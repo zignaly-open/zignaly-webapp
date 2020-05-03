@@ -1,0 +1,15 @@
+home.title: "Homepage"
+home.main: '<h1>Homepage</h1>
+    <p>
+    If you need any help, try <a href="https://www.gatsbyjs.org/docs/" target="_blank">Gatsby docs</a> or <a href="https://github.com/AckeeCZ/gatsby-starter-internationalized" target="_blank">starter web</a>.
+    </p>
+    <h2>Might help you</h2>
+    <ul>
+    <li><a href="https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-default/" >Gatsby Starter Default</a>
+    <li><a href="https://www.gatsbyjs.org/starters/tomekskuta/gatsby-starter-intl/" >Gatsby Starter Intl</a>
+    </ul>'
+footer.title: '© 2019, Built with <a href="https://www.gatsbyjs.org/" target="_blank">Gatsby</a>'
+page1.title: "Page 1"
+subpage.page1.title: "Subpage 1"
+subpage.subsubpage.page1.title: "Subsubpage 1"
+back.home: "Back to homepage"

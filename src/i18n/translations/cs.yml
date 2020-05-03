@@ -1,0 +1,14 @@
+home.title: "Domovská stránka"
+home.main: '<h1>Domovská stránka</h1>
+    <p>Pokud potřebujete pomoct, jděte na <a href="https://www.gatsbyjs.org/docs/" target="_blank">Gatsby dokumentace</a> nebo na
+    <a href="https://github.com/AckeeCZ/gatsby-starter-internationalized" target="_blank">web starteru</a>.
+    </p>
+    <h2>Další doporučené zdroje</h2>
+    <ul>
+    <li><a href="https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-default/" >Gatsby Starter Default</a>
+    <li><a href="https://www.gatsbyjs.org/starters/tomekskuta/gatsby-starter-intl/" >Gatsby Starter Intl</a></ul>'
+footer.title: '© 2019, Vytvořeno s pomocí <a href="https://www.gatsbyjs.org/" target="_blank">Gatsby</a>'
+page1.title: "Stránka 1"
+subpage.page1.title: "Podstránka 1"
+subpage.subsubpage.page1.title: "Podpodstránka 1"
+back.home: "Zpět na domovskou stránku"

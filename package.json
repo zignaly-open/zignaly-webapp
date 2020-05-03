@@ -1,0 +1,47 @@
+{
+    "name": "gatsby-starter-internationalized",
+    "description": "A starter for websites with internationalized content and routes",
+    "version": "0.0.1",
+    "author": "Marek Janča <marek-janca@volny.cz>",
+    "dependencies": {
+        "gatsby": "^2.1.24",
+        "gatsby-image": "^2.0.31",
+        "gatsby-plugin-manifest": "^2.0.22",
+        "gatsby-plugin-offline": "^2.0.24",
+        "gatsby-plugin-react-helmet": "^3.0.8",
+        "gatsby-plugin-sass": "^2.0.11",
+        "gatsby-plugin-sharp": "^2.0.25",
+        "gatsby-source-filesystem": "^2.0.23",
+        "gatsby-transformer-sharp": "^2.1.15",
+        "node-sass": "^4.12.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4",
+        "react-helmet": "^5.2.1",
+        "react-intl": "^2.8.0",
+        "recompose": "^0.30.0"
+    },
+    "keywords": [
+        "gatsby",
+        "gatsby-starter",
+        "intl"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "build": "gatsby build",
+        "develop": "gatsby develop",
+        "start": "npm run develop",
+        "serve": "gatsby serve"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AckeeCZ/gatsby-starter-internationalized"
+    },
+    "bugs": {
+        "url": "https://github.com/AckeeCZ/gatsby-starter-internationalized/issues"
+    },
+    "devDependencies": {
+        "babel-preset-gatsby": "^0.1.8",
+        "identity-obj-proxy": "^3.0.0"
+    }
+}
