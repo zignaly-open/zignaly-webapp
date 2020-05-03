@@ -40,5 +40,15 @@ module.exports = {
                 develop: true,
             }
         },
+        {
+            resolve: `gatsby-plugin-react-css-modules`,
+            options: {
+                filetypes: {
+                    ".scss": {syntax: `postcss-scss`},
+                },
+                // Exclude global styles from the plugin using a RegExp:
+                exclude: `\/global\/`,
+            },
+        },
     ]
 }
