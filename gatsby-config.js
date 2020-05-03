@@ -32,5 +32,13 @@ module.exports = {
                 icon: `src/images/gatsby-icon.png`,
             },
         },
+        {
+            resolve: `gatsby-plugin-purgecss`,
+            options: {
+                printRejected: true,
+                // Enable while using `gatsby develop`
+                develop: true,
+            }
+        },
     ]
 }
