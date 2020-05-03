@@ -4,6 +4,7 @@ module.exports = {
         description: `Zignaly the copy-trader platform.`,
     },
     plugins: [
+        `gatsby-plugin-sass`,
         `gatsby-plugin-react-helmet`,
         {
             resolve: `gatsby-source-filesystem`,
