@@ -54,8 +54,4 @@
     "bugs": {
         "url": "https://github.com/AckeeCZ/gatsby-starter-internationalized/issues"
     },
-    "devDependencies": {
-        "babel-preset-gatsby": "^0.1.8",
-        "identity-obj-proxy": "^3.0.0"
-    }
 }
