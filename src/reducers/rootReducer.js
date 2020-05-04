@@ -1,7 +1,9 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
 import settings from './settings';
+import session from './session';
 
 export default combineReducers({
-  settings,
+    session,
+    settings,
 });
