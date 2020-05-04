@@ -6,6 +6,7 @@
     "dependencies": {
         "@material-ui/core": "4.9.11",
         "@material-ui/styles": "4.9.10",
+        "cross-fetch": "^3.0.4",
         "dotenv": "^8.0.0",
         "gatsby": "^2.1.24",
         "gatsby-image": "^2.0.31",
