@@ -4,6 +4,7 @@ import {FormattedMessage} from "react-intl";
 import Link from "../LocalizedLink";
 import LanguageSwitcher from "../LanguageSwitcher";
 import {useSelector} from 'react-redux';
+import tradeApiClient from '../../services/tradeApiClient';
 
 import "./Header.sass";
 
