@@ -1,4 +1,4 @@
-@import '../../styles/variables.sass';
+@import '../../../styles/variables.sass';
 
 .testimonial
     width: 576px;
@@ -9,6 +9,7 @@
     position: relative;
     margin: 64px 0;
     padding: 20px;
+    box-sizing: border-box;
 
     .avatar
         width: 80px;
@@ -19,8 +20,9 @@
         border-radius: 50%;
 
     .time-box
+        height: 42px
         .time
-            font-family: 'PlexSans-Regular';
+            font-family: 'PlexSans-Light';
             font-size: 14px;
             margin-right: 1rem;
             letter-spacing: .53px;
@@ -37,13 +39,15 @@
         margin-top: 16px;
         .title
             font-size: 21px;
-            font-family: 'PlexSans-Bold';
+            font-family: 'PlexSans-Medium';
             letter-spacing: .8px;
             margin: 0;
             &+p
                 font-size: 16px;
-                letter-spacing: .6px;
+                letter-spacing: .61px;
+                line-height: 21px;
                 margin: 10px 0 0 0;
+                font-family: 'PlexSans-Light';
 
 
 

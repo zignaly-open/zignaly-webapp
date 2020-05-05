@@ -24,6 +24,7 @@
         "gatsby-source-filesystem": "^2.0.23",
         "gatsby-transformer-sharp": "^2.1.15",
         "lodash": "^4.17.11",
+        "moment": "^2.25.3",
         "node-sass": "^4.12.0",
         "prop-types": "^15.7.2",
         "react": "^16.8.4",
@@ -35,6 +36,9 @@
         "react-verification-code-input": "^1.2.3",
         "recompose": "^0.30.0",
         "redux": "^4.0.0"
+    },
+    "resolutions": {
+        "moment": "2.24.0"
     },
     "devDependencies": {
         "babel-jest": "^24.8.0",

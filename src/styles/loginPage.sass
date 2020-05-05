@@ -1,3 +1,4 @@
+@import url('./fonts.sass');
 @import './variables.sass';
 
 .loginPage
@@ -83,11 +84,34 @@
             width: 100px !important;
         .section
             min-height: 450px;
-    .testimonials
-        padding: 50px 130px;
 
-        .title
-            font-family: 'PlexSans-Medium';
-            font-size: 28px !important;
-            text-align: left;
-            color: $black !important;
+.custom-input
+    width: 100%;
+    margin: 0;
+    height: 32px;
+    input
+        padding: 0 1rem;
+    div
+        height: 32px;
+    &>div
+        padding-right: 0;
+
+.checkbox-input
+    padding: 0 !important;
+    margin: .2rem .5rem 0 0 !important;
+    color: $purple !important;
+    &.error
+        color: $red !important;
+
+
+.custom-label
+    font-size: 16px;
+    color: $black;
+
+
+.text-center
+    text-align: center;
+
+.password-strength-box
+    z-index: 1000;
+    left: -20px !important;

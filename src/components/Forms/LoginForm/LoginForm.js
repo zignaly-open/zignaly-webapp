@@ -67,7 +67,7 @@ class LoginForm extends Component{
 
     render(){
         return(
-            <Box className="login-form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+            <Box className="loginForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <Modal state={this.state.modal} onClose={() => this.setState({modal: false})} persist={false}>
                     <ForgotPasswordForm dispatch={this.props.dispatch} />
                 </Modal>

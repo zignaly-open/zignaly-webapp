@@ -8,31 +8,29 @@ const PasswordStrength = (props) => {
     const [bars, setBars] = useState([])
 
     useEffect(() => {
-        checkStrength()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [strength])
-
-    const checkStrength = () => {
-        let data = []
-        let color = ""
-        if(strength === 1){
-            color = "red"
-        }
-        if(strength > 1 &&  strength <= 3){
-            color = "yellow"
-        }
-        if(strength >= 4){
-            color = "green"
-        }
-        for(let a=1; a<=4; a++){
-            if(a <= strength){
-                data.push(color)
-            }else {
-                data.push("")
+        const checkStrength = () => {
+            let data = []
+            let color = ""
+            if(strength === 1){
+                color = "red"
             }
+            if(strength > 1 &&  strength <= 3){
+                color = "yellow"
+            }
+            if(strength >= 4){
+                color = "green"
+            }
+            for(let a=1; a<=4; a++){
+                if(a <= strength){
+                    data.push(color)
+                }else {
+                    data.push("")
+                }
+            }
+            setBars(data)
         }
-        setBars(data)
-    }
+        checkStrength()
+    }, [strength])
 
     return(
         <Box className="password-strength" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
