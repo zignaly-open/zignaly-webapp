@@ -1,0 +1,93 @@
+@import './variables.sass';
+
+.loginPage
+    background: $white;
+    padding-bottom: 100px;
+    .login-header
+        position: relative;
+
+        .header-image
+            width: 100%;
+            height: 624px;
+            position: absolute;
+            background-image: url('../images/login/group.png');
+            background-size: cover;
+            &:after
+                content: '';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0 100px 100vw;
+                border-color: transparent transparent #ffffff transparent;
+
+    .tagline-box
+        width: 550px;
+        height: 300px;
+        z-index: 100;
+        margin-top: 150px;
+        .logo
+            width: 216px;
+        .tagline
+            width: 85%;
+            font-size: 37px;
+            line-height: 1.2;
+            margin-top: 32px;
+            color: $white;
+            font-family: 'PlexSerif-Regular';
+        .slogan
+            font-size: 18px;
+            color: $white;
+            width: 100%;
+            margin-top: 16px;
+            font-family: 'PlexSans-Light';
+            b{font-family: 'PlexSans-Bold';}
+
+    .tabs-box
+        margin-top: 100px;
+        background: $white !important;
+        border-radius: 4px;
+        width: 450px;
+        min-height: 450px;
+        z-index: 100;
+        overflow-y: visible;
+        box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+
+        .tabs-menu
+            width: 100%;
+            min-height: 70px;
+            max-height: 70px;
+            border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+            .container
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                button
+                    padding: 0;
+                    min-width: 100px;
+                    max-width: 100px;
+                    min-height: 70px;
+                    max-height: 70px;
+                    text-transform: capitalize;
+                    font-size: 21px !important;
+                    font-family: 'PlexSans-Regular';
+                    &:focus
+                        outline: none;
+                    &.selected
+                        font-family: 'PlexSans-Bold';
+
+        .indicator
+            background: $purple !important;
+            width: 100px !important;
+        .section
+            min-height: 450px;
+    .testimonials
+        padding: 50px 130px;
+
+        .title
+            font-family: 'PlexSans-Medium';
+            font-size: 28px !important;
+            text-align: left;
+            color: $black !important;

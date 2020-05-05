@@ -1,0 +1,42 @@
+@import '../../styles/variables.sass';
+
+.custom-button
+    height: 48px !important;
+    font-size: 16px !important;
+    letter-spacing: 1px !important;
+    min-width: 250px !important;
+    text-transform: capitalize !important;
+    cursor: pointer !important;
+    padding: .25rem .75rem !important;
+    box-sizing: border-box;
+    font-family: 'PlexSans-Medium' !important;
+
+    .loader
+        width: 20px !important;
+        height: 20px !important;
+        color: $white;
+
+
+    &.submit-btn
+        background: $purple;
+        color: $white !important;
+        &:hover
+            background: $purpleLight;
+
+
+    &.disabled-btn
+        background: $lightGrey;
+        color: $black !important;
+        &:hover
+            background: $lightGrey;
+
+
+
+    &.load-more-btn
+        background: $white;
+        color: $purple;
+        border: 2px solid $purple;
+
+
+    &.full
+        width: 100%;

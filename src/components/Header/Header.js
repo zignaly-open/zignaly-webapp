@@ -9,7 +9,7 @@ import tradeApiClient from '../../services/tradeApiClient';
 import "./Header.sass";
 
 const Header = () => {
-    const languageCode = useSelector(state => state.settings.languageCode);
+    // const languageCode = useSelector(state => state.settings.languageCode);
 
     return (
         <header className="Header">
@@ -33,7 +33,7 @@ const Header = () => {
                     <FormattedMessage id="subpage.subsubpage.page1.title"/>
                 </Link>
                 <LanguageSwitcher/>
-                <p>Selected language state is: {languageCode}</p>
+                {/* <p>Selected language state is: {languageCode}</p> */}
             </nav>
         </header>
     );

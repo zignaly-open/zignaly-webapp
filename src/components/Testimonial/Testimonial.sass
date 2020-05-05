@@ -1,0 +1,55 @@
+@import '../../styles/variables.sass';
+
+.testimonial
+    width: 576px;
+    height: 268px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+    background: $white;
+    position: relative;
+    margin: 64px 0;
+    padding: 20px;
+
+    .avatar
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        left: 24px;
+        top: -30px;
+        border-radius: 50%;
+
+    .time-box
+        .time
+            font-family: 'PlexSans-Regular';
+            font-size: 14px;
+            margin-right: 1rem;
+            letter-spacing: .53px;
+
+        .icon
+            background: $blue;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            padding-top: 5px;
+
+
+    .title-box
+        margin-top: 16px;
+        .title
+            font-size: 21px;
+            font-family: 'PlexSans-Bold';
+            letter-spacing: .8px;
+            margin: 0;
+            &+p
+                font-size: 16px;
+                letter-spacing: .6px;
+                margin: 10px 0 0 0;
+
+
+
+    .review-box
+        position: absolute;
+        width: calc(100% - 40px);
+        bottom: 16px;
+        .stars
+            color: $green !important;
