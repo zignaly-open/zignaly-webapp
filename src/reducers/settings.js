@@ -7,7 +7,7 @@ const settings = (state = {}, action) => {
             state.language = action.payload;
             return state;
         case SELECT_THEME:
-            state.themeMode = action.payload;
+            state.darkStyle = action.payload;
             return state;
         default:
             return state;
