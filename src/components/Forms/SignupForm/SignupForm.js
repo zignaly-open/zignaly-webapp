@@ -206,9 +206,9 @@ class LoginForm extends Component{
                             onKeyDown={this.handleKeyPress}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton onClick={() => this.setState({showPassword: !this.state.showPassword})}>
+                                    <span className={common.pointer} onClick={() => this.setState({showPassword: !this.state.showPassword})}>
                                         {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
+                                    </span>
                                 </InputAdornment>
                             }
                             />
@@ -227,9 +227,9 @@ class LoginForm extends Component{
                             onKeyDown={this.handleKeyPress}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <IconButton onClick={() => this.setState({showRepeatPassword: !this.state.showRepeatPassword})}>
+                                    <span className={common.pointer} onClick={() => this.setState({showRepeatPassword: !this.state.showRepeatPassword})}>
                                         {this.state.showRepeatPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
+                                    </span>
                                 </InputAdornment>
                             }
                             />
