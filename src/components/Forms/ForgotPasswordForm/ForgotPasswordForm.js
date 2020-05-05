@@ -5,7 +5,7 @@ import CustomButton from '../../CustomButton/CustomButton';
 // import {recover1} from 'actions';
 import { validateEmail } from '../../../helpers/validators';
 
-class TwoFAForm extends Component{
+class ForgotPasswordForm extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -55,7 +55,7 @@ class TwoFAForm extends Component{
 
     render(){
         return(
-            <Box className="twoFA-form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+            <Box className="forgotPasswordForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <h3>Password Recovery Form</h3>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className="custom-label">Enter your email address</label>
@@ -84,4 +84,4 @@ class TwoFAForm extends Component{
     }
 }
 
-export default TwoFAForm;
+export default ForgotPasswordForm;
