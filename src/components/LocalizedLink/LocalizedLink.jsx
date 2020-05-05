@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "gatsby";
-
 import { getLocalizedPath } from "../../i18n";
 import { PageContext } from "../../pageContext";
 
