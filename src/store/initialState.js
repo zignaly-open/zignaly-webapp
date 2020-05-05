@@ -9,7 +9,7 @@ const initialState = {
     },
     settings: {
         languageCode: 'en',
-        themeMode: 'light',
+        darkStyle: false,
     }
 };
 
