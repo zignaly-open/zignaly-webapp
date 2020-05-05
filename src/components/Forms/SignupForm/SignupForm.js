@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './SignupForm.sass';
+import common from '../../../styles/common.module.sass';
 import {Box, TextField, Checkbox, IconButton, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail, validateName, validatePassword} from '../../../helpers/validators';
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import PasswordStrength from '../../PasswordStrength';
@@ -35,10 +36,10 @@ class LoginForm extends Component{
         this.recaptchaRef = React.createRef();
     }
 
-    componentDidMount() {
-        const ref = saveRefCookie(this.props.location);
-        this.setState({ref: ref})
-    }
+    // componentDidMount() {
+    //     const ref = saveRefCookie(this.props.location);
+    //     this.setState({ref: ref})
+    // }
 
     handleEmailChange = (e) => {
         this.setState({
@@ -112,7 +113,7 @@ class LoginForm extends Component{
                 subscribe: this.state.subscribe,
                 ref: this.state.ref || null,
                 array: true,
-                gRecaptchaResponse: envconfig.configureCaptcha ? this.state.gRecaptchaResponse : "abracadabra"
+                gRecaptchaResponse: "abracadabra"
             };
             if(envconfig.configureCaptcha){
                 this.recaptchaRef.current.reset()
@@ -158,7 +159,7 @@ class LoginForm extends Component{
         return(
             <Box className="signup-form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <Popper
-                    className="password-strength-box"
+                    className={common.passwordStrengthBox}
                     placement="left"
                     transition
                     open={this.state.anchorEl ? true : false}
@@ -166,9 +167,9 @@ class LoginForm extends Component{
                     <PasswordStrength onClose={() => this.setState({anchorEl: undefined})} strength={this.state.strength} />
                 </Popper>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
-                    <label className="custom-label">Name</label>
+                    <label className={common.customLabel}>Name</label>
                     <TextField
-                        className="custom-input"
+                        className={common.customInput}
                         fullWidth
                         type="text"
                         variant="outlined"
@@ -179,9 +180,9 @@ class LoginForm extends Component{
                         />
                 </Box>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
-                    <label className="custom-label">Email address</label>
+                    <label className={common.customLabel}>Email address</label>
                     <TextField
-                        className="custom-input"
+                        className={common.customInput}
                         type="email"
                         fullWidth
                         variant="outlined"
@@ -194,8 +195,8 @@ class LoginForm extends Component{
                 </Box>
 
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
-                    <label className="custom-label">Password</label>
-                    <FormControl className="custom-input" variant="outlined">
+                    <label className={common.customLabel}>Password</label>
+                    <FormControl className={common.customInput} variant="outlined">
                         <OutlinedInput
                             type={this.state.showPassword ? 'text' : 'password'}
                             value={this.state.password}
@@ -215,8 +216,8 @@ class LoginForm extends Component{
                 </Box>
 
                 <Box className={"input-box " + (this.state.passwordDoNotMatch ? "no-margin" : "")} display="flex" flexDirection="column" justifyContent="start" alignItems="start">
-                    <label className="custom-label">Repeat Password</label>
-                    <FormControl className="custom-input" variant="outlined">
+                    <label className={common.customLabel}>Repeat Password</label>
+                    <FormControl className={common.customInput} variant="outlined">
                         <OutlinedInput
                             type={this.state.showRepeatPassword ? 'text' : 'password'}
                             value={this.state.repeatPassword}
@@ -241,7 +242,7 @@ class LoginForm extends Component{
                     <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
                         <Checkbox
                             checked={this.state.terms}
-                            className={"checkbox-input " + (this.state.termsError ? "error" : "")}
+                            className={common.checkboxInput + (this.state.termsError ? "error" : "")}
                             onChange={this.handleTermsChange}
                         />
                         <Box className="terms-box" display="flex" flexDirection="row" justifyContent="start" flexWrap="wrap">
@@ -257,14 +258,14 @@ class LoginForm extends Component{
                     <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
                         <Checkbox
                             checked={this.state.subscribe}
-                            className={"checkbox-input"}
+                            className={common.checkboxInput}
                             onChange={(e) => this.setState({subscribe: e.target.checked})}
                         />
                         <span className={"terms-text"}>Subscribe to notifications</span>
                     </Box>
                 </Box>
 
-                {envconfig.configureCaptcha &&
+                {/* {envconfig.configureCaptcha &&
                     <Box className="input-box">
                         <ReCAPTCHA
                             ref={this.recaptchaRef}
@@ -273,7 +274,7 @@ class LoginForm extends Component{
                             onExpired={this.onExpiredReCAPTCHA}
                             onErrored={this.onErroredReCAPTCHA}/>
                     </Box>
-                }
+                } */}
 
                 <Box className="input-box button-box">
                     <CustomButton

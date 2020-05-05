@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './LoginForm.sass';
+import common from '../../../styles/common.module.sass';
 import {Box, TextField, FormControl, InputAdornment, OutlinedInput, IconButton} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail} from '../../../helpers/validators';
@@ -74,7 +75,7 @@ class LoginForm extends Component{
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className="custom-label">Email address</label>
                     <TextField
-                        className="custom-input"
+                        className={common.customInput}
                         type="email"
                         fullWidth
                         variant="outlined"
@@ -88,7 +89,7 @@ class LoginForm extends Component{
 
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className="custom-label">Password</label>
-                    <FormControl className="custom-input" variant="outlined">
+                    <FormControl className={common.customInput} variant="outlined">
                         <OutlinedInput
                             type={this.state.showPassword ? 'text' : 'password'}
                             value={this.state.password}
