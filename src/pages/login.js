@@ -32,9 +32,11 @@ const LoginPage = () => {
         setPageSize(size)
     };
 
-    changeTab = (event, newValue) => {
+    const changeTab = (event, newValue) => {
         setTabValue(newValue)
     };
+
+    const show2FA = false;
 
     return(
         <Box className="loginPage">
@@ -68,9 +70,11 @@ const LoginPage = () => {
             <Box className="testimonials">
                 <span className="title">Testimonials</span>
                 <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
+{/*
                     {this.state.data.map((item) =>
                         <Testimonial key={item.id} data={item} />
                     )}
+*/}
                 </Box>
                 <Box display="flex" flexDirection="row" justifyContent="center">
                     <CustomButton disabled={pageSize === testominalFeed.length} className="load-more-btn" onClick={loadMoreData}>Load More</CustomButton>
