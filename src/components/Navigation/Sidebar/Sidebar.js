@@ -61,8 +61,8 @@ const Sidebar = () => {
                         </React.Fragment>
                     }
                     {!hover &&
-                        <Box display="flex"flexDirection="row" justifyContent="center" className={darkStyle ? "darkBox" : "lightBox"}>
-                            <img onClick={() => dispatch(selectDarkTheme(true))} src={darkStyle ? FillWhite : OutlineBlack} alt="zignaly" className={"icon"} />
+                        <Box display="flex"flexDirection="row" justifyContent="center" className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}>
+                            <img onClick={() => dispatch(selectDarkTheme(true))} src={darkStyle ? OutlineWhite : FillBlack} alt="zignaly" className={"icon"} />
                         </Box>
                     }
                 </Box>

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import style from './layout.module.sass';
+import './layout.sass';
 import Header from "../components/Navigation/Header";
 import { getDisplayName } from "../utils";
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -17,13 +17,13 @@ const withLayout = Component => {
         return (
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Box bgcolor="background.default" className={style.app}>
+                <Box bgcolor="background.default" className={"app"}>
                     <Header />
-                    <Box display="flex" flexDirection="row" flexWrap="nowrap" className={style.body}>
-                        <Box className={style.side}>
+                    <Box display="flex" flexDirection="row" flexWrap="nowrap" className={"body"}>
+                        <Box className={"side"}>
                             <Sidebar />
                         </Box>
-                        <Box className={style.content}>
+                        <Box className={"content"}>
                             <Component {...props} />
                         </Box>
                     </Box>
