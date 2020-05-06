@@ -8,6 +8,7 @@ import "../styles/common.sass";
 import themeData from '../services/theme';
 import { useSelector } from "react-redux";
 import Sidebar from "../components/Navigation/Sidebar";
+import FAQ from '../components/FAQ';
 
 const withLayout = Component => {
     const WrapperComponent = props => {
@@ -26,6 +27,9 @@ const withLayout = Component => {
                         <Box className={"content"}>
                             <Component {...props} />
                         </Box>
+                    </Box>
+                    <Box className={"footer"}>
+                        <FAQ />
                     </Box>
                 </Box>
             </ThemeProvider>

@@ -5,12 +5,12 @@ const settings = (state = {}, action) => {
     switch (action.type) {
         case SELECT_LANGUAGE:
             state.language = action.payload;
-            return state;
+            return {...state};
         case SELECT_THEME:
             state.darkStyle = action.payload;
-            return state;
+            return {...state};
         default:
-            return state;
+            return {...state};
     }
 };
 

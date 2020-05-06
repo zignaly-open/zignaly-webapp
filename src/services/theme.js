@@ -31,6 +31,7 @@ const theme = (darkStyle) => {
                 primary: darkStyle ? white : black
             },
             action: {
+                color: white,
                 hover: purple,
                 active: purple,
                 hoverOpacity: 0,

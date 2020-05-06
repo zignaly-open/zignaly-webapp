@@ -32,15 +32,15 @@ const Header = () => {
                     {showBalance &&
                         <Grow in={true}>
                             <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-                                <Box className={"box"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
                                     <span className="title">available balance</span>
                                     <span className="balance">btc 0.256</span>
                                 </Box>
-                                <Box className={"box"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
                                     <span className="title">invested</span>
                                     <span className="balance">btc 0.452</span>
                                 </Box>
-                                <Box className={"box"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
                                     <span className="title">p/l</span>
                                     <span className="balance">btc +0.47</span>
                                 </Box>
@@ -60,15 +60,14 @@ const Header = () => {
                 <Box className={"linkBox"}>
                     <img onClick={(e) => setAnchorEl(e.currentTarget)} src={ProfileIcon} className={"icon"} alt="zignaly-user" />
                     <Menu
-                        id="simple-menu"
                         anchorEl={anchorEl}
                         keepMounted
                         open={Boolean(anchorEl)}
                         onClose={() => setAnchorEl(undefined)}>
 
-                        <MenuItem onClick={() => setAnchorEl(undefined)}>Profile</MenuItem>
-                        <MenuItem onClick={() => setAnchorEl(undefined)}>My account</MenuItem>
-                        <MenuItem onClick={() => setAnchorEl(undefined)}>Logout</MenuItem>
+                        <MenuItem classes={{root: darkStyle ? "darkMenu" : "lightMenu"}} onClick={() => setAnchorEl(undefined)}>Profile</MenuItem>
+                        <MenuItem classes={{root: darkStyle ? "darkMenu" : "lightMenu"}} onClick={() => setAnchorEl(undefined)}>My account</MenuItem>
+                        <MenuItem classes={{root: darkStyle ? "darkMenu" : "lightMenu"}} onClick={() => setAnchorEl(undefined)}>Logout</MenuItem>
                     </Menu>
                 </Box>
             </Box>
