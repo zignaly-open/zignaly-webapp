@@ -1,0 +1,48 @@
+@import '../../../styles/variables.sass';
+@import url('../../../styles/fonts.sass');
+
+.sidebar
+    width: 60px
+    box-sizing: border-box;
+    border-radius: 28px;
+    padding: 10px;
+    transition: width 0.35s;
+    overflow: hidden !important;
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    &:hover
+        width: 200px;
+        overflow: visible;
+        .sideBarLink
+            &.active
+
+
+    .sideBarLink
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        text-decoration: none;
+        margin-bottom: 50px;
+        font-family: 'PlexSans-Medium';
+        color: inherit;
+        padding: 8px;
+        overflow: hidden
+        height: 40px;
+        &:hover
+            color: $purpleLight;
+        &.active
+            background-image: $purpleDarkGradient;
+            border-radius: 19px;
+            &:hover
+                color: inherit;
+
+        .icon
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+        .text
+            font-size: 14px;
+            text-transform: capitalize;

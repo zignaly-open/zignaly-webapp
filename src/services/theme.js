@@ -7,6 +7,7 @@ const yellow = "#f6ad3f";
 const white = "#ffffff";
 const lightGrey = "#d4d4d4";
 const blue = "#017aff;"
+const lightBlack = "#27273f"
 
 const theme = (darkStyle) => {
     return {
@@ -15,8 +16,12 @@ const theme = (darkStyle) => {
                 default: darkStyle ? black : white,
                 paper: darkStyle ? black : white,
             },
+            grid: {
+                main: darkStyle ? lightBlack : white,
+                content: darkStyle ? lightBlack : white,
+            },
             primary: {
-                main: purple,
+                main: darkStyle ? purpleLight : purple,
             },
             secondary: {
                 main: purpleLight,
