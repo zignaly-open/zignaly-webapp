@@ -5,15 +5,16 @@ const green = "#08a441";
 const pink = "#f63f82";
 const yellow = "#f6ad3f";
 const white = "#ffffff";
-const lightGrey = "#d4d4d4";
+const lightGrey = "#e4e4e4";
 const blue = "#017aff;"
 const lightBlack = "#27273f"
+const offWhite = "f3f3f3";
 
 const theme = (darkStyle) => {
     return {
         palette: {
             background: {
-                default: darkStyle ? black : white,
+                default: darkStyle ? black : lightGrey,
                 paper: darkStyle ? black : white,
             },
             grid: {

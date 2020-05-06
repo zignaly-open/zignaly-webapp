@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from './Sidebar.module.sass';
 import { Box } from '@material-ui/core';
 import Link from '../../LocalizedLink';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import SignalWhite from '../../../images/sidebar/signalWhite.svg';
 import SignalBlack from '../../../images/sidebar/signalBlack.svg';
 import TerminalWhite from '../../../images/sidebar/terminalWhite.svg';
@@ -15,16 +15,16 @@ import OutlineWhite from '../../../images/sidebar/outlineWhite.svg';
 import OutlineBlack from '../../../images/sidebar/outlineBlack.svg';
 import DashboardWhite from '../../../images/sidebar/dashboardWhite.svg';
 import DashboarBlack from '../../../images/sidebar/dashboardBlack.svg';
-
+import {selectDarkTheme} from '../../../store/actions/settings';
 
 const Sidebar = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
-    const [hover, setHover] = useState(false)
+    const dispatch = useDispatch()
+
+    console.log(darkStyle)
 
     return (
         <Box
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
             display="flex"
             flexDirection="column"
             justifyContent="center"
@@ -48,8 +48,13 @@ const Sidebar = () => {
                 <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={style.icon} />
                 <span className={style.text}>trading terminal</span>
             </Link>
-            <Box>
-
+            <Box className={style.themeBox} display="flex" flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
+                <Box display="flex"flexDirection="row" justifyContent="center" className={darkStyle ? style.checkedDarkBox : style.darkBox}>
+                    <img onClick={() => dispatch(selectDarkTheme(true))} src={darkStyle ? OutlineWhite : OutlineBlack} alt="zignaly" className={style.icon} />
+                </Box>
+                <Box display="flex" flexDirection="row" justifyContent="center" className={!darkStyle ? style.checkedLightBox : style.lightBox}>
+                    <img onClick={() => dispatch(selectDarkTheme(false))} src={darkStyle ? FillWhite : FillBlack} alt="zignaly" className={style.icon} />
+                </Box>
             </Box>
         </Box>
     )
