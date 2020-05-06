@@ -61,6 +61,7 @@ const Header = () => {
                     <img onClick={(e) => setAnchorEl(e.currentTarget)} src={ProfileIcon} className={"icon"} alt="zignaly-user" />
                     <Menu
                         anchorEl={anchorEl}
+                        classes={{paper: "menu"}}
                         keepMounted
                         open={Boolean(anchorEl)}
                         onClose={() => setAnchorEl(undefined)}>
