@@ -1,32 +1,30 @@
 @import '../../styles/variables.sass';
 
 .customButton
+    height: 48px !important;
     font-size: 16px !important;
     letter-spacing: 1px !important;
+    min-width: 250px !important;
     text-transform: capitalize !important;
     cursor: pointer !important;
-    box-sizing: border-box;
     padding: 0px !important;
+    box-sizing: border-box;
     font-family: 'PlexSans-Medium' !important;
-    color: $white !important;
-
-    &.header
-        background: $green !important;
-        height: 32px !important;
-        margin: 0px 12px;
-        min-width: 200px !important;
-
-    &.login
-        background: $purple !important;
-        height: 48px !important;
-        min-width: 100%;
 
     .loader
         width: 20px !important;
         height: 20px !important;
         color: $white;
 
-    &.disabled
+
+    &.submit-btn
+        background: $purple;
+        color: $white !important;
+        &:hover
+            background: $purpleLight;
+
+
+    &.disabled-btn
         background: $lightGrey;
         color: $black !important;
         &:hover
@@ -42,3 +40,9 @@
 
     &.full
         width: 100%;
+
+    &.header-btn
+        background: $green !important;
+        height: 32px !important;
+        min-width: 200px !important;
+        margin: 0px 12px;

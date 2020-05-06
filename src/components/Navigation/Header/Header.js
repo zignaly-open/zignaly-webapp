@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './Header.module.sass';
+import './Header.sass';
 import { Box } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';
@@ -14,14 +14,14 @@ const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
 
     return (
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" className={style.header}>
-            <img src={darkStyle ? LogoWhite :LogoBlack} className={style.headerLogo} alt="zignaly-logo" />
-            <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center" className={style.linksContainer}>
-                <CustomButton type="header">Connect Account</CustomButton>
-                <Box className={style.linkBox}><LanguageSwitcher /></Box>
-                <Box className={style.linkBox}><NotificationsNoneIcon className={style.icon} /></Box>
-                <Box className={style.linkBox}>
-                    <img src={ProfileIcon} className={style.icon} alt="zignaly-user" />
+        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" className={"header"}>
+            <img src={darkStyle ? LogoWhite :LogoBlack} className={"headerLogo"} alt="zignaly-logo" />
+            <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center" className={"linksContainer"}>
+                <CustomButton className="header-btn">Connect Account</CustomButton>
+                <Box className={"linkBox"}><LanguageSwitcher /></Box>
+                <Box className={"linkBox"}><NotificationsNoneIcon className={"icon"} /></Box>
+                <Box className={"linkBox"}>
+                    <img src={ProfileIcon} className={"icon"} alt="zignaly-user" />
                 </Box>
             </Box>
         </Box>

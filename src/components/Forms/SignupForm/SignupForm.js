@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './SignupForm.sass';
 import common from '../../../styles/common.module.sass';
-import {Box, TextField, Checkbox, IconButton, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
+import {Box, TextField, Checkbox, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail, validateName, validatePassword} from '../../../helpers/validators';
 // import ReCAPTCHA from "react-google-recaptcha";
@@ -9,7 +9,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import PasswordStrength from '../../PasswordStrength';
 
-class LoginForm extends Component{
+class SignupForm extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -278,7 +278,7 @@ class LoginForm extends Component{
 
                 <Box className="input-box button-box">
                     <CustomButton
-                        type="login"
+                        className={"full " + (this.disabledButton() ? "disabled-btn" : "submit-btn")}
                         disabled={this.disabledButton()}
                         loading={this.state.loading}
                         onClick= {this.handleSubmit}>Register</CustomButton>
@@ -288,4 +288,4 @@ class LoginForm extends Component{
     }
 }
 
-export default LoginForm;
+export default SignupForm;
