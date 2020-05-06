@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import style from '../styles/login.module.sass';
-import TwoFAForm from '../components/Forms/TwoFAForm';
-import Modal from '../components/Modal';
-import Logo from '../images/logo/logoWhite.svg';
-import Testimonials from '../components/Testimonials';
-import LoginTabs from '../components/LoginTabs';
+import style from './login.module.sass';
+import TwoFAForm from '../../components/Forms/TwoFAForm';
+import Modal from '../../components/Modal';
+import Logo from '../../images/logo/logoWhite.svg';
+import Testimonials from '../../components/Testimonials';
+import LoginTabs from '../../components/LoginTabs';
 
 const LoginPage = () => {
     const show2FA = false;
