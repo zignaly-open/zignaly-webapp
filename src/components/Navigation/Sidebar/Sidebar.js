@@ -19,7 +19,7 @@ import {selectDarkTheme} from '../../../store/actions/settings';
 
 const Sidebar = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
-    const [hover, setHover] = useState(true)
+    const [hover, setHover] = useState(false)
     const dispatch = useDispatch()
 
     return (

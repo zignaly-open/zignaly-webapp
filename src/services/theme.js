@@ -22,16 +22,16 @@ const theme = (darkStyle) => {
                 content: darkStyle ? lightBlack : white,
             },
             primary: {
-                main: darkStyle ? purpleLight : purple,
+                main: purple,
             },
             secondary: {
-                main: purpleLight,
+                main: purple,
             },
             text: {
                 primary: darkStyle ? white : black
             },
             action: {
-                hover: purpleLight,
+                hover: purple,
                 active: purple,
                 hoverOpacity: 0,
             },

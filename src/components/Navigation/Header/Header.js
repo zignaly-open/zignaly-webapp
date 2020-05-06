@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Header.sass';
-import { Box } from '@material-ui/core';
+import { Box, Menu, MenuItem } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';
 import ProfileIcon from '../../../images/profileIcon.svg';
@@ -15,6 +15,8 @@ import Grow from '@material-ui/core/Grow';
 const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
     const [showBalance, setShowBalance] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(undefined)
+
 
     return (
         <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" className={"header"}>
@@ -56,7 +58,18 @@ const Header = () => {
                 <CustomButton className="header-btn">Connect Account</CustomButton>
                 <Box className={"linkBox"}><NotificationsNoneIcon className={"icon"} /></Box>
                 <Box className={"linkBox"}>
-                    <img src={ProfileIcon} className={"icon"} alt="zignaly-user" />
+                    <img onClick={(e) => setAnchorEl(e.currentTarget)} src={ProfileIcon} className={"icon"} alt="zignaly-user" />
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={() => setAnchorEl(undefined)}>
+
+                        <MenuItem onClick={() => setAnchorEl(undefined)}>Profile</MenuItem>
+                        <MenuItem onClick={() => setAnchorEl(undefined)}>My account</MenuItem>
+                        <MenuItem onClick={() => setAnchorEl(undefined)}>Logout</MenuItem>
+                    </Menu>
                 </Box>
             </Box>
         </Box>
