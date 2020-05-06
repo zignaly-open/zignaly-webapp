@@ -17,7 +17,7 @@ const Header = () => {
         <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" className={style.header}>
             <img src={darkStyle ? LogoWhite :LogoBlack} className={style.headerLogo} alt="zignaly-logo" />
             <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center" className={style.linksContainer}>
-                <CustomButton type="green">Connect Account</CustomButton>
+                <CustomButton type="header">Connect Account</CustomButton>
                 <Box className={style.linkBox}><LanguageSwitcher /></Box>
                 <Box className={style.linkBox}><NotificationsNoneIcon className={style.icon} /></Box>
                 <Box className={style.linkBox}>

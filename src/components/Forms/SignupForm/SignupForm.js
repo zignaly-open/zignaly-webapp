@@ -278,7 +278,7 @@ class LoginForm extends Component{
 
                 <Box className="input-box button-box">
                     <CustomButton
-                        className={"full " + (this.disabledButton() ? "disabled-btn" : "submit-btn")}
+                        type="login"
                         disabled={this.disabledButton()}
                         loading={this.state.loading}
                         onClick= {this.handleSubmit}>Register</CustomButton>
