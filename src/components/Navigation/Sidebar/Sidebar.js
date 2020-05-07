@@ -48,7 +48,7 @@ const Sidebar = () => {
                     <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={"icon"} />
                     <span className={"text"}>trading terminal</span>
                 </Link>
-                <Box className={"themeBox"} display="flex" flexWrap="wrap" flexDirection="row">
+                <Box className={"themeBox"} display="flex" flexWrap="nowrap" flexDirection="row">
                     {hover &&
                         <React.Fragment>
                             <Box display="flex"flexDirection="row" justifyContent="center" className={darkStyle ? "checkedDarkBox" : "darkBox"}>
