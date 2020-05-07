@@ -1,4 +1,5 @@
 const black = "#191927";
+const black2 = "#1b1b2c";
 const purple = "#770fc8";
 const purpleLight = "#a946f6";
 const green = "#08a441";
@@ -15,11 +16,11 @@ const theme = (darkStyle) => {
         palette: {
             background: {
                 default: darkStyle ? black : offWhite,
-                paper: darkStyle ? lightBlack : white,
+                paper: darkStyle ? black2 : white,
             },
             grid: {
                 main: darkStyle ? lightBlack : white,
-                content: darkStyle ? lightBlack : white,
+                content: darkStyle ? black2 : white,
             },
             primary: {
                 main: purple,

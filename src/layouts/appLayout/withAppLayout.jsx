@@ -8,7 +8,7 @@ import { CssBaseline, Box } from '@material-ui/core';
 import themeData from '../../services/theme';
 import { useSelector } from "react-redux";
 import Sidebar from "../../components/Navigation/Sidebar";
-import FAQ from '../../components/FAQ';
+import Alert from '../../components/Alert';
 
 const withAppLayout = Component => {
     const WrapperComponent = props => {
@@ -18,6 +18,7 @@ const withAppLayout = Component => {
         return (
             <ThemeProvider theme={theme}>
                 <CssBaseline />
+                <Alert />
                 <Box bgcolor="background.default" className={"app"}>
                     <Header />
                     <Box display="flex" flexDirection="row" flexWrap="nowrap" className={"body"}>

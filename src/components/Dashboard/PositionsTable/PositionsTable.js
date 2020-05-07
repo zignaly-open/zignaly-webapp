@@ -7,7 +7,7 @@ const PositionSettingsForm = (props) => {
 
     return(
         <Box className="positionsTable" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <Box className="tableBox" bgcolor="grid.main" display="flex" flexDirection="row" justifyContent="center">
+            <Box className="tableBox" display="flex" flexDirection="row" justifyContent="center">
                 <Table className="table">
                     <TableHead className="head">
                         <TableRow className="row">
@@ -20,6 +20,8 @@ const PositionSettingsForm = (props) => {
                             <TableCell align="left"className="cell" >Current Price</TableCell>
                             <TableCell align="left" className="cell">P/L %</TableCell>
                             <TableCell align="left" className="cell">P/L #</TableCell>
+                            <TableCell align="left" className="cell">Net Profit</TableCell>
+                            <TableCell align="left" className="cell">Risk</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody className="body">
@@ -32,6 +34,8 @@ const PositionSettingsForm = (props) => {
                             <TableCell align="left" className="cell">{"time"}</TableCell>
                             <TableCell align="left" className="cell">{"data"}</TableCell>
                             <TableCell align="left" className="cell">{"data"}</TableCell>
+                            <TableCell align="left" className="cell">{"data"}</TableCell>
+                            <TableCell align="left" className="cell">{"time"}</TableCell>
                             <TableCell align="left" className="cell">{"data"}</TableCell>
                             <TableCell align="left" className="cell">{"time"}</TableCell>
                         </TableRow>

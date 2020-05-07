@@ -8,7 +8,7 @@ import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 
 const withDashboardLayout = Component => {
     const WrapperComponent = props => {
-        const [exchange, setExchange] = useState(false)
+        const [exchange, setExchange] = useState(true)
 
         return (
             <Box className="dashboardLayout" display="flex" flexDirection="column" justifyContent="flex-start" alignItems="flex-start">

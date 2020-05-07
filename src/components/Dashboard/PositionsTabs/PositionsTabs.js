@@ -16,7 +16,7 @@ const PositionsTabs = (props) => {
     };
 
     return(
-        <Box bgcolor="grid.main" className="positionsTabs">
+        <Box bgcolor="grid.content" className="positionsTabs">
             <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Tabs value={tabValue} onChange={changeTab} classes={{indicator: 'indicator', flexContainer: 'container'}} className="tabs-menu">
                     <Tab label="open positions" classes={{selected: 'selected'}} />
