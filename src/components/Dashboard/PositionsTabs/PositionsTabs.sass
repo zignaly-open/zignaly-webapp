@@ -18,17 +18,20 @@
             justify-content: flex-start;
             button
                 padding: 0;
-                min-width: 160px;
-                max-width: 160px;
+                min-width: 170px;
+                max-width: 170px;
                 min-height: 70px;
                 max-height: 70px;
                 text-transform: capitalize;
                 font-size: 16px !important;
-                font-family: 'PlexSans-Medium';
+                font-family: 'PlexSans-Bold';
+                &:last-child
+                    min-width: 100px;
+                    max-width: 100px;
                 &:focus
                     outline: none;
                 &.selected
-                    color: $purpleLight;
+                    color: $purple;
 
     .indicator
         display: none;
