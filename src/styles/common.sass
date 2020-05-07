@@ -1,5 +1,15 @@
 @import url('./fonts.sass');
 
+html
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+html::-webkit-scrollbar
+                width: 0;
+                height: 0;
+
 body
     margin: 0;
 .pageTitle
