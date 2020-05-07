@@ -3,7 +3,7 @@ import './PositionsTable.sass';
 import {Box, Table, TableHead, TableBody, TableRow, TableCell} from '@material-ui/core';
 
 const PositionSettingsForm = (props) => {
-    const rows = [1,2,3,4,5,6,7];
+    const rows = [1,2,3,4,5,6];
 
     return(
         <Box className="positionsTable" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
