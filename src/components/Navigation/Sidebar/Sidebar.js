@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import  './Sidebar.sass';
 import { Box, ClickAwayListener } from '@material-ui/core';
 import Link from '../../LocalizedLink';
@@ -19,12 +19,7 @@ import {selectDarkTheme} from '../../../store/actions/settings';
 const Sidebar = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
     const [hover, setHover] = useState(false)
-    const [path, setPath] = useState("")
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        setPath(window.location.pathname)
-    }, [window.location])
 
     return (
         <ClickAwayListener onClickAway={() => setHover(false)}>
@@ -37,20 +32,20 @@ const Sidebar = () => {
                 bgcolor="grid.main"
                 className={"sidebar " + (hover ? "full" : "")}>
 
-                <Link to={"/dashboard/positions"} className={"sideBarLink"} activeClassName={"active"}>
-                    <img src={darkStyle ? DashboardWhite : (path.includes('dashboard') ? DashboardWhite : DashboardBlack)} alt="zignaly" className={"icon"} />
+                <Link to={"/dashboard/positions"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                    <img src={darkStyle ? DashboardWhite : DashboardBlack} alt="zignaly" className={"icon"} />
                     <span className={"text"}>dashboard</span>
                 </Link>
-                <Link to={"/copyTraders"} className={"sideBarLink"} activeClassName={"active"}>
-                    <img src={darkStyle ? CopyWhite : (path.includes('copyTraders') ? CopyWhite : CopyBlack)} alt="zignaly" className={"icon"} />
+                <Link to={"/copyTraders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                    <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
                     <span className={"text"}>copy traders</span>
                 </Link>
-                <Link to={"/signalProviders"} className={"sideBarLink"} activeClassName={"active"}>
-                    <img src={darkStyle ? SignalWhite : (path.includes('signalProviders') ? SignalWhite : SignalBlack)} alt="zignaly" className={"icon"} />
+                <Link to={"/signalProviders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                    <img src={darkStyle ? SignalWhite : SignalBlack} alt="zignaly" className={"icon"} />
                     <span className={"text"}>signal providers</span>
                 </Link>
-                <Link to={"/tradingTerminal"} className={"sideBarLink"} activeClassName={"active"}>
-                    <img src={darkStyle ? TerminalWhite : (path.includes('tradingTerminal') ? TerminalWhite : TerminlBlack)} alt="zignaly" className={"icon"} />
+                <Link to={"/tradingTerminal"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                    <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={"icon"} />
                     <span className={"text"}>trading terminal</span>
                 </Link>
                 <Box className={"themeBox"} display="flex" flexWrap="wrap" flexDirection="row">

@@ -24,7 +24,7 @@ const withAppLayout = Component => {
                         <Box className={"side"}>
                             <Sidebar />
                         </Box>
-                        <Box className={"content"}>
+                        <Box className={"appContent"}>
                             <Component {...props} />
                         </Box>
                     </Box>
