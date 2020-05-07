@@ -11,7 +11,7 @@ const ConnectedTraders = () => {
     return (
         <React.Fragment>
             <Helmet>
-                <title>Dashboard/Balance</title>
+                <title>Connected Traders</title>
             </Helmet>
             <Box display="flex" flexDirection="row" justifyContent="center" className="balancePage">
 

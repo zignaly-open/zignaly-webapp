@@ -5,8 +5,9 @@ import SettingsIcon from '../../../images/dashboard/settings.svg';
 import BorderIcon from '../../../images/dashboard/border.svg';
 import Modal from '../../Modal';
 import PositionSettingsForm from '../../Forms/PositionSettingsForm';
+import PositionsTable from '../PositionsTable';
 
-const LoginTabs = (props) => {
+const PositionsTabs = (props) => {
     const [tabValue, setTabValue] = useState(0)
     const [settingsModal, showSettingsModal] = useState(false)
 
@@ -29,17 +30,17 @@ const LoginTabs = (props) => {
             </Box>
             {tabValue === 0 &&
                 <Box className="section">
-
+                    <PositionsTable />
                 </Box>
             }
             {tabValue === 1 &&
                 <Box className="section">
-
+                    <PositionsTable />
                 </Box>
             }
             {tabValue === 2 &&
                 <Box className="section">
-
+                    <PositionsTable />
                 </Box>
             }
             <Modal state={settingsModal} size={"medium"} onClose={() => showSettingsModal(false)}>
@@ -49,4 +50,4 @@ const LoginTabs = (props) => {
     )
 }
 
-export default LoginTabs;
+export default PositionsTabs;

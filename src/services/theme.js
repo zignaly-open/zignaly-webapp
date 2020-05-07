@@ -15,7 +15,7 @@ const theme = (darkStyle) => {
         palette: {
             background: {
                 default: darkStyle ? black : offWhite,
-                paper: darkStyle ? black : white,
+                paper: darkStyle ? lightBlack : white,
             },
             grid: {
                 main: darkStyle ? lightBlack : white,

@@ -11,7 +11,7 @@ const Balance = () => {
     return (
         <React.Fragment>
             <Helmet>
-                <title>Dashboard/Balance</title>
+                <title>Balance</title>
             </Helmet>
             <Box display="flex" flexDirection="row" justifyContent="center" className="balancePage">
 
