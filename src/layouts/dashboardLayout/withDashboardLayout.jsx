@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/common.sass";
 import './dashboardLayout.sass';
 import { getDisplayName } from "../../utils";
@@ -8,7 +8,8 @@ import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 
 const withDashboardLayout = Component => {
     const WrapperComponent = props => {
-        const exchange = false
+        const [exchange, setExchange] = useState(false)
+
         return (
             <Box className="dashboardLayout" display="flex" flexDirection="column" justifyContent="flex-start" alignItems="flex-start">
                 <Box className="titleBox" display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
@@ -29,7 +30,7 @@ const withDashboardLayout = Component => {
                 {!exchange &&
                     <Box className="noExchangeBox" display="flex" flexDirection="column" justifyContent="flex-start">
                         <span className="title">
-                            Go to <b>My Exchange Accounts</b> in the menu at the top-right to set up your exchange
+                            <b onClick={() => setExchange(true)}>Connect Exchange Account</b> to set up your exchange
                         </span>
                         <span className="text">
                             To be able to trade on Zignaly you need to connect or create at least one exchange accounts like <b>Binance</b> or <b>KuCoin</b>.
