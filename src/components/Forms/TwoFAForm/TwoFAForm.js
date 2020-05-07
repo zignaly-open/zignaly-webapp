@@ -51,7 +51,7 @@ class TwoFAForm extends Component{
     render(){
         return(
             <Box className="twoFA-form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                <h3>2 Factor Authentication</h3>
+                <span className="boxTitle">2 Factor Authentication</span>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="center">
                     <label className="custom-label">Input Your Authentication Code</label>
                     <ReactCodeInput fields={6} onChange={this.handleCodeChange} onComplete={this.handleKeyPress} />

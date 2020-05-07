@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './LoginForm.sass';
 import common from '../../../styles/common.module.sass';
-import {Box, TextField, FormControl, InputAdornment, OutlinedInput, IconButton} from '@material-ui/core';
+import {Box, TextField, FormControl, InputAdornment, OutlinedInput} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail} from '../../../helpers/validators';
 import Modal from '../../Modal';
@@ -69,7 +69,7 @@ class LoginForm extends Component{
     render(){
         return(
             <Box className="loginForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                <Modal state={this.state.modal} onClose={() => this.setState({modal: false})} persist={false}>
+                <Modal state={this.state.modal} size="small" onClose={() => this.setState({modal: false})} persist={false}>
                     <ForgotPasswordForm dispatch={this.props.dispatch} />
                 </Modal>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">

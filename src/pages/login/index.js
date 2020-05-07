@@ -17,7 +17,7 @@ const LoginPage = () => {
                 <title>Login</title>
             </Helmet>
             <Box className={style.loginPage}>
-                <Modal state={show2FA} persist={true}>
+                <Modal state={show2FA} size="small" persist={true}>
                     <TwoFAForm />
                 </Modal>
                 <Box className={style.loginHeader} display="flex" flexDirection="row" justifyContent="space-around">

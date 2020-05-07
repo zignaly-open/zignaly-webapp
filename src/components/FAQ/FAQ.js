@@ -9,8 +9,8 @@ const FAQ = () => {
             <Box className="questionContainer" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <span className="question">How do i start trading?</span>
                 <span className="question">How can i withdraw my balance?</span>
-                <span className="question">what are signal providers?</span>
-                <span className="question">what are copy traders?</span>
+                <span className="question">What are signal providers?</span>
+                <span className="question">What are copy traders?</span>
             </Box>
         </Box>
     )

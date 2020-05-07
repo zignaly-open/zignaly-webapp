@@ -3,13 +3,14 @@ import './Modal.sass';
 import { Dialog } from '@material-ui/core';
 
 const GenericModal = (props) => {
-    const {state, onClose, persist, children, className} = props
+    const {state, onClose, persist, children, size} = props
 
     return (
         <Dialog
             open={state}
             onClose={onClose}
-            classes={{paper: 'modal ' + (className ? className : "")}}
+            maxWidth="lg"
+            classes={{paper: 'modal ' + (size ? size : " ")}}
             disableBackdropClick={persist}>
 
             {children}

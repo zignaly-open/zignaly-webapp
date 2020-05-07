@@ -13,9 +13,10 @@
         max-height: 70px;
         border-bottom: solid 2px rgba(0, 0, 0, 0.1);
         .container
+            width: fit-content;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-start;
             button
                 padding: 0;
                 min-width: 170px;
@@ -32,12 +33,13 @@
                     outline: none;
                 &.selected
                     color: $purple;
-            .settings
-                padding: 0 20px;
-                width: 120px;
-                .icon
-                    width: 28px;
-                    height: 28px;
+    .settings
+        padding: 0 20px;
+        width: 120px;
+        .icon
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
 
     .indicator
         display: none;
