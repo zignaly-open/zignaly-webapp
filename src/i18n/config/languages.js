@@ -5,7 +5,9 @@ module.exports = [
         routes: {
             "/": "/",
             "/login": "prihlasit-se",
-            "/dashboard": "/dashboard",
+            "/dashboard/balance": "/dashboard/balance",
+            "/dashboard/positions": "/dashboard/positions",
+            "/dashboard/connectedTraders": "/dashboard/connectedTraders",
             "/copyTraders": "/copyTraders",
             "/signalProviders": "/signalProviders",
             "/tradingTerminal": "/tradingTerminal",
@@ -21,7 +23,9 @@ module.exports = [
         routes: {
             "/": "/",
             "/login": "/login",
-            "/dashboard": "/dashboard",
+            "/dashboard/balance": "/dashboard/balance",
+            "/dashboard/positions": "/dashboard/positions",
+            "/dashboard/connectedTraders": "/dashboard/connectedTraders",
             "/copyTraders": "/copyTraders",
             "/signalProviders": "/signalProviders",
             "/tradingTerminal": "/tradingTerminal",

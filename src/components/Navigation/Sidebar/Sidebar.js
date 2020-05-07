@@ -37,7 +37,7 @@ const Sidebar = () => {
                 bgcolor="grid.main"
                 className={"sidebar " + (hover ? "full" : "")}>
 
-                <Link to={"/dashboard"} className={"sideBarLink"} activeClassName={"active"}>
+                <Link to={"/dashboard/positions"} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? DashboardWhite : (path.includes('dashboard') ? DashboardWhite : DashboardBlack)} alt="zignaly" className={"icon"} />
                     <span className={"text"}>dashboard</span>
                 </Link>

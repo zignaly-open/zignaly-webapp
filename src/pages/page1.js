@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import { compose } from "recompose";
 
-import withLayout from "../layout";
+import withLayout from "../layouts/appLayout";
 import withPageContext from "../pageContext";
 
 import Link from "../components/LocalizedLink";

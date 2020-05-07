@@ -1,12 +1,18 @@
 @import '../../styles/variables.sass';
-@import url(../../styles/fonts.sass);
 
-.dashboard
+.dashboardLayout
     .titleBox
         box-sizing: border-box;
         width: 100%;
+        margin-bottom: 16px;
         .exchangeTitle
             color: $purpleLight;
             font-size: 16px;
             font-family: 'PlexSans-Medium';
             margin: 0 0 0 16px
+    .pageContent
+        width: 100%;
+        min-height: calc(100% - 200px);
+    .faq
+        width: 100%;
+        height: 100px;

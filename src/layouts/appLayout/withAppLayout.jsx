@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
-import "../styles/common.sass";
-import './layout.sass';
-import Header from "../components/Navigation/Header";
-import { getDisplayName } from "../utils";
+import "../../styles/common.sass";
+import './appLayout.sass';
+import Header from "../../components/Navigation/Header";
+import { getDisplayName } from "../../utils";
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline, Box } from '@material-ui/core';
-import themeData from '../services/theme';
+import themeData from '../../services/theme';
 import { useSelector } from "react-redux";
-import Sidebar from "../components/Navigation/Sidebar";
-import FAQ from '../components/FAQ';
+import Sidebar from "../../components/Navigation/Sidebar";
+import FAQ from '../../components/FAQ';
 
-const withLayout = Component => {
+const withAppLayout = Component => {
     const WrapperComponent = props => {
         const darkStyle = useSelector(state => state.settings.darkStyle)
         const theme = useMemo(() => createMuiTheme(themeData(darkStyle)),[darkStyle])
@@ -28,9 +28,6 @@ const withLayout = Component => {
                             <Component {...props} />
                         </Box>
                     </Box>
-                    <Box className={"footer"}>
-                        <FAQ />
-                    </Box>
                 </Box>
             </ThemeProvider>
         );
@@ -39,4 +36,4 @@ const withLayout = Component => {
     return WrapperComponent;
 };
 
-export default withLayout;
+export default withAppLayout;
