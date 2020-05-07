@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
+import "../styles/common.sass";
 import './layout.sass';
 import Header from "../components/Navigation/Header";
 import { getDisplayName } from "../utils";
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline, Box } from '@material-ui/core';
-import "../styles/common.sass";
 import themeData from '../services/theme';
 import { useSelector } from "react-redux";
 import Sidebar from "../components/Navigation/Sidebar";

@@ -3,7 +3,7 @@ import './Header.sass';
 import { Box, Menu, MenuItem } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';
-import ProfileIcon from '../../../images/profileIcon.svg';
+import ProfileIcon from '../../../images/header/profileIcon.svg';
 import { useSelector } from 'react-redux';
 import LanguageSwitcher from '../../LanguageSwitcher';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
