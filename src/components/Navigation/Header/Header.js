@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Header.sass';
-import { Box, Menu, MenuItem } from '@material-ui/core';
+import { Box, Menu, MenuItem, Grow } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';
 import ProfileIcon from '../../../images/header/profileIcon.svg';
@@ -10,7 +10,6 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import CustomButton from '../../CustomButton';
 import LeftIcon from '../../../images/header/chevron-left.svg';
 import RightIcon from '../../../images/header/chevron-right.svg';
-import Grow from '@material-ui/core/Grow';
 
 const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import './PositionsTabs.sass';
-import { Box, Tab, Tabs } from '@material-ui/core';
+import { Box, Tab, Tabs, Grow} from '@material-ui/core';
 import SettingsIcon from '../../../images/dashboard/settings.svg';
-import BorderIcon from '../../../images/dashboard/border.svg';
+import FiltersUnchecked from '../../../images/dashboard/filtersHollow.svg';
+import FilstersChecked from '../../../images/dashboard/filtersFill.svg';
 import Modal from '../../Modal';
 import PositionSettingsForm from '../../Forms/PositionSettingsForm';
 import PositionsTable from '../PositionsTable';
+import PositionFilters from '../PositionFilters';
 
 const PositionsTabs = (props) => {
     const [tabValue, setTabValue] = useState(0)
     const [settingsModal, showSettingsModal] = useState(false)
+    const [filters, showFilters] = useState(false)
 
     const changeTab = (event, newValue) => {
         setTabValue(newValue)
@@ -17,17 +20,22 @@ const PositionsTabs = (props) => {
 
     return(
         <Box bgcolor="grid.content" className="positionsTabs">
-            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Box className="tabsBox" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Tabs value={tabValue} onChange={changeTab} classes={{indicator: 'indicator', flexContainer: 'container'}} className="tabs-menu">
                     <Tab label="open positions" classes={{selected: 'selected'}} />
                     <Tab label="closed positions" classes={{selected: 'selected'}} />
                     <Tab label="logs" classes={{selected: 'selected'}} />
                 </Tabs>
                 <Box className="settings" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <img src={BorderIcon} alt="zignaly" className="icon" />
+                    <img onClick={() => showFilters(!filters)} src={filters ? FilstersChecked : FiltersUnchecked} alt="zignaly" className="icon" />
                     <img onClick={() => showSettingsModal(true)} src={SettingsIcon} alt="zignaly" className="icon" />
                 </Box>
             </Box>
+            {filters &&
+                <Grow in={filters}>
+                    <Box><PositionFilters onClose={() => showFilters(false)} /></Box>
+                </Grow>
+            }
             {tabValue === 0 &&
                 <Box className="section">
                     <PositionsTable />
