@@ -2,6 +2,7 @@ import React from 'react';
 import './PositionSettingsForm.sass';
 import {Box} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const PositionSettingsForm = (props) => {
 
@@ -11,7 +12,8 @@ const PositionSettingsForm = (props) => {
 
     return(
         <Box className="positionSettingsForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <span className="boxTitle">Configure Positions Table</span>
+            <CloseIcon className="closeIcon" />
+            <span className="boxTitle">Choose Columns</span>
             <Box className="form">
 
             </Box>
