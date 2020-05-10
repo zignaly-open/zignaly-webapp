@@ -11,7 +11,7 @@ const PositionSettingsForm = (props) => {
     }
 
     return(
-        <Box className="positionSettingsForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+        <Box bgcolor="grid.main" className="positionSettingsForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
             <CloseIcon className="closeIcon" />
             <span className="boxTitle">Choose Columns</span>
             <Box className="form">

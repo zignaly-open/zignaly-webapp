@@ -8,6 +8,7 @@
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.52",
         "@material-ui/styles": "4.9.10",
+        "chart.js": "^2.9.3",
         "cross-fetch": "^3.0.4",
         "dotenv": "^8.0.0",
         "gatsby": "^2.1.24",

@@ -9,7 +9,7 @@ const white = "#ffffff";
 const lightGrey = "#ededed";
 const blue = "#017aff;"
 const lightBlack = "#27273f"
-const offWhite = "#efefef";
+const offWhite = "#fbfafc";
 
 const theme = (darkStyle) => {
     return {
@@ -29,7 +29,7 @@ const theme = (darkStyle) => {
                 main: purple,
             },
             text: {
-                primary: darkStyle ? white : black
+                primary: darkStyle ? white : black,
             },
             action: {
                 hover: purple,
