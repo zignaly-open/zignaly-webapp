@@ -1,7 +1,7 @@
 import React from 'react';
 import './TotalEquity.sass';
 import { Box } from '@material-ui/core';
-import Chart from '../../Chart';
+import Chart from '../../Graphs/Chart';
 
 const TotalEquity = (props) => {
     return (
@@ -18,9 +18,7 @@ const TotalEquity = (props) => {
                     </select>
                 </Box>
             </Box>
-            <Box className="equityGraph" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Chart />
-            </Box>
+            <Chart type="line" />
         </Box>
     )
 }

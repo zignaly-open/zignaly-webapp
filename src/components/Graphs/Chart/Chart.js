@@ -12,7 +12,7 @@ const GenericChart = (props) => {
         background.addColorStop(0, "#a946f6");
         let border = "#770fc8";
         new Chart(ctx, {
-            type: "line",
+            type: 'line',
             data: {
                 labels: ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [
