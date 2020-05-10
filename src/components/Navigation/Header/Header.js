@@ -10,6 +10,7 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import CustomButton from '../../CustomButton';
 import LeftIcon from '../../../images/header/chevron-left.svg';
 import RightIcon from '../../../images/header/chevron-right.svg';
+import Link from '../../LocalizedLink';
 
 const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
@@ -20,7 +21,7 @@ const Header = () => {
     return (
         <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" className={"header"}>
             <Box className={"logoContainer"} display="flex" flexDirection="row" alignItems="center">
-                <img src={darkStyle ? LogoWhite :LogoBlack} className={"headerLogo"} alt="zignaly-logo" />
+                <Link to="/dashboard/positions"><img src={darkStyle ? LogoWhite :LogoBlack} className={"headerLogo"} alt="zignaly-logo" /></Link>
                 <LanguageSwitcher />
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center" className={"linksContainer"}>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../styles/common.sass";
 import './dashboardLayout.sass';
 import { getDisplayName } from "../../utils";
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 
@@ -13,7 +13,7 @@ const withDashboardLayout = Component => {
         return (
             <Box className="dashboardLayout" display="flex" flexDirection="column" justifyContent="flex-start" alignItems="flex-start">
                 <Box className="titleBox" display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-                    <span className="pageTitle">Dashboard</span>
+                    <Typography variant="h1">Dashboard</Typography>
                     {exchange && <span className="exchangeTitle">KuCion (Demo)</span>}
                 </Box>
                 {exchange &&
