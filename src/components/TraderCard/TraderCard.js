@@ -5,6 +5,7 @@ import ConnectedIcon from '../../images/dashboard/connected.svg';
 import LogoIcon from '../../images/logo/logoIcon.svg';
 import Chart from '../Graphs/Chart';
 import UserSummary from './UserSummary';
+import CustomButton from '../CustomButton';
 
 const TraderCard = (props) => {
     const {data} = props
@@ -43,6 +44,10 @@ const TraderCard = (props) => {
                     <Chart id={id}>
                         <canvas id={id} className="chartCanvas"></canvas>
                     </Chart>
+                    <Box className="actions" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                        <CustomButton className="text-default">Stop Copying</CustomButton>
+                        <CustomButton className="text-default">View Trader</CustomButton>
+                    </Box>
                 </Box>
                 <UserSummary />
             </Box>
