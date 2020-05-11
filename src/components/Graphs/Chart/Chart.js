@@ -33,6 +33,7 @@ const GenericChart = (props) => {
                     mode: 'index',
                     intersect: false,
                     position: 'nearest',
+                    displayColors: false,
                     callbacks: {
                         label: (tooltipItem, data) => {
                           return "returns " + data['datasets'][0]['data'][tooltipItem['index']];
