@@ -44,7 +44,8 @@ const GenericChart = (props) => {
                             fontFamily: "PlexSans-Bold",
                         },
                         gridLines: {
-                            display: false
+                            display: false,
+                            tickMarkLength: 0,
                         }
                     }],
                     yAxes: [{
@@ -54,6 +55,7 @@ const GenericChart = (props) => {
                         },
                         gridLines: {
                             display: false,
+                            tickMarkLength: 0,
                         }
                     }]
                 }
