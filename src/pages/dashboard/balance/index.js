@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import TotalEquity from '../../../components/Balance/TotalEquity';
 import CryptoComposition from '../../../components/Balance/CryptoComposition';
 import AvailableBalance from '../../../components/Balance/AvailableBalance';
+import History from '../../../components/Balance/History';
 
 const Balance = () => {
     return (
@@ -25,6 +26,9 @@ const Balance = () => {
                 </Box>
                 <Box className="balanceBox">
                     <AvailableBalance />
+                </Box>
+                <Box className="historyBox">
+                    <History />
                 </Box>
             </Box>
         </React.Fragment>

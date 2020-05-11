@@ -1,12 +1,17 @@
 @import '../../../styles/variables.sass';
-@import url('../../../styles/fonts.sass');
 
-.cryptoComposition
+.history
     width: 100%;
-    padding: 0 0 0 20px;
-    .boxTitle
-        margin-bottom: 20px;
-        font-family: 'PlexSans-Bold';
-
-    .doughnutCanvas
-        width: 100% !important;
+    box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+    .historyHeader
+        width: 100%;
+        height: 70px;
+        padding: 0 20px;
+        .boxTitle
+            color: $purple;
+        .settings
+            width: 80px;
+            .icon
+                width: 24px;
+                height: 24px;
+                cursor: pointer;

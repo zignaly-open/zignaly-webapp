@@ -92,32 +92,27 @@ const theme = (darkStyle) => {
             text: {
                 primary: darkStyle ? white : black,
             },
-            action: {
-                hover: purple,
-                active: purple,
-                hoverOpacity: 0,
-            },
         },
         typography:{
-            h1: {
+            h1: { // this is for page title eg "Dashboard"
                 fontSize: "33px",
                 fontFamily: 'PlexSans-Bold'
             },
-            h3: {
+            h3: { // this is for titles inside components eg: "Totla Equity"
                 fontSize: "21px",
                 fontFamily: 'PlexSans-Bold',
             },
-            h4: {
+            h4: { //this is sub headings eg "Available", "Invested" inside crypto composition
                 fontSize: "16px",
                 fontFamily: 'PlexSans-SemiBold',
                 wordSpacing: "5px"
             },
-            h5: {
+            h5: { // for BTC counts inside Available Balance and Total Equity
                 fontSize: "14px",
                 fontFamily: 'PlexSans-Medium',
                 wordSpacing: "5px"
             },
-            subtitle2: {
+            subtitle2: { // this is a small text which is being used for balance in USD like in Available Balance component
                 fontSize: "12px",
                 fontFamily: 'PlexSans-Light',
                 wordSpacing: "5px"
@@ -128,6 +123,11 @@ const theme = (darkStyle) => {
               '@global': {
                 '@font-face': [PlexSansMedium, PlexSansRegular, PlexSansSemiBold, PlexSansBold, PlexSansLight],
               },
+            },
+        },
+        props: {
+            MuiButtonBase: {
+              disableRipple: true,
             },
         },
     }
