@@ -29,6 +29,11 @@ const GenericChart = (props) => {
                 legend: {
                     display: false,
                 },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    position: 'nearest'
+                },
                 elements: {
                     point:{
                         radius: 0
