@@ -37,22 +37,17 @@
                     text-transform: uppercase;
             .blaanceBox
                 width: 140px;
-                height: 40px;
+                height: 42px;
                 &:first-child
                     width: 160px;
                 &:last-child
                     width: 100px;
-                .title
-                    font-size: 12px;
-                    font-family: 'PlexSans-Bold';
-                    color: inherit;
-                    text-transform: uppercase;
-                    letter-spacing: .42px;
                 .balance
-                    font-size: 14px;
-                    font-family: 'PlexSans-Regular';
-                    color: inherit;
                     text-transform: uppercase;
+                    &.red
+                        color: $red;
+                    &.green
+                        color: $green;
 .lightMenu
     &:hover
         color: $white !important;

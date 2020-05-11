@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Header.sass';
-import { Box, Menu, MenuItem, Grow } from '@material-ui/core';
+import { Box, Menu, MenuItem, Grow, Typography } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';
 import ProfileIcon from '../../../images/header/profileIcon.svg';
@@ -32,17 +32,17 @@ const Header = () => {
                     {showBalance &&
                         <Grow in={true}>
                             <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
-                                    <span className="title">available balance</span>
-                                    <span className="balance">btc 0.256</span>
+                                <Box className="blaanceBox" display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                    <Typography variant="subtitle1" className="title">available balance</Typography>
+                                    <Typography variant="h5" className="balance">btc 0.256</Typography>
                                 </Box>
-                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
-                                    <span className="title">invested</span>
-                                    <span className="balance">btc 0.452</span>
+                                <Box className="blaanceBox" display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                    <Typography variant="subtitle1" className="title">invested</Typography>
+                                    <Typography variant="h5" className="balance">btc 0.452</Typography>
                                 </Box>
-                                <Box className={"blaanceBox"} display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
-                                    <span className="title">p/l</span>
-                                    <span className="balance">btc +0.47</span>
+                                <Box className="blaanceBox" display="flex" flexDirection="column" justifyContent="space-between" alignItems="flex-start">
+                                    <Typography variant="subtitle1" className="title">p/l</Typography>
+                                    <Typography variant="h5" className="balance green">btc +0.47</Typography>
                                 </Box>
                             </Box>
                         </Grow>

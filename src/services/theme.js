@@ -96,26 +96,38 @@ const theme = (darkStyle) => {
         typography:{
             h1: { // this is for page title eg "Dashboard"
                 fontSize: "33px",
-                fontFamily: 'PlexSans-Bold'
+                fontFamily: 'PlexSans-Bold',
+                textTransform: 'capitalize'
             },
             h3: { // this is for titles inside components eg: "Totla Equity"
                 fontSize: "21px",
                 fontFamily: 'PlexSans-Bold',
+                textTransform: 'capitalize'
             },
             h4: { //this is sub headings eg "Available", "Invested" inside crypto composition
                 fontSize: "16px",
                 fontFamily: 'PlexSans-SemiBold',
-                wordSpacing: "5px"
+                wordSpacing: "5px",
+                textTransform: 'capitalize'
             },
             h5: { // for BTC counts inside Available Balance and Total Equity
                 fontSize: "14px",
                 fontFamily: 'PlexSans-Medium',
-                wordSpacing: "5px"
+                wordSpacing: "5px",
+                textTransform: 'capitalize'
+            },
+            subtitle1: { // this is a small text which is being used for balance in USD like in Available Balance component
+                fontSize: "12px",
+                fontFamily: 'PlexSans-Bold',
+                wordSpacing: "5px",
+                letterSpacing: "1px",
+                textTransform: 'capitalize'
             },
             subtitle2: { // this is a small text which is being used for balance in USD like in Available Balance component
                 fontSize: "12px",
                 fontFamily: 'PlexSans-Light',
-                wordSpacing: "5px"
+                wordSpacing: "5px",
+                textTransform: 'capitalize'
             },
         },
         overrides: {
