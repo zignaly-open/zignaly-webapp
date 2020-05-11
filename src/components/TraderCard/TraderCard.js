@@ -4,6 +4,7 @@ import { Box, Typography } from '@material-ui/core';
 import ConnectedIcon from '../../images/dashboard/connected.svg';
 import LogoIcon from '../../images/logo/logoIcon.svg';
 import Chart from '../Graphs/Chart';
+import UserSummary from './UserSummary';
 
 const TraderCard = (props) => {
     const {data} = props
@@ -43,6 +44,7 @@ const TraderCard = (props) => {
                         <canvas id={id} className="chartCanvas"></canvas>
                     </Chart>
                 </Box>
+                <UserSummary />
             </Box>
         </Box>
     )

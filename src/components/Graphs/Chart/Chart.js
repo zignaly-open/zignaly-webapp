@@ -8,7 +8,7 @@ const GenericChart = (props) => {
     useEffect(() => {
         let ctx = document.getElementById(props.id).getContext("2d");
         let background = ctx.createLinearGradient(0, 0, 0, 500);
-        background.addColorStop(1, "rgba(216, 216, 216, .2)");
+        background.addColorStop(1, "rgba(216, 216, 216, .1)");
         background.addColorStop(0, "#a946f6");
         let border = "#770fc8";
         new Chart(ctx, {
