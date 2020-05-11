@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import  './Sidebar.sass';
-import { Box, ClickAwayListener } from '@material-ui/core';
+import { Box, ClickAwayListener, Typography } from '@material-ui/core';
 import Link from '../../LocalizedLink';
 import { useSelector, useDispatch } from 'react-redux';
 import SignalWhite from '../../../images/sidebar/signalWhite.svg';
@@ -34,19 +34,19 @@ const Sidebar = () => {
 
                 <Link to={"/dashboard/positions"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? DashboardWhite : DashboardBlack} alt="zignaly" className={"icon"} />
-                    <span className={"text"}>dashboard</span>
+                    <Typography variant="h6">dashboard</Typography>
                 </Link>
                 <Link to={"/copyTraders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
-                    <span className={"text"}>copy traders</span>
+                    <Typography variant="h6">copy traders</Typography>
                 </Link>
                 <Link to={"/signalProviders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? SignalWhite : SignalBlack} alt="zignaly" className={"icon"} />
-                    <span className={"text"}>signal providers</span>
+                    <Typography variant="h6">signal providers</Typography>
                 </Link>
                 <Link to={"/tradingTerminal"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={"icon"} />
-                    <span className={"text"}>trading terminal</span>
+                    <Typography variant="h6">trading terminal</Typography>
                 </Link>
                 <Box className={"themeBox"} display="flex" flexWrap="nowrap" flexDirection="row">
                     {hover &&

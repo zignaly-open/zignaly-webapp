@@ -50,7 +50,7 @@ const Header = () => {
                     {!showBalance &&
                         <Grow in={true}>
                             <Box className={"iconBox"} display="flex" flexDirection="column" justifyContent="center">
-                                <span className={"title"}>balance</span>
+                                <Typography variant="h4">Balance</Typography>
                             </Box>
                         </Grow>
                     }

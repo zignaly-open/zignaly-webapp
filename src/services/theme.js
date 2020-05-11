@@ -108,7 +108,6 @@ const theme = (darkStyle) => {
                 fontSize: "16px",
                 fontFamily: 'PlexSans-SemiBold',
                 wordSpacing: "5px",
-                textTransform: 'capitalize'
             },
             h5: { // for BTC counts inside Available Balance and Total Equity
                 fontSize: "14px",
@@ -117,15 +116,28 @@ const theme = (darkStyle) => {
                 textTransform: 'capitalize'
             },
             subtitle1: { // this is a small text which is being used for balance in USD like in Available Balance component
-                fontSize: "12px",
+                fontSize: "11px",
                 fontFamily: 'PlexSans-Bold',
                 wordSpacing: "5px",
-                letterSpacing: "1px",
-                textTransform: 'capitalize'
+                letterSpacing: ".42px",
+                textTransform: 'uppercase',
+                opacity: '0.6',
             },
             subtitle2: { // this is a small text which is being used for balance in USD like in Available Balance component
                 fontSize: "12px",
                 fontFamily: 'PlexSans-Light',
+                wordSpacing: "5px",
+                textTransform: 'capitalize'
+            },
+            h6: { // this is for sidebar link but we can use it anywhere else as well
+                fontSize: "14px",
+                fontFamily: 'PlexSans-SemiBold',
+                wordSpacing: "5px",
+                textTransform: 'capitalize'
+            },
+            caption: { // this is for sidebar link but we can use it anywhere else as well
+                fontSize: "14px",
+                fontFamily: 'PlexSans-Regular',
                 wordSpacing: "5px",
                 textTransform: 'capitalize'
             },

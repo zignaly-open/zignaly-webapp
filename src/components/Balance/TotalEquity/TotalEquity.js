@@ -21,7 +21,9 @@ const TotalEquity = (props) => {
                     </select>
                 </Box>
             </Box>
-            <Chart type="line" />
+            <Chart type="line" id="myChart">
+                <canvas id="myChart" className="chartCanvas"></canvas>
+            </Chart>
         </Box>
     )
 }

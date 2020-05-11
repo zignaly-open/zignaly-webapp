@@ -6,19 +6,19 @@ import {Chart} from 'chart.js';
 const GenericChart = (props) => {
 
     useEffect(() => {
-        let ctx = document.getElementById('myChart').getContext("2d");
+        let ctx = document.getElementById(props.id).getContext("2d");
         let background = ctx.createLinearGradient(0, 0, 0, 500);
-        background.addColorStop(1, "rgba(216, 216, 216, 1)");
+        background.addColorStop(1, "rgba(216, 216, 216, .2)");
         background.addColorStop(0, "#a946f6");
         let border = "#770fc8";
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: ["", "", "", "", "", "", "", ""],
                 datasets: [
                     {
                         label: "Equity",
-                        data: [100, 137, 161, 120, 200, 100, 137, 161, 120, 200, 150, 300],
+                        data: [100, 137, 161, 120, 200, 100, 137, 161],
                         backgroundColor: background,
                         borderColor: border,
                     }
@@ -32,12 +32,15 @@ const GenericChart = (props) => {
                 elements: {
                     point:{
                         radius: 0
-                    }
+                    },
+                    line: {
+                        tension: 0
+                    },
                 },
                 scales: {
                     xAxes: [{
                         ticks: {
-                            display: true,
+                            display: false,
                             fontFamily: "PlexSans-Bold",
                         },
                         gridLines: {
@@ -45,7 +48,10 @@ const GenericChart = (props) => {
                         }
                     }],
                     yAxes: [{
-                        ticks: { display: false },
+                        stacked: true,
+                        ticks: {
+                            display: false,
+                        },
                         gridLines: {
                             display: false,
                         }
@@ -57,7 +63,7 @@ const GenericChart = (props) => {
 
     return (
         <Box className="chart">
-            <canvas id="myChart" className="chartCanvas"></canvas>
+            {props.children}
         </Box>
     )
 }
