@@ -21,9 +21,7 @@ const History = (props) => {
                 </Box>
             </Box>
             {filters &&
-                <Grow in={filters}>
-                    <Box><PositionFilters onClose={() => showFilters(false)} /></Box>
-                </Grow>
+                <PositionFilters onClose={() => showFilters(false)} />
             }
             <PositionsTable />
             <Popover

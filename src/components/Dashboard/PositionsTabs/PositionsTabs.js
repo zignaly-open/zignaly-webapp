@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './PositionsTabs.sass';
-import { Box, Tab, Tabs, Grow, Popover} from '@material-ui/core';
+import { Box, Tab, Tabs, Popover} from '@material-ui/core';
 import SettingsIcon from '../../../images/dashboard/settings.svg';
 import FiltersUnchecked from '../../../images/dashboard/filtersHollow.svg';
 import FilstersChecked from '../../../images/dashboard/filtersFill.svg';
@@ -31,9 +31,7 @@ const PositionsTabs = (props) => {
                 </Box>
             </Box>
             {filters &&
-                <Grow in={filters}>
-                    <Box><PositionFilters onClose={() => showFilters(false)} /></Box>
-                </Grow>
+                <PositionFilters onClose={() => showFilters(false)} />
             }
             {tabValue === 0 &&
                 <Box className="tabPanel">
