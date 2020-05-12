@@ -11,10 +11,12 @@ import CustomButton from '../../CustomButton';
 import LeftIcon from '../../../images/header/chevron-left.svg';
 import RightIcon from '../../../images/header/chevron-right.svg';
 import Link from '../../LocalizedLink';
+import UserExchangeList from './UserExchangsList';
 
 const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)
     const [showBalance, setShowBalance] = useState(false)
+    const [connected, setConnected] = useState(false)
     const [anchorEl, setAnchorEl] = useState(undefined)
 
 
@@ -55,8 +57,14 @@ const Header = () => {
                         </Grow>
                     }
                 </Box>
-                <CustomButton className="header-btn">Connect Account</CustomButton>
-                <Box className={"linkBox"}><NotificationsNoneIcon className={"icon"} /></Box>
+                {!connected && <CustomButton onClick={() => setConnected(true)} className="header-btn">Connect Account</CustomButton>}
+                {connected &&
+                    <UserExchangeList />
+                }
+
+                <Box className={"linkBox"}>
+                    <NotificationsNoneIcon className={"icon"} />
+                </Box>
                 <Box className={"linkBox"}>
                     <img onClick={(e) => setAnchorEl(e.currentTarget)} src={ProfileIcon} className={"icon"} alt="zignaly-user" />
                     <Menu
