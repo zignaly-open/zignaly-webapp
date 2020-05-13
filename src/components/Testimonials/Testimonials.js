@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './Testimonials.sass';
+import style from './Testimonials.module.sass';
 import { Box } from '@material-ui/core';
 import Testimonial from './Testimonial';
 import CustomButton from '../CustomButton';
@@ -27,8 +27,8 @@ const Testimonials = () => {
     };
 
     return(
-        <Box className="testimonials">
-            <span className="title">Testimonials</span>
+        <Box className={style.testimonials}>
+            <span className={style.title}>Testimonials</span>
             <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
                 {data && data.map((item) =>
                     <Testimonial key={item.id} data={item} />
