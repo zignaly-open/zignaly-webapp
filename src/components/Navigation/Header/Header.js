@@ -11,7 +11,7 @@ import CustomButton from '../../CustomButton';
 import LeftIcon from '../../../images/header/chevron-left.svg';
 import RightIcon from '../../../images/header/chevron-right.svg';
 import Link from '../../LocalizedLink';
-import UserExchangeList from './UserExchangsList';
+import UserExchangeList from './UserExchangeList';
 
 const Header = () => {
     const darkStyle = useSelector(state => state.settings.darkStyle)

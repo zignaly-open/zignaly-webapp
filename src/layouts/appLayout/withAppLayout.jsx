@@ -8,7 +8,7 @@ import themeData from '../../services/theme';
 import { useSelector } from "react-redux";
 import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
-import MobileAppbar from "../../components/Navigation/MobileAppbar";
+// import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from '../../components/Alert';
 
@@ -27,7 +27,7 @@ const withAppLayout = Component => {
                     </Hidden>
                     <Hidden smUp>
                         <MobileHeader />
-                        <MobileAppbar />
+                        {/* <MobileAppbar /> */}
                     </Hidden>
                     <Box display="flex" flexDirection="row" flexWrap="nowrap" className={"body"}>
                         <Hidden xsDown>
