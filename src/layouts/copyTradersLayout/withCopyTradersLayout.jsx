@@ -1,15 +1,13 @@
-import React, { useState } from "react"
+import React from "react"
 import "../../styles/common.sass"
 import "./copyTradersLayout.sass"
 import { getDisplayName } from "../../utils"
 import { Box, Typography } from "@material-ui/core"
 import FAQ from "../../components/FAQ"
-import DashboardHeader from "../../components/Dashboard/DashboardHeader"
+import ProvidersHeader from "../../components/Providers/ProvidersHeader"
 
 const withDashboardLayout = Component => {
   const WrapperComponent = props => {
-    const [exchange, setExchange] = useState(true)
-
     return (
       <Box
         className="copyTradersLayout"
@@ -19,42 +17,21 @@ const withDashboardLayout = Component => {
         alignItems="flex-start"
       >
         <Box className="titleBox" display="flex" flexDirection="column">
-          <Typography variant="h1">
-            Copy Traders
-          </Typography>
+          <Typography variant="h1">Copy Traders</Typography>
           <h4 className="subHeader">
             Copy experienced traders who trade with the currencies you own.
           </h4>
         </Box>
 
-        {exchange && (
-          <React.Fragment>
-            <DashboardHeader />
-            <Box className="pageContent">
-              <Component {...props} />
-            </Box>
-            <Box className="faq">
-              <FAQ />
-            </Box>
-          </React.Fragment>
-        )}
-        {!exchange && (
-          <Box
-            className="noExchangeBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="flex-start"
-          >
-            <span className="title">
-              <b onClick={() => setExchange(true)}>Connect Exchange Account</b>{" "}
-              to set up your exchange
-            </span>
-            <span className="text">
-              To be able to trade on Zignaly you need to connect or create at
-              least one exchange accounts like <b>Binance</b> or <b>KuCoin</b>.
-            </span>
+        <React.Fragment>
+          <ProvidersHeader />
+          <Box className="pageContent">
+            <Component {...props} />
           </Box>
-        )}
+          <Box className="faq">
+            <FAQ />
+          </Box>
+        </React.Fragment>
       </Box>
     )
   }

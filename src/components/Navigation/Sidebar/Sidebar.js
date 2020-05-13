@@ -36,7 +36,7 @@ const Sidebar = () => {
                     <img src={darkStyle ? DashboardWhite : DashboardBlack} alt="zignaly" className={"icon"} />
                     <Typography variant="h6">dashboard</Typography>
                 </Link>
-                <Link to={"/copyTraders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                <Link to={"/copyTraders/browse"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
                     <Typography variant="h6">copy traders</Typography>
                 </Link>
