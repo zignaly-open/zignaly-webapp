@@ -46,41 +46,33 @@
             font-family: 'PlexSans-Light';
             b{font-family: 'PlexSans-Bold';}
 
-    .tabs-box
-        margin-top: 100px;
-        background: $white !important;
-        border-radius: 4px;
-        width: 450px;
-        min-height: 450px;
-        z-index: 100;
-        overflow-y: visible;
-        box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+@media only screen and (max-width: 600px)
+    .loginPage
+        padding-bottom: 100px;
+        .loginHeader
+            position: relative;
+            flex-direction: column;
 
-        .tabs-menu
+            .headerImage
+                width: 100%;
+                height: 250px;
+                top: 0;
+                &:after
+                    border-width: 0 0 0 0;
+
+        .tagLineBox
             width: 100%;
-            min-height: 70px;
-            max-height: 70px;
-            border-bottom: solid 2px rgba(0, 0, 0, 0.1);
-            .container
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                button
-                    padding: 0;
-                    min-width: 100px;
-                    max-width: 100px;
-                    min-height: 70px;
-                    max-height: 70px;
-                    text-transform: capitalize;
-                    font-size: 21px !important;
-                    font-family: 'PlexSans-Regular';
-                    &:focus
-                        outline: none;
-                    &.selected
-                        font-family: 'PlexSans-Bold';
-
-        .indicator
-            background: $purple !important;
-            width: 100px !important;
-        .section
-            min-height: 450px;
+            height: auto;
+            z-index: 100;
+            margin-top: 0;
+            padding: 30px 20px;
+            box-sizing: border-box !important;
+            height: 250px;
+            .logo
+                width: 100px;
+            .tagLine
+                display: none;
+            .slogan
+                font-size: 24px;
+                width: 100%;
+                margin-top: 40px;
