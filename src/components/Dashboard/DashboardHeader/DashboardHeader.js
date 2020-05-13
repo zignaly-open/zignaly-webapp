@@ -5,7 +5,7 @@ import Link from '../../LocalizedLink';
 
 const DashboardHeader = () => {
     return (
-        <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" className="dashboardHeader">
+        <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" className="dashboardHeader hideScroll">
             <Link to="/dashboard/positions" className="dashboardLink" activeClassName="active">
                 Positions
             </Link>

@@ -18,7 +18,7 @@ const GenericChart = (props) => {
                 datasets: [
                     {
                         label: "Equity",
-                        data: [100, 137, 161, 120, 200, 100, 137, 161],
+                        data: [100, 107, 116, 120, 130, 120, 137, 151],
                         backgroundColor: background,
                         borderColor: border,
                     }

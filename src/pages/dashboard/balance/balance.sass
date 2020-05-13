@@ -1,6 +1,7 @@
 @import '../../../styles/variables.sass';
 
 .balancePage
+    width: 100%;
     .equityBox
         width: 62%;
         min-height: 300px;
@@ -15,3 +16,15 @@
         width: 100%;
         min-height: 300px;
         margin-top: 30px;
+@media only screen and (max-width: 600px)
+    .balancePage
+        flex-direction: column;
+        align-items: flex-start;
+        .balanceBox
+            box-shadow: none;
+        .equityBox
+            width: 100%;
+        .cryptoBox
+            min-height: 200px;
+        .cryptoBox
+            width: 100%;

@@ -74,3 +74,33 @@
                     color: $green;
                 &.red
                     color: $red;
+@media only screen and (max-width: 600px)
+    .traderCard
+        width: 100%;
+        margin: 30px 0 0 0;
+
+        .traderCardHeader
+            width: 100%;
+            padding: 0px 10px;
+            .logoIcon
+                width: 30px;
+                height: 30px;
+            .traderCardHeaderTitleBox
+                width: calc(100% - 40px);
+                margin-left: 15px;
+                .nameBox
+                    height: 40px;
+                    width: fit-content;
+                    .name
+                        color: $purple;
+                        text-overflow: ellipsis !important;
+                        white-space: nowrap !important;
+                        overflow: hidden !important;
+                .commissionBox
+                    height: 40px;
+                    width: fit-content;
+        .traderCardBody
+            .returnsBox
+                padding: 0px 10px;
+            .userSummary
+                padding: 10px;

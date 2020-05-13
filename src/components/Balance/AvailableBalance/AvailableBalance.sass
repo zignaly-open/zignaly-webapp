@@ -7,10 +7,21 @@
         .smallText
             margin-left: 12px;
     .operator
-        width: 50px;
+        width: content;
         display: flex;
         flex-direction: row;
         justifyContent: center;
         alignItems: center;
         font-size: 21px;
         font-weight: bold;
+@media only screen and (max-width: 600px)
+    .availableBalance
+        height: auto;
+        padding: 0px;
+        align-items: center !important;
+        flex-direction: column !important;
+        .dataBox
+            width: 100% !important;
+            align-items: center;
+        .operator
+            width: fit-content;
