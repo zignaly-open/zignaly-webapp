@@ -12,7 +12,7 @@ const TraderCard = (props) => {
     let id = "traderCard"+data
 
     return (
-        <Box bgcolor="grid.main" display="flex" flexDirection="column" justifyContent="flex-start" className="traderCard">
+        <Box bgcolor="grid.content" display="flex" flexDirection="column" justifyContent="flex-start" className="traderCard">
             <Box className="traderCardHeader" display="flex" flexDirection="row" alignItems="center">
                 <img src={LogoIcon} className="logoIcon" alt="zignaly" />
                 <Box className="traderCardHeaderTitleBox" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
