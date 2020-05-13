@@ -6,9 +6,9 @@ import withCopyTradersLayout from "../../../layouts/copyTradersLayout"
 import withPageContext from "../../../pageContext"
 import TraderCard from "../../../components/TraderCard"
 import Helmet from "react-helmet"
-import "./browse.sass"
+import "./cTBrowse.sass"
 
-const CopyTraders = () => {
+const CTBrowse = () => {
   const list = [1, 2, 3]
 
   return (
@@ -30,7 +30,10 @@ const CopyTraders = () => {
           alignItems="center"
           flexWrap="wrap"
         >
-          {list && list.map(item => <TraderCard key={item} data={item} />)}
+          {list &&
+            list.map(item => (
+              <TraderCard key={item} data={item} showSummary={false} />
+            ))}
         </Box>
       </Box>
     </Box>
@@ -41,4 +44,4 @@ export default compose(
   withPageContext,
   withAppLayout,
   withCopyTradersLayout
-)(CopyTraders)
+)(CTBrowse)
