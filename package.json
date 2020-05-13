@@ -67,6 +67,6 @@
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",
-        "checkjs": "tsc --allowJs --checkJs --noEmit --target ES5 src/*.js"
+        "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js"
     }
 }
