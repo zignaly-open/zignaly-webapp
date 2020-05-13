@@ -1,3 +1,4 @@
+// @flow
 import fetch from "cross-fetch";
 
 // Trade API client service, provides integration to API endpoints.
@@ -12,7 +13,14 @@ class TradeApiClient {
         return TradeApiClient;
    }
 
-   userLogin(username, password) {
+   /**
+    * Login a user in Trade API.
+    *
+    * @param {UserLoginPayload} payload
+    * @returns string The session token.
+    * @memberof TradeApiClient
+    */
+   userLogin(payload) {
 
    }
 
@@ -20,16 +28,33 @@ class TradeApiClient {
 
    }
 
-   userCreate(userCreatePayload) {
+   async userCreate(userCreatePayload) {
+    const apiBaseUrl = 'http://api.zignaly.lndo.site/';
+    const endpointPath = 'fe/api.php?action=signup';
+    const requestUrl = apiBaseUrl + endpointPath;
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(userCreatePayload)
+    }
 
+    try {
+      const response = await fetch(requestUrl, options);
+      if (response.status === 200) {
+        return await response.json();
+      }
+
+      throw new Error("User creation failed.");
+    } catch (e) {
+      console.error(e);
+    }
    }
 
-   positionsGet(token, positionStatus) {
+   openPositionsGet(token, positionStatus) {
 
    }
 }
 
-const instance = new TradeApiClient();
-Object.freeze(instance);
+const client = new TradeApiClient();
+Object.freeze(client);
 
-export default instance;
+export default client.instance;
