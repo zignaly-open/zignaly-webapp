@@ -1,5 +1,5 @@
 import fetch from "cross-fetch"
-import { userCreateResponseTransform } from "./tradeApiClient.types"
+import { userCreateResponseTransform, userEntityResponseTransform } from './tradeApiClient.types';
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -56,7 +56,7 @@ class TradeApiClient {
    * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
    * @param {UserLoginPayload} payload
    *
-   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserLoginResponse
+   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
    * @returns {Promise<UserLoginResponse>}
    *
    * @memberof TradeApiClient
@@ -64,9 +64,8 @@ class TradeApiClient {
   async userLogin(payload) {
     const endpointPath = "/fe/api.php?action=login"
     const responseData = await this.doRequest(endpointPath, payload)
-    console.log("user: ", responseData);
 
-    return userCreateResponseTransform(responseData)
+    return userEntityResponseTransform(responseData)
   }
 
   userLogout() {}
