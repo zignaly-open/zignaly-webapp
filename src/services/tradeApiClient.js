@@ -1,10 +1,10 @@
 import fetch from "cross-fetch"
 import {
-    userCreateResponseTransform,
-    userEntityResponseTransform,
-    userPositionsResponseTransform
-} from './tradeApiClient.types';
-import * as TradeApiTypes from './tradeApiClient.types'
+  userCreateResponseTransform,
+  userEntityResponseTransform,
+  userPositionsResponseTransform,
+} from "./tradeApiClient.types"
+import * as TradeApiTypes from "./tradeApiClient.types"
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -51,7 +51,7 @@ class TradeApiClient {
       const body = await response.text()
       throw new Error(`API ${requestUrl} request failed:` + body)
     } catch (e) {
-      console.error(e)
+      console.error("API error: ", e)
     }
   }
 
@@ -103,10 +103,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async openPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const endpointPath = "/fe/api.php?action=getOpenPositions"
+    const responseData = await this.doRequest(endpointPath, payload)
 
-    return userPositionsResponseTransform(responseData);
+    return userPositionsResponseTransform(responseData)
   }
 }
 
