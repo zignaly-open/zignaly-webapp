@@ -7,8 +7,8 @@ import { CssBaseline, Box, Hidden } from '@material-ui/core';
 import themeData from '../../services/theme';
 import { useSelector } from "react-redux";
 import Header from "../../components/Navigation/Header";
-import MobileHeader from "../../components/Navigation/MobileHeader";
-import MobileAppbar from "../../components/Navigation/MobileAppbar";
+// import MobileHeader from "../../components/Navigation/MobileHeader";
+// import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from '../../components/Alert';
 
@@ -25,10 +25,10 @@ const withAppLayout = Component => {
                     <Hidden xsDown>
                         <Header />
                     </Hidden>
-                    <Hidden smUp>
+                    {/* <Hidden smUp>
                         <MobileHeader />
                         <MobileAppbar />
-                    </Hidden>
+                    </Hidden> */}
                     <Box display="flex" flexDirection="row" flexWrap="nowrap" className={"body"}>
                         <Hidden xsDown>
                             <Box className={"side"}>
