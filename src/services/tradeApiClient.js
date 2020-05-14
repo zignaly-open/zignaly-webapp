@@ -4,6 +4,7 @@ import {
     userEntityResponseTransform,
     userPositionsResponseTransform
 } from './tradeApiClient.types';
+import * as TradeApiTypes from './tradeApiClient.types'
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -95,8 +96,9 @@ class TradeApiClient {
   /**
    * Get user open trading positions.
    *
-   * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
-   * @param {Promise<UserPositionsCollection>} payload
+   * @param {TradeApiTypes.UserPositionsPayload} payload
+
+   * @returns {Promise<TradeApiTypes.UserPositionsCollection>}
    *
    * @memberof TradeApiClient
    */
