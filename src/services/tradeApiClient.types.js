@@ -1,4 +1,4 @@
-import { assign } from 'lodash'
+import { assign, isArray } from "lodash"
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -53,6 +53,103 @@ import { assign } from 'lodash'
  */
 
 /**
+ * @typedef {Object} UserPositionsPayload
+ * @property {string} token
+ */
+
+/**
+ * @typedef {Object} PositionEntity
+ * @property {boolean} closed
+ * @property {string} positionId
+ * @property {string} userId
+ * @property {string} openDate
+ * @property {string} openTrigger
+ * @property {string} closeDate
+ * @property {string} closeTrigger
+ * @property {string} pair
+ * @property {string} base
+ * @property {string} quote
+ * @property {string} buyPrice
+ * @property {string} sellPrice
+ * @property {string} side
+ * @property {string} amount
+ * @property {string} remainAmount
+ * @property {string} invested
+ * @property {number} positionSizeQuote
+ * @property {string} positionSize
+ * @property {string} investedQuote
+ * @property {string} profitPercentage
+ * @property {number} profit
+ * @property {string} quoteAsset
+ * @property {number} stopLossPercentage
+ * @property {number} stopLossPrice
+ * @property {boolean} takeProfit
+ * @property {number} trailingStopPercentage
+ * @property {number} trailingStopTriggerPercentage
+ * @property {boolean} trailingStopTriggered
+ * @property {boolean} trailingStopPrice
+ * @property {string} exchange
+ * @property {string} exchangeInternalName
+ * @property {string} symbol
+ * @property {number} status
+ * @property {string} statusDesc
+ * @property {string} sellPlaceOrderAt
+ * @property {boolean} checkStop
+ * @property {string} provider
+ * @property {boolean} sellByTTL
+ * @property {number} buyTTL
+ * @property {boolean} updating
+ * @property {boolean} signalMetadata
+ * @property {boolean} accounting
+ * @property {string} providerId
+ * @property {string} providerName
+ * @property {string} signalTerm
+ * @property {number} takeProfitTargetsCountFail
+ * @property {number} takeProfitTargetsCountSuccess
+ * @property {number} takeProfitTargetsCountPending
+ * @property {number} reBuyTargetsCountFail
+ * @property {number} reBuyTargetsCountSuccess
+ * @property {number} reBuyTargetsCountPending
+ * @property {boolean} isCopyTrading
+ * @property {boolean} isCopyTrader
+ * @property {string} signalId
+ * @property {string} type
+ * @property {boolean} copyTraderId
+ * @property {boolean} paperTrading
+ * @property {RealInvestment} realInvestment
+ * @property {number} leverage
+ * @property {string} internalExchangeId
+ * @property {string} logoUrl
+ * @property {Array<ReBuyTarget>} reBuyTargets
+ */
+
+/**
+ * @typedef {Object} RealInvestment
+ * @property {string} $numberDecimal
+ */
+
+/**
+ * @typedef {Object} ReBuyTarget
+ * @property {number} targetId
+ * @property {number} triggerPercentage
+ * @property {number} quantity
+ * @property {boolean} buying
+ * @property {boolean} done
+ * @property {string} orderId
+ * @property {boolean} cancel
+ * @property {boolean} skipped
+ * @property {string} buyType
+ */
+
+/**
+ * @typedef {Array<PositionEntity>} UserPositionsCollection
+ */
+
+/**
+ * @typedef {Array<UserLoginResponse>} UsersCollection
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -82,7 +179,7 @@ export function userEntityResponseTransform(response) {
     userId: response.userId,
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
-    twoFAEnable: response['twoFAEnable'],
+    twoFAEnable: response["twoFAEnable"],
     ref: response.ref,
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,
@@ -98,4 +195,101 @@ export function userEntityResponseTransform(response) {
     onboarding: response.onboarding,
     refCode: response.refCode,
   }
+}
+
+/**
+ * Transform user positions response to typed object collection.
+ *
+ * @export
+ * @param {*} response
+ * @returns {UserPositionsCollection}
+ */
+export function userPositionsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.")
+  }
+
+  return response.map(positionItem => {
+    return userPositionItemTransform(positionItem)
+  })
+}
+
+/**
+ * Transform API position item to typed object.
+ *
+ * @param {Object} positionItem
+ * @returns {PositionEntity}
+ */
+function userPositionItemTransform(positionItem) {
+  /**
+   * @typedef {PositionEntity} emptyPositionEntity
+   */
+  const emptyPositionEntity = {
+    closed: false,
+    positionId: "",
+    userId: "",
+    openDate: "",
+    openTrigger: "",
+    closeDate: "",
+    closeTrigger: "",
+    pair: "",
+    base: "",
+    quote: "",
+    buyPrice: "",
+    sellPrice: "",
+    side: "",
+    amount: "",
+    remainAmount: "",
+    invested: "",
+    positionSizeQuote: 0,
+    positionSize: "",
+    investedQuote: "",
+    profitPercentage: "",
+    profit: 0,
+    quoteAsset: "",
+    stopLossPercentage: 0,
+    stopLossPrice: 0,
+    takeProfit: false,
+    trailingStopPercentage: 0,
+    trailingStopTriggerPercentage: 0,
+    trailingStopTriggered: false,
+    trailingStopPrice: false,
+    exchange: "",
+    exchangeInternalName: "",
+    symbol: "",
+    status: 0,
+    statusDesc: "",
+    sellPlaceOrderAt: "",
+    checkStop: false,
+    provider: "",
+    sellByTTL: false,
+    buyTTL: 0,
+    updating: false,
+    signalMetadata: false,
+    accounting: false,
+    providerId: "",
+    providerName: "",
+    signalTerm: "",
+    takeProfitTargetsCountFail: 0,
+    takeProfitTargetsCountSuccess: 0,
+    takeProfitTargetsCountPending: 0,
+    reBuyTargetsCountFail: 0,
+    reBuyTargetsCountSuccess: 0,
+    reBuyTargetsCountPending: 0,
+    isCopyTrading: false,
+    isCopyTrader: false,
+    signalId: "",
+    type: "",
+    copyTraderId: false,
+    paperTrading: false,
+    realInvestment: { $numberDecimal: 0 },
+    leverage: 0,
+    internalExchangeId: "",
+    logoUrl: "",
+  }
+
+  const transformedResponse = assign(positionItem, emptyPositionEntity)
+  console.log("TRANS: ", transformedResponse);
+
+  return transformedResponse;
 }
