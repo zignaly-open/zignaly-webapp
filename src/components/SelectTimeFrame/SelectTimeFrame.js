@@ -1,14 +1,13 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import {
-  FormGroup,
   FormControl,
   FormControlLabel,
   Select,
   MenuItem,
-  Typography,
+  Typography
 } from "@material-ui/core"
-
+import "../../styles/common.sass"
 import "./selectTimeFrame.sass"
 
 const SelectTimeFrame = props => {
@@ -17,29 +16,37 @@ const SelectTimeFrame = props => {
     setValue(val)
     props.onChange(val)
   }
+  const dates = [
+    { label: "Last month", val: 0 },
+    { label: "Last 90 days", val: 0 },
+    { label: "Last year", val: 1 },
+  ]
   return (
-    <>
-      {/* <FormGroup row> */}
-      <FormControlLabel
-        control={
+    <FormControlLabel
+      control={
+        <FormControl variant="outlined" className="callout">
           <Select
             value={value}
             onChange={e => handleChange(e.target.value)}
             variant="outlined"
             className="select"
+            classes={{
+              root: "callout1",
+            }}
           >
-            <MenuItem value={0}>Last month</MenuItem>
-            <MenuItem value={1}>Last year</MenuItem>
+            {dates.map((item, index) => (
+              <MenuItem key={index} value={item.val}>
+                {item.label}
+              </MenuItem>
+            ))}
           </Select>
-        }
-        labelPlacement="start"
-        label={<Typography className="callout2">Returns Timeframe</Typography>}
-        className="selectTimeFrame"
-      ></FormControlLabel>
-      {/* /> */}
-      {/* <FormControl variant="outlined" className="selectInput"></FormControl> */}
-      {/* </FormGroup> */}
-    </>
+        </FormControl>
+      }
+      labelPlacement="start"
+      label={<Typography className="callout2">Returns Timeframe</Typography>}
+      className="selectTimeFrame"
+      spacing={0}
+    />
   )
 }
 
