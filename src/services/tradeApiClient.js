@@ -1,4 +1,9 @@
 import fetch from "cross-fetch"
+import { userCreateResponseTransform } from "./tradeApiResponseTransformer"
+
+/**
+ * @typedef {import('./tradeApi.types')} UserCreateResponse
+ */
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -21,11 +26,12 @@ class TradeApiClient {
    *
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
+   * @param {function} transformCallback Data transform callback to typed response.
    * @returns {Promise<Object>}
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload) {
+  async doRequest(endpointPath, payload, transformCallback) {
     const apiBaseUrl = "http://api.zignaly.lndo.site/"
     const requestUrl = apiBaseUrl + endpointPath
     const options = {
@@ -36,7 +42,19 @@ class TradeApiClient {
       },
     }
 
-    return fetch(requestUrl, options)
+    try {
+      const response = await fetch(requestUrl, options)
+      if (response.status === 200) {
+        const responseData = await response.json()
+
+        return transformCallback(responseData)
+      }
+
+      const body = await response.text()
+      throw new Error("User creation failed:" + body)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /**
@@ -53,7 +71,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    const endpointPath = '/fe/api.php?action=login'
+    const endpointPath = "/fe/api.php?action=login"
   }
 
   userLogout() {}
@@ -67,35 +85,20 @@ class TradeApiClient {
    */
 
   /**
-   * @typedef {Object} UserCreateResponse
-   * @property {string} token User access token.
-   */
-
-  /**
    * Create user at Zignaly Trade API.
    *
    * @param {UserCreatePayload} UserCreatePayload
-   * @returns {Promise<UserCreateResponse>}
+   * @returns {UserCreateResponse}
    * @memberof TradeApiClient
    */
-  async userCreate(UserCreatePayload) {
-    const digestedResponse = {}
+  userCreate(UserCreatePayload) {
     const endpointPath = "fe/api.php?action=signup"
 
-    try {
-      const response = await this.doRequest(endpointPath, UserCreatePayload)
-      if (response.status === 200) {
-        const token = await response.json()
-        digestedResponse.token = token;
-
-        return digestedResponse;
-      }
-
-      const body = await response.text()
-      throw new Error("User creation failed:" + body)
-    } catch (e) {
-      console.error(e)
-    }
+    return this.doRequest(
+      endpointPath,
+      UserCreatePayload,
+      userCreateResponseTransform
+    )
   }
 
   openPositionsGet(token, positionStatus) {}
