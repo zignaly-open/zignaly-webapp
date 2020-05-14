@@ -102,6 +102,7 @@ const ResetPasswordForm = (props) => {
 
                 <Box className="input-box">
                     <CustomButton
+                        type="submit"
                         className={"full submit-btn"}
                         loading={loading}
                         onClick= {handleSubmit}>Sign in</CustomButton>
