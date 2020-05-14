@@ -1,9 +1,8 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import './LoginForm.sass';
 import common from '../../../styles/common.module.sass';
 import {Box, TextField, FormControl, InputAdornment, OutlinedInput} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
-import {validateEmail} from '../../../helpers/validators';
 import Modal from '../../Modal';
 import ForgotPasswordForm from '../ForgotPasswordForm';
 import Visibility from '@material-ui/icons/Visibility';
@@ -14,7 +13,7 @@ const LoginForm = (props) => {
     const [modal, showModal] = useState(false)
     const [loading, showLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const {watch, handleSubmit, errors, register} = useForm()
+    const {handleSubmit, errors, register} = useForm()
 
     const onSubmit = (data) => {
         showLoading(true)
