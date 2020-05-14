@@ -1,3 +1,5 @@
+import { assign } from 'lodash'
+
 /**
  * @typedef {Object} UserCreatePayload
  * @property {string} firstName User first name.
@@ -26,7 +28,7 @@
  * @property {string} userId User ID.
  * @property {string} createdAt Creation timestamp: e.g. (2020-05-14T14:34:48).
  * @property {boolean} providerEnable Indicates if user is subscribed to signal providers.
- * @property {boolean} 2FAEnable Indicate if 2FA is enabled.
+ * @property {boolean} twoFAEnable Indicate if 2FA is enabled.
  * @property {boolean} ref
  * @property {boolean} subscribe
  * @property {boolean} isAdmin Indicate if user is administrator.
@@ -62,4 +64,38 @@ export function userCreateResponseTransform(response) {
   transformResponse.token = response
 
   return transformResponse
+}
+
+/**
+ * Transform user entity response to typed object.
+ *
+ * @export
+ * @param {*} response
+ * @returns {UserLoginResponse}
+ */
+export function userEntityResponseTransform(response) {
+  return {
+    firstName: response.firstName,
+    email: response.email,
+    token: response.token,
+    ask2FA: response.ask2FA,
+    userId: response.userId,
+    createdAt: response.createdAt,
+    providerEnable: response.providerEnable,
+    twoFAEnable: response['twoFAEnable'],
+    ref: response.ref,
+    subscribe: response.subscribe,
+    isAdmin: response.isAdmin,
+    binanceConnected: response.binanceConnected,
+    buysCount: response.buysCount,
+    sellsCount: response.sellsCount,
+    planId: response.planId,
+    planName: response.planName,
+    planType: response.planType,
+    projectId: response.projectId,
+    minimumProviderSettings: response.minimumProviderSettings,
+    status: response.status,
+    onboarding: response.onboarding,
+    refCode: response.refCode,
+  }
 }
