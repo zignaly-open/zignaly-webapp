@@ -2,7 +2,7 @@ import React from 'react';
 import './PositionsTable.sass';
 import {Box, Table, TableHead, TableBody, TableRow, TableCell} from '@material-ui/core';
 
-const PositionSettingsForm = (props) => {
+const PositionsTable = (props) => {
     const rows = [1,2,3,4,5,6];
 
     return(
@@ -47,4 +47,4 @@ const PositionSettingsForm = (props) => {
     )
 }
 
-export default PositionSettingsForm;
+export default PositionsTable;
