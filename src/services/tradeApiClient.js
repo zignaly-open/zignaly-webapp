@@ -51,12 +51,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {Object} UserLoginPayload
-   * @property {string} email
-   * @property {string} password
-   */
-
-  /**
    * Login a user in Trade API.
    *
    * @param {UserLoginPayload} payload
@@ -71,14 +65,6 @@ class TradeApiClient {
   }
 
   userLogout() {}
-
-  /**
-   * @typedef {Object} UserCreatePayload
-   * @property {string} firstName User first name.
-   * @property {string} email User email address.
-   * @property {string} password User password.
-   * @property {string} gRecaptchaResponse Google captcha response.
-   */
 
   /**
    * Create user at Zignaly Trade API.
