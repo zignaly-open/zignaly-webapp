@@ -2,10 +2,6 @@ import fetch from "cross-fetch"
 import { userCreateResponseTransform } from "./tradeApiResponseTransformer"
 
 /**
- * @typedef {import('./tradeApi.types')} UserCreateResponse
- */
-
-/**
  * Trade API client service, provides integration to API endpoints.
  *
  * @constructor
@@ -26,12 +22,11 @@ class TradeApiClient {
    *
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
-   * @param {function} transformCallback Data transform callback to typed response.
-   * @returns {Promise<Object>}
+   * @returns {Promise<*>}
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, transformCallback) {
+  async doRequest(endpointPath, payload) {
     const apiBaseUrl = "http://api.zignaly.lndo.site/"
     const requestUrl = apiBaseUrl + endpointPath
     const options = {
@@ -45,13 +40,11 @@ class TradeApiClient {
     try {
       const response = await fetch(requestUrl, options)
       if (response.status === 200) {
-        const responseData = await response.json()
-
-        return transformCallback(responseData)
+        return await response.json()
       }
 
       const body = await response.text()
-      throw new Error("User creation failed:" + body)
+      throw new Error(`API ${requestUrl} request failed:` + body)
     } catch (e) {
       console.error(e)
     }
@@ -88,17 +81,19 @@ class TradeApiClient {
    * Create user at Zignaly Trade API.
    *
    * @param {UserCreatePayload} UserCreatePayload
-   * @returns {UserCreateResponse}
+   * @returns {Promise<UserCreateResponse>}
    * @memberof TradeApiClient
    */
-  userCreate(UserCreatePayload) {
+  async userCreate(UserCreatePayload) {
     const endpointPath = "fe/api.php?action=signup"
 
-    return this.doRequest(
+    const responseData = await this.doRequest(
       endpointPath,
       UserCreatePayload,
-      userCreateResponseTransform
     )
+
+
+    return userCreateResponseTransform(responseData);
   }
 
   openPositionsGet(token, positionStatus) {}
