@@ -1,5 +1,9 @@
 import fetch from "cross-fetch"
-import { userCreateResponseTransform, userEntityResponseTransform } from './tradeApiClient.types';
+import {
+    userCreateResponseTransform,
+    userEntityResponseTransform,
+    userPositionsResponseTransform
+} from './tradeApiClient.types';
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -88,7 +92,20 @@ class TradeApiClient {
     return userCreateResponseTransform(responseData)
   }
 
-  openPositionsGet(token, positionStatus) {}
+  /**
+   * Get user open trading positions.
+   *
+   * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+   * @param {Promise<UserPositionsCollection>} payload
+   *
+   * @memberof TradeApiClient
+   */
+  async openPositionsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionsResponseTransform(responseData);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
