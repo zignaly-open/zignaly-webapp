@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import "./ProvidersHeader.sass"
 import { Box } from "@material-ui/core"
 import Link from "../../LocalizedLink"
@@ -7,8 +8,12 @@ import SettingsIcon from "../../../images/dashboard/settings.svg"
 import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg"
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg"
 
-const ProvidersHeader = () => {
-  const [filters, showFilters] = useState(false)
+const ProvidersHeader = (props) => {
+    // const [filters, showFilters] = useState(false)
+    //   const handle = val => {
+    //     setValue(val)
+    //     props.onFiltersOpen(val)
+    //   }
 
   return (
     <Box
@@ -40,8 +45,8 @@ const ProvidersHeader = () => {
         alignItems="center"
       >
         <img
-          onClick={() => showFilters(!filters)}
-          src={filters ? FilstersChecked : FiltersUnchecked}
+          onClick={() => props.toggleFilters()}
+          src={props.filters ? FilstersChecked : FiltersUnchecked}
           alt="zignaly"
           className="icon"
         />
@@ -56,5 +61,7 @@ const ProvidersHeader = () => {
     </Box>
   )
 }
-
+ProvidersHeader.propTypes = {
+  onFiltersOpen: PropTypes.func,
+}
 export default ProvidersHeader

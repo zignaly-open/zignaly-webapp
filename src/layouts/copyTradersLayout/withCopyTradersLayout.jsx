@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import "../../styles/common.sass"
 import "./copyTradersLayout.sass"
 import { getDisplayName } from "../../utils"
@@ -8,6 +8,19 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader"
 
 const withDashboardLayout = Component => {
   const WrapperComponent = props => {
+    const [filters, showFilters] = useState(false)
+    const [sorting, showSorting] = useState(false)
+
+    const toggleFilters = val => {
+      showFilters(!filters)
+    //   props.onFiltersOpen(val)
+    }
+
+    const toggleSorting = val => {
+      setValue(val)
+      props.onFiltersOpen(val)
+    }
+
     return (
       <Box
         className="copyTradersLayout"
@@ -23,9 +36,13 @@ const withDashboardLayout = Component => {
           </h4>
         </Box>
 
-        <ProvidersHeader />
+        <ProvidersHeader toggleFilters={toggleFilters} filters={filters} />
         <Box className="pageContent">
-          <Component {...props} />
+          <Component
+            {...props}
+            toggleFilters={toggleFilters}
+            filters={filters}
+          />
         </Box>
         <Box className="faq">
           <FAQ />
