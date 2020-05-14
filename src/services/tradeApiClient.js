@@ -35,20 +35,26 @@ class TradeApiClient {
 
   /**
    * @typedef {Object} UserCreatePayload
-   * @property {string} firstName
-   * @property {string} email
-   * @property {string} password
-   * @property {string} gRecaptchaResponse
+   * @property {string} firstName User first name.
+   * @property {string} email User email address.
+   * @property {string} password User password.
+   * @property {string} gRecaptchaResponse Google captcha response.
+   */
+
+  /**
+   * @typedef {Object} UserCreateResponse
+   * @property {string} token User access token.
    */
 
   /**
    * Create user at Zignaly Trade API.
    *
    * @param {UserCreatePayload} UserCreatePayload
-   * @returns
+   * @returns {Promise<UserCreateResponse>}
    * @memberof TradeApiClient
    */
   async userCreate(UserCreatePayload) {
+    const digestedResponse = {}
     const apiBaseUrl = "http://api.zignaly.lndo.site/"
     const endpointPath = "fe/api.php?action=signup"
     const requestUrl = apiBaseUrl + endpointPath
@@ -56,18 +62,21 @@ class TradeApiClient {
       method: "POST",
       body: JSON.stringify(UserCreatePayload),
       headers: {
-        'Content-Type': 'application/json',
-      }
+        "Content-Type": "application/json",
+      },
     }
 
     try {
       const response = await fetch(requestUrl, options)
       if (response.status === 200) {
-        return await response.json()
+        const token = await response.json()
+        digestedResponse.token = token;
+
+        return digestedResponse;
       }
 
-      const body = await response.text();
-      throw new Error("User creation failed:" + body);
+      const body = await response.text()
+      throw new Error("User creation failed:" + body)
     } catch (e) {
       console.error(e)
     }
