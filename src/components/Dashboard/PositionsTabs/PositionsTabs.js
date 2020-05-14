@@ -8,6 +8,7 @@ import PositionSettingsForm from '../../Forms/PositionSettingsForm';
 import PositionsTable from '../PositionsTable';
 import PositionFilters from '../PositionFilters';
 import {FormattedMessage} from 'react-intl';
+import NoPositions from '../NoPositions';
 
 const PositionsTabs = (props) => {
     const [tabValue, setTabValue] = useState(0)
@@ -36,7 +37,7 @@ const PositionsTabs = (props) => {
             }
             {tabValue === 0 &&
                 <Box className="tabPanel">
-                    <PositionsTable />
+                    <NoPositions />
                 </Box>
             }
             {tabValue === 1 &&
