@@ -1,5 +1,5 @@
 import fetch from "cross-fetch"
-import { userCreateResponseTransform } from "./tradeApiResponseTransformer"
+import { userCreateResponseTransform } from "./tradeApiClient.types"
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -53,8 +53,12 @@ class TradeApiClient {
   /**
    * Login a user in Trade API.
    *
+   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
    * @param {UserLoginPayload} payload
+   *
+   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserLoginResponse
    * @returns {Promise<UserLoginResponse>}
+   *
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
@@ -69,13 +73,17 @@ class TradeApiClient {
   /**
    * Create user at Zignaly Trade API.
    *
-   * @param {UserCreatePayload} UserCreatePayload
+   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
+   * @param {UserCreatePayload} payload
+   *
+   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
    * @returns {Promise<UserCreateResponse>}
+   *
    * @memberof TradeApiClient
    */
-  async userCreate(UserCreatePayload) {
+  async userCreate(payload) {
     const endpointPath = "fe/api.php?action=signup"
-    const responseData = await this.doRequest(endpointPath, UserCreatePayload)
+    const responseData = await this.doRequest(endpointPath, payload)
 
     return userCreateResponseTransform(responseData)
   }
