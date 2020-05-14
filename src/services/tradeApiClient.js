@@ -17,6 +17,29 @@ class TradeApiClient {
   }
 
   /**
+   * Process API HTTP request.
+   *
+   * @param {string} endpointPath API endpoint path and action.
+   * @param {Object} payload Request payload parameters object.
+   * @returns {Promise<Object>}
+   *
+   * @memberof TradeApiClient
+   */
+  async doRequest(endpointPath, payload) {
+    const apiBaseUrl = "http://api.zignaly.lndo.site/"
+    const requestUrl = apiBaseUrl + endpointPath
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+
+    return fetch(requestUrl, options)
+  }
+
+  /**
    * @typedef {Object} UserLoginPayload
    * @property {string} email
    * @property {string} password
@@ -29,7 +52,9 @@ class TradeApiClient {
    * @returns string The session token.
    * @memberof TradeApiClient
    */
-  userLogin(payload) {}
+  async userLogin(payload) {
+    const endpointPath = '/fe/api.php?action=login'
+  }
 
   userLogout() {}
 
@@ -55,19 +80,10 @@ class TradeApiClient {
    */
   async userCreate(UserCreatePayload) {
     const digestedResponse = {}
-    const apiBaseUrl = "http://api.zignaly.lndo.site/"
     const endpointPath = "fe/api.php?action=signup"
-    const requestUrl = apiBaseUrl + endpointPath
-    const options = {
-      method: "POST",
-      body: JSON.stringify(UserCreatePayload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
 
     try {
-      const response = await fetch(requestUrl, options)
+      const response = await this.doRequest(endpointPath, UserCreatePayload)
       if (response.status === 200) {
         const token = await response.json()
         digestedResponse.token = token;
