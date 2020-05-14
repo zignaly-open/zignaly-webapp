@@ -9,17 +9,11 @@ import fetch from "cross-fetch"
  */
 class TradeApiClient {
   /**
-   * @property {String} instance
+   * Creates an instance of TradeApiClient.
+   * @memberof TradeApiClient
    */
   constructor() {
-    this.instance = undefined;
     this.baseUrl = process.env.TRADEAPI_URL
-
-    if (!TradeApiClient.instance) {
-      TradeApiClient.instance = this
-    }
-
-    return TradeApiClient
   }
 
   /**
@@ -71,7 +65,10 @@ class TradeApiClient {
   openPositionsGet(token, positionStatus) {}
 }
 
+// JS export by default guarantee a singleton instance if we export the class
+// instance, see:
+// https://medium.com/@lazlojuly/are-node-js-modules-singletons-764ae97519af
 const client = new TradeApiClient()
 Object.freeze(client)
 
-export default client.instance
+export default client
