@@ -221,10 +221,20 @@ export function userPositionsResponseTransform(response) {
  * @returns {PositionEntity}
  */
 function userPositionItemTransform(positionItem) {
-  /**
-   * @typedef {PositionEntity} emptyPositionEntity
-   */
-  const emptyPositionEntity = {
+  const emptyPositionEntity = createEmptyPositionEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyPositionEntity, positionItem)
+
+  return transformedResponse;
+}
+
+/**
+ * Create empty position entity skeleton.
+ *
+ * @returns {PositionEntity}
+ */
+function createEmptyPositionEntity() {
+  return {
     closed: false,
     positionId: "",
     userId: "",
@@ -282,14 +292,10 @@ function userPositionItemTransform(positionItem) {
     type: "",
     copyTraderId: false,
     paperTrading: false,
-    realInvestment: { $numberDecimal: 0 },
+    realInvestment: { $numberDecimal: '' },
     leverage: 0,
     internalExchangeId: "",
     logoUrl: "",
+    reBuyTargets: [],
   }
-
-  const transformedResponse = assign(positionItem, emptyPositionEntity)
-  console.log("TRANS: ", transformedResponse);
-
-  return transformedResponse;
 }
