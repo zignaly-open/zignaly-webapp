@@ -23,15 +23,13 @@ const withDashboardLayout = Component => {
           </h4>
         </Box>
 
-        <React.Fragment>
-          <ProvidersHeader />
-          <Box className="pageContent">
-            <Component {...props} />
-          </Box>
-          <Box className="faq">
-            <FAQ />
-          </Box>
-        </React.Fragment>
+        <ProvidersHeader />
+        <Box className="pageContent">
+          <Component {...props} />
+        </Box>
+        <Box className="faq">
+          <FAQ />
+        </Box>
       </Box>
     )
   }
