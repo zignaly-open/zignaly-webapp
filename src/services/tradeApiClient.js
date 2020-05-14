@@ -37,7 +37,7 @@ class TradeApiClient {
    * @typedef {Object} UserCreatePayload
    * @property {string} firstName
    * @property {string} email
-   * @property {string} passwrod
+   * @property {string} password
    */
 
   /**
