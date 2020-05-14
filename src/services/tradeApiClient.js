@@ -1,9 +1,18 @@
-// @flow
 import fetch from "cross-fetch"
 
-// Trade API client service, provides integration to API endpoints.
+/**
+ * Trade API client service, provides integration to API endpoints.
+ *
+ * @constructor
+ * @public
+ * @class TradeApiClient
+ */
 class TradeApiClient {
+  /**
+   * @property {String} instance
+   */
   constructor() {
+    this.instance = undefined;
     this.baseUrl = process.env.TRADEAPI_URL
 
     if (!TradeApiClient.instance) {
