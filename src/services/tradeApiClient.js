@@ -60,11 +60,14 @@ class TradeApiClient {
    * Login a user in Trade API.
    *
    * @param {UserLoginPayload} payload
-   * @returns string The session token.
+   * @returns {Promise<UserLoginResponse>}
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
     const endpointPath = "/fe/api.php?action=login"
+    const responseData = await this.doRequest(endpointPath, payload)
+
+    return userCreateResponseTransform(responseData)
   }
 
   userLogout() {}
@@ -86,14 +89,9 @@ class TradeApiClient {
    */
   async userCreate(UserCreatePayload) {
     const endpointPath = "fe/api.php?action=signup"
+    const responseData = await this.doRequest(endpointPath, UserCreatePayload)
 
-    const responseData = await this.doRequest(
-      endpointPath,
-      UserCreatePayload,
-    )
-
-
-    return userCreateResponseTransform(responseData);
+    return userCreateResponseTransform(responseData)
   }
 
   openPositionsGet(token, positionStatus) {}

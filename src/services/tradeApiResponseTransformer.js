@@ -1,5 +1,5 @@
 /**
- * Transform Trade API user create response to typed object.
+ * Transform user create response to typed object.
  *
  * @export
  * @param {*} response
