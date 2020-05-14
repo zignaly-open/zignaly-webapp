@@ -17,6 +17,12 @@ class TradeApiClient {
   }
 
   /**
+   * @typedef {Object} UserLoginPayload
+   * @property {string} email
+   * @property {string} password
+   */
+
+  /**
    * Login a user in Trade API.
    *
    * @param {UserLoginPayload} payload
