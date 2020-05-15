@@ -1,26 +1,22 @@
 .app
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    .body
-        width: inherit;
-        .side
-            width: 90px;
-            min-height: calc(100vh - 74px);
-            position: relative;
-            box-sizing: border-box;
-        .appContent
-            width: calc(100% - 90px);
-            min-height: calc(100vh - 74px);
-            padding: 30px 20px 10px 50px;
-            box-sizing: border-box;
+    box-sizing: border-box
+    min-height: 100vh
+    min-height: calc(100vh - 74px)
+    width: inherit
+    width: calc(100% - 90px)
+
+    .appContent
+        box-sizing: border-box
+        min-height: calc(100vh - 74px)
+        width: inherit
+        width: 100% !important
 
 @media only screen and (max-width: 600px)
     .app
         .body
-            width: inherit;
+            width: inherit
             .appContent
-                width: 100% !important;
-                min-height: calc(100vh - 74px);
-                padding: 15px !important;
-                box-sizing: border-box;
+                box-sizing: border-box
+                min-height: calc(100vh - 74px)
+                padding: 15px !important
+                width: 100% !important

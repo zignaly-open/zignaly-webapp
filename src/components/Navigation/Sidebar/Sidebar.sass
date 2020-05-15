@@ -1,61 +1,61 @@
-@import '../../../styles/variables.sass';
-@import url('../../../styles/fonts.sass');
+@import '../../../styles/variables.sass'
+@import url('../../../styles/fonts.sass')
 
 .sidebar
+    border: 1px solid $borderColor
+    border-radius: 28px
+    box-sizing: border-box
+    left: 30px
+    overflow: hidden !important
+    padding: 10px
+    position: absolute
+    top: 40px
+    transition: width 0.25s
     width: 60px
-    box-sizing: border-box;
-    border-radius: 28px;
-    padding: 10px;
-    transition: width 0.25s;
-    overflow: hidden !important;
-    position: absolute;
-    left: 30px;
-    top: 40px;
-    border: 1px solid $borderColor;
-    z-index: 1000;
+    z-index: 1000
 
     &.full
-        width: 200px;
-        overflow: visible;
+        overflow: visible
+        width: 200px
 
     .sideBarLink
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        text-decoration: none;
-        margin-bottom: 50px;
-        font-family: 'PlexSans-Medium';
-        color: inherit;
-        padding: 8px;
+        align-items: center
+        color: inherit
+        display: flex
+        flex-direction: row
+        font-family: 'PlexSans-Medium'
+        height: 40px
+        justify-content: flex-start
+        margin-bottom: 50px
         overflow: hidden
-        height: 40px;
-        white-space: nowrap;
+        padding: 8px
+        text-decoration: none
+        white-space: nowrap
+        width: 100%
         &.active
-            background-image: $purpleDarkGradient;
-            border-radius: 19px;
-            color: $white;
+            background-image: $purpleDarkGradient
+            border-radius: 19px
+            color: $white
 
         .icon
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
+            height: 24px
+            margin-right: 12px
+            width: 24px
     .themeBox
-        width: fit-content;
-        border-radius: 20px !important;
-        overflow: hidden;
+        border-radius: 20px !important
+        overflow: hidden
+        width: fit-content
         img
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-        .darkBox,
-            padding: 8px;
+            cursor: pointer
+            height: 24px
+            width: 24px
+        .darkBox
+            padding: 8px
         .checkedDarkBox
-            background-image: $purpleDarkGradient;
-            padding: 8px;
+            background-image: $purpleDarkGradient
+            padding: 8px
         .lightBox
-            padding: 8px;
+            padding: 8px
         .checkedLightBox
-            background-image: $purpleDarkGradient;
+            background-image: $purpleDarkGradient
             padding: 8px

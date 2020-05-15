@@ -1,67 +1,64 @@
-@import '../../../styles/variables.sass';
+@import '../../../styles/variables.sass'
 
 .testimonial
-    width: 576px;
-    min-height: 268px;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
-    background: $white;
-    position: relative;
-    margin: 64px 0;
-    padding: 20px;
-    box-sizing: border-box;
+    background: $white
+    border-radius: 4px
+    box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2)
+    box-sizing: border-box
+    margin: 64px 0
+    min-height: 268px
+    padding: 20px
+    position: relative
+    width: 576px
 
     .avatar
-        width: 80px;
-        height: 80px;
-        position: absolute;
-        left: 24px;
-        top: -30px;
-        border-radius: 50%;
+        border-radius: 50%
+        height: 80px
+        left: 24px
+        position: absolute
+        top: -30px
+        width: 80px
 
     .time-box
         height: 42px
         .time
-            font-family: 'PlexSans-Light';
-            font-size: 14px;
-            margin-right: 1rem;
-            letter-spacing: .53px;
+            font-family: 'PlexSans-Light'
+            font-size: 14px
+            letter-spacing: .53px
+            margin-right: 1rem
 
         .icon
-            background: $blue;
-            border-radius: 50%;
-            width: 42px;
-            height: 36px;
-            padding-top: 5px;
-
+            background: $blue
+            border-radius: 50%
+            height: 36px
+            padding-top: 5px
+            width: 42px
 
     .title-box
-        margin-top: 16px;
+        margin-top: 16px
         .title
-            font-size: 21px;
-            font-family: 'PlexSans-Medium';
-            letter-spacing: .8px;
-            margin: 0;
+            font-family: 'PlexSans-Medium'
+            font-size: 21px
+            letter-spacing: .8px
+            margin: 0
             &+p
-                font-size: 16px;
-                letter-spacing: .61px;
-                line-height: 21px;
-                margin: 10px 0 0 0;
-                font-family: 'PlexSans-Light';
-
-
+                font-family: 'PlexSans-Light'
+                font-size: 16px
+                letter-spacing: .61px
+                line-height: 21px
+                margin: 10px 0 0 0
 
     .review-box
-        position: absolute;
-        width: calc(100% - 40px);
-        bottom: 16px;
+        bottom: 16px
+        position: absolute
+        width: calc(100% - 40px)
         .stars
-            color: $green !important;
+            color: $green !important
 
 @media only screen and (max-width: 600px)
     .testimonial
         .avatar
-            width: 60px;
-            height: 60px;
+            height: 60px
+            width: 60px
         .title-box
-            margin-bottom: 20px;
+            margin-bottom: 20px
