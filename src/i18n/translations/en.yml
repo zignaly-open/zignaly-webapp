@@ -32,6 +32,7 @@ dashboard.balance.cryptocompo: "Crypto Composition"
 dashboard.balance.available: "Available"
 dashboard.balance.invested: "Invested"
 dashboard.balance.profit: "Profit"
+dashboard.balance.total: "Total"
 dashboard.balance.historical: "Historical"
 dashboard.traders.copying: "Traders I am copying:"
 
