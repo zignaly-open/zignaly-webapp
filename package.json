@@ -63,6 +63,7 @@
         "postcss-scss": "^2.0.0",
         "prettier": "^1.17.1",
         "react-test-renderer": "^16.8.6",
+        "sass-lint": "^1.13.1",
         "sass-lint-auto-fix": "^0.21.0",
         "typescript": "^3.9.2"
     },
@@ -74,6 +75,7 @@
         "serve": "gatsby serve",
         "test": "jest",
         "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js",
-        "sassfix": "sass-lint-auto-fix -c .sass-lint.yml"
+        "sassfix": "sass-lint-auto-fix -c .sass-lint.yml",
+        "sasslint": "sass-lint -c .sass-lint.yml"
     }
 }
