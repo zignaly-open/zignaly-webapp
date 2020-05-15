@@ -1,52 +1,66 @@
-@import '../../styles/variables.sass'
+@import "../../styles/variables.sass";
 
-.customButton
-    box-sizing: border-box
-    cursor: pointer 
-    font-family: 'PlexSans-Medium' 
-    font-size: 16px 
-    height: 48px 
-    letter-spacing: 1px 
-    min-width: 250px 
-    padding: 0 
-    text-transform: capitalize 
+.customButton {
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: "PlexSans-Medium";
+  font-size: 16px;
+  height: 48px;
+  letter-spacing: 1px;
+  min-width: 250px;
+  padding: 0;
+  text-transform: capitalize;
 
-    .loader
-        color: $white
-        height: 20px 
-        width: 20px 
+  .loader {
+    color: $white;
+    height: 20px;
+    width: 20px;
+  }
 
-    &.submit-btn
-        background: $purple
-        color: $white 
-        &:hover
-            background: $purpleLight
+  &.submit-btn {
+    background: $purple;
+    color: $white;
 
-    &.disabled-btn
-        background: $lightGrey
-        color: $black 
-        &:hover
-            background: $lightGrey
+    &:hover {
+      background: $purpleLight;
+    }
+  }
 
-    &.load-more-btn
-        background: $white
-        border: 2px solid $purple
-        color: $purple
+  &.disabled-btn {
+    background: $lightGrey;
+    color: $black;
 
-    &.text-purple
-        background: transparent
-        color: $purple 
-        min-width: 120px 
-    &.text-default
-        background: transparent
-        min-width: 120px 
+    &:hover {
+      background: $lightGrey;
+    }
+  }
 
-    &.full
-        width: 100%
+  &.load-more-btn {
+    background: $white;
+    border: 2px solid $purple;
+    color: $purple;
+  }
 
-    &.header-btn
-        background: $green 
-        color: $white
-        height: 32px 
-        margin: 0 12px
-        min-width: 200px 
+  &.text-purple {
+    background: transparent;
+    color: $purple;
+    min-width: 120px;
+  }
+
+  &.text-default {
+    background: transparent;
+    min-width: 120px;
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  &.header-btn {
+    background: $green;
+    color: $white;
+    height: 32px;
+    margin: 0 12px;
+    min-width: 200px;
+  }
+}

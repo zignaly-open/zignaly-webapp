@@ -1,49 +1,79 @@
-@import '../../../styles/variables.sass'
+@import "../../../styles/variables.sass";
 
-.header
-    box-sizing: boorder-box
-    height: 74px
-    padding: 16px 32px
-    width: 100%
+.header {
+  box-sizing: boorder-box;
+  height: 74px;
+  padding: 16px 32px;
+  width: 100%;
 
-    .headerLogo
-        height: 42px
-        margin: 0 16px 0 0
-        width: 106px
+  .headerLogo {
+    height: 42px;
+    margin: 0 16px 0 0;
+    width: 106px;
+  }
 
-    .linksContainer
-        .linkBox
-            padding: 0 12px
-            .icon
-                cursor: pointer
-                font-size: 28px
-                height: 32px
-                widows: 32px
-        .balanceContainer
-            .iconBox
-                height: 44px
-                width: 40px
-                &:last-child
-                    width: 100px
-                .expandIcon
-                    cursor: pointer
-                    height: 24px
-                    width: 24px
-            .blaanceBox
-                height: 42px
-                width: 140px
-                &:first-child
-                    width: 160px
-                &:last-child
-                    width: 100px
-                .balance
-                    text-transform: uppercase
-                    &.red
-                        color: $red
-                    &.green
-                        color: $green
-.lightMenu
-    &:hover
-        color: $white 
-.menu
-    margin-top: 40px
+  .linksContainer {
+    .linkBox {
+      padding: 0 12px;
+
+      .icon {
+        cursor: pointer;
+        font-size: 28px;
+        height: 32px;
+        widows: 32px;
+      }
+    }
+
+    .balanceContainer {
+      .iconBox {
+        height: 44px;
+        width: 40px;
+
+        &:last-child {
+          width: 100px;
+        }
+
+        .expandIcon {
+          cursor: pointer;
+          height: 24px;
+          width: 24px;
+        }
+      }
+
+      .blaanceBox {
+        height: 42px;
+        width: 140px;
+
+        &:first-child {
+          width: 160px;
+        }
+
+        &:last-child {
+          width: 100px;
+        }
+
+        .balance {
+          text-transform: uppercase;
+
+          &.red {
+            color: $red;
+          }
+
+          &.green {
+            color: $green;
+          }
+        }
+      }
+    }
+  }
+}
+
+.lightMenu {
+  &:hover {
+    color: $white;
+  }
+}
+
+.menu {
+  margin-top: 40px;
+}

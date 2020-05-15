@@ -1,13 +1,19 @@
-@import '../../styles/variables.sass'
+@import "../../styles/variables.sass";
 
-.selectTimeFrame
-    p
-        margin-right: 24px
-    .customSelect
-        margin-right: 0
-    .select
-        background: $white
-        border-radius: 4px
-        height: 32px
-        margin-right: 0
-        width: 144px
+.selectTimeFrame {
+  p {
+    margin-right: 24px;
+  }
+
+  .customSelect {
+    margin-right: 0;
+  }
+
+  .select {
+    background: $white;
+    border-radius: 4px;
+    height: 32px;
+    margin-right: 0;
+    width: 144px;
+  }
+}

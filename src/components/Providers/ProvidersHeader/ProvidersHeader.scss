@@ -1,18 +1,24 @@
-@import '../../../styles/variables.sass'
-@import url('../../../styles/fonts.sass')
+@import "../../../styles/variables.sass";
 
-.providersHeader
-    width: 100%
-    .settings
-        background: $white
-        border-radius: 4px
-        bottom: 15px
-        box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2)
-        height: 56px
-        position: absolute
-        right: 0
-        width: 120px
-    .icon
-        cursor: pointer
-        height: 24px
-        width: 24px
+@import url("../../../styles/fonts.sass");
+
+.providersHeader {
+  width: 100%;
+
+  .settings {
+    background: $white;
+    border-radius: 4px;
+    bottom: 15px;
+    box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+    height: 56px;
+    position: absolute;
+    right: 0;
+    width: 120px;
+  }
+
+  .icon {
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+  }
+}

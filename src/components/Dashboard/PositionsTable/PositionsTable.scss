@@ -1,30 +1,43 @@
-@import '../../../styles/variables.sass'
-@import url('../../../styles/variables.sass')
+@import "../../../styles/variables.sass";
 
-.positionsTable
-    padding: 0 10px
-    width: 100%
+@import url("../../../styles/variables.sass");
 
-    .tableBox
-        min-height: 300px
-        width: 100%
-        .table
-            width: 100%
-            .head
-                .row
-                    .cell
-                        border-bottom: 0
-                        font-family: 'PlexSans-Medium'
-                        font-size: 11px
-                        height: 60px
-                        padding: 8px 12px
-                        text-transform: capitalize
-            .body
-                .row
-                    .cell
-                        border-bottom: 1px solid $borderColor
-                        font-family: 'PlexSans-Medium'
-                        font-size: 14px
-                        height: 60px
-                        padding: 12px
-                        text-transform: capitalize
+.positionsTable {
+  padding: 0 10px;
+  width: 100%;
+
+  .tableBox {
+    min-height: 300px;
+    width: 100%;
+
+    .table {
+      width: 100%;
+
+      .head {
+        .row {
+          .cell {
+            border-bottom: 0;
+            font-family: "PlexSans-Medium";
+            font-size: 11px;
+            height: 60px;
+            padding: 8px 12px;
+            text-transform: capitalize;
+          }
+        }
+      }
+
+      .body {
+        .row {
+          .cell {
+            border-bottom: 1px solid $borderColor;
+            font-family: "PlexSans-Medium";
+            font-size: 14px;
+            height: 60px;
+            padding: 12px;
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+}

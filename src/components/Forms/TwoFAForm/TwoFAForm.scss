@@ -1,33 +1,42 @@
-@import '../../../styles/variables.sass'
-@import url('../../../styles/fonts.sass')
+@import "../../../styles/variables.sass";
 
-.twoFA-form
-    padding: 40px
-    width: 500px
+@import url("../../../styles/fonts.sass");
 
-    .boxTitle
-        margin-bottom: 40px
+.twoFA-form {
+  padding: 40px;
+  width: 500px;
 
-    .input-box
-        margin-bottom: 40px
-        width: 364px
-        .custom-input
-            height: 32px
+  .boxTitle {
+    margin-bottom: 40px;
+  }
 
-        .custom-label
-            font-family: 'PlexSans-Bold'
-            font-size: 16px
-            margin-bottom: 12px
+  .input-box {
+    margin-bottom: 40px;
+    width: 364px;
 
-    .link
-        color: $purple
-        font-size: 11px
-        font-weight: 600
-        margin-bottom: 40px
-        text-decoration: none
-        text-transform: uppercase
+    .custom-input {
+      height: 32px;
+    }
 
-    .error-text
-        color: $red
-        font-size: 11px
-        margin-top: 8px
+    .custom-label {
+      font-family: "PlexSans-Bold";
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .link {
+    color: $purple;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .error-text {
+    color: $red;
+    font-size: 11px;
+    margin-top: 8px;
+  }
+}

@@ -1,13 +1,19 @@
-@import '../../styles/variables.sass'
+@import "../../styles/variables.sass";
 
-.modal
-    border-radius: 4px 
-    height: fit-content 
-    padding: 20px
+.modal {
+  border-radius: 4px;
+  height: fit-content;
+  padding: 20px;
 
-    &.small
-        width: 500px
-    &.medium
-        width: 800px
-    &.large
-        width: 1000px
+  &.small {
+    width: 500px;
+  }
+
+  &.medium {
+    width: 800px;
+  }
+
+  &.large {
+    width: 1000px;
+  }
+}

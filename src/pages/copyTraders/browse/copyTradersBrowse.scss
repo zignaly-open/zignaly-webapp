@@ -1,10 +1,12 @@
-@import '../../../styles/variables.sass'
+@import "../../../styles/variables.sass";
 
-.ctBrowsePage
-    width: 100%
+.ctBrowsePage {
+  width: 100%;
 
-    .traderCard
-        height: 360px
-        margin-left: 0
-        margin-right: 0
-        width: 336px
+  .traderCard {
+    height: 360px;
+    margin-left: 0;
+    margin-right: 0;
+    width: 336px;
+  }
+}
