@@ -75,7 +75,7 @@
         "serve": "gatsby serve",
         "test": "jest",
         "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js",
-        "sassfix": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
-        "sasslint": "sass-lint --config .sass-lint.yml"
+        "sassfix": "sass-lint-auto-fix",
+        "sasslint": "sass-lint -v"
     }
 }
