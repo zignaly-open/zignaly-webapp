@@ -7,7 +7,7 @@ import withCopyTradersLayout from "../../../layouts/copyTradersLayout"
 import withPageContext from "../../../pageContext"
 import TraderCard from "../../../components/TraderCard"
 import ProvidersFilters from "../../../components/Providers/ProvidersFilters"
-import SelectTimeFrame from "../../../components/SelectTimeFrame"
+import TimeFrameSelect from "../../../components/TimeFrameSelect"
 import CustomSelect from "../../../components/CustomSelect"
 import Helmet from "react-helmet"
 import "./copyTradersBrowse.sass"
@@ -59,6 +59,7 @@ const CopyTradersBrowse = ({
 
   const handleSortChange = val => {
     setSort(val)
+    console.log(val)
   }
 
   return (
@@ -75,13 +76,13 @@ const CopyTradersBrowse = ({
         >
           <CustomSelect
             options={coins}
-            handleChange={handleCoinChange}
+            onChange={handleCoinChange}
             value={coin}
             label="Coin"
           />
           <CustomSelect
             options={exchanges}
-            handleChange={handleExchangeChange}
+            onChange={handleExchangeChange}
             value={exchange}
             label="Exchange"
           />
@@ -95,7 +96,7 @@ const CopyTradersBrowse = ({
         >
           <CustomSelect
             options={sorts}
-            handleChange={handleSortChange}
+            onChange={handleSortChange}
             value={sort}
             label=""
             className="sortSelect"
@@ -112,7 +113,7 @@ const CopyTradersBrowse = ({
           justifyContent="flex-end"
           alignItems="center"
         >
-          {/* <SelectTimeFrame onChange={handleTimeFrameChange} /> */}
+          <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
       <Box display="flex" flexDirection="column" justifyContent="flex-start">

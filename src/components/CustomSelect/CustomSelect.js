@@ -9,14 +9,14 @@ import {
 } from "@material-ui/core"
 import "./CustomSelect.sass"
 
-const CustomSelect = ({ options, handleChange, value, label, className }) => {
+const CustomSelect = ({ options, onChange, value, label, className }) => {
   return (
     <FormControlLabel
       control={
         <FormControl variant="outlined" className="callout">
           <Select
             value={value}
-            onChange={e => handleChange(e.target.value)}
+            onChange={e => onChange(e.target.value)}
             displayEmpty={true}
             variant="outlined"
             className={`select ${className}`}
@@ -25,8 +25,11 @@ const CustomSelect = ({ options, handleChange, value, label, className }) => {
             }}
           >
             {options.map((item, index) => (
-              <MenuItem key={index} value={item}>
-                {item}
+              <MenuItem
+                key={index}
+                value={item.val !== undefined ? item.val : item}
+              >
+                {item.label !== undefined ? item.label : item}
               </MenuItem>
             ))}
           </Select>
@@ -41,8 +44,8 @@ const CustomSelect = ({ options, handleChange, value, label, className }) => {
 
 CustomSelect.propTypes = {
   options: PropTypes.array.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
   className: PropTypes.string,
 }
