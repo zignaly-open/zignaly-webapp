@@ -63,6 +63,7 @@
         "postcss-scss": "^2.0.0",
         "prettier": "^1.17.1",
         "react-test-renderer": "^16.8.6",
+        "sass-lint-auto-fix": "^0.21.0",
         "typescript": "^3.9.2"
     },
     "scripts": {
