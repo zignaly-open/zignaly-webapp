@@ -44,6 +44,9 @@ rules:
   force-pseudo-nesting: 1
 
   # Name Formats
+  class-name-format:
+    - 1
+    - convention: camelcase
   id-name-format:
     - 1
     - convention: camelcase
