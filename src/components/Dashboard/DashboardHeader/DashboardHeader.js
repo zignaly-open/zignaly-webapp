@@ -1,22 +1,28 @@
-import React from 'react';
-import './DashboardHeader.sass';
-import { Box } from '@material-ui/core';
-import Link from '../../LocalizedLink';
+import React from "react"
+import "./DashboardHeader.sass"
+import { Box } from "@material-ui/core"
+import SubNavHeader from "../../SubNavHeader"
 
 const DashboardHeader = () => {
-    return (
-        <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" className="dashboardHeader hideScroll">
-            <Link to="/dashboard/positions" className="dashboardLink" activeClassName="active">
-                Positions
-            </Link>
-            <Link to="/dashboard/balance" className="dashboardLink" activeClassName="active">
-                Balance
-            </Link>
-            <Link to="/dashboard/connectedTraders" className="dashboardLink" activeClassName="active">
-                connected traders
-            </Link>
-        </Box>
-    )
+  const links = [
+    {
+      name: "Positions",
+      to: "/dashboard/positions",
+    },
+    {
+      name: "Balance",
+      to: "/dashboard/balance",
+    },
+    {
+      name: "Connected traders",
+      to: "/dashboard/connectedTraders",
+    },
+  ]
+  return (
+    <Box className="dashboardHeader hideScroll">
+      <SubNavHeader links={links} />
+    </Box>
+  )
 }
 
-export default DashboardHeader;
+export default DashboardHeader
