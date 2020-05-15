@@ -99,6 +99,11 @@ const theme = (darkStyle) => {
                 fontFamily: 'PlexSans-Bold',
                 textTransform: 'capitalize'
             },
+            h2: { // this is for page title inside testimonials"
+                fontSize: "28px",
+                fontFamily: 'PlexSans-Medium',
+                textTransform: 'capitalize'
+            },
             h3: { // this is for titles inside components eg: "Totla Equity"
                 fontSize: "21px",
                 fontFamily: 'PlexSans-Bold',

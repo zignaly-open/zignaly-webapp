@@ -1,35 +1,119 @@
-import fetch from "cross-fetch";
+import fetch from "cross-fetch"
+import {
+  userCreateResponseTransform,
+  userEntityResponseTransform,
+  userPositionsResponseTransform,
+} from "./tradeApiClient.types"
+import * as TradeApiTypes from "./tradeApiClient.types"
 
-// Trade API client service, provides integration to API endpoints.
+/**
+ * Trade API client service, provides integration to API endpoints.
+ *
+ * @constructor
+ * @public
+ * @class TradeApiClient
+ */
 class TradeApiClient {
-   constructor() {
-       this.baseUrl = process.env.TRADEAPI_URL;
+  /**
+   * Creates an instance of TradeApiClient.
+   * @memberof TradeApiClient
+   */
+  constructor() {
+    this.baseUrl = process.env.TRADEAPI_URL
+  }
 
-        if (!TradeApiClient.instance) {
-            TradeApiClient.instance = this;
-        }
+  /**
+   * Process API HTTP request.
+   *
+   * @param {string} endpointPath API endpoint path and action.
+   * @param {Object} payload Request payload parameters object.
+   * @returns {Promise<*>}
+   *
+   * @memberof TradeApiClient
+   */
+  async doRequest(endpointPath, payload) {
+    const apiBaseUrl = "http://api.zignaly.lndo.site/"
+    const requestUrl = apiBaseUrl + endpointPath
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
 
-        return TradeApiClient;
-   }
+    try {
+      const response = await fetch(requestUrl, options)
+      if (response.status === 200) {
+        return await response.json()
+      }
 
-   userLogin(username, password) {
+      const body = await response.text()
+      throw new Error(`API ${requestUrl} request failed:` + body)
+    } catch (e) {
+      console.error("API error: ", e)
+    }
+  }
 
-   }
+  /**
+   * Login a user in Trade API.
+   *
+   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+   * @param {UserLoginPayload} payload
+   *
+   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
+   * @returns {Promise<UserLoginResponse>}
+   *
+   * @memberof TradeApiClient
+   */
+  async userLogin(payload) {
+    const endpointPath = "/fe/api.php?action=login"
+    const responseData = await this.doRequest(endpointPath, payload)
 
-   userLogout() {
+    return userEntityResponseTransform(responseData)
+  }
 
-   }
+  userLogout() {}
 
-   userCreate(userCreatePayload) {
+  /**
+   * Create user at Zignaly Trade API.
+   *
+   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
+   * @param {UserCreatePayload} payload
+   *
+   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
+   * @returns {Promise<UserCreateResponse>}
+   *
+   * @memberof TradeApiClient
+   */
+  async userCreate(payload) {
+    const endpointPath = "fe/api.php?action=signup"
+    const responseData = await this.doRequest(endpointPath, payload)
 
-   }
+    return userCreateResponseTransform(responseData)
+  }
 
-   positionsGet(token, positionStatus) {
+  /**
+   * Get user open trading positions.
+   *
+   * @param {TradeApiTypes.UserPositionsPayload} payload
 
-   }
+   * @returns {Promise<TradeApiTypes.UserPositionsCollection>}
+   *
+   * @memberof TradeApiClient
+   */
+  async openPositionsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getOpenPositions"
+    const responseData = await this.doRequest(endpointPath, payload)
+
+    return userPositionsResponseTransform(responseData)
+  }
 }
 
-const instance = new TradeApiClient();
-Object.freeze(instance);
+// JS export by default guarantee a singleton instance if we export the class
+// instance, see:
+// https://medium.com/@lazlojuly/are-node-js-modules-singletons-764ae97519af
+const client = new TradeApiClient()
+Object.freeze(client)
 
-export default instance;
+export default client

@@ -8,7 +8,7 @@ import Testimonials from '../../components/Testimonials';
 import LoginTabs from '../../components/LoginTabs';
 import Helmet from 'react-helmet';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     const show2FA = false;
 
     return(
