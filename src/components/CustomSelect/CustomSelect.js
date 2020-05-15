@@ -42,6 +42,10 @@ const CustomSelect = ({ options, onChange, value, label, className }) => {
   )
 }
 
+CustomSelect.defaultProps = {
+  className: "",
+}
+
 CustomSelect.propTypes = {
   options: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,

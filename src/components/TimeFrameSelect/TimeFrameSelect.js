@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
+import { Box } from "@material-ui/core"
 import CustomSelect from "../CustomSelect"
 import "../../styles/common.sass"
 import "./TimeFrameSelect.sass"
@@ -19,12 +20,14 @@ const TimeFrameSelect = ({ onChange }) => {
   }
 
   return (
-    <CustomSelect
-      options={timeframes}
-      onChange={handleChange}
-      value={val}
-      label="Analytics Timeframe"
-    />
+    <Box className="selectTimeFrame">
+      <CustomSelect
+        options={timeframes}
+        onChange={handleChange}
+        value={val}
+        label="Analytics Timeframe"
+      />
+    </Box>
   )
 }
 
