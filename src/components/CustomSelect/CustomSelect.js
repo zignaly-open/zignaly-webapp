@@ -19,6 +19,7 @@ const CustomSelect = ({ options, handleChange, value, label }) => {
           <Select
             value={value}
             onChange={e => handleChange(e.target.value)}
+            displayEmpty={true}
             variant="outlined"
             className="select"
             classes={{
@@ -35,7 +36,7 @@ const CustomSelect = ({ options, handleChange, value, label }) => {
       }
       labelPlacement="start"
       label={<Typography className="callout2">{label}</Typography>}
-      className="selectTimeFrame"
+      className="customSelect"
     />
   )
 }

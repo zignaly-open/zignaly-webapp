@@ -32,6 +32,11 @@ const CopyTradersBrowse = props => {
     setExchange(val)
   }
 
+  const clearFilters = () => {
+    setCoin("")
+    setExchange("")
+  }
+
   return (
     <Box className="ctBrowsePage">
       <Helmet>
@@ -41,6 +46,7 @@ const CopyTradersBrowse = props => {
       {props.filters && (
         <ProvidersFilters
           onClose={() => props.toggleFilters()}
+          onClear={() => clearFilters()}
           handleCoinChange={handleCoinChange}
         >
           <CustomSelect
