@@ -7,10 +7,8 @@ syntax:
       - scss
       - sass
 resolvers:
-  indentation:
-    - 1
-    - size: 4
-  property-sort-order: 0
+  indentation: 1
+  property-sort-order: 1
   attribute-quotes: 1
   border-zero: 1
   no-color-keywords: 1
@@ -18,47 +16,16 @@ resolvers:
   no-important: 1
   no-trailing-zero: 1
   space-after-bang: 0
-  space-before-bang: 0
-  space-after-colon: 0
+  space-before-bang: 1
+  space-after-colon: 1
   space-before-colon: 0
-  space-between-parens: 1
+  space-between-parens: 0
   hex-length: 1
   empty-line-between-blocks: 1
   url-quotes: 1
   shorthand-values:
   zero-unit: 1
   hex-notation: 1
-  final-newline: 1
-  property-units:
-    - 1
-    - global:
-        - ch
-        - em
-        - ex
-        - rem
-        - cm
-        - in
-        - mm
-        - pc
-        - pt
-        - px
-        - q
-        - vh
-        - vw
-        - vmin
-        - vmax
-        - deg
-        - grad
-        - rad
-        - turn
-        - ms
-        - s
-        - Hz
-        - kHz
-        - dpi
-        - dpcm
-        - dppx
-        - '%'
-      per-property: {}
+  final-newline: 0
 options:
   optOut: true
