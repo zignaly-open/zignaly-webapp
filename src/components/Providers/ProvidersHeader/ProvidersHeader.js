@@ -4,7 +4,7 @@ import "./ProvidersHeader.sass"
 import { Box, Icon } from "@material-ui/core"
 import Link from "../../LocalizedLink"
 import SortIcon from "../../../images/filters/sort.svg"
-import SortFillIcon from "../../../images/filters/sort.svg"
+import SortFillIcon from "../../../images/filters/sort-fill.svg"
 import FilterIcon from "../../../images/filters/filter.svg"
 import FilterFillIcon from "../../../images/filters/filter-fill.svg"
 

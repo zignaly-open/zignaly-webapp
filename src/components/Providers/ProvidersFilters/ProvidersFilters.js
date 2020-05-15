@@ -5,7 +5,7 @@ import { Box } from "@material-ui/core"
 import CustomButtom from "../../CustomButton"
 
 const ProvidersFilters = props => {
-  const { onClose, onClear } = props
+  const { onClose, onClear, title } = props
 
   return (
     <Box
@@ -22,7 +22,7 @@ const ProvidersFilters = props => {
         justifyContent="flex-start"
         alignItems="center"
       >
-        <span className="title">Filters</span>
+        <span className="title">{title}</span>
         {props.children}
       </Box>
       <Box
@@ -44,8 +44,9 @@ const ProvidersFilters = props => {
 }
 
 ProvidersFilters.propTypes = {
-  onClose: PropTypes.func,
-  onClear: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
+  onClear: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 }
 
 export default ProvidersFilters

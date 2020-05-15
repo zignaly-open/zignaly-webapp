@@ -9,9 +9,7 @@ import {
 } from "@material-ui/core"
 import "./CustomSelect.sass"
 
-const CustomSelect = ({ options, handleChange, value, label }) => {
-  //   const { loading, className, children, onClick, disabled } = props
-
+const CustomSelect = ({ options, handleChange, value, label, className }) => {
   return (
     <FormControlLabel
       control={
@@ -21,7 +19,7 @@ const CustomSelect = ({ options, handleChange, value, label }) => {
             onChange={e => handleChange(e.target.value)}
             displayEmpty={true}
             variant="outlined"
-            className="select"
+            className={`select ${className}`}
             classes={{
               root: "callout1",
             }}
@@ -41,4 +39,11 @@ const CustomSelect = ({ options, handleChange, value, label }) => {
   )
 }
 
+CustomSelect.propTypes = {
+  options: PropTypes.array.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  className: PropTypes.string,
+}
 export default CustomSelect

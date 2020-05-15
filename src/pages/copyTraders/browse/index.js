@@ -21,9 +21,20 @@ const CopyTradersBrowse = ({
   const list = [1, 2, 3]
   const coins = ["BTC", "USDT"]
   const exchanges = ["Binance", "KuCoin"]
+  const sorts = [
+    "Descending Results",
+    "Ascending Results",
+    "Descending Name",
+    "Ascending Name",
+    "Descending Subscription Fee",
+    "Ascending Subscription Fee",
+    "Descending Creation Date",
+    "Ascending Creation Date",
+  ]
 
   const [coin, setCoin] = useState(coins[0])
   const [exchange, setExchange] = useState(exchanges[0])
+  const [sort, setSort] = useState("")
   const handleTimeFrameChange = val => {
     console.log(val)
   }
@@ -42,6 +53,14 @@ const CopyTradersBrowse = ({
     setExchange("")
   }
 
+  const clearSort = () => {
+    setSort("")
+  }
+
+  const handleSortChange = val => {
+    setSort(val)
+  }
+
   return (
     <Box className="ctBrowsePage">
       <Helmet>
@@ -52,6 +71,7 @@ const CopyTradersBrowse = ({
         <ProvidersFilters
           onClose={() => toggleFilters()}
           onClear={() => clearFilters()}
+          title="Filters"
         >
           <CustomSelect
             options={coins}
@@ -64,6 +84,21 @@ const CopyTradersBrowse = ({
             handleChange={handleExchangeChange}
             value={exchange}
             label="Exchange"
+          />
+        </ProvidersFilters>
+      )}
+      {showSort && (
+        <ProvidersFilters
+          onClose={() => toggleSort()}
+          onClear={() => clearSort()}
+          title="Sort by"
+        >
+          <CustomSelect
+            options={sorts}
+            handleChange={handleSortChange}
+            value={sort}
+            label=""
+            className="sortSelect"
           />
         </ProvidersFilters>
       )}
