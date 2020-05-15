@@ -60,6 +60,7 @@
         "faker": "^4.1.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.0.1",
+        "postcss-scss": "^2.0.0",
         "prettier": "^1.17.1",
         "react-test-renderer": "^16.8.6",
         "typescript": "^3.9.2"
