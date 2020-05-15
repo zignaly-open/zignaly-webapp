@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import "./ProvidersHeader.sass"
+import "./ProvidersHeader.scss"
 import { Box, Icon } from "@material-ui/core"
 import SubNavHeader from "../../SubNavHeader"
 import SortIcon from "../../../images/filters/sort.svg"

@@ -1,5 +1,5 @@
 import React from 'react';
-import './CustomButton.sass';
+import './CustomButton.scss';
 import {Button, CircularProgress} from '@material-ui/core';
 
 const CustomButton = (props) => {

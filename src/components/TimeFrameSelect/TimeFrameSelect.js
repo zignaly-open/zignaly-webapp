@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { Box } from "@material-ui/core"
 import CustomSelect from "../CustomSelect"
-import "../../styles/common.sass"
-import "./TimeFrameSelect.sass"
+import "../../styles/common.scss"
+import "./TimeFrameSelect.scss"
 
 const timeframes = [
   { label: "Last month", val: 0 },

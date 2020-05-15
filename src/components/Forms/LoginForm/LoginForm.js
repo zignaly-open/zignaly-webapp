@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './LoginForm.sass';
-import common from '../../../styles/common.module.sass';
+import './LoginForm.scss';
+import common from '../../../styles/common.module.scss';
 import {Box, TextField, FormControl, InputAdornment, OutlinedInput} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import Modal from '../../Modal';

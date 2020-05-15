@@ -1,6 +1,6 @@
 import React, {createRef, useState} from 'react';
-import './SignupForm.sass';
-import common from '../../../styles/common.module.sass';
+import './SignupForm.scss';
+import common from '../../../styles/common.module.scss';
 import {Box, TextField, Checkbox, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail, validateName, validatePassword} from '../../../helpers/validators';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './PositionsTabs.sass';
+import './PositionsTabs.scss';
 import { Box, Tab, Tabs, Popover} from '@material-ui/core';
 import SettingsIcon from '../../../images/dashboard/settings.svg';
 import FiltersUnchecked from '../../../images/dashboard/filtersHollow.svg';

@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import "./ProvidersFilters.sass"
+import "./ProvidersFilters.scss"
 import { Box } from "@material-ui/core"
 import CustomButtom from "../../CustomButton"
 

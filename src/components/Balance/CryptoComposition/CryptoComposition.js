@@ -1,5 +1,5 @@
 import React from 'react';
-import './CryptoComposition.sass';
+import './CryptoComposition.scss';
 import { Box, Typography } from '@material-ui/core';
 import Doughnut from '../../Graphs/Doughnut';
 

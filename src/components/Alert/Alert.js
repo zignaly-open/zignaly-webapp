@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Alert.sass';
+import './Alert.scss';
 import {Snackbar} from '@material-ui/core';
 import Message from './Message';
 

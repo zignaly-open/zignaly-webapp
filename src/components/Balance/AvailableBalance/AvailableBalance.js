@@ -1,5 +1,5 @@
 import React from 'react';
-import './AvailableBalance.sass';
+import './AvailableBalance.scss';
 import { Box, Typography } from '@material-ui/core';
 
 const AvailableBalance = (props) => {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './ForgotPasswordForm.sass';
-import common from '../../../styles/common.module.sass';
+import './ForgotPasswordForm.scss';
+import common from '../../../styles/common.module.scss';
 import {Box, TextField} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {useForm} from 'react-hook-form';
