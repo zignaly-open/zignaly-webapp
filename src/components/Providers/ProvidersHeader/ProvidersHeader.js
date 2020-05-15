@@ -1,20 +1,19 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import "./ProvidersHeader.sass"
-import { Box } from "@material-ui/core"
+import { Box, Icon } from "@material-ui/core"
 import Link from "../../LocalizedLink"
-import PositionFilters from "../../Dashboard/PositionFilters"
-import SettingsIcon from "../../../images/dashboard/settings.svg"
-import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg"
-import FilstersChecked from "../../../images/dashboard/filtersFill.svg"
+import SortIcon from "../../../images/filters/sort.svg"
+import SortFillIcon from "../../../images/filters/sort.svg"
+import FilterIcon from "../../../images/filters/filter.svg"
+import FilterFillIcon from "../../../images/filters/filter-fill.svg"
 
-const ProvidersHeader = (props) => {
-    // const [filters, showFilters] = useState(false)
-    //   const handle = val => {
-    //     setValue(val)
-    //     props.onFiltersOpen(val)
-    //   }
-
+const ProvidersHeader = ({
+  showFilters,
+  showSort,
+  toggleFilters,
+  toggleSort,
+}) => {
   return (
     <Box
       display="flex"
@@ -44,24 +43,31 @@ const ProvidersHeader = (props) => {
         justifyContent="space-around"
         alignItems="center"
       >
-        <img
-          onClick={() => props.toggleFilters()}
-          src={props.filters ? FilstersChecked : FiltersUnchecked}
-          alt="zignaly"
-          className="icon"
-        />
-        <img
-          onClick={e => setSettingAnchor(e.currentTarget)}
-          src={SettingsIcon}
-          alt="zignaly"
-          className="icon"
-        />
+        <Icon>
+          <img
+            onClick={() => toggleFilters()}
+            src={showFilters ? FilterFillIcon : FilterIcon}
+            alt="zignaly"
+            className="icon"
+          />
+        </Icon>
+
+        <Icon>
+          <img
+            onClick={() => toggleSort()}
+            src={showSort ? SortFillIcon : SortIcon}
+            alt="zignaly"
+            className="icon"
+          />
+        </Icon>
       </Box>
-      {/* <PositionFilters onClose={() => showFilters(false)} /> */}
     </Box>
   )
 }
 ProvidersHeader.propTypes = {
-  onFiltersOpen: PropTypes.func,
+  toggleFilters: PropTypes.func,
+  toggleSort: PropTypes.func,
+  showFilters: PropTypes.bool,
+  showSort: PropTypes.bool,
 }
 export default ProvidersHeader

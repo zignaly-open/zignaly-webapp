@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import { Box, Typography } from "@material-ui/core"
 import { compose } from "recompose"
 import withAppLayout from "../../../layouts/appLayout"
@@ -11,12 +12,16 @@ import CustomSelect from "../../../components/CustomSelect"
 import Helmet from "react-helmet"
 import "./copyTradersBrowse.sass"
 
-const CopyTradersBrowse = props => {
+const CopyTradersBrowse = ({
+  showFilters,
+  showSort,
+  toggleFilters,
+  toggleSort,
+}) => {
   const list = [1, 2, 3]
   const coins = ["BTC", "USDT"]
   const exchanges = ["Binance", "KuCoin"]
 
-  const [filters, showFilters] = useState(false)
   const [coin, setCoin] = useState(coins[0])
   const [exchange, setExchange] = useState(exchanges[0])
   const handleTimeFrameChange = val => {
@@ -43,11 +48,10 @@ const CopyTradersBrowse = props => {
         <title>Copy Traders</title>
       </Helmet>
 
-      {props.filters && (
+      {showFilters && (
         <ProvidersFilters
-          onClose={() => props.toggleFilters()}
+          onClose={() => toggleFilters()}
           onClear={() => clearFilters()}
-          handleCoinChange={handleCoinChange}
         >
           <CustomSelect
             options={coins}
@@ -93,6 +97,13 @@ const CopyTradersBrowse = props => {
       </Box>
     </Box>
   )
+}
+
+CopyTradersBrowse.propTypes = {
+  toggleFilters: PropTypes.func,
+  toggleSort: PropTypes.func,
+  showFilters: PropTypes.bool,
+  showSort: PropTypes.bool,
 }
 
 export default compose(

@@ -8,17 +8,15 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader"
 
 const withDashboardLayout = Component => {
   const WrapperComponent = props => {
-    const [filters, showFilters] = useState(false)
-    const [sorting, showSorting] = useState(false)
+    const [showFilters, setShowFilters] = useState(false)
+    const [showSort, setShowSort] = useState(false)
 
-    const toggleFilters = val => {
-      showFilters(!filters)
-    //   props.onFiltersOpen(val)
+    const toggleFilters = () => {
+      setShowFilters(!showFilters)
     }
 
-    const toggleSorting = val => {
-      setValue(val)
-      props.onFiltersOpen(val)
+    const toggleSort = () => {
+      setShowSort(!showSort)
     }
 
     return (
@@ -36,12 +34,19 @@ const withDashboardLayout = Component => {
           </h4>
         </Box>
 
-        <ProvidersHeader toggleFilters={toggleFilters} filters={filters} />
+        <ProvidersHeader
+          toggleFilters={toggleFilters}
+          toggleSort={toggleSort}
+          showFilters={showFilters}
+          showSort={showSort}
+        />
         <Box className="pageContent">
           <Component
             {...props}
             toggleFilters={toggleFilters}
-            filters={filters}
+            toggleSort={toggleSort}
+            showFilters={showFilters}
+            showSort={showSort}
           />
         </Box>
         <Box className="faq">
