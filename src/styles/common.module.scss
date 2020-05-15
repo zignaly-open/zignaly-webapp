@@ -1,0 +1,51 @@
+@import "./variables.sass";
+
+@import url("./fonts.sass");
+
+.customInput {
+  height: 32px;
+  margin: 0;
+  width: 100%;
+
+  input {
+    padding: 0 1rem;
+  }
+
+  div {
+    height: 32px;
+  }
+
+  & > div {
+    padding-right: 10px;
+  }
+}
+
+.checkboxInput {
+  color: $purple;
+  margin: 0 0.5rem 0 0;
+  padding: 0;
+
+  &.error {
+    color: $red;
+  }
+}
+
+.customLabel {
+  color: $black;
+  font-family: "PlexSans-Regular";
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.passwordStrengthBox {
+  left: -20px;
+  z-index: 1000;
+}
+
+.pointer {
+  cursor: pointer;
+}

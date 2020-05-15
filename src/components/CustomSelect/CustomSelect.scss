@@ -1,0 +1,23 @@
+@import "../../styles/variables.sass";
+
+.customSelect {
+  p {
+    margin-right: 12px;
+  }
+
+  .select {
+    background: $white;
+    border-radius: 4px;
+    height: 32px;
+    margin-right: 50px;
+    width: 144px;
+
+    > div {
+      opacity: 0.6;
+    }
+  }
+
+  .sortSelect {
+    width: 216px;
+  }
+}

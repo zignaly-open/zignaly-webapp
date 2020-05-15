@@ -1,0 +1,106 @@
+@import url("../../styles/fonts.sass");
+
+@import "../../styles/variables.sass";
+
+.loginPage {
+  background: $white;
+  padding-bottom: 100px;
+
+  .loginHeader {
+    position: relative;
+
+    .headerImage {
+      background-image: url("../../images/login/group.png");
+      background-size: cover;
+      height: 624px;
+      position: absolute;
+      width: 100%;
+
+      &:after {
+        border-color: transparent transparent #fff transparent;
+        border-style: solid;
+        border-width: 0 0 100px 100vw;
+        bottom: 0;
+        content: "";
+        height: 0;
+        position: absolute;
+        right: 0;
+        width: 0;
+      }
+    }
+  }
+
+  .tagLineBox {
+    height: 300px;
+    margin-top: 150px;
+    width: 550px;
+    z-index: 100;
+
+    .logo {
+      width: 216px;
+    }
+
+    .tagLine {
+      color: $white;
+      font-family: "PlexSerif-Regular";
+      font-size: 37px;
+      line-height: 1.2;
+      margin-top: 32px;
+      width: 85%;
+    }
+
+    .slogan {
+      bfont-family: "PlexSans-Bold";
+      color: $white;
+      font-family: "PlexSans-Light";
+      font-size: 18px;
+      margin-top: 16px;
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .loginPage {
+    padding-bottom: 100px;
+
+    .loginHeader {
+      flex-direction: column;
+      position: relative;
+
+      .headerImage {
+        height: 250px;
+        top: 0;
+        width: 100%;
+
+        &:after {
+          border-width: 0 0 0 0;
+        }
+      }
+    }
+
+    .tagLineBox {
+      box-sizing: border-box;
+      height: auto;
+      height: 250px;
+      margin-top: 0;
+      padding: 30px 20px;
+      width: 100%;
+      z-index: 100;
+
+      .logo {
+        width: 100px;
+      }
+
+      .tagLine {
+        display: none;
+      }
+
+      .slogan {
+        font-size: 24px;
+        margin-top: 40px;
+        width: 100%;
+      }
+    }
+  }
+}

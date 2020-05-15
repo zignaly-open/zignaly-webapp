@@ -1,0 +1,61 @@
+@import "../../styles/variables.sass";
+
+.loginTabs {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+  margin-top: 100px;
+  min-height: 450px;
+  overflow-y: visible;
+  width: 450px;
+  z-index: 100;
+
+  .tabs-menu {
+    border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+    max-height: 70px;
+    min-height: 70px;
+    width: 100%;
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      button {
+        font-family: "PlexSans-Regular";
+        font-size: 21px;
+        max-height: 70px;
+        max-width: 100px;
+        min-height: 70px;
+        min-width: 100px;
+        padding: 0;
+        text-transform: capitalize;
+
+        &:focus {
+          outline: none;
+        }
+
+        &.selected {
+          font-family: "PlexSans-Bold";
+        }
+      }
+    }
+  }
+
+  .indicator {
+    background: $purple;
+    width: 100px;
+  }
+
+  .section {
+    min-height: 450px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .loginTabs {
+    border-radius: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+}

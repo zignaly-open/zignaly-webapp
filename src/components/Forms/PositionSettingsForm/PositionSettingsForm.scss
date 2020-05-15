@@ -1,0 +1,19 @@
+@import "../../../styles/variables.sass";
+
+.positionSettingsForm {
+  overflow: scroll;
+  padding: 20px;
+  position: relative;
+  width: 320px;
+
+  .form {
+    min-height: 400px;
+    width: 100%;
+  }
+
+  .closeIcon {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+  }
+}

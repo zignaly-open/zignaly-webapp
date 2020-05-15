@@ -1,0 +1,68 @@
+@import "../../../styles/variables.sass";
+
+@import url("../../../styles/fonts.sass");
+
+.signup-form {
+  padding: 48px;
+
+  .input-box {
+    margin-bottom: 40px;
+    width: 264px;
+
+    &.checkbox {
+      width: 300px;
+    }
+
+    &.button-box {
+      margin-bottom: 10px;
+    }
+
+    &.no-margin {
+      margin-bottom: 10px;
+    }
+
+    .custom-input {
+      height: 32px;
+    }
+
+    .custom-label {
+      color: $black;
+      font-family: "PlexSans-Regular";
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .error-text {
+    color: $red;
+    font-family: "PlexSans-Regular";
+    font-size: 11px;
+    margin-bottom: 40px;
+
+    &.bold {
+      font-family: "PlexSans-Medium";
+      font-size: 13px;
+    }
+  }
+
+  .terms-box {
+    * {
+      font-size: 14px;
+    }
+
+    .link {
+      align-self: center;
+      color: $purple;
+      font-family: "PlexSans-Bold";
+      margin: 0 7px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    &.error {
+      * {
+        color: $red;
+      }
+    }
+  }
+}

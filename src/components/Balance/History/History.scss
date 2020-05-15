@@ -1,0 +1,27 @@
+@import "../../../styles/variables.sass";
+
+.history {
+  box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+  width: 100%;
+
+  .historyHeader {
+    border-bottom: 1px solid $borderColor;
+    height: 70px;
+    padding: 0 20px;
+    width: 100%;
+
+    .boxTitle {
+      color: $purple;
+    }
+
+    .settings {
+      width: 80px;
+
+      .icon {
+        cursor: pointer;
+        height: 24px;
+        width: 24px;
+      }
+    }
+  }
+}

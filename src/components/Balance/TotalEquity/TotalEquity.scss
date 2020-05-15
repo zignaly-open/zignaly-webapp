@@ -1,0 +1,36 @@
+@import "../../../styles/variables.sass";
+
+.totalEquity {
+  padding: 0 20px 0 0;
+
+  .equityHeader {
+    width: 100%;
+
+    .smallText {
+      margin-left: 12px;
+    }
+
+    label {
+      font-family: "PlexSans-Regular";
+      font-size: 16px;
+      margin-right: 12px;
+    }
+  }
+
+  .chartCanvas {
+    height: 250px;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .totalEquity {
+    margin-bottom: 30px;
+    padding: 0;
+
+    .chartCanvas {
+      height: 250px;
+      width: 100%;
+    }
+  }
+}

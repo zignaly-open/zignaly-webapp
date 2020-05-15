@@ -1,0 +1,12 @@
+@import "../../styles/variables.sass";
+
+.alert {
+  .alertMessage {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    box-shadow: (-1px) 1px 5px rgba(64, 34, 95, 0.2);
+    min-height: 100px;
+    padding: 15px;
+    width: 500px;
+  }
+}
