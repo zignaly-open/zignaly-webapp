@@ -70,7 +70,7 @@
     "scripts": {
         "build": "gatsby build",
         "develop": "NODE_ENV=development gatsby develop",
-        "format": "prettier --write src/**/*.{js,jsx}",
+        "format": "prettier --write src/**/**/**/*.{js,jsx}",
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",
