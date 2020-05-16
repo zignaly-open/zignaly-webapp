@@ -1,15 +1,20 @@
-import React from 'react';
-import './CustomButton.scss';
-import {Button, CircularProgress} from '@material-ui/core';
+import React from "react";
+import "./CustomButton.scss";
+import { Button, CircularProgress } from "@material-ui/core";
 
-const CustomButton = (props) => {
-    const {loading, className, children, onClick, disabled, type} = props
+const CustomButton = props => {
+  const { loading, className, children, onClick, disabled, type } = props;
 
-    return (
-        <Button type={type ? type : "button"} onClick={onClick} disabled={disabled} className={"customButton " + className}>
-            {loading ? <CircularProgress thickness={5} className="loader" /> :  children}
-        </Button>
-    )
-}
+  return (
+    <Button
+      type={type ? type : "button"}
+      onClick={onClick}
+      disabled={disabled}
+      className={"customButton " + className}
+    >
+      {loading ? <CircularProgress thickness={5} className="loader" /> : children}
+    </Button>
+  );
+};
 
 export default CustomButton;

@@ -1,8 +1,8 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Box } from "@material-ui/core"
-import Link from "../LocalizedLink"
-import "./SubNavHeader.scss"
+import React from "react";
+import PropTypes from "prop-types";
+import { Box } from "@material-ui/core";
+import Link from "../LocalizedLink";
+import "./SubNavHeader.scss";
 
 const SubNavHeader = ({ links, children }) => {
   return (
@@ -14,21 +14,16 @@ const SubNavHeader = ({ links, children }) => {
       className="subNavHeader hideScroll"
     >
       {links.map((item, index) => (
-        <Link
-          to={item.to}
-          className="dashboardLink"
-          activeClassName="active"
-          key={index}
-        >
+        <Link to={item.to} className="dashboardLink" activeClassName="active" key={index}>
           {item.name}
         </Link>
       ))}
       {children}
     </Box>
-  )
-}
+  );
+};
 SubNavHeader.propTypes = {
   links: PropTypes.array.isRequired,
   children: PropTypes.node,
-}
-export default SubNavHeader
+};
+export default SubNavHeader;

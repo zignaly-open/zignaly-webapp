@@ -1,1 +1,1 @@
-export { default } from "./withCopyTradersLayout"
+export { default } from "./withCopyTradersLayout";

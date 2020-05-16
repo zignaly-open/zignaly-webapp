@@ -1,1 +1,1 @@
-export { default } from './LocalizedLink';
+export { default } from "./LocalizedLink";

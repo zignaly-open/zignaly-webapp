@@ -1,10 +1,10 @@
-import fetch from "cross-fetch"
+import fetch from "cross-fetch";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
   userPositionsResponseTransform,
-} from "./tradeApiClient.types"
-import * as TradeApiTypes from "./tradeApiClient.types"
+} from "./tradeApiClient.types";
+import * as TradeApiTypes from "./tradeApiClient.types";
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -19,7 +19,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   constructor() {
-    this.baseUrl = process.env.TRADEAPI_URL
+    this.baseUrl = process.env.TRADEAPI_URL;
   }
 
   /**
@@ -32,26 +32,26 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload) {
-    const apiBaseUrl = "http://api.zignaly.lndo.site/"
-    const requestUrl = apiBaseUrl + endpointPath
+    const apiBaseUrl = "http://api.zignaly.lndo.site/";
+    const requestUrl = apiBaseUrl + endpointPath;
     const options = {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    };
 
     try {
-      const response = await fetch(requestUrl, options)
+      const response = await fetch(requestUrl, options);
       if (response.status === 200) {
-        return await response.json()
+        return await response.json();
       }
 
-      const body = await response.text()
-      throw new Error(`API ${requestUrl} request failed:` + body)
+      const body = await response.text();
+      throw new Error(`API ${requestUrl} request failed:` + body);
     } catch (e) {
-      console.error("API error: ", e)
+      console.error("API error: ", e);
     }
   }
 
@@ -67,10 +67,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    const endpointPath = "/fe/api.php?action=login"
-    const responseData = await this.doRequest(endpointPath, payload)
+    const endpointPath = "/fe/api.php?action=login";
+    const responseData = await this.doRequest(endpointPath, payload);
 
-    return userEntityResponseTransform(responseData)
+    return userEntityResponseTransform(responseData);
   }
 
   userLogout() {}
@@ -87,10 +87,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userCreate(payload) {
-    const endpointPath = "fe/api.php?action=signup"
-    const responseData = await this.doRequest(endpointPath, payload)
+    const endpointPath = "fe/api.php?action=signup";
+    const responseData = await this.doRequest(endpointPath, payload);
 
-    return userCreateResponseTransform(responseData)
+    return userCreateResponseTransform(responseData);
   }
 
   /**
@@ -103,17 +103,17 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async openPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions"
-    const responseData = await this.doRequest(endpointPath, payload)
+    const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionsResponseTransform(responseData)
+    return userPositionsResponseTransform(responseData);
   }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
 // instance, see:
 // https://medium.com/@lazlojuly/are-node-js-modules-singletons-764ae97519af
-const client = new TradeApiClient()
-Object.freeze(client)
+const client = new TradeApiClient();
+Object.freeze(client);
 
-export default client
+export default client;

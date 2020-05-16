@@ -1,1 +1,1 @@
-export {default} from './AvailableBalance';
+export { default } from "./AvailableBalance";

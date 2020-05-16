@@ -1,4 +1,4 @@
-import withPageContext from './withPageContext';
-import PageContext from './PageContext';
+import withPageContext from "./withPageContext";
+import PageContext from "./PageContext";
 
 export { withPageContext as default, PageContext };

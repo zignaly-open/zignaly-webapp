@@ -1,8 +1,8 @@
-import PlexSansBoldttf from "../styles/fonts/Sans/IBMPlexSans-Bold.ttf"
-import PlexSansLightttf from "../styles/fonts/Sans/IBMPlexSans-Light.ttf"
-import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf"
-import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf"
-import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf"
+import PlexSansBoldttf from "../styles/fonts/Sans/IBMPlexSans-Bold.ttf";
+import PlexSansLightttf from "../styles/fonts/Sans/IBMPlexSans-Light.ttf";
+import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf";
+import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf";
+import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf";
 
 const PlexSansBold = {
   fontFamily: "PlexSans-Bold",
@@ -14,7 +14,7 @@ const PlexSansBold = {
       local('PlesSans-Bold'),
       url(${PlexSansBoldttf}) format('woff2')
     `,
-}
+};
 
 const PlexSansSemiBold = {
   fontFamily: "PlexSans-SemiBold",
@@ -26,7 +26,7 @@ const PlexSansSemiBold = {
       local('PlesSans-SemiBold'),
       url(${PlexSansSemiBoldttf}) format('woff2')
     `,
-}
+};
 
 const PlexSansMedium = {
   fontFamily: "PlexSans-Medium",
@@ -38,7 +38,7 @@ const PlexSansMedium = {
       local('PlesSans-Medium'),
       url(${PlexSansMediumttf}) format('woff2')
     `,
-}
+};
 
 const PlexSansRegular = {
   fontFamily: "PlexSans-Regular",
@@ -50,7 +50,7 @@ const PlexSansRegular = {
       local('PlesSans-Regular'),
       url(${PlexSansRegularttf}) format('woff2')
     `,
-}
+};
 
 const PlexSansLight = {
   fontFamily: "PlexSans-Light",
@@ -62,15 +62,15 @@ const PlexSansLight = {
       local('PlesSans-Bold'),
       url(${PlexSansLightttf}) format('woff2')
     `,
-}
+};
 
-const black = "#191927"
-const black2 = "#1b1b2c"
-const purple = "#770fc8"
-const purpleLight = "#a946f6"
-const white = "#ffffff"
-const lightBlack = "#27273f"
-const offWhite = "#fbfafc"
+const black = "#191927";
+const black2 = "#1b1b2c";
+const purple = "#770fc8";
+const purpleLight = "#a946f6";
+const white = "#ffffff";
+const lightBlack = "#27273f";
+const offWhite = "#fbfafc";
 
 const theme = darkStyle => {
   return {
@@ -81,7 +81,7 @@ const theme = darkStyle => {
       },
       grid: {
         main: darkStyle ? lightBlack : white,
-        content: darkStyle ? black2 : white
+        content: darkStyle ? black2 : white,
       },
       primary: {
         main: purple,
@@ -168,7 +168,7 @@ const theme = darkStyle => {
         disableRipple: true,
       },
     },
-  }
-}
+  };
+};
 
-export default theme
+export default theme;

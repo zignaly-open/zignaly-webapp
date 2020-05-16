@@ -1,16 +1,16 @@
 const initialState = {
-    session: {
-        tradeApi: {
-            accessToken: '',
-        },
-        coinRay: {
-            accessToken: '',
-        }
+  session: {
+    tradeApi: {
+      accessToken: "",
     },
-    settings: {
-        languageCode: 'en',
-        darkStyle: false,
-    }
+    coinRay: {
+      accessToken: "",
+    },
+  },
+  settings: {
+    languageCode: "en",
+    darkStyle: false,
+  },
 };
 
 export default initialState;

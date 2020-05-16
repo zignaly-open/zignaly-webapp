@@ -1,4 +1,4 @@
-import { assign, isArray } from "lodash"
+import { assign, isArray } from "lodash";
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -157,10 +157,10 @@ import { assign, isArray } from "lodash"
  * @returns {UserCreateResponse}
  */
 export function userCreateResponseTransform(response) {
-  const transformResponse = {}
-  transformResponse.token = response
+  const transformResponse = {};
+  transformResponse.token = response;
 
-  return transformResponse
+  return transformResponse;
 }
 
 /**
@@ -194,7 +194,7 @@ export function userEntityResponseTransform(response) {
     status: response.status,
     onboarding: response.onboarding,
     refCode: response.refCode,
-  }
+  };
 }
 
 /**
@@ -206,12 +206,12 @@ export function userEntityResponseTransform(response) {
  */
 export function userPositionsResponseTransform(response) {
   if (!isArray(response)) {
-    throw new Error("Response must be an array of positions.")
+    throw new Error("Response must be an array of positions.");
   }
 
   return response.map(positionItem => {
-    return userPositionItemTransform(positionItem)
-  })
+    return userPositionItemTransform(positionItem);
+  });
 }
 
 /**
@@ -223,7 +223,7 @@ export function userPositionsResponseTransform(response) {
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyPositionEntity, positionItem)
+  const transformedResponse = assign(emptyPositionEntity, positionItem);
 
   return transformedResponse;
 }
@@ -292,10 +292,10 @@ function createEmptyPositionEntity() {
     type: "",
     copyTraderId: false,
     paperTrading: false,
-    realInvestment: { $numberDecimal: '' },
+    realInvestment: { $numberDecimal: "" },
     leverage: 0,
     internalExchangeId: "",
     logoUrl: "",
     reBuyTargets: [],
-  }
+  };
 }

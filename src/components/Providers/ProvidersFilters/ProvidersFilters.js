@@ -1,11 +1,11 @@
-import React from "react"
-import PropTypes from "prop-types"
-import "./ProvidersFilters.scss"
-import { Box } from "@material-ui/core"
-import CustomButtom from "../../CustomButton"
+import React from "react";
+import PropTypes from "prop-types";
+import "./ProvidersFilters.scss";
+import { Box } from "@material-ui/core";
+import CustomButtom from "../../CustomButton";
 
 const ProvidersFilters = props => {
-  const { onClose, onClear, title } = props
+  const { onClose, onClear, title } = props;
 
   return (
     <Box
@@ -40,13 +40,13 @@ const ProvidersFilters = props => {
         </CustomButtom>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
 ProvidersFilters.propTypes = {
   onClose: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
-export default ProvidersFilters
+export default ProvidersFilters;

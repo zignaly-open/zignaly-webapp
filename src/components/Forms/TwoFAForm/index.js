@@ -1,1 +1,1 @@
-export {default} from  './TwoFAForm';
+export { default } from "./TwoFAForm";

@@ -1,1 +1,1 @@
-export { default } from "./TimeFrameSelect"
+export { default } from "./TimeFrameSelect";

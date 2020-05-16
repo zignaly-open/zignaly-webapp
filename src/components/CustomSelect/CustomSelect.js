@@ -1,13 +1,7 @@
-import React from "react"
-import PropTypes from "prop-types"
-import {
-  FormControl,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Typography,
-} from "@material-ui/core"
-import "./CustomSelect.scss"
+import React from "react";
+import PropTypes from "prop-types";
+import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@material-ui/core";
+import "./CustomSelect.scss";
 
 const CustomSelect = ({ options, onChange, value, label, className }) => {
   return (
@@ -25,10 +19,7 @@ const CustomSelect = ({ options, onChange, value, label, className }) => {
             }}
           >
             {options.map((item, index) => (
-              <MenuItem
-                key={index}
-                value={item.val !== undefined ? item.val : item}
-              >
+              <MenuItem key={index} value={item.val !== undefined ? item.val : item}>
                 {item.label !== undefined ? item.label : item}
               </MenuItem>
             ))}
@@ -39,12 +30,12 @@ const CustomSelect = ({ options, onChange, value, label, className }) => {
       label={<Typography className="callout2">{label}</Typography>}
       className="customSelect"
     />
-  )
-}
+  );
+};
 
 CustomSelect.defaultProps = {
   className: "",
-}
+};
 
 CustomSelect.propTypes = {
   options: PropTypes.array.isRequired,
@@ -52,5 +43,5 @@ CustomSelect.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
   className: PropTypes.string,
-}
-export default CustomSelect
+};
+export default CustomSelect;
