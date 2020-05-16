@@ -1,19 +1,18 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { compose } from "recompose";
-import withAppLayout from "../../layouts/appLayout";
-import withDashboardLayout from "../../layouts/dashboardLayout";
+import withLayout from "../../layouts/appLayout";
 import withPageContext from "../../pageContext";
 import Helmet from 'react-helmet';
 
-const SignalProviders = () => {
+const CopyTraders = () => {
     return (
         <React.Fragment>
             <Helmet>
-                <title>Signal Providers</title>
+                <title>Copy Trader</title>
             </Helmet>
             <Box display="flex" flexDirection="row" justifyContent="center" className="dashboard">
-                <h1>I will be the Signal Providers</h1>
+                <h1>I will be a single Copy Traders</h1>
             </Box>
         </React.Fragment>
     )
@@ -21,6 +20,5 @@ const SignalProviders = () => {
 
 export default compose(
     withPageContext,
-    withAppLayout,
-    withDashboardLayout,
-)(SignalProviders);
+    withLayout
+)(CopyTraders);

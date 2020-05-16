@@ -3,7 +3,7 @@ import './SignupForm.sass';
 import common from '../../../styles/common.module.sass';
 import {Box, TextField, Checkbox, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
-import {validateEmail, validateName, validatePassword} from '../../../helpers/validators';
+import {validatePassword} from '../../../utils/validators';
 // import ReCAPTCHA from "react-google-recaptcha";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';

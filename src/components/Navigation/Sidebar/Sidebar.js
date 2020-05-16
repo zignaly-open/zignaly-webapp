@@ -40,7 +40,7 @@ const Sidebar = () => {
                     <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
                     <Typography variant="h6">copy traders</Typography>
                 </Link>
-                <Link to={"/signalProviders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                <Link to={"/signalProviders/browse"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? SignalWhite : SignalBlack} alt="zignaly" className={"icon"} />
                     <Typography variant="h6">signal providers</Typography>
                 </Link>

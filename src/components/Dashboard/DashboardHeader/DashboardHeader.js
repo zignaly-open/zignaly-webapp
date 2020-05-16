@@ -1,26 +1,20 @@
 import React from "react"
 import "./DashboardHeader.sass"
-import { Box } from "@material-ui/core"
+import { Box, Typography } from "@material-ui/core"
 import SubNavHeader from "../../SubNavHeader"
+import {routesMapping} from '../../../utils/routesMapping';
+import {FormattedMessage} from 'react-intl';
 
-const DashboardHeader = () => {
-  const links = [
-    {
-      name: "Positions",
-      to: "/dashboard/positions",
-    },
-    {
-      name: "Balance",
-      to: "/dashboard/balance",
-    },
-    {
-      name: "Connected traders",
-      to: "/dashboard/connectedTraders",
-    },
-  ]
+const DashboardHeader = (props) => {
+  const {path} = props
+
   return (
-    <Box className="dashboardHeader hideScroll">
-      <SubNavHeader links={links} />
+    <Box className="dashboardHeader">
+      <Box className="titleBox" display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
+        <Typography variant="h1"><FormattedMessage id={routesMapping(path).name} /></Typography>
+        {routesMapping(path).name === "dashboard" && <span className="exchangeTitle">KuCion (Demo)</span>}
+      </Box>
+      <SubNavHeader links={routesMapping(path).links} />
     </Box>
   )
 }

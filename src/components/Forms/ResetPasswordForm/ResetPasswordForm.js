@@ -5,7 +5,7 @@ import CustomButton from '../../CustomButton/CustomButton';
 import {alertError} from '../../../actions';
 import axios from 'axios';
 import {RECOVER3_URL,} from '../../../api';
-import { validatePassword } from '../../../helpers/validators';
+import { validatePassword } from '../../../utils/validators';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import PasswordStrength from '../../PasswordStrength';
