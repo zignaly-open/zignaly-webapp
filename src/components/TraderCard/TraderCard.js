@@ -115,8 +115,8 @@ const TraderCard = (props) => {
               justifyContent="space-around"
               alignItems="center"
             >
-              <CustomButton className="text-default">Stop Copying</CustomButton>
-              <CustomButton onClick={() => navigate('/copyTrader/profile')} className="text-default">View Trader</CustomButton>
+              <CustomButton className="textDefault">Stop Copying</CustomButton>
+              <CustomButton onClick={() => navigate('/copyTrader/profile')} className="textDefault">View Trader</CustomButton>
             </Box>
           </Box>
           {showSummary && <UserSummary />}

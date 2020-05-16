@@ -12,8 +12,8 @@ const PositionFilters = (props) => {
                 <span className="title">Filters</span>
             </Box>
             <Box className="actions" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                <CustomButtom onClick={onClose} className="text-purple">Clear All</CustomButtom>
-                <CustomButtom onClick={onClose} className="text-purple">Hide</CustomButtom>
+                <CustomButtom onClick={onClose} className="textPurple">Clear All</CustomButtom>
+                <CustomButtom onClick={onClose} className="textPurple">Hide</CustomButtom>
             </Box>
         </Box>
     )

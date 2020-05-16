@@ -18,7 +18,7 @@ const PositionSettingsForm = (props) => {
 
             </Box>
             <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
-                <CustomButton className={"submit-btn"} onClick= {handleSubmit}>Save Preference</CustomButton>
+                <CustomButton className={"submitbutton"} onClick= {handleSubmit}>Save Preference</CustomButton>
             </Box>
         </Box>
     )

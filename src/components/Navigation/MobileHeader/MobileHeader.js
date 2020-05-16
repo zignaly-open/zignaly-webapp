@@ -47,7 +47,7 @@ const MobileHeader = () => {
                     }
                 </Box>
             }
-            {!connected && <CustomButton onClick={() => setConnected(true)} className="header-btn">Connect Account</CustomButton>}
+            {!connected && <CustomButton onClick={() => setConnected(true)} className="headerButton">Connect Account</CustomButton>}
         </Box>
     )
 }

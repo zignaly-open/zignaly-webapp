@@ -48,7 +48,7 @@ const TwoFAForm = (props) => {
 
             <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
                 <CustomButton
-                    className={"full " + (disabledButton() ? "disabled-btn" : "submit-btn")}
+                    className={"full " + (disabledButton() ? "disabledButton" : "submitButton")}
                     disabled={disabledButton()}
                     loading={loading}
                     onClick= {handleSubmit}>Sign in</CustomButton>

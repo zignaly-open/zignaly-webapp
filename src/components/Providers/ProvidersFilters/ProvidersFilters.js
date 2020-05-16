@@ -32,10 +32,10 @@ const ProvidersFilters = props => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <CustomButtom onClick={onClear} className="text-purple">
+        <CustomButtom onClick={onClear} className="textPurple">
           Clear All
         </CustomButtom>
-        <CustomButtom onClick={onClose} className="text-purple">
+        <CustomButtom onClick={onClose} className="textPurple">
           Hide
         </CustomButtom>
       </Box>

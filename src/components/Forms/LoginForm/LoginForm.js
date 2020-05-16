@@ -63,7 +63,7 @@ const LoginForm = (props) => {
                 <Box className="input-box">
                     <CustomButton
                         type="submit"
-                        className={"full submit-btn"}
+                        className={"full submitButton"}
                         loading={loading}
                         onClick= {handleSubmit}>Sign in</CustomButton>
                 </Box>

@@ -35,7 +35,7 @@ const Testimonials = () => {
                 )}
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="center">
-                <CustomButton disabled={pageSize === testominalFeed.length} className="load-more-btn" onClick={loadMoreData}>Load More</CustomButton>
+                <CustomButton disabled={pageSize === testominalFeed.length} className="loadMoreButton" onClick={loadMoreData}>Load More</CustomButton>
             </Box>
         </Box>
     )

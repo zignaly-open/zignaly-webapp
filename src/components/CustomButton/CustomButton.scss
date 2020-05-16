@@ -17,7 +17,7 @@
     width: 20px;
   }
 
-  &.submit-btn {
+  &.submitButton {
     background: $purple;
     color: $white;
 
@@ -26,7 +26,7 @@
     }
   }
 
-  &.disabled-btn {
+  &.disabledButton {
     background: $lightGrey;
     color: $black;
 
@@ -35,19 +35,19 @@
     }
   }
 
-  &.load-more-btn {
+  &.loadMoreButton {
     background: $white;
     border: 2px solid $purple;
     color: $purple;
   }
 
-  &.text-purple {
+  &.textPurple {
     background: transparent;
     color: $purple;
     min-width: 120px;
   }
 
-  &.text-default {
+  &.textDefault {
     background: transparent;
     min-width: 120px;
   }
@@ -56,7 +56,7 @@
     width: 100%;
   }
 
-  &.header-btn {
+  &.headerButton {
     background: $green;
     color: $white;
     height: 32px;

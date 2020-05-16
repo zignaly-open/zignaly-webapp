@@ -14,7 +14,7 @@ const NoPositions = () => {
     return (
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" className="noPositions">
             <Typography variant="h3"><FormattedMessage id="dashboard.positions.nopositions" /></Typography>
-            <CustomButton onClick={redirect} className="submit-btn"><FormattedMessage id="dashboard.browsetraders" /></CustomButton>
+            <CustomButton onClick={redirect} className="submitButton"><FormattedMessage id="dashboard.browsetraders" /></CustomButton>
         </Box>
     )
 }

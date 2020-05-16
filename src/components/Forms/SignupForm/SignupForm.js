@@ -200,7 +200,7 @@ const SignupForm = () => {
                 <Box className="input-box button-box">
                     <CustomButton
                         type="submit"
-                        className={"full submit-btn"}
+                        className={"full submitButton"}
                         loading={loading}>Register</CustomButton>
                 </Box>
             </Box>
