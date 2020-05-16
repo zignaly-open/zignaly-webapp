@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
-import "../../styles/common.sass"
-import "./appLayout.sass"
+import "../../styles/common.scss"
+import "./appLayout.scss"
 import { getDisplayName } from "../../utils"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import { CssBaseline, Box, Hidden } from "@material-ui/core"
