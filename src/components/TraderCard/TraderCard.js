@@ -7,6 +7,7 @@ import Chart from '../Graphs/Chart';
 import UserSummary from './UserSummary';
 import CustomButton from '../CustomButton';
 import PropTypes from "prop-types"
+import {navigate} from '@reach/router';
 
 const TraderCard = (props) => {
     const { data, showSummary } = props
@@ -115,7 +116,7 @@ const TraderCard = (props) => {
               alignItems="center"
             >
               <CustomButton className="text-default">Stop Copying</CustomButton>
-              <CustomButton className="text-default">View Trader</CustomButton>
+              <CustomButton onClick={() => navigate('/copyTrader/profile')} className="text-default">View Trader</CustomButton>
             </Box>
           </Box>
           {showSummary && <UserSummary />}
