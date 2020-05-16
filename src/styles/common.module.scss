@@ -1,6 +1,5 @@
-@import "./variables.scss";
-
-@import url("./fonts.scss");
+@import "_variables";
+@import "_fonts";
 
 .customInput {
   height: 32px;

@@ -1,5 +1,4 @@
 import React, { useMemo } from "react"
-import "../../styles/common.scss"
 import "./appLayout.scss"
 import { getDisplayName } from "../../utils"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
