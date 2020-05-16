@@ -1,12 +1,12 @@
 export const routesMapping = (path) => {
-  let name = path.split("/")[1]
-  let identifier = "!"
+  let id = path.split("/")[1]
+  let identifier = "1"
 
-    switch(name){
+    switch(id){
         case "dashboard":
           return {
             title: "dashboard",
-            name: name,
+            id: id,
             links: [
               {
                 name: "Positions",
@@ -25,7 +25,7 @@ export const routesMapping = (path) => {
         case "copyTrders":
           return {
             title: "copy traders",
-            name: name,
+            id: id,
             links: [
               {
                 name: "Browse",
@@ -40,7 +40,7 @@ export const routesMapping = (path) => {
         case "signalProviders":
           return {
             title: "signal Providers",
-            name : name,
+            id : id,
             links: [
               {
                 name: "Browse",
@@ -55,45 +55,45 @@ export const routesMapping = (path) => {
         case "copyTrader":
           return {
             title: "copy trader",
-            name: name,
+            id: id,
             links: [
               {
                 name: "Profile",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/copyTrader/profile`,
               },
               {
                 name: "Analytics",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/copyTrader/analytics`,
               },
               {
                 name: "Positions",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/copyTrader/positions`,
               },
             ]
           }
         case "signalProvider":
           return {
             title: "signal Provider",
-            name: name,
+            id: id,
             links: [
               {
                 name: "Profile",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/signalProvider/positions`,
               },
               {
                 name: "Analytics",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/signalProvider/positions`,
               },
               {
                 name: "Positions",
-                to: `/copyTrader/${identifier}/positions`,
+                to: `/signalProvider/positions`,
               },
             ]
           }
         default:
           return {
             title: "Dashboard",
-            name: name,
+            id: id,
             links: [
               {
                 name: "Positions",
