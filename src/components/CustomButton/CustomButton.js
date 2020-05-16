@@ -7,12 +7,12 @@ const CustomButton = props => {
 
   return (
     <Button
-      type={type ? type : "button"}
-      onClick={onClick}
-      disabled={disabled}
       className={"customButton " + className}
+      disabled={disabled}
+      onClick={onClick}
+      type={type ? type : "button"}
     >
-      {loading ? <CircularProgress thickness={5} className="loader" /> : children}
+      {loading ? <CircularProgress className="loader" thickness={5} /> : children}
     </Button>
   );
 };

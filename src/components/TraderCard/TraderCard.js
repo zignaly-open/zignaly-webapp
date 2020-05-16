@@ -16,19 +16,19 @@ const TraderCard = props => {
   return (
     <Box
       bgcolor="grid.main"
+      className="traderCard"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      className="traderCard"
     >
-      <Box className="traderCardHeader" display="flex" flexDirection="row" alignItems="center">
-        <img src={LogoIcon} className="logoIcon" alt="zignaly" />
+      <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
+        <img alt="zignaly" className="logoIcon" src={LogoIcon} />
         <Box
+          alignItems="center"
           className="traderCardHeaderTitleBox"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Box
             className="nameBox"
@@ -37,26 +37,26 @@ const TraderCard = props => {
             justifyContent="space-between"
           >
             <Box
+              alignItems="flex-start"
               display="flex"
               flexDirection="row"
               justifyContent="flex-start"
-              alignItems="flex-start"
             >
-              <Typography variant="h4" className="name">
+              <Typography className="name" variant="h4">
                 Ritoku Trendalyst
               </Typography>
-              <img src={ConnectedIcon} className="connectedIcon" alt="zignaly" />
+              <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />
             </Box>
-            <Typography variant="caption" className="tradeType">
+            <Typography className="tradeType" variant="caption">
               Trades BTC
             </Typography>
           </Box>
           <Box
+            alignItems="flex-end"
             className="commissionBox"
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            alignItems="flex-end"
           >
             <Typography variant="h4">20%</Typography>
             <Typography variant="subtitle1">commission fee</Typography>
@@ -65,11 +65,11 @@ const TraderCard = props => {
       </Box>
       <Box className="traderCardBody">
         <Box
+          alignItems="center"
           className="returnsBox"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Box
             className="returns"
@@ -77,19 +77,19 @@ const TraderCard = props => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography variant="h4" className="green">
+            <Typography className="green" variant="h4">
               16%
             </Typography>
             <Typography variant="subtitle1">returns(90D)</Typography>
           </Box>
           <Box
+            alignItems="flex-end"
             className="openPositions"
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            alignItems="flex-end"
           >
-            <Typography variant="h4" className="green">
+            <Typography className="green" variant="h4">
               10%
             </Typography>
             <Typography variant="subtitle1">open positions</Typography>
@@ -97,17 +97,17 @@ const TraderCard = props => {
         </Box>
         <Box className="traderCardGraph">
           <Chart id={id}>
-            <canvas id={id} className="chartCanvas"></canvas>
+            <canvas className="chartCanvas" id={id} />
           </Chart>
           <Box
+            alignItems="center"
             className="actions"
             display="flex"
             flexDirection="row"
             justifyContent="space-around"
-            alignItems="center"
           >
             <CustomButton className="text-default">Stop Copying</CustomButton>
-            <CustomButton onClick={() => navigate("/copyTrader/profile")} className="text-default">
+            <CustomButton className="text-default" onClick={() => navigate("/copyTrader/profile")}>
               View Trader
             </CustomButton>
           </Box>

@@ -179,7 +179,7 @@ export function userEntityResponseTransform(response) {
     userId: response.userId,
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
-    twoFAEnable: response["twoFAEnable"],
+    twoFAEnable: response.twoFAEnable,
     ref: response.ref,
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,

@@ -14,13 +14,13 @@ const LoginTabs = props => {
   return (
     <Box className="loginTabs">
       <Tabs
-        value={tabValue}
-        onChange={changeTab}
         classes={{ indicator: "indicator", flexContainer: "container" }}
         className="tabs-menu"
+        onChange={changeTab}
+        value={tabValue}
       >
-        <Tab label="Sign in" classes={{ selected: "selected" }} />
-        <Tab label="Register" classes={{ selected: "selected" }} />
+        <Tab classes={{ selected: "selected" }} label="Sign in" />
+        <Tab classes={{ selected: "selected" }} label="Register" />
       </Tabs>
       {tabValue === 0 && (
         <Box className="section">

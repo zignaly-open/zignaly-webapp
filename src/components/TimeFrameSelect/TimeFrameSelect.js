@@ -21,10 +21,10 @@ const TimeFrameSelect = ({ onChange }) => {
   return (
     <Box className="selectTimeFrame">
       <CustomSelect
-        options={timeframes}
-        onChange={handleChange}
-        value={val}
         label="Analytics Timeframe"
+        onChange={handleChange}
+        options={timeframes}
+        value={val}
       />
     </Box>
   );

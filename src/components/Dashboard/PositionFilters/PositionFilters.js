@@ -8,32 +8,32 @@ const PositionFilters = props => {
 
   return (
     <Box
+      alignItems="center"
+      className="positionFilters"
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
-      className="positionFilters"
     >
       <Box
+        alignItems="center"
         className="filters"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
         <span className="title">Filters</span>
       </Box>
       <Box
+        alignItems="center"
         className="actions"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
-        <CustomButtom onClick={onClose} className="text-purple">
+        <CustomButtom className="text-purple" onClick={onClose}>
           Clear All
         </CustomButtom>
-        <CustomButtom onClick={onClose} className="text-purple">
+        <CustomButtom className="text-purple" onClick={onClose}>
           Hide
         </CustomButtom>
       </Box>

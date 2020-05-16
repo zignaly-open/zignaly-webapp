@@ -12,12 +12,12 @@ const LoginPage = props => {
   const show2FA = false;
 
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <title>Login</title>
       </Helmet>
       <Box className={style.loginPage}>
-        <Modal state={show2FA} size="small" persist={true}>
+        <Modal persist={true} size="small" state={show2FA}>
           <TwoFAForm />
         </Modal>
         <Box
@@ -26,15 +26,15 @@ const LoginPage = props => {
           flexDirection="row"
           justifyContent="space-around"
         >
-          <Box className={style.headerImage}></Box>
+          <Box className={style.headerImage} />
           <Box
+            alignItems="start"
             className={style.tagLineBox}
             display="flex"
             flexDirection="column"
             justifyContent="start"
-            alignItems="start"
           >
-            <img className={style.logo} src={Logo} alt="Zignaly" />
+            <img alt="Zignaly" className={style.logo} src={Logo} />
             <span className={style.tagLine}>What could a pro trader do with your crypto?</span>
             <span className={style.slogan}>
               <b>Copy pro traders </b>and earn same profits as they do.{" "}
@@ -44,7 +44,7 @@ const LoginPage = props => {
         </Box>
         <Testimonials />
       </Box>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -22,49 +22,49 @@ const PositionsTabs = props => {
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
       <Box
+        alignItems="center"
         className="tabsBox"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
         <Tabs
-          value={tabValue}
-          onChange={changeTab}
           classes={{ indicator: "indicator", flexContainer: "container" }}
           className="tabs-menu"
+          onChange={changeTab}
+          value={tabValue}
         >
           <Tab
+            classes={{ selected: "selected" }}
             label={<FormattedMessage id="dashboard.positions.open" />}
-            classes={{ selected: "selected" }}
           />
           <Tab
+            classes={{ selected: "selected" }}
             label={<FormattedMessage id="dashboard.positions.closed" />}
-            classes={{ selected: "selected" }}
           />
           <Tab
-            label={<FormattedMessage id="dashboard.positions.log" />}
             classes={{ selected: "selected" }}
+            label={<FormattedMessage id="dashboard.positions.log" />}
           />
         </Tabs>
         <Box
+          alignItems="center"
           className="settings"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <img
+            alt="zignaly"
+            className="icon"
             onClick={() => showFilters(!filters)}
             src={filters ? FilstersChecked : FiltersUnchecked}
-            alt="zignaly"
-            className="icon"
           />
           <img
-            onClick={e => setSettingAnchor(e.currentTarget)}
-            src={SettingsIcon}
             alt="zignaly"
             className="icon"
+            onClick={e => setSettingAnchor(e.currentTarget)}
+            src={SettingsIcon}
           />
         </Box>
       </Box>
@@ -85,10 +85,10 @@ const PositionsTabs = props => {
         </Box>
       )}
       <Popover
-        open={Boolean(settingsAnchor)}
-        onClose={() => setSettingAnchor(undefined)}
         anchorEl={settingsAnchor}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        onClose={() => setSettingAnchor(undefined)}
+        open={Boolean(settingsAnchor)}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <PositionSettingsForm onClose={() => setSettingAnchor(undefined)} />

@@ -12,16 +12,16 @@ const NoPositions = () => {
 
   return (
     <Box
+      alignItems="center"
+      className="noPositions"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
-      className="noPositions"
     >
       <Typography variant="h3">
         <FormattedMessage id="dashboard.positions.nopositions" />
       </Typography>
-      <CustomButton onClick={redirect} className="submit-btn">
+      <CustomButton className="submit-btn" onClick={redirect}>
         <FormattedMessage id="dashboard.browsetraders" />
       </CustomButton>
     </Box>

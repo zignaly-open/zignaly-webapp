@@ -13,16 +13,16 @@ import History from "../../../components/Balance/History";
 
 const Balance = () => {
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <title>Balance</title>
       </Helmet>
       <Box
+        className="balancePage"
         display="flex"
         flexDirection="row"
-        justifyContent="center"
         flexWrap="wrap"
-        className="balancePage"
+        justifyContent="center"
       >
         <Box className="equityBox">
           <TotalEquity />
@@ -37,7 +37,7 @@ const Balance = () => {
           <History />
         </Box>
       </Box>
-    </React.Fragment>
+    </>
   );
 };
 

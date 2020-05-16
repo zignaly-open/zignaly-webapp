@@ -22,56 +22,56 @@ const MobileAppbar = () => {
 
   return (
     <Box
-      display="flex"
-      flexDirection="row"
-      justifyContent="space-between"
       alignItems="center"
       bgcolor="grid.main"
       className="mobileAppbar"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
     >
       <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
         to={"/dashboard/positions"}
-        partiallyActive={true}
-        className={"sideBarLink"}
-        activeClassName={"active"}
       >
-        <img src={darkStyle ? DashboardWhite : DashboardBlack} alt="zignaly" className={"icon"} />
+        <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
       </Link>
       <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
         to={"/copyTraders"}
-        partiallyActive={true}
-        className={"sideBarLink"}
-        activeClassName={"active"}
       >
-        <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
+        <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
       </Link>
       <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
         to={"/signalProviders"}
-        partiallyActive={true}
-        className={"sideBarLink"}
-        activeClassName={"active"}
       >
-        <img src={darkStyle ? SignalWhite : SignalBlack} alt="zignaly" className={"icon"} />
+        <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
       </Link>
       <Link
-        to={"/tradingTerminal"}
-        partiallyActive={true}
-        className={"sideBarLink"}
         activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
+        to={"/tradingTerminal"}
       >
-        <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={"icon"} />
+        <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
       </Link>
       <Box
+        className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
         display="flex"
         flexDirection="row"
         justifyContent="center"
-        className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
       >
         <img
-          onClick={() => dispatch(selectDarkTheme(true))}
-          src={darkStyle ? OutlineWhite : FillWhite}
           alt="zignaly"
           className={"icon"}
+          onClick={() => dispatch(selectDarkTheme(true))}
+          src={darkStyle ? OutlineWhite : FillWhite}
         />
       </Box>
     </Box>

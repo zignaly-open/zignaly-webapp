@@ -56,38 +56,32 @@ const ResetPasswordForm = props => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
+        alignItems="center"
         className="reset-password-form"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
       >
         <h3>Reset Password From</h3>
         <Popper
+          anchorEl={anchorEl}
           className="password-strength-box"
+          open={!!anchorEl}
           placement="left"
           transition
-          open={anchorEl ? true : false}
-          anchorEl={anchorEl}
         >
           <PasswordStrength onClose={() => setAnchorEl(undefined)} strength={strength} />
         </Popper>
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className="custom-label">New Password</label>
           <FormControl className="custom-input" variant="outlined">
             <OutlinedInput
-              type={showPassword ? "text" : "password"}
-              error={errors.password ? true : false}
-              onBlur={() => setAnchorEl(undefined)}
-              inputRef={register(required)}
-              onChange={handlePasswordChange}
-              name="password"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
@@ -95,25 +89,26 @@ const ResetPasswordForm = props => {
                   </IconButton>
                 </InputAdornment>
               }
+              error={!!errors.password}
+              inputRef={register(required)}
+              name="password"
+              onBlur={() => setAnchorEl(undefined)}
+              onChange={handlePasswordChange}
+              type={showPassword ? "text" : "password"}
             />
           </FormControl>
         </Box>
 
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className="custom-label">Repeat Password</label>
           <FormControl className="custom-input" variant="outlined">
             <OutlinedInput
-              type={showRepeatPassword ? "text" : "password"}
-              error={errors.repeatPassword ? true : false}
-              onChange={handleRepeatPasswordChange}
-              inputRef={register(required)}
-              name="repeatPassword"
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
@@ -121,6 +116,11 @@ const ResetPasswordForm = props => {
                   </IconButton>
                 </InputAdornment>
               }
+              error={!!errors.repeatPassword}
+              inputRef={register(required)}
+              name="repeatPassword"
+              onChange={handleRepeatPasswordChange}
+              type={showRepeatPassword ? "text" : "password"}
             />
           </FormControl>
           {passwordDoNotMatch && <span className="error-text">Passwords do not match</span>}
@@ -128,10 +128,10 @@ const ResetPasswordForm = props => {
 
         <Box className="input-box">
           <CustomButton
-            type="submit"
             className={"full submit-btn"}
             loading={loading}
             onClick={handleSubmit}
+            type="submit"
           >
             Sign in
           </CustomButton>

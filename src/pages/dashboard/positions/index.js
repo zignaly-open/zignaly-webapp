@@ -10,14 +10,14 @@ import PositionsTabs from "../../../components/Dashboard/PositionsTabs";
 
 const Positions = () => {
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <title>Positions</title>
       </Helmet>
-      <Box display="flex" flexDirection="row" justifyContent="center" className="positionsPage">
+      <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">
         <PositionsTabs />
       </Box>
-    </React.Fragment>
+    </>
   );
 };
 

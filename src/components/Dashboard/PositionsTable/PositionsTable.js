@@ -36,11 +36,11 @@ const PositionsTable = props => {
 
   return (
     <Box
+      alignItems="center"
       className="positionsTable"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
     >
       <Box className="tableBox" display="flex" flexDirection="row" justifyContent="center">
         <Table className="table">
@@ -83,7 +83,7 @@ const PositionsTable = props => {
           </TableHead>
           <TableBody className="body">
             {positionsCollection.map(position => (
-              <TableRow key={position.positionId} className="row">
+              <TableRow className="row" key={position.positionId}>
                 <TableCell align="left" className="cell">
                   {position.openDate}
                 </TableCell>

@@ -16,48 +16,48 @@ const MobileHeader = () => {
 
   return (
     <Box
+      alignItems="center"
+      className={"mobileHeader"}
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
-      className={"mobileHeader"}
     >
       {connected && (
         <Box
+          alignItems="flex-start"
           className="connectedBox"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"
-          alignItems="flex-start"
         >
           <Box
+            alignItems="center"
             className={"actionBox"}
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
-            alignItems="center"
           >
             <UserExchangeList />
             <Box
+              alignItems="center"
               className="iconBox"
-              onClick={() => setShowBalance(!showBalance)}
               display="flex"
               flexDirection="row"
               justifyContent="flex-end"
-              alignItems="center"
+              onClick={() => setShowBalance(!showBalance)}
             >
               {darkStyle && (
                 <img
-                  src={showBalance ? DisabledWhite : EnabledWhite}
-                  className={"expandIcon"}
                   alt="zignaly"
+                  className={"expandIcon"}
+                  src={showBalance ? DisabledWhite : EnabledWhite}
                 />
               )}
               {!darkStyle && (
                 <img
-                  src={showBalance ? Disabled : Enabled}
-                  className={"expandIcon"}
                   alt="zignaly"
+                  className={"expandIcon"}
+                  src={showBalance ? Disabled : Enabled}
                 />
               )}
               <Typography variant="h4">Balance</Typography>
@@ -66,51 +66,51 @@ const MobileHeader = () => {
           {showBalance && (
             <Grow in={true}>
               <Box
+                alignItems="center"
                 className="balanceContainer"
                 display="flex"
                 flexDirection="row"
                 justifyContent="space-between"
-                alignItems="center"
               >
                 <Box
+                  alignItems="flex-start"
                   className="balanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     available balance
                   </Typography>
-                  <Typography variant="h5" className="balance">
+                  <Typography className="balance" variant="h5">
                     btc 0.256
                   </Typography>
                 </Box>
                 <Box
+                  alignItems="flex-start"
                   className="balanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     invested
                   </Typography>
-                  <Typography variant="h5" className="balance">
+                  <Typography className="balance" variant="h5">
                     btc 0.452
                   </Typography>
                 </Box>
                 <Box
+                  alignItems="flex-start"
                   className="balanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     p/l
                   </Typography>
-                  <Typography variant="h5" className="balance green">
+                  <Typography className="balance green" variant="h5">
                     btc +0.47
                   </Typography>
                 </Box>
@@ -120,7 +120,7 @@ const MobileHeader = () => {
         </Box>
       )}
       {!connected && (
-        <CustomButton onClick={() => setConnected(true)} className="header-btn">
+        <CustomButton className="header-btn" onClick={() => setConnected(true)}>
           Connect Account
         </CustomButton>
       )}

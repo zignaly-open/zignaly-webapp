@@ -23,52 +23,48 @@ const LoginForm = props => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
+        alignItems="center"
         className="loginForm"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
       >
-        <Modal state={modal} size="small" onClose={() => showModal(false)} persist={false}>
+        <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
           <ForgotPasswordForm />
         </Modal>
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className="custom-label">Email address</label>
           <TextField
             className={common.customInput}
-            type="email"
-            name="email"
+            error={!!errors.email}
             fullWidth
-            variant="outlined"
             inputRef={register({
               required: true,
               pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
             })}
-            error={errors.email ? true : false}
+            name="email"
+            type="email"
+            variant="outlined"
           />
           {errors.email && <span className="error-text">Email should be valid</span>}
         </Box>
 
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className="custom-label">Password</label>
           <FormControl className={common.customInput} variant="outlined">
             <OutlinedInput
-              type={showPassword ? "text" : "password"}
-              inputRef={register({ required: true })}
-              error={errors.password ? true : false}
-              name="password"
               endAdornment={
                 <InputAdornment position="end">
                   <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
@@ -76,6 +72,10 @@ const LoginForm = props => {
                   </span>
                 </InputAdornment>
               }
+              error={!!errors.password}
+              inputRef={register({ required: true })}
+              name="password"
+              type={showPassword ? "text" : "password"}
             />
           </FormControl>
           {errors.password && <span className="error-text">Password cannot be empty</span>}
@@ -83,16 +83,16 @@ const LoginForm = props => {
 
         <Box className="input-box">
           <CustomButton
-            type="submit"
             className={"full submit-btn"}
             loading={loading}
             onClick={handleSubmit}
+            type="submit"
           >
             Sign in
           </CustomButton>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <span onClick={() => showModal(true)} className="link">
+        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
+          <span className="link" onClick={() => showModal(true)}>
             Forgot password
           </span>
         </Box>

@@ -10,29 +10,29 @@ const Testimonial = props => {
 
   return (
     <Box className="testimonial">
-      <img src={data.image} alt="Zignaly" className="avatar" />
+      <img alt="Zignaly" className="avatar" src={data.image} />
       <Box
+        alignItems="center"
         className="time-box"
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-        alignItems="center"
       >
         <span className="time"> {moment(data.date).fromNow()} </span>
-        {data.facebook && <img src={FacebookIcon} alt="Zignaly" className="icon" />}
+        {data.facebook && <img alt="Zignaly" className="icon" src={FacebookIcon} />}
       </Box>
       <Box
+        alignItems="start"
         className="title-box"
         display="flex"
         flexDirection="column"
         justifyContent="start"
-        alignItems="start"
       >
         <span className="title"> {data.name} </span>
         <p> {data.review} </p>
       </Box>
       <Box className="review-box" display="flex" flexDirection="row" justifyContent="flex-end">
-        <Rating value={5} readOnly classes={{ icon: "stars" }} />
+        <Rating classes={{ icon: "stars" }} readOnly value={5} />
       </Box>
     </Box>
   );

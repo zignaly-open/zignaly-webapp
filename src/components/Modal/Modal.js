@@ -7,11 +7,11 @@ const GenericModal = props => {
 
   return (
     <Dialog
-      open={state}
-      onClose={onClose}
-      maxWidth="lg"
       classes={{ paper: "modal " + (size ? size : " ") }}
       disableBackdropClick={persist}
+      maxWidth="lg"
+      onClose={onClose}
+      open={state}
     >
       {children}
     </Dialog>

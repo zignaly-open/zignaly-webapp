@@ -12,14 +12,14 @@ const withDashboardLayout = Component => {
 
     return (
       <Box
+        alignItems="flex-start"
         className="dashboardLayout"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         {exchange && (
-          <React.Fragment>
+          <>
             <DashboardHeader path={props.path} />
             <Box className="pageContent">
               <Component {...props} />
@@ -27,7 +27,7 @@ const withDashboardLayout = Component => {
             <Box className="faq">
               <FAQ />
             </Box>
-          </React.Fragment>
+          </>
         )}
         {!exchange && (
           <Box

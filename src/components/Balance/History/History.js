@@ -13,53 +13,53 @@ const History = props => {
 
   return (
     <Box
+      alignItems="flex-start"
       bgcolor="grid.content"
+      className="history"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      alignItems="flex-start"
-      className="history"
     >
       <Box
+        alignItems="center"
         className="historyHeader"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
-        <Typography variant="h4" className="boxTitle">
+        <Typography className="boxTitle" variant="h4">
           History
         </Typography>
         <Box
+          alignItems="center"
           className="settings"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <img
+            alt="zignaly"
+            className="icon"
             onClick={() => showFilters(!filters)}
             src={filters ? FilstersChecked : FiltersUnchecked}
-            alt="zignaly"
-            className="icon"
           />
           <img
-            onClick={e => setSettingAnchor(e.currentTarget)}
-            src={SettingsIcon}
             alt="zignaly"
             className="icon"
+            onClick={e => setSettingAnchor(e.currentTarget)}
+            src={SettingsIcon}
           />
         </Box>
       </Box>
       {filters && <PositionFilters onClose={() => showFilters(false)} />}
       <PositionsTable />
       <Popover
-        open={Boolean(settingsAnchor)}
-        onClose={() => setSettingAnchor(undefined)}
         anchorEl={settingsAnchor}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        onClose={() => setSettingAnchor(undefined)}
+        open={Boolean(settingsAnchor)}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-      ></Popover>
+       />
     </Box>
   );
 };

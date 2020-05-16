@@ -7,43 +7,43 @@ import { FormattedMessage } from "react-intl";
 const TotalEquity = props => {
   return (
     <Box
+      alignItems="flex-start"
+      className="totalEquity"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      alignItems="flex-start"
-      className="totalEquity"
     >
       <Box
+        alignItems="center"
         className="equityHeader"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
         <Box
+          alignItems="flex-start"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"
-          alignItems="flex-start"
         >
-          <Typography variant="h3" className="boxTitle">
+          <Typography className="boxTitle" variant="h3">
             <FormattedMessage id="dashboard.balance.totalequity" />
           </Typography>
           <Box
-            mt={1}
+            alignItems="center"
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
-            alignItems="center"
+            mt={1}
           >
             <Typography variant="h4">BTC 0.5346 </Typography>
-            <Typography variant="subtitle2" className="smallText">
+            <Typography className="smallText" variant="subtitle2">
               {" "}
               = USD 3450.6
             </Typography>
           </Box>
         </Box>
-        <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center">
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <label>
             <FormattedMessage id="dashboard.balance.show" />
           </label>
@@ -52,8 +52,8 @@ const TotalEquity = props => {
           </select>
         </Box>
       </Box>
-      <Chart type="line" id="myChart">
-        <canvas id="myChart" className="chartCanvas"></canvas>
+      <Chart id="myChart" type="line">
+        <canvas className="chartCanvas" id="myChart" />
       </Chart>
     </Box>
   );
