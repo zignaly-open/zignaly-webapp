@@ -1,23 +1,29 @@
-import React from 'react';
-import './DashboardHeader.sass';
-import { Box } from '@material-ui/core';
-import Link from '../../LocalizedLink';
-import {FormattedMessage} from 'react-intl';
+import React from "react"
+import "./DashboardHeader.sass"
+import { Box } from "@material-ui/core"
+import { injectIntl } from "react-intl"
+import SubNavHeader from "../../SubNavHeader"
 
-const DashboardHeader = () => {
-    return (
-        <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" className="dashboardHeader hideScroll">
-            <Link to="/dashboard/positions" className="dashboardLink" activeClassName="active">
-                <FormattedMessage id="dashboard.positions" />
-            </Link>
-            <Link to="/dashboard/balance" className="dashboardLink" activeClassName="active">
-                <FormattedMessage id="dashboard.balance" />
-            </Link>
-            <Link to="/dashboard/connectedTraders" className="dashboardLink" activeClassName="active">
-                <FormattedMessage id="dashboard.traders" />
-            </Link>
-        </Box>
-    )
+const DashboardHeader = ({ intl }) => {
+  const links = [
+    {
+      name: intl.formatMessage({ id: "dashboard.positions" }),
+      to: "/dashboard/positions",
+    },
+    {
+      name: intl.formatMessage({ id: "dashboard.balance" }),
+      to: "/dashboard/balance",
+    },
+    {
+      name: intl.formatMessage({ id: "dashboard.traders" }),
+      to: "/dashboard/connectedTraders",
+    },
+  ]
+  return (
+    <Box className="dashboardHeader">
+      <SubNavHeader links={links} />
+    </Box>
+  )
 }
 
-export default DashboardHeader;
+export default injectIntl(DashboardHeader)
