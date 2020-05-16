@@ -2,7 +2,7 @@ import React from "react";
 import "./CustomButton.scss";
 import { Button, CircularProgress } from "@material-ui/core";
 
-const CustomButton = props => {
+const CustomButton = (props) => {
   const { loading, className, children, onClick, disabled, type } = props;
 
   return (

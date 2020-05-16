@@ -72,7 +72,7 @@ const white = "#ffffff";
 const lightBlack = "#27273f";
 const offWhite = "#fbfafc";
 
-const theme = darkStyle => {
+const theme = (darkStyle) => {
   return {
     palette: {
       background: {

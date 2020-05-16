@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 
-const UserSummary = props => {
+const UserSummary = (props) => {
   const { data } = props;
   let id = "traderCard" + data;
 

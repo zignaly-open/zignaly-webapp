@@ -1,4 +1,4 @@
-export const routesMapping = path => {
+export const routesMapping = (path) => {
   let id = path.split("/")[1];
   let identifier = "1";
 

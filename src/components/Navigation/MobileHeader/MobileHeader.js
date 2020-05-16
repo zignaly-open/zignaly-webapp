@@ -10,7 +10,7 @@ import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import UserExchangeList from "./UserExchangeList";
 
 const MobileHeader = () => {
-  const darkStyle = useSelector(state => state.settings.darkStyle);
+  const darkStyle = useSelector((state) => state.settings.darkStyle);
   const [showBalance, setShowBalance] = useState(false);
   const [connected, setConnected] = useState(false);
 

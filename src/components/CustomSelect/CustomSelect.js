@@ -15,7 +15,7 @@ const CustomSelect = ({ options, onChange, value, label, className }) => {
             }}
             className={`select ${className}`}
             displayEmpty={true}
-            onChange={e => onChange(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             value={value}
             variant="outlined"
           >

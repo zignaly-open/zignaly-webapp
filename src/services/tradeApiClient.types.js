@@ -209,7 +209,7 @@ export function userPositionsResponseTransform(response) {
     throw new Error("Response must be an array of positions.");
   }
 
-  return response.map(positionItem => {
+  return response.map((positionItem) => {
     return userPositionItemTransform(positionItem);
   });
 }

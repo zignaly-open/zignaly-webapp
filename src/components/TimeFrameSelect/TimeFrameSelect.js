@@ -13,7 +13,7 @@ const timeframes = [
 const TimeFrameSelect = ({ onChange }) => {
   const [val, setVal] = useState(timeframes[1].val);
 
-  const handleChange = val => {
+  const handleChange = (val) => {
     setVal(val);
     onChange(val);
   };

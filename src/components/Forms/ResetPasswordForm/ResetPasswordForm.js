@@ -18,7 +18,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../PasswordStrength";
 import { useForm } from "react-hook-form";
 
-const ResetPasswordForm = props => {
+const ResetPasswordForm = (props) => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
@@ -27,7 +27,7 @@ const ResetPasswordForm = props => {
   const [strength, setStrength] = useState(0);
   const { errors, handleSubmit, register, watch, clearError } = useForm();
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     setAnchorEl(e.currentTarget);
     let howStrong = validatePassword(e.target.value);
@@ -35,14 +35,14 @@ const ResetPasswordForm = props => {
     howStrong >= 4 ? clearError("password") : setError("password");
   };
 
-  const handleRepeatPasswordChange = e => {
+  const handleRepeatPasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     let howStrong = validatePassword(e.target.value);
     setStrength(howStrong);
     howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
   };
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     if (password === repeatPassword) {
       console.log(data);
     } else {
@@ -51,7 +51,7 @@ const ResetPasswordForm = props => {
     requestPasswordChange();
   };
 
-  const requestPasswordChange = params => {};
+  const requestPasswordChange = (params) => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

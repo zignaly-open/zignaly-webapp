@@ -2,7 +2,7 @@ import React from "react";
 import "./Alert.scss";
 import { Box } from "@material-ui/core";
 
-const Popup = props => {
+const Popup = (props) => {
   return (
     <Box bgcolor="grid.main" className="alertMessage">
       <Box className="head">

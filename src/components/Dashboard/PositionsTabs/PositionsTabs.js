@@ -10,7 +10,7 @@ import PositionFilters from "../PositionFilters";
 import { FormattedMessage } from "react-intl";
 import NoPositions from "../NoPositions";
 
-const PositionsTabs = props => {
+const PositionsTabs = (props) => {
   const [tabValue, setTabValue] = useState(0);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
@@ -63,7 +63,7 @@ const PositionsTabs = props => {
           <img
             alt="zignaly"
             className="icon"
-            onClick={e => setSettingAnchor(e.currentTarget)}
+            onClick={(e) => setSettingAnchor(e.currentTarget)}
             src={SettingsIcon}
           />
         </Box>

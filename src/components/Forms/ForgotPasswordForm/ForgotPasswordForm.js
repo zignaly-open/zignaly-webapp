@@ -11,7 +11,7 @@ const ForgotPasswordForm = () => {
   const dispatch = useDispatch();
   const { errors, handleSubmit, register } = useForm();
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     setLoading(true);
     const params = {
       email: data.email,
@@ -20,7 +20,7 @@ const ForgotPasswordForm = () => {
     // dispatch(recover1(params, this.hideLoader));
   };
 
-  const handleKeyPress = event => {
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSubmit();
     }

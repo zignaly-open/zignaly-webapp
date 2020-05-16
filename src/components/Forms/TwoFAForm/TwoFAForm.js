@@ -5,12 +5,12 @@ import CustomButton from "../../CustomButton/CustomButton";
 // import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
 
-const TwoFAForm = props => {
+const TwoFAForm = (props) => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
 
-  handleCodeChange = e => {
+  handleCodeChange = (e) => {
     setCode(e.length === 6);
     if (e.length === 6) {
       setCodeError(false);
@@ -24,7 +24,7 @@ const TwoFAForm = props => {
     // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
   };
 
-  handleKeyPress = event => {
+  handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSubmit();
     }

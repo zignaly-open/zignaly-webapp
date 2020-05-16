@@ -7,7 +7,7 @@ import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionsTable from "../../Dashboard/PositionsTable";
 import PositionFilters from "../../Dashboard/PositionFilters";
 
-const History = props => {
+const History = (props) => {
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
 
@@ -46,7 +46,7 @@ const History = props => {
           <img
             alt="zignaly"
             className="icon"
-            onClick={e => setSettingAnchor(e.currentTarget)}
+            onClick={(e) => setSettingAnchor(e.currentTarget)}
             src={SettingsIcon}
           />
         </Box>
@@ -59,7 +59,7 @@ const History = props => {
         onClose={() => setSettingAnchor(undefined)}
         open={Boolean(settingsAnchor)}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-       />
+      />
     </Box>
   );
 };

@@ -17,7 +17,7 @@ import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
 
 const Sidebar = () => {
-  const darkStyle = useSelector(state => state.settings.darkStyle);
+  const darkStyle = useSelector((state) => state.settings.darkStyle);
   const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
 

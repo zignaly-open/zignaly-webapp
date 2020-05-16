@@ -1,4 +1,4 @@
-export const validateEmail = email => {
+export const validateEmail = (email) => {
   let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   if (email && regex.test(email)) {
     return true;
@@ -6,7 +6,7 @@ export const validateEmail = email => {
   return false;
 };
 
-export const validatePassword = password => {
+export const validatePassword = (password) => {
   let strength = 0;
   let specialRegex = /[ `!@#$%^&*()_+\-=[\]{};':"|,.<>/?~\\]/;
   if (password) {
@@ -33,14 +33,14 @@ export const validatePassword = password => {
   return strength;
 };
 
-export const validateName = name => {
+export const validateName = (name) => {
   if (name && name.length) {
     return true;
   }
   return false;
 };
 
-export const validateCode = code => {
+export const validateCode = (code) => {
   if (code && code.length === 6) {
     return true;
   }

@@ -10,8 +10,8 @@ import translations from "../i18n/translations";
 
 import { getDisplayName } from "../utils";
 
-const withPageContext = Component => {
-  const WrapperComponent = props => {
+const withPageContext = (Component) => {
+  const WrapperComponent = (props) => {
     const { locale } = props.pageContext;
     return (
       <IntlProvider locale={locale} messages={translations[locale]}>

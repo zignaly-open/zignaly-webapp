@@ -11,9 +11,9 @@ import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from "../../components/Alert";
 
-const withAppLayout = Component => {
-  const WrapperComponent = props => {
-    const darkStyle = useSelector(state => state.settings.darkStyle);
+const withAppLayout = (Component) => {
+  const WrapperComponent = (props) => {
+    const darkStyle = useSelector((state) => state.settings.darkStyle);
     const theme = useMemo(() => createMuiTheme(themeData(darkStyle)), [darkStyle]);
 
     return (

@@ -9,7 +9,7 @@ import CustomButton from "../CustomButton";
 import PropTypes from "prop-types";
 import { navigate } from "@reach/router";
 
-const TraderCard = props => {
+const TraderCard = (props) => {
   const { data, showSummary } = props;
   let id = "traderCard" + data;
 

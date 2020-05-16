@@ -30,16 +30,16 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
   const [coin, setCoin] = useState(coins[0]);
   const [exchange, setExchange] = useState(exchanges[0]);
   const [sort, setSort] = useState("");
-  const handleTimeFrameChange = val => {
+  const handleTimeFrameChange = (val) => {
     console.log(val);
   };
 
-  const handleCoinChange = val => {
+  const handleCoinChange = (val) => {
     console.log(val);
     setCoin(val);
   };
 
-  const handleExchangeChange = val => {
+  const handleExchangeChange = (val) => {
     setExchange(val);
   };
 
@@ -52,7 +52,7 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
     setSort("");
   };
 
-  const handleSortChange = val => {
+  const handleSortChange = (val) => {
     setSort(val);
     console.log(val);
   };
@@ -106,7 +106,7 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
           flexWrap="wrap"
           justifyContent="space-between"
         >
-          {list && list.map(item => <TraderCard data={item} key={item} showSummary={false} />)}
+          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
         </Box>
       </Box>
     </Box>

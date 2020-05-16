@@ -9,13 +9,13 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
 
-const LoginForm = props => {
+const LoginForm = (props) => {
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { handleSubmit, errors, register } = useForm();
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     showLoading(true);
     console.log(data);
   };

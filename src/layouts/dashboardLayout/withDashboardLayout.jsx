@@ -6,8 +6,8 @@ import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedHTMLMessage } from "react-intl";
 
-const withDashboardLayout = Component => {
-  const WrapperComponent = props => {
+const withDashboardLayout = (Component) => {
+  const WrapperComponent = (props) => {
     const [exchange, setExchange] = useState(true);
 
     return (

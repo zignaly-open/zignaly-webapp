@@ -3,7 +3,7 @@ import "./Doughnut.scss";
 import { Box } from "@material-ui/core";
 import { Chart } from "chart.js";
 
-const Doughnut = props => {
+const Doughnut = (props) => {
   useEffect(() => {
     let ctx = document.getElementById("myDoughnut").getContext("2d");
     let background = ctx.createLinearGradient(0, 0, 0, 500);

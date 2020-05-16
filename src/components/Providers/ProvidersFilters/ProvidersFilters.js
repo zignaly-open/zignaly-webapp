@@ -4,7 +4,7 @@ import "./ProvidersFilters.scss";
 import { Box } from "@material-ui/core";
 import CustomButtom from "../../CustomButton";
 
-const ProvidersFilters = props => {
+const ProvidersFilters = (props) => {
   const { onClose, onClear, title } = props;
 
   return (

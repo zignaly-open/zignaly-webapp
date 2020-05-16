@@ -4,7 +4,7 @@ import { Box, Table, TableHead, TableBody, TableRow, TableCell } from "@material
 import tradeApi from "../../../services/tradeApiClient";
 import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 
-const PositionsTable = props => {
+const PositionsTable = (props) => {
   const [positions, setPositions] = useState([]);
   const authenticateUser = async () => {
     const loginPayload = {
@@ -82,7 +82,7 @@ const PositionsTable = props => {
             </TableRow>
           </TableHead>
           <TableBody className="body">
-            {positionsCollection.map(position => (
+            {positionsCollection.map((position) => (
               <TableRow className="row" key={position.positionId}>
                 <TableCell align="left" className="cell">
                   {position.openDate}

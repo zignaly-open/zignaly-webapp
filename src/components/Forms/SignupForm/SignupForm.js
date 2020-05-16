@@ -36,7 +36,7 @@ const SignupForm = () => {
   //     this.setState({ref: ref})
   // }
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     setAnchorEl(e.currentTarget);
     let howStrong = validatePassword(e.target.value);
@@ -44,14 +44,14 @@ const SignupForm = () => {
     howStrong >= 4 ? clearError("password") : setError("password");
   };
 
-  const handleRepeatPasswordChange = e => {
+  const handleRepeatPasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     let howStrong = validatePassword(e.target.value);
     setStrength(howStrong);
     howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
   };
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
       // showLoading(true)
       console.log(data);
@@ -72,7 +72,7 @@ const SignupForm = () => {
     }
   };
 
-  const onChangeReCAPTCHA = value => {
+  const onChangeReCAPTCHA = (value) => {
     setCaptchaResponse(value);
   };
 

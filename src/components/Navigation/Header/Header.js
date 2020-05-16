@@ -14,7 +14,7 @@ import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
 
 const Header = () => {
-  const darkStyle = useSelector(state => state.settings.darkStyle);
+  const darkStyle = useSelector((state) => state.settings.darkStyle);
   const [showBalance, setShowBalance] = useState(false);
   const [connected, setConnected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
@@ -139,7 +139,7 @@ const Header = () => {
           <img
             alt="zignaly-user"
             className={"icon"}
-            onClick={e => setAnchorEl(e.currentTarget)}
+            onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
           <Menu

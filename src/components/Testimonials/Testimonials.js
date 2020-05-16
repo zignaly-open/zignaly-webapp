@@ -10,7 +10,7 @@ const Testimonials = () => {
   const [pageSize, setPageSize] = useState(6);
 
   useEffect(() => {
-    const feedData = size => {
+    const feedData = (size) => {
       let arr = [];
       for (let a = 0; a < size; a++) {
         arr.push(testominalFeed[a]);
@@ -30,7 +30,7 @@ const Testimonials = () => {
     <Box className={style.testimonials}>
       <span className={style.title}>Testimonials</span>
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
-        {data && data.map(item => <Testimonial data={item} key={item.id} />)}
+        {data && data.map((item) => <Testimonial data={item} key={item.id} />)}
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="center">
         <CustomButton

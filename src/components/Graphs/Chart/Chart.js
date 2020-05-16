@@ -3,7 +3,7 @@ import "./Chart.scss";
 import { Box } from "@material-ui/core";
 import { Chart } from "chart.js";
 
-const GenericChart = props => {
+const GenericChart = (props) => {
   useEffect(() => {
     let ctx = document.getElementById(props.id).getContext("2d");
     let background = ctx.createLinearGradient(0, 0, 0, 500);

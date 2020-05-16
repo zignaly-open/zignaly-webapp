@@ -5,7 +5,7 @@ import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
 
-const DashboardHeader = props => {
+const DashboardHeader = (props) => {
   const { path } = props;
 
   return (

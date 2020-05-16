@@ -1,6 +1,6 @@
 const languages = require("../config/languages");
 
-const defaultLanguage = languages.find(lang => lang.default);
+const defaultLanguage = languages.find((lang) => lang.default);
 
 if (!defaultLanguage) {
   throw new Error("Default language has to be specified in the language configuration.");
@@ -8,7 +8,7 @@ if (!defaultLanguage) {
 
 const getLocalizedPath = (originalPath, locale) => {
   const keyPath = originalPath.replace(/(\w+)\/$/, "$1");
-  const lang = languages.find(lang => lang.locale === locale);
+  const lang = languages.find((lang) => lang.locale === locale);
 
   const isDefault = locale === defaultLanguage.locale;
   const localizedPath = lang && lang.routes && lang.routes[keyPath];

@@ -5,8 +5,8 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 
-const withDashboardLayout = Component => {
-  const WrapperComponent = props => {
+const withDashboardLayout = (Component) => {
+  const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
 

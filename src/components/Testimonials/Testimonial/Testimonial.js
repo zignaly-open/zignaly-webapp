@@ -5,7 +5,7 @@ import Rating from "@material-ui/lab/Rating";
 import FacebookIcon from "../../../images/facebook-icon.svg";
 import moment from "moment";
 
-const Testimonial = props => {
+const Testimonial = (props) => {
   const { data } = props;
 
   return (

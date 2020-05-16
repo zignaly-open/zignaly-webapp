@@ -19,7 +19,7 @@ const LanguageSwitcher = () => (
   <PageContext.Consumer>
     {({ originalPath, locale }) => (
       <div className="LanguageSwitcher">
-        {languages.map(lang =>
+        {languages.map((lang) =>
           lang.locale === locale ? (
             <img alt={lang.label} key={lang.locale} src={flags[lang.locale]} />
           ) : (

@@ -4,7 +4,7 @@ import { Box, Tab, Tabs } from "@material-ui/core";
 import LoginForm from "../Forms/LoginForm";
 import SignupForm from "../Forms/SignupForm";
 
-const LoginTabs = props => {
+const LoginTabs = (props) => {
   const [tabValue, setTabValue] = useState(0);
 
   const changeTab = (event, newValue) => {
