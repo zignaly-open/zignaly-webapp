@@ -11,7 +11,7 @@ const SubNavHeader = ({ links, children }) => {
       flexDirection="row"
       justifyContent="flex-start"
       alignItems="center"
-      className="subNavHeader"
+      className="subNavHeader hideScroll"
     >
       {links.map((item, index) => (
         <Link

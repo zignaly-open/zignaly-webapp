@@ -7,6 +7,8 @@ import FilstersChecked from '../../../images/dashboard/filtersFill.svg';
 import PositionSettingsForm from '../../Forms/PositionSettingsForm';
 import PositionsTable from '../PositionsTable';
 import PositionFilters from '../PositionFilters';
+import {FormattedMessage} from 'react-intl';
+import NoPositions from '../NoPositions';
 
 const PositionsTabs = (props) => {
     const [tabValue, setTabValue] = useState(0)
@@ -21,9 +23,9 @@ const PositionsTabs = (props) => {
         <Box bgcolor="grid.content" className="positionsTabs">
             <Box className="tabsBox" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Tabs value={tabValue} onChange={changeTab} classes={{indicator: 'indicator', flexContainer: 'container'}} className="tabs-menu">
-                    <Tab label="open positions" classes={{selected: 'selected'}} />
-                    <Tab label="closed positions" classes={{selected: 'selected'}} />
-                    <Tab label="logs" classes={{selected: 'selected'}} />
+                    <Tab label={<FormattedMessage id="dashboard.positions.open" />} classes={{selected: 'selected'}} />
+                    <Tab label={<FormattedMessage id="dashboard.positions.closed" />} classes={{selected: 'selected'}} />
+                    <Tab label={<FormattedMessage id="dashboard.positions.log" />} classes={{selected: 'selected'}} />
                 </Tabs>
                 <Box className="settings" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                     <img onClick={() => showFilters(!filters)} src={filters ? FilstersChecked : FiltersUnchecked} alt="zignaly" className="icon" />
@@ -35,7 +37,7 @@ const PositionsTabs = (props) => {
             }
             {tabValue === 0 &&
                 <Box className="tabPanel">
-                    <PositionsTable />
+                    <NoPositions />
                 </Box>
             }
             {tabValue === 1 &&
