@@ -4,7 +4,7 @@
   box-sizing: border-box;
   margin-bottom: 30px;
   position: relative;
-  width: 100%;
+  overflow: scroll;
 
   .dashboardLink {
     box-sizing: border-box;
@@ -15,15 +15,10 @@
     padding: 12px 12px 21px 0;
     text-decoration: none;
     text-transform: capitalize;
+    white-space: nowrap;
 
     &.active {
       border-bottom: 2px solid $purple;
     }
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .dashboardHeader {
-    overflow: scroll;
   }
 }

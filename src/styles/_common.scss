@@ -28,7 +28,7 @@ body {
 }
 
 .hideScroll {
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: scroll;
   scrollbar-width: none;
 }
