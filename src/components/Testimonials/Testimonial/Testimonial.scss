@@ -1,0 +1,83 @@
+@import "../../../styles/variables.scss";
+
+.testimonial {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+  box-sizing: border-box;
+  margin: 64px 0;
+  min-height: 268px;
+  padding: 20px;
+  position: relative;
+  width: 576px;
+
+  .avatar {
+    border-radius: 50%;
+    height: 80px;
+    left: 24px;
+    position: absolute;
+    top: -30px;
+    width: 80px;
+  }
+
+  .time-box {
+    height: 42px;
+
+    .time {
+      font-family: "PlexSans-Light";
+      font-size: 14px;
+      letter-spacing: 0.53px;
+      margin-right: 1rem;
+    }
+
+    .icon {
+      background: $blue;
+      border-radius: 50%;
+      height: 36px;
+      padding-top: 5px;
+      width: 42px;
+    }
+  }
+
+  .title-box {
+    margin-top: 16px;
+
+    .title {
+      font-family: "PlexSans-Medium";
+      font-size: 21px;
+      letter-spacing: 0.8px;
+      margin: 0;
+
+      & + p {
+        font-family: "PlexSans-Light";
+        font-size: 16px;
+        letter-spacing: 0.61px;
+        line-height: 21px;
+        margin: 10px 0 0 0;
+      }
+    }
+  }
+
+  .review-box {
+    bottom: 16px;
+    position: absolute;
+    width: calc(100% - 40px);
+
+    .stars {
+      color: $green;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .testimonial {
+    .avatar {
+      height: 60px;
+      width: 60px;
+    }
+
+    .title-box {
+      margin-bottom: 20px;
+    }
+  }
+}

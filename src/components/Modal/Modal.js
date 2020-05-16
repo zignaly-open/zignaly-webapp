@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modal.sass';
+import './Modal.scss';
 import { Dialog } from '@material-ui/core';
 
 const GenericModal = (props) => {

@@ -1,0 +1,66 @@
+@import "../../styles/variables.scss";
+
+.customButton {
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: "PlexSans-Medium";
+  font-size: 16px;
+  height: 48px;
+  letter-spacing: 1px;
+  min-width: 250px;
+  padding: 0;
+  text-transform: capitalize;
+
+  .loader {
+    color: $white;
+    height: 20px;
+    width: 20px;
+  }
+
+  &.submit-btn {
+    background: $purple;
+    color: $white;
+
+    &:hover {
+      background: $purpleLight;
+    }
+  }
+
+  &.disabled-btn {
+    background: $lightGrey;
+    color: $black;
+
+    &:hover {
+      background: $lightGrey;
+    }
+  }
+
+  &.load-more-btn {
+    background: $white;
+    border: 2px solid $purple;
+    color: $purple;
+  }
+
+  &.text-purple {
+    background: transparent;
+    color: $purple;
+    min-width: 120px;
+  }
+
+  &.text-default {
+    background: transparent;
+    min-width: 120px;
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  &.header-btn {
+    background: $green;
+    color: $white;
+    height: 32px;
+    margin: 0 12px;
+    min-width: 200px;
+  }
+}

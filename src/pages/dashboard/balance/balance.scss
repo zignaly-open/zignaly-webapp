@@ -1,0 +1,50 @@
+@import "../../../styles/variables.scss";
+
+.balancePage {
+  width: 100%;
+
+  .equityBox {
+    min-height: 300px;
+    width: 62%;
+  }
+
+  .cryptoBox {
+    min-height: 300px;
+    width: 38%;
+  }
+
+  .balanceBox {
+    box-shadow: 0 2px 8px 0 rgba(64, 50, 79, 0.2);
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  .historyBox {
+    margin-top: 30px;
+    min-height: 300px;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .balancePage {
+    align-items: flex-start;
+    flex-direction: column;
+
+    .balanceBox {
+      box-shadow: none;
+    }
+
+    .equityBox {
+      width: 100%;
+    }
+
+    .cryptoBox {
+      min-height: 200px;
+    }
+
+    .cryptoBox {
+      width: 100%;
+    }
+  }
+}

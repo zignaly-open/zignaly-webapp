@@ -1,87 +1,59 @@
-import React, {Component} from 'react';
-import './ForgotPasswordForm.sass';
+import React, {useState} from 'react';
+import './ForgotPasswordForm.scss';
+import common from '../../../styles/common.module.scss';
 import {Box, TextField} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
-// import {recover1} from 'actions';
-import { validateEmail } from '../../../helpers/validators';
+import {useForm} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
 
-class ForgotPasswordForm extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            email: "",
-            emailError: false,
-            loading: false
-        }
-    }
+const ForgotPasswordForm = () => {
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+    const {errors, handleSubmit, register} = useForm()
 
-    handleEmailChange = (e) => {
-        this.setState({
-            email: e.target.value,
-            emailError: validateEmail(e.target.value) ? false : true
-        })
-    }
-
-    handleSubmit = () => {
-        this.showLoader()
+    const onSubmit = (data) => {
+        setLoading(true)
         const params = {
-            email: this.state.email,
-            password: this.state.password,
+            email: data.email,
             array: true
         }
-        // this.props.dispatch(recover1(params, this.hideLoader));
+        // dispatch(recover1(params, this.hideLoader));
     }
 
-    handleKeyPress = (event) => {
+    const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.handleSubmit()
+            handleSubmit()
         }
     }
 
-    showLoader = () => {
-        this.setState({loading: true})
-    }
-
-    hideLoader = () => {
-        this.setState({loading: false})
-    }
-
-    disabledButton = () => {
-        if(this.state.email && !this.state.emailError){
-            return false
-        }
-        return true
-    }
-
-    render(){
-        return(
+    return(
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Box className="forgotPasswordForm" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <h3>Password Recovery Form</h3>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className="custom-label">Enter your email address</label>
                     <TextField
-                        className="custom-input"
+                        className={common.customInput}
                         type="email"
                         fullWidth
                         variant="outlined"
-                        error={this.state.emailError}
-                        value={this.state.email}
-                        onChange={this.handleEmailChange}
-                        onKeyDown={this.handleKeyPress}
+                        error={errors.email}
+                        name="email"
+                        inputRef={register({required: true, pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/})}
                         />
-                    {this.state.emailError && <span className="error-text">email should be valid</span>}
+                    {errors.email && <span className="error-text">email should be valid</span>}
                 </Box>
 
                 <Box className="input-box">
                     <CustomButton
-                        className={"full " + (this.disabledButton() ? "disabled-btn" : "submit-btn")}
-                        disabled={this.disabledButton()}
-                        loading={this.state.loading}
-                        onClick= {this.handleSubmit}>Recover Account</CustomButton>
+                        type="submit"
+                        className={"full submit-btn"}
+                        loading={loading}
+                        onClick= {handleSubmit}>Recover Account</CustomButton>
                 </Box>
             </Box>
-        )
-    }
+        </form>
+    )
 }
 
 export default ForgotPasswordForm;
