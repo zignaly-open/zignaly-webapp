@@ -12,10 +12,10 @@ const Popup = () => {
         vertical: "top",
         horizontal: "right",
       }}
-      className={"alert success"}
-      open={alert}
-      onClose={() => showAlert(true)}
       autoHideDuration={5000}
+      className={"alert success"}
+      onClose={() => showAlert(true)}
+      open={alert}
     >
       <Message data={{}} />
     </Snackbar>

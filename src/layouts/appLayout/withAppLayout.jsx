@@ -28,7 +28,7 @@ const withAppLayout = (Component) => {
             <MobileHeader />
             <MobileAppbar />
           </Hidden>
-          <Box display="flex" flexDirection="row" flexWrap="nowrap" className={"body"}>
+          <Box className={"body"} display="flex" flexDirection="row" flexWrap="nowrap">
             <Hidden xsDown>
               <Box className={"side"}>
                 <Sidebar />

@@ -30,12 +30,12 @@ const Testimonials = () => {
     <Box className={style.testimonials}>
       <span className={style.title}>Testimonials</span>
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
-        {data && data.map((item) => <Testimonial key={item.id} data={item} />)}
+        {data && data.map((item) => <Testimonial data={item} key={item.id} />)}
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="center">
         <CustomButton
-          disabled={pageSize === testominalFeed.length}
           className="loadMoreButton"
+          disabled={pageSize === testominalFeed.length}
           onClick={loadMoreData}
         >
           Load More

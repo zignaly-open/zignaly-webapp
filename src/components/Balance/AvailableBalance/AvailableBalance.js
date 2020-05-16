@@ -6,30 +6,30 @@ import { FormattedMessage } from "react-intl";
 const AvailableBalance = (props) => {
   return (
     <Box
+      alignItems="center"
+      className="availableBalance"
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
-      className="availableBalance"
     >
       <Box
+        alignItems="flex-start"
         className="dataBox"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box
-          mb={1}
+          alignItems="center"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
+          mb={1}
         >
           <Typography variant="h4">
             <FormattedMessage id="dashboard.balance.available" />
           </Typography>
-          <Typography variant="subtitle2" className="smallText">
+          <Typography className="smallText" variant="subtitle2">
             {" "}
             = USD 3450.6
           </Typography>
@@ -38,23 +38,23 @@ const AvailableBalance = (props) => {
       </Box>
       <span className="operator">+</span>
       <Box
+        alignItems="flex-start"
         className="dataBox"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box
-          mb={1}
+          alignItems="center"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
+          mb={1}
         >
           <Typography variant="h4">
             <FormattedMessage id="dashboard.balance.invested" />
           </Typography>
-          <Typography variant="subtitle2" className="smallText">
+          <Typography className="smallText" variant="subtitle2">
             {" "}
             = USD 3450.6
           </Typography>
@@ -63,23 +63,23 @@ const AvailableBalance = (props) => {
       </Box>
       <span className="operator">+</span>
       <Box
+        alignItems="flex-start"
         className="dataBox"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box
-          mb={1}
+          alignItems="center"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
+          mb={1}
         >
           <Typography variant="h4">
             <FormattedMessage id="dashboard.balance.profit" />
           </Typography>
-          <Typography variant="subtitle2" className="smallText">
+          <Typography className="smallText" variant="subtitle2">
             {" "}
             = USD 3450.6
           </Typography>
@@ -88,23 +88,23 @@ const AvailableBalance = (props) => {
       </Box>
       <span className="operator">=</span>
       <Box
+        alignItems="flex-start"
         className="dataBox"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box
-          mb={1}
+          alignItems="center"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
+          mb={1}
         >
           <Typography variant="h4">
             <FormattedMessage id="dashboard.balance.total" />
           </Typography>
-          <Typography variant="subtitle2" className="smallText">
+          <Typography className="smallText" variant="subtitle2">
             {" "}
             = USD 3450.6
           </Typography>

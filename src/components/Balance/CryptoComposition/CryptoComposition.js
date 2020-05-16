@@ -7,13 +7,13 @@ import { FormattedMessage } from "react-intl";
 const CryptoComposition = (props) => {
   return (
     <Box
+      alignItems="flex-start"
+      className="cryptoComposition"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      alignItems="flex-start"
-      className="cryptoComposition"
     >
-      <Typography variant="h3" className="boxTitle">
+      <Typography className="boxTitle" variant="h3">
         <FormattedMessage id="dashboard.balance.cryptocompo" />
       </Typography>
       <Doughnut />

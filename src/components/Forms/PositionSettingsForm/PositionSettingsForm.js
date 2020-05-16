@@ -9,16 +9,16 @@ const PositionSettingsForm = (props) => {
 
   return (
     <Box
+      alignItems="center"
       bgcolor="grid.main"
       className="positionSettingsForm"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
     >
       <CloseIcon className="closeIcon" />
       <span className="boxTitle">Choose Columns</span>
-      <Box className="form"></Box>
+      <Box className="form" />
       <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
         <CustomButton className={"submitbutton"} onClick={handleSubmit}>
           Save Preference

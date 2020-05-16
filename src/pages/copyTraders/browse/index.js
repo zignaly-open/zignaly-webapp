@@ -65,48 +65,48 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 
       {showFilters && (
         <ProvidersFilters
-          onClose={() => toggleFilters()}
           onClear={() => clearFilters()}
+          onClose={() => toggleFilters()}
           title="Filters"
         >
-          <CustomSelect options={coins} onChange={handleCoinChange} value={coin} label="Coin" />
+          <CustomSelect label="Coin" onChange={handleCoinChange} options={coins} value={coin} />
           <CustomSelect
-            options={exchanges}
-            onChange={handleExchangeChange}
-            value={exchange}
             label="Exchange"
+            onChange={handleExchangeChange}
+            options={exchanges}
+            value={exchange}
           />
         </ProvidersFilters>
       )}
       {showSort && (
-        <ProvidersFilters onClose={() => toggleSort()} onClear={() => clearSort()} title="Sort by">
+        <ProvidersFilters onClear={() => clearSort()} onClose={() => toggleSort()} title="Sort by">
           <CustomSelect
-            options={sorts}
-            onChange={handleSortChange}
-            value={sort}
-            label=""
             className="sortSelect"
+            label=""
+            onChange={handleSortChange}
+            options={sorts}
+            value={sort}
           />
         </ProvidersFilters>
       )}
       <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h3" className="regularHeading">
+        <Typography className="regularHeading" variant="h3">
           7 traders
         </Typography>
-        <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center">
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
       <Box display="flex" flexDirection="column" justifyContent="flex-start">
         <Box
+          alignItems="center"
           className="tradersBox"
           display="flex"
           flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
           flexWrap="wrap"
+          justifyContent="space-between"
         >
-          {list && list.map((item) => <TraderCard key={item} data={item} showSummary={false} />)}
+          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
         </Box>
       </Box>
     </Box>

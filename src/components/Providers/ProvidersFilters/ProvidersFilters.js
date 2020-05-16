@@ -9,33 +9,33 @@ const ProvidersFilters = (props) => {
 
   return (
     <Box
+      alignItems="center"
+      className="providersFilters"
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
-      className="providersFilters"
     >
       <Box
+        alignItems="center"
         className="filters"
         display="flex"
         flexDirection="row"
         justifyContent="flex-start"
-        alignItems="center"
       >
         <span className="title">{title}</span>
         {props.children}
       </Box>
       <Box
+        alignItems="center"
         className="actions"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
-        <CustomButtom onClick={onClear} className="textPurple">
+        <CustomButtom className="textPurple" onClick={onClear}>
           Clear All
         </CustomButtom>
-        <CustomButtom onClick={onClose} className="textPurple">
+        <CustomButtom className="textPurple" onClick={onClose}>
           Hide
         </CustomButtom>
       </Box>

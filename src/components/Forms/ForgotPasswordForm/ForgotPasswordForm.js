@@ -29,42 +29,42 @@ const ForgotPasswordForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
+        alignItems="center"
         className="forgotPasswordForm"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
       >
         <h3>Password Recovery Form</h3>
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className="custom-label">Enter your email address</label>
           <TextField
             className={common.customInput}
-            type="email"
-            fullWidth
-            variant="outlined"
             error={errors.email}
-            name="email"
+            fullWidth
             inputRef={register({
               required: true,
               pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
             })}
+            name="email"
+            type="email"
+            variant="outlined"
           />
           {errors.email && <span className="error-text">email should be valid</span>}
         </Box>
 
         <Box className="input-box">
           <CustomButton
-            type="submit"
             className={"full submitButton"}
             loading={loading}
             onClick={handleSubmit}
+            type="submit"
           >
             Recover Account
           </CustomButton>

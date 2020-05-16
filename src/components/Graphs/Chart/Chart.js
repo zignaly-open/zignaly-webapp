@@ -35,7 +35,7 @@ const GenericChart = (props) => {
           displayColors: false,
           callbacks: {
             label: (tooltipItem, data) => {
-              return "returns " + data["datasets"][0]["data"][tooltipItem["index"]];
+              return "returns " + data.datasets[0].data[tooltipItem.index];
             },
             afterLabel: (tooltipItem, data) => {
               return new Date();

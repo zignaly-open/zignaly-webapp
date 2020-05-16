@@ -21,91 +21,91 @@ const Header = () => {
 
   return (
     <Box
+      alignItems="center"
+      className={"header"}
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
-      className={"header"}
     >
-      <Box className={"logoContainer"} display="flex" flexDirection="row" alignItems="center">
+      <Box alignItems="center" className={"logoContainer"} display="flex" flexDirection="row">
         <Link to="/dashboard/positions">
           <img
-            src={darkStyle ? LogoWhite : LogoBlack}
-            className={"headerLogo"}
             alt="zignaly-logo"
+            className={"headerLogo"}
+            src={darkStyle ? LogoWhite : LogoBlack}
           />
         </Link>
         <LanguageSwitcher />
       </Box>
       <Box
+        alignItems="center"
+        className={"linksContainer"}
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-        alignItems="center"
-        className={"linksContainer"}
       >
         <Box
+          alignItems="center"
           className="balanceContainer"
           display="flex"
           flexDirection="row"
           justifyContent="flex-start"
-          alignItems="center"
         >
           <Box className={"iconBox"} display="flex" flexDirection="column" justifyContent="center">
             <img
+              alt="zignaly"
+              className={"expandIcon"}
               onClick={() => setShowBalance(!showBalance)}
               src={showBalance ? RightIcon : LeftIcon}
-              className={"expandIcon"}
-              alt="zignaly"
             />
           </Box>
           {showBalance && (
             <Grow in={true}>
               <Box
+                alignItems="center"
                 display="flex"
                 flexDirection="row"
                 justifyContent="flex-start"
-                alignItems="center"
               >
                 <Box
+                  alignItems="flex-start"
                   className="blaanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     available balance
                   </Typography>
-                  <Typography variant="h5" className="balance">
+                  <Typography className="balance" variant="h5">
                     btc 0.256
                   </Typography>
                 </Box>
                 <Box
+                  alignItems="flex-start"
                   className="blaanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     invested
                   </Typography>
-                  <Typography variant="h5" className="balance">
+                  <Typography className="balance" variant="h5">
                     btc 0.452
                   </Typography>
                 </Box>
                 <Box
+                  alignItems="flex-start"
                   className="blaanceBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="space-between"
-                  alignItems="flex-start"
                 >
-                  <Typography variant="subtitle1" className="title">
+                  <Typography className="title" variant="subtitle1">
                     p/l
                   </Typography>
-                  <Typography variant="h5" className="balance green">
+                  <Typography className="balance green" variant="h5">
                     btc +0.47
                   </Typography>
                 </Box>
@@ -126,7 +126,7 @@ const Header = () => {
           )}
         </Box>
         {!connected && (
-          <CustomButton onClick={() => setConnected(true)} className="headerButton">
+          <CustomButton className="headerButton" onClick={() => setConnected(true)}>
             Connect Account
           </CustomButton>
         )}
@@ -137,17 +137,17 @@ const Header = () => {
         </Box>
         <Box className={"linkBox"}>
           <img
+            alt="zignaly-user"
+            className={"icon"}
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
-            className={"icon"}
-            alt="zignaly-user"
           />
           <Menu
             anchorEl={anchorEl}
             classes={{ paper: "menu" }}
             keepMounted
-            open={Boolean(anchorEl)}
             onClose={() => setAnchorEl(undefined)}
+            open={Boolean(anchorEl)}
           >
             <MenuItem
               classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}

@@ -21,10 +21,10 @@ const LanguageSwitcher = () => (
       <div className="LanguageSwitcher">
         {languages.map((lang) =>
           lang.locale === locale ? (
-            <img key={lang.locale} src={flags[lang.locale]} alt={lang.label} />
+            <img alt={lang.label} key={lang.locale} src={flags[lang.locale]} />
           ) : (
             <Link key={lang.locale} to={getLocalizedPath(originalPath, lang.locale)}>
-              <img src={flags[lang.locale]} alt={lang.label} />
+              <img alt={lang.label} src={flags[lang.locale]} />
             </Link>
           ),
         )}

@@ -23,27 +23,27 @@ const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort }) =
     <Box className="providersHeader">
       <SubNavHeader links={links}>
         <Box
+          alignItems="center"
           className="settings"
           display="flex"
           flexDirection="row"
           justifyContent="space-around"
-          alignItems="center"
         >
           <Icon>
             <img
-              onClick={() => toggleFilters()}
-              src={showFilters ? FilterFillIcon : FilterIcon}
               alt="zignaly"
               className="icon"
+              onClick={() => toggleFilters()}
+              src={showFilters ? FilterFillIcon : FilterIcon}
             />
           </Icon>
 
           <Icon>
             <img
-              onClick={() => toggleSort()}
-              src={showSort ? SortFillIcon : SortIcon}
               alt="zignaly"
               className="icon"
+              onClick={() => toggleSort()}
+              src={showSort ? SortFillIcon : SortIcon}
             />
           </Icon>
         </Box>

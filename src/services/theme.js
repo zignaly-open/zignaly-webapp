@@ -107,7 +107,7 @@ const theme = (darkStyle) => {
         textTransform: "capitalize",
       },
       h4: {
-        //this is sub headings eg "Available", "Invested" inside crypto composition
+        // this is sub headings eg "Available", "Invested" inside crypto composition
         fontSize: "16px",
         fontFamily: "PlexSans-SemiBold",
         wordSpacing: "5px",

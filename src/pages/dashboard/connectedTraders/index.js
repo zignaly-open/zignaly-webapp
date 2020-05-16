@@ -12,31 +12,31 @@ const ConnectedTraders = () => {
   const list = [1, 2, 3];
 
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <title>Connected Traders</title>
       </Helmet>
       <Box
+        className="connectedTradersPage"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        className="connectedTradersPage"
       >
         <Box className="headlineBox">
           <Typography variant="h4">Traders I am copying:</Typography>
         </Box>
         <Box
+          alignItems="center"
           className="tradersBox"
           display="flex"
           flexDirection="row"
-          justifyContent="flex-start"
-          alignItems="center"
           flexWrap="wrap"
+          justifyContent="flex-start"
         >
-          {list && list.map((item) => <TraderCard key={item} data={item} showSummary={true} />)}
+          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={true} />)}
         </Box>
       </Box>
-    </React.Fragment>
+    </>
   );
 };
 

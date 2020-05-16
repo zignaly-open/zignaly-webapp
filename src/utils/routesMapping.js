@@ -59,15 +59,15 @@ export const routesMapping = (path) => {
         links: [
           {
             name: "Profile",
-            to: `/copyTrader/profile`,
+            to: "/copyTrader/profile",
           },
           {
             name: "Analytics",
-            to: `/copyTrader/analytics`,
+            to: "/copyTrader/analytics",
           },
           {
             name: "Positions",
-            to: `/copyTrader/positions`,
+            to: "/copyTrader/positions",
           },
         ],
       };
@@ -78,15 +78,15 @@ export const routesMapping = (path) => {
         links: [
           {
             name: "Profile",
-            to: `/signalProvider/positions`,
+            to: "/signalProvider/positions",
           },
           {
             name: "Analytics",
-            to: `/signalProvider/positions`,
+            to: "/signalProvider/positions",
           },
           {
             name: "Positions",
-            to: `/signalProvider/positions`,
+            to: "/signalProvider/positions",
           },
         ],
       };

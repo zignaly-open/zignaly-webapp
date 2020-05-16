@@ -34,7 +34,7 @@ const Doughnut = (props) => {
 
   return (
     <Box className="doughnut">
-      <canvas id="myDoughnut" className="doughnutCanvas"></canvas>
+      <canvas className="doughnutCanvas" id="myDoughnut" />
     </Box>
   );
 };

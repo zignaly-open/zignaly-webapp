@@ -34,26 +34,26 @@ const PasswordStrength = (props) => {
 
   return (
     <Box
+      alignItems="start"
       className="password-strength"
       display="flex"
       flexDirection="column"
       justifyContent="start"
-      alignItems="start"
     >
-      <CloseIcon onClick={onClose} className="close-icon" />
+      <CloseIcon className="close-icon" onClick={onClose} />
       <span className="title">Password Requirements</span>
       <span className="text"> - Atleast 8 characters</span>
       <span className="text"> - Container letters and numbers</span>
       <span className="title last">Password Strength</span>
       <Box
+        alignItems="center"
         className="strength"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
         {bars.map((item, index) => (
-          <span key={index} className={"bar " + item}></span>
+          <span className={"bar " + item} key={index} />
         ))}
       </Box>
     </Box>

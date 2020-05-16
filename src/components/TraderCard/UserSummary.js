@@ -6,7 +6,7 @@ const UserSummary = (props) => {
   let id = "traderCard" + data;
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="flex-start" className="userSummary">
+    <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
       <Typography variant="subtitle1">Allocated</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">BTC 0.2</Typography>
@@ -14,19 +14,19 @@ const UserSummary = (props) => {
       </Box>
       <Typography variant="subtitle1">Return since copying</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h5" className="green">
+        <Typography className="green" variant="h5">
           7.2%
         </Typography>
-        <Typography variant="h5" className="green">
+        <Typography className="green" variant="h5">
           19%
         </Typography>
       </Box>
       <Typography variant="subtitle1">Open positions now</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h5" className="red">
+        <Typography className="red" variant="h5">
           .7%%
         </Typography>
-        <Typography variant="h5" className="red">
+        <Typography className="red" variant="h5">
           $2.4
         </Typography>
       </Box>

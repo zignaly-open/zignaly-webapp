@@ -11,11 +11,11 @@ const DashboardHeader = (props) => {
   return (
     <Box className="dashboardHeader">
       <Box
+        alignItems="center"
         className="titleBox"
         display="flex"
         flexDirection="row"
         justifyContent="flex-start"
-        alignItems="center"
       >
         <Typography variant="h1">
           <FormattedMessage id={routesMapping(path).id} />

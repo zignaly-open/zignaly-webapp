@@ -6,8 +6,8 @@ const UserExchangeList = () => {
 
   return (
     <Box className="userExchangeList">
-      <FormControl variant="outlined" className="selectInput">
-        <Select value={exchange} onChange={(e) => setExchange(e.target.value)}>
+      <FormControl className="selectInput" variant="outlined">
+        <Select onChange={(e) => setExchange(e.target.value)} value={exchange}>
           <MenuItem value={10}>Binance</MenuItem>
           <MenuItem value={20}>KuCoin</MenuItem>
           <MenuItem value={30}>Zignaly</MenuItem>

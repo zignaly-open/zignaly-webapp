@@ -9,15 +9,15 @@ import withLayout from "../layouts/appLayout";
 import astronaut from "../images/gatsby-astronaut.png";
 
 const IndexPage = ({ intl }) => (
-  <React.Fragment>
+  <>
     <Helmet>
       <title>{intl.formatMessage({ id: "home.title" })}</title>
     </Helmet>
     <main>
       <FormattedHTMLMessage id="home.main" tagName="div" />
-      <img src={astronaut} alt="" />
+      <img alt="" src={astronaut} />
     </main>
-  </React.Fragment>
+  </>
 );
 
 IndexPage.propTypes = {

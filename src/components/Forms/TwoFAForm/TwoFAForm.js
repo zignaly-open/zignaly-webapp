@@ -39,19 +39,19 @@ const TwoFAForm = (props) => {
 
   return (
     <Box
+      alignItems="center"
       className="twoFA-form"
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
     >
       <span className="boxTitle">2 Factor Authentication</span>
       <Box
+        alignItems="center"
         className="input-box"
         display="flex"
         flexDirection="column"
         justifyContent="start"
-        alignItems="center"
       >
         <label className="custom-label">Input Your Authentication Code</label>
         <ReactCodeInput fields={6} onChange={handleCodeChange} onComplete={handleKeyPress} />

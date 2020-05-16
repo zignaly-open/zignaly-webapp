@@ -7,14 +7,14 @@ import "./SubNavHeader.scss";
 const SubNavHeader = ({ links, children }) => {
   return (
     <Box
+      alignItems="center"
+      className="subNavHeader hideScroll"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
-      alignItems="center"
-      className="subNavHeader hideScroll"
     >
       {links.map((item, index) => (
-        <Link to={item.to} className="dashboardLink" activeClassName="active" key={index}>
+        <Link activeClassName="active" className="dashboardLink" key={index} to={item.to}>
           {item.name}
         </Link>
       ))}

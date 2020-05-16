@@ -93,77 +93,71 @@ const SignupForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
+        alignItems="center"
         className="signup-form"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
       >
         <Popper
+          anchorEl={anchorEl}
           className={common.passwordStrengthBox}
+          open={!!anchorEl}
           placement="left"
           transition
-          open={anchorEl ? true : false}
-          anchorEl={anchorEl}
         >
           <PasswordStrength onClose={() => setAnchorEl(undefined)} strength={strength} />
         </Popper>
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className={common.customLabel}>Name</label>
           <TextField
             className={common.customInput}
+            error={!!errors.name}
             fullWidth
+            inputRef={register({ required: true, minLength: 3 })}
+            name="name"
             type="text"
             variant="outlined"
-            error={errors.name ? true : false}
-            name="name"
-            inputRef={register({ required: true, minLength: 3 })}
           />
         </Box>
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className={common.customLabel}>Email address</label>
           <TextField
             className={common.customInput}
-            type="email"
+            error={!!errors.email}
             fullWidth
-            variant="outlined"
-            error={errors.email ? true : false}
-            name="email"
             inputRef={register({
               required: true,
               pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
             })}
+            name="email"
+            type="email"
+            variant="outlined"
           />
         </Box>
 
         <Box
+          alignItems="start"
           className="input-box"
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className={common.customLabel}>Password</label>
           <FormControl className={common.customInput} variant="outlined">
             <OutlinedInput
-              type={showPassword ? "text" : "password"}
-              error={errors.password ? true : false}
-              name="password"
-              inputRef={register({ required: true })}
-              onChange={handlePasswordChange}
-              onBlur={() => setAnchorEl(undefined)}
               endAdornment={
                 <InputAdornment position="end">
                   <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
@@ -171,25 +165,26 @@ const SignupForm = () => {
                   </span>
                 </InputAdornment>
               }
+              error={!!errors.password}
+              inputRef={register({ required: true })}
+              name="password"
+              onBlur={() => setAnchorEl(undefined)}
+              onChange={handlePasswordChange}
+              type={showPassword ? "text" : "password"}
             />
           </FormControl>
         </Box>
 
         <Box
+          alignItems="start"
           className={"input-box " + (passwordDoNotMatch ? "no-margin" : "")}
           display="flex"
           flexDirection="column"
           justifyContent="start"
-          alignItems="start"
         >
           <label className={common.customLabel}>Repeat Password</label>
           <FormControl className={common.customInput} variant="outlined">
             <OutlinedInput
-              type={showRepeatPassword ? "text" : "password"}
-              error={errors.repeatPassword ? true : false}
-              name="repeatPassword"
-              inputRef={register({ required: true })}
-              onChange={handleRepeatPasswordChange}
               endAdornment={
                 <InputAdornment position="end">
                   <span
@@ -200,34 +195,39 @@ const SignupForm = () => {
                   </span>
                 </InputAdornment>
               }
+              error={!!errors.repeatPassword}
+              inputRef={register({ required: true })}
+              name="repeatPassword"
+              onChange={handleRepeatPasswordChange}
+              type={showRepeatPassword ? "text" : "password"}
             />
           </FormControl>
         </Box>
-        <Box minWidth="100%" display="flex" flexDirection="row" justifyContent="center">
+        <Box display="flex" flexDirection="row" justifyContent="center" minWidth="100%">
           {passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
         </Box>
         <Box className="input-box checkbox">
-          <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
+          <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
               className={common.checkboxInput}
-              name="terms"
               error={errors.terms ? "true" : "false"}
-              onChange={() => clearError("terms")}
               inputRef={register({ required: true })}
+              name="terms"
+              onChange={() => clearError("terms")}
             />
             <Box
               className={"terms-box " + (errors.terms ? " error" : "")}
               display="flex"
               flexDirection="row"
-              justifyContent="start"
               flexWrap="wrap"
+              justifyContent="start"
             >
               <span className="text">I agree to</span>
-              <a href={`/legal/terms`} className="link">
+              <a className="link" href={"/legal/terms"}>
                 Terms and condition
               </a>
               <span className="text">and</span>
-              <a href={`/legal/privacy`} className="link">
+              <a className="link" href={"/legal/privacy"}>
                 privacy policy
               </a>
             </Box>
@@ -235,8 +235,8 @@ const SignupForm = () => {
         </Box>
 
         <Box className="input-box checkbox">
-          <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
-            <Checkbox className={common.checkboxInput} name="subscribe" inputRef={register} />
+          <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
+            <Checkbox className={common.checkboxInput} inputRef={register} name="subscribe" />
             <span className={"terms-text"}>Subscribe to notifications</span>
           </Box>
         </Box>
@@ -253,7 +253,7 @@ const SignupForm = () => {
                 } */}
 
         <Box className="input-box button-box">
-          <CustomButton type="submit" className={"full submitButton"} loading={loading}>
+          <CustomButton className={"full submitButton"} loading={loading} type="submit">
             Register
           </CustomButton>
         </Box>

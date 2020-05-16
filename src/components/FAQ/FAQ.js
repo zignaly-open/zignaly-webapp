@@ -5,32 +5,32 @@ import { Box, Typography } from "@material-ui/core";
 const FAQ = () => {
   return (
     <Box
+      alignItems="flex-start"
+      className={"FAQ"}
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      alignItems="flex-start"
-      className={"FAQ"}
     >
-      <Typography variant="h4" className="title">
+      <Typography className="title" variant="h4">
         frequently asked questions
       </Typography>
       <Box
+        alignItems="center"
         className="questionContainer"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
-        <Typography variant="caption" className="question">
+        <Typography className="question" variant="caption">
           How do i start trading?
         </Typography>
-        <Typography variant="caption" className="question">
+        <Typography className="question" variant="caption">
           How can i withdraw my balance?
         </Typography>
-        <Typography variant="caption" className="question">
+        <Typography className="question" variant="caption">
           What are signal providers?
         </Typography>
-        <Typography variant="caption" className="question">
+        <Typography className="question" variant="caption">
           What are copy traders?
         </Typography>
       </Box>

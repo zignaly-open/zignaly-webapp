@@ -6,17 +6,18 @@ import "./CustomSelect.scss";
 const CustomSelect = ({ options, onChange, value, label, className }) => {
   return (
     <FormControlLabel
+      className="customSelect"
       control={
-        <FormControl variant="outlined" className="callout">
+        <FormControl className="callout" variant="outlined">
           <Select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            displayEmpty={true}
-            variant="outlined"
-            className={`select ${className}`}
             classes={{
               root: "callout1",
             }}
+            className={`select ${className}`}
+            displayEmpty={true}
+            onChange={(e) => onChange(e.target.value)}
+            value={value}
+            variant="outlined"
           >
             {options.map((item, index) => (
               <MenuItem key={index} value={item.val !== undefined ? item.val : item}>
@@ -26,9 +27,8 @@ const CustomSelect = ({ options, onChange, value, label, className }) => {
           </Select>
         </FormControl>
       }
-      labelPlacement="start"
       label={<Typography className="callout2">{label}</Typography>}
-      className="customSelect"
+      labelPlacement="start"
     />
   );
 };
