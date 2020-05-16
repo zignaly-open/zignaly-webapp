@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import './SignupForm.sass';
-import common from '../../../styles/common.module.sass';
+import React, {createRef, useState} from 'react';
+import './SignupForm.scss';
+import common from '../../../styles/common.module.scss';
 import {Box, TextField, Checkbox, InputAdornment, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {validateEmail, validateName, validatePassword} from '../../../helpers/validators';
@@ -8,163 +8,86 @@ import {validateEmail, validateName, validatePassword} from '../../../helpers/va
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import PasswordStrength from '../../PasswordStrength';
+import {useDispatch} from 'react-redux';
+import {useForm} from 'react-hook-form';
 
-class SignupForm extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            name: "",
-            email: "",
-            password: "",
-            repeat_password: "",
-            terms: false,
-            termsError: false,
-            nameError: false,
-            emailError: false,
-            loading: false,
-            gRecaptchaResponse: "",
-            ref: "",
-            showPassword: false,
-            showRepeatPassword: false,
-            anchorEl: undefined,
-            strength: 0,
-            subscribe: true,
-            passwordDoNotMatch: false,
-            passwordError: false,
-            repeatPasswordError: false
-        }
-        this.recaptchaRef = React.createRef();
-    }
+const SignupForm = () => {
+    const [showPassword, setShowPassword] = useState(false)
+    const [showRepeatPassword, setShowRepeatPassword] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(undefined)
+    const [gRecaptchaResponse, setCaptchaResponse] = useState('')
+    const [strength, setStrength] = useState(0)
+    const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false)
+    const [loading, showLoading] = useState(false)
+    const recaptchaRef = createRef()
+    const dispatch = useDispatch()
+    const {errors, handleSubmit, register, setError, clearError} = useForm()
 
     // componentDidMount() {
     //     const ref = saveRefCookie(this.props.location);
     //     this.setState({ref: ref})
     // }
 
-    handleEmailChange = (e) => {
-        this.setState({
-            email: e.target.value,
-            emailError: validateEmail(e.target.value) ? false : true
-        })
+    const handlePasswordChange = (e) => {
+        setPasswordDoNotMatch(false)
+        setAnchorEl(e.currentTarget)
+        let howStrong = validatePassword(e.target.value)
+        setStrength(howStrong)
+        howStrong >= 4 ? clearError("password") : setError("password")
     }
 
-    handleNameChange = (e) => {
-        this.setState({
-            name: e.target.value,
-            nameError: validateName(e.target.value) ? false : true
-        })
+    const handleRepeatPasswordChange = (e) => {
+        setPasswordDoNotMatch(false)
+        let howStrong = validatePassword(e.target.value)
+        setStrength(howStrong)
+        howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword")
     }
 
-    handleTermsChange = (e) => {
-        this.setState({
-            terms: e.target.checked,
-            termsError: e.target.checked ? false : true
-        })
-    }
-
-    handlePasswordChange = (e) => {
-        this.setState({
-            password: e.target.value,
-            anchorEl: e.currentTarget,
-            strength: validatePassword(e.target.value),
-            passwordDoNotMatch: false,
-            passwordError:  e.target.value && validatePassword(e.target.value) >= 4 ? false : true
-        })
-    }
-
-    handleRepeatPasswordChange = (e) => {
-        this.setState({
-            repeat_password: e.target.value,
-            strength: validatePassword(e.target.value),
-            passwordDoNotMatch: false,
-            repeatPasswordError:  e.target.value && e.target.value.length >= 3 ? false : true
-        })
-    }
-
-    matchPasswords = () => {
-        this.setState({anchorEl: undefined})
-        if(this.state.password && this.state.repeat_password){
-            if(this.state.password === this.state.repeat_password){
-                this.setState({passwordDoNotMatch: false})
-            } else {
-                this.setState({passwordDoNotMatch: true})
-            }
+    const onSubmit = (data) => {
+        if(data.password && data.repeatPassword && data.password === data.repeatPassword){
+            // showLoading(true)
+            console.log(data)
+            // const params = {
+            //     projectId: projectId,
+            //     firstName: data.firstName,
+            //     email: data.email,
+            //     password: data.password,
+            //     subscribe: data.subscribe,
+            //     ref: this.state.ref || null,
+            //     array: true,
+            //     gRecaptchaResponse: "abracadabra"
+            // };
+            // setCaptchaResponse('')
+            // this.props.dispatch(signup(params, this.hideLoader));
         } else {
-            this.setState({passwordDoNotMatch: false})
+            setPasswordDoNotMatch(true)
         }
     }
 
-    showLoader = () => {
-        this.setState({loading: true})
+    const onChangeReCAPTCHA = (value) => {
+        setCaptchaResponse(value)
     }
 
-    hideLoader = () => {
-        this.setState({loading: false})
+    const onExpiredReCAPTCHA = () => {
+        dispatch(alertError('Your solution to the ReCAPTCHA has expired, please resolve it again.'));
+        setCaptchaResponse('')
     }
 
-    handleSubmit = () => {
-        if(this.state.terms){
-            this.showLoader()
-            const params = {
-                projectId: projectId,
-                firstName: this.state.name,
-                email: this.state.email,
-                password: this.state.password,
-                subscribe: this.state.subscribe,
-                ref: this.state.ref || null,
-                array: true,
-                gRecaptchaResponse: "abracadabra"
-            };
-            if(envconfig.configureCaptcha){
-                this.recaptchaRef.current.reset()
-            }
-            this.setState({gRecaptchaResponse: ''})
-            this.props.dispatch(signup(params, this.hideLoader));
-        } else{
-            this.setState({termsError: true})
-        }
+    const onErroredReCAPTCHA = () => {
+        dispatch(alertError('Something went wrong with the ReCAPTCHA, try to reload the page if you can\'t signup.'));
+        setCaptchaResponse('')
     }
 
-    handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            this.handleSubmit()
-        }
-    }
-
-    disabledButton = () => {
-        if(this.state.name && this.state.email && this.state.password && this.state.repeat_password){
-            if(!this.state.emailError && !this.state.nameError && !this.state.passwordError && !this.state.repeatPasswordError && !this.state.passwordDoNotMatch){
-                return false
-            }
-            return true
-        }
-        return true
-    }
-
-    onChangeReCAPTCHA = (value) => {
-        this.setState({gRecaptchaResponse: value})
-    }
-
-    onExpiredReCAPTCHA = () => {
-        this.props.dispatch(alertError('Your solution to the ReCAPTCHA has expired, please resolve it again.'));
-        this.setState({gRecaptchaResponse: ''})
-    }
-
-    onErroredReCAPTCHA = () => {
-        this.props.dispatch(alertError('Something went wrong with the ReCAPTCHA, try to reload the page if you can\'t signup.'));
-        this.setState({gRecaptchaResponse: ''})
-    }
-
-    render(){
-        return(
+    return(
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Box className="signup-form" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <Popper
                     className={common.passwordStrengthBox}
                     placement="left"
                     transition
-                    open={this.state.anchorEl ? true : false}
-                    anchorEl={this.state.anchorEl}>
-                    <PasswordStrength onClose={() => this.setState({anchorEl: undefined})} strength={this.state.strength} />
+                    open={anchorEl ? true : false}
+                    anchorEl={anchorEl}>
+                    <PasswordStrength onClose={() => setAnchorEl(undefined)} strength={strength} />
                 </Popper>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className={common.customLabel}>Name</label>
@@ -173,10 +96,9 @@ class SignupForm extends Component{
                         fullWidth
                         type="text"
                         variant="outlined"
-                        error={this.state.nameError}
-                        value={this.state.name}
-                        onChange={this.handleNameChange}
-                        onKeyDown={this.handleKeyPress}
+                        error={errors.name ? true : false}
+                        name="name"
+                        inputRef={register({required: true, minLength: 3})}
                         />
                 </Box>
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
@@ -186,28 +108,26 @@ class SignupForm extends Component{
                         type="email"
                         fullWidth
                         variant="outlined"
-                        error={this.state.emailError}
-                        value={this.state.email}
-                        onChange={this.handleEmailChange}
-                        onKeyDown={this.handleKeyPress}
+                        error={errors.email ? true : false}
+                        name="email"
+                        inputRef={register({required: true, pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ })}
                         />
-                    {this.state.emailError && <span className="error-text">Email should be valid</span>}
                 </Box>
 
                 <Box className="input-box" display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className={common.customLabel}>Password</label>
                     <FormControl className={common.customInput} variant="outlined">
                         <OutlinedInput
-                            type={this.state.showPassword ? 'text' : 'password'}
-                            value={this.state.password}
-                            error={this.state.passwordError}
-                            onBlur={this.matchPasswords}
-                            onChange={this.handlePasswordChange}
-                            onKeyDown={this.handleKeyPress}
+                            type={showPassword ? 'text' : 'password'}
+                            error={errors.password ? true : false}
+                            name="password"
+                            inputRef={register({required: true})}
+                            onChange={handlePasswordChange}
+                            onBlur={() => setAnchorEl(undefined)}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <span className={common.pointer} onClick={() => this.setState({showPassword: !this.state.showPassword})}>
-                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </span>
                                 </InputAdornment>
                             }
@@ -215,20 +135,19 @@ class SignupForm extends Component{
                     </FormControl>
                 </Box>
 
-                <Box className={"input-box " + (this.state.passwordDoNotMatch ? "no-margin" : "")} display="flex" flexDirection="column" justifyContent="start" alignItems="start">
+                <Box className={"input-box " + (passwordDoNotMatch ? "no-margin" : "")} display="flex" flexDirection="column" justifyContent="start" alignItems="start">
                     <label className={common.customLabel}>Repeat Password</label>
                     <FormControl className={common.customInput} variant="outlined">
                         <OutlinedInput
-                            type={this.state.showRepeatPassword ? 'text' : 'password'}
-                            value={this.state.repeatPassword}
-                            error={this.state.repeatPasswordError}
-                            onBlur={this.matchPasswords}
-                            onChange={this.handleRepeatPasswordChange}
-                            onKeyDown={this.handleKeyPress}
+                            type={showRepeatPassword ? 'text' : 'password'}
+                            error={errors.repeatPassword ? true : false}
+                            name="repeatPassword"
+                            inputRef={register({required: true})}
+                            onChange={handleRepeatPasswordChange}
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <span className={common.pointer} onClick={() => this.setState({showRepeatPassword: !this.state.showRepeatPassword})}>
-                                        {this.state.showRepeatPassword ? <Visibility /> : <VisibilityOff />}
+                                    <span className={common.pointer} onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
+                                        {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
                                     </span>
                                 </InputAdornment>
                             }
@@ -236,16 +155,18 @@ class SignupForm extends Component{
                     </FormControl>
                 </Box>
                 <Box minWidth="100%" display="flex" flexDirection="row" justifyContent="center">
-                    {this.state.passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
+                    {passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
                 </Box>
                 <Box className="input-box checkbox">
                     <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
                         <Checkbox
-                            checked={this.state.terms}
-                            className={common.checkboxInput + (this.state.termsError ? "error" : "")}
-                            onChange={this.handleTermsChange}
+                            className={common.checkboxInput}
+                            name="terms"
+                            error={errors.terms ? "true" : "false"}
+                            onChange={() => clearError("terms")}
+                            inputRef={register({required: true})}
                         />
-                        <Box className="terms-box" display="flex" flexDirection="row" justifyContent="start" flexWrap="wrap">
+                        <Box className={"terms-box " + (errors.terms ? " error" : "")} display="flex" flexDirection="row" justifyContent="start" flexWrap="wrap">
                             <span className="text">I agree to</span>
                             <a href={`/legal/terms`} className="link">Terms and condition</a>
                             <span className="text">and</span>
@@ -257,9 +178,9 @@ class SignupForm extends Component{
                 <Box className="input-box checkbox">
                     <Box display="flex" flexDirection="row" justifyContent="start" alignItems="start">
                         <Checkbox
-                            checked={this.state.subscribe}
                             className={common.checkboxInput}
-                            onChange={(e) => this.setState({subscribe: e.target.checked})}
+                            name="subscribe"
+                            inputRef={register}
                         />
                         <span className={"terms-text"}>Subscribe to notifications</span>
                     </Box>
@@ -278,14 +199,13 @@ class SignupForm extends Component{
 
                 <Box className="input-box button-box">
                     <CustomButton
-                        className={"full " + (this.disabledButton() ? "disabled-btn" : "submit-btn")}
-                        disabled={this.disabledButton()}
-                        loading={this.state.loading}
-                        onClick= {this.handleSubmit}>Register</CustomButton>
+                        type="submit"
+                        className={"full submit-btn"}
+                        loading={loading}>Register</CustomButton>
                 </Box>
             </Box>
-        )
-    }
+        </form>
+    )
 }
 
 export default SignupForm;

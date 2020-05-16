@@ -1,5 +1,5 @@
 import React from 'react';
-import './PositionFilters.sass';
+import './PositionFilters.scss';
 import { Box } from '@material-ui/core';
 import CustomButtom from '../../CustomButton';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './PasswordStrength.sass';
+import './PasswordStrength.scss';
 import { Box } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 

@@ -1,0 +1,34 @@
+@import '../../../styles/variables.sass'
+
+.mobileHeader
+    width: 100%
+    min-height: 50px
+    box-sizing: border-box
+    padding: 16px
+    .header-btn
+        min-width: 100% !important
+        margin: 0 !important
+        height: 40px !important
+    .connectedBox
+        width: 100%
+        .actionBox
+            width: 100% !important
+            height: 44px
+            .expandIcon
+                width: 24px
+                height: 24px
+                margin-right: 5px
+            .iconBox
+                padding-right: 15px
+        .balanceContainer
+            width: 100%
+            margin-top: 15px
+            .balanceBox
+                width: fit-content
+                height: 42px
+                .balance
+                    text-transform: uppercase
+                    &.red
+                        color: $red
+                    &.green
+                        color: $green

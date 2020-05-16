@@ -17,8 +17,8 @@ const getLocalizedPath = (originalPath, locale) => {
 
     if (!localizedPath) {
         throw new Error(
-            `You have to specify a tranlastion for all of your routes.\n There is no transalation for ${originalPath} in language ${locale}.`
-        );
+          `You have to specify a translation for all of your routes.\n There is no translation for ${originalPath} in language ${locale}.`
+        )
     }
     return isDefault ? localizedPath : `/${locale}${localizedPath}`;
 };

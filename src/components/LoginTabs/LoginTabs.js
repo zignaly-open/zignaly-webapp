@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './LoginTabs.sass';
+import './LoginTabs.scss';
 import { Box, Tab, Tabs } from '@material-ui/core';
 import LoginForm from '../Forms/LoginForm';
 import SignupForm from '../Forms/SignupForm';
