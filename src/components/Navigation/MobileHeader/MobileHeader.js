@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './MobileHeader.sass';
+import './MobileHeader.scss';
 import { Box, Grow, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import CustomButton from '../../CustomButton';

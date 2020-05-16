@@ -1,5 +1,5 @@
 import React from 'react';
-import './NoPositions.sass';
+import './NoPositions.scss';
 import { Box, Typography } from '@material-ui/core';
 import {FormattedMessage} from 'react-intl';
 import CustomButton from '../../CustomButton';

@@ -10,7 +10,7 @@ import ProvidersFilters from "../../../components/Providers/ProvidersFilters"
 import TimeFrameSelect from "../../../components/TimeFrameSelect"
 import CustomSelect from "../../../components/CustomSelect"
 import Helmet from "react-helmet"
-import "./copyTradersBrowse.sass"
+import "./copyTradersBrowse.scss"
 
 const CopyTradersBrowse = ({
   showFilters,

@@ -1,5 +1,5 @@
 import React from 'react';
-import  './MobileAppbar.sass';
+import  './MobileAppbar.scss';
 import { Box } from '@material-ui/core';
 import Link from '../../LocalizedLink';
 import { useSelector, useDispatch } from 'react-redux';
