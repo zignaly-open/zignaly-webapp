@@ -1,0 +1,75 @@
+@import url("./fonts.sass");
+
+@import "./variables.sass";
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+body {
+  margin: 0;
+}
+
+.pageTitle {
+  font-family: "PlexSans-Bold";
+  font-size: 33px;
+  line-height: 36px;
+  margin: 0;
+}
+
+.boxTitle {
+  font-family: "PlexSans-Medium";
+  font-size: 24px;
+  line-height: 24px;
+  margin: 0;
+}
+
+.hideScroll {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.hideScroll::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+.selectInput {
+  background-image: $purpleLightGradient !important;
+  border-radius: 4px;
+  height: 40px !important;
+  min-width: 200px !important;
+
+  div {
+    color: $white !important;
+    height: 40px;
+    max-height: 40px !important;
+    padding-bottom: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0 !important;
+    padding-top: 0.6rem !important;
+
+    &:before, &:after {
+      border: 0;
+      display: none !important;
+    }
+
+    svg {
+      color: $white;
+      font-size: 28px;
+      margin-top: -2px;
+    }
+  }
+
+  .option {
+    font-family: "PlexSans-Bold" !important;
+  }
+}
