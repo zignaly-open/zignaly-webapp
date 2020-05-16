@@ -2,30 +2,27 @@
 
 .positionsTabs
     border-radius: 4px
-    width: 100%
-    min-height: 350px
     box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2)
+    min-height: 350px
+    width: 100%
 
     .tabsBox
         border-bottom: solid 1px rgba(0, 0, 0, 0.2)
         .tabs-menu
-            width: 100%
             min-height: 70px
-            max-height: 70px
+            width: 100%
             .container
-                width: fit-content
                 display: flex
                 flex-direction: row
                 justify-content: flex-start
+                width: fit-content
                 button
-                    padding: 0
-                    min-width: 170px
+                    font-family: 'PlexSans-Bold'
+                    font-size: 16px !important
                     max-width: 170px
                     min-height: 70px
-                    max-height: 70px
+                    padding: 0
                     text-transform: capitalize
-                    font-size: 16px !important
-                    font-family: 'PlexSans-Bold'
                     &:focus
                         outline: none
                     &.selected
@@ -34,9 +31,9 @@
             padding: 0 20px
             width: 120px
             .icon
-                width: 24px
-                height: 24px
                 cursor: pointer
+                height: 24px
+                width: 24px
 
         .indicator
             display: none
