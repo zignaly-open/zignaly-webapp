@@ -1,0 +1,55 @@
+@import "../../../styles/variables.sass";
+
+.mobileHeader {
+  box-sizing: border-box;
+  min-height: 50px;
+  padding: 16px;
+  width: 100%;
+
+  .header-btn {
+    height: 40px;
+    margin: 0;
+    min-width: 100%;
+  }
+
+  .connectedBox {
+    width: 100%;
+
+    .actionBox {
+      height: 44px;
+      width: 100%;
+
+      .expandIcon {
+        height: 24px;
+        margin-right: 5px;
+        width: 24px;
+      }
+
+      .iconBox {
+        padding-right: 15px;
+      }
+    }
+
+    .balanceContainer {
+      margin-top: 15px;
+      width: 100%;
+
+      .balanceBox {
+        height: 42px;
+        width: fit-content;
+
+        .balance {
+          text-transform: uppercase;
+
+          &.red {
+            color: $red;
+          }
+
+          &.green {
+            color: $green;
+          }
+        }
+      }
+    }
+  }
+}
