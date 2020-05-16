@@ -44,4 +44,4 @@ module.exports = [
       "/subpage/subsubpage/page1": "/subpage/subsubpage/page1",
     },
   },
-]
+];

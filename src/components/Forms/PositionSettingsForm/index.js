@@ -1,1 +1,1 @@
-export {default} from  './PositionSettingsForm';
+export { default } from "./PositionSettingsForm";

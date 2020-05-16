@@ -1,1 +1,1 @@
-export {default} from  './PositionsTable';
+export { default } from "./PositionsTable";

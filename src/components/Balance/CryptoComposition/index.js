@@ -1,1 +1,1 @@
-export {default} from './CryptoComposition';
+export { default } from "./CryptoComposition";

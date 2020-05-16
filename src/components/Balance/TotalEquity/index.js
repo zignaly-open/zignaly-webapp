@@ -1,1 +1,1 @@
-export {default} from './TotalEquity';
+export { default } from "./TotalEquity";

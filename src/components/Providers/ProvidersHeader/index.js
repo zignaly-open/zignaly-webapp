@@ -1,1 +1,1 @@
-export { default } from "./ProvidersHeader"
+export { default } from "./ProvidersHeader";

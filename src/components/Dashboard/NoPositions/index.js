@@ -1,1 +1,1 @@
-export {default} from './NoPositions';
+export { default } from "./NoPositions";

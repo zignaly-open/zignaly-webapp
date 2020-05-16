@@ -1,45 +1,38 @@
-import React, { useEffect, useState } from "react"
-import "./PositionsTable.scss"
-import {
-  Box,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@material-ui/core"
-import tradeApi from "../../../services/tradeApiClient"
-import * as TradeApiTypes from "../../../services/tradeApiClient.types"
+import React, { useEffect, useState } from "react";
+import "./PositionsTable.scss";
+import { Box, Table, TableHead, TableBody, TableRow, TableCell } from "@material-ui/core";
+import tradeApi from "../../../services/tradeApiClient";
+import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 
-const PositionsTable = props => {
-  const [positions, setPositions] = useState([])
+const PositionsTable = (props) => {
+  const [positions, setPositions] = useState([]);
   const authenticateUser = async () => {
     const loginPayload = {
       email: "mailxuftg1pxzk@example.test",
       password: "abracadabra",
-    }
+    };
 
-    return await tradeApi.userLogin(loginPayload)
-  }
+    return await tradeApi.userLogin(loginPayload);
+  };
 
   const loadPositions = async () => {
-    const userEntity = await authenticateUser()
+    const userEntity = await authenticateUser();
     const sessionPayload = {
       token: userEntity.token,
-    }
+    };
 
-    const positions = await tradeApi.openPositionsGet(sessionPayload)
-    setPositions(positions)
-  }
+    const positions = await tradeApi.openPositionsGet(sessionPayload);
+    setPositions(positions);
+  };
 
   useEffect(() => {
-    loadPositions()
-  }, [])
+    loadPositions();
+  }, []);
 
   /**
    * @type {TradeApiTypes.UserPositionsCollection} positionsCollection
    */
-  const positionsCollection = positions
+  const positionsCollection = positions;
 
   return (
     <Box
@@ -49,12 +42,7 @@ const PositionsTable = props => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box
-        className="tableBox"
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-      >
+      <Box className="tableBox" display="flex" flexDirection="row" justifyContent="center">
         <Table className="table">
           <TableHead className="head">
             <TableRow className="row">
@@ -94,7 +82,7 @@ const PositionsTable = props => {
             </TableRow>
           </TableHead>
           <TableBody className="body">
-            {positionsCollection.map(position => (
+            {positionsCollection.map((position) => (
               <TableRow key={position.positionId} className="row">
                 <TableCell align="left" className="cell">
                   {position.openDate}
@@ -135,7 +123,7 @@ const PositionsTable = props => {
         </Table>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default PositionsTable
+export default PositionsTable;
