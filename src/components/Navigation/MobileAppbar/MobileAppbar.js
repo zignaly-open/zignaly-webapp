@@ -32,10 +32,10 @@ const MobileAppbar = () => {
                 <Link to={"/dashboard/positions"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? DashboardWhite : DashboardBlack} alt="zignaly" className={"icon"} />
                 </Link>
-                <Link to={"/copyTraders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                <Link to={"/copyTraders/browse"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? CopyWhite : CopyBlack} alt="zignaly" className={"icon"} />
                 </Link>
-                <Link to={"/signalProviders"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
+                <Link to={"/signalProviders/browse"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
                     <img src={darkStyle ? SignalWhite : SignalBlack} alt="zignaly" className={"icon"} />
                 </Link>
                 <Link to={"/tradingTerminal"} partiallyActive={true} className={"sideBarLink"} activeClassName={"active"}>
