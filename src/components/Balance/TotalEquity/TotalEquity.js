@@ -1,5 +1,5 @@
 import React from 'react';
-import './TotalEquity.sass';
+import './TotalEquity.scss';
 import { Box, Typography } from '@material-ui/core';
 import Chart from '../../Graphs/Chart';
 

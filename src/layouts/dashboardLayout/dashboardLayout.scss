@@ -1,0 +1,71 @@
+@import "../../styles/variables.scss";
+
+.dashboardLayout {
+  .titleBox {
+    box-sizing: border-box;
+    height: 50px;
+    margin-bottom: 16px;
+    width: 100%;
+
+    .exchangeTitle {
+      color: $purple;
+      font-family: "PlexSans-Bold";
+      font-size: 16px;
+      margin: 8px 0 0 16px;
+    }
+  }
+
+  .pageContent {
+    margin-bottom: 30px;
+    min-height: 400px;
+    width: 100%;
+  }
+
+  .faq {
+    width: 100%;
+  }
+
+  .noExchangeBox {
+    .title {
+      font-family: "PlexSans-Medium";
+      font-size: 21px;
+      margin-bottom: 16px;
+      width: 450px;
+
+      b {
+        color: $purple;
+        cursor: pointer;
+      }
+
+      .text {
+        font-family: "PlexSans-Light";
+        font-size: 18px;
+        width: 420px;
+
+        b {
+          font-family: "PlexSans-Medium";
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .dashboardLayout {
+    padding-bottom: 60px;
+
+    .titleBox {
+      margin-bottom: 10px;
+    }
+
+    .noExchangeBox {
+      .title {
+        width: 100%;
+      }
+
+      .text {
+        width: 100%;
+      }
+    }
+  }
+}

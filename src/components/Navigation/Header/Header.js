@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Header.sass';
+import './Header.scss';
 import { Box, Menu, MenuItem, Grow, Typography } from '@material-ui/core';
 import LogoWhite from '../../../images/logo/logoWhite.svg';
 import LogoBlack from '../../../images/logo/logoBlack.svg';

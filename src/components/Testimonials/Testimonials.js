@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import style from './Testimonials.module.sass';
+import style from './Testimonials.module.scss';
 import { Box } from '@material-ui/core';
 import Testimonial from './Testimonial';
 import CustomButton from '../CustomButton';

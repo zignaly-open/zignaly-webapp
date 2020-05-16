@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import "./PositionsTable.sass"
+import "./PositionsTable.scss"
 import {
   Box,
   Table,

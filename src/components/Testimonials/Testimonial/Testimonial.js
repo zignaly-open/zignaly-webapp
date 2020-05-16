@@ -1,5 +1,5 @@
 import React from 'react';
-import './Testimonial.sass';
+import './Testimonial.scss';
 import { Box } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import FacebookIcon from '../../../images/facebook-icon.svg';

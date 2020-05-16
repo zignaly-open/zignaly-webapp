@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "../../styles/common.sass";
-import './dashboardLayout.sass';
+import "../../styles/common.scss";
+import './dashboardLayout.scss';
 import { getDisplayName } from "../../utils";
 import { Box, Typography } from '@material-ui/core';
 import FAQ from "../../components/FAQ";

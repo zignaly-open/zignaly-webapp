@@ -8,7 +8,7 @@ import { languages, getLocalizedPath } from "../../i18n";
 
 import { PageContext } from "../../pageContext";
 
-import "./LanguageSwitcher.sass";
+import "./LanguageSwitcher.scss";
 
 const flags = {
     cs,

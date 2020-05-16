@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Box } from "@material-ui/core"
 import Link from "../LocalizedLink"
-import "./SubNavHeader.sass"
+import "./SubNavHeader.scss"
 
 const SubNavHeader = ({ links, children }) => {
   return (

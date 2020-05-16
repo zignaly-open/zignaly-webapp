@@ -1,4 +1,4 @@
-@import "../../../styles/variables.sass";
+@import "../../../styles/variables.scss";
 
 .positionsTabs {
   border-radius: 4px;
@@ -26,6 +26,11 @@
           min-height: 70px;
           padding: 0;
           text-transform: capitalize;
+
+            &:last-child {
+                max-width: 100px;
+                min-width: 100px;
+            }
 
           &:focus {
             outline: none;

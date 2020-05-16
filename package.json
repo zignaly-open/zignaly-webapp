@@ -60,8 +60,11 @@
         "faker": "^4.1.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.0.1",
+        "postcss-scss": "^2.0.0",
         "prettier": "^1.17.1",
         "react-test-renderer": "^16.8.6",
+        "sass-lint": "^1.13.1",
+        "sass-lint-auto-fix": "^0.21.0",
         "typescript": "^3.9.2"
     },
     "scripts": {
@@ -71,6 +74,8 @@
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",
-        "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js"
+        "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js",
+        "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
+        "sasslint": "sass-lint -v"
     }
 }

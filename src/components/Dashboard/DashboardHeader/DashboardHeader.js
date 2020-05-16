@@ -1,5 +1,5 @@
 import React from "react"
-import "./DashboardHeader.sass"
+import "./DashboardHeader.scss"
 import { Box } from "@material-ui/core"
 import { injectIntl } from "react-intl"
 import SubNavHeader from "../../SubNavHeader"

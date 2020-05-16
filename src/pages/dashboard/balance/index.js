@@ -1,5 +1,5 @@
 import React from 'react';
-import './balance.sass';
+import './balance.scss';
 import { Box } from '@material-ui/core';
 import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";
