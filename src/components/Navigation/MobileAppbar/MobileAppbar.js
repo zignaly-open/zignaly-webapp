@@ -42,7 +42,7 @@ const MobileAppbar = () => {
                     <img src={darkStyle ? TerminalWhite : TerminlBlack} alt="zignaly" className={"icon"} />
                 </Link>
                 <Box display="flex"flexDirection="row" justifyContent="center" className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}>
-                    <img onClick={() => dispatch(selectDarkTheme(true))} src={darkStyle ? OutlineWhite : FillWhite} alt="zignaly" className={"icon"} />
+                    <img onClick={() => dispatch(selectDarkTheme(!darkStyle))} src={darkStyle ? OutlineWhite : FillWhite} alt="zignaly" className={"icon"} />
                 </Box>
             </Box>
     )
