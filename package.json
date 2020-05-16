@@ -78,6 +78,7 @@
         "test": "jest",
         "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 \"src/**/*.js\"",
         "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-        "sasslint": "sass-lint -v"
+        "sasslint": "sass-lint -v",
+        "jsfix": "eslint --fix --ext .js,.jsx"
     }
 }
