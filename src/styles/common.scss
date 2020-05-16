@@ -43,23 +43,23 @@ body {
 }
 
 .selectInput {
-  background-image: $purpleLightGradient !important;
+  background-image: $purpleLightGradient ;
   border-radius: 4px;
-  height: 40px !important;
-  min-width: 200px !important;
+  height: 40px ;
+  min-width: 200px ;
 
   div {
-    color: $white !important;
+    color: $white ;
     height: 40px;
-    max-height: 40px !important;
-    padding-bottom: 0 !important;
-    padding-left: 0.5rem !important;
-    padding-right: 0 !important;
-    padding-top: 0.6rem !important;
+    max-height: 40px ;
+    padding-bottom: 0 ;
+    padding-left: 0.5rem ;
+    padding-right: 0 ;
+    padding-top: 0.6rem ;
 
     &:before, &:after {
       border: 0;
-      display: none !important;
+      display: none ;
     }
 
     svg {
@@ -70,6 +70,6 @@ body {
   }
 
   .option {
-    font-family: "PlexSans-Bold" !important;
+    font-family: "PlexSans-Bold" ;
   }
 }
