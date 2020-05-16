@@ -28,7 +28,7 @@ const withAppLayout = Component => {
           </Hidden>
           <Hidden smUp>
             <MobileHeader />
-            {/* <MobileAppbar /> */}
+            <MobileAppbar />
           </Hidden>
           <Box
             display="flex"
