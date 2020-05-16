@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import './ResetPasswordForm.sass';
+import './ResetPasswordForm.scss';
 import {Box, InputAdornment, IconButton, FormControl, OutlinedInput, Popper} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import {alertError} from '../../../actions';

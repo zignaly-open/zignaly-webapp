@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import  './Sidebar.sass';
+import  './Sidebar.scss';
 import { Box, ClickAwayListener, Typography } from '@material-ui/core';
 import Link from '../../LocalizedLink';
 import { useSelector, useDispatch } from 'react-redux';

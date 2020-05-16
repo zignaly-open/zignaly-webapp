@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './TwoFAForm.sass';
+import './TwoFAForm.scss';
 import {Box} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 // import {verify2FA} from 'actions';

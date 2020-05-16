@@ -1,0 +1,19 @@
+@import "../../styles/variables.scss";
+
+.modal {
+  border-radius: 4px;
+  height: fit-content;
+  padding: 20px;
+
+  &.small {
+    width: 500px;
+  }
+
+  &.medium {
+    width: 800px;
+  }
+
+  &.large {
+    width: 1000px;
+  }
+}

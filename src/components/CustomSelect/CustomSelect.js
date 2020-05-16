@@ -7,7 +7,7 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core"
-import "./CustomSelect.sass"
+import "./CustomSelect.scss"
 
 const CustomSelect = ({ options, onChange, value, label, className }) => {
   return (

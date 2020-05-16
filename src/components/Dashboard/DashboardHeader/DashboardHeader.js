@@ -1,5 +1,5 @@
 import React from "react"
-import "./DashboardHeader.sass"
+import "./DashboardHeader.scss"
 import { Box, Typography } from "@material-ui/core"
 import SubNavHeader from "../../SubNavHeader"
 import {routesMapping} from '../../../utils/routesMapping';

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import "../../styles/common.sass"
-import "./copyTradersLayout.sass"
+import "../../styles/common.scss"
+import "./copyTradersLayout.scss"
 import { getDisplayName } from "../../utils"
 import { Box, Typography } from "@material-ui/core"
 import FAQ from "../../components/FAQ"

@@ -1,5 +1,5 @@
 import React from 'react';
-import './TraderCard.sass';
+import './TraderCard.scss';
 import { Box, Typography } from '@material-ui/core';
 import ConnectedIcon from '../../images/dashboard/connected.svg';
 import LogoIcon from '../../images/logo/logoIcon.svg';

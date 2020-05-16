@@ -1,5 +1,5 @@
 import React from 'react';
-import './Alert.sass';
+import './Alert.scss';
 import { Box } from '@material-ui/core';
 
 const Popup = (props) => {

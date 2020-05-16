@@ -1,5 +1,5 @@
 import React from 'react';
-import './PositionSettingsForm.sass';
+import './PositionSettingsForm.scss';
 import {Box} from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import CloseIcon from '@material-ui/icons/Close';

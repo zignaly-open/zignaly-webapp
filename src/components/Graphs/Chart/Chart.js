@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './Chart.sass';
+import './Chart.scss';
 import { Box } from '@material-ui/core';
 import {Chart} from 'chart.js';
 

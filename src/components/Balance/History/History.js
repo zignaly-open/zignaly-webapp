@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './History.sass';
+import './History.scss';
 import { Box, Popover, Typography } from '@material-ui/core';
 import SettingsIcon from '../../../images/dashboard/settings.svg';
 import FiltersUnchecked from '../../../images/dashboard/filtersHollow.svg';

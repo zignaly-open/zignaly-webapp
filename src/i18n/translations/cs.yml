@@ -31,6 +31,7 @@ dashboard.balance.cryptocompo: "cs-Crypto Composition"
 dashboard.balance.available: "cs-Available"
 dashboard.balance.invested: "cs-Invested"
 dashboard.balance.profit: "cs-Profit"
+dashboard.balance.total: cs-"Total"
 dashboard.balance.historical: "cs-Historical"
 dashboard.traders.copying: "cs-Traders I am copying:"
 

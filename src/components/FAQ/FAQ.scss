@@ -1,0 +1,33 @@
+@import "../../styles/variables.scss";
+
+@import url("../../styles/fonts.scss");
+
+.FAQ {
+  box-sizing: boorder-box;
+  width: 100%;
+
+  .title {
+    text-transform: capitalize;
+  }
+
+  .questionContainer {
+    .question {
+      color: $purple;
+      margin: 16px 16px 0 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .FAQ {
+    .questionContainer {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      .question {
+        margin: 10px 0 0 0;
+      }
+    }
+  }
+}

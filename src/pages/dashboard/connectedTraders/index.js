@@ -1,5 +1,5 @@
 import React from 'react';
-import './connectedTraders.sass';
+import './connectedTraders.scss';
 import { Box, Typography } from '@material-ui/core';
 import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";

@@ -1,0 +1,40 @@
+@import "../../../styles/variables.scss";
+
+.availableBalance {
+  height: 80px;
+  padding: 0 20px;
+
+  .dataBox {
+    .smallText {
+      margin-left: 12px;
+    }
+  }
+
+  .operator {
+    alignItems: center;
+    display: flex;
+    flex-direction: row;
+    font-size: 21px;
+    font-weight: bold;
+    justifyContent: center;
+    width: content;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .availableBalance {
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+
+    .dataBox {
+      align-items: center;
+      width: 100%;
+    }
+
+    .operator {
+      width: fit-content;
+    }
+  }
+}

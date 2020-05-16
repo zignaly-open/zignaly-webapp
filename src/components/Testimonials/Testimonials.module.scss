@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+.testimonials {
+  padding: 50px 130px;
+
+  .title {
+    color: $black;
+    display: block;
+    font-family: "PlexSans-Medium";
+    font-size: 28px;
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .testimonials {
+    padding: 30px 20px;
+
+    .title {
+      text-align: center;
+    }
+  }
+}
