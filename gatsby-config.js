@@ -9,7 +9,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: "gatsby-plugin-sass",
+      resolve: `gatsby-plugin-sass`,
       options: {
         data: `@import "${__dirname}/src/styles/index";`,
       },
@@ -53,6 +53,18 @@ module.exports = {
         },
         // Exclude global styles from the plugin using a RegExp:
         exclude: `\/global\/`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-eslint`,
+      options: {
+        test: /\.js$|\.jsx$/,
+        exclude: /(node_modules|.cache|public)/,
+        stages: ["develop"],
+        options: {
+          emitWarning: true,
+          failOnError: false,
+        },
       },
     },
   ],
