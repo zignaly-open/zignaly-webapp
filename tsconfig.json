@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "allowJs": true,
+    "checkJs": true,
+    "moduleResolution": "node",
+    "alwaysStrict": true,
+    "strictNullChecks": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "types",
+    "jsx": "react",
+    "lib": ["dom", "esnext"],
+    "sourceMap": true,
+    "removeComments": false
+  },
+  "include": ["./src/**/*"],
+  "exclude": [
+    "node_modules",
+    "types"
+  ]
+}
