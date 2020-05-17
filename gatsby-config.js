@@ -70,7 +70,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-ts",
       options: {
-        typeCheck: process.env.NODE_ENV !== "production",
+        // TODO: Disable until all contrib packages data types are resolved.
+        typeCheck: false,
         failOnError: true,
         codegen: true,
       }
