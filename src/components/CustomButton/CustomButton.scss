@@ -1,15 +1,14 @@
 
 
 .customButton {
-  box-sizing: border-box;
-  cursor: pointer;
-  font-family: "PlexSans-Medium";
-  font-size: 16px;
   height: 48px;
-  letter-spacing: 1px;
   min-width: 250px;
-  padding: 0;
-  text-transform: capitalize;
+  span{
+    font-family: 'PlexSans-Medium';
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+  }
 
   .loader {
     color: $white;
@@ -39,6 +38,7 @@
     background: $white;
     border: 2px solid $purple;
     color: $purple;
+    min-width: 250px;
   }
 
   &.textPurple {
@@ -59,8 +59,9 @@
   &.headerButton {
     background: $green;
     color: $white;
-    height: 32px;
+    height: 34px;
     margin: 0 12px;
     min-width: 200px;
+    padding: 0 20px;
   }
 }
