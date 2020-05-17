@@ -153,8 +153,8 @@ import { assign, isArray } from "lodash";
  * Transform user create response to typed object.
  *
  * @export
- * @param {*} response
- * @returns {UserCreateResponse}
+ * @param {*} response Trade API user object.
+ * @returns {UserCreateResponse} User entity.
  */
 export function userCreateResponseTransform(response) {
   const transformResponse = {};
@@ -167,8 +167,8 @@ export function userCreateResponseTransform(response) {
  * Transform user entity response to typed object.
  *
  * @export
- * @param {*} response
- * @returns {UserLoginResponse}
+ * @param {*} response Trade API user object.
+ * @returns {UserLoginResponse} User entity.
  */
 export function userEntityResponseTransform(response) {
   return {
@@ -201,8 +201,8 @@ export function userEntityResponseTransform(response) {
  * Transform user positions response to typed object collection.
  *
  * @export
- * @param {*} response
- * @returns {UserPositionsCollection}
+ * @param {*} response Trade API positions list response.
+ * @returns {UserPositionsCollection} Positions entities collection.
  */
 export function userPositionsResponseTransform(response) {
   if (!isArray(response)) {
@@ -217,8 +217,8 @@ export function userPositionsResponseTransform(response) {
 /**
  * Transform API position item to typed object.
  *
- * @param {Object} positionItem
- * @returns {PositionEntity}
+ * @param {Object} positionItem Trade API position item.
+ * @returns {PositionEntity} Position entity.
  */
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
@@ -231,7 +231,7 @@ function userPositionItemTransform(positionItem) {
 /**
  * Create empty position entity skeleton.
  *
- * @returns {PositionEntity}
+ * @returns {PositionEntity} Empty position entity.
  */
 function createEmptyPositionEntity() {
   return {
