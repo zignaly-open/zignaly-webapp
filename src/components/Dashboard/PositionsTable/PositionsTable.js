@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./PositionsTable.scss";
 import { Box, Table, TableHead, TableBody, TableRow, TableCell } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
-import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 
-const PositionsTable = (props) => {
+const PositionsTable = () => {
   const [positions, setPositions] = useState([]);
   const authenticateUser = async () => {
     const loginPayload = {
@@ -21,8 +20,8 @@ const PositionsTable = (props) => {
       token: userEntity.token,
     };
 
-    const positions = await tradeApi.openPositionsGet(sessionPayload);
-    setPositions(positions);
+    const responseData = await tradeApi.openPositionsGet(sessionPayload);
+    setPositions(responseData);
   };
 
   useEffect(() => {
@@ -30,7 +29,8 @@ const PositionsTable = (props) => {
   }, []);
 
   /**
-   * @type {TradeApiTypes.UserPositionsCollection} positionsCollection
+   * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+   * @type {UserPositionsCollection} positionsCollection
    */
   const positionsCollection = positions;
 

@@ -10,12 +10,18 @@ import PositionFilters from "../PositionFilters";
 import { FormattedMessage } from "react-intl";
 import NoPositions from "../NoPositions";
 
-const PositionsTabs = (props) => {
+const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
 
-  const changeTab = (event, newValue) => {
+  /**
+   * Event handler to change tab value.
+   *
+   * @param {number} newValue Tab index to set active.
+   * @returns {void}
+   */
+  const changeTab = (newValue) => {
     setTabValue(newValue);
   };
 

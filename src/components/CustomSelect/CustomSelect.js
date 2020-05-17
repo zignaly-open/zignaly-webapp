@@ -38,10 +38,10 @@ CustomSelect.defaultProps = {
 };
 
 CustomSelect.propTypes = {
-  options: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired,
   className: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 export default CustomSelect;
