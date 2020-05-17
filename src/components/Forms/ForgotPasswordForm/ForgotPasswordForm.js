@@ -3,27 +3,30 @@ import "./ForgotPasswordForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const { errors, handleSubmit, register } = useForm();
 
-  const onSubmit = (data) => {
+  /**
+   * Persists submitted data into Redux store.
+   *
+   * @returns {void}
+   */
+  const onSubmit = () => {
     setLoading(true);
-    const params = {
-      email: data.email,
-      array: true,
-    };
+    // const params = {
+    //   email: data.email,
+    //   array: true,
+    // };
     // dispatch(recover1(params, this.hideLoader));
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSubmit();
-    }
-  };
+//   const handleKeyPress = (event) => {
+//     if (event.key === "Enter") {
+//       handleSubmit();
+//     }
+//   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
