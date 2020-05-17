@@ -60,6 +60,8 @@
         "eslint-plugin-react-hooks": "3.0.0",
         "faker": "^4.1.0",
         "gatsby-plugin-eslint": "^2.0.8",
+        "gatsby-plugin-graphql-codegen": "^2.7.1",
+        "gatsby-plugin-ts": "^2.7.1",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.0.1",
         "postcss-scss": "^2.0.0",

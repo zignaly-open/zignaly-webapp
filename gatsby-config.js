@@ -67,5 +67,13 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: "gatsby-plugin-ts",
+      options: {
+        typeCheck: process.env.NODE_ENV !== "production",
+        failOnError: true,
+        codegen: true,
+      }
+    }
   ],
 };
