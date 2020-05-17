@@ -29,8 +29,11 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 
   const [coin, setCoin] = useState(coins[0]);
   const [exchange, setExchange] = useState(exchanges[0]);
+  const [, setTimeFrame] = useState("");
   const [sort, setSort] = useState("");
-  const handleTimeFrameChange = (val) => { };
+  const handleTimeFrameChange = (val) => {
+    setTimeFrame(val);
+  };
 
   const handleCoinChange = (val) => {
     setCoin(val);
