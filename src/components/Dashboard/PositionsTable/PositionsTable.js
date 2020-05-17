@@ -14,17 +14,17 @@ const PositionsTable = () => {
     return await tradeApi.userLogin(loginPayload);
   };
 
-  const loadPositions = async () => {
-    const userEntity = await authenticateUser();
-    const sessionPayload = {
-      token: userEntity.token,
+  useEffect(() => {
+    const loadPositions = async () => {
+      const userEntity = await authenticateUser();
+      const sessionPayload = {
+        token: userEntity.token,
+      };
+
+      const responseData = await tradeApi.openPositionsGet(sessionPayload);
+      setPositions(responseData);
     };
 
-    const responseData = await tradeApi.openPositionsGet(sessionPayload);
-    setPositions(responseData);
-  };
-
-  useEffect(() => {
     loadPositions();
   }, []);
 
