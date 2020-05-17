@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import CloseIcon from "@material-ui/icons/Close";
 
-const PositionSettingsForm = (props) => {
+const PositionSettingsForm = () => {
   const handleSubmit = () => {};
 
   return (

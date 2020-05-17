@@ -1,4 +1,4 @@
-import React, { createRef, useState } from "react";
+import React, { useState } from "react";
 import "./SignupForm.scss";
 import {
   Box,
@@ -15,19 +15,20 @@ import { validatePassword } from "../../../utils/validators";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../PasswordStrength";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [, setPasswordDoNotMatch] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const [passwordDoNotMatch] = useState(false);
   const [strength, setStrength] = useState(0);
-  const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
-  const [loading, showLoading] = useState(false);
-  const recaptchaRef = createRef();
-  const dispatch = useDispatch();
+  // const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const [loading] = useState(false);
+  // const recaptchaRef = createRef();
+  // const dispatch = useDispatch();
   const { errors, handleSubmit, register, setError, clearError } = useForm();
 
   // componentDidMount() {
@@ -35,59 +36,85 @@ const SignupForm = () => {
   //     this.setState({ref: ref})
   // }
 
+  /**
+   * @typedef {import('react').ChangeEvent} ChangeEvent
+   */
+
+  /**
+   * Main password change state handling.
+   *
+   * @param {ChangeEvent} e Observed event.
+   * @return {void}
+   */
   const handlePasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     setAnchorEl(e.currentTarget);
-    let howStrong = validatePassword(e.target.value);
+    const targetElement = /** @type {HTMLInputElement} */ (e.target);
+    let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
-    howStrong >= 4 ? clearError("password") : setError("password");
-  };
-
-  const handleRepeatPasswordChange = (e) => {
-    setPasswordDoNotMatch(false);
-    let howStrong = validatePassword(e.target.value);
-    setStrength(howStrong);
-    howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
-  };
-
-  const onSubmit = (data) => {
-    if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
-      // showLoading(true)
-      console.log(data);
-      // const params = {
-      //     projectId: projectId,
-      //     firstName: data.firstName,
-      //     email: data.email,
-      //     password: data.password,
-      //     subscribe: data.subscribe,
-      //     ref: this.state.ref || null,
-      //     array: true,
-      //     gRecaptchaResponse: "abracadabra"
-      // };
-      // setCaptchaResponse('')
-      // this.props.dispatch(signup(params, this.hideLoader));
+    if (strength >= 4) {
+      clearError("password");
     } else {
-      setPasswordDoNotMatch(true);
+      setError("password", "The password is fragile.");
     }
   };
 
-  const onChangeReCAPTCHA = (value) => {
-    setCaptchaResponse(value);
+  /**
+   * Repeat password change state handling.
+   *
+   * @param {ChangeEvent} e Change event.
+   * @return {void}
+   */
+  const handleRepeatPasswordChange = (e) => {
+    setPasswordDoNotMatch(false);
+    const targetElement = /** @type {HTMLInputElement} */ (e.target);
+    let howStrong = validatePassword(targetElement.value);
+    setStrength(howStrong);
+    if (howStrong >= 4) {
+      clearError("repeatPassword");
+    } else {
+      setError("repeatPassword", "Repeat password don't match with main password.");
+    }
   };
 
-  const onExpiredReCAPTCHA = () => {
-    dispatch(alertError("Your solution to the ReCAPTCHA has expired, please resolve it again."));
-    setCaptchaResponse("");
-  };
+  //   const onSubmit = () => {
+  //     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
+  //       showLoading(true)
+  //       const params = {
+  //           projectId: projectId,
+  //           firstName: data.firstName,
+  //           email: data.email,
+  //           password: data.password,
+  //           subscribe: data.subscribe,
+  //           ref: this.state.ref || null,
+  //           array: true,
+  //           gRecaptchaResponse: "abracadabra"
+  //       };
+  //       setCaptchaResponse('')
+  //       this.props.dispatch(signup(params, this.hideLoader));
+  //     } else {
+  //       setPasswordDoNotMatch(true);
+  //     }
+  //   };
 
-  const onErroredReCAPTCHA = () => {
-    dispatch(
-      alertError(
-        "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
-      ),
-    );
-    setCaptchaResponse("");
-  };
+  //   const onChangeReCAPTCHA = (value) => {
+  //     setCaptchaResponse(value);
+  //   };
+
+  //   const onExpiredReCAPTCHA = () => {
+  //     dispatch(alertError("Your solution to the ReCAPTCHA has expired, please resolve it again."));
+  //     setCaptchaResponse("");
+  //   };
+
+  //   const onErroredReCAPTCHA = () => {
+  //     dispatch(
+  //       alertError(
+  //         "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
+  //       ),
+  //     );
+  //     setCaptchaResponse("");
+  //   };
+  const onSubmit = () => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -209,7 +236,7 @@ const SignupForm = () => {
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
               className="checkboxInput"
-              error={errors.terms ? "true" : "false"}
+              // error={errors.terms ? "true" : "false"}
               inputRef={register({ required: true })}
               name="terms"
               onChange={() => clearError("terms")}
