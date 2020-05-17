@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+
 
 .traderCard {
   border: 1px solid $borderColor;
@@ -6,7 +6,7 @@
   box-sizing: border-box;
   margin: 30px 21px 30px 0;
   min-height: 300px;
-  width: 405px;
+  width: 400px;
 
   .traderCardHeader {
     border-bottom: 1px solid $borderColor;

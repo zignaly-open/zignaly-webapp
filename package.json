@@ -49,15 +49,17 @@
         "babel-jest": "^24.8.0",
         "babel-preset-gatsby": "^0.1.11",
         "chai": "^4.2.0",
-        "eslint": "^5.16.0",
+        "eslint": "^7.0.0",
         "eslint-config-airbnb": "^17.1.0",
         "eslint-config-prettier": "^4.3.0",
+        "eslint-loader": "^4.0.2",
         "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-jsx-a11y": "^6.1.1",
         "eslint-plugin-prettier": "^3.1.0",
         "eslint-plugin-react": "^7.13.0",
         "eslint-plugin-react-hooks": "3.0.0",
         "faker": "^4.1.0",
+        "gatsby-plugin-eslint": "^2.0.8",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.0.1",
         "postcss-scss": "^2.0.0",
@@ -70,12 +72,13 @@
     "scripts": {
         "build": "gatsby build",
         "develop": "NODE_ENV=development gatsby develop",
-        "format": "prettier --write src/**/*.{js,jsx}",
+        "format": "prettier --write \"src/**/*.{js,jsx}\"",
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",
-        "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 src/**/*.js",
+        "checkjs": "tsc --allowJs --jsx react --checkJs --noEmit --target ES5 \"src/**/*.js\"",
         "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-        "sasslint": "sass-lint -v"
+        "sasslint": "sass-lint -v",
+        "jsfix": "eslint --fix \"src/**/*.{js,jsx}\""
     }
 }

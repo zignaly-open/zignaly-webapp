@@ -1,29 +1,32 @@
-import React from "react"
-import "./DashboardHeader.scss"
-import { Box } from "@material-ui/core"
-import { injectIntl } from "react-intl"
-import SubNavHeader from "../../SubNavHeader"
+import React from "react";
+import "./DashboardHeader.scss";
+import { Box, Typography } from "@material-ui/core";
+import SubNavHeader from "../../SubNavHeader";
+import { routesMapping } from "../../../utils/routesMapping";
+import { FormattedMessage } from "react-intl";
 
-const DashboardHeader = ({ intl }) => {
-  const links = [
-    {
-      name: intl.formatMessage({ id: "dashboard.positions" }),
-      to: "/dashboard/positions",
-    },
-    {
-      name: intl.formatMessage({ id: "dashboard.balance" }),
-      to: "/dashboard/balance",
-    },
-    {
-      name: intl.formatMessage({ id: "dashboard.traders" }),
-      to: "/dashboard/connectedTraders",
-    },
-  ]
+const DashboardHeader = (props) => {
+  const { path } = props;
+
   return (
     <Box className="dashboardHeader">
-      <SubNavHeader links={links} />
+      <Box
+        alignItems="center"
+        className="titleBox"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
+        <Typography variant="h1">
+          <FormattedMessage id={routesMapping(path).id} />
+        </Typography>
+        {routesMapping(path).name === "dashboard" && (
+          <span className="exchangeTitle">KuCion (Demo)</span>
+        )}
+      </Box>
+      <SubNavHeader links={routesMapping(path).links} />
     </Box>
-  )
-}
+  );
+};
 
-export default injectIntl(DashboardHeader)
+export default DashboardHeader;

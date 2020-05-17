@@ -1,13 +1,10 @@
-@import "../../styles/variables.scss";
-
-@import url("../../styles/fonts.scss");
 
 .subNavHeader {
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   margin-bottom: 30px;
+  overflow: scroll;
   position: relative;
-  width: 100%;
 
   .dashboardLink {
     box-sizing: border-box;
@@ -18,15 +15,10 @@
     padding: 12px 12px 21px 0;
     text-decoration: none;
     text-transform: capitalize;
+    white-space: nowrap;
 
     &.active {
       border-bottom: 2px solid $purple;
     }
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .dashboardHeader {
-    overflow: scroll;
   }
 }

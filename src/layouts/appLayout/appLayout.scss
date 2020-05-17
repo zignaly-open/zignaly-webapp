@@ -1,12 +1,21 @@
 .app {
   box-sizing: border-box;
   min-height: calc(100vh - 74px);
-  width: calc(100% - 90px);
+  width: 100%;
 
-  .appContent {
-    box-sizing: border-box;
-    min-height: calc(100vh - 74px);
+  .body{
     width: 100%;
+    .side{
+      position: relative;
+      width: 100px;
+    }
+
+    .appContent {
+      box-sizing: border-box;
+      min-height: calc(100vh - 74px);
+      padding: 40px;
+      width: 100%;
+    }
   }
 }
 

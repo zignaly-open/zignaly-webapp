@@ -1,31 +1,30 @@
-import React, { useState } from "react"
-import "../../styles/common.scss"
-import "./copyTradersLayout.scss"
-import { getDisplayName } from "../../utils"
-import { Box, Typography } from "@material-ui/core"
-import FAQ from "../../components/FAQ"
-import ProvidersHeader from "../../components/Providers/ProvidersHeader"
+import React, { useState } from "react";
+import "./copyTradersLayout.scss";
+import { getDisplayName } from "../../utils";
+import { Box, Typography } from "@material-ui/core";
+import FAQ from "../../components/FAQ";
+import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 
-const withDashboardLayout = Component => {
-  const WrapperComponent = props => {
-    const [showFilters, setShowFilters] = useState(false)
-    const [showSort, setShowSort] = useState(false)
+const withDashboardLayout = (Component) => {
+  const WrapperComponent = (props) => {
+    const [showFilters, setShowFilters] = useState(false);
+    const [showSort, setShowSort] = useState(false);
 
     const toggleFilters = () => {
-      setShowFilters(!showFilters)
-    }
+      setShowFilters(!showFilters);
+    };
 
     const toggleSort = () => {
-      setShowSort(!showSort)
-    }
+      setShowSort(!showSort);
+    };
 
     return (
       <Box
+        alignItems="flex-start"
         className="copyTradersLayout"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box className="titleBox" display="flex" flexDirection="column">
           <Typography variant="h1">Copy Traders</Typography>
@@ -35,28 +34,28 @@ const withDashboardLayout = Component => {
         </Box>
 
         <ProvidersHeader
-          toggleFilters={toggleFilters}
-          toggleSort={toggleSort}
           showFilters={showFilters}
           showSort={showSort}
+          toggleFilters={toggleFilters}
+          toggleSort={toggleSort}
         />
         <Box className="pageContent">
           <Component
             {...props}
-            toggleFilters={toggleFilters}
-            toggleSort={toggleSort}
             showFilters={showFilters}
             showSort={showSort}
+            toggleFilters={toggleFilters}
+            toggleSort={toggleSort}
           />
         </Box>
         <Box className="faq">
           <FAQ />
         </Box>
       </Box>
-    )
-  }
-  WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`
-  return WrapperComponent
-}
+    );
+  };
+  WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
+  return WrapperComponent;
+};
 
-export default withDashboardLayout
+export default withDashboardLayout;

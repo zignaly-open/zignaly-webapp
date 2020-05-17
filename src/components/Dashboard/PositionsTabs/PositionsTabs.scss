@@ -1,5 +1,3 @@
-@import "../../../styles/variables.scss";
-
 .positionsTabs {
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
@@ -10,7 +8,6 @@
     border-bottom: solid 1px rgba(0, 0, 0, 0.2);
 
     .tabs-menu {
-      max-height: 70px;
       min-height: 70px;
       width: 100%;
 
@@ -22,11 +19,9 @@
 
         button {
           font-family: "PlexSans-Bold";
-          font-size: 16px;
-          max-height: 70px;
+          font-size: 16px ;
           max-width: 170px;
           min-height: 70px;
-          min-width: 170px;
           padding: 0;
           text-transform: capitalize;
 

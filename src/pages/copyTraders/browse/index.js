@@ -1,31 +1,26 @@
-import React, { useState } from "react"
-import PropTypes from "prop-types"
-import { Box, Typography } from "@material-ui/core"
-import { compose } from "recompose"
-import withAppLayout from "../../../layouts/appLayout"
-import withCopyTradersLayout from "../../../layouts/copyTradersLayout"
-import withPageContext from "../../../pageContext"
-import TraderCard from "../../../components/TraderCard"
-import ProvidersFilters from "../../../components/Providers/ProvidersFilters"
-import ProvidersSort from "../../../components/Providers/ProvidersSort"
-import TimeFrameSelect from "../../../components/TimeFrameSelect"
-import Helmet from "react-helmet"
-import "./copyTradersBrowse.scss"
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Box, Typography } from "@material-ui/core";
+import { compose } from "recompose";
+import withAppLayout from "../../../layouts/appLayout";
+import withCopyTradersLayout from "../../../layouts/copyTradersLayout";
+import withPageContext from "../../../pageContext";
+import TraderCard from "../../../components/TraderCard";
+import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
+import ProvidersSort from "../../../components/Providers/ProvidersSort";
+import TimeFrameSelect from "../../../components/TimeFrameSelect";
+import Helmet from "react-helmet";
+import "./copyTradersBrowse.scss";
 
-const CopyTradersBrowse = ({
-  showFilters,
-  showSort,
-  toggleFilters,
-  toggleSort,
-}) => {
-  const list = [1, 2, 3]
+const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
+  const list = [1, 2, 3];
 
-  const handleFiltersChange = (type, mda, trader) => {}
-  const handleSortChange = sort => {}
+  const handleFiltersChange = (type, mda, trader) => {};
+  const handleSortChange = (sort) => {};
 
-  const handleTimeFrameChange = val => {
-    console.log(val)
-  }
+  const handleTimeFrameChange = (val) => {
+    console.log(val);
+  };
 
   return (
     <Box className="ctBrowsePage">
@@ -33,56 +28,37 @@ const CopyTradersBrowse = ({
         <title>Copy Traders</title>
       </Helmet>
 
-      {showFilters && (
-        <ProvidersFilters
-          onClose={toggleFilters}
-          onChange={handleFiltersChange}
-        />
-      )}
-      {showSort && (
-        <ProvidersSort onClose={toggleSort} onChange={handleSortChange} />
-      )}
+      {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
+      {showSort && <ProvidersSort onChange={handleSortChange} onClose={toggleSort} />}
       <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h3" className="regularHeading">
+        <Typography className="regularHeading" variant="h3">
           7 traders
         </Typography>
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
       <Box display="flex" flexDirection="column" justifyContent="flex-start">
         <Box
+          alignItems="center"
           className="tradersBox"
           display="flex"
           flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
           flexWrap="wrap"
+          justifyContent="space-between"
         >
-          {list &&
-            list.map(item => (
-              <TraderCard key={item} data={item} showSummary={false} />
-            ))}
+          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
 CopyTradersBrowse.propTypes = {
   toggleFilters: PropTypes.func,
   toggleSort: PropTypes.func,
   showFilters: PropTypes.bool,
   showSort: PropTypes.bool,
-}
+};
 
-export default compose(
-  withPageContext,
-  withAppLayout,
-  withCopyTradersLayout
-)(CopyTradersBrowse)
+export default compose(withPageContext, withAppLayout, withCopyTradersLayout)(CopyTradersBrowse);

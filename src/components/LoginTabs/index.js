@@ -1,1 +1,1 @@
-export {default} from './LoginTabs';
+export { default } from "./LoginTabs";

@@ -1,1 +1,1 @@
-export {default} from './TraderCard';
+export { default } from "./TraderCard";

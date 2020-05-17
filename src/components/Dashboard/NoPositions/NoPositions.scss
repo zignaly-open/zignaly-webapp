@@ -1,13 +1,10 @@
-@import "../../../styles/variables.scss";
-@import url("../../../styles/fonts.scss");
-
 .noPositions {
+  min-height: inherit;
   width: 100%;
-  min-height: inherit !important;
-}
 
-.noPositions h3 {
-  margin-bottom: 20px;
+  h3 {
+    margin-bottom: 20px;
+  }
 }
 
 @media only screen and (max-width: 600px) {

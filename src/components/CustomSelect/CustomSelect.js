@@ -1,50 +1,41 @@
-import React from "react"
-import PropTypes from "prop-types"
-import {
-  FormControl,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Typography,
-} from "@material-ui/core"
-import "./CustomSelect.scss"
+import React from "react";
+import PropTypes from "prop-types";
+import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@material-ui/core";
+import "./CustomSelect.scss";
 
 const CustomSelect = ({ options, onChange, value, label, className }) => {
   return (
     <FormControlLabel
+      className="customSelect"
       control={
-        <FormControl variant="outlined" className="callout">
+        <FormControl className="callout" variant="outlined">
           <Select
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            displayEmpty={true}
-            variant="outlined"
-            className={`select ${className}`}
             classes={{
               root: "callout1",
             }}
+            className={`select ${className}`}
+            displayEmpty={true}
+            onChange={(e) => onChange(e.target.value)}
+            value={value}
+            variant="outlined"
           >
             {options.map((item, index) => (
-              <MenuItem
-                key={index}
-                value={item.val !== undefined ? item.val : item}
-              >
+              <MenuItem key={index} value={item.val !== undefined ? item.val : item}>
                 {item.label !== undefined ? item.label : item}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       }
-      labelPlacement="start"
       label={<Typography className="callout2">{label}</Typography>}
-      className="customSelect"
+      labelPlacement="start"
     />
-  )
-}
+  );
+};
 
 CustomSelect.defaultProps = {
   className: "",
-}
+};
 
 CustomSelect.propTypes = {
   options: PropTypes.array.isRequired,
@@ -52,5 +43,5 @@ CustomSelect.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
   className: PropTypes.string,
-}
-export default CustomSelect
+};
+export default CustomSelect;

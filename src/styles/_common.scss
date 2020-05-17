@@ -1,0 +1,64 @@
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+body {
+  margin: 0;
+}
+
+.boxTitle {
+  font-family: "PlexSans-Medium";
+  font-size: 24px;
+  line-height: 24px;
+  margin: 0;
+}
+
+.hideScroll {
+  overflow-x: scroll;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.hideScroll::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+.selectInput {
+  background-image: $purpleLightGradient ;
+  border-radius: 4px;
+  height: 40px ;
+  min-width: 200px ;
+
+  div {
+    color: $white ;
+    height: 40px;
+    max-height: 40px ;
+    padding-bottom: 0 ;
+    padding-left: 0.5rem ;
+    padding-right: 0 ;
+    padding-top: 0.6rem ;
+
+    &:before, &:after {
+      border: 0;
+      display: none ;
+    }
+
+    svg {
+      color: $white;
+      font-size: 28px;
+      margin-top: -2px;
+    }
+  }
+
+  .option {
+    font-family: "PlexSans-Bold" ;
+  }
+}

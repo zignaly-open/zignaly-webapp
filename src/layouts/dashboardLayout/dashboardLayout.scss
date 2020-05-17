@@ -1,20 +1,6 @@
-@import "../../styles/variables.scss";
+
 
 .dashboardLayout {
-  .titleBox {
-    box-sizing: border-box;
-    height: 50px;
-    margin-bottom: 16px;
-    width: 100%;
-
-    .exchangeTitle {
-      color: $purple;
-      font-family: "PlexSans-Bold";
-      font-size: 16px;
-      margin: 8px 0 0 16px;
-    }
-  }
-
   .pageContent {
     margin-bottom: 30px;
     min-height: 400px;
