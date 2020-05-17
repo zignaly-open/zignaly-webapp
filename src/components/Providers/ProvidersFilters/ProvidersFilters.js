@@ -44,8 +44,8 @@ const ProvidersFilters = (props) => {
 };
 
 ProvidersFilters.propTypes = {
-  onClose: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 
