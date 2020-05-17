@@ -46,7 +46,7 @@ export const prepareChartOptions = (backgroundColor, borderColor) => {
           label: (tooltipItem, data) => {
             return "returns " + data.datasets[0].data[tooltipItem.index];
           },
-          afterLabel: (tooltipItem, data) => {
+          afterLabel: () => {
             return new Date();
           },
         },
