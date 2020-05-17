@@ -3,7 +3,6 @@ import { Box, Typography } from "@material-ui/core";
 
 const UserSummary = (props) => {
   const { data } = props;
-  let id = "traderCard" + data;
 
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
