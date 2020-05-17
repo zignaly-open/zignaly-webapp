@@ -60,7 +60,6 @@
         "eslint-plugin-react-hooks": "3.0.0",
         "faker": "^4.1.0",
         "gatsby-plugin-eslint": "^2.0.8",
-        "gatsby-plugin-tslint": "^0.0.2",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.0.1",
         "postcss-scss": "^2.0.0",
@@ -68,8 +67,6 @@
         "react-test-renderer": "^16.8.6",
         "sass-lint": "^1.13.1",
         "sass-lint-auto-fix": "^0.21.0",
-        "tslint": "^6.1.2",
-        "tslint-loader": "^3.5.4",
         "typescript": "^3.9.2"
     },
     "scripts": {
