@@ -22,8 +22,9 @@ const SubNavHeader = ({ links, children }) => {
     </Box>
   );
 };
+
 SubNavHeader.propTypes = {
+  children: PropTypes.node.isRequired,
   links: PropTypes.array.isRequired,
-  children: PropTypes.node,
 };
 export default SubNavHeader;
