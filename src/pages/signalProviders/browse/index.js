@@ -30,12 +30,9 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
   const [coin, setCoin] = useState(coins[0]);
   const [exchange, setExchange] = useState(exchanges[0]);
   const [sort, setSort] = useState("");
-  const handleTimeFrameChange = (val) => {
-    console.log(val);
-  };
+  const handleTimeFrameChange = (val) => { };
 
   const handleCoinChange = (val) => {
-    console.log(val);
     setCoin(val);
   };
 
@@ -54,7 +51,6 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 
   const handleSortChange = (val) => {
     setSort(val);
-    console.log(val);
   };
 
   return (
@@ -114,10 +110,10 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 };
 
 CopyTradersBrowse.propTypes = {
-  toggleFilters: PropTypes.func,
-  toggleSort: PropTypes.func,
   showFilters: PropTypes.bool,
   showSort: PropTypes.bool,
+  toggleFilters: PropTypes.func,
+  toggleSort: PropTypes.func,
 };
 
 export default compose(withPageContext, withAppLayout, withDashboardLayout)(CopyTradersBrowse);
