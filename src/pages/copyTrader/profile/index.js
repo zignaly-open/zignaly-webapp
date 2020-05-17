@@ -110,10 +110,10 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 };
 
 CopyTradersBrowse.propTypes = {
-  showFilters: PropTypes.bool,
-  showSort: PropTypes.bool,
-  toggleFilters: PropTypes.func,
-  toggleSort: PropTypes.func,
+  showFilters: PropTypes.bool.isRequired,
+  showSort: PropTypes.bool.isRequired,
+  toggleFilters: PropTypes.func.isRequired,
+  toggleSort: PropTypes.func.isRequired,
 };
 
 export default compose(withPageContext, withAppLayout, withDashboardLayout)(CopyTradersBrowse);
