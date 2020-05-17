@@ -59,7 +59,7 @@ const History = (props) => {
         onClose={() => setSettingAnchor(undefined)}
         open={Boolean(settingsAnchor)}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-       />
+      />
     </Box>
   );
 };
