@@ -7,8 +7,8 @@ import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/wi
 import withPageContext from "../../../pageContext"
 import TraderCard from "../../../components/TraderCard"
 import ProvidersFilters from "../../../components/Providers/ProvidersFilters"
+import ProvidersSort from "../../../components/Providers/ProvidersSort"
 import TimeFrameSelect from "../../../components/TimeFrameSelect"
-import CustomSelect from "../../../components/CustomSelect"
 import Helmet from "react-helmet"
 import "./SignalProvidersBrowse.scss"
 
@@ -19,46 +19,9 @@ const SignalProvidersBrowse = ({
   toggleSort,
 }) => {
   const list = [1, 2, 3]
-  const coins = ["BTC", "USDT"]
-  const exchanges = ["Binance", "KuCoin"]
-  const sorts = [
-    "Descending Results",
-    "Ascending Results",
-    "Descending Name",
-    "Ascending Name",
-    "Descending Subscription Fee",
-    "Ascending Subscription Fee",
-    "Descending Creation Date",
-    "Ascending Creation Date",
-  ]
-
-  const [coin, setCoin] = useState(coins[0])
-  const [exchange, setExchange] = useState(exchanges[0])
-  const [sort, setSort] = useState("")
+  const handleFiltersChange = (type, mda, trader) => {}
+  const handleSortChange = sort => {}
   const handleTimeFrameChange = val => {
-    console.log(val)
-  }
-
-  const handleCoinChange = val => {
-    console.log(val)
-    setCoin(val)
-  }
-
-  const handleExchangeChange = val => {
-    setExchange(val)
-  }
-
-  const clearFilters = () => {
-    setCoin("")
-    setExchange("")
-  }
-
-  const clearSort = () => {
-    setSort("")
-  }
-
-  const handleSortChange = val => {
-    setSort(val)
     console.log(val)
   }
 
@@ -70,39 +33,14 @@ const SignalProvidersBrowse = ({
 
       {showFilters && (
         <ProvidersFilters
-          onClose={() => toggleFilters()}
-          onClear={() => clearFilters()}
-          title="Filters"
-        >
-          <CustomSelect
-            options={coins}
-            onChange={handleCoinChange}
-            value={coin}
-            label="Coin"
-          />
-          <CustomSelect
-            options={exchanges}
-            onChange={handleExchangeChange}
-            value={exchange}
-            label="Exchange"
-          />
-        </ProvidersFilters>
+          onClose={toggleFilters}
+          onChange={handleFiltersChange}
+        />
       )}
       {showSort && (
-        <ProvidersFilters
-          onClose={() => toggleSort()}
-          onClear={() => clearSort()}
-          title="Sort by"
-        >
-          <CustomSelect
-            options={sorts}
-            onChange={handleSortChange}
-            value={sort}
-            label=""
-            className="sortSelect"
-          />
-        </ProvidersFilters>
+        <ProvidersSort onClose={toggleSort} onChange={handleSortChange} />
       )}
+
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h3" className="regularHeading">
           7 traders
