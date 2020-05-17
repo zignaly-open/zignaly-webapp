@@ -14,9 +14,9 @@ const TimeFrameSelect = ({ onChange }) => {
   const [val, setVal] = useState(timeframes[1].val);
 
   const handleChange = (e) => {
-    const val = e.target.value;
-    setVal(val);
-    onChange(val);
+    const newValue = e.target.value;
+    setVal(newValue);
+    onChange(newValue);
   };
 
   return (
