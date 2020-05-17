@@ -17,7 +17,7 @@
  * @param {string} path Path to map section links for.
  * @returns {SectionNavigation} A section navigation object.
  */
-const routesMapping = (path) => {
+export const routesMapping = (path) => {
   let id = path.split("/")[1];
 
   switch (id) {
@@ -129,5 +129,3 @@ const routesMapping = (path) => {
       };
   }
 };
-
-export default routesMapping;
