@@ -15,7 +15,7 @@ const LoginTabs = (props) => {
     <Box className="loginTabs">
       <Tabs
         classes={{ indicator: "indicator", flexContainer: "container" }}
-        className="tabs-menu"
+        className="tabsMenu"
         onChange={changeTab}
         value={tabValue}
       >

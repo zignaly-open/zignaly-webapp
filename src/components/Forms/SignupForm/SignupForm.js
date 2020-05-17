@@ -1,6 +1,5 @@
 import React, { createRef, useState } from "react";
 import "./SignupForm.scss";
-import common from "../../../styles/common.module.scss";
 import {
   Box,
   TextField,
@@ -94,14 +93,14 @@ const SignupForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
-        className="signup-form"
+        className="signupForm"
         display="flex"
         flexDirection="column"
         justifyContent="center"
       >
         <Popper
           anchorEl={anchorEl}
-          className={common.passwordStrengthBox}
+          className="passwordStrengthBox"
           open={!!anchorEl}
           placement="left"
           transition
@@ -110,14 +109,14 @@ const SignupForm = () => {
         </Popper>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Name</label>
+          <label className="customLabel">Name</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={!!errors.name}
             fullWidth
             inputRef={register({ required: true, minLength: 3 })}
@@ -128,14 +127,14 @@ const SignupForm = () => {
         </Box>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Email address</label>
+          <label className="customLabel">Email address</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={!!errors.email}
             fullWidth
             inputRef={register({
@@ -150,17 +149,17 @@ const SignupForm = () => {
 
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Password</label>
-          <FormControl className={common.customInput} variant="outlined">
+          <label className="customLabel">Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
+                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </span>
                 </InputAdornment>
@@ -177,18 +176,18 @@ const SignupForm = () => {
 
         <Box
           alignItems="start"
-          className={"input-box " + (passwordDoNotMatch ? "no-margin" : "")}
+          className={"inputBox " + (passwordDoNotMatch ? "no-margin" : "")}
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Repeat Password</label>
-          <FormControl className={common.customInput} variant="outlined">
+          <label className="customLabel">Repeat Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
                   <span
-                    className={common.pointer}
+                    className="pointer"
                     onClick={() => setShowRepeatPassword(!showRepeatPassword)}
                   >
                     {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
@@ -206,10 +205,10 @@ const SignupForm = () => {
         <Box display="flex" flexDirection="row" justifyContent="center" minWidth="100%">
           {passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
         </Box>
-        <Box className="input-box checkbox">
+        <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
-              className={common.checkboxInput}
+              className="checkboxInput"
               error={errors.terms ? "true" : "false"}
               inputRef={register({ required: true })}
               name="terms"
@@ -234,15 +233,15 @@ const SignupForm = () => {
           </Box>
         </Box>
 
-        <Box className="input-box checkbox">
+        <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
-            <Checkbox className={common.checkboxInput} inputRef={register} name="subscribe" />
+            <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
             <span className={"terms-text"}>Subscribe to notifications</span>
           </Box>
         </Box>
 
         {/* {envconfig.configureCaptcha &&
-                    <Box className="input-box">
+                    <Box className="inputBox">
                         <ReCAPTCHA
                             ref={this.recaptchaRef}
                             sitekey="6LdORtMUAAAAAGLmbf3TM8plIRorVCEc9pVChix8"
@@ -252,7 +251,7 @@ const SignupForm = () => {
                     </Box>
                 } */}
 
-        <Box className="input-box button-box">
+        <Box className="inputBox button-box">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
             Register
           </CustomButton>

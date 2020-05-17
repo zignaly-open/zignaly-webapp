@@ -1,4 +1,4 @@
-.twoFA-form {
+.twoFAForm {
   padding: 40px;
   width: 500px;
 
@@ -6,19 +6,9 @@
     margin-bottom: 40px;
   }
 
-  .input-box {
+  .inputBox {
     margin-bottom: 40px;
     width: 364px;
-
-    .custom-input {
-      height: 32px;
-    }
-
-    .custom-label {
-      font-family: "PlexSans-Bold";
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
   }
 
   .link {
@@ -28,11 +18,5 @@
     margin-bottom: 40px;
     text-decoration: none;
     text-transform: uppercase;
-  }
-
-  .error-text {
-    color: $red;
-    font-size: 11px;
-    margin-top: 8px;
   }
 }

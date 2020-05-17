@@ -1,6 +1,6 @@
 .positionFilters {
-  background: rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  background: $transparentBackground;
+  border-bottom: 1px solid $borderColor;
   box-sizing: boorder-box;
   height: 70px;
   margin-bottom: 16px;

@@ -30,7 +30,7 @@ const PositionsTabs = (props) => {
       >
         <Tabs
           classes={{ indicator: "indicator", flexContainer: "container" }}
-          className="tabs-menu"
+          className="tabsMenu"
           onChange={changeTab}
           value={tabValue}
         >

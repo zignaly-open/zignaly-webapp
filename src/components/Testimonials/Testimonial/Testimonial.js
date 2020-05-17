@@ -13,7 +13,7 @@ const Testimonial = (props) => {
       <img alt="Zignaly" className="avatar" src={data.image} />
       <Box
         alignItems="center"
-        className="time-box"
+        className="timeBox"
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
@@ -23,7 +23,7 @@ const Testimonial = (props) => {
       </Box>
       <Box
         alignItems="start"
-        className="title-box"
+        className="titleBox"
         display="flex"
         flexDirection="column"
         justifyContent="start"
@@ -31,7 +31,7 @@ const Testimonial = (props) => {
         <span className="title"> {data.name} </span>
         <p> {data.review} </p>
       </Box>
-      <Box className="review-box" display="flex" flexDirection="row" justifyContent="flex-end">
+      <Box className="reviewBox" display="flex" flexDirection="row" justifyContent="flex-end">
         <Rating classes={{ icon: "stars" }} readOnly value={5} />
       </Box>
     </Box>

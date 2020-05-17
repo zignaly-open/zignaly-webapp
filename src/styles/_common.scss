@@ -2,11 +2,11 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   scrollbar-width: none;
-}
 
-html::-webkit-scrollbar {
-  height: 0;
-  width: 0;
+  &::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+  }
 }
 
 body {
@@ -24,31 +24,31 @@ body {
   overflow-x: scroll;
   overflow-y: scroll;
   scrollbar-width: none;
-}
 
-.hideScroll::-webkit-scrollbar {
-  height: 0;
-  width: 0;
+  &::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+  }
 }
 
 .selectInput {
   background-image: $purpleLightGradient ;
   border-radius: 4px;
-  height: 40px ;
-  min-width: 200px ;
+  height: 40px;
+  min-width: 200px;
 
   div {
-    color: $white ;
+    color: $white;
     height: 40px;
-    max-height: 40px ;
-    padding-bottom: 0 ;
-    padding-left: 0.5rem ;
-    padding-right: 0 ;
-    padding-top: 0.6rem ;
+    max-height: 40px;
+    padding-bottom: 0;
+    padding-left: .5rem;
+    padding-right: 0;
+    padding-top: .6rem;
 
-    &:before, &:after {
+    &::before, &::after {
       border: 0;
-      display: none ;
+      display: none;
     }
 
     svg {
@@ -59,6 +59,54 @@ body {
   }
 
   .option {
-    font-family: "PlexSans-Bold" ;
+    font-family: "PlexSans-Bold";
   }
+}
+
+// forms related styling in below
+
+.errorText {
+  color: $red;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.customLabel {
+  color: $black;
+  font-family: "PlexSans-Regular";
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.customInput {
+  height: 32px;
+  margin: 0;
+  width: 100%;
+
+  div {
+    height: 32px;
+  }
+
+  & > div {
+    padding-right: 10px;
+  }
+}
+
+.checkboxInput {
+  color: $purple;
+  margin: 0 .5rem 0 0;
+  padding: 0;
+
+  &.error {
+    color: $red;
+  }
+}
+
+.passwordStrengthBox {
+  left: -20px;
+  z-index: 1000;
+}
+
+.pointer {
+  cursor: pointer;
 }

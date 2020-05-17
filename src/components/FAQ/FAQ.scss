@@ -1,4 +1,4 @@
-.FAQ {
+.faq {
   box-sizing: boorder-box;
   width: 100%;
 
@@ -15,14 +15,14 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .FAQ {
+  .faq {
     .questionContainer {
       align-items: flex-start;
       flex-direction: column;
       justify-content: flex-start;
 
       .question {
-        margin: 10px 0 0 0;
+        margin: 10px 0 0;
       }
     }
   }

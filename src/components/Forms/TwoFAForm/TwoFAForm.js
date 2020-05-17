@@ -40,7 +40,7 @@ const TwoFAForm = (props) => {
   return (
     <Box
       alignItems="center"
-      className="twoFA-form"
+      className="twoFAForm"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -48,17 +48,17 @@ const TwoFAForm = (props) => {
       <span className="boxTitle">2 Factor Authentication</span>
       <Box
         alignItems="center"
-        className="input-box"
+        className="inputBox"
         display="flex"
         flexDirection="column"
         justifyContent="start"
       >
-        <label className="custom-label">Input Your Authentication Code</label>
+        <label className="customLabel">Input Your Authentication Code</label>
         <ReactCodeInput fields={6} onChange={handleCodeChange} onComplete={handleKeyPress} />
-        {codeError && <span className="error-text">Code must be of 6 digits!</span>}
+        {codeError && <span className="errorText">Code must be of 6 digits!</span>}
       </Box>
 
-      <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
+      <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
         <CustomButton
           className={"full " + (disabledButton() ? "disabledButton" : "submitButton")}
           disabled={disabledButton()}

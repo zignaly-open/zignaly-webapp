@@ -12,8 +12,8 @@
       position: absolute;
       width: 100%;
 
-      &:after {
-        border-color: transparent transparent #fff transparent;
+      &::after {
+        border-color: transparent transparent $white;
         border-style: solid;
         border-width: 0 0 100px 100vw;
         bottom: 0;
@@ -68,15 +68,14 @@
         top: 0;
         width: 100%;
 
-        &:after {
-          border-width: 0 0 0 0;
+        &::after {
+          border-width: 0;
         }
       }
     }
 
     .tagLineBox {
       box-sizing: border-box;
-      height: auto;
       height: 250px;
       margin-top: 0;
       padding: 30px 20px;

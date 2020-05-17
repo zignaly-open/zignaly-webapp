@@ -35,12 +35,12 @@ const PasswordStrength = (props) => {
   return (
     <Box
       alignItems="start"
-      className="password-strength"
+      className="passwordStrength"
       display="flex"
       flexDirection="column"
       justifyContent="start"
     >
-      <CloseIcon className="close-icon" onClick={onClose} />
+      <CloseIcon className="closeIcon" onClick={onClose} />
       <span className="title">Password Requirements</span>
       <span className="text"> - Atleast 8 characters</span>
       <span className="text"> - Container letters and numbers</span>

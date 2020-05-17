@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./ForgotPasswordForm.scss";
-import common from "../../../styles/common.module.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
@@ -38,14 +37,14 @@ const ForgotPasswordForm = () => {
         <h3>Password Recovery Form</h3>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="custom-label">Enter your email address</label>
+          <label className="customLabel">Enter your email address</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={errors.email}
             fullWidth
             inputRef={register({
@@ -56,10 +55,10 @@ const ForgotPasswordForm = () => {
             type="email"
             variant="outlined"
           />
-          {errors.email && <span className="error-text">email should be valid</span>}
+          {errors.email && <span className="errorText">email should be valid</span>}
         </Box>
 
-        <Box className="input-box">
+        <Box className="inputBox">
           <CustomButton
             className={"full submitButton"}
             loading={loading}

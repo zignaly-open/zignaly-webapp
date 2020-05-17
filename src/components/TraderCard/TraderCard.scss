@@ -104,10 +104,10 @@
       padding: 10px 20px;
 
       h5 {
-        margin: 5px 0 10px 0;
+        margin: 5px 0 10px;
 
         &:last-child {
-          margin: 5px 0 5px 0;
+          margin: 5px 0;
         }
 
         &.green {
@@ -124,7 +124,7 @@
 
 @media only screen and (max-width: 600px) {
   .traderCard {
-    margin: 30px 0 0 0;
+    margin: 30px 0 0;
     width: 100%;
 
     .traderCardHeader {

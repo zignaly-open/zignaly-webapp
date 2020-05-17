@@ -9,12 +9,12 @@
   }
 
   .operator {
-    alignItems: center;
+    align-items: center;
     display: flex;
     flex-direction: row;
     font-size: 21px;
     font-weight: bold;
-    justifyContent: center;
+    justify-content: center;
     width: content;
   }
 }

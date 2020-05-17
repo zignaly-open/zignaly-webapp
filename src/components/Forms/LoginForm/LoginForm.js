@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./LoginForm.scss";
-import common from "../../../styles/common.module.scss";
 import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
@@ -34,14 +33,14 @@ const LoginForm = (props) => {
         </Modal>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="custom-label">Email address</label>
+          <label className="customLabel">Email address</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={!!errors.email}
             fullWidth
             inputRef={register({
@@ -52,22 +51,22 @@ const LoginForm = (props) => {
             type="email"
             variant="outlined"
           />
-          {errors.email && <span className="error-text">Email should be valid</span>}
+          {errors.email && <span className="errorText">Email should be valid</span>}
         </Box>
 
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="custom-label">Password</label>
-          <FormControl className={common.customInput} variant="outlined">
+          <label className="customLabel">Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
+                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </span>
                 </InputAdornment>
@@ -78,10 +77,10 @@ const LoginForm = (props) => {
               type={showPassword ? "text" : "password"}
             />
           </FormControl>
-          {errors.password && <span className="error-text">Password cannot be empty</span>}
+          {errors.password && <span className="errorText">Password cannot be empty</span>}
         </Box>
 
-        <Box className="input-box">
+        <Box className="inputBox">
           <CustomButton
             className={"full submitButton"}
             loading={loading}
