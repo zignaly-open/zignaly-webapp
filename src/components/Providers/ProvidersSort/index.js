@@ -1,1 +1,1 @@
-export { default } from "./ProvidersSort"
+export { default } from "./ProvidersSort";

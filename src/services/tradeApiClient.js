@@ -108,6 +108,22 @@ class TradeApiClient {
 
     return userPositionsResponseTransform(responseData);
   }
+
+  /**
+   * Get user open trading positions.
+   *
+   * @param {TradeApiTypes.UserPositionsPayload} payload
+
+   * @returns {Promise<TradeApiTypes.UserPositionsCollection>}
+   *
+   * @memberof TradeApiClient
+   */
+  async providersGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderList2";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providersResponseTransform(responseData);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

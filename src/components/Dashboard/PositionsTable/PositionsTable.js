@@ -25,7 +25,9 @@ const PositionsTable = (props) => {
     setPositions(positions);
   };
 
+  console.log("aaaa");
   useEffect(() => {
+    console.log("aa");
     loadPositions();
   }, []);
 

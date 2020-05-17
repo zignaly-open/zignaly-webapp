@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";
 import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
 import withPageContext from "../../../pageContext";
-import TraderCard from "../../../components/TraderCard";
 import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
 import ProvidersSort from "../../../components/Providers/ProvidersSort";
 import TimeFrameSelect from "../../../components/TimeFrameSelect";
+import ProvidersList from "../../../components/Providers/ProvidersList";
 import Helmet from "react-helmet";
-import "./SignalProvidersBrowse.scss";
+import tradeApi from "../../../services/tradeApiClient";
+import * as TradeApiTypes from "../../../services/tradeApiClient.types";
+import "./signalProvidersBrowse.scss";
 
 const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
-  const list = [1, 2, 3];
   const handleFiltersChange = (type, mda, trader) => {
     console.log(type, mda, trader);
   };
@@ -23,6 +24,37 @@ const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSor
   const handleTimeFrameChange = (val) => {
     console.log(val);
   };
+  const [providers, setProviders] = useState([1, 2, 3]);
+  const authenticateUser = async () => {
+    const loginPayload = {
+      email: "mailxuftg1pxzk@example.test",
+      password: "abracadabra",
+    };
+
+    return await tradeApi.userLogin(loginPayload);
+  };
+
+  const loadProviders = async () => {
+    const userEntity = await authenticateUser();
+    const sessionPayload = {
+      token: userEntity.token,
+      type: "all",
+      ro: true,
+      copyTradersOnly: false,
+    };
+
+    const positions = await tradeApi.providersGet(sessionPayload);
+    setProviders(positions);
+  };
+
+  useEffect(() => {
+    // loadProviders();
+  }, []);
+
+  /**
+   * @type {TradeApiTypes.UserPositionsCollection} positionsCollection
+   */
+  const providersCollections = providers;
 
   return (
     <Box className="spBrowsePage">
@@ -41,18 +73,7 @@ const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSor
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="column" justifyContent="flex-start">
-        <Box
-          alignItems="center"
-          className="tradersBox"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="space-between"
-        >
-          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
-        </Box>
-      </Box>
+      <ProvidersList providers={providersCollections} />
     </Box>
   );
 };
