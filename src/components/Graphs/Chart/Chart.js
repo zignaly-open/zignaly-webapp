@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Chart.scss";
-import { prepareChartOptions, generateChart } from "../../../utils/chart";
+import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
 
 const GenericChart = (props) => {
@@ -11,7 +11,7 @@ const GenericChart = (props) => {
     background.addColorStop(1, "rgba(216, 216, 216, .1)");
     background.addColorStop(0, "#a946f6");
     const borderColor = "#770fc8";
-    generateChart(context, prepareChartOptions(background, borderColor));
+    generateChart(context, prepareLineChartOptions(background, borderColor));
   }, [props.id]);
 
   return <Box className="chart">{props.children}</Box>;

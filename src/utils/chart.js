@@ -12,13 +12,13 @@ export const generateChart = (context, options) => {
 };
 
 /**
- * Prepare chart options.
+ * Prepare line chart options.
  *
  * @param {string} backgroundColor Background HTML color.
  * @param {string} borderColor Border HTML color.
  * @returns {Object} Chart options.
  */
-export const prepareChartOptions = (backgroundColor, borderColor) => {
+export const prepareLineChartOptions = (backgroundColor, borderColor) => {
   return {
     type: "line",
     data: {
@@ -84,6 +84,36 @@ export const prepareChartOptions = (backgroundColor, borderColor) => {
             },
           },
         ],
+      },
+    },
+  };
+};
+
+/**
+ * Prepare pie chart options.
+ *
+ * @param {Array<string>} gradientColors Gradient HTML gradient colors.
+ * @param {string} borderColor Border HTML color.
+ * @returns {Object} Chart options.
+ */
+export const preparePieChartOptions = (gradientColors, borderColor) => {
+  return {
+    type: "doughnut",
+    data: {
+      labels: ["BTC", "ETH"],
+      datasets: [
+        {
+          data: [25, 75],
+          backgroundColor: gradientColors,
+          borderColor: borderColor,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: true,
+        position: "right",
       },
     },
   };
