@@ -46,6 +46,7 @@
     },
     "devDependencies": {
         "@types/chart.js": "^2.9.20",
+        "@types/intl-messageformat": "^3.0.0",
         "@types/jest": "^25.2.2",
         "@types/react-dom": "^16.9.8",
         "@types/react-helmet": "^6.0.0",
