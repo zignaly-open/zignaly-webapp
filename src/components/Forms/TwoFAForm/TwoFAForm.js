@@ -5,36 +5,46 @@ import CustomButton from "../../CustomButton/CustomButton";
 // import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
 
-const TwoFAForm = (props) => {
-  const [code, setCode] = useState("");
+/**
+ * @typedef {import('react').ChangeEvent} ChangeEvent
+ * @typedef {import('react').KeyboardEvent} KeyboardEvent
+ */
+
+const TwoFAForm = () => {
+  const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
 
-  handleCodeChange = (e) => {
-    setCode(e.length === 6);
-    if (e.length === 6) {
+  /**
+   * Code change event callback.
+   *
+   * @param {string} value Code change event.
+   * @return {void}
+   */
+  const handleCodeChange = (value) => {
+    setCode(value.length === 6);
+    if (value.length === 6) {
       setCodeError(false);
     } else {
       setCodeError(true);
     }
   };
 
-  handleSubmit = () => {
+  const handleSubmit = () => {
     setLoading(true);
     // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
   };
 
-  handleKeyPress = (event) => {
+  /**
+   * Code submission enter keypress kandling.
+   *
+   * @param {KeyboardEvent} event Key press event.
+   * @returns {void}
+   */
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSubmit();
     }
-  };
-
-  disabledButton = () => {
-    if (this.state.code && !this.state.codeError) {
-      return false;
-    }
-    return true;
   };
 
   return (
@@ -60,8 +70,7 @@ const TwoFAForm = (props) => {
 
       <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
         <CustomButton
-          className={"full " + (disabledButton() ? "disabledButton" : "submitButton")}
-          disabled={disabledButton()}
+          className={"fullSubmitButton"}
           loading={loading}
           onClick={handleSubmit}
         >
