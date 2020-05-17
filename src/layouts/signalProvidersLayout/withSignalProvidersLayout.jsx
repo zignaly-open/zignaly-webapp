@@ -20,11 +20,11 @@ const withSignalProvidersLayout = (Component) => {
 
     return (
       <Box
+        alignItems="flex-start"
         className="copyTradersLayout"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
       >
         <Box className="titleBox" display="flex" flexDirection="column">
           <Typography variant="h1">Signal Providers</Typography>
@@ -34,18 +34,18 @@ const withSignalProvidersLayout = (Component) => {
         </Box>
 
         <ProvidersHeader
-          toggleFilters={toggleFilters}
-          toggleSort={toggleSort}
           showFilters={showFilters}
           showSort={showSort}
+          toggleFilters={toggleFilters}
+          toggleSort={toggleSort}
         />
         <Box className="pageContent">
           <Component
             {...props}
-            toggleFilters={toggleFilters}
-            toggleSort={toggleSort}
             showFilters={showFilters}
             showSort={showSort}
+            toggleFilters={toggleFilters}
+            toggleSort={toggleSort}
           />
         </Box>
         <Box className="faq">

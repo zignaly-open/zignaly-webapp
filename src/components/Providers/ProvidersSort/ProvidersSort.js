@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"
-import { Box } from "@material-ui/core"
-import PropTypes from "prop-types"
-import "./ProvidersSort.scss"
-import CustomFilters from "../../CustomFilters"
-import CustomSelect from "../../CustomSelect"
+import React, { useState, useEffect } from "react";
+import { Box } from "@material-ui/core";
+import PropTypes from "prop-types";
+import "./ProvidersSort.scss";
+import CustomFilters from "../../CustomFilters";
+import CustomSelect from "../../CustomSelect";
 
 const ProvidersSort = ({ onChange, onClose }) => {
   const sorts = [
@@ -15,37 +15,32 @@ const ProvidersSort = ({ onChange, onClose }) => {
     "Ascending Subscription Fee",
     "Descending Creation Date",
     "Ascending Creation Date",
-  ]
+  ];
 
-  const [sort, setSort] = useState("")
+  const [sort, setSort] = useState("");
 
   const clearFilters = () => {
-    setSort("")
-  }
+    setSort("");
+  };
 
   useEffect(() => {
     if (onChange) {
-      onChange(sort)
+      onChange(sort);
     }
-  }, [sort])
+  }, [sort]);
 
   return (
     <Box className="providersSort">
-      <CustomFilters title="Sort by" onClose={onClose} onClear={clearFilters}>
-        <CustomSelect
-          options={sorts}
-          onChange={setSort}
-          value={sort}
-          label=""
-        />
+      <CustomFilters onClear={clearFilters} onClose={onClose} title="Sort by">
+        <CustomSelect label="" onChange={setSort} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
-  )
-}
+  );
+};
 
 ProvidersSort.propTypes = {
   onChange: PropTypes.func,
   onClose: PropTypes.func,
-}
+};
 
-export default ProvidersSort
+export default ProvidersSort;

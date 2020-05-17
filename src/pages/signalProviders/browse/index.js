@@ -14,8 +14,12 @@ import "./SignalProvidersBrowse.scss";
 
 const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
   const list = [1, 2, 3];
-  const handleFiltersChange = (type, mda, trader) => {};
-  const handleSortChange = (sort) => {};
+  const handleFiltersChange = (type, mda, trader) => {
+    console.log(type, mda, trader);
+  };
+  const handleSortChange = (sort) => {
+    console.log(sort);
+  };
   const handleTimeFrameChange = (val) => {
     console.log(val);
   };
