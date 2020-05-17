@@ -7,8 +7,8 @@ const Doughnut = () => {
   useEffect(() => {
     const context = document.getElementById("myDoughnut").getContext("2d");
     const borderColor = "#770fc8";
-    const gradientColors = ["#a946f6", "#770fc8"];
-    generateChart(context, preparePieChartOptions(gradientColors, borderColor));
+    const chunksColors = ["#a946f6", "#770fc8"];
+    generateChart(context, preparePieChartOptions(chunksColors, borderColor));
   }, []);
 
   return (

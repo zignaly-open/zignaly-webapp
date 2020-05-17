@@ -92,11 +92,11 @@ export const prepareLineChartOptions = (backgroundColor, borderColor) => {
 /**
  * Prepare pie chart options.
  *
- * @param {Array<string>} gradientColors Gradient HTML gradient colors.
+ * @param {Array<string>} chunksColors Pie chunks HTML colors.
  * @param {string} borderColor Border HTML color.
  * @returns {Object} Chart options.
  */
-export const preparePieChartOptions = (gradientColors, borderColor) => {
+export const preparePieChartOptions = (chunksColors, borderColor) => {
   return {
     type: "doughnut",
     data: {
@@ -104,7 +104,7 @@ export const preparePieChartOptions = (gradientColors, borderColor) => {
       datasets: [
         {
           data: [25, 75],
-          backgroundColor: gradientColors,
+          backgroundColor: chunksColors,
           borderColor: borderColor,
         },
       ],
