@@ -12,7 +12,22 @@ import CustomSelect from "../../../components/CustomSelect";
 import Helmet from "react-helmet";
 import "./copyTradersBrowse.scss";
 
-const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
+/**
+ * @typedef {Object} CopyTradersBrosePropTypes
+ * @property {boolean} showFilters Flag to indicate if filters should be rendered.
+ * @property {boolean} showSort Flag to indicate if sort options should be rendered.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ */
+
+/**
+ * Provides a list to browse copy traders.
+ *
+ * @param {CopyTradersBrosePropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
+const CopyTradersBrowse = (props) => {
+  const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const list = [1, 2, 3];
   const coins = ["BTC", "USDT"];
   const exchanges = ["Binance", "KuCoin"];
@@ -30,7 +45,7 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
   const [coin, setCoin] = useState(coins[0]);
   const [exchange, setExchange] = useState(exchanges[0]);
   const [sort, setSort] = useState("");
-  const handleTimeFrameChange = () => { };
+  const handleTimeFrameChange = () => {};
   const handleCoinChange = (val) => {
     setCoin(val);
   };
