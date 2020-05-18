@@ -32,7 +32,7 @@ body {
 }
 
 .selectInput {
-  background-image: $purpleLightGradient ;
+  background-image: $purpleLightGradient;
   border-radius: 4px;
   height: 40px;
   min-width: 200px;
@@ -42,11 +42,12 @@ body {
     height: 40px;
     max-height: 40px;
     padding-bottom: 0;
-    padding-left: .5rem;
+    padding-left: 0.5rem;
     padding-right: 0;
-    padding-top: .6rem;
+    padding-top: 0.6rem;
 
-    &::before, &::after {
+    &::before,
+    &::after {
       border: 0;
       display: none;
     }
@@ -94,7 +95,7 @@ body {
 
 .checkboxInput {
   color: $purple;
-  margin: 0 .5rem 0 0;
+  margin: 0 0.5rem 0 0;
   padding: 0;
 
   &.error {
@@ -109,4 +110,12 @@ body {
 
 .pointer {
   cursor: pointer;
+}
+
+.green {
+  color: $green;
+}
+
+.red {
+  color: $red;
 }
