@@ -1,10 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 
-const UserSummary = (props) => {
-  const { data } = props;
-  let id = "traderCard" + data;
-
+const UserSummary = () => {
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
       <Typography variant="subtitle1">Allocated</Typography>

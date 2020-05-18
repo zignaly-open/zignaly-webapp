@@ -119,8 +119,8 @@ const TraderCard = (props) => {
 };
 
 TraderCard.propTypes = {
-  data: PropTypes.number,
-  showSummary: PropTypes.bool,
+  data: PropTypes.number.isRequired,
+  showSummary: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

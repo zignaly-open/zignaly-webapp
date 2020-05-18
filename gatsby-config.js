@@ -4,41 +4,41 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Zignaly Gatsby Starter`,
-    description: `Zignaly the copy-trader platform.`,
+    title: "Zignaly Gatsby Starter",
+    description: "Zignaly the copy-trader platform.",
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-sass`,
+      resolve: "gatsby-plugin-sass",
       options: {
         data: `@import "${__dirname}/src/styles/index";`,
       },
     },
-    `gatsby-plugin-react-helmet`,
+    "gatsby-plugin-react-helmet",
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: "gatsby-source-filesystem",
       options: {
-        name: `images`,
+        name: "images",
         path: `${__dirname}/src/images`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    "gatsby-transformer-sharp",
+    "gatsby-plugin-sharp",
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: "gatsby-plugin-manifest",
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `Zignaly`,
-        start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
-        display: `minimal-ui`,
+        name: "gatsby-starter-default",
+        short_name: "Zignaly",
+        start_url: "/",
+        background_color: "#663399",
+        theme_color: "#663399",
+        display: "minimal-ui",
         // This path is relative to the root of the site.
-        icon: `src/images/gatsby-icon.png`,
+        icon: "src/images/gatsby-icon.png",
       },
     },
     {
-      resolve: `gatsby-plugin-purgecss`,
+      resolve: "gatsby-plugin-purgecss",
       options: {
         printRejected: true,
         // Enable while using `gatsby develop`
@@ -46,17 +46,17 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-react-css-modules`,
+      resolve: "gatsby-plugin-react-css-modules",
       options: {
         filetypes: {
-          ".scss": { syntax: `postcss-scss` },
+          ".scss": { syntax: "postcss-scss" },
         },
         // Exclude global styles from the plugin using a RegExp:
-        exclude: `\/global\/`,
+        exclude: "\/global\/",
       },
     },
     {
-      resolve: `gatsby-plugin-eslint`,
+      resolve: "gatsby-plugin-eslint",
       options: {
         test: /\.js$|\.jsx$/,
         exclude: /(node_modules|.cache|public)/,
@@ -67,5 +67,14 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: "gatsby-plugin-ts",
+      options: {
+        // TODO: Disable until all contrib packages data types are resolved.
+        typeCheck: false,
+        failOnError: true,
+        codegen: true,
+      }
+    }
   ],
 };

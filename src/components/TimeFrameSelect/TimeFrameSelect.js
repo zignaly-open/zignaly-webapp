@@ -13,9 +13,10 @@ const timeframes = [
 const TimeFrameSelect = ({ onChange }) => {
   const [val, setVal] = useState(timeframes[1].val);
 
-  const handleChange = (val) => {
-    setVal(val);
-    onChange(val);
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setVal(newValue);
+    onChange(newValue);
   };
 
   return (
@@ -31,7 +32,7 @@ const TimeFrameSelect = ({ onChange }) => {
 };
 
 TimeFrameSelect.propTypes = {
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default TimeFrameSelect;

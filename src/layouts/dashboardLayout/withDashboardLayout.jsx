@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./dashboardLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedHTMLMessage } from "react-intl";
 
 const withDashboardLayout = (Component) => {
   const WrapperComponent = (props) => {
-    const [exchange, setExchange] = useState(true);
+    const [exchange, ] = useState(true);
 
     return (
       <Box

@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import Chart from "../../Graphs/Chart";
 import { FormattedMessage } from "react-intl";
 
-const TotalEquity = (props) => {
+const TotalEquity = () => {
   return (
     <Box
       alignItems="flex-start"

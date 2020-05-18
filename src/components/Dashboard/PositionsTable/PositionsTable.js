@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./PositionsTable.scss";
 import { Box, Table, TableHead, TableBody, TableRow, TableCell } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
-import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 
-const PositionsTable = (props) => {
+const PositionsTable = () => {
   const [positions, setPositions] = useState([]);
   const authenticateUser = async () => {
     const loginPayload = {
@@ -15,24 +14,23 @@ const PositionsTable = (props) => {
     return await tradeApi.userLogin(loginPayload);
   };
 
-  const loadPositions = async () => {
-    const userEntity = await authenticateUser();
-    const sessionPayload = {
-      token: userEntity.token,
+  useEffect(() => {
+    const loadPositions = async () => {
+      const userEntity = await authenticateUser();
+      const sessionPayload = {
+        token: userEntity.token,
+      };
+
+      const responseData = await tradeApi.openPositionsGet(sessionPayload);
+      setPositions(responseData);
     };
 
-    const positions = await tradeApi.openPositionsGet(sessionPayload);
-    setPositions(positions);
-  };
-
-  console.log("aaaa");
-  useEffect(() => {
-    console.log("aa");
     loadPositions();
   }, []);
 
   /**
-   * @type {TradeApiTypes.UserPositionsCollection} positionsCollection
+   * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+   * @type {UserPositionsCollection} positionsCollection
    */
   const positionsCollection = positions;
 

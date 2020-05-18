@@ -4,7 +4,6 @@ import {
   userEntityResponseTransform,
   userPositionsResponseTransform,
 } from "./tradeApiClient.types";
-import * as TradeApiTypes from "./tradeApiClient.types";
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -27,11 +26,12 @@ class TradeApiClient {
    *
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
-   * @returns {Promise<*>}
+   * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload) {
+    let responseData = {};
     const apiBaseUrl = "http://api.zignaly.lndo.site/";
     const requestUrl = apiBaseUrl + endpointPath;
     const options = {
@@ -45,24 +45,29 @@ class TradeApiClient {
     try {
       const response = await fetch(requestUrl, options);
       if (response.status === 200) {
-        return await response.json();
+        responseData = await response.json();
       }
 
       const body = await response.text();
       throw new Error(`API ${requestUrl} request failed:` + body);
     } catch (e) {
-      console.error("API error: ", e);
+      responseData.error = e.message;
     }
+
+    return responseData;
   }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
+   */
 
   /**
    * Login a user in Trade API.
    *
-   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
-   * @param {UserLoginPayload} payload
+   * @param {UserLoginPayload} payload User login payload
    *
-   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
-   * @returns {Promise<UserLoginResponse>}
+   * @returns {Promise<UserLoginResponse>} Promise that resolves user login response
    *
    * @memberof TradeApiClient
    */
@@ -76,13 +81,16 @@ class TradeApiClient {
   userLogout() {}
 
   /**
+   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
+   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
+   */
+
+  /**
    * Create user at Zignaly Trade API.
    *
-   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
-   * @param {UserCreatePayload} payload
+   * @param {UserCreatePayload} payload User create payload.
    *
-   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
-   * @returns {Promise<UserCreateResponse>}
+   * @returns {Promise<UserCreateResponse>} Promise that resolves user create response.
    *
    * @memberof TradeApiClient
    */
@@ -94,11 +102,16 @@ class TradeApiClient {
   }
 
   /**
+   * @typedef {import('./tradeApiClient.types').UserPositionsPayload} UserPositionsPayload
+   * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+   */
+
+  /**
    * Get user open trading positions.
    *
-   * @param {TradeApiTypes.UserPositionsPayload} payload
+   * @param {UserPositionsPayload} payload Get user positions payload.
 
-   * @returns {Promise<TradeApiTypes.UserPositionsCollection>}
+   * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
    * @memberof TradeApiClient
    */

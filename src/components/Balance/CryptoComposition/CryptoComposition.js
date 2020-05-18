@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import Doughnut from "../../Graphs/Doughnut";
 import { FormattedMessage } from "react-intl";
 
-const CryptoComposition = (props) => {
+const CryptoComposition = () => {
   return (
     <Box
       alignItems="flex-start"

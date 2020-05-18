@@ -1,6 +1,24 @@
+/**
+ * @typedef {Object} NavigationLink Navigation link object.
+ * @property {string} name Link title.
+ * @property {string} to Link path.
+ */
+
+/**
+ * @typedef {Object} SectionNavigation Section navigation object.
+ * @property {string} title Section title.
+ * @property {string} id Section ID.
+ * @property {Array<NavigationLink>} links Section navigation links.
+ */
+
+/**
+ * Map path to section navigation object.
+ *
+ * @param {string} path Path to map section links for.
+ * @returns {SectionNavigation} A section navigation object.
+ */
 export const routesMapping = (path) => {
   let id = path.split("/")[1];
-  let identifier = "1";
 
   switch (id) {
     case "dashboard":

@@ -1,15 +1,10 @@
 import React from "react";
 import { Link } from "gatsby";
-
 import cs from "../../images/cs.png";
 import en from "../../images/en.png";
-
 import { languages, getLocalizedPath } from "../../i18n";
-
 import { PageContext } from "../../pageContext";
-
-import "./LanguageSwitcher.scss";
-
+import "./languageSwitcher.scss";
 const flags = {
   cs,
   en,
@@ -18,7 +13,7 @@ const flags = {
 const LanguageSwitcher = () => (
   <PageContext.Consumer>
     {({ originalPath, locale }) => (
-      <div className="LanguageSwitcher">
+      <div className="languageSwitcher">
         {languages.map((lang) =>
           lang.locale === locale ? (
             <img alt={lang.label} key={lang.locale} src={flags[lang.locale]} />

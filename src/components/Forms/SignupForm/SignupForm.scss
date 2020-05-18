@@ -1,7 +1,7 @@
-.signup-form {
+.signupForm {
   padding: 48px;
 
-  .input-box {
+  .inputBox {
     margin-bottom: 40px;
     width: 264px;
 
@@ -9,27 +9,16 @@
       width: 300px;
     }
 
-    &.button-box {
+    &.buttonBox {
       margin-bottom: 10px;
     }
 
-    &.no-margin {
+    &.noMargin {
       margin-bottom: 10px;
-    }
-
-    .custom-input {
-      height: 32px;
-    }
-
-    .custom-label {
-      color: $black;
-      font-family: "PlexSans-Regular";
-      font-size: 16px;
-      margin-bottom: 12px;
     }
   }
 
-  .error-text {
+  .errorText {
     color: $red;
     font-family: "PlexSans-Regular";
     font-size: 11px;
@@ -41,7 +30,7 @@
     }
   }
 
-  .terms-box {
+  .termsBox {
     * {
       font-size: 14px;
     }

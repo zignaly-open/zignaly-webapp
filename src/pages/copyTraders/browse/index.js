@@ -18,9 +18,7 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
   const handleFiltersChange = (type, mda, trader) => {};
   const handleSortChange = (sort) => {};
 
-  const handleTimeFrameChange = (val) => {
-    console.log(val);
-  };
+  const handleTimeFrameChange = (val) => {};
 
   return (
     <Box className="ctBrowsePage">
@@ -55,10 +53,10 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 };
 
 CopyTradersBrowse.propTypes = {
-  toggleFilters: PropTypes.func,
-  toggleSort: PropTypes.func,
-  showFilters: PropTypes.bool,
-  showSort: PropTypes.bool,
+  showFilters: PropTypes.bool.isRequired,
+  showSort: PropTypes.bool.isRequired,
+  toggleFilters: PropTypes.func.isRequired,
+  toggleSort: PropTypes.func.isRequired,
 };
 
 export default compose(withPageContext, withAppLayout, withCopyTradersLayout)(CopyTradersBrowse);

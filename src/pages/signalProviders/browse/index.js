@@ -16,15 +16,9 @@ import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 import "./signalProvidersBrowse.scss";
 
 const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort, intl }) => {
-  const handleFiltersChange = (type, mda, trader) => {
-    console.log(type, mda, trader);
-  };
-  const handleSortChange = (sort) => {
-    console.log(sort);
-  };
-  const handleTimeFrameChange = (val) => {
-    console.log(val);
-  };
+  const handleFiltersChange = (type, mda, trader) => {};
+  const handleSortChange = (sort) => {};
+  const handleTimeFrameChange = (val) => {};
   const [providers, setProviders] = useState([1, 2, 3]);
   const authenticateUser = async () => {
     const loginPayload = {
@@ -80,10 +74,10 @@ const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSor
 };
 
 SignalProvidersBrowse.propTypes = {
-  toggleFilters: PropTypes.func,
-  toggleSort: PropTypes.func,
-  showFilters: PropTypes.bool,
-  showSort: PropTypes.bool,
+  toggleFilters: PropTypes.func.isRequired,
+  toggleSort: PropTypes.func.isRequired,
+  showFilters: PropTypes.bool.isRequired,
+  showSort: PropTypes.bool.isRequired,
   intl: intlShape.isRequired,
 };
 

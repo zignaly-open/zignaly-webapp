@@ -30,8 +30,8 @@ const ProvidersFilters = ({ onChange, onClose }) => {
 };
 
 ProvidersFilters.propTypes = {
-  onChange: PropTypes.func,
-  onClose: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ProvidersFilters;

@@ -57,7 +57,7 @@ const ResetPasswordForm = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
-        className="reset-password-form"
+        className="resetPasswordForm"
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -65,7 +65,7 @@ const ResetPasswordForm = (props) => {
         <h3>Reset Password From</h3>
         <Popper
           anchorEl={anchorEl}
-          className="password-strength-box"
+          className="passwordStrengthBox"
           open={!!anchorEl}
           placement="left"
           transition
@@ -74,13 +74,13 @@ const ResetPasswordForm = (props) => {
         </Popper>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="custom-label">New Password</label>
-          <FormControl className="custom-input" variant="outlined">
+          <label className="customLabel">New Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
@@ -101,13 +101,13 @@ const ResetPasswordForm = (props) => {
 
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="custom-label">Repeat Password</label>
-          <FormControl className="custom-input" variant="outlined">
+          <label className="customLabel">Repeat Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
@@ -123,10 +123,10 @@ const ResetPasswordForm = (props) => {
               type={showRepeatPassword ? "text" : "password"}
             />
           </FormControl>
-          {passwordDoNotMatch && <span className="error-text">Passwords do not match</span>}
+          {passwordDoNotMatch && <span className="errorText">Passwords do not match</span>}
         </Box>
 
-        <Box className="input-box">
+        <Box className="inputBox">
           <CustomButton
             className={"full submitButton"}
             loading={loading}

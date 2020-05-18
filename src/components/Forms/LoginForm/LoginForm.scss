@@ -1,20 +1,9 @@
 .loginForm {
   padding: 48px;
 
-  .input-box {
+  .inputBox {
     margin-bottom: 40px;
     width: 264px;
-
-    .custom-input {
-      height: 32px;
-    }
-
-    .custom-label {
-      color: $black;
-      font-family: "PlexSans-Regular";
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
   }
 
   .link {
@@ -22,7 +11,7 @@
     cursor: pointer;
     font-family: "PlexSans-Bold";
     font-size: 11px;
-    letter-spacing: 0.42px;
+    letter-spacing: .42px;
     margin-bottom: 40px;
     text-decoration: none;
     text-transform: uppercase;
@@ -32,7 +21,7 @@
     }
   }
 
-  .error-text {
+  .errorText {
     color: $red;
     font-size: 11px;
   }

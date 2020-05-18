@@ -1,6 +1,5 @@
-import React, { createRef, useState } from "react";
+import React, { useState } from "react";
 import "./SignupForm.scss";
-import common from "../../../styles/common.module.scss";
 import {
   Box,
   TextField,
@@ -16,19 +15,20 @@ import { validatePassword } from "../../../utils/validators";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../PasswordStrength";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [, setPasswordDoNotMatch] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const [passwordDoNotMatch] = useState(false);
   const [strength, setStrength] = useState(0);
-  const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
-  const [loading, showLoading] = useState(false);
-  const recaptchaRef = createRef();
-  const dispatch = useDispatch();
+  // const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const [loading] = useState(false);
+  // const recaptchaRef = createRef();
+  // const dispatch = useDispatch();
   const { errors, handleSubmit, register, setError, clearError } = useForm();
 
   // componentDidMount() {
@@ -36,72 +36,98 @@ const SignupForm = () => {
   //     this.setState({ref: ref})
   // }
 
+  /**
+   * @typedef {import('react').ChangeEvent} ChangeEvent
+   */
+
+  /**
+   * Main password change state handling.
+   *
+   * @param {ChangeEvent} e Observed event.
+   * @return {void}
+   */
   const handlePasswordChange = (e) => {
     setPasswordDoNotMatch(false);
     setAnchorEl(e.currentTarget);
-    let howStrong = validatePassword(e.target.value);
+    const targetElement = /** @type {HTMLInputElement} */ (e.target);
+    let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
-    howStrong >= 4 ? clearError("password") : setError("password");
-  };
-
-  const handleRepeatPasswordChange = (e) => {
-    setPasswordDoNotMatch(false);
-    let howStrong = validatePassword(e.target.value);
-    setStrength(howStrong);
-    howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
-  };
-
-  const onSubmit = (data) => {
-    if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
-      // showLoading(true)
-      console.log(data);
-      // const params = {
-      //     projectId: projectId,
-      //     firstName: data.firstName,
-      //     email: data.email,
-      //     password: data.password,
-      //     subscribe: data.subscribe,
-      //     ref: this.state.ref || null,
-      //     array: true,
-      //     gRecaptchaResponse: "abracadabra"
-      // };
-      // setCaptchaResponse('')
-      // this.props.dispatch(signup(params, this.hideLoader));
+    if (strength >= 4) {
+      clearError("password");
     } else {
-      setPasswordDoNotMatch(true);
+      setError("password", "The password is fragile.");
     }
   };
 
-  const onChangeReCAPTCHA = (value) => {
-    setCaptchaResponse(value);
+  /**
+   * Repeat password change state handling.
+   *
+   * @param {ChangeEvent} e Change event.
+   * @return {void}
+   */
+  const handleRepeatPasswordChange = (e) => {
+    setPasswordDoNotMatch(false);
+    const targetElement = /** @type {HTMLInputElement} */ (e.target);
+    let howStrong = validatePassword(targetElement.value);
+    setStrength(howStrong);
+    if (howStrong >= 4) {
+      clearError("repeatPassword");
+    } else {
+      setError("repeatPassword", "Repeat password don't match with main password.");
+    }
   };
 
-  const onExpiredReCAPTCHA = () => {
-    dispatch(alertError("Your solution to the ReCAPTCHA has expired, please resolve it again."));
-    setCaptchaResponse("");
-  };
+  //   const onSubmit = () => {
+  //     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
+  //       showLoading(true)
+  //       const params = {
+  //           projectId: projectId,
+  //           firstName: data.firstName,
+  //           email: data.email,
+  //           password: data.password,
+  //           subscribe: data.subscribe,
+  //           ref: this.state.ref || null,
+  //           array: true,
+  //           gRecaptchaResponse: "abracadabra"
+  //       };
+  //       setCaptchaResponse('')
+  //       this.props.dispatch(signup(params, this.hideLoader));
+  //     } else {
+  //       setPasswordDoNotMatch(true);
+  //     }
+  //   };
 
-  const onErroredReCAPTCHA = () => {
-    dispatch(
-      alertError(
-        "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
-      ),
-    );
-    setCaptchaResponse("");
-  };
+  //   const onChangeReCAPTCHA = (value) => {
+  //     setCaptchaResponse(value);
+  //   };
+
+  //   const onExpiredReCAPTCHA = () => {
+  //     dispatch(alertError("Your solution to the ReCAPTCHA has expired, please resolve it again."));
+  //     setCaptchaResponse("");
+  //   };
+
+  //   const onErroredReCAPTCHA = () => {
+  //     dispatch(
+  //       alertError(
+  //         "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
+  //       ),
+  //     );
+  //     setCaptchaResponse("");
+  //   };
+  const onSubmit = () => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
-        className="signup-form"
+        className="signupForm"
         display="flex"
         flexDirection="column"
         justifyContent="center"
       >
         <Popper
           anchorEl={anchorEl}
-          className={common.passwordStrengthBox}
+          className="passwordStrengthBox"
           open={!!anchorEl}
           placement="left"
           transition
@@ -110,14 +136,14 @@ const SignupForm = () => {
         </Popper>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Name</label>
+          <label className="customLabel">Name</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={!!errors.name}
             fullWidth
             inputRef={register({ required: true, minLength: 3 })}
@@ -128,14 +154,14 @@ const SignupForm = () => {
         </Box>
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Email address</label>
+          <label className="customLabel">Email address</label>
           <TextField
-            className={common.customInput}
+            className="customInput"
             error={!!errors.email}
             fullWidth
             inputRef={register({
@@ -150,17 +176,17 @@ const SignupForm = () => {
 
         <Box
           alignItems="start"
-          className="input-box"
+          className="inputBox"
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Password</label>
-          <FormControl className={common.customInput} variant="outlined">
+          <label className="customLabel">Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <span className={common.pointer} onClick={() => setShowPassword(!showPassword)}>
+                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </span>
                 </InputAdornment>
@@ -177,18 +203,18 @@ const SignupForm = () => {
 
         <Box
           alignItems="start"
-          className={"input-box " + (passwordDoNotMatch ? "no-margin" : "")}
+          className={"inputBox " + (passwordDoNotMatch ? "no-margin" : "")}
           display="flex"
           flexDirection="column"
           justifyContent="start"
         >
-          <label className={common.customLabel}>Repeat Password</label>
-          <FormControl className={common.customInput} variant="outlined">
+          <label className="customLabel">Repeat Password</label>
+          <FormControl className="customInput" variant="outlined">
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
                   <span
-                    className={common.pointer}
+                    className="pointer"
                     onClick={() => setShowRepeatPassword(!showRepeatPassword)}
                   >
                     {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
@@ -206,11 +232,11 @@ const SignupForm = () => {
         <Box display="flex" flexDirection="row" justifyContent="center" minWidth="100%">
           {passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
         </Box>
-        <Box className="input-box checkbox">
+        <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
-              className={common.checkboxInput}
-              error={errors.terms ? "true" : "false"}
+              className="checkboxInput"
+              // error={errors.terms ? "true" : "false"}
               inputRef={register({ required: true })}
               name="terms"
               onChange={() => clearError("terms")}
@@ -234,15 +260,15 @@ const SignupForm = () => {
           </Box>
         </Box>
 
-        <Box className="input-box checkbox">
+        <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
-            <Checkbox className={common.checkboxInput} inputRef={register} name="subscribe" />
+            <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
             <span className={"terms-text"}>Subscribe to notifications</span>
           </Box>
         </Box>
 
         {/* {envconfig.configureCaptcha &&
-                    <Box className="input-box">
+                    <Box className="inputBox">
                         <ReCAPTCHA
                             ref={this.recaptchaRef}
                             sitekey="6LdORtMUAAAAAGLmbf3TM8plIRorVCEc9pVChix8"
@@ -252,7 +278,7 @@ const SignupForm = () => {
                     </Box>
                 } */}
 
-        <Box className="input-box button-box">
+        <Box className="inputBox button-box">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
             Register
           </CustomButton>

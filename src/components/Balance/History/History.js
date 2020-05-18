@@ -7,7 +7,7 @@ import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionsTable from "../../Dashboard/PositionsTable";
 import PositionFilters from "../../Dashboard/PositionFilters";
 
-const History = (props) => {
+const History = () => {
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
 

@@ -4,9 +4,8 @@ import { Box, Tab, Tabs } from "@material-ui/core";
 import LoginForm from "../Forms/LoginForm";
 import SignupForm from "../Forms/SignupForm";
 
-const LoginTabs = (props) => {
+const LoginTabs = () => {
   const [tabValue, setTabValue] = useState(0);
-
   const changeTab = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -15,7 +14,7 @@ const LoginTabs = (props) => {
     <Box className="loginTabs">
       <Tabs
         classes={{ indicator: "indicator", flexContainer: "container" }}
-        className="tabs-menu"
+        className="tabsMenu"
         onChange={changeTab}
         value={tabValue}
       >

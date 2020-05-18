@@ -8,10 +8,9 @@ if (!defaultLanguage) {
 
 const getLocalizedPath = (originalPath, locale) => {
   const keyPath = originalPath.replace(/(\w+)\/$/, "$1");
-  const lang = languages.find((lang) => lang.locale === locale);
-
+  const selectedLanguage = languages.find((lang) => lang.locale === locale);
   const isDefault = locale === defaultLanguage.locale;
-  const localizedPath = lang && lang.routes && lang.routes[keyPath];
+  const localizedPath = selectedLanguage && selectedLanguage.routes && selectedLanguage.routes[keyPath];
 
   if (!localizedPath) {
     throw new Error(

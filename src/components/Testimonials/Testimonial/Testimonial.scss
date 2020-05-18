@@ -1,7 +1,7 @@
 .testimonial {
   background: $white;
   border-radius: 4px;
-  box-shadow: 0 2px 8px 0 rgba(64, 34, 95, 0.2);
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
   box-sizing: border-box;
   margin: 64px 0;
   min-height: 268px;
@@ -18,13 +18,13 @@
     width: 80px;
   }
 
-  .time-box {
+  .timeBox {
     height: 42px;
 
     .time {
       font-family: "PlexSans-Light";
       font-size: 14px;
-      letter-spacing: 0.53px;
+      letter-spacing: .53px;
       margin-right: 1rem;
     }
 
@@ -37,26 +37,26 @@
     }
   }
 
-  .title-box {
+  .titleBox {
     margin-top: 16px;
 
     .title {
       font-family: "PlexSans-Medium";
       font-size: 21px;
-      letter-spacing: 0.8px;
+      letter-spacing: .8px;
       margin: 0;
 
       & + p {
         font-family: "PlexSans-Light";
         font-size: 16px;
-        letter-spacing: 0.61px;
+        letter-spacing: .61px;
         line-height: 21px;
-        margin: 10px 0 0 0;
+        margin: 10px 0 0;
       }
     }
   }
 
-  .review-box {
+  .reviewBox {
     bottom: 16px;
     position: absolute;
     width: calc(100% - 40px);
@@ -74,7 +74,7 @@
       width: 60px;
     }
 
-    .title-box {
+    .titleBox {
       margin-bottom: 20px;
     }
   }

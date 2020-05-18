@@ -11,7 +11,7 @@ import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
 import FillWhite from "../../../images/sidebar/fillWhite.svg";
 import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
-import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
+// import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";

@@ -5,42 +5,52 @@ import CustomButton from "../../CustomButton/CustomButton";
 // import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
 
-const TwoFAForm = (props) => {
-  const [code, setCode] = useState("");
+/**
+ * @typedef {import('react').ChangeEvent} ChangeEvent
+ * @typedef {import('react').KeyboardEvent} KeyboardEvent
+ */
+
+const TwoFAForm = () => {
+  const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
 
-  handleCodeChange = (e) => {
-    setCode(e.length === 6);
-    if (e.length === 6) {
+  /**
+   * Code change event callback.
+   *
+   * @param {string} value Code change event.
+   * @return {void}
+   */
+  const handleCodeChange = (value) => {
+    setCode(value.length === 6);
+    if (value.length === 6) {
       setCodeError(false);
     } else {
       setCodeError(true);
     }
   };
 
-  handleSubmit = () => {
+  const handleSubmit = () => {
     setLoading(true);
     // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
   };
 
-  handleKeyPress = (event) => {
+  /**
+   * Code submission enter keypress kandling.
+   *
+   * @param {KeyboardEvent} event Key press event.
+   * @returns {void}
+   */
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSubmit();
     }
   };
 
-  disabledButton = () => {
-    if (this.state.code && !this.state.codeError) {
-      return false;
-    }
-    return true;
-  };
-
   return (
     <Box
       alignItems="center"
-      className="twoFA-form"
+      className="twoFAForm"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -48,20 +58,19 @@ const TwoFAForm = (props) => {
       <span className="boxTitle">2 Factor Authentication</span>
       <Box
         alignItems="center"
-        className="input-box"
+        className="inputBox"
         display="flex"
         flexDirection="column"
         justifyContent="start"
       >
-        <label className="custom-label">Input Your Authentication Code</label>
+        <label className="customLabel">Input Your Authentication Code</label>
         <ReactCodeInput fields={6} onChange={handleCodeChange} onComplete={handleKeyPress} />
-        {codeError && <span className="error-text">Code must be of 6 digits!</span>}
+        {codeError && <span className="errorText">Code must be of 6 digits!</span>}
       </Box>
 
-      <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
+      <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
         <CustomButton
-          className={"full " + (disabledButton() ? "disabledButton" : "submitButton")}
-          disabled={disabledButton()}
+          className={"fullSubmitButton"}
           loading={loading}
           onClick={handleSubmit}
         >

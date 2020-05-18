@@ -11,12 +11,18 @@ import { FormattedMessage } from "react-intl";
 import NoPositions from "../NoPositions";
 import CustomFilters from "../../CustomFilters";
 
-const PositionsTabs = (props) => {
+const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
 
-  const changeTab = (event, newValue) => {
+  /**
+   * Event handler to change tab value.
+   *
+   * @param {number} newValue Tab index to set active.
+   * @returns {void}
+   */
+  const changeTab = (newValue) => {
     setTabValue(newValue);
   };
 
@@ -33,7 +39,7 @@ const PositionsTabs = (props) => {
       >
         <Tabs
           classes={{ indicator: "indicator", flexContainer: "container" }}
-          className="tabs-menu"
+          className="tabsMenu"
           onChange={changeTab}
           value={tabValue}
         >

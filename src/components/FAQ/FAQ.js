@@ -6,7 +6,7 @@ const FAQ = () => {
   return (
     <Box
       alignItems="flex-start"
-      className={"FAQ"}
+      className="faq"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
