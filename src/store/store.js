@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
-import initialState from "./initialState";
+import DefaultState from "./initialState";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 const persistConfig = {
@@ -13,5 +13,5 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-export const store = createStore(persistedReducer, initialState, applyMiddleware(thunk));
+export const store = createStore(persistedReducer, DefaultState, applyMiddleware(thunk));
 export const persistor = persistStore(store);
