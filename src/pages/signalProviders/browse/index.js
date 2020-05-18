@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
+import { injectIntl, intlShape } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
 import withPageContext from "../../../pageContext";
@@ -14,7 +15,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 import "./signalProvidersBrowse.scss";
 
-const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
+const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort, intl }) => {
   const handleFiltersChange = (type, mda, trader) => {
     console.log(type, mda, trader);
   };
@@ -59,7 +60,7 @@ const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSor
   return (
     <Box className="spBrowsePage">
       <Helmet>
-        <title>Signal Providers</title>
+        <title>{intl.formatMessage({ id: "signalProviders" })}</title>
       </Helmet>
 
       {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
@@ -83,10 +84,12 @@ SignalProvidersBrowse.propTypes = {
   toggleSort: PropTypes.func,
   showFilters: PropTypes.bool,
   showSort: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
 export default compose(
   withPageContext,
   withAppLayout,
   withSignalProvidersLayout,
+  injectIntl,
 )(SignalProvidersBrowse);

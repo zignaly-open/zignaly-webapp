@@ -26,14 +26,8 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <Box className="titleBox" display="flex" flexDirection="column">
-          <Typography variant="h1">Copy Traders</Typography>
-          <h4 className="subHeader">
-            Copy experienced traders who trade with the currencies you own.
-          </h4>
-        </Box>
-
         <ProvidersHeader
+          path={props.path}
           showFilters={showFilters}
           showSort={showSort}
           toggleFilters={toggleFilters}
