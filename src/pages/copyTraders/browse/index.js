@@ -13,7 +13,7 @@ import Helmet from "react-helmet";
 import "./copyTradersBrowse.scss";
 
 const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
-  const list = [1, 2, 3];
+  const list = [1, 2, 3, 4, 5, 6, 7];
 
   const handleFiltersChange = (type, mda, trader) => {};
   const handleSortChange = (sort) => {};
@@ -28,7 +28,7 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
 
       {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
       {showSort && <ProvidersSort onChange={handleSortChange} onClose={toggleSort} />}
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
+      <Box display="flex" flexDirection="row" justifyContent="space-between" pb="12px">
         <Typography className="regularHeading" variant="h3">
           7 traders
         </Typography>
@@ -36,17 +36,14 @@ const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort })
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="column" justifyContent="flex-start">
-        <Box
-          alignItems="center"
-          className="tradersBox"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="space-between"
-        >
-          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
-        </Box>
+      <Box
+        className="tradersBox"
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
+        justifyContent="flex-start"
+      >
+        {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
       </Box>
     </Box>
   );
