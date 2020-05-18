@@ -7,7 +7,7 @@ import { navigate } from "@reach/router";
 
 const NoPositions = () => {
   const redirect = () => {
-    navigate("/copyTraders");
+    navigate("/copyTraders/browse");
   };
 
   return (
