@@ -5,6 +5,10 @@ import Message from "./Message";
 
 const Popup = () => {
   const [alert, showAlert] = useState(false);
+  const data = {
+    title: "",
+    message: "",
+  };
 
   return (
     <Snackbar
@@ -17,7 +21,7 @@ const Popup = () => {
       onClose={() => showAlert(true)}
       open={alert}
     >
-      <Message data={{}} />
+      <Message message={data} />
     </Snackbar>
   );
 };

@@ -1,8 +1,22 @@
 import React from "react";
 import "./Alert.scss";
 import { Box } from "@material-ui/core";
+import PropTypes from "prop-types";
 
-const Popup = () => {
+/**
+ * @typedef {Object} AlertMessageProps
+ * @property {Object} message Object which will contain message data to display to the user.
+ */
+
+/**
+ * Message data which will be according to the type of alert
+ *
+ * @param {AlertMessageProps} props Component properties.
+ */
+
+const PopupMessage = (props) => {
+  const { message } = props;
+
   return (
     <Box bgcolor="grid.main" className="alertMessage">
       <Box className="head">
@@ -17,4 +31,8 @@ const Popup = () => {
   );
 };
 
-export default Popup;
+PopupMessage.propTypes = {
+  message: PropTypes.object,
+};
+
+export default PopupMessage;
