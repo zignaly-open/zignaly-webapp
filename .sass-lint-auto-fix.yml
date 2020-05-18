@@ -3,9 +3,9 @@ files:
   ignore:
     - node_modules/**
 syntax:
-    include:
-      - scss
-      - sass
+  include:
+    - scss
+    - sass
 resolvers:
   indentation: 1
   property-sort-order: 1
@@ -14,7 +14,7 @@ resolvers:
   no-color-keywords: 1
   no-css-comments: 0
   no-important: 1
-  no-trailing-zero: 1
+  no-trailing-zero: 0
   space-after-bang: 0
   space-before-bang: 1
   space-after-colon: 1
