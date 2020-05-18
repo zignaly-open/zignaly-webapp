@@ -1,12 +1,13 @@
 /**
  * @typedef {Object} NavigationLink Navigation link object.
- * @property {string} name Link title.
+ * @property {string} id Link ID.
  * @property {string} to Link path.
  */
 
 /**
  * @typedef {Object} SectionNavigation Section navigation object.
- * @property {string} title Section title.
+ * @property {string} [subtitleId] Section subtitle.
+ * @property {string} [subtitle2Id] Section subtitle 2.
  * @property {string} id Section ID.
  * @property {Array<NavigationLink>} links Section navigation links.
  */
@@ -23,49 +24,50 @@ export const routesMapping = (path) => {
   switch (id) {
     case "dashboard":
       return {
-        title: "dashboard",
         id: id,
         links: [
           {
-            name: "Positions",
+            id: "dashboard.positions",
             to: "/dashboard/positions",
           },
           {
-            name: "Balance",
+            id: "dashboard.balance",
             to: "/dashboard/balance",
           },
           {
-            name: "Connected traders",
+            id: "dashboard.traders",
             to: "/dashboard/connectedTraders",
           },
         ],
       };
-    case "copyTrders":
+    case "copyTraders":
       return {
-        title: "copy traders",
         id: id,
+        subtitleId: "copyTraders.subtitle",
+        subtitle2Id: "copyTraders.subtitle2",
         links: [
           {
-            name: "Browse",
+            id: "srv.browse",
             to: "/copyTraders/browse",
           },
           {
-            name: "Analytics",
+            id: "srv.analytics",
             to: "/copyTraders/analytics",
           },
         ],
       };
     case "signalProviders":
       return {
-        title: "signal Providers",
         id: id,
+        subtitleId: "signalProviders.subtitle",
+        subtitle2Id: "signalProviders.subtitle2",
         links: [
           {
-            name: "Browse",
+            id: "srv.browse",
             to: "/signalProviders/browse",
           },
           {
-            name: "Analytics",
+            id: "srv.analytics",
             to: "/signalProviders/analytics",
           },
         ],
@@ -110,19 +112,18 @@ export const routesMapping = (path) => {
       };
     default:
       return {
-        title: "Dashboard",
         id: id,
         links: [
           {
-            name: "Positions",
+            id: "dashboard.positions",
             to: "/dashboard/positions",
           },
           {
-            name: "Balance",
+            id: "dashboard.balance",
             to: "/dashboard/balance",
           },
           {
-            name: "Connected traders",
+            id: "dashboard.traders",
             to: "/dashboard/connectedTraders",
           },
         ],

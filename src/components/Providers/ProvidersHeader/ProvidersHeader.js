@@ -18,9 +18,9 @@ const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, pat
           <FormattedMessage id={routesMapping(path).id} />
         </Typography>
         <h4 className="subHeader">
-          <FormattedMessage id="signalProviders.subtitle" />
+          <FormattedMessage id={routesMapping(path).subtitleId} />
           <br />
-          <FormattedMessage id="signalProviders.subtitle2" />
+          <FormattedMessage id={routesMapping(path).subtitle2Id} />
         </h4>
       </Box>
       <SubNavHeader links={routesMapping(path).links}>

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 import Link from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
@@ -15,7 +16,7 @@ const SubNavHeader = ({ links, children }) => {
     >
       {links.map((item, index) => (
         <Link activeClassName="active" className="dashboardLink" key={index} to={item.to}>
-          {item.name}
+          <FormattedMessage id={item.id} />
         </Link>
       ))}
       {children}
@@ -23,8 +24,12 @@ const SubNavHeader = ({ links, children }) => {
   );
 };
 
+SubNavHeader.defaultProps = {
+  children: null,
+};
+
 SubNavHeader.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   links: PropTypes.array.isRequired,
 };
 export default SubNavHeader;
