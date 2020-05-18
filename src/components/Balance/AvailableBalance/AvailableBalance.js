@@ -3,7 +3,18 @@ import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
-const AvailableBalance = () => {
+/**
+ * @typedef {Object} AvailableBalanceProps
+ * @property {Object} balance Object which will contain user balancs summary
+ */
+
+/**
+ * User balance summary
+ *
+ * @param {AvailableBalanceProps} props Component properties.
+ */
+
+const AvailableBalance = (props) => {
   return (
     <Box
       alignItems="center"

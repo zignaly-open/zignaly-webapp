@@ -4,7 +4,18 @@ import { Box, Typography } from "@material-ui/core";
 import Doughnut from "../../Graphs/Doughnut";
 import { FormattedMessage } from "react-intl";
 
-const CryptoComposition = () => {
+/**
+ * @typedef {Object} CryptoCompositionProps
+ * @property {Object} crypto Object which will contain the user's available crypto and will
+ */
+
+/**
+ * User's crypto composition and all available crypto balance.
+ *
+ * @param {CryptoCompositionProps} props Component properties.
+ */
+
+const CryptoComposition = (props) => {
   return (
     <Box
       alignItems="flex-start"
