@@ -188,6 +188,24 @@ const theme = (darkStyle) => {
         textTransform: "capitalize",
       },
     },
+
+    /**
+     * Matrial UI overirde Font Object.
+     *
+     * @typedef {Object} FontObject
+     * @property {String} fontFamily
+     * @property {String} fontSize
+     * @property {String} fontDisplay
+     * @property {String} fontWeight
+     * @property {String} src
+     */
+
+    /**
+     * Matrial UI overirde options
+     *
+     * @param {FontObject} PlexSansMedium
+     */
+
     overrides: {
       MuiCssBaseline: {
         "@global": {

@@ -14,11 +14,11 @@
  * @property {DefaultStateSessionCoinRay} coinRay
  */
 
- /**
-  * @typedef {Object} DefaultStateSettings
-  * @property {string} languageCode
-  * @property {boolean} darkStyle
-  */
+/**
+ * @typedef {Object} DefaultStateSettings
+ * @property {String} languageCode
+ * @property {Boolean} darkStyle
+ */
 
 /**
  * @typedef {Object} DefaultState
@@ -26,9 +26,9 @@
  * @property {DefaultStateSettings} settings
  */
 
- /**
-  * @type {DefaultState} initialState
-  */
+/**
+ * @type {DefaultState} initialState
+ */
 const initialState = {
   session: {
     tradeApi: {
