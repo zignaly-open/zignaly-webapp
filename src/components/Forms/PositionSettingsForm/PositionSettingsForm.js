@@ -4,7 +4,19 @@ import { Box } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import CloseIcon from "@material-ui/icons/Close";
 
-const PositionSettingsForm = () => {
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Function} onClose
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
+const PositionSettingsForm = (props) => {
+  const { onClose } = props;
   const handleSubmit = () => {};
 
   return (
@@ -16,7 +28,7 @@ const PositionSettingsForm = () => {
       flexDirection="column"
       justifyContent="center"
     >
-      <CloseIcon className="closeIcon" />
+      <CloseIcon className="closeIcon" onClick={onClose} />
       <span className="boxTitle">Choose Columns</span>
       <Box className="form" />
       <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">

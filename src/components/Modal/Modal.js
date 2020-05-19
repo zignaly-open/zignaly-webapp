@@ -2,6 +2,21 @@ import React from "react";
 import "./Modal.scss";
 import { Dialog } from "@material-ui/core";
 
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Boolean} state
+ * @property {Function} onClose
+ * @property {Boolean} persist
+ * @property {Object} children
+ * @property {String} size
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
 const GenericModal = (props) => {
   const { state, onClose, persist, children, size } = props;
 

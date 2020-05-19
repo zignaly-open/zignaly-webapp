@@ -3,9 +3,22 @@ import "./Chart.scss";
 import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
 
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {String} id
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
 const GenericChart = (props) => {
+  const { id } = props;
+
   useEffect(() => {
-    const elementId = props.id;
+    const elementId = id;
     const context = document.getElementById(elementId).getContext("2d");
     const background = context.createLinearGradient(0, 0, 0, 500);
     background.addColorStop(1, "rgba(216, 216, 216, .1)");

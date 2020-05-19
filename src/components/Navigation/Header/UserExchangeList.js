@@ -5,22 +5,21 @@ const UserExchangeList = () => {
   const [exchange, setExchange] = useState(10);
 
   /**
-   *
-   * @typedef {Object} TargetObject
-   * @property {Number} value
+   * @typedef {import('react').ChangeEvent} ChangeEvent
    */
 
   /**
+   * Repeat password change state handling.
    *
-   * @typedef {Object} EventObject
-   * @property {TargetObject} target
+   * @param {ChangeEvent} event Change event.
+   * @return {void}
    */
 
-  /**
-   *
-   * @param {EventObject} event
-   */
-  const handleChange = (event) => setExchange(event.target.value);
+  const handleChange = (event) => {
+    const targetElement = /** @type {HTMLSelectElement} */ (event.target);
+    let value = parseInt(targetElement.value);
+    setExchange(value);
+  };
 
   return (
     <Box className="userExchangeList">

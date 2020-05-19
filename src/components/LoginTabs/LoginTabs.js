@@ -6,6 +6,13 @@ import SignupForm from "../Forms/SignupForm";
 
 const LoginTabs = () => {
   const [tabValue, setTabValue] = useState(0);
+
+  /**
+   *
+   * @param {Object} event
+   * @param {Number} newValue
+   */
+
   const changeTab = (event, newValue) => {
     setTabValue(newValue);
   };
