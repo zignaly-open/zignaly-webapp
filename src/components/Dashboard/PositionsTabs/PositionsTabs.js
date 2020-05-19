@@ -19,11 +19,13 @@ const PositionsTabs = () => {
   /**
    * Event handler to change tab value.
    *
-   * @param {number} newValue Tab index to set active.
+   * @param {number} event Tab index to set active.
+   * @param {number} val Tab index to set active.
    * @returns {void}
    */
-  const changeTab = (newValue) => {
-    setTabValue(newValue);
+
+  const changeTab = (event, val) => {
+    setTabValue(val);
   };
 
   const handleFiltersChange = (type, mda, trader) => {};

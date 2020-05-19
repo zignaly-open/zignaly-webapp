@@ -12,7 +12,22 @@ import TimeFrameSelect from "../../../components/TimeFrameSelect";
 import Helmet from "react-helmet";
 import "./copyTradersBrowse.scss";
 
-const CopyTradersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort }) => {
+/**
+ * @typedef {Object} CopyTradersBrowsePropTypes
+ * @property {boolean} showFilters Flag to indicate if filters should be rendered.
+ * @property {boolean} showSort Flag to indicate if sort options should be rendered.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ */
+
+/**
+ * Provides a list to browse copy traders.
+ *
+ * @param {CopyTradersBrowsePropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
+const CopyTradersBrowse = (props) => {
+  const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const list = [1, 2, 3, 4, 5, 6, 7];
 
   const handleFiltersChange = (type, mda, trader) => {};
