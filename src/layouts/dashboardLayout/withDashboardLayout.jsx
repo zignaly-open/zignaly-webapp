@@ -6,9 +6,28 @@ import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedHTMLMessage } from "react-intl";
 
+/**
+ *  App layout is defined here, the placement of header, sidebar, mobile appbar.
+ *
+ * @param {Object} Component
+ * @returns {Object} Component
+ */
+
 const withDashboardLayout = (Component) => {
+  /**
+   *
+   * @typedef {Object} DefaultProps
+   * @property {String} path
+   */
+
+  /**
+   *
+   * @param {DefaultProps} props
+   */
+
   const WrapperComponent = (props) => {
-    const [exchange, ] = useState(true);
+    const { path } = props;
+    const [exchange] = useState(true);
 
     return (
       <Box
@@ -19,7 +38,7 @@ const withDashboardLayout = (Component) => {
         justifyContent="flex-start"
       >
         {exchange && (
-          <>
+          <React.Fragment>
             <DashboardHeader path={props.path} />
             <Box className="pageContent">
               <Component {...props} />
@@ -27,7 +46,7 @@ const withDashboardLayout = (Component) => {
             <Box className="faq">
               <FAQ />
             </Box>
-          </>
+          </React.Fragment>
         )}
         {!exchange && (
           <Box

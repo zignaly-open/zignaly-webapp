@@ -24,7 +24,7 @@ import Alert from "../../components/Alert";
 
 const withAppLayout = (Component) => {
   /**
-   * Component received by the HOC.
+   *
    *
    * @param {Object} props
    */
