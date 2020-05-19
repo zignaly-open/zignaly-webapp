@@ -150,6 +150,44 @@ import { assign, isArray } from "lodash";
  */
 
 /**
+ * @typedef {Object} ProvidersPayload
+ * @property {string} token
+ */
+
+/**
+ * @typedef {Object} ProviderEntity
+ * @property {string} id
+ * @property {string} name
+ * @property {string} description
+ * @property {string} shortDesc
+ * @property {string} longDesc
+ * @property {string} fee
+ * @property {boolean} website
+ * @property {Array<string>} exchanges
+ * @property {boolean} key
+ * @property {boolean} disable
+ * @property {boolean} customerKey
+ * @property {boolean} public
+ * @property {boolean} hasRecommendedSettings
+ * @property {string} logoUrl
+ * @property {string} coin
+ * @property {boolean} hasBeenUsed
+ * @property {boolean} isClone
+ * @property {boolean} isCopyTrading
+ * @property {boolean} clonedFrom
+ * @property {number} createdAt
+ * @property {boolean} isFromUser
+ * @property {boolean} quote
+ * @property {string} createdAt
+ * @property {Array<number>} dailyReturns
+ * @property {number} risk
+ */
+
+/**
+ * @typedef {Array<ProviderEntity>} ProvidersCollection
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -194,6 +232,73 @@ export function userEntityResponseTransform(response) {
     status: response.status,
     onboarding: response.onboarding,
     refCode: response.refCode,
+  };
+}
+
+/**
+ * Transform providers response to typed object.
+ *
+ * @export
+ * @param {*} response Trade API signal providers list response.
+ * @returns {ProvidersCollection} Signal providers entities collection.
+ */
+export function providersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of providers.");
+  }
+
+  return response.map((providerItem) => {
+    return providerItemTransform(providerItem);
+  });
+}
+
+/**
+ * Transform API provider item to typed object.
+ *
+ * @param {Object} providerItem Trade API provider item.
+ * @returns {ProviderEntity} Provider entity.
+ */
+function providerItemTransform(providerItem) {
+  const emptyProviderEntity = createEmptyProviderEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyProviderEntity, providerItem);
+
+  return transformedResponse;
+}
+
+/**
+ * Create empty provider entity skeletion.
+ *
+ * @returns {ProviderEntity} Enpty provider entity.
+ */
+
+function createEmptyProviderEntity() {
+  return {
+    id: "",
+    name: "",
+    description: "",
+    shortDesc: "",
+    longDesc: "",
+    fee: false,
+    website: false,
+    exchanges: [],
+    key: false,
+    disable: true,
+    customerKey: false,
+    public: true,
+    logoUrl: "",
+    hasRecommendedSettings: false,
+    hasBeenUsed: false,
+    isClone: false,
+    isCopyTrading: false,
+    clonedFrom: false,
+    createdAt: 0,
+    isFromUser: false,
+    quote: false,
+    dailyReturns: [],
+    risk: 0,
+    coin: "BTC",
+    disable: true,
   };
 }
 

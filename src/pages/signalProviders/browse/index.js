@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
-import { injectIntl, intlShape } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
 import withPageContext from "../../../pageContext";
@@ -12,49 +12,71 @@ import TimeFrameSelect from "../../../components/TimeFrameSelect";
 import ProvidersList from "../../../components/Providers/ProvidersList";
 import Helmet from "react-helmet";
 import tradeApi from "../../../services/tradeApiClient";
-import * as TradeApiTypes from "../../../services/tradeApiClient.types";
 import "./signalProvidersBrowse.scss";
 
-const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSort, intl }) => {
+/**
+ * @typedef {Object} SignalProvidersBrowsePropTypes
+ * @property {boolean} showFilters Flag to indicate if filters should be rendered.
+ * @property {boolean} showSort Flag to indicate if sort options should be rendered.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {any} intl React-intl context to translate strings
+ */
+
+/**
+ * Provides a list to browse signal providers.
+ *
+ * @param {SignalProvidersBrowsePropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
+const SignalProvidersBrowse = (props) => {
+  const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
   const handleFiltersChange = (type, mda, trader) => {};
   const handleSortChange = (sort) => {};
   const handleTimeFrameChange = (val) => {};
-  const [providers, setProviders] = useState([1, 2, 3]);
+
+  /**
+   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+   * @type {ProvidersCollection} initialState
+   */
+  const initialState = [];
+  const [providers, setProviders] = useState(initialState);
+
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
+      email: "mailouckuo5rcv@example.test",
       password: "abracadabra",
     };
 
     return await tradeApi.userLogin(loginPayload);
   };
 
-  const loadProviders = async () => {
-    const userEntity = await authenticateUser();
-    const sessionPayload = {
-      token: userEntity.token,
-      type: "all",
-      ro: true,
-      copyTradersOnly: false,
-    };
-
-    const positions = await tradeApi.providersGet(sessionPayload);
-    setProviders(positions);
-  };
-
   useEffect(() => {
-    // loadProviders();
-  }, []);
+    const loadProviders = async () => {
+      const userEntity = await authenticateUser();
+      console.log(userEntity);
+      const sessionPayload = {
+        token: userEntity.token,
+        type: "all",
+        ro: true,
+        copyTradersOnly: false,
+      };
+      console.log(sessionPayload);
 
-  /**
-   * @type {TradeApiTypes.UserPositionsCollection} positionsCollection
-   */
-  const providersCollections = providers;
+      const responseData = await tradeApi.providersGet(sessionPayload);
+      setProviders(responseData);
+    };
+    loadProviders();
+  }, []);
 
   return (
     <Box className="spBrowsePage">
       <Helmet>
-        <title>{intl.formatMessage({ id: "signalProviders" })}</title>
+        <title>
+          {intl.formatMessage({
+            id: "menu.signalproviders",
+          })}
+        </title>
       </Helmet>
 
       {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
@@ -62,13 +84,13 @@ const SignalProvidersBrowse = ({ showFilters, showSort, toggleFilters, toggleSor
 
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography className="regularHeading" variant="h3">
-          7 traders
+          {providers.length} <FormattedMessage id="copyt.traders" />
         </Typography>
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <ProvidersList providers={providersCollections} />
+      <ProvidersList providers={providers} />
     </Box>
   );
 };

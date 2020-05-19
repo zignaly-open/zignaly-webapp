@@ -69,11 +69,7 @@ const TwoFAForm = () => {
       </Box>
 
       <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
-        <CustomButton
-          className={"fullSubmitButton"}
-          loading={loading}
-          onClick={handleSubmit}
-        >
+        <CustomButton className={"fullSubmitButton"} loading={loading} onClick={handleSubmit}>
           Sign in
         </CustomButton>
       </Box>

@@ -42,7 +42,7 @@ export const routesMapping = (path) => {
       };
     case "copyTraders":
       return {
-        id: id,
+        id: "menu.copytraders",
         subtitleId: "copyTraders.subtitle",
         subtitle2Id: "copyTraders.subtitle2",
         links: [
@@ -58,9 +58,9 @@ export const routesMapping = (path) => {
       };
     case "signalProviders":
       return {
-        id: id,
-        subtitleId: "signalProviders.subtitle",
-        subtitle2Id: "signalProviders.subtitle2",
+        id: "menu.signalproviders",
+        subtitleId: "signalp.subtitle",
+        subtitle2Id: "signalp.subtitle2",
         links: [
           {
             id: "srv.browse",

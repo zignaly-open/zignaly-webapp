@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
+import { injectIntl, intlShape } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withCopyTradersLayout from "../../../layouts/copyTradersLayout";
 import withPageContext from "../../../pageContext";
@@ -18,6 +19,7 @@ import "./copyTradersBrowse.scss";
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
  * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
  * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {any} intl React-intl context to translate strings
  */
 
 /**
@@ -27,10 +29,10 @@ import "./copyTradersBrowse.scss";
  * @returns {Object} Component JSX.
  */
 const CopyTradersBrowse = (props) => {
-  const { showFilters, showSort, toggleFilters, toggleSort } = props;
+  const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
   const list = [1, 2, 3, 4, 5, 6, 7];
 
-  const handleFiltersChange = (type, mda, trader) => {};
+  const handleFiltersChange = (coin, exchange) => {};
   const handleSortChange = (sort) => {};
 
   const handleTimeFrameChange = (val) => {};
@@ -38,7 +40,7 @@ const CopyTradersBrowse = (props) => {
   return (
     <Box className="ctBrowsePage">
       <Helmet>
-        <title>Copy Traders</title>
+        <title>{intl.formatMessage({ id: "menu.copytraders" })}</title>
       </Helmet>
 
       {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
@@ -58,7 +60,20 @@ const CopyTradersBrowse = (props) => {
         flexWrap="wrap"
         justifyContent="flex-start"
       >
-        {list && list.map((item) => <TraderCard data={item} key={item} showSummary={false} />)}
+        {list &&
+          list.map((item) => (
+            <TraderCard
+              key={item.id}
+              id={item.id}
+              returns={item.returns}
+              risk={item.risk}
+              showSummary={false}
+              coin={item.coin}
+              fee={item.fee}
+              logoUrl={item.logoUrl}
+              name={item.name}
+            />
+          ))}
       </Box>
     </Box>
   );
@@ -69,6 +84,12 @@ CopyTradersBrowse.propTypes = {
   showSort: PropTypes.bool.isRequired,
   toggleFilters: PropTypes.func.isRequired,
   toggleSort: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default compose(withPageContext, withAppLayout, withCopyTradersLayout)(CopyTradersBrowse);
+export default compose(
+  withPageContext,
+  withAppLayout,
+  withCopyTradersLayout,
+  injectIntl,
+)(CopyTradersBrowse);

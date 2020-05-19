@@ -3,6 +3,7 @@ import {
   userCreateResponseTransform,
   userEntityResponseTransform,
   userPositionsResponseTransform,
+  providersResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -123,11 +124,16 @@ class TradeApiClient {
   }
 
   /**
-   * Get user open trading positions.
-   *
-   * @param {TradeApiTypes.UserPositionsPayload} payload
+   * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+   * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+   */
 
-   * @returns {Promise<TradeApiTypes.UserPositionsCollection>}
+  /**
+   * Get providers list.
+   *
+   * @param {ProvidersPayload} payload Get providers payload.
+
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */

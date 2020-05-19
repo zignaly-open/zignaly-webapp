@@ -22,11 +22,11 @@ const ForgotPasswordForm = () => {
     // dispatch(recover1(params, this.hideLoader));
   };
 
-//   const handleKeyPress = (event) => {
-//     if (event.key === "Enter") {
-//       handleSubmit();
-//     }
-//   };
+  //   const handleKeyPress = (event) => {
+  //     if (event.key === "Enter") {
+  //       handleSubmit();
+  //     }
+  //   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

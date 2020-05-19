@@ -8,7 +8,7 @@ import { FormattedHTMLMessage } from "react-intl";
 
 const withDashboardLayout = (Component) => {
   const WrapperComponent = (props) => {
-    const [exchange, ] = useState(true);
+    const [exchange] = useState(true);
 
     return (
       <Box
