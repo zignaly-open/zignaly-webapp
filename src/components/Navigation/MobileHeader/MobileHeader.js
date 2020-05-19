@@ -9,8 +9,20 @@ import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import UserExchangeList from "./UserExchangeList";
 
+/**
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ */
+
 const MobileHeader = () => {
-  const darkStyle = useSelector((state) => state.settings.darkStyle);
+  /**
+   * Settings darkStyle selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {boolean} Flag that indicates if darkStyle is enabled.
+   */
+
+  const selector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(selector);
   const [showBalance, setShowBalance] = useState(false);
   const [connected, setConnected] = useState(false);
 
