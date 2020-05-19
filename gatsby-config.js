@@ -4,9 +4,7 @@ require("dotenv").config({
 });
 
 // eslint-disable-next-line no-console
-console.log("TRADE API URL:", process.env.GATSBY_TRADEAPI_URL);
-// eslint-disable-next-line no-console
-console.log("===========================");
+console.log("\nTRADE API URL:", process.env.GATSBY_TRADEAPI_URL, "\n\n");
 
 module.exports = {
   siteMetadata: {
