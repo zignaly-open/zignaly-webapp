@@ -1,10 +1,10 @@
-const appStage = process.env.STAGE || 'dev';
+const appStage = process.env.STAGE || "dev";
 require("dotenv").config({
   path: `.env.${appStage}`,
 });
 
 // eslint-disable-next-line no-console
-console.log("TRADE API URL:", process.env);
+console.log("TRADE API URL:", process.env.GATSBY_TRADEAPI_URL);
 // eslint-disable-next-line no-console
 console.log("===========================");
 
