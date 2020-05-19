@@ -3,13 +3,17 @@ import "./Testimonials.scss";
 import { Box } from "@material-ui/core";
 import Testimonial from "./Testimonial";
 import CustomButton from "../CustomButton";
-import testominalFeed from "../../utils/testimonialFeed.json";
+import { default as testominalFeed } from "../../utils/testimonialFeed.json";
 
 const Testimonials = () => {
   const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(6);
 
   useEffect(() => {
+    /**
+     *
+     * @param {Number} size
+     */
     const feedData = (size) => {
       let arr = [];
       for (let a = 0; a < size; a++) {

@@ -82,7 +82,7 @@ export const prepareLineChartOptions = (backgroundColor, borderColor) => {
             return "returns " + data.datasets[0].data[index];
           },
           afterLabel: () => {
-            return new Date();
+            return new Date().getTime();
           },
         },
       },
