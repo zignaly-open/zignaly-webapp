@@ -2,6 +2,11 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+// eslint-disable-next-line no-console
+console.log("TRADE API URL:", process.env);
+// eslint-disable-next-line no-console
+console.log("===========================");
+
 module.exports = {
   siteMetadata: {
     title: "Zignaly Gatsby Starter",
