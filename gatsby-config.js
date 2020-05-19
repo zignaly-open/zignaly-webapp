@@ -1,5 +1,6 @@
+const appStage = process.env.STAGE || 'dev';
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${appStage}`,
 });
 
 // eslint-disable-next-line no-console
