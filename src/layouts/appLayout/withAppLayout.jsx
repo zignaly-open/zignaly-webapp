@@ -16,8 +16,10 @@ import Alert from "../../components/Alert";
  */
 
 /**
+ *  App layout is defined here, the placement of header, sidebar, mobile appbar.
  *
  * @param {Object} Component
+ * @returns {Object} Component
  */
 
 const withAppLayout = (Component) => {

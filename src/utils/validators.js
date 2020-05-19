@@ -1,10 +1,8 @@
-export const validateEmail = (email) => {
-  let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-  if (email && regex.test(email)) {
-    return true;
-  }
-  return false;
-};
+/**
+ *
+ * @param {string} password
+ * @returns {number}
+ */
 
 export const validatePassword = (password) => {
   let strength = 0;
@@ -20,7 +18,8 @@ export const validatePassword = (password) => {
       }
       let str = String(password);
       for (let a = 0; a < str.length; a++) {
-        if (!isNaN(str.charAt(a))) {
+        let char = parseInt(str.charAt(a));
+        if (!isNaN(char)) {
           strength += 1;
           break;
         }
@@ -31,18 +30,4 @@ export const validatePassword = (password) => {
     }
   }
   return strength;
-};
-
-export const validateName = (name) => {
-  if (name && name.length) {
-    return true;
-  }
-  return false;
-};
-
-export const validateCode = (code) => {
-  if (code && code.length === 6) {
-    return true;
-  }
-  return false;
 };
