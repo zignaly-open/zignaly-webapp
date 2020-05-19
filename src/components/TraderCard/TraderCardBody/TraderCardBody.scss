@@ -1,0 +1,53 @@
+.traderCardBody {
+  .returnsBox {
+    height: 60px;
+    padding: 0 20px;
+
+    .returns {
+      height: 40px;
+    }
+
+    .openPositions {
+      height: 40px;
+    }
+  }
+
+  .traderCardGraph {
+    position: relative;
+    width: 100%;
+
+    .chartCanvas {
+      width: 100%;
+    }
+  }
+
+  .actions {
+    bottom: 16px;
+    position: absolute;
+    width: 100%;
+  }
+
+  .userSummary {
+    padding: 10px 20px;
+
+    h5 {
+      margin: 5px 0 10px;
+
+      &:last-child {
+        margin: 5px 0;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .traderCardBody {
+    .returnsBox {
+      padding: 0 10px;
+    }
+
+    .userSummary {
+      padding: 10px;
+    }
+  }
+}
