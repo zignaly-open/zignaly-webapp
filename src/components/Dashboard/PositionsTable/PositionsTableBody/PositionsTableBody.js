@@ -2,12 +2,24 @@ import React from "react";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Array<PositionEntity>} positions
+ */
+
+/**
+ * Default component props.
+ *
+ * @param {DefaultProps} props
+ */
+
 const PositionsTableBody = (props) => {
   const { positions } = props;
-  /**
-   * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
-   * @type {UserPositionsCollection} positionsCollection
-   */
 
   return (
     <TableBody className="tableBody">

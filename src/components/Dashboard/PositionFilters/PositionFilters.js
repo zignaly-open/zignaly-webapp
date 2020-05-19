@@ -3,8 +3,22 @@ import "./PositionFilters.scss";
 import { Box } from "@material-ui/core";
 import CustomButtom from "../../CustomButton";
 
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Function} onChange
+ * @property {Function} onClose
+ *
+ */
+
+/**
+ * Default component props.
+ *
+ * @param {DefaultProps} props
+ */
+
 const PositionFilters = (props) => {
-  const { onClose } = props;
+  const { onClose, onChange } = props;
 
   return (
     <Box

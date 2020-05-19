@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import "./Chart.scss";
 import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 /**
  *
  * @typedef {Object} DefaultProps
  * @property {String} id
+ * @property {Object} children
  */
 
 /**
@@ -15,7 +17,7 @@ import { Box } from "@material-ui/core";
  */
 
 const GenericChart = (props) => {
-  const { id } = props;
+  const { id, children } = props;
 
   useEffect(() => {
     const elementId = id;
@@ -27,7 +29,12 @@ const GenericChart = (props) => {
     generateChart(context, prepareLineChartOptions(background, borderColor));
   }, [props.id]);
 
-  return <Box className="chart">{props.children}</Box>;
+  return <Box className="chart">{children}</Box>;
+};
+
+GenericChart.prototype = {
+  children: PropTypes.node.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default GenericChart;
