@@ -48,10 +48,15 @@ class TradeApiClient {
         responseData = await response.json();
       }
 
-      const body = await response.text();
-      throw new Error(`API ${requestUrl} request failed:` + body);
+      responseData.error = await response.text();
     } catch (e) {
       responseData.error = e.message;
+    }
+
+    if (responseData.error) {
+      const customError = new Error(`API ${requestUrl} request failed:` + responseData.error);
+
+      throw customError;
     }
 
     return responseData;
