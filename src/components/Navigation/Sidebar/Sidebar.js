@@ -16,8 +16,19 @@ import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
 
+/**
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ */
+
 const Sidebar = () => {
-  const darkStyle = useSelector((state) => state.settings.darkStyle);
+  /**
+   * Settings darkStyle selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {boolean} Flag that indicates if darkStyle is enabled.
+   */
+  const selector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(selector);
   const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
 
