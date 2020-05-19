@@ -5,6 +5,18 @@ import TraderCardHeader from "./TraderCardHeader";
 import TraderCardBody from "./TraderCardBody";
 import PropTypes from "prop-types";
 
+/**
+ *
+ * @typedef {Object} PropsObject
+ * @property {Object} data
+ * @property {Boolean} showSummary
+ */
+
+/**
+ *
+ * @param {PropsObject} props
+ */
+
 const TraderCard = (props) => {
   const { data, showSummary } = props;
 
@@ -17,7 +29,7 @@ const TraderCard = (props) => {
       justifyContent="flex-start"
     >
       <TraderCardHeader />
-      <TraderCardBody data={data} showSummary={showSummary} />
+      <TraderCardBody bodyData={data} showSummary={showSummary} />
     </Box>
   );
 };

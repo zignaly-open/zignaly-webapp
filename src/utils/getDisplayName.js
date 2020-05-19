@@ -1,4 +1,5 @@
 /**
+ * Received a component with default properties.
  *
  * @typedef {object} WrappedComponentType
  * @property {string} displayName

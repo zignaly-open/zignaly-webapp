@@ -7,9 +7,21 @@ import CustomButton from "../../CustomButton";
 import PropTypes from "prop-types";
 import { navigate } from "@reach/router";
 
+/**
+ *
+ * @typedef {Object} PropsObject
+ * @property {Object} bodyData
+ * @property {Boolean} showSummary
+ */
+
+/**
+ *
+ * @param {PropsObject} props
+ */
+
 const TraderCard = (props) => {
-  const { data, showSummary } = props;
-  let id = "traderCard" + data;
+  const { bodyData, showSummary } = props;
+  let id = "traderCard" + bodyData;
 
   return (
     <Box className="traderCardBody">

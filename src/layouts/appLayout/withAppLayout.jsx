@@ -24,9 +24,10 @@ import Alert from "../../components/Alert";
 
 const withAppLayout = (Component) => {
   /**
-   *
+   * Default component props.
    *
    * @param {Object} props
+   * @returns {Object}
    */
   const WrapperComponent = (props) => {
     /**

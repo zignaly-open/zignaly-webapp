@@ -1,0 +1,18 @@
+.userSummary {
+  padding: 10px 20px;
+  margin-top: 10px;
+
+  h5 {
+    margin: 5px 0 10px;
+
+    &:last-child {
+      margin: 5px 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .userSummary {
+    padding: 10px;
+  }
+}

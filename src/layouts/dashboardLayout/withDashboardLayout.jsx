@@ -9,7 +9,7 @@ import { FormattedHTMLMessage } from "react-intl";
 /**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
  *
- * @param {Object} Component
+ * @param {import('../../utils/getDisplayName').WrappedComponentType} Component
  * @returns {Object} Component
  */
 
@@ -39,7 +39,7 @@ const withDashboardLayout = (Component) => {
       >
         {exchange && (
           <React.Fragment>
-            <DashboardHeader path={props.path} />
+            <DashboardHeader path={path} />
             <Box className="pageContent">
               <Component {...props} />
             </Box>
@@ -66,6 +66,9 @@ const withDashboardLayout = (Component) => {
       </Box>
     );
   };
+  /**
+   * @param {Object} Component
+   */
   WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
   return WrapperComponent;
 };
