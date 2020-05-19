@@ -83,6 +83,7 @@
         "build": "gatsby build",
         "develop": "NODE_ENV=development gatsby develop",
         "format": "prettier --write \"src/**/*.{js,jsx}\"",
+        "clean": "rm -rf node_modules/",
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",
