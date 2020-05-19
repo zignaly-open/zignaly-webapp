@@ -1,16 +1,28 @@
 const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
 const SELECT_THEME = "SELECT_THEME_ACTION";
 
-export const selectDarkTheme = (data) => {
+/**
+ * Dark style flag selected by user.
+ *
+ * @param {Boolean} darkStyle
+ */
+
+export const selectDarkTheme = (darkStyle) => {
   return {
     type: SELECT_THEME,
-    payload: data,
+    payload: darkStyle,
   };
 };
 
-export const changeLanguage = (data) => {
+/**
+ * User's selected language.
+ *
+ * @param {String} langCode
+ */
+
+export const changeLanguage = (langCode) => {
   return {
     type: SELECT_LANGUAGE,
-    payload: data,
+    payload: langCode,
   };
 };
