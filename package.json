@@ -81,7 +81,7 @@
     },
     "scripts": {
         "build": "gatsby build",
-        "develop": "NODE_ENV=development gatsby develop",
+        "develop": "gatsby develop -p 3000",
         "format": "prettier --write \"src/**/*.{js,jsx}\"",
         "clean": "rm -rf node_modules/",
         "reset": "rm -rf .cache/ public/",
