@@ -80,7 +80,7 @@
     "typescript": "^3.9.2"
   },
   "scripts": {
-    "build": "gatsby build --prefix-paths",
+    "build": "yarn install && gatsby build --prefix-paths",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "clean": "rm -rf node_modules/",
