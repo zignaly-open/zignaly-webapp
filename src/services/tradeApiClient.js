@@ -18,7 +18,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   constructor() {
-    this.baseUrl = process.env.TRADEAPI_URL;
+    this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
   }
 
   /**
@@ -32,8 +32,7 @@ class TradeApiClient {
    */
   async doRequest(endpointPath, payload) {
     let responseData = {};
-    const apiBaseUrl = "http://api.zignaly.lndo.site/";
-    const requestUrl = apiBaseUrl + endpointPath;
+    const requestUrl = this.baseUrl + endpointPath;
     const options = {
       method: "POST",
       body: JSON.stringify(payload),
