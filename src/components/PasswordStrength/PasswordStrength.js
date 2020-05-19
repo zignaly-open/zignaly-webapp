@@ -7,7 +7,7 @@ import CloseIcon from "@material-ui/icons/Close";
  *
  * @typedef {Object} DefaultProps
  * @property {Number} strength
- * @property {Object} onClose
+ * @property {Function} onClose
  */
 
 /**

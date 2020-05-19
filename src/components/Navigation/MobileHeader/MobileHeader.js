@@ -7,7 +7,7 @@ import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
-import UserExchangeList from "./UserExchangeList";
+import UserExchangeList from "../Header/UserExchangeList";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
