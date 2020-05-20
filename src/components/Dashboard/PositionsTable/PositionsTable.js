@@ -18,13 +18,16 @@ const PositionsTable = () => {
 
   useEffect(() => {
     const loadPositions = async () => {
-      const userEntity = await authenticateUser();
-      const sessionPayload = {
-        token: userEntity.token,
-      };
-
-      const responseData = await tradeApi.openPositionsGet(sessionPayload);
-      setPositions(responseData);
+      try {
+        const userEntity = await authenticateUser();
+        const sessionPayload = {
+          token: userEntity.token,
+        };
+        const responseData = await tradeApi.openPositionsGet(sessionPayload);
+        setPositions(responseData);
+      } catch (e) {
+        // TODO: Display error in alert.
+      }
     };
 
     loadPositions();

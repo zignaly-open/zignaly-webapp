@@ -1,6 +1,10 @@
+const appStage = process.env.STAGE || "dev";
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${appStage}`,
 });
+
+// eslint-disable-next-line no-console
+console.log("\nTRADE API URL:", process.env.GATSBY_TRADEAPI_URL, "\n\n");
 
 module.exports = {
   siteMetadata: {

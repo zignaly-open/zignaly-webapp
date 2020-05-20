@@ -70,6 +70,7 @@
         "gatsby-plugin-graphql-codegen": "^2.7.1",
         "gatsby-plugin-ts": "^2.7.1",
         "identity-obj-proxy": "^3.0.0",
+        "include-media": "^1.4.9",
         "jest": "^26.0.1",
         "postcss-scss": "^2.0.0",
         "prettier": "^1.17.1",
@@ -80,8 +81,9 @@
     },
     "scripts": {
         "build": "gatsby build",
-        "develop": "NODE_ENV=development gatsby develop",
+        "develop": "gatsby develop -p 3000 -H 0.0.0.0",
         "format": "prettier --write \"src/**/*.{js,jsx}\"",
+        "clean": "rm -rf node_modules/",
         "reset": "rm -rf .cache/ public/",
         "serve": "gatsby serve",
         "test": "jest",

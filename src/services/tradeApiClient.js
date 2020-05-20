@@ -19,7 +19,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   constructor() {
-    this.baseUrl = process.env.TRADEAPI_URL;
+    this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
   }
 
   /**
@@ -33,8 +33,7 @@ class TradeApiClient {
    */
   async doRequest(endpointPath, payload) {
     let responseData = {};
-    const apiBaseUrl = "http://api.zignaly.lndo.site/";
-    const requestUrl = apiBaseUrl + endpointPath;
+    const requestUrl = this.baseUrl + endpointPath;
     const options = {
       method: "POST",
       body: JSON.stringify(payload),
@@ -49,10 +48,15 @@ class TradeApiClient {
         responseData = await response.json();
       }
 
-      const body = await response.text();
-      throw new Error(`API ${requestUrl} request failed:` + body);
+      responseData.error = await response.text();
     } catch (e) {
       responseData.error = e.message;
+    }
+
+    if (responseData.error) {
+      const customError = new Error(`API ${requestUrl} request failed:` + responseData.error);
+
+      throw customError;
     }
 
     return responseData;

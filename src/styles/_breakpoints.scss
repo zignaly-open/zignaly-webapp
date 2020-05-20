@@ -1,0 +1,15 @@
+$breakpoints: (
+  "xs": 0,
+  "sm": 600px,
+  "md": 960px,
+  "lg": 1280px,
+  "xl": 1920px,
+) !default;
+
+// After careful evaluation of multiples breakpoint approaches the more
+// expresive syntax is provided by include-media so is the breakpoint SASS
+// dependency we rely for this purpose. See syntax approaches comparison at:
+// https://css-tricks.com/approaches-media-queries-sass
+// And examples documentation:
+// https://eduardoboucas.github.io/include-media
+@import "../../node_modules/include-media/dist/include-media";
