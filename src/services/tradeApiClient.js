@@ -56,7 +56,7 @@ class TradeApiClient {
     if (responseData.error) {
       const customError = new Error(`API ${requestUrl} request failed:` + responseData.error);
 
-      throw customError;
+      // throw customError;
     }
 
     return responseData;
