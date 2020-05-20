@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
-import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
 import withPageContext from "../../../pageContext";
@@ -20,7 +20,6 @@ import "./signalProvidersBrowse.scss";
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
  * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
  * @property {function} toggleSort Callback that delegate sort toggle state to caller.
- * @property {any} intl React-intl context to translate strings
  */
 
 /**
@@ -30,10 +29,11 @@ import "./signalProvidersBrowse.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const SignalProvidersBrowse = (props) => {
-  const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
+  const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const handleFiltersChange = (/* type, mda, trader */) => {};
   const handleSortChange = () => {};
   const handleTimeFrameChange = () => {};
+  const intl = useIntl();
 
   /**
    * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -94,7 +94,6 @@ const SignalProvidersBrowse = (props) => {
 };
 
 SignalProvidersBrowse.propTypes = {
-  intl: intlShape.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSort: PropTypes.bool.isRequired,
   toggleFilters: PropTypes.func.isRequired,
@@ -105,5 +104,4 @@ export default compose(
   withPageContext,
   withAppLayout,
   withSignalProvidersLayout,
-  injectIntl,
 )(SignalProvidersBrowse);

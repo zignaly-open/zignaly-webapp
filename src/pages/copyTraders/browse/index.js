@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
-import { injectIntl, intlShape, FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withCopyTradersLayout from "../../../layouts/copyTradersLayout";
 import withPageContext from "../../../pageContext";
@@ -20,7 +20,6 @@ import "./copyTradersBrowse.scss";
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
  * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
  * @property {function} toggleSort Callback that delegate sort toggle state to caller.
- * @property {any} intl React-intl context to translate strings
  */
 
 /**
@@ -30,10 +29,11 @@ import "./copyTradersBrowse.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTradersBrowse = (props) => {
-  const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
+  const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const handleFiltersChange = (/* coin, exchange */) => {};
   const handleSortChange = () => {};
   const handleTimeFrameChange = () => {};
+  const intl = useIntl();
 
   /**
    * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -96,9 +96,4 @@ CopyTradersBrowse.propTypes = {
   toggleSort: PropTypes.func.isRequired,
 };
 
-export default compose(
-  withPageContext,
-  withAppLayout,
-  withCopyTradersLayout,
-  injectIntl,
-)(CopyTradersBrowse);
+export default compose(withPageContext, withAppLayout, withCopyTradersLayout)(CopyTradersBrowse);
