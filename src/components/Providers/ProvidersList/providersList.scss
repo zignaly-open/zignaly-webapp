@@ -1,16 +1,16 @@
 .providersList {
   .tradersBox {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(354px, 425px));
     grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(354px, 425px));
     justify-content: flex-start;
   }
 
   .traderCard {
-    min-width: auto;
-    min-height: auto;
-    width: auto;
     height: auto;
     margin: 0;
+    min-height: auto;
+    min-width: auto;
+    width: auto;
   }
 }

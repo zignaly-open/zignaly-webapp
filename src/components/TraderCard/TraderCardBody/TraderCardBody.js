@@ -23,7 +23,7 @@ import { FormattedMessage } from "react-intl";
  * Provides a body for a trader card.
  *
  * @param {TraderCardBodyPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
   const { id, showSummary, risk, dailyReturns, isCopyTrading } = props;
@@ -34,8 +34,8 @@ const TraderCard = (props) => {
   let cumulativeTotalInvested = 0;
   const totalReturns = dailyReturns.reduce((acc, item) => {
     if (isCopyTrading) {
-      const ret = item.returns;
-      acc += ret;
+      const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+      acc += returns;
     } else {
       cumulativeTotalProfits += parseFloat(item.totalProfit);
       cumulativeTotalInvested += parseFloat(item.totalInvested);
@@ -85,7 +85,7 @@ const TraderCard = (props) => {
         </Box>
       </Box>
       <Box className="traderCardGraph">
-        <Chart id={cardId} data={chartData}>
+        <Chart data={chartData} id={cardId}>
           <canvas className="chartCanvas" id={cardId} />
         </Chart>
         <Box
@@ -109,11 +109,11 @@ const TraderCard = (props) => {
 };
 
 TraderCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  showSummary: PropTypes.bool.isRequired,
-  risk: PropTypes.number.isRequired,
   dailyReturns: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
   isCopyTrading: PropTypes.bool.isRequired,
+  risk: PropTypes.number.isRequired,
+  showSummary: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

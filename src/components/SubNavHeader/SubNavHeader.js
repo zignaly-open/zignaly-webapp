@@ -6,8 +6,10 @@ import Link from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
 /**
+ * @typedef {import("../../utils/routesMapping").NavigationLink} NavigationLink
+ *
  * @typedef {Object} SubNavHeaderPropTypes
- * @property {function} links Array of link translation id and path.
+ * @property {Array<NavigationLink>} links Array of link translation id and path.
  * @property {*} [children] Optional elements to display in the header.
  */
 
@@ -15,7 +17,7 @@ import "./SubNavHeader.scss";
  * Provides a navigation bar to display links with optional elements.
  *
  * @param {SubNavHeaderPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const SubNavHeader = ({ links, children }) => {
   return (

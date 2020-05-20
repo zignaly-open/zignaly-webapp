@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
 /**
  * Provides the navigation bar for the dashboard.
  *
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const DashboardHeader = () => {
   return (

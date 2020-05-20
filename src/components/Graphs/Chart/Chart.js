@@ -6,17 +6,18 @@ import PropTypes from "prop-types";
 
 /**
  *
- * @typedef {Object} DefaultProps
+ * @typedef {Object} GenericChartPropTypes
  * @property {String} id ID of the cnavas passed as a child.
  * @property {Object} children Canvas component to render the chart.
  * @property {Array<Object>} data Chart data. (todo)
  */
 
 /**
+ * Provides a wrapper to display a chart.
  *
- * @param {DefaultProps} props
+ * @param {GenericChartPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
  */
-
 const GenericChart = (props) => {
   const { id, data, children } = props;
 

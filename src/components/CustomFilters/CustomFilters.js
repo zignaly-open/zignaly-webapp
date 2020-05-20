@@ -16,7 +16,7 @@ import CustomButtom from "../CustomButton";
  * Provides a wrapper to display filters bar with clear/hide buttons.
  *
  * @param {CustomFiltersPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const CustomFilters = (props) => {
   const { onClose, onClear, title, children } = props;

@@ -13,7 +13,7 @@ import CustomSelect from "../../CustomSelect";
  * Provides filters for filtering positions.
  *
  * @param {PositionFiltersPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = ({ onChange, onClose }) => {
   const types = ["All types", "type 1"];

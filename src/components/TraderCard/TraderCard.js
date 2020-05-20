@@ -18,16 +18,28 @@ import PropTypes from "prop-types";
  * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
  * @property {string} id Provider id.
  * @property {Array<string>} exchanges Exchanges supported by provider
+ * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
  */
 
 /**
  * Provides a card with trader's information and stats
  *
  * @param {TraderCardPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { id, risk, dailyReturns, showSummary, fee, name, logoUrl, coin, exchanges } = props;
+  const {
+    id,
+    risk,
+    dailyReturns,
+    showSummary,
+    fee,
+    name,
+    logoUrl,
+    coin,
+    exchanges,
+    isCopyTrading,
+  } = props;
 
   return (
     <Box
@@ -37,22 +49,28 @@ const TraderCard = (props) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <TraderCardHeader coin={coin} fee={fee} logoUrl={logoUrl} name={name} exchanges={exchanges} />
-      <TraderCardBody id={id} dailyReturns={dailyReturns} risk={risk} showSummary={showSummary} />
+      <TraderCardHeader coin={coin} exchanges={exchanges} fee={fee} logoUrl={logoUrl} name={name} />
+      <TraderCardBody
+        dailyReturns={dailyReturns}
+        id={id}
+        isCopyTrading={isCopyTrading}
+        risk={risk}
+        showSummary={showSummary}
+      />
     </Box>
   );
 };
 
 TraderCard.propTypes = {
-  name: PropTypes.string.isRequired,
   coin: PropTypes.string.isRequired,
-  fee: PropTypes.any.isRequired,
-  logoUrl: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  showSummary: PropTypes.bool.isRequired,
-  risk: PropTypes.number.isRequired,
   dailyReturns: PropTypes.array.isRequired,
   exchanges: PropTypes.array.isRequired,
+  fee: PropTypes.any.isRequired,
+  id: PropTypes.string.isRequired,
+  logoUrl: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  risk: PropTypes.number.isRequired,
+  showSummary: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

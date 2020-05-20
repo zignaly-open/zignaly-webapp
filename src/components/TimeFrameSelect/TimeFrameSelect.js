@@ -19,7 +19,7 @@ const timeframes = [
  * Provides sorting options for providers.
  *
  * @param {TimeFrameSelectPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const TimeFrameSelect = (props) => {
   const { onChange } = props;

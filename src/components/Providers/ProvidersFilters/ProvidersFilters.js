@@ -13,7 +13,7 @@ import CustomSelect from "../../CustomSelect";
  * Provides filters for filtering providers.
  *
  * @param {ProvidersFiltersPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const ProvidersFilters = ({ onChange, onClose }) => {
   const coins = ["BTC", "USDT"];
