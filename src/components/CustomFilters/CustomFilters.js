@@ -4,8 +4,22 @@ import "./CustomFilters.scss";
 import { Box } from "@material-ui/core";
 import CustomButtom from "../CustomButton";
 
+/**
+ * @typedef {Object} CustomFiltersPropTypes
+ * @property {function} onClose Callback that delegate filters toggle state to caller.
+ * @property {function} onClear Callback that delegate filters clearing to caller.
+ * @property {string} title Filters' title.
+ * @property {*} children Dropdowns to display.
+ */
+
+/**
+ * Provides a wrapper to display filters bar with clear/hide buttons.
+ *
+ * @param {CustomFiltersPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
 const CustomFilters = (props) => {
-  const { onClose, onClear, title } = props;
+  const { onClose, onClear, title, children } = props;
 
   return (
     <Box
@@ -23,7 +37,7 @@ const CustomFilters = (props) => {
         justifyContent="flex-start"
       >
         <span className="title">{title}</span>
-        {props.children}
+        {children}
       </Box>
       <Box
         alignItems="center"
@@ -44,8 +58,9 @@ const CustomFilters = (props) => {
 };
 
 CustomFilters.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
   onClear: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 

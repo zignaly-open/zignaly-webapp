@@ -10,6 +10,21 @@ import FilterIcon from "../../../images/filters/filter.svg";
 import FilterFillIcon from "../../../images/filters/filter-fill.svg";
 import { FormattedMessage } from "react-intl";
 
+/**
+ * @typedef {Object} SubNavHeaderPropTypes
+ * @property {boolean} showFilters Flag to indicate if filters are displayed.
+ * @property {boolean} showSort Flag to indicate if sort options are displayed.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {string} path Current route path.
+ */
+
+/**
+ * Provides the navigation bar for the providers with filter buttons.
+ *
+ * @param {SubNavHeaderPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
 const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, path }) => {
   return (
     <Box className="providersHeader">
@@ -59,6 +74,7 @@ const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, pat
 };
 
 ProvidersHeader.propTypes = {
+  path: PropTypes.string.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSort: PropTypes.bool.isRequired,
   toggleFilters: PropTypes.func.isRequired,

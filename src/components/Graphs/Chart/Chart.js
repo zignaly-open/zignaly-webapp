@@ -4,6 +4,7 @@ import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
 
 const GenericChart = (props) => {
+  const { id, data } = props;
   useEffect(() => {
     const elementId = props.id;
     const context = document.getElementById(elementId).getContext("2d");
@@ -11,8 +12,9 @@ const GenericChart = (props) => {
     background.addColorStop(1, "rgba(216, 216, 216, .1)");
     background.addColorStop(0, "#a946f6");
     const borderColor = "#770fc8";
-    generateChart(context, prepareLineChartOptions(background, borderColor));
-  }, [props.id]);
+    console.log(background, borderColor);
+    generateChart(context, prepareLineChartOptions(background, borderColor, data));
+  }, [id]);
 
   return <Box className="chart">{props.children}</Box>;
 };

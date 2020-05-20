@@ -6,6 +6,8 @@ import TraderCardBody from "./TraderCardBody";
 import PropTypes from "prop-types";
 
 /**
+ * @typedef {import("../../services/tradeApiClient.types").DailyReturn} DailyReturn
+ *
  * @typedef {Object} TraderCardPropTypes
  * @property {any} fee Comission fee in %
  * @property {string} name Provider's name
@@ -13,7 +15,7 @@ import PropTypes from "prop-types";
  * @property {string} coin Coin traded by provider
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {number} risk Return for open positions.
- * @property {Array<Object>} dailyReturns Return for closed positions on the selected period.
+ * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
  * @property {string} id Provider id.
  * @property {Array<string>} exchanges Exchanges supported by provider
  */

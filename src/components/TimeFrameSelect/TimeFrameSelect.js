@@ -10,7 +10,19 @@ const timeframes = [
   { label: "Last year", val: 2 },
 ];
 
-const TimeFrameSelect = ({ onChange }) => {
+/**
+ * @typedef {Object} TimeFrameSelectPropTypes
+ * @property {function} onChange Callback that delegate timeframe changes to caller.
+ */
+
+/**
+ * Provides sorting options for providers.
+ *
+ * @param {TimeFrameSelectPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
+const TimeFrameSelect = (props) => {
+  const { onChange } = props;
   const [val, setVal] = useState(timeframes[1].val);
 
   const handleChange = (e) => {

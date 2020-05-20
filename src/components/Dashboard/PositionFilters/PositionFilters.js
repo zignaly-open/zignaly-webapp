@@ -3,6 +3,18 @@ import PropTypes from "prop-types";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
+/**
+ * @typedef {Object} PositionFiltersPropTypes
+ * @property {function} onChange Callback that delegate filters changes to caller.
+ * @property {function} onClose Callback that delegate filters toggle state to caller.
+ */
+
+/**
+ * Provides filters for filtering positions.
+ *
+ * @param {PositionFiltersPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
 const PositionFilters = ({ onChange, onClose }) => {
   const types = ["All types", "type 1"];
   const mdas = ["MDA"];
@@ -34,8 +46,8 @@ const PositionFilters = ({ onChange, onClose }) => {
 };
 
 PositionFilters.propTypes = {
-  onChange: PropTypes.func,
-  onClose: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default PositionFilters;

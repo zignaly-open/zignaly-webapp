@@ -5,6 +5,18 @@ import "./ProvidersSort.scss";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
+/**
+ * @typedef {Object} ProvidersSortPropTypes
+ * @property {function} onChange Callback that delegate sorting changes to caller.
+ * @property {function} onClose Callback that delegate sorting toggle state to caller.
+ */
+
+/**
+ * Provides sorting options for providers.
+ *
+ * @param {ProvidersSortPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
 const ProvidersSort = ({ onChange, onClose }) => {
   const sorts = [
     "Descending Results",
@@ -39,8 +51,8 @@ const ProvidersSort = ({ onChange, onClose }) => {
 };
 
 ProvidersSort.propTypes = {
-  onChange: PropTypes.func,
-  onClose: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ProvidersSort;

@@ -5,6 +5,18 @@ import { FormattedMessage } from "react-intl";
 import Link from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
+/**
+ * @typedef {Object} SubNavHeaderPropTypes
+ * @property {function} links Array of link translation id and path.
+ * @property {*} [children] Optional elements to display in the header.
+ */
+
+/**
+ * Provides a navigation bar to display links with optional elements.
+ *
+ * @param {SubNavHeaderPropTypes} props Component properties.
+ * @returns {Object} Component JSX.
+ */
 const SubNavHeader = ({ links, children }) => {
   return (
     <Box

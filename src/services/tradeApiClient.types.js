@@ -155,6 +155,15 @@ import { assign, isArray } from "lodash";
  */
 
 /**
+ * @typedef {Object} DailyReturn
+ * @property {string} name
+ * @property {number} [positions]
+ * @property {string} returns
+ * @property {string} [totalInvested]
+ * @property {string} [totalProfit]
+ */
+
+/**
  * @typedef {Object} ProviderEntity
  * @property {string} id
  * @property {string} name
@@ -178,9 +187,9 @@ import { assign, isArray } from "lodash";
  * @property {number} createdAt
  * @property {boolean} isFromUser
  * @property {boolean} quote
- * @property {string} createdAt
- * @property {Array<number>} dailyReturns
- * @property {number} risk
+ * @property {Array<DailyReturn>} dailyReturns
+ * @property {number} [risk]
+ * @property {number} [followers]
  */
 
 /**
@@ -261,6 +270,7 @@ export function providersResponseTransform(response) {
 function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
+  providerItem.returns = parseFloat(providerItem.returns);
   const transformedResponse = assign(emptyProviderEntity, providerItem);
 
   return transformedResponse;

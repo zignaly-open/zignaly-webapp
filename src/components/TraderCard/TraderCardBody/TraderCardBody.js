@@ -9,11 +9,13 @@ import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
+ *
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
  * @property {number} risk Return for open positions.
- * @property {Array<Object>} dailyReturns Return for closed positions on the selected period.
+ * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
  * @property {string} id Provider id.
  */
 
@@ -28,19 +30,20 @@ const TraderCard = (props) => {
   let cardId = "traderCard" + id;
   let chartData = [];
 
+  let cumulativeTotalProfits = 0;
+  let cumulativeTotalInvested = 0;
   const totalReturns = dailyReturns.reduce((acc, item) => {
     if (isCopyTrading) {
-      const ret = parseFloat(item.returns);
-      chartData.push(ret);
+      const ret = item.returns;
       acc += ret;
     } else {
-      //   cumulativeTotalProfits += parseFloat(dayReturn.totalProfit);
-      //   cumulativeTotalInvested += parseFloat(dayReturn.totalInvested);
-      //   let cumulativeReturns = 0;
-      //   if (cumulativeTotalInvested !== 0)
-      //     cumulativeReturns = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-      //   dayReturn.returns = cumulativeReturns;
+      cumulativeTotalProfits += parseFloat(item.totalProfit);
+      cumulativeTotalInvested += parseFloat(item.totalInvested);
+      if (cumulativeTotalInvested) {
+        acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+      }
     }
+    chartData.push(acc);
     return acc;
   }, 0);
 
@@ -82,7 +85,7 @@ const TraderCard = (props) => {
         </Box>
       </Box>
       <Box className="traderCardGraph">
-        <Chart id={cardId}>
+        <Chart id={cardId} data={chartData}>
           <canvas className="chartCanvas" id={cardId} />
         </Chart>
         <Box
