@@ -4,7 +4,7 @@ import { getDisplayName } from "../../utils";
 import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
-import { FormattedHTMLMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 /**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
@@ -44,10 +44,10 @@ const withDashboardLayout = (Component) => {
             justifyContent="flex-start"
           >
             <span className="title">
-              <FormattedHTMLMessage id="dashboard.connectexchange.title" />
+              <FormattedMessage id="dashboard.connectexchange.title" />
             </span>
             <span className="text">
-              <FormattedHTMLMessage id="dashboard.connectexchange.subtitle" />
+              <FormattedMessage id="dashboard.connectexchange.subtitle" />
             </span>
           </Box>
         )}
