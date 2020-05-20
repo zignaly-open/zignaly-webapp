@@ -60,26 +60,5 @@ module.exports = {
         exclude: "/global/",
       },
     },
-    {
-      resolve: "gatsby-plugin-eslint",
-      options: {
-        test: /\.js$|\.jsx$/,
-        exclude: /(node_modules|.cache|public)/,
-        stages: ["develop"],
-        options: {
-          emitWarning: true,
-          failOnError: false,
-        },
-      },
-    },
-    {
-      resolve: "gatsby-plugin-ts",
-      options: {
-        // TODO: Disable until all contrib packages data types are resolved.
-        typeCheck: false,
-        failOnError: true,
-        codegen: true,
-      },
-    },
   ],
 };
