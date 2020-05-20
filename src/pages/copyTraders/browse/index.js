@@ -90,7 +90,6 @@ const CopyTradersBrowse = (props) => {
 };
 
 CopyTradersBrowse.propTypes = {
-  intl: intlShape.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSort: PropTypes.bool.isRequired,
   toggleFilters: PropTypes.func.isRequired,

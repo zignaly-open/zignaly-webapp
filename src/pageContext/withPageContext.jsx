@@ -1,13 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import { IntlProvider } from "react-intl";
-
 import PageContext from "./PageContext";
-
-import "../i18n/config/reactIntl";
 import translations from "../i18n/translations";
-
 import { getDisplayName } from "../utils";
 
 const withPageContext = (Component) => {
