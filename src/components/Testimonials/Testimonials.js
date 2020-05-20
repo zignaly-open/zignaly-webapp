@@ -11,8 +11,10 @@ const Testimonials = () => {
 
   useEffect(() => {
     /**
+     * Testimonials pagination.
      *
-     * @param {Number} size
+     * @param {Number} size Size of testimonials to display
+     * @returns {void}
      */
     const feedData = (size) => {
       let arr = [];

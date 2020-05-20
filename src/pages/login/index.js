@@ -17,7 +17,7 @@ const LoginPage = () => {
         <title>Login</title>
       </Helmet>
       <Box className="loginPage">
-        <Modal persist={true} size="small" state={show2FA} onClose={() => {}}>
+        <Modal onClose={() => {}} persist={true} size="small" state={show2FA}>
           <TwoFAForm />
         </Modal>
         <Box

@@ -26,7 +26,7 @@ const withDashboardLayout = (Component) => {
         justifyContent="flex-start"
       >
         {exchange && (
-          <React.Fragment>
+          <>
             <DashboardHeader />
             <Box className="pageContent">
               <Component {...props} />
@@ -34,7 +34,7 @@ const withDashboardLayout = (Component) => {
             <Box className="faq">
               <FAQ />
             </Box>
-          </React.Fragment>
+          </>
         )}
         {!exchange && (
           <Box
