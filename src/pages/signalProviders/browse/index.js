@@ -10,7 +10,7 @@ import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
 import ProvidersSort from "../../../components/Providers/ProvidersSort";
 import TimeFrameSelect from "../../../components/TimeFrameSelect";
 import ProvidersList from "../../../components/Providers/ProvidersList";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import tradeApi from "../../../services/tradeApiClient";
 import "./signalProvidersBrowse.scss";
 

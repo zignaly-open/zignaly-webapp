@@ -5,7 +5,7 @@ import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import withPageContext from "../../../pageContext";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import TraderCard from "../../../components/TraderCard";
 
 const ConnectedTraders = () => {

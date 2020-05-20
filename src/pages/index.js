@@ -1,5 +1,5 @@
 import React from "react";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import { injectIntl, FormattedHTMLMessage } from "react-intl";
 import { compose } from "recompose";
 

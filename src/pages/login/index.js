@@ -6,7 +6,7 @@ import Modal from "../../components/Modal";
 import Logo from "../../images/logo/logoWhite.svg";
 import Testimonials from "../../components/Testimonials";
 import LoginTabs from "../../components/LoginTabs";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 
 const LoginPage = () => {
   const show2FA = false;

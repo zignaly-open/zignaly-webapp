@@ -9,7 +9,7 @@ import withPageContext from "../../../pageContext";
 import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
 import ProvidersSort from "../../../components/Providers/ProvidersSort";
 import TimeFrameSelect from "../../../components/TimeFrameSelect";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import tradeApi from "../../../services/tradeApiClient";
 import ProvidersList from "../../../components/Providers/ProvidersList";
 import "./copyTradersBrowse.scss";
