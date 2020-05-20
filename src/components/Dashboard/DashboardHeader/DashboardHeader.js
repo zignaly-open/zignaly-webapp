@@ -23,11 +23,9 @@ const DashboardHeader = () => {
         <Typography variant="h1">
           <FormattedMessage id="dashboard" />
         </Typography>
-        {routesMapping(path).name === "dashboard" && (
-          <span className="exchangeTitle">KuCion (Demo)</span>
-        )}
+        <span className="exchangeTitle">KuCion (Demo)</span>
       </Box>
-      <SubNavHeader links={routesMapping(path).links} />
+      <SubNavHeader links={routesMapping("dashboard").links} />
     </Box>
   );
 };
