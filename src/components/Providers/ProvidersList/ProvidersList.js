@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
@@ -14,7 +14,7 @@ import "./providersList.scss";
  * Provides a list of signal providers cards.
  *
  * @param {ProvidersListPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
   const { providers } = props;
@@ -37,14 +37,14 @@ const ProvidersList = (props) => {
           providers.map((item) => (
             <TraderCard
               coin={item.coin}
+              dailyReturns={item.dailyReturns}
               fee={item.fee}
               id={item.id}
-              key={item}
+              key={item.id}
               logoUrl={item.logoUrl}
               name={item.name}
-              showSummary={false}
-              dailyReturns={item.dailyReturns}
               risk={item.risk}
+              showSummary={false}
             />
           ))}
       </Box>

@@ -27,13 +27,13 @@ import "./copyTradersBrowse.scss";
  * Provides a list to browse copy traders.
  *
  * @param {CopyTradersBrowsePropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
-  const handleFiltersChange = (coin, exchange) => {};
-  const handleSortChange = (sort) => {};
-  const handleTimeFrameChange = (val) => {};
+  const handleFiltersChange = (/* coin, exchange */) => {};
+  const handleSortChange = () => {};
+  const handleTimeFrameChange = () => {};
 
   /**
    * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -90,11 +90,11 @@ const CopyTradersBrowse = (props) => {
 };
 
 CopyTradersBrowse.propTypes = {
+  intl: intlShape.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSort: PropTypes.bool.isRequired,
   toggleFilters: PropTypes.func.isRequired,
   toggleSort: PropTypes.func.isRequired,
-  intl: intlShape.isRequired,
 };
 
 export default compose(

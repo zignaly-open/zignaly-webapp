@@ -16,10 +16,10 @@ export const generateChart = (context, options) => {
  *
  * @param {string} backgroundColor Background HTML color.
  * @param {string} borderColor Border HTML color.
- * @param {Array<Object>} data Chart data (todo).
+ * @param {Array<Object>} chartData Chart data (todo).
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (backgroundColor, borderColor, data) => {
+export const prepareLineChartOptions = (backgroundColor, borderColor, chartData) => {
   return {
     type: "line",
     data: {
@@ -27,7 +27,7 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, data) => {
       datasets: [
         {
           label: "Equity",
-          data,
+          data: chartData,
           backgroundColor: backgroundColor,
           borderColor: borderColor,
         },

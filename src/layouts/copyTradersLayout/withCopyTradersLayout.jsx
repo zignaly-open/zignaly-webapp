@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./copyTradersLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 

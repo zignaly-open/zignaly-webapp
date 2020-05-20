@@ -23,7 +23,7 @@ import { FormattedMessage } from "react-intl";
  * Provides the navigation bar for the providers with filter buttons.
  *
  * @param {SubNavHeaderPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, path }) => {
   return (
