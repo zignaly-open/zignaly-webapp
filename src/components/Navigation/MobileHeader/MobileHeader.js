@@ -8,6 +8,7 @@ import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import UserExchangeList from "../Header/UserExchangeList";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -72,7 +73,9 @@ const MobileHeader = () => {
                   src={showBalance ? Disabled : Enabled}
                 />
               )}
-              <Typography variant="h4">Balance</Typography>
+              <Typography variant="h4">
+                <FormattedMessage id="dashboard.balance" />
+              </Typography>
             </Box>
           </Box>
           {showBalance && (
@@ -92,7 +95,7 @@ const MobileHeader = () => {
                   justifyContent="space-between"
                 >
                   <Typography className="title" variant="subtitle1">
-                    available balance
+                    <FormattedMessage id="balance.available" />
                   </Typography>
                   <Typography className="balance" variant="h5">
                     btc 0.256
@@ -106,7 +109,7 @@ const MobileHeader = () => {
                   justifyContent="space-between"
                 >
                   <Typography className="title" variant="subtitle1">
-                    invested
+                    <FormattedMessage id="balance.invested" />
                   </Typography>
                   <Typography className="balance" variant="h5">
                     btc 0.452
@@ -120,7 +123,7 @@ const MobileHeader = () => {
                   justifyContent="space-between"
                 >
                   <Typography className="title" variant="subtitle1">
-                    p/l
+                    <FormattedMessage id="col.plnumber" />
                   </Typography>
                   <Typography className="balance green" variant="h5">
                     btc +0.47
