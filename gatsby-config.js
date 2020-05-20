@@ -1,8 +1,15 @@
+const appStage = process.env.STAGE || "dev";
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${appStage}`,
 });
 
+// eslint-disable-next-line no-console
+console.log("\nTRADE API URL:", process.env.GATSBY_TRADEAPI_URL, "\n\n");
+
 module.exports = {
+  // This only works on prod build so currently is not possible to use app path
+  // on develop mode, see issue: https://github.com/gatsbyjs/gatsby/issues/3721
+  pathPrefix: "/app",
   siteMetadata: {
     title: "Zignaly Gatsby Starter",
     description: "Zignaly the copy-trader platform.",
@@ -52,7 +59,7 @@ module.exports = {
           ".scss": { syntax: "postcss-scss" },
         },
         // Exclude global styles from the plugin using a RegExp:
-        exclude: "\/global\/",
+        exclude: "/global/",
       },
     },
     {
@@ -74,7 +81,7 @@ module.exports = {
         typeCheck: false,
         failOnError: true,
         codegen: true,
-      }
-    }
+      },
+    },
   ],
 };

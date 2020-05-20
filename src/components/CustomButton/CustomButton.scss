@@ -1,4 +1,8 @@
 .customButton {
+  @include media("<=sm") {
+    width: 90%;
+  }
+
   height: 48px;
   min-width: 250px;
 
