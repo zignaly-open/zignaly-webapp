@@ -31,11 +31,6 @@ const PositionSettingsForm = (props) => {
       <CloseIcon className="closeIcon" onClick={onClose} />
       <span className="boxTitle">Choose Columns</span>
       <Box className="form" />
-      <Box className="input-box" display="flex" flexDirection="row" justifyContent="center">
-        <CustomButton className={"submitbutton"} onClick={handleSubmit}>
-          Save Preference
-        </CustomButton>
-      </Box>
     </Box>
   );
 };
