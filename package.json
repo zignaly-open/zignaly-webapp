@@ -37,12 +37,10 @@
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.21",
-    "@types/intl-messageformat": "^3.0.0",
     "@types/jest": "^25.2.3",
     "@types/react-dom": "^16.9.8",
-    "@types/react-helmet": "^6.0.0",
-    "@types/react-intl": "^3.0.0",
     "@types/react-redux": "^7.1.9",
+    "@types/react-helmet": "^6.0.0",
     "@types/recompose": "^0.30.7",
     "babel-jest": "^26.0.1",
     "babel-preset-gatsby": "^0.4.6",
