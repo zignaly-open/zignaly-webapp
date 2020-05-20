@@ -16,6 +16,7 @@ export const generateChart = (context, options) => {
  *
  * @param {string} backgroundColor Background HTML color.
  * @param {string} borderColor Border HTML color.
+ * @param {Array<Object>} data Chart data (todo).
  * @returns {Object} Chart options.
  */
 export const prepareLineChartOptions = (backgroundColor, borderColor, data) => {
