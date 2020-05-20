@@ -9,7 +9,6 @@ import PositionsTable from "../PositionsTable";
 import PositionFilters from "../PositionFilters";
 import { FormattedMessage } from "react-intl";
 import NoPositions from "../NoPositions";
-import CustomFilters from "../../CustomFilters";
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -28,6 +27,8 @@ const PositionsTabs = () => {
     setTabValue(val);
   };
 
+  const handleFiltersChange = () => {};
+
   const handleClose = () => setSettingAnchor(undefined);
 
   return (
@@ -40,7 +41,10 @@ const PositionsTabs = () => {
         justifyContent="space-between"
       >
         <Tabs
-          classes={{ indicator: "indicator", flexContainer: "container" }}
+          classes={{
+            indicator: "indicator",
+            flexContainer: "container",
+          }}
           className="tabsMenu"
           onChange={changeTab}
           value={tabValue}

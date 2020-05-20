@@ -3,6 +3,17 @@ import { Icon } from "@material-ui/core";
 import BinanceIcon from "../../images/exchanges/binance.svg";
 import ZignalyIcon from "../../images/exchanges/zignaly.svg";
 
+/**
+ * @typedef {Object} ExchangeIconPropTypes
+ * @property {string} exchange Exchange name.
+ */
+
+/**
+ * Provides exchange icon.
+ *
+ * @param {ExchangeIconPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const ExchangeIcon = (props) => {
   const { exchange } = props;
   let icon = null;

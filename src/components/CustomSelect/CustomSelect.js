@@ -4,10 +4,16 @@ import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@ma
 import "./CustomSelect.scss";
 
 /**
+ * @typedef {Object} OptionType
+ * @property {string} label Option label.
+ * @property {string} val Option value.
+ */
+
+/**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
  * @property {string|number} value Assign the selected value.
- * @property {Array<Object|string>} options List of options selectable.
+ * @property {Array<OptionType|string>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  */
 
@@ -15,7 +21,7 @@ import "./CustomSelect.scss";
  * Provides a list to browse signal providers.
  *
  * @param {CustomSelectPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = ({ options, onChange, value, label }) => {
   return (

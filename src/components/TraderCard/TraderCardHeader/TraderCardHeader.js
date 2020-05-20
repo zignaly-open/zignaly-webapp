@@ -4,6 +4,7 @@ import "./TraderCardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import ConnectedIcon from "../../../images/dashboard/connected.svg";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
+import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -19,7 +20,7 @@ import { FormattedMessage } from "react-intl";
  * Provides a header for a trader card.
  *
  * @param {TraderCardHeaderPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
   const { fee, name, logoUrl, coin, exchanges } = props;
@@ -51,7 +52,10 @@ const TraderCardHeader = (props) => {
             <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />
           </Box>
           <Typography className="tradeType" variant="caption">
-            {/* Trades {coin} on {exchanges.map(exchange => <)} */}
+            Trades {coin} on{" "}
+            {exchanges.map((exchange, index) => (
+              <ExchangeIcon exchange={exchange} key={index} />
+            ))}
           </Typography>
         </Box>
         <Box
@@ -72,11 +76,11 @@ const TraderCardHeader = (props) => {
 };
 
 TraderCardHeader.propTypes = {
-  name: PropTypes.string.isRequired,
   coin: PropTypes.string.isRequired,
+  exchanges: PropTypes.array.isRequired,
   fee: PropTypes.number.isRequired,
   logoUrl: PropTypes.string.isRequired,
-  exchanges: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default TraderCardHeader;

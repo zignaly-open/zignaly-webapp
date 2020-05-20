@@ -15,7 +15,7 @@ import CustomSelect from "../../CustomSelect";
  * Provides sorting options for providers.
  *
  * @param {ProvidersSortPropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const ProvidersSort = ({ onChange, onClose }) => {
   const sorts = [
@@ -36,9 +36,7 @@ const ProvidersSort = ({ onChange, onClose }) => {
   };
 
   useEffect(() => {
-    if (onChange) {
-      onChange(sort);
-    }
+    onChange(sort);
   }, [sort]);
 
   return (

@@ -158,7 +158,7 @@ import { assign, isArray } from "lodash";
  * @typedef {Object} DailyReturn
  * @property {string} name
  * @property {number} [positions]
- * @property {string} returns
+ * @property {string|number} returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
  */
@@ -170,7 +170,7 @@ import { assign, isArray } from "lodash";
  * @property {string} description
  * @property {string} shortDesc
  * @property {string} longDesc
- * @property {string} fee
+ * @property {string|boolean} fee
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
@@ -270,7 +270,6 @@ export function providersResponseTransform(response) {
 function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
-  providerItem.returns = parseFloat(providerItem.returns);
   const transformedResponse = assign(emptyProviderEntity, providerItem);
 
   return transformedResponse;
@@ -308,7 +307,6 @@ function createEmptyProviderEntity() {
     dailyReturns: [],
     risk: 0,
     coin: "BTC",
-    disable: true,
   };
 }
 

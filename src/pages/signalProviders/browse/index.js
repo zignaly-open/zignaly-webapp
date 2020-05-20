@@ -27,13 +27,13 @@ import "./signalProvidersBrowse.scss";
  * Provides a list to browse signal providers.
  *
  * @param {SignalProvidersBrowsePropTypes} props Component properties.
- * @returns {Object} Component JSX.
+ * @returns {JSX.Element} Component JSX.
  */
 const SignalProvidersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
-  const handleFiltersChange = (type, mda, trader) => {};
-  const handleSortChange = (sort) => {};
-  const handleTimeFrameChange = (val) => {};
+  const handleFiltersChange = (/* type, mda, trader */) => {};
+  const handleSortChange = () => {};
+  const handleTimeFrameChange = () => {};
 
   /**
    * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -94,11 +94,11 @@ const SignalProvidersBrowse = (props) => {
 };
 
 SignalProvidersBrowse.propTypes = {
-  toggleFilters: PropTypes.func.isRequired,
-  toggleSort: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
   showFilters: PropTypes.bool.isRequired,
   showSort: PropTypes.bool.isRequired,
-  intl: intlShape.isRequired,
+  toggleFilters: PropTypes.func.isRequired,
+  toggleSort: PropTypes.func.isRequired,
 };
 
 export default compose(
