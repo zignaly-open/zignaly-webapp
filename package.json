@@ -68,6 +68,7 @@
   },
   "scripts": {
     "build": "npm install && gatsby build --prefix-paths",
+    "checkall": "npm run jslint && npm run jstype && npm run csslint",
     "clean": "rm -rf node_modules/",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
