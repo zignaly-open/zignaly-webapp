@@ -5,8 +5,11 @@
       font-family: "PlexSans-Medium";
       font-size: 11px;
       height: 60px;
+      min-width: 80px;
+      max-width: 120px;
       padding: 8px 12px;
       text-transform: capitalize;
+      white-space: nowrap;
     }
   }
 }
