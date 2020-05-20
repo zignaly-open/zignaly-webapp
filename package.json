@@ -68,16 +68,16 @@
   },
   "scripts": {
     "build": "yarn install && gatsby build --prefix-paths",
+    "clean": "rm -rf node_modules/",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "clean": "rm -rf node_modules/",
-    "reset": "rm -rf .cache/ public/",
-    "serve": "gatsby serve",
-    "test": "jest",
-    "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-    "checkjs": "tsc --allowJs",
-    "sasslint": "sass-lint -v",
+    "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
     "jslint": "eslint \"src/**/*.{js,jsx}\"",
-    "jsfix": "eslint --fix \"src/**/*.{js,jsx}\""
+    "jstype": "tsc --allowJs",
+    "reset": "rm -rf .cache/ public/",
+    "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
+    "sasslint": "sass-lint -v",
+    "serve": "gatsby serve",
+    "test": "jest"
   }
 }
