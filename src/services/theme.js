@@ -72,6 +72,44 @@ const white = "#ffffff";
 const lightBlack = "#27273f";
 const offWhite = "#fbfafc";
 
+/**
+ *
+ * @typedef {Object} ThemeOptionsGrid
+ * @property {string} main
+ * @property {string} content
+ */
+
+/**
+ *
+ * @typedef {Object} ExtendedPaletteColorOptions
+ * @property {ThemeOptionsGrid} grid
+ */
+
+/**
+ *
+ * @typedef {Object} CustomPaletteOptions
+ * @typedef {import('@material-ui/core/styles').PaletteColorOptions} PaletteColorOptions
+ * @typedef {PaletteColorOptions & ExtendedPaletteColorOptions} ExtendedPaletteOptions
+ */
+
+/**
+ *
+ * @typedef {Object} ExtendedThemeOptions
+ * @property {ExtendedPaletteOptions} palette
+ */
+
+/**
+ * @typedef {import('@material-ui/core/styles').ThemeOptions} ThemeOptions
+ * @typedef {ThemeOptions & ExtendedThemeOptions} CustomThemeOptions
+ */
+
+/**
+ * Theme mode based on darkStyle flag.
+ *
+ * @param {boolean} darkStyle Flag that shows if dark theme is enabled.
+ * @returns {CustomThemeOptions} Options to customize the Material UI theme based on darkStyle.
+ *
+ */
 const theme = (darkStyle) => {
   return {
     palette: {
@@ -150,6 +188,24 @@ const theme = (darkStyle) => {
         textTransform: "capitalize",
       },
     },
+
+    /**
+     * Matrial UI overirde Font Object.
+     *
+     * @typedef {Object} FontObject
+     * @property {String} fontFamily
+     * @property {String} fontSize
+     * @property {String} fontDisplay
+     * @property {String} fontWeight
+     * @property {String} src
+     */
+
+    /**
+     * Matrial UI overirde options
+     *
+     * @param {FontObject} PlexSansMedium
+     */
+
     overrides: {
       MuiCssBaseline: {
         "@global": {

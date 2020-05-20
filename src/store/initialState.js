@@ -16,8 +16,8 @@
 
 /**
  * @typedef {Object} DefaultStateSettings
- * @property {string} languageCode
- * @property {boolean} darkStyle
+ * @property {String} languageCode
+ * @property {Boolean} darkStyle
  */
 
 /**

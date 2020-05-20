@@ -9,49 +9,74 @@ import {
   Popper,
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { alertError } from "../../../actions";
-import axios from "axios";
-import { RECOVER3_URL } from "../../../api";
 import { validatePassword } from "../../../utils/validators";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../PasswordStrength";
 import { useForm } from "react-hook-form";
 
-const ResetPasswordForm = (props) => {
+const ResetPasswordForm = () => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
-  const { errors, handleSubmit, register, watch, clearError } = useForm();
+  const { errors, handleSubmit, register, clearError } = useForm();
 
-  const handlePasswordChange = (e) => {
+  /**
+   * @typedef {import('react').ChangeEvent} ChangeEvent
+   */
+
+  /**
+   * Main password change state handling.
+   *
+   * @param {ChangeEvent} event Observed event.
+   * @return {void}
+   */
+
+  const handlePasswordChange = (event) => {
     setPasswordDoNotMatch(false);
-    setAnchorEl(e.currentTarget);
-    let howStrong = validatePassword(e.target.value);
+    setAnchorEl(event.currentTarget);
+    const targetElement = /** @type {HTMLInputElement} */ (event.target);
+    let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
     howStrong >= 4 ? clearError("password") : setError("password");
   };
 
-  const handleRepeatPasswordChange = (e) => {
+  /**
+   * Main password change state handling.
+   *
+   * @param {ChangeEvent} event Observed event.
+   * @return {void}
+   */
+
+  const handleRepeatPasswordChange = (event) => {
     setPasswordDoNotMatch(false);
-    let howStrong = validatePassword(e.target.value);
+    const targetElement = /** @type {HTMLInputElement} */ (event.target);
+    let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
     howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
   };
 
+  /**
+   *
+   * @typedef {Object} DataObject
+   * @property {String} password
+   * @property {String} repeatPassword
+   */
+
+  /**
+   * Data returned at form submition.
+   *
+   * @param {DataObject} data
+   */
   const onSubmit = (data) => {
-    if (password === repeatPassword) {
-      console.log(data);
+    if (data.password === data.repeatPassword) {
     } else {
       setPasswordDoNotMatch(true);
     }
-    requestPasswordChange();
   };
-
-  const requestPasswordChange = (params) => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -85,7 +110,7 @@ const ResetPasswordForm = (props) => {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
-                    {howPassword ? <Visibility /> : <VisibilityOff />}
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               }
@@ -141,4 +166,4 @@ const ResetPasswordForm = (props) => {
   );
 };
 
-export default TwoFAForm;
+export default ResetPasswordForm;

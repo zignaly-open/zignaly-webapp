@@ -11,10 +11,36 @@ import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from "../../components/Alert";
 
+/**
+ * @typedef {import('../../store/initialState').DefaultState} DefaultState
+ */
+
+/**
+ *  App layout is defined here, the placement of header, sidebar, mobile appbar.
+ *
+ * @param {Object} Component
+ * @returns {Object} Component
+ */
+
 const withAppLayout = (Component) => {
+  /**
+   * Default component props.
+   *
+   * @param {Object} props
+   * @returns {Object}
+   */
   const WrapperComponent = (props) => {
-    const darkStyle = useSelector((state) => state.settings.darkStyle);
-    const theme = useMemo(() => createMuiTheme(themeData(darkStyle)), [darkStyle]);
+    /**
+     * Settings darkStyle selector.
+     *
+     * @param {DefaultState} state Redux store state data.
+     * @return {boolean} Flag that indicates if darkStyle is enabled.
+     */
+
+    const selector = (state) => state.settings.darkStyle;
+    const darkStyle = useSelector(selector);
+    const options = themeData(darkStyle);
+    const theme = useMemo(() => createMuiTheme(options), [darkStyle]);
 
     return (
       <ThemeProvider theme={theme}>

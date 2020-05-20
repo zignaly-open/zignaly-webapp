@@ -3,6 +3,18 @@ import "./PasswordStrength.scss";
 import { Box } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Number} strength
+ * @property {Function} onClose
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
 const PasswordStrength = (props) => {
   const { strength, onClose } = props;
   const [bars, setBars] = useState([]);

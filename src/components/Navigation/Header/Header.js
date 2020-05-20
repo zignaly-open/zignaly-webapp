@@ -13,8 +13,19 @@ import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
 
+/**
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ */
+
 const Header = () => {
-  const darkStyle = useSelector((state) => state.settings.darkStyle);
+  /**
+   * Settings darkStyle selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {boolean} Flag that indicates if darkStyle is enabled.
+   */
+  const selector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(selector);
   const [showBalance, setShowBalance] = useState(false);
   const [connected, setConnected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);

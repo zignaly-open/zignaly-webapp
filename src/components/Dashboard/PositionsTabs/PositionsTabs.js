@@ -19,8 +19,8 @@ const PositionsTabs = () => {
   /**
    * Event handler to change tab value.
    *
-   * @param {number} event Tab index to set active.
-   * @param {number} val Tab index to set active.
+   * @param {Object} event Tab index to set active.
+   * @param {Number} val Tab index to set active.
    * @returns {void}
    */
 
@@ -28,7 +28,7 @@ const PositionsTabs = () => {
     setTabValue(val);
   };
 
-  const handleFiltersChange = (type, mda, trader) => {};
+  const handleClose = () => setSettingAnchor(undefined);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -104,7 +104,7 @@ const PositionsTabs = () => {
         open={Boolean(settingsAnchor)}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <PositionSettingsForm onClose={() => setSettingAnchor(undefined)} />
+        <PositionSettingsForm onClose={handleClose} />
       </Popover>
     </Box>
   );

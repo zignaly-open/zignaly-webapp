@@ -5,6 +5,27 @@ import Rating from "@material-ui/lab/Rating";
 import FacebookIcon from "../../../images/facebook-icon.svg";
 import moment from "moment";
 
+/**
+ *
+ * @typedef {Object} DataObject
+ * @property {String} review
+ * @property {String} name
+ * @property {String} date
+ * @property {String} image
+ * @property {Boolean} facebook
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {DataObject} data
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
 const Testimonial = (props) => {
   const { data } = props;
 

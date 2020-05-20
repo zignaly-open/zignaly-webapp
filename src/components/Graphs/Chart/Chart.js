@@ -2,21 +2,41 @@ import React, { useEffect } from "react";
 import "./Chart.scss";
 import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
+import PropTypes from "prop-types";
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {String} id ID of the cnavas passed as a child.
+ * @property {Object} children Canvas component to render the chart.
+ * @property {Array<Object>} data Chart data. (todo)
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
 
 const GenericChart = (props) => {
-  const { id, data } = props;
+  const { id, data, children } = props;
+
   useEffect(() => {
-    const elementId = props.id;
+    const elementId = id;
     const context = document.getElementById(elementId).getContext("2d");
     const background = context.createLinearGradient(0, 0, 0, 500);
     background.addColorStop(1, "rgba(216, 216, 216, .1)");
     background.addColorStop(0, "#a946f6");
     const borderColor = "#770fc8";
-    console.log(background, borderColor);
     generateChart(context, prepareLineChartOptions(background, borderColor, data));
   }, [id]);
 
-  return <Box className="chart">{props.children}</Box>;
+  return <Box className="chart">{children}</Box>;
+};
+
+GenericChart.prototype = {
+  children: PropTypes.node.isRequired, // Need a canvas component with unique id to render the chart.
+  id: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default GenericChart;

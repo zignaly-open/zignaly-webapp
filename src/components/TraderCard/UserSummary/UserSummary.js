@@ -1,4 +1,5 @@
 import React from "react";
+import "./UserSummary.scss";
 import { Box, Typography } from "@material-ui/core";
 
 const UserSummary = () => {
