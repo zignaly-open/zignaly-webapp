@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
+import "./providersList.scss";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").SignalProvidersCollection} SignalProvidersCollection
- *
+ * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {Object} ProvidersListPropTypes
- * @property {SignalProvidersCollection} providers Flag to indicate if filters should be rendered.
+ * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
  */
 
 /**
@@ -19,7 +19,12 @@ import TraderCard from "../../../components/TraderCard";
 const ProvidersList = (props) => {
   const { providers } = props;
   return (
-    <Box display="flex" flexDirection="column" justifyContent="flex-start">
+    <Box
+      className="providersList"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
       <Box
         alignItems="center"
         className="tradersBox"
@@ -31,15 +36,15 @@ const ProvidersList = (props) => {
         {providers &&
           providers.map((item) => (
             <TraderCard
-              key={item}
-              id={item.id}
-              returns={item.returns}
-              risk={item.risk}
-              showSummary={false}
               coin={item.coin}
               fee={item.fee}
+              id={item.id}
+              key={item}
               logoUrl={item.logoUrl}
               name={item.name}
+              showSummary={false}
+              dailyReturns={item.dailyReturns}
+              risk={item.risk}
             />
           ))}
       </Box>

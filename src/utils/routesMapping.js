@@ -43,8 +43,7 @@ export const routesMapping = (path) => {
     case "copyTraders":
       return {
         id: "menu.copytraders",
-        subtitleId: "copyTraders.subtitle",
-        subtitle2Id: "copyTraders.subtitle2",
+        subtitleId: "copyt.subtitle",
         links: [
           {
             id: "srv.browse",

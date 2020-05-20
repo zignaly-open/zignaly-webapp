@@ -44,7 +44,7 @@ const SignalProvidersBrowse = (props) => {
 
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mailouckuo5rcv@example.test",
+      email: "mailkdqvw4bplp@example.test",
       password: "abracadabra",
     };
 
@@ -54,14 +54,12 @@ const SignalProvidersBrowse = (props) => {
   useEffect(() => {
     const loadProviders = async () => {
       const userEntity = await authenticateUser();
-      console.log(userEntity);
       const sessionPayload = {
         token: userEntity.token,
         type: "all",
         ro: true,
         copyTradersOnly: false,
       };
-      console.log(sessionPayload);
 
       const responseData = await tradeApi.providersGet(sessionPayload);
       setProviders(responseData);

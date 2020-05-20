@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
-import { injectIntl, intlShape } from "react-intl";
+import { injectIntl, intlShape, FormattedMessage } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withCopyTradersLayout from "../../../layouts/copyTradersLayout";
 import withPageContext from "../../../pageContext";
-import TraderCard from "../../../components/TraderCard";
 import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
 import ProvidersSort from "../../../components/Providers/ProvidersSort";
 import TimeFrameSelect from "../../../components/TimeFrameSelect";
 import Helmet from "react-helmet";
+import tradeApi from "../../../services/tradeApiClient";
+import ProvidersList from "../../../components/Providers/ProvidersList";
 import "./copyTradersBrowse.scss";
 
 /**
@@ -30,12 +31,42 @@ import "./copyTradersBrowse.scss";
  */
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort, intl } = props;
-  const list = [1, 2, 3, 4, 5, 6, 7];
-
   const handleFiltersChange = (coin, exchange) => {};
   const handleSortChange = (sort) => {};
-
   const handleTimeFrameChange = (val) => {};
+
+  /**
+   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+   * @type {ProvidersCollection} initialState
+   */
+  const initialState = [];
+  const [providers, setProviders] = useState(initialState);
+
+  const authenticateUser = async () => {
+    const loginPayload = {
+      email: "mailkdqvw4bplp@example.test",
+      password: "abracadabra",
+    };
+
+    return await tradeApi.userLogin(loginPayload);
+  };
+
+  useEffect(() => {
+    const loadProviders = async () => {
+      const userEntity = await authenticateUser();
+      const sessionPayload = {
+        token: userEntity.token,
+        type: "all",
+        ro: true,
+        copyTradersOnly: true,
+        timeFrame: 90,
+      };
+
+      const responseData = await tradeApi.providersGet(sessionPayload);
+      setProviders(responseData);
+    };
+    loadProviders();
+  }, []);
 
   return (
     <Box className="ctBrowsePage">
@@ -47,34 +78,13 @@ const CopyTradersBrowse = (props) => {
       {showSort && <ProvidersSort onChange={handleSortChange} onClose={toggleSort} />}
       <Box display="flex" flexDirection="row" justifyContent="space-between" pb="12px">
         <Typography className="regularHeading" variant="h3">
-          7 traders
+          {providers.length} <FormattedMessage id="copyt.traders" />
         </Typography>
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <Box
-        className="tradersBox"
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        justifyContent="flex-start"
-      >
-        {list &&
-          list.map((item) => (
-            <TraderCard
-              key={item.id}
-              id={item.id}
-              returns={item.returns}
-              risk={item.risk}
-              showSummary={false}
-              coin={item.coin}
-              fee={item.fee}
-              logoUrl={item.logoUrl}
-              name={item.name}
-            />
-          ))}
-      </Box>
+      <ProvidersList providers={providers} />
     </Box>
   );
 };

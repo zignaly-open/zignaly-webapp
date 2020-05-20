@@ -46,9 +46,9 @@ export const prepareLineChartOptions = (backgroundColor, borderColor) => {
           label: (tooltipItem, data) => {
             return "returns " + data.datasets[0].data[tooltipItem.index];
           },
-          afterLabel: () => {
-            return new Date();
-          },
+          //   afterLabel: () => {
+          //     return new Date();
+          //   },
         },
       },
       elements: {

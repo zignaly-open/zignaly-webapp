@@ -11,8 +11,9 @@ import { FormattedMessage } from "react-intl";
 /**
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+ * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
  * @property {number} risk Return for open positions.
- * @property {number} returns Return for closed positions on the selected period.
+ * @property {Array<Object>} dailyReturns Return for closed positions on the selected period.
  * @property {string} id Provider id.
  */
 
@@ -23,8 +24,25 @@ import { FormattedMessage } from "react-intl";
  * @returns {Object} Component JSX.
  */
 const TraderCard = (props) => {
-  const { id, showSummary, risk, returns } = props;
+  const { id, showSummary, risk, dailyReturns, isCopyTrading } = props;
   let cardId = "traderCard" + id;
+  let chartData = [];
+
+  const totalReturns = dailyReturns.reduce((acc, item) => {
+    if (isCopyTrading) {
+      const ret = parseFloat(item.returns);
+      chartData.push(ret);
+      acc += ret;
+    } else {
+      //   cumulativeTotalProfits += parseFloat(dayReturn.totalProfit);
+      //   cumulativeTotalInvested += parseFloat(dayReturn.totalInvested);
+      //   let cumulativeReturns = 0;
+      //   if (cumulativeTotalInvested !== 0)
+      //     cumulativeReturns = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+      //   dayReturn.returns = cumulativeReturns;
+    }
+    return acc;
+  }, 0);
 
   return (
     <Box className="traderCardBody">
@@ -42,7 +60,7 @@ const TraderCard = (props) => {
           justifyContent="space-between"
         >
           <Typography className="green" variant="h4">
-            {returns}%
+            {totalReturns}%
           </Typography>
           <Typography variant="subtitle1">
             <FormattedMessage id="returns(90D)" />
@@ -91,7 +109,8 @@ TraderCard.propTypes = {
   id: PropTypes.string.isRequired,
   showSummary: PropTypes.bool.isRequired,
   risk: PropTypes.number.isRequired,
-  returns: PropTypes.number.isRequired,
+  dailyReturns: PropTypes.array.isRequired,
+  isCopyTrading: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

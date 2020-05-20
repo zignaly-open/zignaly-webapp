@@ -11,7 +11,8 @@ import { FormattedMessage } from "react-intl";
  * @property {number} fee Comission fee in %
  * @property {string} name Provider's name
  * @property {string} logoUrl Url of the provider's logo
- * @property {string} coin Coin trader by provider
+ * @property {string} coin Coin traded by provider
+ * @property {Array<string>} exchanges Exchanges supported by provider
  */
 
 /**
@@ -21,7 +22,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {Object} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin } = props;
+  const { fee, name, logoUrl, coin, exchanges } = props;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -50,7 +51,7 @@ const TraderCardHeader = (props) => {
             <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />
           </Box>
           <Typography className="tradeType" variant="caption">
-            Trades {coin}
+            {/* Trades {coin} on {exchanges.map(exchange => <)} */}
           </Typography>
         </Box>
         <Box
@@ -75,6 +76,7 @@ TraderCardHeader.propTypes = {
   coin: PropTypes.string.isRequired,
   fee: PropTypes.number.isRequired,
   logoUrl: PropTypes.string.isRequired,
+  exchanges: PropTypes.array.isRequired,
 };
 
 export default TraderCardHeader;
