@@ -4,9 +4,14 @@ import { Dialog } from "@material-ui/core";
 
 /**
  *
+ * @typedef {import('@material-ui/core/Dialog').DialogProps.onClose} CLoseFunction
+ */
+
+/**
+ *
  * @typedef {Object} DefaultProps
  * @property {Boolean} state
- * @property {Function} onClose
+ * @property {CLoseFunction} onClose
  * @property {Boolean} persist
  * @property {Object} children
  * @property {String} size

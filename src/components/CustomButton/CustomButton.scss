@@ -1,5 +1,3 @@
-
-
 .customButton {
   height: 48px;
   min-width: 250px;
@@ -20,6 +18,7 @@
   &.submitButton {
     background: $purple;
     color: $white;
+    padding: 0px 20px;
 
     &:hover {
       background: $purpleLight;

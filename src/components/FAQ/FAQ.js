@@ -28,10 +28,10 @@ const FAQ = () => {
           How can i withdraw my balance?
         </Typography>
         <Typography className="question" variant="caption">
-          What are signal providers?
+          Who are signal providers?
         </Typography>
         <Typography className="question" variant="caption">
-          What are copy traders?
+          Who are copy traders?
         </Typography>
       </Box>
     </Box>

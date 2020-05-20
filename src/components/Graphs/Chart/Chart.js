@@ -7,8 +7,8 @@ import PropTypes from "prop-types";
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {String} id
- * @property {Object} children
+ * @property {String} id ID of the cnavas passed as a child.
+ * @property {Object} children Canvas component to render the chart.
  */
 
 /**
@@ -33,7 +33,7 @@ const GenericChart = (props) => {
 };
 
 GenericChart.prototype = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired, // Need a canvas component with unique id to render the chart.
   id: PropTypes.string.isRequired,
 };
 
