@@ -21,7 +21,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .totalEquity {
     margin-bottom: 30px;
     padding: 0;

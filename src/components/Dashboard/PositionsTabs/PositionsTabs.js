@@ -44,6 +44,7 @@ const PositionsTabs = () => {
           classes={{
             indicator: "indicator",
             flexContainer: "container",
+            scroller: "hideScroll",
           }}
           className="tabsMenu"
           onChange={changeTab}
