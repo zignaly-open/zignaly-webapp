@@ -1,5 +1,4 @@
 {
-
   "env": {
     "browser": true,
     "es6": true,
@@ -27,16 +26,13 @@
 
   "parser": "babel-eslint",
 
-  "plugins": [
-    "react-hooks"
-  ],
+  "plugins": ["react-hooks", "formatjs"],
 
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
 
   "rules": {
+    "formatjs/no-offset": "error",
+    "formatjs/no-multiple-whitespaces": "error",
     "react/boolean-prop-naming": 2,
     "react/button-has-type": 2,
     "react/default-props-match-prop-types": 2,
@@ -56,7 +52,7 @@
     "react/jsx-fragments": 2,
     "react/jsx-handler-names": 0,
     "react/jsx-key": 2,
-    "react/jsx-max-depth": [2, {"max": 9}],
+    "react/jsx-max-depth": [2, { "max": 9 }],
     "react/jsx-no-bind": 0,
     "react/jsx-no-comment-textnodes": 2,
     "react/jsx-no-target-blank": 2,
@@ -122,10 +118,10 @@
     "func-style": 0,
     "generator-star-spacing": [2, "both"],
     "guard-for-in": 2,
-    "handle-callback-err": [2, "^(err|error|anySpecificError)$" ],
+    "handle-callback-err": [2, "^(err|error|anySpecificError)$"],
     "indent": 0,
     "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
-    "keyword-spacing": [2, {"before": true, "after": true}],
+    "keyword-spacing": [2, { "before": true, "after": true }],
     "linebreak-style": 2,
     "max-depth": 1,
     "max-len": [0, 100, 2],
@@ -219,7 +215,14 @@
     "no-unneeded-ternary": 2,
     "no-unreachable": 2,
     "no-unused-expressions": 2,
-    "no-unused-vars": [2, { "vars": "all", "varsIgnorePattern": "([Rr]eact|Provider|App|CssBaseline)", "args": "after-used" }],
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "varsIgnorePattern": "([Rr]eact|Provider|App|CssBaseline)",
+        "args": "after-used"
+      }
+    ],
     "no-use-before-define": 0,
     "no-var": 2,
     "no-void": 0,
@@ -237,7 +240,7 @@
     "semi-spacing": 2,
     "sort-vars": 1,
     "space-before-blocks": [2, "always"],
-    "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}],
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
