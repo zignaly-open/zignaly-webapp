@@ -14,6 +14,10 @@ import { FormattedHTMLMessage } from "react-intl";
  */
 
 const withDashboardLayout = (Component) => {
+  /**
+   *
+   * @param {Object} props Default params.
+   */
   const WrapperComponent = (props) => {
     const [exchange] = useState(true);
 

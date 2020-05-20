@@ -1,5 +1,5 @@
 # MENU
-menu.dashboad: "Dashboard"
+menu.dashboard: "Dashboard"
 menu.copytraders: "Copy-Traders"
 menu.signalproviders: "Signal Providers"
 menu.tradingterminal: "Trading Terminal"
@@ -14,7 +14,7 @@ menu.signout: "Sign Out"
 balance.available: "Available"
 balance.invested: "Invested"
 balance.profit: "Profit"
-balnce.total: "Total Equity"
+balance.total: "Total Equity"
 
 # DASHBOARD SECTION
 dashboard: "Dashboard"

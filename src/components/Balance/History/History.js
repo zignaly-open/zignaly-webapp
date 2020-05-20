@@ -6,6 +6,7 @@ import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionsTable from "../../Dashboard/PositionsTable";
 import PositionFilters from "../../Dashboard/PositionFilters";
+import { FormattedMessage } from "react-intl";
 
 const History = () => {
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
@@ -28,7 +29,7 @@ const History = () => {
         justifyContent="space-between"
       >
         <Typography className="boxTitle" variant="h4">
-          History
+          <FormattedMessage id="dashboard.balance.historical" />
         </Typography>
         <Box
           alignItems="center"
