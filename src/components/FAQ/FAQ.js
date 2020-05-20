@@ -1,6 +1,7 @@
 import React from "react";
 import "./FAQ.scss";
 import { Box, Typography } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
 const FAQ = () => {
   return (
@@ -12,7 +13,7 @@ const FAQ = () => {
       justifyContent="flex-start"
     >
       <Typography className="title" variant="h4">
-        frequently asked questions
+        <FormattedMessage id="faq" />
       </Typography>
       <Box
         alignItems="center"

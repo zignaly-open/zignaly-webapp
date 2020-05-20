@@ -15,6 +15,7 @@ import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -50,7 +51,9 @@ const Sidebar = () => {
           to={"/dashboard/positions"}
         >
           <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
-          <Typography variant="h6">dashboard</Typography>
+          <Typography variant="h6">
+            <FormattedMessage id="menu.dashboard" />
+          </Typography>
         </Link>
         <Link
           activeClassName={"active"}
@@ -59,7 +62,9 @@ const Sidebar = () => {
           to={"/copyTraders/browse"}
         >
           <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
-          <Typography variant="h6">copy traders</Typography>
+          <Typography variant="h6">
+            <FormattedMessage id="menu.copytraders" />
+          </Typography>
         </Link>
         <Link
           activeClassName={"active"}
@@ -68,7 +73,9 @@ const Sidebar = () => {
           to={"/signalProviders/browse"}
         >
           <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
-          <Typography variant="h6">signal providers</Typography>
+          <Typography variant="h6">
+            <FormattedMessage id="menu.signalproviders" />
+          </Typography>
         </Link>
         <Link
           activeClassName={"active"}
@@ -77,7 +84,9 @@ const Sidebar = () => {
           to={"/tradingTerminal"}
         >
           <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
-          <Typography variant="h6">trading terminal</Typography>
+          <Typography variant="h6">
+            <FormattedMessage id="menu.tradingterminal" />
+          </Typography>
         </Link>
         <Box className={"themeBox"} display="flex" flexDirection="row" flexWrap="nowrap">
           {hover && (

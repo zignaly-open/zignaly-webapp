@@ -12,6 +12,7 @@ import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -131,7 +132,9 @@ const Header = () => {
                 flexDirection="column"
                 justifyContent="center"
               >
-                <Typography variant="h4">Balance</Typography>
+                <Typography variant="h4">
+                  <FormattedMessage id="dashboard.balance" />
+                </Typography>
               </Box>
             </Grow>
           )}

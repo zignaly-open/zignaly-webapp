@@ -38,7 +38,7 @@ const AvailableBalance = () => {
           mb={1}
         >
           <Typography variant="h4">
-            <FormattedMessage id="dashboard.balance.available" />
+            <FormattedMessage id="balance.available" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
             {" "}
@@ -63,7 +63,7 @@ const AvailableBalance = () => {
           mb={1}
         >
           <Typography variant="h4">
-            <FormattedMessage id="dashboard.balance.invested" />
+            <FormattedMessage id="balance.invested" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
             {" "}
@@ -88,7 +88,7 @@ const AvailableBalance = () => {
           mb={1}
         >
           <Typography variant="h4">
-            <FormattedMessage id="dashboard.balance.profit" />
+            <FormattedMessage id="balance.profit" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
             {" "}
@@ -113,7 +113,7 @@ const AvailableBalance = () => {
           mb={1}
         >
           <Typography variant="h4">
-            <FormattedMessage id="dashboard.balance.total" />
+            <FormattedMessage id="balance.total" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
             {" "}
