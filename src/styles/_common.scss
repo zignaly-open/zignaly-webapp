@@ -21,13 +21,14 @@ body {
 }
 
 .hideScroll {
-  overflow-x: scroll !important;
-  overflow-y: scroll !important;
-  scrollbar-width: none !important;
+  overflow: scroll !important;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    height: 0 !important;
-    width: 0 !important;
+    height: 0;
+    width: 0;
   }
 }
 
@@ -108,8 +109,8 @@ body {
   z-index: 1000;
 
   @media only screen and (max-width: 600px) {
-    top: -100px !important;
-    left: -50px !important;
+    top: -100px;
+    left: -50px;
   }
 }
 
