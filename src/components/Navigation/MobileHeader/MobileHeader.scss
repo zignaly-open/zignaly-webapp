@@ -17,6 +17,12 @@
       height: 44px;
       width: 100%;
 
+      .userExchangeList {
+        .selectInput {
+          min-width: 180px;
+        }
+      }
+
       .expandIcon {
         height: 24px;
         margin-right: 5px;

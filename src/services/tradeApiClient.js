@@ -158,7 +158,7 @@ class TradeApiClient {
    */
 
   async userExchangesGet(payload) {
-    const endpointPath = "fe/api.php?action=getUserExchanges";
+    const endpointPath = "/fe/api.php?action=getUserExchanges";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return UserExchangeConnectionResponseTransform(responseData);

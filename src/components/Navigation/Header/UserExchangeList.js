@@ -3,7 +3,7 @@ import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 
 const UserExchangeList = () => {
-  const [exchange, setExchange] = useState(10);
+  const [exchange, setExchange] = useState("");
   const [exchangeList, setExchangeList] = useState([]);
 
   const authenticateUser = async () => {
@@ -23,11 +23,12 @@ const UserExchangeList = () => {
           token: userEntity.token,
         };
         const responseData = await tradeApi.userExchangesGet(sessionPayload);
-        console.log(responseData);
         setExchangeList(responseData);
+        if (responseData.length) {
+          setExchange(responseData[0].exchangeName);
+        }
       } catch (e) {
         // TODO: Display error in alert.
-        console.log(e);
       }
     };
 
@@ -47,7 +48,7 @@ const UserExchangeList = () => {
 
   const handleChange = (event) => {
     const targetElement = /** @type {HTMLSelectElement} */ (event.target);
-    let value = parseInt(targetElement.value);
+    let value = targetElement.value;
     setExchange(value);
   };
 
@@ -55,9 +56,11 @@ const UserExchangeList = () => {
     <Box className="userExchangeList">
       <FormControl className="selectInput" variant="outlined">
         <Select onChange={handleChange} value={exchange}>
-          <MenuItem value={10}>Binance</MenuItem>
-          <MenuItem value={20}>KuCoin</MenuItem>
-          <MenuItem value={30}>Zignaly</MenuItem>
+          {exchangeList.map((item, index) => (
+            <MenuItem key={index} value={item.exchangeName}>
+              {item.exchangeName}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
