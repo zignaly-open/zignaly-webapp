@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./CustomFilters.scss";
 import { Box } from "@material-ui/core";
 import CustomButtom from "../CustomButton";
@@ -55,13 +54,6 @@ const CustomFilters = (props) => {
       </Box>
     </Box>
   );
-};
-
-CustomFilters.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClear: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
 };
 
 export default CustomFilters;

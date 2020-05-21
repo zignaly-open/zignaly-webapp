@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./ProvidersHeader.scss";
 import { Box, Icon, Typography } from "@material-ui/core";
 import { routesMapping } from "../../../utils/routesMapping";
@@ -75,11 +74,4 @@ const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, pat
   );
 };
 
-ProvidersHeader.propTypes = {
-  path: PropTypes.string.isRequired,
-  showFilters: PropTypes.bool.isRequired,
-  showSort: PropTypes.bool.isRequired,
-  toggleFilters: PropTypes.func.isRequired,
-  toggleSort: PropTypes.func.isRequired,
-};
 export default ProvidersHeader;

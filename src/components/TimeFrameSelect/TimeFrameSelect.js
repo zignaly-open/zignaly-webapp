@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
@@ -41,10 +40,6 @@ const TimeFrameSelect = (props) => {
       />
     </Box>
   );
-};
-
-TimeFrameSelect.propTypes = {
-  onChange: PropTypes.func.isRequired,
 };
 
 export default TimeFrameSelect;

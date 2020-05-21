@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@material-ui/core";
 import "./CustomSelect.scss";
 
@@ -52,12 +51,5 @@ const CustomSelect = (props) => {
       labelPlacement="start"
     />
   );
-};
-
-CustomSelect.propTypes = {
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.array.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 export default CustomSelect;

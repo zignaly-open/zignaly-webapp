@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
@@ -37,11 +36,6 @@ const ProvidersFilters = ({ onChange, onClose }) => {
       <CustomSelect label="Exchange" onChange={setExchange} options={exchanges} value={exchange} />
     </CustomFilters>
   );
-};
-
-ProvidersFilters.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ProvidersFilters;
