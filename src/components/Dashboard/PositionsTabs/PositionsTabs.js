@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./PositionsTabs.scss";
-import { Box, Tab, Tabs, Popover } from "@material-ui/core";
+import { Box, Popover } from "@material-ui/core";
 import SettingsIcon from "../../../images/dashboard/settings.svg";
 import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionSettingsForm from "../../Forms/PositionSettingsForm";
 import PositionsTable from "../PositionsTable";
 import PositionFilters from "../PositionFilters";
-import { FormattedMessage } from "react-intl";
 import NoPositions from "../NoPositions";
+import TabsMenu from "./TabsMenu";
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -40,29 +40,7 @@ const PositionsTabs = () => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <Tabs
-          className="tabsMenu"
-          classes={{
-            indicator: "indicator",
-            flexContainer: "container",
-            scroller: "hideScroll",
-          }}
-          onChange={changeTab}
-          value={tabValue}
-        >
-          <Tab
-            classes={{ selected: "selected" }}
-            label={<FormattedMessage id="dashboard.positions.open" />}
-          />
-          <Tab
-            classes={{ selected: "selected" }}
-            label={<FormattedMessage id="dashboard.positions.closed" />}
-          />
-          <Tab
-            classes={{ selected: "selected" }}
-            label={<FormattedMessage id="dashboard.positions.log" />}
-          />
-        </Tabs>
+        <TabsMenu changeTab={changeTab} tabValue={tabValue} />
         <Box
           alignItems="center"
           className="settings"

@@ -12,6 +12,8 @@ const History = () => {
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
 
+  const handleChange = () => {};
+
   return (
     <Box
       alignItems="flex-start"
@@ -52,7 +54,7 @@ const History = () => {
           />
         </Box>
       </Box>
-      {filters && <PositionFilters onClose={() => showFilters(false)} />}
+      {filters && <PositionFilters onChange={handleChange} onClose={() => showFilters(false)} />}
       <PositionsTable />
       <Popover
         anchorEl={settingsAnchor}

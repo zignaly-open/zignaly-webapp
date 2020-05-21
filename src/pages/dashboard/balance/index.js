@@ -12,18 +12,6 @@ import AvailableBalance from "../../../components/Balance/AvailableBalance";
 import History from "../../../components/Balance/History";
 
 const Balance = () => {
-  const balance = {
-    total: "",
-    available: "",
-    profit: "",
-    invested: "",
-  };
-
-  const crypto = {
-    BTC: "",
-    ETH: "",
-  };
-
   return (
     <>
       <Helmet>
@@ -40,10 +28,10 @@ const Balance = () => {
           <TotalEquity />
         </Box>
         <Box className="cryptoBox">
-          <CryptoComposition crypto={crypto} />
+          <CryptoComposition />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance balance={balance} />
+          <AvailableBalance />
         </Box>
         <Box className="historyBox">
           <History />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { injectIntl, FormattedMessage } from "react-intl";
+import { injectIntl } from "react-intl";
 import { compose } from "recompose";
 import withPageContext from "../pageContext";
 import withLayout from "../layouts/appLayout";
@@ -12,7 +12,6 @@ const IndexPage = () => (
       <title>Zignaly</title>
     </Helmet>
     <main>
-      <FormattedMessage id="home.main" tagName="div" />
       <img alt="" src={astronaut} />
     </main>
   </>

@@ -55,7 +55,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .loginPage {
     padding-bottom: 100px;
 

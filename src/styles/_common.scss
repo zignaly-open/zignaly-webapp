@@ -21,7 +21,7 @@ body {
 }
 
 .hideScroll {
-  overflow: scroll !important;
+  overflow: scroll;
   overflow-x: scroll;
   overflow-y: scroll;
   scrollbar-width: none;
@@ -109,8 +109,8 @@ body {
   z-index: 1000;
 
   @media only screen and (max-width: 600px) {
-    top: -100px;
     left: -50px;
+    top: -100px;
   }
 }
 

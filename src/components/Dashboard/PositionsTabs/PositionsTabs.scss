@@ -7,35 +7,6 @@
   .tabsBox {
     border-bottom: solid 1px $borderColor;
 
-    .tabsMenu {
-      min-height: 70px;
-      width: 100%;
-
-      .container {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        width: fit-content;
-
-        button {
-          font-family: "PlexSans-Bold";
-          font-size: 16px;
-          max-width: 170px;
-          min-height: 70px;
-          padding: 0;
-          text-transform: capitalize;
-
-          &:focus {
-            outline: none;
-          }
-
-          &.selected {
-            color: $purple;
-          }
-        }
-      }
-    }
-
     .settings {
       padding: 0 20px;
       width: 120px;
@@ -45,10 +16,6 @@
         height: 24px;
         width: 24px;
       }
-    }
-
-    .indicator {
-      display: none;
     }
   }
 
@@ -60,36 +27,6 @@
 @include media("<=sm") {
   .positionsTabs {
     .tabsBox {
-      .tabsMenu {
-        min-height: 70px;
-        width: calc(100% - 100px);
-
-        .container {
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-start;
-          width: fit-content;
-
-          button {
-            font-family: "PlexSans-Bold";
-            font-size: 16px;
-            min-width: 150px;
-            max-width: 200px;
-            min-height: 70px;
-            padding: 0;
-            text-transform: capitalize;
-
-            &:focus {
-              outline: none;
-            }
-
-            &.selected {
-              color: $purple;
-            }
-          }
-        }
-      }
-
       .settings {
         padding: 0 20px;
         width: 100px;
