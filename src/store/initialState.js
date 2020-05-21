@@ -1,4 +1,8 @@
 /**
+ * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
+
+/**
  * @typedef {Object} DefaultStateSessionTradeApi
  * @property {string} accessToken
  */
@@ -24,6 +28,7 @@
  * @typedef {Object} DefaultState
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
+ * @property {Array<ExchangeConnectionEntity>} userExchanges
  */
 
 /**
@@ -42,6 +47,7 @@ const initialState = {
     languageCode: "en",
     darkStyle: false,
   },
+  userExchanges: [],
 };
 
 export default initialState;
