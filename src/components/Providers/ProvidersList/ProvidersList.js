@@ -38,8 +38,10 @@ const ProvidersList = (props) => {
             <TraderCard
               coin={item.coin}
               dailyReturns={item.dailyReturns}
+              exchanges={[]}
               fee={item.fee}
               id={item.id}
+              isCopyTrading={false}
               key={item.id}
               logoUrl={item.logoUrl}
               name={item.name}
