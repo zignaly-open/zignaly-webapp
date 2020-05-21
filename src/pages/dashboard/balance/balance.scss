@@ -24,7 +24,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .balancePage {
     align-items: flex-start;
     flex-direction: column;
