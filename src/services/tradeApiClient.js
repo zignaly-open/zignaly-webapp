@@ -5,6 +5,7 @@ import {
   userPositionsResponseTransform,
   providersResponseTransform,
 } from "./tradeApiClient.types";
+import { isObject } from "lodash";
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -46,9 +47,9 @@ class TradeApiClient {
       const response = await fetch(requestUrl, options);
       if (response.status === 200) {
         responseData = await response.json();
+      } else {
+        responseData.error = await response.text();
       }
-
-      responseData.error = await response.text();
     } catch (e) {
       responseData.error = e.message;
     }
@@ -99,7 +100,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userCreate(payload) {
-    const endpointPath = "fe/api.php?action=signup";
+    const endpointPath = "/fe/api.php?action=signup";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userCreateResponseTransform(responseData);
