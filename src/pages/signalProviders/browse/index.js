@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -95,13 +94,6 @@ const SignalProvidersBrowse = (props) => {
       <ProvidersList providers={providers} />
     </Box>
   );
-};
-
-SignalProvidersBrowse.propTypes = {
-  showFilters: PropTypes.bool.isRequired,
-  showSort: PropTypes.bool.isRequired,
-  toggleFilters: PropTypes.func.isRequired,
-  toggleSort: PropTypes.func.isRequired,
 };
 
 export default compose(

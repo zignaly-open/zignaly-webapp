@@ -3,7 +3,6 @@ import "./TraderCard.scss";
 import { Box } from "@material-ui/core";
 import TraderCardHeader from "./TraderCardHeader";
 import TraderCardBody from "./TraderCardBody";
-import PropTypes from "prop-types";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").DailyReturn} DailyReturn
@@ -59,18 +58,6 @@ const TraderCard = (props) => {
       />
     </Box>
   );
-};
-
-TraderCard.propTypes = {
-  coin: PropTypes.string.isRequired,
-  dailyReturns: PropTypes.array.isRequired,
-  exchanges: PropTypes.array.isRequired,
-  fee: PropTypes.any.isRequired,
-  id: PropTypes.string.isRequired,
-  logoUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  risk: PropTypes.number.isRequired,
-  showSummary: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

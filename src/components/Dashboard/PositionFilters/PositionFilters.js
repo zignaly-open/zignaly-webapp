@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
@@ -41,11 +40,6 @@ const PositionFilters = ({ onChange, onClose }) => {
       <CustomSelect label="" onChange={setTrader} options={traders} value={trader} />
     </CustomFilters>
   );
-};
-
-PositionFilters.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default PositionFilters;

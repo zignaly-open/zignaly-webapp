@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
 import "./providersList.scss";
@@ -52,10 +51,6 @@ const ProvidersList = (props) => {
       </Box>
     </Box>
   );
-};
-
-ProvidersList.propTypes = {
-  providers: PropTypes.array.isRequired,
 };
 
 export default ProvidersList;
