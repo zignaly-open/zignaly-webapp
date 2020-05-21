@@ -20,8 +20,8 @@ const LoginTabs = () => {
   return (
     <Box className="loginTabs">
       <Tabs
-        classes={{ indicator: "indicator", flexContainer: "container" }}
         className="tabsMenu"
+        classes={{ indicator: "indicator", flexContainer: "container" }}
         onChange={changeTab}
         value={tabValue}
       >

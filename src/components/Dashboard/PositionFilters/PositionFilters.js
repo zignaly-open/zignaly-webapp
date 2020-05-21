@@ -31,10 +31,8 @@ const PositionFilters = ({ onChange, onClose }) => {
   };
 
   useEffect(() => {
-    if (onChange) {
-      onChange(type, mda, trader);
-    }
-  }, [type, mda, trader]);
+    onChange(type, mda, trader);
+  }, [type, mda, trader, onChange]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">

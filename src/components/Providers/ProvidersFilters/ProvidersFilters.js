@@ -28,10 +28,8 @@ const ProvidersFilters = ({ onChange, onClose }) => {
   };
 
   useEffect(() => {
-    if (onChange) {
-      onChange(coin, exchange);
-    }
-  }, [coin, exchange]);
+    onChange(coin, exchange);
+  }, [coin, exchange, onChange]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">

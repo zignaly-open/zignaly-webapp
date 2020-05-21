@@ -23,17 +23,18 @@ import "./CustomSelect.scss";
  * @param {CustomSelectPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const CustomSelect = ({ options, onChange, value, label }) => {
+const CustomSelect = (props) => {
+  const { label, onChange, options, value } = props;
   return (
     <FormControlLabel
       className="customSelect"
       control={
         <FormControl className="callout" variant="outlined">
           <Select
+            className="select"
             classes={{
               root: "callout1",
             }}
-            className="select"
             displayEmpty={true}
             onChange={(e) => onChange(e.target.value)}
             value={value}

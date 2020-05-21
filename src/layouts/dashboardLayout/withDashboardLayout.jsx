@@ -17,6 +17,7 @@ const withDashboardLayout = (Component) => {
   /**
    *
    * @param {Object} props Default params.
+   * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
     const [exchange] = useState(true);

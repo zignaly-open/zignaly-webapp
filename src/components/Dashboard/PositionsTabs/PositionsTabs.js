@@ -41,12 +41,12 @@ const PositionsTabs = () => {
         justifyContent="space-between"
       >
         <Tabs
+          className="tabsMenu"
           classes={{
             indicator: "indicator",
             flexContainer: "container",
             scroller: "hideScroll",
           }}
-          className="tabsMenu"
           onChange={changeTab}
           value={tabValue}
         >

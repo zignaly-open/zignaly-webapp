@@ -29,7 +29,7 @@ const GenericChart = (props) => {
     background.addColorStop(0, "#a946f6");
     const borderColor = "#770fc8";
     generateChart(context, prepareLineChartOptions(background, borderColor, data));
-  }, [id]);
+  }, [id, data]);
 
   return <Box className="chart">{children}</Box>;
 };

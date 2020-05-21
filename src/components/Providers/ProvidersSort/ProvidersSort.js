@@ -37,7 +37,7 @@ const ProvidersSort = ({ onChange, onClose }) => {
 
   useEffect(() => {
     onChange(sort);
-  }, [sort]);
+  }, [sort, onChange]);
 
   return (
     <Box className="providersSort">

@@ -40,7 +40,7 @@ const withAppLayout = (Component) => {
     const selector = (state) => state.settings.darkStyle;
     const darkStyle = useSelector(selector);
     const options = themeData(darkStyle);
-    const theme = useMemo(() => createMuiTheme(options), [darkStyle]);
+    const theme = useMemo(() => createMuiTheme(options), [options]);
 
     return (
       <ThemeProvider theme={theme}>
