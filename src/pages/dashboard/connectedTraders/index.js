@@ -33,7 +33,7 @@ const ConnectedTraders = () => {
           flexWrap="wrap"
           justifyContent="flex-start"
         >
-          {list && list.map((item) => <TraderCard data={item} key={item} showSummary={true} />)}
+          {/* list && list.map((item) => <TraderCard data={item} key={item} showSummary={true} />) */}
         </Box>
       </Box>
     </>

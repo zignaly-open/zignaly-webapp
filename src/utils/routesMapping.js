@@ -6,9 +6,9 @@
 
 /**
  * @typedef {Object} SectionNavigation Section navigation object.
- * @property {string} [id] Section ID.
- * @property {string} [subtitleId] Section subtitle.
- * @property {string} [subtitle2Id] Section subtitle 2.
+ * @property {string} id Section ID.
+ * @property {string} subtitleId Section subtitle.
+ * @property {string} subtitle2Id Section subtitle 2.
  * @property {Array<NavigationLink>} links Section navigation links.
  */
 
@@ -25,6 +25,8 @@ export const routesMapping = (path) => {
     case "dashboard":
       return {
         id: id,
+        subtitleId: "",
+        subtitle2Id: "",
         links: [
           {
             id: "dashboard.positions",
@@ -44,6 +46,7 @@ export const routesMapping = (path) => {
       return {
         id: "menu.copytraders",
         subtitleId: "copyt.subtitle",
+        subtitle2Id: "",
         links: [
           {
             id: "srv.browse",
@@ -73,6 +76,9 @@ export const routesMapping = (path) => {
       };
     case "copyTrader":
       return {
+        id: "",
+        subtitleId: "",
+        subtitle2Id: "",
         links: [
           {
             id: "srv.profile",
@@ -90,6 +96,9 @@ export const routesMapping = (path) => {
       };
     case "signalProvider":
       return {
+        id: "",
+        subtitleId: "",
+        subtitle2Id: "",
         links: [
           {
             id: "srv.profile",
@@ -108,6 +117,8 @@ export const routesMapping = (path) => {
     default:
       return {
         id: "dashboard",
+        subtitleId: "",
+        subtitle2Id: "",
         links: [
           {
             id: "dashboard.positions",

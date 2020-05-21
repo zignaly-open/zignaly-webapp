@@ -61,8 +61,12 @@ const SignalProvidersBrowse = (props) => {
         copyTradersOnly: false,
       };
 
-      const responseData = await tradeApi.providersGet(sessionPayload);
-      setProviders(responseData);
+      try {
+        const responseData = await tradeApi.providersGet(sessionPayload);
+        setProviders(responseData);
+      } catch (e) {
+        setProviders([]);
+      }
     };
     loadProviders();
   }, []);

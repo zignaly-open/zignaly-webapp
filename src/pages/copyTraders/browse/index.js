@@ -62,8 +62,12 @@ const CopyTradersBrowse = (props) => {
         timeFrame: 90,
       };
 
-      const responseData = await tradeApi.providersGet(sessionPayload);
-      setProviders(responseData);
+      try {
+        const responseData = await tradeApi.providersGet(sessionPayload);
+        setProviders(responseData);
+      } catch (e) {
+        setProviders([]);
+      }
     };
     loadProviders();
   }, []);

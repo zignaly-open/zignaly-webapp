@@ -26,23 +26,25 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersHeader = ({ showFilters, showSort, toggleFilters, toggleSort, path }) => {
+  const sectionNavitation = routesMapping(path);
+
   return (
     <Box className="providersHeader">
       <Box className="titleBox" display="flex" flexDirection="column">
         <Typography variant="h1">
-          <FormattedMessage id={routesMapping(path).id} />
+          {sectionNavitation.id && <FormattedMessage id={sectionNavitation.id} />}
         </Typography>
         <h4 className="subHeader">
-          <FormattedMessage id={routesMapping(path).subtitleId} />
-          {routesMapping(path).subtitle2Id && (
+          {sectionNavitation.subtitleId && <FormattedMessage id={sectionNavitation.subtitleId} />}
+          {sectionNavitation.subtitle2Id && (
             <>
               <br />
-              <FormattedMessage id={routesMapping(path).subtitle2Id} />
+              <FormattedMessage id={sectionNavitation.subtitle2Id} />
             </>
           )}
         </h4>
       </Box>
-      <SubNavHeader links={routesMapping(path).links}>
+      <SubNavHeader links={sectionNavitation.links}>
         <Box
           alignItems="center"
           className="settings"
