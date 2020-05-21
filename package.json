@@ -74,7 +74,7 @@
   "scripts": {
     "build": "npm install && gatsby build --prefix-paths",
     "checkall": "npm run sasslint && npm run tscheck && npm run jslint",
-    "clean": "rm -rf node_modules/",
+    "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
