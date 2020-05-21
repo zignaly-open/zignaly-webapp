@@ -9,19 +9,14 @@
   }
 
   .operator {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
     font-size: 21px;
     font-weight: bold;
-    justify-content: center;
-    width: content;
+    width: fit-content;
   }
 }
 
 @include media("<=sm") {
   .availableBalance {
-    align-items: center;
     flex-wrap: wrap;
     height: auto;
     padding: 0;
@@ -30,9 +25,9 @@
       align-items: center;
       width: 100%;
     }
-
     .operator {
-      width: fit-content;
+      width: 100%;
+      text-align: center;
     }
   }
 }
