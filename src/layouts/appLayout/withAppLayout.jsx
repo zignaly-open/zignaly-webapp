@@ -18,7 +18,7 @@ import Alert from "../../components/Alert";
 /**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
  *
- * @param {Object} Component
+ * @param {import("../../utils/getDisplayName").WrappedComponentType} Component
  * @returns {Object} Component.
  */
 

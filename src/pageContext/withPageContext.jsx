@@ -5,9 +5,34 @@ import PageContext from "./PageContext";
 import translations from "../i18n/translations";
 import { getDisplayName } from "../utils";
 
+/**
+ *
+ * @param {import("../utils/getDisplayName").WrappedComponentType} Component
+ * @returns {Object} Component.
+ */
+
 const withPageContext = (Component) => {
+  /**
+   *
+   * @typedef {Object} DefaultContext
+   * @property {String} locale
+   */
+
+  /**
+   *
+   * @typedef {Object} DefaultProps
+   * @property {DefaultContext} pageContext
+   * @property {String} locale
+   */
+
+  /**
+   *
+   * @param {DefaultProps} props Component props.
+   */
   const WrapperComponent = (props) => {
-    const { locale } = props.pageContext;
+    const { pageContext } = props;
+    const { locale } = pageContext;
+
     return (
       <IntlProvider locale={locale} messages={translations[locale]}>
         <PageContext.Provider value={props.pageContext}>
@@ -16,6 +41,7 @@ const withPageContext = (Component) => {
       </IntlProvider>
     );
   };
+  /** */
   WrapperComponent.displayName = `PageContext(${getDisplayName(Component)})`;
   return WrapperComponent;
 };

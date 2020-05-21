@@ -5,8 +5,8 @@ import CustomSelect from "../../CustomSelect";
 
 /**
  * @typedef {Object} PositionFiltersPropTypes
- * @property {function} onChange Callback that delegate filters changes to caller.
- * @property {function} onClose Callback that delegate filters toggle state to caller.
+ * @property {Function} onChange Callback that delegate filters changes to caller.
+ * @property {Function} onClose Callback that delegate filters toggle state to caller.
  */
 
 /**
