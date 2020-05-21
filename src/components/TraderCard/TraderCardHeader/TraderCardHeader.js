@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./TraderCardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import ConnectedIcon from "../../../images/dashboard/connected.svg";
@@ -73,14 +72,6 @@ const TraderCardHeader = (props) => {
       </Box>
     </Box>
   );
-};
-
-TraderCardHeader.propTypes = {
-  coin: PropTypes.string.isRequired,
-  exchanges: PropTypes.array.isRequired,
-  fee: PropTypes.number.isRequired,
-  logoUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
 };
 
 export default TraderCardHeader;

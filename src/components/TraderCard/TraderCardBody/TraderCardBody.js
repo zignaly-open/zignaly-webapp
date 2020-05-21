@@ -4,7 +4,6 @@ import { Box, Typography } from "@material-ui/core";
 import Chart from "../../Graphs/Chart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
-import PropTypes from "prop-types";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 
@@ -106,14 +105,6 @@ const TraderCard = (props) => {
       {showSummary && <UserSummary />}
     </Box>
   );
-};
-
-TraderCard.propTypes = {
-  dailyReturns: PropTypes.array.isRequired,
-  id: PropTypes.string.isRequired,
-  isCopyTrading: PropTypes.bool.isRequired,
-  risk: PropTypes.number.isRequired,
-  showSummary: PropTypes.bool.isRequired,
 };
 
 export default TraderCard;

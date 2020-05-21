@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "./Chart.scss";
 import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
-import PropTypes from "prop-types";
 
 /**
  *
@@ -32,12 +31,6 @@ const GenericChart = (props) => {
   }, [id, data]);
 
   return <Box className="chart">{children}</Box>;
-};
-
-GenericChart.prototype = {
-  children: PropTypes.node.isRequired, // Need a canvas component with unique id to render the chart.
-  id: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
 };
 
 export default GenericChart;

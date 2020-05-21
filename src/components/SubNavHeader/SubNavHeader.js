@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import Link from "../LocalizedLink";
@@ -42,8 +41,4 @@ SubNavHeader.defaultProps = {
   children: null,
 };
 
-SubNavHeader.propTypes = {
-  children: PropTypes.node,
-  links: PropTypes.array.isRequired,
-};
 export default SubNavHeader;
