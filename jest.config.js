@@ -1,3 +1,8 @@
+const appStage = process.env.STAGE || "dev";
+require("dotenv").config({
+  path: `.env.${appStage}`,
+});
+
 module.exports = {
   transform: {
     "^.+\\.jsx?$": `<rootDir>/jest-preprocess.js`,
