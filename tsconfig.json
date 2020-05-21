@@ -15,7 +15,7 @@
     "jsx": "react",
     "lib": ["dom", "esnext"],
     "removeComments": false,
-      "pretty": true
+    "pretty": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"]
 }
