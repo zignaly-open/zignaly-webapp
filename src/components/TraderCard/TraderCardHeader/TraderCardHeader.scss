@@ -41,7 +41,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .traderCardHeader {
     padding: 0 10px;
     width: 100%;

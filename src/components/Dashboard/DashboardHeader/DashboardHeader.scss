@@ -8,10 +8,16 @@
     width: 100%;
 
     .exchangeTitle {
-      color: $purple ;
+      color: $purple;
       font-family: "PlexSans-Bold";
       font-size: 16px;
       margin: 8px 0 0 16px;
     }
+  }
+}
+
+@include media("<=sm") {
+  .dashboardHeader {
+    overflow: scroll;
   }
 }

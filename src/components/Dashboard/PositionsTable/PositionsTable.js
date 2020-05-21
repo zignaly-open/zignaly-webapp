@@ -46,7 +46,12 @@ const PositionsTable = () => {
       flexDirection="column"
       justifyContent="center"
     >
-      <Box className="tableBox" display="flex" flexDirection="row" justifyContent="center">
+      <Box
+        className="tableBox hideScroll"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
         <Table className="table">
           <PositionsTableHead />
           <PositionsTableBody positions={positions} />

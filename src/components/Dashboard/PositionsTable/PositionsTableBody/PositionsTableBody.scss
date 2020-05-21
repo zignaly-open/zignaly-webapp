@@ -4,9 +4,11 @@
       border-bottom: 1px solid $borderColor;
       font-family: "PlexSans-Medium";
       font-size: 14px;
-      height: 60px;
+      min-width: 80px;
+      max-width: 120px;
       padding: 12px;
       text-transform: capitalize;
+      white-space: nowrap;
     }
   }
 }

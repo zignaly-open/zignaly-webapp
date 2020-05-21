@@ -2,7 +2,7 @@
   background: $transparentBackground;
   border-bottom: 1px solid $borderColor;
   box-sizing: boorder-box;
-  height: 70px;
+  min-height: 70px;
   margin-bottom: 16px;
   padding: 0 25px;
   width: 100%;
@@ -20,5 +20,35 @@
 
   .actions {
     width: 250px;
+  }
+}
+
+@include media("<=sm") {
+  .customFilters {
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px 0;
+
+    .filters {
+      width: 100%;
+      min-height: 60px;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+
+      .title {
+        display: none;
+      }
+
+      label {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    }
+
+    .actions {
+      width: 100%;
+      min-height: 40px;
+    }
   }
 }

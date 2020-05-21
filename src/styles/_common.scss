@@ -21,6 +21,7 @@ body {
 }
 
 .hideScroll {
+  overflow: scroll !important;
   overflow-x: scroll;
   overflow-y: scroll;
   scrollbar-width: none;
@@ -106,6 +107,11 @@ body {
 .passwordStrengthBox {
   left: -20px;
   z-index: 1000;
+
+  @media only screen and (max-width: 600px) {
+    top: -100px;
+    left: -50px;
+  }
 }
 
 .pointer {

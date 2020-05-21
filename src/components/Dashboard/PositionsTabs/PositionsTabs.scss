@@ -19,7 +19,7 @@
 
         button {
           font-family: "PlexSans-Bold";
-          font-size: 16px ;
+          font-size: 16px;
           max-width: 170px;
           min-height: 70px;
           padding: 0;
@@ -54,5 +54,50 @@
 
   .tabPanel {
     min-height: 350px;
+  }
+}
+
+@include media("<=sm") {
+  .positionsTabs {
+    .tabsBox {
+      .tabsMenu {
+        min-height: 70px;
+        width: calc(100% - 100px);
+
+        .container {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          width: fit-content;
+
+          button {
+            font-family: "PlexSans-Bold";
+            font-size: 16px;
+            min-width: 150px;
+            max-width: 200px;
+            min-height: 70px;
+            padding: 0;
+            text-transform: capitalize;
+
+            &:focus {
+              outline: none;
+            }
+
+            &.selected {
+              color: $purple;
+            }
+          }
+        }
+      }
+
+      .settings {
+        padding: 0 20px;
+        width: 100px;
+      }
+    }
+
+    .tabPanel {
+      min-height: 350px;
+    }
   }
 }
