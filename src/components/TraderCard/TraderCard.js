@@ -6,19 +6,21 @@ import TraderCardBody from "./TraderCardBody";
 import PropTypes from "prop-types";
 
 /**
+ * @typedef {import("../../services/tradeApiClient.types").ProviderEntity} Provider
  * @typedef {import("../../services/tradeApiClient.types").DailyReturn} DailyReturn
  *
  * @typedef {Object} TraderCardPropTypes
- * @property {any} fee Comission fee in %
- * @property {string} name Provider's name
- * @property {string} logoUrl Url of the provider's logo
- * @property {string} coin Coin traded by provider
- * @property {boolean} showSummary Flag to indicate if summary should be rendered.
- * @property {number} risk Return for open positions.
- * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
- * @property {string} id Provider id.
- * @property {Array<string>} exchanges Exchanges supported by provider
- * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
+//  * @property {any} fee Comission fee in %
+//  * @property {string} name Provider's name
+//  * @property {string} logoUrl Url of the provider's logo
+//  * @property {string} coin Coin traded by provider
+//  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+//  * @property {number} risk Return for open positions.
+//  * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
+//  * @property {string} id Provider id.
+//  * @property {Array<string>} exchanges Exchanges supported by provider
+//  * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
+ * @property {Provider} provider Flag to indicate if the provider is copy trading.
  */
 
 /**
@@ -28,18 +30,7 @@ import PropTypes from "prop-types";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const {
-    id,
-    risk,
-    dailyReturns,
-    showSummary,
-    fee,
-    name,
-    logoUrl,
-    coin,
-    exchanges,
-    isCopyTrading,
-  } = props;
+  const { provider, showSummary } = props;
 
   return (
     <Box
@@ -49,12 +40,13 @@ const TraderCard = (props) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <TraderCardHeader coin={coin} exchanges={exchanges} fee={fee} logoUrl={logoUrl} name={name} />
+      <TraderCardHeader provider={provider} />
       <TraderCardBody
-        dailyReturns={dailyReturns}
-        id={id}
-        isCopyTrading={isCopyTrading}
-        risk={risk}
+        // dailyReturns={dailyReturns}
+        // id={id}
+        // isCopyTrading={isCopyTrading}
+        // risk={risk}
+        provider={provider}
         showSummary={showSummary}
       />
     </Box>
@@ -62,15 +54,16 @@ const TraderCard = (props) => {
 };
 
 TraderCard.propTypes = {
-  coin: PropTypes.string.isRequired,
-  dailyReturns: PropTypes.array.isRequired,
-  exchanges: PropTypes.array.isRequired,
-  fee: PropTypes.any.isRequired,
-  id: PropTypes.string.isRequired,
-  logoUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  risk: PropTypes.number.isRequired,
+  //   coin: PropTypes.string.isRequired,
+  //   dailyReturns: PropTypes.array.isRequired,
+  //   exchanges: PropTypes.array.isRequired,
+  //   fee: PropTypes.any.isRequired,
+  //   id: PropTypes.string.isRequired,
+  //   logoUrl: PropTypes.string.isRequired,
+  //   name: PropTypes.string.isRequired,
+  //   risk: PropTypes.number.isRequired,
   showSummary: PropTypes.bool.isRequired,
+  provider: PropTypes.object.isRequired,
 };
 
 export default TraderCard;

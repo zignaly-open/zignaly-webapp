@@ -44,7 +44,7 @@ const CopyTradersBrowse = (props) => {
 
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mailkdqvw4bplp@example.test",
+      email: "mailxuftg1pxzk@example.test",
       password: "abracadabra",
     };
 

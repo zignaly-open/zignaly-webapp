@@ -9,11 +9,12 @@ import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} TraderCardHeaderPropTypes
- * @property {number} fee Comission fee in %
- * @property {string} name Provider's name
- * @property {string} logoUrl Url of the provider's logo
- * @property {string} coin Coin traded by provider
- * @property {Array<string>} exchanges Exchanges supported by provider
+//  * @property {number} fee Comission fee in %
+//  * @property {string} name Provider's name
+//  * @property {string} logoUrl Url of the provider's logo
+//  * @property {string} coin Coin traded by provider
+//  * @property {Array<string>} exchanges Exchanges supported by provider
+ * @property {Provider} provider Flag to indicate if the provider is copy trading.
  */
 
 /**
@@ -23,7 +24,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin, exchanges } = props;
+  const { fee, name, logoUrl, coin, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -76,11 +77,12 @@ const TraderCardHeader = (props) => {
 };
 
 TraderCardHeader.propTypes = {
-  coin: PropTypes.string.isRequired,
-  exchanges: PropTypes.array.isRequired,
-  fee: PropTypes.number.isRequired,
-  logoUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  //   coin: PropTypes.string.isRequired,
+  //   exchanges: PropTypes.array.isRequired,
+  //   fee: PropTypes.number.isRequired,
+  //   logoUrl: PropTypes.string.isRequired,
+  //   name: PropTypes.string.isRequired,
+  provider: PropTypes.object.isRequired,
 };
 
 export default TraderCardHeader;

@@ -34,21 +34,7 @@ const ProvidersList = (props) => {
         justifyContent="space-between"
       >
         {providers &&
-          providers.map((item) => (
-            <TraderCard
-              coin={item.coin}
-              dailyReturns={item.dailyReturns}
-              exchanges={[]}
-              fee={item.fee}
-              id={item.id}
-              isCopyTrading={false}
-              key={item.id}
-              logoUrl={item.logoUrl}
-              name={item.name}
-              risk={item.risk}
-              showSummary={false}
-            />
-          ))}
+          providers.map((provider) => <TraderCard provider={provider} showSummary={false} />)}
       </Box>
     </Box>
   );

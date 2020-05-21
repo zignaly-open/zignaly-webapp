@@ -10,6 +10,7 @@ import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  *
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
@@ -17,6 +18,7 @@ import { FormattedMessage } from "react-intl";
  * @property {number} risk Return for open positions.
  * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
  * @property {string} id Provider id.
+ * @property {Provider} provider Flag to indicate if the provider is copy trading.
  */
 
 /**
@@ -26,7 +28,31 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { id, showSummary, risk, dailyReturns, isCopyTrading } = props;
+  const { provider } = props;
+
+  const { id, showSummary, risk, isCopyTrading } = provider;
+  const dailyReturns = [
+    {
+      name: "2020-03-29",
+      returns: "5.42466341627152",
+      positions: 6,
+    },
+    {
+      name: "2020-03-30",
+      returns: "15.11468924148286",
+      positions: 8,
+    },
+    {
+      name: "2020-04-01",
+      returns: "7.52008233572196",
+      positions: 5,
+    },
+    {
+      name: "2020-04-02",
+      returns: "2.9421316999993",
+      positions: 1,
+    },
+  ];
   let cardId = "traderCard" + id;
   let chartData = [];
 
@@ -63,7 +89,7 @@ const TraderCard = (props) => {
           justifyContent="space-between"
         >
           <Typography className="green" variant="h4">
-            {totalReturns}%
+            {totalReturns.toFixed(2)}%
           </Typography>
           <Typography variant="subtitle1">
             <FormattedMessage id="returns(90D)" />
@@ -109,11 +135,12 @@ const TraderCard = (props) => {
 };
 
 TraderCard.propTypes = {
-  dailyReturns: PropTypes.array.isRequired,
-  id: PropTypes.string.isRequired,
-  isCopyTrading: PropTypes.bool.isRequired,
-  risk: PropTypes.number.isRequired,
-  showSummary: PropTypes.bool.isRequired,
+  //   dailyReturns: PropTypes.array.isRequired,
+  //   id: PropTypes.string.isRequired,
+  //   isCopyTrading: PropTypes.bool.isRequired,
+  //   risk: PropTypes.number.isRequired,
+  //   showSummary: PropTypes.bool.isRequired,
+  provider: PropTypes.object.isRequired,
 };
 
 export default TraderCard;
