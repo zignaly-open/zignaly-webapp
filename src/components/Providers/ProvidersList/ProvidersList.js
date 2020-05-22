@@ -17,7 +17,7 @@ import "./providersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers } = props;
+  const { providers, showSummary } = props;
   return (
     <Box
       className="providersList"
@@ -34,7 +34,7 @@ const ProvidersList = (props) => {
         justifyContent="space-between"
       >
         {providers &&
-          providers.map((provider) => <TraderCard provider={provider} showSummary={false} />)}
+          providers.map((provider) => <TraderCard provider={provider} showSummary={showSummary} />)}
       </Box>
     </Box>
   );

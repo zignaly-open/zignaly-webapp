@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./connectedTraders.scss";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
@@ -6,10 +6,45 @@ import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
-import TraderCard from "../../../components/TraderCard";
+import tradeApi from "../../../services/tradeApiClient";
+import ProvidersList from "../../../components/Providers/ProvidersList";
 
 const ConnectedTraders = () => {
-  const list = [1, 2, 3];
+  /**
+   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+   * @type {ProvidersCollection} initialState
+   */
+  const initialState = [];
+  const [providers, setProviders] = useState(initialState);
+  const authenticateUser = async () => {
+    const loginPayload = {
+      email: "mail22sygn6vvi@example.test",
+      password: "abracadabra",
+    };
+
+    return await tradeApi.userLogin(loginPayload);
+  };
+
+  useEffect(() => {
+    const loadProviders = async () => {
+      const userEntity = await authenticateUser();
+      const sessionPayload = {
+        token: userEntity.token,
+        type: "all",
+        ro: true,
+        copyTradersOnly: true,
+        timeFrame: 90,
+      };
+
+      try {
+        const responseData = await tradeApi.providersGet(sessionPayload);
+        setProviders(responseData);
+      } catch (e) {
+        setProviders([]);
+      }
+    };
+    loadProviders();
+  }, []);
 
   return (
     <>
@@ -34,6 +69,7 @@ const ConnectedTraders = () => {
           justifyContent="flex-start"
         >
           {/* list && list.map((item) => <TraderCard data={item} key={item} showSummary={true} />) */}
+          <ProvidersList providers={providers} showSummary={true} />
         </Box>
       </Box>
     </>

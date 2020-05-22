@@ -88,7 +88,7 @@ const CopyTradersBrowse = (props) => {
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <ProvidersList providers={providers} />
+      <ProvidersList providers={providers} showSummary={false} />
     </Box>
   );
 };

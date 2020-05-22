@@ -55,10 +55,17 @@ export const ReturnsChart = (props) => {
   useEffect(() => {
     const elementId = id;
     const context = document.getElementById(elementId).getContext("2d");
-    const background = context.createLinearGradient(0, 0, 0, 500);
-    background.addColorStop(1, "rgba(216, 216, 216, .1)");
-    background.addColorStop(0, "#a946f6");
-    const borderColor = "#770fc8";
+    const background = context.createLinearGradient(0, 0, 0, 700);
+    //   background: linear-gradient(144deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.34) 20%, rgba(104, 213, 114, 0.19) 22%, rgba(165, 216, 178, 0.08) 69%, rgba(223, 223, 223, 0.03) 89%, rgba(255, 255, 255, 0) 100%);
+
+    background.addColorStop(1, "rgba(255, 255, 255, 0) ");
+    background.addColorStop(0.89, "rgba(223, 223, 223, 0.03)");
+    background.addColorStop(0.69, "rgba(165, 216, 178, 0.08)");
+    background.addColorStop(0.22, "rgba(104, 213, 114, 0.19)");
+    background.addColorStop(0.2, "rgba(0, 0, 0, 0.34)");
+    background.addColorStop(0, "rgb(0, 0, 0)");
+    const borderColor = "#00cb3a";
+    console.log(background, borderColor);
     generateChart(context, prepareLineChartOptions(background, borderColor, data, labels, ""));
   }, [id, data]);
 

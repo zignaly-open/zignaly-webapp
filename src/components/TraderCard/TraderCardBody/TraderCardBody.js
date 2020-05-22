@@ -24,7 +24,7 @@ import { FormattedMessage } from "react-intl";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { id, risk, isCopyTrading } = provider;
+  const { id, risk, isCopyTrading, followers, disable } = provider;
   const dailyReturns = [
     {
       name: "2020-03-29",
@@ -119,6 +119,9 @@ const TraderCard = (props) => {
         <ReturnsChart data={chartData} id={cardId} labels={labels}>
           <canvas className="chartCanvas" id={cardId} />
         </ReturnsChart>
+        <Box alignItems="center" display="flex" flexDirection="row">
+          You and {followers} are copying this trader
+        </Box>
         <Box
           alignItems="center"
           className="actions"
