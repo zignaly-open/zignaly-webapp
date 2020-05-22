@@ -127,11 +127,11 @@ const TraderCard = (props) => {
         </Box>
         <Box
           className="actionsWrapper"
-          justifyContent="center"
           display="flex"
           flexDirection="column"
+          justifyContent="center"
         >
-          <Box className="followers" justifyContent="center" display="flex" flexDirection="row">
+          <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {disable ? (
               <h6 className="callout2 green">You and {followers} are copying this trader</h6>
             ) : (

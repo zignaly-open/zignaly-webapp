@@ -48,7 +48,7 @@ const TraderCardHeader = (props) => {
             </Typography>
             {disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />}
           </Box>
-          <Box display="flex" flexDirection="row" alignItems="center">
+          <Box alignItems="center" display="flex" flexDirection="row">
             <Typography className="tradeType" variant="caption">
               Trades {coin} on
             </Typography>

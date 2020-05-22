@@ -15,6 +15,7 @@
   .traderCardGraph {
     position: relative;
     width: 100%;
+    // The chart height will be 20% of width
     padding-top: 20%;
 
     .chartWrapper {
@@ -26,13 +27,10 @@
     }
 
     .chart {
+      // Chart canvas will fill this container
       width: 100%;
       position: relative;
       height: 100%;
-    }
-
-    .chartCanvas {
-      width: 100%;
     }
   }
 

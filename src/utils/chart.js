@@ -1,6 +1,10 @@
 import { Chart } from "chart.js";
 
 /**
+ * @typedef {import('chart.js').Chart} Chart
+ */
+
+/**
  * Generate a chart instance.
  *
  * @param {string} context Element context.
@@ -28,8 +32,8 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
         {
           label,
           data: chartData,
-          //   backgroundColor: backgroundColor,
-          borderColor: borderColor,
+          backgroundColor,
+          borderColor,
         },
       ],
     },
@@ -121,9 +125,20 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
     plugins: [
       {
         id: "responsiveGradient",
-        afterLayout: function (chart, options) {
-          var scales = chart.scales;
-          var color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
+        /**
+         * @typedef {Object} ChartWithScales
+         * @property {*} scales
+         */
+
+        /**
+         * Fill chart with gradient on layout change.
+         *
+         * @typedef {Chart & ChartWithScales} ExtendedChart
+         * @param {ExtendedChart} chart
+         */
+        afterLayout: function (chart /* options */) {
+          let scales = chart.scales;
+          let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
           color.addColorStop(0, "#e5f8ed");
           color.addColorStop(1, "#b6f2cb");
           chart.data.datasets[0].backgroundColor = color;
