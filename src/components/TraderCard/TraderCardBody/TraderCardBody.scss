@@ -21,10 +21,13 @@
     }
   }
 
-  .actions {
-    // bottom: 16px;
-    // position: absolute;
-    // width: 100%;
+  .actionsWrapper {
+    background: linear-gradient(180deg, rgba(229, 248, 237, 1) 0%, rgba(255, 255, 255, 1) 100%);
+
+    h6,
+    button {
+      opacity: 0.6;
+    }
   }
 
   .userSummary {

@@ -78,6 +78,8 @@ const TraderCard = (props) => {
     return acc;
   }, 0);
 
+  const color = totalReturns >= 0 ? "green" : "red";
+
   return (
     <Box className="traderCardBody">
       <Box
@@ -93,7 +95,7 @@ const TraderCard = (props) => {
           flexDirection="column"
           justifyContent="space-between"
         >
-          <Typography className="green" variant="h4">
+          <Typography className={color} variant="h4">
             {totalReturns.toFixed(2)}%
           </Typography>
           <Typography variant="subtitle1">

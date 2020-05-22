@@ -96,7 +96,6 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
             ticks: {
               display: false,
               fontFamily: "PlexSans-Bold",
-              padding: 100,
             },
             gridLines: {
               display: false,
@@ -117,11 +116,6 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
           },
         ],
       },
-      layout: {
-        padding: {
-          bottom: 25,
-        },
-      },
     },
     plugins: [
       {
@@ -129,9 +123,8 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
         afterLayout: function (chart, options) {
           var scales = chart.scales;
           var color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-          color.addColorStop(0, "#ffffff");
+          color.addColorStop(0, "#e5f8ed");
           color.addColorStop(1, "#b6f2cb");
-          console.log(color);
           chart.data.datasets[0].backgroundColor = color;
         },
       },
