@@ -4,7 +4,7 @@ import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import CustomButton from "../../CustomButton";
@@ -13,9 +13,12 @@ import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
 import { FormattedMessage } from "react-intl";
+import { setUserExchanges } from "../../../store/actions/userExchanges";
+import tradeApi from "../../../services/tradeApiClient";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 const Header = () => {
@@ -25,11 +28,36 @@ const Header = () => {
    * @param {DefaultState} state Redux store state data.
    * @return {boolean} Flag that indicates if darkStyle is enabled.
    */
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
+
+  const darkStyleSelector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(darkStyleSelector);
+
+  /**
+   *
+   * @param {DefaultState} state
+   * @returns {Array<ExchangeConnectionEntity>}
+   */
+
+  const userExchangeSelector = (state) => state.userExchanges;
+  const userExchanges = useSelector(userExchangeSelector);
+  const dispatch = useDispatch();
+
   const [showBalance, setShowBalance] = useState(false);
-  const [connected, setConnected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
+
+  const authenticateUser = async () => {
+    const loginPayload = {
+      email: "mailxuftg1pxzk@example.test",
+      password: "abracadabra",
+    };
+
+    return await tradeApi.userLogin(loginPayload);
+  };
+
+  const fetchUserExchanges = async () => {
+    const userEntity = await authenticateUser();
+    dispatch(setUserExchanges(userEntity));
+  };
 
   return (
     <Box
@@ -139,12 +167,12 @@ const Header = () => {
             </Grow>
           )}
         </Box>
-        {!connected && (
-          <CustomButton className="headerButton" onClick={() => setConnected(true)}>
+        {userExchanges.length === 0 && (
+          <CustomButton className="headerButton" onClick={fetchUserExchanges}>
             Connect Account
           </CustomButton>
         )}
-        {connected && <UserExchangeList />}
+        {userExchanges.length > 0 && <UserExchangeList />}
 
         <Box className={"linkBox"}>
           <NotificationsNoneIcon className={"icon"} />

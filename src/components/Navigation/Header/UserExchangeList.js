@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
-import tradeApi from "../../../services/tradeApiClient";
-import { useSelector, useDispatch } from "react-redux";
-import { addUserExchanges } from "../../../store/actions/userExchanges";
+import { useSelector } from "react-redux";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
- * @typedef {import('../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 const UserExchangeList = () => {
@@ -14,11 +11,9 @@ const UserExchangeList = () => {
    * Settings darkStyle selector.
    *
    * @param {DefaultState} state Redux store state data.
-   * @return {Array<ExchangeConnectionEntity>} Flag that indicates if darkStyle is enabled.
    */
 
   const selector = (state) => state.userExchanges;
-  const dispatch = useDispatch();
   const userExchanges = useSelector(selector);
   const [selectedExchange, setSelectedExchange] = useState("");
 
@@ -27,32 +22,6 @@ const UserExchangeList = () => {
       setSelectedExchange(userExchanges[0].exchangeName);
     }
   }, [userExchanges]);
-
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
-      password: "abracadabra",
-    };
-
-    return await tradeApi.userLogin(loginPayload);
-  };
-
-  useEffect(() => {
-    const loadUserExchanges = async () => {
-      try {
-        const userEntity = await authenticateUser();
-        const sessionPayload = {
-          token: userEntity.token,
-        };
-        const responseData = await tradeApi.userExchangesGet(sessionPayload);
-        dispatch(addUserExchanges(responseData));
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
-    };
-
-    loadUserExchanges();
-  }, []);
 
   /**
    * @typedef {import('react').ChangeEvent} ChangeEvent

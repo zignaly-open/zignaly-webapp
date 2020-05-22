@@ -5,6 +5,12 @@ import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
+import { useSelector } from "react-redux";
+
+/**
+ *
+ * @typedef {import('../../store/initialState').DefaultState} DefaultState
+ */
 
 /**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
@@ -20,7 +26,12 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const [exchange] = useState(true);
+    /**
+     *
+     * @param {DefaultState} state
+     */
+    const selector = (state) => state.userExchanges;
+    const userExchanges = useSelector(selector);
 
     return (
       <Box
@@ -30,7 +41,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {exchange && (
+        {userExchanges.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -41,7 +52,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {!exchange && (
+        {userExchanges.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"
@@ -50,9 +61,19 @@ const withDashboardLayout = (Component) => {
           >
             <span className="title">
               <FormattedMessage id="dashboard.connectexchange.title" />
+              <b>
+                <FormattedMessage id="dashboard.connectexchange.bold.title" />
+              </b>
             </span>
-            <span className="text">
+            <span className="subtitle">
               <FormattedMessage id="dashboard.connectexchange.subtitle" />
+              <span>
+                <FormattedMessage id="exchange.binance" />
+              </span>
+              ,
+              <span>
+                <FormattedMessage id="exchange.kucoin" />
+              </span>
             </span>
           </Box>
         )}
