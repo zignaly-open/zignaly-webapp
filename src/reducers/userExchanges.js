@@ -28,7 +28,7 @@ const settings = (state = [], action) => {
       state = [];
       return [...state];
     default:
-      return { ...state };
+      return [...state];
   }
 };
 
