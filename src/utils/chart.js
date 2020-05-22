@@ -19,14 +19,14 @@ export const generateChart = (context, options) => {
  * @param {Array<Object>} chartData Chart data (todo).
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (backgroundColor, borderColor, chartData) => {
+export const prepareLineChartOptions = (backgroundColor, borderColor, chartData, labels, label) => {
   return {
     type: "line",
     data: {
-      labels: ["", "", "", "", "", "", "", ""],
+      labels,
       datasets: [
         {
-          label: "Equity",
+          label,
           data: chartData,
           backgroundColor: backgroundColor,
           borderColor: borderColor,
@@ -50,38 +50,33 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData)
            * @typedef {Object} TooltipItemParam
            * @property {String} index
            */
-
           /**
            * Default Tooltip component configurations.
            *
            * @typedef {Object} DatasetObject
            * @property {Array<Number>} data
            */
-
           /**
            * Default Datasets object proteries
            *
            * @typedef {Array<DatasetObject>} DatasetCollection
            */
-
           /**
            * Default Dara params.
            *
            * @typedef {Object} DataParam
            * @property {DatasetCollection} datasets
            */
-
           /**
            * Tooltip configuration params.
            *
            * @param {TooltipItemParam} tooltipItem
            * @param {DataParam} data
            */
-
-          label: (tooltipItem, data) => {
-            let index = parseInt(tooltipItem.index);
-            return "returns " + data.datasets[0].data[index];
-          },
+          //   label: (tooltipItem, data) => {
+          //     let index = parseInt(tooltipItem.index);
+          //     return "returns " + data.datasets[0].data[index];
+          //   },
           //   afterLabel: () => {
           //     return new Date();
           //   },

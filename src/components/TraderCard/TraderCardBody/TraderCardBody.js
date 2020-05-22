@@ -1,10 +1,9 @@
 import React from "react";
 import "./TraderCardBody.scss";
 import { Box, Typography } from "@material-ui/core";
-import Chart from "../../Graphs/Chart";
+import { ReturnsChart } from "../../Graphs/Chart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
-import PropTypes from "prop-types";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 
@@ -14,11 +13,7 @@ import { FormattedMessage } from "react-intl";
  *
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
- * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
- * @property {number} risk Return for open positions.
- * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
- * @property {string} id Provider id.
- * @property {Provider} provider Flag to indicate if the provider is copy trading.
+ * @property {Provider} provider The provider to display.
  */
 
 /**
@@ -28,9 +23,8 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { provider } = props;
-
-  const { id, showSummary, risk, isCopyTrading } = provider;
+  const { provider, showSummary } = props;
+  const { id, risk, isCopyTrading } = provider;
   const dailyReturns = [
     {
       name: "2020-03-29",
@@ -54,7 +48,13 @@ const TraderCard = (props) => {
     },
   ];
   let cardId = "traderCard" + id;
+
+  /**
+   * @typedef {import("../../Graphs/Chart/Chart").DayStatsCollection} DayStatsCollection
+   * @type {DayStatsCollection} chartData
+   */
   let chartData = [];
+  let labels = [];
 
   let cumulativeTotalProfits = 0;
   let cumulativeTotalInvested = 0;
@@ -63,13 +63,18 @@ const TraderCard = (props) => {
       const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
       acc += returns;
     } else {
-      cumulativeTotalProfits += parseFloat(item.totalProfit);
-      cumulativeTotalInvested += parseFloat(item.totalInvested);
-      if (cumulativeTotalInvested) {
-        acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-      }
+      //   cumulativeTotalProfits += parseFloat(item.totalProfit);
+      //   cumulativeTotalInvested += parseFloat(item.totalInvested);
+      //   if (cumulativeTotalInvested) {
+      //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+      //   }
     }
-    chartData.push(acc);
+    // chartData.push({
+    //   day: item.name,
+    //   returns: acc.toFixed(2),
+    // });
+    chartData.push(acc.toFixed(2));
+    labels.push(item.name);
     return acc;
   }, 0);
 
@@ -111,9 +116,9 @@ const TraderCard = (props) => {
         </Box>
       </Box>
       <Box className="traderCardGraph">
-        <Chart data={chartData} id={cardId}>
+        <ReturnsChart data={chartData} id={cardId} labels={labels}>
           <canvas className="chartCanvas" id={cardId} />
-        </Chart>
+        </ReturnsChart>
         <Box
           alignItems="center"
           className="actions"
@@ -132,15 +137,6 @@ const TraderCard = (props) => {
       {showSummary && <UserSummary />}
     </Box>
   );
-};
-
-TraderCard.propTypes = {
-  //   dailyReturns: PropTypes.array.isRequired,
-  //   id: PropTypes.string.isRequired,
-  //   isCopyTrading: PropTypes.bool.isRequired,
-  //   risk: PropTypes.number.isRequired,
-  //   showSummary: PropTypes.bool.isRequired,
-  provider: PropTypes.object.isRequired,
 };
 
 export default TraderCard;

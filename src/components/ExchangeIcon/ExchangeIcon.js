@@ -1,5 +1,4 @@
 import React from "react";
-import { Icon } from "@material-ui/core";
 import BinanceIcon from "../../images/exchanges/binance.svg";
 import ZignalyIcon from "../../images/exchanges/zignaly.svg";
 
@@ -27,10 +26,6 @@ const ExchangeIcon = (props) => {
     default:
       break;
   }
-  return (
-    <Icon>
-      <img alt="zignaly" className="icon" src={icon} />
-    </Icon>
-  );
+  return <img alt="zignaly" className="icon" src={icon} title={exchange} />;
 };
 export default ExchangeIcon;

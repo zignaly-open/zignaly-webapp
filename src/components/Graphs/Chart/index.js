@@ -1,1 +1,1 @@
-export { default } from "./Chart";
+export { default, ReturnsChart } from "./Chart";
