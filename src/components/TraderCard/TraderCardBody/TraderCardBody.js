@@ -117,10 +117,14 @@ const TraderCard = (props) => {
           </Typography>
         </Box>
       </Box>
-      <Box className="traderCardGraph">
-        <ReturnsChart data={chartData} id={cardId} labels={labels}>
-          <canvas className="chartCanvas" id={cardId} />
-        </ReturnsChart>
+      <Box>
+        <Box className="traderCardGraph">
+          <Box className="chartWrapper">
+            <ReturnsChart data={chartData} id={cardId} labels={labels}>
+              <canvas className="chartCanvas" id={cardId} />
+            </ReturnsChart>
+          </Box>
+        </Box>
         <Box
           className="actionsWrapper"
           justifyContent="center"
@@ -134,6 +138,7 @@ const TraderCard = (props) => {
               <h6 className="callout1">{followers} people copying this trader</h6>
             )}
           </Box>
+
           <Box
             alignItems="center"
             className="actions"

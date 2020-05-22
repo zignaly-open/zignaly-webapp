@@ -71,11 +71,7 @@ export const ReturnsChart = (props) => {
     generateChart(context, prepareLineChartOptions(background, borderColor, data, labels, ""));
   }, [id, data]);
 
-  return (
-    <Box className="chart">
-      <Box className="chart2">{children}</Box>
-    </Box>
-  );
+  return <Box className="chart">{children}</Box>;
 };
 
 export default GenericChart;
