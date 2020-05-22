@@ -8,10 +8,13 @@ import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import UserExchangeList from "../Header/UserExchangeList";
+import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
+import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 const MobileHeader = () => {
@@ -24,8 +27,16 @@ const MobileHeader = () => {
 
   const selector = (state) => state.settings.darkStyle;
   const darkStyle = useSelector(selector);
+
+  /**
+   *
+   * @param {DefaultState} state
+   * @returns {Array<ExchangeConnectionEntity>}
+   */
+  const userExchangeSelector = (state) => state.userExchanges;
+  const userExchanges = useSelector(userExchangeSelector);
+
   const [showBalance, setShowBalance] = useState(false);
-  const [connected, setConnected] = useState(false);
 
   return (
     <Box
@@ -35,7 +46,7 @@ const MobileHeader = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      {connected && (
+      {userExchanges.length > 0 && (
         <Box
           alignItems="flex-start"
           className="connectedBox"
@@ -78,67 +89,10 @@ const MobileHeader = () => {
               </Typography>
             </Box>
           </Box>
-          {showBalance && (
-            <Grow in={true}>
-              <Box
-                alignItems="center"
-                className="balanceContainer"
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                <Box
-                  alignItems="flex-start"
-                  className="balanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    <FormattedMessage id="balance.available" />
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.256
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="balanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    <FormattedMessage id="balance.invested" />
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.452
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="balanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    <FormattedMessage id="col.plnumber" />
-                  </Typography>
-                  <Typography className="balance green" variant="h5">
-                    btc +0.47
-                  </Typography>
-                </Box>
-              </Box>
-            </Grow>
-          )}
+          {showBalance && <BalanceBox />}
         </Box>
       )}
-      {!connected && (
-        <CustomButton className="headerButton" onClick={() => setConnected(true)}>
-          Connect Account
-        </CustomButton>
-      )}
+      {userExchanges.length === 0 && <ConnectExchangeButton />}
     </Box>
   );
 };

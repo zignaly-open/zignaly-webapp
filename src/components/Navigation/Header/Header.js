@@ -7,14 +7,13 @@ import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import CustomButton from "../../CustomButton";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
+import BalanceBox from "./BalanceBox";
+import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
-import { setUserExchanges } from "../../../store/actions/userExchanges";
-import tradeApi from "../../../services/tradeApiClient";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -40,24 +39,9 @@ const Header = () => {
 
   const userExchangeSelector = (state) => state.userExchanges;
   const userExchanges = useSelector(userExchangeSelector);
-  const dispatch = useDispatch();
 
   const [showBalance, setShowBalance] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
-
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
-      password: "abracadabra",
-    };
-
-    return await tradeApi.userLogin(loginPayload);
-  };
-
-  const fetchUserExchanges = async () => {
-    const userEntity = await authenticateUser();
-    dispatch(setUserExchanges(userEntity));
-  };
 
   return (
     <Box
@@ -86,12 +70,18 @@ const Header = () => {
       >
         <Box
           alignItems="center"
-          className="balanceContainer"
+          className={"balanceWrapper " + (showBalance ? "full" : "")}
           display="flex"
           flexDirection="row"
           justifyContent="flex-start"
         >
-          <Box className={"iconBox"} display="flex" flexDirection="column" justifyContent="center">
+          <Box
+            className="iconBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+          >
             <img
               alt="zignaly"
               className={"expandIcon"}
@@ -99,63 +89,11 @@ const Header = () => {
               src={showBalance ? RightIcon : LeftIcon}
             />
           </Box>
-          {showBalance && (
-            <Grow in={true}>
-              <Box
-                alignItems="center"
-                display="flex"
-                flexDirection="row"
-                justifyContent="flex-start"
-              >
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    available balance
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.256
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    invested
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.452
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    p/l
-                  </Typography>
-                  <Typography className="balance green" variant="h5">
-                    btc +0.47
-                  </Typography>
-                </Box>
-              </Box>
-            </Grow>
-          )}
+          {showBalance && <BalanceBox />}
           {!showBalance && (
             <Grow in={true}>
               <Box
-                className={"iconBox"}
+                className="iconBox"
                 display="flex"
                 flexDirection="column"
                 justifyContent="center"
@@ -167,11 +105,7 @@ const Header = () => {
             </Grow>
           )}
         </Box>
-        {userExchanges.length === 0 && (
-          <CustomButton className="headerButton" onClick={fetchUserExchanges}>
-            Connect Account
-          </CustomButton>
-        )}
+        {userExchanges.length === 0 && <ConnectExchangeButton />}
         {userExchanges.length > 0 && <UserExchangeList />}
 
         <Box className={"linkBox"}>

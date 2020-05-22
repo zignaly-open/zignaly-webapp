@@ -13,15 +13,17 @@ const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
  * Dark style flag selected by user.
  *
  * @param {UserLoginResponse} data
+ * @param {Function} hideLoading
  */
 
-export const setUserExchanges = (data) => {
+export const setUserExchanges = (data, hideLoading) => {
   return async (dispatch) => {
     try {
       const sessionPayload = {
         token: data.token,
       };
       const responseData = await tradeApi.userExchangesGet(sessionPayload);
+      hideLoading();
       dispatch({
         type: ADD_USER_EXCHNAGES,
         payload: responseData,

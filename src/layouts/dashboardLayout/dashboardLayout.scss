@@ -22,6 +22,7 @@
         margin-left: 5px;
       }
     }
+
     .subtitle {
       font-family: "PlexSans-Light";
       font-size: 18px;
@@ -30,6 +31,7 @@
       span {
         font-family: "PlexSans-Medium";
         text-transform: capitalize;
+
         &:last-child {
           margin-left: 5px;
         }
@@ -38,7 +40,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .dashboardLayout {
     padding-bottom: 60px;
 
@@ -51,7 +53,7 @@
         width: 100%;
       }
 
-      .text {
+      .subtitle {
         width: 100%;
       }
     }

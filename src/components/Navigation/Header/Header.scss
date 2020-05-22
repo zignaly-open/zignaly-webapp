@@ -28,7 +28,13 @@
       }
     }
 
-    .balanceContainer {
+    .balanceWrapper {
+      width: fit-content;
+
+      &.full {
+        width: 450px;
+      }
+
       .iconBox {
         height: 44px;
         width: 40px;
@@ -44,7 +50,7 @@
         }
       }
 
-      .blaanceBox {
+      .balanceBox {
         height: 42px;
         width: 140px;
 
@@ -58,14 +64,6 @@
 
         .balance {
           text-transform: uppercase;
-
-          &.red {
-            color: $red;
-          }
-
-          &.green {
-            color: $green;
-          }
         }
       }
     }
