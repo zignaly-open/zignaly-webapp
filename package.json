@@ -74,15 +74,15 @@
   "scripts": {
     "build": "npm install && gatsby build --prefix-paths",
     "checkall": "npm run sasslint && npm run tscheck && npm run jslint",
-    "clean": "rm -rf node_modules/",
+    "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
-    "jslint": "eslint \"src/**/*.{js,jsx}\";exit 0",
-    "tscheck": "tsc --allowJs;exit 0",
+    "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\";exit 0",
+    "tscheck": "env FORCE_COLOR=1 tsc --allowJs;exit 0",
     "reset": "rm -rf .cache/ public/",
     "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-    "sasslint": "sass-lint -v",
+    "sasslint": "env FORCE_COLOR=1 sass-lint -v",
     "serve": "gatsby serve",
     "test": "jest"
   }

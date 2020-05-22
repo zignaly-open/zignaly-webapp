@@ -14,7 +14,8 @@
     "outDir": "types",
     "jsx": "react",
     "lib": ["dom", "esnext"],
-    "removeComments": false
+    "removeComments": false,
+    "pretty": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"]
 }
