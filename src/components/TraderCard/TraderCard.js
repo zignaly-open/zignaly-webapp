@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 //  * @property {string} name Provider's name
 //  * @property {string} logoUrl Url of the provider's logo
 //  * @property {string} coin Coin traded by provider
-//  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+* @property {boolean} showSummary Flag to indicate if summary should be rendered.
 //  * @property {number} risk Return for open positions.
 //  * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
 //  * @property {string} id Provider id.
