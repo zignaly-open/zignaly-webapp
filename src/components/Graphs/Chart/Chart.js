@@ -54,6 +54,8 @@ export const ReturnsChart = (props) => {
 
   useEffect(() => {
     const elementId = id;
+    console.log(id);
+    console.log(document.getElementById(elementId));
     const context = document.getElementById(elementId).getContext("2d");
     const background = context.createLinearGradient(0, 0, 0, 700);
     //   background: linear-gradient(144deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.34) 20%, rgba(104, 213, 114, 0.19) 22%, rgba(165, 216, 178, 0.08) 69%, rgba(223, 223, 223, 0.03) 89%, rgba(255, 255, 255, 0) 100%);
@@ -69,7 +71,11 @@ export const ReturnsChart = (props) => {
     generateChart(context, prepareLineChartOptions(background, borderColor, data, labels, ""));
   }, [id, data]);
 
-  return <Box className="chart">{children}</Box>;
+  return (
+    <Box className="chart">
+      <Box className="chart2">{children}</Box>
+    </Box>
+  );
 };
 
 export default GenericChart;

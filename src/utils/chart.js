@@ -35,6 +35,7 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       legend: {
         display: false,
       },

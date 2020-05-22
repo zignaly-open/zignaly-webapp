@@ -34,7 +34,9 @@ const ProvidersList = (props) => {
         justifyContent="space-between"
       >
         {providers &&
-          providers.map((provider) => <TraderCard provider={provider} showSummary={showSummary} />)}
+          providers.map((provider) => (
+            <TraderCard provider={provider} showSummary={showSummary} key={provider.id} />
+          ))}
       </Box>
     </Box>
   );

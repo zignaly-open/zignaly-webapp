@@ -121,22 +121,33 @@ const TraderCard = (props) => {
         <ReturnsChart data={chartData} id={cardId} labels={labels}>
           <canvas className="chartCanvas" id={cardId} />
         </ReturnsChart>
-        <Box alignItems="center" display="flex" flexDirection="row">
-          You and {followers} are copying this trader
-        </Box>
         <Box
-          alignItems="center"
-          className="actions"
+          className="actionsWrapper"
+          justifyContent="center"
           display="flex"
-          flexDirection="row"
-          justifyContent="space-around"
+          flexDirection="column"
         >
-          <CustomButton className="textDefault">
-            <FormattedMessage id="trader.stop" />
-          </CustomButton>
-          <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
-            <FormattedMessage id="trader.view" />
-          </CustomButton>
+          <Box className="followers" justifyContent="center" display="flex" flexDirection="row">
+            {disable ? (
+              <h6 className="callout2 green">You and {followers} are copying this trader</h6>
+            ) : (
+              <h6 className="callout1">{followers} people copying this trader</h6>
+            )}
+          </Box>
+          <Box
+            alignItems="center"
+            className="actions"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-around"
+          >
+            <CustomButton className="textDefault">
+              <FormattedMessage id="trader.stop" />
+            </CustomButton>
+            <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
+              <FormattedMessage id="trader.view" />
+            </CustomButton>
+          </Box>
         </Box>
       </Box>
       {showSummary && <UserSummary />}
