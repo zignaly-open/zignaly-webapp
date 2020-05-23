@@ -8,7 +8,7 @@ const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
  *
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
- * @typedef {import('redux').Dispatch} Dispatch
+ * @typedef {import('../../store/store').AppThunk} AppThunk
  */
 
 /**
@@ -16,6 +16,7 @@ const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
  *
  * @param {UserLoginResponse} data
  * @param {Function} hideLoading
+ * @returns {AppThunk}
  */
 
 export const setUserExchanges = (data, hideLoading) => {
@@ -47,6 +48,7 @@ export const unsetUserExchanges = () => {
  * Dark style flag selected by user.
  *
  * @param {UserLoginResponse} data
+ * @returns {AppThunk}
  */
 
 export const setUserBalance = (data) => {
