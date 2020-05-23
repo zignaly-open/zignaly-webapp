@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CustomButton from "../../CustomButton";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
-import { setUserExchanges } from "../../../store/actions/userExchanges";
+import { setUserExchanges, setUserBalance } from "../../../store/actions/user";
 
 const ConnectExchangeButton = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,12 @@ const ConnectExchangeButton = () => {
   const hideLoading = () => setLoading(true);
 
   const fetchUserExchanges = async () => {
-    showLoading();
-    const userEntity = await authenticateUser();
-    dispatch(setUserExchanges(userEntity, hideLoading));
+    try {
+      showLoading();
+      const userEntity = await authenticateUser();
+      dispatch(setUserExchanges(userEntity, hideLoading));
+      dispatch(setUserBalance(userEntity));
+    } catch (error) {}
   };
 
   return (

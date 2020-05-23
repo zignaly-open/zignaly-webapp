@@ -1,34 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import tradeApi from "../../../services/tradeApiClient";
+import { useSelector } from "react-redux";
+
+/**
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../store/initialState').UserBalanceEntity} UserBalanceEntity
+ */
 
 const BalanceBox = () => {
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
-      password: "abracadabra",
-    };
-
-    return await tradeApi.userLogin(loginPayload);
-  };
-
-  useEffect(() => {
-    const loadUserBalance = async () => {
-      try {
-        const userEntity = await authenticateUser();
-        const sessionPayload = {
-          token: userEntity.token,
-        };
-        const responseData = await tradeApi.userBalanceGet(sessionPayload);
-        console.log(responseData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    loadUserBalance();
-  }, []);
+  /**
+   * User balance selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {UserBalanceEntity} Object that contains user balance properties.
+   */
+  const userBalanceSelector = (state) => state.userBalance;
+  const userBalance = useSelector(userBalanceSelector);
 
   return (
     <Box
@@ -49,7 +37,7 @@ const BalanceBox = () => {
           <FormattedMessage id="balance.available" />
         </Typography>
         <Typography className="balance" variant="h5">
-          btc 0.256
+          {userBalance.totalOpen}
         </Typography>
       </Box>
       <Box
@@ -63,7 +51,7 @@ const BalanceBox = () => {
           <FormattedMessage id="balance.invested" />
         </Typography>
         <Typography className="balance" variant="h5">
-          btc 0.452
+          {userBalance.totalInvested}
         </Typography>
       </Box>
       <Box
@@ -76,8 +64,11 @@ const BalanceBox = () => {
         <Typography className="title" variant="subtitle1">
           <FormattedMessage id="col.plnumber" />
         </Typography>
-        <Typography className="balance green" variant="h5">
-          btc +0.47
+        <Typography
+          className={"balance " + (parseFloat(userBalance.totalProfit) > 0 ? "green" : "red")}
+          variant="h5"
+        >
+          {userBalance.totalProfit}
         </Typography>
       </Box>
     </Box>

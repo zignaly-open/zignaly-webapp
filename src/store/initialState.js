@@ -3,6 +3,16 @@
  */
 
 /**
+ * @typedef {Object} UserBalanceEntity
+ * @property {Boolean} btcusdt
+ * @property {String} profitPercentage
+ * @property {String} totalInvested
+ * @property {String} totalAssets
+ * @property {String} totalOpen
+ * @property {String} totalProfit
+ */
+
+/**
  * @typedef {Object} DefaultStateSessionTradeApi
  * @property {string} accessToken
  */
@@ -29,6 +39,7 @@
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
  * @property {Array<ExchangeConnectionEntity>} userExchanges
+ * @property {UserBalanceEntity} userBalance
  */
 
 /**
@@ -48,6 +59,14 @@ const initialState = {
     darkStyle: false,
   },
   userExchanges: [],
+  userBalance: {
+    btcusdt: false,
+    totalInvested: "",
+    totalOpen: "",
+    totalProfit: "",
+    totalAssets: "",
+    profitPercentage: "",
+  },
 };
 
 export default initialState;

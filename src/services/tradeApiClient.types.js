@@ -502,22 +502,14 @@ function createExchangeConnectionEmptyEntity() {
 }
 
 /**
- * @typedef {Object} UserBalanceEntity
- * @property {String} btcusdt
- * @property {String} profitPercentage
- * @property {String} totalInvested
- * @property {String} totalAssets
- * @property {String} totalOpen
- * @property {String} totalProfit
+ * @typedef {import('../store/initialState').UserBalanceEntity} UserBalanceEntity
  */
 
 /**
- * Transform API exchange connection item to typed object.
+ * Transform API user balance response to typed object.
  *
  * @param {*} response Trade API exchange connection item.
- * @returns {UserBalanceEntity} Exchange connection entity.
- *
- *
+ * @returns {UserBalanceEntity} User Balance entity.
  */
 
 /**

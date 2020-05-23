@@ -1,4 +1,4 @@
-const ADD_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
+const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
 
 /**
@@ -19,9 +19,9 @@ const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
  * @param {ActionObject} action
  */
 
-const settings = (state = [], action) => {
+const userExchanges = (state = [], action) => {
   switch (action.type) {
-    case ADD_USER_EXCHNAGES:
+    case GET_USER_EXCHNAGES:
       state = action.payload;
       return [...state];
     case REMOVE_USER_EXCHNAGES:
@@ -32,4 +32,4 @@ const settings = (state = [], action) => {
   }
 };
 
-export default settings;
+export default userExchanges;

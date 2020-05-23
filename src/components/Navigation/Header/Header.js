@@ -68,43 +68,45 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <Box
-          alignItems="center"
-          className={"balanceWrapper " + (showBalance ? "full" : "")}
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
+        {userExchanges.length > 0 && (
           <Box
-            className="iconBox"
+            alignItems="center"
+            className={"balanceWrapper " + (showBalance ? "full" : "")}
             display="flex"
             flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
+            justifyContent="flex-start"
           >
-            <img
-              alt="zignaly"
-              className={"expandIcon"}
-              onClick={() => setShowBalance(!showBalance)}
-              src={showBalance ? RightIcon : LeftIcon}
-            />
+            <Box
+              className="iconBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <img
+                alt="zignaly"
+                className={"expandIcon"}
+                onClick={() => setShowBalance(!showBalance)}
+                src={showBalance ? RightIcon : LeftIcon}
+              />
+            </Box>
+            {showBalance && <BalanceBox />}
+            {!showBalance && (
+              <Grow in={true}>
+                <Box
+                  className="iconBox"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Typography variant="h4">
+                    <FormattedMessage id="dashboard.balance" />
+                  </Typography>
+                </Box>
+              </Grow>
+            )}
           </Box>
-          {showBalance && <BalanceBox />}
-          {!showBalance && (
-            <Grow in={true}>
-              <Box
-                className="iconBox"
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-              >
-                <Typography variant="h4">
-                  <FormattedMessage id="dashboard.balance" />
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </Box>
+        )}
         {userExchanges.length === 0 && <ConnectExchangeButton />}
         {userExchanges.length > 0 && <UserExchangeList />}
 
