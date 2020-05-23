@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -17,12 +17,12 @@ import { useForm } from "react-hook-form";
 
 const ResetPasswordForm = () => {
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
-  const { errors, handleSubmit, register, clearError } = useForm();
+  const { errors, handleSubmit, register, clearError, setError } = useForm();
 
   /**
    * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -41,7 +41,11 @@ const ResetPasswordForm = () => {
     const targetElement = /** @type {HTMLInputElement} */ (event.target);
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
-    howStrong >= 4 ? clearError("password") : setError("password");
+    if (howStrong >= 4) {
+      clearError("password");
+    } else {
+      setError("password");
+    }
   };
 
   /**
@@ -56,7 +60,11 @@ const ResetPasswordForm = () => {
     const targetElement = /** @type {HTMLInputElement} */ (event.target);
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
-    howStrong >= 4 ? clearError("repeatPassword") : setError("repeatPassword");
+    if (howStrong >= 4) {
+      clearError("repeatPassword");
+    } else {
+      setError("repeatPassword");
+    }
   };
 
   /**
@@ -69,7 +77,8 @@ const ResetPasswordForm = () => {
   /**
    * Data returned at form submition.
    *
-   * @param {DataObject} data
+   * @param {DataObject} data form data received by the submit method.
+   * @returns {void}
    */
   const onSubmit = (data) => {
     if (data.password === data.repeatPassword) {
@@ -115,7 +124,7 @@ const ResetPasswordForm = () => {
                 </InputAdornment>
               }
               error={!!errors.password}
-              inputRef={register(required)}
+              inputRef={register({ required: true })}
               name="password"
               onBlur={() => setAnchorEl(undefined)}
               onChange={handlePasswordChange}
@@ -142,7 +151,7 @@ const ResetPasswordForm = () => {
                 </InputAdornment>
               }
               error={!!errors.repeatPassword}
-              inputRef={register(required)}
+              inputRef={register({ required: true })}
               name="repeatPassword"
               onChange={handleRepeatPasswordChange}
               type={showRepeatPassword ? "text" : "password"}

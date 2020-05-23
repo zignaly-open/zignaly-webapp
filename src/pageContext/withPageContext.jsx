@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { IntlProvider } from "react-intl";
 import PageContext from "./PageContext";
 import translations from "../i18n/translations";
@@ -44,10 +43,6 @@ const withPageContext = (Component) => {
   /** */
   WrapperComponent.displayName = `PageContext(${getDisplayName(Component)})`;
   return WrapperComponent;
-};
-
-withPageContext.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default withPageContext;

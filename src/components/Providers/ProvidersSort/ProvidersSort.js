@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-import PropTypes from "prop-types";
 import "./ProvidersSort.scss";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
@@ -46,11 +45,6 @@ const ProvidersSort = ({ onChange, onClose }) => {
       </CustomFilters>
     </Box>
   );
-};
-
-ProvidersSort.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ProvidersSort;
