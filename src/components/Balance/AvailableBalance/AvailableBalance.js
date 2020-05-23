@@ -41,7 +41,6 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.available" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            {" "}
             = USD 3450.6
           </Typography>
         </Box>
@@ -66,7 +65,6 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.invested" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            {" "}
             = USD 3450.6
           </Typography>
         </Box>
@@ -91,7 +89,6 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.profit" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            {" "}
             = USD 3450.6
           </Typography>
         </Box>
@@ -116,7 +113,6 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.total" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            {" "}
             = USD 3450.6
           </Typography>
         </Box>
