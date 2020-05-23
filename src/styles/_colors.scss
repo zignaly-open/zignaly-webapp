@@ -32,6 +32,8 @@ $yellow3: #c9af19;
 
 $white: #fff;
 
+$whiteChartBottom: #e5f8ed;
+
 $red: #f00;
 
 $red2: #b52a00;
@@ -55,7 +57,7 @@ $passwordStrengthBackground: rgba(0, 0, 0, 0.9);
 $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
 
 $purpleDarkGradient: linear-gradient(to bottom, $grey, $grey),
-linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
+  linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
 
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
