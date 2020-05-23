@@ -13,15 +13,15 @@ const UserExchangeList = () => {
    * @param {DefaultState} state Redux store state data.
    */
 
-  const selector = (state) => state.userExchanges;
-  const userExchanges = useSelector(selector);
+  const selector = (state) => state.user.exchangeConnections;
+  const exchangeConnections = useSelector(selector);
   const [selectedExchange, setSelectedExchange] = useState("");
 
   useEffect(() => {
-    if (userExchanges.length) {
-      setSelectedExchange(userExchanges[0].exchangeName);
+    if (exchangeConnections.length) {
+      setSelectedExchange(exchangeConnections[0].exchangeName);
     }
-  }, [userExchanges]);
+  }, [exchangeConnections]);
 
   /**
    * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -44,8 +44,8 @@ const UserExchangeList = () => {
     <Box className="userExchangeList">
       <FormControl className="selectInput" variant="outlined">
         <Select onChange={handleChange} value={selectedExchange}>
-          {userExchanges &&
-            userExchanges.map((item, index) => (
+          {exchangeConnections &&
+            exchangeConnections.map((item, index) => (
               <MenuItem key={index} value={item.exchangeName}>
                 {item.exchangeName}
               </MenuItem>

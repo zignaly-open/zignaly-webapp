@@ -30,8 +30,8 @@ const withDashboardLayout = (Component) => {
      *
      * @param {DefaultState} state
      */
-    const selector = (state) => state.userExchanges;
-    const userExchanges = useSelector(selector);
+    const selector = (state) => state.user.exchangeConnections;
+    const exchangeConnections = useSelector(selector);
 
     return (
       <Box
@@ -41,7 +41,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {userExchanges.length > 0 && (
+        {exchangeConnections.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -52,7 +52,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {userExchanges.length === 0 && (
+        {exchangeConnections.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"

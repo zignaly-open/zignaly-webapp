@@ -37,8 +37,8 @@ const Header = () => {
    * @returns {Array<ExchangeConnectionEntity>}
    */
 
-  const userExchangeSelector = (state) => state.userExchanges;
-  const userExchanges = useSelector(userExchangeSelector);
+  const userExchangeSelector = (state) => state.user.exchangeConnections;
+  const exchangeConnections = useSelector(userExchangeSelector);
 
   const [showBalance, setShowBalance] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
@@ -68,7 +68,7 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        {userExchanges.length > 0 && (
+        {exchangeConnections.length > 0 && (
           <Box
             alignItems="center"
             className={"balanceWrapper " + (showBalance ? "full" : "")}
@@ -107,8 +107,8 @@ const Header = () => {
             )}
           </Box>
         )}
-        {userExchanges.length === 0 && <ConnectExchangeButton />}
-        {userExchanges.length > 0 && <UserExchangeList />}
+        {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+        {exchangeConnections.length > 0 && <UserExchangeList />}
 
         <Box className={"linkBox"}>
           <NotificationsNoneIcon className={"icon"} />

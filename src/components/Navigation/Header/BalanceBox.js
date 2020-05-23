@@ -15,8 +15,8 @@ const BalanceBox = () => {
    * @param {DefaultState} state Redux store state data.
    * @return {UserBalanceEntity} Object that contains user balance properties.
    */
-  const userBalanceSelector = (state) => state.userBalance;
-  const userBalance = useSelector(userBalanceSelector);
+  const userBalanceSelector = (state) => state.user.balance;
+  const balance = useSelector(userBalanceSelector);
 
   return (
     <Box
@@ -37,7 +37,7 @@ const BalanceBox = () => {
           <FormattedMessage id="balance.available" />
         </Typography>
         <Typography className="balance" variant="h5">
-          {userBalance.totalOpen}
+          {balance.totalOpen}
         </Typography>
       </Box>
       <Box
@@ -51,7 +51,7 @@ const BalanceBox = () => {
           <FormattedMessage id="balance.invested" />
         </Typography>
         <Typography className="balance" variant="h5">
-          {userBalance.totalInvested}
+          {balance.totalInvested}
         </Typography>
       </Box>
       <Box
@@ -65,10 +65,10 @@ const BalanceBox = () => {
           <FormattedMessage id="col.plnumber" />
         </Typography>
         <Typography
-          className={"balance " + (parseFloat(userBalance.totalProfit) > 0 ? "green" : "red")}
+          className={"balance " + (parseFloat(balance.totalProfit) > 0 ? "green" : "red")}
           variant="h5"
         >
-          {userBalance.totalProfit}
+          {balance.totalProfit}
         </Typography>
       </Box>
     </Box>

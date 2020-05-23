@@ -33,8 +33,8 @@ const MobileHeader = () => {
    * @param {DefaultState} state
    * @returns {Array<ExchangeConnectionEntity>}
    */
-  const userExchangeSelector = (state) => state.userExchanges;
-  const userExchanges = useSelector(userExchangeSelector);
+  const userExchangeSelector = (state) => state.user.exchangeConnections;
+  const exchangeConnections = useSelector(userExchangeSelector);
 
   const [showBalance, setShowBalance] = useState(false);
 
@@ -46,7 +46,7 @@ const MobileHeader = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      {userExchanges.length > 0 && (
+      {exchangeConnections.length > 0 && (
         <Box
           alignItems="flex-start"
           className="connectedBox"
@@ -92,7 +92,7 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {userExchanges.length === 0 && <ConnectExchangeButton />}
+      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
     </Box>
   );
 };
