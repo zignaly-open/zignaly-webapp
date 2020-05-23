@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import tradeApi from "../../../services/tradeApiClient";
 
 const BalanceBox = () => {
+  const authenticateUser = async () => {
+    const loginPayload = {
+      email: "mailxuftg1pxzk@example.test",
+      password: "abracadabra",
+    };
+
+    return await tradeApi.userLogin(loginPayload);
+  };
+
+  useEffect(() => {
+    const loadUserBalance = async () => {
+      try {
+        const userEntity = await authenticateUser();
+        const sessionPayload = {
+          token: userEntity.token,
+        };
+        const responseData = await tradeApi.userBalanceGet(sessionPayload);
+        console.log(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadUserBalance();
+  }, []);
+
   return (
     <Box
       alignItems="center"

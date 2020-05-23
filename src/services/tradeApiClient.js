@@ -4,7 +4,8 @@ import {
   userEntityResponseTransform,
   userPositionsResponseTransform,
   providersResponseTransform,
-  UserExchangeConnectionResponseTransform,
+  userExchangeConnectionResponseTransform,
+  userBalanceResponseTransform,
 } from "./tradeApiClient.types";
 import { isObject } from "lodash";
 
@@ -161,7 +162,22 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getUserExchanges";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return UserExchangeConnectionResponseTransform(responseData);
+    return userExchangeConnectionResponseTransform(responseData);
+  }
+
+  /**
+   *
+   *
+   * @param {AuthorizationPayload} payload
+   * @returns
+   * @memberof TradeApiClient
+   */
+
+  async userBalanceGet(payload) {
+    const endpointPath = "/fe/api.php?action=getDashboardStats";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userBalanceResponseTransform(responseData);
   }
 }
 

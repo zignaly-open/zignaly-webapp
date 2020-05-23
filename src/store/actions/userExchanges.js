@@ -30,6 +30,7 @@ export const setUserExchanges = (data, hideLoading) => {
       });
     } catch (e) {
       // TODO: Display error in alert.
+      hideLoading();
     }
   };
 };

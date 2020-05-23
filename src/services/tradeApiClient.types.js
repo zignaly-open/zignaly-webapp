@@ -418,15 +418,15 @@ function createEmptyPositionEntity() {
  *
  * @export
  * @param {*} response
- * @returns
+ * @returns {Array<ExchangeConnectionEntity>}
  */
-export function UserExchangeConnectionResponseTransform(response) {
+export function userExchangeConnectionResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of positions.");
   }
 
   return response.map((exchangeConnectionItem) => {
-    return UserExchangeConnectionItemTransform(exchangeConnectionItem);
+    return userExchangeConnectionItemTransform(exchangeConnectionItem);
   });
 }
 
@@ -455,15 +455,15 @@ export function UserExchangeConnectionResponseTransform(response) {
  */
 
 /**
- * Transform API position item to typed object.
+ * Transform API exchange connection item to typed object.
  *
- * @param {*} exchangeConnectionItem Trade API position item.
- * @returns {ExchangeConnectionEntity} Position entity.
+ * @param {*} exchangeConnectionItem Trade API exchange connection item.
+ * @returns {ExchangeConnectionEntity} Exchange connection entity.
  *
  *
  */
 
-function UserExchangeConnectionItemTransform(exchangeConnectionItem) {
+function userExchangeConnectionItemTransform(exchangeConnectionItem) {
   const emptyExchangeConnectionEntity = createExchangeConnectionEmptyEntity();
   const normalizedId = isObject(exchangeConnectionItem._id)
     ? exchangeConnectionItem._id["$oid"]
@@ -498,5 +498,55 @@ function createExchangeConnectionEmptyEntity() {
     subAccountId: "",
     binanceBrokerId: "",
     checkAuthCount: false,
+  };
+}
+
+/**
+ * @typedef {Object} UserBalanceEntity
+ * @property {String} btcusdt
+ * @property {String} profitPercentage
+ * @property {String} totalInvested
+ * @property {String} totalAssets
+ * @property {String} totalOpen
+ * @property {String} totalProfit
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} response Trade API exchange connection item.
+ * @returns {UserBalanceEntity} Exchange connection entity.
+ *
+ *
+ */
+
+/**
+ *
+ *
+ * @export
+ * @param {*} response
+ * @returns
+ */
+export function userBalanceResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different propteries.");
+  }
+  const transformedResponse = createUserBalanceEntity(response);
+  return transformedResponse;
+}
+
+/**
+ *
+ * @param {*} response
+ */
+
+function createUserBalanceEntity(response) {
+  return {
+    btcusdt: response.btcusdt,
+    totalInvested: response.totalInvested,
+    totalOpen: response.totalOpen,
+    totalProfit: response.totalProfit,
+    totalAssets: response.totalAssets,
+    profitPercentage: response.profitPercentage,
   };
 }
