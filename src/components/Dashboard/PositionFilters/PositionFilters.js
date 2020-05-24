@@ -3,9 +3,10 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
+ * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback that delegate filters changes to caller.
- * @property {Function} onClose Callback that delegate filters toggle state to caller.
+ * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  */
 
 /**

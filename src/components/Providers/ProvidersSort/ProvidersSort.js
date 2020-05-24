@@ -5,9 +5,10 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
+ * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} ProvidersSortPropTypes
- * @property {function} onChange Callback that delegate sorting changes to caller.
- * @property {function} onClose Callback that delegate sorting toggle state to caller.
+ * @property {Function} onChange Callback that delegate sorting changes to caller.
+ * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
  */
 
 /**
