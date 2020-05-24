@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
@@ -18,17 +18,22 @@ const ProvidersFilters = ({ onChange, onClose }) => {
   const coins = ["BTC", "USDT"];
   const exchanges = ["Binance", "KuCoin"];
 
-  const [coin, setCoin] = useState(coins[0]);
-  const [exchange, setExchange] = useState(exchanges[0]);
+  const [coin, setCoin] = useState("");
+  const [exchange, setExchange] = useState("");
 
   const clearFilters = () => {
     setCoin("");
     setExchange("");
   };
 
+  // Memoized callback to satisfy exhaustive-deps
+  const triggerChange = useCallback((...args) => {
+    onChange(...args);
+  }, []);
+
   useEffect(() => {
-    onChange(coin, exchange);
-  }, [coin, exchange, onChange]);
+    triggerChange(coin, exchange);
+  }, [coin, exchange, triggerChange]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">

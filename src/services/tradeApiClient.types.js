@@ -189,7 +189,8 @@ import { assign, isArray } from "lodash";
  * @property {boolean} quote
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
- * @property {number} [followers]
+ * @property {number} followers
+ * @property {number} returns
  */
 
 /**
@@ -271,6 +272,23 @@ function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem);
+  transformedResponse.returns = transformedResponse.dailyReturns.reduce((acc, item) => {
+    // if (isCopyTrading) {
+    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    acc += returns;
+    // } else {
+    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
+    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
+    //   //   if (cumulativeTotalInvested) {
+    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+    //   //   }
+    // }
+    // chartData.push({
+    //   day: item.name,
+    //   returns: acc.toFixed(2),
+    // });
+    return acc;
+  }, 0);
 
   return transformedResponse;
 }
@@ -305,8 +323,10 @@ function createEmptyProviderEntity() {
     isFromUser: false,
     quote: false,
     dailyReturns: [],
+    returns: 0,
     risk: 0,
     coin: "BTC",
+    followers: 0,
   };
 }
 

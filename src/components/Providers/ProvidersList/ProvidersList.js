@@ -25,14 +25,7 @@ const ProvidersList = (props) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Box
-        alignItems="center"
-        className="tradersBox"
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        justifyContent="space-between"
-      >
+      <Box className="tradersBox">
         {providers &&
           providers.map((provider) => (
             <TraderCard key={provider.id} provider={provider} showSummary={showSummary} />

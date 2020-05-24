@@ -24,6 +24,7 @@ import "./CustomSelect.scss";
  */
 const CustomSelect = (props) => {
   const { label, onChange, options, value } = props;
+
   return (
     <FormControlLabel
       className="customSelect"
@@ -40,8 +41,8 @@ const CustomSelect = (props) => {
             variant="outlined"
           >
             {options.map((item, index) => (
-              <MenuItem key={index} value={item.val !== undefined ? item.val : item}>
-                {item.label !== undefined ? item.label : item}
+              <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
+                {typeof item === "object" ? item.label : item}
               </MenuItem>
             ))}
           </Select>

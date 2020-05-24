@@ -29,17 +29,35 @@ import "./signalProvidersBrowse.scss";
  */
 const SignalProvidersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
-  const handleFiltersChange = (/* type, mda, trader */) => {};
-  const handleSortChange = () => {};
-  const handleTimeFrameChange = () => {};
   const intl = useIntl();
-
   /**
    * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
    * @type {ProvidersCollection} initialState
    */
   const initialState = [];
   const [providers, setProviders] = useState(initialState);
+  const [providersFiltered, setProvidersFiltered] = useState(initialState);
+
+  /**
+   * Filters change callback.
+   *
+   * @param {String} coin
+   * @param {String} exchange
+   */
+  const handleFiltersChange = (coin, exchange) => {
+    const _providersFiltered = providers.filter(
+      (p) => (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange)),
+    );
+    setProvidersFiltered(_providersFiltered);
+  };
+  const handleSortChange = (sort) => {
+    const providersSorted = providersFiltered.sort((a, b) => {
+      return a.returns < b.returns;
+    });
+    console.log(providersSorted);
+    setProvidersFiltered(providersSorted);
+  };
+  const handleTimeFrameChange = () => {};
 
   const authenticateUser = async () => {
     const loginPayload = {
@@ -60,12 +78,15 @@ const SignalProvidersBrowse = (props) => {
         copyTradersOnly: false,
       };
 
+      /**
+       * @type {ProvidersCollection} responseData
+       */
+      let responseData = [];
       try {
-        const responseData = await tradeApi.providersGet(sessionPayload);
-        setProviders(responseData);
-      } catch (e) {
-        setProviders([]);
-      }
+        responseData = await tradeApi.providersGet(sessionPayload);
+      } catch (e) {}
+      setProviders(responseData);
+      setProvidersFiltered(responseData);
     };
     loadProviders();
   }, []);
@@ -85,13 +106,13 @@ const SignalProvidersBrowse = (props) => {
 
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography className="regularHeading" variant="h3">
-          {providers.length} <FormattedMessage id="copyt.traders" />
+          {providersFiltered.length} <FormattedMessage id="copyt.traders" />
         </Typography>
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <ProvidersList providers={providers} showSummary={false} />
+      <ProvidersList providers={providersFiltered} showSummary={false} />
     </Box>
   );
 };

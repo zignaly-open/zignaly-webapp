@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useIntl } from "react-intl";
 import { Box } from "@material-ui/core";
 import "./ProvidersSort.scss";
 import CustomFilters from "../../CustomFilters";
@@ -18,29 +19,63 @@ import CustomSelect from "../../CustomSelect";
  */
 const ProvidersSort = ({ onChange, onClose }) => {
   const sorts = [
-    "Descending Results",
-    "Ascending Results",
-    "Descending Name",
-    "Ascending Name",
-    "Descending Subscription Fee",
-    "Ascending Subscription Fee",
-    "Descending Creation Date",
-    "Ascending Creation Date",
+    {
+      label: "Descending Results",
+      val: "result-desc",
+    },
+    {
+      label: "Ascending Results",
+      val: "result-asc",
+    },
+    {
+      label: "Descending Name",
+      val: "name-desc",
+    },
+    {
+      label: "Ascending Name",
+      val: "name-asc",
+    },
+    {
+      label: "Descending Subscription Fee",
+      val: "fee-desc",
+    },
+    {
+      label: "Ascending Subscription Fee",
+      val: "fee-asc",
+    },
+    {
+      label: "Descending Creation Date",
+      val: "creationDate-desc",
+    },
+    {
+      label: "Ascending Creation Date",
+      val: "creationDate-asc",
+    },
   ];
 
   const [sort, setSort] = useState("");
+  const intl = useIntl();
 
   const clearFilters = () => {
     setSort("");
   };
 
+  // Memoized callback to satisfy exhaustive-deps
+  const triggerChange = useCallback((...args) => {
+    onChange(...args);
+  }, []);
+
   useEffect(() => {
-    onChange(sort);
-  }, [sort, onChange]);
+    triggerChange(sort);
+  }, [sort, triggerChange]);
 
   return (
     <Box className="providersSort">
-      <CustomFilters onClear={clearFilters} onClose={onClose} title="Sort by">
+      <CustomFilters
+        onClear={clearFilters}
+        onClose={onClose}
+        title={intl.formatMessage({ id: "sort.sortby" })}
+      >
         <CustomSelect label="" onChange={setSort} options={sorts} value={sort} />
       </CustomFilters>
     </Box>

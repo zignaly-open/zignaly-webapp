@@ -30,7 +30,9 @@ import "./copyTradersBrowse.scss";
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const handleFiltersChange = (/* coin, exchange */) => {};
-  const handleSortChange = () => {};
+  const handleSortChange = (sort) => {
+    console.log(sort);
+  };
   const handleTimeFrameChange = () => {};
   const intl = useIntl();
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useIntl } from "react-intl";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
@@ -23,6 +24,7 @@ const timeframes = [
 const TimeFrameSelect = (props) => {
   const { onChange } = props;
   const [val, setVal] = useState(timeframes[1].val);
+  const intl = useIntl();
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -33,7 +35,7 @@ const TimeFrameSelect = (props) => {
   return (
     <Box className="selectTimeFrame">
       <CustomSelect
-        label="Analytics Timeframe"
+        label={intl.formatMessage({ id: "timeframe.returns" })}
         onChange={handleChange}
         options={timeframes}
         value={val}

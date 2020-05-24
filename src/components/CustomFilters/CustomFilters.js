@@ -1,6 +1,7 @@
 import React from "react";
 import "./CustomFilters.scss";
 import { Box } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
 
 /**
@@ -46,10 +47,10 @@ const CustomFilters = (props) => {
         justifyContent="space-between"
       >
         <CustomButtom className="text-purple" onClick={onClear}>
-          Clear All
+          <FormattedMessage id="fil.clearall" />
         </CustomButtom>
         <CustomButtom className="text-purple" onClick={onClose}>
-          Hide
+          <FormattedMessage id="fil.hide" />
         </CustomButtom>
       </Box>
     </Box>
