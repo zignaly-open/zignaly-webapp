@@ -52,7 +52,7 @@ const TotalEquity = () => {
           </select>
         </Box>
       </Box>
-      <Chart id="myChart" type="line">
+      <Chart id="myChart">
         <canvas className="chartCanvas" id="myChart" />
       </Chart>
     </Box>
