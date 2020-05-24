@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Chart.scss";
-import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
+import { prepareLineChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
 
 /**
@@ -19,26 +19,14 @@ import { Box } from "@material-ui/core";
  */
 const GenericChart = (props) => {
   const { id, data, children } = props;
-
-  /**
-   * Find DOM canvas element by ID.
-   *
-   * @returns {HTMLCanvasElement} Chart canvas.
-   */
-  const getCanvasElement = () => {
-    const elementMatch = document.getElementById(id);
-    return /** @type {HTMLCanvasElement} */ (elementMatch);
-  };
-
-  const chartCanvas = getCanvasElement();
+  const canvasContext = getCanvasContext(id);
   useEffect(() => {
-    const context = chartCanvas.getContext("2d");
-    const background = context.createLinearGradient(0, 0, 0, 500);
+    const background = canvasContext.createLinearGradient(0, 0, 0, 500);
     background.addColorStop(1, "rgba(216, 216, 216, .1)");
     background.addColorStop(0, "#a946f6");
     const borderColor = "#770fc8";
-    generateChart(context, prepareLineChartOptions(background, borderColor, data));
-  }, [chartCanvas, data]);
+    generateChart(canvasContext, prepareLineChartOptions(background, borderColor, data));
+  }, [canvasContext, data]);
 
   return <Box className="chart">{children}</Box>;
 };
