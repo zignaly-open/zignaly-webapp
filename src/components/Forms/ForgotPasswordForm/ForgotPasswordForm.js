@@ -11,6 +11,7 @@ const ForgotPasswordForm = () => {
   /**
    * Persists submitted data into Redux store.
    *
+   * @type {React.MouseEventHandler} onSubmit
    * @returns {void}
    */
   const onSubmit = () => {
@@ -20,6 +21,16 @@ const ForgotPasswordForm = () => {
     //   array: true,
     // };
     // dispatch(recover1(params, this.hideLoader));
+  };
+
+  /**
+   * Handle submit buttton click.
+   *
+   * @type {React.MouseEventHandler} handleClickSubmit
+   * @returns {void}
+   */
+  const handleSubmitClick = () => {
+    handleSubmit(onSubmit);
   };
 
   //   const handleKeyPress = (event) => {
@@ -65,7 +76,7 @@ const ForgotPasswordForm = () => {
           <CustomButton
             className={"full submitButton"}
             loading={loading}
-            onClick={handleSubmit}
+            onClick={handleSubmitClick}
             type="submit"
           >
             Recover Account
