@@ -25,13 +25,9 @@ const ResetPasswordForm = () => {
   const { errors, handleSubmit, register, clearError, setError } = useForm();
 
   /**
-   * @typedef {import('react').ChangeEvent} ChangeEvent
-   */
-
-  /**
    * Main password change state handling.
    *
-   * @param {ChangeEvent} event Observed event.
+   * @param {React.ChangeEvent} event Observed event.
    * @return {void}
    */
 
@@ -44,14 +40,14 @@ const ResetPasswordForm = () => {
     if (howStrong >= 4) {
       clearError("password");
     } else {
-      setError("password");
+      setError("password", "notStrong", "The password is weak.");
     }
   };
 
   /**
    * Main password change state handling.
    *
-   * @param {ChangeEvent} event Observed event.
+   * @param {React.ChangeEvent} event Observed event.
    * @return {void}
    */
 
@@ -63,12 +59,11 @@ const ResetPasswordForm = () => {
     if (howStrong >= 4) {
       clearError("repeatPassword");
     } else {
-      setError("repeatPassword");
+      setError("repeatPassword", "notStrong", "The repeat password is very weak.");
     }
   };
 
   /**
-   *
    * @typedef {Object} DataObject
    * @property {String} password
    * @property {String} repeatPassword
@@ -82,9 +77,20 @@ const ResetPasswordForm = () => {
    */
   const onSubmit = (data) => {
     if (data.password === data.repeatPassword) {
+      setPasswordDoNotMatch(false);
     } else {
       setPasswordDoNotMatch(true);
     }
+  };
+
+  /**
+   * Handle submit buttton click.
+   *
+   * @type {React.MouseEventHandler} handleClickSubmit
+   * @returns {void}
+   */
+  const handleSubmitClick = () => {
+    handleSubmit(onSubmit);
   };
 
   return (
@@ -164,7 +170,7 @@ const ResetPasswordForm = () => {
           <CustomButton
             className={"full submitButton"}
             loading={loading}
-            onClick={handleSubmit}
+            onClick={handleSubmitClick}
             type="submit"
           >
             Sign in
