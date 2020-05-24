@@ -3,10 +3,14 @@ import { Box } from "@material-ui/core";
 import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
 
+/**
+ * @typedef {import('../CustomSelect/CustomSelect').OptionType} OptionType
+ * @type {Array<OptionType>} timeframes
+ */
 const timeframes = [
-  { label: "Last month", val: 0 },
-  { label: "Last 90 days", val: 1 },
-  { label: "Last year", val: 2 },
+  { label: "Last month", val: "0" },
+  { label: "Last 90 days", val: "1" },
+  { label: "Last year", val: "2" },
 ];
 
 /**

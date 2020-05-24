@@ -15,11 +15,17 @@ import CustomSelect from "../../CustomSelect";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersFilters = ({ onChange, onClose }) => {
-  const coins = ["BTC", "USDT"];
-  const exchanges = ["Binance", "KuCoin"];
+  const coins = [
+    { label: "BTC", val: "BTC" },
+    { label: "USDT", val: "USDT" },
+  ];
+  const exchanges = [
+    { label: "Binance", val: "BINANCE" },
+    { label: "KuCoin", val: "KUCOIN" },
+  ];
 
-  const [coin, setCoin] = useState(coins[0]);
-  const [exchange, setExchange] = useState(exchanges[0]);
+  const [coin, setCoin] = useState(coins[0].val);
+  const [exchange, setExchange] = useState(exchanges[0].val);
 
   const clearFilters = () => {
     setCoin("");

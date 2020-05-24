@@ -18,14 +18,14 @@ import CustomSelect from "../../CustomSelect";
  */
 const ProvidersSort = ({ onChange, onClose }) => {
   const sorts = [
-    "Descending Results",
-    "Ascending Results",
-    "Descending Name",
-    "Ascending Name",
-    "Descending Subscription Fee",
-    "Ascending Subscription Fee",
-    "Descending Creation Date",
-    "Ascending Creation Date",
+    { label: "Descending Results", val: "RESULTS_DESC" },
+    { label: "Ascending Results", val: "RESULST_ASC" },
+    { label: "Descending Name", val: "NAME_DES" },
+    { label: "Ascending Name", val: "NAME_ASC" },
+    { label: "Descending Subscription Fee", val: "FEE_DESC" },
+    { label: "Ascending Subscription Fee", val: "FEE_ASC" },
+    { label: "Descending Creation Date", val: "DATE_DESC" },
+    { label: "Ascending Creation Date", val: "DATE_ASC" },
   ];
 
   const [sort, setSort] = useState("");
