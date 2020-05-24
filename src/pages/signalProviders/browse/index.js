@@ -43,7 +43,7 @@ const SignalProvidersBrowse = (props) => {
 
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mailkdqvw4bplp@example.test",
+      email: "mailhjmhtitjyc@example.test",
       password: "abracadabra",
     };
 
@@ -91,7 +91,7 @@ const SignalProvidersBrowse = (props) => {
           <TimeFrameSelect onChange={handleTimeFrameChange} />
         </Box>
       </Box>
-      <ProvidersList providers={providers} />
+      <ProvidersList providers={providers} showSummary={false} />
     </Box>
   );
 };

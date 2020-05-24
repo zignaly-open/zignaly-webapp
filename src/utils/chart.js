@@ -1,10 +1,6 @@
 import { Chart } from "chart.js";
 
 /**
- * @typedef {import('chart.js').Chart} Chart
- */
-
-/**
  * Generate a chart instance.
  *
  * @param {string} context Element context.
@@ -16,24 +12,39 @@ export const generateChart = (context, options) => {
 };
 
 /**
+ * @typedef {Object} ChartData
+ * @property {Array<Number|String>} values Chart values.
+ * @property {Array<String>} labels Chart labels.
+ */
+
+/**
+ * @typedef {Object} ChartColorOptions
+ * @property {string} backgroundColor Background HTML color.
+ * @property {string} borderColor Border HTML color.
+ * @property {string} gradientColor1 Chart gradient color top.
+ * @property {string} gradientColor2 Chart gradient color bottom.
+ */
+
+/**
  * Prepare line chart options.
  *
- * @param {string} backgroundColor Background HTML color.
- * @param {string} borderColor Border HTML color.
- * @param {Array<Object>} chartData Chart data (todo).
+ * @param {ChartColorOptions} colorsOptions Chart colors.
+ * @param {ChartData} chartData Chart dataset.
+ * @param {string} label Tooltip label.
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (backgroundColor, borderColor, chartData, labels, label) => {
+export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
   return {
     type: "line",
     data: {
-      labels,
+      labels: chartData.labels,
       datasets: [
         {
           label,
-          data: chartData,
-          backgroundColor,
-          borderColor,
+          data: chartData.values,
+          backgroundColor: colorsOptions.backgroundColor,
+          borderColor: colorsOptions.borderColor,
+          fill: "start",
         },
       ],
     },
@@ -128,19 +139,21 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData,
         /**
          * @typedef {Object} ChartWithScales
          * @property {*} scales
+         *
+         * @typedef {Chart & ChartWithScales} ExtendedChart
          */
 
         /**
          * Fill chart with gradient on layout change.
          *
-         * @typedef {Chart & ChartWithScales} ExtendedChart
-         * @param {ExtendedChart} chart
+         * @param {ExtendedChart} chart Chart instance.
+         * @returns {void}
          */
-        afterLayout: function (chart /* options */) {
+        afterLayout: (chart /* options */) => {
           let scales = chart.scales;
           let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-          color.addColorStop(0, "#e5f8ed");
-          color.addColorStop(1, "#b6f2cb");
+          color.addColorStop(0, colorsOptions.gradientColor2);
+          color.addColorStop(1, colorsOptions.gradientColor1);
           chart.data.datasets[0].backgroundColor = color;
         },
       },

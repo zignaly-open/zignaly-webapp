@@ -13,8 +13,8 @@
   }
 
   .traderCardGraph {
-    // The chart height will be 20% of width
-    padding-top: 20%;
+    // The chart height will be 30% of width
+    padding-top: 30%;
     position: relative;
     width: 100%;
 
@@ -35,8 +35,15 @@
   }
 
   .actionsWrapper {
-    background: linear-gradient(180deg, $whiteChartBottom 0%, $white 100%);
-    margin-bottom: 24px;
+    padding: 15px 0 24px;
+
+    &.positive {
+      background: linear-gradient(180deg, $greenChartBottom 0%, $white 100%);
+    }
+
+    &.negative {
+      background: linear-gradient(180deg, $redChartBottom 0%, $white 100%);
+    }
 
     h6,
     button {
@@ -44,7 +51,7 @@
     }
 
     .followers {
-      padding: 14px 0;
+      padding-bottom: 14px;
     }
   }
 

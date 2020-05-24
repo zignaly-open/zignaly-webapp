@@ -7,6 +7,7 @@ import "./providersList.scss";
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {Object} ProvidersListPropTypes
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
+ * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  */
 
 /**
@@ -34,7 +35,7 @@ const ProvidersList = (props) => {
       >
         {providers &&
           providers.map((provider) => (
-            <TraderCard provider={provider} showSummary={showSummary} key={provider.id} />
+            <TraderCard key={provider.id} provider={provider} showSummary={showSummary} />
           ))}
       </Box>
     </Box>

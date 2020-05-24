@@ -18,7 +18,7 @@ const ConnectedTraders = () => {
   const [providers, setProviders] = useState(initialState);
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mail22sygn6vvi@example.test",
+      email: "mailrh5a6gnsvn@example.test",
       password: "abracadabra",
     };
 
@@ -68,7 +68,6 @@ const ConnectedTraders = () => {
           flexWrap="wrap"
           justifyContent="flex-start"
         >
-          {/* list && list.map((item) => <TraderCard data={item} key={item} showSummary={true} />) */}
           <ProvidersList providers={providers} showSummary={true} />
         </Box>
       </Box>
