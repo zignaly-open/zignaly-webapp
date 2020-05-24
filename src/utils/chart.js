@@ -3,7 +3,7 @@ import { Chart } from "chart.js";
 /**
  * Generate a chart instance.
  *
- * @param {string} context Element context.
+ * @param {CanvasRenderingContext2D} context Element context.
  * @param {Object} options Chart options.
  * @return {Chart} Chart JS instance.
  */
@@ -14,7 +14,7 @@ export const generateChart = (context, options) => {
 /**
  * Prepare line chart options.
  *
- * @param {string} backgroundColor Background HTML color.
+ * @param {CanvasGradient} backgroundColor Background HTML color.
  * @param {string} borderColor Border HTML color.
  * @param {Array<Object>} chartData Chart data (todo).
  * @returns {Object} Chart options.
