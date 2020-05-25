@@ -12,16 +12,12 @@ import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from "../../components/Alert";
 
 /**
- * @typedef {import('../../store/initialState').DefaultState} DefaultState
- */
-
-/**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
  *
- * @param {import("../../utils/getDisplayName").WrappedComponentType} Component
- * @returns {Object} Component.
+ * @param {React.ComponentType<any>} Component The component to wrap.
+ *
+ * @returns {Function} Wrapper component function.
  */
-
 const withAppLayout = (Component) => {
   /**
    * Default component props.
@@ -33,6 +29,7 @@ const withAppLayout = (Component) => {
     /**
      * Settings darkStyle selector.
      *
+     * @typedef {import('../../store/initialState').DefaultState} DefaultState
      * @param {DefaultState} state Redux store state data.
      * @return {boolean} Flag that indicates if darkStyle is enabled.
      */
@@ -68,7 +65,9 @@ const withAppLayout = (Component) => {
       </ThemeProvider>
     );
   };
+
   WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
+
   return WrapperComponent;
 };
 
