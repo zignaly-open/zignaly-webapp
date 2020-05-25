@@ -31,6 +31,6 @@ it("renders correctly", () => {
     floating: 0,
     openPositions: 0,
   };
-  const tree = renderer.create(<TraderCard provider={provider} />).toJSON();
+  const tree = renderer.create(<TraderCard provider={provider} showSummary={true} />).toJSON();
   expect(tree).toMatchSnapshot();
 });

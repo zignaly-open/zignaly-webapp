@@ -4,8 +4,13 @@ import CustomSelect from "../../CustomSelect";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
- * @property {function} onChange Callback that delegate filters changes to caller.
  * @property {function} onClose Callback that delegate filters toggle state to caller.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {function} onCoinChange Callback that delegate coin change to caller.
+ * @property {function} onExchangeChange Callback that delegate exchange change to caller.
+ * @property {string} coin Selected coin.
+ * @property {string} exchange Selected exchange.
+ *
  */
 
 /**
@@ -15,7 +20,6 @@ import CustomSelect from "../../CustomSelect";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersFilters = ({
-  onChange,
   onClose,
   coin,
   exchange,
@@ -25,23 +29,6 @@ const ProvidersFilters = ({
 }) => {
   const coins = ["BTC", "USDT"];
   const exchanges = ["Binance", "KuCoin"];
-
-  //   const [coin, setCoin] = useState("");
-  //   const [exchange, setExchange] = useState("");
-
-  //   const clearFilters = () => {
-  //     setCoin("");
-  //     setExchange("");
-  //   };
-
-  //   // Memoized callback to satisfy exhaustive-deps
-  //   const triggerChange = useCallback((...args) => {
-  //     onChange(...args);
-  //   }, []);
-
-  //   useEffect(() => {
-  //     triggerChange(coin, exchange);
-  //   }, [coin, exchange, triggerChange]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">

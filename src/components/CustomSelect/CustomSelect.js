@@ -5,7 +5,7 @@ import "./CustomSelect.scss";
 /**
  * @typedef {Object} OptionType
  * @property {string} label Option label.
- * @property {string} val Option value.
+ * @property {string|number} val Option value.
  */
 
 /**

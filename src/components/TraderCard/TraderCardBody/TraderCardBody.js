@@ -30,8 +30,8 @@ import { FormattedMessage } from "react-intl";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { id, risk, isCopyTrading, followers, disable } = provider;
-  const dailyReturns = [
+  const { id, risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  const dailyReturns0 = [
     {
       name: "2020-03-29",
       returns: "5.42466341627152",

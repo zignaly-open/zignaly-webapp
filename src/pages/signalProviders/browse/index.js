@@ -26,13 +26,9 @@ import "./signalProvidersBrowse.scss";
 const SignalProvidersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const intl = useIntl();
-  const [providers, provComponents] = useProvidersList(
-    false,
-    false,
-    false,
-    toggleFilters,
-    toggleSort,
-  );
+  const providersOptions = { copyTradersOnly: false, connectedOnly: false, showSummary: false };
+  const providersCallbacks = { toggleFilters, toggleSort };
+  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
   const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelect } = provComponents;
 
   return (

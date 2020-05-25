@@ -4,6 +4,10 @@ import { Box } from "@material-ui/core";
 import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
 
+/**
+ * @typedef {import("../CustomSelect/CustomSelect").OptionType} OptionType
+ * @type {Array<OptionType>}
+ */
 const timeframes = [
   { label: "Last month", val: 30 },
   { label: "Last 90 days", val: 90 },
@@ -13,6 +17,7 @@ const timeframes = [
 /**
  * @typedef {Object} TimeFrameSelectPropTypes
  * @property {function} onChange Callback that delegate timeframe changes to caller.
+ * @property {number} value Selected value.
  */
 
 /**

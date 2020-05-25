@@ -5,85 +5,113 @@ import ProvidersList from "../components/Providers/ProvidersList";
 import TimeFrameSelect from "../components/TimeFrameSelect";
 import tradeApi from "../services/tradeApiClient";
 
-const useProvidersList = (
-  copyTradersOnly,
-  connectedOnly,
-  showSummary,
-  toggleFilters,
-  toggleSort,
-) => {
+/**
+ * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ */
+
+/**
+ * @typedef {Object} ProvidersComponents
+ * @property {function} ProvidersList
+ * @property {function} ProvidersFilters
+ * @property {function} ProvidersSort
+ * @property {function} TimeFrameSelect
+ */
+
+/**
+ * @typedef {Object} ProvidersOptions
+ * @property {boolean} copyTradersOnly
+ * @property {boolean} connectedOnly
+ * @property {boolean} showSummary
+ */
+
+/**
+ * @typedef {Object} ProvidersCallbacks
+ * @property {function} [toggleFilters]
+ * @property {function} [toggleSort]
+ */
+
+/**
+ * Hook to generate the providers components including list, filters, and sort.
+ *
+ * @param {ProvidersOptions} options
+ * @param {ProvidersCallbacks} callbacks
+ * @returns {[ProvidersCollection, ProvidersComponents]}
+ */
+const useProvidersList = (options, callbacks) => {
+  const { copyTradersOnly, connectedOnly, showSummary } = options;
+  const { toggleFilters, toggleSort } = callbacks;
   /**
-   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
    * @type {ProvidersCollection} initialState
    */
   const initialState = [];
   const [providers, setProviders] = useState(initialState);
-  const initialState2 = [];
-
-  const [providersFiltered, setProvidersFiltered] = useState(initialState2);
+  const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
   const [coin, setCoin] = useState("");
   const [exchange, setExchange] = useState("");
   const [sort, setSort] = useState("");
-  //   const providers = useRef();
 
   const clearFilters = () => {
     setCoin("");
     setExchange("");
   };
 
-  // Memoized callback to satisfy exhaustive-deps
-  //   const triggerChange = useCallback((...args) => {
-  //     onChange(...args);
-  //   }, []);
+  const clearSort = () => {
+    setSort("");
+  };
 
-  //   useEffect(() => {
-  //     triggerChange(coin, exchange);
-  //   }, [coin, exchange, triggerChange]);
+  /**
+   * Sort providers by select option
+   *
+   * @param {ProvidersCollection} _providersFiltered
+   */
+  const sortProviders = (_providersFiltered) => {
+    let providersSorted = _providersFiltered;
+    if (sort) {
+      const [key, direction] = sort.split("-");
+      providersSorted = _providersFiltered.concat().sort((a, b) => {
+        let res = 0;
+        switch (key) {
+          case "returns":
+          case "createdAt":
+            res = a[key] < b[key] ? 1 : -1;
+            break;
+          case "name":
+            res = a.name.localeCompare(b.name);
+            break;
+          case "fee":
+            break;
+          default:
+            break;
+        }
+        return direction === "asc" ? res : -res;
+      });
+    }
+    setProvidersFiltered(providersSorted);
+  };
 
-  console.log("aaa");
-
-  const sortProviders = useCallback(
-    (_providersFiltered) => {
-      //   const sortProviders = (_providersFiltered) => {
-      let providersSorted = _providersFiltered;
-      if (sort) {
-        const [key, direction] = sort.split("-");
-        providersSorted = _providersFiltered.concat().sort((a, b) => {
-          let res;
-          switch (typeof a[key]) {
-            case "number":
-              res = a[key] < b[key];
-              break;
-            case "string":
-              res = a[key].localeCompare(b[key]);
-              break;
-            default:
-              break;
-          }
-          return direction === "asc" ? res : -res;
-        });
-      }
-      setProvidersFiltered(providersSorted);
-    },
-    [sort],
-  );
-  //   };
+  // Update providers sorting on sort change
+  useEffect(() => {
+    sortProviders(providersFiltered);
+  }, [sort]);
 
   // useCallback since it's a dependency of loadProviders()
   const filterProviders = useCallback(
     (_providers) => {
-      //   console.log("filterProviders", providers);
-      //  const filterProviders = (_providers) => {
       const _providersFiltered = providers.filter(
         (p) =>
           (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
       );
       sortProviders(_providersFiltered);
-      //  };
     },
-    [sortProviders, coin, exchange, providers],
+    [coin, exchange, providers],
   );
+
+  //   Filter providers when providers loaded or filters changed
+  useEffect(() => {
+    filterProviders();
+  }, [filterProviders]);
 
   const authenticateUser = async () => {
     const loginPayload = {
@@ -110,44 +138,13 @@ const useProvidersList = (
 
       try {
         const responseData = await tradeApi.providersGet(sessionPayload);
-        // setProviders(responseData);
-        // providers.current = responseData;
         setProviders(responseData);
       } catch (e) {
-        // setProviders([]);
-        // providers.current = [];
         setProviders([]);
       }
-      //   filterProviders(providers.current);
     };
-    console.log("loadProviders");
     loadProviders();
   }, [timeFrame, connectedOnly, copyTradersOnly]);
-
-  //   Filter providers when providers loaded or filters changed
-  useEffect(() => {
-    // const filterProviders = () => {
-    //   const _providersFiltered = providers.current.filter(
-    //     (p) =>
-    //       (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
-    //   );
-    //   sortProviders();
-    // };
-    console.log("filterProviders useEffect", providers);
-
-    // if (providers.current) {
-    filterProviders();
-    // }
-  }, [filterProviders]);
-
-  // Update providers sorting on sort change
-  useEffect(() => {
-    sortProviders(providersFiltered);
-  }, [sort, sortProviders, providersFiltered]);
-
-  //   const handleTimeFrameChange = (timeFrame) => {
-  //     setTimeFrame(timeFrame);
-  //   };
 
   const ProvidersListMaker = () => (
     <ProvidersList providers={providersFiltered} showSummary={showSummary} />
@@ -165,7 +162,7 @@ const useProvidersList = (
   );
 
   const ProvidersSortMaker = () => (
-    <ProvidersSort onChange={setSort} onClose={toggleSort} sort={sort} />
+    <ProvidersSort onChange={setSort} onClose={toggleSort} sort={sort} clearFilters={clearSort} />
   );
 
   const TimeFrameSelectMaker = () => <TimeFrameSelect onChange={setTimeFrame} value={timeFrame} />;

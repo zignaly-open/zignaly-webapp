@@ -26,13 +26,9 @@ import "./copyTradersBrowse.scss";
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const intl = useIntl();
-  const [providers, provComponents] = useProvidersList(
-    true,
-    false,
-    false,
-    toggleFilters,
-    toggleSort,
-  );
+  const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
+  const providersCallbacks = { toggleFilters, toggleSort };
+  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
   const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelect } = provComponents;
 
   return (

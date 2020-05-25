@@ -9,6 +9,8 @@ import CustomSelect from "../../CustomSelect";
  * @typedef {Object} ProvidersSortPropTypes
  * @property {function} onChange Callback that delegate sorting changes to caller.
  * @property {function} onClose Callback that delegate sorting toggle state to caller.
+ * @property {string} sort value Selected value.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
  */
 
 /**
@@ -21,11 +23,11 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
   const sorts = [
     {
       label: "Descending Results",
-      val: "result-desc",
+      val: "returns-desc",
     },
     {
       label: "Ascending Results",
-      val: "result-asc",
+      val: "returns-asc",
     },
     {
       label: "Descending Name",
