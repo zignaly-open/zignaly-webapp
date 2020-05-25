@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./dashboardLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box } from "@material-ui/core";
@@ -8,17 +8,19 @@ import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 
 /**
- *
  * @typedef {import('../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
- *  App layout is defined here, the placement of header, sidebar, mobile appbar.
+ * HOC wrap component with dashboard layout.
  *
- * @param {import('../../utils/getDisplayName').WrappedComponentType} Component
- * @returns {Object} Component
+ * App layout is defined here, the placement of header, sidebar, mobile appbar.
+ *
+ * @param {React.ComponentType<any>} Component The component to wrap.
+ *
+ * @returns {Function} Wrap component function.
  */
-
 const withDashboardLayout = (Component) => {
   /**
    *
@@ -27,8 +29,11 @@ const withDashboardLayout = (Component) => {
    */
   const WrapperComponent = (props) => {
     /**
+     * User exchange connections selector.
      *
-     * @param {DefaultState} state
+     * @param {DefaultState} state Store state object.
+     *
+     * @returns {Array<ExchangeConnectionEntity>} None.
      */
     const selector = (state) => state.user.exchangeConnections;
     const exchangeConnections = useSelector(selector);
@@ -80,10 +85,9 @@ const withDashboardLayout = (Component) => {
       </Box>
     );
   };
-  /**
-   * @param {Object} Component
-   */
+
   WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
+
   return WrapperComponent;
 };
 
