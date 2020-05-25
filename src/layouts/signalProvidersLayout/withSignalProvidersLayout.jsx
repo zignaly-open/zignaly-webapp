@@ -5,7 +5,26 @@ import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 
+/**
+ * HOC wrap component with copy traders layout.
+ *
+ * @param {React.ComponentType<any>} Component The component to wrap.
+ *
+ * @returns {Function} Wrap component function.
+ */
 const withSignalProvidersLayout = (Component) => {
+  /**
+   * @typedef {Object} WithSignalProvidersPropsType
+   * @property {string} path Providers page path.
+   */
+
+  /**
+   * Perform component wrapping.
+   *
+   * @param {WithSignalProvidersPropsType} props Default params.
+   *
+   * @returns {JSX.Element} Component JSX.
+   */
   const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
