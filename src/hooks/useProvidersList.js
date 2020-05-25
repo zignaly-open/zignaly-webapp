@@ -17,13 +17,15 @@ const useProvidersList = (
    * @type {ProvidersCollection} initialState
    */
   const initialState = [];
-  //   const [providers, setProviders] = useState(initialState);
-  const [providersFiltered, setProvidersFiltered] = useState(initialState);
+  const [providers, setProviders] = useState(initialState);
+  const initialState2 = [];
+
+  const [providersFiltered, setProvidersFiltered] = useState(initialState2);
   const [timeFrame, setTimeFrame] = useState(90);
   const [coin, setCoin] = useState("");
   const [exchange, setExchange] = useState("");
   const [sort, setSort] = useState("");
-  const providers = useRef();
+  //   const providers = useRef();
 
   const clearFilters = () => {
     setCoin("");
@@ -40,44 +42,55 @@ const useProvidersList = (
   //   }, [coin, exchange, triggerChange]);
 
   console.log("aaa");
-  const filterProviders = useCallback((_providers) => {
-    console.log("filterProviders");
-    //    const filterProviders = (_providers) => {
-    const _providersFiltered = _providers.filter(
-      (p) =>
-        (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
-    );
-    sortProviders(_providersFiltered);
-    //    };
-  }, []);
 
-  //   const sortProviders = useCallback(() => {
-  const sortProviders = (_providersFiltered) => {
-    if (sort) {
-      const [key, direction] = sort.split("-");
-      _providersFiltered.sort((a, b) => {
-        let res;
-        switch (typeof a[key]) {
-          case "number":
-            res = a[key] < b[key];
-            break;
-          case "string":
-            res = a[key].localeCompare(b[key]);
-            break;
-          default:
-            break;
-        }
-        return direction === "asc" ? res : -res;
-      });
-    }
-    setProvidersFiltered(_providersFiltered);
-    //   }, []);
-  };
+  const sortProviders = useCallback(
+    (_providersFiltered) => {
+      //   const sortProviders = (_providersFiltered) => {
+      let providersSorted = _providersFiltered;
+      if (sort) {
+        const [key, direction] = sort.split("-");
+        providersSorted = _providersFiltered.concat().sort((a, b) => {
+          let res;
+          switch (typeof a[key]) {
+            case "number":
+              res = a[key] < b[key];
+              break;
+            case "string":
+              res = a[key].localeCompare(b[key]);
+              break;
+            default:
+              break;
+          }
+          return direction === "asc" ? res : -res;
+        });
+      }
+      setProvidersFiltered(providersSorted);
+    },
+    [sort],
+  );
+  //   };
+
+  // useCallback since it's a dependency of loadProviders()
+  const filterProviders = useCallback(
+    (_providers) => {
+      //   console.log("filterProviders", providers);
+      //  const filterProviders = (_providers) => {
+      const _providersFiltered = providers.filter(
+        (p) =>
+          (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+      );
+      sortProviders(_providersFiltered);
+      //  };
+    },
+    [sortProviders, coin, exchange, providers],
+  );
 
   const authenticateUser = async () => {
     const loginPayload = {
-      email: "mailhjmhtitjyc@example.test",
-      password: "abracadabra",
+      email: "me@brbordallo.com",
+      //   email: "mailhjmhtitjyc@example.test",
+      //   password: "abracadabra",
+      password: "09876aaA!",
     };
 
     return await tradeApi.userLogin(loginPayload);
@@ -98,36 +111,39 @@ const useProvidersList = (
       try {
         const responseData = await tradeApi.providersGet(sessionPayload);
         // setProviders(responseData);
-        providers.current = responseData;
+        // providers.current = responseData;
+        setProviders(responseData);
       } catch (e) {
         // setProviders([]);
-        providers.current = [];
+        // providers.current = [];
+        setProviders([]);
       }
-      filterProviders(providers.current);
+      //   filterProviders(providers.current);
     };
+    console.log("loadProviders");
     loadProviders();
-  }, [timeFrame, connectedOnly, copyTradersOnly, filterProviders]);
+  }, [timeFrame, connectedOnly, copyTradersOnly]);
 
   //   Filter providers when providers loaded or filters changed
-  //   useEffect(() => {
-  //     const filterProviders = () => {
-  //       const _providersFiltered = providers.current.filter(
-  //         (p) =>
-  //           (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
-  //       );
-  //       sortProviders();
-  //     };
-  //     console.log("filterProviders", providers);
+  useEffect(() => {
+    // const filterProviders = () => {
+    //   const _providersFiltered = providers.current.filter(
+    //     (p) =>
+    //       (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+    //   );
+    //   sortProviders();
+    // };
+    console.log("filterProviders useEffect", providers);
 
-  //     if (providers.current) {
-  //       filterProviders();
-  //     }
-  //   }, [providers]);
+    // if (providers.current) {
+    filterProviders();
+    // }
+  }, [filterProviders]);
 
-  //   // Update providers sorting on sort change
-  //   useEffect(() => {
-  //     sortProviders();
-  //   }, [sort, sortProviders, providersFiltered]);
+  // Update providers sorting on sort change
+  useEffect(() => {
+    sortProviders(providersFiltered);
+  }, [sort, sortProviders, providersFiltered]);
 
   //   const handleTimeFrameChange = (timeFrame) => {
   //     setTimeFrame(timeFrame);
