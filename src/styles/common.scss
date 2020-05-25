@@ -3,7 +3,7 @@ html {
   overflow-y: scroll;
   scrollbar-width: none;
 
-  &::-webkit-scrollbar {
+  &::scrollbar {
     height: 0;
     width: 0;
   }
@@ -26,7 +26,7 @@ body {
   overflow-y: scroll;
   scrollbar-width: none;
 
-  &::-webkit-scrollbar {
+  &::scrollbar {
     height: 0;
     width: 0;
   }
