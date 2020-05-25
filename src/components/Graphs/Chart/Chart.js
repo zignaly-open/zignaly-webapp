@@ -26,9 +26,8 @@ const GenericChart = (props) => {
   const { id, chartData, colorsOptions, children } = props;
 
   useEffect(() => {
-    const elementId = id;
-    const context = document.getElementById(elementId).getContext("2d");
-    generateChart(context, prepareLineChartOptions(colorsOptions, chartData, ""));
+    const canvasContext = getCanvasContext(id);
+    generateChart(canvasContext, prepareLineChartOptions(colorsOptions, chartData, ""));
   }, [id, chartData, colorsOptions]);
 
   return <Box className="chart">{children}</Box>;

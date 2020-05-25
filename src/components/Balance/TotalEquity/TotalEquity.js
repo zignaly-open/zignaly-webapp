@@ -52,7 +52,16 @@ const TotalEquity = () => {
           </select>
         </Box>
       </Box>
-      <Chart data={[2, 4, 6]} id="myChart">
+      <Chart
+        chartData={{ values: [2, 4, 6], labels: ["a", "b", "c"] }}
+        colorsOptions={{
+          backgroundColor: "",
+          borderColor: "",
+          gradientColor1: "",
+          gradientColor2: "",
+        }}
+        id="myChart"
+      >
         <canvas className="chartCanvas" id="myChart" />
       </Chart>
     </Box>

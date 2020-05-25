@@ -27,8 +27,8 @@ import tradeApi from "../services/tradeApiClient";
 
 /**
  * @typedef {Object} ProvidersCallbacks
- * @property {function} [toggleFilters]
- * @property {function} [toggleSort]
+ * @property {React.MouseEventHandler} [toggleFilters]
+ * @property {React.MouseEventHandler} [toggleSort]
  */
 
 /**
@@ -74,19 +74,21 @@ const useProvidersList = (options, callbacks) => {
       providersSorted = _providersFiltered.concat().sort((a, b) => {
         let res = 0;
         switch (key) {
-          case "returns":
-          case "createdAt":
-            res = a[key] < b[key] ? 1 : -1;
+          case "RETURNS":
+            res = a.returns < b.returns ? 1 : -1;
             break;
-          case "name":
+          case "DATE":
+            res = a.createdAt < b.createdAt ? 1 : -1;
+            break;
+          case "NAME":
             res = a.name.localeCompare(b.name);
             break;
-          case "fee":
+          case "FEE":
             break;
           default:
             break;
         }
-        return direction === "asc" ? res : -res;
+        return direction === "ASC" ? res : -res;
       });
     }
     setProvidersFiltered(providersSorted);

@@ -11,7 +11,7 @@ import CustomSelect from "../../CustomSelect";
  * @property {Function} onChange Callback that delegate sorting changes to caller.
  * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
  * @property {string} sort value Selected value.
- * @property {Function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
  */
 
 /**
@@ -48,11 +48,11 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
     },
     {
       label: "Descending Creation Date",
-      val: "CREATEDAT_DESC",
+      val: "DATE_DESC",
     },
     {
       label: "Ascending Creation Date",
-      val: "createdAt_asc",
+      val: "DATE_ASC",
     },
   ];
 
