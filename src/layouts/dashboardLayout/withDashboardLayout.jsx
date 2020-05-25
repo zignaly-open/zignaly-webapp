@@ -23,7 +23,6 @@ import { useSelector } from "react-redux";
  */
 const withDashboardLayout = (Component) => {
   /**
-   *
    * @param {Object} props Default params.
    * @returns {JSX.Element} Component JSX.
    */
