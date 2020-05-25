@@ -64,7 +64,10 @@ const TwoFAForm = () => {
         justifyContent="start"
       >
         <label className="customLabel">Input Your Authentication Code</label>
-        <ReactCodeInput fields={6} onChange={handleCodeChange} onComplete={handleKeyPress} />
+        {
+          // @ts-ignore
+          <ReactCodeInput fields={6} onChange={handleCodeChange} onComplete={handleKeyPress} />
+        }
         {codeError && <span className="errorText">Code must be of 6 digits!</span>}
       </Box>
 
