@@ -2,7 +2,8 @@
  * @typedef {Object} LocalizationLanguage
  * @property {String} locale
  * @property {String} label
- * @property {Object} routes
+ * @property {Boolean=} default
+ * @property {Object<string, string>} routes
  */
 
 /**
