@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import "./connectedTraders.scss";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
@@ -6,50 +7,18 @@ import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
-import tradeApi from "../../../services/tradeApiClient";
-import ProvidersList from "../../../components/Providers/ProvidersList";
+import useProvidersList from "../../../hooks/useProvidersList";
 
 const ConnectedTraders = () => {
-  /**
-   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
-   * @type {ProvidersCollection} initialState
-   */
-  const initialState = [];
-  const [providers, setProviders] = useState(initialState);
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailrh5a6gnsvn@example.test",
-      password: "abracadabra",
-    };
+  const intl = useIntl();
 
-    return await tradeApi.userLogin(loginPayload);
-  };
-
-  useEffect(() => {
-    const loadProviders = async () => {
-      const userEntity = await authenticateUser();
-      const sessionPayload = {
-        token: userEntity.token,
-        type: "all",
-        ro: true,
-        copyTradersOnly: true,
-        timeFrame: 90,
-      };
-
-      try {
-        const responseData = await tradeApi.providersGet(sessionPayload);
-        setProviders(responseData);
-      } catch (e) {
-        setProviders([]);
-      }
-    };
-    loadProviders();
-  }, []);
+  const [providers, provComponents] = useProvidersList(false, true, true);
+  const { ProvidersList, TimeFrameSelect } = provComponents;
 
   return (
     <>
       <Helmet>
-        <title>Connected Traders</title>
+        <title>{intl.formatMessage({ id: "dashboard.traders" })}</title>
       </Helmet>
       <Box
         className="connectedTradersPage"
@@ -58,7 +27,12 @@ const ConnectedTraders = () => {
         justifyContent="flex-start"
       >
         <Box className="headlineBox">
-          <Typography variant="h4">Traders I am copying:</Typography>
+          <Typography variant="h4">
+            <FormattedMessage id="dashboard.traders.copying" />
+          </Typography>
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
+            <TimeFrameSelect />
+          </Box>
         </Box>
         <Box
           alignItems="center"
@@ -68,7 +42,7 @@ const ConnectedTraders = () => {
           flexWrap="wrap"
           justifyContent="flex-start"
         >
-          <ProvidersList providers={providers} showSummary={true} />
+          <ProvidersList />
         </Box>
       </Box>
     </>

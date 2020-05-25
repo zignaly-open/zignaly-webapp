@@ -17,7 +17,7 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
   const sorts = [
     {
       label: "Descending Results",
@@ -53,21 +53,21 @@ const ProvidersSort = ({ onChange, onClose }) => {
     },
   ];
 
-  const [sort, setSort] = useState("");
+  //   const [sort, setSort] = useState("");
   const intl = useIntl();
 
-  const clearFilters = () => {
-    setSort("");
-  };
+  //   const clearFilters = () => {
+  //     setSort("");
+  //   };
 
-  // Memoized callback to satisfy exhaustive-deps
-  const triggerChange = useCallback((...args) => {
-    onChange(...args);
-  }, []);
+  //   // Memoized callback to satisfy exhaustive-deps
+  //   const triggerChange = useCallback((...args) => {
+  //     onChange(...args);
+  //   }, []);
 
-  useEffect(() => {
-    triggerChange(sort);
-  }, [sort, triggerChange]);
+  //   useEffect(() => {
+  //     triggerChange(sort);
+  //   }, [sort, triggerChange]);
 
   return (
     <Box className="providersSort">
@@ -76,7 +76,7 @@ const ProvidersSort = ({ onChange, onClose }) => {
         onClose={onClose}
         title={intl.formatMessage({ id: "sort.sortby" })}
       >
-        <CustomSelect label="" onChange={setSort} options={sorts} value={sort} />
+        <CustomSelect label="" onChange={onchange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
   );

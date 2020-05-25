@@ -5,9 +5,9 @@ import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
 
 const timeframes = [
-  { label: "Last month", val: 0 },
-  { label: "Last 90 days", val: 1 },
-  { label: "Last year", val: 2 },
+  { label: "Last month", val: 30 },
+  { label: "Last 90 days", val: 90 },
+  { label: "Last year", val: 365 },
 ];
 
 /**
@@ -22,23 +22,16 @@ const timeframes = [
  * @returns {JSX.Element} Component JSX.
  */
 const TimeFrameSelect = (props) => {
-  const { onChange } = props;
-  const [val, setVal] = useState(timeframes[1].val);
+  const { onChange, value } = props;
   const intl = useIntl();
-
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setVal(newValue);
-    onChange(newValue);
-  };
 
   return (
     <Box className="selectTimeFrame">
       <CustomSelect
         label={intl.formatMessage({ id: "timeframe.returns" })}
-        onChange={handleChange}
+        onChange={onChange}
         options={timeframes}
-        value={val}
+        value={value}
       />
     </Box>
   );

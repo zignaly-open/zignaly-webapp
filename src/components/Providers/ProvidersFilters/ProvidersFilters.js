@@ -14,31 +14,44 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersFilters = ({ onChange, onClose }) => {
+const ProvidersFilters = ({
+  onChange,
+  onClose,
+  coin,
+  exchange,
+  onCoinChange,
+  onExchangeChange,
+  clearFilters,
+}) => {
   const coins = ["BTC", "USDT"];
   const exchanges = ["Binance", "KuCoin"];
 
-  const [coin, setCoin] = useState("");
-  const [exchange, setExchange] = useState("");
+  //   const [coin, setCoin] = useState("");
+  //   const [exchange, setExchange] = useState("");
 
-  const clearFilters = () => {
-    setCoin("");
-    setExchange("");
-  };
+  //   const clearFilters = () => {
+  //     setCoin("");
+  //     setExchange("");
+  //   };
 
-  // Memoized callback to satisfy exhaustive-deps
-  const triggerChange = useCallback((...args) => {
-    onChange(...args);
-  }, []);
+  //   // Memoized callback to satisfy exhaustive-deps
+  //   const triggerChange = useCallback((...args) => {
+  //     onChange(...args);
+  //   }, []);
 
-  useEffect(() => {
-    triggerChange(coin, exchange);
-  }, [coin, exchange, triggerChange]);
+  //   useEffect(() => {
+  //     triggerChange(coin, exchange);
+  //   }, [coin, exchange, triggerChange]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
-      <CustomSelect label="Coin" onChange={setCoin} options={coins} value={coin} />
-      <CustomSelect label="Exchange" onChange={setExchange} options={exchanges} value={exchange} />
+      <CustomSelect label="Coin" onChange={onCoinChange} options={coins} value={coin} />
+      <CustomSelect
+        label="Exchange"
+        onChange={onExchangeChange}
+        options={exchanges}
+        value={exchange}
+      />
     </CustomFilters>
   );
 };
