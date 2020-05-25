@@ -26,11 +26,14 @@ const ConnectExchangeButton = () => {
       const userEntity = await authenticateUser();
       dispatch(setUserExchanges(userEntity, hideLoading));
       dispatch(setUserBalance(userEntity));
-    } catch (error) {}
+    } catch (error) {
+      // TODO: Display the error in Alert.
+      hideLoading();
+    }
   };
 
   return (
-    <CustomButton loading={loading} className="headerButton" onClick={fetchUserExchanges}>
+    <CustomButton className="headerButton" loading={loading} onClick={fetchUserExchanges}>
       Connect Account
     </CustomButton>
   );

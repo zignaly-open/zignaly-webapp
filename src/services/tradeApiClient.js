@@ -7,7 +7,6 @@ import {
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
 } from "./tradeApiClient.types";
-import { isObject } from "lodash";
 
 /**
  * Trade API client service, provides integration to API endpoints.

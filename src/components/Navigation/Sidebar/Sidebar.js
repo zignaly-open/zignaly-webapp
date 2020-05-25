@@ -41,8 +41,8 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
+      onMouseOver={() => setHover(true)}
     >
       <Link
         activeClassName={"active"}

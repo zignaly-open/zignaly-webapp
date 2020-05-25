@@ -4,7 +4,7 @@ import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import LeftIcon from "../../../images/header/chevron-left.svg";
@@ -77,11 +77,11 @@ const Header = () => {
             justifyContent="flex-start"
           >
             <Box
+              alignItems="center"
               className="iconBox"
               display="flex"
               flexDirection="row"
               justifyContent="center"
-              alignItems="center"
             >
               <img
                 alt="zignaly"
