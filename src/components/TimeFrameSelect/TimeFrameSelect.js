@@ -28,8 +28,14 @@ const TimeFrameSelect = (props) => {
   const { onChange } = props;
   const [val, setVal] = useState(timeframes[1].val);
 
-  const handleChange = (e) => {
-    const newValue = e.target.value;
+  /**
+   * Selected option state change handler.
+   *
+   * @param {String} newValue New selected value.
+   *
+   * @returns {Void} None.
+   */
+  const handleChange = (newValue) => {
     setVal(newValue);
     onChange(newValue);
   };
