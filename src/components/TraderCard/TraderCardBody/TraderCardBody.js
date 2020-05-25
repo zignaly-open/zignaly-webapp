@@ -27,6 +27,9 @@ import { FormattedMessage } from "react-intl";
 const TraderCard = (props) => {
   const { id, showSummary, risk, dailyReturns, isCopyTrading } = props;
   let cardId = "traderCard" + id;
+  /**
+   * @type {Array<number>} chartData
+   */
   let chartData = [];
 
   let cumulativeTotalProfits = 0;
