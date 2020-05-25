@@ -3,13 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
-import DefaultState from "./initialState";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
-
-/**
- * @typedef {import("redux").Action} Action
- * @typedef {import("redux-thunk").ThunkAction<void, DefaultState, unknown, Action>} AppThunk
- */
 
 const persistConfig = {
   key: "zignaly-webapp2",
@@ -18,5 +12,5 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-export const store = createStore(persistedReducer, DefaultState, applyMiddleware(thunk));
+export const store = createStore(persistedReducer, applyMiddleware(thunk));
 export const persistor = persistStore(store);

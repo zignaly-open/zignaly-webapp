@@ -1,5 +1,6 @@
-const USER_LOGIN = "USER_LOGIN_ACTION";
 import initialState from "../store/initialState";
+
+const USER_LOGIN = "USER_LOGIN_ACTION";
 
 /**
  *

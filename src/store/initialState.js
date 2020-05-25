@@ -1,8 +1,4 @@
 /**
- * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- */
-
-/**
  * @typedef {Object} UserBalanceEntity
  * @property {Boolean} btcusdt
  * @property {String} profitPercentage
@@ -13,6 +9,7 @@
  */
 
 /**
+ * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalanceEntity} balance
