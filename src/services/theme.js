@@ -1,67 +1,56 @@
-import PlexSansBoldttf from "../styles/fonts/Sans/IBMPlexSans-Bold.ttf";
-import PlexSansLightttf from "../styles/fonts/Sans/IBMPlexSans-Light.ttf";
-import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf";
-import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf";
-import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf";
+// import PlexSansBoldttf from "../styles/fonts/Sans/IBMPlexSans-Bold.ttf";
+// import PlexSansLightttf from "../styles/fonts/Sans/IBMPlexSans-Light.ttf";
+// import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf";
+// import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf";
+// import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf";
 
+/**
+ * @typedef {import("@material-ui/system").TypographyProps} TypographyProps
+ */
+
+/**
+ * @type {TypographyProps} PlexSansBold
+ */
 const PlexSansBold = {
   fontFamily: "PlexSans-Bold",
   fontStyle: "normal",
-  fontDisplay: "swap",
   fontWeight: 400,
-  src: `
-      local('PlexSans'),
-      local('PlesSans-Bold'),
-      url(${PlexSansBoldttf}) format('woff2')
-    `,
 };
 
+/**
+ * @type {TypographyProps} PlexSansSemiBold
+ */
 const PlexSansSemiBold = {
   fontFamily: "PlexSans-SemiBold",
   fontStyle: "normal",
-  fontDisplay: "swap",
   fontWeight: 400,
-  src: `
-      local('PlexSans'),
-      local('PlesSans-SemiBold'),
-      url(${PlexSansSemiBoldttf}) format('woff2')
-    `,
 };
 
+/**
+ * @type {TypographyProps} PlexSansMedium
+ */
 const PlexSansMedium = {
   fontFamily: "PlexSans-Medium",
   fontStyle: "normal",
-  fontDisplay: "swap",
   fontWeight: 400,
-  src: `
-      local('PlexSans'),
-      local('PlesSans-Medium'),
-      url(${PlexSansMediumttf}) format('woff2')
-    `,
 };
 
+/**
+ * @type {TypographyProps} PlexSansRegular
+ */
 const PlexSansRegular = {
   fontFamily: "PlexSans-Regular",
   fontStyle: "normal",
-  fontDisplay: "swap",
   fontWeight: 400,
-  src: `
-      local('PlexSans'),
-      local('PlesSans-Regular'),
-      url(${PlexSansRegularttf}) format('woff2')
-    `,
 };
 
+/**
+ * @type {TypographyProps} PlexSansLight
+ */
 const PlexSansLight = {
   fontFamily: "PlexSans-Light",
   fontStyle: "normal",
-  fontDisplay: "swap",
   fontWeight: 400,
-  src: `
-      local('PlexSans'),
-      local('PlesSans-Bold'),
-      url(${PlexSansLightttf}) format('woff2')
-    `,
 };
 
 const black = "#191927";
