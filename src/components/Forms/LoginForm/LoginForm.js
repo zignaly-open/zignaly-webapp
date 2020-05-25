@@ -12,7 +12,10 @@ const LoginForm = () => {
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { handleSubmit, errors, register } = useForm();
+  const { handleSubmit, errors, register } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
 
   const onSubmit = () => {
     showLoading(true);
@@ -54,13 +57,16 @@ const LoginForm = () => {
             fullWidth
             inputRef={register({
               required: true,
-              pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+              pattern: {
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                message: "Email should be valid",
+              },
             })}
             name="email"
             type="email"
             variant="outlined"
           />
-          {errors.email && <span className="errorText">Email should be valid</span>}
+          {errors.email && <span className="errorText">{errors.email.message}</span>}
         </Box>
 
         <Box
