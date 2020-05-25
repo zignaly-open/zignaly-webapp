@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ProvidersFilters from "../components/Providers/ProvidersFilters";
 import ProvidersSort from "../components/Providers/ProvidersSort";
 import ProvidersList from "../components/Providers/ProvidersList";
@@ -34,9 +34,9 @@ import tradeApi from "../services/tradeApiClient";
 /**
  * Hook to generate the providers components including list, filters, and sort.
  *
- * @param {ProvidersOptions} options
- * @param {ProvidersCallbacks} callbacks
- * @returns {[ProvidersCollection, ProvidersComponents]}
+ * @param {ProvidersOptions} options Hook options.
+ * @param {ProvidersCallbacks} callbacks Hook callbacks.
+ * @returns {[ProvidersCollection, ProvidersComponents]} Array with providers data and components.
  */
 const useProvidersList = (options, callbacks) => {
   const { copyTradersOnly, connectedOnly, showSummary } = options;
@@ -64,7 +64,8 @@ const useProvidersList = (options, callbacks) => {
   /**
    * Sort providers by select option
    *
-   * @param {ProvidersCollection} _providersFiltered
+   * @param {ProvidersCollection} _providersFiltered Current providers collection.
+   * @returns {void}
    */
   const sortProviders = (_providersFiltered) => {
     let providersSorted = _providersFiltered;
@@ -94,23 +95,22 @@ const useProvidersList = (options, callbacks) => {
   // Update providers sorting on sort change
   useEffect(() => {
     sortProviders(providersFiltered);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
-  // useCallback since it's a dependency of loadProviders()
-  const filterProviders = useCallback(
-    (_providers) => {
-      const _providersFiltered = providers.filter(
-        (p) =>
-          (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
-      );
-      sortProviders(_providersFiltered);
-    },
-    [coin, exchange, providers],
-  );
+  const filterProviders = useCallback(() => {
+    const _providersFiltered = providers.filter(
+      (p) =>
+        (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+    );
+    sortProviders(_providersFiltered);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coin, exchange, providers]);
 
-  //   Filter providers when providers loaded or filters changed
+  // Filter providers when providers loaded or filters changed
   useEffect(() => {
     filterProviders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterProviders]);
 
   const authenticateUser = async () => {
@@ -162,7 +162,7 @@ const useProvidersList = (options, callbacks) => {
   );
 
   const ProvidersSortMaker = () => (
-    <ProvidersSort onChange={setSort} onClose={toggleSort} sort={sort} clearFilters={clearSort} />
+    <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={toggleSort} sort={sort} />
   );
 
   const TimeFrameSelectMaker = () => <TimeFrameSelect onChange={setTimeFrame} value={timeFrame} />;

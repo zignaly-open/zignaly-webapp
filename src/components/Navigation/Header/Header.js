@@ -77,11 +77,11 @@ const Header = () => {
             justifyContent="flex-start"
           >
             <Box
+              alignItems="center"
               className="iconBox"
               display="flex"
               flexDirection="row"
               justifyContent="center"
-              alignItems="center"
             >
               <img
                 alt="zignaly"

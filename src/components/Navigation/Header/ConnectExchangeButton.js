@@ -30,7 +30,7 @@ const ConnectExchangeButton = () => {
   };
 
   return (
-    <CustomButton loading={loading} className="headerButton" onClick={fetchUserExchanges}>
+    <CustomButton className="headerButton" loading={loading} onClick={fetchUserExchanges}>
       Connect Account
     </CustomButton>
   );

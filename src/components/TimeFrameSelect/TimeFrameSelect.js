@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../CustomSelect";

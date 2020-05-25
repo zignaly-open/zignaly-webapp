@@ -486,7 +486,7 @@ export function userExchangeConnectionResponseTransform(response) {
 function userExchangeConnectionItemTransform(exchangeConnectionItem) {
   const emptyExchangeConnectionEntity = createExchangeConnectionEmptyEntity();
   const normalizedId = isObject(exchangeConnectionItem._id)
-    ? exchangeConnectionItem._id["$oid"]
+    ? exchangeConnectionItem._id.$oid
     : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyExchangeConnectionEntity, exchangeConnectionItem, {
