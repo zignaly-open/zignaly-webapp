@@ -1,5 +1,3 @@
-
-
 .dashboardLayout {
   .pageContent {
     margin-bottom: 30px;
@@ -16,27 +14,33 @@
       font-family: "PlexSans-Medium";
       font-size: 21px;
       margin-bottom: 16px;
-      width: 450px;
+      width: 300px;
 
       b {
         color: $purple;
         cursor: pointer;
+        margin-left: 5px;
       }
+    }
 
-      .text {
-        font-family: "PlexSans-Light";
-        font-size: 18px;
-        width: 420px;
+    .subtitle {
+      font-family: "PlexSans-Light";
+      font-size: 18px;
+      width: 450px;
 
-        b {
-          font-family: "PlexSans-Medium";
+      span {
+        font-family: "PlexSans-Medium";
+        text-transform: capitalize;
+
+        &:last-child {
+          margin-left: 5px;
         }
       }
     }
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .dashboardLayout {
     padding-bottom: 60px;
 
@@ -49,7 +53,7 @@
         width: 100%;
       }
 
-      .text {
+      .subtitle {
         width: 100%;
       }
     }

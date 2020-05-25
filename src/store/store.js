@@ -5,6 +5,12 @@ import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
 import DefaultState from "./initialState";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+/**
+ * @typedef {ThunkAction<void, DefaultState, unknown, Action<Object>>} AppThunk
+ */
 
 const persistConfig = {
   key: "zignaly-webapp2",

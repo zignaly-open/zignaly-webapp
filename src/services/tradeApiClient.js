@@ -4,6 +4,8 @@ import {
   userEntityResponseTransform,
   userPositionsResponseTransform,
   providersResponseTransform,
+  userExchangeConnectionResponseTransform,
+  userBalanceResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -106,14 +108,14 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').UserPositionsPayload} UserPositionsPayload
+   * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
    * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
    */
 
   /**
    * Get user open trading positions.
    *
-   * @param {UserPositionsPayload} payload Get user positions payload.
+   * @param {AuthorizationPayload} payload Get user positions payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -145,6 +147,36 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providersResponseTransform(responseData);
+  }
+
+  /**
+   *
+   *
+   * @param {AuthorizationPayload} payload
+   * @returns
+   * @memberof TradeApiClient
+   */
+
+  async userExchangesGet(payload) {
+    const endpointPath = "/fe/api.php?action=getUserExchanges";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userExchangeConnectionResponseTransform(responseData);
+  }
+
+  /**
+   *
+   *
+   * @param {AuthorizationPayload} payload
+   * @returns
+   * @memberof TradeApiClient
+   */
+
+  async userBalanceGet(payload) {
+    const endpointPath = "/fe/api.php?action=getDashboardStats";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userBalanceResponseTransform(responseData);
   }
 }
 

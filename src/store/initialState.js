@@ -1,4 +1,24 @@
 /**
+ * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
+
+/**
+ * @typedef {Object} UserBalanceEntity
+ * @property {Boolean} btcusdt
+ * @property {String} profitPercentage
+ * @property {String} totalInvested
+ * @property {String} totalAssets
+ * @property {String} totalOpen
+ * @property {String} totalProfit
+ */
+
+/**
+ * @typedef {Object} UserObject
+ * @property {Array<ExchangeConnectionEntity>} exchangeConnections
+ * @property {UserBalanceEntity} balance
+ */
+
+/**
  * @typedef {Object} DefaultStateSessionTradeApi
  * @property {string} accessToken
  */
@@ -24,6 +44,7 @@
  * @typedef {Object} DefaultState
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
+ * @property {UserObject} user
  */
 
 /**
@@ -41,6 +62,17 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+  },
+  user: {
+    exchangeConnections: [],
+    balance: {
+      btcusdt: false,
+      totalInvested: "",
+      totalOpen: "",
+      totalProfit: "",
+      totalAssets: "",
+      profitPercentage: "",
+    },
   },
 };
 

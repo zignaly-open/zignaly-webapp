@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Sidebar.scss";
-import { Box, ClickAwayListener, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import Link from "../../LocalizedLink";
 import { useSelector, useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
@@ -34,94 +34,65 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
   return (
-    <ClickAwayListener onClickAway={() => setHover(false)}>
-      <Box
-        alignItems="flex-start"
-        bgcolor="grid.main"
-        className={"sidebar " + (hover ? "full" : "")}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        onMouseEnter={() => setHover(true)}
+    <Box
+      alignItems="flex-start"
+      bgcolor="grid.main"
+      className={"sidebar " + (hover ? "full" : "")}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+    >
+      <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
+        to={"/dashboard/positions"}
       >
-        <Link
-          activeClassName={"active"}
-          className={"sideBarLink"}
-          partiallyActive={true}
-          to={"/dashboard/positions"}
-        >
-          <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
-          <Typography variant="h6">
-            <FormattedMessage id="menu.dashboard" />
-          </Typography>
-        </Link>
-        <Link
-          activeClassName={"active"}
-          className={"sideBarLink"}
-          partiallyActive={true}
-          to={"/copyTraders/browse"}
-        >
-          <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
-          <Typography variant="h6">
-            <FormattedMessage id="menu.copytraders" />
-          </Typography>
-        </Link>
-        <Link
-          activeClassName={"active"}
-          className={"sideBarLink"}
-          partiallyActive={true}
-          to={"/signalProviders/browse"}
-        >
-          <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
-          <Typography variant="h6">
-            <FormattedMessage id="menu.signalproviders" />
-          </Typography>
-        </Link>
-        <Link
-          activeClassName={"active"}
-          className={"sideBarLink"}
-          partiallyActive={true}
-          to={"/tradingTerminal"}
-        >
-          <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
-          <Typography variant="h6">
-            <FormattedMessage id="menu.tradingterminal" />
-          </Typography>
-        </Link>
-        <Box className={"themeBox"} display="flex" flexDirection="row" flexWrap="nowrap">
-          {hover && (
-            <>
-              <Box
-                className={darkStyle ? "checkedDarkBox" : "darkBox"}
-                display="flex"
-                flexDirection="row"
-                justifyContent="center"
-              >
-                <img
-                  alt="zignaly"
-                  className={"icon"}
-                  onClick={() => dispatch(selectDarkTheme(true))}
-                  src={darkStyle ? OutlineWhite : OutlineBlack}
-                />
-              </Box>
-              <Box
-                className={!darkStyle ? "checkedLightBox" : "lightBox"}
-                display="flex"
-                flexDirection="row"
-                justifyContent="center"
-              >
-                <img
-                  alt="zignaly"
-                  className={"icon"}
-                  onClick={() => dispatch(selectDarkTheme(false))}
-                  src={FillWhite}
-                />
-              </Box>
-            </>
-          )}
-          {!hover && (
+        <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.dashboard" />
+        </Typography>
+      </Link>
+      <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
+        to={"/copyTraders/browse"}
+      >
+        <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.copytraders" />
+        </Typography>
+      </Link>
+      <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
+        to={"/signalProviders/browse"}
+      >
+        <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.signalproviders" />
+        </Typography>
+      </Link>
+      <Link
+        activeClassName={"active"}
+        className={"sideBarLink"}
+        partiallyActive={true}
+        to={"/tradingTerminal"}
+      >
+        <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.tradingterminal" />
+        </Typography>
+      </Link>
+      <Box className={"themeBox"} display="flex" flexDirection="row" flexWrap="nowrap">
+        {hover && (
+          <>
             <Box
-              className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
+              className={darkStyle ? "checkedDarkBox" : "darkBox"}
               display="flex"
               flexDirection="row"
               justifyContent="center"
@@ -130,13 +101,41 @@ const Sidebar = () => {
                 alt="zignaly"
                 className={"icon"}
                 onClick={() => dispatch(selectDarkTheme(true))}
-                src={darkStyle ? OutlineWhite : FillWhite}
+                src={darkStyle ? OutlineWhite : OutlineBlack}
               />
             </Box>
-          )}
-        </Box>
+            <Box
+              className={!darkStyle ? "checkedLightBox" : "lightBox"}
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+            >
+              <img
+                alt="zignaly"
+                className={"icon"}
+                onClick={() => dispatch(selectDarkTheme(false))}
+                src={FillWhite}
+              />
+            </Box>
+          </>
+        )}
+        {!hover && (
+          <Box
+            className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <img
+              alt="zignaly"
+              className={"icon"}
+              onClick={() => dispatch(selectDarkTheme(true))}
+              src={darkStyle ? OutlineWhite : FillWhite}
+            />
+          </Box>
+        )}
       </Box>
-    </ClickAwayListener>
+    </Box>
   );
 };
 

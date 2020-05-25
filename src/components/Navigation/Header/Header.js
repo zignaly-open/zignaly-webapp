@@ -4,18 +4,20 @@ import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import CustomButton from "../../CustomButton";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
+import BalanceBox from "./BalanceBox";
+import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 const Header = () => {
@@ -25,10 +27,20 @@ const Header = () => {
    * @param {DefaultState} state Redux store state data.
    * @return {boolean} Flag that indicates if darkStyle is enabled.
    */
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
+
+  const darkStyleSelector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(darkStyleSelector);
+
+  /**
+   *
+   * @param {DefaultState} state
+   * @returns {Array<ExchangeConnectionEntity>}
+   */
+
+  const userExchangeSelector = (state) => state.user.exchangeConnections;
+  const exchangeConnections = useSelector(userExchangeSelector);
+
   const [showBalance, setShowBalance] = useState(false);
-  const [connected, setConnected] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
 
   return (
@@ -56,95 +68,47 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <Box
-          alignItems="center"
-          className="balanceContainer"
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
-          <Box className={"iconBox"} display="flex" flexDirection="column" justifyContent="center">
-            <img
-              alt="zignaly"
-              className={"expandIcon"}
-              onClick={() => setShowBalance(!showBalance)}
-              src={showBalance ? RightIcon : LeftIcon}
-            />
+        {exchangeConnections.length > 0 && (
+          <Box
+            alignItems="center"
+            className={"balanceWrapper " + (showBalance ? "full" : "")}
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-start"
+          >
+            <Box
+              className="iconBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <img
+                alt="zignaly"
+                className={"expandIcon"}
+                onClick={() => setShowBalance(!showBalance)}
+                src={showBalance ? RightIcon : LeftIcon}
+              />
+            </Box>
+            {showBalance && <BalanceBox />}
+            {!showBalance && (
+              <Grow in={true}>
+                <Box
+                  className="iconBox"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Typography variant="h4">
+                    <FormattedMessage id="dashboard.balance" />
+                  </Typography>
+                </Box>
+              </Grow>
+            )}
           </Box>
-          {showBalance && (
-            <Grow in={true}>
-              <Box
-                alignItems="center"
-                display="flex"
-                flexDirection="row"
-                justifyContent="flex-start"
-              >
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    available balance
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.256
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    invested
-                  </Typography>
-                  <Typography className="balance" variant="h5">
-                    btc 0.452
-                  </Typography>
-                </Box>
-                <Box
-                  alignItems="flex-start"
-                  className="blaanceBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Typography className="title" variant="subtitle1">
-                    p/l
-                  </Typography>
-                  <Typography className="balance green" variant="h5">
-                    btc +0.47
-                  </Typography>
-                </Box>
-              </Box>
-            </Grow>
-          )}
-          {!showBalance && (
-            <Grow in={true}>
-              <Box
-                className={"iconBox"}
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-              >
-                <Typography variant="h4">
-                  <FormattedMessage id="dashboard.balance" />
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </Box>
-        {!connected && (
-          <CustomButton className="headerButton" onClick={() => setConnected(true)}>
-            Connect Account
-          </CustomButton>
         )}
-        {connected && <UserExchangeList />}
+        {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+        {exchangeConnections.length > 0 && <UserExchangeList />}
 
         <Box className={"linkBox"}>
           <NotificationsNoneIcon className={"icon"} />

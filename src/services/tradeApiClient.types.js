@@ -1,4 +1,4 @@
-import { assign, isArray } from "lodash";
+import { assign, isArray, isObject } from "lodash";
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -53,7 +53,7 @@ import { assign, isArray } from "lodash";
  */
 
 /**
- * @typedef {Object} UserPositionsPayload
+ * @typedef {Object} AuthorizationPayload
  * @property {string} token
  */
 
@@ -430,5 +430,135 @@ function createEmptyPositionEntity() {
     internalExchangeId: "",
     logoUrl: "",
     reBuyTargets: [],
+  };
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} response
+ * @returns {Array<ExchangeConnectionEntity>}
+ */
+export function userExchangeConnectionResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((exchangeConnectionItem) => {
+    return userExchangeConnectionItemTransform(exchangeConnectionItem);
+  });
+}
+
+/**
+ * @typedef {Object} ExchangeConnectionEntity
+ * @property {String} id
+ * @property {String} Name
+ * @property {String} exchangeId
+ * @property {String} exchangeName
+ * @property {String} internalId
+ * @property {String} exchangeInternalName
+ * @property {Boolean} key
+ * @property {Boolean} secret
+ * @property {Boolean} arrayKeysValid
+ * @property {Boolean} paperTrading
+ * @property {String} exchangeType
+ * @property {Boolean} isTestnet
+ * @property {Boolean} disable
+ * @property {Number} positionSize
+ * @property {Boolean} managed
+ * @property {Boolean} internal
+ * @property {Boolean} isBrokerAccount
+ * @property {String} subAccountId
+ * @property {String} binanceBrokerId
+ * @property {Number} checkAuthCount
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} exchangeConnectionItem Trade API exchange connection item.
+ * @returns {ExchangeConnectionEntity} Exchange connection entity.
+ *
+ *
+ */
+
+function userExchangeConnectionItemTransform(exchangeConnectionItem) {
+  const emptyExchangeConnectionEntity = createExchangeConnectionEmptyEntity();
+  const normalizedId = isObject(exchangeConnectionItem._id)
+    ? exchangeConnectionItem._id["$oid"]
+    : "";
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyExchangeConnectionEntity, exchangeConnectionItem, {
+    id: normalizedId,
+  });
+
+  return transformedResponse;
+}
+
+function createExchangeConnectionEmptyEntity() {
+  return {
+    id: "",
+    name: "",
+    exchangeId: "",
+    exchangeName: "",
+    internalId: "",
+    internalName: "",
+    key: false,
+    secret: false,
+    areKeysValid: false,
+    paperTrading: false,
+    exchangeType: "",
+    isTestnet: false,
+    disable: false,
+    positionSize: 0,
+    managed: false,
+    internal: false,
+    isBrokerAccount: true,
+    subAccountId: "",
+    binanceBrokerId: "",
+    checkAuthCount: false,
+  };
+}
+
+/**
+ * @typedef {import('../store/initialState').UserBalanceEntity} UserBalanceEntity
+ */
+
+/**
+ * Transform API user balance response to typed object.
+ *
+ * @param {*} response Trade API exchange connection item.
+ * @returns {UserBalanceEntity} User Balance entity.
+ */
+
+/**
+ *
+ *
+ * @export
+ * @param {*} response
+ * @returns
+ */
+export function userBalanceResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different propteries.");
+  }
+  const transformedResponse = createUserBalanceEntity(response);
+  return transformedResponse;
+}
+
+/**
+ *
+ * @param {*} response
+ */
+
+function createUserBalanceEntity(response) {
+  return {
+    btcusdt: response.btcusdt,
+    totalInvested: response.totalInvested,
+    totalOpen: response.totalOpen,
+    totalProfit: response.totalProfit,
+    totalAssets: response.totalAssets,
+    profitPercentage: response.profitPercentage,
   };
 }

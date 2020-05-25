@@ -16,10 +16,16 @@ balance.invested: "Invested"
 balance.profit: "Profit"
 balance.total: "Total Equity"
 
+# EXCHANGES
+exchange.binance: "binance"
+exchange.kucoin: "kuCoin"
+exchange.zignaly: "zignaly"
+
 # DASHBOARD SECTION
 dashboard: "Dashboard"
-dashboard.connectexchange.title: "Go to My Exchange Accounts in the menu at the top-right to set up your exchange"
-dashboard.connectexchange.subtitle: "To be able to trade on Zignaly you need to connect or create at least one exchange accounts like Binance or KuCoin."
+dashboard.connectexchange.bold.title: "My Exchange Accounts"
+dashboard.connectexchange.title: "You need to add an exchange, go to"
+dashboard.connectexchange.subtitle: "To be able to trade on Zignaly you need to connect or create at least one exchange accounts like "
 dashboard.positions: "Positions"
 dashboard.balance: "Balance"
 dashboard.traders: "Connected Traders"
