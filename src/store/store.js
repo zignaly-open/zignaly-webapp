@@ -5,11 +5,10 @@ import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
 import DefaultState from "./initialState";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
-import { Action } from "redux";
-import { ThunkAction } from "redux-thunk";
 
 /**
- * @typedef {ThunkAction<void, DefaultState, unknown, Action<Object>>} AppThunk
+ * @typedef {import("redux").Action} Action
+ * @typedef {import("redux-thunk").ThunkAction<void, DefaultState, unknown, Action>} AppThunk
  */
 
 const persistConfig = {
