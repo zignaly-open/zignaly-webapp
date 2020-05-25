@@ -45,29 +45,15 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
     },
     {
       label: "Descending Creation Date",
-      val: "creationDate-desc",
+      val: "createdAt-desc",
     },
     {
       label: "Ascending Creation Date",
-      val: "creationDate-asc",
+      val: "createdAt-asc",
     },
   ];
 
-  //   const [sort, setSort] = useState("");
   const intl = useIntl();
-
-  //   const clearFilters = () => {
-  //     setSort("");
-  //   };
-
-  //   // Memoized callback to satisfy exhaustive-deps
-  //   const triggerChange = useCallback((...args) => {
-  //     onChange(...args);
-  //   }, []);
-
-  //   useEffect(() => {
-  //     triggerChange(sort);
-  //   }, [sort, triggerChange]);
 
   return (
     <Box className="providersSort">
@@ -76,7 +62,7 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
         onClose={onClose}
         title={intl.formatMessage({ id: "sort.sortby" })}
       >
-        <CustomSelect label="" onChange={onchange} options={sorts} value={sort} />
+        <CustomSelect label="" onChange={onChange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
   );

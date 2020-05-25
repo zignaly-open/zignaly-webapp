@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import ProvidersFilters from "../components/Providers/ProvidersFilters";
 import ProvidersSort from "../components/Providers/ProvidersSort";
 import ProvidersList from "../components/Providers/ProvidersList";
@@ -17,12 +17,13 @@ const useProvidersList = (
    * @type {ProvidersCollection} initialState
    */
   const initialState = [];
-  const [providers, setProviders] = useState(initialState);
+  //   const [providers, setProviders] = useState(initialState);
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
   const [coin, setCoin] = useState("");
   const [exchange, setExchange] = useState("");
   const [sort, setSort] = useState("");
+  const providers = useRef();
 
   const clearFilters = () => {
     setCoin("");
@@ -38,19 +39,39 @@ const useProvidersList = (
   //     triggerChange(coin, exchange);
   //   }, [coin, exchange, triggerChange]);
 
-  const filterProviders = () => {
-    const _providersFiltered = providers.filter(
+  console.log("aaa");
+  const filterProviders = useCallback((_providers) => {
+    console.log("filterProviders");
+    //    const filterProviders = (_providers) => {
+    const _providersFiltered = _providers.filter(
       (p) =>
         (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
     );
     sortProviders(_providersFiltered);
-  };
+    //    };
+  }, []);
 
+  //   const sortProviders = useCallback(() => {
   const sortProviders = (_providersFiltered) => {
-    const providersSorted = _providersFiltered.sort((a, b) => {
-      return a.returns < b.returns;
-    });
-    setProvidersFiltered(providersSorted);
+    if (sort) {
+      const [key, direction] = sort.split("-");
+      _providersFiltered.sort((a, b) => {
+        let res;
+        switch (typeof a[key]) {
+          case "number":
+            res = a[key] < b[key];
+            break;
+          case "string":
+            res = a[key].localeCompare(b[key]);
+            break;
+          default:
+            break;
+        }
+        return direction === "asc" ? res : -res;
+      });
+    }
+    setProvidersFiltered(_providersFiltered);
+    //   }, []);
   };
 
   const authenticateUser = async () => {
@@ -76,23 +97,41 @@ const useProvidersList = (
 
       try {
         const responseData = await tradeApi.providersGet(sessionPayload);
-        setProviders(responseData);
+        // setProviders(responseData);
+        providers.current = responseData;
       } catch (e) {
-        setProviders([]);
+        // setProviders([]);
+        providers.current = [];
       }
+      filterProviders(providers.current);
     };
     loadProviders();
-  }, [timeFrame]);
+  }, [timeFrame, connectedOnly, copyTradersOnly, filterProviders]);
 
-  // Filter providers when providers loaded or filters changed
-  useEffect(() => {
-    filterProviders();
-  }, [providers, coin, exchange]);
+  //   Filter providers when providers loaded or filters changed
+  //   useEffect(() => {
+  //     const filterProviders = () => {
+  //       const _providersFiltered = providers.current.filter(
+  //         (p) =>
+  //           (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+  //       );
+  //       sortProviders();
+  //     };
+  //     console.log("filterProviders", providers);
 
-  // Update providers sorting on sort change
-  useEffect(() => {
-    sortProviders(providersFiltered);
-  }, [sort]);
+  //     if (providers.current) {
+  //       filterProviders();
+  //     }
+  //   }, [providers]);
+
+  //   // Update providers sorting on sort change
+  //   useEffect(() => {
+  //     sortProviders();
+  //   }, [sort, sortProviders, providersFiltered]);
+
+  //   const handleTimeFrameChange = (timeFrame) => {
+  //     setTimeFrame(timeFrame);
+  //   };
 
   const ProvidersListMaker = () => (
     <ProvidersList providers={providersFiltered} showSummary={showSummary} />
@@ -100,17 +139,17 @@ const useProvidersList = (
 
   const ProvidersFiltersMaker = () => (
     <ProvidersFilters
+      clearFilters={clearFilters}
+      coin={coin}
+      exchange={exchange}
       onClose={toggleFilters}
       onCoinChange={setCoin}
       onExchangeChange={setExchange}
-      coin={coin}
-      exchange={exchange}
-      clearFilters={clearFilters}
     />
   );
 
   const ProvidersSortMaker = () => (
-    <ProvidersSort onClose={toggleSort} sort={sort} onChange={setSort} />
+    <ProvidersSort onChange={setSort} onClose={toggleSort} sort={sort} />
   );
 
   const TimeFrameSelectMaker = () => <TimeFrameSelect onChange={setTimeFrame} value={timeFrame} />;
