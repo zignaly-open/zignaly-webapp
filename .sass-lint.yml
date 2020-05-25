@@ -31,7 +31,10 @@ rules:
   no-important: 2
   no-invalid-hex: 2
   no-mergeable-selectors: 1
-  no-misspelled-properties: 1
+  no-misspelled-properties:
+    - 1
+    - extra-properties:
+        - "scrollbar-width"
   no-qualifying-elements: 1
   no-trailing-zero: 1
   no-transition-all: 1
