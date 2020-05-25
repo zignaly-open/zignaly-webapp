@@ -1,4 +1,15 @@
-module.exports = [
+/**
+ * @typedef {Object} LocalizationLanguage
+ * @property {String} locale
+ * @property {String} label
+ * @property {Boolean=} default
+ * @property {Object<string, string>} routes
+ */
+
+/**
+ * @type {Array<LocalizationLanguage>} LocalizationLanguages
+ */
+const LocalizationLanguages = [
   {
     locale: "cs",
     label: "Čeština",
@@ -37,3 +48,5 @@ module.exports = [
     },
   },
 ];
+
+module.exports = LocalizationLanguages;

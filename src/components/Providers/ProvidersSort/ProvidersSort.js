@@ -6,11 +6,12 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
+ * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} ProvidersSortPropTypes
- * @property {function} onChange Callback that delegate sorting changes to caller.
- * @property {function} onClose Callback that delegate sorting toggle state to caller.
+ * @property {Function} onChange Callback that delegate sorting changes to caller.
+ * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
  * @property {string} sort value Selected value.
- * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {Function} clearFilters Callback that delegate filters clearing to caller.
  */
 
 /**
@@ -23,35 +24,35 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
   const sorts = [
     {
       label: "Descending Results",
-      val: "returns-desc",
+      val: "RETURNS_DESC",
     },
     {
       label: "Ascending Results",
-      val: "returns-asc",
+      val: "RETURNS_ASC",
     },
     {
       label: "Descending Name",
-      val: "name-desc",
+      val: "NAME_DESC",
     },
     {
       label: "Ascending Name",
-      val: "name-asc",
+      val: "NAME_ASC",
     },
     {
       label: "Descending Subscription Fee",
-      val: "fee-desc",
+      val: "FEE_DESC",
     },
     {
       label: "Ascending Subscription Fee",
-      val: "fee-asc",
+      val: "FEE_ASC",
     },
     {
       label: "Descending Creation Date",
-      val: "createdAt-desc",
+      val: "CREATEDAT_DESC",
     },
     {
       label: "Ascending Creation Date",
-      val: "createdAt-asc",
+      val: "createdAt_asc",
     },
   ];
 

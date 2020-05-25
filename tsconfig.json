@@ -17,5 +17,6 @@
     "removeComments": false,
     "pretty": true
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "types/global.d.ts"],
+  "typeRoots": ["./src/types", "./node_modules/@types"]
 }

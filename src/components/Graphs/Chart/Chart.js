@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Chart.scss";
-import { prepareLineChartOptions, generateChart } from "../../../utils/chart";
+import { prepareLineChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
 
 /**

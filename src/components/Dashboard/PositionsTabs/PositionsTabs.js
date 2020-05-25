@@ -18,11 +18,10 @@ const PositionsTabs = () => {
   /**
    * Event handler to change tab value.
    *
-   * @param {Object} event Tab index to set active.
+   * @param {React.ChangeEvent<{checked: boolean}>} event Tab index to set active.
    * @param {Number} val Tab index to set active.
    * @returns {void}
    */
-
   const changeTab = (event, val) => {
     setTabValue(val);
   };

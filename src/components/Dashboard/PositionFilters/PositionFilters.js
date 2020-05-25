@@ -3,9 +3,10 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
+ * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback that delegate filters changes to caller.
- * @property {Function} onClose Callback that delegate filters toggle state to caller.
+ * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  */
 
 /**
@@ -15,13 +16,16 @@ import CustomSelect from "../../CustomSelect";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = ({ onChange, onClose }) => {
-  const types = ["All types", "type 1"];
-  const mdas = ["MDA"];
-  const traders = ["All Traders"];
+  const types = [
+    { label: "All types", val: "all" },
+    { label: "Type 1", val: "type1" },
+  ];
+  const mdas = [{ label: "MDA", val: "mda" }];
+  const traders = [{ label: "All Traders", val: "all" }];
 
-  const [type, setType] = useState(types[0]);
-  const [mda, setMDA] = useState(mdas[0]);
-  const [trader, setTrader] = useState(traders[0]);
+  const [type, setType] = useState(types[0].val);
+  const [mda, setMDA] = useState(mdas[0].val);
+  const [trader, setTrader] = useState(traders[0].val);
 
   const clearFilters = () => {
     setType("");

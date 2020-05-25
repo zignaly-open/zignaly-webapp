@@ -1,16 +1,10 @@
 /**
- * Received a component with default properties.
+ * Extract display name from wrapped component.
  *
- * @typedef {object} WrappedComponentType
- * @property {string} displayName
- * @property {string} name
- */
-
-/**
+ * @param {React.ComponentType} WrappedComponent Wrapped component.
  *
- * @param {WrappedComponentType} WrappedComponent
+ * @returns {String} Wrapped component name.
  */
-
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || "Component";
 }

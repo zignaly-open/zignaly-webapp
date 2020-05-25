@@ -12,7 +12,7 @@ import "./CustomSelect.scss";
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
  * @property {string|number} value Assign the selected value.
- * @property {Array<OptionType|string>} options List of options selectable.
+ * @property {Array<OptionType>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  */
 

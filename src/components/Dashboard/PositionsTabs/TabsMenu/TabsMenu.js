@@ -5,14 +5,10 @@ import { FormattedMessage } from "react-intl";
 
 /**
  *
- * @typedef {import('@material-ui/core/Tabs').TabsProps.onChange} ChangeEvent
- */
-
-/**
- *
+ * @typedef {import("@material-ui/core").TabTypeMap} TabTypeMap
  * @typedef {Object} DefaultProps
  * @property {Number} tabValue
- * @property {ChangeEvent} changeTab
+ * @property {TabTypeMap["props"]["onChange"]} changeTab
  */
 
 /**

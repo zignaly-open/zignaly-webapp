@@ -18,6 +18,16 @@ const LoginForm = () => {
     showLoading(true);
   };
 
+  /**
+   * Handle submit buttton click.
+   *
+   * @type {React.MouseEventHandler} handleClickSubmit
+   * @returns {void}
+   */
+  const handleSubmitClick = () => {
+    handleSubmit(onSubmit);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -83,7 +93,7 @@ const LoginForm = () => {
           <CustomButton
             className={"full submitButton"}
             loading={loading}
-            onClick={handleSubmit}
+            onClick={handleSubmitClick}
             type="submit"
           >
             Sign in

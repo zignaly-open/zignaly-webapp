@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import "./Doughnut.scss";
 import { Box } from "@material-ui/core";
-import { preparePieChartOptions, generateChart } from "../../../utils/chart";
+import { preparePieChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
 
 const Doughnut = () => {
   useEffect(() => {
-    const context = document.getElementById("myDoughnut").getContext("2d");
+    const canvasContext = getCanvasContext("myDoughnut");
     const borderColor = "#770fc8";
     const chunksColors = ["#a946f6", "#770fc8"];
-    generateChart(context, preparePieChartOptions(chunksColors, borderColor));
+    generateChart(canvasContext, preparePieChartOptions(chunksColors, borderColor));
   }, []);
 
   return (

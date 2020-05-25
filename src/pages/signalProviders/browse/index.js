@@ -13,8 +13,8 @@ import "./signalProvidersBrowse.scss";
  * @typedef {Object} SignalProvidersBrowsePropTypes
  * @property {boolean} showFilters Flag to indicate if filters should be rendered.
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
- * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
- * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {React.MouseEventHandler} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {React.MouseEventHandler} toggleSort Callback that delegate sort toggle state to caller.
  */
 
 /**

@@ -1,9 +1,21 @@
 import { Chart } from "chart.js";
 
 /**
+ * Find DOM canvas element by ID.
+ *
+ * @param {String} id Canvas element ID.
+ * @returns {CanvasRenderingContext2D} Chart canvas.
+ */
+export const getCanvasContext = (id) => {
+  const elementMatch = document.getElementById(id);
+  const chartCanvas = /** @type {HTMLCanvasElement} */ (elementMatch);
+  return chartCanvas.getContext("2d");
+};
+
+/**
  * Generate a chart instance.
  *
- * @param {string} context Element context.
+ * @param {CanvasRenderingContext2D} context Element context.
  * @param {Object} options Chart options.
  * @return {Chart} Chart JS instance.
  */

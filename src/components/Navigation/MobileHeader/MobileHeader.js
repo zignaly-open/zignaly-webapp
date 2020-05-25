@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./MobileHeader.scss";
-import { Box, Grow, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import CustomButton from "../../CustomButton";
 import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
@@ -29,9 +28,11 @@ const MobileHeader = () => {
   const darkStyle = useSelector(selector);
 
   /**
+   * User state exchange connections selector.
    *
-   * @param {DefaultState} state
-   * @returns {Array<ExchangeConnectionEntity>}
+   * @param {DefaultState} state User state.
+   *
+   * @returns {Array<ExchangeConnectionEntity>} User exchange connections.
    */
   const userExchangeSelector = (state) => state.user.exchangeConnections;
   const exchangeConnections = useSelector(userExchangeSelector);

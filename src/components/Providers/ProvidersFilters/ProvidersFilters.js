@@ -4,7 +4,7 @@ import CustomSelect from "../../CustomSelect";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
- * @property {function} onClose Callback that delegate filters toggle state to caller.
+ * @property {React.MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.

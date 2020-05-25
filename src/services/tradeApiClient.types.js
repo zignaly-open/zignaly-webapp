@@ -298,7 +298,6 @@ function providerItemTransform(providerItem) {
  *
  * @returns {ProviderEntity} Enpty provider entity.
  */
-
 function createEmptyProviderEntity() {
   return {
     id: "",
@@ -333,7 +332,6 @@ function createEmptyProviderEntity() {
 /**
  * Transform user positions response to typed object collection.
  *
- * @export
  * @param {*} response Trade API positions list response.
  * @returns {UserPositionsCollection} Positions entities collection.
  */
@@ -434,11 +432,10 @@ function createEmptyPositionEntity() {
 }
 
 /**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
  *
- *
- * @export
- * @param {*} response
- * @returns {Array<ExchangeConnectionEntity>}
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ExchangeConnectionEntity>} User exchange connections collection.
  */
 export function userExchangeConnectionResponseTransform(response) {
   if (!isArray(response)) {
@@ -479,15 +476,10 @@ export function userExchangeConnectionResponseTransform(response) {
  *
  * @param {*} exchangeConnectionItem Trade API exchange connection item.
  * @returns {ExchangeConnectionEntity} Exchange connection entity.
- *
- *
  */
-
 function userExchangeConnectionItemTransform(exchangeConnectionItem) {
   const emptyExchangeConnectionEntity = createExchangeConnectionEmptyEntity();
-  const normalizedId = isObject(exchangeConnectionItem._id)
-    ? exchangeConnectionItem._id.$oid
-    : "";
+  const normalizedId = isObject(exchangeConnectionItem._id) ? exchangeConnectionItem._id.$oid : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyExchangeConnectionEntity, exchangeConnectionItem, {
     id: normalizedId,
@@ -533,25 +525,26 @@ function createExchangeConnectionEmptyEntity() {
  */
 
 /**
+ * Transform user balance response to typed UserBalanceEntity.
  *
- *
- * @export
- * @param {*} response
- * @returns
+ * @param {*} response Trade API get user balance raw response.
+ * @returns {UserBalanceEntity} User balance entity.
  */
 export function userBalanceResponseTransform(response) {
   if (!isObject(response)) {
     throw new Error("Response must be an object with different propteries.");
   }
+
   const transformedResponse = createUserBalanceEntity(response);
   return transformedResponse;
 }
 
 /**
+ * Create user balance entity.
  *
- * @param {*} response
+ * @param {*} response Trade API user balance raw raw response.
+ * @returns {UserBalanceEntity} User balance entity.
  */
-
 function createUserBalanceEntity(response) {
   return {
     btcusdt: response.btcusdt,

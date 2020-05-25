@@ -5,9 +5,10 @@ import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
 
 /**
+ * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {Object} CustomFiltersPropTypes
- * @property {function} onClose Callback that delegate filters toggle state to caller.
- * @property {function} onClear Callback that delegate filters clearing to caller.
+ * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
+ * @property {MouseEventHandler} onClear Callback that delegate filters clearing to caller.
  * @property {string} title Filters' title.
  * @property {*} children Dropdowns to display.
  */

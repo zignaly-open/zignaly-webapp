@@ -5,7 +5,6 @@ const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 
 /**
- *
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('../../store/store').AppThunk} AppThunk

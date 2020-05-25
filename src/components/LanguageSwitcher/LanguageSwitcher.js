@@ -5,6 +5,10 @@ import en from "../../images/en.png";
 import { languages, getLocalizedPath } from "../../i18n";
 import { PageContext } from "../../pageContext";
 import "./languageSwitcher.scss";
+
+/**
+ * @type {Object.<string, string>} flags
+ */
 const flags = {
   cs,
   en,

@@ -24,20 +24,14 @@ const UserExchangeList = () => {
   }, [exchangeConnections]);
 
   /**
-   * @typedef {import('react').ChangeEvent} ChangeEvent
-   */
-
-  /**
-   * Repeat password change state handling.
+   * Select change handler.
    *
-   * @param {ChangeEvent} event Change event.
-   * @return {void}
+   * @param {React.ChangeEvent<{name: string, value: string}>} event Change event.
+   *
+   * @returns {Void} No return.
    */
-
   const handleChange = (event) => {
-    const targetElement = /** @type {HTMLSelectElement} */ (event.target);
-    let value = targetElement.value;
-    setSelectedExchange(value);
+    setSelectedExchange(event.target.value);
   };
 
   return (

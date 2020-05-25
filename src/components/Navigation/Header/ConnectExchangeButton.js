@@ -26,7 +26,10 @@ const ConnectExchangeButton = () => {
       const userEntity = await authenticateUser();
       dispatch(setUserExchanges(userEntity, hideLoading));
       dispatch(setUserBalance(userEntity));
-    } catch (error) {}
+    } catch (error) {
+      // TODO: Display the error in Alert.
+      hideLoading();
+    }
   };
 
   return (

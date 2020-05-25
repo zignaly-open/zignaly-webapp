@@ -1,23 +1,16 @@
 import React from "react";
 import "./PositionSettingsForm.scss";
 import { Box } from "@material-ui/core";
-import CustomButton from "../../CustomButton/CustomButton";
 import CloseIcon from "@material-ui/icons/Close";
 
 /**
- *
  * @typedef {Object} DefaultProps
- * @property {Function} onClose
- */
-
-/**
- *
+ * @property {React.MouseEventHandler} onClose
  * @param {DefaultProps} props
  */
 
 const PositionSettingsForm = (props) => {
   const { onClose } = props;
-  const handleSubmit = () => {};
 
   return (
     <Box

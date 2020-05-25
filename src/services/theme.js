@@ -4,64 +4,79 @@ import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf";
 import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf";
 import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf";
 
+/**
+ * @typedef {import("@material-ui/styles").CSSProperties} CSSProperties
+ */
+
+/**
+ * @type {CSSProperties["@font-face"]} PlexSansBold
+ */
 const PlexSansBold = {
   fontFamily: "PlexSans-Bold",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-      local('PlexSans'),
-      local('PlesSans-Bold'),
-      url(${PlexSansBoldttf}) format('woff2')
-    `,
+    local('PlesSans-Bold'),
+    url(${PlexSansBoldttf}) format('woff2')
+  `,
 };
 
+/**
+ * @type {CSSProperties["@font-face"]} PlexSansSemiBold
+ */
 const PlexSansSemiBold = {
   fontFamily: "PlexSans-SemiBold",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-      local('PlexSans'),
-      local('PlesSans-SemiBold'),
-      url(${PlexSansSemiBoldttf}) format('woff2')
-    `,
+    local('PlesSans-SemiBold'),
+    url(${PlexSansSemiBoldttf}) format('woff2')
+  `,
 };
 
+/**
+ *
+ * @type {CSSProperties["@font-face"]} PlexSansMedium
+ */
 const PlexSansMedium = {
   fontFamily: "PlexSans-Medium",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-      local('PlexSans'),
-      local('PlesSans-Medium'),
-      url(${PlexSansMediumttf}) format('woff2')
-    `,
+    local('PlesSans-Medium'),
+    url(${PlexSansMediumttf}) format('woff2')
+  `,
 };
 
+/**
+ * @type {CSSProperties["@font-face"]} PlexSansRegular
+ */
 const PlexSansRegular = {
   fontFamily: "PlexSans-Regular",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-      local('PlexSans'),
-      local('PlesSans-Regular'),
-      url(${PlexSansRegularttf}) format('woff2')
-    `,
+    local('PlesSans-Regular'),
+    url(${PlexSansRegularttf}) format('woff2')
+  `,
 };
 
+/**
+ * @type {CSSProperties["@font-face"]} PlexSansLight
+ */
 const PlexSansLight = {
   fontFamily: "PlexSans-Light",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-      local('PlexSans'),
-      local('PlesSans-Bold'),
-      url(${PlexSansLightttf}) format('woff2')
-    `,
+    local('PlesSans-Light'),
+    url(${PlexSansLightttf}) format('woff2')
+  `,
 };
 
 const black = "#191927";
@@ -73,27 +88,23 @@ const lightBlack = "#27273f";
 const offWhite = "#fbfafc";
 
 /**
- *
  * @typedef {Object} ThemeOptionsGrid
  * @property {string} main
  * @property {string} content
  */
 
 /**
- *
  * @typedef {Object} ExtendedPaletteColorOptions
  * @property {ThemeOptionsGrid} grid
  */
 
 /**
- *
  * @typedef {Object} CustomPaletteOptions
  * @typedef {import('@material-ui/core/styles').PaletteColorOptions} PaletteColorOptions
  * @typedef {PaletteColorOptions & ExtendedPaletteColorOptions} ExtendedPaletteOptions
  */
 
 /**
- *
  * @typedef {Object} ExtendedThemeOptions
  * @property {ExtendedPaletteOptions} palette
  */
@@ -188,24 +199,6 @@ const theme = (darkStyle) => {
         textTransform: "capitalize",
       },
     },
-
-    /**
-     * Matrial UI overirde Font Object.
-     *
-     * @typedef {Object} FontObject
-     * @property {String} fontFamily
-     * @property {String} fontSize
-     * @property {String} fontDisplay
-     * @property {String} fontWeight
-     * @property {String} src
-     */
-
-    /**
-     * Matrial UI overirde options
-     *
-     * @param {FontObject} PlexSansMedium
-     */
-
     overrides: {
       MuiCssBaseline: {
         "@global": {
