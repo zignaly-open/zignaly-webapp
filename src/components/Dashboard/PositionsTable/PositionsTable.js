@@ -4,34 +4,42 @@ import { Box, Table } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import PositionsTableHead from "./PositionsTableHead";
 import PositionsTableBody from "./PositionsTableBody";
+import { useSelector } from "react-redux";
+
+/**
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ */
 
 const PositionsTable = () => {
   const [positions, setPositions] = useState([]);
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
-      password: "abracadabra",
-    };
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
+  const fetchOpenPositions = async () => {
+    try {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+      };
 
-    return await tradeApi.userLogin(loginPayload);
+      return await tradeApi.openPositionsGet(payload);
+    } catch (e) {
+      alert(`ERROR: ${e.message}`);
+    }
   };
 
-  useEffect(() => {
-    const loadPositions = async () => {
-      try {
-        const userEntity = await authenticateUser();
-        const sessionPayload = {
-          token: userEntity.token,
-        };
-        const responseData = await tradeApi.openPositionsGet(sessionPayload);
-        setPositions(responseData);
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
-    };
+  const loadData = () => {
+    fetchOpenPositions().then((fetchData) => {
+      setPositions(fetchData);
+    });
+  };
 
-    loadPositions();
-  }, []);
+  useEffect(loadData, [storeSession.tradeApi.accessToken]);
 
   /**
    * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
