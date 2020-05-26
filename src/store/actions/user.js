@@ -1,9 +1,9 @@
 import tradeApi from "../../services/tradeApiClient";
 
-const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
-const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
-const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
-const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
+export const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
+export const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
+export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
+export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
