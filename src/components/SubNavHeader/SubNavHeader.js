@@ -9,7 +9,7 @@ import "./SubNavHeader.scss";
  *
  * @typedef {Object} SubNavHeaderPropTypes
  * @property {Array<NavigationLink>} links Array of link translation id and path.
- * @property {*} [children] Optional elements to display in the header.
+ * @property {Object} [rightComponent] Optional component to display at the right of the menu.
  */
 
 /**
@@ -18,7 +18,7 @@ import "./SubNavHeader.scss";
  * @param {SubNavHeaderPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const SubNavHeader = ({ links, children }) => {
+const SubNavHeader = ({ links, rightComponent }) => {
   return (
     <Box
       alignItems="center"
@@ -32,7 +32,7 @@ const SubNavHeader = ({ links, children }) => {
           <FormattedMessage id={item.id} />
         </Link>
       ))}
-      {children}
+      {rightComponent && rightComponent}
     </Box>
   );
 };
