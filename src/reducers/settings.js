@@ -20,7 +20,7 @@ const SELECT_THEME = "SELECT_THEME_ACTION";
  * @returns {StateSettingsType} New settings state.
  */
 const settings = (state, action) => {
-  const newState = assign(initialState.settings, state);
+  const newState = assign({}, initialState.settings, state);
 
   switch (action.type) {
     case SELECT_LANGUAGE:

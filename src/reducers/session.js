@@ -20,11 +20,11 @@ import { START_TRADE_API_SESSION } from "../store/actions/session";
  * @returns {StateSessionType} New session state.
  */
 const settings = (state, action) => {
-  const newState = assign(initialState.session, state);
+  const newState = assign({}, initialState.session, state);
 
   switch (action.type) {
     case START_TRADE_API_SESSION:
-      state.tradeApi.accessToken = action.payload.token;
+      newState.tradeApi.accessToken = action.payload.token;
       break;
 
     default:
