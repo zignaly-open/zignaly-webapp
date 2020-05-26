@@ -1,4 +1,5 @@
 import tradeApi from "../../services/tradeApiClient";
+
 const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
 const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
@@ -11,7 +12,7 @@ const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
  */
 
 /**
- * Dark style flag selected by user.
+ * Set user exchanges.
  *
  * @param {UserLoginResponse} data
  * @param {Function} hideLoading
@@ -44,12 +45,11 @@ export const unsetUserExchanges = () => {
 };
 
 /**
- * Dark style flag selected by user.
+ * Set user balance.
  *
- * @param {UserLoginResponse} data
- * @returns {AppThunk}
+ * @param {UserLoginResponse} data User login payload.
+ * @returns {AppThunk} Thunk action function.
  */
-
 export const setUserBalance = (data) => {
   return async (dispatch) => {
     try {

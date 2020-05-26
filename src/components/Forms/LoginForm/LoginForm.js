@@ -7,8 +7,11 @@ import ForgotPasswordForm from "../ForgotPasswordForm";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { startTradeApiSession } from "../../../store/actions/settings";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -17,8 +20,21 @@ const LoginForm = () => {
     reValidateMode: "onChange",
   });
 
-  const onSubmit = () => {
+  /**
+   * @typedef {Object} LoginFormSubmission
+   * @property {string} email
+   * @property {string} password
+   */
+
+  /**
+   * Process data submitted in the login form.
+   *
+   * @param {LoginFormSubmission} payload Submission data.
+   * @returns {Void} None.
+   */
+  const onSubmit = (payload) => {
     showLoading(true);
+    dispatch(startTradeApiSession(payload));
   };
 
   /**
