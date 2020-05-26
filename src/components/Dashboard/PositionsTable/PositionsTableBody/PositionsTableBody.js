@@ -24,7 +24,7 @@ const PositionsTableBody = (props) => {
   const positionsAugmented = positions.map((position) => {
     const dateMoment = moment(position.openDate);
     return {
-      openDateReadable: dateMoment.format("MMM Do YY"),
+      openDateReadable: dateMoment.format("hh.mm DD.MM.YY."),
       ...position,
     };
   });
