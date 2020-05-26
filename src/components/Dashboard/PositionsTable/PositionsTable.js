@@ -39,7 +39,6 @@ const PositionsTable = () => {
     });
   };
 
-  console.log("Positions: ", positions);
   useEffect(loadData, [storeSession.tradeApi.accessToken]);
 
   return (
