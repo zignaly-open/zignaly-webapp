@@ -62,7 +62,7 @@ import { assign, isArray, isObject } from "lodash";
  * @property {boolean} closed
  * @property {string} positionId
  * @property {string} userId
- * @property {string} openDate
+ * @property {number} openDate
  * @property {string} openTrigger
  * @property {string} closeDate
  * @property {string} closeTrigger
@@ -348,13 +348,15 @@ export function userPositionsResponseTransform(response) {
 /**
  * Transform API position item to typed object.
  *
- * @param {Object} positionItem Trade API position item.
+ * @param {Object.<string, any>} positionItem Trade API position item.
  * @returns {PositionEntity} Position entity.
  */
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyPositionEntity, positionItem);
+  const transformedResponse = assign(emptyPositionEntity, positionItem, {
+    openDate: Number(positionItem.openDate),
+  });
 
   return transformedResponse;
 }
@@ -369,7 +371,7 @@ function createEmptyPositionEntity() {
     closed: false,
     positionId: "",
     userId: "",
-    openDate: "",
+    openDate: 0,
     openTrigger: "",
     closeDate: "",
     closeTrigger: "",
