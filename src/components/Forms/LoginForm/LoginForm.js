@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginForm.scss";
 import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -7,10 +7,25 @@ import ForgotPasswordForm from "../ForgotPasswordForm";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { startTradeApiSession } from "../../../store/actions/settings";
+import { useDispatch, useSelector } from "react-redux";
+import { startTradeApiSession } from "../../../store/actions/session";
+import { isEmpty } from "lodash";
+import { navigateTo } from "gatsby";
+
+/**
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ */
 
 const LoginForm = () => {
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
@@ -36,6 +51,12 @@ const LoginForm = () => {
     showLoading(true);
     dispatch(startTradeApiSession(payload));
   };
+
+  useEffect(() => {
+    if (!isEmpty(storeSession.tradeApi.accessToken)) {
+      navigateTo("/");
+    }
+  }, [storeSession.tradeApi.accessToken]);
 
   /**
    * Handle submit buttton click.
