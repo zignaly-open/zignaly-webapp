@@ -4,8 +4,11 @@ import ProvidersSort from "../components/Providers/ProvidersSort";
 import ProvidersList from "../components/Providers/ProvidersList";
 import TimeFrameSelect from "../components/TimeFrameSelect";
 import tradeApi from "../services/tradeApiClient";
+import { useSelector } from "react-redux";
 
 /**
+ * @typedef {import("../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  */
@@ -39,8 +42,17 @@ import tradeApi from "../services/tradeApiClient";
  * @returns {[ProvidersCollection, ProvidersComponents]} Array with providers data and components.
  */
 const useProvidersList = (options, callbacks) => {
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
   const { copyTradersOnly, connectedOnly, showSummary } = options;
   const { toggleFilters, toggleSort } = callbacks;
+
   /**
    * @type {ProvidersCollection} initialState
    */
@@ -115,23 +127,11 @@ const useProvidersList = (options, callbacks) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterProviders]);
 
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "me@brbordallo.com",
-      //   email: "mailhjmhtitjyc@example.test",
-      //   password: "abracadabra",
-      password: "09876aaA!",
-    };
-
-    return await tradeApi.userLogin(loginPayload);
-  };
-
   // Load providers at init and on timeframe change.
   useEffect(() => {
     const loadProviders = async () => {
-      const userEntity = await authenticateUser();
       const sessionPayload = {
-        token: userEntity.token,
+        token: storeSession.tradeApi.accessToken,
         type: connectedOnly ? "connected" : "all",
         // ro: true,
         copyTradersOnly,
@@ -146,7 +146,7 @@ const useProvidersList = (options, callbacks) => {
       }
     };
     loadProviders();
-  }, [timeFrame, connectedOnly, copyTradersOnly]);
+  }, [timeFrame, connectedOnly, copyTradersOnly, storeSession.tradeApi.accessToken]);
 
   const ProvidersListMaker = () => (
     <ProvidersList providers={providersFiltered} showSummary={showSummary} />
