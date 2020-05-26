@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
 import { isEmpty } from "lodash";
 import { navigateTo } from "gatsby";
+import { setUserBalance, setUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -52,11 +53,20 @@ const LoginForm = () => {
     dispatch(startTradeApiSession(payload));
   };
 
-  useEffect(() => {
+  const loadAppUserData = () => {
     if (!isEmpty(storeSession.tradeApi.accessToken)) {
+      const authorizationPayload = {
+        token: storeSession.tradeApi.accessToken,
+      };
+
+      dispatch(setUserExchanges(authorizationPayload));
+      dispatch(setUserBalance(authorizationPayload));
+
       navigateTo("/");
     }
-  }, [storeSession.tradeApi.accessToken]);
+  };
+
+  useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
 
   /**
    * Handle submit buttton click.

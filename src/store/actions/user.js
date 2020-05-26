@@ -8,32 +8,29 @@ export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  */
 
 /**
- * Set user exchanges.
+ * Get user connected exchanges store thunk action.
  *
- * @param {UserLoginResponse} data
- * @param {Function} hideLoading
- * @returns {AppThunk}
+ * @param {AuthorizationPayload} payload Trade API user authorization.
+ *
+ * @returns {AppThunk} Thunk action function.
  */
-
-export const setUserExchanges = (data, hideLoading) => {
+export const setUserExchanges = (payload) => {
   return async (dispatch) => {
     try {
-      const sessionPayload = {
-        token: data.token,
-      };
-      const responseData = await tradeApi.userExchangesGet(sessionPayload);
-      hideLoading();
-      dispatch({
+      const responseData = await tradeApi.userExchangesGet(payload);
+      const action = {
         type: GET_USER_EXCHNAGES,
         payload: responseData,
-      });
+      };
+
+      dispatch(action);
     } catch (e) {
-      // TODO: Display error in alert.
-      hideLoading();
+      alert(`ERROR: ${e.message}`);
     }
   };
 };
@@ -45,24 +42,24 @@ export const unsetUserExchanges = () => {
 };
 
 /**
- * Set user balance.
+ * Get user balance store thunk action.
  *
- * @param {UserLoginResponse} data User login payload.
+ * @param {AuthorizationPayload} payload Trade API user authorization.
+ *
  * @returns {AppThunk} Thunk action function.
  */
-export const setUserBalance = (data) => {
+export const setUserBalance = (payload) => {
   return async (dispatch) => {
     try {
-      const sessionPayload = {
-        token: data.token,
-      };
-      const responseData = await tradeApi.userBalanceGet(sessionPayload);
-      dispatch({
+      const responseData = await tradeApi.userBalanceGet(payload);
+      const action = {
         type: GET_USER_BALANCE,
         payload: responseData,
-      });
+      };
+
+      dispatch(action);
     } catch (e) {
-      // TODO: Display error in alert.
+      alert(`ERROR: ${e.message}`);
     }
   };
 };
