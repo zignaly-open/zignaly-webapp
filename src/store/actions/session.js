@@ -17,12 +17,14 @@ export const startTradeApiSession = (payload) => {
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userLogin(payload);
-      dispatch({
+      const action = {
         type: START_TRADE_API_SESSION,
         payload: responseData,
-      });
+      };
+
+      dispatch(action);
     } catch (e) {
-      // TODO: Display error in alert.
+      alert(`ERROR: ${e.message}`);
     }
   };
 };

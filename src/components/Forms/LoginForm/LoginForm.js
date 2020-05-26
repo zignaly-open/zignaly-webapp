@@ -53,6 +53,16 @@ const LoginForm = () => {
     dispatch(startTradeApiSession(payload));
   };
 
+  /**
+   * Handle submit buttton click.
+   *
+   * @type {React.MouseEventHandler} handleClickSubmit
+   * @returns {void}
+   */
+  const handleSubmitClick = () => {
+    handleSubmit(onSubmit);
+  };
+
   const loadAppUserData = () => {
     if (!isEmpty(storeSession.tradeApi.accessToken)) {
       const authorizationPayload = {
@@ -67,16 +77,6 @@ const LoginForm = () => {
   };
 
   useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
-
-  /**
-   * Handle submit buttton click.
-   *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
-   */
-  const handleSubmitClick = () => {
-    handleSubmit(onSubmit);
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
