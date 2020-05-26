@@ -34,37 +34,74 @@ const PositionsTableBody = (props) => {
       {positionsAugmented.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
+            {position.paperTrading}
+          </TableCell>
+          <TableCell align="left" className="cell">
             {position.openDateReadable}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.providerId}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.providerName}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.signalId}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.pair}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.buyPrice}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.leverage}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.sellPrice}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {position.profitPercentage}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.side}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            {position.stopLossPrice}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            {position.amount}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"time"}
+            {position.remainAmount}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            {position.positionSizeQuote}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            {position.trailingStopTriggerPercentage}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            {position.takeProfitTargetsCountSuccess}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"time"}
+            {position.reBuyTargetsCountFail}, {position.reBuyTargetsCountPending},{" "}
+            {position.reBuyTargetsCountSuccess}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"data"}
+            "Calculate Age"
           </TableCell>
           <TableCell align="left" className="cell">
-            {"time"}
+            {position.openTrigger}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            "Edit"
+          </TableCell>
+          <TableCell align="left" className="cell">
+            "Exit"
+          </TableCell>
+          <TableCell align="left" className="cell">
+            "Cancel"
           </TableCell>
         </TableRow>
       ))}
