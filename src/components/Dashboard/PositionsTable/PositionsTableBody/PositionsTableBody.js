@@ -1,13 +1,13 @@
 import React from "react";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
+import { unix } from "moment";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
- *
  * @typedef {Object} DefaultProps
  * @property {Array<PositionEntity>} positions
  */
@@ -21,12 +21,28 @@ import { TableBody, TableRow, TableCell } from "@material-ui/core";
 const PositionsTableBody = (props) => {
   const { positions } = props;
 
+  /**
+   * Convert seconds to millseconds.
+   *
+   * @param {number} secs Seconds to convert.
+   *
+   * @returns {number} Milliseconds.
+   */
+  const secToMillisec = (secs) => secs * 1000;
+  const positionsAugmented = positions.map((position) => {
+    const dateMoment = unix(secToMillisec(position.openDate));
+    return {
+      openDateReadable: dateMoment.format("MMM Do YY"),
+      ...position,
+    };
+  });
+
   return (
     <TableBody className="tableBody">
-      {positions.map((position) => (
+      {positionsAugmented.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
-            {position.openDate}
+            {position.openDateReadable}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.side}

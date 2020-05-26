@@ -39,12 +39,8 @@ const PositionsTable = () => {
     });
   };
 
+  console.log("Positions: ", positions);
   useEffect(loadData, [storeSession.tradeApi.accessToken]);
-
-  /**
-   * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
-   * @type {UserPositionsCollection} positionsCollection
-   */
 
   return (
     <Box
