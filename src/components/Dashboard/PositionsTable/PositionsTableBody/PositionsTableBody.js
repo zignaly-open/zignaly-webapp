@@ -1,7 +1,7 @@
 import React from "react";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { unix } from "moment";
+import * as moment from "moment";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -21,16 +21,8 @@ import { unix } from "moment";
 const PositionsTableBody = (props) => {
   const { positions } = props;
 
-  /**
-   * Convert seconds to millseconds.
-   *
-   * @param {number} secs Seconds to convert.
-   *
-   * @returns {number} Milliseconds.
-   */
-  const secToMillisec = (secs) => secs * 1000;
   const positionsAugmented = positions.map((position) => {
-    const dateMoment = unix(secToMillisec(position.openDate));
+    const dateMoment = moment(position.openDate);
     return {
       openDateReadable: dateMoment.format("MMM Do YY"),
       ...position,
