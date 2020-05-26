@@ -15,9 +15,9 @@ const SELECT_THEME = "SELECT_THEME_ACTION";
  */
 
 /**
- * @param {StateSettingsType} state Current session state.
+ * @param {StateSettingsType} state Current settings state.
  * @param {ActionObject} action Action to reduce.
- * @returns {StateSettingsType} New session state.
+ * @returns {StateSettingsType} New settings state.
  */
 const settings = (state, action) => {
   const newState = assign(initialState.settings, state);

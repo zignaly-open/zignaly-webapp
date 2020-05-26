@@ -1,44 +1,37 @@
+import { assign } from "lodash";
 import initialState from "../store/initialState";
-
-const USER_LOGIN = "USER_LOGIN_ACTION";
+import { START_TRADE_API_SESSION } from "../store/actions/session";
 
 /**
- *
+ * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ */
+
+/**
  * @typedef {Object} ActionObject
  * @property {String} type
  * @property {*} payload
  */
 
 /**
- * @typedef {Object} DefaultStateSessionTradeApi
- * @property {string} accessToken
- */
-
-/**
- * @typedef {Object} DefaultStateSessionCoinRay
- * @property {string} accessToken
- */
-
-/**
- * @typedef {Object} DefaultStateSession
- * @property {DefaultStateSessionTradeApi} tradeApi
- * @property {DefaultStateSessionCoinRay} coinRay
- */
-
-/**
+ * Settings reducer.
  *
- * @param {DefaultStateSession} state
- * @param {ActionObject} action
+ * @param {StateSessionType} state Current session state.
+ * @param {ActionObject} action Action to reduce.
+ * @returns {StateSessionType} New session state.
  */
+const settings = (state, action) => {
+  const newState = assign(initialState.session, state);
 
-const settings = (state = initialState.session, action) => {
   switch (action.type) {
-    case USER_LOGIN:
+    case START_TRADE_API_SESSION:
       state.tradeApi.accessToken = action.payload.token;
-      return state;
+      break;
+
     default:
-      return state;
+      break;
   }
+
+  return newState;
 };
 
 export default settings;
