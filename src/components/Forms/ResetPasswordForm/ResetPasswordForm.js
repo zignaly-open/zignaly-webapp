@@ -131,9 +131,9 @@ const ResetPasswordForm = () => {
               error={!!errors.password}
               inputRef={register({ required: true })}
               name="password"
-              onFocus={(e) => setAnchorEl(e.currentTarget)}
               onBlur={() => setAnchorEl(undefined)}
               onChange={handlePasswordChange}
+              onFocus={(e) => setAnchorEl(e.currentTarget)}
               type={showPassword ? "text" : "password"}
             />
           </FormControl>
