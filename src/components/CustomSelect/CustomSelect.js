@@ -5,14 +5,14 @@ import "./CustomSelect.scss";
 /**
  * @typedef {Object} OptionType
  * @property {string} label Option label.
- * @property {string} val Option value.
+ * @property {string|number} val Option value.
  */
 
 /**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
  * @property {string|number} value Assign the selected value.
- * @property {Array<OptionType>} options List of options selectable.
+ * @property {Array<OptionType|string>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  */
 
@@ -24,6 +24,7 @@ import "./CustomSelect.scss";
  */
 const CustomSelect = (props) => {
   const { label, onChange, options, value } = props;
+
   return (
     <FormControlLabel
       className="customSelect"
@@ -40,8 +41,8 @@ const CustomSelect = (props) => {
             variant="outlined"
           >
             {options.map((item, index) => (
-              <MenuItem key={index} value={item.val}>
-                item.label
+              <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
+                {typeof item === "object" ? item.label : item}
               </MenuItem>
             ))}
           </Select>

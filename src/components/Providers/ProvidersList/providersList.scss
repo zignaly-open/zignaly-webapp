@@ -14,3 +14,9 @@
     width: auto;
   }
 }
+
+@include media("<=sm") {
+  .providersList {
+    align-items: center;
+  }
+}

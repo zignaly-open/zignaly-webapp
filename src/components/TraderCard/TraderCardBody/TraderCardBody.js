@@ -1,21 +1,25 @@
 import React from "react";
 import "./TraderCardBody.scss";
 import { Box, Typography } from "@material-ui/core";
-import Chart from "../../Graphs/Chart";
+import GenericChart from "../../Graphs/Chart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 
 /**
+ * @typedef {import('../../../utils/chart').ChartColorOptions} ChartColorOptions
+ * @typedef {import('../../../utils/chart').ChartData} ChartData
+ */
+
+/**
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ *
  *
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
- * @property {boolean} isCopyTrading Flag to indicate if the provider is copy trading.
- * @property {number} risk Return for open positions.
- * @property {Array<DailyReturn>} dailyReturns Return for closed positions on the selected period.
- * @property {string} id Provider id.
+ * @property {Provider} provider The provider to display.
  */
 
 /**
@@ -25,29 +29,58 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { id, showSummary, risk, dailyReturns, isCopyTrading } = props;
+  const { provider, showSummary } = props;
+  const { id, risk, isCopyTrading, followers, disable, dailyReturns } = provider;
   let cardId = "traderCard" + id;
-  /**
-   * @type {Array<number>} chartData
-   */
-  let chartData = [];
 
-  let cumulativeTotalProfits = 0;
-  let cumulativeTotalInvested = 0;
+  /**
+   * @type {ChartData} chartData
+   */
+  let chartData = { values: [], labels: [] };
+
+  //   let cumulativeTotalProfits = 0;
+  //   let cumulativeTotalInvested = 0;
   const totalReturns = dailyReturns.reduce((acc, item) => {
-    if (isCopyTrading) {
-      const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
-      acc += returns;
-    } else {
-      cumulativeTotalProfits += parseFloat(item.totalProfit);
-      cumulativeTotalInvested += parseFloat(item.totalInvested);
-      if (cumulativeTotalInvested) {
-        acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-      }
-    }
-    chartData.push(acc);
+    // if (isCopyTrading) {
+    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    acc += returns;
+    // } else {
+    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
+    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
+    //   //   if (cumulativeTotalInvested) {
+    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+    //   //   }
+    // }
+    // chartData.push({
+    //   day: item.name,
+    //   returns: acc.toFixed(2),
+    // });
+    chartData.values.push(acc.toFixed(2));
+    chartData.labels.push(item.name);
     return acc;
   }, 0);
+
+  let colorClass = "green";
+
+  /**
+   * @type {ChartColorOptions} colorsOptions
+   */
+  let colorsOptions = {
+    backgroundColor: "",
+    borderColor: "#00cb3a",
+    gradientColor1: "#b6f2cb",
+    gradientColor2: "#e5f8ed",
+  };
+
+  if (totalReturns < 0) {
+    colorClass = "red";
+    colorsOptions = {
+      ...colorsOptions,
+      borderColor: "#f0226f",
+      gradientColor1: "#fccbde",
+      gradientColor2: "#fcecf3",
+    };
+  }
 
   return (
     <Box className="traderCardBody">
@@ -64,11 +97,11 @@ const TraderCard = (props) => {
           flexDirection="column"
           justifyContent="space-between"
         >
-          <Typography className="green" variant="h4">
-            {totalReturns}%
+          <Typography className={colorClass} variant="h4">
+            {totalReturns.toFixed(2)}%
           </Typography>
           <Typography variant="subtitle1">
-            <FormattedMessage id="returns(90D)" />
+            <FormattedMessage id="srv.returnsperiod" />
           </Typography>
         </Box>
         <Box
@@ -86,23 +119,44 @@ const TraderCard = (props) => {
           </Typography>
         </Box>
       </Box>
-      <Box className="traderCardGraph">
-        <Chart data={chartData} id={cardId}>
-          <canvas className="chartCanvas" id={cardId} />
-        </Chart>
+      <Box>
+        <Box className="traderCardGraph">
+          <Box className="chartWrapper">
+            <GenericChart chartData={chartData} colorsOptions={colorsOptions} id={cardId}>
+              <canvas className="chartCanvas" id={cardId} />
+            </GenericChart>
+          </Box>
+        </Box>
         <Box
-          alignItems="center"
-          className="actions"
+          className={`actionsWrapper ${totalReturns >= 0 ? "positive" : "negative"}`}
           display="flex"
-          flexDirection="row"
-          justifyContent="space-around"
+          flexDirection="column"
+          justifyContent="center"
         >
-          <CustomButton className="textDefault">
-            <FormattedMessage id="trader.stop" />
-          </CustomButton>
-          <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
-            <FormattedMessage id="trader.view" />
-          </CustomButton>
+          <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
+            {!disable ? (
+              <h6 className="callout2 green">You and {followers} are copying this trader</h6>
+            ) : (
+              <h6 className="callout1">{followers} people copying this trader</h6>
+            )}
+          </Box>
+
+          <Box
+            alignItems="center"
+            className="actions"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-around"
+          >
+            {!disable && (
+              <CustomButton className="textDefault">
+                <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+              </CustomButton>
+            )}
+            <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
+              <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
+            </CustomButton>
+          </Box>
         </Box>
       </Box>
       {showSummary && <UserSummary />}

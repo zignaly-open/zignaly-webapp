@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useIntl } from "react-intl";
 import { Box } from "@material-ui/core";
 import "./ProvidersSort.scss";
 import CustomFilters from "../../CustomFilters";
@@ -9,6 +10,8 @@ import CustomSelect from "../../CustomSelect";
  * @typedef {Object} ProvidersSortPropTypes
  * @property {Function} onChange Callback that delegate sorting changes to caller.
  * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
+ * @property {string} sort value Selected value.
+ * @property {MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
  */
 
 /**
@@ -17,32 +20,52 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
   const sorts = [
-    { label: "Descending Results", val: "RESULTS_DESC" },
-    { label: "Ascending Results", val: "RESULST_ASC" },
-    { label: "Descending Name", val: "NAME_DES" },
-    { label: "Ascending Name", val: "NAME_ASC" },
-    { label: "Descending Subscription Fee", val: "FEE_DESC" },
-    { label: "Ascending Subscription Fee", val: "FEE_ASC" },
-    { label: "Descending Creation Date", val: "DATE_DESC" },
-    { label: "Ascending Creation Date", val: "DATE_ASC" },
+    {
+      label: "Descending Results",
+      val: "RETURNS_DESC",
+    },
+    {
+      label: "Ascending Results",
+      val: "RETURNS_ASC",
+    },
+    {
+      label: "Descending Name",
+      val: "NAME_DESC",
+    },
+    {
+      label: "Ascending Name",
+      val: "NAME_ASC",
+    },
+    {
+      label: "Descending Subscription Fee",
+      val: "FEE_DESC",
+    },
+    {
+      label: "Ascending Subscription Fee",
+      val: "FEE_ASC",
+    },
+    {
+      label: "Descending Creation Date",
+      val: "DATE_DESC",
+    },
+    {
+      label: "Ascending Creation Date",
+      val: "DATE_ASC",
+    },
   ];
 
-  const [sort, setSort] = useState("");
-
-  const clearFilters = () => {
-    setSort("");
-  };
-
-  useEffect(() => {
-    onChange(sort);
-  }, [sort, onChange]);
+  const intl = useIntl();
 
   return (
     <Box className="providersSort">
-      <CustomFilters onClear={clearFilters} onClose={onClose} title="Sort by">
-        <CustomSelect label="" onChange={setSort} options={sorts} value={sort} />
+      <CustomFilters
+        onClear={clearFilters}
+        onClose={onClose}
+        title={intl.formatMessage({ id: "sort.sortby" })}
+      >
+        <CustomSelect label="" onChange={onChange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
   );

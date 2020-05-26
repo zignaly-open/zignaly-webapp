@@ -7,6 +7,7 @@ import "./providersList.scss";
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {Object} ProvidersListPropTypes
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
+ * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  */
 
 /**
@@ -16,7 +17,7 @@ import "./providersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers } = props;
+  const { providers, showSummary } = props;
   return (
     <Box
       className="providersList"
@@ -24,29 +25,10 @@ const ProvidersList = (props) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Box
-        alignItems="center"
-        className="tradersBox"
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        justifyContent="space-between"
-      >
+      <Box className="tradersBox">
         {providers &&
-          providers.map((item) => (
-            <TraderCard
-              coin={item.coin}
-              dailyReturns={item.dailyReturns}
-              exchanges={[]}
-              fee={item.fee}
-              id={item.id}
-              isCopyTrading={false}
-              key={item.id}
-              logoUrl={item.logoUrl}
-              name={item.name}
-              risk={item.risk}
-              showSummary={false}
-            />
+          providers.map((provider) => (
+            <TraderCard key={provider.id} provider={provider} showSummary={showSummary} />
           ))}
       </Box>
     </Box>

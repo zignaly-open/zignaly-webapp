@@ -7,12 +7,10 @@ import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ *
  * @typedef {Object} TraderCardHeaderPropTypes
- * @property {number} fee Comission fee in %
- * @property {string} name Provider's name
- * @property {string} logoUrl Url of the provider's logo
- * @property {string} coin Coin traded by provider
- * @property {Array<string>} exchanges Exchanges supported by provider
+ * @property {Provider} provider The provider to display.
  */
 
 /**
@@ -22,7 +20,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin, exchanges } = props;
+  const { fee, name, logoUrl, coin, exchanges, disable } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -48,14 +46,16 @@ const TraderCardHeader = (props) => {
             <Typography className="name" variant="h4">
               {name}
             </Typography>
-            <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />
+            {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />}
           </Box>
-          <Typography className="tradeType" variant="caption">
-            Trades {coin} on{" "}
+          <Box alignItems="center" display="flex" flexDirection="row">
+            <Typography className="tradeType" variant="caption">
+              Trades {coin} on
+            </Typography>
             {exchanges.map((exchange, index) => (
               <ExchangeIcon exchange={exchange} key={index} />
             ))}
-          </Typography>
+          </Box>
         </Box>
         <Box
           alignItems="flex-end"

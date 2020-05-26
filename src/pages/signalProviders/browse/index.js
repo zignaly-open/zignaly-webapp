@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
 import withPageContext from "../../../pageContext";
-import ProvidersFilters from "../../../components/Providers/ProvidersFilters";
-import ProvidersSort from "../../../components/Providers/ProvidersSort";
-import TimeFrameSelect from "../../../components/TimeFrameSelect";
-import ProvidersList from "../../../components/Providers/ProvidersList";
 import { Helmet } from "react-helmet";
-import tradeApi from "../../../services/tradeApiClient";
+import useProvidersList from "../../../hooks/useProvidersList";
 import "./signalProvidersBrowse.scss";
 
 /**
@@ -29,46 +25,11 @@ import "./signalProvidersBrowse.scss";
  */
 const SignalProvidersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
-  const handleFiltersChange = (/* type, mda, trader */) => {};
-  const handleSortChange = () => {};
-  const handleTimeFrameChange = () => {};
   const intl = useIntl();
-
-  /**
-   * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
-   * @type {ProvidersCollection} initialState
-   */
-  const initialState = [];
-  const [providers, setProviders] = useState(initialState);
-
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailkdqvw4bplp@example.test",
-      password: "abracadabra",
-    };
-
-    return await tradeApi.userLogin(loginPayload);
-  };
-
-  useEffect(() => {
-    const loadProviders = async () => {
-      const userEntity = await authenticateUser();
-      const sessionPayload = {
-        token: userEntity.token,
-        type: "all",
-        ro: true,
-        copyTradersOnly: false,
-      };
-
-      try {
-        const responseData = await tradeApi.providersGet(sessionPayload);
-        setProviders(responseData);
-      } catch (e) {
-        setProviders([]);
-      }
-    };
-    loadProviders();
-  }, []);
+  const providersOptions = { copyTradersOnly: false, connectedOnly: false, showSummary: false };
+  const providersCallbacks = { toggleFilters, toggleSort };
+  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
+  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelect } = provComponents;
 
   return (
     <Box className="spBrowsePage">
@@ -80,18 +41,18 @@ const SignalProvidersBrowse = (props) => {
         </title>
       </Helmet>
 
-      {showFilters && <ProvidersFilters onChange={handleFiltersChange} onClose={toggleFilters} />}
-      {showSort && <ProvidersSort onChange={handleSortChange} onClose={toggleSort} />}
+      {showFilters && <ProvidersFilters />}
+      {showSort && <ProvidersSort />}
 
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography className="regularHeading" variant="h3">
           {providers.length} <FormattedMessage id="copyt.traders" />
         </Typography>
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
-          <TimeFrameSelect onChange={handleTimeFrameChange} />
+          <TimeFrameSelect />
         </Box>
       </Box>
-      <ProvidersList providers={providers} />
+      <ProvidersList />
     </Box>
   );
 };

@@ -24,29 +24,45 @@ export const generateChart = (context, options) => {
 };
 
 /**
+ * @typedef {Object} ChartData
+ * @property {Array<Number|String>} values Chart values.
+ * @property {Array<String>} labels Chart labels.
+ */
+
+/**
+ * @typedef {Object} ChartColorOptions
+ * @property {string} backgroundColor Background HTML color.
+ * @property {string} borderColor Border HTML color.
+ * @property {string} gradientColor1 Chart gradient color top.
+ * @property {string} gradientColor2 Chart gradient color bottom.
+ */
+
+/**
  * Prepare line chart options.
  *
- * @param {CanvasGradient} backgroundColor Background HTML color.
- * @param {string} borderColor Border HTML color.
- * @param {Array<Object>} chartData Chart data (todo).
+ * @param {ChartColorOptions} colorsOptions Chart colors.
+ * @param {ChartData} chartData Chart dataset.
+ * @param {string} label Tooltip label.
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (backgroundColor, borderColor, chartData) => {
+export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
   return {
     type: "line",
     data: {
-      labels: ["", "", "", "", "", "", "", ""],
+      labels: chartData.labels,
       datasets: [
         {
-          label: "Equity",
-          data: chartData,
-          backgroundColor: backgroundColor,
-          borderColor: borderColor,
+          label,
+          data: chartData.values,
+          backgroundColor: colorsOptions.backgroundColor,
+          borderColor: colorsOptions.borderColor,
+          fill: "start",
         },
       ],
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       legend: {
         display: false,
       },
@@ -62,38 +78,33 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData)
            * @typedef {Object} TooltipItemParam
            * @property {String} index
            */
-
           /**
            * Default Tooltip component configurations.
            *
            * @typedef {Object} DatasetObject
            * @property {Array<Number>} data
            */
-
           /**
            * Default Datasets object proteries
            *
            * @typedef {Array<DatasetObject>} DatasetCollection
            */
-
           /**
            * Default Dara params.
            *
            * @typedef {Object} DataParam
            * @property {DatasetCollection} datasets
            */
-
           /**
            * Tooltip configuration params.
            *
            * @param {TooltipItemParam} tooltipItem
            * @param {DataParam} data
            */
-
-          label: (tooltipItem, data) => {
-            let index = parseInt(tooltipItem.index);
-            return "returns " + data.datasets[0].data[index];
-          },
+          //   label: (tooltipItem, data) => {
+          //     let index = parseInt(tooltipItem.index);
+          //     return "returns " + data.datasets[0].data[index];
+          //   },
           //   afterLabel: () => {
           //     return new Date();
           //   },
@@ -134,6 +145,31 @@ export const prepareLineChartOptions = (backgroundColor, borderColor, chartData)
         ],
       },
     },
+    plugins: [
+      {
+        id: "responsiveGradient",
+        /**
+         * @typedef {Object} ChartWithScales
+         * @property {*} scales
+         *
+         * @typedef {Chart & ChartWithScales} ExtendedChart
+         */
+
+        /**
+         * Fill chart with gradient on layout change.
+         *
+         * @param {ExtendedChart} chart Chart instance.
+         * @returns {void}
+         */
+        afterLayout: (chart /* options */) => {
+          let scales = chart.scales;
+          let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
+          color.addColorStop(0, colorsOptions.gradientColor2);
+          color.addColorStop(1, colorsOptions.gradientColor1);
+          chart.data.datasets[0].backgroundColor = color;
+        },
+      },
+    ],
   };
 };
 

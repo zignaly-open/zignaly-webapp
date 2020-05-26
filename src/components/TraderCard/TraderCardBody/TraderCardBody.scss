@@ -13,21 +13,50 @@
   }
 
   .traderCardGraph {
+    // The chart height will be 30% of width
+    padding-top: 30%;
     position: relative;
     width: 100%;
 
-    .chartCanvas {
+    .chartWrapper {
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .chart {
+      // Chart canvas will fill this container
+      height: 100%;
+      position: relative;
       width: 100%;
     }
   }
 
-  .actions {
-    bottom: 16px;
-    position: absolute;
-    width: 100%;
+  .actionsWrapper {
+    padding: 15px 0 24px;
+
+    &.positive {
+      background: linear-gradient(180deg, $greenChartBottom 0%, $white 100%);
+    }
+
+    &.negative {
+      background: linear-gradient(180deg, $redChartBottom 0%, $white 100%);
+    }
+
+    h6,
+    button {
+      opacity: 0.6;
+    }
+
+    .followers {
+      padding-bottom: 14px;
+    }
   }
 
   .userSummary {
+    border-top: 1px solid $borderColor;
     padding: 10px 20px;
 
     h5 {
