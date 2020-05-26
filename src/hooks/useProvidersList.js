@@ -82,7 +82,7 @@ const useProvidersList = (options, callbacks) => {
   const sortProviders = (_providersFiltered) => {
     let providersSorted = _providersFiltered;
     if (sort) {
-      const [key, direction] = sort.split("-");
+      const [key, direction] = sort.split("_");
       providersSorted = _providersFiltered.concat().sort((a, b) => {
         let res = 0;
         switch (key) {
