@@ -3,30 +3,22 @@ import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
-import withSignalProvidersLayout from "../../../layouts/signalProvidersLayout/withSignalProvidersLayout";
+import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
 import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import "./signalProvidersAnalytics.scss";
+import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfitsTable";
 
 /**
- * @typedef {Object} SignalProvidersBrowsePropTypes
- * @property {boolean} showFilters Flag to indicate if filters should be rendered.
- * @property {boolean} showSort Flag to indicate if sort options should be rendered.
- * @property {React.MouseEventHandler} toggleFilters Callback that delegate filters toggle state to caller.
- * @property {React.MouseEventHandler} toggleSort Callback that delegate sort toggle state to caller.
- */
-
-/**
- * Provides a list to browse signal providers.
+ * Provides analytics of signal providers.
  *
- * @param {SignalProvidersBrowsePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const SignalProvidersAnalytics = (props) => {
+const SignalProvidersAnalytics = () => {
   const intl = useIntl();
 
   return (
-    <Box className="spBrowsePage">
+    <Box className="spAnalyticsPage">
       <Helmet>
         <title>
           {intl.formatMessage({
@@ -34,6 +26,7 @@ const SignalProvidersAnalytics = (props) => {
           })}
         </title>
       </Helmet>
+      <ProvidersProfitsTable />
     </Box>
   );
 };
@@ -41,5 +34,5 @@ const SignalProvidersAnalytics = (props) => {
 export default compose(
   withPageContext,
   withAppLayout,
-  withSignalProvidersLayout,
+  withProvidersAnalyticsLayout,
 )(SignalProvidersAnalytics);

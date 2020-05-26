@@ -161,6 +161,17 @@ import { assign, isArray, isObject } from "lodash";
  * @property {string|number} returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
+ * @property {boolean} ro
+ */
+
+/**
+ * @typedef {Object} ProvidersStatsPayload
+ * @property {string} token
+ * @property {string} quote
+ * @property {string} base
+ * @property {string} timeFrame
+ * @property {string} DCAFilter
+ * @property {boolean} ro
  */
 
 /**
@@ -195,6 +206,99 @@ import { assign, isArray, isObject } from "lodash";
 
 /**
  * @typedef {Array<ProviderEntity>} ProvidersCollection
+ */
+
+/**
+ * @typedef {Object} ProviderStats
+ * @property {string} id
+ * @property {string} name
+ * @property {string} logoUrl
+ * @property {string} name
+ * @property {string} quote
+ * @property {boolean} base
+ * @property {number} signals
+ * @property {string} sumTotalInvested
+ * @property {string} sumTotalProfit
+ * @property {string} sumTotalProfitFromClosed
+ * @property {string} sumTotalProfitFromOpened
+ * @property {string} sumPositions
+ * @property {string} sumUnclosedPositions
+ * @property {string} sumWins
+ * @property {string} sumLosses
+ * @property {string} sumDCAs
+ * @property {string} sumDCAWins
+ * @property {string} sumDCALosses
+ * @property {string} sumSoldByTakeProfit
+ * @property {string} sumSoldManually
+ * @property {string} sumSoldByTrailingStop
+ * @property {string} sumSoldByStopLoss
+ * @property {string} sumSoldByTTL
+ * @property {string} sumSoldBySignal
+ * @property {string} sumSoldByOther
+ * @property {string} avgAverageProfit
+ * @property {string} avgAveragePositionSize
+ * @property {string} avgAverageDCAsPerPosition
+ * @property {string} avgAverageClosingTime
+ * @property {string} avgAverageEntryPrice
+ * @property {string} avgAverageExitPrice
+ * @property {string} avgAverageAveragePrice
+ * @property {string} avgAverageProfitPercentage
+ * @property {string} avgI24h_higherPricePercentage
+ * @property {string} avgI24h_lowerBeforeHigherPricePercentage
+ * @property {string} avgI24h_lowerPricePercentage
+ * @property {string} avgI24h_secondsUntilHigherPrice
+ * @property {string} avgI24h_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI24h_secondsUntilLowerPrice
+ * @property {string} avgI3d_higherPricePercentage
+ * @property {string} avgI3d_lowerBeforeHigherPricePercentage
+ * @property {string} avgI3d_lowerPricePercentage
+ * @property {string} avgI3d_secondsUntilHigherPrice
+ * @property {string} avgI3d_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI3d_secondsUntilLowerPrice
+ * @property {string} avgI1w_higherPricePercentage
+ * @property {string} avgI1w_lowerBeforeHigherPricePercentage
+ * @property {string} avgI1w_lowerPricePercentage
+ * @property {string} avgI1w_secondsUntilHigherPrice
+ * @property {string} avgI1w_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI1w_secondsUntilLowerPrice
+ * @property {string} avgI2w_higherPricePercentage
+ * @property {string} avgI2w_lowerBeforeHigherPricePercentage
+ * @property {string} avgI2w_lowerPricePercentage
+ * @property {string} avgI2w_secondsUntilHigherPrice
+ * @property {string} avgI2w_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI2w_secondsUntilLowerPrice
+ * @property {string} avgI1m_higherPricePercentage
+ * @property {string} avgI1m_lowerBeforeHigherPricePercentage
+ * @property {string} avgI1m_lowerPricePercentage
+ * @property {string} avgI1m_secondsUntilHigherPrice
+ * @property {string} avgI1m_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI1m_secondsUntilLowerPrice
+ * @property {string} avgI3m_higherPricePercentage
+ * @property {string} avgI3m_lowerBeforeHigherPricePercentage
+ * @property {string} avgI3m_lowerPricePercentage
+ * @property {string} avgI3m_secondsUntilHigherPrice
+ * @property {string} avgI3m_secondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI3m_secondsUntilLowerPrice
+ * @property {string} maxMaxInvestment
+ * @property {string} maxMaxReturnOfInvestment
+ * @property {string} maxMaxDCAProfit
+ * @property {string} maxMaxBuyingPrice
+ * @property {string} maxMaxExitPrice
+ * @property {string} maxSlowerClosedPositionInSeconds
+ * @property {string} minMinInvestment
+ * @property {string} minMinReturnOfInvestment
+ * @property {string} minMinDCAProfit
+ * @property {string} minMinBuyingPrice
+ * @property {string} minMinExitPrice
+ * @property {string} minFasterClosedPositionInSeconds
+ * @property {string} sumReturnOfInvestment
+ * @property {string} sumClosedPositions
+ * @property {string} percentageProfit
+ * @property {string} winRate
+ */
+
+/**
+ * @typedef {Array<ProviderStats>} ProvidersStatsCollection
  */
 
 /**
@@ -553,5 +657,131 @@ function createUserBalanceEntity(response) {
     totalProfit: response.totalProfit,
     totalAssets: response.totalAssets,
     profitPercentage: response.profitPercentage,
+  };
+}
+
+/**
+ * Transform providers stats response to typed ProvidersStatsCollection.
+ *
+ * @param {*} response Trade API get user balance raw response.
+ * @returns {ProvidersStatsCollection} User balance entity.
+ */
+export function providersStatsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different propteries.");
+  }
+
+  return response.map((providerStatsItem) => {
+    console.log(providerStatsItem);
+    return providerStatsItemTransform(providerStatsItem);
+  });
+}
+
+/**
+ * Transform API provider stats item to typed object.
+ *
+ * @param {*} providerStatsItem Trade API provider stats item.
+ * @returns {ProviderStats} Provider stats.
+ */
+function providerStatsItemTransform(providerStatsItem) {
+  const emptyProviderStatsEntity = createProviderStatsEmptyEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyProviderStatsEntity, providerStatsItem);
+
+  return transformedResponse;
+}
+
+/**
+ * Create provider stats entity.
+ *
+ * @returns {ProviderStats} User balance entity.
+ */
+
+function createProviderStatsEmptyEntity() {
+  return {
+    id: "",
+    name: "",
+    logoUrl: "",
+    quote: "",
+    base: false,
+    signals: 0,
+    sumTotalInvested: "",
+    sumTotalProfit: "",
+    sumTotalProfitFromClosed: "",
+    sumTotalProfitFromOpened: "",
+    sumPositions: "",
+    sumUnclosedPositions: "",
+    sumWins: "",
+    sumLosses: "",
+    sumDCAs: "",
+    sumDCAWins: "",
+    sumDCALosses: "",
+    sumSoldByTakeProfit: "",
+    sumSoldManually: "",
+    sumSoldByTrailingStop: "",
+    sumSoldByStopLoss: "",
+    sumSoldByTTL: "",
+    sumSoldBySignal: "",
+    sumSoldByOther: "",
+    avgAverageProfit: "",
+    avgAveragePositionSize: "",
+    avgAverageDCAsPerPosition: "",
+    avgAverageClosingTime: "",
+    avgAverageEntryPrice: "",
+    avgAverageExitPrice: "",
+    avgAverageAveragePrice: "",
+    avgAverageProfitPercentage: "",
+    avgI24h_higherPricePercentage: "",
+    avgI24h_lowerBeforeHigherPricePercentage: "",
+    avgI24h_lowerPricePercentage: "",
+    avgI24h_secondsUntilHigherPrice: "",
+    avgI24h_secondsUntilLowerBeforeHigherPrice: "",
+    avgI24h_secondsUntilLowerPrice: "",
+    avgI3d_higherPricePercentage: "",
+    avgI3d_lowerBeforeHigherPricePercentage: "",
+    avgI3d_lowerPricePercentage: "",
+    avgI3d_secondsUntilHigherPrice: "",
+    avgI3d_secondsUntilLowerBeforeHigherPrice: "",
+    avgI3d_secondsUntilLowerPrice: "",
+    avgI1w_higherPricePercentage: "",
+    avgI1w_lowerBeforeHigherPricePercentage: "",
+    avgI1w_lowerPricePercentage: "",
+    avgI1w_secondsUntilHigherPrice: "",
+    avgI1w_secondsUntilLowerBeforeHigherPrice: "",
+    avgI1w_secondsUntilLowerPrice: "",
+    avgI2w_higherPricePercentage: "",
+    avgI2w_lowerBeforeHigherPricePercentage: "",
+    avgI2w_lowerPricePercentage: "",
+    avgI2w_secondsUntilHigherPrice: "",
+    avgI2w_secondsUntilLowerBeforeHigherPrice: "",
+    avgI2w_secondsUntilLowerPrice: "",
+    avgI1m_higherPricePercentage: "",
+    avgI1m_lowerBeforeHigherPricePercentage: "",
+    avgI1m_lowerPricePercentage: "",
+    avgI1m_secondsUntilHigherPrice: "",
+    avgI1m_secondsUntilLowerBeforeHigherPrice: "",
+    avgI1m_secondsUntilLowerPrice: "",
+    avgI3m_higherPricePercentage: "",
+    avgI3m_lowerBeforeHigherPricePercentage: "",
+    avgI3m_lowerPricePercentage: "",
+    avgI3m_secondsUntilHigherPrice: "",
+    avgI3m_secondsUntilLowerBeforeHigherPrice: "",
+    avgI3m_secondsUntilLowerPrice: "",
+    maxMaxInvestment: "",
+    maxMaxReturnOfInvestment: "",
+    maxMaxDCAProfit: "",
+    maxMaxBuyingPrice: "",
+    maxMaxExitPrice: "",
+    maxSlowerClosedPositionInSeconds: "",
+    minMinInvestment: "",
+    minMinReturnOfInvestment: "",
+    minMinDCAProfit: "",
+    minMinBuyingPrice: "",
+    minMinExitPrice: "",
+    minFasterClosedPositionInSeconds: "",
+    sumReturnOfInvestment: "",
+    sumClosedPositions: "",
+    percentageProfit: "",
+    winRate: "",
   };
 }

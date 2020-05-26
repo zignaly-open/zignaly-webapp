@@ -133,7 +133,7 @@ const useProvidersList = (options, callbacks) => {
       const sessionPayload = {
         token: userEntity.token,
         type: connectedOnly ? "connected" : "all",
-        // ro: true,
+        ro: true,
         copyTradersOnly,
         timeFrame,
       };

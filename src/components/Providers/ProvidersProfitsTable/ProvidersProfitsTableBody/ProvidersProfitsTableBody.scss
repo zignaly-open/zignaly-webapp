@@ -1,0 +1,14 @@
+.tableBody {
+  .row {
+    .cell {
+      border-bottom: 1px solid $borderColor;
+      font-family: "PlexSans-Medium";
+      font-size: 14px;
+      max-width: 120px;
+      min-width: 80px;
+      padding: 12px;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+  }
+}

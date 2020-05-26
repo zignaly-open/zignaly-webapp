@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box, Icon } from "@material-ui/core";
-import SortIcon from "../../../images/filters/sort.svg";
-import SortFillIcon from "../../../images/filters/sort-fill.svg";
-import FilterIcon from "../../../images/filters/filter.svg";
-import FilterFillIcon from "../../../images/filters/filter-fill.svg";
+import SortIcon from "../../images/filters/sort.svg";
+import SortFillIcon from "../../images/filters/sort-fill.svg";
+import FilterIcon from "../../images/filters/filter.svg";
+import FilterFillIcon from "../../images/filters/filter-fill.svg";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 
@@ -41,7 +41,7 @@ const withProvidersLayout = (Component) => {
       setShowSort(!showSort);
     };
 
-    const filters = () => (
+    const filters = (
       <Box
         alignItems="center"
         className="settings"

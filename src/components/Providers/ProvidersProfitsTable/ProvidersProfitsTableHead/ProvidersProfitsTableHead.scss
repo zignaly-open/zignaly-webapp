@@ -1,0 +1,15 @@
+.tableHead {
+  .row {
+    .cell {
+      border-bottom: 0;
+      font-family: "PlexSans-Medium";
+      font-size: 11px;
+      height: 60px;
+      max-width: 120px;
+      min-width: 80px;
+      padding: 8px 12px;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+  }
+}

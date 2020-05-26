@@ -37,8 +37,4 @@ const SubNavHeader = ({ links, rightComponent }) => {
   );
 };
 
-SubNavHeader.defaultProps = {
-  children: null,
-};
-
 export default SubNavHeader;
