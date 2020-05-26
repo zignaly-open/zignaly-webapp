@@ -66,6 +66,7 @@ const PositionsTabs = () => {
       )}
       {tabValue === 0 && (
         <Box className="tabPanel">
+          <PositionsTable />
           <NoPositions />
         </Box>
       )}
