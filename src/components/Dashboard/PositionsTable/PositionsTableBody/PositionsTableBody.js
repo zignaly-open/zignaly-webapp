@@ -126,8 +126,21 @@ const PositionsTableBody = (props) => {
             )}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.reBuyTargetsCountFail}, {position.reBuyTargetsCountPending},{" "}
-            {position.reBuyTargetsCountSuccess}
+            {position.reBuyTargetsCountFail > 0 && (
+              <span className="targetRed" title="DCAs failed.">
+                {position.reBuyTargetsCountFail}
+              </span>
+            )}
+            {position.reBuyTargetsCountSuccess > 0 && (
+              <span className="targetGreen" title="DCAs successfully completed.">
+                {position.reBuyTargetsCountSuccess}
+              </span>
+            )}
+            {position.reBuyTargetsCountPending > 0 && (
+              <span className="targetGray" title="Pending DCAs">
+                {position.reBuyTargetsCountPending}
+              </span>
+            )}
           </TableCell>
           <TableCell align="left" className="cell">
             "Calculate Risk"
