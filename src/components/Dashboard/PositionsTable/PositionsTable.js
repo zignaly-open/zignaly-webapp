@@ -11,7 +11,20 @@ import { useSelector } from "react-redux";
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  */
 
-const PositionsTable = () => {
+/**
+ * @typedef {"open" | "closed" | "log"} PositionTableType
+ * @typedef {Object} PositionsTableProps
+ * @property {PositionTableType} type
+ */
+
+/**
+ * Component that display user positions in table view.
+ *
+ * @param {PositionsTableProps} props Component properties.
+ * @returns {JSX.Element} Positions table element.
+ */
+const PositionsTable = (props) => {
+  const { type } = props;
   const [positions, setPositions] = useState([]);
   /**
    * Select store session data.
@@ -26,6 +39,10 @@ const PositionsTable = () => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
       };
+
+      if (type === "closed") {
+        return await tradeApi.closedPositionsGet(payload);
+      }
 
       return await tradeApi.openPositionsGet(payload);
     } catch (e) {
