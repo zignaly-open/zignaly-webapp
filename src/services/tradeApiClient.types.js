@@ -87,6 +87,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} quoteAsset
  * @property {number} stopLossPercentage
  * @property {number} stopLossPrice
+ * @property {string} stopLossStyle
  * @property {boolean} takeProfit
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
@@ -382,6 +383,7 @@ function userPositionItemTransform(positionItem) {
     providerLink: composeProviderLink(),
     openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
     profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
+    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
   });
 
   return transformedResponse;
@@ -420,6 +422,7 @@ function createEmptyPositionEntity() {
     quoteAsset: "",
     stopLossPercentage: 0,
     stopLossPrice: 0,
+    stopLossStyle: "",
     takeProfit: false,
     trailingStopPercentage: 0,
     trailingStopTriggerPercentage: 0,
