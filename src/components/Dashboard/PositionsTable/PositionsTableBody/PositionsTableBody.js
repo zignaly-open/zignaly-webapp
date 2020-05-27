@@ -78,10 +78,14 @@ const PositionsTableBody = (props) => {
             {position.sellPrice}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.profit}
+            {position.status === 1 ? <span>Still entering...</span> : <>{position.profit}</>}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.profitPercentage}
+            {position.status === 1 ? (
+              <span>Still entering...</span>
+            ) : (
+              <>{position.profitPercentage}</>
+            )}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.side}
