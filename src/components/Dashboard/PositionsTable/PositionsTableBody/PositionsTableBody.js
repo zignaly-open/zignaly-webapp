@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { File } from "react-feather";
@@ -30,8 +31,10 @@ const PositionsTableBody = (props) => {
   const composeProviderIcon = (position) => {
     return (
       <>
-        <img src={position.providerLogo} width="30px" />
-        <span>{position.providerName}</span>
+        <Link to={position.providerLink}>
+          <img src={position.providerLogo} width="30px" />
+          <span>{position.providerName}</span>
+        </Link>
       </>
     );
   };

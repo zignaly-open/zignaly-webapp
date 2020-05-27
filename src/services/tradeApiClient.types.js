@@ -124,6 +124,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} internalExchangeId
  * @property {string} logoUrl
  * @property {string} providerLogo
+ * @property {string} providerLink
  * @property {Array<ReBuyTarget>} reBuyTargets
  */
 
@@ -358,11 +359,25 @@ export function userPositionsResponseTransform(response) {
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(positionItem.openDate);
+  const composeProviderLink = () => {
+    // Manual positions don't use a signal provider.
+    if (positionItem.providerId === 1) {
+      return "";
+    }
+
+    if (positionItem.isCopyTrading) {
+      return `/copytraders/${positionItem.providerId}`;
+    }
+
+    return `/signalsproviders/${positionItem.providerId}`;
+  };
+
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
     openDate: Number(positionItem.openDate),
     openDateMoment: openDateMoment,
     providerLogo: positionItem.logoUrl || defaultProviderLogo,
+    providerLink: composeProviderLink(),
     openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
   });
 
@@ -439,6 +454,7 @@ function createEmptyPositionEntity() {
     internalExchangeId: "",
     logoUrl: "",
     providerLogo: "",
+    providerLink: "",
     reBuyTargets: [],
   };
 }
