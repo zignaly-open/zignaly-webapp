@@ -210,7 +210,7 @@ import { assign, isArray, isObject } from "lodash";
 
 /**
  * @typedef {Object} ProviderStats
- * @property {string} id
+ * @property {string} providerId
  * @property {string} name
  * @property {string} logoUrl
  * @property {string} name
@@ -699,7 +699,7 @@ function providerStatsItemTransform(providerStatsItem) {
 
 function createProviderStatsEmptyEntity() {
   return {
-    id: "",
+    providerId: "",
     name: "",
     logoUrl: "",
     quote: "",

@@ -3,40 +3,30 @@ import { FormattedMessage } from "react-intl";
 import "./ProvidersProfitsTableHead.scss";
 import { TableHead, TableRow, TableCell } from "@material-ui/core";
 
-const ProvidersProfitsTableHead = () => {
+/**
+ * @typedef {import("../ProvidersProfitsTable").Column} Column
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Array<Column>} columns
+ */
+
+/**
+ * Default component props.
+ *
+ * @param {DefaultProps} props
+ */
+const ProvidersProfitsTableHead = ({ columns }) => {
   return (
     <TableHead className="tableHead">
       <TableRow className="row">
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.name" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.protit-percentage" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.totalsignals" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.positions.total" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.winrate" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.position.closed" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.averageclosing" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.soldbysignal" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.soldbystop" />
-        </TableCell>
-        <TableCell align="left" className="cell">
-          <FormattedMessage id="col.soldbytake" />
-        </TableCell>
+        {columns.map((column) => (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id={column.id} />
+          </TableCell>
+        ))}
       </TableRow>
     </TableHead>
   );
