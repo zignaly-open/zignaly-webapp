@@ -358,7 +358,7 @@ export function userPositionsResponseTransform(response) {
  */
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
-  const openDateMoment = moment(positionItem.openDate);
+  const openDateMoment = moment(Number(positionItem.openDate));
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
     if (positionItem.providerId === "1") {
@@ -372,7 +372,8 @@ function userPositionItemTransform(positionItem) {
     return `/signalsproviders/${positionItem.providerId}`;
   };
 
-  // Override the empty entity with the values that came in from API.
+  // Override the empty entity with the values that came in from API and augment
+  // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
     openDate: Number(positionItem.openDate),
     openDateMoment: openDateMoment,

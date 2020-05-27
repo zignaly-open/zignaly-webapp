@@ -29,7 +29,6 @@ const PositionsTableBody = (props) => {
    * @returns {JSX.Element} Provider icon JSX element.
    */
   const composeProviderIcon = (position) => {
-    console.log("Provider Link: ", position.providerLink);
     // Wrap with link to provider provile when available.
     if (position.providerLink) {
       return (
