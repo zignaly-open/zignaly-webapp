@@ -127,6 +127,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} logoUrl
  * @property {string} providerLogo
  * @property {string} providerLink
+ * @property {string} risk
  * @property {Array<ReBuyTarget>} reBuyTargets
  */
 
@@ -374,6 +375,21 @@ function userPositionItemTransform(positionItem) {
     return `/signalsproviders/${positionItem.providerId}`;
   };
 
+  const calculateRisk = () => {
+    const buyPrice = parseFloat(positionItem.buyPrice);
+    let risk = ((positionItem.stopLossPrice - buyPrice) / buyPrice) * 100;
+
+    if (isNaN(risk)) {
+      return "0.0%";
+    }
+
+    if (positionItem.type === "SHORT") {
+      risk *= -1;
+    }
+
+    return risk.toFixed(2) + "%";
+  };
+
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
@@ -384,6 +400,7 @@ function userPositionItemTransform(positionItem) {
     openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
     profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
     stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
+    risk: calculateRisk(),
   });
 
   return transformedResponse;
@@ -463,6 +480,7 @@ function createEmptyPositionEntity() {
     providerLogo: "",
     providerLink: "",
     reBuyTargets: [],
+    risk: "0.0%",
   };
 }
 
