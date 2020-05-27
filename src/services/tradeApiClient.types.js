@@ -127,7 +127,8 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} logoUrl
  * @property {string} providerLogo
  * @property {string} providerLink
- * @property {string} risk
+ * @property {number} risk
+ * @property {string} riskStyle
  * @property {Array<ReBuyTarget>} reBuyTargets
  */
 
@@ -387,9 +388,10 @@ function userPositionItemTransform(positionItem) {
       risk *= -1;
     }
 
-    return risk.toFixed(2) + "%";
+    return risk;
   };
 
+  const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
@@ -400,7 +402,8 @@ function userPositionItemTransform(positionItem) {
     openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
     profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
     stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
-    risk: calculateRisk(),
+    risk: risk,
+    riskStyle: risk >= 0 ? "gain" : "loss",
   });
 
   return transformedResponse;
@@ -480,7 +483,8 @@ function createEmptyPositionEntity() {
     providerLogo: "",
     providerLink: "",
     reBuyTargets: [],
-    risk: "0.0%",
+    risk: 0,
+    riskStyle: "",
   };
 }
 
