@@ -40,10 +40,7 @@ const PositionsTableBody = (props) => {
             {position.openDateReadable}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.providerId}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            {position.providerName}
+            {position.providerId} - {position.providerName}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.signalId}
@@ -59,6 +56,9 @@ const PositionsTableBody = (props) => {
           </TableCell>
           <TableCell align="left" className="cell">
             {position.sellPrice}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            {"Unknown"}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.profitPercentage}
@@ -87,6 +87,9 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.reBuyTargetsCountFail}, {position.reBuyTargetsCountPending},{" "}
             {position.reBuyTargetsCountSuccess}
+          </TableCell>
+          <TableCell align="left" className="cell">
+            "Calculate Risk"
           </TableCell>
           <TableCell align="left" className="cell">
             "Calculate Age"
