@@ -261,24 +261,12 @@ import { assign, isArray, isObject } from "lodash";
  * @property {string} avgI1w_secondsUntilHigherPrice
  * @property {string} avgI1w_secondsUntilLowerBeforeHigherPrice
  * @property {string} avgI1w_secondsUntilLowerPrice
- * @property {string} avgI2w_higherPricePercentage
- * @property {string} avgI2w_lowerBeforeHigherPricePercentage
- * @property {string} avgI2w_lowerPricePercentage
- * @property {string} avgI2w_secondsUntilHigherPrice
- * @property {string} avgI2w_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI2w_secondsUntilLowerPrice
  * @property {string} avgI1m_higherPricePercentage
  * @property {string} avgI1m_lowerBeforeHigherPricePercentage
  * @property {string} avgI1m_lowerPricePercentage
  * @property {string} avgI1m_secondsUntilHigherPrice
  * @property {string} avgI1m_secondsUntilLowerBeforeHigherPrice
  * @property {string} avgI1m_secondsUntilLowerPrice
- * @property {string} avgI3m_higherPricePercentage
- * @property {string} avgI3m_lowerBeforeHigherPricePercentage
- * @property {string} avgI3m_lowerPricePercentage
- * @property {string} avgI3m_secondsUntilHigherPrice
- * @property {string} avgI3m_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI3m_secondsUntilLowerPrice
  * @property {string} maxMaxInvestment
  * @property {string} maxMaxReturnOfInvestment
  * @property {string} maxMaxDCAProfit
@@ -749,24 +737,12 @@ function createProviderStatsEmptyEntity() {
     avgI1w_secondsUntilHigherPrice: "",
     avgI1w_secondsUntilLowerBeforeHigherPrice: "",
     avgI1w_secondsUntilLowerPrice: "",
-    avgI2w_higherPricePercentage: "",
-    avgI2w_lowerBeforeHigherPricePercentage: "",
-    avgI2w_lowerPricePercentage: "",
-    avgI2w_secondsUntilHigherPrice: "",
-    avgI2w_secondsUntilLowerBeforeHigherPrice: "",
-    avgI2w_secondsUntilLowerPrice: "",
     avgI1m_higherPricePercentage: "",
     avgI1m_lowerBeforeHigherPricePercentage: "",
     avgI1m_lowerPricePercentage: "",
     avgI1m_secondsUntilHigherPrice: "",
     avgI1m_secondsUntilLowerBeforeHigherPrice: "",
     avgI1m_secondsUntilLowerPrice: "",
-    avgI3m_higherPricePercentage: "",
-    avgI3m_lowerBeforeHigherPricePercentage: "",
-    avgI3m_lowerPricePercentage: "",
-    avgI3m_secondsUntilHigherPrice: "",
-    avgI3m_secondsUntilLowerBeforeHigherPrice: "",
-    avgI3m_secondsUntilLowerPrice: "",
     maxMaxInvestment: "",
     maxMaxReturnOfInvestment: "",
     maxMaxDCAProfit: "",

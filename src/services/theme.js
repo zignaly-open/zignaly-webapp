@@ -211,6 +211,37 @@ const theme = (darkStyle) => {
           ],
         },
       },
+
+      MUIDataTableToolbar: {
+        root: {
+          // body2
+          fontSize: "16px",
+          fontFamily: "PlexSans-SemiBold",
+          lineHeight: 1.31,
+          letterSpacing: "0.61px",
+        },
+      },
+
+      MUIDataTableHeadCell: {
+        root: {
+          // footnote
+          fontSize: "11px",
+          fontFamily: "PlexSans-Bold",
+          textTransform: "uppercase",
+          opacity: "0.6",
+          lineHeight: 1.45,
+          letterSpacing: "0.42px",
+        },
+      },
+      //   MUIDataTableBodyCell: {
+      //     root: {
+      //       overflow: "hidden",
+      //       whiteSpace: "nowrap",
+      //       textOverflow: "ellipsis",
+      //       position: "relative",
+      //       //   maxWidth: 0,
+      //     },
+      //   },
     },
     props: {
       MuiButtonBase: {

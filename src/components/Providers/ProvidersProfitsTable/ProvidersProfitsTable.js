@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./ProvidersProfitsTable.scss";
-import {
-  Box,
-  Table,
-  TableContainer,
-  Paper,
-  TableFooter,
-  TableRow,
-  TablePagination,
-  Typography,
-} from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
-import ProvidersProfitsTableHead from "./ProvidersProfitsTableHead";
-import ProvidersProfitsTableBody from "./ProvidersProfitsTableBody";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import MUIDataTable from "mui-datatables";
+import moment from "moment";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -31,372 +22,6 @@ import { FormattedMessage } from "react-intl";
  * @property {boolean} [excludeFromShowHideColumn]
  */
 
-/**
- * @type {Array<Column>}
- */
-const columns = [
-  { name: "name", id: "col.name", show: true, excludeFromShowHideColumn: true },
-  {
-    name: "percentageProfit",
-    id: "col.protit-percentage",
-    show: true,
-    parse: "float",
-    digits: 2,
-  },
-  { name: "signals", id: "col.totalsignals", show: true, parse: "int" },
-  { name: "sumPositions", id: "col.positions.total", show: true, parse: "int" },
-  {
-    name: "winRate",
-    id: "col.winrate",
-    show: true,
-    parse: "float",
-    digits: 2,
-  },
-  { name: "sumClosedPositions", id: "col.position.closed", show: true, parse: "int" },
-  { name: "avgAverageClosingTime", id: "col.averageclosing", show: true, parse: "time" },
-  { name: "sumSoldBySignal", id: "col.soldbysignal", show: true, parse: "int" },
-  { name: "sumSoldByStopLoss", id: "col.soldbystop", show: true, parse: "int" },
-  { name: "sumSoldByTakeProfit", id: "col.soldbytake", show: true, parse: "int" },
-
-  { name: "quote", id: "Quote", show: false, excludeFromShowHideColumn: true },
-  {
-    name: "maxMaxDCAProfit",
-    id: "Max Profits from DCA",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "maxMaxInvestment",
-    id: "Max Investment",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "maxMaxReturnOfInvestment",
-    id: "Max Profit",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "maxSlowerClosedPositionInSeconds",
-    id: "Slower Closing Time",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "minFasterClosedPositionInSeconds",
-    id: "Faster Closing Time",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "minMinDCAProfit",
-    id: "Min Profits from DCA",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "minMinInvestment",
-    id: "Min Investment",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "minMinReturnOfInvestment",
-    id: "Min Profit",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  { name: "sumDCALosses", id: "DCAs Lost", show: false, parse: "int" },
-  { name: "sumDCAWins", id: "DCA Won", show: false, parse: "int" },
-  { name: "sumDCAs", id: "Total DCAs", show: false, parse: "int" },
-  { name: "sumLosses", id: "Positions Lost", show: false, parse: "int" },
-  {
-    name: "sumReturnOfInvestment",
-    id: "Return of Investment",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  { name: "sumSoldByOther", id: "Exit by Other", show: false, parse: "int" },
-
-  { name: "sumSoldByTTL", id: "Exit by TTL", show: false, parse: "int" },
-  { name: "sumSoldByTrailingStop", id: "Exit by Trailing-Stop", show: false, parse: "int" },
-  { name: "sumSoldManually", id: "Exit Manually", show: false, parse: "int" },
-  {
-    name: "sumTotalInvested",
-    id: "Total Invested",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  { name: "sumTotalProfit", id: "Total Profits", show: false, parse: "float", digits: false },
-  { name: "sumUnclosedPositions", id: "Positions Still Opened", show: false, parse: "int" },
-  { name: "sumWins", id: "Positions Won", show: false, parse: "int" },
-  { name: "avgAverageDCAsPerPosition", id: "Avg DCAs per Position", show: false, parse: "int" },
-  {
-    name: "avgAveragePositionSize",
-    id: "Avg Position Size",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "avgAverageProfit",
-    id: "Avg Profit per Position",
-    show: false,
-    parse: "float",
-    digits: false,
-  },
-  {
-    name: "avgAverageProfitPercentage",
-    id: "Avg Profit per Position (%)",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1m_higherPricePercentage",
-    id: "Higher Price in 1m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1m_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 1m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1m_lowerPricePercentage",
-    id: "Lower price in 1m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1m_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 1m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI1m_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 1m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI1m_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 1m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI1w_higherPricePercentage",
-    id: "Higher Price in 1w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1w_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 1w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1w_lowerPricePercentage",
-    id: "Lower price in 1w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI1w_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 1w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI1w_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 1w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI1w_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 1w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI2w_higherPricePercentage",
-    id: "Higher Price in 2w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI2w_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 2w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI2w_lowerPricePercentage",
-    id: "Lower price in 2w",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI2w_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 2w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI2w_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 2w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI2w_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 2w",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3d_higherPricePercentage",
-    id: "Higher Price in 3d",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3d_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 3d",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3d_lowerPricePercentage",
-    id: "Lower price in 3d",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3d_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 3d",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3d_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 3d",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3d_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 3d",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3m_higherPricePercentage",
-    id: "Higher Price in 3m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3m_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 3m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3m_lowerPricePercentage",
-    id: "Lower price in 3m",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI3m_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 3m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3m_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 3m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI3m_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 3m",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI24h_higherPricePercentage",
-    id: "Higher Price in 24h",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI24h_lowerBeforeHigherPricePercentage",
-    id: "Lower Price Before Higher in 24h",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI24h_lowerPricePercentage",
-    id: "Lower price in 24h",
-    show: false,
-    parse: "float",
-    digits: 2,
-  },
-  {
-    name: "avgI24h_secondsUntilHigherPrice",
-    id: "Time Until Higher Price in 24h",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI24h_secondsUntilLowerBeforeHigherPrice",
-    id: "Time Until Lower Price Before Higher in 24h",
-    show: false,
-    parse: "time",
-  },
-  {
-    name: "avgI24h_secondsUntilLowerPrice",
-    id: "Time Until Lower Price in 24h",
-    show: false,
-    parse: "time",
-  },
-];
-
 const ProvidersProfitsTable = () => {
   /**
    * Select store session data.
@@ -407,17 +32,412 @@ const ProvidersProfitsTable = () => {
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
   const [stats, setStats] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const intl = useIntl();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  /**
+   * Format string to float with 2 decimals.
+   * @param {string} val
+   */
+  const formatFloat2D = (val) => parseFloat(val).toFixed(2);
+  const formatFloatAuto = (val) => {
+    const valueFloat = parseFloat(val);
+    return valueFloat >= 1 || valueFloat <= -1 ? valueFloat.toFixed(2) : valueFloat.toFixed(8);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const formatTime = (val) => {
+    let duration = moment.duration(parseInt(val, 10) * 1000);
+    let durationStr = "";
+    if (duration.asDays() >= 1) {
+      durationStr = duration.asDays().toFixed(1);
+      durationStr += duration.asDays() > 1 ? " days" : " day";
+    } else if (duration.asHours() >> 1) {
+      durationStr = duration.asHours().toFixed(1);
+      durationStr += duration.asHours() > 1 ? " hours" : " hour";
+    } else if (duration.asMinutes() >= 1) {
+      durationStr = duration.asMinutes().toFixed(1);
+      durationStr += duration.asMinutes() > 1 ? " minutes" : " minute";
+    } else {
+      durationStr = duration.asSeconds().toFixed(1);
+      durationStr += duration.asSeconds() > 1 ? " seconds" : " second";
+    }
+
+    return durationStr;
   };
+
+  /**
+   * @type {Array<Column>}
+   */
+  const columns = [
+    {
+      name: "name",
+      label: "col.name",
+      options: {
+        viewColumns: false,
+      },
+    },
+    {
+      name: "percentageProfit",
+      label: "col.profit.percentage",
+      options: {
+        customBodyRender: (val) => <span>{formatFloat2D(val)}%</span>,
+        sort: true,
+      },
+    },
+    {
+      name: "signals",
+      label: "col.totalsignals",
+    },
+    {
+      name: "sumPositions",
+      label: "col.positions.total",
+    },
+    {
+      name: "winRate",
+      label: "col.winrate",
+      options: {
+        customBodyRender: (val) => <span>{formatFloat2D(val)}%</span>,
+      },
+    },
+    {
+      name: "sumClosedPositions",
+      label: "col.position.closed",
+    },
+    {
+      name: "avgAverageClosingTime",
+      label: "col.position.closingtime.avg",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "sumSoldBySignal",
+      label: "col.soldbysignal",
+    },
+    {
+      name: "sumSoldByStopLoss",
+      label: "col.soldbystop",
+    },
+    {
+      name: "sumSoldByTakeProfit",
+      label: "col.soldbytake",
+    },
+    {
+      name: "sumSoldByTTL",
+      label: "col.exit.ttl",
+    },
+    {
+      name: "sumSoldByTrailingStop",
+      label: "col.exit.trailing",
+    },
+    {
+      name: "sumSoldManually",
+      label: "col.exit.manually",
+    },
+    {
+      name: "sumSoldByOther",
+      label: "col.exit.other",
+    },
+    {
+      name: "maxMaxDCAProfit",
+      label: "col.profit.max.fromDCA",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "maxMaxInvestment",
+      label: "col.investment.max",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "maxMaxReturnOfInvestment",
+      label: "col.profit.max",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "minMinDCAProfit",
+      label: "col.profit.min.fromDCA",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "minMinInvestment",
+      label: "col.investment.min",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "minMinReturnOfInvestment",
+      label: "col.profit.min",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "sumDCALosses",
+      label: "col.dca.lost",
+    },
+    {
+      name: "sumDCAWins",
+      label: "col.dca.won",
+    },
+    {
+      name: "sumDCAs",
+      label: "col.dca.total",
+    },
+    {
+      name: "sumLosses",
+      label: "col.positions.lost",
+    },
+    {
+      name: "sumTotalInvested",
+      label: "col.invested.total",
+      customBodyRender: formatFloatAuto,
+    },
+    {
+      name: "sumTotalProfit",
+      label: "col.profit.total",
+    },
+    {
+      name: "sumUnclosedPositions",
+      label: "col.positions.stillopened",
+    },
+    {
+      name: "sumWins",
+      label: "col.positions.won",
+    },
+    {
+      name: "maxSlowerClosedPositionInSeconds",
+      label: "col.time.closing.slow",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "minFasterClosedPositionInSeconds",
+      label: "col.time.closing.fast",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgAverageClosingTime",
+      label: "col.time.closing.average",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgAverageDCAsPerPosition",
+      label: "col.position.dca.avg",
+    },
+    {
+      name: "avgAveragePositionSize",
+      label: "col.position.size.avg",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgAverageProfit",
+      label: "col.position.profit.avg",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgAverageProfitPercentage",
+      label: "col.position.profit.avgpercentage",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avg24h_higherPricePercentage",
+      label: "col.price.timeuntilhigher.24hours",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI24h_lowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.24hours",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI24h_lowerPricePercentage",
+      label: "col.price.lower.24hours",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI24h_secondsUntilHigherPrice",
+      label: "col.price.timeuntilhigher.24hours",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI24h_secondsUntilLowerBeforeHigherPrice",
+      label: "col.price.untillower.24hours",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI24h_secondsUntilLowerPrice",
+      label: "col.price.timeuntillower.24hours",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI24h_lowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.24hours",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI3d_higherPricePercentage",
+      label: "col.price.timeuntilhigher.3days",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI3d_lowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.3days",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI3d_lowerPricePercentage",
+      label: "col.price.lower.3days",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI3d_secondsUntilHigherPrice",
+      label: "col.price.timeuntilhigher.3days",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI3d_secondsUntilLowerBeforeHigherPrice",
+      label: "col.price.untillower.3days",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI3d_secondsUntilLowerPrice",
+      label: "col.price.timeuntillower.3days",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1w_higherPricePercentage",
+      label: "col.price.timeuntilhigher.1week",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1w_lowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.1week",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1w_lowerPricePercentage",
+      label: "col.price.lower.1week",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1w_secondsUntilHigherPrice",
+      label: "col.price.timeuntilhigher.1week",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1w_secondsUntilLowerBeforeHigherPrice",
+      label: "col.price.untillower.1week",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1w_secondsUntilLowerPrice",
+      label: "col.price.timeuntillower.1week",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1m_higherPricePercentage",
+      label: "col.price.higher.1month",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1m_lowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.1month",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1m_lowerPricePercentage",
+      label: "col.price.lower.1month",
+      options: {
+        customBodyRender: formatFloatAuto,
+      },
+    },
+    {
+      name: "avgI1m_secondsUntilHigherPrice",
+      label: "col.price.timeuntilhigher.1month",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1m_secondsUntilLowerBeforeHigherPrice",
+      label: "col.price.untillower.1month",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1m_secondsUntilLowerPrice",
+      label: "col.price.timeuntillower.1month",
+      options: {
+        customBodyRender: formatTime,
+      },
+    },
+  ].map((c) => ({
+    ...c,
+    label: intl.formatMessage({ id: c.label }),
+    options: { ...c.options, sort: c.options && c.options.sort ? true : false },
+  }));
 
   useEffect(() => {
     const loadProvidersStats = async () => {
@@ -440,32 +460,28 @@ const ProvidersProfitsTable = () => {
     loadProvidersStats();
   }, []);
 
+  // <Paper>
+  //   <Typography variant="h4">
+  //     <FormattedMessage id="copyt.performance" />
+  //   </Typography>
+  // </Paper>;
+
+  const options = {
+    selectableRows: "none",
+    responsive: "stacked",
+    filter: false,
+    search: false,
+    print: false,
+  };
+
   return (
     <Box className="ProvidersProfitsTable" display="flex" flexDirection="column" width={1}>
-      <TableContainer component={Paper}>
-        <Table className="table">
-          <ProvidersProfitsTableHead columns={columns} />
-          <ProvidersProfitsTableBody stats={stats} columns={columns} />
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={stats.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: { "aria-label": "rows per page" },
-                  native: true,
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                // ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+      <MUIDataTable
+        title={<FormattedMessage id="copyt.performance" />}
+        data={stats}
+        columns={columns}
+        options={options}
+      />
     </Box>
   );
 };

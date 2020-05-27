@@ -1,13 +1,15 @@
-.positionsTable {
+.ProvidersProfitsTable {
   padding: 0 10px;
-  width: 100%;
 
-  .tableBox {
-    min-height: 300px;
-    width: 100%;
+  .MuiTableRow-head {
+    vertical-align: top;
+  }
 
-    .table {
-      width: 100%;
-    }
+  .MuiTableCell-head div {
+    min-width: 98px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 }

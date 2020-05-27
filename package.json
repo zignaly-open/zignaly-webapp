@@ -21,6 +21,7 @@
     "gatsby-plugin-react-helmet": "^3.3.2",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
+    "mui-datatables": "^2.14.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
