@@ -19,5 +19,44 @@
     .gain {
       color: $green;
     }
+
+    .targetRed {
+      background-color: $grey;
+      border: 2px solid $grey;
+      border-radius: 5px;
+      color: $red;
+      display: inline-block;
+      height: 22px;
+      margin: 2px;
+      padding: 1px;
+      text-align: center;
+      width: 22px;
+    }
+
+    .targetGreen {
+      background-color: $grey;
+      border: 2px solid $grey;
+      border-radius: 5px;
+      color: $green;
+      display: inline-block;
+      height: 22px;
+      margin: 2px;
+      padding: 1px;
+      text-align: center;
+      width: 22px;
+    }
+
+    .targetGray {
+      background-color: $grey;
+      border: 2px solid $grey;
+      border-radius: 5px;
+      color: $white;
+      display: inline-block;
+      height: 22px;
+      margin: 2px;
+      padding: 1px;
+      text-align: center;
+      width: 22px;
+    }
   }
 }
