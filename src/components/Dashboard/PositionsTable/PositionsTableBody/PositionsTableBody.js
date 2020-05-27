@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { Edit, Eye, File, LogOut, XCircle } from "react-feather";
+import { Edit, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -106,7 +106,7 @@ const PositionsTableBody = (props) => {
             {position.positionSizeQuote}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.trailingStopTriggerPercentage}
+            {position.trailingStopTriggerPercentage && <TrendingUp />}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.takeProfitTargetsCountSuccess}
