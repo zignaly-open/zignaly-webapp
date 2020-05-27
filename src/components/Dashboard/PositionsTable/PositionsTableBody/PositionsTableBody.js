@@ -94,7 +94,7 @@ const PositionsTableBody = (props) => {
             {position.side}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.stopLossPrice}
+            <span className={position.stopLossStyle}>{position.stopLossPrice}</span>
           </TableCell>
           <TableCell align="left" className="cell">
             {position.amount}
