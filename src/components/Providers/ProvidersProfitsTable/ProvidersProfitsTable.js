@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./ProvidersProfitsTable.scss";
-import { Box, Table, TableContainer, Paper } from "@material-ui/core";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Paper,
+  TableFooter,
+  TableRow,
+  TablePagination,
+  Typography,
+} from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import ProvidersProfitsTableHead from "./ProvidersProfitsTableHead";
 import ProvidersProfitsTableBody from "./ProvidersProfitsTableBody";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -397,6 +407,17 @@ const ProvidersProfitsTable = () => {
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
   const [stats, setStats] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     const loadProvidersStats = async () => {
@@ -425,6 +446,24 @@ const ProvidersProfitsTable = () => {
         <Table className="table">
           <ProvidersProfitsTableHead columns={columns} />
           <ProvidersProfitsTableBody stats={stats} columns={columns} />
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={stats.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                // ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </Box>

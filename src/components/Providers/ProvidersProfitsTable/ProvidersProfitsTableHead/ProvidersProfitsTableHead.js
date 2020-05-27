@@ -23,7 +23,7 @@ const ProvidersProfitsTableHead = ({ columns }) => {
     <TableHead className="tableHead">
       <TableRow className="row">
         {columns.map((column) => (
-          <TableCell align="left" className="cell">
+          <TableCell align="left" className="cell" key={column.id}>
             <FormattedMessage id={column.id} />
           </TableCell>
         ))}
