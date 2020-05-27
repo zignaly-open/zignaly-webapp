@@ -29,12 +29,21 @@ const PositionsTableBody = (props) => {
    * @returns {JSX.Element} Provider icon JSX element.
    */
   const composeProviderIcon = (position) => {
-    return (
-      <>
+    console.log("Provider Link: ", position.providerLink);
+    // Wrap with link to provider provile when available.
+    if (position.providerLink) {
+      return (
         <Link to={position.providerLink}>
           <img src={position.providerLogo} width="30px" />
           <span>{position.providerName}</span>
         </Link>
+      );
+    }
+
+    return (
+      <>
+        <img src={position.providerLogo} width="30px" />
+        <span>{position.providerName}</span>
       </>
     );
   };

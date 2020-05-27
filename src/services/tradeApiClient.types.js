@@ -361,7 +361,7 @@ function userPositionItemTransform(positionItem) {
   const openDateMoment = moment(positionItem.openDate);
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
-    if (positionItem.providerId === 1) {
+    if (positionItem.providerId === "1") {
       return "";
     }
 
