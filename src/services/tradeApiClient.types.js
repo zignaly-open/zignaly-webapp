@@ -382,7 +382,7 @@ function userPositionItemTransform(positionItem) {
     let risk = ((positionItem.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
-      return "0.0%";
+      return 0.0;
     }
 
     if (positionItem.type === "SHORT") {
