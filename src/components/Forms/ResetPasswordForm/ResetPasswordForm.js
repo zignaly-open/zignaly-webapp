@@ -33,7 +33,6 @@ const ResetPasswordForm = () => {
 
   const handlePasswordChange = (event) => {
     setPasswordDoNotMatch(false);
-    setAnchorEl(event.currentTarget);
     const targetElement = /** @type {HTMLInputElement} */ (event.target);
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
@@ -134,6 +133,7 @@ const ResetPasswordForm = () => {
               name="password"
               onBlur={() => setAnchorEl(undefined)}
               onChange={handlePasswordChange}
+              onFocus={(e) => setAnchorEl(e.currentTarget)}
               type={showPassword ? "text" : "password"}
             />
           </FormControl>

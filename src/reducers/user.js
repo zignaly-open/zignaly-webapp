@@ -1,3 +1,4 @@
+import { assign } from "lodash";
 import initialState from "../store/initialState";
 
 const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
@@ -21,23 +22,31 @@ const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
  * @param {ActionObject} action
  */
 
-const userExchanges = (state = initialState.user, action) => {
+const userExchanges = (state, action) => {
+  const newState = assign({}, initialState.user, state);
+
   switch (action.type) {
     case GET_USER_EXCHNAGES:
-      state.exchangeConnections = action.payload;
-      return { ...state };
+      newState.exchangeConnections = action.payload;
+      break;
+
     case REMOVE_USER_EXCHNAGES:
-      state.exchangeConnections = [];
-      return { ...state };
+      newState.exchangeConnections = [];
+      break;
+
     case GET_USER_BALANCE:
-      state.balance = action.payload;
-      return { ...state };
+      newState.balance = action.payload;
+      break;
+
     case REMOVE_USER_BALANCE:
-      state.balance = {};
-      return { ...state };
+      newState.balance = {};
+      break;
+
     default:
-      return { ...state };
+      break;
   }
+
+  return newState;
 };
 
 export default userExchanges;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginForm.scss";
 import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -7,15 +7,50 @@ import ForgotPasswordForm from "../ForgotPasswordForm";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { startTradeApiSession } from "../../../store/actions/session";
+import { isEmpty } from "lodash";
+import { navigateTo } from "gatsby";
+import { setUserBalance, setUserExchanges } from "../../../store/actions/user";
+
+/**
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ */
 
 const LoginForm = () => {
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
+  const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { handleSubmit, errors, register } = useForm();
+  const { handleSubmit, errors, register } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
 
-  const onSubmit = () => {
+  /**
+   * @typedef {Object} LoginFormSubmission
+   * @property {string} email
+   * @property {string} password
+   */
+
+  /**
+   * Process data submitted in the login form.
+   *
+   * @param {LoginFormSubmission} payload Submission data.
+   * @returns {Void} None.
+   */
+  const onSubmit = (payload) => {
     showLoading(true);
+    dispatch(startTradeApiSession(payload));
   };
 
   /**
@@ -27,6 +62,21 @@ const LoginForm = () => {
   const handleSubmitClick = () => {
     handleSubmit(onSubmit);
   };
+
+  const loadAppUserData = () => {
+    if (!isEmpty(storeSession.tradeApi.accessToken)) {
+      const authorizationPayload = {
+        token: storeSession.tradeApi.accessToken,
+      };
+
+      dispatch(setUserExchanges(authorizationPayload));
+      dispatch(setUserBalance(authorizationPayload));
+
+      navigateTo("/");
+    }
+  };
+
+  useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,13 +104,16 @@ const LoginForm = () => {
             fullWidth
             inputRef={register({
               required: true,
-              pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+              pattern: {
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                message: "Email should be valid",
+              },
             })}
             name="email"
             type="email"
             variant="outlined"
           />
-          {errors.email && <span className="errorText">Email should be valid</span>}
+          {errors.email && <span className="errorText">{errors.email.message}</span>}
         </Box>
 
         <Box

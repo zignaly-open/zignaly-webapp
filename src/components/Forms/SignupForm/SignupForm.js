@@ -48,7 +48,6 @@ const SignupForm = () => {
    */
   const handlePasswordChange = (e) => {
     setPasswordDoNotMatch(false);
-    setAnchorEl(e.currentTarget);
     const targetElement = /** @type {HTMLInputElement} */ (e.target);
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
@@ -196,6 +195,7 @@ const SignupForm = () => {
               name="password"
               onBlur={() => setAnchorEl(undefined)}
               onChange={handlePasswordChange}
+              onFocus={(e) => setAnchorEl(e.currentTarget)}
               type={showPassword ? "text" : "password"}
             />
           </FormControl>

@@ -1,5 +1,5 @@
-const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
-const SELECT_THEME = "SELECT_THEME_ACTION";
+export const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
+export const SELECT_THEME = "SELECT_THEME_ACTION";
 
 /**
  * Dark style flag selected by user.
