@@ -129,6 +129,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} providerLink
  * @property {number} risk
  * @property {string} riskStyle
+ * @property {string} age
  * @property {Array<ReBuyTarget>} reBuyTargets
  */
 
@@ -404,6 +405,7 @@ function userPositionItemTransform(positionItem) {
     stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
     risk: risk,
     riskStyle: risk >= 0 ? "gain" : "loss",
+    age: openDateMoment.toNow(true),
   });
 
   return transformedResponse;
@@ -485,6 +487,7 @@ function createEmptyPositionEntity() {
     reBuyTargets: [],
     risk: 0,
     riskStyle: "",
+    age: "",
   };
 }
 

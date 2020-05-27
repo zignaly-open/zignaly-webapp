@@ -146,7 +146,7 @@ const PositionsTableBody = (props) => {
             <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
           </TableCell>
           <TableCell align="left" className="cell">
-            "Calculate Age"
+            {position.age}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.openTrigger}
