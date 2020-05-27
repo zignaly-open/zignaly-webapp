@@ -31,6 +31,8 @@ const PositionsTable = () => {
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
+
+    return [];
   };
 
   const loadData = () => {
