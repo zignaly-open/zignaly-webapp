@@ -3,6 +3,7 @@ import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import * as moment from "moment";
 import { File } from "react-feather";
+import defaultProviderLogo from "../../../../images/defaultProviderLogo.png";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -25,6 +26,7 @@ const PositionsTableBody = (props) => {
   const positionsAugmented = positions.map((position) => {
     const dateMoment = moment(position.openDate);
     return {
+      providerLogo: position.logoUrl || defaultProviderLogo,
       openDateReadable: dateMoment.format("hh.mm DD.MM.YY."),
       ...position,
     };
@@ -41,7 +43,7 @@ const PositionsTableBody = (props) => {
             {position.openDateReadable}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.providerId} - {position.providerName}
+            <img src={position.providerLogo} width="30px" /> <span>{position.providerName}</span>
           </TableCell>
           <TableCell align="left" className="cell">
             {position.signalId}
