@@ -1,9 +1,7 @@
 import React from "react";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import * as moment from "moment";
 import { File } from "react-feather";
-import defaultProviderLogo from "../../../../images/defaultProviderLogo.png";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -23,18 +21,24 @@ import defaultProviderLogo from "../../../../images/defaultProviderLogo.png";
 const PositionsTableBody = (props) => {
   const { positions } = props;
 
-  const positionsAugmented = positions.map((position) => {
-    const dateMoment = moment(position.openDate);
-    return {
-      providerLogo: position.logoUrl || defaultProviderLogo,
-      openDateReadable: dateMoment.format("hh.mm DD.MM.YY."),
-      ...position,
-    };
-  });
+  /**
+   * Compose provider icon column content.
+   *
+   * @param {PositionEntity} position Position entity to compose icon for.
+   * @returns {JSX.Element} Provider icon JSX element.
+   */
+  const composeProviderIcon = (position) => {
+    return (
+      <>
+        <img src={position.providerLogo} width="30px" />
+        <span>{position.providerName}</span>
+      </>
+    );
+  };
 
   return (
     <TableBody className="tableBody">
-      {positionsAugmented.map((position) => (
+      {positions.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
             {position.paperTrading && <File />}
@@ -43,7 +47,7 @@ const PositionsTableBody = (props) => {
             {position.openDateReadable}
           </TableCell>
           <TableCell align="left" className="cell">
-            <img src={position.providerLogo} width="30px" /> <span>{position.providerName}</span>
+            {composeProviderIcon(position)}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.signalId}

@@ -1,4 +1,6 @@
+import * as moment from "moment";
 import { assign, isArray, isObject } from "lodash";
+import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -63,6 +65,7 @@ import { assign, isArray, isObject } from "lodash";
  * @property {string} positionId
  * @property {string} userId
  * @property {number} openDate
+ * @property {string} openDateReadable
  * @property {string} openTrigger
  * @property {string} closeDate
  * @property {string} closeTrigger
@@ -120,6 +123,7 @@ import { assign, isArray, isObject } from "lodash";
  * @property {number} leverage
  * @property {string} internalExchangeId
  * @property {string} logoUrl
+ * @property {string} providerLogo
  * @property {Array<ReBuyTarget>} reBuyTargets
  */
 
@@ -353,9 +357,13 @@ export function userPositionsResponseTransform(response) {
  */
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
+  const openDateMoment = moment(positionItem.openDate);
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
     openDate: Number(positionItem.openDate),
+    openDateMoment: openDateMoment,
+    providerLogo: positionItem.logoUrl || defaultProviderLogo,
+    openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
   });
 
   return transformedResponse;
