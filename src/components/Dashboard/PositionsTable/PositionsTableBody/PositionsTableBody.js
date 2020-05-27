@@ -2,6 +2,7 @@ import React from "react";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import * as moment from "moment";
+import { File } from "react-feather";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -34,7 +35,7 @@ const PositionsTableBody = (props) => {
       {positionsAugmented.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
-            {position.paperTrading}
+            {position.paperTrading && <File />}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.openDateReadable}
