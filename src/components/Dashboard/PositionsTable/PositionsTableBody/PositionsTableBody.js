@@ -109,7 +109,21 @@ const PositionsTableBody = (props) => {
             {position.trailingStopTriggerPercentage && <TrendingUp />}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.takeProfitTargetsCountSuccess}
+            {position.takeProfitTargetsCountFail > 0 && (
+              <span className="targetRed" title="Take profits failed.">
+                {position.takeProfitTargetsCountFail}
+              </span>
+            )}
+            {position.takeProfitTargetsCountSuccess > 0 && (
+              <span className="targetGreen" title="Take profits successfully completed.">
+                {position.takeProfitTargetsCountSuccess}
+              </span>
+            )}
+            {position.takeProfitTargetsCountPending > 0 && (
+              <span className="targetGray" title="Pending take profits.">
+                {position.takeProfitTargetsCountPending}
+              </span>
+            )}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.reBuyTargetsCountFail}, {position.reBuyTargetsCountPending},{" "}
@@ -125,7 +139,7 @@ const PositionsTableBody = (props) => {
             {position.openTrigger}
           </TableCell>
           <TableCell align="left" className="cell">
-            <Edit />
+            {position.isCopyTrading ? <Eye /> : <Edit />}
           </TableCell>
           <TableCell align="left" className="cell">
             <LogOut />
