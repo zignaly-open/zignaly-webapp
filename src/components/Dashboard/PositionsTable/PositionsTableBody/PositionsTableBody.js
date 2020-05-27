@@ -77,7 +77,7 @@ const PositionsTableBody = (props) => {
             {position.sellPrice}
           </TableCell>
           <TableCell align="left" className="cell">
-            {"Unknown"}
+            {position.profit}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.profitPercentage}
