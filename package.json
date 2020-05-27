@@ -86,6 +86,6 @@
     "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
     "sasslint": "env FORCE_COLOR=1 sass-lint -v",
     "serve": "gatsby serve",
-    "test": "jest"
+    "test": "STAGE=test jest"
   }
 }
