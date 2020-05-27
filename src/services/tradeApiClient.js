@@ -115,7 +115,7 @@ class TradeApiClient {
   /**
    * Get user open trading positions.
    *
-   * @param {AuthorizationPayload} payload Get user positions payload.
+   * @param {AuthorizationPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -123,6 +123,22 @@ class TradeApiClient {
    */
   async openPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Get user closed trading positions.
+   *
+   * @param {AuthorizationPayload} payload User authorization payload.
+
+   * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async closedPositionsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionsResponseTransform(responseData);
