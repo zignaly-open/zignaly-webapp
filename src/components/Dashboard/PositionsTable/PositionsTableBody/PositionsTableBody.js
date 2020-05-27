@@ -143,7 +143,7 @@ const PositionsTableBody = (props) => {
             )}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.risk.toFixed(2)} %
+            <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
           </TableCell>
           <TableCell align="left" className="cell">
             "Calculate Age"
