@@ -33,16 +33,14 @@ const PositionsTableBody = (props) => {
     if (position.providerLink) {
       return (
         <Link to={position.providerLink}>
-          <img src={position.providerLogo} width="30px" />
-          <span>{position.providerName}</span>
+          <img src={position.providerLogo} title={position.providerName} width="30px" />
         </Link>
       );
     }
 
     return (
       <>
-        <img src={position.providerLogo} width="30px" />
-        <span>{position.providerName}</span>
+        <img src={position.providerLogo} title={position.providerName} width="30px" />
       </>
     );
   };
