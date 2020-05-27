@@ -3,7 +3,6 @@ import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { Edit, Eye, File, LogOut, XCircle } from "react-feather";
-import CustomButton from "../../../CustomButton";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -78,13 +77,17 @@ const PositionsTableBody = (props) => {
             {position.sellPrice}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.status === 1 ? <span>Still entering...</span> : <>{position.profit}</>}
+            {position.status === 1 ? (
+              <span>Still entering...</span>
+            ) : (
+              <span className={position.profitStyle}>{position.profit}</span>
+            )}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.status === 1 ? (
               <span>Still entering...</span>
             ) : (
-              <>{position.profitPercentage}</>
+              <span className={position.profitStyle}>{position.profitPercentage}</span>
             )}
           </TableCell>
           <TableCell align="left" className="cell">

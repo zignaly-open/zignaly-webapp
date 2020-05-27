@@ -10,4 +10,14 @@
       white-space: nowrap;
     }
   }
+
+  .cell {
+    .loss {
+      color: $red;
+    }
+
+    .gain {
+      color: $green;
+    }
+  }
 }
