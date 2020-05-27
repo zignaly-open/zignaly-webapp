@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { File } from "react-feather";
+import { Edit, Eye, File, LogOut, XCircle } from "react-feather";
+import CustomButton from "../../../CustomButton";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -117,13 +118,13 @@ const PositionsTableBody = (props) => {
             {position.openTrigger}
           </TableCell>
           <TableCell align="left" className="cell">
-            "Edit"
+            <Edit />
           </TableCell>
           <TableCell align="left" className="cell">
-            "Exit"
+            <LogOut />
           </TableCell>
           <TableCell align="left" className="cell">
-            "Cancel"
+            <XCircle />
           </TableCell>
         </TableRow>
       ))}
