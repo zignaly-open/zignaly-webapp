@@ -16,6 +16,9 @@ const PositionsTableHead = () => {
           Provider
         </TableCell>
         <TableCell align="left" className="cell">
+          Provider Name
+        </TableCell>
+        <TableCell align="left" className="cell">
           Signal ID
         </TableCell>
         <TableCell align="left" className="cell">

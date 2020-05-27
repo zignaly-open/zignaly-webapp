@@ -59,6 +59,9 @@ const PositionsTableBody = (props) => {
             {composeProviderIcon(position)}
           </TableCell>
           <TableCell align="left" className="cell">
+            {position.providerName}
+          </TableCell>
+          <TableCell align="left" className="cell">
             {position.signalId}
           </TableCell>
           <TableCell align="left" className="cell">
