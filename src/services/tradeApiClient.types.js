@@ -83,6 +83,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} investedQuote
  * @property {string} profitPercentage
  * @property {number} profit
+ * @property {string} profitStyle
  * @property {string} quoteAsset
  * @property {number} stopLossPercentage
  * @property {number} stopLossPrice
@@ -380,6 +381,7 @@ function userPositionItemTransform(positionItem) {
     providerLogo: positionItem.logoUrl || defaultProviderLogo,
     providerLink: composeProviderLink(),
     openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
+    profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
   });
 
   return transformedResponse;
@@ -414,6 +416,7 @@ function createEmptyPositionEntity() {
     investedQuote: "",
     profitPercentage: "",
     profit: 0,
+    profitStyle: "",
     quoteAsset: "",
     stopLossPercentage: 0,
     stopLossPrice: 0,
