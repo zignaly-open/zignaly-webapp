@@ -380,6 +380,7 @@ function createEmptyPositionEntity() {
     positionId: "",
     userId: "",
     openDate: 0,
+    openDateReadable: "",
     openTrigger: "",
     closeDate: "",
     closeTrigger: "",
@@ -437,6 +438,7 @@ function createEmptyPositionEntity() {
     leverage: 0,
     internalExchangeId: "",
     logoUrl: "",
+    providerLogo: "",
     reBuyTargets: [],
   };
 }
