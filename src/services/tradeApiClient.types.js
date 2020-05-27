@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 import { assign, isArray, isObject } from "lodash";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
