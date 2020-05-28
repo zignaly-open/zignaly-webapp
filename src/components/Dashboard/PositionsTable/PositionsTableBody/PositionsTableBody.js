@@ -86,7 +86,7 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.providerName}
           </TableCell>
-          {type === "closed" && (
+          {["closed", "log"].includes(type) && (
             <TableCell align="left" className="cell">
               {position.statusDesc}
             </TableCell>
@@ -105,33 +105,39 @@ const PositionsTableBody = (props) => {
               {position.leverage}
             </TableCell>
           )}
-          <TableCell align="left" className="cell">
-            {position.sellPrice}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            {position.status === 1 ? (
-              <span>Still entering...</span>
-            ) : (
-              <span className={position.profitStyle}>{position.profit}</span>
-            )}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            {position.status === 1 ? (
-              <span>Still entering...</span>
-            ) : (
-              <span className={position.profitStyle}>{position.profitPercentage}</span>
-            )}
-          </TableCell>
+          {["closed", "open"].includes(type) && (
+            <>
+              <TableCell align="left" className="cell">
+                {position.sellPrice}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.status === 1 ? (
+                  <span>Still entering...</span>
+                ) : (
+                  <span className={position.profitStyle}>{position.profit}</span>
+                )}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.status === 1 ? (
+                  <span>Still entering...</span>
+                ) : (
+                  <span className={position.profitStyle}>{position.profitPercentage}</span>
+                )}
+              </TableCell>
+            </>
+          )}
           <TableCell align="left" className="cell">
             {position.side}
           </TableCell>
-          <TableCell align="left" className="cell">
-            <span className={position.stopLossStyle}>{position.stopLossPrice}</span>
-          </TableCell>
+          {["closed", "open"].includes(type) && (
+            <TableCell align="left" className="cell">
+              <span className={position.stopLossStyle}>{position.stopLossPrice}</span>
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {position.amount}
           </TableCell>
-          {type === "open" && (
+          {["open", "log"].includes(type) && (
             <TableCell align="left" className="cell">
               {position.remainAmount}
             </TableCell>
@@ -139,54 +145,60 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.positionSizeQuote}
           </TableCell>
-          <TableCell align="left" className="cell">
-            {composeTrailingStopIcon(position)}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            {position.takeProfitTargetsCountFail > 0 && (
-              <span className="targetRed" title="Take profits failed.">
-                {position.takeProfitTargetsCountFail}
-              </span>
-            )}
-            {position.takeProfitTargetsCountSuccess > 0 && (
-              <span className="targetGreen" title="Take profits successfully completed.">
-                {position.takeProfitTargetsCountSuccess}
-              </span>
-            )}
-            {position.takeProfitTargetsCountPending > 0 && (
-              <span className="targetGray" title="Pending take profits.">
-                {position.takeProfitTargetsCountPending}
-              </span>
-            )}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            {position.reBuyTargetsCountFail > 0 && (
-              <span className="targetRed" title="DCAs failed.">
-                {position.reBuyTargetsCountFail}
-              </span>
-            )}
-            {position.reBuyTargetsCountSuccess > 0 && (
-              <span className="targetGreen" title="DCAs successfully completed.">
-                {position.reBuyTargetsCountSuccess}
-              </span>
-            )}
-            {position.reBuyTargetsCountPending > 0 && (
-              <span className="targetGray" title="Pending DCAs">
-                {position.reBuyTargetsCountPending}
-              </span>
-            )}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
-          </TableCell>
+          {["closed", "open"].includes(type) && (
+            <>
+              <TableCell align="left" className="cell">
+                {composeTrailingStopIcon(position)}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.takeProfitTargetsCountFail > 0 && (
+                  <span className="targetRed" title="Take profits failed.">
+                    {position.takeProfitTargetsCountFail}
+                  </span>
+                )}
+                {position.takeProfitTargetsCountSuccess > 0 && (
+                  <span className="targetGreen" title="Take profits successfully completed.">
+                    {position.takeProfitTargetsCountSuccess}
+                  </span>
+                )}
+                {position.takeProfitTargetsCountPending > 0 && (
+                  <span className="targetGray" title="Pending take profits.">
+                    {position.takeProfitTargetsCountPending}
+                  </span>
+                )}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.reBuyTargetsCountFail > 0 && (
+                  <span className="targetRed" title="DCAs failed.">
+                    {position.reBuyTargetsCountFail}
+                  </span>
+                )}
+                {position.reBuyTargetsCountSuccess > 0 && (
+                  <span className="targetGreen" title="DCAs successfully completed.">
+                    {position.reBuyTargetsCountSuccess}
+                  </span>
+                )}
+                {position.reBuyTargetsCountPending > 0 && (
+                  <span className="targetGray" title="Pending DCAs">
+                    {position.reBuyTargetsCountPending}
+                  </span>
+                )}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
+              </TableCell>
+            </>
+          )}
           {type === "open" && (
             <TableCell align="left" className="cell">
               {position.age}
             </TableCell>
           )}
-          <TableCell align="left" className="cell">
-            {position.openTrigger}
-          </TableCell>
+          {["closed", "open"].includes(type) && (
+            <TableCell align="left" className="cell">
+              {position.openTrigger}
+            </TableCell>
+          )}
           {type === "closed" && (
             <>
               <TableCell align="left" className="cell">
@@ -198,10 +210,12 @@ const PositionsTableBody = (props) => {
               <TableCell align="left" className="cell">
                 {formatNumber(position.netProfit)}
               </TableCell>
-              <TableCell align="left" className="cell">
-                <Eye color={colors.purpleLight} />
-              </TableCell>
             </>
+          )}
+          {["closed", "log"].includes(type) && (
+            <TableCell align="left" className="cell">
+              <Eye color={colors.purpleLight} />
+            </TableCell>
           )}
           {type === "open" && (
             <>
