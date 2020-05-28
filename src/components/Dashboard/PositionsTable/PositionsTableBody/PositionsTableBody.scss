@@ -4,11 +4,51 @@
       border-bottom: 1px solid $borderColor;
       font-family: "PlexSans-Medium";
       font-size: 14px;
-      max-width: 120px;
       min-width: 80px;
       padding: 12px;
       text-transform: capitalize;
       white-space: nowrap;
+    }
+  }
+
+  .actions {
+    span {
+      margin: 0 10px;
+    }
+  }
+
+  .cell {
+    .loss {
+      color: $red;
+    }
+
+    .gain {
+      color: $green;
+    }
+
+    %target-base {
+      border-radius: 10px;
+      color: $white;
+      display: inline-block;
+      height: 22px;
+      padding: 1px;
+      text-align: center;
+      width: 22px;
+    }
+
+    .targetRed {
+      @extend %target-base;
+      background-color: $grey;
+    }
+
+    .targetGreen {
+      @extend %target-base;
+      background-color: $green;
+    }
+
+    .targetGray {
+      @extend %target-base;
+      background-color: $darkGrey;
     }
   }
 }

@@ -12,7 +12,10 @@ menu.support: "Contact Support"
 menu.tradingterminal: "Trading Terminal"
 menu.manageaccounts: "Manage Accounts"
 menu.demo: "DEMO"
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 
 # BALANCE
 balance.available: "Available"
@@ -20,7 +23,10 @@ balance.invested: "Invested"
 balance.profit: "Profit"
 balance.total: "Total Equity"
 balance.profitlosses: "P/L #"
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 
 # EXCHANGES
 exchange.binance: "binance"
@@ -86,6 +92,10 @@ col.invested.total: "TOTAL INVESTED"
 col.investment.max: "MAX INVESTMENT"
 col.investment.min: "MIN INVESTMENT"
 col.investment.return: "RETURN OF INVESTMENT"
+<<<<<<< HEAD
+=======
+col.leverage: "LEVERAGE"
+>>>>>>> origin/develop
 col.name: "NAME"
 col.netprofit.amount: "NET PROFIT #"
 col.netprofit.percentage: "NET PROFIT %"
@@ -194,7 +204,10 @@ sort.sortby: "SORT BY"
 sort.return: "Return"
 sort.newest: "Newest"
 sort.name: "Name"
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.allocated: "Allocated"
@@ -337,7 +350,10 @@ terminal.trigger.help: "Once this price is reached, the trailing stop loss will 
 terminal.units: "Units"
 terminal.unitstoexit: "Units to exit"
 terminal.unitstoexit.help: "The amount to exit on this target."
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"

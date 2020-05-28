@@ -66,17 +66,18 @@ const PositionsTabs = () => {
       )}
       {tabValue === 0 && (
         <Box className="tabPanel">
+          <PositionsTable type="open" />
           <NoPositions />
         </Box>
       )}
       {tabValue === 1 && (
         <Box className="tabPanel">
-          <PositionsTable />
+          <PositionsTable type="closed" />
         </Box>
       )}
       {tabValue === 2 && (
         <Box className="tabPanel">
-          <PositionsTable />
+          <PositionsTable type="log" />
         </Box>
       )}
       <Popover

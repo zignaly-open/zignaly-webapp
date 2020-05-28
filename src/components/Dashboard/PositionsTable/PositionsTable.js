@@ -4,39 +4,74 @@ import { Box, Table } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import PositionsTableHead from "./PositionsTableHead";
 import PositionsTableBody from "./PositionsTableBody";
+import { useSelector } from "react-redux";
+import useIterval from "use-interval";
 
-const PositionsTable = () => {
+/**
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ */
+
+/**
+ * @typedef {"open" | "closed" | "log"} PositionTableType
+ * @typedef {Object} PositionsTableProps
+ * @property {PositionTableType} type
+ */
+
+/**
+ * Component that display user positions in table view.
+ *
+ * @param {PositionsTableProps} props Component properties.
+ * @returns {JSX.Element} Positions table element.
+ */
+const PositionsTable = (props) => {
+  const { type } = props;
   const [positions, setPositions] = useState([]);
-  const authenticateUser = async () => {
-    const loginPayload = {
-      email: "mailxuftg1pxzk@example.test",
-      password: "abracadabra",
-    };
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
+  const fetchOpenPositions = async () => {
+    try {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+      };
 
-    return await tradeApi.userLogin(loginPayload);
+      if (type === "closed") {
+        return await tradeApi.closedPositionsGet(payload);
+      }
+
+      if (type === "log") {
+        return await tradeApi.logPositionsGet(payload);
+      }
+
+      return await tradeApi.openPositionsGet(payload);
+    } catch (e) {
+      alert(`ERROR: ${e.message}`);
+    }
+
+    return [];
   };
 
-  useEffect(() => {
-    const loadPositions = async () => {
-      try {
-        const userEntity = await authenticateUser();
-        const sessionPayload = {
-          token: userEntity.token,
-        };
-        const responseData = await tradeApi.openPositionsGet(sessionPayload);
-        setPositions(responseData);
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
-    };
+  const loadData = () => {
+    fetchOpenPositions().then((fetchData) => {
+      setPositions(fetchData);
+    });
+  };
 
-    loadPositions();
-  }, []);
+  const updateData = () => {
+    // Only open positions needs continuos updates.
+    if (type === "open") {
+      loadData();
+    }
+  };
 
-  /**
-   * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
-   * @type {UserPositionsCollection} positionsCollection
-   */
+  useEffect(loadData, [storeSession.tradeApi.accessToken]);
+  useIterval(updateData, 5000);
 
   return (
     <Box
@@ -53,8 +88,8 @@ const PositionsTable = () => {
         justifyContent="flex-start"
       >
         <Table className="table">
-          <PositionsTableHead />
-          <PositionsTableBody positions={positions} />
+          <PositionsTableHead type={type} />
+          <PositionsTableBody positions={positions} type={type} />
         </Table>
       </Box>
     </Box>

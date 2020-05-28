@@ -1,43 +1,147 @@
 import React from "react";
 import "./PositionsTableHead.scss";
 import { TableHead, TableRow, TableCell } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
-const PositionsTableHead = () => {
+/**
+ * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
+ */
+
+/**
+ * Display user position table header cells.
+ *
+ * @param {PositionsTableProps} props Component properties.
+ *
+ * @returns {JSX.Element} Table head element.
+ */
+const PositionsTableHead = (props) => {
+  const { type } = props;
   return (
     <TableHead className="tableHead">
       <TableRow className="row">
         <TableCell align="left" className="cell">
-          Time
+          {" "}
         </TableCell>
         <TableCell align="left" className="cell">
-          Type
+          <FormattedMessage id="col.date.open" />
+        </TableCell>
+        {type === "closed" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.date.close" />
+          </TableCell>
+        )}
+        <TableCell align="left" className="cell">
+          <FormattedMessage id="col.provider.logo" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Pair
+          <FormattedMessage id="col.provider.name" />
+        </TableCell>
+        {["closed", "log"].includes(type) && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.stat" />
+          </TableCell>
+        )}
+        <TableCell align="left" className="cell">
+          <FormattedMessage id="col.signalid" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Trader
+          <FormattedMessage id="col.pair" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Invested
+          <FormattedMessage id="col.price.entry" />
         </TableCell>
+        {type === "closed" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.price.exit" />
+          </TableCell>
+        )}
+        {type === "open" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.leverage" />
+          </TableCell>
+        )}
+        {type === "open" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.price.current" />
+          </TableCell>
+        )}
+        {["closed", "open"].includes(type) && (
+          <>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.plnumber" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.plpercentage" />
+            </TableCell>
+          </>
+        )}
         <TableCell align="left" className="cell">
-          Entry Price
+          <FormattedMessage id="col.side" />
         </TableCell>
+        {["closed", "open"].includes(type) && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.stoplossprice" />
+          </TableCell>
+        )}
+        {["closed", "log"].includes(type) && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.amount" />
+          </TableCell>
+        )}
+        {type === "open" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.initialamount" />
+          </TableCell>
+        )}
+        {["open", "log"].includes(type) && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.remainingamount" />
+          </TableCell>
+        )}
         <TableCell align="left" className="cell">
-          Current Price
+          <FormattedMessage id="col.invested" />
         </TableCell>
-        <TableCell align="left" className="cell">
-          P/L %
-        </TableCell>
-        <TableCell align="left" className="cell">
-          P/L #
-        </TableCell>
-        <TableCell align="left" className="cell">
-          Net Profit
-        </TableCell>
-        <TableCell align="left" className="cell">
-          Risk
+        {["closed", "open"].includes(type) && (
+          <>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.tsl" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.tp" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.dca" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.risk" />
+            </TableCell>
+          </>
+        )}
+        {type === "open" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.age" />
+          </TableCell>
+        )}
+        {["closed", "open"].includes(type) && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.opentrigger" />
+          </TableCell>
+        )}
+        {type === "closed" && (
+          <>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.fees" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.net.percentage" />
+            </TableCell>
+            <TableCell align="left" className="cell">
+              <FormattedMessage id="col.net.amount" />
+            </TableCell>
+          </>
+        )}
+        <TableCell align="right" className="cell">
+          <FormattedMessage id="col.actions" />
         </TableCell>
       </TableRow>
     </TableHead>

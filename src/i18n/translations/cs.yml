@@ -11,8 +11,7 @@ menu.signout: "ch-Sign Out"
 menu.support: "ch-Contact Support"
 menu.tradingterminal: "ch-Trading Terminal"
 menu.manageaccounts: "ch-Manage Accounts"
-menu.demo: "ch-DEMO" 
-
+menu.demo: "ch-DEMO"
 
 # BALANCE
 balance.available: "ch-Available"
@@ -21,12 +20,10 @@ balance.profit: "ch-Profit"
 balance.total: "ch-Total Equity"
 balance.profitlosses: "ch-P/L #"
 
-
 # EXchANGES
 exchange.binance: "ch-binance"
 exchange.kucoin: "ch-kuCoin"
 exchange.zignaly: "ch-zignaly"
-
 
 # DASHBOARD SECTION
 dashboard: "ch-Dashboard"
@@ -49,7 +46,6 @@ dashboard.balance.invested: "ch-Invested"
 dashboard.balance.profit: "ch-Profit"
 dashboard.balance.historical: "ch-Historical"
 dashboard.traders.copying: "ch-Traders I am copying:"
-
 
 # COLUMNS
 col.actions: "ch-ACTIONS"
@@ -174,7 +170,6 @@ col.valueUSDT: "ch-USDT Value"
 col.valueBNBapprox: "ch-Approx. BNB Value"
 col.winrate: "ch-WIN RATE"
 
-
 # FILTERS AND SORT BY
 fil.filters: "ch-FILTERS"
 fil.clearall: "ch-CLEAR ALL"
@@ -195,7 +190,6 @@ sort.return: "ch-Return"
 sort.newest: "ch-Newest"
 sort.name: "ch-Name"
 
-
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.allocated: "ch-Allocated"
 srv.comision: "ch-Comission Fee"
@@ -213,7 +207,6 @@ provider.others: "ch-others are listening this provider"
 provider.stop: "ch-STOP LISTENING"
 provider.view: "ch-VIEW PROVIDER"
 provider.people: "ch-people copying this provider"
-
 
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "ch-COPY-TRADERS"
@@ -284,7 +277,6 @@ signalp.settings.leverage: "ch-Leverage"
 signalp.settings.blacklist: "ch-Blacklist"
 signalp.settings.whitelist: "ch-Whitelist"
 
-
 # SIGNAL PROVIDER OPTIONS
 signalp.option.stoploss: "ch-Accept Stop Loss Value From Signal?"
 signalp.option.updates: "ch-Accept Updates from Signals?"
@@ -301,7 +293,6 @@ signalp.option.DCA: "ch-Accept DCA/ReBuys Signals"
 signalp.option.checkterms: "ch-check terms from provider"
 signalp.option.filterrisk: "ch-Filter by Risk"
 signalp.option.minimumsuccess: "ch-Select the minimum success rate allowed."
-
 
 # TRADING TERMINAL
 terminal.available: "ch-Available"
@@ -337,7 +328,6 @@ terminal.trigger.help: "ch-Once this price is reached, the trailing stop loss wi
 terminal.units: "ch-Units"
 terminal.unitstoexit: "ch-Units to exit"
 terminal.unitstoexit.help: "ch-The amount to exit on this target."
-
 
 # EXchANGE ACCOUNTS
 accounts.title: "ch-My Exchange Accounts"
@@ -427,7 +417,6 @@ withdraw.history: "ch-Withdraw History"
 withdraw.memo: "ch-MEMO/Tag"
 withdraw.minimum: "ch-Minimum withdrawal"
 
-
 # SETTINGS
 settings.notifications: "ch-Notifications"
 settings.preferences: "ch-Preferences"
@@ -466,7 +455,6 @@ progile.email: "ch-Email"
 profile.photo: "ch-Profile Picture"
 profile.username: "ch-Username"
 
-
 # MONTHS
 m.jan: "ch-JAN"
 m.feb: "ch-FEB"
@@ -481,10 +469,8 @@ m.oct: "ch-OCT"
 m.nov: "ch-NOV"
 m.dec: "ch-DEC"
 
-
 # FAQ
 faq: "ch-Frequently Asked Questions"
-
 
 # STATUS
 status.0: "ch-Position Created In DB"

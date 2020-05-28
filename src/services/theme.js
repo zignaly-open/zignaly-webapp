@@ -79,13 +79,17 @@ const PlexSansLight = {
   `,
 };
 
-const black = "#191927";
-const black2 = "#1b1b2c";
-const purple = "#770fc8";
-// const purpleLight = "#a946f6";
-const white = "#ffffff";
-const lightBlack = "#27273f";
-const offWhite = "#fbfafc";
+export const colors = {
+  black2: "#1b1b2c",
+  black: "#191927",
+  darkGrey: "#808080",
+  green: "#08a441",
+  lightBlack: "#27273f",
+  offWhite: "#fbfafc",
+  purple: "#770fc8",
+  purpleLight: "#a946f6",
+  white: "#ffffff",
+};
 
 /**
  * @typedef {Object} ThemeOptionsGrid
@@ -126,21 +130,21 @@ const theme = (darkStyle) => {
   return {
     palette: {
       background: {
-        default: darkStyle ? black : offWhite,
-        paper: darkStyle ? black2 : white,
+        default: darkStyle ? colors.black : colors.offWhite,
+        paper: darkStyle ? colors.black2 : colors.white,
       },
       grid: {
-        main: darkStyle ? lightBlack : white,
-        content: darkStyle ? black2 : white,
+        main: darkStyle ? colors.lightBlack : colors.white,
+        content: darkStyle ? colors.black2 : colors.white,
       },
       primary: {
-        main: purple,
+        main: colors.purple,
       },
       secondary: {
-        main: purple,
+        main: colors.purple,
       },
       text: {
-        primary: darkStyle ? white : black,
+        primary: darkStyle ? colors.white : colors.black,
       },
     },
     typography: {
