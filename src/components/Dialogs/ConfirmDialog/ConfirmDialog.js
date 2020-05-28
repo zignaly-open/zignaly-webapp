@@ -1,4 +1,5 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -7,9 +8,16 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 /**
+ * @typedef {Object} ConfirmDialogConfig
+ * @property {string} titleTranslationId
+ * @property {string} messageTranslationId
+ * @property {boolean} visible
+ */
+
+/**
  * @typedef {Object} ConfirmDialogProps
- * @property {Function} setConfirmVisible Set state callback to control dialog visibility.
- * @property {boolean} confirmVisible Current visibility flag state.
+ * @property {Function} setConfirmConfig Set state callback to control dialog configuration.
+ * @property {ConfirmDialogConfig} confirmConfig Current dialog configuration.
  * @property {Function} executeActionCallback Callback to execute to perform the action when is confirmed.
  */
 
@@ -20,25 +28,29 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @returns {JSX.Element} Confirm dialog element.
  */
 const ConfirmDialog = (props) => {
-  const { setConfirmVisible, confirmVisible, executeActionCallback } = props;
+  const { setConfirmConfig, confirmConfig, executeActionCallback } = props;
 
   const handleClose = () => {
-    setConfirmVisible(false);
+    setConfirmConfig({
+      ...confirmConfig,
+      visible: false,
+    });
   };
 
   const triggerActionCallback = () => {
-    setConfirmVisible(false);
+    handleClose();
     executeActionCallback();
   };
 
   return (
     <div>
-      <Dialog onClose={handleClose} open={confirmVisible}>
-        <DialogTitle>Confirm Action</DialogTitle>
+      <Dialog onClose={handleClose} open={confirmConfig.visible}>
+        <DialogTitle>
+          <FormattedMessage id={confirmConfig.titleTranslationId} />
+        </DialogTitle>
         <DialogContent>
           <DialogContentText color="textPrimary">
-            Are you sure you want to cancel the position? Canceling the position means you will
-            remove the position from Zignaly, keeping your current bought coins.
+            <FormattedMessage id={confirmConfig.messageTranslationId} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>

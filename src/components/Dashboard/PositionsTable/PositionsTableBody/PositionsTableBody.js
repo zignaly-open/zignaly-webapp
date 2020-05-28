@@ -39,7 +39,18 @@ const PositionsTableBody = (props) => {
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
   const { positions, type } = props;
-  const [confirmVisible, setConfirmVisible] = useState(false);
+
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
   const [actionData, setActionData] = useState({
     positionId: "",
     action: "",
@@ -60,7 +71,13 @@ const PositionsTableBody = (props) => {
       positionId: positionId || "",
     });
 
-    setConfirmVisible(true);
+    if (action === "cancel") {
+      setConfirmConfig({
+        titleTranslationId: "confirm.positioncancel.title",
+        messageTranslationId: "confirm.positioncancel.message",
+        visible: true,
+      });
+    }
   };
 
   /**
@@ -126,9 +143,9 @@ const PositionsTableBody = (props) => {
   return (
     <>
       <ConfirmDialog
-        confirmVisible={confirmVisible}
+        confirmConfig={confirmConfig}
         executeActionCallback={executeAction}
-        setConfirmVisible={setConfirmVisible}
+        setConfirmConfig={setConfirmConfig}
       />
       <TableBody className="tableBody">
         {positions.map((position) => (
