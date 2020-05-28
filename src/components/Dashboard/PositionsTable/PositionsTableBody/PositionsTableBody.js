@@ -163,7 +163,7 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
           </TableCell>
-          {type === "closed" && (
+          {type === "open" && (
             <TableCell align="left" className="cell">
               {position.age}
             </TableCell>
