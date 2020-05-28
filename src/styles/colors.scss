@@ -46,6 +46,10 @@ $lightGrey: #d4d4d4;
 
 $blue: #017aff;
 
+$darkGrey: #808080;
+
+$paleGrey: #fbfafc;
+
 $grey: rgba(255, 255, 255, 0.2);
 
 $borderColor: rgba(0, 0, 0, 0.1);
@@ -58,9 +62,6 @@ $passwordStrengthBackground: rgba(0, 0, 0, 0.9);
 
 $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
 
-$purpleDarkGradient: linear-gradient(to bottom, $grey, $grey),
-linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
-
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
 $pinkGradient: linear-gradient(to right, $pink2 8%, $pink3 98%);
@@ -70,3 +71,5 @@ $greyGradient: linear-gradient(to bottom, $grey, $grey);
 $yelloGradient: linear-gradient(99deg, $yellow2, $yellow3 96%);
 
 $redGradient: linear-gradient(99deg, $red2, $red3 96%);
+
+$purpleDarkGradient: $greyGradient, linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
