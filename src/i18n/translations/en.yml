@@ -13,7 +13,6 @@ menu.tradingterminal: "Trading Terminal"
 menu.manageaccounts: "Manage Accounts"
 menu.demo: "DEMO"
 
-
 # BALANCE
 balance.available: "Available"
 balance.invested: "Invested"
@@ -21,12 +20,10 @@ balance.profit: "Profit"
 balance.total: "Total Equity"
 balance.profitlosses: "P/L #"
 
-
 # EXCHANGES
 exchange.binance: "binance"
 exchange.kucoin: "kuCoin"
 exchange.zignaly: "zignaly"
-
 
 # DASHBOARD SECTION
 dashboard: "Dashboard"
@@ -49,7 +46,6 @@ dashboard.balance.invested: "Invested"
 dashboard.balance.profit: "Profit"
 dashboard.balance.historical: "Historical"
 dashboard.traders.copying: "Traders I am copying:"
-
 
 # COLUMNS
 col.actions: "ACTIONS"
@@ -86,6 +82,7 @@ col.invested.total: "TOTAL INVESTED"
 col.investment.max: "MAX INVESTMENT"
 col.investment.min: "MIN INVESTMENT"
 col.investment.return: "RETURN OF INVESTMENT"
+col.leverage: "LEVERAGE"
 col.name: "NAME"
 col.netprofit.amount: "NET PROFIT #"
 col.netprofit.percentage: "NET PROFIT %"
@@ -174,7 +171,6 @@ col.valueUSDT: "USDT Value"
 col.valueBNBapprox: "Approx. BNB Value"
 col.winrate: "WIN RATE"
 
-
 # FILTERS AND SORT BY
 fil.filters: "FILTERS"
 fil.clearall: "CLEAR ALL"
@@ -195,7 +191,6 @@ sort.return: "Return"
 sort.newest: "Newest"
 sort.name: "Name"
 
-
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.allocated: "Allocated"
 srv.comision: "Comission Fee"
@@ -213,7 +208,6 @@ provider.others: "others are listening this provider"
 provider.stop: "STOP LISTENING"
 provider.view: "VIEW PROVIDER"
 provider.people: "people copying this provider"
-
 
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "COPY-TRADERS"
@@ -284,7 +278,6 @@ signalp.settings.leverage: "Leverage"
 signalp.settings.blacklist: "Blacklist"
 signalp.settings.whitelist: "Whitelist"
 
-
 # SIGNAL PROVIDER OPTIONS
 signalp.option.stoploss: "Accept Stop Loss Value From Signal?"
 signalp.option.updates: "Accept Updates from Signals?"
@@ -301,7 +294,6 @@ signalp.option.DCA: "Accept DCA/ReBuys Signals"
 signalp.option.checkterms: "Check terms from provider"
 signalp.option.filterrisk: "Filter by Risk"
 signalp.option.minimumsuccess: "Select the minimum success rate allowed."
-
 
 # TRADING TERMINAL
 terminal.available: "Available"
@@ -337,7 +329,6 @@ terminal.trigger.help: "Once this price is reached, the trailing stop loss will 
 terminal.units: "Units"
 terminal.unitstoexit: "Units to exit"
 terminal.unitstoexit.help: "The amount to exit on this target."
-
 
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"
@@ -427,7 +418,6 @@ withdraw.history: "Withdraw History"
 withdraw.memo: "MEMO/Tag"
 withdraw.minimum: "Minimum withdrawal"
 
-
 # SETTINGS
 settings.notifications: "Notifications"
 settings.preferences: "Preferences"
@@ -466,7 +456,6 @@ progile.email: "Email"
 profile.photo: "Profile Picture"
 profile.username: "Username"
 
-
 # MONTHS
 m.jan: "JAN"
 m.feb: "FEB"
@@ -481,10 +470,8 @@ m.oct: "OCT"
 m.nov: "NOV"
 m.dec: "DEC"
 
-
 # FAQ
 faq: "Frequently Asked Questions"
-
 
 # STATUS
 status.0: "Position Created In DB"

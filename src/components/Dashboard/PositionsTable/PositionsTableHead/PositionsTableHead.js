@@ -1,6 +1,7 @@
 import React from "react";
 import "./PositionsTableHead.scss";
 import { TableHead, TableRow, TableCell } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
@@ -22,141 +23,126 @@ const PositionsTableHead = (props) => {
           {" "}
         </TableCell>
         <TableCell align="left" className="cell">
-          Open Date
+          <FormattedMessage id="col.date.open" />
         </TableCell>
         {type === "closed" && (
           <TableCell align="left" className="cell">
-            Close Date
+            <FormattedMessage id="col.date.close" />
           </TableCell>
         )}
         <TableCell align="left" className="cell">
-          Provider
+          <FormattedMessage id="col.provider.logo" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Provider Name
+          <FormattedMessage id="col.provider.name" />
         </TableCell>
         {["closed", "log"].includes(type) && (
           <TableCell align="left" className="cell">
-            Status
+            <FormattedMessage id="col.stat" />
           </TableCell>
         )}
         <TableCell align="left" className="cell">
-          Signal ID
+          <FormattedMessage id="col.signalid" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Pair
+          <FormattedMessage id="col.pair" />
         </TableCell>
         <TableCell align="left" className="cell">
-          Entry Price
+          <FormattedMessage id="col.price.entry" />
         </TableCell>
         {type === "closed" && (
           <TableCell align="left" className="cell">
-            Exit Price
+            <FormattedMessage id="col.price.exit" />
           </TableCell>
         )}
         {type === "open" && (
           <TableCell align="left" className="cell">
-            Leverage
+            <FormattedMessage id="col.leverage" />
           </TableCell>
         )}
         {type === "open" && (
           <TableCell align="left" className="cell">
-            Current Price
+            <FormattedMessage id="col.price.current" />
           </TableCell>
         )}
         {["closed", "open"].includes(type) && (
           <>
             <TableCell align="left" className="cell">
-              P/L #
+              <FormattedMessage id="col.plnumber" />
             </TableCell>
             <TableCell align="left" className="cell">
-              Price Difference
+              <FormattedMessage id="col.plpercentage" />
             </TableCell>
           </>
         )}
         <TableCell align="left" className="cell">
-          Side
+          <FormattedMessage id="col.side" />
         </TableCell>
         {["closed", "open"].includes(type) && (
           <TableCell align="left" className="cell">
-            Stop Loss Price
+            <FormattedMessage id="col.stoplossprice" />
           </TableCell>
         )}
         {["closed", "log"].includes(type) && (
           <TableCell align="left" className="cell">
-            Amount
+            <FormattedMessage id="col.amount" />
           </TableCell>
         )}
         {type === "open" && (
           <TableCell align="left" className="cell">
-            Initial Amount
+            <FormattedMessage id="col.initialamount" />
           </TableCell>
         )}
         {["open", "log"].includes(type) && (
           <TableCell align="left" className="cell">
-            Remaining Amount
+            <FormattedMessage id="col.remainingamount" />
           </TableCell>
         )}
         <TableCell align="left" className="cell">
-          Invested
+          <FormattedMessage id="col.invested" />
         </TableCell>
         {["closed", "open"].includes(type) && (
           <>
             <TableCell align="left" className="cell">
-              TSL
+              <FormattedMessage id="col.tsl" />
             </TableCell>
             <TableCell align="left" className="cell">
-              TP
+              <FormattedMessage id="col.tp" />
             </TableCell>
             <TableCell align="left" className="cell">
-              DCA
+              <FormattedMessage id="col.dca" />
             </TableCell>
             <TableCell align="left" className="cell">
-              Risk
+              <FormattedMessage id="col.risk" />
             </TableCell>
           </>
         )}
         {type === "open" && (
           <TableCell align="left" className="cell">
-            Age
+            <FormattedMessage id="col.age" />
           </TableCell>
         )}
         {["closed", "open"].includes(type) && (
           <TableCell align="left" className="cell">
-            Open Trigger
+            <FormattedMessage id="col.opentrigger" />
           </TableCell>
         )}
         {type === "closed" && (
           <>
             <TableCell align="left" className="cell">
-              Fees
+              <FormattedMessage id="col.fees" />
             </TableCell>
             <TableCell align="left" className="cell">
-              Net Profit %
+              <FormattedMessage id="col.net.percentage" />
             </TableCell>
             <TableCell align="left" className="cell">
-              Net Profit
+              <FormattedMessage id="col.net.amount" />
             </TableCell>
           </>
         )}
-        {["closed", "log"].includes(type) && (
-          <TableCell align="left" className="cell">
-            View
-          </TableCell>
-        )}
-        {type === "open" && (
-          <>
-            <TableCell align="left" className="cell">
-              Edit
-            </TableCell>
-            <TableCell align="left" className="cell">
-              Exit Position
-            </TableCell>
-            <TableCell align="left" className="cell">
-              Cancel Position
-            </TableCell>
-          </>
-        )}
+        <TableCell align="right" className="cell">
+          <FormattedMessage id="col.actions" />
+        </TableCell>
       </TableRow>
     </TableHead>
   );

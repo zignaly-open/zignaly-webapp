@@ -11,6 +11,12 @@
     }
   }
 
+  .actions {
+    span {
+      margin: 0 10px;
+    }
+  }
+
   .cell {
     .loss {
       color: $red;

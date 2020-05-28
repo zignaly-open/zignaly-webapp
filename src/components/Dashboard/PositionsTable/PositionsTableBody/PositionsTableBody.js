@@ -212,28 +212,32 @@ const PositionsTableBody = (props) => {
               </TableCell>
             </>
           )}
-          {["closed", "log"].includes(type) && (
-            <TableCell align="left" className="cell">
-              <Eye color={colors.purpleLight} />
-            </TableCell>
-          )}
-          {type === "open" && (
-            <>
-              <TableCell align="left" className="cell">
+          <TableCell align="right" className="cell actions">
+            {["closed", "log"].includes(type) && (
+              <span title="view">
+                <Eye color={colors.purpleLight} />
+              </span>
+            )}
+            {type === "open" && (
+              <>
                 {position.isCopyTrading ? (
-                  <Eye color={colors.purpleLight} />
+                  <span title="view">
+                    <Eye color={colors.purpleLight} />
+                  </span>
                 ) : (
-                  <Edit2 color={colors.purpleLight} />
+                  <span title="edit">
+                    <Edit2 color={colors.purpleLight} />
+                  </span>
                 )}
-              </TableCell>
-              <TableCell align="left" className="cell">
-                <LogOut color={colors.purpleLight} />
-              </TableCell>
-              <TableCell align="left" className="cell">
-                <XCircle color={colors.purpleLight} />
-              </TableCell>
-            </>
-          )}
+                <span title="exit">
+                  <LogOut color={colors.purpleLight} />
+                </span>
+                <span title="cancel">
+                  <XCircle color={colors.purpleLight} />
+                </span>
+              </>
+            )}
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>

@@ -49,7 +49,6 @@ const PositionsTable = (props) => {
         return await tradeApi.logPositionsGet(payload);
       }
 
-      // TODO: Translate Position Table labels.
       return await tradeApi.openPositionsGet(payload);
     } catch (e) {
       alert(`ERROR: ${e.message}`);
