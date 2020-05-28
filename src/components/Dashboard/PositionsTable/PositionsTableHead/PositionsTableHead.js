@@ -117,9 +117,6 @@ const PositionsTableHead = (props) => {
         {type === "closed" && (
           <>
             <TableCell align="left" className="cell">
-              Open Trigger
-            </TableCell>
-            <TableCell align="left" className="cell">
               Fees
             </TableCell>
             <TableCell align="left" className="cell">
