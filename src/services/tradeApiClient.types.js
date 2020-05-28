@@ -3,7 +3,7 @@ import { assign, isArray, isObject } from "lodash";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
- * @typedef {Object} PositionClosePayload
+ * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
  */

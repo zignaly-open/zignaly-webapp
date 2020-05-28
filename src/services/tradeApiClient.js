@@ -219,21 +219,37 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').PositionClosePayload} PositionClosePayload
+   * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
    * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
    */
 
   /**
    * Close a position.
    *
-   * @param {PositionClosePayload} payload User authorization payload.
+   * @param {PositionActionPayload} payload User authorization payload.
 
-   * @returns {Promise<PositionEntity>} Promise that resolve user positions collection.
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
    */
   async positionClose(payload) {
     const endpointPath = "/fe/api.php?action=closePosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Exit a position.
+   *
+   * @param {PositionActionPayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionExit(payload) {
+    const endpointPath = "/fe/api.php?action=sellPosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionItemTransform(responseData);
