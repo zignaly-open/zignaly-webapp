@@ -1,5 +1,4 @@
 import moment from "moment";
-import _ from "lodash";
 
 /**
  * Format string to float with 2 decimals.
@@ -29,17 +28,29 @@ export const formatFloat = (val) => {
 export const formatTime = (val) => moment.duration(parseInt(val, 10), "second").humanize();
 
 /**
+ * Format string to camelCase
+ * Ex: avgI1w_higherPricePercentage -> avgI1wHigherPricePercentage
+ *
+ * @param {string} text String to format
+ * @returns {string} String formatted
+ */
+export const toCamelCase = (text) => {
+  text = text.replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ""));
+  return text.substr(0, 1).toLowerCase() + text.substr(1);
+};
+
+/**
  * Format object keys to camelCase
  *
  * @param {Object} obj Object to format
- * @returns {Object} Object formatter
+ * @returns {Object} Object formatted
  */
-export const toCamelCase = (obj) => {
-  return _.reduce(
-    obj,
-    (result, value, key) => {
-      return { ...result, [_.camelCase(key)]: value };
-    },
+export const toCamelCaseKeys = (obj) => {
+  return Object.entries(obj).reduce(
+    (result, [key, value]) => ({
+      ...result,
+      [toCamelCase(key)]: value,
+    }),
     {},
   );
 };

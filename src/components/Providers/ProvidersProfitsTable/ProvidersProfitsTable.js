@@ -15,6 +15,7 @@ import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format"
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
+ * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
  */
 
 const ProvidersProfitsTable = () => {
@@ -424,15 +425,6 @@ const ProvidersProfitsTable = () => {
     },
   }));
 
-  /**
-   * Handle column display toggle settings.
-   *
-   * @type {MUIDataTableOptions["onColumnViewChange"]} updateDisplayColumnSettings
-   */
-  const updateDisplayColumnSettings = (changedColumn, action) => {
-    dispatch(setDisplayColumn({ table: "spAnalytics", changedColumn, action }));
-  };
-
   useEffect(() => {
     const loadProvidersStats = async () => {
       try {
@@ -455,8 +447,6 @@ const ProvidersProfitsTable = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(stats);
-
   /**
    * @type {MUIDataTableOptions}
    */
@@ -466,7 +456,9 @@ const ProvidersProfitsTable = () => {
     filter: false,
     search: false,
     print: false,
-    onColumnViewChange: updateDisplayColumnSettings,
+    onColumnViewChange: (changedColumn, action) => {
+      dispatch(setDisplayColumn({ table: "spAnalytics", changedColumn, action }));
+    },
   };
 
   return (

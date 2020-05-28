@@ -1,5 +1,5 @@
 import { assign, isArray, isObject } from "lodash";
-import { toCamelCase } from "../utils/format";
+import { toCamelCaseKeys } from "../utils/format";
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -674,7 +674,7 @@ export function providersStatsResponseTransform(response) {
 function providerStatsItemTransform(providerStatsItem) {
   const emptyProviderStatsEntity = createProviderStatsEmptyEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyProviderStatsEntity, toCamelCase(providerStatsItem));
+  const transformedResponse = assign(emptyProviderStatsEntity, toCamelCaseKeys(providerStatsItem));
 
   return transformedResponse;
 }
