@@ -78,6 +78,14 @@ const PositionsTableBody = (props) => {
         visible: true,
       });
     }
+
+    if (action === "exit") {
+      setConfirmConfig({
+        titleTranslationId: "confirm.positionexit.title",
+        messageTranslationId: "confirm.positionexit.message",
+        visible: true,
+      });
+    }
   };
 
   /**
@@ -310,7 +318,13 @@ const PositionsTableBody = (props) => {
                       <Edit2 color={colors.purpleLight} />
                     </button>
                   )}
-                  <button title="exit" type="button">
+                  <button
+                    data-action={"exit"}
+                    data-position-id={position.positionId}
+                    onClick={confirmAction}
+                    title="exit"
+                    type="button"
+                  >
                     <LogOut color={colors.purpleLight} />
                   </button>
                   <button
