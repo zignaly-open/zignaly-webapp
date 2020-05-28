@@ -75,7 +75,7 @@ const PositionsTable = (props) => {
         justifyContent="flex-start"
       >
         <Table className="table">
-          <PositionsTableHead />
+          <PositionsTableHead type={type} />
           <PositionsTableBody positions={positions} />
         </Table>
       </Box>
