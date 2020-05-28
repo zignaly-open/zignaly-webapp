@@ -140,7 +140,7 @@ const theme = (darkStyle) => {
         main: colors.purple,
       },
       secondary: {
-        main: colors.purple,
+        main: colors.purpleLight,
       },
       text: {
         primary: darkStyle ? colors.white : colors.black,
