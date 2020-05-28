@@ -105,7 +105,21 @@ const PositionsTableBody = (props) => {
           alert(`Position ${position.positionId} was cancelled.`);
         })
         .catch((e) => {
-          alert(`Position cancellation failed: ${e.message}`);
+          alert(`Cancel position failed: ${e.message}`);
+        });
+    }
+
+    if (action === "exit") {
+      tradeApi
+        .positionExit({
+          positionId: positionId,
+          token: storeSession.tradeApi.accessToken,
+        })
+        .then((position) => {
+          alert(`Position ${position.positionId} was exited.`);
+        })
+        .catch((e) => {
+          alert(`Exit position failed: ${e.message}`);
         });
     }
   };
