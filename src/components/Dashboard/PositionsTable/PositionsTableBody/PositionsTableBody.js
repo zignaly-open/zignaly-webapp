@@ -50,12 +50,27 @@ const PositionsTableBody = (props) => {
     );
   };
 
+  /**
+   * Compose trailing stop icon for a given position.
+   *
+   * @param {PositionEntity} position Position entity to compose icon for.
+   * @returns {JSX.Element|null} Provider icon JSX element.
+   */
+  const composeTrailingStopIcon = (position) => {
+    const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.purpleLight;
+    if (position.trailingStopTriggerPercentage) {
+      return <TrendingUp color={trailingStopColor} />;
+    }
+
+    return null;
+  };
+
   return (
     <TableBody className="tableBody">
       {positions.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
-            {position.paperTrading && <File color={colors.purple} />}
+            {position.paperTrading && <File color={colors.purpleLight} />}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.openDateReadable}
@@ -125,7 +140,7 @@ const PositionsTableBody = (props) => {
             {position.positionSizeQuote}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.trailingStopTriggerPercentage && <TrendingUp />}
+            {composeTrailingStopIcon(position)}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.takeProfitTargetsCountFail > 0 && (
@@ -184,7 +199,7 @@ const PositionsTableBody = (props) => {
                 {formatNumber(position.netProfit)}
               </TableCell>
               <TableCell align="left" className="cell">
-                <Eye color={colors.purple} />
+                <Eye color={colors.purpleLight} />
               </TableCell>
             </>
           )}
@@ -192,16 +207,16 @@ const PositionsTableBody = (props) => {
             <>
               <TableCell align="left" className="cell">
                 {position.isCopyTrading ? (
-                  <Eye color={colors.purple} />
+                  <Eye color={colors.purpleLight} />
                 ) : (
-                  <Edit2 color={colors.purple} />
+                  <Edit2 color={colors.purpleLight} />
                 )}
               </TableCell>
               <TableCell align="left" className="cell">
-                <LogOut color={colors.purple} />
+                <LogOut color={colors.purpleLight} />
               </TableCell>
               <TableCell align="left" className="cell">
-                <XCircle color={colors.purple} />
+                <XCircle color={colors.purpleLight} />
               </TableCell>
             </>
           )}

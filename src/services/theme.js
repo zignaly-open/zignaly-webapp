@@ -80,12 +80,14 @@ const PlexSansLight = {
 };
 
 export const colors = {
-  black: "#191927",
   black2: "#1b1b2c",
-  purple: "#770fc8",
-  white: "#ffffff",
+  black: "#191927",
+  green: "#08a441",
   lightBlack: "#27273f",
   offWhite: "#fbfafc",
+  purple: "#770fc8",
+  purpleLight: "#a946f6",
+  white: "#ffffff",
 };
 
 /**
