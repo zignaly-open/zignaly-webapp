@@ -55,10 +55,10 @@ const ConfirmDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button autoFocus color="secondary" onClick={handleClose}>
-            Cancel
+            <FormattedMessage id="confirm.cancel" />
           </Button>
           <Button color="secondary" onClick={triggerActionCallback}>
-            Confirm
+            <FormattedMessage id="confirm.accept" />
           </Button>
         </DialogActions>
       </Dialog>
