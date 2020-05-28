@@ -5,24 +5,16 @@ import { Box } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import { FormattedMessage, useIntl } from "react-intl";
 import MUIDataTable from "mui-datatables";
-import moment from "moment";
 import { setDisplayColumn } from "../../../store/actions/settings";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
+import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
- */
-
-/**
- * @typedef Column
- * @property {string} name
- * @property {string} id
- * @property {string} [parse]
- * @property {number} [digits]
- * @property {boolean} show
- * @property {boolean} [excludeFromShowHideColumn]
+ * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 const ProvidersProfitsTable = () => {
@@ -41,37 +33,7 @@ const ProvidersProfitsTable = () => {
   const dispatch = useDispatch();
 
   /**
-   * Format string to float with 2 decimals.
-   * @param {string} val
-   */
-  const formatFloat2D = (val) => parseFloat(val).toFixed(2);
-  const formatFloatAuto = (val) => {
-    const valueFloat = parseFloat(val);
-    return valueFloat >= 1 || valueFloat <= -1 ? valueFloat.toFixed(2) : valueFloat.toFixed(8);
-  };
-
-  const formatTime = (val) => {
-    let duration = moment.duration(parseInt(val, 10) * 1000);
-    let durationStr = "";
-    if (duration.asDays() >= 1) {
-      durationStr = duration.asDays().toFixed(1);
-      durationStr += duration.asDays() > 1 ? " days" : " day";
-    } else if (duration.asHours() >> 1) {
-      durationStr = duration.asHours().toFixed(1);
-      durationStr += duration.asHours() > 1 ? " hours" : " hour";
-    } else if (duration.asMinutes() >= 1) {
-      durationStr = duration.asMinutes().toFixed(1);
-      durationStr += duration.asMinutes() > 1 ? " minutes" : " minute";
-    } else {
-      durationStr = duration.asSeconds().toFixed(1);
-      durationStr += duration.asSeconds() > 1 ? " seconds" : " second";
-    }
-
-    return durationStr;
-  };
-
-  /**
-   * @type {Array<Column>}
+   * @type {Array<MUIDataTableColumn>} Table columns
    */
   const columns = [
     {
@@ -85,7 +47,7 @@ const ProvidersProfitsTable = () => {
       name: "name",
       label: "col.name",
       options: {
-        customBodyRender: (val, tableMeta, updateValue) => (
+        customBodyRender: (val, tableMeta) => (
           <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>
         ),
         viewColumns: false,
@@ -96,7 +58,7 @@ const ProvidersProfitsTable = () => {
       label: "col.profit.percentage",
       options: {
         customBodyRender: (val) => (
-          <span className={val >= 0 ? "green" : "red"}>{formatFloat2D(val)}%</span>
+          <span className={val >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
         ),
         sort: true,
         sortDirection: "desc",
@@ -160,42 +122,42 @@ const ProvidersProfitsTable = () => {
       name: "maxMaxDCAProfit",
       label: "col.profit.max.fromDCA",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "maxMaxInvestment",
       label: "col.investment.max",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "maxMaxReturnOfInvestment",
       label: "col.profit.max",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "minMinDCAProfit",
       label: "col.profit.min.fromDCA",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "minMinInvestment",
       label: "col.investment.min",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "minMinReturnOfInvestment",
       label: "col.profit.min",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -217,7 +179,7 @@ const ProvidersProfitsTable = () => {
     {
       name: "sumTotalInvested",
       label: "col.invested.total",
-      customBodyRender: formatFloatAuto,
+      customBodyRender: formatFloat,
     },
     {
       name: "sumTotalProfit",
@@ -260,193 +222,193 @@ const ProvidersProfitsTable = () => {
       name: "avgAveragePositionSize",
       label: "col.position.size.avg",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "avgAverageProfit",
       label: "col.position.profit.avg",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
       name: "avgAverageProfitPercentage",
       label: "col.position.profit.avgpercentage",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avg24h_higherPricePercentage",
+      name: "avgI24hHigherPricePercentage",
       label: "col.price.timeuntilhigher.24hours",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI24h_lowerBeforeHigherPricePercentage",
+      name: "avgI24hLowerBeforeHigherPricePercentage",
       label: "col.price.lowerbeforehigher.24hours",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI24h_lowerPricePercentage",
+      name: "avgI24hLowerPricePercentage",
       label: "col.price.lower.24hours",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI24h_secondsUntilHigherPrice",
+      name: "avgI24hSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.24hours",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI24h_secondsUntilLowerBeforeHigherPrice",
+      name: "avgI24hSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.24hours",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI24h_secondsUntilLowerPrice",
+      name: "avgI24hSecondsUntilLowerPrice",
       label: "col.price.timeuntillower.24hours",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI24h_lowerBeforeHigherPricePercentage",
+      name: "avgI24hLowerBeforeHigherPricePercentage",
       label: "col.price.lowerbeforehigher.24hours",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI3d_higherPricePercentage",
+      name: "avgI3dHigherPricePercentage",
       label: "col.price.timeuntilhigher.3days",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI3d_lowerBeforeHigherPricePercentage",
+      name: "avgI3dLowerBeforeHigherPricePercentage",
       label: "col.price.lowerbeforehigher.3days",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI3d_lowerPricePercentage",
+      name: "avgI3dLowerPricePercentage",
       label: "col.price.lower.3days",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI3d_secondsUntilHigherPrice",
+      name: "avgI3dSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.3days",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI3d_secondsUntilLowerBeforeHigherPrice",
+      name: "avgI3dSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.3days",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI3d_secondsUntilLowerPrice",
+      name: "avgI3dSecondsUntilLowerPrice",
       label: "col.price.timeuntillower.3days",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1w_higherPricePercentage",
+      name: "avgI1wHigherPricePercentage",
       label: "col.price.timeuntilhigher.1week",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1w_lowerBeforeHigherPricePercentage",
+      name: "avgI1wLowerBeforeHigherPricePercentage",
       label: "col.price.lowerbeforehigher.1week",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1w_lowerPricePercentage",
+      name: "avgI1wLowerPricePercentage",
       label: "col.price.lower.1week",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1w_secondsUntilHigherPrice",
+      name: "avgI1wSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.1week",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1w_secondsUntilLowerBeforeHigherPrice",
+      name: "avgI1wSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.1week",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1w_secondsUntilLowerPrice",
+      name: "avgI1wSecondsUntilLowerPrice",
       label: "col.price.timeuntillower.1week",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1m_higherPricePercentage",
+      name: "avgI1mHigherPricePercentage",
       label: "col.price.higher.1month",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1m_lowerBeforeHigherPricePercentage",
+      name: "avgI1mLowerBeforeHigherPricePercentage",
       label: "col.price.lowerbeforehigher.1month",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1m_lowerPricePercentage",
+      name: "avgI1mLowerPricePercentage",
       label: "col.price.lower.1month",
       options: {
-        customBodyRender: formatFloatAuto,
+        customBodyRender: formatFloat,
       },
     },
     {
-      name: "avgI1m_secondsUntilHigherPrice",
+      name: "avgI1mSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.1month",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1m_secondsUntilLowerBeforeHigherPrice",
+      name: "avgI1mSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.1month",
       options: {
         customBodyRender: formatTime,
       },
     },
     {
-      name: "avgI1m_secondsUntilLowerPrice",
+      name: "avgI1mSecondsUntilLowerPrice",
       label: "col.price.timeuntillower.1month",
       options: {
         customBodyRender: formatTime,
@@ -457,19 +419,15 @@ const ProvidersProfitsTable = () => {
     label: c.label ? intl.formatMessage({ id: c.label }) : "",
     options: {
       ...c.options,
-      sort: c.options && c.options.sort ? true : false,
-      display: storeSettings.displayColumns["spAnalytics"].includes(c.name),
-      //   customBodyRender: (value) => <Box display="flex">{value}</Box>,
+      sort: !!(c.options && c.options.sort),
+      display: storeSettings.displayColumns.spAnalytics.includes(c.name),
     },
   }));
 
-  console.log(columns);
-
   /**
-   * Process data submitted in the login form.
+   * Handle column display toggle settings.
    *
-   * @param {LoginFormSubmission} payload Submission data.
-   * @returns {Void} None.
+   * @type {MUIDataTableOptions["onColumnViewChange"]} updateDisplayColumnSettings
    */
   const updateDisplayColumnSettings = (changedColumn, action) => {
     dispatch(setDisplayColumn({ table: "spAnalytics", changedColumn, action }));
@@ -494,10 +452,14 @@ const ProvidersProfitsTable = () => {
     };
 
     loadProvidersStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(stats);
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
   const options = {
     selectableRows: "none",
     responsive: "stacked",
@@ -505,16 +467,15 @@ const ProvidersProfitsTable = () => {
     search: false,
     print: false,
     onColumnViewChange: updateDisplayColumnSettings,
-    // customRowRender:
   };
 
   return (
     <Box className="ProvidersProfitsTable" display="flex" flexDirection="column" width={1}>
       <MUIDataTable
-        title={<FormattedMessage id="copyt.performance" />}
-        data={stats}
         columns={columns}
+        data={stats}
         options={options}
+        title={<FormattedMessage id="copyt.performance" />}
       />
     </Box>
   );

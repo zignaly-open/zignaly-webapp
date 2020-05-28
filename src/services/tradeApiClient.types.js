@@ -1,4 +1,5 @@
 import { assign, isArray, isObject } from "lodash";
+import { toCamelCase } from "../utils/format";
 
 /**
  * @typedef {Object} UserCreatePayload
@@ -243,30 +244,30 @@ import { assign, isArray, isObject } from "lodash";
  * @property {string} avgAverageExitPrice
  * @property {string} avgAverageAveragePrice
  * @property {string} avgAverageProfitPercentage
- * @property {string} avgI24h_higherPricePercentage
- * @property {string} avgI24h_lowerBeforeHigherPricePercentage
- * @property {string} avgI24h_lowerPricePercentage
- * @property {string} avgI24h_secondsUntilHigherPrice
- * @property {string} avgI24h_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI24h_secondsUntilLowerPrice
- * @property {string} avgI3d_higherPricePercentage
- * @property {string} avgI3d_lowerBeforeHigherPricePercentage
- * @property {string} avgI3d_lowerPricePercentage
- * @property {string} avgI3d_secondsUntilHigherPrice
- * @property {string} avgI3d_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI3d_secondsUntilLowerPrice
- * @property {string} avgI1w_higherPricePercentage
- * @property {string} avgI1w_lowerBeforeHigherPricePercentage
- * @property {string} avgI1w_lowerPricePercentage
- * @property {string} avgI1w_secondsUntilHigherPrice
- * @property {string} avgI1w_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI1w_secondsUntilLowerPrice
- * @property {string} avgI1m_higherPricePercentage
- * @property {string} avgI1m_lowerBeforeHigherPricePercentage
- * @property {string} avgI1m_lowerPricePercentage
- * @property {string} avgI1m_secondsUntilHigherPrice
- * @property {string} avgI1m_secondsUntilLowerBeforeHigherPrice
- * @property {string} avgI1m_secondsUntilLowerPrice
+ * @property {string} avgI24hHigherPricePercentage
+ * @property {string} avgI24hLowerBeforeHigherPricePercentage
+ * @property {string} avgI24hLowerPricePercentage
+ * @property {string} avgI24hSecondsUntilHigherPrice
+ * @property {string} avgI24hSecondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI24hSecondsUntilLowerPrice
+ * @property {string} avgI3dHigherPricePercentage
+ * @property {string} avgI3dLowerBeforeHigherPricePercentage
+ * @property {string} avgI3dLowerPricePercentage
+ * @property {string} avgI3dSecondsUntilHigherPrice
+ * @property {string} avgI3dSecondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI3dSecondsUntilLowerPrice
+ * @property {string} avgI1wHigherPricePercentage
+ * @property {string} avgI1wLowerBeforeHigherPricePercentage
+ * @property {string} avgI1wLowerPricePercentage
+ * @property {string} avgI1wSecondsUntilHigherPrice
+ * @property {string} avgI1wSecondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI1wSecondsUntilLowerPrice
+ * @property {string} avgI1mHigherPricePercentage
+ * @property {string} avgI1mLowerBeforeHigherPricePercentage
+ * @property {string} avgI1mLowerPricePercentage
+ * @property {string} avgI1mSecondsUntilHigherPrice
+ * @property {string} avgI1mSecondsUntilLowerBeforeHigherPrice
+ * @property {string} avgI1mSecondsUntilLowerPrice
  * @property {string} maxMaxInvestment
  * @property {string} maxMaxReturnOfInvestment
  * @property {string} maxMaxDCAProfit
@@ -660,7 +661,6 @@ export function providersStatsResponseTransform(response) {
   }
 
   return response.map((providerStatsItem) => {
-    console.log(providerStatsItem);
     return providerStatsItemTransform(providerStatsItem);
   });
 }
@@ -674,7 +674,7 @@ export function providersStatsResponseTransform(response) {
 function providerStatsItemTransform(providerStatsItem) {
   const emptyProviderStatsEntity = createProviderStatsEmptyEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyProviderStatsEntity, providerStatsItem);
+  const transformedResponse = assign(emptyProviderStatsEntity, toCamelCase(providerStatsItem));
 
   return transformedResponse;
 }
@@ -719,30 +719,30 @@ function createProviderStatsEmptyEntity() {
     avgAverageExitPrice: "",
     avgAverageAveragePrice: "",
     avgAverageProfitPercentage: "",
-    avgI24h_higherPricePercentage: "",
-    avgI24h_lowerBeforeHigherPricePercentage: "",
-    avgI24h_lowerPricePercentage: "",
-    avgI24h_secondsUntilHigherPrice: "",
-    avgI24h_secondsUntilLowerBeforeHigherPrice: "",
-    avgI24h_secondsUntilLowerPrice: "",
-    avgI3d_higherPricePercentage: "",
-    avgI3d_lowerBeforeHigherPricePercentage: "",
-    avgI3d_lowerPricePercentage: "",
-    avgI3d_secondsUntilHigherPrice: "",
-    avgI3d_secondsUntilLowerBeforeHigherPrice: "",
-    avgI3d_secondsUntilLowerPrice: "",
-    avgI1w_higherPricePercentage: "",
-    avgI1w_lowerBeforeHigherPricePercentage: "",
-    avgI1w_lowerPricePercentage: "",
-    avgI1w_secondsUntilHigherPrice: "",
-    avgI1w_secondsUntilLowerBeforeHigherPrice: "",
-    avgI1w_secondsUntilLowerPrice: "",
-    avgI1m_higherPricePercentage: "",
-    avgI1m_lowerBeforeHigherPricePercentage: "",
-    avgI1m_lowerPricePercentage: "",
-    avgI1m_secondsUntilHigherPrice: "",
-    avgI1m_secondsUntilLowerBeforeHigherPrice: "",
-    avgI1m_secondsUntilLowerPrice: "",
+    avgI24hHigherPricePercentage: "",
+    avgI24hLowerBeforeHigherPricePercentage: "",
+    avgI24hLowerPricePercentage: "",
+    avgI24hSecondsUntilHigherPrice: "",
+    avgI24hSecondsUntilLowerBeforeHigherPrice: "",
+    avgI24hSecondsUntilLowerPrice: "",
+    avgI3dHigherPricePercentage: "",
+    avgI3dLowerBeforeHigherPricePercentage: "",
+    avgI3dLowerPricePercentage: "",
+    avgI3dSecondsUntilHigherPrice: "",
+    avgI3dSecondsUntilLowerBeforeHigherPrice: "",
+    avgI3dSecondsUntilLowerPrice: "",
+    avgI1wHigherPricePercentage: "",
+    avgI1wLowerBeforeHigherPricePercentage: "",
+    avgI1wLowerPricePercentage: "",
+    avgI1wSecondsUntilHigherPrice: "",
+    avgI1wSecondsUntilLowerBeforeHigherPrice: "",
+    avgI1wSecondsUntilLowerPrice: "",
+    avgI1mHigherPricePercentage: "",
+    avgI1mLowerBeforeHigherPricePercentage: "",
+    avgI1mLowerPricePercentage: "",
+    avgI1mSecondsUntilHigherPrice: "",
+    avgI1mSecondsUntilLowerBeforeHigherPrice: "",
+    avgI1mSecondsUntilLowerPrice: "",
     maxMaxInvestment: "",
     maxMaxReturnOfInvestment: "",
     maxMaxDCAProfit: "",

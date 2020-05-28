@@ -32,7 +32,7 @@ const settings = (state, action) => {
       newState.darkStyle = action.payload;
       break;
 
-    case SET_DISPLAY_COLUMN:
+    case SET_DISPLAY_COLUMN: {
       const { table, changedColumn, action: userAction } = action.payload;
       if (userAction === "add") {
         //   Add column to displayed list
@@ -44,6 +44,7 @@ const settings = (state, action) => {
         );
       }
       break;
+    }
 
     default:
       break;

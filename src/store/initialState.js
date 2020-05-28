@@ -32,9 +32,16 @@
  */
 
 /**
+ * @typedef {Object} DisplayColumns
+ * @property {Array<string>} spAnalytics
+ * @property {Array<string>} ctAnalytics
+ */
+
+/**
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {DisplayColumns} displayColumns
  */
 
 /**
@@ -72,6 +79,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
+      ctAnalytics: [],
     },
   },
   user: {
