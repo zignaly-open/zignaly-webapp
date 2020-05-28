@@ -3,6 +3,12 @@ import { assign, isArray, isObject } from "lodash";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @typedef {Object} PositionClosePayload
+ * @property {string} positionId Position ID to cancel.
+ * @property {string} token Access token.
+ */
+
+/**
  * @typedef {Object} UserCreatePayload
  * @property {string} firstName User first name.
  * @property {string} email User email address.
@@ -365,7 +371,7 @@ export function userPositionsResponseTransform(response) {
  * @param {Object.<string, any>} positionItem Trade API position item.
  * @returns {PositionEntity} Position entity.
  */
-function userPositionItemTransform(positionItem) {
+export function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));

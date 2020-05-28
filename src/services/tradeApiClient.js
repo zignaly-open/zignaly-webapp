@@ -6,6 +6,7 @@ import {
   providersResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
+  userPositionItemTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -215,6 +216,27 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').PositionClosePayload} PositionClosePayload
+   * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
+   */
+
+  /**
+   * Close a position.
+   *
+   * @param {PositionClosePayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user positions collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionClose(payload) {
+    const endpointPath = "/fe/api.php?action=closePosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
   }
 }
 
