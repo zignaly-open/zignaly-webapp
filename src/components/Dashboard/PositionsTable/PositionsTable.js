@@ -5,6 +5,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import PositionsTableHead from "./PositionsTableHead";
 import PositionsTableBody from "./PositionsTableBody";
 import { useSelector } from "react-redux";
+import useIterval from "use-interval";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -48,6 +49,7 @@ const PositionsTable = (props) => {
         return await tradeApi.logPositionsGet(payload);
       }
 
+      // TODO: Translate Position Table labels.
       return await tradeApi.openPositionsGet(payload);
     } catch (e) {
       alert(`ERROR: ${e.message}`);
@@ -62,7 +64,15 @@ const PositionsTable = (props) => {
     });
   };
 
+  const updateData = () => {
+    // Only open positions needs continuos updates.
+    if (type === "open") {
+      loadData();
+    }
+  };
+
   useEffect(loadData, [storeSession.tradeApi.accessToken]);
+  useIterval(updateData, 5000);
 
   return (
     <Box
