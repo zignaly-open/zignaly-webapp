@@ -67,7 +67,8 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} openDate
  * @property {string} openDateReadable
  * @property {string} openTrigger
- * @property {string} closeDate
+ * @property {number} closeDate
+ * @property {string} closeDateReadable
  * @property {string} closeTrigger
  * @property {string} pair
  * @property {string} base
@@ -364,6 +365,7 @@ export function userPositionsResponseTransform(response) {
 function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(Number(positionItem.openDate));
+  const closeDateMoment = moment(Number(positionItem.closeDate));
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
     if (positionItem.providerId === "1") {
@@ -397,10 +399,12 @@ function userPositionItemTransform(positionItem) {
   // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
     openDate: Number(positionItem.openDate),
+    closeDate: Number(positionItem.closeDate),
     openDateMoment: openDateMoment,
     providerLogo: positionItem.logoUrl || defaultProviderLogo,
     providerLink: composeProviderLink(),
-    openDateReadable: openDateMoment.format("hh.mm DD.MM.YY."),
+    openDateReadable: positionItem.openDate ? openDateMoment.format("hh.mm DD.MM.YY.") : "-",
+    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("hh.mm DD.MM.YY.") : "-",
     profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
     stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
     risk: risk,
@@ -424,7 +428,8 @@ function createEmptyPositionEntity() {
     openDate: 0,
     openDateReadable: "",
     openTrigger: "",
-    closeDate: "",
+    closeDate: 0,
+    closeDateReadable: "",
     closeTrigger: "",
     pair: "",
     base: "",
