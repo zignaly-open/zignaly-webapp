@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { Edit, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -152,7 +152,7 @@ const PositionsTableBody = (props) => {
             {position.openTrigger}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.isCopyTrading ? <Eye /> : <Edit />}
+            {position.isCopyTrading ? <Eye /> : <Edit2 />}
           </TableCell>
           <TableCell align="left" className="cell">
             <LogOut />
