@@ -57,7 +57,7 @@ const PositionsTableBody = (props) => {
    * @returns {JSX.Element|null} Provider icon JSX element.
    */
   const composeTrailingStopIcon = (position) => {
-    const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.purpleLight;
+    const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.darkGrey;
     if (position.trailingStopTriggerPercentage) {
       return <TrendingUp color={trailingStopColor} />;
     }
@@ -70,7 +70,7 @@ const PositionsTableBody = (props) => {
       {positions.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
-            {position.paperTrading && <File color={colors.purpleLight} />}
+            {position.paperTrading && <File color={colors.darkGrey} />}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.openDateReadable}

@@ -82,6 +82,7 @@ const PlexSansLight = {
 export const colors = {
   black2: "#1b1b2c",
   black: "#191927",
+  darkGrey: "#808080",
   green: "#08a441",
   lightBlack: "#27273f",
   offWhite: "#fbfafc",
