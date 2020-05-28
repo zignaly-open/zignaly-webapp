@@ -47,6 +47,14 @@ dashboard.balance.profit: "ch-Profit"
 dashboard.balance.historical: "ch-Historical"
 dashboard.traders.copying: "ch-Traders I am copying:"
 
+# CONFIRMATION DIALOGS
+confirm.cancel: "ch-Cancel"
+confirm.accept: "ch-Confirm"
+confirm.positioncancel.title: "ch-Confirm Cancel"
+confirm.positioncancel.message: "ch-Are you sure you want to cancel the position? Canceling the position means you will remove the position from Zignaly, keeping your current bought coins."
+confirm.positionexit.title: "ch-Confirm Exit"
+confirm.positionexit.message: "ch-Are you sure you want to exit the position?"
+
 # COLUMNS
 col.actions: "ch-ACTIONS"
 col.age: "ch-AGE"
