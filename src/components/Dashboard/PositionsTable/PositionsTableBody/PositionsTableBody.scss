@@ -12,8 +12,14 @@
   }
 
   .actions {
-    span {
+    button {
+      background-color: transparent;
+      border: none;
       margin: 0 10px;
+    }
+
+    svg {
+      pointer-events: none;
     }
   }
 
