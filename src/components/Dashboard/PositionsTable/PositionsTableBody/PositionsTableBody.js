@@ -3,6 +3,7 @@ import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
+import { colors } from "../../../../services/theme";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -50,7 +51,7 @@ const PositionsTableBody = (props) => {
       {positions.map((position) => (
         <TableRow className="row" key={position.positionId}>
           <TableCell align="left" className="cell">
-            {position.paperTrading && <File />}
+            {position.paperTrading && <File color={colors.purple} />}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.openDateReadable}
@@ -152,13 +153,17 @@ const PositionsTableBody = (props) => {
             {position.openTrigger}
           </TableCell>
           <TableCell align="left" className="cell">
-            {position.isCopyTrading ? <Eye /> : <Edit2 />}
+            {position.isCopyTrading ? (
+              <Eye color={colors.purple} />
+            ) : (
+              <Edit2 color={colors.purple} />
+            )}
           </TableCell>
           <TableCell align="left" className="cell">
-            <LogOut />
+            <LogOut color={colors.purple} />
           </TableCell>
           <TableCell align="left" className="cell">
-            <XCircle />
+            <XCircle color={colors.purple} />
           </TableCell>
         </TableRow>
       ))}
