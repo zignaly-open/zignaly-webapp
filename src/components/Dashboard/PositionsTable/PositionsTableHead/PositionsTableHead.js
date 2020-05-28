@@ -35,7 +35,7 @@ const PositionsTableHead = (props) => {
         <TableCell align="left" className="cell">
           Provider Name
         </TableCell>
-        {type === "closed" && (
+        {["closed", "log"].includes(type) && (
           <TableCell align="left" className="cell">
             Status
           </TableCell>
@@ -64,19 +64,25 @@ const PositionsTableHead = (props) => {
             Current Price
           </TableCell>
         )}
-        <TableCell align="left" className="cell">
-          P/L #
-        </TableCell>
-        <TableCell align="left" className="cell">
-          Price Difference
-        </TableCell>
+        {["closed", "open"].includes(type) && (
+          <>
+            <TableCell align="left" className="cell">
+              P/L #
+            </TableCell>
+            <TableCell align="left" className="cell">
+              Price Difference
+            </TableCell>
+          </>
+        )}
         <TableCell align="left" className="cell">
           Side
         </TableCell>
-        <TableCell align="left" className="cell">
-          Stop Loss Price
-        </TableCell>
-        {type === "closed" && (
+        {["closed", "open"].includes(type) && (
+          <TableCell align="left" className="cell">
+            Stop Loss Price
+          </TableCell>
+        )}
+        {["closed", "log"].includes(type) && (
           <TableCell align="left" className="cell">
             Amount
           </TableCell>
@@ -86,7 +92,7 @@ const PositionsTableHead = (props) => {
             Initial Amount
           </TableCell>
         )}
-        {type === "open" && (
+        {["open", "log"].includes(type) && (
           <TableCell align="left" className="cell">
             Remaining Amount
           </TableCell>
@@ -94,26 +100,32 @@ const PositionsTableHead = (props) => {
         <TableCell align="left" className="cell">
           Invested
         </TableCell>
-        <TableCell align="left" className="cell">
-          TSL
-        </TableCell>
-        <TableCell align="left" className="cell">
-          TP
-        </TableCell>
-        <TableCell align="left" className="cell">
-          DCA
-        </TableCell>
-        <TableCell align="left" className="cell">
-          Risk
-        </TableCell>
+        {["closed", "open"].includes(type) && (
+          <>
+            <TableCell align="left" className="cell">
+              TSL
+            </TableCell>
+            <TableCell align="left" className="cell">
+              TP
+            </TableCell>
+            <TableCell align="left" className="cell">
+              DCA
+            </TableCell>
+            <TableCell align="left" className="cell">
+              Risk
+            </TableCell>
+          </>
+        )}
         {type === "open" && (
           <TableCell align="left" className="cell">
             Age
           </TableCell>
         )}
-        <TableCell align="left" className="cell">
-          Open Trigger
-        </TableCell>
+        {["closed", "open"].includes(type) && (
+          <TableCell align="left" className="cell">
+            Open Trigger
+          </TableCell>
+        )}
         {type === "closed" && (
           <>
             <TableCell align="left" className="cell">
@@ -125,10 +137,12 @@ const PositionsTableHead = (props) => {
             <TableCell align="left" className="cell">
               Net Profit
             </TableCell>
-            <TableCell align="left" className="cell">
-              View
-            </TableCell>
           </>
+        )}
+        {["closed", "log"].includes(type) && (
+          <TableCell align="left" className="cell">
+            View
+          </TableCell>
         )}
         {type === "open" && (
           <>
