@@ -1,0 +1,25 @@
+.winRate {
+  height: 16px;
+  width: 104px;
+  background-color: $greyBackground;
+  border-radius: 2px;
+
+  .bar {
+    height: 100%;
+    width: 100%;
+    border-radius: 2px;
+    transition: "all .2s ease-out";
+  }
+
+  .pink {
+    background-color: $pink;
+  }
+
+  .yellow {
+    background-color: $yellow;
+  }
+
+  .green {
+    background-color: $green;
+  }
+}

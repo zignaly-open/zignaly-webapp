@@ -24,8 +24,6 @@ $pink: #f63f82;
 
 $pink2: #c12860;
 
-$pink3: #f63f82;
-
 $yellow: #f6ad3f;
 
 $yellow2: #b5b200;
@@ -48,6 +46,8 @@ $blue: #017aff;
 
 $grey: rgba(255, 255, 255, 0.2);
 
+$greyBackground: #b6c5de;
+
 $borderColor: rgba(0, 0, 0, 0.1);
 
 $boxShadowColor: rgba(64, 34, 95, 0.2);
@@ -59,11 +59,11 @@ $passwordStrengthBackground: rgba(0, 0, 0, 0.9);
 $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
 
 $purpleDarkGradient: linear-gradient(to bottom, $grey, $grey),
-linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
+  linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
 
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
-$pinkGradient: linear-gradient(to right, $pink2 8%, $pink3 98%);
+$pinkGradient: linear-gradient(to right, $pink2 8%, $pink 98%);
 
 $greyGradient: linear-gradient(to bottom, $grey, $grey);
 

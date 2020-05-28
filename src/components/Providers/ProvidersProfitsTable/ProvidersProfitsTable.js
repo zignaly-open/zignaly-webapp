@@ -8,6 +8,7 @@ import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { setDisplayColumn } from "../../../store/actions/settings";
 import { Link } from "gatsby";
+import WinRate from "./WinRate";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -94,7 +95,9 @@ const ProvidersProfitsTable = () => {
       name: "percentageProfit",
       label: "col.profit.percentage",
       options: {
-        customBodyRender: (val) => <span>{formatFloat2D(val)}%</span>,
+        customBodyRender: (val) => (
+          <span className={val >= 0 ? "green" : "red"}>{formatFloat2D(val)}%</span>
+        ),
         sort: true,
         sortDirection: "desc",
       },
@@ -111,7 +114,7 @@ const ProvidersProfitsTable = () => {
       name: "winRate",
       label: "col.winrate",
       options: {
-        customBodyRender: (val) => <span>{formatFloat2D(val)}%</span>,
+        customBodyRender: (val) => <WinRate val={val} />,
       },
     },
     {
