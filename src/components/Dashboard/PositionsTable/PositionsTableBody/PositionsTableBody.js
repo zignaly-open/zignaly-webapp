@@ -84,9 +84,11 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.buyPrice}
           </TableCell>
-          <TableCell align="left" className="cell">
-            {position.leverage}
-          </TableCell>
+          {type === "open" && (
+            <TableCell align="left" className="cell">
+              {position.leverage}
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {position.sellPrice}
           </TableCell>
@@ -113,9 +115,11 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.amount}
           </TableCell>
-          <TableCell align="left" className="cell">
-            {position.remainAmount}
-          </TableCell>
+          {type === "open" && (
+            <TableCell align="left" className="cell">
+              {position.remainAmount}
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {position.positionSizeQuote}
           </TableCell>
@@ -159,25 +163,47 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
           </TableCell>
-          <TableCell align="left" className="cell">
-            {position.age}
-          </TableCell>
+          {type === "closed" && (
+            <TableCell align="left" className="cell">
+              {position.age}
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {position.openTrigger}
           </TableCell>
-          <TableCell align="left" className="cell">
-            {position.isCopyTrading ? (
-              <Eye color={colors.purple} />
-            ) : (
-              <Edit2 color={colors.purple} />
-            )}
-          </TableCell>
-          <TableCell align="left" className="cell">
-            <LogOut color={colors.purple} />
-          </TableCell>
-          <TableCell align="left" className="cell">
-            <XCircle color={colors.purple} />
-          </TableCell>
+          {type === "closed" && (
+            <>
+              <TableCell align="left" className="cell">
+                {position.fees}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.netProfitPercentage}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                {position.netProfit}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                <Eye color={colors.purple} />
+              </TableCell>
+            </>
+          )}
+          {type === "open" && (
+            <>
+              <TableCell align="left" className="cell">
+                {position.isCopyTrading ? (
+                  <Eye color={colors.purple} />
+                ) : (
+                  <Edit2 color={colors.purple} />
+                )}
+              </TableCell>
+              <TableCell align="left" className="cell">
+                <LogOut color={colors.purple} />
+              </TableCell>
+              <TableCell align="left" className="cell">
+                <XCircle color={colors.purple} />
+              </TableCell>
+            </>
+          )}
         </TableRow>
       ))}
     </TableBody>
