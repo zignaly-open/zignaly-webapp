@@ -167,6 +167,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {Object} ProvidersPayload
  * @property {string} token
+ * @property {boolean} ro
  */
 
 /**
@@ -176,7 +177,6 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string|number} returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
- * @property {boolean} ro
  */
 
 /**
