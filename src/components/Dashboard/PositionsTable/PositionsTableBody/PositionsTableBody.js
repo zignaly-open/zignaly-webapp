@@ -4,6 +4,7 @@ import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
+import { formatNumber } from "../../../../utils/formatters";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -174,13 +175,13 @@ const PositionsTableBody = (props) => {
           {type === "closed" && (
             <>
               <TableCell align="left" className="cell">
-                {position.fees}
+                {formatNumber(position.fees)}
               </TableCell>
               <TableCell align="left" className="cell">
-                {position.netProfitPercentage}
+                {formatNumber(position.netProfitPercentage, 2)}
               </TableCell>
               <TableCell align="left" className="cell">
-                {position.netProfit}
+                {formatNumber(position.netProfit)}
               </TableCell>
               <TableCell align="left" className="cell">
                 <Eye color={colors.purple} />
