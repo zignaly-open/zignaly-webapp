@@ -10,6 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} setConfirmVisible Set state callback to control dialog visibility.
  * @property {boolean} confirmVisible Current visibility flag state.
+ * @property {Function} executeActionCallback Callback to execute to perform the action when is confirmed.
  */
 
 /**
@@ -19,10 +20,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @returns {JSX.Element} Confirm dialog element.
  */
 const ConfirmDialog = (props) => {
-  const { setConfirmVisible, confirmVisible } = props;
+  const { setConfirmVisible, confirmVisible, executeActionCallback } = props;
 
   const handleClose = () => {
     setConfirmVisible(false);
+  };
+
+  const triggerActionCallback = () => {
+    setConfirmVisible(false);
+    executeActionCallback();
   };
 
   return (
@@ -39,7 +45,7 @@ const ConfirmDialog = (props) => {
           <Button autoFocus color="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button color="secondary" onClick={handleClose}>
+          <Button color="secondary" onClick={triggerActionCallback}>
             Confirm
           </Button>
         </DialogActions>

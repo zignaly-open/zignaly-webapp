@@ -28,6 +28,10 @@ import { ConfirmDialog } from "../../../Dialogs";
 const PositionsTableBody = (props) => {
   const { positions, type } = props;
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [actionData, setActionData] = useState({
+    positionId: "",
+    action: "",
+  });
 
   /**
    * Handle action element click event.
@@ -35,12 +39,26 @@ const PositionsTableBody = (props) => {
    * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
    * @returns {Void} None.
    */
-  const confirmAction = () => {
-    // const targetElement = event.currentTarget;
-    // const positionId = targetElement.getAttribute("data-position-id");
-    // const action = targetElement.getAttribute("data-action");
+  const confirmAction = (event) => {
+    const targetElement = event.currentTarget;
+    const positionId = targetElement.getAttribute("data-position-id");
+    const action = targetElement.getAttribute("data-action");
+    setActionData({
+      action: action || "",
+      positionId: positionId || "",
+    });
 
     setConfirmVisible(true);
+  };
+
+  /**
+   * Handle confirm dialog post confirmation, action execution.
+   *
+   * @returns {Void} None.
+   */
+  const executeAction = () => {
+    const { positionId, action } = actionData;
+    console.log(`Performing ${action} on position ${positionId}`);
   };
 
   /**
@@ -83,7 +101,11 @@ const PositionsTableBody = (props) => {
 
   return (
     <>
-      <ConfirmDialog confirmVisible={confirmVisible} setConfirmVisible={setConfirmVisible} />
+      <ConfirmDialog
+        confirmVisible={confirmVisible}
+        executeActionCallback={executeAction}
+        setConfirmVisible={setConfirmVisible}
+      />
       <TableBody className="tableBody">
         {positions.map((position) => (
           <TableRow className="row" key={position.positionId}>
