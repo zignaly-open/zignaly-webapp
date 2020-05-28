@@ -6,10 +6,14 @@ import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
 import { formatNumber } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
+import { useSelector } from "react-redux";
+import tradeApi from "../../../../services/tradeApiClient";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
+ * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
  */
 
 /**
@@ -26,6 +30,14 @@ import { ConfirmDialog } from "../../../Dialogs";
  * @return {JSX.Element} Position table body element.
  */
 const PositionsTableBody = (props) => {
+  /**
+   * Select store session data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {StateSessionType} Store session data.
+   */
+  const selectStoreSession = (state) => state.session;
+  const storeSession = useSelector(selectStoreSession);
   const { positions, type } = props;
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [actionData, setActionData] = useState({
@@ -58,7 +70,19 @@ const PositionsTableBody = (props) => {
    */
   const executeAction = () => {
     const { positionId, action } = actionData;
-    console.log(`Performing ${action} on position ${positionId}`);
+    if (action === "cancel") {
+      tradeApi
+        .positionClose({
+          positionId: positionId,
+          token: storeSession.tradeApi.accessToken,
+        })
+        .then((position) => {
+          alert(`Position ${position.positionId} was cancelled.`);
+        })
+        .catch((e) => {
+          alert(`Position cancellation failed: ${e.message}`);
+        });
+    }
   };
 
   /**
