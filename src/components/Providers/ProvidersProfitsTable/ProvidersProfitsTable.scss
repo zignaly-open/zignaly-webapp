@@ -5,11 +5,13 @@
     vertical-align: top;
   }
 
-  .MuiTableCell-head div {
-    min-width: 98px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  .MuiTableCell-head {
+    // Don't wrap small headers and avoid wrapping long headers too much
+    min-width: 128px;
+  }
+
+  a {
+    color: $purple;
+    text-decoration: none;
   }
 }

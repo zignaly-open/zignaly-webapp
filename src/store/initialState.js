@@ -59,6 +59,20 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    displayColumns: {
+      spAnalytics: [
+        "name",
+        "percentageProfit",
+        "signals",
+        "sumPositions",
+        "winRate",
+        "sumClosedPositions",
+        "avgAverageClosingTime",
+        "sumSoldBySignal",
+        "sumSoldByStopLoss",
+        "sumSoldByTakeProfit",
+      ],
+    },
   },
   user: {
     exchangeConnections: [],

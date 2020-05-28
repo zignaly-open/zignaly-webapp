@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./ProvidersProfitsTable.scss";
 import { Box } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import { FormattedMessage, useIntl } from "react-intl";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
+import { setDisplayColumn } from "../../../store/actions/settings";
+import { Link } from "gatsby";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -31,8 +33,11 @@ const ProvidersProfitsTable = () => {
    */
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
+  const selectStoreSettings = (state) => state.settings;
+  const storeSettings = useSelector(selectStoreSettings);
   const [stats, setStats] = useState([]);
   const intl = useIntl();
+  const dispatch = useDispatch();
 
   /**
    * Format string to float with 2 decimals.
@@ -69,9 +74,19 @@ const ProvidersProfitsTable = () => {
    */
   const columns = [
     {
+      name: "providerId",
+      options: {
+        display: false,
+        viewColumns: false,
+      },
+    },
+    {
       name: "name",
       label: "col.name",
       options: {
+        customBodyRender: (val, tableMeta, updateValue) => (
+          <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>
+        ),
         viewColumns: false,
       },
     },
@@ -81,6 +96,7 @@ const ProvidersProfitsTable = () => {
       options: {
         customBodyRender: (val) => <span>{formatFloat2D(val)}%</span>,
         sort: true,
+        sortDirection: "desc",
       },
     },
     {
@@ -435,9 +451,26 @@ const ProvidersProfitsTable = () => {
     },
   ].map((c) => ({
     ...c,
-    label: intl.formatMessage({ id: c.label }),
-    options: { ...c.options, sort: c.options && c.options.sort ? true : false },
+    label: c.label ? intl.formatMessage({ id: c.label }) : "",
+    options: {
+      ...c.options,
+      sort: c.options && c.options.sort ? true : false,
+      display: storeSettings.displayColumns["spAnalytics"].includes(c.name),
+      //   customBodyRender: (value) => <Box display="flex">{value}</Box>,
+    },
   }));
+
+  console.log(columns);
+
+  /**
+   * Process data submitted in the login form.
+   *
+   * @param {LoginFormSubmission} payload Submission data.
+   * @returns {Void} None.
+   */
+  const updateDisplayColumnSettings = (changedColumn, action) => {
+    dispatch(setDisplayColumn({ table: "spAnalytics", changedColumn, action }));
+  };
 
   useEffect(() => {
     const loadProvidersStats = async () => {
@@ -460,11 +493,7 @@ const ProvidersProfitsTable = () => {
     loadProvidersStats();
   }, []);
 
-  // <Paper>
-  //   <Typography variant="h4">
-  //     <FormattedMessage id="copyt.performance" />
-  //   </Typography>
-  // </Paper>;
+  console.log(stats);
 
   const options = {
     selectableRows: "none",
@@ -472,6 +501,8 @@ const ProvidersProfitsTable = () => {
     filter: false,
     search: false,
     print: false,
+    onColumnViewChange: updateDisplayColumnSettings,
+    // customRowRender:
   };
 
   return (
