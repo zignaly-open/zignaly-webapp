@@ -7,21 +7,24 @@ import { colors } from "../../../../services/theme";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
  */
 
 /**
- * @typedef {Object} DefaultProps
+ * @typedef {Object} PositionTableBodyProps
  * @property {Array<PositionEntity>} positions
+ * @property {PositionsTableProps["type"]} type
  */
 
 /**
- * Default component props.
+ * Display user positions table body rows.
  *
- * @param {DefaultProps} props
+ * @param {PositionTableBodyProps} props Component properties.
+ *
+ * @return {JSX.Element} Position table body element.
  */
-
 const PositionsTableBody = (props) => {
-  const { positions } = props;
+  const { positions, type } = props;
 
   /**
    * Compose provider icon column content.
@@ -56,12 +59,22 @@ const PositionsTableBody = (props) => {
           <TableCell align="left" className="cell">
             {position.openDateReadable}
           </TableCell>
+          {type === "closed" && (
+            <TableCell align="left" className="cell">
+              {position.closeDateReadable}
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {composeProviderIcon(position)}
           </TableCell>
           <TableCell align="left" className="cell">
             {position.providerName}
           </TableCell>
+          {type === "closed" && (
+            <TableCell align="left" className="cell">
+              {position.statusDesc}
+            </TableCell>
+          )}
           <TableCell align="left" className="cell">
             {position.signalId}
           </TableCell>

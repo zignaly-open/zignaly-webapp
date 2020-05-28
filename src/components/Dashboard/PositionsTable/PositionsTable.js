@@ -76,7 +76,7 @@ const PositionsTable = (props) => {
       >
         <Table className="table">
           <PositionsTableHead type={type} />
-          <PositionsTableBody positions={positions} />
+          <PositionsTableBody positions={positions} type={type} />
         </Table>
       </Box>
     </Box>
