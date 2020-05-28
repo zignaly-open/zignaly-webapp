@@ -148,6 +148,25 @@ class TradeApiClient {
   }
 
   /**
+   * Get user unsold / unopened trading positions.
+   *
+   * @param {AuthorizationPayload} payload User authorization payload.
+
+   * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async logPositionsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const responseData = await this.doRequest(endpointPath, {
+      type: "unsold",
+      ...payload,
+    });
+
+    return userPositionsResponseTransform(responseData);
+  }
+
+  /**
    * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
    * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
    */

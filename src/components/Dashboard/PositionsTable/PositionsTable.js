@@ -44,6 +44,10 @@ const PositionsTable = (props) => {
         return await tradeApi.closedPositionsGet(payload);
       }
 
+      if (type === "log") {
+        return await tradeApi.logPositionsGet(payload);
+      }
+
       return await tradeApi.openPositionsGet(payload);
     } catch (e) {
       alert(`ERROR: ${e.message}`);
