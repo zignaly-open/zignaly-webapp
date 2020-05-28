@@ -55,7 +55,7 @@ const History = () => {
         </Box>
       </Box>
       {filters && <PositionFilters onChange={handleChange} onClose={() => showFilters(false)} />}
-      <PositionsTable />
+      <PositionsTable type="closed" />
       <Popover
         anchorEl={settingsAnchor}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
