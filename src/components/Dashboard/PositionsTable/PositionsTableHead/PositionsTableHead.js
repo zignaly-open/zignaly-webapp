@@ -78,7 +78,7 @@ const PositionsTableHead = (props) => {
         </TableCell>
         {type === "closed" && (
           <TableCell align="left" className="cell">
-            Initial Amount
+            Amount
           </TableCell>
         )}
         {type === "open" && (
