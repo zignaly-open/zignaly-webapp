@@ -140,7 +140,7 @@ class TradeApiClient {
   async closedPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, {
-      type: "allClosedExtended",
+      type: "sold",
       ...payload,
     });
 
