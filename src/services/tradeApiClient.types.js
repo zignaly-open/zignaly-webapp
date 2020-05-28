@@ -61,77 +61,80 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Object} PositionEntity
+ * @property {Array<ReBuyTarget>} reBuyTargets
+ * @property {RealInvestment} realInvestment
+ * @property {boolean} accounting
+ * @property {boolean} checkStop
  * @property {boolean} closed
- * @property {string} positionId
- * @property {string} userId
- * @property {number} openDate
- * @property {string} openDateReadable
- * @property {string} openTrigger
+ * @property {boolean} copyTraderId
+ * @property {boolean} isCopyTrader
+ * @property {boolean} isCopyTrading
+ * @property {boolean} paperTrading
+ * @property {boolean} sellByTTL
+ * @property {boolean} signalMetadata
+ * @property {boolean} takeProfit
+ * @property {boolean} trailingStopPrice
+ * @property {boolean} trailingStopTriggered
+ * @property {boolean} updating
+ * @property {number} buyTTL
  * @property {number} closeDate
- * @property {string} closeDateReadable
- * @property {string} closeTrigger
- * @property {string} pair
- * @property {string} base
- * @property {string} quote
- * @property {string} buyPrice
- * @property {string} sellPrice
- * @property {string} side
- * @property {string} amount
- * @property {string} remainAmount
- * @property {string} invested
+ * @property {number} fees
+ * @property {number} leverage
+ * @property {number} netProfit
+ * @property {number} netProfitPercentage
+ * @property {number} openDate
  * @property {number} positionSizeQuote
- * @property {string} positionSize
- * @property {string} investedQuote
- * @property {string} profitPercentage
  * @property {number} profit
- * @property {string} profitStyle
- * @property {string} quoteAsset
+ * @property {number} reBuyTargetsCountFail
+ * @property {number} reBuyTargetsCountPending
+ * @property {number} reBuyTargetsCountSuccess
+ * @property {number} risk
+ * @property {number} status
  * @property {number} stopLossPercentage
  * @property {number} stopLossPrice
- * @property {string} stopLossStyle
- * @property {boolean} takeProfit
+ * @property {number} takeProfitTargetsCountFail
+ * @property {number} takeProfitTargetsCountPending
+ * @property {number} takeProfitTargetsCountSuccess
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
- * @property {boolean} trailingStopTriggered
- * @property {boolean} trailingStopPrice
+ * @property {string} age
+ * @property {string} amount
+ * @property {string} base
+ * @property {string} buyPrice
+ * @property {string} closeDateReadable
+ * @property {string} closeTrigger
  * @property {string} exchange
  * @property {string} exchangeInternalName
- * @property {string} symbol
- * @property {number} status
- * @property {string} statusDesc
- * @property {string} sellPlaceOrderAt
- * @property {boolean} checkStop
- * @property {string} provider
- * @property {boolean} sellByTTL
- * @property {number} buyTTL
- * @property {boolean} updating
- * @property {boolean} signalMetadata
- * @property {boolean} accounting
- * @property {string} providerId
- * @property {string} providerName
- * @property {string} signalTerm
- * @property {number} takeProfitTargetsCountFail
- * @property {number} takeProfitTargetsCountSuccess
- * @property {number} takeProfitTargetsCountPending
- * @property {number} reBuyTargetsCountFail
- * @property {number} reBuyTargetsCountSuccess
- * @property {number} reBuyTargetsCountPending
- * @property {boolean} isCopyTrading
- * @property {boolean} isCopyTrader
- * @property {string} signalId
- * @property {string} type
- * @property {boolean} copyTraderId
- * @property {boolean} paperTrading
- * @property {RealInvestment} realInvestment
- * @property {number} leverage
  * @property {string} internalExchangeId
+ * @property {string} invested
+ * @property {string} investedQuote
  * @property {string} logoUrl
- * @property {string} providerLogo
+ * @property {string} openDateReadable
+ * @property {string} openTrigger
+ * @property {string} pair
+ * @property {string} positionId
+ * @property {string} positionSize
+ * @property {string} profitPercentage
+ * @property {string} profitStyle
+ * @property {string} provider
+ * @property {string} providerId
  * @property {string} providerLink
- * @property {number} risk
+ * @property {string} providerLogo
+ * @property {string} providerName
+ * @property {string} quote
+ * @property {string} quoteAsset
+ * @property {string} remainAmount
  * @property {string} riskStyle
- * @property {string} age
- * @property {Array<ReBuyTarget>} reBuyTargets
+ * @property {string} sellPlaceOrderAt
+ * @property {string} sellPrice
+ * @property {string} side
+ * @property {string} signalId
+ * @property {string} signalTerm
+ * @property {string} statusDesc
+ * @property {string} stopLossStyle
+ * @property {string} symbol
+ * @property {string} type
+ * @property {string} userId
  */
 
 /**
@@ -398,18 +401,21 @@ function userPositionItemTransform(positionItem) {
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
-    openDate: Number(positionItem.openDate),
+    age: openDateMoment.toNow(true),
     closeDate: Number(positionItem.closeDate),
-    openDateMoment: openDateMoment,
-    providerLogo: positionItem.logoUrl || defaultProviderLogo,
-    providerLink: composeProviderLink(),
-    openDateReadable: positionItem.openDate ? openDateMoment.format("hh.mm DD.MM.YY.") : "-",
     closeDateReadable: positionItem.closeDate ? closeDateMoment.format("hh.mm DD.MM.YY.") : "-",
+    fees: parseFloat(positionItem.fees),
+    netProfit: parseFloat(positionItem.netProfit),
+    netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
+    openDate: Number(positionItem.openDate),
+    openDateMoment: openDateMoment,
+    openDateReadable: positionItem.openDate ? openDateMoment.format("hh.mm DD.MM.YY.") : "-",
     profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
-    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
+    providerLink: composeProviderLink(),
+    providerLogo: positionItem.logoUrl || defaultProviderLogo,
     risk: risk,
     riskStyle: risk >= 0 ? "gain" : "loss",
-    age: openDateMoment.toNow(true),
+    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
   });
 
   return transformedResponse;
@@ -422,77 +428,80 @@ function userPositionItemTransform(positionItem) {
  */
 function createEmptyPositionEntity() {
   return {
-    closed: false,
-    positionId: "",
-    userId: "",
-    openDate: 0,
-    openDateReadable: "",
-    openTrigger: "",
+    accounting: false,
+    age: "",
+    amount: "",
+    base: "",
+    buyPrice: "",
+    buyTTL: 0,
+    checkStop: false,
     closeDate: 0,
     closeDateReadable: "",
     closeTrigger: "",
+    closed: false,
+    copyTraderId: false,
+    exchange: "",
+    exchangeInternalName: "",
+    fees: 0,
+    internalExchangeId: "",
+    invested: "",
+    investedQuote: "",
+    isCopyTrader: false,
+    isCopyTrading: false,
+    leverage: 0,
+    logoUrl: "",
+    netProfit: 0,
+    netProfitPercentage: 0,
+    openDate: 0,
+    openDateReadable: "",
+    openTrigger: "",
     pair: "",
-    base: "",
+    paperTrading: false,
+    positionId: "",
+    positionSize: "",
+    positionSizeQuote: 0,
+    profit: 0,
+    profitPercentage: "",
+    profitStyle: "",
+    provider: "",
+    providerId: "",
+    providerLink: "",
+    providerLogo: "",
+    providerName: "",
     quote: "",
-    buyPrice: "",
+    quoteAsset: "",
+    reBuyTargets: [],
+    reBuyTargetsCountFail: 0,
+    reBuyTargetsCountPending: 0,
+    reBuyTargetsCountSuccess: 0,
+    realInvestment: { $numberDecimal: "" },
+    remainAmount: "",
+    risk: 0,
+    riskStyle: "",
+    sellByTTL: false,
+    sellPlaceOrderAt: "",
     sellPrice: "",
     side: "",
-    amount: "",
-    remainAmount: "",
-    invested: "",
-    positionSizeQuote: 0,
-    positionSize: "",
-    investedQuote: "",
-    profitPercentage: "",
-    profit: 0,
-    profitStyle: "",
-    quoteAsset: "",
+    signalId: "",
+    signalMetadata: false,
+    signalTerm: "",
+    status: 0,
+    statusDesc: "",
     stopLossPercentage: 0,
     stopLossPrice: 0,
     stopLossStyle: "",
+    symbol: "",
     takeProfit: false,
+    takeProfitTargetsCountFail: 0,
+    takeProfitTargetsCountPending: 0,
+    takeProfitTargetsCountSuccess: 0,
     trailingStopPercentage: 0,
+    trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
-    trailingStopPrice: false,
-    exchange: "",
-    exchangeInternalName: "",
-    symbol: "",
-    status: 0,
-    statusDesc: "",
-    sellPlaceOrderAt: "",
-    checkStop: false,
-    provider: "",
-    sellByTTL: false,
-    buyTTL: 0,
-    updating: false,
-    signalMetadata: false,
-    accounting: false,
-    providerId: "",
-    providerName: "",
-    signalTerm: "",
-    takeProfitTargetsCountFail: 0,
-    takeProfitTargetsCountSuccess: 0,
-    takeProfitTargetsCountPending: 0,
-    reBuyTargetsCountFail: 0,
-    reBuyTargetsCountSuccess: 0,
-    reBuyTargetsCountPending: 0,
-    isCopyTrading: false,
-    isCopyTrader: false,
-    signalId: "",
     type: "",
-    copyTraderId: false,
-    paperTrading: false,
-    realInvestment: { $numberDecimal: "" },
-    leverage: 0,
-    internalExchangeId: "",
-    logoUrl: "",
-    providerLogo: "",
-    providerLink: "",
-    reBuyTargets: [],
-    risk: 0,
-    riskStyle: "",
-    age: "",
+    updating: false,
+    userId: "",
   };
 }
 
