@@ -1,10 +1,4 @@
-.ProvidersProfitsTable {
-  padding: 0 10px;
-
-  .MuiTableRow-head {
-    vertical-align: top;
-  }
-
+.providersProfitsTable {
   .MuiTableCell-head {
     // Don't wrap small headers and avoid wrapping long headers too much
     min-width: 128px;

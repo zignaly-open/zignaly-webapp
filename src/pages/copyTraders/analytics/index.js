@@ -1,12 +1,12 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
 import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
-import "./signalProvidersAnalytics.scss";
+import "./copyTradersAnalytics.scss";
 import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfitsTable";
 
 /**
@@ -14,11 +14,11 @@ import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfit
  *
  * @returns {JSX.Element} Component JSX.
  */
-const SignalProvidersAnalytics = () => {
+const CopyTradersAnalytics = () => {
   const intl = useIntl();
 
   return (
-    <Box className="spAnalyticsPage">
+    <Box className="ctAnalyticsPage">
       <Helmet>
         <title>
           {intl.formatMessage({
@@ -27,8 +27,8 @@ const SignalProvidersAnalytics = () => {
         </title>
       </Helmet>
       <ProvidersProfitsTable
-        persistKey="spAnalytics"
-        title={<FormattedMessage id="signalp.performance" />}
+        persistKey="ctAnalytics"
+        title={<FormattedMessage id="copyt.performance" />}
       />
     </Box>
   );
@@ -38,4 +38,4 @@ export default compose(
   withPageContext,
   withAppLayout,
   withProvidersAnalyticsLayout,
-)(SignalProvidersAnalytics);
+)(CopyTradersAnalytics);

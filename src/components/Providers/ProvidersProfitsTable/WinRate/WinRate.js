@@ -7,7 +7,9 @@ import "./WinRate.scss";
  *
  * @typedef {Object} DefaultProps
  * @property {number} val Win rate value.
- * @param {DefaultProps} props
+ *
+ * @param {DefaultProps} props Component props.
+ * @returns {JSX.Element} Component JSX.
  */
 const WinRate = ({ val }) => (
   <Box className="winRate" title={val.toFixed(2) + "%"}>
