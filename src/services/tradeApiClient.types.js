@@ -656,7 +656,7 @@ function createUserBalanceEntity(response) {
  * @returns {ProvidersStatsCollection} User balance entity.
  */
 export function providersStatsResponseTransform(response) {
-  if (!isObject(response)) {
+  if (!isArray(response)) {
     throw new Error("Response must be an object with different propteries.");
   }
 

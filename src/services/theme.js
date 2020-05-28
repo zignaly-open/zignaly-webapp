@@ -107,6 +107,7 @@ const offWhite = "#fbfafc";
 /**
  * @typedef {Object} ExtendedThemeOptions
  * @property {ExtendedPaletteOptions} palette
+ * @property {*} overrides
  */
 
 /**
@@ -233,15 +234,6 @@ const theme = (darkStyle) => {
           letterSpacing: "0.42px",
         },
       },
-      //   MUIDataTableBodyCell: {
-      //     root: {
-      //       overflow: "hidden",
-      //       whiteSpace: "nowrap",
-      //       textOverflow: "ellipsis",
-      //       position: "relative",
-      //       //   maxWidth: 0,
-      //     },
-      //   },
     },
     props: {
       MuiButtonBase: {

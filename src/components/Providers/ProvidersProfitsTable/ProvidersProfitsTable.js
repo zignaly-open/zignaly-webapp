@@ -13,8 +13,10 @@ import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format"
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../../../store/initialState").DefaultStateSettings} DefaultStateSettings
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
+ * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
  */
 
@@ -27,6 +29,12 @@ const ProvidersProfitsTable = () => {
    */
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
+  /**
+   * Select store settings data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {DefaultStateSettings} Store settings data.
+   */
   const selectStoreSettings = (state) => state.settings;
   const storeSettings = useSelector(selectStoreSettings);
   const [stats, setStats] = useState([]);
@@ -34,13 +42,54 @@ const ProvidersProfitsTable = () => {
   const dispatch = useDispatch();
 
   /**
+   * @typedef {Object} Test
+   * @property {'aa'|'bb'} prop
+   */
+
+  /**
+   * @typedef {Object} TestWrap
+   * @property {Test} aaaaaa
+   */
+
+  /**
+   * @type {Test}
+   */
+  // const test = "aaa";
+  const test = {
+    prop: "aa",
+  };
+
+  /**
+   * @type {Array<Test>}
+   */
+  const testCol = [
+    {
+      prop: "aa",
+    },
+  ];
+
+  /**
+   * @type {Array<TestWrap>}
+   */
+  const testtt = [
+    {
+      //   /**
+      //    * @type {Test}
+      //    */
+      aaaaaa: {
+        prop: "aa",
+      },
+    },
+  ];
+
+  /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
-  const columns = [
+  let columns = [
     {
       name: "providerId",
       options: {
-        display: false,
+        display: "false",
         viewColumns: false,
       },
     },
@@ -48,18 +97,20 @@ const ProvidersProfitsTable = () => {
       name: "name",
       label: "col.name",
       options: {
-        customBodyRender: (val, tableMeta) => (
-          <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>
-        ),
+        customBodyRender: (
+          /** @type {string} */ val,
+          /** @type {MUIDataTableMeta} */ tableMeta,
+        ) => <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>,
         viewColumns: false,
       },
     },
     {
       name: "percentageProfit",
       label: "col.profit.percentage",
+
       options: {
-        customBodyRender: (val) => (
-          <span className={val >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
+        customBodyRender: (/** @type {string} */ val) => (
+          <span className={parseFloat(val) >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
         ),
         sort: true,
         sortDirection: "desc",
@@ -77,7 +128,7 @@ const ProvidersProfitsTable = () => {
       name: "winRate",
       label: "col.winrate",
       options: {
-        customBodyRender: (val) => <WinRate val={val} />,
+        customBodyRender: (/** @type {string} */ val) => <WinRate val={parseFloat(val)} />,
       },
     },
     {
@@ -180,7 +231,9 @@ const ProvidersProfitsTable = () => {
     {
       name: "sumTotalInvested",
       label: "col.invested.total",
-      customBodyRender: formatFloat,
+      options: {
+        customBodyRender: formatFloat,
+      },
     },
     {
       name: "sumTotalProfit",
@@ -415,12 +468,16 @@ const ProvidersProfitsTable = () => {
         customBodyRender: formatTime,
       },
     },
-  ].map((c) => ({
+  ];
+
+  columns = columns.map((c) => ({
     ...c,
+    // Translate labels
     label: c.label ? intl.formatMessage({ id: c.label }) : "",
     options: {
       ...c.options,
-      sort: !!(c.options && c.options.sort),
+      //   sort: !!(c.options && c.options.sort),
+      // Display columns picked hy the user
       display: storeSettings.displayColumns.spAnalytics.includes(c.name),
     },
   }));

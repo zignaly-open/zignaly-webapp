@@ -29,9 +29,9 @@ export const changeLanguage = (langCode) => {
 };
 
 /**
- * User's selected language.
+ * User's display columns selection.
  *
- * @param {String} langCode
+ * @param {Object} payload
  */
 
 export const setDisplayColumn = (payload) => {

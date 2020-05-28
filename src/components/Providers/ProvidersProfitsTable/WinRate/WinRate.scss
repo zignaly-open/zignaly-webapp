@@ -1,14 +1,14 @@
 .winRate {
-  height: 16px;
-  width: 104px;
   background-color: $greyBackground;
   border-radius: 2px;
+  height: 16px;
+  width: 104px;
 
   .bar {
-    height: 100%;
-    width: 100%;
     border-radius: 2px;
+    height: 100%;
     transition: "all .2s ease-out";
+    width: 100%;
   }
 
   .pink {

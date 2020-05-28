@@ -7,6 +7,7 @@ const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
+ * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
  */
 
 /**
@@ -33,7 +34,13 @@ const settings = (state, action) => {
       break;
 
     case SET_DISPLAY_COLUMN: {
-      const { table, changedColumn, action: userAction } = action.payload;
+      /**
+       * @type {keyof DisplayColumns} table
+       */
+      const table = action.payload.table;
+      const { changedColumn, action: userAction } = action.payload;
+
+      //   const { table, changedColumn, action: userAction } = action.payload;
       if (userAction === "add") {
         //   Add column to displayed list
         newState.displayColumns[table] = [...newState.displayColumns[table], changedColumn];
