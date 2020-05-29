@@ -4,6 +4,7 @@ import {
   userEntityResponseTransform,
   userPositionsResponseTransform,
   providersResponseTransform,
+  providersStatsResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   userPositionItemTransform,
@@ -216,6 +217,27 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
+   * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
+   */
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {ProvidersStatsPayload} payload Get providers stats payload.
+
+   * @returns {Promise<ProvidersStatsCollection>} Promise that resolves providers stats collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersStatsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderProfitStats";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providersStatsResponseTransform(responseData);
   }
 
   /**

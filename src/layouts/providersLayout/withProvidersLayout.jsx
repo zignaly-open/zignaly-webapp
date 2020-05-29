@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import "./signalProvidersLayout.scss";
+import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box } from "@material-ui/core";
+import { Box, Icon } from "@material-ui/core";
+import SortIcon from "../../images/filters/sort.svg";
+import SortFillIcon from "../../images/filters/sort-fill.svg";
+import FilterIcon from "../../images/filters/filter.svg";
+import FilterFillIcon from "../../images/filters/filter-fill.svg";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 
@@ -12,7 +16,7 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
  *
  * @returns {Function} Wrap component function.
  */
-const withSignalProvidersLayout = (Component) => {
+const withProvidersLayout = (Component) => {
   /**
    * @typedef {Object} WithSignalProvidersPropsType
    * @property {string} path Providers page path.
@@ -37,21 +41,43 @@ const withSignalProvidersLayout = (Component) => {
       setShowSort(!showSort);
     };
 
+    const filters = (
+      <Box
+        alignItems="center"
+        className="settings"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-around"
+      >
+        <Icon>
+          <img
+            alt="zignaly"
+            className="icon"
+            onClick={() => toggleFilters()}
+            src={showFilters ? FilterFillIcon : FilterIcon}
+          />
+        </Icon>
+
+        <Icon>
+          <img
+            alt="zignaly"
+            className="icon"
+            onClick={() => toggleSort()}
+            src={showSort ? SortFillIcon : SortIcon}
+          />
+        </Icon>
+      </Box>
+    );
+
     return (
       <Box
         alignItems="flex-start"
-        className="copyTradersLayout"
+        className="providersLayout"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <ProvidersHeader
-          path={props.path}
-          showFilters={showFilters}
-          showSort={showSort}
-          toggleFilters={toggleFilters}
-          toggleSort={toggleSort}
-        />
+        <ProvidersHeader path={props.path} rightComponent={filters} />
         <Box className="pageContent">
           <Component
             {...props}
@@ -71,5 +97,4 @@ const withSignalProvidersLayout = (Component) => {
   return WrapperComponent;
 };
 
-// export default injectIntl(withSignalProvidersLayout);
-export default withSignalProvidersLayout;
+export default withProvidersLayout;

@@ -111,6 +111,7 @@ export const colors = {
 /**
  * @typedef {Object} ExtendedThemeOptions
  * @property {ExtendedPaletteOptions} palette
+ * @property {*} overrides
  */
 
 /**

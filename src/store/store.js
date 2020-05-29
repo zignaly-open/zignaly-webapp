@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 /**
  * @typedef {import("redux").Action} Action
@@ -17,5 +18,5 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-export const store = createStore(persistedReducer, applyMiddleware(thunk));
+export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 export const persistor = persistStore(store);

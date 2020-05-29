@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./copyTradersLayout.scss";
+import React from "react";
+import "./providersAnalyticsLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
@@ -12,54 +12,31 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
  *
  * @returns {Function} Wrap component function.
  */
-const withDashboardLayout = (Component) => {
+const withProvidersAnalyticsLayout = (Component) => {
   /**
-   * @typedef {Object} WithCopyTradersPropsType
+   * @typedef {Object} WithSignalProvidersAnalyticsPropsType
    * @property {string} path Providers page path.
    */
 
   /**
    * Perform component wrapping.
    *
-   * @param {WithCopyTradersPropsType} props Default params.
+   * @param {WithSignalProvidersAnalyticsPropsType} props Default params.
    *
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const [showFilters, setShowFilters] = useState(false);
-    const [showSort, setShowSort] = useState(false);
-
-    const toggleFilters = () => {
-      setShowFilters(!showFilters);
-    };
-
-    const toggleSort = () => {
-      setShowSort(!showSort);
-    };
-
     return (
       <Box
         alignItems="flex-start"
-        className="copyTradersLayout"
+        className="providersAnalyticsLayout"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <ProvidersHeader
-          path={props.path}
-          showFilters={showFilters}
-          showSort={showSort}
-          toggleFilters={toggleFilters}
-          toggleSort={toggleSort}
-        />
+        <ProvidersHeader path={props.path} />
         <Box className="pageContent">
-          <Component
-            {...props}
-            showFilters={showFilters}
-            showSort={showSort}
-            toggleFilters={toggleFilters}
-            toggleSort={toggleSort}
-          />
+          <Component {...props} />
         </Box>
         <Box className="faq">
           <FAQ />
@@ -67,10 +44,8 @@ const withDashboardLayout = (Component) => {
       </Box>
     );
   };
-
   WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
-
   return WrapperComponent;
 };
 
-export default withDashboardLayout;
+export default withProvidersAnalyticsLayout;

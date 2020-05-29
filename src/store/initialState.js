@@ -32,9 +32,16 @@
  */
 
 /**
+ * @typedef {Object} DisplayColumns
+ * @property {Array<string>} spAnalytics
+ * @property {Array<string>} ctAnalytics
+ */
+
+/**
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {DisplayColumns} displayColumns
  */
 
 /**
@@ -59,6 +66,32 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    displayColumns: {
+      spAnalytics: [
+        "name",
+        "percentageProfit",
+        "signals",
+        "sumPositions",
+        "winRate",
+        "sumClosedPositions",
+        "avgAverageClosingTime",
+        "sumSoldBySignal",
+        "sumSoldByStopLoss",
+        "sumSoldByTakeProfit",
+      ],
+      ctAnalytics: [
+        "name",
+        "percentageProfit",
+        "signals",
+        "sumPositions",
+        "winRate",
+        "sumClosedPositions",
+        "avgAverageClosingTime",
+        "sumSoldBySignal",
+        "sumSoldByStopLoss",
+        "sumSoldByTakeProfit",
+      ],
+    },
   },
   user: {
     exchangeConnections: [],
