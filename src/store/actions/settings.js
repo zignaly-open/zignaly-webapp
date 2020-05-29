@@ -1,6 +1,7 @@
 export const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
 export const SELECT_THEME = "SELECT_THEME_ACTION";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
+export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 
 /**
  * Dark style flag selected by user.
@@ -25,6 +26,17 @@ export const changeLanguage = (langCode) => {
   return {
     type: SELECT_LANGUAGE,
     payload: langCode,
+  };
+};
+
+/**
+ *
+ * @param {import("../initialState").ExchangeConnectionEntity} payload
+ */
+export const setSelectedExchange = (payload) => {
+  return {
+    type: SET_SELECTED_EXCHANGE,
+    payload,
   };
 };
 

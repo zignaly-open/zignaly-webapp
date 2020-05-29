@@ -109,10 +109,6 @@ const Header = () => {
         )}
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
-
-        <Box className={"linkBox"}>
-          <NotificationsNoneIcon className={"icon"} />
-        </Box>
         <Box className={"linkBox"}>
           <img
             alt="zignaly-user"

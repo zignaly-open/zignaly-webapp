@@ -42,6 +42,7 @@
  * @property {String} languageCode
  * @property {Boolean} darkStyle
  * @property {DisplayColumns} displayColumns
+ * @property {ExchangeConnectionEntity} selectedExchange
  */
 
 /**
@@ -91,6 +92,28 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
+    },
+    selectedExchange: {
+      id: "",
+      name: "",
+      exchangeId: "",
+      exchangeName: "",
+      internalId: "",
+      internalName: "",
+      key: false,
+      secret: false,
+      areKeysValid: false,
+      paperTrading: false,
+      exchangeType: "",
+      isTestnet: false,
+      disable: false,
+      positionSize: 0,
+      managed: false,
+      internal: false,
+      isBrokerAccount: true,
+      subAccountId: "",
+      binanceBrokerId: "",
+      checkAuthCount: 0,
     },
   },
   user: {

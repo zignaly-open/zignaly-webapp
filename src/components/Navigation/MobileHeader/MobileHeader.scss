@@ -10,18 +10,29 @@
     min-width: 100%;
   }
 
+  .userExchangeList {
+    margin-right: 20px;
+
+    .selectInput {
+      .root {
+        max-width: 180px;
+
+        .name {
+          text-transform: capitalize;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
   .connectedBox {
     width: 100%;
 
     .actionBox {
       height: 44px;
       width: 100%;
-
-      .userExchangeList {
-        .selectInput {
-          min-width: 180px;
-        }
-      }
 
       .expandIcon {
         height: 24px;

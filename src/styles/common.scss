@@ -44,7 +44,7 @@ body {
     padding-bottom: 0;
     padding-left: 0.5rem;
     padding-right: 0;
-    padding-top: 0.6rem;
+    padding-top: 0;
 
     &::before,
     &::after {
@@ -139,4 +139,35 @@ body {
   letter-spacing: 0.53px;
   line-height: 1.43;
   margin: 0;
+}
+
+// header user exchange styling
+.userExchangeList {
+  margin-right: 20px;
+
+  .selectInput {
+    min-width: 200px;
+
+    .root {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      min-width: 180px;
+      padding-bottom: 0;
+      padding-left: 0;
+      padding-top: 0;
+
+      img {
+        height: 20px;
+        margin-right: 10px;
+        width: 20px;
+      }
+
+      .name {
+        font-family: "PlexSans-Medium";
+        margin-right: 5px;
+        text-transform: capitalize;
+      }
+    }
+  }
 }

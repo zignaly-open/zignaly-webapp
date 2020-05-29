@@ -15,7 +15,7 @@
       box-sizing: border-box;
       min-height: calc(100vh - 74px);
       padding: 40px;
-      width: 100%;
+      width: calc(100% - 100px);
     }
   }
 }

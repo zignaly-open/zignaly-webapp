@@ -617,7 +617,7 @@ export function userExchangeConnectionResponseTransform(response) {
 /**
  * @typedef {Object} ExchangeConnectionEntity
  * @property {String} id
- * @property {String} Name
+ * @property {String} name
  * @property {String} exchangeId
  * @property {String} exchangeName
  * @property {String} internalId
@@ -636,6 +636,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} subAccountId
  * @property {String} binanceBrokerId
  * @property {Number} checkAuthCount
+ * @property {String} internalName
  */
 
 /**
@@ -676,7 +677,7 @@ function createExchangeConnectionEmptyEntity() {
     isBrokerAccount: true,
     subAccountId: "",
     binanceBrokerId: "",
-    checkAuthCount: false,
+    checkAuthCount: 0,
   };
 }
 
