@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "gatsby";
-import { getLocalizedPath } from "../../i18n";
-import { PageContext } from "../../pageContext";
 
 /**
  *
@@ -14,17 +12,15 @@ import { PageContext } from "../../pageContext";
 /**
  * Localized link component.
  *
+ * TODO: We removed paths localization so this will be just a Link wrapper.
+ *
  * @param {GatsbyLinkPropsFix} props Link properties.
  *
  * @returns {JSX.Element} Localized link element.
  */
 const LocalizedLink = (props) => {
   const { to } = props;
-  return (
-    <PageContext.Consumer>
-      {({ locale }) => <Link {...props} to={getLocalizedPath(to, locale)} />}
-    </PageContext.Consumer>
-  );
+  return <Link {...props} to={to} />;
 };
 
 export default LocalizedLink;

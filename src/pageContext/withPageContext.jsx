@@ -16,13 +16,11 @@ const withPageContext = (Component) => {
   /**
    * @typedef {Object} DefaultContext
    * @property {String} locale
-   * @property {String} originalPath
    */
 
   /**
    * @typedef {Object} DefaultProps
    * @property {DefaultContext} pageContext
-   * @property {String} locale
    */
 
   /**
@@ -40,7 +38,7 @@ const withPageContext = (Component) => {
         locale={storeSettings.languageCode}
         messages={translations[storeSettings.languageCode]}
       >
-        <PageContext.Provider value={props.pageContext}>
+        <PageContext.Provider value={{ locale: storeSettings.languageCode }}>
           <Component {...props} />
         </PageContext.Provider>
       </IntlProvider>
