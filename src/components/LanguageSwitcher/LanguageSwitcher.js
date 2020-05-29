@@ -1,8 +1,8 @@
 import React from "react";
+import "./LanguageSwitcher.scss";
 import cs from "../../images/cs.png";
 import en from "../../images/en.png";
 import { languages } from "../../i18n";
-import "./languageSwitcher.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../../types/store/actions/settings";
