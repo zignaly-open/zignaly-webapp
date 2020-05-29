@@ -1,6 +1,5 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
-import PageContext from "./PageContext";
 import translations from "../i18n/translations";
 import { getDisplayName } from "../utils";
 import useStoreSettingsSelector from "../hooks/useStoreSettingsSelector";
@@ -14,13 +13,8 @@ import useStoreSettingsSelector from "../hooks/useStoreSettingsSelector";
  */
 const withPageContext = (Component) => {
   /**
-   * @typedef {Object} DefaultContext
-   * @property {String} locale
-   */
-
-  /**
    * @typedef {Object} DefaultProps
-   * @property {DefaultContext} pageContext
+   * @property {Object} pageContext
    */
 
   /**
@@ -38,9 +32,7 @@ const withPageContext = (Component) => {
         locale={storeSettings.languageCode}
         messages={translations[storeSettings.languageCode]}
       >
-        <PageContext.Provider value={{ locale: storeSettings.languageCode }}>
-          <Component {...props} />
-        </PageContext.Provider>
+        <Component {...props} />
       </IntlProvider>
     );
   };
