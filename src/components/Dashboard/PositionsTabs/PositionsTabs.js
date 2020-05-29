@@ -7,7 +7,7 @@ import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionSettingsForm from "../../Forms/PositionSettingsForm";
 import PositionsTable from "../PositionsTable";
 import PositionFilters from "../PositionFilters";
-import NoPositions from "../NoPositions";
+// import NoPositions from "../NoPositions";
 import TabsMenu from "./TabsMenu";
 
 const PositionsTabs = () => {

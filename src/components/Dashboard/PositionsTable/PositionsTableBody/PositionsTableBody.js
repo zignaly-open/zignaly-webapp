@@ -276,10 +276,10 @@ const PositionsTableBody = (props) => {
             </TableCell>
             {["closed", "open"].includes(type) && (
               <>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {composeTrailingStopIcon(position)}
                 </TableCell>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {position.takeProfitTargetsCountFail > 0 && (
                     <span className="targetRed" title="Take profits failed.">
                       {position.takeProfitTargetsCountFail}
@@ -296,7 +296,7 @@ const PositionsTableBody = (props) => {
                     </span>
                   )}
                 </TableCell>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {position.reBuyTargetsCountFail > 0 && (
                     <span className="targetRed" title="DCAs failed.">
                       {position.reBuyTargetsCountFail}

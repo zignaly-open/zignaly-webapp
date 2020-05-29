@@ -104,13 +104,13 @@ const PositionsTableHead = (props) => {
         </TableCell>
         {["closed", "open"].includes(type) && (
           <>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.tsl" />
             </TableCell>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.tp" />
             </TableCell>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.dca" />
             </TableCell>
             <TableCell align="left" className="cell">
