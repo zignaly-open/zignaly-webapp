@@ -8,7 +8,7 @@ import { formatNumber } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useSelector } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
-import { navigateTo } from "../../../../../.cache/gatsby-browser-entry";
+import { navigateTo } from "gatsby";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
