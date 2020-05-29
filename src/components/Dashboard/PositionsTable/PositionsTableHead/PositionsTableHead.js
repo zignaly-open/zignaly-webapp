@@ -134,10 +134,10 @@ const PositionsTableHead = (props) => {
               <FormattedMessage id="col.fees" />
             </TableCell>
             <TableCell align="left" className="cell">
-              <FormattedMessage id="col.net.percentage" />
+              <FormattedMessage id="col.netprofit.percentage" />
             </TableCell>
             <TableCell align="left" className="cell">
-              <FormattedMessage id="col.net.amount" />
+              <FormattedMessage id="col.netprofit.amount" />
             </TableCell>
           </>
         )}
