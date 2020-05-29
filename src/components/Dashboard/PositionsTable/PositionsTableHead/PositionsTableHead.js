@@ -22,7 +22,8 @@ const PositionsTableHead = (props) => {
         <TableCell align="left" className="cell">
           {" "}
         </TableCell>
-        <TableCell align="left" className="cell">
+        <TableCell align="left" className="cell bold">
+          <span>▼ </span>
           <FormattedMessage id="col.date.open" />
         </TableCell>
         {type === "closed" && (
