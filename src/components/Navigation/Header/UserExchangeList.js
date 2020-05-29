@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
@@ -22,7 +22,13 @@ const UserExchangeList = () => {
 
   /**
    *
-   * @param {DefaultState} state
+   * @typedef {import("../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
+   */
+
+  /**
+   *
+   * @param {DefaultState} state Default retux state.
+   * @returns {ExchangeConnectionEntity} Exchange connections object.
    */
   const selectedExchangeSelector = (state) => state.settings.selectedExchange;
   const selectedExchange = useSelector(selectedExchangeSelector);
@@ -41,22 +47,20 @@ const UserExchangeList = () => {
     }
   };
 
-  console.log(exchangeConnections);
-
   return (
     <Box className="userExchangeList">
       <FormControl className="selectInput" variant="outlined">
         <Select
+          classes={{ root: "root" }}
           onChange={handleChange}
           value={selectedExchange.internalId}
-          classes={{ root: "root" }}
         >
           {exchangeConnections &&
             exchangeConnections.map((item, index) => (
               <MenuItem className="exchangeListItem" key={index} value={item.internalId}>
-                {item.name.toLowerCase() === "binance" && <img src={BinanceIcon} alt="zignaly" />}
-                {item.name.toLowerCase() === "zignaly" && <img src={ZignalyIcon} alt="zignaly" />}
-                {item.name.toLowerCase() === "kucoin" && <img src={KucoinIcon} alt="zignaly" />}
+                {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
+                {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
+                {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
                 <span className="name"> {item.internalName} </span>
                 {item.paperTrading && <span className="name"> (DEMO) </span>}
               </MenuItem>

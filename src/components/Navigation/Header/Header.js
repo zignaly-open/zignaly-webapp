@@ -6,7 +6,6 @@ import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
@@ -132,21 +131,9 @@ const Header = () => {
             onClose={() => setAnchorEl(undefined)}
             open={Boolean(anchorEl)}
           >
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
-              My account
-            </MenuItem>
-            <MenuItem classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }} onClick={logout}>
-              Logout
-            </MenuItem>
+            <MenuItem onClick={() => setAnchorEl(undefined)}>Profile</MenuItem>
+            <MenuItem onClick={() => setAnchorEl(undefined)}>My account</MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
         </Box>
       </Box>

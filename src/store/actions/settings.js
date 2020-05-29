@@ -32,7 +32,13 @@ export const changeLanguage = (langCode) => {
 
 /**
  *
- * @param {import("../initialState").ExchangeConnectionEntity} payload
+ * @typedef {import("../initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
+
+/**
+ *
+ * @param {ExchangeConnectionEntity} payload Exchange connections object.
+ * @returns {Object} return action object.
  */
 export const setSelectedExchange = (payload) => {
   return {

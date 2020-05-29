@@ -621,10 +621,9 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} exchangeId
  * @property {String} exchangeName
  * @property {String} internalId
- * @property {String} exchangeInternalName
  * @property {Boolean} key
  * @property {Boolean} secret
- * @property {Boolean} arrayKeysValid
+ * @property {Boolean} areKeysValid
  * @property {Boolean} paperTrading
  * @property {String} exchangeType
  * @property {Boolean} isTestnet

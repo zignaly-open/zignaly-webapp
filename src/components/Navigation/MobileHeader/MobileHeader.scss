@@ -18,9 +18,9 @@
         max-width: 180px;
 
         .name {
-          text-transform: capitalize;
           overflow: hidden;
           text-overflow: ellipsis;
+          text-transform: capitalize;
           white-space: nowrap;
         }
       }
