@@ -196,7 +196,7 @@ const PositionsTableBody = (props) => {
                 {position.closeDateReadable}
               </TableCell>
             )}
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               {composeProviderIcon(position)}
             </TableCell>
             <TableCell align="left" className="cell">

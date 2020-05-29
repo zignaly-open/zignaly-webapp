@@ -30,7 +30,7 @@ const PositionsTableHead = (props) => {
             <FormattedMessage id="col.date.close" />
           </TableCell>
         )}
-        <TableCell align="left" className="cell">
+        <TableCell align="center" className="cell">
           <FormattedMessage id="col.provider.logo" />
         </TableCell>
         <TableCell align="left" className="cell">
