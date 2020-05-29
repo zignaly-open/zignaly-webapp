@@ -214,6 +214,7 @@ const PositionsTableBody = (props) => {
               {position.pair}
             </TableCell>
             <TableCell align="left" className="cell">
+              <span className="symbol">{position.quote}</span>
               {formatPrice(position.buyPrice)}
             </TableCell>
             {type === "open" && (
@@ -224,13 +225,17 @@ const PositionsTableBody = (props) => {
             {["closed", "open"].includes(type) && (
               <>
                 <TableCell align="left" className="cell">
+                  <span className="symbol">{position.quote}</span>
                   {formatPrice(position.sellPrice)}
                 </TableCell>
                 <TableCell align="left" className="cell">
                   {position.status === 1 ? (
                     <span>Still entering...</span>
                   ) : (
-                    <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
+                    <>
+                      <span className="symbol">{position.quote}</span>
+                      <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
+                    </>
                   )}
                 </TableCell>
                 <TableCell align="left" className="cell">
@@ -249,20 +254,24 @@ const PositionsTableBody = (props) => {
             </TableCell>
             {["closed", "open"].includes(type) && (
               <TableCell align="left" className="cell">
+                {!isNaN(position.stopLossPrice) && <span className="symbol">{position.quote}</span>}
                 <span className={position.stopLossStyle}>
                   {formatPrice(position.stopLossPrice)}
                 </span>
               </TableCell>
             )}
             <TableCell align="left" className="cell">
-              {position.amount}
+              <span className="symbol">{position.base}</span>
+              {formatPrice(position.amount)}
             </TableCell>
             {["open", "log"].includes(type) && (
               <TableCell align="left" className="cell">
-                {position.remainAmount}
+                <span className="symbol">{position.base}</span>
+                {formatPrice(position.remainAmount)}
               </TableCell>
             )}
             <TableCell align="left" className="cell">
+              <span className="symbol">{position.quote}</span>
               {formatPrice(position.positionSizeQuote)}
             </TableCell>
             {["closed", "open"].includes(type) && (

@@ -57,5 +57,10 @@
       @extend %target-base;
       background-color: $darkGrey;
     }
+
+    .symbol {
+      display: inline-block;
+      margin-right: 5px;
+    }
   }
 }
