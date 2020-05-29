@@ -4,7 +4,7 @@ import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
-import { formatNumber } from "../../../../utils/formatters";
+import { formatNumber, formatPrice } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useSelector } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -214,7 +214,7 @@ const PositionsTableBody = (props) => {
               {position.pair}
             </TableCell>
             <TableCell align="left" className="cell">
-              {position.buyPrice}
+              {formatPrice(position.buyPrice)}
             </TableCell>
             {type === "open" && (
               <TableCell align="left" className="cell">
@@ -224,20 +224,22 @@ const PositionsTableBody = (props) => {
             {["closed", "open"].includes(type) && (
               <>
                 <TableCell align="left" className="cell">
-                  {position.sellPrice}
+                  {formatPrice(position.sellPrice)}
                 </TableCell>
                 <TableCell align="left" className="cell">
                   {position.status === 1 ? (
                     <span>Still entering...</span>
                   ) : (
-                    <span className={position.profitStyle}>{position.profit}</span>
+                    <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
                   )}
                 </TableCell>
                 <TableCell align="left" className="cell">
                   {position.status === 1 ? (
                     <span>Still entering...</span>
                   ) : (
-                    <span className={position.profitStyle}>{position.profitPercentage}</span>
+                    <span className={position.profitStyle}>
+                      {formatNumber(position.profitPercentage, 2)}
+                    </span>
                   )}
                 </TableCell>
               </>
@@ -247,7 +249,9 @@ const PositionsTableBody = (props) => {
             </TableCell>
             {["closed", "open"].includes(type) && (
               <TableCell align="left" className="cell">
-                <span className={position.stopLossStyle}>{position.stopLossPrice}</span>
+                <span className={position.stopLossStyle}>
+                  {formatPrice(position.stopLossPrice)}
+                </span>
               </TableCell>
             )}
             <TableCell align="left" className="cell">
@@ -259,7 +263,7 @@ const PositionsTableBody = (props) => {
               </TableCell>
             )}
             <TableCell align="left" className="cell">
-              {position.positionSizeQuote}
+              {formatPrice(position.positionSizeQuote)}
             </TableCell>
             {["closed", "open"].includes(type) && (
               <>
