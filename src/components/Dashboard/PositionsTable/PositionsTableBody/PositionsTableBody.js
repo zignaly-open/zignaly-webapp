@@ -8,6 +8,7 @@ import { formatNumber } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useSelector } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
+import { navigateTo } from "../../../../../.cache/gatsby-browser-entry";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -122,6 +123,18 @@ const PositionsTableBody = (props) => {
           alert(`Exit position failed: ${e.message}`);
         });
     }
+  };
+
+  /**
+   * Navigate to position detail page.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @returns {Void} None.
+   */
+  const gotoPositionDetail = (event) => {
+    const targetElement = event.currentTarget;
+    const positionId = targetElement.getAttribute("data-position-id");
+    navigateTo(`position/${positionId}`);
   };
 
   /**
@@ -324,11 +337,21 @@ const PositionsTableBody = (props) => {
               {type === "open" && (
                 <>
                   {position.isCopyTrading ? (
-                    <button title="view" type="button">
+                    <button
+                      data-position-id={position.positionId}
+                      onClick={gotoPositionDetail}
+                      title="view"
+                      type="button"
+                    >
                       <Eye color={colors.purpleLight} />
                     </button>
                   ) : (
-                    <button title="edit" type="button">
+                    <button
+                      data-position-id={position.positionId}
+                      onClick={gotoPositionDetail}
+                      title="edit"
+                      type="button"
+                    >
                       <Edit2 color={colors.purpleLight} />
                     </button>
                   )}
