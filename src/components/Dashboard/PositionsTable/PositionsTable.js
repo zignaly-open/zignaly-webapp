@@ -35,7 +35,7 @@ const PositionsTable = (props) => {
    */
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
-  const fetchOpenPositions = async () => {
+  const fetchPositions = async () => {
     try {
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -58,7 +58,7 @@ const PositionsTable = (props) => {
   };
 
   const loadData = () => {
-    fetchOpenPositions().then((fetchData) => {
+    fetchPositions().then((fetchData) => {
       setPositions(fetchData);
     });
   };
