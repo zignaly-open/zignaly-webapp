@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./ProvidersProfitsTable.scss";
-import { Box } from "@material-ui/core";
+import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
@@ -60,7 +60,6 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
     {
       name: "percentageProfit",
       label: "col.profit.percentage",
-
       options: {
         customBodyRender: (val) => (
           <span className={parseFloat(val) >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
@@ -445,9 +444,26 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const getMuiTheme = () =>
+    createMuiTheme({
+      /**
+       * @type {*}
+       */
+      overrides: {
+        MUIDataTableHeadCell: {
+          root: {
+            // Don't wrap small headers and avoid wrapping long headers too much
+            minWidth: "128px",
+          },
+        },
+      },
+    });
+
   return (
     <Box className="providersProfitsTable" display="flex" flexDirection="column" width={1}>
-      <Table columns={columns} data={stats} persistKey={persistKey} title={title} />
+      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
+        <Table columns={columns} data={stats} persistKey={persistKey} title={title} />
+      </MuiThemeProvider>
     </Box>
   );
 };

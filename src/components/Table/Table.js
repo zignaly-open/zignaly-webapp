@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
-import { Box } from "@material-ui/core";
+import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -73,9 +73,54 @@ const Table = ({ columns, data, persistKey, title }) => {
       );
     },
   };
+
+  // Customizing styling here to avoid lint warning camelCase class-name-format
+  const getMuiTheme = () =>
+    createMuiTheme({
+      /**
+       * @type {*}
+       */
+      overrides: {
+        MUIDataTableHeadRow: {
+          root: {
+            verticalAlign: "top",
+          },
+        },
+        MUIDataTableToolbar: {
+          root: {
+            // body2
+            fontSize: "16px",
+            fontFamily: "PlexSans-SemiBold",
+            lineHeight: 1.31,
+            letterSpacing: "0.61px",
+          },
+        },
+
+        MUIDataTableHeadCell: {
+          root: {
+            // footnote
+            fontSize: "11px",
+            fontFamily: "PlexSans-Bold",
+            textTransform: "uppercase",
+            opacity: "0.6",
+            lineHeight: 1.45,
+            letterSpacing: "0.42px",
+            minWidth: "128px",
+          },
+        },
+      },
+    });
+
   return (
     <Box className="customTable">
-      <MUIDataTable columns={columnsCustom} data={data} options={options} title={title} />;
+      <MuiThemeProvider
+        theme={(outerTheme) => ({
+          ...getMuiTheme(),
+          outerTheme,
+        })}
+      >
+        <MUIDataTable columns={columnsCustom} data={data} options={options} title={title} />
+      </MuiThemeProvider>
     </Box>
   );
 };

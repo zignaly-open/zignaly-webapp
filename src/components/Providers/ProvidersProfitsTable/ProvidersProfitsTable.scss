@@ -1,9 +1,4 @@
 .providersProfitsTable {
-  .MuiTableCell-head {
-    // Don't wrap small headers and avoid wrapping long headers too much
-    min-width: 128px;
-  }
-
   a {
     color: $purple;
     text-decoration: none;
