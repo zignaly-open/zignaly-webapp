@@ -496,6 +496,34 @@ export function userPositionItemTransform(positionItem) {
     return risk;
   };
 
+  /**
+   * Checks if entry price is currently at profit or loss.
+   *
+   * @param {number} entry Entry price.
+   * @param {number} current Current price.
+   * @param {string} side Position side.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getProfitType = (entry, current, side) => {
+    if (side === "LONG") {
+      if (entry > current) {
+        return "gain";
+      } else if (entry < current) {
+        return "loss";
+      }
+    }
+
+    if (side === "SHORT") {
+      if (entry < current) {
+        return "gain";
+      } else if (entry > current) {
+        return "loss";
+      }
+    }
+
+    return "breakeven";
+  };
+
   const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
@@ -514,15 +542,19 @@ export function userPositionItemTransform(positionItem) {
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
-    profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
+    profitStyle: getProfitType(positionItem.profit, 0, positionItem.side),
     providerLink: composeProviderLink(),
     providerLogo: positionItem.logoUrl || defaultProviderLogo,
     remainAmount: parseFloat(positionItem.remainAmount),
     risk: risk,
-    riskStyle: risk >= 0 ? "gain" : "loss",
+    riskStyle: risk < 0 ? "loss" : "gain",
     sellPrice: parseFloat(positionItem.sellPrice),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
-    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
+    stopLossStyle: getProfitType(
+      positionItem.stopLossPrice,
+      positionItem.buyPrice,
+      positionItem.side,
+    ),
   });
 
   return transformedResponse;
