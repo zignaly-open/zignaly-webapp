@@ -4,6 +4,8 @@ import en from "../../images/en.png";
 import { languages } from "../../i18n";
 import "./languageSwitcher.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
+import { useDispatch } from "react-redux";
+import { changeLanguage } from "../../../types/store/actions/settings";
 
 /**
  * @type {Object.<string, string>} flags
@@ -15,6 +17,21 @@ const flags = {
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
+
+  /**
+   * Dispatch language selection persistance in the store.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Language selection click.
+   * @returns {Void} None.
+   */
+  const handleLanguageSelection = (event) => {
+    const targetElement = event.currentTarget;
+    const languageCode = targetElement.getAttribute("data-lang-code");
+    if (languageCode) {
+      dispatch(changeLanguage(languageCode));
+    }
+  };
 
   return (
     <div className="languageSwitcher">
@@ -22,7 +39,7 @@ const LanguageSwitcher = () => {
         lang.locale === storeSettings.languageCode ? (
           <img alt={lang.label} key={lang.locale} src={flags[lang.locale]} />
         ) : (
-          <button type="button">
+          <button data-lang-code={lang.locale} onClick={handleLanguageSelection} type="button">
             <img alt={lang.label} src={flags[lang.locale]} />
           </button>
         ),
