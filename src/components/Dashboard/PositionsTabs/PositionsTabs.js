@@ -67,7 +67,7 @@ const PositionsTabs = () => {
       {tabValue === 0 && (
         <Box className="tabPanel">
           <PositionsTable type="open" />
-          <NoPositions />
+          {/* <NoPositions /> */}
         </Box>
       )}
       {tabValue === 1 && (
