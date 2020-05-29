@@ -5,7 +5,7 @@ import en from "../../images/en.png";
 import { languages } from "../../i18n";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
-import { changeLanguage } from "../../../types/store/actions/settings";
+import { changeLanguage } from "../../store/actions/settings";
 
 /**
  * @type {Object.<string, string>} flags
