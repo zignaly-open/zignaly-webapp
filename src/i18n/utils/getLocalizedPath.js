@@ -22,6 +22,10 @@ if (!defaultLanguage) {
  * @returns {String} Localized path.
  */
 const getLocalizedPath = (originalPath, locale) => {
+  if (!originalPath) {
+    return "/";
+  }
+
   const keyPath = originalPath.replace(/(\w+)\/$/, "$1");
   /**
    * @type {LocalizationLanguage} selectedLanguage
@@ -32,10 +36,9 @@ const getLocalizedPath = (originalPath, locale) => {
     selectedLanguage && selectedLanguage.routes && selectedLanguage.routes[keyPath];
 
   if (!localizedPath) {
-    throw new Error(
-      `You have to specify a translation for all of your routes.\n There is no translation for ${originalPath} in language ${locale}.`,
-    );
+    return originalPath;
   }
+
   return isDefault ? localizedPath : `/${locale}${localizedPath}`;
 };
 

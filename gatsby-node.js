@@ -13,10 +13,17 @@ exports.onCreatePage = ({ page, actions }) => {
     return;
   }
 
-  return new Promise(resolve => {
+  // Override position page route to support positionId argument.
+  if (page.path.match(/^\/position\/$/)) {
+    page.matchPath = "/position/:positionId";
+    createPage(page);
+    return;
+  }
+
+  return new Promise((resolve) => {
     deletePage(page);
 
-    languages.forEach(lang => {
+    languages.forEach((lang) => {
       const localizedPath = getLocalizedPath(page.path, lang.locale);
       const localePage = {
         ...page,
