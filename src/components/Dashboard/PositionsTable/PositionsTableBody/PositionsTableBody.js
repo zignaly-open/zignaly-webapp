@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
 import { formatNumber } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
@@ -186,7 +186,7 @@ const PositionsTableBody = (props) => {
         {positions.map((position) => (
           <TableRow className="row" key={position.positionId}>
             <TableCell align="left" className="cell">
-              {position.paperTrading && <File color={colors.darkGrey} />}
+              {position.paperTrading && <Layers color={colors.darkGrey} />}
             </TableCell>
             <TableCell align="left" className="cell">
               {position.openDateReadable}
