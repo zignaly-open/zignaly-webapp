@@ -4,7 +4,7 @@ import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import LeftIcon from "../../../images/header/chevron-left.svg";
@@ -14,6 +14,8 @@ import UserExchangeList from "./UserExchangeList";
 import BalanceBox from "./BalanceBox";
 import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
+import { endTradeApiSession } from "../../../store/actions/session";
+import { navigate } from "gatsby";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -42,6 +44,13 @@ const Header = () => {
 
   const [showBalance, setShowBalance] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    setAnchorEl(undefined);
+    dispatch(endTradeApiSession());
+    navigate("/login");
+  };
 
   return (
     <Box
@@ -135,10 +144,7 @@ const Header = () => {
             >
               My account
             </MenuItem>
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
+            <MenuItem classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }} onClick={logout}>
               Logout
             </MenuItem>
           </Menu>

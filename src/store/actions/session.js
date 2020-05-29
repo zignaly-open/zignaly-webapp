@@ -1,6 +1,9 @@
 import tradeApi from "../../services/tradeApiClient";
+import { unsetSelectedExchange } from "./settings";
+import { unsetUserExchanges, unsetUserBalance } from "./user";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
+export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
@@ -23,6 +26,27 @@ export const startTradeApiSession = (payload) => {
       };
 
       dispatch(action);
+    } catch (e) {
+      alert(`ERROR: ${e.message}`);
+    }
+  };
+};
+
+/**
+ * @returns {AppThunk}
+ */
+
+export const endTradeApiSession = () => {
+  return async (dispatch) => {
+    try {
+      const action = {
+        type: END_TRADE_API_SESSION,
+      };
+
+      dispatch(action);
+      dispatch(unsetSelectedExchange());
+      dispatch(unsetUserExchanges());
+      dispatch(unsetUserBalance());
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }

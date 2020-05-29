@@ -5,6 +5,7 @@ import {
   SET_SELECTED_EXCHANGE,
   SET_DISPLAY_COLUMN,
   SELECT_THEME,
+  UNSET_SELECTED_EXCHANGE,
 } from "../store/actions/settings";
 
 /**
@@ -36,6 +37,9 @@ const settings = (state, action) => {
       break;
     case SET_SELECTED_EXCHANGE:
       newState.selectedExchange = action.payload;
+      break;
+    case UNSET_SELECTED_EXCHANGE:
+      newState.selectedExchange = initialState.settings.selectedExchange;
       break;
 
     case SET_DISPLAY_COLUMN: {
