@@ -171,3 +171,20 @@ body {
     }
   }
 }
+
+.userMenu {
+  padding: 15px 10px;
+
+  .userMenuItem {
+    margin-bottom: 15px;
+    width: 100%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    img {
+      margin-right: 15px;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Header.scss";
-import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
+import { Box, Popover, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
@@ -13,8 +13,7 @@ import UserExchangeList from "./UserExchangeList";
 import BalanceBox from "./BalanceBox";
 import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
-import { endTradeApiSession } from "../../../store/actions/session";
-import { navigate } from "gatsby";
+import UserMenu from "./UserMenu";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -43,13 +42,6 @@ const Header = () => {
 
   const [showBalance, setShowBalance] = useState(false);
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const dispatch = useDispatch();
-
-  const logout = () => {
-    setAnchorEl(undefined);
-    dispatch(endTradeApiSession());
-    navigate("/login");
-  };
 
   return (
     <Box
@@ -124,17 +116,21 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Menu
-            anchorEl={anchorEl}
-            classes={{ paper: "menu" }}
-            keepMounted
-            onClose={() => setAnchorEl(undefined)}
+          <Popover
             open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(undefined)}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
           >
-            <MenuItem onClick={() => setAnchorEl(undefined)}>Profile</MenuItem>
-            <MenuItem onClick={() => setAnchorEl(undefined)}>My account</MenuItem>
-            <MenuItem onClick={logout}>Logout</MenuItem>
-          </Menu>
+            <UserMenu />
+          </Popover>
         </Box>
       </Box>
     </Box>
