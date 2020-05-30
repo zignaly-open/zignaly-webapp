@@ -65,6 +65,11 @@
 }
 
 .exchangeListItem {
+  &.selected {
+    background-image: $purpleLightGradient;
+    color: $white;
+  }
+
   img {
     height: 20px;
     margin-right: 10px;

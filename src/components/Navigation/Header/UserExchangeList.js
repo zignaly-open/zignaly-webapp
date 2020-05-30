@@ -57,7 +57,12 @@ const UserExchangeList = () => {
         >
           {exchangeConnections &&
             exchangeConnections.map((item, index) => (
-              <MenuItem className="exchangeListItem" key={index} value={item.internalId}>
+              <MenuItem
+                className="exchangeListItem"
+                classes={{ selected: "selected" }}
+                key={index}
+                value={item.internalId}
+              >
                 {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
                 {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
                 {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
