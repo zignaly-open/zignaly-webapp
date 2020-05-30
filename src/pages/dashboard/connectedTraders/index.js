@@ -12,7 +12,7 @@ import useProvidersList from "../../../hooks/useProvidersList";
 const ConnectedTraders = () => {
   const intl = useIntl();
 
-  const providersOptions = { copyTradersOnly: false, connectedOnly: true, showSummary: true };
+  const providersOptions = { copyTradersOnly: true, connectedOnly: true, showSummary: true };
   const [, provComponents] = useProvidersList(providersOptions, {});
   const { ProvidersList, TimeFrameSelect } = provComponents;
 

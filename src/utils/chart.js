@@ -52,7 +52,7 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
       labels: chartData.labels,
       datasets: [
         {
-          label,
+          label: "",
           data: chartData.values,
           backgroundColor: colorsOptions.backgroundColor,
           borderColor: colorsOptions.borderColor,
@@ -101,12 +101,9 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
            * @param {TooltipItemParam} tooltipItem
            * @param {DataParam} data
            */
-          //   label: (tooltipItem, data) => {
-          //     let index = parseInt(tooltipItem.index);
-          //     return "returns " + data.datasets[0].data[index];
-          //   },
+          //   label,
           //   afterLabel: () => {
-          //     return new Date();
+          //     return "%";
           //   },
         },
       },

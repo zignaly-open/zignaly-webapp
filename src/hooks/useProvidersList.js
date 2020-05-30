@@ -130,7 +130,7 @@ const useProvidersList = (options, callbacks) => {
   // Load providers at init and on timeframe change.
   useEffect(() => {
     const loadProviders = async () => {
-      const sessionPayload = {
+      const payload = {
         token: storeSession.tradeApi.accessToken,
         type: connectedOnly ? "connected" : "all",
         // ro: true,
@@ -139,7 +139,7 @@ const useProvidersList = (options, callbacks) => {
       };
 
       try {
-        const responseData = await tradeApi.providersGet(sessionPayload);
+        const responseData = await tradeApi.providersGet(payload);
         setProviders(responseData);
       } catch (e) {
         setProviders([]);

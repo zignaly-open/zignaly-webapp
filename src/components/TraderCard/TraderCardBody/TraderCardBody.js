@@ -6,6 +6,7 @@ import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
+import CustomToolip from "../../CustomTooltip";
 
 /**
  * @typedef {import('../../../utils/chart').ChartColorOptions} ChartColorOptions
@@ -91,19 +92,22 @@ const TraderCard = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <Box
-          className="returns"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-        >
-          <Typography className={colorClass} variant="h4">
-            {totalReturns.toFixed(2)}%
-          </Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.returnsperiod" />
-          </Typography>
-        </Box>
+        <CustomToolip title={<FormattedMessage id="copyt.subtitle" />}>
+          <Box
+            className="returns"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Typography className={colorClass} variant="h4">
+              {+totalReturns.toFixed(2)}%
+            </Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.returnsperiod" />
+            </Typography>
+          </Box>
+        </CustomToolip>
+
         <Box
           alignItems="flex-end"
           className="openPositions"
@@ -135,7 +139,7 @@ const TraderCard = (props) => {
         >
           <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {!disable ? (
-              <h6 className="callout2 green">You and {followers} are copying this trader</h6>
+              <h6 className="callout2 green">You and {followers - 1} are copying this trader</h6>
             ) : (
               <h6 className="callout1">{followers} people copying this trader</h6>
             )}

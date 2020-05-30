@@ -46,11 +46,16 @@ const TraderCardHeader = (props) => {
             <Typography className="name" variant="h4">
               {name}
             </Typography>
-            {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />}
+            {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
           </Box>
           <Box alignItems="center" display="flex" flexDirection="row">
             <Typography className="tradeType" variant="caption">
-              Trades {coin} on
+              <FormattedMessage
+                id="srv.trades"
+                values={{
+                  coin,
+                }}
+              />
             </Typography>
             {exchanges.map((exchange, index) => (
               <ExchangeIcon exchange={exchange} key={index} />

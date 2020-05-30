@@ -166,6 +166,9 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {Object} ProvidersPayload
  * @property {string} token
+ * @property {string} type
+ * @property {number} timeFrame
+ * @property {boolean} copyTradersOnly
  */
 
 /**
