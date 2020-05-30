@@ -78,11 +78,12 @@ const MobileExchangeList = () => {
         <span className="name"> {selectedExchange.internalName} </span>
         {selectedExchange.paperTrading && <span className="name"> (DEMO) </span>}
       </Box>
+
       <Slide direction="up" in={list}>
         <Box bgcolor="grid.content" className="mobileExchangeListDrawer hideScroll">
           <Box
-            className="drawerHeader"
             alignItems="center"
+            className="drawerHeader"
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
@@ -92,8 +93,8 @@ const MobileExchangeList = () => {
             </Typography>
             <img
               alt="zignaly"
-              src={darkStyle ? CloseWhite : CloseBlack}
               onClick={() => showList(false)}
+              src={darkStyle ? CloseWhite : CloseBlack}
             />
           </Box>
           {exchangeConnections &&
