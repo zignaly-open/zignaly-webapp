@@ -6,7 +6,7 @@ import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
-import UserExchangeList from "../Header/UserExchangeList";
+import MobileExchangeList from "./MobileExchangeList";
 import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
@@ -57,12 +57,12 @@ const MobileHeader = () => {
         >
           <Box
             alignItems="center"
-            className={"actionBox"}
+            className="actionBox"
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
           >
-            <UserExchangeList />
+            <MobileExchangeList />
             <Box
               alignItems="center"
               className="iconBox"

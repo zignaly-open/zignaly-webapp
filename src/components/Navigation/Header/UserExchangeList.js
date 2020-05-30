@@ -5,6 +5,7 @@ import { setSelectedExchange } from "../../../store/actions/settings";
 import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
 import BinanceIcon from "../../../images/exchanges/binance.svg";
 import KucoinIcon from "../../../images/exchanges/kucoin.svg";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -67,7 +68,12 @@ const UserExchangeList = () => {
                 {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
                 {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
                 <span className="name"> {item.internalName} </span>
-                {item.paperTrading && <span className="name"> (DEMO) </span>}
+                {item.paperTrading && (
+                  <span className="name">
+                    {" "}
+                    (<FormattedMessage id="menu.demo" />){" "}
+                  </span>
+                )}
               </MenuItem>
             ))}
         </Select>

@@ -10,29 +10,83 @@
     min-width: 100%;
   }
 
-  .userExchangeList {
-    margin-right: 20px;
-
-    .selectInput {
-      .root {
-        max-width: 180px;
-
-        .name {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          text-transform: capitalize;
-          white-space: nowrap;
-        }
-      }
-    }
-  }
-
   .connectedBox {
     width: 100%;
 
     .actionBox {
       height: 44px;
       width: 100%;
+
+      .mobileExchangeList {
+        margin-right: 10px;
+        width: 220px;
+        height: 40px;
+
+        .currentSelectionBox {
+          width: 100%;
+          background-image: $purpleLightGradient;
+          color: $white;
+          height: inherit;
+          padding: 5px 10px;
+          border-radius: 4px;
+          .name {
+            font-size: 14px;
+          }
+        }
+
+        .mobileExchangeListDrawer {
+          bottom: 0;
+          height: 100vh;
+          left: 0;
+          position: fixed;
+          right: 0;
+          top: 0;
+          width: 100%;
+          z-index: 1005;
+          padding: 20px 0;
+
+          .mobileExchangeListItem {
+            width: 100%;
+
+            &.selected {
+              background-image: $purpleLightGradient;
+              color: $white;
+            }
+          }
+
+          .drawerHeader {
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 0 15px;
+
+            h3 {
+              width: fit-content;
+              font-family: "PlexSans-SemiBold";
+            }
+
+            img {
+              width: 24px;
+              height: 24px;
+            }
+          }
+        }
+
+        img {
+          height: 24px;
+          margin-right: 10px;
+          width: 24px;
+        }
+
+        .name {
+          font-size: 16px;
+          font-family: "PlexSans-Medium";
+          margin-right: 5px;
+          text-transform: capitalize;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
 
       .expandIcon {
         height: 24px;

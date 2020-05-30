@@ -12,6 +12,7 @@ menu.support: "ch-Contact Support"
 menu.tradingterminal: "ch-Trading Terminal"
 menu.manageaccounts: "ch-Manage Accounts"
 menu.demo: "ch-DEMO"
+menu.exchangeSelectionTitle: "ch-Select Trading Account"
 
 # BALANCE
 balance.available: "ch-Available"
