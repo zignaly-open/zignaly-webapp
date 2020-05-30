@@ -4,7 +4,7 @@ import { Box, Popover, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
@@ -117,13 +117,13 @@ const Header = () => {
             src={ProfileIcon}
           />
           <Popover
-            open={Boolean(anchorEl)}
             anchorEl={anchorEl}
-            onClose={() => setAnchorEl(undefined)}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
             }}
+            onClose={() => setAnchorEl(undefined)}
+            open={Boolean(anchorEl)}
             transformOrigin={{
               vertical: "top",
               horizontal: "left",

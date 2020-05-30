@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MobileAppbar.scss";
-import { Box } from "@material-ui/core";
+import { Box, Slide } from "@material-ui/core";
 import Link from "../../LocalizedLink";
 import { useSelector, useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
@@ -11,16 +11,21 @@ import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
 import FillWhite from "../../../images/sidebar/fillWhite.svg";
 import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
-// import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
+import PersonBlack from "../../../images/sidebar/personBlack.svg";
+import PersonWhite from "../../../images/sidebar/personWhite.svg";
+import CloseBlack from "../../../images/sidebar/closeBlack.svg";
+import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
+import UserMenu from "../Header/UserMenu";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  */
 
 const MobileAppbar = () => {
+  const [menu, showMenu] = useState(false);
   /**
    * Settings darkStyle selector.
    *
@@ -73,6 +78,18 @@ const MobileAppbar = () => {
         <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
       </Link>
       <Box
+        className="sideBarLink"
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        onClick={() => showMenu(!menu)}
+      >
+        {!menu && (
+          <img alt="zignaly" className={"icon"} src={darkStyle ? PersonWhite : PersonBlack} />
+        )}
+        {menu && <img alt="zignaly" className={"icon"} src={darkStyle ? CloseWhite : CloseBlack} />}
+      </Box>
+      <Box
         className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
         display="flex"
         flexDirection="row"
@@ -85,6 +102,11 @@ const MobileAppbar = () => {
           src={darkStyle ? OutlineWhite : FillWhite}
         />
       </Box>
+      <Slide direction="up" in={menu}>
+        <Box bgcolor="grid.content" className="userMenuDrawer">
+          <UserMenu />
+        </Box>
+      </Slide>
     </Box>
   );
 };

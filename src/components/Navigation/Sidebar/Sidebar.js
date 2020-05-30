@@ -49,8 +49,8 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      onMouseLeave={showSmallMenu}
       onMouseEnter={showFullMenu}
+      onMouseLeave={showSmallMenu}
     >
       <Link
         activeClassName={"active"}

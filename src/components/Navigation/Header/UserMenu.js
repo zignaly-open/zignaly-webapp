@@ -29,7 +29,7 @@ const UserMenu = () => {
   };
 
   return (
-    <Box className="userMenu" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box alignItems="flex-start" className="userMenu" display="flex" flexDirection="column">
       <MenuItem className="userMenuItem">
         <img alt="zignaly" src={MyExchange} />
         <span className="item">

@@ -20,7 +20,7 @@
 
     &.active {
       background-image: $purpleDarkGradient;
-      border-radius: 19px;
+      border-radius: 100%;
       color: $white;
     }
   }
@@ -40,5 +40,15 @@
     background-image: $purpleDarkGradient;
     border-radius: 100%;
     padding: 10px;
+  }
+
+  .userMenuDrawer {
+    bottom: 0;
+    height: calc(100vh - 60px);
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
   }
 }
