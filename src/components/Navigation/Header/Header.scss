@@ -40,25 +40,6 @@
     }
   }
 
-  .exchangeListItem {
-    &.selected {
-      background-image: $purpleLightGradient;
-      color: $white;
-    }
-
-    img {
-      height: 20px;
-      margin-right: 10px;
-      width: 20px;
-    }
-
-    .name {
-      font-family: "PlexSans-Medium";
-      margin-right: 5px;
-      text-transform: capitalize;
-    }
-  }
-
   .linksContainer {
     .linkBox {
       padding: 0 12px;
@@ -110,5 +91,24 @@
         }
       }
     }
+  }
+}
+
+.exchangeListItem {
+  &.selected {
+    background-image: $purpleLightGradient;
+    color: $white;
+  }
+
+  img {
+    height: 20px;
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  .name {
+    font-family: "PlexSans-Medium";
+    margin-right: 5px;
+    text-transform: capitalize;
   }
 }
