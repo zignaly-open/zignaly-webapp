@@ -5,14 +5,15 @@ import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
 
 /**
- *
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
  */
 
 /**
+ * Connect exchange component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Component props.
+ * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
   /**
