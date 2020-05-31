@@ -1,0 +1,16 @@
+.connectExchangeView {
+  .actionBar {
+    border-bottom: 1px solid $borderColor;
+    padding: 10px;
+    width: 100%;
+
+    .submitButton {
+      height: 40px;
+    }
+  }
+
+  .titleBar {
+    padding: 10px;
+    width: 100%;
+  }
+}

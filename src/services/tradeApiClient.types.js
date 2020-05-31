@@ -663,14 +663,13 @@ export function userExchangeConnectionResponseTransform(response) {
 /**
  * @typedef {Object} ExchangeConnectionEntity
  * @property {String} id
- * @property {String} Name
+ * @property {String} name
  * @property {String} exchangeId
  * @property {String} exchangeName
  * @property {String} internalId
- * @property {String} exchangeInternalName
  * @property {Boolean} key
  * @property {Boolean} secret
- * @property {Boolean} arrayKeysValid
+ * @property {Boolean} areKeysValid
  * @property {Boolean} paperTrading
  * @property {String} exchangeType
  * @property {Boolean} isTestnet
@@ -682,6 +681,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} subAccountId
  * @property {String} binanceBrokerId
  * @property {Number} checkAuthCount
+ * @property {String} internalName
  */
 
 /**
@@ -722,7 +722,7 @@ function createExchangeConnectionEmptyEntity() {
     isBrokerAccount: true,
     subAccountId: "",
     binanceBrokerId: "",
-    checkAuthCount: false,
+    checkAuthCount: 0,
   };
 }
 
