@@ -7,9 +7,6 @@ import PositionsTableBody from "./PositionsTableBody";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
- */
-
-/**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {UserPositionsCollection} positions

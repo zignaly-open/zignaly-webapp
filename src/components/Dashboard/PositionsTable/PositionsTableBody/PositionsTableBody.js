@@ -13,9 +13,6 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
- */
-
-/**
  * @typedef {Object} PositionTableBodyProps
  * @property {Array<PositionEntity>} positions
  * @property {PositionsTableProps["type"]} type

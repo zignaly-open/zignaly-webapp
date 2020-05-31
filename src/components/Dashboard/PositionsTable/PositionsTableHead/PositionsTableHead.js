@@ -5,9 +5,6 @@ import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
- */
-
-/**
  * @typedef {Object} PositionsTableHeadProps
  * @property {PositionsCollectionType} type
  */
