@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip, Box, Popper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import "./CustomTooltip.scss";
 
@@ -10,17 +10,22 @@ const CustomTooltip = (props) => {
         transform: `translate3d(${pos.left}px, ${pos.top}px, 0px) !important`,
       }
     : null;
-  //   const posStyle = { tooltip: { backgroundColor: "red" } };
 
-  const StyledTooltip = withStyles({ popper: posStyle })(Tooltip);
+  const StyledTooltip = withStyles({ popper: posStyle, tooltip: {} })(Tooltip);
+  const CustomPopper = ({ children, ...others }) => {
+    const wrapperChildren = (childrenProps) => (
+      <Box className="customTooltipWrapper">{children(childrenProps)}</Box>
+    );
+    return <Popper children={wrapperChildren} {...others} />;
+  };
   return (
     <StyledTooltip
       title={title}
-      //   classes={{ tooltip: "customTooltip" }}
-      //   style={posStyle}
+      classes={{ tooltip: "customTooltip" }}
+      PopperComponent={CustomPopper}
       {...others}
     >
-      <div>{children}</div>
+      <Box>{children}</Box>
     </StyledTooltip>
   );
 };

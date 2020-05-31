@@ -31,7 +31,7 @@ const GenericChart = (props) => {
   const { id, chartData, colorsOptions, children } = props;
   const [tooltipOpen, showTooltip] = useState(false);
   const chartRef = useRef(null);
-  const [pos, setPos] = useState({});
+  const [tooltipData, setTooltipData] = useState(null);
 
   const showTooltip2 = useCallback((tooltip) => {
     console.log(tooltip);
@@ -44,7 +44,7 @@ const GenericChart = (props) => {
 
     // hide the tooltip when chartjs determines you've hovered out
     if (tooltip.opacity === 0) {
-      showTooltip(false);
+      setTooltipData({ show: false });
       return;
     }
 
@@ -57,12 +57,9 @@ const GenericChart = (props) => {
 
     // set values for display of data in the tooltip
     const date = tooltip.dataPoints[0].xLabel;
-    const value = tooltip.dataPoints[0].yLabel;
+    const value = tooltip.dataPoints[0].yLabel + "%";
 
-    // this.setPositionAndData({ top, left, date, value });
-    console.log(position);
-    setPos({ top, left });
-    showTooltip(true);
+    setTooltipData({ pos: { top, left }, title: value, show: true });
   }, []);
 
   const data = {
@@ -186,9 +183,11 @@ const GenericChart = (props) => {
 
   return (
     <Box className="chart">
-      <CustomToolip title="aa" open={tooltipOpen} pos={pos}>
-        {/* <FowardRefComponent data={data} options={options} ref={chartRef} /> */}
-      </CustomToolip>
+      {tooltipData && (
+        <CustomToolip title={tooltipData.title} open={tooltipData.show} pos={tooltipData.pos}>
+          <div></div>
+        </CustomToolip>
+      )}
 
       <MemoizedLine data={data} options={options} ref={chartRef} />
     </Box>

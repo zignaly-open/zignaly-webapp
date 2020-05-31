@@ -1,7 +1,11 @@
-.customTooltip {
-  @extend .body1;
-  background-color: $tooltipBackground;
-  border: solid 1px $tooltipBorder;
-  color: rgba(255, 255, 255, 0.94);
-  padding: 16px;
+.customTooltipWrapper {
+  transform: translateX(-50%);
+
+  .customTooltip {
+    @extend .body1;
+    background-color: $tooltipBackground;
+    border: solid 1px $tooltipBorder;
+    color: rgba(255, 255, 255, 0.94);
+    padding: 16px;
+  }
 }
