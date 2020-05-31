@@ -105,9 +105,9 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
  * @property {string} age
- * @property {string} amount
+ * @property {number} amount
  * @property {string} base
- * @property {string} buyPrice
+ * @property {number} buyPrice
  * @property {string} closeDateReadable
  * @property {string} closeTrigger
  * @property {string} exchange
@@ -121,7 +121,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} pair
  * @property {string} positionId
  * @property {string} positionSize
- * @property {string} profitPercentage
+ * @property {number} profitPercentage
  * @property {string} profitStyle
  * @property {string} provider
  * @property {string} providerId
@@ -130,10 +130,10 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} providerName
  * @property {string} quote
  * @property {string} quoteAsset
- * @property {string} remainAmount
+ * @property {number} remainAmount
  * @property {string} riskStyle
  * @property {string} sellPlaceOrderAt
- * @property {string} sellPrice
+ * @property {number} sellPrice
  * @property {string} side
  * @property {string} signalId
  * @property {string} signalTerm
@@ -496,25 +496,65 @@ export function userPositionItemTransform(positionItem) {
     return risk;
   };
 
+  /**
+   * Checks if entry price is currently at profit or loss.
+   *
+   * @param {number} entry Entry price.
+   * @param {number} current Current price.
+   * @param {string} side Position side.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getProfitType = (entry, current, side) => {
+    if (side === "LONG") {
+      if (entry > current) {
+        return "gain";
+      } else if (entry < current) {
+        return "loss";
+      }
+    }
+
+    if (side === "SHORT") {
+      if (entry < current) {
+        return "gain";
+      } else if (entry > current) {
+        return "loss";
+      }
+    }
+
+    return "breakeven";
+  };
+
   const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const transformedResponse = assign(emptyPositionEntity, positionItem, {
     age: openDateMoment.toNow(true),
+    amount: parseFloat(positionItem.amount),
+    buyPrice: parseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
-    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("hh.mm DD.MM.YY.") : "-",
+    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("YY/MM/DD hh:mm") : "-",
     fees: parseFloat(positionItem.fees),
     netProfit: parseFloat(positionItem.netProfit),
     netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     openDateMoment: openDateMoment,
-    openDateReadable: positionItem.openDate ? openDateMoment.format("hh.mm DD.MM.YY.") : "-",
-    profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
+    openDateReadable: positionItem.openDate ? openDateMoment.format("YY/MM/DD hh:mm") : "-",
+    positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
+    profit: parseFloat(positionItem.profit),
+    profitPercentage: parseFloat(positionItem.profitPercentage),
+    profitStyle: getProfitType(positionItem.profit, 0, positionItem.side),
     providerLink: composeProviderLink(),
     providerLogo: positionItem.logoUrl || defaultProviderLogo,
+    remainAmount: parseFloat(positionItem.remainAmount),
     risk: risk,
-    riskStyle: risk >= 0 ? "gain" : "loss",
-    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
+    riskStyle: risk < 0 ? "loss" : "gain",
+    sellPrice: parseFloat(positionItem.sellPrice),
+    stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    stopLossStyle: getProfitType(
+      positionItem.stopLossPrice,
+      positionItem.buyPrice,
+      positionItem.side,
+    ),
   });
 
   return transformedResponse;
@@ -529,9 +569,9 @@ function createEmptyPositionEntity() {
   return {
     accounting: false,
     age: "",
-    amount: "",
+    amount: 0,
     base: "",
-    buyPrice: "",
+    buyPrice: 0,
     buyTTL: 0,
     checkStop: false,
     closeDate: 0,
@@ -560,7 +600,7 @@ function createEmptyPositionEntity() {
     positionSize: "",
     positionSizeQuote: 0,
     profit: 0,
-    profitPercentage: "",
+    profitPercentage: 0,
     profitStyle: "",
     provider: "",
     providerId: "",
@@ -574,12 +614,12 @@ function createEmptyPositionEntity() {
     reBuyTargetsCountPending: 0,
     reBuyTargetsCountSuccess: 0,
     realInvestment: { $numberDecimal: "" },
-    remainAmount: "",
+    remainAmount: 0,
     risk: 0,
     riskStyle: "",
     sellByTTL: false,
     sellPlaceOrderAt: "",
-    sellPrice: "",
+    sellPrice: 0,
     side: "",
     signalId: "",
     signalMetadata: false,

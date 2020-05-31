@@ -4,15 +4,14 @@ import { Box, Popover, Typography } from "@material-ui/core";
 import SettingsIcon from "../../../images/dashboard/settings.svg";
 import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
-import PositionsTable from "../../Dashboard/PositionsTable";
-import PositionFilters from "../../Dashboard/PositionFilters";
+// import PositionsTable from "../../Dashboard/PositionsTable";
+// import PositionFilters from "../../Dashboard/PositionFilters";
 import { FormattedMessage } from "react-intl";
 
 const History = () => {
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
-
-  const handleChange = () => {};
+  // const handleChange = () => {};
 
   return (
     <Box
@@ -54,8 +53,8 @@ const History = () => {
           />
         </Box>
       </Box>
-      {filters && <PositionFilters onChange={handleChange} onClose={() => showFilters(false)} />}
-      <PositionsTable type="closed" />
+      {/** filters && <PositionFilters onChange={handleChange} onClose={() => showFilters(false)} /> */}
+      {/** <PositionsTable type="closed" /> */}
       <Popover
         anchorEl={settingsAnchor}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}

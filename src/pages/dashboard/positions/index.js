@@ -6,7 +6,7 @@ import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
-import PositionsTabs from "../../../components/Dashboard/PositionsTabs";
+import { PositionsTabs } from "../../../components/Dashboard/PositionsTabs";
 
 const Positions = () => {
   return (

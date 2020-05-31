@@ -2,22 +2,17 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import { Edit2, Eye, File, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
-import { formatNumber } from "../../../../utils/formatters";
+import { formatNumber, formatPrice } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
-import { useSelector } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
 import { navigateTo } from "gatsby";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
- * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
- */
-
-/**
  * @typedef {Object} PositionTableBodyProps
  * @property {Array<PositionEntity>} positions
  * @property {PositionsTableProps["type"]} type
@@ -31,14 +26,7 @@ import { navigateTo } from "gatsby";
  * @return {JSX.Element} Position table body element.
  */
 const PositionsTableBody = (props) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
+  const storeSession = useStoreSessionSelector();
   const { positions, type } = props;
 
   /**
@@ -186,7 +174,7 @@ const PositionsTableBody = (props) => {
         {positions.map((position) => (
           <TableRow className="row" key={position.positionId}>
             <TableCell align="left" className="cell">
-              {position.paperTrading && <File color={colors.darkGrey} />}
+              {position.paperTrading && <Layers color={colors.darkGrey} />}
             </TableCell>
             <TableCell align="left" className="cell">
               {position.openDateReadable}
@@ -196,7 +184,7 @@ const PositionsTableBody = (props) => {
                 {position.closeDateReadable}
               </TableCell>
             )}
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               {composeProviderIcon(position)}
             </TableCell>
             <TableCell align="left" className="cell">
@@ -214,7 +202,8 @@ const PositionsTableBody = (props) => {
               {position.pair}
             </TableCell>
             <TableCell align="left" className="cell">
-              {position.buyPrice}
+              <span className="symbol">{position.quote}</span>
+              {formatPrice(position.buyPrice)}
             </TableCell>
             {type === "open" && (
               <TableCell align="left" className="cell">
@@ -224,20 +213,26 @@ const PositionsTableBody = (props) => {
             {["closed", "open"].includes(type) && (
               <>
                 <TableCell align="left" className="cell">
-                  {position.sellPrice}
+                  <span className="symbol">{position.quote}</span>
+                  {formatPrice(position.sellPrice)}
                 </TableCell>
                 <TableCell align="left" className="cell">
                   {position.status === 1 ? (
                     <span>Still entering...</span>
                   ) : (
-                    <span className={position.profitStyle}>{position.profit}</span>
+                    <>
+                      <span className="symbol">{position.quote}</span>
+                      <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
+                    </>
                   )}
                 </TableCell>
                 <TableCell align="left" className="cell">
                   {position.status === 1 ? (
                     <span>Still entering...</span>
                   ) : (
-                    <span className={position.profitStyle}>{position.profitPercentage}</span>
+                    <span className={position.profitStyle}>
+                      {formatNumber(position.profitPercentage, 2)}
+                    </span>
                   )}
                 </TableCell>
               </>
@@ -247,26 +242,32 @@ const PositionsTableBody = (props) => {
             </TableCell>
             {["closed", "open"].includes(type) && (
               <TableCell align="left" className="cell">
-                <span className={position.stopLossStyle}>{position.stopLossPrice}</span>
+                {!isNaN(position.stopLossPrice) && <span className="symbol">{position.quote}</span>}
+                <span className={position.stopLossStyle}>
+                  {formatPrice(position.stopLossPrice)}
+                </span>
               </TableCell>
             )}
             <TableCell align="left" className="cell">
-              {position.amount}
+              <span className="symbol">{position.base}</span>
+              {formatPrice(position.amount)}
             </TableCell>
             {["open", "log"].includes(type) && (
               <TableCell align="left" className="cell">
-                {position.remainAmount}
+                <span className="symbol">{position.base}</span>
+                {formatPrice(position.remainAmount)}
               </TableCell>
             )}
             <TableCell align="left" className="cell">
-              {position.positionSizeQuote}
+              <span className="symbol">{position.quote}</span>
+              {formatPrice(position.positionSizeQuote)}
             </TableCell>
             {["closed", "open"].includes(type) && (
               <>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {composeTrailingStopIcon(position)}
                 </TableCell>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {position.takeProfitTargetsCountFail > 0 && (
                     <span className="targetRed" title="Take profits failed.">
                       {position.takeProfitTargetsCountFail}
@@ -283,7 +284,7 @@ const PositionsTableBody = (props) => {
                     </span>
                   )}
                 </TableCell>
-                <TableCell align="left" className="cell">
+                <TableCell align="center" className="cell">
                   {position.reBuyTargetsCountFail > 0 && (
                     <span className="targetRed" title="DCAs failed.">
                       {position.reBuyTargetsCountFail}
