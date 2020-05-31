@@ -23,7 +23,7 @@ const PositionFilters = (props) => {
   const defaultFilters = {
     provider: "all",
     pair: "all",
-    type: "all",
+    side: "all",
   };
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -44,7 +44,7 @@ const PositionFilters = (props) => {
   };
 
   const pairOptions = extractPairOptions();
-  const types = [
+  const sides = [
     { label: "All Types", val: "all" },
     { label: "SHORT", val: "SHORT" },
     { label: "LONG", val: "LONG" },
@@ -92,10 +92,10 @@ const PositionFilters = (props) => {
    * @param {string} value Selected filter value.
    * @returns {Void} None.
    */
-  const setType = (value) => {
+  const setSide = (value) => {
     setFilters({
       ...filters,
-      type: value,
+      side: value,
     });
   };
 
@@ -110,7 +110,7 @@ const PositionFilters = (props) => {
         value={filters.provider}
       />
       <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
-      <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
+      <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
     </CustomFilters>
   );
 };

@@ -25,7 +25,7 @@ const usePositionsList = (type) => {
   const defaultFilters = {
     provider: "all",
     pair: "all",
-    type: "all",
+    side: "all",
   };
 
   const [filters, setFilters] = useState(defaultFilters);
