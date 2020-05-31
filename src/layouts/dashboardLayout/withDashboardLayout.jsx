@@ -1,11 +1,13 @@
 import React from "react";
 import "./dashboardLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
+import BinanceIcon from "../../images/exchanges/binance.svg";
+import KucoinIcon from "../../images/exchanges/kucoin.svg";
 
 /**
  * @typedef {import('../../store/initialState').DefaultState} DefaultState
@@ -63,6 +65,9 @@ const withDashboardLayout = (Component) => {
             flexDirection="column"
             justifyContent="flex-start"
           >
+            <Typography variant="h1">
+              <FormattedMessage id="dashboard" />
+            </Typography>
             <span className="title">
               <FormattedMessage id="dashboard.connectexchange.title" />
               <b>
@@ -74,11 +79,15 @@ const withDashboardLayout = (Component) => {
               <span>
                 <FormattedMessage id="exchange.binance" />
               </span>
-              ,
+              or
               <span>
                 <FormattedMessage id="exchange.kucoin" />
               </span>
             </span>
+            <Box display="flex" flexDirection="row" justifyContent="flex-start">
+              <img alt="zignaly" src={BinanceIcon} />
+              <img alt="zignaly" src={KucoinIcon} />
+            </Box>
           </Box>
         )}
       </Box>
