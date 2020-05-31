@@ -1,3 +1,4 @@
+import { PositionsTabContent } from "./";
 import React, { useState } from "react";
 import "./PositionsTabs.scss";
 import { Box, Popover } from "@material-ui/core";
@@ -5,11 +6,7 @@ import SettingsIcon from "../../../images/dashboard/settings.svg";
 import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionSettingsForm from "../../Forms/PositionSettingsForm";
-import PositionsTable from "../PositionsTable";
-import PositionFilters from "../PositionFilters";
-// import NoPositions from "../NoPositions";
 import TabsMenu from "./TabsMenu";
-import usePositionsList from "../../../hooks/usePositionsList";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -17,8 +14,8 @@ import usePositionsList from "../../../hooks/usePositionsList";
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
+  const [settingsAnchor, setSettingAnchor] = useState(undefined);
 
   /**
    * Map tab index to positions collection type.
@@ -39,7 +36,9 @@ const PositionsTabs = () => {
   };
 
   const selectedType = mapIndexToCollectionType();
-  const positions = usePositionsList(selectedType);
+  const handleClose = () => {
+    setSettingAnchor(undefined);
+  };
 
   /**
    * Event handler to change tab value.
@@ -51,10 +50,6 @@ const PositionsTabs = () => {
   const changeTab = (event, val) => {
     setTabValue(val);
   };
-
-  const handleFiltersChange = () => {};
-
-  const handleClose = () => setSettingAnchor(undefined);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -87,31 +82,19 @@ const PositionsTabs = () => {
           />
         </Box>
       </Box>
-      {filters && (
-        <PositionFilters onChange={handleFiltersChange} onClose={() => showFilters(false)} />
-      )}
-      {tabValue === 0 && (
-        <Box className="tabPanel">
-          <PositionsTable positions={positions} type={selectedType} />
-          {/* <NoPositions /> */}
-        </Box>
-      )}
-      {tabValue === 1 && (
-        <Box className="tabPanel">
-          <PositionsTable positions={positions} type={selectedType} />
-        </Box>
-      )}
-      {tabValue === 2 && (
-        <Box className="tabPanel" visibility={tabValue === 2}>
-          <PositionsTable positions={positions} type={selectedType} />
-        </Box>
-      )}
+      <PositionsTabContent type={selectedType} />
       <Popover
         anchorEl={settingsAnchor}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
         onClose={() => setSettingAnchor(undefined)}
         open={Boolean(settingsAnchor)}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
       >
         <PositionSettingsForm onClose={handleClose} />
       </Popover>
