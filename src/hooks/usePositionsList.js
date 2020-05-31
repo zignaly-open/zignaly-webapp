@@ -17,34 +17,44 @@ import useInterval from "use-interval";
  * @returns {UserPositionsCollection} Positions collection.
  */
 const usePositionsList = (type) => {
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState({
+    open: [],
+    closed: [],
+    log: [],
+  });
   const storeSession = useStoreSessionSelector();
-  const fetchPositions = async () => {
-    try {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-      };
+  const routeFetchMethod = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+    };
 
-      if (type === "closed") {
-        return await tradeApi.closedPositionsGet(payload);
-      }
-
-      if (type === "log") {
-        return await tradeApi.logPositionsGet(payload);
-      }
-
-      return await tradeApi.openPositionsGet(payload);
-    } catch (e) {
-      alert(`ERROR: ${e.message}`);
+    if (type === "closed") {
+      return tradeApi.closedPositionsGet(payload);
     }
 
-    return [];
+    if (type === "log") {
+      return tradeApi.logPositionsGet(payload);
+    }
+
+    if (type === "open") {
+      return tradeApi.openPositionsGet(payload);
+    }
+
+    return false;
   };
 
   const loadData = () => {
-    fetchPositions().then((fetchData) => {
-      setPositions(fetchData);
-    });
+    const fetchMethod = routeFetchMethod();
+    if (fetchMethod) {
+      fetchMethod
+        .then((fetchData) => {
+          const newPositions = { ...positions, [type]: fetchData };
+          setPositions(newPositions);
+        })
+        .catch((e) => {
+          alert(`ERROR: ${e.message}`);
+        });
+    }
   };
 
   const updateData = () => {
@@ -54,10 +64,10 @@ const usePositionsList = (type) => {
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
   useInterval(updateData, 5000);
 
-  return positions;
+  return positions[type];
 };
 
 export default usePositionsList;

@@ -38,6 +38,9 @@ const PositionsTabs = () => {
     }
   };
 
+  const selectedType = mapIndexToCollectionType();
+  const positions = usePositionsList(selectedType);
+
   /**
    * Event handler to change tab value.
    *
@@ -52,9 +55,6 @@ const PositionsTabs = () => {
   const handleFiltersChange = () => {};
 
   const handleClose = () => setSettingAnchor(undefined);
-
-  const selectedType = mapIndexToCollectionType();
-  const positions = usePositionsList(selectedType);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -102,7 +102,7 @@ const PositionsTabs = () => {
         </Box>
       )}
       {tabValue === 2 && (
-        <Box className="tabPanel">
+        <Box className="tabPanel" visibility={tabValue === 2}>
           <PositionsTable positions={positions} type={selectedType} />
         </Box>
       )}
