@@ -9,11 +9,34 @@ import PositionsTable from "../PositionsTable";
 import PositionFilters from "../PositionFilters";
 // import NoPositions from "../NoPositions";
 import TabsMenu from "./TabsMenu";
+import usePositionsList from "../../../hooks/usePositionsList";
+
+/**
+ * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ */
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
   const [filters, showFilters] = useState(false);
+
+  /**
+   * Map tab index to positions collection type.
+   *
+   * @returns {PositionsCollectionType} Collection type.
+   */
+  const mapIndexToCollectionType = () => {
+    switch (tabValue) {
+      case 1:
+        return "closed";
+
+      case 2:
+        return "log";
+
+      default:
+        return "open";
+    }
+  };
 
   /**
    * Event handler to change tab value.
@@ -29,6 +52,9 @@ const PositionsTabs = () => {
   const handleFiltersChange = () => {};
 
   const handleClose = () => setSettingAnchor(undefined);
+
+  const selectedType = mapIndexToCollectionType();
+  const positions = usePositionsList(selectedType);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -66,18 +92,18 @@ const PositionsTabs = () => {
       )}
       {tabValue === 0 && (
         <Box className="tabPanel">
-          <PositionsTable type="open" />
+          <PositionsTable positions={positions} type={selectedType} />
           {/* <NoPositions /> */}
         </Box>
       )}
       {tabValue === 1 && (
         <Box className="tabPanel">
-          <PositionsTable type="closed" />
+          <PositionsTable positions={positions} type={selectedType} />
         </Box>
       )}
       {tabValue === 2 && (
         <Box className="tabPanel">
-          <PositionsTable type="log" />
+          <PositionsTable positions={positions} type={selectedType} />
         </Box>
       )}
       <Popover
