@@ -13,6 +13,8 @@ import { isEmpty, take } from "lodash";
 /**
  * @typedef {Object} PositionsTabContentProps
  * @property {PositionsCollectionType} type
+ * @property {React.MouseEventHandler} toggleFilters
+ * @property {boolean} filtersVisibility
  */
 
 /**
@@ -23,16 +25,15 @@ import { isEmpty, take } from "lodash";
  */
 
 const PositionsTabContent = (props) => {
-  const { type } = props;
+  const { type, filtersVisibility, toggleFilters } = props;
   const positions = usePositionsList(type);
-  const [filters, showFilters] = useState(false);
-  const handleFiltersChange = () => {};
   const positionsFiltered = take(positions, 100);
+  const handleFiltersChange = () => {};
 
   return (
     <>
-      {filters && (
-        <PositionFilters onChange={handleFiltersChange} onClose={() => showFilters(false)} />
+      {filtersVisibility && (
+        <PositionFilters onChange={handleFiltersChange} onClose={toggleFilters} />
       )}
       {type === "open" && (
         <Box className="tabPanel">

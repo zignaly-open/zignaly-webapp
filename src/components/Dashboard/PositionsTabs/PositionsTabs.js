@@ -14,7 +14,7 @@ import TabsMenu from "./TabsMenu";
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [filters, showFilters] = useState(false);
+  const [filtersVisibility, setFiltersVisibility] = useState(false);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
 
   /**
@@ -38,6 +38,10 @@ const PositionsTabs = () => {
   const selectedType = mapIndexToCollectionType();
   const handleClose = () => {
     setSettingAnchor(undefined);
+  };
+
+  const toggleFilters = () => {
+    setFiltersVisibility(!filtersVisibility);
   };
 
   /**
@@ -71,8 +75,8 @@ const PositionsTabs = () => {
           <img
             alt="zignaly"
             className="icon"
-            onClick={() => showFilters(!filters)}
-            src={filters ? FilstersChecked : FiltersUnchecked}
+            onClick={toggleFilters}
+            src={filtersVisibility ? FilstersChecked : FiltersUnchecked}
           />
           <img
             alt="zignaly"
@@ -82,7 +86,11 @@ const PositionsTabs = () => {
           />
         </Box>
       </Box>
-      <PositionsTabContent type={selectedType} />
+      <PositionsTabContent
+        filtersVisibility={filtersVisibility}
+        toggleFilters={toggleFilters}
+        type={selectedType}
+      />
       <Popover
         anchorEl={settingsAnchor}
         anchorOrigin={{
