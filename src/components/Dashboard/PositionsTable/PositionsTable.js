@@ -4,8 +4,8 @@ import { Box, Table } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import PositionsTableHead from "./PositionsTableHead";
 import PositionsTableBody from "./PositionsTableBody";
-import { useSelector } from "react-redux";
 import useIterval from "use-interval";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -27,14 +27,7 @@ import useIterval from "use-interval";
 const PositionsTable = (props) => {
   const { type } = props;
   const [positions, setPositions] = useState([]);
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
+  const storeSession = useStoreSessionSelector();
   const fetchPositions = async () => {
     try {
       const payload = {
