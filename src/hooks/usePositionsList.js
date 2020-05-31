@@ -8,7 +8,8 @@ import { filter, omitBy, take } from "lodash";
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {"open" | "closed" | "log"} PositionsCollectionType
  * @typedef {Object} HookPositionsListData
- * @property {UserPositionsCollection} positions
+ * @property {UserPositionsCollection} positionsAll
+ * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
  */
 
@@ -79,8 +80,7 @@ const usePositionsList = (type) => {
     if (fetchMethod) {
       fetchMethod
         .then((fetchData) => {
-          const fetchDataFiltered = filterData(fetchData);
-          const newPositions = { ...positions, [type]: fetchDataFiltered };
+          const newPositions = { ...positions, [type]: fetchData };
           setPositions(newPositions);
         })
         .catch((e) => {
@@ -100,7 +100,8 @@ const usePositionsList = (type) => {
   useInterval(updateData, 5000);
 
   return {
-    positions: take(filterData(positions[type]), 100),
+    positionsAll: positions[type],
+    positionsFiltered: take(filterData(positions[type]), 100),
     setFilters: setFilters,
   };
 };

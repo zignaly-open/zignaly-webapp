@@ -23,37 +23,37 @@ import { isEmpty } from "lodash";
 
 const PositionsTabContent = (props) => {
   const { type, filtersVisibility, toggleFilters } = props;
-  const { positions, setFilters } = usePositionsList(type);
+  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
 
   return (
     <>
       {filtersVisibility && (
-        <PositionFilters onChange={setFilters} onClose={toggleFilters} positions={positions} />
+        <PositionFilters onChange={setFilters} onClose={toggleFilters} positions={positionsAll} />
       )}
       {type === "open" && (
         <Box className="tabPanel">
-          {isEmpty(positions) ? (
+          {isEmpty(positionsFiltered) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
       {type === "closed" && (
         <Box className="tabPanel">
-          {isEmpty(positions) ? (
+          {isEmpty(positionsFiltered) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
       {type === "log" && (
         <Box className="tabPanel">
-          {isEmpty(positions) ? (
+          {isEmpty(positionsFiltered) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
