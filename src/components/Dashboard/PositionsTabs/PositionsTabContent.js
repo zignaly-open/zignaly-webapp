@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import PositionsTable from "../PositionsTable";
 import usePositionsList from "../../../hooks/usePositionsList";
 import NoPositions from "../NoPositions";
-import { isEmpty } from "lodash";
+import { isEmpty, take } from "lodash";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -27,6 +27,7 @@ const PositionsTabContent = (props) => {
   const positions = usePositionsList(type);
   const [filters, showFilters] = useState(false);
   const handleFiltersChange = () => {};
+  const positionsFiltered = take(positions, 100);
 
   return (
     <>
@@ -38,7 +39,7 @@ const PositionsTabContent = (props) => {
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
@@ -47,7 +48,7 @@ const PositionsTabContent = (props) => {
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
@@ -56,7 +57,7 @@ const PositionsTabContent = (props) => {
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positions} type={type} />
+            <PositionsTable positions={positionsFiltered} type={type} />
           )}
         </Box>
       )}
