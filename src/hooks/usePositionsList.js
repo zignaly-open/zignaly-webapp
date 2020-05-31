@@ -54,6 +54,26 @@ const usePositionsList = (type) => {
     return false;
   };
 
+  /**
+   * Filter positions list by filters criteria.
+   *
+   * @param {UserPositionsCollection} filterPositions Positions collection.
+   * @returns {UserPositionsCollection | null} Filtered positiosn collection.
+   */
+  const filterData = (filterPositions) => {
+    /**
+     * Checks if value equals to "all".
+     *
+     * @param {string} value Value to check.
+     * @returns {boolean} TRUE when equals, FALSE otherwise.
+     */
+    const isAll = (value) => value === "all";
+    const filterValues = omitBy(filters, isAll);
+    const matches = filter(filterPositions, filterValues);
+
+    return /** @type {UserPositionsCollection} */ (matches);
+  };
+
   const loadData = () => {
     const fetchMethod = routeFetchMethod();
     if (fetchMethod) {
@@ -79,28 +99,8 @@ const usePositionsList = (type) => {
   useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
   useInterval(updateData, 5000);
 
-  /**
-   * Filter positions list by filters criteria.
-   *
-   * @param {UserPositionsCollection} filterPositions Positions collection.
-   * @returns {UserPositionsCollection | null} Filtered positiosn collection.
-   */
-  const filterData = (filterPositions) => {
-    /**
-     * Checks if value equals to "all".
-     *
-     * @param {string} value Value to check.
-     * @returns {boolean} TRUE when equals, FALSE otherwise.
-     */
-    const isAll = (value) => value === "all";
-    const filterValues = omitBy(filters, isAll);
-    const matches = filter(filterPositions, filterValues);
-
-    return /** @type {UserPositionsCollection} */ (matches);
-  };
-
   return {
-    positions: take(positions[type], 100),
+    positions: take(filterData(positions[type]), 100),
     setFilters: setFilters,
   };
 };

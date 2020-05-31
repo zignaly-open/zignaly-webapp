@@ -99,7 +99,7 @@ const PositionFilters = (props) => {
     });
   };
 
-  useEffect(broadcastChange, [setFilters]);
+  useEffect(broadcastChange, [filters]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
