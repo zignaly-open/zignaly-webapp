@@ -127,7 +127,7 @@ const TraderCard = (props) => {
         <Box className="traderCardGraph">
           <Box className="chartWrapper">
             <GenericChart chartData={chartData} colorsOptions={colorsOptions} id={cardId}>
-              <canvas className="chartCanvas" id={cardId} />
+              {/* <canvas className="chartCanvas" id={cardId} /> */}
             </GenericChart>
           </Box>
         </Box>

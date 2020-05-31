@@ -45,7 +45,7 @@ export const generateChart = (context, options) => {
  * @param {string} label Tooltip label.
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
+export const prepareLineChartOptions = (colorsOptions, chartData, showTooltip) => {
   return {
     type: "line",
     data: {
@@ -106,6 +106,8 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
           //     return "%";
           //   },
         },
+        enabled: false,
+        custom: showTooltip,
       },
       elements: {
         point: {

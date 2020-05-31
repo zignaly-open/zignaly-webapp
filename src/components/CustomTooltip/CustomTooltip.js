@@ -1,13 +1,27 @@
 import React from "react";
 import { Tooltip } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import "./CustomTooltip.scss";
 
 const CustomTooltip = (props) => {
-  const { title, children, ...others } = props;
+  const { title, children, pos, ...others } = props;
+  const posStyle = !_.isEmpty(pos)
+    ? {
+        transform: `translate3d(${pos.left}px, ${pos.top}px, 0px) !important`,
+      }
+    : null;
+  //   const posStyle = { tooltip: { backgroundColor: "red" } };
+
+  const StyledTooltip = withStyles({ popper: posStyle })(Tooltip);
   return (
-    <Tooltip title={title} classes={{ tooltip: "customTooltip" }} {...others}>
-      {children}
-    </Tooltip>
+    <StyledTooltip
+      title={title}
+      //   classes={{ tooltip: "customTooltip" }}
+      //   style={posStyle}
+      {...others}
+    >
+      <div>{children}</div>
+    </StyledTooltip>
   );
 };
 
