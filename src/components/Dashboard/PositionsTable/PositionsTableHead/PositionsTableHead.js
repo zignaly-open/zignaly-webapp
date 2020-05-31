@@ -4,13 +4,18 @@ import { TableHead, TableRow, TableCell } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
 /**
- * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
+ * @typedef {import("../../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ */
+
+/**
+ * @typedef {Object} PositionsTableHeadProps
+ * @property {PositionsCollectionType} type
  */
 
 /**
  * Display user position table header cells.
  *
- * @param {PositionsTableProps} props Component properties.
+ * @param {PositionsTableHeadProps} props Component properties.
  *
  * @returns {JSX.Element} Table head element.
  */

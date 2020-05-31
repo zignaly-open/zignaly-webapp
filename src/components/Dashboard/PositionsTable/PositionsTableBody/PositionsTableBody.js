@@ -6,15 +6,13 @@ import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { colors } from "../../../../services/theme";
 import { formatNumber, formatPrice } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
-import { useSelector } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
 import { navigateTo } from "gatsby";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
- * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
  */
 
 /**
@@ -31,14 +29,7 @@ import { navigateTo } from "gatsby";
  * @return {JSX.Element} Position table body element.
  */
 const PositionsTableBody = (props) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
+  const storeSession = useStoreSessionSelector();
   const { positions, type } = props;
 
   /**
