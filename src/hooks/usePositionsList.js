@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
+import { take } from "lodash";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {"open" | "closed" | "log"} PositionsCollectionType
+ * @typedef {Object} HookPositionsListData
+ * @property {UserPositionsCollection} positions
+ * @property {Function} setFilters
  */
 
 /**
@@ -14,9 +18,16 @@ import useInterval from "use-interval";
  * Encapsulates the data fetch from Trade API and local state handling.
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
- * @returns {UserPositionsCollection} Positions collection.
+ * @returns {HookPositionsListData} Positions collection.
  */
 const usePositionsList = (type) => {
+  const defaultFilters = {
+    provider: "all",
+    pair: "all",
+    type: "all",
+  };
+
+  const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState({
     open: [],
     closed: [],
@@ -67,7 +78,10 @@ const usePositionsList = (type) => {
   useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
   useInterval(updateData, 5000);
 
-  return positions[type];
+  return {
+    positions: take(positions[type], 100),
+    setFilters: setFilters,
+  };
 };
 
 export default usePositionsList;

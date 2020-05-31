@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import PositionFilters from "../PositionFilters";
 import { Box } from "@material-ui/core";
 import PositionsTable from "../PositionsTable";
 import usePositionsList from "../../../hooks/usePositionsList";
 import NoPositions from "../NoPositions";
-import { isEmpty, take } from "lodash";
+import { isEmpty } from "lodash";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -23,25 +23,19 @@ import { isEmpty, take } from "lodash";
 
 const PositionsTabContent = (props) => {
   const { type, filtersVisibility, toggleFilters } = props;
-  const positions = usePositionsList(type);
-  const positionsFiltered = take(positions, 100);
-  const handleFiltersChange = () => {};
+  const { positions, setFilters } = usePositionsList(type);
 
   return (
     <>
       {filtersVisibility && (
-        <PositionFilters
-          onChange={handleFiltersChange}
-          onClose={toggleFilters}
-          positions={positions}
-        />
+        <PositionFilters onChange={setFilters} onClose={toggleFilters} positions={positions} />
       )}
       {type === "open" && (
         <Box className="tabPanel">
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
+            <PositionsTable positions={positions} type={type} />
           )}
         </Box>
       )}
@@ -50,7 +44,7 @@ const PositionsTabContent = (props) => {
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
+            <PositionsTable positions={positions} type={type} />
           )}
         </Box>
       )}
@@ -59,7 +53,7 @@ const PositionsTabContent = (props) => {
           {isEmpty(positions) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
+            <PositionsTable positions={positions} type={type} />
           )}
         </Box>
       )}

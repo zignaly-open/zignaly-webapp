@@ -7,7 +7,7 @@ import { uniqBy, sortBy } from "lodash";
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} PositionFiltersPropTypes
- * @property {Function} onChange Callback that delegate filters changes to caller.
+ * @property {Function} onChange Callback to broadcast filters changes to caller.
  * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  * @property {UserPositionsCollection} positions
  */
