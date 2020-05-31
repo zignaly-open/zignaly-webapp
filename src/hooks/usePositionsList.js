@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { take } from "lodash";
+import { filter, omitBy, take } from "lodash";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -59,7 +59,8 @@ const usePositionsList = (type) => {
     if (fetchMethod) {
       fetchMethod
         .then((fetchData) => {
-          const newPositions = { ...positions, [type]: fetchData };
+          const fetchDataFiltered = filterData(fetchData);
+          const newPositions = { ...positions, [type]: fetchDataFiltered };
           setPositions(newPositions);
         })
         .catch((e) => {
@@ -77,6 +78,26 @@ const usePositionsList = (type) => {
 
   useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
   useInterval(updateData, 5000);
+
+  /**
+   * Filter positions list by filters criteria.
+   *
+   * @param {UserPositionsCollection} filterPositions Positions collection.
+   * @returns {UserPositionsCollection | null} Filtered positiosn collection.
+   */
+  const filterData = (filterPositions) => {
+    /**
+     * Checks if value equals to "all".
+     *
+     * @param {string} value Value to check.
+     * @returns {boolean} TRUE when equals, FALSE otherwise.
+     */
+    const isAll = (value) => value === "all";
+    const filterValues = omitBy(filters, isAll);
+    const matches = filter(filterPositions, filterValues);
+
+    return /** @type {UserPositionsCollection} */ (matches);
+  };
 
   return {
     positions: take(positions[type], 100),
