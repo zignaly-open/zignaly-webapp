@@ -109,10 +109,10 @@ const Header = () => {
         )}
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
-        <Box className={"linkBox"}>
+        <Box className="linkBox">
           <img
             alt="zignaly-user"
-            className={"icon"}
+            className="icon"
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
@@ -126,7 +126,7 @@ const Header = () => {
             open={Boolean(anchorEl)}
             transformOrigin={{
               vertical: "top",
-              horizontal: "left",
+              horizontal: "center",
             }}
           >
             <UserMenu />
