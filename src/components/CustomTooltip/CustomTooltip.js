@@ -14,15 +14,17 @@ import "./CustomTooltip.scss";
  */
 
 /**
+ * @typedef {Object} DefaultProps
+ * @property {PosType} [pos] Custom tooltip position.
+ *
+ * @typedef {TooltipProps & DefaultProps} FullProps
+ */
+
+/**
  * Provides a custom tooltip component.
  *
- * @typedef {Object} PropTypes
- * @property {PosType} [pos] Custom tooltip position.
- * @property {Object} [children] Child components of the tooltip.
- *
- * @param {TooltipProps & PropTypes} props Component props.
+ * @param {FullProps} props Component props.
  * @returns {JSX.Element} Component JSX.
- *
  */
 const CustomTooltip = (props) => {
   const { title, children, pos, ...others } = props;
@@ -64,7 +66,7 @@ const CustomTooltip = (props) => {
       title={title}
       {...others}
     >
-      {children || <Box />}
+      {children}
     </StyledTooltip>
   );
 };

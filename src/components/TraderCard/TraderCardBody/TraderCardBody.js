@@ -11,6 +11,7 @@ import CustomToolip from "../../CustomTooltip";
 /**
  * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
  * @typedef {import("../../Graphs/Chart/Chart").ChartData} ChartData
+ * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  *
@@ -28,8 +29,13 @@ import CustomToolip from "../../CustomTooltip";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { id, risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  const { risk, isCopyTrading, followers, disable, dailyReturns } = provider;
 
+  /**
+   * Format tooltip content.
+   * @param {ChartTooltipItem} tooltipItem Tooltip object.
+   * @returns {React.ReactNode} Tooltip content.
+   */
   const tooltipFormat = (tooltipItem) => (
     <Box className="contentTooltip">
       <Box>{+tooltipItem.yLabel.toFixed(2) + "%"}</Box>
@@ -59,7 +65,7 @@ const TraderCard = (props) => {
     //   day: item.name,
     //   returns: acc.toFixed(2),
     // });
-    chartData.values.push(acc.toFixed(2));
+    chartData.values.push(acc);
     chartData.labels.push(item.name);
     return acc;
   }, 0);

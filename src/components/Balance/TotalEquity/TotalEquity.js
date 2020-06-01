@@ -60,6 +60,7 @@ const TotalEquity = () => {
           gradientColor1: "",
           gradientColor2: "",
         }}
+        tooltipFormat={() => 100}
       />
     </Box>
   );

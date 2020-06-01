@@ -3,11 +3,11 @@ import "./Chart.scss";
 import { Box } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
-import { setPropTypes } from "recompose";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
+ * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
  * @typedef {import('../../CustomTooltip/CustomTooltip').PosType} PosType
  */
 
@@ -47,7 +47,12 @@ const LineChart = (props) => {
   const [pos, setPos] = useState(/** @type {PosType} */ (null));
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
-  const showTooltip = useCallback((tooltip) => {
+  /**
+   * Callback to handle tooltip display.
+   * @param {Chart.ChartTooltipModel} tooltip Tooltip model.
+   * @returns {void}
+   */
+  const showTooltip = (tooltip) => {
     // if chart is not defined, return early
     const chart = chartRef.current;
     if (!chart) {
@@ -73,7 +78,8 @@ const LineChart = (props) => {
 
     // Show tooltip
     setTooltipVisibility(true);
-  }, []);
+  };
+  const showTooltipCallback = useCallback(showTooltip, []);
 
   /**
    * @type Chart.ChartData
@@ -115,7 +121,7 @@ const LineChart = (props) => {
       //   position: "nearest",
       displayColors: false,
       enabled: false,
-      custom: showTooltip,
+      custom: showTooltipCallback,
     },
     elements: {
       point: {
@@ -184,7 +190,9 @@ const LineChart = (props) => {
   return (
     <Box className="chart">
       {isTooltipVisible && (
-        <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent} />
+        <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent}>
+          <></>
+        </CustomToolip>
       )}
 
       <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
