@@ -47,6 +47,16 @@
           color: $white;
         }
 
+        &.action {
+          height: 50px;
+          border-top: 1px solid $borderColor;
+
+          img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+
         .exchangeIcon {
           margin-right: 10px;
         }

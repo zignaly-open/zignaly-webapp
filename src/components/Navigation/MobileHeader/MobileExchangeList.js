@@ -7,8 +7,10 @@ import BinanceIcon from "../../../images/exchanges/binance.svg";
 import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
+import MyExchange from "../../../images/header/myExchange.svg";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -114,6 +116,15 @@ const MobileExchangeList = () => {
                 {item.paperTrading && <span className="name"> (DEMO) </span>}
               </MenuItem>
             ))}
+          <MenuItem
+            className="exchangeListItem action"
+            onClick={() => dispatch(openExchangeConnectionView(true))}
+          >
+            <img src={MyExchange} alt="zignaly" />
+            <span className="name">
+              <FormattedMessage id="menu.manageaccounts" />
+            </span>
+          </MenuItem>
         </Box>
       </Slide>
     </Box>

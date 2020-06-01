@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
+import MyExchange from "../../../images/header/myExchange.svg";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -72,6 +74,15 @@ const UserExchangeList = () => {
                 )}
               </MenuItem>
             ))}
+          <MenuItem
+            className="exchangeListItem action"
+            onClick={() => dispatch(openExchangeConnectionView(true))}
+          >
+            <img src={MyExchange} alt="zignaly" />
+            <span className="name">
+              <FormattedMessage id="menu.manageaccounts" />
+            </span>
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>
