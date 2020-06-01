@@ -5,6 +5,8 @@ import "./CustomTooltip.scss";
 
 const CustomTooltip = (props) => {
   const { title, children, pos, ...others } = props;
+
+  // Custom tooltip position for the chart
   const posStyle = !_.isEmpty(pos)
     ? {
         transform: `translate3d(${pos.left}px, ${pos.bottom}px, 0px) !important`,
@@ -12,15 +14,17 @@ const CustomTooltip = (props) => {
     : null;
 
   const StyledTooltip = withStyles({ popper: posStyle, tooltip: {} })(Tooltip);
+
   const CustomPopper = ({ children, ...others }) => {
-    const wrapperChildren = (childrenProps) => (
-      <Box className="customTooltipWrapper">
+    const childrenWrapper = (childrenProps) => (
+      <Box className={`customTooltipPopper ${!_.isEmpty(pos) ? "customPos" : ""}`}>
         {children(childrenProps)}
-        <Box className="lineTooltip" />
+        {!_.isEmpty(pos) && <Box className="lineTooltip" />}
       </Box>
     );
-    return <Popper children={wrapperChildren} {...others} />;
+    return <Popper children={childrenWrapper} {...others} />;
   };
+
   return (
     <StyledTooltip
       title={title}

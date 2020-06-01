@@ -27,14 +27,12 @@ const MemoizedLine = React.memo(Line, () => true);
  * @param {GenericChartPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const GenericChart = (props) => {
-  const { id, chartData, colorsOptions, children } = props;
+const LineChart = (props) => {
+  const { chartData, colorsOptions } = props;
   const chartRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
 
-  const showTooltip2 = useCallback((tooltip) => {
-    console.log(tooltip);
-
+  const showTooltip = useCallback((tooltip) => {
     // if chart is not defined, return early
     const chart = chartRef.current;
     if (!chart) {
@@ -49,22 +47,21 @@ const GenericChart = (props) => {
 
     const position = chart.chartInstance.canvas.getBoundingClientRect();
 
-    // assuming your tooltip is `position: fixed`
-    // set position of tooltip
-    //   caretX?
     const left = position.left + window.pageXOffset + tooltip.caretX;
-
     const bottom = position.top + window.pageYOffset + tooltip.caretY;
-
-    console.log(tooltip.yAlign, tooltip.caretY, window.pageYOffset);
 
     // set values for display of data in the tooltip
     const date = tooltip.dataPoints[0].xLabel;
     const value = tooltip.dataPoints[0].yLabel + "%";
-
+    const message = (
+      <Box className="contentTooltip">
+        <Box>{value}</Box>
+        <Box className="subtitleTooltip">{date}</Box>
+      </Box>
+    );
     setTooltipData({
       pos: { bottom, left },
-      title: value,
+      title: message,
       show: true,
     });
   }, []);
@@ -138,7 +135,7 @@ const GenericChart = (props) => {
         //   },
       },
       enabled: false,
-      custom: showTooltip2,
+      custom: showTooltip,
     },
     elements: {
       point: {
@@ -174,22 +171,35 @@ const GenericChart = (props) => {
         },
       ],
     },
-    events: ["mousemove", "mouseout", "click", "touchstart", "touchmove"],
     // events: ["click", "touchstart", "touchmove"],
-
     // pointHitRadius: 10,
   };
 
-  //   console.log(positions);
+  const plugins = [
+    {
+      id: "responsiveGradient",
+      /**
+       * @typedef {Object} ChartWithScales
+       * @property {*} scales
+       *
+       * @typedef {Chart & ChartWithScales} ExtendedChart
+       */
 
-  //   useEffect(() => {
-  //     const canvasContext = getCanvasContext(id);
-  //     generateChart(canvasContext, prepareLineChartOptions(colorsOptions, chartData, showTooltip2));
-  //   }, [id, chartData, colorsOptions]);
-  //   const LineChart = React.memo((props) => {
-  //     console.log("Greeting Comp render");
-  //     return <Line data={data} options={options} />;
-  //   });
+      /**
+       * Fill chart with gradient on layout change.
+       *
+       * @param {ExtendedChart} chart Chart instance.
+       * @returns {void}
+       */
+      afterLayout: (chart /* options */) => {
+        let scales = chart.scales;
+        let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
+        color.addColorStop(0, colorsOptions.gradientColor2);
+        color.addColorStop(1, colorsOptions.gradientColor1);
+        chart.data.datasets[0].backgroundColor = color;
+      },
+    },
+  ];
 
   return (
     <Box className="chart">
@@ -199,9 +209,9 @@ const GenericChart = (props) => {
         </CustomToolip>
       )}
 
-      <MemoizedLine data={data} options={options} ref={chartRef} />
+      <MemoizedLine data={data} options={options} ref={chartRef} plugins={plugins} />
     </Box>
   );
 };
 
-export default GenericChart;
+export default LineChart;

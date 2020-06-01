@@ -1,3 +1,15 @@
 .chart {
   width: 100%;
 }
+
+.customTooltip {
+  padding: 8px !important;
+
+  .contentTooltip {
+    text-align: center;
+  }
+
+  .subtitleTooltip {
+    opacity: 0.6;
+  }
+}

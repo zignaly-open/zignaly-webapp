@@ -1,5 +1,12 @@
-.customTooltipWrapper {
-  transform: translate(0, -100%);
+.customTooltipPopper {
+  &.customPos {
+    transform: translate(0, -100%);
+
+    .customTooltip {
+      transform: translate(-50%, 0) !important;
+      transition: none !important;
+    }
+  }
 
   .customTooltip {
     @extend .body1;
@@ -7,8 +14,6 @@
     border: solid 1px $tooltipBorder;
     color: rgba(255, 255, 255, 0.94);
     padding: 16px;
-    transform: translate(-50%, 0) !important;
-    transition: none !important;
   }
 
   .lineTooltip {
