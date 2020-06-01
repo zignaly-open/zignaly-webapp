@@ -8,6 +8,7 @@ import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import { FormattedMessage } from "react-intl";
+import ExchangeIcon from "../../ExchangeIcon";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -93,6 +94,7 @@ const MobileExchangeList = () => {
             </Typography>
             <img
               alt="zignaly"
+              className="closeIcon"
               onClick={() => showList(false)}
               src={darkStyle ? CloseWhite : CloseBlack}
             />
@@ -107,9 +109,7 @@ const MobileExchangeList = () => {
                 key={index}
                 onClick={() => handleChange(item)}
               >
-                {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
-                {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
-                {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
+                <ExchangeIcon exchange={item.name.toLowerCase()} size="medium" />
                 <span className="name"> {item.internalName} </span>
                 {item.paperTrading && <span className="name"> (DEMO) </span>}
               </MenuItem>

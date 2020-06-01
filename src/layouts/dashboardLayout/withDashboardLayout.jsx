@@ -6,8 +6,7 @@ import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
-import BinanceIcon from "../../images/exchanges/binance.svg";
-import KucoinIcon from "../../images/exchanges/kucoin.svg";
+import ExchangeIcon from "../../components/ExchangeIcon";
 
 /**
  * @typedef {import('../../store/initialState').DefaultState} DefaultState
@@ -85,8 +84,8 @@ const withDashboardLayout = (Component) => {
               </span>
             </span>
             <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <img alt="zignaly" src={BinanceIcon} />
-              <img alt="zignaly" src={KucoinIcon} />
+              <ExchangeIcon exchange="binance" size="xlarge" />
+              <ExchangeIcon exchange="kucoin" size="xlarge" />
             </Box>
           </Box>
         )}

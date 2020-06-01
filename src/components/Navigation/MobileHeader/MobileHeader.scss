@@ -46,6 +46,10 @@
           background-image: $purpleLightGradient;
           color: $white;
         }
+
+        .exchangeIcon {
+          margin-right: 10px;
+        }
       }
 
       .drawerHeader {
@@ -58,17 +62,11 @@
           width: fit-content;
         }
 
-        img {
+        .closeIcon {
           height: 24px;
           width: 24px;
         }
       }
-    }
-
-    img {
-      height: 24px;
-      margin-right: 10px;
-      width: 24px;
     }
 
     .name {

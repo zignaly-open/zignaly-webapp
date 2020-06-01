@@ -2,10 +2,8 @@ import React from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
-import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
-import BinanceIcon from "../../../images/exchanges/binance.svg";
-import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import { FormattedMessage } from "react-intl";
+import ExchangeIcon from "../../ExchangeIcon";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -64,9 +62,7 @@ const UserExchangeList = () => {
                 key={index}
                 value={item.internalId}
               >
-                {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
-                {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
-                {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
+                <ExchangeIcon exchange={item.name.toLowerCase()} size="small" />
                 <span className="name"> {item.internalName} </span>
                 {item.paperTrading && (
                   <span className="name">
