@@ -8,6 +8,7 @@ import {
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   userPositionItemTransform,
+  userEquityResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -214,6 +215,21 @@ class TradeApiClient {
 
   async userBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getDashboardStats";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userEquityResponseTransform(responseData);
+  }
+
+  /**
+   *
+   *
+   * @param {AuthorizationPayload} payload
+   * @returns
+   * @memberof TradeApiClient
+   */
+
+  async userEquityGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBalance";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);

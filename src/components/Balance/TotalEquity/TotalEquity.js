@@ -1,10 +1,19 @@
 import React from "react";
 import "./TotalEquity.scss";
 import { Box, Typography } from "@material-ui/core";
-import Chart from "../../Graphs/Chart";
+import GenericChart from "../../Graphs/Chart";
 import { FormattedMessage } from "react-intl";
 
 const TotalEquity = () => {
+  let chartData = { values: [100, 200, 150, 200, 220, 250], labels: ["", "", "", "", "", ""] };
+
+  let colorsOptions = {
+    backgroundColor: "",
+    borderColor: "#a946f6",
+    gradientColor1: "#a946f6",
+    gradientColor2: "#fafafa",
+  };
+
   return (
     <Box
       alignItems="flex-start"
@@ -52,18 +61,9 @@ const TotalEquity = () => {
           </select>
         </Box>
       </Box>
-      <Chart
-        chartData={{ values: [2, 4, 6], labels: ["a", "b", "c"] }}
-        colorsOptions={{
-          backgroundColor: "",
-          borderColor: "",
-          gradientColor1: "",
-          gradientColor2: "",
-        }}
-        id="myChart"
-      >
+      <GenericChart chartData={chartData} colorsOptions={colorsOptions} id="myChart">
         <canvas className="chartCanvas" id="myChart" />
-      </Chart>
+      </GenericChart>
     </Box>
   );
 };
