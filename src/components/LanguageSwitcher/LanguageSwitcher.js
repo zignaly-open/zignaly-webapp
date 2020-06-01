@@ -39,7 +39,12 @@ const LanguageSwitcher = () => {
         lang.locale === storeSettings.languageCode ? (
           <img alt={lang.label} key={lang.locale} src={flags[lang.locale]} />
         ) : (
-          <button data-lang-code={lang.locale} onClick={handleLanguageSelection} type="button">
+          <button
+            data-lang-code={lang.locale}
+            key={lang.locale}
+            onClick={handleLanguageSelection}
+            type="button"
+          >
             <img alt={lang.label} src={flags[lang.locale]} />
           </button>
         ),

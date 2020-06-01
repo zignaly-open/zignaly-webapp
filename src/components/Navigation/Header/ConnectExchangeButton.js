@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomButton from "../../CustomButton";
-import Modal from "../../Modal";
-import ConnectExchangeView from "../../ConnectExchangeView";
 import { FormattedMessage } from "react-intl";
+import { useDispatch } from "react-redux";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
 
 const ConnectExchangeButton = () => {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <>
-      <CustomButton className="headerButton" onClick={() => setOpen(true)}>
+      <CustomButton
+        className="headerButton"
+        onClick={() => dispatch(openExchangeConnectionView(true))}
+      >
         <FormattedMessage id="menu.connectexchange" />
       </CustomButton>
-      <Modal onClose={() => setOpen(false)} persist={false} size="large" state={open}>
-        <ConnectExchangeView onClose={() => setOpen(false)} />
-      </Modal>
     </>
   );
 };

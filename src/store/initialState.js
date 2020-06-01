@@ -46,10 +46,28 @@
  */
 
 /**
+ * @typedef {Object} DefaultUIModalObject
+ * @property {Boolean} exchangeConnectionView
+ */
+
+/**
+ * @typedef {Object} DefaultUIAlertsObject
+ * @property {Object} success
+ * @property {Object} error
+ */
+
+/**
+ * @typedef {Object} DefaultUIObject
+ * @property {DefaultUIModalObject} modal
+ * @property {DefaultUIAlertsObject} alerts
+ */
+
+/**
  * @typedef {Object} DefaultState
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
  * @property {UserObject} user
+ * @property {DefaultUIObject} ui
  */
 
 /**
@@ -125,6 +143,15 @@ const initialState = {
       totalProfit: "",
       totalAssets: "",
       profitPercentage: "",
+    },
+  },
+  ui: {
+    modal: {
+      exchangeConnectionView: false,
+    },
+    alerts: {
+      success: {},
+      error: {},
     },
   },
 };

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./MobileHeader.scss";
 import { Box, Typography } from "@material-ui/core";
-import { useSelector } from "react-redux";
 import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
@@ -10,6 +9,8 @@ import MobileExchangeList from "./MobileExchangeList";
 import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -17,26 +18,8 @@ import ConnectExchangeButton from "../Header/ConnectExchangeButton";
  */
 
 const MobileHeader = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
-
-  /**
-   * User state exchange connections selector.
-   *
-   * @param {DefaultState} state User state.
-   *
-   * @returns {Array<ExchangeConnectionEntity>} User exchange connections.
-   */
-  const userExchangeSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(userExchangeSelector);
-
+  const storeSettings = useStoreSettingsSelector();
+  const storeUser = useStoreExchangeConnectionSelector();
   const [showBalance, setShowBalance] = useState(false);
 
   return (
@@ -47,7 +30,7 @@ const MobileHeader = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      {exchangeConnections.length > 0 && (
+      {storeUser.exchangeConnections.length > 0 && (
         <Box
           alignItems="flex-start"
           className="connectedBox"
@@ -71,19 +54,15 @@ const MobileHeader = () => {
               justifyContent="flex-end"
               onClick={() => setShowBalance(!showBalance)}
             >
-              {darkStyle && (
+              {storeSettings.darkStyle && (
                 <img
                   alt="zignaly"
-                  className={"expandIcon"}
+                  className="expandIcon"
                   src={showBalance ? DisabledWhite : EnabledWhite}
                 />
               )}
-              {!darkStyle && (
-                <img
-                  alt="zignaly"
-                  className={"expandIcon"}
-                  src={showBalance ? Disabled : Enabled}
-                />
+              {!storeSettings.darkStyle && (
+                <img alt="zignaly" className="expandIcon" src={showBalance ? Disabled : Enabled} />
               )}
               <Typography variant="h4">
                 <FormattedMessage id="dashboard.balance" />
@@ -93,7 +72,7 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+      {storeUser.exchangeConnections.length === 0 && <ConnectExchangeButton />}
     </Box>
   );
 };

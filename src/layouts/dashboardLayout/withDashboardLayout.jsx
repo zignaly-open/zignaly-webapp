@@ -5,14 +5,10 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
-import BinanceIcon from "../../images/exchanges/binance.svg";
-import KucoinIcon from "../../images/exchanges/kucoin.svg";
-
-/**
- * @typedef {import('../../store/initialState').DefaultState} DefaultState
- * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- */
+import { useDispatch } from "react-redux";
+import ExchangeIcon from "../../components/ExchangeIcon";
+import { openExchangeConnectionView } from "../../store/actions/ui";
+import useStoreExchangeConnectionSelector from "../../hooks/useStoreExchangeConnectionSelector";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -29,15 +25,12 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    /**
-     * User exchange connections selector.
-     *
-     * @param {DefaultState} state Store state object.
-     *
-     * @returns {Array<ExchangeConnectionEntity>} None.
-     */
-    const selector = (state) => state.user.exchangeConnections;
-    const exchangeConnections = useSelector(selector);
+    const storeUser = useStoreExchangeConnectionSelector();
+    const dispatch = useDispatch();
+
+    const handleClickEvent = () => {
+      dispatch(openExchangeConnectionView(true));
+    };
 
     return (
       <Box
@@ -47,7 +40,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {exchangeConnections.length > 0 && (
+        {storeUser.exchangeConnections.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -58,7 +51,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {exchangeConnections.length === 0 && (
+        {storeUser.exchangeConnections.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"
@@ -69,10 +62,11 @@ const withDashboardLayout = (Component) => {
               <FormattedMessage id="dashboard" />
             </Typography>
             <span className="title">
-              <FormattedMessage id="dashboard.connectexchange.title" />
-              <b>
+              <FormattedMessage id="dashboard.connectexchange.preText" />
+              <b onClick={handleClickEvent}>
                 <FormattedMessage id="dashboard.connectexchange.bold.title" />
               </b>
+              <FormattedMessage id="dashboard.connectexchange.postText" />
             </span>
             <span className="subtitle">
               <FormattedMessage id="dashboard.connectexchange.subtitle" />
@@ -85,8 +79,8 @@ const withDashboardLayout = (Component) => {
               </span>
             </span>
             <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <img alt="zignaly" src={BinanceIcon} />
-              <img alt="zignaly" src={KucoinIcon} />
+              <ExchangeIcon exchange="binance" size="xlarge" />
+              <ExchangeIcon exchange="kucoin" size="xlarge" />
             </Box>
           </Box>
         )}

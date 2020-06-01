@@ -4,12 +4,17 @@ import { getDisplayName } from "../../utils";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { CssBaseline, Box, Hidden } from "@material-ui/core";
 import themeData from "../../services/theme";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from "../../components/Alert";
+import Modal from "../../components/Modal";
+import ConnectExchangeView from "../../components/ConnectExchangeView";
+import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
+import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
+import { openExchangeConnectionView } from "../../store/actions/ui";
 
 /**
  *  App layout is defined here, the placement of header, sidebar, mobile appbar.
@@ -26,23 +31,24 @@ const withAppLayout = (Component) => {
    * @returns {Object} Component.
    */
   const WrapperComponent = (props) => {
-    /**
-     * Settings darkStyle selector.
-     *
-     * @typedef {import('../../store/initialState').DefaultState} DefaultState
-     * @param {DefaultState} state Redux store state data.
-     * @return {boolean} Flag that indicates if darkStyle is enabled.
-     */
-
-    const selector = (state) => state.settings.darkStyle;
-    const darkStyle = useSelector(selector);
-    const options = themeData(darkStyle);
+    const storeSettings = useStoreSettingsSelector();
+    const storeModal = userStoreUIModalSelector();
+    const dispatch = useDispatch();
+    const options = themeData(storeSettings.darkStyle);
     const theme = useMemo(() => createMuiTheme(options), [options]);
 
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Alert />
+        <Modal
+          onClose={() => dispatch(openExchangeConnectionView(false))}
+          persist={false}
+          size="large"
+          state={storeModal.exchangeConnectionView}
+        >
+          <ConnectExchangeView onClose={() => dispatch(openExchangeConnectionView(false))} />
+        </Modal>
         <Box bgcolor="background.default" className={"app"}>
           <Hidden xsDown>
             <Header />

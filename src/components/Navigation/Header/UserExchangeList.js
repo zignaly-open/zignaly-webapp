@@ -1,38 +1,21 @@
 import React from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
-import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
-import BinanceIcon from "../../../images/exchanges/binance.svg";
-import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import { FormattedMessage } from "react-intl";
+import ExchangeIcon from "../../ExchangeIcon";
+import MyExchange from "../../../images/header/myExchange.svg";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
+import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  */
 
 const UserExchangeList = () => {
-  /**
-   * Default redux State.
-   *
-   * @param {DefaultState} state Redux store state data.
-   */
-
-  const exchangeConnectionsSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(exchangeConnectionsSelector);
-
-  /**
-   *
-   * @typedef {import("../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
-   */
-
-  /**
-   *
-   * @param {DefaultState} state Default retux state.
-   * @returns {ExchangeConnectionEntity} Exchange connections object.
-   */
-  const selectedExchangeSelector = (state) => state.settings.selectedExchange;
-  const selectedExchange = useSelector(selectedExchangeSelector);
+  const storeUser = useStoreExchangeConnectionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   /**
    * Select change handler.
@@ -42,7 +25,9 @@ const UserExchangeList = () => {
    * @returns {Void} No return.
    */
   const handleChange = (event) => {
-    let found = [...exchangeConnections].find((item) => item.internalId === event.target.value);
+    let found = [...storeUser.exchangeConnections].find(
+      (item) => item.internalId === event.target.value,
+    );
     if (found) {
       dispatch(setSelectedExchange(found));
     }
@@ -54,28 +39,34 @@ const UserExchangeList = () => {
         <Select
           classes={{ root: "root" }}
           onChange={handleChange}
-          value={selectedExchange.internalId}
+          value={storeSettings.selectedExchange.internalId}
         >
-          {exchangeConnections &&
-            exchangeConnections.map((item, index) => (
+          {storeUser.exchangeConnections &&
+            storeUser.exchangeConnections.map((item, index) => (
               <MenuItem
                 className="exchangeListItem"
                 classes={{ selected: "selected" }}
                 key={index}
                 value={item.internalId}
               >
-                {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
-                {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
-                {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
+                <ExchangeIcon exchange={item.name.toLowerCase()} size="small" />
                 <span className="name"> {item.internalName} </span>
                 {item.paperTrading && (
                   <span className="name">
-                    {" "}
                     (<FormattedMessage id="menu.demo" />){" "}
                   </span>
                 )}
               </MenuItem>
             ))}
+          <MenuItem
+            className="exchangeListItem action"
+            onClick={() => dispatch(openExchangeConnectionView(true))}
+          >
+            <img alt="zignaly" src={MyExchange} />
+            <span className="name">
+              <FormattedMessage id="menu.manageaccounts" />
+            </span>
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>
