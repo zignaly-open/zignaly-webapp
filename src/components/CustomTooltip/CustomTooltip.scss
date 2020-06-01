@@ -1,5 +1,5 @@
 .customTooltipWrapper {
-  transform: translateX(-50%);
+  transform: translate(0, -100%);
 
   .customTooltip {
     @extend .body1;
@@ -7,5 +7,13 @@
     border: solid 1px $tooltipBorder;
     color: rgba(255, 255, 255, 0.94);
     padding: 16px;
+    transform: translate(-50%, 0) !important;
+    transition: none !important;
+  }
+
+  .lineTooltip {
+    width: 1px;
+    height: 21px;
+    border: solid 2px $borderColor;
   }
 }

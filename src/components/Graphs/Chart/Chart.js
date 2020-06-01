@@ -29,7 +29,6 @@ const MemoizedLine = React.memo(Line, () => true);
  */
 const GenericChart = (props) => {
   const { id, chartData, colorsOptions, children } = props;
-  const [tooltipOpen, showTooltip] = useState(false);
   const chartRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
 
@@ -52,14 +51,22 @@ const GenericChart = (props) => {
 
     // assuming your tooltip is `position: fixed`
     // set position of tooltip
+    //   caretX?
     const left = position.left + window.pageXOffset + tooltip.caretX;
-    const top = position.top + window.pageYOffset + tooltip.caretY;
+
+    const bottom = position.top + window.pageYOffset + tooltip.caretY;
+
+    console.log(tooltip.yAlign, tooltip.caretY, window.pageYOffset);
 
     // set values for display of data in the tooltip
     const date = tooltip.dataPoints[0].xLabel;
     const value = tooltip.dataPoints[0].yLabel + "%";
 
-    setTooltipData({ pos: { top, left }, title: value, show: true });
+    setTooltipData({
+      pos: { bottom, left },
+      title: value,
+      show: true,
+    });
   }, []);
 
   const data = {
@@ -71,7 +78,7 @@ const GenericChart = (props) => {
         backgroundColor: colorsOptions.backgroundColor,
         borderColor: colorsOptions.borderColor,
         fill: "start",
-        // pointHoverRadius: 10,
+        pointHoverRadius: 7,
         pointHoverBorderWidth: 4,
         pointHoverBorderColor: "#5200c5",
         pointHoverBackgroundColor: "#fff",
@@ -85,10 +92,15 @@ const GenericChart = (props) => {
     legend: {
       display: false,
     },
-    tooltips: {
-      mode: "index",
+    hover: {
       intersect: false,
-      position: "nearest",
+      mode: "nearest",
+      animationDuration: 0,
+    },
+    tooltips: {
+      mode: "nearest",
+      intersect: false,
+      //   position: "nearest",
       displayColors: false,
       callbacks: {
         /**
@@ -162,12 +174,10 @@ const GenericChart = (props) => {
         },
       ],
     },
-    // events: ["mousemove", "mouseout", "click", "touchstart", "touchmove"],
-    events: ["click", "touchstart", "touchmove"],
-    hover: {
-      intersect: false,
-    },
-    pointHitRadius: 10,
+    events: ["mousemove", "mouseout", "click", "touchstart", "touchmove"],
+    // events: ["click", "touchstart", "touchmove"],
+
+    // pointHitRadius: 10,
   };
 
   //   console.log(positions);
