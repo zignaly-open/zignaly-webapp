@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./MobileAppbar.scss";
 import { Box, Slide } from "@material-ui/core";
 import Link from "../../LocalizedLink";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";
 import TerminalWhite from "../../../images/sidebar/terminalWhite.svg";

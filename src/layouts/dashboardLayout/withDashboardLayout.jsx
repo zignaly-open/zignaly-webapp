@@ -5,8 +5,9 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
+import { openExchangeConnectionView } from "../../store/actions/ui";
 
 /**
  * @typedef {import('../../store/initialState').DefaultState} DefaultState
@@ -37,6 +38,11 @@ const withDashboardLayout = (Component) => {
      */
     const selector = (state) => state.user.exchangeConnections;
     const exchangeConnections = useSelector(selector);
+    const dispatch = useDispatch();
+
+    const handleClickEvent = () => {
+      dispatch(openExchangeConnectionView(true));
+    };
 
     return (
       <Box
@@ -68,10 +74,11 @@ const withDashboardLayout = (Component) => {
               <FormattedMessage id="dashboard" />
             </Typography>
             <span className="title">
-              <FormattedMessage id="dashboard.connectexchange.title" />
-              <b>
+              <FormattedMessage id="dashboard.connectexchange.preText" />
+              <b onClick={handleClickEvent}>
                 <FormattedMessage id="dashboard.connectexchange.bold.title" />
               </b>
+              <FormattedMessage id="dashboard.connectexchange.postText" />
             </span>
             <span className="subtitle">
               <FormattedMessage id="dashboard.connectexchange.subtitle" />

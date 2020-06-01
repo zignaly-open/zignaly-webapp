@@ -28,8 +28,9 @@ exchange.zignaly: "zignaly"
 
 # DASHBOARD SECTION
 dashboard: "Dashboard"
+dashboard.connectexchange.preText: "Go to"
+dashboard.connectexchange.postText: "in the menu at the top-right to set up your exchange"
 dashboard.connectexchange.bold.title: "My Exchange Accounts"
-dashboard.connectexchange.title: "You need to add an exchange, go to"
 dashboard.connectexchange.subtitle: "To be able to trade on Zignaly you need to connect or create at least one exchange accounts like "
 dashboard.positions: "Positions"
 dashboard.balance: "Balance"
