@@ -5,14 +5,10 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
 import { openExchangeConnectionView } from "../../store/actions/ui";
-
-/**
- * @typedef {import('../../store/initialState').DefaultState} DefaultState
- * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- */
+import useStoreExchangeConnectionSelector from "../../hooks/useStoreExchangeConnectionSelector";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -29,15 +25,7 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    /**
-     * User exchange connections selector.
-     *
-     * @param {DefaultState} state Store state object.
-     *
-     * @returns {Array<ExchangeConnectionEntity>} None.
-     */
-    const selector = (state) => state.user.exchangeConnections;
-    const exchangeConnections = useSelector(selector);
+    const storeUser = useStoreExchangeConnectionSelector();
     const dispatch = useDispatch();
 
     const handleClickEvent = () => {
@@ -52,7 +40,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {exchangeConnections.length > 0 && (
+        {storeUser.exchangeConnections.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -63,7 +51,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {exchangeConnections.length === 0 && (
+        {storeUser.exchangeConnections.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./MobileHeader.scss";
 import { Box, Typography } from "@material-ui/core";
-import { useSelector } from "react-redux";
 import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
@@ -11,6 +10,7 @@ import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -19,17 +19,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const MobileHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-
-  /**
-   * User state exchange connections selector.
-   *
-   * @param {DefaultState} state User state.
-   *
-   * @returns {Array<ExchangeConnectionEntity>} User exchange connections.
-   */
-  const userExchangeSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(userExchangeSelector);
-
+  const storeUser = useStoreExchangeConnectionSelector();
   const [showBalance, setShowBalance] = useState(false);
 
   return (
@@ -40,7 +30,7 @@ const MobileHeader = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      {exchangeConnections.length > 0 && (
+      {storeUser.exchangeConnections.length > 0 && (
         <Box
           alignItems="flex-start"
           className="connectedBox"
@@ -82,7 +72,7 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+      {storeUser.exchangeConnections.length === 0 && <ConnectExchangeButton />}
     </Box>
   );
 };
