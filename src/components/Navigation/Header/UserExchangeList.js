@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
@@ -62,7 +62,7 @@ const UserExchangeList = () => {
             className="exchangeListItem action"
             onClick={() => dispatch(openExchangeConnectionView(true))}
           >
-            <img src={MyExchange} alt="zignaly" />
+            <img alt="zignaly" src={MyExchange} />
             <span className="name">
               <FormattedMessage id="menu.manageaccounts" />
             </span>

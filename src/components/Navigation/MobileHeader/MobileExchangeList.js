@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Slide, MenuItem, Typography } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
 import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
 import BinanceIcon from "../../../images/exchanges/binance.svg";
@@ -104,7 +104,7 @@ const MobileExchangeList = () => {
             className="exchangeListItem action"
             onClick={() => dispatch(openExchangeConnectionView(true))}
           >
-            <img src={MyExchange} alt="zignaly" />
+            <img alt="zignaly" src={MyExchange} />
             <span className="name">
               <FormattedMessage id="menu.manageaccounts" />
             </span>
