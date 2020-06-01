@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
 import { isEmpty } from "lodash";
-import { navigateTo } from "gatsby";
+import { navigate } from "gatsby";
 import { setUserBalance, setUserExchanges } from "../../../store/actions/user";
 
 /**
@@ -72,7 +72,7 @@ const LoginForm = () => {
       dispatch(setUserExchanges(authorizationPayload));
       dispatch(setUserBalance(authorizationPayload));
 
-      navigateTo("/");
+      navigate("/dashboard/positions");
     }
   };
 
