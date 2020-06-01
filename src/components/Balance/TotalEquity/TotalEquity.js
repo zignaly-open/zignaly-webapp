@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./TotalEquity.scss";
 import { Box, Typography } from "@material-ui/core";
 import GenericChart from "../../Graphs/Chart";
 import { FormattedMessage } from "react-intl";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 const TotalEquity = () => {
+  const storeSession = useStoreSessionSelector();
   let chartData = { values: [100, 200, 150, 200, 220, 250], labels: ["", "", "", "", "", ""] };
 
   let colorsOptions = {
@@ -13,6 +16,22 @@ const TotalEquity = () => {
     gradientColor1: "#a946f6",
     gradientColor2: "#fafafa",
   };
+
+  useEffect(() => {
+    const loadEquity = async () => {
+      try {
+        const payload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        const response = await tradeApi.userEquityGet(payload);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadEquity();
+  }, []);
 
   return (
     <Box

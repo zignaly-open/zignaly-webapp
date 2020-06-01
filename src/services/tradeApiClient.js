@@ -217,7 +217,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getDashboardStats";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userEquityResponseTransform(responseData);
+    return userBalanceResponseTransform(responseData);
   }
 
   /**
@@ -232,7 +232,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getBalance";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userBalanceResponseTransform(responseData);
+    return userEquityResponseTransform(responseData);
   }
 
   /**
