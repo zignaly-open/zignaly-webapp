@@ -12,6 +12,7 @@ menu.support: "Contact Support"
 menu.tradingterminal: "Trading Terminal"
 menu.manageaccounts: "Manage Accounts"
 menu.demo: "DEMO"
+menu.exchangeSelectionTitle: "Select Trading Account"
 
 # BALANCE
 balance.available: "Available"
@@ -46,6 +47,14 @@ dashboard.balance.invested: "Invested"
 dashboard.balance.profit: "Profit"
 dashboard.balance.historical: "Historical"
 dashboard.traders.copying: "Traders I am copying:"
+
+# CONFIRMATION DIALOGS
+confirm.cancel: "Cancel"
+confirm.accept: "Confirm"
+confirm.positioncancel.title: "Confirm Cancel"
+confirm.positioncancel.message: "Are you sure you want to cancel the position? Canceling the position means you will remove the position from Zignaly, keeping your current bought coins."
+confirm.positionexit.title: "Confirm Exit"
+confirm.positionexit.message: "Are you sure you want to exit the position?"
 
 # COLUMNS
 col.actions: "ACTIONS"
@@ -135,7 +144,7 @@ col.profit.max.fromDCA: "MAX PROFIT FROM DCA"
 col.profit.min.fromDCA: "MIN PROFIT FROM DCA"
 col.profit.total: "TOTAL PROFITS"
 col.profit.percentage: "PROFIT %"
-col.provider.logo: "PROVIDER LOGO"
+col.provider.logo: "PROVIDER"
 col.provider.name: "PROVIDER NAME"
 col.remainingamount: "REMAINING AMOUNT"
 col.risk: "RISK"

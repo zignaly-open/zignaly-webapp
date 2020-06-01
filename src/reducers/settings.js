@@ -1,11 +1,16 @@
 import initialState from "../store/initialState";
 import { assign } from "lodash";
-
-const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
-const SELECT_THEME = "SELECT_THEME_ACTION";
+import {
+  SELECT_LANGUAGE,
+  SET_SELECTED_EXCHANGE,
+  SET_DISPLAY_COLUMN,
+  SELECT_THEME,
+  UNSET_SELECTED_EXCHANGE,
+} from "../store/actions/settings";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
+ * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
  */
 
 /**
@@ -30,6 +35,32 @@ const settings = (state, action) => {
     case SELECT_THEME:
       newState.darkStyle = action.payload;
       break;
+    case SET_SELECTED_EXCHANGE:
+      newState.selectedExchange = action.payload;
+      break;
+    case UNSET_SELECTED_EXCHANGE:
+      newState.selectedExchange = initialState.settings.selectedExchange;
+      break;
+
+    case SET_DISPLAY_COLUMN: {
+      /**
+       * @type {keyof DisplayColumns} table
+       */
+      const table = action.payload.table;
+      const { changedColumn, action: userAction } = action.payload;
+
+      //   const { table, changedColumn, action: userAction } = action.payload;
+      if (userAction === "add") {
+        //   Add column to displayed list
+        newState.displayColumns[table] = [...newState.displayColumns[table], changedColumn];
+      } else {
+        //   Remove column to displayed list
+        newState.displayColumns[table] = newState.displayColumns[table].filter(
+          (c) => c !== changedColumn,
+        );
+      }
+      break;
+    }
 
     default:
       break;

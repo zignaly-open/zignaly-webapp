@@ -10,6 +10,10 @@
   }
 
   .noExchangeBox {
+    h1 {
+      margin-bottom: 20px;
+    }
+
     .title {
       font-family: "PlexSans-Medium";
       font-size: 21px;
@@ -26,16 +30,25 @@
     .subtitle {
       font-family: "PlexSans-Light";
       font-size: 18px;
+      margin-bottom: 20px;
       width: 450px;
 
       span {
         font-family: "PlexSans-Medium";
+        margin-right: 5px;
         text-transform: capitalize;
 
         &:last-child {
           margin-left: 5px;
+          margin-right: 0;
         }
       }
+    }
+
+    img {
+      height: 40px;
+      margin-right: 20px;
+      width: 40px;
     }
   }
 }

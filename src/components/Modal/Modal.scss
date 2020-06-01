@@ -1,9 +1,8 @@
-
-
 .modal {
   border-radius: 4px;
   height: fit-content;
-  padding: 20px;
+  max-height: 700px;
+  min-height: 300px;
 
   &.small {
     width: 500px;
@@ -14,6 +13,6 @@
   }
 
   &.large {
-    width: 1000px;
+    width: 1200px;
   }
 }

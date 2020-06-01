@@ -4,8 +4,10 @@ import {
   userEntityResponseTransform,
   userPositionsResponseTransform,
   providersResponseTransform,
+  providersStatsResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
+  userPositionItemTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -215,6 +217,64 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
+   * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
+   */
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {ProvidersStatsPayload} payload Get providers stats payload.
+
+   * @returns {Promise<ProvidersStatsCollection>} Promise that resolves providers stats collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersStatsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderProfitStats";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providersStatsResponseTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
+   * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
+   */
+
+  /**
+   * Close a position.
+   *
+   * @param {PositionActionPayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionClose(payload) {
+    const endpointPath = "/fe/api.php?action=closePosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Exit a position.
+   *
+   * @param {PositionActionPayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionExit(payload) {
+    const endpointPath = "/fe/api.php?action=sellPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
   }
 }
 

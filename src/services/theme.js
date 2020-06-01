@@ -111,6 +111,7 @@ export const colors = {
 /**
  * @typedef {Object} ExtendedThemeOptions
  * @property {ExtendedPaletteOptions} palette
+ * @property {*} overrides
  */
 
 /**
@@ -140,7 +141,7 @@ const theme = (darkStyle) => {
         main: colors.purple,
       },
       secondary: {
-        main: colors.purple,
+        main: colors.purpleLight,
       },
       text: {
         primary: darkStyle ? colors.white : colors.black,

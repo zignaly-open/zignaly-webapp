@@ -32,9 +32,17 @@
  */
 
 /**
+ * @typedef {Object} DisplayColumns
+ * @property {Array<string>} spAnalytics
+ * @property {Array<string>} ctAnalytics
+ */
+
+/**
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {DisplayColumns} displayColumns
+ * @property {ExchangeConnectionEntity} selectedExchange
  */
 
 /**
@@ -59,6 +67,54 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    displayColumns: {
+      spAnalytics: [
+        "name",
+        "percentageProfit",
+        "signals",
+        "sumPositions",
+        "winRate",
+        "sumClosedPositions",
+        "avgAverageClosingTime",
+        "sumSoldBySignal",
+        "sumSoldByStopLoss",
+        "sumSoldByTakeProfit",
+      ],
+      ctAnalytics: [
+        "name",
+        "percentageProfit",
+        "signals",
+        "sumPositions",
+        "winRate",
+        "sumClosedPositions",
+        "avgAverageClosingTime",
+        "sumSoldBySignal",
+        "sumSoldByStopLoss",
+        "sumSoldByTakeProfit",
+      ],
+    },
+    selectedExchange: {
+      id: "",
+      name: "",
+      exchangeId: "",
+      exchangeName: "",
+      internalId: "",
+      internalName: "",
+      key: false,
+      secret: false,
+      areKeysValid: false,
+      paperTrading: false,
+      exchangeType: "",
+      isTestnet: false,
+      disable: false,
+      positionSize: 0,
+      managed: false,
+      internal: false,
+      isBrokerAccount: true,
+      subAccountId: "",
+      binanceBrokerId: "",
+      checkAuthCount: 0,
+    },
   },
   user: {
     exchangeConnections: [],

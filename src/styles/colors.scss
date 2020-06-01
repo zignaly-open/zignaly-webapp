@@ -4,7 +4,7 @@ $black2: #1b1b2c;
 
 $purple: #770fc8;
 
-$purpleLight: #a946f6;
+$purpleLight: #aa46f6;
 
 $purpleMedium: #a25cd9;
 
@@ -23,8 +23,6 @@ $greenChartBottom: #e5f8ed;
 $pink: #f63f82;
 
 $pink2: #c12860;
-
-$pink3: #f63f82;
 
 $yellow: #f6ad3f;
 
@@ -52,6 +50,8 @@ $paleGrey: #fbfafc;
 
 $grey: rgba(255, 255, 255, 0.2);
 
+$greyBackground: #b6c5de;
+
 $borderColor: rgba(0, 0, 0, 0.1);
 
 $tooltipBorder: rgba(64, 57, 70, 0.37);
@@ -70,7 +70,7 @@ $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
 
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
-$pinkGradient: linear-gradient(to right, $pink2 8%, $pink3 98%);
+$pinkGradient: linear-gradient(to right, $pink2 8%, $pink 98%);
 
 $greyGradient: linear-gradient(to bottom, $grey, $grey);
 

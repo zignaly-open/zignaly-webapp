@@ -1,8 +1,8 @@
 import React from "react";
 import { IntlProvider } from "react-intl";
-import PageContext from "./PageContext";
 import translations from "../i18n/translations";
 import { getDisplayName } from "../utils";
+import useStoreSettingsSelector from "../hooks/useStoreSettingsSelector";
 
 /**
  * HOC wrap component with page conext.
@@ -13,15 +13,8 @@ import { getDisplayName } from "../utils";
  */
 const withPageContext = (Component) => {
   /**
-   * @typedef {Object} DefaultContext
-   * @property {String} locale
-   * @property {String} originalPath
-   */
-
-  /**
    * @typedef {Object} DefaultProps
-   * @property {DefaultContext} pageContext
-   * @property {String} locale
+   * @property {Object} pageContext
    */
 
   /**
@@ -32,14 +25,14 @@ const withPageContext = (Component) => {
    * @returns {JSX.Element} Componet JSX.
    */
   const WrapperComponent = (props) => {
-    const { pageContext } = props;
-    const { locale } = pageContext;
+    const storeSettings = useStoreSettingsSelector();
 
     return (
-      <IntlProvider locale={locale} messages={translations[locale]}>
-        <PageContext.Provider value={props.pageContext}>
-          <Component {...props} />
-        </PageContext.Provider>
+      <IntlProvider
+        locale={storeSettings.languageCode}
+        messages={translations[storeSettings.languageCode]}
+      >
+        <Component {...props} />
       </IntlProvider>
     );
   };

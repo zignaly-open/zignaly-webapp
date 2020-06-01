@@ -1,4 +1,6 @@
 import tradeApi from "../../services/tradeApiClient";
+import { SET_SELECTED_EXCHANGE } from "./settings";
+import initialState from "../initialState";
 
 export const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 export const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
@@ -28,7 +30,13 @@ export const setUserExchanges = (payload) => {
         payload: responseData,
       };
 
+      const action2 = {
+        type: SET_SELECTED_EXCHANGE,
+        payload: responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange,
+      };
+
       dispatch(action);
+      dispatch(action2);
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }

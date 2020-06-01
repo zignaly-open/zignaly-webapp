@@ -1,0 +1,10 @@
+export const createBinanceAPIKeySecretPairDoc = "https://docs.zignaly.com/create-binance-api-keys";
+export const howToSendSignalsDocumentation = "https://docs.zignaly.com/signals/how-to";
+export const analyticsProvidersDocumentation = "https://docs.zignaly.com/usage/providers-analytics";
+export const statusesDoc = "https://docs.zignaly.com/information/positions-statuses#";
+export const publicRoadMapURL = "https://trello.com/b/pETATrWk/zignaly-product-roadmap";
+export const docsURL = "https://docs.zignaly.com/";
+export const contactMailURL = "support@zignaly.freshdesk.com";
+export const discordURL = "https://discord.gg/vx8wx8u";
+export const affiliateName = "Affiliate Program";
+export const affiliateURL = "https://zignaly.firstpromoter.com/";

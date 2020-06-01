@@ -1,6 +1,6 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
-import { START_TRADE_API_SESSION } from "../store/actions/session";
+import { START_TRADE_API_SESSION, END_TRADE_API_SESSION } from "../store/actions/session";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -25,6 +25,9 @@ const settings = (state, action) => {
   switch (action.type) {
     case START_TRADE_API_SESSION:
       newState.tradeApi.accessToken = action.payload.token;
+      break;
+    case END_TRADE_API_SESSION:
+      newState.tradeApi.accessToken = "";
       break;
 
     default:

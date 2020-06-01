@@ -1,6 +1,14 @@
 .languageSwitcher {
+  button {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    width: auto;
+  }
+
   img {
-    margin-left: .5em;
-    width: 1.2em;
+    cursor: pointer;
+    margin: 0 0.25em;
+    width: 1.4em;
   }
 }

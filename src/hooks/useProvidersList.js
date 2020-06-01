@@ -133,7 +133,7 @@ const useProvidersList = (options, callbacks) => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         type: connectedOnly ? "connected" : "all",
-        // ro: true,
+        ro: true,
         copyTradersOnly,
         timeFrame,
       };

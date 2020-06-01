@@ -33,6 +33,14 @@ const Sidebar = () => {
   const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
 
+  const showFullMenu = () => {
+    setHover(true);
+  };
+
+  const showSmallMenu = () => {
+    setHover(false);
+  };
+
   return (
     <Box
       alignItems="flex-start"
@@ -41,8 +49,8 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      onMouseOut={() => setHover(false)}
-      onMouseOver={() => setHover(true)}
+      onMouseEnter={showFullMenu}
+      onMouseLeave={showSmallMenu}
     >
       <Link
         activeClassName={"active"}

@@ -4,13 +4,15 @@ import { TableHead, TableRow, TableCell } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
 /**
- * @typedef {import("../PositionsTable").PositionsTableProps} PositionsTableProps
+ * @typedef {import("../../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {Object} PositionsTableHeadProps
+ * @property {PositionsCollectionType} type
  */
 
 /**
  * Display user position table header cells.
  *
- * @param {PositionsTableProps} props Component properties.
+ * @param {PositionsTableHeadProps} props Component properties.
  *
  * @returns {JSX.Element} Table head element.
  */
@@ -22,7 +24,8 @@ const PositionsTableHead = (props) => {
         <TableCell align="left" className="cell">
           {" "}
         </TableCell>
-        <TableCell align="left" className="cell">
+        <TableCell align="left" className="cell bold">
+          <span>▼ </span>
           <FormattedMessage id="col.date.open" />
         </TableCell>
         {type === "closed" && (
@@ -30,7 +33,7 @@ const PositionsTableHead = (props) => {
             <FormattedMessage id="col.date.close" />
           </TableCell>
         )}
-        <TableCell align="left" className="cell">
+        <TableCell align="center" className="cell">
           <FormattedMessage id="col.provider.logo" />
         </TableCell>
         <TableCell align="left" className="cell">
@@ -103,13 +106,13 @@ const PositionsTableHead = (props) => {
         </TableCell>
         {["closed", "open"].includes(type) && (
           <>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.tsl" />
             </TableCell>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.tp" />
             </TableCell>
-            <TableCell align="left" className="cell">
+            <TableCell align="center" className="cell">
               <FormattedMessage id="col.dca" />
             </TableCell>
             <TableCell align="left" className="cell">
@@ -133,10 +136,10 @@ const PositionsTableHead = (props) => {
               <FormattedMessage id="col.fees" />
             </TableCell>
             <TableCell align="left" className="cell">
-              <FormattedMessage id="col.net.percentage" />
+              <FormattedMessage id="col.netprofit.percentage" />
             </TableCell>
             <TableCell align="left" className="cell">
-              <FormattedMessage id="col.net.amount" />
+              <FormattedMessage id="col.netprofit.amount" />
             </TableCell>
           </>
         )}

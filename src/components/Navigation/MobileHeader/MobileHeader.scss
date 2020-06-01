@@ -10,18 +10,84 @@
     min-width: 100%;
   }
 
+  .mobileExchangeList {
+    height: 40px;
+    margin-right: 10px;
+    width: 220px;
+
+    .currentSelectionBox {
+      background-image: $purpleLightGradient;
+      border-radius: 4px;
+      color: $white;
+      height: inherit;
+      padding: 5px 10px;
+      width: 100%;
+
+      .name {
+        font-size: 14px;
+      }
+    }
+
+    .mobileExchangeListDrawer {
+      bottom: 0;
+      height: 100vh;
+      left: 0;
+      padding: 20px 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 100%;
+      z-index: 1005;
+
+      .mobileExchangeListItem {
+        width: 100%;
+
+        &.selected {
+          background-image: $purpleLightGradient;
+          color: $white;
+        }
+      }
+
+      .drawerHeader {
+        margin-bottom: 30px;
+        padding: 0 15px;
+        width: 100%;
+
+        h3 {
+          font-family: "PlexSans-SemiBold";
+          width: fit-content;
+        }
+
+        img {
+          height: 24px;
+          width: 24px;
+        }
+      }
+    }
+
+    img {
+      height: 24px;
+      margin-right: 10px;
+      width: 24px;
+    }
+
+    .name {
+      font-family: "PlexSans-Medium";
+      font-size: 16px;
+      margin-right: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+  }
+
   .connectedBox {
     width: 100%;
 
     .actionBox {
       height: 44px;
       width: 100%;
-
-      .userExchangeList {
-        .selectInput {
-          min-width: 180px;
-        }
-      }
 
       .expandIcon {
         height: 24px;
