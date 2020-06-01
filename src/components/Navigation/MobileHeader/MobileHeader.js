@@ -10,6 +10,7 @@ import MobileExchangeList from "./MobileExchangeList";
 import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -17,15 +18,7 @@ import ConnectExchangeButton from "../Header/ConnectExchangeButton";
  */
 
 const MobileHeader = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
+  const storeSettings = useStoreSettingsSelector();
 
   /**
    * User state exchange connections selector.
@@ -71,19 +64,15 @@ const MobileHeader = () => {
               justifyContent="flex-end"
               onClick={() => setShowBalance(!showBalance)}
             >
-              {darkStyle && (
+              {storeSettings.darkStyle && (
                 <img
                   alt="zignaly"
-                  className={"expandIcon"}
+                  className="expandIcon"
                   src={showBalance ? DisabledWhite : EnabledWhite}
                 />
               )}
-              {!darkStyle && (
-                <img
-                  alt="zignaly"
-                  className={"expandIcon"}
-                  src={showBalance ? Disabled : Enabled}
-                />
+              {!storeSettings.darkStyle && (
+                <img alt="zignaly" className="expandIcon" src={showBalance ? Disabled : Enabled} />
               )}
               <Typography variant="h4">
                 <FormattedMessage id="dashboard.balance" />
