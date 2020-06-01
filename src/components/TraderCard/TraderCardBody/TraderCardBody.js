@@ -1,7 +1,7 @@
 import React from "react";
 import "./TraderCardBody.scss";
 import { Box, Typography } from "@material-ui/core";
-import GenericChart from "../../Graphs/Chart";
+import LineChart from "../../Graphs/Chart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
@@ -9,11 +9,8 @@ import { FormattedMessage } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 
 /**
- * @typedef {import('../../../utils/chart').ChartColorOptions} ChartColorOptions
- * @typedef {import('../../../utils/chart').ChartData} ChartData
- */
-
-/**
+ * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
+ * @typedef {import("../../Graphs/Chart/Chart").ChartData} ChartData
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  *
@@ -32,10 +29,16 @@ import CustomToolip from "../../CustomTooltip";
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
   const { id, risk, isCopyTrading, followers, disable, dailyReturns } = provider;
-  let cardId = "traderCard" + id;
+
+  const tooltipFormat = (tooltipItem) => (
+    <Box className="contentTooltip">
+      <Box>{+tooltipItem.yLabel.toFixed(2) + "%"}</Box>
+      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
+    </Box>
+  );
 
   /**
-   * @type {ChartData} chartData
+   * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
 
@@ -126,9 +129,11 @@ const TraderCard = (props) => {
       <Box>
         <Box className="traderCardGraph">
           <Box className="chartWrapper">
-            <GenericChart chartData={chartData} colorsOptions={colorsOptions} id={cardId}>
-              {/* <canvas className="chartCanvas" id={cardId} /> */}
-            </GenericChart>
+            <LineChart
+              chartData={chartData}
+              colorsOptions={colorsOptions}
+              tooltipFormat={tooltipFormat}
+            />
           </Box>
         </Box>
         <Box

@@ -1,36 +1,51 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import "./Chart.scss";
-import { prepareLineChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
 import { Box } from "@material-ui/core";
-import { positions } from "@material-ui/system";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
+import { setPropTypes } from "recompose";
 
 /**
- * @typedef {import('../../../utils/chart').ChartColorOptions} ChartColorOptions
- * @typedef {import('../../../utils/chart').ChartData} ChartData
+ * @typedef {import('chart.js').ChartData} Chart.ChartData
+ * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
+ * @typedef {import('../../CustomTooltip/CustomTooltip').PosType} PosType
  */
 
-const MemoizedLine = React.memo(Line, () => true);
+/**
+ * @typedef {Object} ChartData
+ * @property {Array<Number>} values Chart values.
+ * @property {Array<String>} labels Chart labels.
+ */
 
 /**
- * @typedef {Object} GenericChartPropTypes
- * @property {String} id ID of the cnavas passed as a child.
- * @property {Object} children Canvas component to render the chart.
+ * @typedef {Object} ChartColorOptions
+ * @property {string} backgroundColor Background HTML color.
+ * @property {string} borderColor Border HTML color.
+ * @property {string} gradientColor1 Chart gradient color top.
+ * @property {string} gradientColor2 Chart gradient color bottom.
+ */
+
+const MemoizedLine = React.memo(Line, (/* prevProps, nextProps */) => true);
+
+/**
+ * @typedef {Object} LineChartPropTypes
  * @property {ChartColorOptions} colorsOptions Chart colors.
  * @property {ChartData} chartData Chart dataset.
+ * @property {function} tooltipFormat Function to format data based on selected value.
  */
 
 /**
  * Provides a wrapper to display a chart.
  *
- * @param {GenericChartPropTypes} props Component properties.
+ * @param {LineChartPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 const LineChart = (props) => {
-  const { chartData, colorsOptions } = props;
+  const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
-  const [tooltipData, setTooltipData] = useState(null);
+  const [tooltipContent, setTooltipContent] = useState();
+  const [pos, setPos] = useState(/** @type {PosType} */ (null));
+  const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
   const showTooltip = useCallback((tooltip) => {
     // if chart is not defined, return early
@@ -41,31 +56,28 @@ const LineChart = (props) => {
 
     // hide the tooltip when chartjs determines you've hovered out
     if (tooltip.opacity === 0) {
-      setTooltipData({ show: false });
+      setTooltipVisibility(false);
       return;
     }
 
+    // Set tooltip position.
     const position = chart.chartInstance.canvas.getBoundingClientRect();
 
     const left = position.left + window.pageXOffset + tooltip.caretX;
-    const bottom = position.top + window.pageYOffset + tooltip.caretY;
+    const top = position.top + window.pageYOffset + tooltip.caretY;
+    setPos({ top, left });
 
-    // set values for display of data in the tooltip
-    const date = tooltip.dataPoints[0].xLabel;
-    const value = tooltip.dataPoints[0].yLabel + "%";
-    const message = (
-      <Box className="contentTooltip">
-        <Box>{value}</Box>
-        <Box className="subtitleTooltip">{date}</Box>
-      </Box>
-    );
-    setTooltipData({
-      pos: { bottom, left },
-      title: message,
-      show: true,
-    });
+    // Set values for display of data in the tooltip
+    const content = tooltipFormat(tooltip.dataPoints[0]);
+    setTooltipContent(content);
+
+    // Show tooltip
+    setTooltipVisibility(true);
   }, []);
 
+  /**
+   * @type Chart.ChartData
+   */
   const data = {
     labels: chartData.labels,
     datasets: [
@@ -83,6 +95,9 @@ const LineChart = (props) => {
     ],
   };
 
+  /**
+   * @type Chart.ChartOptions
+   */
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -99,41 +114,6 @@ const LineChart = (props) => {
       intersect: false,
       //   position: "nearest",
       displayColors: false,
-      callbacks: {
-        /**
-         * Default Tooltip component configurations.
-         *
-         * @typedef {Object} TooltipItemParam
-         * @property {String} index
-         */
-        /**
-         * Default Tooltip component configurations.
-         *
-         * @typedef {Object} DatasetObject
-         * @property {Array<Number>} data
-         */
-        /**
-         * Default Datasets object proteries
-         *
-         * @typedef {Array<DatasetObject>} DatasetCollection
-         */
-        /**
-         * Default Dara params.
-         *
-         * @typedef {Object} DataParam
-         * @property {DatasetCollection} datasets
-         */
-        /**
-         * Tooltip configuration params.
-         *
-         * @param {TooltipItemParam} tooltipItem
-         * @param {DataParam} data
-         */
-        //   label,
-        //   afterLabel: () => {
-        //     return "%";
-        //   },
-      },
       enabled: false,
       custom: showTooltip,
     },
@@ -171,7 +151,7 @@ const LineChart = (props) => {
         },
       ],
     },
-    // events: ["click", "touchstart", "touchmove"],
+    events: ["click", "touchstart", "touchmove"],
     // pointHitRadius: 10,
   };
 
@@ -203,13 +183,11 @@ const LineChart = (props) => {
 
   return (
     <Box className="chart">
-      {tooltipData && (
-        <CustomToolip title={tooltipData.title} open={tooltipData.show} pos={tooltipData.pos}>
-          <div></div>
-        </CustomToolip>
+      {isTooltipVisible && (
+        <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent} />
       )}
 
-      <MemoizedLine data={data} options={options} ref={chartRef} plugins={plugins} />
+      <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
     </Box>
   );
 };

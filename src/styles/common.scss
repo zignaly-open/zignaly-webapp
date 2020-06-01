@@ -141,10 +141,14 @@ body {
   margin: 0;
 }
 
-.body1 {
+%body1 {
   font-family: "PlexSans-Regular";
   font-size: 16px;
-  line-height: 1.31;
   letter-spacing: 0.61px;
+  line-height: 1.31;
   margin: 0;
+}
+
+.body1 {
+  @extend %body1;
 }

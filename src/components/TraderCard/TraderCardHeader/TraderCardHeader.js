@@ -1,7 +1,6 @@
 import React from "react";
 import "./TraderCardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
-import ConnectedIcon from "../../../images/dashboard/connected.svg";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
@@ -20,7 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin, exchanges, disable } = props.provider;
+  const { fee, name, logoUrl, coin, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />

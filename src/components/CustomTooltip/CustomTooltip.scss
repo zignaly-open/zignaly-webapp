@@ -1,3 +1,4 @@
+// sass-lint:disable no-important
 .customTooltipPopper {
   &.customPos {
     transform: translate(0, -100%);
@@ -9,16 +10,16 @@
   }
 
   .customTooltip {
-    @extend .body1;
+    @extend %body1;
     background-color: $tooltipBackground;
     border: solid 1px $tooltipBorder;
-    color: rgba(255, 255, 255, 0.94);
+    color: $tooltipText;
     padding: 16px;
   }
 
   .lineTooltip {
-    width: 1px;
-    height: 21px;
     border: solid 2px $borderColor;
+    height: 21px;
+    width: 1px;
   }
 }

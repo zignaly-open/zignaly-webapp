@@ -45,14 +45,14 @@ export const generateChart = (context, options) => {
  * @param {string} label Tooltip label.
  * @returns {Object} Chart options.
  */
-export const prepareLineChartOptions = (colorsOptions, chartData, showTooltip) => {
+export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
   return {
     type: "line",
     data: {
       labels: chartData.labels,
       datasets: [
         {
-          label: "",
+          label,
           data: chartData.values,
           backgroundColor: colorsOptions.backgroundColor,
           borderColor: colorsOptions.borderColor,
@@ -101,13 +101,14 @@ export const prepareLineChartOptions = (colorsOptions, chartData, showTooltip) =
            * @param {TooltipItemParam} tooltipItem
            * @param {DataParam} data
            */
-          //   label,
+          //   label: (tooltipItem, data) => {
+          //     let index = parseInt(tooltipItem.index);
+          //     return "returns " + data.datasets[0].data[index];
+          //   },
           //   afterLabel: () => {
-          //     return "%";
+          //     return new Date();
           //   },
         },
-        enabled: false,
-        custom: showTooltip,
       },
       elements: {
         point: {

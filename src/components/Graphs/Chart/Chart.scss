@@ -1,9 +1,10 @@
+// sass-lint:disable force-element-nesting
 .chart {
   width: 100%;
 }
 
-.customTooltip {
-  padding: 8px !important;
+.customTooltipPopper .customTooltip {
+  padding: 8px;
 
   .contentTooltip {
     text-align: center;
