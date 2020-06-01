@@ -157,7 +157,7 @@ const LineChart = (props) => {
         },
       ],
     },
-    events: ["click", "touchstart", "touchmove"],
+    // events: ["click", "touchstart", "touchmove"],
     // pointHitRadius: 10,
   };
 
@@ -191,7 +191,7 @@ const LineChart = (props) => {
     <Box className="chart">
       {isTooltipVisible && (
         <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent}>
-          <></>
+          <Box />
         </CustomToolip>
       )}
 
