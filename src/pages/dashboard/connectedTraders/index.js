@@ -28,16 +28,7 @@ const ConnectedTraders = () => {
         justifyContent="flex-start"
       >
         <TimeFrameSelectRow title={<FormattedMessage id="dashboard.traders.copying" />} />
-        <Box
-          alignItems="center"
-          className="tradersBox"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="flex-start"
-        >
-          <ProvidersList />
-        </Box>
+        <ProvidersList />
       </Box>
     </>
   );
