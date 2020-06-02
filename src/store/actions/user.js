@@ -6,6 +6,7 @@ export const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 export const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
 export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
+export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -75,5 +76,27 @@ export const setUserBalance = (payload) => {
 export const unsetUserBalance = () => {
   return {
     type: REMOVE_USER_BALANCE,
+  };
+};
+
+/**
+ * Get user balance store thunk action.
+ *
+ * @param {AuthorizationPayload} payload Trade API user authorization.
+ *
+ * @returns {AppThunk} Thunk action function.
+ */
+export const setDailyUserBalance = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await tradeApi.userEquityGet(payload);
+      const action = {
+        type: GET_DAILY_USER_BALANCE,
+        payload: response,
+      };
+      dispatch(action);
+    } catch (e) {
+      alert(`ERROR: ${e.message}`);
+    }
   };
 };

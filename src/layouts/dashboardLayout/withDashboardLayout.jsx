@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
 import { openExchangeConnectionView } from "../../store/actions/ui";
-import useStoreExchangeConnectionSelector from "../../hooks/useStoreExchangeConnectionSelector";
+import useStoreUserSelector from "../../hooks/useStoreUserSelector";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -25,7 +25,7 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const storeUser = useStoreExchangeConnectionSelector();
+    const storeUser = useStoreUserSelector();
     const dispatch = useDispatch();
 
     const handleClickEvent = () => {

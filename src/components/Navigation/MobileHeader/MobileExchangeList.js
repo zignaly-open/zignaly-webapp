@@ -12,7 +12,7 @@ import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import { openExchangeConnectionView } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -21,7 +21,7 @@ import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeC
 const MobileExchangeList = () => {
   const [list, showList] = useState(false);
   const storeSettings = useStoreSettingsSelector();
-  const storeUser = useStoreExchangeConnectionSelector();
+  const storeUser = useStoreUserSelector();
   const dispatch = useDispatch();
 
   /**

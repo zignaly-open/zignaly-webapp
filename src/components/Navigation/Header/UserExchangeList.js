@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import MyExchange from "../../../images/header/myExchange.svg";
 import { openExchangeConnectionView } from "../../../store/actions/ui";
-import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
@@ -14,7 +14,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 
 const UserExchangeList = () => {
-  const storeUser = useStoreExchangeConnectionSelector();
+  const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   /**

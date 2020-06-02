@@ -1,19 +1,30 @@
-
-
 .customSelect {
+  height: 32px;
+
   p {
     margin-right: 12px;
   }
 
+  &.dark {
+    svg {
+      color: $white;
+    }
+  }
+
+  &.light {
+    svg {
+      color: $black2;
+    }
+  }
+
   .select {
-    background: $white;
     border-radius: 4px;
     height: 32px;
     margin-right: 50px;
-    width: 144px;
+    min-width: 94px;
 
     > div {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 }
