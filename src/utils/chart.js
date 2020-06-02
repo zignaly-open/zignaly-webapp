@@ -182,8 +182,8 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
 /**
  * Prepare line chart options.
  *
- * @param {DoughnutColorOptions} colorsOptions Chart colors.
  * @param {ChartData} chartData Chart dataset.
+ * @param {DoughnutColorOptions} colorsOptions Chart colors.
  * @returns {Object} Chart options.
  */
 export const preparePieChartOptions = (chartData, colorsOptions) => {

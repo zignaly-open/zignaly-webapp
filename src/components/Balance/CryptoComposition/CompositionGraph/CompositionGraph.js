@@ -20,7 +20,6 @@ import Doughnut from "../../../Graphs/Doughnut";
 
 const CompositionGraph = (props) => {
   const { list } = props;
-  console.log(list);
 
   const sectionColors = [
     "#4e07da",

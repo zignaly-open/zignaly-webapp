@@ -3,7 +3,6 @@ import "./EquityFilter.scss";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../../CustomSelect";
 import { useIntl } from "react-intl";
-import moment from "moment";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
@@ -60,9 +59,10 @@ const EquityFilter = (props) => {
     if (value === 0) {
       return list;
     }
-    let date = moment().subtract(value, "d");
+    let date = new Date();
+    date.setDate(date.getDate() - value);
     let newList = [...list].filter((item) => {
-      return parseFloat(item.date) > new Date(date._d).getTime();
+      return parseFloat(item.date) > new Date(date).getTime();
     });
     return newList;
   };

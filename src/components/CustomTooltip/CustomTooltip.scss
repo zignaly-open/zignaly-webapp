@@ -3,8 +3,8 @@
     transform: translate(0, -100%);
 
     .customTooltip {
-      transform: translate(-50%, 0) !important; // sass-lint:disable-line no-important
-      transition: none !important; // sass-lint:disable-line no-important
+      transform: translate(-50%, 0); // sass-lint:disable-line no-important
+      transition: none; // sass-lint:disable-line no-important
     }
   }
 

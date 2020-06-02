@@ -2,7 +2,6 @@ import React from "react";
 import "./TitleBar.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
 
 /**
  *
@@ -21,8 +20,7 @@ import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
  */
 
 const TitleBar = (props) => {
-  const storeUser = useStoreUserSelector();
-
+  const { list } = props;
   return (
     <Box
       alignItems="center"
@@ -47,11 +45,9 @@ const TitleBar = (props) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">
-            BTC {storeUser.dailyBalance.length ? storeUser.dailyBalance[0].totalBTC : "0"}{" "}
-          </Typography>
+          <Typography variant="h4">BTC {list.length ? list[0].totalBTC : "0"} </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {storeUser.dailyBalance.length ? storeUser.dailyBalance[0].totalUSD : "0"}
+            = USD {list.length ? list[0].totalUSD : "0"}
           </Typography>
         </Box>
       </Box>

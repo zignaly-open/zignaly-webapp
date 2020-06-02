@@ -27,6 +27,7 @@ const Doughnut = (props) => {
   useEffect(() => {
     const canvasContext = getCanvasContext("myDoughnut");
     generateChart(canvasContext, preparePieChartOptions(chartData, colorOptions));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chartData.values]);
 
   return (
