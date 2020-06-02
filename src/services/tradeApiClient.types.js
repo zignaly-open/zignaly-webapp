@@ -533,37 +533,40 @@ export function userPositionItemTransform(positionItem) {
   const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const transformedResponse = assign(emptyPositionEntity, positionItem, {
-    age: openDateMoment.toNow(true),
+  const positionEntity = assign(emptyPositionEntity, positionItem, {
     amount: parseFloat(positionItem.amount),
     buyPrice: parseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
-    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
     fees: parseFloat(positionItem.fees),
     netProfit: parseFloat(positionItem.netProfit),
     netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
-    openDateMoment: openDateMoment,
-    openDateReadable: positionItem.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
-    profitStyle: getProfitType(positionItem.profit, 0, positionItem.side),
-    providerLink: composeProviderLink(),
-    providerLogo: positionItem.logoUrl || defaultProviderLogo,
     remainAmount: parseFloat(positionItem.remainAmount),
     risk: risk,
-    riskStyle: risk < 0 ? "loss" : "gain",
     sellPrice: parseFloat(positionItem.sellPrice),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
+  });
+
+  const augmentedEntity = assign(positionEntity, {
+    age: openDateMoment.toNow(true),
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateMoment: openDateMoment,
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
+    providerLink: composeProviderLink(),
+    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    riskStyle: risk < 0 ? "loss" : "gain",
     stopLossStyle: getProfitType(
-      positionItem.stopLossPrice,
-      positionItem.buyPrice,
-      positionItem.side,
+      positionEntity.stopLossPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
     ),
   });
 
-  return transformedResponse;
+  return augmentedEntity;
 }
 
 /**
