@@ -14,6 +14,7 @@ import BalanceBox from "./BalanceBox";
 import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -21,15 +22,7 @@ import UserMenu from "./UserMenu";
  */
 
 const Header = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-
-  const darkStyleSelector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(darkStyleSelector);
+  const storeSettings = useStoreSettingsSelector();
 
   /**
    *
@@ -56,7 +49,7 @@ const Header = () => {
           <img
             alt="zignaly-logo"
             className={"headerLogo"}
-            src={darkStyle ? LogoWhite : LogoBlack}
+            src={storeSettings.darkStyle ? LogoWhite : LogoBlack}
           />
         </Link>
         <LanguageSwitcher />

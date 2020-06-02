@@ -95,9 +95,21 @@
 }
 
 .exchangeListItem {
+  height: 40px;
+
   &.selected {
     background-image: $purpleLightGradient;
     color: $white;
+  }
+
+  &.action {
+    border-top: 1px solid $borderColor;
+    height: 50px;
+
+    img {
+      height: 24px;
+      width: 24px;
+    }
   }
 
   img {

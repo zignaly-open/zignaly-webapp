@@ -46,6 +46,20 @@
           background-image: $purpleLightGradient;
           color: $white;
         }
+
+        &.action {
+          border-top: 1px solid $borderColor;
+          height: 50px;
+
+          img {
+            height: 24px;
+            width: 24px;
+          }
+        }
+
+        .exchangeIcon {
+          margin-right: 10px;
+        }
       }
 
       .drawerHeader {
@@ -58,17 +72,11 @@
           width: fit-content;
         }
 
-        img {
+        .closeIcon {
           height: 24px;
           width: 24px;
         }
       }
-    }
-
-    img {
-      height: 24px;
-      margin-right: 10px;
-      width: 24px;
     }
 
     .name {

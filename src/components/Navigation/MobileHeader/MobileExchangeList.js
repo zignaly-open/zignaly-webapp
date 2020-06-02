@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Box, Slide, MenuItem, Typography } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
 import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
 import BinanceIcon from "../../../images/exchanges/binance.svg";
 import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
+import MyExchange from "../../../images/header/myExchange.svg";
 import { FormattedMessage } from "react-intl";
+import ExchangeIcon from "../../ExchangeIcon";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -15,38 +20,14 @@ import { FormattedMessage } from "react-intl";
 
 const MobileExchangeList = () => {
   const [list, showList] = useState(false);
-
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
-
-  /**
-   * Default redux State.
-   *
-   * @param {DefaultState} state Redux store state data.
-   */
-
-  const exchangeConnectionsSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(exchangeConnectionsSelector);
+  const storeSettings = useStoreSettingsSelector();
+  const storeUser = useStoreExchangeConnectionSelector();
+  const dispatch = useDispatch();
 
   /**
    *
    * @typedef {import("../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
    */
-
-  /**
-   *
-   * @param {DefaultState} state Default retux state.
-   * @returns {ExchangeConnectionEntity} Exchange connections object.
-   */
-  const selectedExchangeSelector = (state) => state.settings.selectedExchange;
-  const selectedExchange = useSelector(selectedExchangeSelector);
-  const dispatch = useDispatch();
   /**
    * Select change handler.
    *
@@ -68,15 +49,21 @@ const MobileExchangeList = () => {
         justifyContent="flex-start"
         onClick={() => showList(true)}
       >
-        {selectedExchange.name.toLowerCase() === "binance" && (
+        {storeSettings.selectedExchange.name.toLowerCase() === "binance" && (
           <img alt="zignaly" src={BinanceIcon} />
         )}
-        {selectedExchange.name.toLowerCase() === "zignaly" && (
+        {storeSettings.selectedExchange.name.toLowerCase() === "zignaly" && (
           <img alt="zignaly" src={ZignalyIcon} />
         )}
-        {selectedExchange.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
-        <span className="name"> {selectedExchange.internalName} </span>
-        {selectedExchange.paperTrading && <span className="name"> (DEMO) </span>}
+        {storeSettings.selectedExchange.name.toLowerCase() === "kucoin" && (
+          <img alt="zignaly" src={KucoinIcon} />
+        )}
+        <span className="name"> {storeSettings.selectedExchange.internalName} </span>
+        {storeSettings.selectedExchange.paperTrading && (
+          <span className="name">
+            (<FormattedMessage id="menu.demo" />){" "}
+          </span>
+        )}
       </Box>
 
       <Slide direction="up" in={list}>
@@ -93,27 +80,35 @@ const MobileExchangeList = () => {
             </Typography>
             <img
               alt="zignaly"
+              className="closeIcon"
               onClick={() => showList(false)}
-              src={darkStyle ? CloseWhite : CloseBlack}
+              src={storeSettings.darkStyle ? CloseWhite : CloseBlack}
             />
           </Box>
-          {exchangeConnections &&
-            exchangeConnections.map((item, index) => (
+          {storeUser.exchangeConnections &&
+            storeUser.exchangeConnections.map((item, index) => (
               <MenuItem
                 className={
                   "mobileExchangeListItem " +
-                  (selectedExchange.internalId === item.internalId ? "selected" : "")
+                  (storeSettings.selectedExchange.internalId === item.internalId ? "selected" : "")
                 }
                 key={index}
                 onClick={() => handleChange(item)}
               >
-                {item.name.toLowerCase() === "binance" && <img alt="zignaly" src={BinanceIcon} />}
-                {item.name.toLowerCase() === "zignaly" && <img alt="zignaly" src={ZignalyIcon} />}
-                {item.name.toLowerCase() === "kucoin" && <img alt="zignaly" src={KucoinIcon} />}
+                <ExchangeIcon exchange={item.name.toLowerCase()} size="medium" />
                 <span className="name"> {item.internalName} </span>
                 {item.paperTrading && <span className="name"> (DEMO) </span>}
               </MenuItem>
             ))}
+          <MenuItem
+            className="exchangeListItem action"
+            onClick={() => dispatch(openExchangeConnectionView(true))}
+          >
+            <img alt="zignaly" src={MyExchange} />
+            <span className="name">
+              <FormattedMessage id="menu.manageaccounts" />
+            </span>
+          </MenuItem>
         </Box>
       </Slide>
     </Box>
