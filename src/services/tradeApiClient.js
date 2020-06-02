@@ -160,9 +160,9 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async logPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, {
-      type: "unsold",
+      type: "allClosedExtended",
       ...payload,
     });
 
