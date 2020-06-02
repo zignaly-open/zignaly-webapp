@@ -30,7 +30,7 @@ const TotalEquity = () => {
       className="totalEquity"
       display="flex"
       flexDirection="column"
-      justifyContent="flex-start"
+      justifyContent="space-between"
     >
       <Box
         alignItems="flex-start"
@@ -43,7 +43,7 @@ const TotalEquity = () => {
         <TitleBar />
         <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
       </Box>
-      <TotalEquityGraph />
+      <TotalEquityGraph list={list} />
     </Box>
   );
 };
