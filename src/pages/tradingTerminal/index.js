@@ -1,8 +1,5 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
-import withLayout from "../../layouts/appLayout";
-import withPageContext from "../../pageContext";
 import { Helmet } from "react-helmet";
 
 const TradingTerminal = () => {
@@ -18,4 +15,4 @@ const TradingTerminal = () => {
   );
 };
 
-export default compose(withPageContext, withLayout)(TradingTerminal);
+export default TradingTerminal;
