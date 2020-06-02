@@ -1,0 +1,13 @@
+.providersTimeFrameSelect {
+  margin-bottom: 10px;
+
+  @include media("<=sm") {
+    .providersCount {
+      @include text-no-wrap();
+    }
+
+    .customSelect {
+      margin-left: 0;
+    }
+  }
+}

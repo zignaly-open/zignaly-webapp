@@ -93,7 +93,8 @@ const LineChart = (props) => {
         backgroundColor: colorsOptions.backgroundColor,
         borderColor: colorsOptions.borderColor,
         fill: "start",
-        pointHoverRadius: 7,
+        // pointHitRadius: 20,
+        pointHoverRadius: 8,
         pointHoverBorderWidth: 4,
         pointHoverBorderColor: "#5200c5",
         pointHoverBackgroundColor: "#fff",
@@ -157,8 +158,7 @@ const LineChart = (props) => {
         },
       ],
     },
-    // events: ["click", "touchstart", "touchmove"],
-    // pointHitRadius: 10,
+    events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [

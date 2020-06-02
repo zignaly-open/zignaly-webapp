@@ -11,12 +11,11 @@
 
   .traderCardHeaderTitleBox {
     height: 40px;
+    width: 100%;
     margin-left: 20px;
-    width: calc(100% - 60px);
 
     .nameBox {
       height: 40px;
-      width: fit-content;
 
       .name {
         color: $purple;
@@ -37,7 +36,10 @@
 
     .commissionBox {
       height: 40px;
-      width: fit-content;
+
+      h6 {
+        @include text-no-wrap();
+      }
     }
   }
 }
@@ -54,23 +56,13 @@
 
     .traderCardHeaderTitleBox {
       margin-left: 15px;
-      width: calc(100% - 40px);
 
       .nameBox {
         height: 40px;
-        width: fit-content;
-
-        .name {
-          color: $purple;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
       }
 
       .commissionBox {
         height: 40px;
-        width: fit-content;
       }
     }
   }

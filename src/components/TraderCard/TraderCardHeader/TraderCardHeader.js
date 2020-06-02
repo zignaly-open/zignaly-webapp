@@ -61,13 +61,7 @@ const TraderCardHeader = (props) => {
             ))}
           </Box>
         </Box>
-        <Box
-          alignItems="flex-end"
-          className="commissionBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-        >
+        <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
           <Typography variant="h4">{fee}</Typography>
           <Typography variant="subtitle1">
             <FormattedMessage id="srv.comision" />
