@@ -28,6 +28,7 @@ const usePositionsList = (type) => {
     provider: "all",
     pair: "all",
     side: "all",
+    type: "all",
     internalExchangeId: storeSettings.selectedExchange.internalId,
   };
 
@@ -75,6 +76,12 @@ const usePositionsList = (type) => {
      */
     const isAll = (value) => value === "all";
     const filterValues = omitBy(filters, isAll);
+
+    // Only use the type filter on log positions table.
+    if (type !== "log") {
+      delete filterValues.type;
+    }
+
     const matches = filter(filterPositions, filterValues);
 
     return /** @type {UserPositionsCollection} */ (matches);
@@ -110,10 +117,12 @@ const usePositionsList = (type) => {
    * @returns {Void} None.
    */
   const updateFilters = () => {
-    setFilters({
+    const newFilters = {
       ...filters,
       internalExchangeId: storeSettings.selectedExchange.internalId,
-    });
+    };
+
+    setFilters(newFilters);
   };
 
   useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
@@ -121,7 +130,7 @@ const usePositionsList = (type) => {
   /**
    * Combine external state filters with local state.
    *
-   * @param {Object} values External filter values.
+   * @param {defaultFilters} values External filter values.
    *
    * @returns {Void} None.
    */

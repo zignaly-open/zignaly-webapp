@@ -1,3 +1,3 @@
 import withPageContext from "./withPageContext";
 
-export { withPageContext as default };
+export default withPageContext;

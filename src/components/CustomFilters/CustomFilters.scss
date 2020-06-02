@@ -8,18 +8,12 @@
   width: 100%;
 
   .filters {
-    width: calc(100% - 290px);
-
     .title {
       color: $purple;
       font-family: "PlexSans-Medium";
       font-size: 16px;
       margin-right: 34px;
     }
-  }
-
-  .actions {
-    width: 290px;
   }
 }
 

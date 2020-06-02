@@ -1,9 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import withAppLayout from "../../layouts/appLayout";
 import withDashboardLayout from "../../layouts/dashboardLayout";
-import withPageContext from "../../pageContext";
 import { Helmet } from "react-helmet";
 
 /**
@@ -40,4 +38,4 @@ const PositionPage = (props) => {
   );
 };
 
-export default compose(withPageContext, withAppLayout, withDashboardLayout)(PositionPage);
+export default compose(withDashboardLayout)(PositionPage);

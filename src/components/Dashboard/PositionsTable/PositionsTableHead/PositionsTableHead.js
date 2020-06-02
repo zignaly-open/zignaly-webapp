@@ -28,6 +28,11 @@ const PositionsTableHead = (props) => {
           <span>▼ </span>
           <FormattedMessage id="col.date.open" />
         </TableCell>
+        {type === "log" && (
+          <TableCell align="left" className="cell">
+            <FormattedMessage id="col.type" />
+          </TableCell>
+        )}
         {type === "closed" && (
           <TableCell align="left" className="cell">
             <FormattedMessage id="col.date.close" />
