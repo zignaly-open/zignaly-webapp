@@ -3,6 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
 import { filter, omitBy, take } from "lodash";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -34,10 +35,13 @@ const usePositionsList = (type) => {
     closed: [],
     log: [],
   });
+
+  const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const routeFetchMethod = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     if (type === "closed") {
