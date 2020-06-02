@@ -54,8 +54,8 @@ const PositionFilters = (props) => {
 
   const types = [
     { label: "All Types", val: "all" },
-    { label: "UNSOLD", val: "Unsold" },
-    { label: "UNOPENED", val: "Unopen" },
+    { label: "UNSOLD", val: "unsold" },
+    { label: "UNOPEN", val: "unopen" },
   ];
 
   const providerOptions = extractProviderOptions();
