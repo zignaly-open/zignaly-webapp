@@ -1,8 +1,10 @@
 import React from "react";
 import "./CustomFilters.scss";
-import { Box } from "@material-ui/core";
+import { Box, Button, Icon } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
+import ChevronRightIcon from "../../images/filters/chevron-right.svg";
+import ClosetIcon from "../../images/filters/close.svg";
 
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
@@ -47,10 +49,18 @@ const CustomFilters = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <CustomButtom className="text-purple" onClick={onClear}>
+        <CustomButtom
+          className="textPurple"
+          onClick={onClear}
+          startIcon={<img className="icon" src={ClosetIcon} />}
+        >
           <FormattedMessage id="fil.clearall" />
         </CustomButtom>
-        <CustomButtom className="text-purple" onClick={onClose}>
+        <CustomButtom
+          className="textPurple"
+          onClick={onClose}
+          startIcon={<img className="icon" src={ChevronRightIcon} />}
+        >
           <FormattedMessage id="fil.hide" />
         </CustomButtom>
       </Box>
