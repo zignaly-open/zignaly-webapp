@@ -1,7 +1,7 @@
 import React from "react";
 import { compose } from "recompose";
-import withAppLayout from "./appLayout/withAppLayout";
 import withPageContext from "../pageContext";
+import PrivateAreaLayout from "./PrivateAreaLayout";
 
 /**
  * @typedef {Object} PageContext
@@ -23,23 +23,20 @@ import withPageContext from "../pageContext";
  * Wrap Gatsby root element in
  *
  * @param {WrapRootLayoutProps} props Wrapper properties.
- * @returns {Function} Root layout element.
+ * @returns {JSX.Element} Root layout element.
  */
 const wrapRootWithLayout = (props) => {
   const { children, location } = props;
   const currentPath = location.pathname || "";
-  const MainElement = () => <>{children}</>;
+  const PublicPage = () => <>{children}</>;
+  const PrivatePage = () => <PrivateAreaLayout>{children}</PrivateAreaLayout>;
 
   // Login don't use any layout.
   if (currentPath.match("/login")) {
-    return MainElement;
+    return PublicPage();
   }
 
-  // The rest of the pages are private are and use i18n context and app layout.
-  /** @type {Function} composedLayout */
-  const composedLayout = compose(withPageContext, withAppLayout)(MainElement);
-
-  return composedLayout();
+  return PrivatePage();
 };
 
 export default wrapRootWithLayout;
