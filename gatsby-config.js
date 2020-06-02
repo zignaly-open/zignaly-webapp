@@ -29,5 +29,9 @@ module.exports = {
         develop: false,
       },
     },
+    {
+      resolve: "gatsby-plugin-layout",
+      options: {},
+    },
   ],
 };
