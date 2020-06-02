@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
 import useProvidersList from "../../../hooks/useProvidersList";

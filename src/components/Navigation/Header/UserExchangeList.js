@@ -18,7 +18,6 @@ const UserExchangeList = () => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
-  console.log(storeUser.exchangeConnections);
   /**
    * Select change handler.
    *

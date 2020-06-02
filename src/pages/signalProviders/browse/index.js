@@ -27,7 +27,7 @@ const SignalProvidersBrowse = (props) => {
   const providersOptions = { copyTradersOnly: false, connectedOnly: false, showSummary: false };
   const providersCallbacks = { toggleFilters, toggleSort };
   const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelect } = provComponents;
+  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="spBrowsePage">
