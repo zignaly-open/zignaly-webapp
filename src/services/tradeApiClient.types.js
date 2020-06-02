@@ -67,6 +67,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object & AuthorizationPayload} ReadOnlyPayload
+ * @property {boolean} ro
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Array<ReBuyTarget>} reBuyTargets
  * @property {RealInvestment} realInvestment
@@ -311,6 +316,16 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Array<ProviderStats>} ProvidersStatsCollection
+ */
+
+/**
+ * @typedef {Object} Quote
+ * @property {string} quote
+ * @property {string} minNominal
+ */
+
+/**
+ * @typedef {Object.<string, Quote>} QuotesDict
  */
 
 /**
@@ -776,11 +791,11 @@ function createUserBalanceEntity(response) {
  * Transform providers stats response to typed ProvidersStatsCollection.
  *
  * @param {*} response Trade API get user balance raw response.
- * @returns {ProvidersStatsCollection} User balance entity.
+ * @returns {ProvidersStatsCollection} Provider Stats list.
  */
 export function providersStatsResponseTransform(response) {
   if (!isArray(response)) {
-    throw new Error("Response must be an object with different propteries.");
+    throw new Error("Response must be an array of provider stats.");
   }
 
   return response.map((providerStatsItem) => {
@@ -883,4 +898,27 @@ function createProviderStatsEmptyEntity() {
     percentageProfit: "",
     winRate: "",
   };
+}
+
+/**
+ * Transform quote assets response to typed QuotesDict.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {QuotesDict} Quote assets.
+ */
+export function quotesResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: {
+        quote: val.quote,
+        minNotional: val.minotional,
+      },
+    }),
+    {},
+  );
 }

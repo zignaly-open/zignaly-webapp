@@ -8,6 +8,7 @@ import {
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   userPositionItemTransform,
+  quotesResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -275,6 +276,27 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
+   * @typedef {import('./tradeApiClient.types').QuotesDict} QuotesDict
+   */
+
+  /**
+   *
+   * Get quote assets.
+   *
+   * @param {ReadOnlyPayload} payload
+   * @returns {Promise<QuotesDict>} Promise that resolves quote assets.
+   * @memberof TradeApiClient
+   */
+
+  async quotesGet(payload) {
+    const endpointPath = "/fe/api.php?action=getQuoteAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return quotesResponseTransform(responseData);
   }
 }
 
