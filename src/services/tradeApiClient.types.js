@@ -147,7 +147,6 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} statusDesc
  * @property {string} stopLossStyle
  * @property {string} symbol
- * @property {string} type
  * @property {string} userId
  */
 
@@ -488,15 +487,22 @@ export function userPositionItemTransform(positionItem) {
     return `/signalsproviders/${positionItem.providerId}`;
   };
 
-  const calculateRisk = () => {
-    const buyPrice = parseFloat(positionItem.buyPrice);
-    let risk = ((positionItem.stopLossPrice - buyPrice) / buyPrice) * 100;
+  /**
+   * Calculate position risk based on buy price, stop loss and entry side.
+   *
+   * @param {PositionEntity} positionEntity Transformed position entity.
+   * @returns {number} Risk percentage.
+   */
+  const calculateRisk = (positionEntity) => {
+    const buyPrice = positionEntity.buyPrice;
+    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
       return 0.0;
     }
 
-    if (positionItem.type === "SHORT") {
+    // Invert on short position.
+    if (positionEntity.side === "SHORT") {
       risk *= -1;
     }
 
@@ -531,7 +537,6 @@ export function userPositionItemTransform(positionItem) {
     return "breakeven";
   };
 
-  const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const positionEntity = assign(emptyPositionEntity, positionItem, {
@@ -546,11 +551,12 @@ export function userPositionItemTransform(positionItem) {
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
     remainAmount: parseFloat(positionItem.remainAmount),
-    risk: risk,
     sellPrice: parseFloat(positionItem.sellPrice),
+    side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
   });
 
+  const risk = calculateRisk(positionEntity);
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
@@ -559,6 +565,7 @@ export function userPositionItemTransform(positionItem) {
     profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
     providerLink: composeProviderLink(),
     providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    risk: risk,
     riskStyle: risk < 0 ? "loss" : "gain",
     stopLossStyle: getProfitType(
       positionEntity.stopLossPrice,
@@ -650,7 +657,6 @@ function createEmptyPositionEntity() {
     trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
-    type: "",
     updating: false,
     userId: "",
   };
