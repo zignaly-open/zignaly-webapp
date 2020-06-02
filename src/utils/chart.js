@@ -33,8 +33,8 @@ export const generateChart = (context, options) => {
  * @typedef {Object} ChartColorOptions
  * @property {string} backgroundColor Background HTML color.
  * @property {string} borderColor Border HTML color.
- * @property {string} gradientColor1 Chart gradient color top.
- * @property {string} gradientColor2 Chart gradient color bottom.
+ * @property {string} [gradientColor1] Chart gradient color top.
+ * @property {string} [gradientColor2] Chart gradient color bottom.
  */
 
 /**
@@ -174,22 +174,28 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
 };
 
 /**
- * Prepare pie chart options.
+ * @typedef {Object} DoughnutColorOptions
+ * @property {Array<String>} backgroundColor Background HTML color.
+ * @property {string} borderColor Border HTML color.
+ */
+
+/**
+ * Prepare line chart options.
  *
- * @param {Array<string>} chunksColors Pie chunks HTML colors.
- * @param {string} borderColor Border HTML color.
+ * @param {DoughnutColorOptions} colorsOptions Chart colors.
+ * @param {ChartData} chartData Chart dataset.
  * @returns {Object} Chart options.
  */
-export const preparePieChartOptions = (chunksColors, borderColor) => {
+export const preparePieChartOptions = (chartData, colorsOptions) => {
   return {
     type: "doughnut",
     data: {
-      labels: ["BTC", "ETH"],
+      labels: chartData.labels,
       datasets: [
         {
-          data: [25, 75],
-          backgroundColor: chunksColors,
-          borderColor: borderColor,
+          data: chartData.values,
+          backgroundColor: colorsOptions.backgroundColor,
+          borderColor: colorsOptions.borderColor,
         },
       ],
     },

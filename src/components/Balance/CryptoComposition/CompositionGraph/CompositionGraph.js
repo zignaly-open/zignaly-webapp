@@ -1,8 +1,6 @@
 import React from "react";
 import "./CompositionGraph.scss";
-import { Box, Typography } from "@material-ui/core";
 import Doughnut from "../../../Graphs/Doughnut";
-import { FormattedMessage } from "react-intl";
 
 /**
  *
@@ -23,7 +21,49 @@ import { FormattedMessage } from "react-intl";
 const CompositionGraph = (props) => {
   const { list } = props;
   console.log(list);
-  return <Doughnut />;
+
+  const sectionColors = [
+    "#4e07da",
+    "#770fc8",
+    "#a25cd9",
+    "#a946f6",
+    "#f63f82",
+    "#c12860",
+    "#b52a00",
+  ];
+
+  const cryptos = ["BNB", "BTC", "ETH", "PAX", "TUSD", "USDC", "USDT"];
+
+  /**
+   * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
+   * @type {ChartData}
+   */
+  let chartData = { values: [], labels: [] };
+
+  const colorsOptions = {
+    backgroundColor: ["#4e07da"],
+    borderColor: "#4e07da",
+  };
+
+  const prepareChartData = () => {
+    /**
+     * @type {*}
+     */
+    let data = list.length ? list[0] : {};
+    if (data) {
+      for (let a = 0; a < cryptos.length; a++) {
+        if (data[cryptos[a]] && data[cryptos[a]] !== "0E-12") {
+          chartData.values.push(data[cryptos[a]]);
+          chartData.labels.push(cryptos[a]);
+          colorsOptions.backgroundColor.push(sectionColors[a]);
+        }
+      }
+    }
+  };
+
+  prepareChartData();
+
+  return <Doughnut chartData={chartData} colorOptions={colorsOptions} />;
 };
 
 export default CompositionGraph;

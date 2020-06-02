@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./TotalEquityGraph.scss";
 import GenericChart from "../../../Graphs/Chart";
 
@@ -35,8 +35,8 @@ const TotalEquityGraph = (props) => {
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.push(parseFloat(item.totalUSD));
-      chartData.labels.push("");
+      chartData.values.unshift(parseFloat(item.totalUSD));
+      chartData.labels.unshift("");
     });
   };
 
