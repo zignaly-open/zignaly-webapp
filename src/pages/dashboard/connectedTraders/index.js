@@ -3,9 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import "./connectedTraders.scss";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
-import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import useProvidersList from "../../../hooks/useProvidersList";
 
@@ -50,4 +48,4 @@ const ConnectedTraders = () => {
   );
 };
 
-export default compose(withPageContext, withAppLayout, withDashboardLayout)(ConnectedTraders);
+export default compose(withDashboardLayout)(ConnectedTraders);

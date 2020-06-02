@@ -2,9 +2,7 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
-import withAppLayout from "../../../layouts/appLayout";
 import withProvidersLayout from "../../../layouts/providersLayout/withProvidersLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import useProvidersList from "../../../hooks/useProvidersList";
 import "./signalProvidersBrowse.scss";
@@ -57,4 +55,4 @@ const SignalProvidersBrowse = (props) => {
   );
 };
 
-export default compose(withPageContext, withAppLayout, withProvidersLayout)(SignalProvidersBrowse);
+export default compose(withProvidersLayout)(SignalProvidersBrowse);

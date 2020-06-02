@@ -2,9 +2,7 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
-import withAppLayout from "../../../layouts/appLayout";
 import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import "./copyTradersAnalytics.scss";
 import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfitsTable";
@@ -34,8 +32,4 @@ const CopyTradersAnalytics = () => {
   );
 };
 
-export default compose(
-  withPageContext,
-  withAppLayout,
-  withProvidersAnalyticsLayout,
-)(CopyTradersAnalytics);
+export default compose(withProvidersAnalyticsLayout)(CopyTradersAnalytics);

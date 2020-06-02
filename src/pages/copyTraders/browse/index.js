@@ -2,9 +2,7 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { compose } from "recompose";
 import { FormattedMessage, useIntl } from "react-intl";
-import withAppLayout from "../../../layouts/appLayout";
 import withProvidersLayout from "../../../layouts/providersLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import useProvidersList from "../../../hooks/useProvidersList";
 import "./copyTradersBrowse.scss";
@@ -52,4 +50,4 @@ const CopyTradersBrowse = (props) => {
   );
 };
 
-export default compose(withPageContext, withAppLayout, withProvidersLayout)(CopyTradersBrowse);
+export default compose(withProvidersLayout)(CopyTradersBrowse);

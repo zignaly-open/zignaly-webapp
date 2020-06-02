@@ -2,9 +2,7 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import { useIntl, FormattedMessage } from "react-intl";
-import withAppLayout from "../../../layouts/appLayout";
 import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import "./signalProvidersAnalytics.scss";
 import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfitsTable";
@@ -34,8 +32,4 @@ const SignalProvidersAnalytics = () => {
   );
 };
 
-export default compose(
-  withPageContext,
-  withAppLayout,
-  withProvidersAnalyticsLayout,
-)(SignalProvidersAnalytics);
+export default compose(withProvidersAnalyticsLayout)(SignalProvidersAnalytics);
