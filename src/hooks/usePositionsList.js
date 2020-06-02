@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { filter, omitBy, take } from "lodash";
+import { assign, filter, omitBy, take } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
@@ -75,6 +75,7 @@ const usePositionsList = (type) => {
      */
     const isAll = (value) => value === "all";
     const filterValues = omitBy(filters, isAll);
+    console.log("Filters: ", filterValues);
     const matches = filter(filterPositions, filterValues);
 
     return /** @type {UserPositionsCollection} */ (matches);
@@ -104,19 +105,36 @@ const usePositionsList = (type) => {
   useEffect(loadData, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
 
-  const updateExchangeFilter = () => {
+  /**
+   * Update filters with selected exchange.
+   *
+   * @returns {Void} None.
+   */
+  const updateFilters = () => {
     setFilters({
       ...filters,
       internalExchangeId: storeSettings.selectedExchange.internalId,
     });
   };
 
-  useEffect(updateExchangeFilter, [storeSettings.selectedExchange.internalId]);
+  useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
+
+  /**
+   * Combine external state filters with local state.
+   *
+   * @param {Object} values External filter values.
+   *
+   * @returns {Void} None.
+   */
+  const combineFilters = (values) => {
+    const newFilters = assign({}, filters, values);
+    setFilters(newFilters);
+  };
 
   return {
     positionsAll: positions[type],
     positionsFiltered: take(filterData(positions[type]), 100),
-    setFilters: setFilters,
+    setFilters: combineFilters,
   };
 };
 
