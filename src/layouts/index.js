@@ -1,6 +1,4 @@
 import React from "react";
-import { compose } from "recompose";
-import withPageContext from "../pageContext";
 import PrivateAreaLayout from "./PrivateAreaLayout";
 
 /**
