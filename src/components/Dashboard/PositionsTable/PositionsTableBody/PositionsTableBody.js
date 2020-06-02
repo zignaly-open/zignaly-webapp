@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "gatsby";
+import { Link, navigateTo } from "gatsby";
 import "./PositionsTableBody.scss";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
@@ -7,8 +7,8 @@ import { colors } from "../../../../services/theme";
 import { formatNumber, formatPrice } from "../../../../utils/formatters";
 import { ConfirmDialog } from "../../../Dialogs";
 import tradeApi from "../../../../services/tradeApiClient";
-import { navigateTo } from "gatsby";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -163,6 +163,17 @@ const PositionsTableBody = (props) => {
     return null;
   };
 
+  /**
+   * Compose translated status message from status ID.
+   *
+   * @param {number} statusCode Position status code.
+   * @returns {JSX.Element} Formatted message element.
+   */
+  const composeStatusMessage = (statusCode) => {
+    const statusTranslationId = `status.${statusCode}`;
+    return <FormattedMessage id={statusTranslationId} />;
+  };
+
   return (
     <>
       <ConfirmDialog
@@ -192,7 +203,7 @@ const PositionsTableBody = (props) => {
             </TableCell>
             {["closed", "log"].includes(type) && (
               <TableCell align="left" className="cell">
-                {position.statusDesc}
+                {composeStatusMessage(position.status)}
               </TableCell>
             )}
             <TableCell align="left" className="cell">
