@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import withPageContext from "../../../pageContext";
@@ -28,13 +28,8 @@ const CopyTradersBrowse = (props) => {
   const intl = useIntl();
   const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
   const providersCallbacks = { toggleFilters, toggleSort };
-  const [, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const {
-    ProvidersList,
-    ProvidersFilters,
-    ProvidersSort,
-    ProvidersTimeFrameSelect,
-  } = provComponents;
+  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
+  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="ctBrowsePage">
@@ -44,7 +39,9 @@ const CopyTradersBrowse = (props) => {
 
       {showFilters && <ProvidersFilters />}
       {showSort && <ProvidersSort />}
-      <ProvidersTimeFrameSelect />
+      <TimeFrameSelectRow
+        title={`${providers.length} ${intl.formatMessage({ id: "copyt.traders" })}`}
+      />
       <ProvidersList />
     </Box>
   );

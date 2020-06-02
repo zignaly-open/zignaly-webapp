@@ -11,8 +11,8 @@
 
   .traderCardHeaderTitleBox {
     height: 40px;
-    width: 100%;
     margin-left: 20px;
+    width: 100%;
 
     .nameBox {
       height: 40px;
@@ -38,7 +38,7 @@
       height: 40px;
 
       h6 {
-        @include text-no-wrap();
+        @include text-no-wrap;
       }
     }
   }

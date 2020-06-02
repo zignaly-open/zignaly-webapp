@@ -14,7 +14,7 @@ const ConnectedTraders = () => {
 
   const providersOptions = { copyTradersOnly: true, connectedOnly: true, showSummary: true };
   const [, provComponents] = useProvidersList(providersOptions, {});
-  const { ProvidersList, TimeFrameSelect } = provComponents;
+  const { ProvidersList, TimeFrameSelectRow } = provComponents;
 
   return (
     <>
@@ -27,14 +27,7 @@ const ConnectedTraders = () => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <Box className="headlineBox">
-          <Typography variant="h4">
-            <FormattedMessage id="dashboard.traders.copying" />
-          </Typography>
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
-            <TimeFrameSelect />
-          </Box>
-        </Box>
+        <TimeFrameSelectRow title={<FormattedMessage id="dashboard.traders.copying" />} />
         <Box
           alignItems="center"
           className="tradersBox"

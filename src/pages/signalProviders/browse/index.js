@@ -28,13 +28,8 @@ const SignalProvidersBrowse = (props) => {
   const intl = useIntl();
   const providersOptions = { copyTradersOnly: false, connectedOnly: false, showSummary: false };
   const providersCallbacks = { toggleFilters, toggleSort };
-  const [, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const {
-    ProvidersList,
-    ProvidersFilters,
-    ProvidersSort,
-    ProvidersTimeFrameSelect,
-  } = provComponents;
+  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
+  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="spBrowsePage">
@@ -48,7 +43,9 @@ const SignalProvidersBrowse = (props) => {
 
       {showFilters && <ProvidersFilters />}
       {showSort && <ProvidersSort />}
-      <ProvidersTimeFrameSelect />
+      <TimeFrameSelectRow
+        title={`${providers.length} ${intl.formatMessage({ id: "menu.signalproviders" })}`}
+      />
       <ProvidersList />
     </Box>
   );

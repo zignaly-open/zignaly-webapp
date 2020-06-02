@@ -1,11 +1,10 @@
-// sass-lint:disable no-important
 .customTooltipPopper {
   &.customPos {
     transform: translate(0, -100%);
 
     .customTooltip {
-      transform: translate(-50%, 0) !important;
-      transition: none !important;
+      transform: translate(-50%, 0) !important; // sass-lint:disable-line no-important
+      transition: none !important; // sass-lint:disable-line no-important
     }
   }
 
@@ -18,9 +17,9 @@
   }
 
   .lineTooltip {
-    transform: translate(-2px, -8px);
     border: solid 2px $borderColor;
     height: 21px;
+    transform: translate(-2px, -8px);
     width: 1px;
   }
 }

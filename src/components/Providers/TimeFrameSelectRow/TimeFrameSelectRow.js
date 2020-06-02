@@ -2,33 +2,31 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import TimeFrameSelect from "../../TimeFrameSelect";
 import { FormattedMessage } from "react-intl";
-import "./ProvidersTimeFrameSelect.scss";
+import "./TimeFrameSelectRow.scss";
 
 /**
- * @typedef {Object} ProvidersTimeFrameSelectPropTypes
+ * @typedef {Object} TimeFrameSelectRowPropTypes
  * @property {function} onChange Callback that delegate timeframe changes to caller.
  * @property {number} value Selected value.
- * @property {boolean} copyTraders Flag used for the title.
- * @property {number} providersCount Providers count.
+ * @property {string} title Title to display next to the dropdown.
  */
 
 /**
  * Provides row to display providers count with a dropdown to select timeframe.
  *
- * @param {ProvidersTimeFrameSelectPropTypes} props Component properties.
+ * @param {TimeFrameSelectRowPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersTimeFrameSelect = ({ providersCount, copyTraders, onChange, value }) => (
+const TimeFrameSelectRow = ({ title, onChange, value }) => (
   <Box
+    className="timeFrameSelectRow"
     display="flex"
     flexDirection="row"
-    justifyContent="space-between"
     flexWrap="wrap"
-    className="providersTimeFrameSelect"
+    justifyContent="space-between"
   >
     <Typography className="providersCount" variant="h3">
-      {providersCount}{" "}
-      <FormattedMessage id={copyTraders ? "copyt.traders" : "menu.signalproviders"} />
+      {title}
     </Typography>
     <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
       <TimeFrameSelect onChange={onChange} value={value} />
@@ -36,4 +34,4 @@ const ProvidersTimeFrameSelect = ({ providersCount, copyTraders, onChange, value
   </Box>
 );
 
-export default ProvidersTimeFrameSelect;
+export default TimeFrameSelectRow;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ProvidersFilters from "../components/Providers/ProvidersFilters";
 import ProvidersSort from "../components/Providers/ProvidersSort";
 import ProvidersList from "../components/Providers/ProvidersList";
-import ProvidersTimeFrameSelect from "../components/Providers/ProvidersTimeFrameSelect";
+import TimeFrameSelectRow from "../components/Providers/TimeFrameSelectRow";
 import tradeApi from "../services/tradeApiClient";
 import { useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
  * @property {function} ProvidersList
  * @property {function} ProvidersFilters
  * @property {function} ProvidersSort
- * @property {function} ProvidersTimeFrameSelect
+ * @property {function} TimeFrameSelectRow
  */
 
 /**
@@ -167,20 +167,15 @@ const useProvidersList = (options, callbacks) => {
     <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={toggleSort} sort={sort} />
   );
 
-  const ProvidersTimeFrameSelectMaker = () => (
-    <ProvidersTimeFrameSelect
-      onChange={setTimeFrame}
-      value={timeFrame}
-      providersCount={providers.length}
-      copyTraders={copyTradersOnly}
-    />
+  const TimeFrameSelectRowMaker = ({ title }) => (
+    <TimeFrameSelectRow title={title} onChange={setTimeFrame} value={timeFrame} />
   );
 
   const components = {
     ProvidersList: ProvidersListMaker,
     ProvidersFilters: ProvidersFiltersMaker,
     ProvidersSort: ProvidersSortMaker,
-    ProvidersTimeFrameSelect: ProvidersTimeFrameSelectMaker,
+    TimeFrameSelectRow: TimeFrameSelectRowMaker,
   };
 
   return [providersFiltered, components];
