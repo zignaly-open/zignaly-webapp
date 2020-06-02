@@ -148,6 +148,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} stopLossStyle
  * @property {string} symbol
  * @property {string} userId
+ * @property {('unsold' | 'sold' | 'unopened' | '')} type
  */
 
 /**
@@ -659,6 +660,7 @@ function createEmptyPositionEntity() {
     trailingStopTriggered: false,
     updating: false,
     userId: "",
+    type: "",
   };
 }
 

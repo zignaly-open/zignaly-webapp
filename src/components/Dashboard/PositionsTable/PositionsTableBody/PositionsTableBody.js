@@ -190,6 +190,11 @@ const PositionsTableBody = (props) => {
             <TableCell align="left" className="cell">
               {position.openDateReadable}
             </TableCell>
+            {type === "log" && (
+              <TableCell align="left" className="cell">
+                {position.type}
+              </TableCell>
+            )}
             {type === "closed" && (
               <TableCell align="left" className="cell">
                 {position.closeDateReadable}
