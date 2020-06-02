@@ -45,6 +45,7 @@ const Sidebar = () => {
       justifyContent="center"
       onMouseEnter={showFullMenu}
       onMouseLeave={showSmallMenu}
+      onMouseOver={showFullMenu}
     >
       <Link
         activeClassName={"active"}

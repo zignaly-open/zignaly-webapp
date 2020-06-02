@@ -1,7 +1,5 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { compose } from "recompose";
-import withLayout from "../layouts/appLayout";
 import astronaut from "../images/gatsby-astronaut.png";
 
 const IndexPage = () => (
@@ -15,4 +13,4 @@ const IndexPage = () => (
   </>
 );
 
-export default compose(withLayout)(IndexPage);
+export default IndexPage;
