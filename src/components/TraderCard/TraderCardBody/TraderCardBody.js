@@ -8,6 +8,7 @@ import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { toNumber } from "lodash";
+import { useSelector } from "react-redux";
 
 /**
  * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
@@ -15,6 +16,7 @@ import { toNumber } from "lodash";
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  *
  * @typedef {Object} TraderCardBodyPropTypes
@@ -31,6 +33,14 @@ import { toNumber } from "lodash";
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
   const { risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  /**
+   * Settings darkStyle selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {boolean} Flag that indicates if darkStyle is enabled.
+   */
+  const darkStyleSelector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(darkStyleSelector);
 
   /**
    * Format tooltip content.
@@ -165,11 +175,14 @@ const TraderCard = (props) => {
             justifyContent="space-around"
           >
             {!disable && (
-              <CustomButton className="textDefault">
+              <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
                 <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
               </CustomButton>
             )}
-            <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
+            <CustomButton
+              className={darkStyle ? "textPurple" : "textDefault"}
+              onClick={() => navigate("/copyTrader/profile")}
+            >
               <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
             </CustomButton>
           </Box>
