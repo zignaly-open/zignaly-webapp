@@ -12,6 +12,22 @@ import {
 } from "./tradeApiClient.types";
 
 /**
+ * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
+ * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
+ * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
+ * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+ * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
+ * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
+ * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
+ * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
+ * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+ * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ */
+
+/**
  * Trade API client service, provides integration to API endpoints.
  *
  * @constructor
@@ -67,11 +83,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
-   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
-   */
-
-  /**
    * Login a user in Trade API.
    *
    * @param {UserLoginPayload} payload User login payload
@@ -90,11 +101,6 @@ class TradeApiClient {
   userLogout() {}
 
   /**
-   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
-   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
-   */
-
-  /**
    * Create user at Zignaly Trade API.
    *
    * @param {UserCreatePayload} payload User create payload.
@@ -111,14 +117,9 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
-   * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
-   */
-
-  /**
    * Get user open trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -134,7 +135,7 @@ class TradeApiClient {
   /**
    * Get user closed trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -153,7 +154,7 @@ class TradeApiClient {
   /**
    * Get user unsold / unopened trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -168,11 +169,6 @@ class TradeApiClient {
 
     return userPositionsResponseTransform(responseData);
   }
-
-  /**
-   * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
-   * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
-   */
 
   /**
    * Get providers list.
@@ -221,11 +217,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
-   */
-
-  /**
    * Get providers profits stats.
    *
    * @param {ProvidersStatsPayload} payload Get providers stats payload.
@@ -240,11 +231,6 @@ class TradeApiClient {
 
     return providersStatsResponseTransform(responseData);
   }
-
-  /**
-   * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
-   * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
-   */
 
   /**
    * Close a position.

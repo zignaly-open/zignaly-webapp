@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { filter, omitBy, take } from "lodash";
+import { assign, filter, omitBy, take } from "lodash";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -22,10 +23,12 @@ import { filter, omitBy, take } from "lodash";
  * @returns {HookPositionsListData} Positions collection.
  */
 const usePositionsList = (type) => {
+  const storeSettings = useStoreSettingsSelector();
   const defaultFilters = {
     provider: "all",
     pair: "all",
     side: "all",
+    internalExchangeId: storeSettings.selectedExchange.internalId,
   };
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -34,10 +37,12 @@ const usePositionsList = (type) => {
     closed: [],
     log: [],
   });
+
   const storeSession = useStoreSessionSelector();
   const routeFetchMethod = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     if (type === "closed") {
@@ -96,13 +101,39 @@ const usePositionsList = (type) => {
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
+  useEffect(loadData, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
+
+  /**
+   * Update filters with selected exchange.
+   *
+   * @returns {Void} None.
+   */
+  const updateFilters = () => {
+    setFilters({
+      ...filters,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+    });
+  };
+
+  useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
+
+  /**
+   * Combine external state filters with local state.
+   *
+   * @param {Object} values External filter values.
+   *
+   * @returns {Void} None.
+   */
+  const combineFilters = (values) => {
+    const newFilters = assign({}, filters, values);
+    setFilters(newFilters);
+  };
 
   return {
     positionsAll: positions[type],
     positionsFiltered: take(filterData(positions[type]), 100),
-    setFilters: setFilters,
+    setFilters: combineFilters,
   };
 };
 
