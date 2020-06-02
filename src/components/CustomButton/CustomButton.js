@@ -5,6 +5,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {import('react').ButtonHTMLAttributes<HTMLButtonElement>} ButtonHTMLAttributes
+ * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
  */
 
 /**
@@ -22,7 +23,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 /**
  * Default component's props.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps & ButtonProps} props
  */
 
 const CustomButton = (props) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import "./CustomFilters.scss";
-import { Box, Button, Icon } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
 import ChevronRightIcon from "../../images/filters/chevron-right.svg";
