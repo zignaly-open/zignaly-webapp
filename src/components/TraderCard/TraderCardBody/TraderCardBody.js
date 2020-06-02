@@ -7,6 +7,7 @@ import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
+import { toNumber } from "lodash";
 
 /**
  * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
@@ -38,7 +39,7 @@ const TraderCard = (props) => {
    */
   const tooltipFormat = (tooltipItem) => (
     <Box className="contentTooltip">
-      <Box>{+tooltipItem.yLabel.toFixed(2) + "%"}</Box>
+      <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
       <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
     </Box>
   );
