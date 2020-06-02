@@ -95,6 +95,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} leverage
  * @property {number} netProfit
  * @property {number} netProfitPercentage
+ * @property {string} netProfitStyle
  * @property {number} openDate
  * @property {number} positionSizeQuote
  * @property {number} profit
@@ -564,6 +565,7 @@ export function userPositionItemTransform(positionItem) {
       positionEntity.buyPrice,
       positionEntity.side,
     ),
+    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
   });
 
   return augmentedEntity;
@@ -600,6 +602,7 @@ function createEmptyPositionEntity() {
     logoUrl: "",
     netProfit: 0,
     netProfitPercentage: 0,
+    netProfitStyle: "",
     openDate: 0,
     openDateReadable: "",
     openTrigger: "",

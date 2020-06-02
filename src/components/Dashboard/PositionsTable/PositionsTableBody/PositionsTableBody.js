@@ -333,10 +333,14 @@ const PositionsTableBody = (props) => {
                   {formatNumber(position.fees)}
                 </TableCell>
                 <TableCell align="left" className="cell">
-                  {formatNumber(position.netProfitPercentage, 2)}
+                  <span className={position.netProfitStyle}>
+                    {formatNumber(position.netProfitPercentage, 2)}
+                  </span>
                 </TableCell>
                 <TableCell align="left" className="cell">
-                  {formatNumber(position.netProfit)}
+                  <span className={position.netProfitStyle}>
+                    {formatNumber(position.netProfit)}
+                  </span>
                 </TableCell>
               </>
             )}

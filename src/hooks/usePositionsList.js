@@ -75,7 +75,6 @@ const usePositionsList = (type) => {
      */
     const isAll = (value) => value === "all";
     const filterValues = omitBy(filters, isAll);
-    console.log("Filters: ", filterValues);
     const matches = filter(filterPositions, filterValues);
 
     return /** @type {UserPositionsCollection} */ (matches);
