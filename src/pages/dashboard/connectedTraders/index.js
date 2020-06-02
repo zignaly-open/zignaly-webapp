@@ -1,7 +1,7 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./connectedTraders.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
@@ -12,9 +12,9 @@ import useProvidersList from "../../../hooks/useProvidersList";
 const ConnectedTraders = () => {
   const intl = useIntl();
 
-  const providersOptions = { copyTradersOnly: false, connectedOnly: true, showSummary: true };
+  const providersOptions = { copyTradersOnly: true, connectedOnly: true, showSummary: true };
   const [, provComponents] = useProvidersList(providersOptions, {});
-  const { ProvidersList, TimeFrameSelect } = provComponents;
+  const { ProvidersList, TimeFrameSelectRow } = provComponents;
 
   return (
     <>
@@ -27,14 +27,7 @@ const ConnectedTraders = () => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <Box className="headlineBox">
-          <Typography variant="h4">
-            <FormattedMessage id="dashboard.traders.copying" />
-          </Typography>
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
-            <TimeFrameSelect />
-          </Box>
-        </Box>
+        <TimeFrameSelectRow title={<FormattedMessage id="dashboard.traders.copying" />} />
         <Box
           alignItems="center"
           className="tradersBox"

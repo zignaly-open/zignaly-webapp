@@ -1,20 +1,22 @@
 import React from "react";
 import "./TraderCardBody.scss";
 import { Box, Typography } from "@material-ui/core";
-import GenericChart from "../../Graphs/Chart";
+import LineChart from "../../Graphs/Chart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
 import { FormattedMessage } from "react-intl";
+import CustomToolip from "../../CustomTooltip";
+import { toNumber } from "lodash";
+import { useSelector } from "react-redux";
 
 /**
- * @typedef {import('../../../utils/chart').ChartColorOptions} ChartColorOptions
- * @typedef {import('../../../utils/chart').ChartData} ChartData
- */
-
-/**
+ * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
+ * @typedef {import("../../Graphs/Chart/Chart").ChartData} ChartData
+ * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  *
  * @typedef {Object} TraderCardBodyPropTypes
@@ -30,11 +32,30 @@ import { FormattedMessage } from "react-intl";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { id, risk, isCopyTrading, followers, disable, dailyReturns } = provider;
-  let cardId = "traderCard" + id;
+  const { risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  /**
+   * Settings darkStyle selector.
+   *
+   * @param {DefaultState} state Redux store state data.
+   * @return {boolean} Flag that indicates if darkStyle is enabled.
+   */
+  const darkStyleSelector = (state) => state.settings.darkStyle;
+  const darkStyle = useSelector(darkStyleSelector);
 
   /**
-   * @type {ChartData} chartData
+   * Format tooltip content.
+   * @param {ChartTooltipItem} tooltipItem Tooltip object.
+   * @returns {React.ReactNode} Tooltip content.
+   */
+  const tooltipFormat = (tooltipItem) => (
+    <Box className="contentTooltip">
+      <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
+      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
+    </Box>
+  );
+
+  /**
+   * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
 
@@ -55,7 +76,7 @@ const TraderCard = (props) => {
     //   day: item.name,
     //   returns: acc.toFixed(2),
     // });
-    chartData.values.push(acc.toFixed(2));
+    chartData.values.push(acc);
     chartData.labels.push(item.name);
     return acc;
   }, 0);
@@ -91,19 +112,22 @@ const TraderCard = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <Box
-          className="returns"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-        >
-          <Typography className={colorClass} variant="h4">
-            {totalReturns.toFixed(2)}%
-          </Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.returnsperiod" />
-          </Typography>
-        </Box>
+        <CustomToolip title={<FormattedMessage id="copyt.subtitle" />}>
+          <Box
+            className="returns"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Typography className={colorClass} variant="h4">
+              {+totalReturns.toFixed(2)}%
+            </Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.returnsperiod" />
+            </Typography>
+          </Box>
+        </CustomToolip>
+
         <Box
           alignItems="flex-end"
           className="openPositions"
@@ -122,9 +146,11 @@ const TraderCard = (props) => {
       <Box>
         <Box className="traderCardGraph">
           <Box className="chartWrapper">
-            <GenericChart chartData={chartData} colorsOptions={colorsOptions} id={cardId}>
-              <canvas className="chartCanvas" id={cardId} />
-            </GenericChart>
+            <LineChart
+              chartData={chartData}
+              colorsOptions={colorsOptions}
+              tooltipFormat={tooltipFormat}
+            />
           </Box>
         </Box>
         <Box
@@ -135,7 +161,7 @@ const TraderCard = (props) => {
         >
           <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {!disable ? (
-              <h6 className="callout2 green">You and {followers} are copying this trader</h6>
+              <h6 className="callout2 green">You and {followers - 1} are copying this trader</h6>
             ) : (
               <h6 className="callout1">{followers} people copying this trader</h6>
             )}
@@ -149,11 +175,14 @@ const TraderCard = (props) => {
             justifyContent="space-around"
           >
             {!disable && (
-              <CustomButton className="textDefault">
+              <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
                 <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
               </CustomButton>
             )}
-            <CustomButton className="textDefault" onClick={() => navigate("/copyTrader/profile")}>
+            <CustomButton
+              className={darkStyle ? "textPurple" : "textDefault"}
+              onClick={() => navigate("/copyTrader/profile")}
+            >
               <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
             </CustomButton>
           </Box>

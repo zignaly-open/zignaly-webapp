@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import withPageContext from "../../../pageContext";
@@ -29,7 +29,7 @@ const CopyTradersBrowse = (props) => {
   const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
   const providersCallbacks = { toggleFilters, toggleSort };
   const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelect } = provComponents;
+  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="ctBrowsePage">
@@ -39,14 +39,9 @@ const CopyTradersBrowse = (props) => {
 
       {showFilters && <ProvidersFilters />}
       {showSort && <ProvidersSort />}
-      <Box display="flex" flexDirection="row" justifyContent="space-between" pb="12px">
-        <Typography className="regularHeading" variant="h3">
-          {providers.length} <FormattedMessage id="copyt.traders" />
-        </Typography>
-        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
-          <TimeFrameSelect />
-        </Box>
-      </Box>
+      <TimeFrameSelectRow
+        title={`${providers.length} ${intl.formatMessage({ id: "copyt.traders" })}`}
+      />
       <ProvidersList />
     </Box>
   );

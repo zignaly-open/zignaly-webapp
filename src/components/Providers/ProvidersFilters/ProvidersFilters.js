@@ -1,6 +1,7 @@
 import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
+import useQuoteAssets from "../../../hooks/useQuoteAssets";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
@@ -10,7 +11,6 @@ import CustomSelect from "../../CustomSelect";
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
  * @property {string} coin Selected coin.
  * @property {string} exchange Selected exchange.
- *
  */
 
 /**
@@ -27,7 +27,8 @@ const ProvidersFilters = ({
   onExchangeChange,
   clearFilters,
 }) => {
-  const coins = ["BTC", "USDT"];
+  const quoteAssets = useQuoteAssets();
+  const coins = Object.keys(quoteAssets);
   const exchanges = ["Binance", "KuCoin"];
 
   return (

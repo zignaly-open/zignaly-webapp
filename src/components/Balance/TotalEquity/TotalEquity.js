@@ -43,7 +43,7 @@ const TotalEquity = () => {
         <TitleBar />
         <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
       </Box>
-      <TotalEquityGraph list={list} />
+      <TotalEquityGraph />
     </Box>
   );
 };

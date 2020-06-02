@@ -29,9 +29,7 @@ const TotalEquityGraph = () => {
   };
 
   return (
-    <GenericChart chartData={chartData} colorsOptions={colorsOptions} id="myChart">
-      <canvas className="chartCanvas" id="myChart" />
-    </GenericChart>
+    <GenericChart chartData={chartData} colorsOptions={colorsOptions} tooltipFormat={() => 100} />
   );
 };
 

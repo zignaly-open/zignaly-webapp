@@ -9,6 +9,7 @@ import "./TimeFrameSelect.scss";
  * @type {Array<OptionType>}
  */
 const timeframes = [
+  { label: "Last 7 days", val: 7 },
   { label: "Last month", val: 30 },
   { label: "Last 90 days", val: 90 },
   { label: "Last year", val: 365 },
