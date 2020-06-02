@@ -10,6 +10,7 @@ import { uniqBy, sortBy } from "lodash";
  * @property {Function} onChange Callback to broadcast filters changes to caller.
  * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  * @property {UserPositionsCollection} positions
+ * @property {boolean} showTypesFilter
  */
 
 /**
@@ -19,11 +20,12 @@ import { uniqBy, sortBy } from "lodash";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { onChange, onClose, positions } = props;
+  const { onChange, onClose, positions, showTypesFilter } = props;
   const defaultFilters = {
     provider: "all",
     pair: "all",
     side: "all",
+    type: "all",
   };
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -45,9 +47,15 @@ const PositionFilters = (props) => {
 
   const pairOptions = extractPairOptions();
   const sides = [
-    { label: "All Types", val: "all" },
+    { label: "All Sides", val: "all" },
     { label: "SHORT", val: "SHORT" },
     { label: "LONG", val: "LONG" },
+  ];
+
+  const types = [
+    { label: "All Types", val: "all" },
+    { label: "UNSOLD", val: "Unsold" },
+    { label: "UNOPENED", val: "Unopen" },
   ];
 
   const providerOptions = extractProviderOptions();
@@ -63,7 +71,7 @@ const PositionFilters = (props) => {
   /**
    * Set provider filter value.
    *
-   * @param {string} value Selected filter value.
+   * @param {string} value Selected provider value.
    * @returns {Void} None.
    */
   const setProvider = (value) => {
@@ -74,9 +82,9 @@ const PositionFilters = (props) => {
   };
 
   /**
-   * Set pair filter value.
+   * Set coin pair filter value.
    *
-   * @param {string} value Selected filter value.
+   * @param {string} value Selected coin value.
    * @returns {Void} None.
    */
   const setCoin = (value) => {
@@ -87,9 +95,9 @@ const PositionFilters = (props) => {
   };
 
   /**
-   * Set type filter value.
+   * Set side filter value.
    *
-   * @param {string} value Selected filter value.
+   * @param {string} value Selected side value.
    * @returns {Void} None.
    */
   const setSide = (value) => {
@@ -99,10 +107,26 @@ const PositionFilters = (props) => {
     });
   };
 
+  /**
+   * Set type filter value.
+   *
+   * @param {string} value Selected type value.
+   * @returns {Void} None.
+   */
+  const setType = (value) => {
+    setFilters({
+      ...filters,
+      type: value,
+    });
+  };
+
   useEffect(broadcastChange, [filters]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
+      {showTypesFilter && (
+        <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
+      )}
       <CustomSelect
         label=""
         onChange={setProvider}

@@ -28,6 +28,7 @@ const usePositionsList = (type) => {
     provider: "all",
     pair: "all",
     side: "all",
+    type: "all",
     internalExchangeId: storeSettings.selectedExchange.internalId,
   };
 
