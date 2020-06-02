@@ -14,14 +14,7 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
  */
 const withProvidersAnalyticsLayout = (Component) => {
   /**
-   * @typedef {Object} WithSignalProvidersAnalyticsPropsType
-   * @property {string} path Providers page path.
-   */
-
-  /**
    * Perform component wrapping.
-   *
-   * @param {WithSignalProvidersAnalyticsPropsType} props Default params.
    *
    * @returns {JSX.Element} Component JSX.
    */
