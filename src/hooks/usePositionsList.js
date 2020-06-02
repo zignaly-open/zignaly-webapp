@@ -23,10 +23,12 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * @returns {HookPositionsListData} Positions collection.
  */
 const usePositionsList = (type) => {
+  const storeSettings = useStoreSettingsSelector();
   const defaultFilters = {
     provider: "all",
     pair: "all",
     side: "all",
+    internalExchangeId: storeSettings.selectedExchange.internalId,
   };
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -36,7 +38,6 @@ const usePositionsList = (type) => {
     log: [],
   });
 
-  const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const routeFetchMethod = () => {
     const payload = {
@@ -100,8 +101,17 @@ const usePositionsList = (type) => {
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, type]);
+  useEffect(loadData, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
+
+  const updateExchangeFilter = () => {
+    setFilters({
+      ...filters,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+    });
+  };
+
+  useEffect(updateExchangeFilter, [storeSettings.selectedExchange.internalId]);
 
   return {
     positionsAll: positions[type],
