@@ -12,6 +12,7 @@ menu.support: "Contact Support"
 menu.tradingterminal: "Trading Terminal"
 menu.manageaccounts: "Manage Accounts"
 menu.demo: "DEMO"
+menu.testnet: "TestNet"
 menu.exchangeSelectionTitle: "Select Trading Account"
 
 # BALANCE
