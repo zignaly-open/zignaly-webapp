@@ -161,9 +161,19 @@ const TraderCard = (props) => {
         >
           <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {!disable ? (
-              <h6 className="callout2 green">You and {followers - 1} are copying this trader</h6>
+              <h6 className="callout2 green">
+                <FormattedMessage
+                  id={isCopyTrading ? "trader.others" : "provider.others"}
+                  values={{
+                    count: followers - 1,
+                  }}
+                />
+              </h6>
             ) : (
-              <h6 className="callout1">{followers} people copying this trader</h6>
+              <h6 className="callout1">
+                {followers}{" "}
+                <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
+              </h6>
             )}
           </Box>
 
