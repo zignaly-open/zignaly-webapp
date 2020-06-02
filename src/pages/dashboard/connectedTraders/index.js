@@ -1,7 +1,7 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./connectedTraders.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";

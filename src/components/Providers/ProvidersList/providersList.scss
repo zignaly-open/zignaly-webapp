@@ -2,7 +2,7 @@
   .tradersBox {
     display: grid;
     grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(354px, 425px));
+    grid-template-columns: repeat(auto-fit, minmax(354px, 1fr));
     justify-content: flex-start;
   }
 

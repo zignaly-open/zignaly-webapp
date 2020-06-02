@@ -167,8 +167,14 @@ const useProvidersList = (options, callbacks) => {
     <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={toggleSort} sort={sort} />
   );
 
+  /**
+   * TimeFrameSelectRow Maker
+   * @param {Object} props Props.
+   * @param {string} props.title Row title.
+   * @returns  {JSX.Element} TimeFrameSelectRow
+   */
   const TimeFrameSelectRowMaker = ({ title }) => (
-    <TimeFrameSelectRow title={title} onChange={setTimeFrame} value={timeFrame} />
+    <TimeFrameSelectRow onChange={setTimeFrame} title={title} value={timeFrame} />
   );
 
   const components = {

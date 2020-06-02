@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import withAppLayout from "../../../layouts/appLayout";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import withPageContext from "../../../pageContext";

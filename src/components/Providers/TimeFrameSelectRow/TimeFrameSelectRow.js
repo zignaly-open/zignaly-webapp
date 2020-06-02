@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import TimeFrameSelect from "../../TimeFrameSelect";
-import { FormattedMessage } from "react-intl";
 import "./TimeFrameSelectRow.scss";
 
 /**

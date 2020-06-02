@@ -12,7 +12,9 @@ rules:
   placeholder-in-extend: 1
 
   # Mixins
-  mixins-before-declarations: 1
+  mixins-before-declarations:
+    - 1
+    - exclude: ["breakpoint", "media", "mq"]
 
   # Line Spacing
   one-declaration-per-line: 1
