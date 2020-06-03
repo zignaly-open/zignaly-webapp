@@ -55,7 +55,7 @@ const PasswordStrength = (props) => {
       <CloseIcon className="closeIcon" onClick={onClose} />
       <span className="title">Password Requirements</span>
       <span className="text"> - At least 8 characters</span>
-      <span className="text"> - Contains letters, numbers, 1 symbol</span>
+      <span className="text"> - Contains letters, numbers, and at least 1 symbol</span>
       <span className="title last">Password Strength</span>
       <Box
         alignItems="center"

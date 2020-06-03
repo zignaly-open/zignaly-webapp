@@ -49,14 +49,16 @@ const withProvidersLayout = (Component) => {
         flexDirection="row"
         justifyContent="space-around"
       >
-        <Icon>
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={() => toggleFilters()}
-            src={showFilters ? FilterFillIcon : FilterIcon}
-          />
-        </Icon>
+        {!props.path.startsWith("/signalProviders") && (
+          <Icon>
+            <img
+              alt="zignaly"
+              className="icon"
+              onClick={() => toggleFilters()}
+              src={showFilters ? FilterFillIcon : FilterIcon}
+            />
+          </Icon>
+        )}
 
         <Icon>
           <img

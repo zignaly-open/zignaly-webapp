@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
+import { uniqBy, sortBy } from "lodash";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} PositionFiltersPropTypes
- * @property {Function} onChange Callback that delegate filters changes to caller.
+ * @property {Function} onChange Callback to broadcast filters changes to caller.
  * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
+ * @property {UserPositionsCollection} positions
+ * @property {boolean} showTypesFilter
  */
 
 /**
@@ -15,33 +19,122 @@ import CustomSelect from "../../CustomSelect";
  * @param {PositionFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const PositionFilters = ({ onChange, onClose }) => {
-  const types = [
-    { label: "All types", val: "all" },
-    { label: "Type 1", val: "type1" },
-  ];
-  const mdas = [{ label: "MDA", val: "mda" }];
-  const traders = [{ label: "All Traders", val: "all" }];
+const PositionFilters = (props) => {
+  const { onChange, onClose, positions, showTypesFilter } = props;
+  const defaultFilters = {
+    provider: "all",
+    pair: "all",
+    side: "all",
+    type: "all",
+  };
+  const [filters, setFilters] = useState(defaultFilters);
 
-  const [type, setType] = useState(types[0].val);
-  const [mda, setMDA] = useState(mdas[0].val);
-  const [trader, setTrader] = useState(traders[0].val);
+  const extractPairOptions = () => {
+    const coinsDistinct = uniqBy(positions, "pair").map((position) => {
+      return { label: position.pair, val: position.pair };
+    });
 
-  const clearFilters = () => {
-    setType("");
-    setMDA("");
-    setTrader("");
+    return [{ label: "All Pairs", val: "all" }].concat(sortBy(coinsDistinct, "label"));
   };
 
-  useEffect(() => {
-    onChange(type, mda, trader);
-  }, [type, mda, trader, onChange]);
+  const extractProviderOptions = () => {
+    const coinsDistinct = uniqBy(positions, "providerName").map((position) => {
+      return { label: position.providerName, val: position.providerName };
+    });
+
+    return [{ label: "All Providers", val: "all" }].concat(sortBy(coinsDistinct, "label"));
+  };
+
+  const pairOptions = extractPairOptions();
+  const sides = [
+    { label: "All Sides", val: "all" },
+    { label: "SHORT", val: "SHORT" },
+    { label: "LONG", val: "LONG" },
+  ];
+
+  const types = [
+    { label: "All Types", val: "all" },
+    { label: "UNSOLD", val: "unsold" },
+    { label: "UNOPEN", val: "unopen" },
+  ];
+
+  const providerOptions = extractProviderOptions();
+
+  const clearFilters = () => {
+    setFilters(defaultFilters);
+  };
+
+  const broadcastChange = () => {
+    onChange(filters);
+  };
+
+  /**
+   * Set provider filter value.
+   *
+   * @param {string} value Selected provider value.
+   * @returns {Void} None.
+   */
+  const setProvider = (value) => {
+    setFilters({
+      ...filters,
+      provider: value,
+    });
+  };
+
+  /**
+   * Set coin pair filter value.
+   *
+   * @param {string} value Selected coin value.
+   * @returns {Void} None.
+   */
+  const setCoin = (value) => {
+    setFilters({
+      ...filters,
+      pair: value,
+    });
+  };
+
+  /**
+   * Set side filter value.
+   *
+   * @param {string} value Selected side value.
+   * @returns {Void} None.
+   */
+  const setSide = (value) => {
+    setFilters({
+      ...filters,
+      side: value,
+    });
+  };
+
+  /**
+   * Set type filter value.
+   *
+   * @param {string} value Selected type value.
+   * @returns {Void} None.
+   */
+  const setType = (value) => {
+    setFilters({
+      ...filters,
+      type: value,
+    });
+  };
+
+  useEffect(broadcastChange, [filters]);
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
-      <CustomSelect label="" onChange={setType} options={types} value={type} />
-      <CustomSelect label="" onChange={setMDA} options={mdas} value={mda} />
-      <CustomSelect label="" onChange={setTrader} options={traders} value={trader} />
+      {showTypesFilter && (
+        <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
+      )}
+      <CustomSelect
+        label=""
+        onChange={setProvider}
+        options={providerOptions}
+        value={filters.provider}
+      />
+      <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
+      <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
     </CustomFilters>
   );
 };

@@ -10,6 +10,36 @@
     width: 106px;
   }
 
+  .userExchangeList {
+    margin-right: 20px;
+
+    .selectInput {
+      min-width: 200px;
+
+      .root {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        min-width: 180px;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-top: 0;
+
+        img {
+          height: 20px;
+          margin-right: 10px;
+          width: 20px;
+        }
+
+        .name {
+          font-family: "PlexSans-Medium";
+          margin-right: 5px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
   .linksContainer {
     .linkBox {
       padding: 0 12px;
@@ -19,12 +49,6 @@
         font-size: 28px;
         height: 32px;
         widows: 32px;
-      }
-    }
-
-    .userExchangeList {
-      .selectInput {
-        min-width: 180px;
       }
     }
 
@@ -70,12 +94,33 @@
   }
 }
 
-.lightMenu {
-  &:hover {
+.exchangeListItem {
+  height: 40px;
+
+  &.selected {
+    background-image: $purpleLightGradient;
     color: $white;
   }
-}
 
-.menu {
-  margin-top: 40px;
+  &.action {
+    border-top: 1px solid $borderColor;
+    height: 50px;
+
+    img {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  img {
+    height: 20px;
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  .name {
+    font-family: "PlexSans-Medium";
+    margin-right: 5px;
+    text-transform: capitalize;
+  }
 }

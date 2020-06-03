@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, FormControl, Select, MenuItem } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setSelectedExchange } from "../../../store/actions/settings";
+import { FormattedMessage } from "react-intl";
+import ExchangeIcon from "../../ExchangeIcon";
+import MyExchange from "../../../images/header/myExchange.svg";
+import { openExchangeConnectionView } from "../../../store/actions/ui";
+import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  */
 
 const UserExchangeList = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   */
-
-  const selector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(selector);
-  const [selectedExchange, setSelectedExchange] = useState("");
-
-  useEffect(() => {
-    if (exchangeConnections.length) {
-      setSelectedExchange(exchangeConnections[0].exchangeName);
-    }
-  }, [exchangeConnections]);
+  const storeUser = useStoreExchangeConnectionSelector();
+  const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
 
   /**
    * Select change handler.
@@ -31,19 +26,53 @@ const UserExchangeList = () => {
    * @returns {Void} No return.
    */
   const handleChange = (event) => {
-    setSelectedExchange(event.target.value);
+    let found = [...storeUser.exchangeConnections].find(
+      (item) => item.internalId === event.target.value,
+    );
+    if (found) {
+      dispatch(setSelectedExchange(found));
+    }
   };
 
   return (
     <Box className="userExchangeList">
       <FormControl className="selectInput" variant="outlined">
-        <Select onChange={handleChange} value={selectedExchange}>
-          {exchangeConnections &&
-            exchangeConnections.map((item, index) => (
-              <MenuItem key={index} value={item.exchangeName}>
-                {item.exchangeName}
+        <Select
+          classes={{ root: "root" }}
+          onChange={handleChange}
+          value={storeSettings.selectedExchange.internalId}
+        >
+          {storeUser.exchangeConnections &&
+            storeUser.exchangeConnections.map((item, index) => (
+              <MenuItem
+                className="exchangeListItem"
+                classes={{ selected: "selected" }}
+                key={index}
+                value={item.internalId}
+              >
+                <ExchangeIcon exchange={item.name.toLowerCase()} size="small" />
+                <span className="name"> {item.internalName} </span>
+                {item.paperTrading && (
+                  <span className="name">
+                    (<FormattedMessage id="menu.demo" />){" "}
+                  </span>
+                )}
+                {item.isTestnet && (
+                  <span className="name">
+                    (<FormattedMessage id="menu.testnet" />){" "}
+                  </span>
+                )}
               </MenuItem>
             ))}
+          <MenuItem
+            className="exchangeListItem action"
+            onClick={() => dispatch(openExchangeConnectionView(true))}
+          >
+            <img alt="zignaly" src={MyExchange} />
+            <span className="name">
+              <FormattedMessage id="menu.manageaccounts" />
+            </span>
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "./Header.scss";
-import { Box, Menu, MenuItem, Grow, Typography } from "@material-ui/core";
+import { Box, Popover, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useSelector } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
@@ -14,6 +13,8 @@ import UserExchangeList from "./UserExchangeList";
 import BalanceBox from "./BalanceBox";
 import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
+import UserMenu from "./UserMenu";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -21,15 +22,7 @@ import { FormattedMessage } from "react-intl";
  */
 
 const Header = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-
-  const darkStyleSelector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(darkStyleSelector);
+  const storeSettings = useStoreSettingsSelector();
 
   /**
    *
@@ -56,7 +49,7 @@ const Header = () => {
           <img
             alt="zignaly-logo"
             className={"headerLogo"}
-            src={darkStyle ? LogoWhite : LogoBlack}
+            src={storeSettings.darkStyle ? LogoWhite : LogoBlack}
           />
         </Link>
         <LanguageSwitcher />
@@ -109,43 +102,28 @@ const Header = () => {
         )}
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
-
-        <Box className={"linkBox"}>
-          <NotificationsNoneIcon className={"icon"} />
-        </Box>
-        <Box className={"linkBox"}>
+        <Box className="linkBox">
           <img
             alt="zignaly-user"
-            className={"icon"}
+            className="icon"
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Menu
+          <Popover
             anchorEl={anchorEl}
-            classes={{ paper: "menu" }}
-            keepMounted
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
             onClose={() => setAnchorEl(undefined)}
             open={Boolean(anchorEl)}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
           >
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
-              My account
-            </MenuItem>
-            <MenuItem
-              classes={{ root: darkStyle ? "darkMenu" : "lightMenu" }}
-              onClick={() => setAnchorEl(undefined)}
-            >
-              Logout
-            </MenuItem>
-          </Menu>
+            <UserMenu />
+          </Popover>
         </Box>
       </Box>
     </Box>

@@ -1,0 +1,14 @@
+.timeFrameSelectRow {
+  margin-bottom: 10px;
+  width: 100%;
+
+  @include media("<=sm") {
+    .customSelect {
+      margin-left: 0;
+    }
+
+    .providersCount {
+      @include text-no-wrap;
+    }
+  }
+}

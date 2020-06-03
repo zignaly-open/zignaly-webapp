@@ -7,7 +7,25 @@ import {
   providersStatsResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
+  userPositionItemTransform,
+  quotesResponseTransform,
 } from "./tradeApiClient.types";
+
+/**
+ * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
+ * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
+ * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
+ * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+ * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
+ * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
+ * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
+ * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
+ * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+ * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ */
 
 /**
  * Trade API client service, provides integration to API endpoints.
@@ -65,11 +83,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
-   * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
-   */
-
-  /**
    * Login a user in Trade API.
    *
    * @param {UserLoginPayload} payload User login payload
@@ -88,11 +101,6 @@ class TradeApiClient {
   userLogout() {}
 
   /**
-   * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
-   * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
-   */
-
-  /**
    * Create user at Zignaly Trade API.
    *
    * @param {UserCreatePayload} payload User create payload.
@@ -109,14 +117,9 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
-   * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
-   */
-
-  /**
    * Get user open trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -132,7 +135,7 @@ class TradeApiClient {
   /**
    * Get user closed trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
@@ -151,26 +154,21 @@ class TradeApiClient {
   /**
    * Get user unsold / unopened trading positions.
    *
-   * @param {AuthorizationPayload} payload User authorization payload.
+   * @param {PositionsListPayload} payload User authorization payload.
 
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
    * @memberof TradeApiClient
    */
   async logPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions";
+    const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, {
-      type: "unsold",
+      type: "allClosedExtended",
       ...payload,
     });
 
     return userPositionsResponseTransform(responseData);
   }
-
-  /**
-   * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
-   * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
-   */
 
   /**
    * Get providers list.
@@ -219,11 +217,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
-   */
-
-  /**
    * Get providers profits stats.
    *
    * @param {ProvidersStatsPayload} payload Get providers stats payload.
@@ -237,6 +230,59 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providersStatsResponseTransform(responseData);
+  }
+
+  /**
+   * Close a position.
+   *
+   * @param {PositionActionPayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionClose(payload) {
+    const endpointPath = "/fe/api.php?action=closePosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Exit a position.
+   *
+   * @param {PositionActionPayload} payload User authorization payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionExit(payload) {
+    const endpointPath = "/fe/api.php?action=sellPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
+   * @typedef {import('./tradeApiClient.types').QuotesDict} QuotesDict
+   */
+
+  /**
+   *
+   * Get quote assets.
+   *
+   * @param {ReadOnlyPayload} payload
+   * @returns {Promise<QuotesDict>} Promise that resolves quote assets.
+   * @memberof TradeApiClient
+   */
+
+  async quotesGet(payload) {
+    const endpointPath = "/fe/api.php?action=getQuoteAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return quotesResponseTransform(responseData);
   }
 }
 

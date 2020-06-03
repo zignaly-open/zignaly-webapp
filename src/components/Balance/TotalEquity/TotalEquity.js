@@ -60,10 +60,8 @@ const TotalEquity = () => {
           gradientColor1: "",
           gradientColor2: "",
         }}
-        id="myChart"
-      >
-        <canvas className="chartCanvas" id="myChart" />
-      </Chart>
+        tooltipFormat={() => 100}
+      />
     </Box>
   );
 };

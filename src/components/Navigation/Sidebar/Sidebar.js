@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Sidebar.scss";
 import { Box, Typography } from "@material-ui/core";
 import Link from "../../LocalizedLink";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";
 import TerminalWhite from "../../../images/sidebar/terminalWhite.svg";
@@ -16,22 +16,24 @@ import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  */
 
 const Sidebar = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
+  const storeSettings = useStoreSettingsSelector();
   const [hover, setHover] = useState(false);
   const dispatch = useDispatch();
+
+  const showFullMenu = () => {
+    setHover(true);
+  };
+
+  const showSmallMenu = () => {
+    setHover(false);
+  };
 
   return (
     <Box
@@ -41,8 +43,9 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
       justifyContent="center"
-      onMouseOut={() => setHover(false)}
-      onMouseOver={() => setHover(true)}
+      onMouseEnter={showFullMenu}
+      onMouseLeave={showSmallMenu}
+      onMouseOver={showFullMenu}
     >
       <Link
         activeClassName={"active"}
@@ -50,7 +53,11 @@ const Sidebar = () => {
         partiallyActive={true}
         to={"/dashboard/positions"}
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
+        <img
+          alt="zignaly"
+          className={"icon"}
+          src={storeSettings.darkStyle ? DashboardWhite : DashboardBlack}
+        />
         <Typography variant="h6">
           <FormattedMessage id="menu.dashboard" />
         </Typography>
@@ -61,7 +68,11 @@ const Sidebar = () => {
         partiallyActive={true}
         to={"/copyTraders/browse"}
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
+        <img
+          alt="zignaly"
+          className={"icon"}
+          src={storeSettings.darkStyle ? CopyWhite : CopyBlack}
+        />
         <Typography variant="h6">
           <FormattedMessage id="menu.copytraders" />
         </Typography>
@@ -72,7 +83,11 @@ const Sidebar = () => {
         partiallyActive={true}
         to={"/signalProviders/browse"}
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
+        <img
+          alt="zignaly"
+          className={"icon"}
+          src={storeSettings.darkStyle ? SignalWhite : SignalBlack}
+        />
         <Typography variant="h6">
           <FormattedMessage id="menu.signalproviders" />
         </Typography>
@@ -83,7 +98,11 @@ const Sidebar = () => {
         partiallyActive={true}
         to={"/tradingTerminal"}
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
+        <img
+          alt="zignaly"
+          className={"icon"}
+          src={storeSettings.darkStyle ? TerminalWhite : TerminlBlack}
+        />
         <Typography variant="h6">
           <FormattedMessage id="menu.tradingterminal" />
         </Typography>
@@ -92,7 +111,7 @@ const Sidebar = () => {
         {hover && (
           <>
             <Box
-              className={darkStyle ? "checkedDarkBox" : "darkBox"}
+              className={storeSettings.darkStyle ? "checkedDarkBox" : "darkBox"}
               display="flex"
               flexDirection="row"
               justifyContent="center"
@@ -101,11 +120,11 @@ const Sidebar = () => {
                 alt="zignaly"
                 className={"icon"}
                 onClick={() => dispatch(selectDarkTheme(true))}
-                src={darkStyle ? OutlineWhite : OutlineBlack}
+                src={storeSettings.darkStyle ? OutlineWhite : OutlineBlack}
               />
             </Box>
             <Box
-              className={!darkStyle ? "checkedLightBox" : "lightBox"}
+              className={!storeSettings.darkStyle ? "checkedLightBox" : "lightBox"}
               display="flex"
               flexDirection="row"
               justifyContent="center"
@@ -121,7 +140,7 @@ const Sidebar = () => {
         )}
         {!hover && (
           <Box
-            className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
+            className={storeSettings.darkStyle ? "checkedDarkBox" : "checkedLightBox"}
             display="flex"
             flexDirection="row"
             justifyContent="center"
@@ -129,8 +148,7 @@ const Sidebar = () => {
             <img
               alt="zignaly"
               className={"icon"}
-              onClick={() => dispatch(selectDarkTheme(true))}
-              src={darkStyle ? OutlineWhite : FillWhite}
+              src={storeSettings.darkStyle ? OutlineWhite : FillWhite}
             />
           </Box>
         )}

@@ -1,9 +1,12 @@
 import initialState from "../store/initialState";
 import { assign } from "lodash";
-
-const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
-const SELECT_THEME = "SELECT_THEME_ACTION";
-const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
+import {
+  SELECT_LANGUAGE,
+  SET_SELECTED_EXCHANGE,
+  SET_DISPLAY_COLUMN,
+  SELECT_THEME,
+  UNSET_SELECTED_EXCHANGE,
+} from "../store/actions/settings";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
@@ -31,6 +34,12 @@ const settings = (state, action) => {
 
     case SELECT_THEME:
       newState.darkStyle = action.payload;
+      break;
+    case SET_SELECTED_EXCHANGE:
+      newState.selectedExchange = action.payload;
+      break;
+    case UNSET_SELECTED_EXCHANGE:
+      newState.selectedExchange = initialState.settings.selectedExchange;
       break;
 
     case SET_DISPLAY_COLUMN: {

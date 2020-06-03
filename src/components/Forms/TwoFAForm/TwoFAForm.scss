@@ -1,14 +1,11 @@
 .twoFAForm {
-  padding: 40px;
-  width: 500px;
-
   .boxTitle {
     margin-bottom: 40px;
   }
 
   .inputBox {
     margin-bottom: 40px;
-    width: 364px;
+    width: 100%;
   }
 
   .link {
@@ -18,5 +15,27 @@
     margin-bottom: 40px;
     text-decoration: none;
     text-transform: uppercase;
+  }
+
+  .codeInput {
+    text-align: center;
+    width: auto;
+  }
+}
+
+@include media("<=sm") {
+  .twoFAForm {
+    margin: 0 -10px;
+
+    h3 {
+      font-size: 21px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      height: 44px;
+      max-width: 16.66%;
+      width: 46px;
+    }
   }
 }

@@ -42,6 +42,24 @@
  * @property {String} languageCode
  * @property {Boolean} darkStyle
  * @property {DisplayColumns} displayColumns
+ * @property {ExchangeConnectionEntity} selectedExchange
+ */
+
+/**
+ * @typedef {Object} DefaultUIModalObject
+ * @property {Boolean} exchangeConnectionView
+ */
+
+/**
+ * @typedef {Object} DefaultUIAlertsObject
+ * @property {Object} success
+ * @property {Object} error
+ */
+
+/**
+ * @typedef {Object} DefaultUIObject
+ * @property {DefaultUIModalObject} modal
+ * @property {DefaultUIAlertsObject} alerts
  */
 
 /**
@@ -49,6 +67,7 @@
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
  * @property {UserObject} user
+ * @property {DefaultUIObject} ui
  */
 
 /**
@@ -92,6 +111,28 @@ const initialState = {
         "sumSoldByTakeProfit",
       ],
     },
+    selectedExchange: {
+      id: "",
+      name: "",
+      exchangeId: "",
+      exchangeName: "",
+      internalId: "",
+      internalName: "",
+      key: false,
+      secret: false,
+      areKeysValid: false,
+      paperTrading: false,
+      exchangeType: "",
+      isTestnet: false,
+      disable: false,
+      positionSize: 0,
+      managed: false,
+      internal: false,
+      isBrokerAccount: true,
+      subAccountId: "",
+      binanceBrokerId: "",
+      checkAuthCount: 0,
+    },
   },
   user: {
     exchangeConnections: [],
@@ -102,6 +143,15 @@ const initialState = {
       totalProfit: "",
       totalAssets: "",
       profitPercentage: "",
+    },
+  },
+  ui: {
+    modal: {
+      exchangeConnectionView: false,
+    },
+    alerts: {
+      success: {},
+      error: {},
     },
   },
 };

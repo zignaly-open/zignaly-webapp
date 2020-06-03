@@ -4,6 +4,12 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @typedef {Object} PositionActionPayload
+ * @property {string} positionId Position ID to cancel.
+ * @property {string} token Access token.
+ */
+
+/**
  * @typedef {Object} UserCreatePayload
  * @property {string} firstName User first name.
  * @property {string} email User email address.
@@ -57,7 +63,18 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Object} AuthorizationPayload
- * @property {string} token
+ * @property {string} token User access token.
+ */
+
+/**
+ * @typedef {Object} PositionsListPayload
+ * @property {string} token User access token.
+ * @property {string} internalExchangeId User exchange connection ID.
+ */
+
+/**
+ * @typedef {Object & AuthorizationPayload} ReadOnlyPayload
+ * @property {boolean} ro
  */
 
 /**
@@ -83,6 +100,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} leverage
  * @property {number} netProfit
  * @property {number} netProfitPercentage
+ * @property {string} netProfitStyle
  * @property {number} openDate
  * @property {number} positionSizeQuote
  * @property {number} profit
@@ -99,9 +117,9 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
  * @property {string} age
- * @property {string} amount
+ * @property {number} amount
  * @property {string} base
- * @property {string} buyPrice
+ * @property {number} buyPrice
  * @property {string} closeDateReadable
  * @property {string} closeTrigger
  * @property {string} exchange
@@ -115,7 +133,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} pair
  * @property {string} positionId
  * @property {string} positionSize
- * @property {string} profitPercentage
+ * @property {number} profitPercentage
  * @property {string} profitStyle
  * @property {string} provider
  * @property {string} providerId
@@ -124,18 +142,18 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} providerName
  * @property {string} quote
  * @property {string} quoteAsset
- * @property {string} remainAmount
+ * @property {number} remainAmount
  * @property {string} riskStyle
  * @property {string} sellPlaceOrderAt
- * @property {string} sellPrice
+ * @property {number} sellPrice
  * @property {string} side
  * @property {string} signalId
  * @property {string} signalTerm
  * @property {string} statusDesc
  * @property {string} stopLossStyle
  * @property {string} symbol
- * @property {string} type
  * @property {string} userId
+ * @property {('unsold' | 'sold' | 'unopened' | '')} type
  */
 
 /**
@@ -167,6 +185,9 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {Object} ProvidersPayload
  * @property {string} token
+ * @property {string} type
+ * @property {number} timeFrame
+ * @property {boolean} copyTradersOnly
  * @property {boolean} ro
  */
 
@@ -302,6 +323,16 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Array<ProviderStats>} ProvidersStatsCollection
+ */
+
+/**
+ * @typedef {Object} Quote
+ * @property {string} quote
+ * @property {string} minNominal
+ */
+
+/**
+ * @typedef {Object.<string, Quote>} QuotesDict
  */
 
 /**
@@ -458,7 +489,7 @@ export function userPositionsResponseTransform(response) {
  * @param {Object.<string, any>} positionItem Trade API position item.
  * @returns {PositionEntity} Position entity.
  */
-function userPositionItemTransform(positionItem) {
+export function userPositionItemTransform(positionItem) {
   const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
@@ -475,43 +506,95 @@ function userPositionItemTransform(positionItem) {
     return `/signalsproviders/${positionItem.providerId}`;
   };
 
-  const calculateRisk = () => {
-    const buyPrice = parseFloat(positionItem.buyPrice);
-    let risk = ((positionItem.stopLossPrice - buyPrice) / buyPrice) * 100;
+  /**
+   * Calculate position risk based on buy price, stop loss and entry side.
+   *
+   * @param {PositionEntity} positionEntity Transformed position entity.
+   * @returns {number} Risk percentage.
+   */
+  const calculateRisk = (positionEntity) => {
+    const buyPrice = positionEntity.buyPrice;
+    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
       return 0.0;
     }
 
-    if (positionItem.type === "SHORT") {
+    // Invert on short position.
+    if (positionEntity.side === "SHORT") {
       risk *= -1;
     }
 
     return risk;
   };
 
-  const risk = calculateRisk();
+  /**
+   * Checks if entry price is currently at profit or loss.
+   *
+   * @param {number} entry Entry price.
+   * @param {number} current Current price.
+   * @param {string} side Position side.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getProfitType = (entry, current, side) => {
+    if (side === "LONG") {
+      if (entry > current) {
+        return "gain";
+      } else if (entry < current) {
+        return "loss";
+      }
+    }
+
+    if (side === "SHORT") {
+      if (entry < current) {
+        return "gain";
+      } else if (entry > current) {
+        return "loss";
+      }
+    }
+
+    return "breakeven";
+  };
+
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const transformedResponse = assign(emptyPositionEntity, positionItem, {
-    age: openDateMoment.toNow(true),
+  const positionEntity = assign(emptyPositionEntity, positionItem, {
+    amount: parseFloat(positionItem.amount),
+    buyPrice: parseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
-    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("hh.mm DD.MM.YY.") : "-",
     fees: parseFloat(positionItem.fees),
     netProfit: parseFloat(positionItem.netProfit),
     netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
-    openDateMoment: openDateMoment,
-    openDateReadable: positionItem.openDate ? openDateMoment.format("hh.mm DD.MM.YY.") : "-",
-    profitStyle: positionItem.profit >= 0 ? "gain" : "loss",
-    providerLink: composeProviderLink(),
-    providerLogo: positionItem.logoUrl || defaultProviderLogo,
-    risk: risk,
-    riskStyle: risk >= 0 ? "gain" : "loss",
-    stopLossStyle: positionItem.stopLossPrice >= positionItem.buyPrice ? "gain" : "loss",
+    positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
+    profit: parseFloat(positionItem.profit),
+    profitPercentage: parseFloat(positionItem.profitPercentage),
+    remainAmount: parseFloat(positionItem.remainAmount),
+    sellPrice: parseFloat(positionItem.sellPrice),
+    side: positionItem.side.toUpperCase(),
+    stopLossPrice: parseFloat(positionItem.stopLossPrice),
   });
 
-  return transformedResponse;
+  const risk = calculateRisk(positionEntity);
+  const augmentedEntity = assign(positionEntity, {
+    age: openDateMoment.toNow(true),
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateMoment: openDateMoment,
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
+    providerLink: composeProviderLink(),
+    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    risk: risk,
+    riskStyle: risk < 0 ? "loss" : "gain",
+    stopLossStyle: getProfitType(
+      positionEntity.stopLossPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
+  });
+
+  return augmentedEntity;
 }
 
 /**
@@ -523,9 +606,9 @@ function createEmptyPositionEntity() {
   return {
     accounting: false,
     age: "",
-    amount: "",
+    amount: 0,
     base: "",
-    buyPrice: "",
+    buyPrice: 0,
     buyTTL: 0,
     checkStop: false,
     closeDate: 0,
@@ -545,6 +628,7 @@ function createEmptyPositionEntity() {
     logoUrl: "",
     netProfit: 0,
     netProfitPercentage: 0,
+    netProfitStyle: "",
     openDate: 0,
     openDateReadable: "",
     openTrigger: "",
@@ -554,7 +638,7 @@ function createEmptyPositionEntity() {
     positionSize: "",
     positionSizeQuote: 0,
     profit: 0,
-    profitPercentage: "",
+    profitPercentage: 0,
     profitStyle: "",
     provider: "",
     providerId: "",
@@ -568,12 +652,12 @@ function createEmptyPositionEntity() {
     reBuyTargetsCountPending: 0,
     reBuyTargetsCountSuccess: 0,
     realInvestment: { $numberDecimal: "" },
-    remainAmount: "",
+    remainAmount: 0,
     risk: 0,
     riskStyle: "",
     sellByTTL: false,
     sellPlaceOrderAt: "",
-    sellPrice: "",
+    sellPrice: 0,
     side: "",
     signalId: "",
     signalMetadata: false,
@@ -592,9 +676,9 @@ function createEmptyPositionEntity() {
     trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
-    type: "",
     updating: false,
     userId: "",
+    type: "",
   };
 }
 
@@ -617,14 +701,13 @@ export function userExchangeConnectionResponseTransform(response) {
 /**
  * @typedef {Object} ExchangeConnectionEntity
  * @property {String} id
- * @property {String} Name
+ * @property {String} name
  * @property {String} exchangeId
  * @property {String} exchangeName
  * @property {String} internalId
- * @property {String} exchangeInternalName
  * @property {Boolean} key
  * @property {Boolean} secret
- * @property {Boolean} arrayKeysValid
+ * @property {Boolean} areKeysValid
  * @property {Boolean} paperTrading
  * @property {String} exchangeType
  * @property {Boolean} isTestnet
@@ -636,6 +719,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} subAccountId
  * @property {String} binanceBrokerId
  * @property {Number} checkAuthCount
+ * @property {String} internalName
  */
 
 /**
@@ -676,7 +760,7 @@ function createExchangeConnectionEmptyEntity() {
     isBrokerAccount: true,
     subAccountId: "",
     binanceBrokerId: "",
-    checkAuthCount: false,
+    checkAuthCount: 0,
   };
 }
 
@@ -727,11 +811,11 @@ function createUserBalanceEntity(response) {
  * Transform providers stats response to typed ProvidersStatsCollection.
  *
  * @param {*} response Trade API get user balance raw response.
- * @returns {ProvidersStatsCollection} User balance entity.
+ * @returns {ProvidersStatsCollection} Provider Stats list.
  */
 export function providersStatsResponseTransform(response) {
   if (!isArray(response)) {
-    throw new Error("Response must be an object with different propteries.");
+    throw new Error("Response must be an array of provider stats.");
   }
 
   return response.map((providerStatsItem) => {
@@ -834,4 +918,27 @@ function createProviderStatsEmptyEntity() {
     percentageProfit: "",
     winRate: "",
   };
+}
+
+/**
+ * Transform quote assets response to typed QuotesDict.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {QuotesDict} Quote assets.
+ */
+export function quotesResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: {
+        quote: val.quote,
+        minNotional: val.minotional,
+      },
+    }),
+    {},
+  );
 }

@@ -1,3 +1,4 @@
+import { PositionsTabContent } from "./";
 import React, { useState } from "react";
 import "./PositionsTabs.scss";
 import { Box, Popover } from "@material-ui/core";
@@ -5,15 +6,43 @@ import SettingsIcon from "../../../images/dashboard/settings.svg";
 import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
 import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
 import PositionSettingsForm from "../../Forms/PositionSettingsForm";
-import PositionsTable from "../PositionsTable";
-import PositionFilters from "../PositionFilters";
-import NoPositions from "../NoPositions";
 import TabsMenu from "./TabsMenu";
+
+/**
+ * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ */
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
+  const [filtersVisibility, setFiltersVisibility] = useState(false);
   const [settingsAnchor, setSettingAnchor] = useState(undefined);
-  const [filters, showFilters] = useState(false);
+
+  /**
+   * Map tab index to positions collection type.
+   *
+   * @returns {PositionsCollectionType} Collection type.
+   */
+  const mapIndexToCollectionType = () => {
+    switch (tabValue) {
+      case 1:
+        return "closed";
+
+      case 2:
+        return "log";
+
+      default:
+        return "open";
+    }
+  };
+
+  const selectedType = mapIndexToCollectionType();
+  const handleClose = () => {
+    setSettingAnchor(undefined);
+  };
+
+  const toggleFilters = () => {
+    setFiltersVisibility(!filtersVisibility);
+  };
 
   /**
    * Event handler to change tab value.
@@ -25,10 +54,6 @@ const PositionsTabs = () => {
   const changeTab = (event, val) => {
     setTabValue(val);
   };
-
-  const handleFiltersChange = () => {};
-
-  const handleClose = () => setSettingAnchor(undefined);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -50,8 +75,8 @@ const PositionsTabs = () => {
           <img
             alt="zignaly"
             className="icon"
-            onClick={() => showFilters(!filters)}
-            src={filters ? FilstersChecked : FiltersUnchecked}
+            onClick={toggleFilters}
+            src={filtersVisibility ? FilstersChecked : FiltersUnchecked}
           />
           <img
             alt="zignaly"
@@ -61,31 +86,23 @@ const PositionsTabs = () => {
           />
         </Box>
       </Box>
-      {filters && (
-        <PositionFilters onChange={handleFiltersChange} onClose={() => showFilters(false)} />
-      )}
-      {tabValue === 0 && (
-        <Box className="tabPanel">
-          <PositionsTable type="open" />
-          <NoPositions />
-        </Box>
-      )}
-      {tabValue === 1 && (
-        <Box className="tabPanel">
-          <PositionsTable type="closed" />
-        </Box>
-      )}
-      {tabValue === 2 && (
-        <Box className="tabPanel">
-          <PositionsTable type="log" />
-        </Box>
-      )}
+      <PositionsTabContent
+        filtersVisibility={filtersVisibility}
+        toggleFilters={toggleFilters}
+        type={selectedType}
+      />
       <Popover
         anchorEl={settingsAnchor}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
         onClose={() => setSettingAnchor(undefined)}
         open={Boolean(settingsAnchor)}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
       >
         <PositionSettingsForm onClose={handleClose} />
       </Popover>

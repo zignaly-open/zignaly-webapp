@@ -2,9 +2,7 @@ import React from "react";
 import "./balance.scss";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import withAppLayout from "../../../layouts/appLayout";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
-import withPageContext from "../../../pageContext";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
@@ -41,4 +39,4 @@ const Balance = () => {
   );
 };
 
-export default compose(withPageContext, withAppLayout, withDashboardLayout)(Balance);
+export default compose(withDashboardLayout)(Balance);

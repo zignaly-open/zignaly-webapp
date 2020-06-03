@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ProvidersFilters from "../components/Providers/ProvidersFilters";
 import ProvidersSort from "../components/Providers/ProvidersSort";
 import ProvidersList from "../components/Providers/ProvidersList";
-import TimeFrameSelect from "../components/TimeFrameSelect";
+import TimeFrameSelectRow from "../components/Providers/TimeFrameSelectRow";
 import tradeApi from "../services/tradeApiClient";
 import { useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
  * @property {function} ProvidersList
  * @property {function} ProvidersFilters
  * @property {function} ProvidersSort
- * @property {function} TimeFrameSelect
+ * @property {function} TimeFrameSelectRow
  */
 
 /**
@@ -130,7 +130,7 @@ const useProvidersList = (options, callbacks) => {
   // Load providers at init and on timeframe change.
   useEffect(() => {
     const loadProviders = async () => {
-      const sessionPayload = {
+      const payload = {
         token: storeSession.tradeApi.accessToken,
         type: connectedOnly ? "connected" : "all",
         ro: true,
@@ -139,7 +139,7 @@ const useProvidersList = (options, callbacks) => {
       };
 
       try {
-        const responseData = await tradeApi.providersGet(sessionPayload);
+        const responseData = await tradeApi.providersGet(payload);
         setProviders(responseData);
       } catch (e) {
         setProviders([]);
@@ -167,13 +167,21 @@ const useProvidersList = (options, callbacks) => {
     <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={toggleSort} sort={sort} />
   );
 
-  const TimeFrameSelectMaker = () => <TimeFrameSelect onChange={setTimeFrame} value={timeFrame} />;
+  /**
+   * TimeFrameSelectRow Maker
+   * @param {Object} props Props.
+   * @param {string} props.title Row title.
+   * @returns  {JSX.Element} TimeFrameSelectRow
+   */
+  const TimeFrameSelectRowMaker = ({ title }) => (
+    <TimeFrameSelectRow onChange={setTimeFrame} title={title} value={timeFrame} />
+  );
 
   const components = {
     ProvidersList: ProvidersListMaker,
     ProvidersFilters: ProvidersFiltersMaker,
     ProvidersSort: ProvidersSortMaker,
-    TimeFrameSelect: TimeFrameSelectMaker,
+    TimeFrameSelectRow: TimeFrameSelectRowMaker,
   };
 
   return [providersFiltered, components];

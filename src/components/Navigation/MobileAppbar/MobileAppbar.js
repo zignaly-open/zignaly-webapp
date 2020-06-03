@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./MobileAppbar.scss";
-import { Box } from "@material-ui/core";
+import { Box, Slide } from "@material-ui/core";
 import Link from "../../LocalizedLink";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";
 import TerminalWhite from "../../../images/sidebar/terminalWhite.svg";
@@ -11,24 +11,23 @@ import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
 import FillWhite from "../../../images/sidebar/fillWhite.svg";
 import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
-// import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
+import PersonBlack from "../../../images/sidebar/personBlack.svg";
+import PersonWhite from "../../../images/sidebar/personWhite.svg";
+import CloseBlack from "../../../images/sidebar/closeBlack.svg";
+import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
+import UserMenu from "../Header/UserMenu";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  */
 
 const MobileAppbar = () => {
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-  const selector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(selector);
+  const [menu, showMenu] = useState(false);
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
   return (
@@ -41,50 +40,89 @@ const MobileAppbar = () => {
       justifyContent="space-between"
     >
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        activeClassName="active"
+        className="sideBarLink"
         partiallyActive={true}
-        to={"/dashboard/positions"}
+        to="/dashboard/positions"
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? DashboardWhite : DashboardBlack} />
+        <img
+          alt="zignaly"
+          className="icon"
+          src={storeSettings.darkStyle ? DashboardWhite : DashboardBlack}
+        />
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        activeClassName="active"
+        className="sideBarLink"
         partiallyActive={true}
-        to={"/copyTraders/browse"}
+        to="/copyTraders/browse"
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? CopyWhite : CopyBlack} />
+        <img alt="zignaly" className="icon" src={storeSettings.darkStyle ? CopyWhite : CopyBlack} />
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        activeClassName="active"
+        className="sideBarLink"
         partiallyActive={true}
-        to={"/signalProviders/browse"}
+        to="/signalProviders/browse"
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? SignalWhite : SignalBlack} />
+        <img
+          alt="zignaly"
+          className="icon"
+          src={storeSettings.darkStyle ? SignalWhite : SignalBlack}
+        />
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        activeClassName="active"
+        className="sideBarLink"
         partiallyActive={true}
-        to={"/tradingTerminal"}
+        to="/tradingTerminal"
       >
-        <img alt="zignaly" className={"icon"} src={darkStyle ? TerminalWhite : TerminlBlack} />
+        <img
+          alt="zignaly"
+          className={"icon"}
+          src={storeSettings.darkStyle ? TerminalWhite : TerminlBlack}
+        />
       </Link>
       <Box
-        className={darkStyle ? "checkedDarkBox" : "checkedLightBox"}
+        className="sideBarLink"
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        onClick={() => showMenu(!menu)}
+      >
+        {!menu && (
+          <img
+            alt="zignaly"
+            className="icon"
+            src={storeSettings.darkStyle ? PersonWhite : PersonBlack}
+          />
+        )}
+        {menu && (
+          <img
+            alt="zignaly"
+            className="icon"
+            src={storeSettings.darkStyle ? CloseWhite : CloseBlack}
+          />
+        )}
+      </Box>
+      <Box
+        className={storeSettings.darkStyle ? "checkedDarkBox" : "checkedLightBox"}
         display="flex"
         flexDirection="row"
         justifyContent="center"
       >
         <img
           alt="zignaly"
-          className={"icon"}
-          onClick={() => dispatch(selectDarkTheme(!darkStyle))}
-          src={darkStyle ? OutlineWhite : FillWhite}
+          className="icon"
+          onClick={() => dispatch(selectDarkTheme(!storeSettings.darkStyle))}
+          src={storeSettings.darkStyle ? OutlineWhite : FillWhite}
         />
       </Box>
+      <Slide direction="up" in={menu}>
+        <Box bgcolor="grid.content" className="userMenuDrawer">
+          <UserMenu />
+        </Box>
+      </Slide>
     </Box>
   );
 };

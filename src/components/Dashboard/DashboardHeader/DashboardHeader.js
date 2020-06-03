@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -11,6 +12,8 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const DashboardHeader = () => {
+  const storeSettings = useStoreSettingsSelector();
+
   return (
     <Box className="dashboardHeader">
       <Box
@@ -23,7 +26,19 @@ const DashboardHeader = () => {
         <Typography variant="h1">
           <FormattedMessage id="dashboard" />
         </Typography>
-        <span className="exchangeTitle">KuCion (Demo)</span>
+        <span className="exchangeTitle">
+          <span className="name"> {storeSettings.selectedExchange.internalName} </span>
+          {storeSettings.selectedExchange.paperTrading && (
+            <span className="name">
+              (<FormattedMessage id="menu.demo" />){" "}
+            </span>
+          )}
+          {storeSettings.selectedExchange.isTestnet && (
+            <span className="name">
+              (<FormattedMessage id="menu.testnet" />){" "}
+            </span>
+          )}
+        </span>
       </Box>
       <SubNavHeader links={routesMapping("dashboard").links} />
     </Box>

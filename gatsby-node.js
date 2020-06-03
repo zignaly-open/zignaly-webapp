@@ -4,31 +4,17 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-const { languages, getLocalizedPath } = require("./src/i18n");
-
 exports.onCreatePage = ({ page, actions }) => {
-  const { createPage, deletePage } = actions;
+  const { createPage } = actions;
 
   if (page.internalComponentName === "ComponentDev404Page") {
     return;
   }
 
-  return new Promise(resolve => {
-    deletePage(page);
-
-    languages.forEach(lang => {
-      const localizedPath = getLocalizedPath(page.path, lang.locale);
-      const localePage = {
-        ...page,
-        path: localizedPath,
-        context: {
-          locale: lang.locale,
-          originalPath: page.path,
-        },
-      };
-      createPage(localePage);
-    });
-
-    resolve();
-  });
+  // Override position page route to support positionId argument.
+  if (page.path.match(/^\/position\/$/)) {
+    page.matchPath = "/position/:positionId";
+    createPage(page);
+    return;
+  }
 };

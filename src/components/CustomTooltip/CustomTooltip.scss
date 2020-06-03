@@ -1,0 +1,25 @@
+.customTooltipPopper {
+  &.customPos {
+    transform: translate(0, -100%);
+
+    .customTooltip {
+      transform: translate(-50%, 0) !important; // sass-lint:disable-line no-important
+      transition: none !important; // sass-lint:disable-line no-important
+    }
+  }
+
+  .customTooltip {
+    @extend %body1;
+    background-color: $tooltipBackground;
+    border: solid 1px $tooltipBorder;
+    color: $tooltipText;
+    padding: 16px;
+  }
+
+  .lineTooltip {
+    border: solid 2px $borderColor;
+    height: 21px;
+    transform: translate(-2px, -8px);
+    width: 1px;
+  }
+}
