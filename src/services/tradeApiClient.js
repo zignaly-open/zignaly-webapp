@@ -14,6 +14,7 @@ import {
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
+ * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
@@ -220,7 +221,7 @@ class TradeApiClient {
   /**
    *
    *
-   * @param {AuthorizationPayload} payload
+   * @param {UserEquityPayload} payload
    * @returns
    * @memberof TradeApiClient
    */

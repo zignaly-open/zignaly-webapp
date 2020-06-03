@@ -12,6 +12,7 @@ export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
+ * @typedef {import("../../services/tradeApiClient.types").UserEquityPayload} UserEquityPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  */
 
@@ -38,6 +39,11 @@ export const setUserExchanges = (payload) => {
 
       dispatch(action);
       dispatch(action2);
+      /**
+       * @type {import("../../services/tradeApiClient.types").UserEquityPayload}
+       */
+      let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
+      dispatch(setDailyUserBalance(balancePayload));
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
@@ -82,7 +88,7 @@ export const unsetUserBalance = () => {
 /**
  * Get user balance store thunk action.
  *
- * @param {AuthorizationPayload} payload Trade API user authorization.
+ * @param {UserEquityPayload} payload Trade API user authorization.
  *
  * @returns {AppThunk} Thunk action function.
  */

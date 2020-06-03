@@ -67,6 +67,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} UserEquityPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId
+ */
+
+/**
  * @typedef {Object} PositionsListPayload
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
