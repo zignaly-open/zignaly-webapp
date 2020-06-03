@@ -16,7 +16,7 @@ import { camelCase } from "lodash";
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
  */
-const composeProviderIcon = (position) => {
+function composeProviderIcon(position) {
   // Wrap with link to provider provile when available.
   if (position.providerLink) {
     return (
@@ -31,7 +31,7 @@ const composeProviderIcon = (position) => {
       <img src={position.providerLogo} title={position.providerName} width="30px" />
     </>
   );
-};
+}
 
 /**
  * Compose trailing stop icon element for a given position.
@@ -39,14 +39,28 @@ const composeProviderIcon = (position) => {
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element|null} Composed JSX element or null.
  */
-const composeTrailingStopIcon = (position) => {
+function composeTrailingStopIcon(position) {
   const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.darkGrey;
   if (position.trailingStopTriggerPercentage) {
     return <TrendingUp color={trailingStopColor} />;
   }
 
   return null;
-};
+}
+
+/**
+ * Compose paper trading icon element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose icon for.
+ * @returns {JSX.Element|null} Composed JSX element or null.
+ */
+function composePaperTradingIcon(position) {
+  if (position.paperTrading) {
+    return <Layers color={colors.darkGrey} />;
+  }
+
+  return null;
+}
 
 /**
  * Compose exit price element for a given position.
@@ -287,7 +301,7 @@ export function composeOpenPositionsDataTable(positions) {
 
   const openPositionsTableRows = positions.map((position) => {
     return [
-      position.paperTrading ? <Layers color={colors.darkGrey} /> : null,
+      composePaperTradingIcon(position),
       position.openDateReadable,
       composeProviderIcon(position),
       position.providerName,
