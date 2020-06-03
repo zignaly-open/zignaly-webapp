@@ -162,7 +162,7 @@ function composeSymbolWithPrice(symbol, price) {
 /**
  * Compose take profit targets element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose icon for.
+ * @param {PositionEntity} position Position entity to compose profit targets for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeProfitTargets(position) {
@@ -213,6 +213,16 @@ function composeRebuyTargets(position) {
       )}
     </>
   );
+}
+
+/**
+ * Compose React fragment element for a given value.
+ *
+ * @param {string|number} value Value to wrap in fragment.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeFragmentValue(value) {
+  return <>{value}</>;
 }
 
 /**
@@ -271,6 +281,40 @@ function composeColumnDefaultOptions(columnId) {
 }
 
 /**
+ * Compose MUI Data Table row for open position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @returns {Array<JSX.Element>} Row data array.
+ */
+function composeOpenPositionRow(position) {
+  return [
+    composePaperTradingIcon(position),
+    composeFragmentValue(position.openDateReadable),
+    composeProviderIcon(position),
+    composeFragmentValue(position.providerName),
+    composeFragmentValue(position.signalId),
+    composeFragmentValue(position.pair),
+    composeSymbolWithPrice(position.quote, position.buyPrice),
+    composeFragmentValue(position.leverage),
+    composeExitPrice(position),
+    composeProfit(position),
+    composeProfitPercentage(position),
+    composeFragmentValue(position.side),
+    composeStopLossPrice(position),
+    composeSymbolWithPrice(position.base, position.amount),
+    composeSymbolWithPrice(position.base, position.remainAmount),
+    composeSymbolWithPrice(position.quote, position.positionSizeQuote),
+    composeTrailingStopIcon(position),
+    composeProfitTargets(position),
+    composeRebuyTargets(position),
+    composeRisk(position),
+    composeFragmentValue(position.age),
+    composeFragmentValue(position.openTrigger),
+    composeActionButtons(position),
+  ];
+}
+
+/**
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
@@ -305,37 +349,9 @@ export function composeOpenPositionsDataTable(positions) {
     "col.actions",
   ];
 
-  const openPositionsTableRows = positions.map((position) => {
-    return [
-      composePaperTradingIcon(position),
-      position.openDateReadable,
-      composeProviderIcon(position),
-      position.providerName,
-      position.signalId,
-      position.pair,
-      composeSymbolWithPrice(position.quote, position.buyPrice),
-      position.leverage,
-      composeExitPrice(position),
-      composeProfit(position),
-      composeProfitPercentage(position),
-      position.side,
-      composeStopLossPrice(position),
-      composeSymbolWithPrice(position.base, position.amount),
-      composeSymbolWithPrice(position.base, position.remainAmount),
-      composeSymbolWithPrice(position.quote, position.positionSizeQuote),
-      composeTrailingStopIcon(position),
-      composeProfitTargets(position),
-      composeRebuyTargets(position),
-      composeRisk(position),
-      position.age,
-      position.openTrigger,
-      composeActionButtons(position),
-    ];
-  });
-
   return {
     columns: columnsIds.map(composeColumnDefaultOptions),
-    data: openPositionsTableRows,
+    data: positions.map(composeOpenPositionRow),
   };
 }
 
