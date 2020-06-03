@@ -48,6 +48,24 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
+      name: "logoUrl",
+      label: "col.provider.logo",
+      options: {
+        customBodyRender: (val, tableMeta) => (
+          <img src={val} title={tableMeta.rowData[2]} width="30px" />
+        ),
+        // setCellProps: (value) => ({
+        //   className: "test",
+        //   style: {
+        //     textAlign: "center",
+        //   },
+        // }),
+        setCellHeaderProps: () => ({ align: "center" }),
+        setCellProps: () => ({ align: "center" }),
+        viewColumns: false,
+      },
+    },
+    {
       name: "name",
       label: "col.name",
       options: {
@@ -66,6 +84,87 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
         ),
         sort: true,
         sortDirection: "desc",
+      },
+    },
+    {
+      name: "sumTotalProfit",
+      label: "col.profit.total",
+    },
+    {
+      name: "sumTotalInvested",
+      label: "col.invested.total",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "sumReturnOfInvestment",
+      label: "srv.investment.return",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "avgAverageProfit",
+      label: "col.position.profit.avg",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "avgAverageProfitPercentage",
+      label: "col.position.profit.avgpercentage",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "avgAveragePositionSize",
+      label: "col.position.size.avg",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "maxMaxInvestment",
+      label: "col.investment.max",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "minMinInvestment",
+      label: "col.investment.min",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "maxMaxReturnOfInvestment",
+      label: "col.profit.max",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "minMinReturnOfInvestment",
+      label: "col.profit.min",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "maxMaxDCAProfit",
+      label: "col.profit.max.fromDCA",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "minMinDCAProfit",
+      label: "col.profit.min.fromDCA",
+      options: {
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -88,116 +187,19 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       label: "col.position.closed",
     },
     {
-      name: "avgAverageClosingTime",
-      label: "col.position.closingtime.avg",
-      options: {
-        customBodyRender: formatTime,
-      },
-    },
-    {
-      name: "sumSoldBySignal",
-      label: "col.soldbysignal",
-    },
-    {
-      name: "sumSoldByStopLoss",
-      label: "col.soldbystop",
-    },
-    {
-      name: "sumSoldByTakeProfit",
-      label: "col.soldbytake",
-    },
-    {
-      name: "sumSoldByTTL",
-      label: "col.exit.ttl",
-    },
-    {
-      name: "sumSoldByTrailingStop",
-      label: "col.exit.trailing",
-    },
-    {
-      name: "sumSoldManually",
-      label: "col.exit.manually",
-    },
-    {
-      name: "sumSoldByOther",
-      label: "col.exit.other",
-    },
-    {
-      name: "maxMaxDCAProfit",
-      label: "col.profit.max.fromDCA",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "maxMaxInvestment",
-      label: "col.investment.max",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "maxMaxReturnOfInvestment",
-      label: "col.profit.max",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "minMinDCAProfit",
-      label: "col.profit.min.fromDCA",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "minMinInvestment",
-      label: "col.investment.min",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "minMinReturnOfInvestment",
-      label: "col.profit.min",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "sumDCALosses",
-      label: "col.dca.lost",
-    },
-    {
-      name: "sumDCAWins",
-      label: "col.dca.won",
-    },
-    {
-      name: "sumDCAs",
-      label: "col.dca.total",
+      name: "sumWins",
+      label: "col.positions.won",
     },
     {
       name: "sumLosses",
       label: "col.positions.lost",
     },
     {
-      name: "sumTotalInvested",
-      label: "col.invested.total",
+      name: "avgAverageClosingTime",
+      label: "col.position.closingtime.avg",
       options: {
-        customBodyRender: formatFloat,
+        customBodyRender: formatTime,
       },
-    },
-    {
-      name: "sumTotalProfit",
-      label: "col.profit.total",
-    },
-    {
-      name: "sumUnclosedPositions",
-      label: "col.positions.stillopened",
-    },
-    {
-      name: "sumWins",
-      label: "col.positions.won",
     },
     {
       name: "maxSlowerClosedPositionInSeconds",
@@ -214,54 +216,56 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
-      name: "avgAverageClosingTime",
-      label: "col.time.closing.average",
-      options: {
-        customBodyRender: formatTime,
-      },
+      name: "sumDCAs",
+      label: "col.dca.total",
     },
     {
       name: "avgAverageDCAsPerPosition",
       label: "col.position.dca.avg",
     },
     {
-      name: "avgAveragePositionSize",
-      label: "col.position.size.avg",
-      options: {
-        customBodyRender: formatFloat,
-      },
+      name: "sumUnclosedPositions",
+      label: "col.positions.stillopened",
     },
     {
-      name: "avgAverageProfit",
-      label: "col.position.profit.avg",
-      options: {
-        customBodyRender: formatFloat,
-      },
+      name: "sumDCAWins",
+      label: "col.dca.won",
     },
     {
-      name: "avgAverageProfitPercentage",
-      label: "col.position.profit.avgpercentage",
-      options: {
-        customBodyRender: formatFloat,
-      },
+      name: "sumDCALosses",
+      label: "col.dca.lost",
+    },
+    {
+      name: "sumSoldBySignal",
+      label: "col.soldbysignal",
+    },
+    {
+      name: "sumSoldByStopLoss",
+      label: "col.soldbystop",
+    },
+    {
+      name: "sumSoldByTTL",
+      label: "col.exit.ttl",
+    },
+    {
+      name: "sumSoldByTakeProfit",
+      label: "col.soldbytake",
+    },
+    {
+      name: "sumSoldByTrailingStop",
+      label: "col.exit.trailing",
+    },
+    {
+      name: "sumSoldManually",
+      label: "col.exit.manually",
+    },
+    {
+      name: "sumSoldByOther",
+      label: "col.exit.other",
     },
     {
       name: "avgI24hHigherPricePercentage",
       label: "col.price.timeuntilhigher.24hours",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI24hLowerBeforeHigherPricePercentage",
-      label: "col.price.lowerbeforehigher.24hours",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI24hLowerPricePercentage",
-      label: "col.price.lower.24hours",
       options: {
         customBodyRender: formatFloat,
       },
@@ -274,10 +278,24 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
+      name: "avgI24hLowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.24hours",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
       name: "avgI24hSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.24hours",
       options: {
         customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI24hLowerPricePercentage",
+      label: "col.price.lower.24hours",
+      options: {
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -288,29 +306,8 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
-      name: "avgI24hLowerBeforeHigherPricePercentage",
-      label: "col.price.lowerbeforehigher.24hours",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
       name: "avgI3dHigherPricePercentage",
       label: "col.price.timeuntilhigher.3days",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI3dLowerBeforeHigherPricePercentage",
-      label: "col.price.lowerbeforehigher.3days",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI3dLowerPricePercentage",
-      label: "col.price.lower.3days",
       options: {
         customBodyRender: formatFloat,
       },
@@ -323,10 +320,24 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
+      name: "avgI3dLowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.3days",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
       name: "avgI3dSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.3days",
       options: {
         customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI3dLowerPricePercentage",
+      label: "col.price.lower.3days",
+      options: {
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -344,20 +355,6 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
-      name: "avgI1wLowerBeforeHigherPricePercentage",
-      label: "col.price.lowerbeforehigher.1week",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI1wLowerPricePercentage",
-      label: "col.price.lower.1week",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
       name: "avgI1wSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.1week",
       options: {
@@ -365,10 +362,24 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
+      name: "avgI1wLowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.1week",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
       name: "avgI1wSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.1week",
       options: {
         customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1wLowerPricePercentage",
+      label: "col.price.lower.1week",
+      options: {
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -386,20 +397,6 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
-      name: "avgI1mLowerBeforeHigherPricePercentage",
-      label: "col.price.lowerbeforehigher.1month",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "avgI1mLowerPricePercentage",
-      label: "col.price.lower.1month",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
       name: "avgI1mSecondsUntilHigherPrice",
       label: "col.price.timeuntilhigher.1month",
       options: {
@@ -407,10 +404,24 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
     {
+      name: "avgI1mLowerBeforeHigherPricePercentage",
+      label: "col.price.lowerbeforehigher.1month",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
       name: "avgI1mSecondsUntilLowerBeforeHigherPrice",
       label: "col.price.untillower.1month",
       options: {
         customBodyRender: formatTime,
+      },
+    },
+    {
+      name: "avgI1mLowerPricePercentage",
+      label: "col.price.lower.1month",
+      options: {
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -431,7 +442,7 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
           quote: "BTC",
           base: "all",
           timeFrame: "2months",
-          DCAFilter: "withoutDCA",
+          DCAFilter: "anyDCA",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
         setStats(responseData);
