@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import "./PositionsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../Table";
@@ -10,6 +11,7 @@ import {
 } from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import PositionFilters from "../PositionFilters";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -29,6 +31,8 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 const PositionsTable = (props) => {
   const { type, positions } = props;
   const storeSession = useStoreSessionSelector();
+  const [filters, setFilters] = useState();
+  const showTypesFilter = type === "log";
 
   /**
    * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -133,6 +137,19 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
+  const EmbedFilters = (props) => {
+    const { tableToolbarElement } = props;
+    return ReactDOM.createPortal(
+      <PositionFilters
+        onChange={setFilters}
+        positions={positions}
+        showTypesFilter={showTypesFilter}
+      />,
+      tableToolbarElement,
+    );
+  };
+
+  const tableToolbarElement = document.querySelector('[role="toolbar"]');
   return (
     <>
       <ConfirmDialog
@@ -143,6 +160,7 @@ const PositionsTable = (props) => {
 
       <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
         <Table columns={columns} data={data} persistKey="openPositions" title={false} />
+        {tableToolbarElement && <EmbedFilters tableToolbarElement={tableToolbarElement} />}
       </Box>
     </>
   );

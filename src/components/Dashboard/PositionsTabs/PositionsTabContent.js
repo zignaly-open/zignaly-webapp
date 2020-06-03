@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import PositionFilters from "../PositionFilters";
 import { Box } from "@material-ui/core";
 import PositionsTable from "../PositionsTable";
@@ -26,17 +27,14 @@ const PositionsTabContent = (props) => {
 
   return (
     <>
-      <PositionFilters
-        onChange={setFilters}
-        positions={positionsAll}
-        showTypesFilter={showTypesFilter}
-      />
       {type === "open" && (
         <Box className="tabPanel">
           {isEmpty(positionsFiltered) ? (
             <NoPositions />
           ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
+            <>
+              <PositionsTable positions={positionsFiltered} type={type} />
+            </>
           )}
         </Box>
       )}
