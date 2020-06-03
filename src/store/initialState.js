@@ -92,7 +92,6 @@ const initialState = {
     darkStyle: false,
     displayColumns: {
       spAnalytics: [
-        "name",
         "percentageProfit",
         "signals",
         "sumPositions",
@@ -104,7 +103,6 @@ const initialState = {
         "sumSoldByTakeProfit",
       ],
       ctAnalytics: [
-        "name",
         "percentageProfit",
         "signals",
         "sumPositions",
