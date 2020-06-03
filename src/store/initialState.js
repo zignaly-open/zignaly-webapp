@@ -40,6 +40,7 @@
  * @typedef {Object} DisplayColumns
  * @property {Array<string>} spAnalytics
  * @property {Array<string>} ctAnalytics
+ * @property {Array<String>} dailyBalance
  */
 
 /**
@@ -112,6 +113,15 @@ const initialState = {
         "sumSoldBySignal",
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
+      ],
+      dailyBalance: [
+        "dateKey",
+        "totalUSD",
+        "freeUSd",
+        "lockedUSD",
+        "totalBTC",
+        "freeBTC",
+        "lockedBTC",
       ],
     },
     selectedExchange: {

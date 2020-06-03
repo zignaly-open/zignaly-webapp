@@ -21,7 +21,7 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<MUIDataTableColumn>} columns Table Columns.
  * @property {Array<Object>} data Table Data.
- * @property {'ctAnalytics'|'spAnalytics'} persistKey Key to save display columns settings.
+ * @property {'ctAnalytics'|'spAnalytics'|'dailyBalance'} persistKey Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.

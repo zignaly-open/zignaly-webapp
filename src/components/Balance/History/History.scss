@@ -1,25 +1,9 @@
 .history {
-  box-shadow: 0 2px 8px 0 $boxShadowColor;
   width: 100%;
 
   .historyHeader {
-    border-bottom: 1px solid $borderColor;
-    height: 70px;
-    padding: 0 20px;
     width: 100%;
-
-    .boxTitle {
-      color: $purple;
-    }
-
-    .settings {
-      width: 80px;
-
-      .icon {
-        cursor: pointer;
-        height: 24px;
-        width: 24px;
-      }
-    }
+    margin-bottom: 20px;
+    background: transparent;
   }
 }

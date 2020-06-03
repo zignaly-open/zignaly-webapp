@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./History.scss";
-import { Box, Popover, Typography } from "@material-ui/core";
-import SettingsIcon from "../../../images/dashboard/settings.svg";
-import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
-import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
-// import PositionsTable from "../../Dashboard/PositionsTable";
-// import PositionFilters from "../../Dashboard/PositionFilters";
+import { Box } from "@material-ui/core";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import HistoryTable from "./HistoryTable";
 import { FormattedMessage } from "react-intl";
+import EquityFilter from "../TotalEquity/EquityFilter";
 
 const History = () => {
-  const [settingsAnchor, setSettingAnchor] = useState(undefined);
-  const [filters, showFilters] = useState(false);
-  // const handleChange = () => {};
+  const [list, setList] = useState([]);
+  const storeUser = useStoreUserSelector();
+
+  useEffect(() => {
+    setList(storeUser.dailyBalance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeUser.dailyBalance.length]);
+
+  /**
+   *
+   * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
+   */
+
+  /**
+   *
+   * @param {Array<UserEquityEntity>} data
+   */
+
+  const handleChange = (data) => {
+    setList(data);
+  };
 
   return (
     <Box
       alignItems="flex-start"
-      bgcolor="grid.content"
       className="history"
       display="flex"
       flexDirection="column"
@@ -24,43 +39,18 @@ const History = () => {
     >
       <Box
         alignItems="center"
-        className="historyHeader"
+        bgcolor="grid.content"
         display="flex"
         flexDirection="row"
-        justifyContent="space-between"
+        justifyContent="flex-end"
+        className="historyHeader"
       >
-        <Typography className="boxTitle" variant="h4">
-          <FormattedMessage id="dashboard.balance.historical" />
-        </Typography>
-        <Box
-          alignItems="center"
-          className="settings"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={() => showFilters(!filters)}
-            src={filters ? FilstersChecked : FiltersUnchecked}
-          />
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={(e) => setSettingAnchor(e.currentTarget)}
-            src={SettingsIcon}
-          />
-        </Box>
+        <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
       </Box>
-      {/** filters && <PositionFilters onChange={handleChange} onClose={() => showFilters(false)} /> */}
-      {/** <PositionsTable type="closed" /> */}
-      <Popover
-        anchorEl={settingsAnchor}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        onClose={() => setSettingAnchor(undefined)}
-        open={Boolean(settingsAnchor)}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      <HistoryTable
+        list={list}
+        persistKey="dailyBalance"
+        title={<FormattedMessage id="dashboard.balance.historical" />}
       />
     </Box>
   );
