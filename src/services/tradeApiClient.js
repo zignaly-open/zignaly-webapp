@@ -233,11 +233,6 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
-   * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
-   */
-
-  /**
    * Get providers profits stats.
    *
    * @param {ProvidersStatsPayload} payload Get providers stats payload.
