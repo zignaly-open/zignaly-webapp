@@ -113,6 +113,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
+      openPositions: ["positionId"],
     },
     selectedExchange: {
       id: "",
