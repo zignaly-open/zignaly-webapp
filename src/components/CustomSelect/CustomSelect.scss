@@ -22,9 +22,14 @@
     height: 32px;
     margin-right: 50px;
     min-width: 94px;
+    height: 32px;
 
     > div {
-      opacity: 0.6;
+      opacity: 1;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
     }
   }
 }
