@@ -104,7 +104,6 @@ const Table = ({ columns, data, persistKey, title }) => {
             letterSpacing: "0.61px",
           },
         },
-
         MUIDataTableHeadCell: {
           root: {
             // footnote
@@ -115,6 +114,13 @@ const Table = ({ columns, data, persistKey, title }) => {
             lineHeight: 1.45,
             letterSpacing: "0.42px",
             minWidth: "128px",
+          },
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "14px",
+            fontFamily: "PlexSans-Medium",
+            padding: "13px",
           },
         },
       },

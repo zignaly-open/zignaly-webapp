@@ -222,34 +222,14 @@ const PositionsTable = (props) => {
     };
   });
 
-  console.log("Cols: ", openPositionTableColumns);
-  console.log("Data: ", openPositionsTableRows);
-
-  const getMuiTheme = () =>
-    createMuiTheme({
-      /**
-       * @type {*}
-       */
-      overrides: {
-        MUIDataTableHeadCell: {
-          root: {
-            // Don't wrap small headers and avoid wrapping long headers too much
-            minWidth: "128px",
-          },
-        },
-      },
-    });
-
   return (
-    <Box className="openPositionsTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
-        <Table
-          columns={openPositionTableColumns}
-          data={openPositionsTableRows}
-          persistKey="openPositions"
-          title={<h2>Open positions</h2>}
-        />
-      </MuiThemeProvider>
+    <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
+      <Table
+        columns={openPositionTableColumns}
+        data={openPositionsTableRows}
+        persistKey="openPositions"
+        title={<h2>Open positions</h2>}
+      />
     </Box>
   );
 };

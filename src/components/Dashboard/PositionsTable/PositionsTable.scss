@@ -1,13 +1,52 @@
 .positionsTable {
-  padding: 0 10px;
-  width: 100%;
-
-  .tableBox {
-    min-height: 300px;
-    width: 100%;
-
-    .table {
-      width: 100%;
+  .actions {
+    button {
+      background-color: transparent;
+      border: 0;
+      cursor: pointer;
+      margin: 0 10px;
     }
+
+    svg {
+      pointer-events: none;
+    }
+  }
+
+  .loss {
+    color: $red;
+  }
+
+  .gain {
+    color: $green;
+  }
+
+  %target-base {
+    border-radius: 10px;
+    color: $white;
+    display: inline-block;
+    height: 22px;
+    padding: 1px;
+    text-align: center;
+    width: 22px;
+  }
+
+  .targetRed {
+    @extend %target-base;
+    background-color: $grey;
+  }
+
+  .targetGreen {
+    @extend %target-base;
+    background-color: $green;
+  }
+
+  .targetGray {
+    @extend %target-base;
+    background-color: $darkGrey;
+  }
+
+  .symbol {
+    display: inline-block;
+    margin-right: 5px;
   }
 }
