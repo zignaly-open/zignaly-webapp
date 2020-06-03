@@ -66,8 +66,6 @@ const LineChart = (props) => {
     }
 
     // Set tooltip position.
-    const position = chart.chartInstance.canvas.getBoundingClientRect();
-
     const left = tooltip.caretX;
     const top = tooltip.caretY;
     setPos({ top, left });
