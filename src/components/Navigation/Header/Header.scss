@@ -13,29 +13,23 @@
   .userExchangeList {
     margin-right: 20px;
 
-    .selectInput {
-      min-width: 200px;
+    .currentSelectionBox {
+      background-image: $purpleLightGradient;
+      border-radius: 4px;
+      color: $white;
+      height: inherit;
+      padding: 5px 10px;
+      width: 100%;
+      cursor: pointer;
+      height: 36px;
 
-      .root {
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        min-width: 180px;
-        padding-bottom: 0;
-        padding-left: 0;
-        padding-top: 0;
+      .name {
+        font-size: 14px;
+        font-family: "PlexSans-Medium";
+      }
 
-        img {
-          height: 20px;
-          margin-right: 10px;
-          width: 20px;
-        }
-
-        .name {
-          font-family: "PlexSans-Medium";
-          margin-right: 5px;
-          text-transform: capitalize;
-        }
+      .exchangeIcon {
+        margin-right: 5px;
       }
     }
   }
@@ -91,36 +85,5 @@
         }
       }
     }
-  }
-}
-
-.exchangeListItem {
-  height: 40px;
-
-  &.selected {
-    background-image: $purpleLightGradient;
-    color: $white;
-  }
-
-  &.action {
-    border-top: 1px solid $borderColor;
-    height: 50px;
-
-    img {
-      height: 24px;
-      width: 24px;
-    }
-  }
-
-  img {
-    height: 20px;
-    margin-right: 10px;
-    width: 20px;
-  }
-
-  .name {
-    font-family: "PlexSans-Medium";
-    margin-right: 5px;
-    text-transform: capitalize;
   }
 }
