@@ -10,7 +10,7 @@ import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeConnectionSelector";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -19,7 +19,7 @@ import useStoreExchangeConnectionSelector from "../../../hooks/useStoreExchangeC
 
 const MobileHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeUser = useStoreExchangeConnectionSelector();
+  const storeUser = useStoreUserSelector();
   const [showBalance, setShowBalance] = useState(false);
 
   return (

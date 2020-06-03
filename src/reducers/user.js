@@ -1,10 +1,12 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
-
-const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
-const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
-const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
-const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
+import {
+  GET_USER_EXCHNAGES,
+  REMOVE_USER_EXCHNAGES,
+  GET_USER_BALANCE,
+  REMOVE_USER_BALANCE,
+  GET_DAILY_USER_BALANCE,
+} from "../store/actions/user";
 
 /**
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -40,6 +42,10 @@ const userExchanges = (state, action) => {
 
     case REMOVE_USER_BALANCE:
       newState.balance = {};
+      break;
+
+    case GET_DAILY_USER_BALANCE:
+      newState.dailyBalance = action.payload;
       break;
 
     default:

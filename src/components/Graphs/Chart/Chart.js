@@ -25,7 +25,7 @@ import { Line } from "react-chartjs-2";
  * @property {string} gradientColor2 Chart gradient color bottom.
  */
 
-const MemoizedLine = React.memo(Line, (/* prevProps, nextProps */) => true);
+const MemoizedLine = React.memo(Line);
 
 /**
  * @typedef {Object} LineChartPropTypes

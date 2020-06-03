@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
  *
  * @returns {UserObject} Store session state.
  */
-const useStoreExchangeConnectionSelector = () => {
+const useStoreUserSelector = () => {
   /**
    * Select store session data.
    *
@@ -22,4 +22,4 @@ const useStoreExchangeConnectionSelector = () => {
   return useSelector(selectStoreSettings);
 };
 
-export default useStoreExchangeConnectionSelector;
+export default useStoreUserSelector;

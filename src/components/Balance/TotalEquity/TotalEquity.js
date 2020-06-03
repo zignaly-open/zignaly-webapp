@@ -1,67 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TotalEquity.scss";
-import { Box, Typography } from "@material-ui/core";
-import Chart from "../../Graphs/Chart";
-import { FormattedMessage } from "react-intl";
+import { Box } from "@material-ui/core";
+import TotalEquityGraph from "./TotalEquityGraph";
+import TitleBar from "./TitleBar";
+import EquityFilter from "./EquityFilter";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 const TotalEquity = () => {
+  const [list, setList] = useState([]);
+  const storeUser = useStoreUserSelector();
+
+  useEffect(() => {
+    setList(storeUser.dailyBalance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeUser.dailyBalance.length]);
+
+  /**
+   * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
+   * @param {Array<UserEquityEntity>} data
+   */
+
+  const handleChange = (data) => {
+    setList(data);
+  };
+
   return (
     <Box
       alignItems="flex-start"
       className="totalEquity"
       display="flex"
       flexDirection="column"
-      justifyContent="flex-start"
+      justifyContent="space-between"
     >
       <Box
-        alignItems="center"
+        alignItems="flex-start"
         className="equityHeader"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
+        width="100%"
       >
-        <Box
-          alignItems="flex-start"
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-        >
-          <Typography className="boxTitle" variant="h3">
-            <FormattedMessage id="dashboard.balance.totalequity" />
-          </Typography>
-          <Box
-            alignItems="center"
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            mt={1}
-          >
-            <Typography variant="h4">BTC 0.5346 </Typography>
-            <Typography className="smallText" variant="subtitle2">
-              {" "}
-              = USD 3450.6
-            </Typography>
-          </Box>
-        </Box>
-        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
-          <label>
-            <FormattedMessage id="dashboard.balance.show" />
-          </label>
-          <select>
-            <option>Last year</option>
-          </select>
-        </Box>
+        <TitleBar list={list} />
+        <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
       </Box>
-      <Chart
-        chartData={{ values: [2, 4, 6], labels: ["a", "b", "c"] }}
-        colorsOptions={{
-          backgroundColor: "",
-          borderColor: "",
-          gradientColor1: "",
-          gradientColor2: "",
-        }}
-        tooltipFormat={() => 100}
-      />
+      <TotalEquityGraph list={list} />
     </Box>
   );
 };

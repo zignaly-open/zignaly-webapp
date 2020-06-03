@@ -3,13 +3,32 @@ import "./Doughnut.scss";
 import { Box } from "@material-ui/core";
 import { preparePieChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
 
-const Doughnut = () => {
+/**
+ *
+ * @typedef {import("../../../utils/chart").ChartData} ChartData
+ * @typedef {import("../../../utils/chart").DoughnutColorOptions} DoughnutColorOptions
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {ChartData} chartData
+ * @property {DoughnutColorOptions} colorOptions
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+
+const Doughnut = (props) => {
+  const { chartData, colorOptions } = props;
+
   useEffect(() => {
     const canvasContext = getCanvasContext("myDoughnut");
-    const borderColor = "#770fc8";
-    const chunksColors = ["#a946f6", "#770fc8"];
-    generateChart(canvasContext, preparePieChartOptions(chunksColors, borderColor));
-  }, []);
+    generateChart(canvasContext, preparePieChartOptions(chartData, colorOptions));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chartData.values]);
 
   return (
     <Box className="doughnut">

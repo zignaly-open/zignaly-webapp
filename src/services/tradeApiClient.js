@@ -8,11 +8,13 @@ import {
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   userPositionItemTransform,
+  userEquityResponseTransform,
   quotesResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
+ * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
@@ -214,6 +216,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
+  }
+
+  /**
+   *
+   *
+   * @param {UserEquityPayload} payload
+   * @returns
+   * @memberof TradeApiClient
+   */
+
+  async userEquityGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBalance";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userEquityResponseTransform(responseData);
   }
 
   /**

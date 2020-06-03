@@ -1,6 +1,7 @@
 import React from "react";
 import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@material-ui/core";
 import "./CustomSelect.scss";
+import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {Object} OptionType
@@ -24,10 +25,11 @@ import "./CustomSelect.scss";
  */
 const CustomSelect = (props) => {
   const { label, onChange, options, value } = props;
+  const storeSettings = useStoreSettingsSelector();
 
   return (
     <FormControlLabel
-      className="customSelect"
+      className={"customSelect " + (storeSettings.darkStyle ? "dark" : "light")}
       control={
         <FormControl className="callout" variant="outlined">
           <Select

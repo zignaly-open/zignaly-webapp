@@ -177,3 +177,33 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.exchangeListItem {
+  height: 36px;
+  width: 100%;
+
+  &.selected {
+    background-image: $purpleLightGradient;
+    color: $white;
+  }
+
+  &.action {
+    border-top: 1px solid $borderColor;
+    height: 50px;
+
+    img {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  img {
+    margin-right: 10px;
+  }
+
+  .name {
+    font-family: "PlexSans-Medium";
+    margin-right: 5px;
+    text-transform: capitalize;
+  }
+}

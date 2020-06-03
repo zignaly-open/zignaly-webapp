@@ -67,6 +67,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} UserEquityPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId
+ */
+
+/**
  * @typedef {Object} PositionsListPayload
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
@@ -804,6 +810,83 @@ function createUserBalanceEntity(response) {
     totalProfit: response.totalProfit,
     totalAssets: response.totalAssets,
     profitPercentage: response.profitPercentage,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} UserEquityEntity
+ * @property {Number} BNB
+ * @property {Number} BTC
+ * @property {Number} BTCWithoutStableCoins
+ * @property {Number} ETH
+ * @property {Number} PAX
+ * @property {Number} TUSD
+ * @property {Number} USDC
+ * @property {Number} USDT
+ * @property {String} date
+ * @property {String} dateKey
+ * @property {String} freeBTC
+ * @property {String} freeUSD
+ * @property {String} lockedBTC
+ * @property {String} lockedUSD
+ * @property {String} totalBTC
+ * @property {String} totalUSD
+ */
+
+/**
+ * Transform user balance response to typed UserBalanceEntity.
+ *
+ * @param {*} response Trade API get user balance raw response.
+ * @returns {Array<UserEquityEntity>} User balance entity.
+ */
+export function userEquityResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an object with different propteries.");
+  }
+
+  return response.map((userEquityItem) => {
+    return userEquityItemTransform(userEquityItem);
+  });
+}
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} userEquityItem Trade API exchange connection item.
+ * @returns {UserEquityEntity} Exchange connection entity.
+ */
+function userEquityItemTransform(userEquityItem) {
+  const emptyEquityEntity = createUserEquityEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyEquityEntity, userEquityItem);
+
+  return transformedResponse;
+}
+
+/**
+ * Create user balance entity.
+ *
+ * @returns {UserEquityEntity} User balance entity.
+ */
+function createUserEquityEntity() {
+  return {
+    BNB: 0,
+    BTC: 0,
+    BTCWithoutStableCoins: 0,
+    ETH: 0,
+    PAX: 0,
+    TUSD: 0,
+    USDC: 0,
+    USDT: 0,
+    date: "1590973335276",
+    dateKey: "2020-06-01",
+    freeBTC: "0",
+    freeUSD: "0",
+    lockedBTC: "0",
+    lockedUSD: "0",
+    totalBTC: "0",
+    totalUSD: "0",
   };
 }
 

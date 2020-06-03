@@ -48,9 +48,14 @@ const Table = ({ columns, data, persistKey, title }) => {
     label: c.label ? intl.formatMessage({ id: c.label }) : "",
     options: {
       ...c.options,
-      //   sort: !!(c.options && c.options.sort),
-      // Display columns picked hy the user
-      display: storeSettings.displayColumns[persistKey].includes(c.name) ? "true" : "false",
+      sort: !!(c.options && c.options.sort),
+      // Display columns picked by the user
+      display:
+        (c.options && c.options.display) ||
+        ((c.options && c.options.viewColumns === false) ||
+        storeSettings.displayColumns[persistKey].includes(c.name)
+          ? "true"
+          : "false"),
     },
   }));
 
@@ -71,6 +76,10 @@ const Table = ({ columns, data, persistKey, title }) => {
           action,
         }),
       );
+    },
+    fixedHeaderOptions: {
+      xAxis: true,
+      yAxis: true,
     },
   };
 
