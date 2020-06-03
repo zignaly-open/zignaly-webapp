@@ -37,7 +37,7 @@ const CompositionGraph = (props) => {
    * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
    * @type {ChartData}
    */
-  let chartData = { values: [0.004323], labels: ["MM"] };
+  let chartData = { values: [], labels: [] };
 
   const colorsOptions = {
     backgroundColor: sectionColors,

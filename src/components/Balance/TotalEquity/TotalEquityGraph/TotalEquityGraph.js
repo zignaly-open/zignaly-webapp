@@ -1,6 +1,8 @@
 import React from "react";
 import "./TotalEquityGraph.scss";
 import GenericChart from "../../../Graphs/Chart";
+import { Box } from "@material-ui/core";
+import { toNumber } from "lodash";
 
 /**
  *
@@ -42,8 +44,30 @@ const TotalEquityGraph = (props) => {
 
   prepareChartData();
 
+  /**
+   *
+   * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
+   */
+
+  /**
+   * Format tooltip content.
+   * @param {ChartTooltipItem} tooltipItem Tooltip object.
+   * @returns {React.ReactNode} Tooltip content.
+   */
+
+  const tooltipFormat = (tooltipItem) => (
+    <Box className="contentTooltip">
+      <Box>{+toNumber(tooltipItem.yLabel).toFixed(8)}</Box>
+      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
+    </Box>
+  );
+
   return (
-    <GenericChart chartData={chartData} colorsOptions={colorsOptions} tooltipFormat={() => 100} />
+    <GenericChart
+      chartData={chartData}
+      colorsOptions={colorsOptions}
+      tooltipFormat={tooltipFormat}
+    />
   );
 };
 
