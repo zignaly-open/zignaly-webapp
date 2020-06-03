@@ -63,6 +63,26 @@ function composePaperTradingIcon(position) {
 }
 
 /**
+ * Compose amount element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose amount for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeAmount(position) {
+  return <>{formatPrice(position.amount)}</>;
+}
+
+/**
+ * Compose position quote size for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose quote size for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeQuoteSize(position) {
+  return <>{formatPrice(position.positionSizeQuote)}</>;
+}
+
+/**
  * Compose exit price element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose exit price for.
@@ -95,6 +115,28 @@ function composeProfit(position) {
       )}
     </>
   );
+}
+
+/**
+ * Compose net profit percentage element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose net profit percentage for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeNetProfitPercentage(position) {
+  return (
+    <span className={position.netProfitStyle}>{formatNumber(position.netProfitPercentage, 2)}</span>
+  );
+}
+
+/**
+ * Compose net profit element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose net profit for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeNetProfit(position) {
+  return <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>;
 }
 
 /**
@@ -226,12 +268,12 @@ function composeFragmentValue(value) {
 }
 
 /**
- * Compose action buttons element for a given position.
+ * Compose all action buttons element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose icon for.
+ * @param {PositionEntity} position Position entity to compose buttons for.
  * @returns {JSX.Element} Composed JSX element.
  */
-function composeActionButtons(position) {
+function composeAllActionButtons(position) {
   return (
     <>
       {position.isCopyTrading ? (
@@ -260,6 +302,20 @@ function composeActionButtons(position) {
         <XCircle color={colors.purpleLight} />
       </button>
     </>
+  );
+}
+
+/**
+ * Compose view action button element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose buttons for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeViewActionButton(position) {
+  return (
+    <button data-action={"view"} data-position-id={position.positionId} title="view" type="button">
+      <Eye color={colors.purpleLight} />
+    </button>
   );
 }
 
@@ -310,7 +366,41 @@ function composeOpenPositionRow(position) {
     composeRisk(position),
     composeFragmentValue(position.age),
     composeFragmentValue(position.openTrigger),
-    composeActionButtons(position),
+    composeAllActionButtons(position),
+  ];
+}
+
+/**
+ * Compose MUI Data Table row for closed position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @returns {Array<JSX.Element>} Row data array.
+ */
+function composeClosePositionRow(position) {
+  return [
+    composePaperTradingIcon(position),
+    composeFragmentValue(position.closeDateReadable),
+    composeProviderIcon(position),
+    composeFragmentValue(position.providerName),
+    composeFragmentValue(position.signalId),
+    composeFragmentValue(position.pair),
+    composeSymbolWithPrice(position.quote, position.buyPrice),
+    composeSymbolWithPrice(position.quote, position.sellPrice),
+    composeProfit(position),
+    composeProfitPercentage(position),
+    composeFragmentValue(position.side),
+    composeStopLossPrice(position),
+    composeAmount(position),
+    composeQuoteSize(position),
+    composeTrailingStopIcon(position),
+    composeProfitTargets(position),
+    composeRebuyTargets(position),
+    composeRisk(position),
+    composeFragmentValue(position.openTrigger),
+    composeSymbolWithPrice(position.quote, position.fees),
+    composeNetProfitPercentage(position),
+    composeNetProfit(position),
+    composeViewActionButton(position),
   ];
 }
 
@@ -394,7 +484,7 @@ export function composeClosePositionsDataTable(positions) {
 
   return {
     columns: columnsIds.map(composeColumnDefaultOptions),
-    data: [],
+    data: positions.map(composeClosePositionRow),
   };
 }
 
