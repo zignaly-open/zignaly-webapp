@@ -4,6 +4,7 @@ import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { camelCase } from "lodash";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -31,6 +32,17 @@ function composeProviderIcon(position) {
       <img src={position.providerLogo} title={position.providerName} width="30px" />
     </>
   );
+}
+
+/**
+ * Compose translated status message from status ID.
+ *
+ * @param {number} statusCode Position status code.
+ * @returns {JSX.Element} Formatted message element.
+ */
+function composeStatusMessage(statusCode) {
+  const statusTranslationId = `status.${statusCode}`;
+  return <FormattedMessage id={statusTranslationId} />;
 }
 
 /**
@@ -80,6 +92,20 @@ function composeAmount(position) {
  */
 function composeQuoteSize(position) {
   return <>{formatPrice(position.positionSizeQuote)}</>;
+}
+
+/**
+ * Compose entry price element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose entry price for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeEntryPrice(position) {
+  return (
+    <>
+      <span className="symbol">{position.quote}</span> {formatPrice(position.buyPrice)}
+    </>
+  );
 }
 
 /**
@@ -207,7 +233,7 @@ function composeSymbolWithPrice(symbol, price) {
  * @param {PositionEntity} position Position entity to compose profit targets for.
  * @returns {JSX.Element} Composed JSX element.
  */
-function composeProfitTargets(position) {
+function composeTakeProfitTargets(position) {
   return (
     <>
       {position.takeProfitTargetsCountFail > 0 && (
@@ -350,18 +376,18 @@ function composeOpenPositionRow(position) {
     composeFragmentValue(position.providerName),
     composeFragmentValue(position.signalId),
     composeFragmentValue(position.pair),
-    composeSymbolWithPrice(position.quote, position.buyPrice),
+    composeEntryPrice(position),
     composeFragmentValue(position.leverage),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
     composeFragmentValue(position.side),
     composeStopLossPrice(position),
-    composeSymbolWithPrice(position.base, position.amount),
+    composeAmount(position),
     composeSymbolWithPrice(position.base, position.remainAmount),
-    composeSymbolWithPrice(position.quote, position.positionSizeQuote),
+    composeQuoteSize(position),
     composeTrailingStopIcon(position),
-    composeProfitTargets(position),
+    composeTakeProfitTargets(position),
     composeRebuyTargets(position),
     composeRisk(position),
     composeFragmentValue(position.age),
@@ -379,13 +405,15 @@ function composeOpenPositionRow(position) {
 function composeClosePositionRow(position) {
   return [
     composePaperTradingIcon(position),
+    composeFragmentValue(position.openDateReadable),
     composeFragmentValue(position.closeDateReadable),
     composeProviderIcon(position),
     composeFragmentValue(position.providerName),
+    composeStatusMessage(position.status),
     composeFragmentValue(position.signalId),
     composeFragmentValue(position.pair),
-    composeSymbolWithPrice(position.quote, position.buyPrice),
-    composeSymbolWithPrice(position.quote, position.sellPrice),
+    composeEntryPrice(position),
+    composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
     composeFragmentValue(position.side),
@@ -393,13 +421,38 @@ function composeClosePositionRow(position) {
     composeAmount(position),
     composeQuoteSize(position),
     composeTrailingStopIcon(position),
-    composeProfitTargets(position),
+    composeTakeProfitTargets(position),
     composeRebuyTargets(position),
     composeRisk(position),
     composeFragmentValue(position.openTrigger),
     composeSymbolWithPrice(position.quote, position.fees),
     composeNetProfitPercentage(position),
     composeNetProfit(position),
+    composeViewActionButton(position),
+  ];
+}
+
+/**
+ * Compose MUI Data Table row for log position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @returns {Array<JSX.Element>} Row data array.
+ */
+function composeLogPositionRow(position) {
+  return [
+    composePaperTradingIcon(position),
+    composeFragmentValue(position.openDateReadable),
+    composeFragmentValue(position.type),
+    composeProviderIcon(position),
+    composeFragmentValue(position.providerName),
+    composeStatusMessage(position.status),
+    composeFragmentValue(position.signalId),
+    composeFragmentValue(position.pair),
+    composeEntryPrice(position),
+    composeFragmentValue(position.side),
+    composeAmount(position),
+    composeSymbolWithPrice(position.base, position.remainAmount),
+    composeQuoteSize(position),
     composeViewActionButton(position),
   ];
 }
@@ -516,6 +569,6 @@ export function composeLogPositionsDataTable(positions) {
 
   return {
     columns: columnsIds.map(composeColumnDefaultOptions),
-    data: [],
+    data: positions.map(composeLogPositionRow),
   };
 }

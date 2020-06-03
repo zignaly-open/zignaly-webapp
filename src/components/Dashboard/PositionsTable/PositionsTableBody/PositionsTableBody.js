@@ -125,55 +125,6 @@ const PositionsTableBody = (props) => {
     navigateTo(`position/${positionId}`);
   };
 
-  /**
-   * Compose provider icon column content.
-   *
-   * @param {PositionEntity} position Position entity to compose icon for.
-   * @returns {JSX.Element} Provider icon JSX element.
-   */
-  const composeProviderIcon = (position) => {
-    // Wrap with link to provider provile when available.
-    if (position.providerLink) {
-      return (
-        <Link to={position.providerLink}>
-          <img src={position.providerLogo} title={position.providerName} width="30px" />
-        </Link>
-      );
-    }
-
-    return (
-      <>
-        <img src={position.providerLogo} title={position.providerName} width="30px" />
-      </>
-    );
-  };
-
-  /**
-   * Compose trailing stop icon for a given position.
-   *
-   * @param {PositionEntity} position Position entity to compose icon for.
-   * @returns {JSX.Element|null} Provider icon JSX element.
-   */
-  const composeTrailingStopIcon = (position) => {
-    const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.darkGrey;
-    if (position.trailingStopTriggerPercentage) {
-      return <TrendingUp color={trailingStopColor} />;
-    }
-
-    return null;
-  };
-
-  /**
-   * Compose translated status message from status ID.
-   *
-   * @param {number} statusCode Position status code.
-   * @returns {JSX.Element} Formatted message element.
-   */
-  const composeStatusMessage = (statusCode) => {
-    const statusTranslationId = `status.${statusCode}`;
-    return <FormattedMessage id={statusTranslationId} />;
-  };
-
   return (
     <>
       <ConfirmDialog
