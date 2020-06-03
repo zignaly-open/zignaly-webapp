@@ -33,11 +33,11 @@ const PositionsTable = (props) => {
    */
   const composeDataTableForPositionsType = () => {
     if (type === "closed") {
-      return composeLogPositionsDataTable(positions);
+      return composeClosePositionsDataTable(positions);
     }
 
     if (type === "log") {
-      return composeClosePositionsDataTable(positions);
+      return composeLogPositionsDataTable(positions);
     }
 
     return composeOpenPositionsDataTable(positions);
@@ -47,12 +47,7 @@ const PositionsTable = (props) => {
 
   return (
     <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-      <Table
-        columns={columns}
-        data={data}
-        persistKey="openPositions"
-        title={<h2>Open positions</h2>}
-      />
+      <Table columns={columns} data={data} persistKey="openPositions" title={false} />
     </Box>
   );
 };
