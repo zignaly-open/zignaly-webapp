@@ -2,12 +2,13 @@ import React from "react";
 import "./PositionsTable.scss";
 import { colors } from "../../../services/theme";
 import { Link, navigateTo } from "gatsby";
+import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
-import { Box } from "@material-ui/core";
 import PositionsTableHead from "./PositionsTableHead";
 import PositionsTableBody from "./PositionsTableBody";
 import { formatNumber, formatPrice } from "../../../utils/formatters";
 import Table from "../../Table";
+import { camelCase } from "lodash";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -184,60 +185,71 @@ const PositionsTable = (props) => {
     ];
   });
 
-  const openPositionTableColumns = [
-    {
-      name: "paperTrading",
-      label: "col.provider.logo",
-      options: {
-        display: "false",
-        viewColumns: false,
-      },
-    },
-    {
-      name: "providerLogo",
-      label: "col.provider.logo",
-      options: {
-        display: "false",
-        viewColumns: false,
-      },
-    },
-    {
-      name: "providerName",
-      label: "col.provider.logo",
-      options: {
-        display: "false",
-        viewColumns: false,
-      },
-    },
-    {
-      name: "side",
-      label: "col.provider.logo",
-      options: {
-        display: "false",
-        viewColumns: false,
-      },
-    },
+  const openPositionsColsIds = [
+    "col.paper",
+    "col.date.open",
+    "col.provider.logo",
+    "col.provider.name",
+    "col.signalid",
+    "col.pair",
+    "col.price.entry",
+    "col.leverage",
+    "col.price.current",
+    "col.plnumber",
+    "col.plpercentage",
+    "col.side",
+    "col.stoplossprice",
+    "col.initialamount",
+    "col.remainingamount",
+    "col.invested",
+    "col.tsl",
+    "col.tp",
+    "col.dca",
+    "col.risk",
+    "col.age",
+    "col.opentrigger",
+    "col.actions",
   ];
 
+  const openPositionTableColumns = openPositionsColsIds.map((colId) => {
+    return {
+      name: camelCase(colId),
+      label: colId,
+      options: {
+        display: true,
+        viewColumns: true,
+      },
+    };
+  });
+
+  console.log("Cols: ", openPositionTableColumns);
   console.log("Data: ", openPositionsTableRows);
+
+  const getMuiTheme = () =>
+    createMuiTheme({
+      /**
+       * @type {*}
+       */
+      overrides: {
+        MUIDataTableHeadCell: {
+          root: {
+            // Don't wrap small headers and avoid wrapping long headers too much
+            minWidth: "128px",
+          },
+        },
+      },
+    });
+
   return (
-    <Box
-      alignItems="center"
-      className="positionsTable"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <Table
-        columns={openPositionTableColumns}
-        data={openPositionsTableRows}
-        persistKey="openPositions"
-        title={<h2>Open positions</h2>}
-      />
-      {/* <Table className="table">
-          <PositionsTableHead type={type} />
-          <PositionsTableBody positions={positions} type={type} />
-        </Table> */}
+    <Box className="openPositionsTable" display="flex" flexDirection="column" width={1}>
+      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
+        <Table
+          columns={openPositionTableColumns}
+          data={openPositionsTableRows}
+          persistKey="openPositions"
+          title={<h2>Open positions</h2>}
+        />
+      </MuiThemeProvider>
     </Box>
   );
 };
