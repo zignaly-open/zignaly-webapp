@@ -1,9 +1,8 @@
 import React, { useState, useRef, useCallback } from "react";
 import "./Chart.scss";
-import { Box, Tooltip, Button, Popper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
-import { withStyles } from "@material-ui/core/styles";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
@@ -27,7 +26,6 @@ import { withStyles } from "@material-ui/core/styles";
  */
 
 const MemoizedLine = React.memo(Line, (/* prevProps, nextProps */) => true);
-const MemoizedCustomToolip = React.memo(CustomToolip, (/* prevProps, nextProps */) => true);
 
 /**
  * @typedef {Object} LineChartPropTypes
@@ -35,142 +33,6 @@ const MemoizedCustomToolip = React.memo(CustomToolip, (/* prevProps, nextProps *
  * @property {ChartData} chartData Chart dataset.
  * @property {function} tooltipFormat Function to format data based on selected value.
  */
-
-var randomScalingFactor = function () {
-  return (Math.random() > 0.5 ? 1.0 : 1.0) * Math.round(Math.random() * 100);
-};
-
-var line1 = [
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-  randomScalingFactor(),
-];
-
-var MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-const StyledToolip = ({ pos }) =>
-  withStyles({
-    popper: { transform: `translate3d(${pos.left}px, ${pos.top}px, 0px) !important` },
-    tooltip: {},
-  })(Tooltip);
-
-const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
-  console.log(pos);
-  const posStyle = pos
-    ? {
-        marginLeft: pos.left + "px",
-        marginTop: pos.top + "px",
-        position: "absolute",
-      }
-    : { marginTop: Math.random() * 100 + "px" };
-  //   return <Box>aaa</Box>;
-  /**
-   * @param {*} childrenProps Props.
-   * @return {JSX.Element} The wrapped children components.
-   */
-  const childrenWrapper = (childrenProps) => (
-    <Box className="customTooltipPopper customPos" style={posStyle}>
-      {childrenPopper(childrenProps)}
-      <Box className="lineTooltip" />
-    </Box>
-  );
-  return <Popper {...othersProps}>{childrenWrapper}</Popper>;
-};
-const CustomPopperMaker = (pos) => (props) => CustomPopper(props);
 
 /**
  * Provides a wrapper to display a chart.
@@ -181,7 +43,6 @@ const CustomPopperMaker = (pos) => (props) => CustomPopper(props);
 const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
-  const tooltipRef = useRef(null);
   const [tooltipContent, setTooltipContent] = useState();
   const [pos, setPos] = useState(/** @type {PosType} */ (null));
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
@@ -300,19 +161,6 @@ const LineChart = (props) => {
     // events: ["click", "touchstart", "touchmove"],
   };
 
-  const data2 = {
-    labels: MONTHS,
-    datasets: [
-      {
-        label: "My First dataset",
-        //   backgroundColor: window.chartColors.red,
-        borderColor: "red",
-        data: line1,
-        fill: false,
-      },
-    ],
-  };
-
   const plugins = [
     {
       id: "responsiveGradient",
@@ -339,73 +187,17 @@ const LineChart = (props) => {
     },
   ];
 
-  const posStyle = pos
-    ? {
-        // transform: `translate3d(${pos.left}px, ${pos.top}px, 0px) !important`,
-        color: "green",
-        marginLeft: pos.left + "px",
-        marginTop: pos.top + "px",
-        position: "absolute",
-        // paddingTop: "170px",
-      }
-    : {};
-  const offset = pos ? `${pos.left}, 0` : "";
-  //   console.log(posStyle);
-
-  if (tooltipRef.current) {
-    tooltipRef.current.pos = pos;
-  }
   return (
     <Box className="chart">
-      {/* {isTooltipVisible && ( */}
-      {/* <Tooltip
-        title="My Tooltip"
-        open={isTooltipVisible}
-        placement="left"
-        PopperProps={{ keepMounted: true }}
-      >
-        <span>Anchor Point here</span>
-      </Tooltip> */}
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => setTooltipVisibility(!isTooltipVisible)}
-      >
-        Toggle Tooltip
-      </Button>
-      {/* <MemoizedCustomToolip open={isTooltipVisible} pos={pos} title="testtttttttttttttt">
-        <Box />
-      </MemoizedCustomToolip> */}
-      <Tooltip
-        // PopperComponent={CustomPopperMaker(pos)}
-        PopperComponent={CustomPopper}
+      <CustomToolip
         classes={{ tooltip: "customTooltip" }}
-        // PopperProps={{
-        //   popperOptions: {
-        //     modifiers: {
-        //       offset: {
-        //         enabled: true,
-        //         offset,
-        //       },
-        //     },
-        //   },
-        // }}
-        pos={pos}
-        PopperProps={{ keepMounteds: true, styless: { ...posStyle }, pos }}
-        // title="testtttttttttttttt"
-        // style={{ background: "red" }}
-        placement="top-start"
-        title={tooltipContent}
         open={isTooltipVisible}
+        placement="top-start"
         pos={pos}
-        ref={tooltipRef}
+        title={tooltipContent}
       >
-        <MemoizedLine data={data} options={options} ref={chartRef} plugins={plugins} />
-      </Tooltip>
-      {/* )} */}
-
-      {/* <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent}> */}
-      {/* </CustomToolip> */}
+        <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
+      </CustomToolip>
     </Box>
   );
 };
