@@ -12,6 +12,23 @@ import { FormattedMessage } from "react-intl";
  */
 
 /**
+ * @typedef {Object} DataTableDataColumns
+ * @property {string} name
+ * @property {string} label
+ * @property {Object} options
+ */
+
+/**
+ * @typedef {Array<JSX.Element>} DataTableDataRow
+ */
+
+/**
+ * @typedef {Object} DataTableContent
+ * @property {Array<DataTableDataColumns>} columns Columns configuration.
+ * @property {Array<DataTableDataRow>} data Rows data (JSX elements).
+ */
+
+/**
  * Compose provider icon element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
@@ -349,7 +366,7 @@ function composeViewActionButton(position) {
  * Compose MUI Data Table default options for a column translation ID.
  *
  * @param {string} columnId Column ID.
- * @returns {Object} Column options.
+ * @returns {DataTableDataColumns} Column options.
  */
 function composeColumnDefaultOptions(columnId) {
   return {
@@ -463,7 +480,7 @@ function composeLogPositionRow(position) {
  * @export
  * @param {UserPositionsCollection} positions Positions collection.
  *
- * @returns {Object} Open positions data table structure.
+ * @returns {DataTableContent} Open positions data table structure.
  */
 export function composeOpenPositionsDataTable(positions) {
   const columnsIds = [
@@ -504,7 +521,7 @@ export function composeOpenPositionsDataTable(positions) {
  * @export
  * @param {UserPositionsCollection} positions Positions collection.
  *
- * @returns {Object} Closed positions data table structure.
+ * @returns {DataTableContent} Closed positions data table structure.
  */
 export function composeClosePositionsDataTable(positions) {
   const columnsIds = [
@@ -547,7 +564,7 @@ export function composeClosePositionsDataTable(positions) {
  * @export
  * @param {UserPositionsCollection} positions Positions collection.
  *
- * @returns {Object} Log positions data table structure.
+ * @returns {DataTableContent} Log positions data table structure.
  */
 export function composeLogPositionsDataTable(positions) {
   const columnsIds = [
