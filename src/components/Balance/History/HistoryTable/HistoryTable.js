@@ -52,6 +52,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -60,6 +61,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -68,6 +70,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -76,6 +79,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -84,6 +88,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
@@ -92,6 +97,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: formatFloat,
       },
     },
     {
