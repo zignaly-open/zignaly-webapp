@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip, Box, Popper } from "@material-ui/core";
+import { Tooltip, Box, Popper, Button, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import "./CustomTooltip.scss";
 
@@ -19,6 +19,32 @@ import "./CustomTooltip.scss";
  *
  * @typedef {TooltipProps & DefaultProps} FullProps
  */
+
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+  },
+}))(Tooltip);
+
+const CustomPopper = ({ children: childrenPopper, ...othersProps }) => {
+  //   console.log(othersProps);
+  //   return <Box>aaa</Box>;
+  /**
+   * @param {*} childrenProps Props.
+   * @return {JSX.Element} The wrapped children components.
+   */
+  const childrenWrapper = (childrenProps) => (
+    <Box className="customTooltipPopper customPos">
+      {childrenPopper(childrenProps)}
+      <Box className="lineTooltip" />
+    </Box>
+  );
+  return <Popper {...othersProps}>{childrenWrapper}</Popper>;
+};
 
 /**
  * Provides a custom tooltip component.
@@ -45,7 +71,8 @@ const CustomTooltip = (props) => {
    * @param {*} props Props.
    * @return {JSX.Element} A wrapper for popper component.
    */
-  const CustomPopper = ({ children: childrenPopper, ...othersProps }) => {
+  const CustomPopper0 = ({ children: childrenPopper, ...othersProps }) => {
+    return <Box>aaa</Box>;
     /**
      * @param {*} childrenProps Props.
      * @return {JSX.Element} The wrapped children components.
@@ -58,11 +85,25 @@ const CustomTooltip = (props) => {
     );
     return <Popper {...othersProps}>{childrenWrapper}</Popper>;
   };
+  console.log("object");
 
   return (
+    // <HtmlTooltip
+    //   title={
+    //     <React.Fragment>
+    //       <Typography color="inherit">Tooltip with HTML</Typography>
+    //       <em>{"And here's"}</em> <b>{"some"}</b> <u>{"amazing content"}</u>.{" "}
+    //       {"It's very engaging. Right?"}
+    //     </React.Fragment>
+    //   }
+    //   {...others}
+    // >
+    //   <Button>HTML</Button>
+    // </HtmlTooltip>
     <StyledTooltip
-      PopperComponent={CustomPopper}
-      classes={{ tooltip: "customTooltip" }}
+      //   PopperComponent={pos ? CustomPopper : Popper}
+      //   classes={{ tooltip: "customTooltip" }}
+      PopperProps={{ keepMounted: true, style: { ...posStyle } }}
       title={title}
       {...others}
     >
