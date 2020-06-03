@@ -2,8 +2,7 @@
   .tradersBox {
     display: grid;
     grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(354px, 425px));
-    justify-content: flex-start;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   }
 
   .traderCard {
@@ -18,5 +17,9 @@
 @include media("<=sm") {
   .providersList {
     align-items: center;
+
+    .tradersBox {
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
   }
 }
