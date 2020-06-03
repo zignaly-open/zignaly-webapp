@@ -2,6 +2,7 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   scrollbar-width: none;
+  height: 100%;
 
   &::scrollbar {
     height: 0;
@@ -11,6 +12,7 @@ html {
 
 body {
   margin: 0;
+  height: 100%;
 }
 
 .boxTitle {
@@ -205,5 +207,6 @@ body {
     font-family: "PlexSans-Medium";
     margin-right: 5px;
     text-transform: capitalize;
+    word-wrap: break-word;
   }
 }

@@ -47,9 +47,8 @@
 
     .balanceWrapper {
       width: fit-content;
-
       &.full {
-        width: 450px;
+        min-width: 450px;
       }
 
       .iconBox {
@@ -67,17 +66,14 @@
         }
       }
 
+      .balanceContainer {
+        width: calc(100% - 44px);
+        margin-right: 40px;
+      }
+
       .balanceBox {
         height: 42px;
-        width: 140px;
-
-        &:first-child {
-          width: 160px;
-        }
-
-        &:last-child {
-          width: 100px;
-        }
+        width: fit-content;
 
         .balance {
           text-transform: uppercase;

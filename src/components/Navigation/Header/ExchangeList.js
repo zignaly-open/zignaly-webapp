@@ -75,7 +75,7 @@ const ExchangeList = (props) => {
             )}
             {item.isTestnet && (
               <span className="name">
-                (<FormattedMessage id="menu.testnet" />){" "}
+                (<FormattedMessage id="menu.testnet" />){"hfdjkhgk gdfkjghdjkfgh "}
               </span>
             )}
           </MenuItem>
