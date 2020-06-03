@@ -14,7 +14,7 @@ import { camelCase } from "lodash";
  * Compose provider icon column content.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
- * @returns {JSX.Element} Provider icon JSX element.
+ * @returns {JSX.Element} Composed JSX element.
  */
 const composeProviderIcon = (position) => {
   // Wrap with link to provider provile when available.
@@ -37,7 +37,7 @@ const composeProviderIcon = (position) => {
  * Compose trailing stop icon for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
- * @returns {JSX.Element|null} Provider icon JSX element.
+ * @returns {JSX.Element|null} Composed JSX element or null.
  */
 const composeTrailingStopIcon = (position) => {
   const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.darkGrey;
@@ -47,6 +47,197 @@ const composeTrailingStopIcon = (position) => {
 
   return null;
 };
+
+/**
+ * Compose exit price for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose exit price for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeExitPrice(position) {
+  return (
+    <>
+      <span className="symbol">{position.quote}</span> {formatPrice(position.sellPrice)}
+    </>
+  );
+}
+
+/**
+ * Compose profit amount for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose profit for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeProfit(position) {
+  return (
+    <>
+      {position.status === 1 ? (
+        <span>Still entering...</span>
+      ) : (
+        <>
+          <span className="symbol">{position.quote}</span>
+          <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
+        </>
+      )}
+    </>
+  );
+}
+
+/**
+ * Compose profit percentage for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose profit for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeProfitPercentage(position) {
+  return (
+    <>
+      {position.status === 1 ? (
+        <span>Still entering...</span>
+      ) : (
+        <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)}</span>
+      )}
+    </>
+  );
+}
+
+/**
+ * Compose stop loss price for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose stop loss price for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeStopLossPrice(position) {
+  return (
+    <>
+      {!isNaN(position.stopLossPrice) && <span className="symbol">{position.quote}</span>}
+      <span className={position.stopLossStyle}>{formatPrice(position.stopLossPrice)}</span>
+    </>
+  );
+}
+
+/**
+ * Compose risk percentage for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose risk for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeRisk(position) {
+  return (
+    <>
+      <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
+    </>
+  );
+}
+
+/**
+ * Compose formatted price with currency symbol.
+ *
+ * @param {string} symbol Currency symbol.
+ * @param {number} price Price.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeSymbolWithPrice(symbol, price) {
+  return (
+    <>
+      <span className="symbol">{symbol}</span> {formatPrice(price)}
+    </>
+  );
+}
+
+/**
+ * Compose take profit targets for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose icon for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeProfitTargets(position) {
+  return (
+    <>
+      {position.takeProfitTargetsCountFail > 0 && (
+        <span className="targetRed" title="Take profits failed.">
+          {position.takeProfitTargetsCountFail}
+        </span>
+      )}
+      {position.takeProfitTargetsCountSuccess > 0 && (
+        <span className="targetGreen" title="Take profits successfully completed.">
+          {position.takeProfitTargetsCountSuccess}
+        </span>
+      )}
+      {position.takeProfitTargetsCountPending > 0 && (
+        <span className="targetGray" title="Pending take profits.">
+          {position.takeProfitTargetsCountPending}
+        </span>
+      )}
+    </>
+  );
+}
+
+/**
+ * Compose reBuy targets for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose icon for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeRebuyTargets(position) {
+  return (
+    <>
+      {position.reBuyTargetsCountFail > 0 && (
+        <span className="targetRed" title="DCAs failed.">
+          {position.reBuyTargetsCountFail}
+        </span>
+      )}
+      {position.reBuyTargetsCountSuccess > 0 && (
+        <span className="targetGreen" title="DCAs successfully completed.">
+          {position.reBuyTargetsCountSuccess}
+        </span>
+      )}
+      {position.reBuyTargetsCountPending > 0 && (
+        <span className="targetGray" title="Pending DCAs">
+          {position.reBuyTargetsCountPending}
+        </span>
+      )}
+    </>
+  );
+}
+
+/**
+ * Compose action buttons for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose icon for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeActionButtons(position) {
+  return (
+    <>
+      {position.isCopyTrading ? (
+        <button data-position-id={position.positionId} title="view" type="button">
+          <Eye color={colors.purpleLight} />
+        </button>
+      ) : (
+        <button data-position-id={position.positionId} title="edit" type="button">
+          <Edit2 color={colors.purpleLight} />
+        </button>
+      )}
+      <button
+        data-action={"exit"}
+        data-position-id={position.positionId}
+        title="exit"
+        type="button"
+      >
+        <LogOut color={colors.purpleLight} />
+      </button>
+      <button
+        data-action={"cancel"}
+        data-position-id={position.positionId}
+        title="cancel"
+        type="button"
+      >
+        <XCircle color={colors.purpleLight} />
+      </button>
+    </>
+  );
+}
 
 /**
  * Compose MUI Data Table data structure from positions entities collection.
@@ -102,115 +293,23 @@ export function composeOpenPositionsDataTable(positions) {
       position.providerName,
       position.signalId,
       position.pair,
-      <>
-        <span className="symbol">{position.quote}</span> {formatPrice(position.buyPrice)}
-      </>,
+      composeSymbolWithPrice(position.quote, position.buyPrice),
       position.leverage,
-      <>
-        <span className="symbol">{position.quote}</span> {formatPrice(position.sellPrice)}
-      </>,
-      <>
-        {position.status === 1 ? (
-          <span>Still entering...</span>
-        ) : (
-          <>
-            <span className="symbol">{position.quote}</span>
-            <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
-          </>
-        )}
-      </>,
-      <>
-        {" "}
-        {position.status === 1 ? (
-          <span>Still entering...</span>
-        ) : (
-          <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)}</span>
-        )}
-      </>,
+      composeExitPrice(position),
+      composeProfit(position),
+      composeProfitPercentage(position),
       position.side,
-      <>
-        {!isNaN(position.stopLossPrice) && <span className="symbol">{position.quote}</span>}
-        <span className={position.stopLossStyle}>{formatPrice(position.stopLossPrice)}</span>
-      </>,
-      <>
-        <span className="symbol">{position.base}</span>
-        {formatPrice(position.amount)}
-      </>,
-      <>
-        <span className="symbol">{position.base}</span>
-        {formatPrice(position.remainAmount)}
-      </>,
-      <>
-        <span className="symbol">{position.quote}</span>
-        {formatPrice(position.positionSizeQuote)}
-      </>,
-      <>{composeTrailingStopIcon(position)}</>,
-      <>
-        {position.takeProfitTargetsCountFail > 0 && (
-          <span className="targetRed" title="Take profits failed.">
-            {position.takeProfitTargetsCountFail}
-          </span>
-        )}
-        {position.takeProfitTargetsCountSuccess > 0 && (
-          <span className="targetGreen" title="Take profits successfully completed.">
-            {position.takeProfitTargetsCountSuccess}
-          </span>
-        )}
-        {position.takeProfitTargetsCountPending > 0 && (
-          <span className="targetGray" title="Pending take profits.">
-            {position.takeProfitTargetsCountPending}
-          </span>
-        )}
-      </>,
-      <>
-        {position.reBuyTargetsCountFail > 0 && (
-          <span className="targetRed" title="DCAs failed.">
-            {position.reBuyTargetsCountFail}
-          </span>
-        )}
-        {position.reBuyTargetsCountSuccess > 0 && (
-          <span className="targetGreen" title="DCAs successfully completed.">
-            {position.reBuyTargetsCountSuccess}
-          </span>
-        )}
-        {position.reBuyTargetsCountPending > 0 && (
-          <span className="targetGray" title="Pending DCAs">
-            {position.reBuyTargetsCountPending}
-          </span>
-        )}
-      </>,
-      <>
-        <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>
-      </>,
+      composeStopLossPrice(position),
+      composeSymbolWithPrice(position.base, position.amount),
+      composeSymbolWithPrice(position.base, position.remainAmount),
+      composeSymbolWithPrice(position.quote, position.positionSizeQuote),
+      composeTrailingStopIcon(position),
+      composeProfitTargets(position),
+      composeRebuyTargets(position),
+      composeRisk(position),
       position.age,
       position.openTrigger,
-      <>
-        {position.isCopyTrading ? (
-          <button data-position-id={position.positionId} title="view" type="button">
-            <Eye color={colors.purpleLight} />
-          </button>
-        ) : (
-          <button data-position-id={position.positionId} title="edit" type="button">
-            <Edit2 color={colors.purpleLight} />
-          </button>
-        )}
-        <button
-          data-action={"exit"}
-          data-position-id={position.positionId}
-          title="exit"
-          type="button"
-        >
-          <LogOut color={colors.purpleLight} />
-        </button>
-        <button
-          data-action={"cancel"}
-          data-position-id={position.positionId}
-          title="cancel"
-          type="button"
-        >
-          <XCircle color={colors.purpleLight} />
-        </button>
-      </>,
+      composeActionButtons(position),
     ];
   });
 
