@@ -22,13 +22,13 @@ const CompositionGraph = (props) => {
   const { list } = props;
 
   const sectionColors = [
-    "#4e07da",
     "#770fc8",
     "#a25cd9",
     "#a946f6",
     "#f63f82",
     "#c12860",
     "#b52a00",
+    "#c91919",
   ];
 
   const cryptos = ["BNB", "BTC", "ETH", "PAX", "TUSD", "USDC", "USDT"];
@@ -37,10 +37,10 @@ const CompositionGraph = (props) => {
    * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
    * @type {ChartData}
    */
-  let chartData = { values: [], labels: [] };
+  let chartData = { values: [0.004323], labels: ["MM"] };
 
   const colorsOptions = {
-    backgroundColor: ["#4e07da"],
+    backgroundColor: sectionColors,
     borderColor: "#4e07da",
   };
 
@@ -54,7 +54,6 @@ const CompositionGraph = (props) => {
         if (data[cryptos[a]] && data[cryptos[a]] !== "0E-12") {
           chartData.values.push(data[cryptos[a]]);
           chartData.labels.push(cryptos[a]);
-          colorsOptions.backgroundColor.push(sectionColors[a]);
         }
       }
     }
