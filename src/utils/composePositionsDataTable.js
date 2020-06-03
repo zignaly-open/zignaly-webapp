@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
@@ -311,6 +311,18 @@ function composeFragmentValue(value) {
 }
 
 /**
+ * Navigate to position detail page.
+ *
+ * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+ * @returns {Void} None.
+ */
+function gotoPositionDetail(event) {
+  const targetElement = event.currentTarget;
+  const positionId = targetElement.getAttribute("data-position-id");
+  navigate(`position/${positionId}`);
+}
+
+/**
  * Compose all action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
@@ -320,11 +332,21 @@ function composeAllActionButtons(position) {
   return (
     <>
       {position.isCopyTrading ? (
-        <button data-position-id={position.positionId} title="view" type="button">
+        <button
+          data-position-id={position.positionId}
+          onClick={gotoPositionDetail}
+          title="view"
+          type="button"
+        >
           <Eye color={colors.purpleLight} />
         </button>
       ) : (
-        <button data-position-id={position.positionId} title="edit" type="button">
+        <button
+          data-position-id={position.positionId}
+          onClick={gotoPositionDetail}
+          title="edit"
+          type="button"
+        >
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
