@@ -40,10 +40,10 @@ const History = () => {
       <Box
         alignItems="center"
         bgcolor="grid.content"
+        className="historyHeader"
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-        className="historyHeader"
       >
         <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
       </Box>

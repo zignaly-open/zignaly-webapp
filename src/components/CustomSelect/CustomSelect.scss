@@ -22,13 +22,12 @@
     height: 32px;
     margin-right: 50px;
     min-width: 94px;
-    height: 32px;
 
     > div {
-      opacity: 1;
-      height: 32px;
-      display: flex;
       align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
       padding: 0 14px;
     }
   }
