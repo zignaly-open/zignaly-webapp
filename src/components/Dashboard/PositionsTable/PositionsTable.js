@@ -2,10 +2,15 @@ import React from "react";
 import "./PositionsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../Table";
-import { composeOpenPositionsDataTable } from "../../../utils/composePositionsDataTable";
+import {
+  composeOpenPositionsDataTable,
+  composeClosePositionsDataTable,
+  composeLogPositionsDataTable,
+} from "../../../utils/composePositionsDataTable";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
@@ -20,7 +25,25 @@ import { composeOpenPositionsDataTable } from "../../../utils/composePositionsDa
  */
 const PositionsTable = (props) => {
   const { type, positions } = props;
-  const { columns, data } = composeOpenPositionsDataTable(positions);
+
+  /**
+   * Compose MUI data table for positions collection of selected type.
+   *
+   * @returns {DataTableContent} Data table content.
+   */
+  const composeDataTableForPositionsType = () => {
+    if (type === "closed") {
+      return composeLogPositionsDataTable(positions);
+    }
+
+    if (type === "log") {
+      return composeClosePositionsDataTable(positions);
+    }
+
+    return composeOpenPositionsDataTable(positions);
+  };
+
+  const { columns, data } = composeDataTableForPositionsType();
 
   return (
     <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
