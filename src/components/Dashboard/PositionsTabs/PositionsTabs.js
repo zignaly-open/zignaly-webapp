@@ -1,11 +1,7 @@
 import { PositionsTabContent } from "./";
 import React, { useState } from "react";
 import "./PositionsTabs.scss";
-import { Box, Popover } from "@material-ui/core";
-import SettingsIcon from "../../../images/dashboard/settings.svg";
-import FiltersUnchecked from "../../../images/dashboard/filtersHollow.svg";
-import FilstersChecked from "../../../images/dashboard/filtersFill.svg";
-import PositionSettingsForm from "../../Forms/PositionSettingsForm";
+import { Box } from "@material-ui/core";
 import TabsMenu from "./TabsMenu";
 
 /**
@@ -14,8 +10,6 @@ import TabsMenu from "./TabsMenu";
 
 const PositionsTabs = () => {
   const [tabValue, setTabValue] = useState(0);
-  const [filtersVisibility, setFiltersVisibility] = useState(false);
-  const [settingsAnchor, setSettingAnchor] = useState(undefined);
 
   /**
    * Map tab index to positions collection type.
@@ -35,15 +29,6 @@ const PositionsTabs = () => {
     }
   };
 
-  const selectedType = mapIndexToCollectionType();
-  const handleClose = () => {
-    setSettingAnchor(undefined);
-  };
-
-  const toggleFilters = () => {
-    setFiltersVisibility(!filtersVisibility);
-  };
-
   /**
    * Event handler to change tab value.
    *
@@ -55,6 +40,8 @@ const PositionsTabs = () => {
     setTabValue(val);
   };
 
+  const selectedType = mapIndexToCollectionType();
+
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
       <Box
@@ -65,47 +52,8 @@ const PositionsTabs = () => {
         justifyContent="space-between"
       >
         <TabsMenu changeTab={changeTab} tabValue={tabValue} />
-        <Box
-          alignItems="center"
-          className="settings"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={toggleFilters}
-            src={filtersVisibility ? FilstersChecked : FiltersUnchecked}
-          />
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={(e) => setSettingAnchor(e.currentTarget)}
-            src={SettingsIcon}
-          />
-        </Box>
       </Box>
-      <PositionsTabContent
-        filtersVisibility={filtersVisibility}
-        toggleFilters={toggleFilters}
-        type={selectedType}
-      />
-      <Popover
-        anchorEl={settingsAnchor}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        onClose={() => setSettingAnchor(undefined)}
-        open={Boolean(settingsAnchor)}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <PositionSettingsForm onClose={handleClose} />
-      </Popover>
+      <PositionsTabContent type={selectedType} />
     </Box>
   );
 };

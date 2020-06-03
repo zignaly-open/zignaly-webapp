@@ -10,8 +10,6 @@ import { isEmpty } from "lodash";
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {Object} PositionsTabContentProps
  * @property {PositionsCollectionType} type
- * @property {React.MouseEventHandler} toggleFilters
- * @property {boolean} filtersVisibility
  */
 
 /**
@@ -22,20 +20,17 @@ import { isEmpty } from "lodash";
  */
 
 const PositionsTabContent = (props) => {
-  const { type, filtersVisibility, toggleFilters } = props;
+  const { type } = props;
   const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
   const showTypesFilter = type === "log";
 
   return (
     <>
-      {filtersVisibility && (
-        <PositionFilters
-          onChange={setFilters}
-          onClose={toggleFilters}
-          positions={positionsAll}
-          showTypesFilter={showTypesFilter}
-        />
-      )}
+      <PositionFilters
+        onChange={setFilters}
+        positions={positionsAll}
+        showTypesFilter={showTypesFilter}
+      />
       {type === "open" && (
         <Box className="tabPanel">
           {isEmpty(positionsFiltered) ? (
