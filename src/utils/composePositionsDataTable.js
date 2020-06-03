@@ -11,7 +11,7 @@ import { camelCase } from "lodash";
  */
 
 /**
- * Compose provider icon column content.
+ * Compose provider icon element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
@@ -34,7 +34,7 @@ const composeProviderIcon = (position) => {
 };
 
 /**
- * Compose trailing stop icon for a given position.
+ * Compose trailing stop icon element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element|null} Composed JSX element or null.
@@ -49,7 +49,7 @@ const composeTrailingStopIcon = (position) => {
 };
 
 /**
- * Compose exit price for a given position.
+ * Compose exit price element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose exit price for.
  * @returns {JSX.Element} Composed JSX element.
@@ -63,7 +63,7 @@ function composeExitPrice(position) {
 }
 
 /**
- * Compose profit amount for a given position.
+ * Compose profit amount element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose profit for.
  * @returns {JSX.Element} Composed JSX element.
@@ -84,7 +84,7 @@ function composeProfit(position) {
 }
 
 /**
- * Compose profit percentage for a given position.
+ * Compose profit percentage element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose profit for.
  * @returns {JSX.Element} Composed JSX element.
@@ -102,7 +102,7 @@ function composeProfitPercentage(position) {
 }
 
 /**
- * Compose stop loss price for a given position.
+ * Compose stop loss price element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose stop loss price for.
  * @returns {JSX.Element} Composed JSX element.
@@ -117,7 +117,7 @@ function composeStopLossPrice(position) {
 }
 
 /**
- * Compose risk percentage for a given position.
+ * Compose risk percentage element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose risk for.
  * @returns {JSX.Element} Composed JSX element.
@@ -131,7 +131,7 @@ function composeRisk(position) {
 }
 
 /**
- * Compose formatted price with currency symbol.
+ * Compose formatted price with currency symbol element.
  *
  * @param {string} symbol Currency symbol.
  * @param {number} price Price.
@@ -146,7 +146,7 @@ function composeSymbolWithPrice(symbol, price) {
 }
 
 /**
- * Compose take profit targets for a given position.
+ * Compose take profit targets element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
@@ -174,7 +174,7 @@ function composeProfitTargets(position) {
 }
 
 /**
- * Compose reBuy targets for a given position.
+ * Compose reBuy targets element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
@@ -202,7 +202,7 @@ function composeRebuyTargets(position) {
 }
 
 /**
- * Compose action buttons for a given position.
+ * Compose action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
