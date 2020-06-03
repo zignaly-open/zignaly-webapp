@@ -390,4 +390,26 @@ export function composeClosePositionsDataTable(positions) {
  *
  * @returns {Object} Log positions data table structure.
  */
-export function composeLogPositionsDataTable(positions) {}
+export function composeLogPositionsDataTable(positions) {
+  const columnsIds = [
+    "col.paper",
+    "col.date.open",
+    "col.type",
+    "col.provider.logo",
+    "col.provider.name",
+    "col.stat",
+    "col.signalid",
+    "col.pair",
+    "col.price.entry",
+    "col.side",
+    "col.amount",
+    "col.remainingamount",
+    "col.invested",
+    "col.actions",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnDefaultOptions),
+    data: [],
+  };
+}
