@@ -5,6 +5,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {import('react').ButtonHTMLAttributes<HTMLButtonElement>} ButtonHTMLAttributes
+ * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
  */
 
 /**
@@ -22,11 +23,11 @@ import { Button, CircularProgress } from "@material-ui/core";
 /**
  * Default component's props.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps & ButtonProps} props
  */
 
 const CustomButton = (props) => {
-  const { loading, className, children, onClick, disabled, type } = props;
+  const { loading, className, children, onClick, disabled, type, ...others } = props;
 
   return (
     <Button
@@ -35,6 +36,7 @@ const CustomButton = (props) => {
       disabled={disabled}
       onClick={onClick}
       type={type ? type : "button"}
+      {...others}
     >
       {loading ? <CircularProgress className="loader" thickness={5} /> : children}
     </Button>

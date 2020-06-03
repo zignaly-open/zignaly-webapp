@@ -33,6 +33,11 @@ const DashboardHeader = () => {
               (<FormattedMessage id="menu.demo" />){" "}
             </span>
           )}
+          {storeSettings.selectedExchange.isTestnet && (
+            <span className="name">
+              (<FormattedMessage id="menu.testnet" />){" "}
+            </span>
+          )}
         </span>
       </Box>
       <SubNavHeader links={routesMapping("dashboard").links} />

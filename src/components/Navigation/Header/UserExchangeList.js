@@ -17,6 +17,7 @@ const UserExchangeList = () => {
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
+
   /**
    * Select change handler.
    *
@@ -54,6 +55,11 @@ const UserExchangeList = () => {
                 {item.paperTrading && (
                   <span className="name">
                     (<FormattedMessage id="menu.demo" />){" "}
+                  </span>
+                )}
+                {item.isTestnet && (
+                  <span className="name">
+                    (<FormattedMessage id="menu.testnet" />){" "}
                   </span>
                 )}
               </MenuItem>

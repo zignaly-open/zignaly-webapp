@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { Box, Slide, MenuItem, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../store/actions/settings";
-import ZignalyIcon from "../../../images/exchanges/zignaly.svg";
-import BinanceIcon from "../../../images/exchanges/binance.svg";
-import KucoinIcon from "../../../images/exchanges/kucoin.svg";
 import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
@@ -49,19 +46,16 @@ const MobileExchangeList = () => {
         justifyContent="flex-start"
         onClick={() => showList(true)}
       >
-        {storeSettings.selectedExchange.name.toLowerCase() === "binance" && (
-          <img alt="zignaly" src={BinanceIcon} />
-        )}
-        {storeSettings.selectedExchange.name.toLowerCase() === "zignaly" && (
-          <img alt="zignaly" src={ZignalyIcon} />
-        )}
-        {storeSettings.selectedExchange.name.toLowerCase() === "kucoin" && (
-          <img alt="zignaly" src={KucoinIcon} />
-        )}
+        <ExchangeIcon exchange={storeSettings.selectedExchange.name.toLowerCase()} size="medium" />
         <span className="name"> {storeSettings.selectedExchange.internalName} </span>
         {storeSettings.selectedExchange.paperTrading && (
           <span className="name">
             (<FormattedMessage id="menu.demo" />){" "}
+          </span>
+        )}
+        {storeSettings.selectedExchange.isTestnet && (
+          <span className="name">
+            (<FormattedMessage id="menu.testnet" />){" "}
           </span>
         )}
       </Box>
@@ -97,7 +91,16 @@ const MobileExchangeList = () => {
               >
                 <ExchangeIcon exchange={item.name.toLowerCase()} size="medium" />
                 <span className="name"> {item.internalName} </span>
-                {item.paperTrading && <span className="name"> (DEMO) </span>}
+                {item.paperTrading && (
+                  <span className="name">
+                    (<FormattedMessage id="menu.demo" />){" "}
+                  </span>
+                )}
+                {item.isTestnet && (
+                  <span className="name">
+                    (<FormattedMessage id="menu.testnet" />){" "}
+                  </span>
+                )}
               </MenuItem>
             ))}
           <MenuItem

@@ -29,7 +29,7 @@ const ProvidersFilters = ({
 }) => {
   const quoteAssets = useQuoteAssets();
   const coins = Object.keys(quoteAssets);
-  const exchanges = ["Binance", "KuCoin"];
+  const exchanges = ["Binance", "Zignaly", "KuCoin"];
 
   return (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">

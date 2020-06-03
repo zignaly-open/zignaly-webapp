@@ -63,7 +63,13 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Object} AuthorizationPayload
- * @property {string} token
+ * @property {string} token User access token.
+ */
+
+/**
+ * @typedef {Object} PositionsListPayload
+ * @property {string} token User access token.
+ * @property {string} internalExchangeId User exchange connection ID.
  */
 
 /**
@@ -94,6 +100,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} leverage
  * @property {number} netProfit
  * @property {number} netProfitPercentage
+ * @property {string} netProfitStyle
  * @property {number} openDate
  * @property {number} positionSizeQuote
  * @property {number} profit
@@ -145,8 +152,8 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} statusDesc
  * @property {string} stopLossStyle
  * @property {string} symbol
- * @property {string} type
  * @property {string} userId
+ * @property {('unsold' | 'sold' | 'unopened' | '')} type
  */
 
 /**
@@ -499,15 +506,22 @@ export function userPositionItemTransform(positionItem) {
     return `/signalsproviders/${positionItem.providerId}`;
   };
 
-  const calculateRisk = () => {
-    const buyPrice = parseFloat(positionItem.buyPrice);
-    let risk = ((positionItem.stopLossPrice - buyPrice) / buyPrice) * 100;
+  /**
+   * Calculate position risk based on buy price, stop loss and entry side.
+   *
+   * @param {PositionEntity} positionEntity Transformed position entity.
+   * @returns {number} Risk percentage.
+   */
+  const calculateRisk = (positionEntity) => {
+    const buyPrice = positionEntity.buyPrice;
+    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
       return 0.0;
     }
 
-    if (positionItem.type === "SHORT") {
+    // Invert on short position.
+    if (positionEntity.side === "SHORT") {
       risk *= -1;
     }
 
@@ -542,40 +556,45 @@ export function userPositionItemTransform(positionItem) {
     return "breakeven";
   };
 
-  const risk = calculateRisk();
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const transformedResponse = assign(emptyPositionEntity, positionItem, {
-    age: openDateMoment.toNow(true),
+  const positionEntity = assign(emptyPositionEntity, positionItem, {
     amount: parseFloat(positionItem.amount),
     buyPrice: parseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
-    closeDateReadable: positionItem.closeDate ? closeDateMoment.format("YY/MM/DD hh:mm") : "-",
     fees: parseFloat(positionItem.fees),
     netProfit: parseFloat(positionItem.netProfit),
     netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
-    openDateMoment: openDateMoment,
-    openDateReadable: positionItem.openDate ? openDateMoment.format("YY/MM/DD hh:mm") : "-",
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
-    profitStyle: getProfitType(positionItem.profit, 0, positionItem.side),
-    providerLink: composeProviderLink(),
-    providerLogo: positionItem.logoUrl || defaultProviderLogo,
     remainAmount: parseFloat(positionItem.remainAmount),
-    risk: risk,
-    riskStyle: risk < 0 ? "loss" : "gain",
     sellPrice: parseFloat(positionItem.sellPrice),
+    side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
-    stopLossStyle: getProfitType(
-      positionItem.stopLossPrice,
-      positionItem.buyPrice,
-      positionItem.side,
-    ),
   });
 
-  return transformedResponse;
+  const risk = calculateRisk(positionEntity);
+  const augmentedEntity = assign(positionEntity, {
+    age: openDateMoment.toNow(true),
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateMoment: openDateMoment,
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
+    providerLink: composeProviderLink(),
+    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    risk: risk,
+    riskStyle: risk < 0 ? "loss" : "gain",
+    stopLossStyle: getProfitType(
+      positionEntity.stopLossPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
+  });
+
+  return augmentedEntity;
 }
 
 /**
@@ -609,6 +628,7 @@ function createEmptyPositionEntity() {
     logoUrl: "",
     netProfit: 0,
     netProfitPercentage: 0,
+    netProfitStyle: "",
     openDate: 0,
     openDateReadable: "",
     openTrigger: "",
@@ -656,9 +676,9 @@ function createEmptyPositionEntity() {
     trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
-    type: "",
     updating: false,
     userId: "",
+    type: "",
   };
 }
 

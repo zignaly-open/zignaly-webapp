@@ -24,11 +24,17 @@ import { isEmpty } from "lodash";
 const PositionsTabContent = (props) => {
   const { type, filtersVisibility, toggleFilters } = props;
   const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
+  const showTypesFilter = type === "log";
 
   return (
     <>
       {filtersVisibility && (
-        <PositionFilters onChange={setFilters} onClose={toggleFilters} positions={positionsAll} />
+        <PositionFilters
+          onChange={setFilters}
+          onClose={toggleFilters}
+          positions={positionsAll}
+          showTypesFilter={showTypesFilter}
+        />
       )}
       {type === "open" && (
         <Box className="tabPanel">

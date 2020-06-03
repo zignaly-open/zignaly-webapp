@@ -8,18 +8,12 @@
   width: 100%;
 
   .filters {
-    width: calc(100% - 250px);
-
     .title {
       color: $purple;
       font-family: "PlexSans-Medium";
       font-size: 16px;
       margin-right: 34px;
     }
-  }
-
-  .actions {
-    width: 250px;
   }
 }
 
@@ -49,11 +43,6 @@
     .actions {
       min-height: 40px;
       width: 100%;
-    }
-
-    .customButton {
-      min-width: auto;
-      width: auto;
     }
   }
 }
