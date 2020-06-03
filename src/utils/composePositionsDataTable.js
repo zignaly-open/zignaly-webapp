@@ -330,7 +330,7 @@ function gotoPositionDetail(event) {
  */
 function composeAllActionButtons(position) {
   return (
-    <>
+    <div className="actions">
       {position.isCopyTrading ? (
         <button
           data-position-id={position.positionId}
@@ -366,7 +366,7 @@ function composeAllActionButtons(position) {
       >
         <XCircle color={colors.purpleLight} />
       </button>
-    </>
+    </div>
   );
 }
 
@@ -378,9 +378,16 @@ function composeAllActionButtons(position) {
  */
 function composeViewActionButton(position) {
   return (
-    <button data-action={"view"} data-position-id={position.positionId} title="view" type="button">
-      <Eye color={colors.purpleLight} />
-    </button>
+    <div className="actions">
+      <button
+        data-action={"view"}
+        data-position-id={position.positionId}
+        title="view"
+        type="button"
+      >
+        <Eye color={colors.purpleLight} />
+      </button>
+    </div>
   );
 }
 
