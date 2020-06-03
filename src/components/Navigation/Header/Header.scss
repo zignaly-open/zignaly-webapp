@@ -17,15 +17,14 @@
       background-image: $purpleLightGradient;
       border-radius: 4px;
       color: $white;
-      height: inherit;
-      padding: 5px 10px;
-      width: 100%;
       cursor: pointer;
       height: 36px;
+      padding: 5px 10px;
+      width: 100%;
 
       .name {
-        font-size: 14px;
         font-family: "PlexSans-Medium";
+        font-size: 14px;
       }
 
       .exchangeIcon {

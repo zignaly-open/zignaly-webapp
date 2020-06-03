@@ -13,6 +13,7 @@ import { setDailyUserBalance } from "../../../store/actions/user";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import("../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -36,7 +37,7 @@ const ExchangeList = (props) => {
   /**
    * Select change handler.
    *
-   * @param {import("../../../store/initialState").ExchangeConnectionEntity} item Change event.
+   * @param {ExchangeConnectionEntity} item Change event.
    *
    * @returns {Void} No return.
    */
@@ -62,8 +63,8 @@ const ExchangeList = (props) => {
               (storeSettings.selectedExchange.internalId === item.internalId ? "selected" : "")
             }
             key={index}
-            value={item.internalId}
             onClick={() => handleClick(item)}
+            value={item.internalId}
           >
             <ExchangeIcon exchange={item.name.toLowerCase()} size="small" />
             <span className="name"> {item.internalName} </span>
