@@ -254,15 +254,32 @@ function composeActionButtons(position) {
 }
 
 /**
+ * Compose MUI Data Table default options for a column translation ID.
+ *
+ * @param {string} columnId Column ID.
+ * @returns {Object} Column options.
+ */
+function composeColumnDefaultOptions(columnId) {
+  return {
+    name: camelCase(columnId),
+    label: columnId,
+    options: {
+      display: true,
+      viewColumns: true,
+    },
+  };
+}
+
+/**
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
  * @param {UserPositionsCollection} positions Positions collection.
  *
- * @returns {Object} Data table cols / rows structure.
+ * @returns {Object} Open positions data table structure.
  */
 export function composeOpenPositionsDataTable(positions) {
-  const openPositionsColsIds = [
+  const columnsIds = [
     "col.paper",
     "col.date.open",
     "col.provider.logo",
@@ -287,17 +304,6 @@ export function composeOpenPositionsDataTable(positions) {
     "col.opentrigger",
     "col.actions",
   ];
-
-  const openPositionTableColumns = openPositionsColsIds.map((colId) => {
-    return {
-      name: camelCase(colId),
-      label: colId,
-      options: {
-        display: true,
-        viewColumns: true,
-      },
-    };
-  });
 
   const openPositionsTableRows = positions.map((position) => {
     return [
@@ -328,7 +334,60 @@ export function composeOpenPositionsDataTable(positions) {
   });
 
   return {
-    columns: openPositionTableColumns,
+    columns: columnsIds.map(composeColumnDefaultOptions),
     data: openPositionsTableRows,
   };
 }
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {UserPositionsCollection} positions Positions collection.
+ *
+ * @returns {Object} Closed positions data table structure.
+ */
+export function composeClosePositionsDataTable(positions) {
+  const columnsIds = [
+    "col.paper",
+    "col.date.open",
+    "col.date.close",
+    "col.provider.logo",
+    "col.provider.name",
+    "col.stat",
+    "col.signalid",
+    "col.pair",
+    "col.price.entry",
+    "col.price.exit",
+    "col.plnumber",
+    "col.plpercentage",
+    "col.side",
+    "col.stoplossprice",
+    "col.amount",
+    "col.invested",
+    "col.tsl",
+    "col.tp",
+    "col.dca",
+    "col.risk",
+    "col.opentrigger",
+    "col.fees",
+    "col.netprofit.percentage",
+    "col.netprofit.amount",
+    "col.actions",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnDefaultOptions),
+    data: [],
+  };
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {UserPositionsCollection} positions Positions collection.
+ *
+ * @returns {Object} Log positions data table structure.
+ */
+export function composeLogPositionsDataTable(positions) {}
