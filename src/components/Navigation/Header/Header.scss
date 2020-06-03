@@ -47,6 +47,7 @@
 
     .balanceWrapper {
       width: fit-content;
+
       &.full {
         min-width: 450px;
       }
@@ -67,8 +68,8 @@
       }
 
       .balanceContainer {
-        width: calc(100% - 44px);
         margin-right: 40px;
+        width: calc(100% - 44px);
       }
 
       .balanceBox {

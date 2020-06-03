@@ -1,8 +1,8 @@
 html {
+  height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
   scrollbar-width: none;
-  height: 100%;
 
   &::scrollbar {
     height: 0;
@@ -11,8 +11,8 @@ html {
 }
 
 body {
-  margin: 0;
   height: 100%;
+  margin: 0;
 }
 
 .boxTitle {
