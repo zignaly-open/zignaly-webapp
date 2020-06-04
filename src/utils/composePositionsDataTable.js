@@ -107,7 +107,11 @@ function composeAmount(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeQuoteSize(position) {
-  return <>{formatPrice(position.positionSizeQuote)}</>;
+  return (
+    <>
+      <span className="symbol">{position.quote}</span> {formatPrice(position.positionSizeQuote)}
+    </>
+  );
 }
 
 /**
