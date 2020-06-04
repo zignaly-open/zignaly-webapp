@@ -3,6 +3,7 @@ import "./Chart.scss";
 import { Box } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
+import { isEqual } from "lodash";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
@@ -25,7 +26,11 @@ import { Line } from "react-chartjs-2";
  * @property {string} gradientColor2 Chart gradient color bottom.
  */
 
-const MemoizedLine = React.memo(Line);
+// Memoize the chart and only re-renders when the data is updated.
+// Otherwise it will be rendered everytime the toolip is trigered(state update).
+const MemoizedLine = React.memo(Line, (prevProps, nextProps) =>
+  isEqual(prevProps.data, nextProps.data),
+);
 
 /**
  * @typedef {Object} LineChartPropTypes
@@ -43,7 +48,7 @@ const MemoizedLine = React.memo(Line);
 const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
-  const [tooltipContent, setTooltipContent] = useState();
+  const [tooltipContent, setTooltipContent] = useState(<></>);
   const [pos, setPos] = useState(/** @type {PosType} */ (null));
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
@@ -66,10 +71,8 @@ const LineChart = (props) => {
     }
 
     // Set tooltip position.
-    const position = chart.chartInstance.canvas.getBoundingClientRect();
-
-    const left = position.left + window.pageXOffset + tooltip.caretX;
-    const top = position.top + window.pageYOffset + tooltip.caretY;
+    const left = tooltip.caretX;
+    const top = tooltip.caretY;
     setPos({ top, left });
 
     // Set values for display of data in the tooltip
@@ -113,13 +116,13 @@ const LineChart = (props) => {
     },
     hover: {
       intersect: false,
-      mode: "nearest",
+      mode: "index",
       animationDuration: 0,
     },
     tooltips: {
-      mode: "nearest",
+      mode: "index",
       intersect: false,
-      //   position: "nearest",
+      position: "nearest",
       displayColors: false,
       enabled: false,
       custom: showTooltipCallback,
@@ -189,13 +192,15 @@ const LineChart = (props) => {
 
   return (
     <Box className="chart">
-      {isTooltipVisible && (
-        <CustomToolip open={isTooltipVisible} pos={pos} title={tooltipContent}>
-          <Box />
-        </CustomToolip>
-      )}
-
-      <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
+      <CustomToolip
+        classes={{ tooltip: "customTooltip" }}
+        open={isTooltipVisible}
+        placement="top-start"
+        pos={pos}
+        title={tooltipContent}
+      >
+        <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
+      </CustomToolip>
     </Box>
   );
 };
