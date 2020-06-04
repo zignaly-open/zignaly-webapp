@@ -63,13 +63,12 @@ const CustomSelect = (props) => {
               classes={{
                 inputRoot: "searchInputRoot callout1",
                 input: "searchInput",
+                root: "searchRoot",
               }}
               options={options}
               getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
               openOnFocus={true}
-              renderInput={(params) => (
-                <TextField {...params} variant="outlined" classes={{ root: "searchInput" }} />
-              )}
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
               disableClearable={true}
             />
           )}

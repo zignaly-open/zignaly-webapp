@@ -15,12 +15,20 @@
     }
   }
 
+  .select {
+    margin-right: 50px;
+    min-width: 150px;
+  }
+
+  .searchRoot {
+    width: 150px;
+    margin-right: 50px;
+  }
+
   .select,
   .searchInputRoot {
     border-radius: 4px;
     height: 32px;
-    margin-right: 50px;
-    min-width: 120px;
 
     & > div {
       opacity: 0.6;
@@ -29,10 +37,5 @@
     .searchInput {
       padding: 0;
     }
-  }
-
-  .searchInput {
-    width: 120px;
-    margin-right: 50px;
   }
 }

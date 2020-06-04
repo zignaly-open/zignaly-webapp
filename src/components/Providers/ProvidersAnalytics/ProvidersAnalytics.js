@@ -35,6 +35,7 @@ const ProvidersAnalytics = ({
   //   const quoteAssets = useQuoteAssets();
   //   const coins = Object.keys(quoteAssets);
   const [base, setBase] = useState("BTC");
+  console.log("parent");
   const [pair, setPair] = useState("");
   const [timeFrame, setTimeFrame] = useState("");
   const onClear = () => {
