@@ -83,6 +83,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} ro
  */
 
+ /**
+ * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
+ * @property {string} quote
+ */
+
 /**
  * @typedef {Object} PositionEntity
  * @property {Array<ReBuyTarget>} reBuyTargets
@@ -332,13 +337,20 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
- * @typedef {Object} Quote
+ * @typedef {Object} QuoteAsset
  * @property {string} quote
  * @property {string} minNominal
  */
 
 /**
- * @typedef {Object.<string, Quote>} QuotesDict
+ * @typedef {Object} BaseAsset
+ * @property {string} quote
+ * @property {string} base
+ */
+
+/**
+ * @typedef {Object.<string, Quote>} QuoteAssetsDict
+ * @typedef {Object.<string, BaseAsset>} BaseAssetsDict
  */
 
 /**
@@ -1004,10 +1016,10 @@ function createProviderStatsEmptyEntity() {
 }
 
 /**
- * Transform quote assets response to typed QuotesDict.
+ * Transform quote assets response to typed QuoteAssetsDict.
  *
  * @param {*} response Trade API get quotes list raw response.
- * @returns {QuotesDict} Quote assets.
+ * @returns {QuoteAssetsDict} Quote assets.
  */
 export function quotesResponseTransform(response) {
   if (!isObject(response)) {
@@ -1020,6 +1032,29 @@ export function quotesResponseTransform(response) {
       [key]: {
         quote: val.quote,
         minNotional: val.minotional,
+      },
+    }),
+    {},
+  );
+}
+
+/**
+ * Transform base assets response to typed BaseAssetsDict.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {BaseAssetsDict} Base assets.
+ */
+export function basesResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: {
+        quote: val.quote,
+        base: val.base,
       },
     }),
     {},

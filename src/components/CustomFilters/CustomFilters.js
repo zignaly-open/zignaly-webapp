@@ -39,7 +39,7 @@ const CustomFilters = (props) => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <span className="title">{title}</span>
+        {title && <span className="title">{title}</span>}
         {children}
       </Box>
       <Box

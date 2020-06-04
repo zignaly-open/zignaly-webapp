@@ -3,16 +3,17 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+ * @typedef {import("../services/tradeApiClient.types").BaseAssetsDict} BaseAssetsDict
  */
 
 /**
- * Provides quotes assets.
+ * Provides bases assets.
  *
- * @returns {QuoteAssetsDict} Quote Assets.
+ * @param {string} quote Quote of the bases.
+ * @returns {BaseAssetsDict} Quote Assets.
  */
-const useQuoteAssets = () => {
-  const [quotes, setQuotes] = useState({});
+const useBaseAssets = (quote) => {
+  const [bases, setBases] = useState({});
 
   const storeSession = useStoreSessionSelector();
 
@@ -20,12 +21,13 @@ const useQuoteAssets = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,
+      quote,
     };
 
     tradeApi
-      .quotesAssetsGet(payload)
+      .baseAssetsGet(payload)
       .then((data) => {
-        setQuotes(data);
+        setBases(data);
       })
       .catch((e) => {
         alert(`ERROR: ${e.message}`);
@@ -34,7 +36,7 @@ const useQuoteAssets = () => {
 
   useEffect(loadData, [storeSession.tradeApi.accessToken]);
 
-  return quotes;
+  return bases;
 };
 
-export default useQuoteAssets;
+export default useBaseAssets;

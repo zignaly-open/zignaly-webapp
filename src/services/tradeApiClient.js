@@ -10,6 +10,7 @@ import {
   userPositionItemTransform,
   userEquityResponseTransform,
   quotesResponseTransform,
+  basesResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -27,6 +28,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  */
 
 /**
@@ -283,7 +285,8 @@ class TradeApiClient {
 
   /**
    * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
-   * @typedef {import('./tradeApiClient.types').QuotesDict} QuotesDict
+   * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
+   * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
    */
 
   /**
@@ -291,15 +294,31 @@ class TradeApiClient {
    * Get quote assets.
    *
    * @param {ReadOnlyPayload} payload
-   * @returns {Promise<QuotesDict>} Promise that resolves quote assets.
+   * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */
 
-  async quotesGet(payload) {
+  async quotesAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuoteAssets";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return quotesResponseTransform(responseData);
+  }
+
+  /**
+   *
+   * Get quote assets.
+   *
+   * @param {BaseAssetsPayload} payload
+   * @returns {Promise<BaseAssetsDict>} Promise that resolves base assets.
+   * @memberof TradeApiClient
+   */
+
+  async baseAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBaseAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return basesResponseTransform(responseData);
   }
 }
 
