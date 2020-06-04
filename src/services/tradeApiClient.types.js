@@ -194,7 +194,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} type
  * @property {number} timeFrame
  * @property {boolean} copyTradersOnly
- * @property {boolean} ro
+ * @property {boolean} [ro]
  */
 
 /**

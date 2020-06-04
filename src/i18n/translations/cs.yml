@@ -36,6 +36,7 @@ dashboard.connectexchange.subtitle: "CH-To be able to trade on Zignaly you need 
 dashboard.positions: "CH-Positions"
 dashboard.balance: "CH-Balance"
 dashboard.traders: "CH-Connected Traders"
+dashboard.providers: "CH-Connected Providers"
 dashboard.positions.open: "CH-Open Positions"
 dashboard.positions.closed: "CH-Closed Positions"
 dashboard.positions.log: "CH-Log Positions"
