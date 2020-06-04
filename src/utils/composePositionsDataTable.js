@@ -404,11 +404,13 @@ function composeViewActionButton(position) {
  * @returns {DataTableDataColumns} Column options.
  */
 function composeColumnDefaultOptions(columnId) {
+  const permanentColumnIds = ["col.paper", "col.stat", "col.type", "col.actions"];
+
   return {
     name: columnId,
     label: columnId,
     options: {
-      viewColumns: true,
+      viewColumns: !permanentColumnIds.includes(columnId),
       sort: true,
     },
   };
