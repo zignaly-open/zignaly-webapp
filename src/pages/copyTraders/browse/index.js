@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
-import useProvidersList from "../../../hooks/useProvidersList";
+import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
 import "./copyTradersBrowse.scss";
 
 /**
@@ -24,10 +24,10 @@ import "./copyTradersBrowse.scss";
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const intl = useIntl();
-  const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
-  const providersCallbacks = { toggleFilters, toggleSort };
-  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
+  //   const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
+  //   const providersCallbacks = { toggleFilters, toggleSort };
+  //   const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
+  //   const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="ctBrowsePage">
@@ -35,12 +35,14 @@ const CopyTradersBrowse = (props) => {
         <title>{intl.formatMessage({ id: "menu.copytraders" })}</title>
       </Helmet>
 
-      {showFilters && <ProvidersFilters />}
-      {showSort && <ProvidersSort />}
-      <TimeFrameSelectRow
-        title={`${providers.length} ${intl.formatMessage({ id: "copyt.traders" })}`}
+      <ProvidersBrowse
+        type="copyt"
+        openFilters={toggleFilters}
+        openSort={toggleSort}
+        showFilters={showFilters}
+        showSort={showSort}
+        connectedOnly={false}
       />
-      <ProvidersList />
     </Box>
   );
 };
