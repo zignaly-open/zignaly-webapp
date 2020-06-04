@@ -8,7 +8,6 @@ import { uniqBy, sortBy } from "lodash";
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback to broadcast filters changes to caller.
- * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
  * @property {UserPositionsCollection} positions
  * @property {boolean} showTypesFilter
  */
@@ -20,7 +19,7 @@ import { uniqBy, sortBy } from "lodash";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { onChange, onClose, positions, showTypesFilter } = props;
+  const { onChange, positions, showTypesFilter } = props;
   const defaultFilters = {
     provider: "all",
     pair: "all",
@@ -123,7 +122,7 @@ const PositionFilters = (props) => {
   useEffect(broadcastChange, [filters]);
 
   return (
-    <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
+    <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (
         <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
       )}

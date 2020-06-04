@@ -38,10 +38,7 @@
  */
 
 /**
- * @typedef {Object} DisplayColumns
- * @property {Array<string>} spAnalytics
- * @property {Array<string>} ctAnalytics
- * @property {Array<String>} dailyBalance
+ * @typedef {Object<string, Array<string>>} DisplayColumns
  */
 
 /**
@@ -126,6 +123,41 @@ const initialState = {
         "lockedBTC",
         "freeETH",
         "freeBNB",
+      ],
+      openPositions: [
+        "col.date.open",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.current",
+        "col.plnumber",
+        "col.plpercentage",
+        "col.invested",
+        "col.actions",
+      ],
+      closedPositions: [
+        "col.paper",
+        "col.date.open",
+        "col.date.close",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.entry",
+        "col.price.exit",
+        "col.amount",
+        "col.invested",
+        "col.risk",
+        "col.fees",
+        "col.netprofit.percentage",
+        "col.netprofit.amount",
+        "col.actions",
+      ],
+      logPositions: [
+        "col.date.open",
+        "col.type",
+        "col.provider.logo",
+        "col.stat",
+        "col.pair",
+        "col.invested",
+        "col.actions",
       ],
     },
     selectedExchange: {

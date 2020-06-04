@@ -1,6 +1,5 @@
 import React from "react";
 import { Tooltip, Box, Popper } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import "./CustomTooltip.scss";
 
 /**
@@ -14,6 +13,34 @@ import "./CustomTooltip.scss";
  */
 
 /**
+ * @param {*} props Props.
+ * @return {JSX.Element} A wrapper for popper component.
+ */
+const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
+  /**
+   * @type React.CSSProperties
+   */
+  const posStyle = pos
+    ? {
+        marginLeft: pos.left + "px",
+        marginTop: pos.top + "px",
+        position: "absolute",
+      }
+    : {};
+  /**
+   * @param {*} childrenProps Props.
+   * @return {JSX.Element} The wrapped children components.
+   */
+  const childrenWrapper = (childrenProps) => (
+    <Box className="customTooltipPopper" style={posStyle}>
+      {childrenPopper(childrenProps)}
+      <Box className="lineTooltip" />
+    </Box>
+  );
+  return <Popper {...othersProps}>{childrenWrapper}</Popper>;
+};
+
+/**
  * @typedef {Object} DefaultProps
  * @property {PosType} [pos] Custom tooltip position.
  *
@@ -25,49 +52,22 @@ import "./CustomTooltip.scss";
  *
  * @param {FullProps} props Component props.
  * @returns {JSX.Element} Component JSX.
+ *
  */
 const CustomTooltip = (props) => {
   const { title, children, pos, ...others } = props;
 
-  // Custom tooltip position for the chart
-  const posStyle = pos
-    ? {
-        transform: `translate3d(${pos.left}px, ${pos.top}px, 0px) !important`,
-      }
-    : {};
-
-  const StyledTooltip = withStyles({
-    popper: posStyle,
-    tooltip: {},
-  })(Tooltip);
-
-  /**
-   * @param {*} props Props.
-   * @return {JSX.Element} A wrapper for popper component.
-   */
-  const CustomPopper = ({ children: childrenPopper, ...othersProps }) => {
-    /**
-     * @param {*} childrenProps Props.
-     * @return {JSX.Element} The wrapped children components.
-     */
-    const childrenWrapper = (childrenProps) => (
-      <Box className={`customTooltipPopper ${pos ? "customPos" : ""}`}>
-        {childrenPopper(childrenProps)}
-        {pos && <Box className="lineTooltip" />}
-      </Box>
-    );
-    return <Popper {...othersProps}>{childrenWrapper}</Popper>;
-  };
-
   return (
-    <StyledTooltip
-      PopperComponent={CustomPopper}
+    <Tooltip
+      PopperComponent={pos ? CustomPopper : Popper}
+      // @ts-ignore
+      PopperProps={{ pos }}
       classes={{ tooltip: "customTooltip" }}
       title={title}
       {...others}
     >
       {children}
-    </StyledTooltip>
+    </Tooltip>
   );
 };
 

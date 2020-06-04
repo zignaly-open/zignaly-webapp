@@ -9,7 +9,7 @@ import ClosetIcon from "../../images/filters/close.svg";
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {Object} CustomFiltersPropTypes
- * @property {MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
+ * @property {MouseEventHandler} [onClose] Callback that delegate filters toggle state to caller.
  * @property {MouseEventHandler} onClear Callback that delegate filters clearing to caller.
  * @property {string} title Filters' title.
  * @property {*} children Dropdowns to display.
@@ -56,13 +56,15 @@ const CustomFilters = (props) => {
         >
           <FormattedMessage id="fil.clearall" />
         </CustomButtom>
-        <CustomButtom
-          className="textPurple"
-          onClick={onClose}
-          startIcon={<img className="icon" src={ChevronRightIcon} />}
-        >
-          <FormattedMessage id="fil.hide" />
-        </CustomButtom>
+        {onClose && (
+          <CustomButtom
+            className="textPurple"
+            onClick={onClose}
+            startIcon={<img className="icon" src={ChevronRightIcon} />}
+          >
+            <FormattedMessage id="fil.hide" />
+          </CustomButtom>
+        )}
       </Box>
     </Box>
   );
