@@ -1,4 +1,5 @@
 import React from "react";
+import { merge } from "lodash";
 import { Link, navigate } from "gatsby";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
@@ -403,17 +404,26 @@ function composeViewActionButton(position) {
  * @param {string} columnId Column ID.
  * @returns {DataTableDataColumns} Column options.
  */
-function composeColumnDefaultOptions(columnId) {
+function composeColumnOptions(columnId) {
   const permanentColumnIds = ["col.paper", "col.stat", "col.type", "col.actions"];
+  const defaultSortColumnId = "col.date.open";
 
-  return {
+  const columnOptions = {
     name: columnId,
     label: columnId,
     options: {
       viewColumns: !permanentColumnIds.includes(columnId),
-      sort: true,
     },
   };
+
+  // Override defaults on default sort column.
+  if (columnId === defaultSortColumnId) {
+    return merge(columnOptions, {
+      options: { sort: true, sortDirection: "desc" },
+    });
+  }
+
+  return columnOptions;
 }
 
 /**
@@ -549,7 +559,7 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   ];
 
   return {
-    columns: columnsIds.map(composeColumnDefaultOptions),
+    columns: columnsIds.map(composeColumnOptions),
     data: positions.map((position) => composeOpenPositionRow(position, confirmActionHandler)),
   };
 }
@@ -592,7 +602,7 @@ export function composeClosePositionsDataTable(positions) {
   ];
 
   return {
-    columns: columnsIds.map(composeColumnDefaultOptions),
+    columns: columnsIds.map(composeColumnOptions),
     data: positions.map(composeClosePositionRow),
   };
 }
@@ -624,7 +634,7 @@ export function composeLogPositionsDataTable(positions) {
   ];
 
   return {
-    columns: columnsIds.map(composeColumnDefaultOptions),
+    columns: columnsIds.map(composeColumnOptions),
     data: positions.map(composeLogPositionRow),
   };
 }
