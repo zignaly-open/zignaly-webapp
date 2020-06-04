@@ -340,7 +340,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
-          title="view"
+          title="View Position"
           type="button"
         >
           <Eye color={colors.purpleLight} />
@@ -349,7 +349,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
-          title="edit"
+          title="Edit Position"
           type="button"
         >
           <Edit2 color={colors.purpleLight} />
@@ -360,7 +360,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           data-action={"exit"}
           data-position-id={position.positionId}
           onClick={confirmActionHandler}
-          title="exit"
+          title="Exit Position"
           type="button"
         >
           <LogOut color={colors.purpleLight} />
@@ -405,7 +405,7 @@ function composeViewActionButton(position) {
       <button
         data-action={"view"}
         data-position-id={position.positionId}
-        title="view"
+        title="View Position"
         type="button"
       >
         <Eye color={colors.purpleLight} />

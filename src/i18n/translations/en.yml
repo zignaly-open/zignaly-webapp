@@ -53,9 +53,9 @@ dashboard.traders.copying: "Traders I am copying:"
 # CONFIRMATION DIALOGS
 confirm.cancel: "Cancel"
 confirm.accept: "Confirm"
-confirm.positioncancel.title: "Confirm Cancel"
+confirm.positioncancel.title: "Cancel Position"
 confirm.positioncancel.message: "Are you sure you want to cancel the position? Canceling the position means you will remove the position from Zignaly, keeping your current bought coins."
-confirm.positionexit.title: "Confirm Exit"
+confirm.positionexit.title: "Exit Position"
 confirm.positionexit.message: "Are you sure you want to exit the position?"
 
 # COLUMNS
