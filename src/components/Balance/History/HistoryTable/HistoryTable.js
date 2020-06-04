@@ -19,26 +19,19 @@ import Table from "../../../Table";
  * @property {string | React.ReactNode} title Table title.
  * @property {'ctAnalytics'|'spAnalytics'|'dailyBalance'} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
+ * @property {Array<String>} quotes
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ title, persistKey, list }) => {
+const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
 
-  // "dateKey",
-  // "totalUSD",
-  // "freeUSD",
-  // "lockedUSD",
-  // "totalBTC",
-  // "freeBTC",
-  // "lockedBTC",
-
   let columns = [
     {
-      name: "dateKey",
+      name: "date",
       label: "col.date",
       options: {
         display: "true",
@@ -46,26 +39,8 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       },
     },
     {
-      name: "totalUSD",
+      name: "totalUSDT",
       label: "col.totalUSDT",
-      options: {
-        display: "true",
-        viewColumns: true,
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "freeUSD",
-      label: "col.totalUSDTfree",
-      options: {
-        display: "true",
-        viewColumns: true,
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "lockedUSD",
-      label: "col.totalUSDTalloc",
       options: {
         display: "true",
         viewColumns: true,
@@ -82,8 +57,26 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       },
     },
     {
+      name: "freeUSDT",
+      label: "col.totalUSDTfree",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRender: formatFloat,
+      },
+    },
+    {
       name: "freeBTC",
       label: "col.totalBTCfree",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "lockedUSDT",
+      label: "col.totalUSDTalloc",
       options: {
         display: "true",
         viewColumns: true,
@@ -100,14 +93,35 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
       },
     },
     {
-      name: "BNB",
-      label: "col.valueBNBapprox",
+      name: "freeBNB",
+      label: "col.freeBNB",
     },
     {
-      name: "BTC",
-      label: "col.valueBTC",
+      name: "freeETH",
+      label: "col.freeETH",
     },
   ];
+
+  const dynamicColumns = () => {
+    for (let a = 0; a < quotes.length; a++) {
+      let obj = { name: "", label: "" };
+      if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
+        obj.name = "free" + quotes[a];
+        obj.label = "col.free" + quotes[a];
+      }
+      columns.push(obj);
+    }
+    for (let a = 0; a < quotes.length; a++) {
+      let obj = { name: "", label: "" };
+      if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
+        obj.name = "locked" + quotes[a];
+        obj.label = "col.locked" + quotes[a];
+      }
+      columns.push(obj);
+    }
+  };
+
+  dynamicColumns();
 
   const getMuiTheme = () =>
     createMuiTheme({

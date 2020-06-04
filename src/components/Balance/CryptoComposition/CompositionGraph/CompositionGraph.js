@@ -19,9 +19,7 @@ import Doughnut from "../../../Graphs/Doughnut";
  * @param {DefaultProps} props Default props.
  */
 
-const CompositionGraph = (props) => {
-  const { list, quotes } = props;
-
+const CompositionGraph = ({ list, quotes }) => {
   const sectionColors = [
     "#770fc8",
     "#a25cd9",
@@ -53,7 +51,6 @@ const CompositionGraph = (props) => {
     if (equity) {
       for (let a = 0; a < quotes.length; a++) {
         let property = quotes[a] + "percantage";
-        console.log(property);
         if (equity[property]) {
           chartData.values.push(equity[property]);
           chartData.labels.push(quotes[a]);
@@ -62,7 +59,6 @@ const CompositionGraph = (props) => {
       chartData.values.push(equity.otherPercentage);
       chartData.labels.push("Others");
     }
-    console.log(chartData);
   };
 
   prepareChartData();

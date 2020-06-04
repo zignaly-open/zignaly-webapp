@@ -49,6 +49,7 @@ const History = () => {
       </Box>
       <HistoryTable
         list={list}
+        quotes={storeUser.dailyBalance.quotes}
         persistKey="dailyBalance"
         title={<FormattedMessage id="dashboard.balance.historical" />}
       />
