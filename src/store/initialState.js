@@ -10,6 +10,7 @@
 
 /**
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  */
 
@@ -17,7 +18,7 @@
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalanceEntity} balance
- * @property {Array<UserEquityEntity>} dailyBalance
+ * @property {DefaultDailyBalanceEntity} dailyBalance
  */
 
 /**
@@ -157,7 +158,10 @@ const initialState = {
       totalAssets: "",
       profitPercentage: "",
     },
-    dailyBalance: [],
+    dailyBalance: {
+      balances: [],
+      quotes: [],
+    },
   },
   ui: {
     modal: {

@@ -815,39 +815,108 @@ function createUserBalanceEntity(response) {
 
 /**
  *
+ * @typedef {Object} DefaultDailyBalanceEntity
+ * @property {Array<UserEquityEntity>} balances
+ * @property {Array<String>} quotes
+ */
+
+/**
+ *
  * @typedef {Object} UserEquityEntity
- * @property {Number} BNB
- * @property {Number} BTC
- * @property {Number} BTCWithoutStableCoins
- * @property {Number} ETH
- * @property {Number} PAX
- * @property {Number} TUSD
- * @property {Number} USDC
- * @property {Number} USDT
- * @property {String} date
- * @property {String} dateKey
- * @property {String} freeBTC
- * @property {String} freeUSD
- * @property {String} lockedBTC
- * @property {String} lockedUSD
- * @property {String} totalBTC
- * @property {String} totalUSD
+ * @property {String|Number} BNBpercentage
+ * @property {String|Number} BTCpercentage
+ * @property {String|Number} DAIpercentage
+ * @property {String|Number} ETHpercentage
+ * @property {String|Number} KCSpercentage
+ * @property {String|Number} NEOpercentage
+ * @property {String|Number} PAXpercentage
+ * @property {String|Number} TRXpercentage
+ * @property {String|Number} TUSDpercentage
+ * @property {String|Number} USDCpercentage
+ * @property {String|Number} USDTpercentage
+ * @property {String|Number} BKRWpercentage
+ * @property {String|Number} BUSDpercentage
+ * @property {String|Number} EURpercentage
+ * @property {String|Number} IDRTpercentage
+ * @property {String|Number} NGNpercentage
+ * @property {String|Number} RUBpercentage
+ * @property {String|Number} TRYpercentage
+ * @property {String|Number} USDSpercentage
+ * @property {String|Number} XRPpercentage
+ * @property {String|Number} ZARpercentage
+ * @property {String|Number} date
+ * @property {String|Number} freeBNB
+ * @property {String|Number} freeBTC
+ * @property {String|Number} freeDAI
+ * @property {String|Number} freeETH
+ * @property {String|Number} freeKCS
+ * @property {String|Number} freeNEO
+ * @property {String|Number} freePAX
+ * @property {String|Number} freeTRX
+ * @property {String|Number} freeTUSD
+ * @property {String|Number} freeUSDC
+ * @property {String|Number} freeUSDT
+ * @property {String|Number} freeBKRW
+ * @property {String|Number} freeBUSD
+ * @property {String|Number} freeEUR
+ * @property {String|Number} freeIDRT
+ * @property {String|Number} freeNGN
+ * @property {String|Number} freeRUB
+ * @property {String|Number} freeTRY
+ * @property {String|Number} freeUSDS
+ * @property {String|Number} freeXRP
+ * @property {String|Number} freeZAR
+ * @property {String|Number} lockedBNB
+ * @property {String|Number} lockedBTC
+ * @property {String|Number} lockedDAI
+ * @property {String|Number} lockedETH
+ * @property {String|Number} lockedKCS
+ * @property {String|Number} lockedNEO
+ * @property {String|Number} lockedPAX
+ * @property {String|Number} lockedTRX
+ * @property {String|Number} lockedTUSD
+ * @property {String|Number} lockedUSDC
+ * @property {String|Number} lockedUSDT
+ * @property {String|Number} lockedBKRW
+ * @property {String|Number} lockedBUSD
+ * @property {String|Number} lockedEUR
+ * @property {String|Number} lockedIDRT
+ * @property {String|Number} lockedNGN
+ * @property {String|Number} lockedRUB
+ * @property {String|Number} lockedTRY
+ * @property {String|Number} lockedUSDS
+ * @property {String|Number} lockedXRP
+ * @property {String|Number} lockedZAR
+ * @property {String|Number} otherPercentage
+ * @property {String|Number} totalBTC
+ * @property {String|Number} totalFreeBTC
+ * @property {String|Number} totalFreeUSDT
+ * @property {String|Number} totalLockedBTC
+ * @property {String|Number} totalLockedUSDT
+ * @property {String|Number} totalUSDT
+ *
  */
 
 /**
  * Transform user balance response to typed UserBalanceEntity.
  *
  * @param {*} response Trade API get user balance raw response.
- * @returns {Array<UserEquityEntity>} User balance entity.
+ * @returns {DefaultDailyBalanceEntity} User balance entity.
  */
 export function userEquityResponseTransform(response) {
-  if (!isArray(response)) {
-    throw new Error("Response must be an object with different propteries.");
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
   }
 
-  return response.map((userEquityItem) => {
+  let transformedResponse = createUserEquityResponseEntity(response);
+
+  let quotes = transformedResponse.quotes;
+  let balances = transformedResponse.balances.map((userEquityItem) => {
     return userEquityItemTransform(userEquityItem);
   });
+
+  transformedResponse = { ...transformedResponse, balances, quotes };
+  return transformedResponse;
 }
 
 /**
@@ -866,27 +935,94 @@ function userEquityItemTransform(userEquityItem) {
 
 /**
  * Create user balance entity.
+ * @param {*} response
+ * @returns {DefaultDailyBalanceEntity} User balance entity.
+ */
+function createUserEquityResponseEntity(response) {
+  return {
+    balances: response.balances,
+    quotes: response.quotes,
+  };
+}
+
+/**
+ * Create user balance entity.
  *
  * @returns {UserEquityEntity} User balance entity.
  */
 function createUserEquityEntity() {
   return {
-    BNB: 0,
-    BTC: 0,
-    BTCWithoutStableCoins: 0,
-    ETH: 0,
-    PAX: 0,
-    TUSD: 0,
-    USDC: 0,
-    USDT: 0,
-    date: "1590973335276",
-    dateKey: "2020-06-01",
-    freeBTC: "0",
-    freeUSD: "0",
-    lockedBTC: "0",
-    lockedUSD: "0",
-    totalBTC: "0",
-    totalUSD: "0",
+    BKRWpercentage: "0.00",
+    BNBpercentage: "99.50",
+    DAIpercentage: "0.00",
+    BTCpercentage: "0.00",
+    BUSDpercentage: "0.00",
+    ETHpercentage: "0.00",
+    EURpercentage: "0.00",
+    IDRTpercentage: "0.00",
+    NGNpercentage: "0.00",
+    PAXpercentage: "0.00",
+    RUBpercentage: "0.00",
+    TRXpercentage: "0.00",
+    TRYpercentage: "0.00",
+    TUSDpercentage: "0.00",
+    USDCpercentage: "0.00",
+    USDSpercentage: "0.00",
+    USDTpercentage: "0.00",
+    XRPpercentage: "0.00",
+    ZARpercentage: "0.00",
+    KCSpercentage: "0.00",
+    NEOpercentage: "0.00",
+    date: "2020-06-04",
+    freeBKRW: 0,
+    freeBNB: "0.00661017",
+    freeBTC: "0.00000000",
+    freeBUSD: "0.00000000",
+    freeETH: "0.00000000",
+    freeEUR: 0,
+    freeIDRT: 0,
+    freeNGN: 0,
+    freePAX: "0.00000000",
+    freeRUB: 0,
+    freeTRX: "0.00000000",
+    freeTRY: 0,
+    freeTUSD: "0.00000000",
+    freeUSDC: "0.00000000",
+    freeUSDS: "0.00000000",
+    freeUSDT: "0.00000000",
+    freeXRP: "0.00000000",
+    freeZAR: 0,
+    freeDAI: 0,
+    freeNEO: 0,
+    freeKCS: 0,
+    lockedBKRW: 0,
+    lockedBNB: "0.00000000",
+    lockedBTC: "0.00000000",
+    lockedBUSD: "0.00000000",
+    lockedETH: "0.00000000",
+    lockedEUR: 0,
+    lockedIDRT: 0,
+    lockedNGN: 0,
+    lockedPAX: "0.00000000",
+    lockedRUB: 0,
+    lockedTRX: "0.00000000",
+    lockedTRY: 0,
+    lockedTUSD: "0.00000000",
+    lockedUSDC: "0.00000000",
+    lockedUSDS: "0.00000000",
+    lockedUSDT: "0.00000000",
+    lockedXRP: "0.00000000",
+    lockedZAR: 0,
+    lockedDAI: 0,
+    lockedKCS: 0,
+    lockedNEO: 0,
+    otherPercentage: 0.5,
+    totalBTC: "0.00001206",
+    totalFreeBTC: "0.00001206",
+    totalFreeUSDT: "0.11654461",
+    totalLockedBTC: "0.00000000",
+    totalLockedUSDT: "0.00000000",
+    totalUSDT: "0.11654461",
   };
 }
 

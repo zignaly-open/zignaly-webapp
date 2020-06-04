@@ -227,7 +227,7 @@ class TradeApiClient {
    */
 
   async userEquityGet(payload) {
-    const endpointPath = "/fe/api.php?action=getBalance";
+    const endpointPath = "/fe/api.php?action=getHistoricalBalance";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userEquityResponseTransform(responseData);

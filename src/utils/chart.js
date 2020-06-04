@@ -176,7 +176,7 @@ export const prepareLineChartOptions = (colorsOptions, chartData, label) => {
 /**
  * @typedef {Object} DoughnutColorOptions
  * @property {Array<String>} backgroundColor Background HTML color.
- * @property {string} borderColor Border HTML color.
+ * @property {string} [borderColor] Border HTML color.
  */
 
 /**

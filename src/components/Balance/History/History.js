@@ -11,9 +11,9 @@ const History = () => {
   const storeUser = useStoreUserSelector();
 
   useEffect(() => {
-    setList(storeUser.dailyBalance);
+    setList(storeUser.dailyBalance.balances);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeUser.dailyBalance.length]);
+  }, [storeUser.dailyBalance]);
 
   /**
    *
@@ -45,7 +45,7 @@ const History = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <EquityFilter list={storeUser.dailyBalance} onChange={handleChange} />
+        <EquityFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
       </Box>
       <HistoryTable
         list={list}
