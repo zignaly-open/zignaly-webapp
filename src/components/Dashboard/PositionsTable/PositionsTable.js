@@ -34,6 +34,7 @@ const PositionsTable = (props) => {
   const storeSession = useStoreSessionSelector();
   const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
   const showTypesFilter = type === "log";
+  const tablePersistsKey = `${type}Positions`;
 
   /**
    * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -158,7 +159,7 @@ const PositionsTable = (props) => {
         <NoPositions />
       ) : (
         <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-          <Table columns={columns} data={data} persistKey="openPositions" title={embedFilters} />
+          <Table columns={columns} data={data} persistKey={tablePersistsKey} title={embedFilters} />
         </Box>
       )}
     </>

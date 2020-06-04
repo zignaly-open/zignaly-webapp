@@ -41,7 +41,7 @@
  * @property {Array<string>} spAnalytics
  * @property {Array<string>} ctAnalytics
  * @property {Array<string>} openPositions
- * @property {Array<string>} closePositions
+ * @property {Array<string>} closedPositions
  * @property {Array<string>} logPositions
  */
 
@@ -126,7 +126,7 @@ const initialState = {
         "col.invested",
         "col.actions",
       ],
-      closePositions: [
+      closedPositions: [
         "col.paper",
         "col.date.open",
         "col.date.close",
