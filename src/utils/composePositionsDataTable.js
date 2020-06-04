@@ -3,7 +3,6 @@ import { Link, navigate } from "gatsby";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
-import { camelCase } from "lodash";
 import { FormattedMessage } from "react-intl";
 
 /**
