@@ -37,12 +37,7 @@
  */
 
 /**
- * @typedef {Object} DisplayColumns
- * @property {Array<string>} spAnalytics
- * @property {Array<string>} ctAnalytics
- * @property {Array<string>} openPositions
- * @property {Array<string>} closedPositions
- * @property {Array<string>} logPositions
+ * @typedef {Object<string, Array<string>>} DisplayColumns
  */
 
 /**
