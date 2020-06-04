@@ -399,10 +399,9 @@ function composeViewActionButton(position) {
  */
 function composeColumnDefaultOptions(columnId) {
   return {
-    name: camelCase(columnId),
+    name: columnId,
     label: columnId,
     options: {
-      display: true,
       viewColumns: true,
       sort: true,
     },

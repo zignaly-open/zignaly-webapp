@@ -12,6 +12,7 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
+ * @typedef {'ctAnalytics' | 'spAnalytics' | 'openPositions' | 'closePositions' | 'logPositions'} DataTableIds
  */
 
 /**
@@ -21,7 +22,7 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<MUIDataTableColumn>} columns Table Columns.
  * @property {Array<Object>} data Table Data.
- * @property {'ctAnalytics'|'spAnalytics'} persistKey Key to save display columns settings.
+ * @property {DataTableIds} persistKey Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
