@@ -32,3 +32,23 @@
     }
   }
 }
+
+@include media("<=sm") {
+  .customSelect {
+    flex-direction: column;
+    justify-content: flex-end;
+    height: fit-content;
+
+    .callout {
+      order: 2;
+
+      & + span {
+        order: 1;
+        text-align: right;
+        width: 100%;
+        padding-right: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

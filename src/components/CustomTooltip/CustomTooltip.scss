@@ -13,7 +13,16 @@
     background-color: $tooltipBackground;
     border: solid 1px $tooltipBorder;
     color: $tooltipText;
-    padding: 16px;
+    padding: 5px 10px;
+    font-size: 12px;
+    .label {
+      font-family: "PlexSans-Regular";
+      margin-right: 5px;
+
+      & + span {
+        font-family: "PlexSans-Bold";
+      }
+    }
   }
 
   .lineTooltip {

@@ -21,6 +21,27 @@ import { formatFloat } from "../../../../utils/format";
 
 const TitleBar = (props) => {
   const { list } = props;
+
+  const getTotalBTC = () => {
+    let date = new Date().getDate();
+    let item = [...list].find((item) => {
+      return new Date(item.date).getDate() === date;
+    });
+    if (item) {
+      return item.totalBTC;
+    } else return "";
+  };
+
+  const getTotalUSDT = () => {
+    let date = new Date().getDate();
+    let item = [...list].find((item) => {
+      return new Date(item.date).getDate() === date;
+    });
+    if (item) {
+      return item.totalUSDT;
+    } else return "";
+  };
+
   return (
     <Box
       alignItems="center"
@@ -45,11 +66,9 @@ const TitleBar = (props) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">
-            BTC {list.length ? formatFloat(list[0].totalBTC) : "0"}{" "}
-          </Typography>
+          <Typography variant="h4">BTC {getTotalBTC()}</Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {list.length ? formatFloat(list[0].totalUSDT) : "0"}
+            = USD {getTotalUSDT()}
           </Typography>
         </Box>
       </Box>

@@ -1,6 +1,7 @@
 .totalEquity {
   min-height: inherit;
-  padding: 0 20px 0 0;
+  padding: 0 30px 0 0;
+  border-right: 2px solid $borderColor;
 
   .equityHeader {
     margin-bottom: 20px;
@@ -11,5 +12,6 @@
   .totalEquity {
     margin-bottom: 20px;
     padding: 0;
+    border: none;
   }
 }
