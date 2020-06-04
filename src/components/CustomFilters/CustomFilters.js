@@ -49,20 +49,24 @@ const CustomFilters = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <CustomButtom
-          className="textPurple"
-          onClick={onClear}
-          startIcon={<img className="icon" src={ClosetIcon} />}
-        >
-          <FormattedMessage id="fil.clearall" />
-        </CustomButtom>
-        <CustomButtom
-          className="textPurple"
-          onClick={onClose}
-          startIcon={<img className="icon" src={ChevronRightIcon} />}
-        >
-          <FormattedMessage id="fil.hide" />
-        </CustomButtom>
+        {onClear && (
+          <CustomButtom
+            className="textPurple"
+            onClick={onClear}
+            startIcon={<img className="icon" src={ClosetIcon} />}
+          >
+            <FormattedMessage id="fil.clearall" />
+          </CustomButtom>
+        )}
+        {onClose && (
+          <CustomButtom
+            className="textPurple"
+            onClick={onClose}
+            startIcon={<img className="icon" src={ChevronRightIcon} />}
+          >
+            <FormattedMessage id="fil.hide" />
+          </CustomButtom>
+        )}
       </Box>
     </Box>
   );

@@ -29,7 +29,7 @@ const AnalyticsFilters = ({
   onBaseChange,
   onPairChange,
   onTimeFrameChange,
-  clearFilters,
+  onClear,
 }) => {
   const quoteAssets = useQuoteAssets();
   const baseAssets = useBaseAssets(base);
@@ -42,7 +42,7 @@ const AnalyticsFilters = ({
   const intl = useIntl();
 
   return (
-    <CustomFilters onClear={clearFilters} title="">
+    <CustomFilters onClear={onClear} title="">
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.timeframe",

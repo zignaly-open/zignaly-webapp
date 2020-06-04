@@ -37,6 +37,11 @@ const ProvidersAnalytics = ({
   const [base, setBase] = useState("BTC");
   const [pair, setPair] = useState("");
   const [timeFrame, setTimeFrame] = useState("");
+  const onClear = () => {
+    setBase("BTC");
+    setPair("");
+    setTimeFrame("");
+  };
 
   return (
     <Box>
@@ -48,6 +53,7 @@ const ProvidersAnalytics = ({
         onPairChange={setPair}
         timeFrame={timeFrame}
         onTimeFrameChange={setTimeFrame}
+        onClear={onClear}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}

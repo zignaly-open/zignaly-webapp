@@ -61,16 +61,16 @@ const CustomSelect = (props) => {
           ) : (
             <Autocomplete
               classes={{
-                root: "callout1",
-                inputRoot: "searchInputRoot",
+                inputRoot: "searchInputRoot callout1",
                 input: "searchInput",
               }}
               options={options}
               getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
-              //   style={{ width: 300 }}
+              openOnFocus={true}
               renderInput={(params) => (
                 <TextField {...params} variant="outlined" classes={{ root: "searchInput" }} />
               )}
+              disableClearable={true}
             />
           )}
         </FormControl>
