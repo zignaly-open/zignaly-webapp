@@ -42,7 +42,6 @@ const Table = ({ columns, data, persistKey, title }) => {
     label: c.label ? intl.formatMessage({ id: c.label }) : "",
     options: {
       ...c.options,
-      sort: !!(c.options && c.options.sort),
       // Display columns picked by the user
       display:
         (c.options && c.options.display) ||
@@ -62,6 +61,7 @@ const Table = ({ columns, data, persistKey, title }) => {
     filter: false,
     search: false,
     print: false,
+    sort: true,
     onColumnViewChange: (changedColumn, action) => {
       dispatch(
         setDisplayColumn({
