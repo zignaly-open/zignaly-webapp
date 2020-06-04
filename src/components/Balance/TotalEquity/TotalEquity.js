@@ -5,6 +5,7 @@ import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import EquityGraphLabels from "./EquityGraphLabels";
 
 const TotalEquity = () => {
   const [list, setList] = useState([]);
@@ -44,6 +45,7 @@ const TotalEquity = () => {
         <EquityFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
       </Box>
       <TotalEquityGraph list={list} />
+      <EquityGraphLabels list={list} />
     </Box>
   );
 };

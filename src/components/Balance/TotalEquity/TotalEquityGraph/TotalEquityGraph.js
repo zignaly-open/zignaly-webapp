@@ -34,30 +34,10 @@ const TotalEquityGraph = ({ list }) => {
     gradientColor2: "#fafafa",
   };
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   const prepareChartData = () => {
     [...list].forEach((item) => {
       chartData.values.unshift(parseFloat(item.totalUSDT));
-      let date = new Date(item.date);
-      if (!chartData.labels.includes(monthNames[date.getMonth()])) {
-        chartData.labels.unshift(monthNames[date.getMonth()]);
-      } else {
-        chartData.labels.unshift("");
-      }
+      chartData.labels.unshift("");
     });
   };
 
