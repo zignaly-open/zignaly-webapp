@@ -155,7 +155,7 @@ const PositionsTable = (props) => {
         setConfirmConfig={setConfirmConfig}
       />
 
-      {isEmpty(positionsFiltered) ? (
+      {isEmpty(positionsAll) ? (
         <NoPositions />
       ) : (
         <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
