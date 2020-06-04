@@ -62,10 +62,11 @@ const CustomSelect = (props) => {
             <Autocomplete
               classes={{
                 root: "callout1",
-                inputRoot: "searchInput",
+                inputRoot: "searchInputRoot",
+                input: "searchInput",
               }}
               options={options}
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
               //   style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} variant="outlined" classes={{ root: "searchInput" }} />

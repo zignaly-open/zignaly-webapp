@@ -1,6 +1,4 @@
 .customSelect {
-  //   height: 32px;
-
   p {
     margin-right: 12px;
   }
@@ -18,18 +16,23 @@
   }
 
   .select,
-  .searchInput {
+  .searchInputRoot {
     border-radius: 4px;
     height: 32px;
     margin-right: 50px;
-    min-width: 94px;
+    min-width: 120px;
 
     & > div {
       opacity: 0.6;
     }
 
-    input {
+    .searchInput {
       padding: 0;
     }
+  }
+
+  .searchInput {
+    width: 120px;
+    margin-right: 50px;
   }
 }
