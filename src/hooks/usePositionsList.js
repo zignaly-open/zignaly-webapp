@@ -141,7 +141,7 @@ const usePositionsList = (type) => {
 
   return {
     positionsAll: positions[type],
-    positionsFiltered: take(filterData(positions[type]), 100),
+    positionsFiltered: filterData(positions[type]),
     setFilters: combineFilters,
   };
 };
