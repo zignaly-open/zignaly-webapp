@@ -1,9 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
+import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 
 /**
@@ -28,14 +29,7 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  *
  */
 const Table = ({ columns, data, persistKey, title }) => {
-  /**
-   * Select store settings data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {DefaultStateSettings} Store settings data.
-   */
-  const selectStoreSettings = (state) => state.settings;
-  const storeSettings = useSelector(selectStoreSettings);
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
 
