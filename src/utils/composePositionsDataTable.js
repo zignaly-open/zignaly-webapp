@@ -5,6 +5,7 @@ import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
+import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -46,7 +47,7 @@ function composeProviderIcon(position) {
 
   return (
     <>
-      <img src={position.providerLogo} title={position.providerName} width="30px" />
+      <img src={defaultProviderLogo} title={position.providerName} width="30px" />
     </>
   );
 }
