@@ -18,7 +18,7 @@ import { FormattedMessage } from "react-intl";
  */
 
 /**
- * @typedef {Array<JSX.Element>} DataTableDataRow
+ * @typedef {Array<JSX.Element|string|number>} DataTableDataRow
  */
 
 /**
@@ -307,10 +307,10 @@ function composeRebuyTargets(position) {
  * Compose React fragment element for a given value.
  *
  * @param {string|number} value Value to wrap in fragment.
- * @returns {JSX.Element} Composed JSX element.
+ * @returns {string|number} Composed JSX element.
  */
-function composeFragmentValue(value) {
-  return <>{value}</>;
+function composeRawValue(value) {
+  return value;
 }
 
 /**
@@ -421,22 +421,22 @@ function composeColumnDefaultOptions(columnId) {
  *
  * @param {PositionEntity} position Position entity to compose data table row for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {Array<JSX.Element>} Row data array.
+ * @returns {DataTableDataRow} Row data array.
  */
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
     composePaperTradingIcon(position),
-    composeFragmentValue(position.openDateReadable),
+    composeRawValue(position.openDateReadable),
     composeProviderIcon(position),
-    composeFragmentValue(position.providerName),
-    composeFragmentValue(position.signalId),
-    composeFragmentValue(position.pair),
+    composeRawValue(position.providerName),
+    composeRawValue(position.signalId),
+    composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeFragmentValue(position.leverage),
+    composeRawValue(position.leverage),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
-    composeFragmentValue(position.side),
+    composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
     composeSymbolWithPrice(position.base, position.remainAmount),
@@ -445,8 +445,8 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
     composeRisk(position),
-    composeFragmentValue(position.age),
-    composeFragmentValue(position.openTrigger),
+    composeRawValue(position.age),
+    composeRawValue(position.openTrigger),
     composeAllActionButtons(position, confirmActionHandler),
   ];
 }
@@ -455,23 +455,23 @@ function composeOpenPositionRow(position, confirmActionHandler) {
  * Compose MUI Data Table row for closed position entity.
  *
  * @param {PositionEntity} position Position entity to compose data table row for.
- * @returns {Array<JSX.Element>} Row data array.
+ * @returns {DataTableDataRow} Row data array.
  */
 function composeClosePositionRow(position) {
   return [
     composePaperTradingIcon(position),
-    composeFragmentValue(position.openDateReadable),
-    composeFragmentValue(position.closeDateReadable),
+    composeRawValue(position.openDateReadable),
+    composeRawValue(position.closeDateReadable),
     composeProviderIcon(position),
-    composeFragmentValue(position.providerName),
+    composeRawValue(position.providerName),
     composeStatusMessage(position.status),
-    composeFragmentValue(position.signalId),
-    composeFragmentValue(position.pair),
+    composeRawValue(position.signalId),
+    composeRawValue(position.pair),
     composeEntryPrice(position),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
-    composeFragmentValue(position.side),
+    composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
     composeQuoteSize(position),
@@ -479,7 +479,7 @@ function composeClosePositionRow(position) {
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
     composeRisk(position),
-    composeFragmentValue(position.openTrigger),
+    composeRawValue(position.openTrigger),
     composeSymbolWithPrice(position.quote, position.fees),
     composeNetProfitPercentage(position),
     composeNetProfit(position),
@@ -491,20 +491,20 @@ function composeClosePositionRow(position) {
  * Compose MUI Data Table row for log position entity.
  *
  * @param {PositionEntity} position Position entity to compose data table row for.
- * @returns {Array<JSX.Element>} Row data array.
+ * @returns {DataTableDataRow} Row data array.
  */
 function composeLogPositionRow(position) {
   return [
     composePaperTradingIcon(position),
-    composeFragmentValue(position.openDateReadable),
-    composeFragmentValue(position.type),
+    composeRawValue(position.openDateReadable),
+    composeRawValue(position.type),
     composeProviderIcon(position),
-    composeFragmentValue(position.providerName),
+    composeRawValue(position.providerName),
     composeStatusMessage(position.status),
-    composeFragmentValue(position.signalId),
-    composeFragmentValue(position.pair),
+    composeRawValue(position.signalId),
+    composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeFragmentValue(position.side),
+    composeRawValue(position.side),
     composeAmount(position),
     composeSymbolWithPrice(position.base, position.remainAmount),
     composeQuoteSize(position),
