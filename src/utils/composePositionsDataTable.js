@@ -355,15 +355,17 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      <button
-        data-action={"exit"}
-        data-position-id={position.positionId}
-        onClick={confirmActionHandler}
-        title="exit"
-        type="button"
-      >
-        <LogOut color={colors.purpleLight} />
-      </button>
+      {!position.isCopyTrading && (
+        <button
+          data-action={"exit"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="exit"
+          type="button"
+        >
+          <LogOut color={colors.purpleLight} />
+        </button>
+      )}
     </div>
   );
 }
@@ -656,7 +658,7 @@ export function composeLogPositionsDataTable(positions) {
 }
 
 /**
- * Remove data table column and data.
+ * Exclude data table column display.
  *
  * @export
  * @param {DataTableContent} dataTable Data table structure.
@@ -665,7 +667,7 @@ export function composeLogPositionsDataTable(positions) {
  * @returns {DataTableContent} Data table without removed column.
  */
 
-export function removeDataTableColumn(dataTable, columnId) {
+export function excludeDataTableColumn(dataTable, columnId) {
   const columnIndex = findIndex(dataTable.columns, { name: columnId });
   const { columns, data } = dataTable;
 

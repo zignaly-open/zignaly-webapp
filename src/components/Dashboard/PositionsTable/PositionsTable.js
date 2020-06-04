@@ -8,7 +8,7 @@ import {
   composeOpenPositionsDataTable,
   composeClosePositionsDataTable,
   composeLogPositionsDataTable,
-  removeDataTableColumn,
+  excludeDataTableColumn,
 } from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -138,7 +138,7 @@ const PositionsTable = (props) => {
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
-        dataTable = removeDataTableColumn(dataTable, "col.cancel");
+        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
@@ -146,7 +146,7 @@ const PositionsTable = (props) => {
 
     // Avoid display paper trading column on real exchanges.
     if (!storeSettings.selectedExchange.paperTrading) {
-      dataTable = removeDataTableColumn(dataTable, "col.paper");
+      dataTable = excludeDataTableColumn(dataTable, "col.paper");
     }
 
     return dataTable;
