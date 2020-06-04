@@ -6,7 +6,7 @@ import useQuoteAssets from "../../../hooks/useQuoteAssets";
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
  * @property {React.MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
- * @property {React.MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
  * @property {string} coin Selected coin.
@@ -26,12 +26,13 @@ const ProvidersFilters = ({
   onCoinChange,
   onExchangeChange,
   clearFilters,
+  open,
 }) => {
   const quoteAssets = useQuoteAssets();
   const coins = Object.keys(quoteAssets);
   const exchanges = ["Binance", "Zignaly", "KuCoin"];
 
-  return (
+  return open ? (
     <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
       <CustomSelect label="Coin" onChange={onCoinChange} options={coins} value={coin} />
       <CustomSelect
@@ -41,7 +42,7 @@ const ProvidersFilters = ({
         value={exchange}
       />
     </CustomFilters>
-  );
+  ) : null;
 };
 
 export default ProvidersFilters;

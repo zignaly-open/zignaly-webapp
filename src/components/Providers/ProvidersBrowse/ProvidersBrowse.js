@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import CustomFilters from "../../CustomFilters";
-import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
-import ProvidersProfitsTable from "../../Providers/ProvidersProfitsTable";
-import AnalyticsFilters from "../../Providers/AnalyticsFilters";
-import { useIntl, FormattedMessage } from "react-intl";
+import React from "react";
+import { useIntl } from "react-intl";
 import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
 import ProvidersList from "../ProvidersList";
@@ -13,39 +8,31 @@ import useProvidersList from "../../../hooks/useProvidersList";
 import { Box } from "@material-ui/core";
 
 /**
- * @typedef {Object} ProvidersAnalyticsPropTypes
- * @property {React.MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
- * @property {function} onCoinChange Callback that delegate coin change to caller.
- * @property {function} onExchangeChange Callback that delegate exchange change to caller.
- * @property {string} base Selected coin.
- * @property {string} pair Selected pair.
- * @property {string} type Selected timeFrame.
+ * @typedef {Object} ProvidersBrowsePropTypes
+ * @property {boolean} showFilters Flag to indicate if filters should be rendered.
+ * @property {boolean} showSort Flag to indicate if sort options should be rendered.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {'copyt'|'signalp'} type Type of providers to show.
+ * @property {boolean} connectedOnly Only display connected providers.
  */
 
 /**
  * Provides filters for filtering providers.
  *
- * @param {ProvidersAnalyticsPropTypes} props Component properties.
+ * @param {ProvidersBrowsePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersBrowse = ({
-  //   onClose,
-  //   coin,
-  //   exchange,
-  //   onCoinChange,
-  //   onExchangeChange,
-  openSort,
-  openFilters,
+  toggleSort,
+  toggleFilters,
   showFilters,
   showSort,
   type,
   connectedOnly,
 }) => {
-  //   const quoteAssets = useQuoteAssets();
-  //   const coins = Object.keys(quoteAssets);
   const copyTradersOnly = type === "copyt";
   const providersOptions = { copyTradersOnly, connectedOnly };
-  // const providersCallbacks = { toggleFilters, toggleSort };
   const {
     providers,
     timeFrame,
@@ -61,23 +48,24 @@ const ProvidersBrowse = ({
   } = useProvidersList(providersOptions);
   const intl = useIntl();
 
-  // clear filters here or in provfilters?
-
   return (
     <Box>
-      {showFilters && (
-        <ProvidersFilters
-          clearFilters={clearFilters}
-          coin={coin}
-          exchange={exchange}
-          onClose={openFilters}
-          onCoinChange={setCoin}
-          onExchangeChange={setExchange}
-        />
-      )}
-      {showSort && (
-        <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={openSort} sort={sort} />
-      )}
+      <ProvidersFilters
+        clearFilters={clearFilters}
+        coin={coin}
+        exchange={exchange}
+        onClose={toggleFilters}
+        onCoinChange={setCoin}
+        onExchangeChange={setExchange}
+        open={showFilters}
+      />
+      <ProvidersSort
+        clearFilters={clearSort}
+        onChange={setSort}
+        onClose={toggleSort}
+        open={showSort}
+        sort={sort}
+      />
       <TimeFrameSelectRow
         title={`${providers.length} ${intl.formatMessage({ id: `${type}.traders` })}`}
         onChange={setTimeFrame}

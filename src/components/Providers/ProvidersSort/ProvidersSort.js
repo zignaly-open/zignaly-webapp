@@ -20,7 +20,7 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open }) => {
   const sorts = [
     {
       label: "Descending Results",
@@ -58,7 +58,7 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
 
   const intl = useIntl();
 
-  return (
+  return open ? (
     <Box className="providersSort">
       <CustomFilters
         onClear={clearFilters}
@@ -68,7 +68,7 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
         <CustomSelect label="" onChange={onChange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
-  );
+  ) : null;
 };
 
 export default ProvidersSort;

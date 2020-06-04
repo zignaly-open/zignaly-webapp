@@ -23,7 +23,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @property {string|number} value Assign the selected value.
  * @property {Array<OptionType|string>} options List of options selectable.
  * @property {string} label Label for the dropdown.
- * @property {boolean} search Display autocomplete.
+ * @property {boolean} [search] Display autocomplete.
  */
 
 /**
