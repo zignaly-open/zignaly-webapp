@@ -1,5 +1,13 @@
 import React from "react";
-import { FormControl, FormControlLabel, Select, MenuItem, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  FormControlLabel,
+  Select,
+  MenuItem,
+  Typography,
+  TextField,
+} from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
@@ -15,6 +23,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @property {string|number} value Assign the selected value.
  * @property {Array<OptionType|string>} options List of options selectable.
  * @property {string} label Label for the dropdown.
+ * @property {boolean} search Display autocomplete.
  */
 
 /**
@@ -24,7 +33,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = (props) => {
-  const { label, onChange, options, value } = props;
+  const { label, onChange, options, value, search } = props;
   const storeSettings = useStoreSettingsSelector();
 
   return (
@@ -32,22 +41,37 @@ const CustomSelect = (props) => {
       className={"customSelect " + (storeSettings.darkStyle ? "dark" : "light")}
       control={
         <FormControl className="callout" variant="outlined">
-          <Select
-            className="select"
-            classes={{
-              root: "callout1",
-            }}
-            displayEmpty={true}
-            onChange={(e) => onChange(e.target.value)}
-            value={value}
-            variant="outlined"
-          >
-            {options.map((item, index) => (
-              <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
-                {typeof item === "object" ? item.label : item}
-              </MenuItem>
-            ))}
-          </Select>
+          {!search ? (
+            <Select
+              className="select"
+              classes={{
+                root: "callout1",
+              }}
+              displayEmpty={true}
+              onChange={(e) => onChange(e.target.value)}
+              value={value}
+              variant="outlined"
+            >
+              {options.map((item, index) => (
+                <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
+                  {typeof item === "object" ? item.label : item}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            <Autocomplete
+              classes={{
+                root: "callout1",
+                inputRoot: "searchInput",
+              }}
+              options={options}
+              getOptionLabel={(option) => option.label}
+              //   style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} variant="outlined" classes={{ root: "searchInput" }} />
+              )}
+            />
+          )}
         </FormControl>
       }
       label={<Typography className="callout2">{label}</Typography>}

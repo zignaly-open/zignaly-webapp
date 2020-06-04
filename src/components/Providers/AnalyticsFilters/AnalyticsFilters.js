@@ -58,6 +58,7 @@ const AnalyticsFilters = ({
         onChange={onBaseChange}
         options={bases}
         value={base}
+        search={true}
       />
       <CustomSelect
         label={intl.formatMessage({
@@ -66,6 +67,7 @@ const AnalyticsFilters = ({
         onChange={onPairChange}
         options={pairs}
         value={pair}
+        search={true}
       />
     </CustomFilters>
   );
