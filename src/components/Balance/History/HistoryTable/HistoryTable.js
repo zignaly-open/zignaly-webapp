@@ -95,16 +95,32 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
     {
       name: "freeBNB",
       label: "col.freeBNB",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRender: formatFloat,
+      },
     },
     {
       name: "freeETH",
       label: "col.freeETH",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRender: formatFloat,
+      },
     },
   ];
 
   const dynamicColumns = () => {
     for (let a = 0; a < quotes.length; a++) {
-      let obj = { name: "", label: "" };
+      let obj = {
+        name: "",
+        label: "",
+        options: {
+          customBodyRender: formatFloat,
+        },
+      };
       if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
         obj.name = "free" + quotes[a];
         obj.label = "col.free" + quotes[a];
@@ -112,7 +128,13 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       columns.push(obj);
     }
     for (let a = 0; a < quotes.length; a++) {
-      let obj = { name: "", label: "" };
+      let obj = {
+        name: "",
+        label: "",
+        options: {
+          customBodyRender: formatFloat,
+        },
+      };
       if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
         obj.name = "locked" + quotes[a];
         obj.label = "col.locked" + quotes[a];
