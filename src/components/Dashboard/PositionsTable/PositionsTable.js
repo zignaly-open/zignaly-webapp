@@ -137,19 +137,14 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
-  const EmbedFilters = (props) => {
-    const { tableToolbarElement } = props;
-    return ReactDOM.createPortal(
-      <PositionFilters
-        onChange={setFilters}
-        positions={positions}
-        showTypesFilter={showTypesFilter}
-      />,
-      tableToolbarElement,
-    );
-  };
+  const embedFilters = (
+    <PositionFilters
+      onChange={setFilters}
+      positions={positions}
+      showTypesFilter={showTypesFilter}
+    />
+  );
 
-  const tableToolbarElement = document.querySelector('[role="toolbar"]');
   return (
     <>
       <ConfirmDialog
@@ -159,8 +154,7 @@ const PositionsTable = (props) => {
       />
 
       <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-        <Table columns={columns} data={data} persistKey="openPositions" title={false} />
-        {tableToolbarElement && <EmbedFilters tableToolbarElement={tableToolbarElement} />}
+        <Table columns={columns} data={data} persistKey="openPositions" title={embedFilters} />
       </Box>
     </>
   );
