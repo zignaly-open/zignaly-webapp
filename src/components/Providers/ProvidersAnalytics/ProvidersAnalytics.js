@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import CustomFilters from "../../CustomFilters";
-import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
+import useProvidersAnalytics from "../../../hooks/useProvidersAnalytics";
 import ProvidersProfitsTable from "../../Providers/ProvidersProfitsTable";
 import AnalyticsFilters from "../../Providers/AnalyticsFilters";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -23,26 +21,18 @@ import { Box } from "@material-ui/core";
  * @param {ProvidersAnalyticsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersAnalytics = ({
-  //   onClose,
-  //   coin,
-  //   exchange,
-  //   onCoinChange,
-  //   onExchangeChange,
-  //   clearFilters,
-  type,
-}) => {
-  //   const quoteAssets = useQuoteAssets();
-  //   const coins = Object.keys(quoteAssets);
-  const [base, setBase] = useState("BTC");
-  console.log("parent");
-  const [pair, setPair] = useState("");
-  const [timeFrame, setTimeFrame] = useState("");
-  const onClear = () => {
-    setBase("BTC");
-    setPair("");
-    setTimeFrame("");
-  };
+const ProvidersAnalytics = ({ type }) => {
+  const copyTradersOnly = type === "copyt";
+  const {
+    stats,
+    timeFrame,
+    setTimeFrame,
+    quote,
+    setQuote,
+    base,
+    setBase,
+    clearFilters,
+  } = useProvidersAnalytics();
 
   return (
     <Box>
@@ -54,7 +44,7 @@ const ProvidersAnalytics = ({
         onPairChange={setPair}
         timeFrame={timeFrame}
         onTimeFrameChange={setTimeFrame}
-        onClear={onClear}
+        onClear={clearFilters}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}

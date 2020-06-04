@@ -67,7 +67,9 @@ const ProvidersBrowse = ({
         sort={sort}
       />
       <TimeFrameSelectRow
-        title={`${providers.length} ${intl.formatMessage({ id: `${type}.traders` })}`}
+        title={`${providers.length} ${intl.formatMessage({
+          id: copyTradersOnly ? "copyt.traders" : "menu.signalproviders",
+        })}`}
         onChange={setTimeFrame}
         value={timeFrame}
       />

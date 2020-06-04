@@ -9,8 +9,6 @@ import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format"
 import Table from "../../Table";
 
 /**
- * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  */
@@ -26,16 +24,6 @@ import Table from "../../Table";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersProfitsTable = ({ title, persistKey }) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
-  const [stats, setStats] = useState([]);
-
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -432,28 +420,6 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
   ];
-
-  useEffect(() => {
-    const loadProvidersStats = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          ro: true,
-          quote: "BTC",
-          base: "all",
-          timeFrame: "2months",
-          DCAFilter: "anyDCA",
-        };
-        const responseData = await tradeApi.providersStatsGet(payload);
-        setStats(responseData);
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
-    };
-
-    loadProvidersStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const getMuiTheme = () =>
     createMuiTheme({

@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout/withProvidersLayout";
 import { Helmet } from "react-helmet";
-import useProvidersList from "../../../hooks/useProvidersList";
+import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
 import "./signalProvidersBrowse.scss";
 
 /**
@@ -24,10 +24,6 @@ import "./signalProvidersBrowse.scss";
 const SignalProvidersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const intl = useIntl();
-  const providersOptions = { copyTradersOnly: false, connectedOnly: false, showSummary: false };
-  const providersCallbacks = { toggleFilters, toggleSort };
-  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="spBrowsePage">
@@ -39,12 +35,14 @@ const SignalProvidersBrowse = (props) => {
         </title>
       </Helmet>
 
-      {showFilters && <ProvidersFilters />}
-      {showSort && <ProvidersSort />}
-      <TimeFrameSelectRow
-        title={`${providers.length} ${intl.formatMessage({ id: "menu.signalproviders" })}`}
+      <ProvidersBrowse
+        type="signalp"
+        openFilters={toggleFilters}
+        openSort={toggleSort}
+        showFilters={showFilters}
+        showSort={showSort}
+        connectedOnly={false}
       />
-      <ProvidersList />
     </Box>
   );
 };
