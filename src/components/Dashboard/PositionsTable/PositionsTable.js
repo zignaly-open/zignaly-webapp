@@ -129,17 +129,19 @@ const PositionsTable = (props) => {
    * @returns {DataTableContent} Data table content.
    */
   const composeDataTableForPositionsType = () => {
+    let dataTable;
+
     if (type === "closed") {
-      return composeClosePositionsDataTable(positionsFiltered);
-    }
-
-    if (type === "log") {
-      return composeLogPositionsDataTable(positionsFiltered);
-    }
-
-    const dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
-    if (storeSettings.selectedExchange.exchangeType === "futures") {
-      return removeDataTableColumn(dataTable, "col.cancel");
+      dataTable = composeClosePositionsDataTable(positionsFiltered);
+    } else if (type === "log") {
+      dataTable = composeLogPositionsDataTable(positionsFiltered);
+    } else if (type === "open") {
+      dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+      if (storeSettings.selectedExchange.exchangeType === "futures") {
+        dataTable = removeDataTableColumn(dataTable, "col.cancel");
+      }
+    } else {
+      throw new Error(`Invalid positions collection type: ${type}`);
     }
 
     return dataTable;
