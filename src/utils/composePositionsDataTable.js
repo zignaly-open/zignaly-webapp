@@ -671,13 +671,14 @@ export function removeDataTableColumn(dataTable, columnId) {
 
   // Remove column when exists.
   if (columnIndex > -1) {
-    delete columns[columnIndex];
+    columns[columnIndex].options = {
+      viewColumns: false,
+      display: "excluded",
+    };
+
     return {
       columns: columns,
-      data: data.map((row) => {
-        delete row[columnIndex];
-        return row;
-      }),
+      data: data,
     };
   }
 

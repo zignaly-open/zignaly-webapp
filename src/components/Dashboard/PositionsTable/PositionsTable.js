@@ -144,6 +144,11 @@ const PositionsTable = (props) => {
       throw new Error(`Invalid positions collection type: ${type}`);
     }
 
+    // Avoid display paper trading column on real exchanges.
+    if (!storeSettings.selectedExchange.paperTrading) {
+      dataTable = removeDataTableColumn(dataTable, "col.paper");
+    }
+
     return dataTable;
   };
 
