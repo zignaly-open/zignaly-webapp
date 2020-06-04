@@ -1,11 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import PositionFilters from "../PositionFilters";
 import { Box } from "@material-ui/core";
 import PositionsTable from "../PositionsTable";
-import usePositionsList from "../../../hooks/usePositionsList";
-import NoPositions from "../NoPositions";
-import { isEmpty } from "lodash";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -22,41 +17,11 @@ import { isEmpty } from "lodash";
 
 const PositionsTabContent = (props) => {
   const { type } = props;
-  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
-  const showTypesFilter = type === "log";
 
   return (
-    <>
-      {type === "open" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <>
-              <PositionsTable positions={positionsFiltered} type={type} />
-            </>
-          )}
-        </Box>
-      )}
-      {type === "closed" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
-          )}
-        </Box>
-      )}
-      {type === "log" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
-          )}
-        </Box>
-      )}
-    </>
+    <Box className="tabPanel">
+      <PositionsTable type={type} />
+    </Box>
   );
 };
 

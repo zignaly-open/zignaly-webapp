@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import { isEmpty } from "lodash";
 import "./PositionsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../Table";
@@ -12,6 +12,8 @@ import {
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
+import NoPositions from "../NoPositions";
+import usePositionsList from "../../../hooks/usePositionsList";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -19,7 +21,6 @@ import PositionFilters from "../PositionFilters";
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
- * @property {UserPositionsCollection} positions
  */
 
 /**
@@ -29,9 +30,9 @@ import PositionFilters from "../PositionFilters";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type, positions } = props;
+  const { type } = props;
   const storeSession = useStoreSessionSelector();
-  const [filters, setFilters] = useState();
+  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
   const showTypesFilter = type === "log";
 
   /**
@@ -125,14 +126,14 @@ const PositionsTable = (props) => {
    */
   const composeDataTableForPositionsType = () => {
     if (type === "closed") {
-      return composeClosePositionsDataTable(positions);
+      return composeClosePositionsDataTable(positionsFiltered);
     }
 
     if (type === "log") {
-      return composeLogPositionsDataTable(positions);
+      return composeLogPositionsDataTable(positionsFiltered);
     }
 
-    return composeOpenPositionsDataTable(positions);
+    return composeOpenPositionsDataTable(positionsFiltered);
   };
 
   const { columns, data } = composeDataTableForPositionsType();
@@ -140,7 +141,7 @@ const PositionsTable = (props) => {
   const embedFilters = (
     <PositionFilters
       onChange={setFilters}
-      positions={positions}
+      positions={positionsAll}
       showTypesFilter={showTypesFilter}
     />
   );
@@ -153,9 +154,13 @@ const PositionsTable = (props) => {
         setConfirmConfig={setConfirmConfig}
       />
 
-      <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-        <Table columns={columns} data={data} persistKey="openPositions" title={embedFilters} />
-      </Box>
+      {isEmpty(positionsFiltered) ? (
+        <NoPositions />
+      ) : (
+        <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
+          <Table columns={columns} data={data} persistKey="openPositions" title={embedFilters} />
+        </Box>
+      )}
     </>
   );
 };
