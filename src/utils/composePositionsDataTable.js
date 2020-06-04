@@ -1,5 +1,5 @@
 import React from "react";
-import { merge } from "lodash";
+import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
 import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
@@ -653,4 +653,33 @@ export function composeLogPositionsDataTable(positions) {
     columns: columnsIds.map(composeColumnOptions),
     data: positions.map(composeLogPositionRow),
   };
+}
+
+/**
+ * Remove data table column and data.
+ *
+ * @export
+ * @param {DataTableContent} dataTable Data table structure.
+ * @param {string} columnId ID of the column to remove.
+ *
+ * @returns {DataTableContent} Data table without removed column.
+ */
+
+export function removeDataTableColumn(dataTable, columnId) {
+  const columnIndex = findIndex(dataTable.columns, { name: columnId });
+  const { columns, data } = dataTable;
+
+  // Remove column when exists.
+  if (columnIndex > -1) {
+    delete columns[columnIndex];
+    return {
+      columns: columns,
+      data: data.map((row) => {
+        delete row[columnIndex];
+        return row;
+      }),
+    };
+  }
+
+  return dataTable;
 }

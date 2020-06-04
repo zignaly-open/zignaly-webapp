@@ -8,12 +8,14 @@ import {
   composeOpenPositionsDataTable,
   composeClosePositionsDataTable,
   composeLogPositionsDataTable,
+  removeDataTableColumn,
 } from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -32,6 +34,7 @@ import usePositionsList from "../../../hooks/usePositionsList";
 const PositionsTable = (props) => {
   const { type } = props;
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
   const showTypesFilter = type === "log";
   const tablePersistsKey = `${type}Positions`;
@@ -134,7 +137,12 @@ const PositionsTable = (props) => {
       return composeLogPositionsDataTable(positionsFiltered);
     }
 
-    return composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+    const dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+    if (storeSettings.selectedExchange.exchangeType === "futures") {
+      return removeDataTableColumn(dataTable, "col.cancel");
+    }
+
+    return dataTable;
   };
 
   const { columns, data } = composeDataTableForPositionsType();
