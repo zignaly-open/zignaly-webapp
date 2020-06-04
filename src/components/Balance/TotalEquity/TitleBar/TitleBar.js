@@ -49,7 +49,7 @@ const TitleBar = (props) => {
             BTC {list.length ? formatFloat(list[0].totalBTC) : "0"}{" "}
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {list.length ? formatFloat(list[0].totalUSD) : "0"}
+            = USD {list.length ? formatFloat(list[0].totalUSDT) : "0"}
           </Typography>
         </Box>
       </Box>

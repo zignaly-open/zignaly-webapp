@@ -20,8 +20,8 @@ const CryptoComposition = () => {
         <FormattedMessage id="dashboard.balance.cryptocompo" />
       </Typography>
       <CompositionGraph
-        quotes={storeUser.dailyBalance.quotes}
         list={storeUser.dailyBalance.balances}
+        quotes={storeUser.dailyBalance.quotes}
       />
     </Box>
   );
