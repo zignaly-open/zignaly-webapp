@@ -134,7 +134,7 @@ const PositionsTable = (props) => {
       return composeLogPositionsDataTable(positionsFiltered);
     }
 
-    return composeOpenPositionsDataTable(positionsFiltered);
+    return composeOpenPositionsDataTable(positionsFiltered, confirmAction);
   };
 
   const { columns, data } = composeDataTableForPositionsType();

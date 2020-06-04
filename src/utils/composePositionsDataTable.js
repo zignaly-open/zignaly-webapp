@@ -326,9 +326,10 @@ function gotoPositionDetail(event) {
  * Compose all action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {JSX.Element} Composed JSX element.
  */
-function composeAllActionButtons(position) {
+function composeAllActionButtons(position, confirmActionHandler) {
   return (
     <div className="actions">
       {position.isCopyTrading ? (
@@ -353,6 +354,7 @@ function composeAllActionButtons(position) {
       <button
         data-action={"exit"}
         data-position-id={position.positionId}
+        onClick={confirmActionHandler}
         title="exit"
         type="button"
       >
@@ -361,6 +363,7 @@ function composeAllActionButtons(position) {
       <button
         data-action={"cancel"}
         data-position-id={position.positionId}
+        onClick={confirmActionHandler}
         title="cancel"
         type="button"
       >
@@ -412,9 +415,10 @@ function composeColumnDefaultOptions(columnId) {
  * Compose MUI Data Table row for open position entity.
  *
  * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {Array<JSX.Element>} Row data array.
  */
-function composeOpenPositionRow(position) {
+function composeOpenPositionRow(position, confirmActionHandler) {
   return [
     composePaperTradingIcon(position),
     composeFragmentValue(position.openDateReadable),
@@ -438,7 +442,7 @@ function composeOpenPositionRow(position) {
     composeRisk(position),
     composeFragmentValue(position.age),
     composeFragmentValue(position.openTrigger),
-    composeAllActionButtons(position),
+    composeAllActionButtons(position, confirmActionHandler),
   ];
 }
 
@@ -508,10 +512,11 @@ function composeLogPositionRow(position) {
  *
  * @export
  * @param {UserPositionsCollection} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  *
  * @returns {DataTableContent} Open positions data table structure.
  */
-export function composeOpenPositionsDataTable(positions) {
+export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     "col.paper",
     "col.date.open",
@@ -540,7 +545,7 @@ export function composeOpenPositionsDataTable(positions) {
 
   return {
     columns: columnsIds.map(composeColumnDefaultOptions),
-    data: positions.map(composeOpenPositionRow),
+    data: positions.map((position) => composeOpenPositionRow(position, confirmActionHandler)),
   };
 }
 
