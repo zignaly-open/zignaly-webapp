@@ -55,6 +55,7 @@
 /**
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} exchangeConnectionView
+ * @property {Boolean} settingsView
  */
 
 /**
@@ -168,6 +169,7 @@ const initialState = {
   ui: {
     modal: {
       exchangeConnectionView: false,
+      settingsView: false,
     },
     alerts: {
       success: {},

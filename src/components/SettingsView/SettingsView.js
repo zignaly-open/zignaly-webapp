@@ -41,7 +41,7 @@ const SettingsView = (props) => {
       </Box>
       <Box className="titleBar">
         <Typography variant="h1">
-          <FormattedMessage id="account.settings" />
+          <FormattedMessage id="accounts.settings" />
         </Typography>
       </Box>
     </Box>
