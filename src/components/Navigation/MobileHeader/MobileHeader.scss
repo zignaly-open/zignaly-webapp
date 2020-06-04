@@ -44,29 +44,6 @@
       width: 100%;
       z-index: 1002;
 
-      .mobileExchangeListItem {
-        width: 100%;
-
-        &.selected {
-          background-image: $purpleLightGradient;
-          color: $white;
-        }
-
-        &.action {
-          border-top: 1px solid $borderColor;
-          height: 50px;
-
-          img {
-            height: 24px;
-            width: 24px;
-          }
-        }
-
-        .exchangeIcon {
-          margin-right: 10px;
-        }
-      }
-
       .drawerHeader {
         margin-bottom: 30px;
         padding: 0 15px;

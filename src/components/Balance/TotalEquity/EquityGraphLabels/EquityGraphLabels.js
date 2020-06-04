@@ -51,6 +51,7 @@ const EquityGraphLabels = ({ list }) => {
     };
 
     prepareLabels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
 
   return (

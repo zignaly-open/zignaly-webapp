@@ -1,7 +1,7 @@
 .totalEquity {
+  border-right: 2px solid $borderColor;
   min-height: inherit;
   padding: 0 30px 0 0;
-  border-right: 2px solid $borderColor;
 
   .equityHeader {
     margin-bottom: 20px;
@@ -10,8 +10,8 @@
 
 @include media("<=sm") {
   .totalEquity {
+    border: 0;
     margin-bottom: 40px;
     padding: 0;
-    border: none;
   }
 }

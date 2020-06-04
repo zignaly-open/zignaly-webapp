@@ -2,7 +2,6 @@ import React from "react";
 import "./TitleBar.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { formatFloat } from "../../../../utils/format";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
@@ -24,22 +23,24 @@ const TitleBar = (props) => {
 
   const getTotalBTC = () => {
     let date = new Date().getDate();
-    let item = [...list].find((item) => {
+    let found = [...list].find((item) => {
       return new Date(item.date).getDate() === date;
     });
-    if (item) {
-      return item.totalBTC;
-    } else return "";
+    if (found) {
+      return found.totalBTC;
+    }
+    return "";
   };
 
   const getTotalUSDT = () => {
     let date = new Date().getDate();
-    let item = [...list].find((item) => {
+    let found = [...list].find((item) => {
       return new Date(item.date).getDate() === date;
     });
-    if (item) {
-      return item.totalUSDT;
-    } else return "";
+    if (found) {
+      return found.totalUSDT;
+    }
+    return "";
   };
 
   return (
