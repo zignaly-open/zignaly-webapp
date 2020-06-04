@@ -23,20 +23,19 @@ import { useIntl } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const AnalyticsFilters = ({
+  quote,
   base,
-  pair,
   timeFrame,
   onBaseChange,
-  onPairChange,
+  onQuoteChange,
   onTimeFrameChange,
   onClear,
 }) => {
   const quoteAssets = useQuoteAssets();
-  console.log(quoteAssets);
   const baseAssets = useBaseAssets(base);
   const timeFramesOptions = useTimeFramesOptions();
-  const bases = Object.keys(quoteAssets);
-  const pairs = Object.entries(baseAssets).map(([key, val]) => ({
+  const quotes = Object.keys(quoteAssets);
+  const bases = Object.entries(baseAssets).map(([key, val]) => ({
     val: val.base,
     label: val.quote + "/" + val.base,
   }));
@@ -56,18 +55,18 @@ const AnalyticsFilters = ({
         label={intl.formatMessage({
           id: "fil.base",
         })}
-        onChange={onBaseChange}
+        onChange={onQuoteChange}
         options={bases}
-        value={base}
+        value={quote}
         search={true}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.pair",
         })}
-        onChange={onPairChange}
-        options={pairs}
-        value={pair}
+        onChange={onBaseChange}
+        options={bases}
+        value={base}
         search={true}
       />
     </CustomFilters>

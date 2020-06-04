@@ -23,7 +23,7 @@ import Table from "../../Table";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ title, persistKey }) => {
+const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */

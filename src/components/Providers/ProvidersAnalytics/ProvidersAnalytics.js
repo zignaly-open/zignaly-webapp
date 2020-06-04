@@ -40,8 +40,8 @@ const ProvidersAnalytics = ({ type }) => {
         type={type}
         base={base}
         onBaseChange={setBase}
-        pair={pair}
-        onPairChange={setPair}
+        quote={quote}
+        onQuoteChange={setQuote}
         timeFrame={timeFrame}
         onTimeFrameChange={setTimeFrame}
         onClear={clearFilters}
@@ -50,6 +50,7 @@ const ProvidersAnalytics = ({ type }) => {
         persistKey={`${type}Analytics`}
         title={<FormattedMessage id={`${type}.performance`} />}
         type={type}
+        stats={stats}
       />
     </Box>
   );
