@@ -364,6 +364,20 @@ function composeAllActionButtons(position, confirmActionHandler) {
       >
         <LogOut color={colors.purpleLight} />
       </button>
+    </div>
+  );
+}
+
+/**
+ * Compose delete action button element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose buttons for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeCancelActionButton(position, confirmActionHandler) {
+  return (
+    <div className="actions">
       <button
         data-action={"cancel"}
         data-position-id={position.positionId}
@@ -458,6 +472,7 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeRawValue(position.age),
     composeRawValue(position.openTrigger),
     composeAllActionButtons(position, confirmActionHandler),
+    composeCancelActionButton(position, confirmActionHandler),
   ];
 }
 
@@ -556,6 +571,7 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
     "col.age",
     "col.opentrigger",
     "col.actions",
+    "col.cancel",
   ];
 
   return {
