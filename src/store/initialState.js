@@ -10,6 +10,7 @@
 
 /**
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  */
 
@@ -17,7 +18,7 @@
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalanceEntity} balance
- * @property {Array<UserEquityEntity>} dailyBalance
+ * @property {DefaultDailyBalanceEntity} dailyBalance
  */
 
 /**
@@ -51,6 +52,7 @@
 /**
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} exchangeConnectionView
+ * @property {Boolean} settingsView
  */
 
 /**
@@ -110,6 +112,17 @@ const initialState = {
         "sumSoldBySignal",
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
+      ],
+      dailyBalance: [
+        "date",
+        "totalUSDT",
+        "freeUSDT",
+        "lockedUSDT",
+        "totalBTC",
+        "freeBTC",
+        "lockedBTC",
+        "freeETH",
+        "freeBNB",
       ],
       openPositions: [
         "col.date.open",
@@ -180,11 +193,15 @@ const initialState = {
       totalAssets: "",
       profitPercentage: "",
     },
-    dailyBalance: [],
+    dailyBalance: {
+      balances: [],
+      quotes: [],
+    },
   },
   ui: {
     modal: {
       exchangeConnectionView: false,
+      settingsView: false,
     },
     alerts: {
       success: {},

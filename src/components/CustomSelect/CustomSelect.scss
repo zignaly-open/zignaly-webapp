@@ -24,7 +24,31 @@
     min-width: 94px;
 
     > div {
-      opacity: 0.6;
+      align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
+      padding: 0 14px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .customSelect {
+    flex-direction: column;
+    height: fit-content;
+    justify-content: flex-end;
+
+    .callout {
+      order: 2;
+
+      & + span {
+        margin-bottom: 5px;
+        order: 1;
+        padding-right: 5px;
+        text-align: right;
+        width: 100%;
+      }
     }
   }
 }

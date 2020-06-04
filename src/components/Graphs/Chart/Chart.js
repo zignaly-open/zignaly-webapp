@@ -82,7 +82,7 @@ const LineChart = (props) => {
     // Show tooltip
     setTooltipVisibility(true);
   };
-  const showTooltipCallback = useCallback(showTooltip, []);
+  const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
   /**
    * @type Chart.ChartData

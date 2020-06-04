@@ -194,7 +194,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} type
  * @property {number} timeFrame
  * @property {boolean} copyTradersOnly
- * @property {boolean} ro
+ * @property {boolean} [ro]
  */
 
 /**
@@ -815,39 +815,108 @@ function createUserBalanceEntity(response) {
 
 /**
  *
+ * @typedef {Object} DefaultDailyBalanceEntity
+ * @property {Array<UserEquityEntity>} balances
+ * @property {Array<String>} quotes
+ */
+
+/**
+ *
  * @typedef {Object} UserEquityEntity
- * @property {Number} BNB
- * @property {Number} BTC
- * @property {Number} BTCWithoutStableCoins
- * @property {Number} ETH
- * @property {Number} PAX
- * @property {Number} TUSD
- * @property {Number} USDC
- * @property {Number} USDT
+ * @property {Number} BNBpercentage
+ * @property {Number} BTCpercentage
+ * @property {Number} DAIpercentage
+ * @property {Number} ETHpercentage
+ * @property {Number} KCSpercentage
+ * @property {Number} NEOpercentage
+ * @property {Number} PAXpercentage
+ * @property {Number} TRXpercentage
+ * @property {Number} TUSDpercentage
+ * @property {Number} USDCpercentage
+ * @property {Number} USDTpercentage
+ * @property {Number} BKRWpercentage
+ * @property {Number} BUSDpercentage
+ * @property {Number} EURpercentage
+ * @property {Number} IDRTpercentage
+ * @property {Number} NGNpercentage
+ * @property {Number} RUBpercentage
+ * @property {Number} TRYpercentage
+ * @property {Number} USDSpercentage
+ * @property {Number} XRPpercentage
+ * @property {Number} ZARpercentage
  * @property {String} date
- * @property {String} dateKey
- * @property {String} freeBTC
- * @property {String} freeUSD
- * @property {String} lockedBTC
- * @property {String} lockedUSD
+ * @property {Number} freeBNB
+ * @property {Number} freeBTC
+ * @property {Number} freeDAI
+ * @property {Number} freeETH
+ * @property {Number} freeKCS
+ * @property {Number} freeNEO
+ * @property {Number} freePAX
+ * @property {Number} freeTRX
+ * @property {Number} freeTUSD
+ * @property {Number} freeUSDC
+ * @property {Number} freeUSDT
+ * @property {Number} freeBKRW
+ * @property {Number} freeBUSD
+ * @property {Number} freeEUR
+ * @property {Number} freeIDRT
+ * @property {Number} freeNGN
+ * @property {Number} freeRUB
+ * @property {Number} freeTRY
+ * @property {Number} freeUSDS
+ * @property {Number} freeXRP
+ * @property {Number} freeZAR
+ * @property {Number} lockedBNB
+ * @property {Number} lockedBTC
+ * @property {Number} lockedDAI
+ * @property {Number} lockedETH
+ * @property {Number} lockedKCS
+ * @property {Number} lockedNEO
+ * @property {Number} lockedPAX
+ * @property {Number} lockedTRX
+ * @property {Number} lockedTUSD
+ * @property {Number} lockedUSDC
+ * @property {Number} lockedUSDT
+ * @property {Number} lockedBKRW
+ * @property {Number} lockedBUSD
+ * @property {Number} lockedEUR
+ * @property {Number} lockedIDRT
+ * @property {Number} lockedNGN
+ * @property {Number} lockedRUB
+ * @property {Number} lockedTRY
+ * @property {Number} lockedUSDS
+ * @property {Number} lockedXRP
+ * @property {Number} lockedZAR
+ * @property {Number} otherPercentage
  * @property {String} totalBTC
- * @property {String} totalUSD
+ * @property {String} totalFreeBTC
+ * @property {String} totalFreeUSDT
+ * @property {String} totalLockedBTC
+ * @property {String} totalLockedUSDT
+ * @property {String} totalUSDT
+ *
  */
 
 /**
  * Transform user balance response to typed UserBalanceEntity.
  *
  * @param {*} response Trade API get user balance raw response.
- * @returns {Array<UserEquityEntity>} User balance entity.
+ * @returns {DefaultDailyBalanceEntity} User balance entity.
  */
 export function userEquityResponseTransform(response) {
-  if (!isArray(response)) {
-    throw new Error("Response must be an object with different propteries.");
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
   }
 
-  return response.map((userEquityItem) => {
+  let transformedResponse = createUserEquityResponseEntity(response);
+
+  let quotes = transformedResponse.quotes;
+  let balances = transformedResponse.balances.map((userEquityItem) => {
     return userEquityItemTransform(userEquityItem);
   });
+
+  transformedResponse = { ...transformedResponse, balances, quotes };
+  return transformedResponse;
 }
 
 /**
@@ -866,27 +935,94 @@ function userEquityItemTransform(userEquityItem) {
 
 /**
  * Create user balance entity.
+ * @param {*} response Response from the API.
+ * @returns {DefaultDailyBalanceEntity} User balance entity.
+ */
+function createUserEquityResponseEntity(response) {
+  return {
+    balances: response.balances,
+    quotes: response.quotes,
+  };
+}
+
+/**
+ * Create user balance entity.
  *
  * @returns {UserEquityEntity} User balance entity.
  */
 function createUserEquityEntity() {
   return {
-    BNB: 0,
-    BTC: 0,
-    BTCWithoutStableCoins: 0,
-    ETH: 0,
-    PAX: 0,
-    TUSD: 0,
-    USDC: 0,
-    USDT: 0,
-    date: "1590973335276",
-    dateKey: "2020-06-01",
-    freeBTC: "0",
-    freeUSD: "0",
-    lockedBTC: "0",
-    lockedUSD: "0",
+    BKRWpercentage: 0,
+    BNBpercentage: 0,
+    DAIpercentage: 0,
+    BTCpercentage: 0,
+    BUSDpercentage: 0,
+    ETHpercentage: 0,
+    EURpercentage: 0,
+    IDRTpercentage: 0,
+    NGNpercentage: 0,
+    PAXpercentage: 0,
+    RUBpercentage: 0,
+    TRXpercentage: 0,
+    TRYpercentage: 0,
+    TUSDpercentage: 0,
+    USDCpercentage: 0,
+    USDSpercentage: 0,
+    USDTpercentage: 0,
+    XRPpercentage: 0,
+    ZARpercentage: 0,
+    KCSpercentage: 0,
+    NEOpercentage: 0,
+    date: "0",
+    freeBKRW: 0,
+    freeBNB: 0,
+    freeBTC: 0,
+    freeBUSD: 0,
+    freeETH: 0,
+    freeEUR: 0,
+    freeIDRT: 0,
+    freeNGN: 0,
+    freePAX: 0,
+    freeRUB: 0,
+    freeTRX: 0,
+    freeTRY: 0,
+    freeTUSD: 0,
+    freeUSDC: 0,
+    freeUSDS: 0,
+    freeUSDT: 0,
+    freeXRP: 0,
+    freeZAR: 0,
+    freeDAI: 0,
+    freeNEO: 0,
+    freeKCS: 0,
+    lockedBKRW: 0,
+    lockedBNB: 0,
+    lockedBTC: 0,
+    lockedBUSD: 0,
+    lockedETH: 0,
+    lockedEUR: 0,
+    lockedIDRT: 0,
+    lockedNGN: 0,
+    lockedPAX: 0,
+    lockedRUB: 0,
+    lockedTRX: 0,
+    lockedTRY: 0,
+    lockedTUSD: 0,
+    lockedUSDC: 0,
+    lockedUSDS: 0,
+    lockedUSDT: 0,
+    lockedXRP: 0,
+    lockedZAR: 0,
+    lockedDAI: 0,
+    lockedKCS: 0,
+    lockedNEO: 0,
+    otherPercentage: 0,
     totalBTC: "0",
-    totalUSD: "0",
+    totalFreeBTC: "0",
+    totalFreeUSDT: "0",
+    totalLockedBTC: "0",
+    totalLockedUSDT: "0",
+    totalUSDT: "0",
   };
 }
 

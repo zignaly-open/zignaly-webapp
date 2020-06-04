@@ -62,7 +62,7 @@ const EquityFilter = (props) => {
     let date = new Date();
     date.setDate(date.getDate() - value);
     let newList = [...list].filter((item) => {
-      return parseFloat(item.date) > new Date(date).getTime();
+      return new Date(item.date).getTime() > new Date(date).getTime();
     });
     return newList;
   };

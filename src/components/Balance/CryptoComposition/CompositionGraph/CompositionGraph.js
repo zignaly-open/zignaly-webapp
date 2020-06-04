@@ -11,6 +11,7 @@ import Doughnut from "../../../Graphs/Doughnut";
  *
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
+ * @property {Array<String>} quotes
  */
 
 /**
@@ -18,9 +19,7 @@ import Doughnut from "../../../Graphs/Doughnut";
  * @param {DefaultProps} props Default props.
  */
 
-const CompositionGraph = (props) => {
-  const { list } = props;
-
+const CompositionGraph = ({ list, quotes }) => {
   const sectionColors = [
     "#770fc8",
     "#a25cd9",
@@ -29,9 +28,10 @@ const CompositionGraph = (props) => {
     "#c12860",
     "#b52a00",
     "#c91919",
+    "#08a441",
+    "#f6ad3f",
+    "#017aff",
   ];
-
-  const cryptos = ["BNB", "BTC", "ETH", "PAX", "TUSD", "USDC", "USDT"];
 
   /**
    * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
@@ -41,21 +41,23 @@ const CompositionGraph = (props) => {
 
   const colorsOptions = {
     backgroundColor: sectionColors,
-    borderColor: "#4e07da",
   };
 
   const prepareChartData = () => {
     /**
      * @type {*}
      */
-    let data = list.length ? list[0] : {};
-    if (data) {
-      for (let a = 0; a < cryptos.length; a++) {
-        if (data[cryptos[a]] && data[cryptos[a]] !== "0E-12") {
-          chartData.values.push(data[cryptos[a]]);
-          chartData.labels.push(cryptos[a]);
+    let equity = list.length ? list[0] : {};
+    if (equity) {
+      for (let a = 0; a < quotes.length; a++) {
+        let property = quotes[a] + "percantage";
+        if (equity[property]) {
+          chartData.values.push(equity[property]);
+          chartData.labels.push(quotes[a]);
         }
       }
+      chartData.values.push(equity.otherPercentage);
+      chartData.labels.push("Others");
     }
   };
 
