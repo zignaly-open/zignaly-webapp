@@ -404,6 +404,7 @@ function composeColumnDefaultOptions(columnId) {
     options: {
       display: true,
       viewColumns: true,
+      sort: true,
     },
   };
 }
