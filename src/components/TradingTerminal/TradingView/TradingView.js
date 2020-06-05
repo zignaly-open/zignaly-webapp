@@ -1,5 +1,44 @@
 import React, { useEffect } from "react";
-import { widget } from "../../../charting_library.min";
+import { widget } from "../../../tradingView/charting_library.min";
+
+// Resolve an exchange key from user exchange connection object.
+function resolveCoinRayExchangeKey(exchange) {
+  // When not valid exchange object fallback to Binance.
+  if (!exchange || !exchange.exchangeName) {
+    return "BINA";
+  }
+
+  // When not defined default to spot.
+  if (!exchange.exchangeType) {
+    exchange.exchangeType = "spot";
+  }
+
+  const exchangeName = exchange.exchangeName.toUpperCase();
+  const exchangeType = exchange.exchangeType.toUpperCase();
+
+  if (exchangeName === "BINANCE") {
+    if (exchangeType === "FUTURES") {
+      return "BIFU";
+    }
+
+    return "BINA";
+  }
+
+  if (exchangeName === "KUCOIN") {
+    return "KUCN";
+  }
+
+  if (exchangeName === "ZIGNALY") {
+    if (exchangeType === "FUTURES") {
+      return "BIFU";
+    }
+
+    return "BINA";
+  }
+
+  // Fallback to Binance when none of above conditions are met.
+  return "BINA";
+}
 
 const TradingView = () => {
   const widgetOptions = {
@@ -18,6 +57,47 @@ const TradingView = () => {
     autosize: true,
     studiesOverrides: {},
     userExchanges: [],
+  };
+
+  const getDataFeedService = async () => {
+    const accessToken = await getCoinrayToken();
+    const symbol = "BTC/USDT";
+    // const exchangeKey = resolveCoinRayExchangeKey(exchangeData);
+    const exchangeKey = "BINA";
+    const options = {
+      debug: false,
+      exchange: "Binance",
+      exchangeKey,
+      symbol,
+      // TODO: Check this token.
+      token: token,
+      // TODO: What's symbols data?
+      symbolsData: "",
+      accessToken: accessToken,
+      regenerateAccessToken: getCoinrayToken,
+    };
+
+    return new datafeed(options);
+  };
+
+  const getCoinrayToken = async () => {
+    const url = GET_COINRAY_TOKEN + "&token=".concat(this.props.user);
+    const milliSecsThreshold = 20000;
+    // Limit to one request within a time threshold to avoid stampede requests to API.
+    const throttledTokenFetch = throttle(async () => {
+      try {
+        const res = await fetch(url);
+        if (res.status === 200) {
+          const data = await res.json();
+          setCoinRayToken({ accessToken: data.jwt });
+          return data.jwt;
+        }
+      } catch (error) {
+        alert(`ERROR: Get coinray token error: ${error.message}`);
+      }
+    }, milliSecsThreshold);
+
+    return (await throttledTokenFetch()) || "";
   };
 
   useEffect(() => {
