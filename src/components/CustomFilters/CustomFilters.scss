@@ -7,15 +7,13 @@
   width: 100%;
   border-radius: 4px;
 
-  .title {
-    color: $purple;
-    font-family: "PlexSans-Medium";
-    font-size: 16px;
-    width: 100px;
-  }
-
-  .customSelect {
-    margin-left: 0;
+  .filters {
+    .title {
+      color: $purple;
+      font-family: "PlexSans-Medium";
+      font-size: 16px;
+      width: 100px;
+    }
   }
 }
 

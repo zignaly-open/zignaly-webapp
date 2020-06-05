@@ -16,8 +16,12 @@
   }
 
   .select {
-    margin-right: 50px;
-    min-width: 150px;
+    // margin-right: 50px;
+    // min-width: 150px;
+    border-radius: 4px;
+    height: 32px;
+    margin-right: 20px;
+    min-width: 130px;
 
     > div {
       align-items: center;
@@ -50,6 +54,11 @@
     height: fit-content;
     justify-content: flex-end;
 
+    .select,
+    .searchRoot {
+      margin-right: 0;
+    }
+
     .callout {
       order: 2;
 
@@ -57,7 +66,7 @@
         margin-bottom: 5px;
         order: 1;
         padding-right: 5px;
-        text-align: right;
+        text-align: center;
         width: 100%;
       }
     }
