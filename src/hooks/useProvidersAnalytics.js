@@ -35,7 +35,7 @@ const useProvidersAnalytics = () => {
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
   const [stats, setStats] = useState([]);
-  const [quote, setQuote] = useState("BTC");
+  const [quote, setQuote] = useState("USDT");
   const [base, setBase] = useState("");
   const [timeFrame, setTimeFrame] = useState("30days");
 
