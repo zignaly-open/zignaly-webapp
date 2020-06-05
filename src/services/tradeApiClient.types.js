@@ -229,6 +229,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} shortDesc
  * @property {string} longDesc
  * @property {string|boolean} fee
+ * @property {number} price
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
@@ -250,6 +251,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} followers
  * @property {number} returns
  * @property {string} floating
+ * @property {number} openPositions
  */
 
 /**
@@ -463,6 +465,7 @@ function createEmptyProviderEntity() {
     shortDesc: "",
     longDesc: "",
     fee: false,
+    price: 0,
     website: false,
     exchanges: [],
     key: false,

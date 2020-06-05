@@ -6,7 +6,7 @@ import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -14,54 +14,8 @@ import { withStyles } from "@material-ui/core/styles";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
+ * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  */
-
-const StyledTable = withStyles((theme) => ({
-  MUIDataTableHeadRow: {
-    root: {
-      verticalAlign: "top",
-    },
-  },
-  MUIDataTableToolbar: {
-    root: {
-      // body2
-      fontSize: "16px",
-      fontFamily: "PlexSans-SemiBold",
-      lineHeight: 1.31,
-      letterSpacing: "0.61px",
-    },
-  },
-  MUIDataTableHeadCell: {
-    root: {
-      // footnote
-      fontSize: "11px",
-      fontFamily: "PlexSans-Bold",
-      textTransform: "uppercase",
-      opacity: "0.6",
-      lineHeight: 1.45,
-      letterSpacing: "0.42px",
-      minWidth: "80px",
-      maxWidth: "120px",
-      padding: "12px",
-      whiteSpace: "nowrap",
-    },
-  },
-  MUIDataTableBodyCell: {
-    root: {
-      fontSize: "14px",
-      fontFamily: "PlexSans-Medium",
-      minWidth: "80px",
-      padding: "12px",
-      whiteSpace: "nowrap",
-    },
-    stackedCommon: {
-      [theme.breakpoints.down("sm")]: {
-        height: "auto",
-        textAlign: "left",
-      },
-    },
-  },
-}))(MUIDataTable);
 
 /**
  * Provides a table.
@@ -125,9 +79,73 @@ const Table = ({ columns, data, persistKey, title }) => {
     },
   };
 
+  /**
+   * Customizing styling here to avoid lint warning camelCase class-name-format
+   * @param {ThemeOptions} theme
+   */
+  const getMuiTheme = (theme) =>
+    createMuiTheme({
+      /**
+       * @type {*}
+       */
+      overrides: {
+        MUIDataTableHeadRow: {
+          root: {
+            verticalAlign: "top",
+          },
+        },
+        MUIDataTableToolbar: {
+          root: {
+            // body2
+            fontSize: "16px",
+            fontFamily: "PlexSans-SemiBold",
+            lineHeight: 1.31,
+            letterSpacing: "0.61px",
+          },
+        },
+        MUIDataTableHeadCell: {
+          root: {
+            // footnote
+            fontSize: "11px",
+            fontFamily: "PlexSans-Bold",
+            textTransform: "uppercase",
+            opacity: "0.6",
+            lineHeight: 1.45,
+            letterSpacing: "0.42px",
+            minWidth: "80px",
+            maxWidth: "120px",
+            padding: "12px",
+            whiteSpace: "nowrap",
+          },
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "14px",
+            fontFamily: "PlexSans-Medium",
+            minWidth: "80px",
+            padding: "12px",
+            whiteSpace: "nowrap",
+          },
+          stackedCommon: {
+            [theme.breakpoints.down("sm")]: {
+              height: "auto",
+              textAlign: "left",
+            },
+          },
+        },
+      },
+    });
+
   return (
     <Box className="customTable">
-      <StyledTable columns={columnsCustom} data={data} options={options} title={title} />
+      <MuiThemeProvider
+        theme={(outerTheme) => ({
+          ...getMuiTheme(outerTheme),
+          outerTheme,
+        })}
+      >
+        <MUIDataTable columns={columnsCustom} data={data} options={options} title={title} />
+      </MuiThemeProvider>
     </Box>
   );
 };

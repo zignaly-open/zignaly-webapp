@@ -58,7 +58,7 @@ const TraderCardHeader = (props) => {
               />
             </Typography>
             {exchanges.map((exchange, index) => (
-              <ExchangeIcon exchange={exchange} key={index} />
+              <ExchangeIcon exchange={exchange} key={index} size="xsmall" />
             ))}
           </Box>
         </Box>
