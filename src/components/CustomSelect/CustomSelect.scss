@@ -18,6 +18,14 @@
   .select {
     margin-right: 50px;
     min-width: 150px;
+
+    > div {
+      align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
+      padding: 0 14px;
+    }
   }
 
   .searchRoot {
@@ -30,17 +38,9 @@
     border-radius: 4px;
     height: 32px;
 
-    > div {
-      align-items: center;
-      display: flex;
-      height: 32px;
-      opacity: 1;
-      padding: 0 14px;
+    .searchInput {
+      padding: 0;
     }
-  }
-
-  .searchInput {
-    padding: 0;
   }
 }
 

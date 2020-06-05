@@ -1,4 +1,5 @@
 import moment from "moment";
+import { capitalize } from "lodash";
 
 /**
  * Format string to float with 2 decimals.
@@ -25,7 +26,8 @@ export const formatFloat = (val) => {
  * @param {string} val Value to format
  * @returns {string} Value formatted
  */
-export const formatTime = (val) => moment.duration(parseInt(val, 10), "second").humanize();
+export const formatTime = (val) =>
+  capitalize(moment.duration(parseInt(val, 10), "second").humanize());
 
 /**
  * Format string to camelCase
