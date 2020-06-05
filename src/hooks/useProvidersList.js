@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import tradeApi from "../services/tradeApiClient";
-import { useSelector } from "react-redux";
+import useStoreSessionSelector from "./useStoreSessionSelector";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -37,14 +38,9 @@ import { useSelector } from "react-redux";
  * @returns {ProvidersData} Providers and filtering objects.
  */
 const useProvidersList = (options) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
+  const storeSettings = useStoreSettingsSelector();
+  const internalExchangeId = storeSettings.selectedExchange.internalId;
+  const storeSession = useStoreSessionSelector();
   const { copyTradersOnly, connectedOnly } = options;
 
   /**
@@ -56,7 +52,7 @@ const useProvidersList = (options) => {
   const [timeFrame, setTimeFrame] = useState(90);
   const [coin, setCoin] = useState("");
   const [exchange, setExchange] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("RETURNS_DESC");
 
   const clearFilters = () => {
     setCoin("");
@@ -130,6 +126,7 @@ const useProvidersList = (options) => {
         ro: true,
         copyTradersOnly,
         timeFrame,
+        internalExchangeId,
       };
 
       try {
@@ -140,7 +137,13 @@ const useProvidersList = (options) => {
       }
     };
     loadProviders();
-  }, [timeFrame, connectedOnly, copyTradersOnly, storeSession.tradeApi.accessToken]);
+  }, [
+    timeFrame,
+    connectedOnly,
+    copyTradersOnly,
+    storeSession.tradeApi.accessToken,
+    internalExchangeId,
+  ]);
 
   return {
     providers: providersFiltered,

@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  const { openPositions, floating, isCopyTrading, followers, disable, dailyReturns } = provider;
   /**
    * Settings darkStyle selector.
    *
@@ -128,7 +128,9 @@ const TraderCard = (props) => {
           </Box>
         </CustomToolip>
 
-        <CustomToolip title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: 0 }} />}>
+        <CustomToolip
+          title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
+        >
           <Box
             alignItems="flex-end"
             className="openPositions"
@@ -137,7 +139,7 @@ const TraderCard = (props) => {
             justifyContent="space-between"
           >
             <Typography className="green" variant="h4">
-              {}%
+              {+parseFloat(floating).toFixed(2)}%
             </Typography>
             <Typography variant="subtitle1">
               <FormattedMessage id="srv.openpos" />

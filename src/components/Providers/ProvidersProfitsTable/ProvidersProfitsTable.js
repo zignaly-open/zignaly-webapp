@@ -51,6 +51,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
         setCellHeaderProps: () => ({ align: "center" }),
         setCellProps: () => ({ align: "center" }),
         viewColumns: false,
+        sort: false,
       },
     },
     {

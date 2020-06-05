@@ -2,6 +2,7 @@ import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
@@ -29,15 +30,32 @@ const ProvidersFilters = ({
   clearFilters,
   open,
 }) => {
+  const intl = useIntl();
   const quoteAssets = useQuoteAssets();
   const coins = Object.keys(quoteAssets);
   const exchanges = ["Binance", "Zignaly", "KuCoin"];
 
   return open ? (
-    <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
-      <CustomSelect label="Coin" onChange={onCoinChange} options={coins} value={coin} />
+    <CustomFilters
+      onClear={clearFilters}
+      onClose={onClose}
+      title={intl.formatMessage({
+        id: "fil.filters",
+      })}
+    >
       <CustomSelect
-        label="Exchange"
+        label={intl.formatMessage({
+          id: "col.coin",
+        })}
+        onChange={onCoinChange}
+        options={coins}
+        value={coin}
+        search={true}
+      />
+      <CustomSelect
+        label={intl.formatMessage({
+          id: "accounts.exchange",
+        })}
         onChange={onExchangeChange}
         options={exchanges}
         value={exchange}

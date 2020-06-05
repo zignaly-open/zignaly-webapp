@@ -249,6 +249,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} [risk]
  * @property {number} followers
  * @property {number} returns
+ * @property {string} floating
  */
 
 /**
@@ -482,6 +483,8 @@ function createEmptyProviderEntity() {
     risk: 0,
     coin: "BTC",
     followers: 0,
+    floating: "",
+    openPositions: 0,
   };
 }
 
