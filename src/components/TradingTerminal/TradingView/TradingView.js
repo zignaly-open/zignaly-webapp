@@ -1,73 +1,80 @@
-import React, { useEffect } from "react";
-import { widget } from "../../../tradingView/charting_library.min";
+import React, { useEffect, useState } from "react";
+import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import CoinRayDataFeed from "../../../services/coinRayDataFeed";
+import tradeApi from "../../../services/tradeApiClient";
+import { throttle } from "lodash";
 
 const TradingView = () => {
-  const widgetOptions = {
-    symbol: "BTC/USDT",
-    interval: "30",
-    containerId: "trading-view-chart",
-    libraryPath: "/charting_library",
-    locale: "en",
-    disabledFeatures: ["use_localstorage_for_settings"],
-    enabledFeatures: ["study_templates"],
-    chartsStorageUrl: "https://saveload.tradingview.com",
-    chartsStorageApiVersion: "1.1",
-    clientId: "tradingview.com",
-    userId: "public_user_id",
-    fullscreen: false,
-    autosize: true,
-    studiesOverrides: {},
-    userExchanges: [],
-  };
-
+  const [tradingViewWidget, setTradingViewWidget] = useState({ remove: () => {} });
+  const storeSession = useStoreSessionSelector();
   const getDataFeedService = async () => {
-    const accessToken = await getCoinrayToken();
+    const coinRayToken = await getCoinrayToken();
     const symbol = "BTC/USDT";
     // const exchangeKey = resolveCoinRayExchangeKey(exchangeData);
     const exchangeKey = "BINA";
     const options = {
-      debug: false,
       exchange: "Binance",
       exchangeKey,
       symbol,
-      // TODO: Check this token.
-      token: token,
-      // TODO: What's symbols data?
       symbolsData: "",
-      accessToken: accessToken,
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      coinRayToken: coinRayToken,
       regenerateAccessToken: getCoinrayToken,
     };
 
-    return new datafeed(options);
+    return new CoinRayDataFeed(options);
   };
 
   const getCoinrayToken = async () => {
-    const url = GET_COINRAY_TOKEN + "&token=".concat(this.props.user);
     const milliSecsThreshold = 20000;
     // Limit to one request within a time threshold to avoid stampede requests to API.
     const throttledTokenFetch = throttle(async () => {
       try {
-        const res = await fetch(url);
-        if (res.status === 200) {
-          const data = await res.json();
-          setCoinRayToken({ accessToken: data.jwt });
-          return data.jwt;
-        }
+        const coinRayToken = await tradeApi.coinRayTokenGet({
+          token: storeSession.tradeApi.accessToken,
+        });
+
+        return coinRayToken.jwt;
       } catch (error) {
         alert(`ERROR: Get coinray token error: ${error.message}`);
       }
+
+      return "";
     }, milliSecsThreshold);
 
     return (await throttledTokenFetch()) || "";
   };
+  const bootstrapTradigViewWidget = async () => {
+    const dataFeed = await getDataFeedService();
+    console.log("Data Feed: ", dataFeed);
+    const widgetOptions = {
+      symbol: "BTC/USDT",
+      interval: "30",
+      containerId: "trading-view-chart",
+      // libraryPath: "/charting_library",
+      locale: "en",
+      disabledFeatures: ["use_localstorage_for_settings"],
+      enabledFeatures: ["study_templates"],
+      chartsStorageUrl: "https://saveload.tradingview.com",
+      chartsStorageApiVersion: "1.1",
+      clientId: "tradingview.com",
+      userId: "public_user_id",
+      fullscreen: false,
+      autosize: true,
+      studiesOverrides: {},
+      userExchanges: [],
+    };
+
+    const newWidget = new TradingViewWidget(widgetOptions);
+    setTradingViewWidget(newWidget);
+  };
 
   useEffect(() => {
-    const tradingViewWidget = new widget(widgetOptions);
-
     return () => {
       tradingViewWidget.remove();
     };
-  }, []);
+  });
 
   return <div className="tradingView" id="trading-view-chart" />;
 };
