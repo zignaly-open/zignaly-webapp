@@ -57,7 +57,7 @@ const TotalEquityGraph = ({ list }) => {
   const tooltipFormat = (tooltipItem) => {
     // console.log(list[list.length - tooltipItem.index]);
     return (
-      <Box className="contentTooltip">
+      <Box>
         <Box>
           <span className="label"> Date:</span>
           <span>

@@ -18,6 +18,22 @@ import { useSelector } from "react-redux";
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
+ */
+
+/**
+ * Format tooltip content.
+ * @param {ChartTooltipItem} tooltipItem Tooltip object.
+ * @returns {React.ReactNode} Tooltip content.
+ */
+const tooltipFormat = (tooltipItem) => (
+  <Box className="traderCardTooltip">
+    <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
+    <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
+  </Box>
+);
+
+/*
+ *
  *
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
@@ -41,18 +57,6 @@ const TraderCard = (props) => {
    */
   const darkStyleSelector = (state) => state.settings.darkStyle;
   const darkStyle = useSelector(darkStyleSelector);
-
-  /**
-   * Format tooltip content.
-   * @param {ChartTooltipItem} tooltipItem Tooltip object.
-   * @returns {React.ReactNode} Tooltip content.
-   */
-  const tooltipFormat = (tooltipItem) => (
-    <Box className="contentTooltip">
-      <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
-      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
-    </Box>
-  );
 
   /**
    * @type {ChartData}

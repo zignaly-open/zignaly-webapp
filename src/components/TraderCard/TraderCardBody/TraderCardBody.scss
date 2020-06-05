@@ -69,6 +69,15 @@
   }
 }
 
+.traderCardTooltip {
+  padding: 8px;
+  text-align: center;
+
+  .subtitleTooltip {
+    opacity: 0.6;
+  }
+}
+
 @include media("<=sm") {
   .traderCardBody {
     .returnsBox {

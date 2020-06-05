@@ -27,11 +27,3 @@
     width: 1px;
   }
 }
-
-.customTooltip {
-  @extend %body1;
-  background-color: $tooltipBackground;
-  border: solid 1px $tooltipBorder;
-  color: $tooltipText;
-  padding: 16px;
-}
