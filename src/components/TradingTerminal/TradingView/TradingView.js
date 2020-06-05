@@ -1,45 +1,6 @@
 import React, { useEffect } from "react";
 import { widget } from "../../../tradingView/charting_library.min";
 
-// Resolve an exchange key from user exchange connection object.
-function resolveCoinRayExchangeKey(exchange) {
-  // When not valid exchange object fallback to Binance.
-  if (!exchange || !exchange.exchangeName) {
-    return "BINA";
-  }
-
-  // When not defined default to spot.
-  if (!exchange.exchangeType) {
-    exchange.exchangeType = "spot";
-  }
-
-  const exchangeName = exchange.exchangeName.toUpperCase();
-  const exchangeType = exchange.exchangeType.toUpperCase();
-
-  if (exchangeName === "BINANCE") {
-    if (exchangeType === "FUTURES") {
-      return "BIFU";
-    }
-
-    return "BINA";
-  }
-
-  if (exchangeName === "KUCOIN") {
-    return "KUCN";
-  }
-
-  if (exchangeName === "ZIGNALY") {
-    if (exchangeType === "FUTURES") {
-      return "BIFU";
-    }
-
-    return "BINA";
-  }
-
-  // Fallback to Binance when none of above conditions are met.
-  return "BINA";
-}
-
 const TradingView = () => {
   const widgetOptions = {
     symbol: "BTC/USDT",
