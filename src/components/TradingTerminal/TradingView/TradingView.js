@@ -6,7 +6,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import { throttle } from "lodash";
 
 const TradingView = () => {
-  const [tradingViewWidget, setTradingViewWidget] = useState({ remove: () => {} });
   const storeSession = useStoreSessionSelector();
   const getDataFeedService = async () => {
     const coinRayToken = await getCoinrayToken();
@@ -45,38 +44,43 @@ const TradingView = () => {
 
     return (await throttledTokenFetch()) || "";
   };
+
   const bootstrapTradigViewWidget = async () => {
     const dataFeed = await getDataFeedService();
     console.log("Data Feed: ", dataFeed);
+
+    /**
+     * @typedef {import("../../../tradingView/charting_library.min").TradingTerminalWidgetOptions} TTWOptions
+     * @type {TTWOptions} widgetOptions
+     */
     const widgetOptions = {
+      datafeed: dataFeed,
       symbol: "BTC/USDT",
       interval: "30",
-      containerId: "trading-view-chart",
-      // libraryPath: "/charting_library",
+      // eslint-disable-next-line camelcase
+      container_id: "trading_view_chart",
+      library_path: "/trading-view/",
       locale: "en",
-      disabledFeatures: ["use_localstorage_for_settings"],
-      enabledFeatures: ["study_templates"],
-      chartsStorageUrl: "https://saveload.tradingview.com",
-      chartsStorageApiVersion: "1.1",
-      clientId: "tradingview.com",
-      userId: "public_user_id",
+      disabled_features: ["use_localstorage_for_settings"],
+      enabled_features: ["study_templates"],
+      charts_storage_url: "https://saveload.tradingview.com",
+      charts_storage_api_version: "1.1",
+      client_id: "tradingview.com",
+      user_id: "public_user_id",
       fullscreen: false,
       autosize: true,
-      studiesOverrides: {},
-      userExchanges: [],
+      studies_overrides: {},
+      user_exchanges: [],
     };
 
-    const newWidget = new TradingViewWidget(widgetOptions);
-    setTradingViewWidget(newWidget);
+    new TradingViewWidget(widgetOptions);
   };
 
   useEffect(() => {
-    return () => {
-      tradingViewWidget.remove();
-    };
-  });
+    bootstrapTradigViewWidget();
+  }, []);
 
-  return <div className="tradingView" id="trading-view-chart" />;
+  return <div className="tradingView" id="trading_view_chart" />;
 };
 
 export default TradingView;

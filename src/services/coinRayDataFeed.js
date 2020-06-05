@@ -29,7 +29,7 @@ class CoinRayDataFeed {
     this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange || "BINANCE";
-    this.coinray = new Coinray(this.coinRayToken);
+    this.coinray = new Coinray(options.coinRayToken);
     this.coinray.onTokenExpired(options.regenerateAccessToken);
     this.exchangeKey = options.exchangeKey || "BINA";
     this.baseUrl = "https://coinray.io/api/v1";
