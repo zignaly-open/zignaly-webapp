@@ -311,11 +311,11 @@ class TradeApiClient {
    * Get Trade API server time.
    *
    * @param {AuthorizationPayload} payload User authorization.
-   * @returns {ServerTime} Server time value object.
+   * @returns {Promise<ServerTime>} Promise that resolves server time value object.
    *
    * @memberof TradeApiClient
    */
-  async getServerTime(payload) {
+  async serverTimeGet(payload) {
     const endpointPath = "/fe/ohlc.php?action=fetchTime";
     const responseData = await this.doRequest(endpointPath, payload);
 

@@ -1163,7 +1163,9 @@ function createServerTimeEmptyValueObject() {
  * @returns {ServerTime} Quote assets.
  */
 export function serverTimeResponseTransform(response) {
-  return assign(createServerTimeEmptyValueObject(), response);
+  return assign(createServerTimeEmptyValueObject(), response, {
+    dbTime: parseInt(response.dbTime),
+  });
 }
 
 /**
