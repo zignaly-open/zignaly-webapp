@@ -1061,7 +1061,6 @@ function providerStatsItemTransform(providerStatsItem) {
  *
  * @returns {ProviderStats} User balance entity.
  */
-
 function createProviderStatsEmptyEntity() {
   return {
     providerId: "",
@@ -1137,6 +1136,34 @@ function createProviderStatsEmptyEntity() {
     percentageProfit: "",
     winRate: "",
   };
+}
+
+/**
+ * @typedef {Object} ServerTime
+ * @property {number} serverTime
+ * @property {number} dbTime
+ */
+
+/**
+ * Create empty ServerTime value object.
+ *
+ * @returns {ServerTime} Empty object of this type.
+ */
+function createServerTimeEmptyValueObject() {
+  return {
+    serverTime: 0,
+    dbTime: 0,
+  };
+}
+
+/**
+ * Transform server time response to typed ServerTime.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {ServerTime} Quote assets.
+ */
+export function serverTimeResponseTransform(response) {
+  return assign(createServerTimeEmptyValueObject(), response);
 }
 
 /**

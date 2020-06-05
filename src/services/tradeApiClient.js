@@ -10,6 +10,7 @@ import {
   userPositionItemTransform,
   userEquityResponseTransform,
   quotesResponseTransform,
+  serverTimeResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -300,6 +301,25 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return quotesResponseTransform(responseData);
+  }
+
+  /**
+   * @typedef {import('./tradeApiClient.types').ServerTime} ServerTime
+   */
+
+  /**
+   * Get Trade API server time.
+   *
+   * @param {AuthorizationPayload} payload User authorization.
+   * @returns {ServerTime} Server time value object.
+   *
+   * @memberof TradeApiClient
+   */
+  async getServerTime(payload) {
+    const endpointPath = "/fe/ohlc.php?action=fetchTime";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return serverTimeResponseTransform(responseData);
   }
 }
 
