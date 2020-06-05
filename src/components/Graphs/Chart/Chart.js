@@ -161,7 +161,7 @@ const LineChart = (props) => {
         },
       ],
     },
-    events: ["click", "touchstart", "touchmove"],
+    // events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [

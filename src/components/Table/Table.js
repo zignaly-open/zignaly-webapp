@@ -78,7 +78,7 @@ const Table = ({ columns, data, persistKey, title }) => {
   };
 
   // Customizing styling here to avoid lint warning camelCase class-name-format
-  const getMuiTheme = () =>
+  const getMuiTheme = (theme) =>
     createMuiTheme({
       /**
        * @type {*}
@@ -121,6 +121,12 @@ const Table = ({ columns, data, persistKey, title }) => {
             padding: "12px",
             whiteSpace: "nowrap",
           },
+          stackedCommon: {
+            [theme.breakpoints.down("sm")]: {
+              height: "auto",
+              textAlign: "left",
+            },
+          },
         },
       },
     });
@@ -129,7 +135,7 @@ const Table = ({ columns, data, persistKey, title }) => {
     <Box className="customTable">
       <MuiThemeProvider
         theme={(outerTheme) => ({
-          ...getMuiTheme(),
+          ...getMuiTheme(outerTheme),
           outerTheme,
         })}
       >

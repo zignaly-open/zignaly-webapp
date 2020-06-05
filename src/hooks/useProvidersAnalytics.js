@@ -46,14 +46,14 @@ const useProvidersAnalytics = () => {
     setTimeFrame("30days");
   };
 
-  // Filter stats on filter change
+  // Filter stats on filters and stats change
   useEffect(() => {
     const _stats = stats.filter((p) => true /** || !coin || p.coin === coin */);
     setStatsFiltered(_stats);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote, base]);
+  }, [stats, quote, base]);
 
-  // Load stats at init
+  // Load stats at init and on timeframe change
   useEffect(() => {
     const loadProvidersStats = async () => {
       try {

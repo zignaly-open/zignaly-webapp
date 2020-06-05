@@ -77,6 +77,9 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     {
       name: "sumTotalProfit",
       label: "col.profit.total",
+      options: {
+        customBodyRender: formatFloat,
+      },
     },
     {
       name: "sumTotalInvested",
@@ -87,7 +90,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     },
     {
       name: "sumReturnOfInvestment",
-      label: "srv.investment.return",
+      label: "col.investment.return",
       options: {
         customBodyRender: formatFloat,
       },
