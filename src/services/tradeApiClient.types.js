@@ -1169,6 +1169,32 @@ export function serverTimeResponseTransform(response) {
 }
 
 /**
+ * @typedef {Object} CoinRayToken
+ * @property {string} jwt
+ */
+
+/**
+ * Create empty CoinRayToken value object.
+ *
+ * @returns {CoinRayToken} Empty object of this type.
+ */
+function createCoinRayTokenEmptyValueObject() {
+  return {
+    jwt: "",
+  };
+}
+
+/**
+ * Transform coinray token response to typed CoinRayToken
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {CoinRayToken} Coinray token value object.
+ */
+export function coinRayTokenResponseTransform(response) {
+  return assign(createCoinRayTokenEmptyValueObject(), response);
+}
+
+/**
  * Transform quote assets response to typed QuotesDict.
  *
  * @param {*} response Trade API get quotes list raw response.

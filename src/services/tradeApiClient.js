@@ -11,6 +11,7 @@ import {
   userEquityResponseTransform,
   quotesResponseTransform,
   serverTimeResponseTransform,
+  coinRayTokenResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -28,6 +29,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
  */
 
 /**
@@ -320,6 +322,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return serverTimeResponseTransform(responseData);
+  }
+
+  /**
+   * Get a coinray access token for authenticated Trade API user.
+   *
+   * @param {AuthorizationPayload} payload User authorization.
+   * @returns {Promise<CoinRayToken>} Promise that resolves server time value object.
+   *
+   * @memberof TradeApiClient
+   */
+  async coinRayTokenGet(payload) {
+    const endpointPath = "/fe/api.php?action=getCoinRayToken";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return coinRayTokenResponseTransform(responseData);
   }
 }
 
