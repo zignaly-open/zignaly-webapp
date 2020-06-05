@@ -206,13 +206,13 @@ class TradeApiClient {
   /**
    *
    *
-   * @param {AuthorizationPayload} payload
+   * @param {UserEquityPayload} payload
    * @returns
    * @memberof TradeApiClient
    */
 
   async userBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getDashboardStats";
+    const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);

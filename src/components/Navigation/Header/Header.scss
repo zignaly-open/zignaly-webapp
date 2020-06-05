@@ -76,8 +76,13 @@
         height: 42px;
         width: fit-content;
 
-        .balance {
-          text-transform: uppercase;
+        .snallText {
+          font-size: 12px;
+          font-family: "PlexSans-Regular";
+        }
+        .bold {
+          font-size: 14px;
+          font-family: "PlexSans-Medium";
         }
       }
     }

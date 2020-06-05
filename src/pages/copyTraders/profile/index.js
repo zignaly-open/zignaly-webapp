@@ -14,8 +14,6 @@ import { Box } from "@material-ui/core";
  */
 
 const CopyTradersProfile = (props) => {
-  console.log(props);
-
   return <Box>dynamic route for profile</Box>;
 };
 

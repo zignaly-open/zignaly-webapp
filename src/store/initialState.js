@@ -1,11 +1,13 @@
 /**
  * @typedef {Object} UserBalanceEntity
- * @property {Boolean} btcusdt
- * @property {String} profitPercentage
- * @property {String} totalInvested
- * @property {String} totalAssets
- * @property {String} totalOpen
- * @property {String} totalProfit
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} totalBTC
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
+ * @property {Number} totalLockedBTC
+ * @property {Number} totalLockedUSDT
+ * @property {Number} totalUSDT
  */
 
 /**
@@ -186,12 +188,14 @@ const initialState = {
   user: {
     exchangeConnections: [],
     balance: {
-      btcusdt: false,
-      totalInvested: "",
-      totalOpen: "",
-      totalProfit: "",
-      totalAssets: "",
-      profitPercentage: "",
+      pnlBTC: 0,
+      pnlUSDT: 0,
+      totalBTC: 0,
+      totalFreeBTC: 0,
+      totalFreeUSDT: 0,
+      totalLockedBTC: 0,
+      totalLockedUSDT: 0,
+      totalUSDT: 0,
     },
     dailyBalance: {
       balances: [],

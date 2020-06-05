@@ -792,7 +792,7 @@ export function userBalanceResponseTransform(response) {
     throw new Error("Response must be an object with different propteries.");
   }
 
-  const transformedResponse = createUserBalanceEntity(response);
+  let transformedResponse = createUserBalanceEntity(response);
   return transformedResponse;
 }
 
@@ -804,12 +804,14 @@ export function userBalanceResponseTransform(response) {
  */
 function createUserBalanceEntity(response) {
   return {
-    btcusdt: response.btcusdt,
-    totalInvested: response.totalInvested,
-    totalOpen: response.totalOpen,
-    totalProfit: response.totalProfit,
-    totalAssets: response.totalAssets,
-    profitPercentage: response.profitPercentage,
+    pnlBTC: response.pnlBTC,
+    pnlUSDT: response.pnlUSDT,
+    totalBTC: response.totalBTC,
+    totalFreeBTC: response.totalFreeBTC,
+    totalFreeUSDT: response.totalFreeUSDT,
+    totalLockedBTC: response.totalLockedBTC,
+    totalLockedUSDT: response.totalLockedUSDT,
+    totalUSDT: response.totalUSDT,
   };
 }
 

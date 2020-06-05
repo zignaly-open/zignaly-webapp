@@ -44,6 +44,7 @@ export const setUserExchanges = (payload) => {
        */
       let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
       dispatch(setDailyUserBalance(balancePayload));
+      dispatch(setUserBalance(balancePayload));
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
@@ -59,7 +60,7 @@ export const unsetUserExchanges = () => {
 /**
  * Get user balance store thunk action.
  *
- * @param {AuthorizationPayload} payload Trade API user authorization.
+ * @param {UserEquityPayload} payload Trade API user authorization.
  *
  * @returns {AppThunk} Thunk action function.
  */

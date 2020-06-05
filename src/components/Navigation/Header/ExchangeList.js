@@ -9,7 +9,7 @@ import { openExchangeConnectionView } from "../../../store/actions/ui";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { setDailyUserBalance } from "../../../store/actions/user";
+import { setDailyUserBalance, setUserBalance } from "../../../store/actions/user";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -48,6 +48,7 @@ const ExchangeList = (props) => {
       exchangeInternalId: item.internalId,
     };
     dispatch(setDailyUserBalance(payload));
+    dispatch(setUserBalance(payload));
     if (onClose) {
       onClose();
     }

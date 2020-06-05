@@ -70,8 +70,6 @@ const LoginForm = () => {
       };
 
       dispatch(setUserExchanges(authorizationPayload));
-      dispatch(setUserBalance(authorizationPayload));
-
       navigate("/dashboard/positions");
     }
   };
