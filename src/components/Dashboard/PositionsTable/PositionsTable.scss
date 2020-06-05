@@ -64,7 +64,7 @@
       margin-bottom: 16px;
       min-height: 70px;
       padding: 10px 25px;
-      width: 20%;
+      width: 15%;
 
       @include media("<=sm") {
         margin-bottom: 0;
@@ -74,7 +74,7 @@
 
     > :first-child {
       padding: 0;
-      width: 80%;
+      width: 85%;
 
       @include media("<=sm") {
         margin-bottom: 0;
