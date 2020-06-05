@@ -79,6 +79,7 @@ class CoinRayDataFeed {
   }
 
   searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
+    console.log("Search symbols.");
     userInput = userInput.toUpperCase();
     onResultReadyCallback(
       this.symbolsData
@@ -100,6 +101,7 @@ class CoinRayDataFeed {
   }
 
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    console.log("Resolve symbols");
     const comps = symbolName.split(":");
     symbolName = (comps.length > 1 ? comps[1] : symbolName).toUpperCase();
 
@@ -146,6 +148,7 @@ class CoinRayDataFeed {
   }
 
   getCandlesData(base, quote, resolution, startTime, endTime, limit) {
+    console.log("Get candles data: ", base, quote);
     const exchangeCode = this.exchangeKey;
     const endpointPath = `/candles?symbol=${exchangeCode}_${quote}_${base}&start_time=${startTime}&end_time=${endTime}&resolution=${resolution}`;
     const requestUrl = this.baseUrl + endpointPath;
@@ -209,7 +212,6 @@ class CoinRayDataFeed {
     getCandles(from, to);
   }
 
-  ///// ----------------- subscribeBars
   subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID) {
     const exchangeCode = this.exchangeKey;
     const symbolForCoinray = `${exchangeCode}_${symbolInfo.coinrayQuote}_${symbolInfo.coinrayBase}`;

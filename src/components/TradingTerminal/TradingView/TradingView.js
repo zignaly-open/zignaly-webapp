@@ -57,7 +57,7 @@ const TradingView = () => {
      */
     const widgetOptions = {
       datafeed: dataFeed,
-      symbol: "BTC/USDT",
+      symbol: "BTCUSDT",
       interval: "30",
       // eslint-disable-next-line camelcase
       container_id: "trading_view_chart",
