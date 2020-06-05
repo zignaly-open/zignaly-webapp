@@ -50,25 +50,35 @@ const ProvidersBrowse = ({
 
   return (
     <Box>
-      <ProvidersFilters
-        clearFilters={clearFilters}
-        coin={coin}
-        exchange={exchange}
-        onClose={toggleFilters}
-        onCoinChange={setCoin}
-        onExchangeChange={setExchange}
-        open={showFilters}
-      />
-      <ProvidersSort
-        clearFilters={clearSort}
-        onChange={setSort}
-        onClose={toggleSort}
-        open={showSort}
-        sort={sort}
-      />
+      {toggleFilters && (
+        <ProvidersFilters
+          clearFilters={clearFilters}
+          coin={coin}
+          exchange={exchange}
+          onClose={toggleFilters}
+          onCoinChange={setCoin}
+          onExchangeChange={setExchange}
+          open={showFilters}
+        />
+      )}
+      {toggleSort && (
+        <ProvidersSort
+          clearFilters={clearSort}
+          onChange={setSort}
+          onClose={toggleSort}
+          open={showSort}
+          sort={sort}
+        />
+      )}
       <TimeFrameSelectRow
         title={`${providers.length} ${intl.formatMessage({
-          id: copyTradersOnly ? "copyt.traders" : "menu.signalproviders",
+          id: connectedOnly
+            ? copyTradersOnly
+              ? "dashboard.traders.copying"
+              : "dashboard.signalproviders.copying"
+            : copyTradersOnly
+            ? "copyt.traders"
+            : "menu.signalproviders",
         })}`}
         onChange={setTimeFrame}
         value={timeFrame}
