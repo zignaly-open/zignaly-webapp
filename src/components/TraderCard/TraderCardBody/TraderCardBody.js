@@ -46,7 +46,16 @@ const tooltipFormat = (tooltipItem) => (
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { openPositions, floating, isCopyTrading, followers, disable, dailyReturns } = provider;
+  const {
+    openPositions,
+    floating,
+    isCopyTrading,
+    followers,
+    disable,
+    dailyReturns,
+    id,
+    quote,
+  } = provider;
   /**
    * Settings darkStyle selector.
    *
@@ -202,7 +211,7 @@ const TraderCard = (props) => {
           </Box>
         </Box>
       </Box>
-      {showSummary && <UserSummary />}
+      {showSummary && <UserSummary providerId={id} quote={quote} />}
     </Box>
   );
 };

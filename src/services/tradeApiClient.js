@@ -11,6 +11,7 @@ import {
   userEquityResponseTransform,
   quotesResponseTransform,
   basesResponseTransform,
+  connectedProviderUserInfoResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -29,6 +30,8 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
+ * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  */
 
 /**
@@ -319,6 +322,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return basesResponseTransform(responseData);
+  }
+
+  /**
+   *
+   * Get connected provider user info.
+   *
+   * @param {ConnectedProviderUserInfoPayload} payload
+   * @returns {Promise<ConnectedProviderUserInfo>} Promise that resolves connected trader user info.
+   * @memberof TradeApiClient
+   */
+
+  async connectedProviderUserInfoGet(payload) {
+    const endpointPath = "/fe/api.php?action=getCurrentAllocatedAndProfitSinceFollowing";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return connectedProviderUserInfoResponseTransform(responseData);
   }
 }
 

@@ -4,19 +4,22 @@ import { capitalize } from "lodash";
 /**
  * Format string to float with 2 decimals.
  *
- * @param {string} val Value to format
+ * @param {string|number} val Value to format
  * @returns {string} Value formatted
  */
-export const formatFloat2Dec = (val) => parseFloat(val).toFixed(2);
+export const formatFloat2Dec = (val) => {
+  const valueFloat = typeof val === "string" ? parseFloat(val) : val;
+  return (Math.round(valueFloat * 100) / 100).toString();
+};
 
 /**
  * Format string to float with the best number of decimals.
  *
- * @param {string} val Value to format
+ * @param {string|number} val Value to format
  * @returns {string} Value formatted
  */
 export const formatFloat = (val) => {
-  const valueFloat = parseFloat(val);
+  const valueFloat = typeof val === "string" ? parseFloat(val) : val;
   return valueFloat >= 1 || valueFloat <= -1 ? valueFloat.toFixed(2) : valueFloat.toFixed(8);
 };
 

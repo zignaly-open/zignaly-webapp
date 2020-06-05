@@ -357,6 +357,17 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {Object} ConnectedProviderUserInfo
+ * @property {number} currentAllocated
+ * @property {number} profitsSinceCopying
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -1201,4 +1212,31 @@ export function basesResponseTransform(response) {
     }),
     {},
   );
+}
+
+/**
+ * Transform connected provider user info to typed ConnectedProviderUserInfo.
+ *
+ * @param {*} response Connected provider user info raw response.
+ * @returns {ConnectedProviderUserInfo} User info.
+ */
+export function connectedProviderUserInfoResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return createConnectedProviderUserInfoEntity(response);
+}
+
+/**
+ * Create onnected provider user info entity.
+ *
+ * @param {*} response Trade API user balance raw raw response.
+ * @returns {ConnectedProviderUserInfo} User balance entity.
+ */
+function createConnectedProviderUserInfoEntity(response) {
+  return {
+    currentAllocated: response.currentAllocated,
+    profitsSinceCopying: response.profitsSinceCopying,
+  };
 }
