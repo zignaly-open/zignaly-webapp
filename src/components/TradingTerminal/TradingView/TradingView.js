@@ -7,23 +7,7 @@ import { throttle } from "lodash";
 
 const TradingView = () => {
   const storeSession = useStoreSessionSelector();
-  const getDataFeedService = async () => {
-    const coinRayToken = await getCoinrayToken();
-    const symbol = "BTC/USDT";
-    // const exchangeKey = resolveCoinRayExchangeKey(exchangeData);
-    const exchangeKey = "BINA";
-    const options = {
-      exchange: "Binance",
-      exchangeKey,
-      symbol,
-      symbolsData: "",
-      tradeApiToken: storeSession.tradeApi.accessToken,
-      coinRayToken: coinRayToken,
-      regenerateAccessToken: getCoinrayToken,
-    };
-
-    return new CoinRayDataFeed(options);
-  };
+  const [coinRayToken, setCoinRayToken] = useState("");
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
@@ -45,8 +29,25 @@ const TradingView = () => {
     return (await throttledTokenFetch()) || "";
   };
 
-  const bootstrapTradigViewWidget = async () => {
-    const dataFeed = await getDataFeedService();
+  const getDataFeedService = () => {
+    const symbol = "BTC/USDT";
+    // const exchangeKey = resolveCoinRayExchangeKey(exchangeData);
+    const exchangeKey = "BINA";
+    const options = {
+      exchange: "Binance",
+      exchangeKey,
+      symbol,
+      symbolsData: "",
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      coinRayToken: coinRayToken,
+      regenerateAccessToken: getCoinrayToken,
+    };
+
+    return new CoinRayDataFeed(options);
+  };
+
+  const createTradigViewWidget = () => {
+    const dataFeed = getDataFeedService();
     console.log("Data Feed: ", dataFeed);
 
     /**
@@ -73,12 +74,26 @@ const TradingView = () => {
       user_exchanges: [],
     };
 
-    new TradingViewWidget(widgetOptions);
+    return new TradingViewWidget(widgetOptions);
   };
 
+  // Get a CoinRay token.
   useEffect(() => {
-    bootstrapTradigViewWidget();
+    getCoinrayToken().then((token) => {
+      setCoinRayToken(token);
+    });
   }, []);
+
+  // Create Trading View widget when data feed token is ready.
+  useEffect(() => {
+    if (coinRayToken !== "") {
+      const tvInstance = createTradigViewWidget();
+
+      return () => {
+        tvInstance.remove();
+      };
+    }
+  }, [coinRayToken]);
 
   return <div className="tradingView" id="trading_view_chart" />;
 };
