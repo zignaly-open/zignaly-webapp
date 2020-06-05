@@ -112,7 +112,7 @@ const TraderCard = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <CustomToolip title={<FormattedMessage id="copyt.subtitle" />}>
+        <CustomToolip title={<FormattedMessage id="srv.returns.tooltip" />}>
           <Box
             className="returns"
             display="flex"
@@ -128,20 +128,22 @@ const TraderCard = (props) => {
           </Box>
         </CustomToolip>
 
-        <Box
-          alignItems="flex-end"
-          className="openPositions"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-        >
-          <Typography className="green" variant="h4">
-            {risk}%
-          </Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.openpos" />
-          </Typography>
-        </Box>
+        <CustomToolip title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: 0 }} />}>
+          <Box
+            alignItems="flex-end"
+            className="openPositions"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Typography className="green" variant="h4">
+              {0}%
+            </Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.openpos" />
+            </Typography>
+          </Box>
+        </CustomToolip>
       </Box>
       <Box>
         <Box className="traderCardGraph">

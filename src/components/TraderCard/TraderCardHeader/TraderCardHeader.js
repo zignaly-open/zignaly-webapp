@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
+import CustomToolip from "../../CustomTooltip";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
@@ -61,12 +62,22 @@ const TraderCardHeader = (props) => {
             ))}
           </Box>
         </Box>
-        <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
-          <Typography variant="h4">{fee}</Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.comision" />
-          </Typography>
-        </Box>
+
+        <CustomToolip
+          title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: fee }} />}
+        >
+          <Box
+            alignItems="flex-end"
+            className="commissionBox"
+            display="flex"
+            flexDirection="column"
+          >
+            <Typography variant="h4">{fee}</Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.comision" />
+            </Typography>
+          </Box>
+        </CustomToolip>
       </Box>
     </Box>
   );
