@@ -10,6 +10,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
+import { isEqual } from "lodash";
 
 /**
  * @typedef {Object} OptionType
@@ -68,9 +69,11 @@ const CustomSelect = (props) => {
               disableClearable={true}
               getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
               onChange={(e, val) => onChange(typeof val === "object" ? val.val : val)}
+              getOptionSelected={isEqual}
               openOnFocus={true}
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
+              value={value}
             />
           )}
         </FormControl>

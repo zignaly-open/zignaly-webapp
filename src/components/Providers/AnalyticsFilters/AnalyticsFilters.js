@@ -32,7 +32,7 @@ const AnalyticsFilters = ({
   onTimeFrameChange,
   onClear,
 }) => {
-  const quoteAssets = useQuoteAssets();
+  const quoteAssets = useQuoteAssets(onQuoteChange);
   const baseAssets = useBaseAssets(quote);
   const timeFramesOptions = useTimeFramesOptions();
   const quotes = Object.keys(quoteAssets);
