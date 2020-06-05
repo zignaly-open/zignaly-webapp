@@ -49,8 +49,8 @@ const ProvidersFilters = ({
         })}
         onChange={onCoinChange}
         options={coins}
-        value={coin}
         search={true}
+        value={coin}
       />
       <CustomSelect
         label={intl.formatMessage({

@@ -6,7 +6,7 @@ import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
-import { withStyles, MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -15,6 +15,7 @@ import { withStyles, MuiThemeProvider, createMuiTheme } from "@material-ui/core/
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
+ * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
 
 /**
@@ -81,7 +82,8 @@ const Table = ({ columns, data, persistKey, title }) => {
 
   /**
    * Customizing styling here to avoid lint warning camelCase class-name-format
-   * @param {ThemeOptions} theme
+   * @param {ThemeOptions} theme Material UI theme options.
+   * @returns {Theme} Theme overridden.
    */
   const getMuiTheme = (theme) =>
     createMuiTheme({

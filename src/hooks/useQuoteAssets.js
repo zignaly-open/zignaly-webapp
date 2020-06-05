@@ -11,7 +11,7 @@ import tradeApi from "../services/tradeApiClient";
  *
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useQuoteAssets = (onQuoteChange) => {
+const useQuoteAssets = () => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();

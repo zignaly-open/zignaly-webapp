@@ -8,7 +8,7 @@ const UserSummary = () => {
       <Typography variant="subtitle1">Allocated</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">BTC 0.2</Typography>
-        <Typography variant="h5">$1280,46</Typography>
+        {/* <Typography variant="h5">$1280,46</Typography> */}
       </Box>
       <Typography variant="subtitle1">Return since copying</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">

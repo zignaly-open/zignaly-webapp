@@ -33,10 +33,10 @@ const CopyTradersBrowse = (props) => {
 
       <ProvidersBrowse
         connectedOnly={false}
-        toggleFilters={toggleFilters}
-        toggleSort={toggleSort}
         showFilters={showFilters}
         showSort={showSort}
+        toggleFilters={toggleFilters}
+        toggleSort={toggleSort}
         type="copyt"
       />
     </Box>
