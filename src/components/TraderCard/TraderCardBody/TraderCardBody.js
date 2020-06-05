@@ -137,7 +137,7 @@ const TraderCard = (props) => {
             justifyContent="space-between"
           >
             <Typography className="green" variant="h4">
-              {0}%
+              {}%
             </Typography>
             <Typography variant="subtitle1">
               <FormattedMessage id="srv.openpos" />

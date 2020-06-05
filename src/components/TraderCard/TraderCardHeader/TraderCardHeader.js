@@ -20,7 +20,7 @@ import CustomToolip from "../../CustomTooltip";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin, exchanges } = props.provider;
+  const { price, name, logoUrl, coin, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -64,7 +64,7 @@ const TraderCardHeader = (props) => {
         </Box>
 
         <CustomToolip
-          title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: fee }} />}
+          title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: price || 0 }} />}
         >
           <Box
             alignItems="flex-end"
@@ -72,7 +72,7 @@ const TraderCardHeader = (props) => {
             display="flex"
             flexDirection="column"
           >
-            <Typography variant="h4">{fee}</Typography>
+            <Typography variant="h4">{price || 0}</Typography>
             <Typography variant="subtitle1">
               <FormattedMessage id="srv.comision" />
             </Typography>
