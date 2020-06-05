@@ -5,12 +5,13 @@ import useQuoteAssets from "../../../hooks/useQuoteAssets";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
- * @property {React.MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
+ * @property {function} onClose Callback that delegate filters toggle state to caller.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
  * @property {string} coin Selected coin.
  * @property {string} exchange Selected exchange.
+ * @property {boolean} open Flag to indicates if the filters bar is open.
  */
 
 /**

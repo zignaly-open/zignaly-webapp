@@ -83,7 +83,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} ro
  */
 
- /**
+/**
  * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
  * @property {string} quote
  */
@@ -349,7 +349,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
- * @typedef {Object.<string, Quote>} QuoteAssetsDict
+ * @typedef {Object.<string, QuoteAsset>} QuoteAssetsDict
  * @typedef {Object.<string, BaseAsset>} BaseAssetsDict
  */
 

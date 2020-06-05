@@ -1,16 +1,13 @@
-import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
-import tradeApi from "../services/tradeApiClient";
 import { useIntl } from "react-intl";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+ * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
  * Provides bases assets.
  *
- * @returns
+ * @returns {Array<OptionType>} Time frames
  */
 const useTimeFramesOptions = () => {
   const intl = useIntl();

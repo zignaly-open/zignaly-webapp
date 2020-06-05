@@ -7,19 +7,20 @@ import useTimeFramesOptions from "../../../hooks/useTimeFramesOptions";
 import { useIntl } from "react-intl";
 
 /**
- * @typedef {Object} ProvidersFiltersPropTypes
- * @property {React.MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
- * @property {React.MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
- * @property {function} onCoinChange Callback that delegate coin change to caller.
- * @property {function} onExchangeChange Callback that delegate exchange change to caller.
- * @property {string} coin Selected coin.
- * @property {string} exchange Selected exchange.
+ * @typedef {Object} AnayticsFiltersPropTypes
+ * @property {function} onClear Callback that delegate filters clearing to caller.
+ * @property {function} onBaseChange Callback that delegate base change to caller.
+ * @property {function} onQuoteChange Callback that delegate quote change to caller.
+ * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
+ * @property {string} quote Selected quote (base currency).
+ * @property {string} base Selected base (pair).
+ * @property {string} timeFrame Selected time frame.
  */
 
 /**
  * Provides filters for filtering providers.
  *
- * @param {ProvidersFiltersPropTypes} props Component properties.
+ * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 const AnalyticsFilters = ({
@@ -36,7 +37,7 @@ const AnalyticsFilters = ({
   const timeFramesOptions = useTimeFramesOptions();
   const quotes = Object.keys(quoteAssets);
   const bases = Object.entries(baseAssets).map(([key, val]) => ({
-    val: val.base,
+    val: key,
     label: val.quote + "/" + val.base,
   }));
   const intl = useIntl();
@@ -56,9 +57,9 @@ const AnalyticsFilters = ({
           id: "fil.base",
         })}
         onChange={onQuoteChange}
-        options={bases}
-        value={quote}
+        options={quotes}
         search={true}
+        value={quote}
       />
       <CustomSelect
         label={intl.formatMessage({
@@ -66,8 +67,8 @@ const AnalyticsFilters = ({
         })}
         onChange={onBaseChange}
         options={bases}
-        value={base}
         search={true}
+        value={base}
       />
     </CustomFilters>
   );

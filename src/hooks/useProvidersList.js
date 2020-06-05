@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 /**
  * @typedef {Object} ProvidersData
  * @property {ProvidersCollection} providers
- * @property {string} timeFrame
+ * @property {string|number} timeFrame // todo: check with Bart
  * @property {function} setTimeFrame
  * @property {string} coin
  * @property {function} setCoin

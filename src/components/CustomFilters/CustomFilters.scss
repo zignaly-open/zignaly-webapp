@@ -19,10 +19,6 @@
   }
 }
 
-.providersSort .customSelect {
-  margin-left: -12px;
-}
-
 @include media("<=sm") {
   .customFilters {
     flex-direction: column;

@@ -9,10 +9,10 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef {Object} ProvidersBrowsePropTypes
- * @property {boolean} showFilters Flag to indicate if filters should be rendered.
- * @property {boolean} showSort Flag to indicate if sort options should be rendered.
- * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
- * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {boolean} [showFilters] Flag to indicate if filters should be rendered.
+ * @property {boolean} [showSort] Flag to indicate if sort options should be rendered.
+ * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
+ * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {'copyt'|'signalp'} type Type of providers to show.
  * @property {boolean} connectedOnly Only display connected providers.
  */
@@ -49,7 +49,7 @@ const ProvidersBrowse = ({
   const intl = useIntl();
 
   return (
-    <Box>
+    <Box className="providersBrowse">
       {toggleFilters && (
         <ProvidersFilters
           clearFilters={clearFilters}
@@ -71,6 +71,7 @@ const ProvidersBrowse = ({
         />
       )}
       <TimeFrameSelectRow
+        onChange={setTimeFrame}
         title={`${providers.length} ${intl.formatMessage({
           id: connectedOnly
             ? copyTradersOnly
@@ -80,7 +81,6 @@ const ProvidersBrowse = ({
             ? "copyt.traders"
             : "menu.signalproviders",
         })}`}
-        onChange={setTimeFrame}
         value={timeFrame}
       />
       <ProvidersList providers={providers} showSummary={connectedOnly} />

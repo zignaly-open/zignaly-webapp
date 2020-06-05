@@ -6,12 +6,12 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
- * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} ProvidersSortPropTypes
- * @property {Function} onChange Callback that delegate sorting changes to caller.
- * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
+ * @property {function} onChange Callback that delegate sorting changes to caller.
+ * @property {function} onClose Callback that delegate sorting toggle state to caller.
  * @property {string} sort value Selected value.
- * @property {MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {boolean} open Flag to indicates if the sort bar is open.
  */
 
 /**

@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import "./ProvidersProfitsTable.scss";
 import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
-import tradeApi from "../../../services/tradeApiClient";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
@@ -11,6 +9,7 @@ import Table from "../../Table";
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  */
 
 /**
@@ -18,7 +17,8 @@ import Table from "../../Table";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'ctAnalytics'|'spAnalytics'} persistKey Key to save display columns settings.
+ * @property {ProvidersStatsCollection} stats Table stats data.
+ * @property {string} persistKey Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.

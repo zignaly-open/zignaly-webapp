@@ -65,11 +65,11 @@ const CustomSelect = (props) => {
                 input: "searchInput",
                 root: "searchRoot",
               }}
-              options={options}
+              disableClearable={true}
               getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
               openOnFocus={true}
+              options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
-              disableClearable={true}
             />
           )}
         </FormControl>

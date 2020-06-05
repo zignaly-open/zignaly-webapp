@@ -7,10 +7,9 @@ import ChevronRightIcon from "../../images/filters/chevron-right.svg";
 import ClosetIcon from "../../images/filters/close.svg";
 
 /**
- * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {Object} CustomFiltersPropTypes
- * @property {MouseEventHandler} [onClose] Callback that delegate filters toggle state to caller.
- * @property {MouseEventHandler} onClear Callback that delegate filters clearing to caller.
+ * @property {function} [onClose] Callback that delegate filters toggle state to caller.
+ * @property {function} [onClear] Callback that delegate filters clearing to caller.
  * @property {string} title Filters' title.
  * @property {*} children Dropdowns to display.
  */
@@ -52,7 +51,7 @@ const CustomFilters = (props) => {
         {onClear && (
           <CustomButtom
             className="textPurple"
-            onClick={onClear}
+            onClick={() => onClear()}
             startIcon={<img className="icon" src={ClosetIcon} />}
           >
             <FormattedMessage id="fil.clearall" />
@@ -61,7 +60,7 @@ const CustomFilters = (props) => {
         {onClose && (
           <CustomButtom
             className="textPurple"
-            onClick={onClose}
+            onClick={() => onClose()}
             startIcon={<img className="icon" src={ChevronRightIcon} />}
           >
             <FormattedMessage id="fil.hide" />

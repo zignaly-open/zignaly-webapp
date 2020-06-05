@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import { useSelector } from "react-redux";
 
@@ -48,7 +48,7 @@ const useProvidersAnalytics = () => {
 
   // Filter stats on filter change
   useEffect(() => {
-    const _stats = stats.filter((p) => true || !coin || p.coin === coin);
+    const _stats = stats.filter((p) => true /** || !coin || p.coin === coin */);
     setStatsFiltered(_stats);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote, base]);
