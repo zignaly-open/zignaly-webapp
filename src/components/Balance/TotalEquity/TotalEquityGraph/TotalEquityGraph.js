@@ -20,8 +20,7 @@ import { toNumber } from "lodash";
  * @param {DefaultProps} props Default props.
  */
 
-const TotalEquityGraph = (props) => {
-  const { list } = props;
+const TotalEquityGraph = ({ list }) => {
   /**
    * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
    * @type {ChartData}
@@ -37,7 +36,7 @@ const TotalEquityGraph = (props) => {
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.unshift(parseFloat(item.totalUSD));
+      chartData.values.unshift(parseFloat(item.totalUSDT));
       chartData.labels.unshift("");
     });
   };
@@ -55,12 +54,37 @@ const TotalEquityGraph = (props) => {
    * @returns {React.ReactNode} Tooltip content.
    */
 
-  const tooltipFormat = (tooltipItem) => (
-    <Box className="contentTooltip">
-      <Box>{+toNumber(tooltipItem.yLabel).toFixed(8)}</Box>
-      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
-    </Box>
-  );
+  const tooltipFormat = (tooltipItem) => {
+    // console.log(list[list.length - tooltipItem.index]);
+    return (
+      <Box className="contentTooltip">
+        <Box>
+          <span className="label"> Date:</span>
+          <span>
+            {list[list.length - tooltipItem.index]
+              ? list[list.length - tooltipItem.index].date
+              : "0"}
+          </span>
+        </Box>
+        <Box>
+          <span className="label">Total BTC:</span>
+          <span>
+            {list[list.length - tooltipItem.index]
+              ? +toNumber(list[list.length - tooltipItem.index].totalBTC).toFixed(8)
+              : "0"}
+          </span>
+        </Box>
+        <Box>
+          <span className="label">Total USDT:</span>
+          <span>
+            {list[list.length - tooltipItem.index]
+              ? +toNumber(list[list.length - tooltipItem.index].totalUSDT).toFixed(8)
+              : "0"}
+          </span>
+        </Box>
+      </Box>
+    );
+  };
 
   return (
     <GenericChart

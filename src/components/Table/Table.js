@@ -1,9 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
+import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 
 /**
@@ -21,21 +22,14 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<MUIDataTableColumn>} columns Table Columns.
  * @property {Array<Object>} data Table Data.
- * @property {'ctAnalytics'|'spAnalytics'} persistKey Key to save display columns settings.
+ * @property {string} persistKey Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  *
  */
 const Table = ({ columns, data, persistKey, title }) => {
-  /**
-   * Select store settings data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {DefaultStateSettings} Store settings data.
-   */
-  const selectStoreSettings = (state) => state.settings;
-  const storeSettings = useSelector(selectStoreSettings);
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -48,7 +42,6 @@ const Table = ({ columns, data, persistKey, title }) => {
     label: c.label ? intl.formatMessage({ id: c.label }) : "",
     options: {
       ...c.options,
-      sort: !!(c.options && c.options.sort),
       // Display columns picked by the user
       display:
         (c.options && c.options.display) ||
@@ -68,6 +61,7 @@ const Table = ({ columns, data, persistKey, title }) => {
     filter: false,
     search: false,
     print: false,
+    sort: true,
     onColumnViewChange: (changedColumn, action) => {
       dispatch(
         setDisplayColumn({
@@ -104,7 +98,6 @@ const Table = ({ columns, data, persistKey, title }) => {
             letterSpacing: "0.61px",
           },
         },
-
         MUIDataTableHeadCell: {
           root: {
             // footnote
@@ -114,7 +107,19 @@ const Table = ({ columns, data, persistKey, title }) => {
             opacity: "0.6",
             lineHeight: 1.45,
             letterSpacing: "0.42px",
-            minWidth: "128px",
+            minWidth: "80px",
+            maxWidth: "120px",
+            padding: "12px",
+            whiteSpace: "nowrap",
+          },
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "14px",
+            fontFamily: "PlexSans-Medium",
+            minWidth: "80px",
+            padding: "12px",
+            whiteSpace: "nowrap",
           },
         },
       },

@@ -1,17 +1,11 @@
 import React from "react";
-import PositionFilters from "../PositionFilters";
 import { Box } from "@material-ui/core";
 import PositionsTable from "../PositionsTable";
-import usePositionsList from "../../../hooks/usePositionsList";
-import NoPositions from "../NoPositions";
-import { isEmpty } from "lodash";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {Object} PositionsTabContentProps
  * @property {PositionsCollectionType} type
- * @property {React.MouseEventHandler} toggleFilters
- * @property {boolean} filtersVisibility
  */
 
 /**
@@ -22,48 +16,12 @@ import { isEmpty } from "lodash";
  */
 
 const PositionsTabContent = (props) => {
-  const { type, filtersVisibility, toggleFilters } = props;
-  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
-  const showTypesFilter = type === "log";
+  const { type } = props;
 
   return (
-    <>
-      {filtersVisibility && (
-        <PositionFilters
-          onChange={setFilters}
-          onClose={toggleFilters}
-          positions={positionsAll}
-          showTypesFilter={showTypesFilter}
-        />
-      )}
-      {type === "open" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
-          )}
-        </Box>
-      )}
-      {type === "closed" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
-          )}
-        </Box>
-      )}
-      {type === "log" && (
-        <Box className="tabPanel">
-          {isEmpty(positionsFiltered) ? (
-            <NoPositions />
-          ) : (
-            <PositionsTable positions={positionsFiltered} type={type} />
-          )}
-        </Box>
-      )}
-    </>
+    <Box className="tabPanel">
+      <PositionsTable type={type} />
+    </Box>
   );
 };
 

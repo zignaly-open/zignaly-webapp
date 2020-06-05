@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { assign, filter, omitBy, take } from "lodash";
+import { assign, filter, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
@@ -141,7 +141,7 @@ const usePositionsList = (type) => {
 
   return {
     positionsAll: positions[type],
-    positionsFiltered: take(filterData(positions[type]), 100),
+    positionsFiltered: filterData(positions[type]),
     setFilters: combineFilters,
   };
 };

@@ -14,8 +14,9 @@ import Modal from "../../components/Modal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
-import { openExchangeConnectionView } from "../../store/actions/ui";
+import { openExchangeConnectionView, openSettingsView } from "../../store/actions/ui";
 import withPageContext from "../../pageContext/withPageContext";
+import SettingsView from "../../components/SettingsView";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -48,6 +49,14 @@ const PrivateAreaLayout = (props) => {
           state={storeModal.exchangeConnectionView}
         >
           <ConnectExchangeView onClose={() => dispatch(openExchangeConnectionView(false))} />
+        </Modal>
+        <Modal
+          onClose={() => dispatch(openSettingsView(false))}
+          persist={false}
+          size="large"
+          state={storeModal.settingsView}
+        >
+          <SettingsView onClose={() => dispatch(openSettingsView(false))} />
         </Modal>
         <Box bgcolor="background.default" className={"app"}>
           <Hidden xsDown>

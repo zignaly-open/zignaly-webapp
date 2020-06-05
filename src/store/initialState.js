@@ -10,6 +10,7 @@
 
 /**
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  */
 
@@ -17,7 +18,7 @@
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalanceEntity} balance
- * @property {Array<UserEquityEntity>} dailyBalance
+ * @property {DefaultDailyBalanceEntity} dailyBalance
  */
 
 /**
@@ -37,9 +38,7 @@
  */
 
 /**
- * @typedef {Object} DisplayColumns
- * @property {Array<string>} spAnalytics
- * @property {Array<string>} ctAnalytics
+ * @typedef {Object<string, Array<string>>} DisplayColumns
  */
 
 /**
@@ -53,6 +52,7 @@
 /**
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} exchangeConnectionView
+ * @property {Boolean} settingsView
  */
 
 /**
@@ -113,6 +113,52 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
+      dailyBalance: [
+        "date",
+        "totalUSDT",
+        "freeUSDT",
+        "lockedUSDT",
+        "totalBTC",
+        "freeBTC",
+        "lockedBTC",
+        "freeETH",
+        "freeBNB",
+      ],
+      openPositions: [
+        "col.date.open",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.current",
+        "col.plnumber",
+        "col.plpercentage",
+        "col.invested",
+        "col.actions",
+      ],
+      closedPositions: [
+        "col.paper",
+        "col.date.open",
+        "col.date.close",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.entry",
+        "col.price.exit",
+        "col.amount",
+        "col.invested",
+        "col.risk",
+        "col.fees",
+        "col.netprofit.percentage",
+        "col.netprofit.amount",
+        "col.actions",
+      ],
+      logPositions: [
+        "col.date.open",
+        "col.type",
+        "col.provider.logo",
+        "col.stat",
+        "col.pair",
+        "col.invested",
+        "col.actions",
+      ],
     },
     selectedExchange: {
       id: "",
@@ -147,11 +193,15 @@ const initialState = {
       totalAssets: "",
       profitPercentage: "",
     },
-    dailyBalance: [],
+    dailyBalance: {
+      balances: [],
+      quotes: [],
+    },
   },
   ui: {
     modal: {
       exchangeConnectionView: false,
+      settingsView: false,
     },
     alerts: {
       success: {},

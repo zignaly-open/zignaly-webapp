@@ -30,12 +30,36 @@
     border-radius: 4px;
     height: 32px;
 
-    & > div {
-      opacity: 0.6;
+    > div {
+      align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
+      padding: 0 14px;
     }
+  }
 
-    .searchInput {
-      padding: 0;
+  .searchInput {
+    padding: 0;
+  }
+}
+
+@include media("<=sm") {
+  .customSelect {
+    flex-direction: column;
+    height: fit-content;
+    justify-content: flex-end;
+
+    .callout {
+      order: 2;
+
+      & + span {
+        margin-bottom: 5px;
+        order: 1;
+        padding-right: 5px;
+        text-align: right;
+        width: 100%;
+      }
     }
   }
 }

@@ -2,7 +2,6 @@ import React from "react";
 import "./TitleBar.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
@@ -21,6 +20,29 @@ import { FormattedMessage } from "react-intl";
 
 const TitleBar = (props) => {
   const { list } = props;
+
+  const getTotalBTC = () => {
+    let date = new Date().getDate();
+    let found = [...list].find((item) => {
+      return new Date(item.date).getDate() === date;
+    });
+    if (found) {
+      return found.totalBTC;
+    }
+    return "";
+  };
+
+  const getTotalUSDT = () => {
+    let date = new Date().getDate();
+    let found = [...list].find((item) => {
+      return new Date(item.date).getDate() === date;
+    });
+    if (found) {
+      return found.totalUSDT;
+    }
+    return "";
+  };
+
   return (
     <Box
       alignItems="center"
@@ -45,9 +67,9 @@ const TitleBar = (props) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">BTC {list.length ? list[0].totalBTC : "0"} </Typography>
+          <Typography variant="h4">BTC {getTotalBTC()}</Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {list.length ? list[0].totalUSD : "0"}
+            = USD {getTotalUSDT()}
           </Typography>
         </Box>
       </Box>

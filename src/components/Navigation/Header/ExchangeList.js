@@ -70,12 +70,12 @@ const ExchangeList = (props) => {
             <span className="name"> {item.internalName} </span>
             {item.paperTrading && (
               <span className="name">
-                (<FormattedMessage id="menu.demo" />){" "}
+                (<FormattedMessage id="menu.demo" />)
               </span>
             )}
             {item.isTestnet && (
               <span className="name">
-                (<FormattedMessage id="menu.testnet" />){" "}
+                (<FormattedMessage id="menu.testnet" />)
               </span>
             )}
           </MenuItem>
