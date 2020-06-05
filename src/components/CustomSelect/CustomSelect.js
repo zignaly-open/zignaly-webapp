@@ -78,7 +78,7 @@ const CustomSelect = (props) => {
           )}
         </FormControl>
       }
-      label={<Typography className="callout2">{label}</Typography>}
+      label={label ? <Typography className="callout2">{label}</Typography> : null}
       labelPlacement="start"
     />
   );
