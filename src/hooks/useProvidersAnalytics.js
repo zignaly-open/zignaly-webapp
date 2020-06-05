@@ -35,7 +35,6 @@ const useProvidersAnalytics = () => {
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
   const [stats, setStats] = useState([]);
-  const [statsFiltered, setStatsFiltered] = useState([]);
   const [quote, setQuote] = useState("BTC");
   const [base, setBase] = useState("");
   const [timeFrame, setTimeFrame] = useState("30days");
@@ -46,14 +45,7 @@ const useProvidersAnalytics = () => {
     setTimeFrame("30days");
   };
 
-  // Filter stats on filters and stats change
-  useEffect(() => {
-    const _stats = stats.filter((p) => true /** || !coin || p.coin === coin */);
-    setStatsFiltered(_stats);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stats, quote, base]);
-
-  // Load stats at init and on timeframe change
+  // Load stats at init and on filters change
   useEffect(() => {
     const loadProvidersStats = async () => {
       try {
@@ -73,11 +65,10 @@ const useProvidersAnalytics = () => {
     };
 
     loadProvidersStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame]);
+  }, [timeFrame, quote, base]);
 
   return {
-    stats: statsFiltered,
+    stats,
     timeFrame,
     setTimeFrame,
     quote,

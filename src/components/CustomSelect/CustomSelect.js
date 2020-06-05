@@ -67,6 +67,7 @@ const CustomSelect = (props) => {
               }}
               disableClearable={true}
               getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
+              onChange={(e, val) => onChange(val.val)}
               openOnFocus={true}
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
