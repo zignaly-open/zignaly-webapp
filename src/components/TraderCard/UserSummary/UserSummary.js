@@ -9,6 +9,15 @@ import { formatFloat2Dec, formatFloat } from "../../../utils/format";
  * @typedef {import('../../../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  */
 
+/**
+ * @typedef {Object} DefaultProps
+ * @property {string} providerId Provider Id.
+ * @property {string} quote Quote traded by provider.
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ */
 const UserSummary = ({ providerId, quote }) => {
   /**
    * @type {ConnectedProviderUserInfo}

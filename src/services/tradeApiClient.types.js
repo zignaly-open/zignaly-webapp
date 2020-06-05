@@ -245,7 +245,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} clonedFrom
  * @property {number} createdAt
  * @property {boolean} isFromUser
- * @property {boolean} quote
+ * @property {string} quote
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
  * @property {number} followers
