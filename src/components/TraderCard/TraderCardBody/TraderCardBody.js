@@ -46,7 +46,7 @@ const tooltipFormat = (tooltipItem) => (
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { openPositions, floating, isCopyTrading, followers, disable, returns } = provider;
+  const { openPositions, floating, isCopyTrading, followers, disable, dailyReturns } = provider;
   /**
    * Settings darkStyle selector.
    *
@@ -60,6 +60,27 @@ const TraderCard = (props) => {
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
+  //   let cumulativeTotalProfits = 0;
+  //   let cumulativeTotalInvested = 0;
+  const totalReturns = dailyReturns.reduce((acc, item) => {
+    // if (isCopyTrading) {
+    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    acc += returns;
+    // } else {
+    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
+    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
+    //   //   if (cumulativeTotalInvested) {
+    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
+    //   //   }
+    // }
+    // chartData.push({
+    //   day: item.name,
+    //   returns: acc.toFixed(2),
+    // });
+    chartData.values.push(acc);
+    chartData.labels.push(item.name);
+    return acc;
+  }, 0);
   let colorClass = "green";
 
   /**
@@ -72,7 +93,7 @@ const TraderCard = (props) => {
     gradientColor2: "#e5f8ed",
   };
 
-  if (returns < 0) {
+  if (totalReturns < 0) {
     colorClass = "red";
     colorsOptions = {
       ...colorsOptions,
@@ -99,7 +120,7 @@ const TraderCard = (props) => {
             justifyContent="space-between"
           >
             <Typography className={colorClass} variant="h4">
-              {+returns.toFixed(2)}%
+              {+totalReturns.toFixed(2)}%
             </Typography>
             <Typography variant="subtitle1">
               <FormattedMessage id="srv.returnsperiod" />
@@ -137,7 +158,7 @@ const TraderCard = (props) => {
           </Box>
         </Box>
         <Box
-          className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}
+          className={`actionsWrapper ${totalReturns >= 0 ? "positive" : "negative"}`}
           display="flex"
           flexDirection="column"
           justifyContent="center"
