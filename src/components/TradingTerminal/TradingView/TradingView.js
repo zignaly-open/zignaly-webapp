@@ -4,6 +4,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import CoinRayDataFeed from "../../../services/coinRayDataFeed";
 import tradeApi from "../../../services/tradeApiClient";
 import { throttle } from "lodash";
+import "./TradingView.scss";
 
 const TradingView = () => {
   const storeSession = useStoreSessionSelector();
