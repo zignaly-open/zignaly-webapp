@@ -17,6 +17,7 @@ import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 
 /**
  * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
  */
 const UserSummary = ({ providerId, quote }) => {
   /**

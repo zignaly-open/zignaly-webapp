@@ -491,7 +491,7 @@ function createEmptyProviderEntity() {
     clonedFrom: false,
     createdAt: 0,
     isFromUser: false,
-    quote: false,
+    quote: "",
     dailyReturns: [],
     returns: 0,
     risk: 0,
