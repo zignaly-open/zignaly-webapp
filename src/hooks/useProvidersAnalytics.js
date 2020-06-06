@@ -94,7 +94,7 @@ const useProvidersAnalytics = () => {
     };
 
     loadProvidersStats();
-  }, [timeFrame, quote, base, storeSession.tradeApi.accessToken]);
+  }, [timeFrame, quote, base.val, storeSession.tradeApi.accessToken]);
 
   return {
     stats,
