@@ -10,7 +10,6 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import { isEqual } from "lodash";
 
 /**
  * @typedef {Object} OptionType
@@ -21,7 +20,7 @@ import { isEqual } from "lodash";
 /**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
- * @property {string|number} value Assign the selected value.
+ * @property {OptionType|string|number} value Assign the selected value.
  * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  * @property {boolean} [search] Display autocomplete.
@@ -70,13 +69,7 @@ const CustomSelect = (props) => {
               getOptionLabel={(option) =>
                 typeof option === "object" ? option.label : option.toString()
               }
-              getOptionSelected={(option, value) => {
-                console.log(option, value);
-                return typeof option === "object" && typeof value === "string"
-                  ? option.val === value
-                  : isEqual(option, value);
-              }}
-              onChange={(e, val) => onChange(typeof val === "object" ? val.val : val)}
+              onChange={(e, val) => onChange(val)}
               openOnFocus={true}
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}

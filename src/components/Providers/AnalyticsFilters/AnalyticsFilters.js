@@ -1,20 +1,21 @@
 import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
-import useBaseAssets from "../../../hooks/useBaseAssets";
-import useTimeFramesOptions from "../../../hooks/useTimeFramesOptions";
 import { useIntl } from "react-intl";
 
 /**
+ * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {Object} AnayticsFiltersPropTypes
  * @property {function} onClear Callback that delegate filters clearing to caller.
  * @property {function} onBaseChange Callback that delegate base change to caller.
  * @property {function} onQuoteChange Callback that delegate quote change to caller.
  * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
  * @property {string} quote Selected quote (base currency).
- * @property {string} base Selected base (pair).
+ * @property {Array<string>} quotes Quotes options.
+ * @property {OptionType} base Selected base (pair).
+ * @property {Array<OptionType>} bases Bases options.
  * @property {string} timeFrame Selected time frame.
+ * @property {Array<OptionType>} timeFrames
  */
 
 /**
@@ -32,18 +33,10 @@ const AnalyticsFilters = ({
   onTimeFrameChange,
   onClear,
   bases,
+  quotes,
+  timeFrames,
 }) => {
-  const quoteAssets = useQuoteAssets();
-  const baseAssets = useBaseAssets(quote);
-  const timeFramesOptions = useTimeFramesOptions();
-  const quotes = Object.keys(quoteAssets);
   const intl = useIntl();
-  //   const bases = Object.entries(baseAssets).map(([key, val]) => ({
-  //     val: key,
-  //     label: val.quote + "/" + val.base,
-  //   }));
-  //   bases.unshift({ val: "all", label: intl.formatMessage({ id: "fil.pairs" }) });
-  //   console.log(bases);
 
   return (
     <CustomFilters onClear={onClear} title="">
@@ -52,7 +45,7 @@ const AnalyticsFilters = ({
           id: "fil.timeframe",
         })}
         onChange={onTimeFrameChange}
-        options={timeFramesOptions}
+        options={timeFrames}
         value={timeFrame}
       />
       <CustomSelect

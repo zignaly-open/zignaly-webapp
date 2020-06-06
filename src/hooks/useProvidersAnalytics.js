@@ -10,16 +10,20 @@ import { useIntl } from "react-intl";
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
+ * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
  * @typedef {Object} ProviderStatsData
  * @property {ProvidersStatsCollection} stats
  * @property {string} timeFrame
+ * @property {Array<OptionType>} timeFrames
  * @property {function} setTimeFrame
  * @property {string} quote
+ * @property {Array<string>} quotes
  * @property {function} setQuote
- * @property {string} base
+ * @property {OptionType} base
+ * @property {Array<OptionType>} bases
  * @property {function} setBase
  * @property {function} clearFilters
  */
@@ -41,19 +45,23 @@ const useProvidersAnalytics = () => {
   const intl = useIntl();
   const [stats, setStats] = useState([]);
 
-  const [quote, setQuote] = useState("USDT");
+  // time frames
+  const timeFrames = useTimeFramesOptions();
   const [timeFrame, setTimeFrame] = useState("30days");
 
-  //   const quoteAssets = useQuoteAssets();
-  //   const timeFramesOptions = useTimeFramesOptions();
-  //   const quotes = Object.keys(quoteAssets);
+  // quotes
+  const quoteAssets = useQuoteAssets();
+  const quotes = Object.keys(quoteAssets);
+  const [quote, setQuote] = useState("USDT");
 
+  // bases
   const baseAssets = useBaseAssets(quote);
   const bases = Object.entries(baseAssets).map(([key, val]) => ({
     val: key,
     label: val.quote + "/" + val.base,
   }));
-  bases.push({ val: "all", label: intl.formatMessage({ id: "fil.pairs" }) });
+  bases.unshift({ val: "ALL", label: intl.formatMessage({ id: "fil.pairs" }) });
+  //   const [base, setBase] = useState(bases[0]);
   const [base, setBase] = useState(bases[0]);
 
   const clearFilters = () => {
@@ -70,7 +78,7 @@ const useProvidersAnalytics = () => {
           token: storeSession.tradeApi.accessToken,
           ro: true,
           quote,
-          base: base,
+          base: base.val,
           timeFrame,
           DCAFilter: "anyDCA",
         };
@@ -86,8 +94,10 @@ const useProvidersAnalytics = () => {
 
   return {
     stats,
+    timeFrames,
     timeFrame,
     setTimeFrame,
+    quotes,
     quote,
     setQuote,
     base,

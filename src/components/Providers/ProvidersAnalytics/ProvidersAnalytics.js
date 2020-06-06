@@ -20,8 +20,10 @@ const ProvidersAnalytics = ({ type }) => {
   //   const copyTradersOnly = type === "copyt";
   const {
     stats,
+    timeFrames,
     timeFrame,
     setTimeFrame,
+    quotes,
     quote,
     setQuote,
     bases,
@@ -33,14 +35,16 @@ const ProvidersAnalytics = ({ type }) => {
   return (
     <Box>
       <AnalyticsFilters
-        bases={bases}
         base={base}
+        bases={bases}
         onBaseChange={setBase}
         onClear={clearFilters}
         onQuoteChange={setQuote}
         onTimeFrameChange={setTimeFrame}
         quote={quote}
+        quotes={quotes}
         timeFrame={timeFrame}
+        timeFrames={timeFrames}
         // type={type}
       />
       <ProvidersProfitsTable
