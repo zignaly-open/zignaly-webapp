@@ -7,7 +7,7 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef {Object} ProvidersAnalyticsPropTypes
- * @property {string} type Selected timeFrame.
+ * @property {string} type Type of provider to retreive.
  */
 
 /**
@@ -17,7 +17,6 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersAnalytics = ({ type }) => {
-  //   const copyTradersOnly = type === "copyt";
   const {
     stats,
     timeFrames,
@@ -30,7 +29,7 @@ const ProvidersAnalytics = ({ type }) => {
     base,
     setBase,
     clearFilters,
-  } = useProvidersAnalytics();
+  } = useProvidersAnalytics(type);
 
   return (
     <Box>

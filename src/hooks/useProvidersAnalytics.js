@@ -31,9 +31,10 @@ import { useIntl } from "react-intl";
 /**
  * Hook to generate the providers stats fetching and filtering.
  *
+ * @param {string} type Type of provider to retreive.
  * @returns {ProviderStatsData} Providers stats and filtering objects.
  */
-const useProvidersAnalytics = () => {
+const useProvidersAnalytics = (type) => {
   /**
    * Select store session data.
    *
@@ -69,6 +70,7 @@ const useProvidersAnalytics = () => {
     setTimeFrame("30days");
   };
 
+  // Select all bases by default on quote change
   useEffect(() => {
     setBase(bases[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,6 +87,7 @@ const useProvidersAnalytics = () => {
           base: base.val,
           timeFrame,
           DCAFilter: "anyDCA",
+          copyTradersOnly: type === "copyt",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
         setStats(responseData);
@@ -94,7 +97,7 @@ const useProvidersAnalytics = () => {
     };
 
     loadProvidersStats();
-  }, [timeFrame, quote, base.val, storeSession.tradeApi.accessToken]);
+  }, [timeFrame, quote, base.val, storeSession.tradeApi.accessToken, type]);
 
   return {
     stats,

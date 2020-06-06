@@ -24,7 +24,7 @@ const CopyTradersAnalytics = () => {
           })}
         </title>
       </Helmet>
-      <ProvidersAnalytics type="signalp" />
+      <ProvidersAnalytics type="copyt" />
     </Box>
   );
 };
