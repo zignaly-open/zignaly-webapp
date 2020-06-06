@@ -102,7 +102,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
-      copytradersAnalytics: [
+      copytAnalytics: [
         "percentageProfit",
         "signals",
         "sumPositions",
