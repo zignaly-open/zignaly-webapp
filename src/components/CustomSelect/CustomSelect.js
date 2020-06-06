@@ -22,7 +22,7 @@ import { isEqual } from "lodash";
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
  * @property {string|number} value Assign the selected value.
- * @property {Array<OptionType|string>} options List of options selectable.
+ * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  * @property {boolean} [search] Display autocomplete.
  */
@@ -67,8 +67,15 @@ const CustomSelect = (props) => {
                 root: "searchRoot",
               }}
               disableClearable={true}
-              getOptionLabel={(option) => (typeof option === "object" ? option.label : option)}
-              getOptionSelected={isEqual}
+              getOptionLabel={(option) =>
+                typeof option === "object" ? option.label : option.toString()
+              }
+              getOptionSelected={(option, value) => {
+                console.log(option, value);
+                return typeof option === "object" && typeof value === "string"
+                  ? option.val === value
+                  : isEqual(option, value);
+              }}
               onChange={(e, val) => onChange(typeof val === "object" ? val.val : val)}
               openOnFocus={true}
               options={options}

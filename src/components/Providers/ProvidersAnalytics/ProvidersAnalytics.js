@@ -24,6 +24,7 @@ const ProvidersAnalytics = ({ type }) => {
     setTimeFrame,
     quote,
     setQuote,
+    bases,
     base,
     setBase,
     clearFilters,
@@ -32,6 +33,7 @@ const ProvidersAnalytics = ({ type }) => {
   return (
     <Box>
       <AnalyticsFilters
+        bases={bases}
         base={base}
         onBaseChange={setBase}
         onClear={clearFilters}

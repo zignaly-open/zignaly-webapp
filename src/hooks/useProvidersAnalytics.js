@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import { useSelector } from "react-redux";
+import useQuoteAssets from "./useQuoteAssets";
+import useBaseAssets from "./useBaseAssets";
+import useTimeFramesOptions from "./useTimeFramesOptions";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -34,14 +38,27 @@ const useProvidersAnalytics = () => {
    */
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
+  const intl = useIntl();
   const [stats, setStats] = useState([]);
+
   const [quote, setQuote] = useState("USDT");
-  const [base, setBase] = useState("");
   const [timeFrame, setTimeFrame] = useState("30days");
 
+  //   const quoteAssets = useQuoteAssets();
+  //   const timeFramesOptions = useTimeFramesOptions();
+  //   const quotes = Object.keys(quoteAssets);
+
+  const baseAssets = useBaseAssets(quote);
+  const bases = Object.entries(baseAssets).map(([key, val]) => ({
+    val: key,
+    label: val.quote + "/" + val.base,
+  }));
+  bases.push({ val: "all", label: intl.formatMessage({ id: "fil.pairs" }) });
+  const [base, setBase] = useState(bases[0]);
+
   const clearFilters = () => {
-    setQuote("BTC");
-    setBase("");
+    setQuote("USDT");
+    setBase(bases[0]);
     setTimeFrame("30days");
   };
 
@@ -53,7 +70,7 @@ const useProvidersAnalytics = () => {
           token: storeSession.tradeApi.accessToken,
           ro: true,
           quote,
-          base: base || "all",
+          base: base,
           timeFrame,
           DCAFilter: "anyDCA",
         };
@@ -74,6 +91,7 @@ const useProvidersAnalytics = () => {
     quote,
     setQuote,
     base,
+    bases,
     setBase,
     clearFilters,
   };

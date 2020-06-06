@@ -31,16 +31,19 @@ const AnalyticsFilters = ({
   onQuoteChange,
   onTimeFrameChange,
   onClear,
+  bases,
 }) => {
   const quoteAssets = useQuoteAssets();
   const baseAssets = useBaseAssets(quote);
   const timeFramesOptions = useTimeFramesOptions();
   const quotes = Object.keys(quoteAssets);
-  const bases = Object.entries(baseAssets).map(([key, val]) => ({
-    val: key,
-    label: val.quote + "/" + val.base,
-  }));
   const intl = useIntl();
+  //   const bases = Object.entries(baseAssets).map(([key, val]) => ({
+  //     val: key,
+  //     label: val.quote + "/" + val.base,
+  //   }));
+  //   bases.unshift({ val: "all", label: intl.formatMessage({ id: "fil.pairs" }) });
+  //   console.log(bases);
 
   return (
     <CustomFilters onClear={onClear} title="">
