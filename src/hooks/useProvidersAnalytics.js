@@ -61,7 +61,6 @@ const useProvidersAnalytics = () => {
     label: val.quote + "/" + val.base,
   }));
   bases.unshift({ val: "ALL", label: intl.formatMessage({ id: "fil.pairs" }) });
-  //   const [base, setBase] = useState(bases[0]);
   const [base, setBase] = useState(bases[0]);
 
   const clearFilters = () => {
@@ -69,6 +68,10 @@ const useProvidersAnalytics = () => {
     setBase(bases[0]);
     setTimeFrame("30days");
   };
+
+  useEffect(() => {
+    setBase(bases[0]);
+  }, [quote]);
 
   // Load stats at init and on filters change
   useEffect(() => {

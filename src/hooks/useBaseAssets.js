@@ -34,7 +34,7 @@ const useBaseAssets = (quote) => {
       });
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [quote, storeSession.tradeApi.accessToken]);
 
   return bases;
 };
