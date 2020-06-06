@@ -71,6 +71,7 @@ const useProvidersAnalytics = () => {
 
   useEffect(() => {
     setBase(bases[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote]);
 
   // Load stats at init and on filters change
