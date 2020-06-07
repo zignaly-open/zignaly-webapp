@@ -68,7 +68,6 @@
     "eslint-plugin-react-hooks": "^2.5.1",
     "faker": "^4.1.0",
     "gatsby-plugin-env-variables": "^1.0.2",
-    "gatsby-plugin-purgecss": "^5.0.0",
     "gatsby-plugin-sass": "^2.3.2",
     "include-media": "^1.4.9",
     "jest": "^26.0.1",

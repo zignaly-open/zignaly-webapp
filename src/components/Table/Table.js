@@ -5,7 +5,8 @@ import "./Table.scss";
 import MUIDataTable from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -13,6 +14,8 @@ import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
+ * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
+ * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
 
 /**
@@ -77,8 +80,12 @@ const Table = ({ columns, data, persistKey, title }) => {
     },
   };
 
-  // Customizing styling here to avoid lint warning camelCase class-name-format
-  const getMuiTheme = () =>
+  /**
+   * Customizing styling here to avoid lint warning camelCase class-name-format
+   * @param {ThemeOptions} theme Material UI theme options.
+   * @returns {Theme} Theme overridden.
+   */
+  const getMuiTheme = (theme) =>
     createMuiTheme({
       /**
        * @type {*}
@@ -121,6 +128,12 @@ const Table = ({ columns, data, persistKey, title }) => {
             padding: "12px",
             whiteSpace: "nowrap",
           },
+          stackedCommon: {
+            [theme.breakpoints.down("sm")]: {
+              height: "auto",
+              textAlign: "left",
+            },
+          },
         },
       },
     });
@@ -129,7 +142,7 @@ const Table = ({ columns, data, persistKey, title }) => {
     <Box className="customTable">
       <MuiThemeProvider
         theme={(outerTheme) => ({
-          ...getMuiTheme(),
+          ...getMuiTheme(outerTheme),
           outerTheme,
         })}
       >

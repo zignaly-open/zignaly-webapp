@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
+import CustomToolip from "../../CustomTooltip";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
@@ -19,7 +20,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { fee, name, logoUrl, coin, exchanges } = props.provider;
+  const { price, name, logoUrl, coin, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -57,16 +58,26 @@ const TraderCardHeader = (props) => {
               />
             </Typography>
             {exchanges.map((exchange, index) => (
-              <ExchangeIcon exchange={exchange} key={index} />
+              <ExchangeIcon exchange={exchange} key={index} size="xsmall" />
             ))}
           </Box>
         </Box>
-        <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
-          <Typography variant="h4">{fee}</Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.comision" />
-          </Typography>
-        </Box>
+
+        <CustomToolip
+          title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: price || 0 }} />}
+        >
+          <Box
+            alignItems="flex-end"
+            className="commissionBox"
+            display="flex"
+            flexDirection="column"
+          >
+            <Typography variant="h4">{price || 0}</Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.comision" />
+            </Typography>
+          </Box>
+        </CustomToolip>
       </Box>
     </Box>
   );

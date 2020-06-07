@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import ProvidersFilters from "../components/Providers/ProvidersFilters";
-import ProvidersSort from "../components/Providers/ProvidersSort";
-import ProvidersList from "../components/Providers/ProvidersList";
-import TimeFrameSelectRow from "../components/Providers/TimeFrameSelectRow";
+import { useState, useEffect, useCallback } from "react";
 import tradeApi from "../services/tradeApiClient";
-import { useSelector } from "react-redux";
+import useStoreSessionSelector from "./useStoreSessionSelector";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -14,44 +11,37 @@ import { useSelector } from "react-redux";
  */
 
 /**
- * @typedef {Object} ProvidersComponents
- * @property {function} ProvidersList
- * @property {function} ProvidersFilters
- * @property {function} ProvidersSort
- * @property {function} TimeFrameSelectRow
- */
-
-/**
  * @typedef {Object} ProvidersOptions
  * @property {boolean} copyTradersOnly
  * @property {boolean} connectedOnly
- * @property {boolean} showSummary
  */
 
 /**
- * @typedef {Object} ProvidersCallbacks
- * @property {React.MouseEventHandler} [toggleFilters]
- * @property {React.MouseEventHandler} [toggleSort]
+ * @typedef {Object} ProvidersData
+ * @property {ProvidersCollection} providers
+ * @property {number} timeFrame // todo: check with Bart
+ * @property {function} setTimeFrame
+ * @property {string} coin
+ * @property {function} setCoin
+ * @property {string} exchange
+ * @property {function} setExchange
+ * @property {string} sort
+ * @property {function} setSort
+ * @property {function} clearFilters
+ * @property {function} clearSort
  */
 
 /**
- * Hook to generate the providers components including list, filters, and sort.
+ * Hook to generate the providers data fetching and filtering.
  *
  * @param {ProvidersOptions} options Hook options.
- * @param {ProvidersCallbacks} callbacks Hook callbacks.
- * @returns {[ProvidersCollection, ProvidersComponents]} Array with providers data and components.
+ * @returns {ProvidersData} Providers and filtering objects.
  */
-const useProvidersList = (options, callbacks) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
-  const { copyTradersOnly, connectedOnly, showSummary } = options;
-  const { toggleFilters, toggleSort } = callbacks;
+const useProvidersList = (options) => {
+  const storeSettings = useStoreSettingsSelector();
+  const internalExchangeId = storeSettings.selectedExchange.internalId;
+  const storeSession = useStoreSessionSelector();
+  const { copyTradersOnly, connectedOnly } = options;
 
   /**
    * @type {ProvidersCollection} initialState
@@ -62,7 +52,7 @@ const useProvidersList = (options, callbacks) => {
   const [timeFrame, setTimeFrame] = useState(90);
   const [coin, setCoin] = useState("");
   const [exchange, setExchange] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("RETURNS_DESC");
 
   const clearFilters = () => {
     setCoin("");
@@ -136,6 +126,7 @@ const useProvidersList = (options, callbacks) => {
         ro: true,
         copyTradersOnly,
         timeFrame,
+        internalExchangeId,
       };
 
       try {
@@ -146,45 +137,27 @@ const useProvidersList = (options, callbacks) => {
       }
     };
     loadProviders();
-  }, [timeFrame, connectedOnly, copyTradersOnly, storeSession.tradeApi.accessToken]);
+  }, [
+    timeFrame,
+    connectedOnly,
+    copyTradersOnly,
+    storeSession.tradeApi.accessToken,
+    internalExchangeId,
+  ]);
 
-  const ProvidersListMaker = () => (
-    <ProvidersList providers={providersFiltered} showSummary={showSummary} />
-  );
-
-  const ProvidersFiltersMaker = () => (
-    <ProvidersFilters
-      clearFilters={clearFilters}
-      coin={coin}
-      exchange={exchange}
-      onClose={toggleFilters}
-      onCoinChange={setCoin}
-      onExchangeChange={setExchange}
-    />
-  );
-
-  const ProvidersSortMaker = () => (
-    <ProvidersSort clearFilters={clearSort} onChange={setSort} onClose={toggleSort} sort={sort} />
-  );
-
-  /**
-   * TimeFrameSelectRow Maker
-   * @param {Object} props Props.
-   * @param {string} props.title Row title.
-   * @returns  {JSX.Element} TimeFrameSelectRow
-   */
-  const TimeFrameSelectRowMaker = ({ title }) => (
-    <TimeFrameSelectRow onChange={setTimeFrame} title={title} value={timeFrame} />
-  );
-
-  const components = {
-    ProvidersList: ProvidersListMaker,
-    ProvidersFilters: ProvidersFiltersMaker,
-    ProvidersSort: ProvidersSortMaker,
-    TimeFrameSelectRow: TimeFrameSelectRowMaker,
+  return {
+    providers: providersFiltered,
+    timeFrame,
+    setTimeFrame,
+    coin,
+    setCoin,
+    exchange,
+    setExchange,
+    sort,
+    setSort,
+    clearFilters,
+    clearSort,
   };
-
-  return [providersFiltered, components];
 };
 
 export default useProvidersList;

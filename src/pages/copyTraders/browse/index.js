@@ -4,15 +4,15 @@ import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
-import useProvidersList from "../../../hooks/useProvidersList";
+import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
 import "./copyTradersBrowse.scss";
 
 /**
  * @typedef {Object} CopyTradersBrowsePropTypes
  * @property {boolean} showFilters Flag to indicate if filters should be rendered.
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
- * @property {React.MouseEventHandler} toggleFilters Callback that delegate filters toggle state to caller.
- * @property {React.MouseEventHandler} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
+ * @property {function} toggleSort Callback that delegate sort toggle state to caller.
  */
 
 /**
@@ -24,10 +24,6 @@ import "./copyTradersBrowse.scss";
 const CopyTradersBrowse = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort } = props;
   const intl = useIntl();
-  const providersOptions = { copyTradersOnly: true, connectedOnly: false, showSummary: false };
-  const providersCallbacks = { toggleFilters, toggleSort };
-  const [providers, provComponents] = useProvidersList(providersOptions, providersCallbacks);
-  const { ProvidersList, ProvidersFilters, ProvidersSort, TimeFrameSelectRow } = provComponents;
 
   return (
     <Box className="ctBrowsePage">
@@ -35,12 +31,14 @@ const CopyTradersBrowse = (props) => {
         <title>{intl.formatMessage({ id: "menu.copytraders" })}</title>
       </Helmet>
 
-      {showFilters && <ProvidersFilters />}
-      {showSort && <ProvidersSort />}
-      <TimeFrameSelectRow
-        title={`${providers.length} ${intl.formatMessage({ id: "copyt.traders" })}`}
+      <ProvidersBrowse
+        connectedOnly={false}
+        showFilters={showFilters}
+        showSort={showSort}
+        toggleFilters={toggleFilters}
+        toggleSort={toggleSort}
+        type="copyt"
       />
-      <ProvidersList />
     </Box>
   );
 };
