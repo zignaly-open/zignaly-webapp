@@ -2,14 +2,14 @@ import React from "react";
 import { Box } from "@material-ui/core";
 
 /**
- * @typedef {Object} PositionPageProps
+ * @typedef {Object} CopyTradersProfilePageProps
  * @property {String} path
  */
 
 /**
  * Position detail page component.
  *
- * @param {PositionPageProps} props Component properties.
+ * @param {CopyTradersProfilePageProps} props Component properties.
  * @returns {JSX.Element} Position page element.
  */
 
