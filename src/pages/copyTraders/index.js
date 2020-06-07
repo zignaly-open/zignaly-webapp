@@ -2,22 +2,29 @@ import React from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 
-// /**
-//  * @typedef {Object} PositionPageProps
-//  * @property {string} traderId The position ID dynamic route path parameter.
-//  */
+/**
+ *
+ * @typedef {Object} LocationObject
+ * @property {String} pathname
+ */
 
-// /**
-//  * Position detail page component.
-//  *
-//  * @param {PositionPageProps} props Component properties.
-//  * @returns {JSX.Element} Position page element.
-//  */
+/**
+ * @typedef {Object} PositionPageProps
+ * @property {String} providerId
+ * @property {LocationObject} location position ID dynamic route path parameter.
+ */
 
-const CopyTraders = () => {
+/**
+ * Position detail page component.
+ *
+ * @param {PositionPageProps} props Component properties.
+ * @returns {JSX.Element} Position page element.
+ */
+
+const CopyTraders = (props) => {
   return (
     <Router>
-      <Profile path="/copyTraders/:traderId/profile" />
+      <Profile path="/copyTraders/:providerId/profile" />
     </Router>
   );
 };

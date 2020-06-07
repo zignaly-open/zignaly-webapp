@@ -27,6 +27,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
  */
 
 /**
@@ -300,6 +301,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return quotesResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetProviderPayload} payload Get providers stats payload.
+
+   * @returns
+   *
+   * @memberof TradeApiClient
+   */
+  async providerGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

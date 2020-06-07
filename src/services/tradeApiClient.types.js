@@ -29,6 +29,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} GetProviderPayload
+ * @property {string} token
+ * @property {string} providerId
+ */
+
+/**
  * @typedef {Object} UserLoginResponse
  * @property {string} token User access token.
  * @property {string} firstName User first name.
