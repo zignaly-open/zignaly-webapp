@@ -14,6 +14,7 @@
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
+ * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  */
 
 /**
@@ -70,11 +71,17 @@
  */
 
 /**
+ * @typedef {Object} DefaultViewsObject
+ * @property {DefaultProviderGetObject} provider
+ */
+
+/**
  * @typedef {Object} DefaultState
  * @property {DefaultStateSession} session
  * @property {DefaultStateSettings} settings
  * @property {UserObject} user
  * @property {DefaultUIObject} ui
+ * @property {DefaultViewsObject} views
  */
 
 /**
@@ -210,6 +217,69 @@ const initialState = {
     alerts: {
       success: {},
       error: {},
+    },
+  },
+  views: {
+    provider: {
+      connected: false,
+      copyTradingQuote: "",
+      description: "",
+      disable: false,
+      exchangeInternalId: "",
+      exchangeType: "",
+      exchanges: [""],
+      fee: "",
+      hasBeenUsed: false,
+      hasRecommendedSettings: false,
+      id: "",
+      internalPaymentInfo: {
+        isPremium: true,
+        merchantId: "",
+        price: 0,
+        trial: 0,
+      },
+      isAdmin: false,
+      isClone: false,
+      isCopyTrading: false,
+      key: false,
+      list: false,
+      logoUrl: "",
+      longDesc: "",
+      minAllocatedBalance: 0,
+      name: "",
+      options: {
+        acceptUpdateSignal: false,
+        allowSendingBuyOrdersAsMarket: false,
+        balanceFilter: false,
+        enablePanicSellSignals: false,
+        enableSellSignals: false,
+        limitPriceFromSignal: false,
+        reBuyFromProvider: false,
+        reBuysFromSignal: false,
+        reUseSignalIdIfClosed: false,
+        riskFilter: false,
+        stopLossFromSignal: false,
+        successRateFilter: false,
+        takeProfitsFromSignal: false,
+        terms: false,
+        trailingStopFromSignal: false,
+      },
+      public: false,
+      shortDesc: "",
+      userPaymentInfo: { userId: "" },
+      website: "",
+      allocatedBalance: 0,
+      allocatedBalanceUpdatedAt: { $date: { $numberlong: "" } },
+      balanceFilter: false,
+      clonedFrom: { $oid: "" },
+      createdAt: "",
+      enableInProvider: false,
+      originalBalance: "",
+      profitsFromClosedBalance: "0",
+      reBuyFromProvider: false,
+      riskFilter: false,
+      successRateFilter: false,
+      terms: false,
     },
   },
 };

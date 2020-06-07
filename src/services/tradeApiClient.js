@@ -12,6 +12,7 @@ import {
   quotesResponseTransform,
   basesResponseTransform,
   connectedProviderUserInfoResponseTransform,
+  providerGetResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -322,7 +323,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return providerGetResponseTransform(responseData);
   }
 
   /**

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import tradeApi from "../../../services/tradeApiClient";
+import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+
 /**
  * @typedef {Object} CopyTradersProfilePageProps
  * @property {String} path
@@ -15,23 +15,10 @@ import tradeApi from "../../../services/tradeApiClient";
  * @returns {JSX.Element} Position page element.
  */
 
-const CopyTradersProfile = ({ providerId, path }) => {
-  const storeSession = useStoreSessionSelector();
-
-  useEffect(() => {
-    const loadProvider = async () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: providerId,
-      };
-      const response = await tradeApi.providerGet(payload);
-      console.log(response);
-    };
-
-    loadProvider();
-  }, [providerId]);
-
-  return <Box>dynamic route for {path}</Box>;
+const CopyTradersProfile = (props) => {
+  const storeViews = useStoreViewsSelector();
+  console.log(storeViews.provider);
+  return <Box>dynamic route for </Box>;
 };
 
 export default CopyTradersProfile;

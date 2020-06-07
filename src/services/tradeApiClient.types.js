@@ -1249,3 +1249,179 @@ function createConnectedProviderUserInfoEntity(response) {
     profitsSinceCopying: response.profitsSinceCopying,
   };
 }
+
+/**
+ *
+ * @typedef {Object} DefaultProviderClonedFromObject
+ * @property {String} $oid
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderAllocatedUpdatedAtDateObject
+ * @property {String} $numberlong
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderAllocatedUpdatedAtObject
+ * @property {DefaultProviderAllocatedUpdatedAtDateObject} $date
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderUserPaymentObject
+ * @property {String} userId
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderOptions
+ * @property {Boolean} acceptUpdateSignal
+ * @property {Boolean} allowSendingBuyOrdersAsMarket
+ * @property {Boolean} balanceFilter
+ * @property {Boolean} enablePanicSellSignals
+ * @property {Boolean} enableSellSignals
+ * @property {Boolean} limitPriceFromSignal
+ * @property {Boolean} reBuyFromProvider
+ * @property {Boolean} reBuysFromSignal
+ * @property {Boolean} reUseSignalIdIfClosed
+ * @property {Boolean} riskFilter
+ * @property {Boolean} stopLossFromSignal
+ * @property {Boolean} successRateFilter
+ * @property {Boolean} takeProfitsFromSignal
+ * @property {Boolean} terms
+ * @property {Boolean} trailingStopFromSignal
+ */
+
+/**
+ *
+ * @typedef {Object} DefaulProviderInternalPaymentObject
+ * @property {Boolean} isPremium
+ * @property {String} merchantId
+ * @property {Number} price
+ * @property {Number} trial
+ */
+
+/**
+ * Default Single Provider object from 'getProvider' endpoint.
+ *
+ * @typedef {Object} DefaultProviderGetObject
+ * @property {Boolean} connected
+ * @property {String} copyTradingQuote
+ * @property {String} description
+ * @property {Boolean} disable
+ * @property {String} exchangeInternalId
+ * @property {String} exchangeType
+ * @property {Array<String>} exchanges
+ * @property {String} fee
+ * @property {Boolean} hasBeenUsed
+ * @property {Boolean} hasRecommendedSettings
+ * @property {String} id
+ * @property {DefaulProviderInternalPaymentObject} internalPaymentInfo
+ * @property {Boolean} isAdmin
+ * @property {Boolean} isClone
+ * @property {Boolean} isCopyTrading
+ * @property {Boolean} key
+ * @property {Boolean} list
+ * @property {String} logoUrl
+ * @property {String} longDesc
+ * @property {Number} minAllocatedBalance
+ * @property {String} name
+ * @property {DefaultProviderOptions} options
+ * @property {Boolean} public
+ * @property {String} shortDesc
+ * @property {DefaultProviderUserPaymentObject} userPaymentInfo
+ * @property {String} website
+ * @property {Number} allocatedBalance
+ * @property {DefaultProviderAllocatedUpdatedAtObject} allocatedBalanceUpdatedAt
+ * @property {Boolean} balanceFilter
+ * @property {DefaultProviderClonedFromObject} clonedFrom
+ * @property {String} createdAt
+ * @property {Boolean} enableInProvider
+ * @property {String} originalBalance
+ * @property {String} profitsFromClosedBalance
+ * @property {Boolean} reBuyFromProvider
+ * @property {Boolean} riskFilter
+ * @property {Boolean} successRateFilter
+ * @property {Boolean} terms
+ */
+
+/**
+ *
+ * @param {*} response
+ * @returns {DefaulProviderGetObject}
+ */
+
+export function providerGetResponseTransform(response) {
+  if (!isObject) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  let emptyProviderEntity = createEmptyProviderGetEntity();
+  return { ...emptyProviderEntity, ...response };
+}
+
+function createEmptyProviderGetEntity() {
+  return {
+    connected: false,
+    copyTradingQuote: "",
+    description: "",
+    disable: false,
+    exchangeInternalId: false,
+    exchangeType: "",
+    exchanges: [""],
+    fee: "",
+    hasBeenUsed: false,
+    hasRecommendedSettings: false,
+    id: "",
+    internalPaymentInfo: {
+      isPremium: true,
+      merchantId: "",
+      price: 0,
+      trial: 0,
+    },
+    isAdmin: false,
+    isClone: false,
+    isCopyTrading: false,
+    key: false,
+    list: false,
+    logoUrl: "",
+    longDesc: "",
+    minAllocatedBalance: 0,
+    name: "",
+    options: {
+      acceptUpdateSignal: false,
+      allowSendingBuyOrdersAsMarket: false,
+      balanceFilter: false,
+      enablePanicSellSignals: false,
+      enableSellSignals: false,
+      limitPriceFromSignal: false,
+      reBuyFromProvider: false,
+      reBuysFromSignal: false,
+      reUseSignalIdIfClosed: false,
+      riskFilter: false,
+      stopLossFromSignal: false,
+      successRateFilter: false,
+      takeProfitsFromSignal: false,
+      terms: false,
+      trailingStopFromSignal: false,
+    },
+    public: false,
+    shortDesc: "",
+    userPaymentInfo: { userId: "" },
+    website: "",
+    allocatedBalance: 0,
+    allocatedBalanceUpdatedAt: { $date: { $numberlong: "" } },
+    balanceFilter: false,
+    clonedFrom: { $oid: "" },
+    createdAt: "",
+    enableInProvider: false,
+    originalBalance: "",
+    profitsFromClosedBalance: "0",
+    reBuyFromProvider: false,
+    riskFilter: false,
+    successRateFilter: false,
+    terms: false,
+  };
+}
