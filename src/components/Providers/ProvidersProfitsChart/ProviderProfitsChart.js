@@ -25,14 +25,11 @@ import Table from "../../Table";
  * @param {ProvidersAnalyticsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats0 }) => {
+const ProvidersProfitChart = ({}) => {
   const intl = useIntl();
-  // todo: pass as props directly?
   /**
    * @type {ChartData}
    */
-  //   console.log(stats);
-  //   const values = stats.map((s) => s.percentageProfit);
   const stats = [
     {
       percentageProfitW1: -1,
@@ -42,18 +39,7 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats0 }) => {
   ];
   const values = [-1, 1, 0.5];
   const labels = ["W1", "W2", "W3"];
-  //   const labels = stats.map((s) => "W");
-  //   const labels = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
   let chartData = { values, labels };
-  /**
-   * @type {ChartColorOptions} colorsOptions
-   */
-  let colorsOptions = {
-    backgroundColor: "",
-    borderColor: "#00cb3a",
-    gradientColor1: "#b6f2cb",
-    gradientColor2: "#e5f8ed",
-  };
 
   let columns = [
     {
@@ -117,4 +103,4 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats0 }) => {
     </Paper>
   );
 };
-export default ProvidersProfitsChart;
+export default ProviderProfitsChart;
