@@ -33,7 +33,7 @@ const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
    */
   const childrenWrapper = (childrenProps) => (
     <Box className="customTooltipPopper" style={posStyle}>
-      {childrenPopper(childrenProps)}
+      <Box className="innerPopper">{childrenPopper(childrenProps)}</Box>
       <Box className="lineTooltip" />
     </Box>
   );

@@ -1,11 +1,11 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
 import { Helmet } from "react-helmet";
 import "./copyTradersAnalytics.scss";
-import ProvidersProfitsTable from "../../../components/Providers/ProvidersProfitsTable";
+import ProvidersAnalytics from "../../../components/Providers/ProvidersAnalytics";
 
 /**
  * Provides analytics of signal providers.
@@ -24,10 +24,7 @@ const CopyTradersAnalytics = () => {
           })}
         </title>
       </Helmet>
-      <ProvidersProfitsTable
-        persistKey="ctAnalytics"
-        title={<FormattedMessage id="copyt.performance" />}
-      />
+      <ProvidersAnalytics type="copyt" />
     </Box>
   );
 };

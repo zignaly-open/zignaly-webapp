@@ -10,6 +10,8 @@ import {
   userPositionItemTransform,
   userEquityResponseTransform,
   quotesResponseTransform,
+  basesResponseTransform,
+  connectedProviderUserInfoResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -27,6 +29,9 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
+ * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
+ * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  */
 
 /**
@@ -283,7 +288,8 @@ class TradeApiClient {
 
   /**
    * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
-   * @typedef {import('./tradeApiClient.types').QuotesDict} QuotesDict
+   * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
+   * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
    */
 
   /**
@@ -291,15 +297,47 @@ class TradeApiClient {
    * Get quote assets.
    *
    * @param {ReadOnlyPayload} payload
-   * @returns {Promise<QuotesDict>} Promise that resolves quote assets.
+   * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */
 
-  async quotesGet(payload) {
+  async quotesAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuoteAssets";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return quotesResponseTransform(responseData);
+  }
+
+  /**
+   *
+   * Get quote assets.
+   *
+   * @param {BaseAssetsPayload} payload
+   * @returns {Promise<BaseAssetsDict>} Promise that resolves base assets.
+   * @memberof TradeApiClient
+   */
+
+  async baseAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBaseAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return basesResponseTransform(responseData);
+  }
+
+  /**
+   *
+   * Get connected provider user info.
+   *
+   * @param {ConnectedProviderUserInfoPayload} payload
+   * @returns {Promise<ConnectedProviderUserInfo>} Promise that resolves connected trader user info.
+   * @memberof TradeApiClient
+   */
+
+  async connectedProviderUserInfoGet(payload) {
+    const endpointPath = "/fe/api.php?action=getCurrentAllocatedAndProfitSinceFollowing";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return connectedProviderUserInfoResponseTransform(responseData);
   }
 }
 

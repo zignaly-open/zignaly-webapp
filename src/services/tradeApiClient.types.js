@@ -84,6 +84,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
+ * @property {string} quote
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Array<ReBuyTarget>} reBuyTargets
  * @property {RealInvestment} realInvestment
@@ -214,6 +219,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro
+ * @property {boolean} copyTradersOnly
  */
 
 /**
@@ -224,6 +230,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} shortDesc
  * @property {string} longDesc
  * @property {string|boolean} fee
+ * @property {number} price
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
@@ -239,11 +246,13 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} clonedFrom
  * @property {number} createdAt
  * @property {boolean} isFromUser
- * @property {boolean} quote
+ * @property {string} quote
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
  * @property {number} followers
  * @property {number} returns
+ * @property {string} floating
+ * @property {number} openPositions
  */
 
 /**
@@ -332,13 +341,31 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
- * @typedef {Object} Quote
+ * @typedef {Object} QuoteAsset
  * @property {string} quote
  * @property {string} minNominal
  */
 
 /**
- * @typedef {Object.<string, Quote>} QuotesDict
+ * @typedef {Object} BaseAsset
+ * @property {string} quote
+ * @property {string} base
+ */
+
+/**
+ * @typedef {Object.<string, QuoteAsset>} QuoteAssetsDict
+ * @typedef {Object.<string, BaseAsset>} BaseAssetsDict
+ */
+
+/**
+ * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {Object} ConnectedProviderUserInfo
+ * @property {number} currentAllocated
+ * @property {number} profitsSinceCopying
  */
 
 /**
@@ -450,6 +477,7 @@ function createEmptyProviderEntity() {
     shortDesc: "",
     longDesc: "",
     fee: false,
+    price: 0,
     website: false,
     exchanges: [],
     key: false,
@@ -464,12 +492,14 @@ function createEmptyProviderEntity() {
     clonedFrom: false,
     createdAt: 0,
     isFromUser: false,
-    quote: false,
+    quote: "",
     dailyReturns: [],
     returns: 0,
     risk: 0,
     coin: "BTC",
     followers: 0,
+    floating: "",
+    openPositions: 0,
   };
 }
 
@@ -1142,10 +1172,10 @@ function createProviderStatsEmptyEntity() {
 }
 
 /**
- * Transform quote assets response to typed QuotesDict.
+ * Transform quote assets response to typed QuoteAssetsDict.
  *
  * @param {*} response Trade API get quotes list raw response.
- * @returns {QuotesDict} Quote assets.
+ * @returns {QuoteAssetsDict} Quote assets.
  */
 export function quotesResponseTransform(response) {
   if (!isObject(response)) {
@@ -1162,4 +1192,54 @@ export function quotesResponseTransform(response) {
     }),
     {},
   );
+}
+
+/**
+ * Transform base assets response to typed BaseAssetsDict.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {BaseAssetsDict} Base assets.
+ */
+export function basesResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: {
+        quote: val.quote,
+        base: val.base,
+      },
+    }),
+    {},
+  );
+}
+
+/**
+ * Transform connected provider user info to typed ConnectedProviderUserInfo.
+ *
+ * @param {*} response Connected provider user info raw response.
+ * @returns {ConnectedProviderUserInfo} User info.
+ */
+export function connectedProviderUserInfoResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return createConnectedProviderUserInfoEntity(response);
+}
+
+/**
+ * Create onnected provider user info entity.
+ *
+ * @param {*} response Trade API user balance raw raw response.
+ * @returns {ConnectedProviderUserInfo} User balance entity.
+ */
+function createConnectedProviderUserInfoEntity(response) {
+  return {
+    currentAllocated: response.currentAllocated,
+    profitsSinceCopying: response.profitsSinceCopying,
+  };
 }

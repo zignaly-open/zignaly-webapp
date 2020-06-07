@@ -2,15 +2,17 @@ import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
- * @property {React.MouseEventHandler} onClose Callback that delegate filters toggle state to caller.
- * @property {React.MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
+ * @property {function} onClose Callback that delegate filters toggle state to caller.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
  * @property {string} coin Selected coin.
  * @property {string} exchange Selected exchange.
+ * @property {boolean} open Flag to indicates if the filters bar is open.
  */
 
 /**
@@ -26,22 +28,40 @@ const ProvidersFilters = ({
   onCoinChange,
   onExchangeChange,
   clearFilters,
+  open,
 }) => {
+  const intl = useIntl();
   const quoteAssets = useQuoteAssets();
   const coins = Object.keys(quoteAssets);
   const exchanges = ["Binance", "Zignaly", "KuCoin"];
 
-  return (
-    <CustomFilters onClear={clearFilters} onClose={onClose} title="Filters">
-      <CustomSelect label="Coin" onChange={onCoinChange} options={coins} value={coin} />
+  return open ? (
+    <CustomFilters
+      onClear={clearFilters}
+      onClose={onClose}
+      title={intl.formatMessage({
+        id: "fil.filters",
+      })}
+    >
       <CustomSelect
-        label="Exchange"
+        label={intl.formatMessage({
+          id: "col.coin",
+        })}
+        onChange={onCoinChange}
+        options={coins}
+        search={true}
+        value={coin}
+      />
+      <CustomSelect
+        label={intl.formatMessage({
+          id: "accounts.exchange",
+        })}
         onChange={onExchangeChange}
         options={exchanges}
         value={exchange}
       />
     </CustomFilters>
-  );
+  ) : null;
 };
 
 export default ProvidersFilters;

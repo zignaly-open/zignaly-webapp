@@ -54,35 +54,35 @@
     margin-right: 5px;
   }
 
-  [class*="MUIDataTableToolbar-root"] {
+  [role="toolbar"] {
     padding: 0;
-  }
 
-  [class*="MUIDataTableToolbar-actions"] {
-    background: $transparentBackground;
-    border-bottom: 1px solid $borderColor;
-    box-sizing: boorder-box;
-    margin-bottom: 16px;
-    min-height: 70px;
-    padding: 10px 25px;
-    width: 20%;
+    > :last-child {
+      background: $transparentBackground;
+      border-bottom: 1px solid $borderColor;
+      box-sizing: boorder-box;
+      margin-bottom: 16px;
+      min-height: 70px;
+      padding: 10px 25px;
+      width: 15%;
 
-    @include media("<=sm") {
-      margin-bottom: 0;
-      width: 100%;
-    }
-  }
-
-  [class*="MUIDataTableToolbar-left"] {
-    padding: 0;
-    width: 80%;
-
-    @include media("<=sm") {
-      margin-bottom: 0;
-      width: 100%;
-
-      .customFilters {
+      @include media("<=sm") {
         margin-bottom: 0;
+        width: 100%;
+      }
+    }
+
+    > :first-child {
+      padding: 0;
+      width: 85%;
+
+      @include media("<=sm") {
+        margin-bottom: 0;
+        width: 100%;
+
+        .customFilters {
+          margin-bottom: 0;
+        }
       }
     }
   }

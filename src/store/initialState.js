@@ -93,7 +93,7 @@ const initialState = {
     languageCode: "en",
     darkStyle: false,
     displayColumns: {
-      spAnalytics: [
+      signalpAnalytics: [
         "percentageProfit",
         "signals",
         "sumPositions",
@@ -104,7 +104,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
-      ctAnalytics: [
+      copytAnalytics: [
         "percentageProfit",
         "signals",
         "sumPositions",

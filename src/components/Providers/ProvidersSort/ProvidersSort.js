@@ -6,12 +6,12 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
- * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {Object} ProvidersSortPropTypes
- * @property {Function} onChange Callback that delegate sorting changes to caller.
- * @property {MouseEventHandler} onClose Callback that delegate sorting toggle state to caller.
+ * @property {function} onChange Callback that delegate sorting changes to caller.
+ * @property {function} onClose Callback that delegate sorting toggle state to caller.
  * @property {string} sort value Selected value.
- * @property {MouseEventHandler} clearFilters Callback that delegate filters clearing to caller.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {boolean} open Flag to indicates if the sort bar is open.
  */
 
 /**
@@ -20,7 +20,7 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open }) => {
   const sorts = [
     {
       label: "Descending Results",
@@ -58,7 +58,7 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
 
   const intl = useIntl();
 
-  return (
+  return open ? (
     <Box className="providersSort">
       <CustomFilters
         onClear={clearFilters}
@@ -68,7 +68,7 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters }) => {
         <CustomSelect label="" onChange={onChange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
-  );
+  ) : null;
 };
 
 export default ProvidersSort;
