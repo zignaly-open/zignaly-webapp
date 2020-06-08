@@ -72,7 +72,7 @@ const BarChart = (props) => {
         //     // barPercentage: 0.5,
         //   label: "group 1",
         // backgroundColor: colorsOptions.backgroundColor,
-        backgroundColor: "red",
+        backgroundColor: chartData.values.map((v) => (v < 0 ? "#f63f82" : "#08a441")),
         // borderColor: colorsOptions.borderColor,
         // borderWidth: 24,
         //     fill: false,
@@ -127,7 +127,7 @@ const BarChart = (props) => {
         // left: 50,
         right: 0,
         top: 0,
-        bottom: 100,
+        bottom: 80,
       },
     },
     cornerRadius: 4,
@@ -204,7 +204,7 @@ const BarChart = (props) => {
           console.log(x);
           var image = new Image();
           image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
-          ctx.drawImage(image, x - 20, yAxis.bottom + 36 + 40, 40, 40);
+          ctx.drawImage(image, x - 20, yAxis.bottom + 33, 40, 40);
         });
       },
       //   beforeInit: function (chart, options) {
