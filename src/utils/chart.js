@@ -69,6 +69,11 @@ export const preparePieChartOptions = (chartData, colorsOptions) => {
         display: true,
         position: "right",
       },
+      elements: {
+        arc: {
+          borderWidth: 0,
+        },
+      },
     },
   };
 };
