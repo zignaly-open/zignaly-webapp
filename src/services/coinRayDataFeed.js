@@ -86,13 +86,15 @@ class CoinRayDataFeed {
       "2W",
     ];
 
-    // Notify to Trading View which options are supported.
-    callback({
-      supported_resolutions: resolutions,
-      supports_marks: false,
-      supports_time: true,
-      supports_timescale_marks: false,
-    });
+    setTimeout(() => {
+      // Notify to Trading View which options are supported.
+      callback({
+        supported_resolutions: resolutions,
+        supports_marks: false,
+        supports_time: true,
+        supports_timescale_marks: false,
+      });
+    }, 0);
   }
 
   /**
@@ -195,11 +197,15 @@ class CoinRayDataFeed {
           type: "spot",
         };
 
-        onSymbolResolvedCallback(symbolFound);
+        setTimeout(() => {
+          onSymbolResolvedCallback(symbolFound);
+        }, 0);
       }
     }
 
-    onResolveErrorCallback("not found");
+    setTimeout(() => {
+      onResolveErrorCallback("not found");
+    });
   }
 
   /**
