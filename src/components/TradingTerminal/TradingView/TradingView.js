@@ -3,10 +3,9 @@ import { widget as TradingViewWidget } from "../../../tradingView/charting_libra
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import CoinRayDataFeed from "../../../services/coinRayDataFeed";
 import tradeApi from "../../../services/tradeApiClient";
-import { throttle } from "lodash";
+import { isEmpty, throttle } from "lodash";
 import "./TradingView.scss";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { isEmpty } from "lodash";
 
 const TradingView = () => {
   const storeSession = useStoreSessionSelector();
