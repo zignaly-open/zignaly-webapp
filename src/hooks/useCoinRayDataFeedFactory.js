@@ -4,7 +4,7 @@ import { throttle } from "lodash";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
-import { mapExchangeConnectionToCoinRayId } from "../../types/utils/exchangeMapping";
+import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions";
 
 /**
  * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
