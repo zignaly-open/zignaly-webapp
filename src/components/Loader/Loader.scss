@@ -1,5 +1,4 @@
 .wrapper {
-  background: $black2;
   height: 100vh;
   position: fixed;
   width: 100%;
@@ -10,39 +9,55 @@
     height: 50px;
   }
 
-  .loader,
-  .loader:before,
-  .loader:after {
+  .loader {
     animation: load1 1s infinite ease-in-out;
-    background: #fff;
     height: 3em;
     width: 0.8em;
-  }
-
-  .loader {
     animation-delay: -0.16s;
-    color: #fff;
     font-size: 11px;
     margin: 20px auto;
     position: relative;
     text-indent: -9999em;
     transform: translateZ(0);
-  }
 
-  .loader:before,
-  .loader:after {
-    content: "";
-    position: absolute;
-    top: 0;
-  }
+    &.dark {
+      background: $white;
+      color: $white;
 
-  .loader:before {
-    animation-delay: -0.32s;
-    left: -1.5em;
-  }
+      &::before,
+      &::after {
+        background: $white;
+      }
+    }
 
-  .loader:after {
-    left: 1.5em;
+    &.light {
+      background: $black2;
+      color: $black2;
+
+      &::before,
+      &::after {
+        background: $black2;
+      }
+    }
+
+    &::before,
+    &::after {
+      animation: load1 1s infinite ease-in-out;
+      height: 3em;
+      width: 0.8em;
+      content: "";
+      position: absolute;
+      top: 0;
+    }
+
+    &::before {
+      animation-delay: -0.32s;
+      left: -1.5em;
+    }
+
+    &::after {
+      left: 1.5em;
+    }
   }
 }
 

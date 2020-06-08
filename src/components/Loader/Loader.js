@@ -1,9 +1,13 @@
 import React from "react";
 import "./Loader.scss";
 import { Box } from "@material-ui/core";
-import Logo from "../../images/logo/LogoWhite.svg";
+import LogoWhite from "../../images/logo/logoWhite.svg";
+import LogoBlack from "../../images/logo/logoBlack.svg";
+import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 const Loader = () => {
+  const storeSettings = useStoreSettingsSelector();
+
   return (
     <Box
       className="wrapper"
@@ -11,10 +15,11 @@ const Loader = () => {
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
+      bgcolor="background.paper"
     >
       <Box>
-        <Box className="loader"></Box>
-        <img src={Logo} alt="logo" className="logo" />
+        <Box className={"loader " + (storeSettings.darkStyle ? "dark" : "light")}></Box>
+        <img src={storeSettings.darkStyle ? LogoWhite : LogoBlack} alt="logo" className="logo" />
       </Box>
     </Box>
   );
