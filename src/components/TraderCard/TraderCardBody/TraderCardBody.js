@@ -18,7 +18,21 @@ import { useSelector } from "react-redux";
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
- *
+ */
+
+/**
+ * Format tooltip content.
+ * @param {ChartTooltipItem} tooltipItem Tooltip object.
+ * @returns {React.ReactNode} Tooltip content.
+ */
+const tooltipFormat = (tooltipItem) => (
+  <Box className="traderCardTooltip">
+    <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
+    <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
+  </Box>
+);
+
+/**
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {Provider} provider The provider to display.
@@ -32,7 +46,16 @@ import { useSelector } from "react-redux";
  */
 const TraderCard = (props) => {
   const { provider, showSummary } = props;
-  const { risk, isCopyTrading, followers, disable, dailyReturns } = provider;
+  const {
+    openPositions,
+    floating,
+    isCopyTrading,
+    followers,
+    disable,
+    dailyReturns,
+    id,
+    quote,
+  } = provider;
   /**
    * Settings darkStyle selector.
    *
@@ -43,22 +66,9 @@ const TraderCard = (props) => {
   const darkStyle = useSelector(darkStyleSelector);
 
   /**
-   * Format tooltip content.
-   * @param {ChartTooltipItem} tooltipItem Tooltip object.
-   * @returns {React.ReactNode} Tooltip content.
-   */
-  const tooltipFormat = (tooltipItem) => (
-    <Box className="contentTooltip">
-      <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
-      <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
-    </Box>
-  );
-
-  /**
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-
   //   let cumulativeTotalProfits = 0;
   //   let cumulativeTotalInvested = 0;
   const totalReturns = dailyReturns.reduce((acc, item) => {
@@ -80,7 +90,6 @@ const TraderCard = (props) => {
     chartData.labels.push(item.name);
     return acc;
   }, 0);
-
   let colorClass = "green";
 
   /**
@@ -112,7 +121,7 @@ const TraderCard = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <CustomToolip title={<FormattedMessage id="copyt.subtitle" />}>
+        <CustomToolip title={<FormattedMessage id="srv.returns.tooltip" />}>
           <Box
             className="returns"
             display="flex"
@@ -128,20 +137,24 @@ const TraderCard = (props) => {
           </Box>
         </CustomToolip>
 
-        <Box
-          alignItems="flex-end"
-          className="openPositions"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
+        <CustomToolip
+          title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
         >
-          <Typography className="green" variant="h4">
-            {risk}%
-          </Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.openpos" />
-          </Typography>
-        </Box>
+          <Box
+            alignItems="flex-end"
+            className="openPositions"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Typography className="green" variant="h4">
+              {+parseFloat(floating).toFixed(2)}%
+            </Typography>
+            <Typography variant="subtitle1">
+              <FormattedMessage id="srv.openpos" />
+            </Typography>
+          </Box>
+        </CustomToolip>
       </Box>
       <Box>
         <Box className="traderCardGraph">
@@ -198,7 +211,7 @@ const TraderCard = (props) => {
           </Box>
         </Box>
       </Box>
-      {showSummary && <UserSummary />}
+      {showSummary && <UserSummary providerId={id} quote={quote} />}
     </Box>
   );
 };

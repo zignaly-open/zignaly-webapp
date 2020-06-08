@@ -1,6 +1,10 @@
 .customTooltipPopper {
   transform: translate(0, -100%);
 
+  .innerPopper {
+    transform: translate(-50%, 0);
+  }
+
   .customTooltip {
     @extend %body1;
     background-color: $tooltipBackground;

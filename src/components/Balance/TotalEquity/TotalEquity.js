@@ -41,7 +41,7 @@ const TotalEquity = () => {
         justifyContent="space-between"
         width="100%"
       >
-        <TitleBar list={list} />
+        <TitleBar />
         <EquityFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
       </Box>
       <TotalEquityGraph list={list} />

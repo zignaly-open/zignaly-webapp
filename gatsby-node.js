@@ -19,6 +19,18 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
+  // Override position page route to support positionId argument.
+  if (page.path.match(/^\/copyTraders\/$/)) {
+    page.matchPath = "/copyTraders/*";
+    createPage(page);
+    return;
+  }
+  // Override position page route to support positionId argument.
+  if (page.path.match(/^\/signalProviders\/$/)) {
+    page.matchPath = "/signalProviders/*";
+    createPage(page);
+    return;
+  }
 };
 
 // Enable development support for serving Trading View static assets. Workaround

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
 import { isEmpty } from "lodash";
 import { navigate } from "gatsby";
-import { setUserBalance, setUserExchanges } from "../../../store/actions/user";
+import { setUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -70,8 +70,6 @@ const LoginForm = () => {
       };
 
       dispatch(setUserExchanges(authorizationPayload));
-      dispatch(setUserBalance(authorizationPayload));
-
       navigate("/dashboard/positions");
     }
   };

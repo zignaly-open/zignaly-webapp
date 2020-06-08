@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import "./ProvidersProfitsTable.scss";
 import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
-import tradeApi from "../../../services/tradeApiClient";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 import Table from "../../Table";
 
 /**
- * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  */
 
 /**
@@ -20,22 +17,13 @@ import Table from "../../Table";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'ctAnalytics'|'spAnalytics'} persistKey Key to save display columns settings.
+ * @property {ProvidersStatsCollection} stats Table stats data.
+ * @property {string} persistKey Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ title, persistKey }) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
-  const [stats, setStats] = useState([]);
-
+const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -63,6 +51,7 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
         setCellHeaderProps: () => ({ align: "center" }),
         setCellProps: () => ({ align: "center" }),
         viewColumns: false,
+        sort: false,
       },
     },
     {
@@ -89,6 +78,9 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
     {
       name: "sumTotalProfit",
       label: "col.profit.total",
+      options: {
+        customBodyRender: formatFloat,
+      },
     },
     {
       name: "sumTotalInvested",
@@ -99,7 +91,7 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
     },
     {
       name: "sumReturnOfInvestment",
-      label: "srv.investment.return",
+      label: "col.investment.return",
       options: {
         customBodyRender: formatFloat,
       },
@@ -432,28 +424,6 @@ const ProvidersProfitsTable = ({ title, persistKey }) => {
       },
     },
   ];
-
-  useEffect(() => {
-    const loadProvidersStats = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          ro: true,
-          quote: "BTC",
-          base: "all",
-          timeFrame: "2months",
-          DCAFilter: "anyDCA",
-        };
-        const responseData = await tradeApi.providersStatsGet(payload);
-        setStats(responseData);
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
-    };
-
-    loadProvidersStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const getMuiTheme = () =>
     createMuiTheme({

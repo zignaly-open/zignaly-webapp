@@ -1,22 +1,10 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
-
-/**
- * @typedef {import('../../../store/initialState').DefaultState} DefaultState
- * @typedef {import('../../../store/initialState').UserBalanceEntity} UserBalanceEntity
- */
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 const BalanceBox = () => {
-  /**
-   * User balance selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {UserBalanceEntity} Object that contains user balance properties.
-   */
-  const userBalanceSelector = (state) => state.user.balance;
-  const balance = useSelector(userBalanceSelector);
+  const storeUser = useStoreUserSelector();
 
   return (
     <Box
@@ -36,9 +24,8 @@ const BalanceBox = () => {
         <Typography className="title" variant="subtitle1">
           <FormattedMessage id="balance.available" />
         </Typography>
-        <Typography className="balance" variant="h5">
-          {balance.totalOpen}
-        </Typography>
+        <Typography variant="h5">BTC {storeUser.balance.totalFreeBTC}</Typography>
+        <Typography variant="subtitle2">USDT {storeUser.balance.totalFreeUSDT}</Typography>
       </Box>
       <Box
         alignItems="flex-start"
@@ -50,9 +37,8 @@ const BalanceBox = () => {
         <Typography className="title" variant="subtitle1">
           <FormattedMessage id="balance.invested" />
         </Typography>
-        <Typography className="balance" variant="h5">
-          {balance.totalInvested}
-        </Typography>
+        <Typography variant="h5">BTC {storeUser.balance.totalLockedBTC}</Typography>
+        <Typography variant="subtitle2">USDT {storeUser.balance.totalLockedUSDT}</Typography>
       </Box>
       <Box
         alignItems="flex-start"
@@ -64,11 +50,11 @@ const BalanceBox = () => {
         <Typography className="title" variant="subtitle1">
           <FormattedMessage id="col.plnumber" />
         </Typography>
-        <Typography
-          className={"balance " + (parseFloat(balance.totalProfit) > 0 ? "green" : "red")}
-          variant="h5"
-        >
-          {balance.totalProfit}
+        <Typography className={storeUser.balance.pnlBTC > 0 ? "green" : "red"} variant="h5">
+          BTC {storeUser.balance.pnlBTC}
+        </Typography>
+        <Typography className={storeUser.balance.pnlUSDT > 0 ? "green" : "red"} variant="subtitle2">
+          USDT {storeUser.balance.pnlUSDT}
         </Typography>
       </Box>
     </Box>
