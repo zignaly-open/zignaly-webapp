@@ -29,7 +29,7 @@ import "../Chart.roundedBarCharts";
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
-  const { chartData, horizontal } = props;
+  const { chartData, horizontal, tooltipFormat } = props;
   const chartRef = useRef(null);
 
   //   useEffect(() => {
@@ -97,7 +97,7 @@ const BarChart = (props) => {
             beginAtZero: true,
             fontColor: "#787878",
             fontSize: 14,
-            padding: 100,
+            padding: 75,
           },
           gridLines: {
             zeroLineColor: "#fff",
@@ -124,13 +124,31 @@ const BarChart = (props) => {
     },
     layout: {
       padding: {
-        // left: 50,
+        left: 25,
         right: 0,
-        top: 0,
-        bottom: 80,
+        top: 20,
+        bottom: 56,
       },
     },
     cornerRadius: 4,
+    tooltips: {
+      displayColors: false,
+      intersect: false,
+      mode: "index",
+      position: "nearest",
+      callbacks: {
+        // label: function (tooltipItems, data) {
+        //   console.log(tooltipItems, data);
+        //   return tooltipItems.yLabel + "%";
+        // },
+        label: tooltipFormat,
+      },
+    },
+    // hover: {
+    //   intersect: false,
+    //   mode: "index",
+    // },
+
     // plugins: {
     //   datalabels: {
     //     anchor: "center",
@@ -207,11 +225,6 @@ const BarChart = (props) => {
           ctx.drawImage(image, x - 20, yAxis.bottom + 33, 40, 40);
         });
       },
-      //   beforeInit: function (chart, options) {
-      //     chart.legend.afterFit = function () {
-      //       this.height = this.height + 1050;
-      //     };
-      //   },
     },
   ];
 

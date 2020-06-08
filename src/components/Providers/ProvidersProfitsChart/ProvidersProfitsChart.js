@@ -1,8 +1,10 @@
-import React from "react";
-import { Paper, Box } from "@material-ui/core";
+import React, { useState } from "react";
+import { Paper, Box, Typography, Tab, Tabs } from "@material-ui/core";
 import BarChart from "../../Graphs/BarChart";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import "./ProvidersProfitsChart.scss";
+import { formatFloat2Dec } from "../../../utils/format";
+import AnalyticsTabsMenu from "./AnalyticsTabsMenu";
 
 /**
  * @typedef {import("../../Graphs/LineChart/LineChart").ChartColorOptions} ChartColorOptions
@@ -31,8 +33,10 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   /**
    * @type {ChartData}
    */
-  const values = stats.map((s) => s.percentageProfit);
+  const values = stats.map((s) => formatFloat2Dec(s.percentageProfit));
   const labels = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
+  const tooltipFormat = (tooltipItems, data) =>
+    `${stats[tooltipItems.index].name}: ${tooltipItems.yLabel} %`;
   let chartData = { values, labels };
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -44,14 +48,63 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
     gradientColor2: "#e5f8ed",
   };
 
+  const [tabValue, setTabValue] = useState(0);
+
+  /**
+   * Map tab index to positions collection type.
+   *
+   * @returns {PositionsCollectionType} Collection type.
+   */
+  const mapIndexToCollectionType = () => {
+    switch (tabValue) {
+      case 1:
+        return "sumProfit";
+
+      default:
+        return "percentageProfit";
+    }
+  };
+
+  /**
+   * Event handler to change tab value.
+   *
+   * @param {React.ChangeEvent<{checked: boolean}>} event Tab index to set active.
+   * @param {Number} val Tab index to set active.
+   * @returns {void}
+   */
+  const changeTab = (event, val) => {
+    setTabValue(val);
+  };
+
+  const selectedType = mapIndexToCollectionType();
+
   return (
-    <Paper
-      title={intl.formatMessage({
-        id: "srv.profitspercentage",
-      })}
-      className="providersProfitsChart"
-    >
-      <BarChart chartData={chartData} />
+    <Paper className="providersProfitsChart">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        className="profitsHeader"
+      >
+        <Box display="flex" flexDirection="row">
+          <Typography
+            variant="h4"
+            className={tabValue === 0 ? "selected" : null}
+            onClick={() => setTabValue(0)}
+          >
+            <FormattedMessage id="srv.profitspercentage" />
+          </Typography>
+          <Typography
+            variant="h4"
+            className={tabValue === 1 ? "selected" : null}
+            onClick={() => setTabValue(1)}
+          >
+            <FormattedMessage id="srv.netprofit" />
+          </Typography>
+        </Box>
+        <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography>
+      </Box>
+      <BarChart chartData={chartData} tooltipFormat={tooltipFormat} type={selectedType} />
     </Paper>
   );
 };

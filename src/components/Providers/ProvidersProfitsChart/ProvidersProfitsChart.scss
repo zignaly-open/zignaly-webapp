@@ -1,5 +1,27 @@
 .providersProfitsChart {
+  margin-bottom: 14px;
+
+  .profitsHeader {
+    padding: 24px 24px;
+    border-bottom: solid 1px $borderColor;
+
+    h3 {
+      font-family: "PlexSans-Regular";
+    }
+
+    h4 {
+      margin-right: 27px;
+      opacity: 0.6;
+      cursor: pointer;
+
+      &.selected {
+        color: $purple;
+      }
+    }
+  }
+
   .barChart {
     height: 260px;
+    padding: 0 24px 16px;
   }
 }
