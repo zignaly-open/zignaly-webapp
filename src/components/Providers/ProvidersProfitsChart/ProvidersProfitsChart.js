@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, Tab, Tabs } from "@material-ui/core";
+import { Paper, Box, Typography, Tab, Tabs, useMediaQuery, useTheme } from "@material-ui/core";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./ProvidersProfitsChart.scss";
 import { formatFloat2Dec } from "../../../utils/format";
-import AnalyticsTabsMenu from "./AnalyticsTabsMenu";
 
 /**
  * @typedef {import("../../Graphs/LineChart/LineChart").ChartColorOptions} ChartColorOptions
@@ -29,15 +28,17 @@ import AnalyticsTabsMenu from "./AnalyticsTabsMenu";
  */
 const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   const intl = useIntl();
-  // todo: pass as props directly?
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
+
   /**
    * @type {ChartData}
    */
-  const values = stats.map((s) => formatFloat2Dec(s.percentageProfit));
-  const labels = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
+  const data = stats.map((s) => formatFloat2Dec(s.percentageProfit));
+  const images = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
   const tooltipFormat = (tooltipItems, data) =>
     `${stats[tooltipItems.index].name}: ${tooltipItems.yLabel} %`;
-  let chartData = { values, labels };
+
   /**
    * @type {ChartColorOptions} colorsOptions
    */
@@ -104,7 +105,13 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
         </Box>
         <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography>
       </Box>
-      <BarChart chartData={chartData} tooltipFormat={tooltipFormat} type={selectedType} />
+      <BarChart
+        data={data}
+        tooltipFormat={tooltipFormat}
+        type={selectedType}
+        labels={[]}
+        images={images}
+      />
     </Paper>
   );
 };

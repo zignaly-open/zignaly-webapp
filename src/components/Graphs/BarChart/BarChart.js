@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import "./BarChart.scss";
 import { Box } from "@material-ui/core";
 import { Chart, Bar, HorizontalBar } from "react-chartjs-2";
-// import "../chartjs-plugin-labels";
-// import "chartjs-plugin-labels";
 import "../Chart.roundedBarCharts";
+import { isEqual } from "lodash";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
@@ -22,6 +21,10 @@ import "../Chart.roundedBarCharts";
  * @property {ChartData} chartData Chart dataset.
  */
 
+// const MemoizedBar = React.memo(Bar, (prevProps, nextProps) =>
+//   isEqual(prevProps.data, nextProps.data),
+// );
+
 /**
  * Provides a wrapper to display a bar chart.
  *
@@ -29,50 +32,24 @@ import "../Chart.roundedBarCharts";
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
-  const { chartData, horizontal, tooltipFormat } = props;
+  const { data: values, labels, horizontal, tooltipFormat, images } = props;
   const chartRef = useRef(null);
-
-  //   useEffect(() => {
-  //     Chart.pluginService.register({
-  //       afterDraw: (chart, easing) => {
-  //         var ctx = chart.chart.ctx;
-  //         var xAxis = chart.scales["x-axis-0"];
-  //         var yAxis = chart.scales["y-axis-0"];
-  //         xAxis.ticks.forEach((value, index) => {
-  //           var x = xAxis.getPixelForTick(index);
-  //           console.log(x);
-  //           var image = new Image();
-  //           image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
-  //           ctx.drawImage(image, x - 40, yAxis.bottom - 36 - 40, 40, 40);
-  //         });
-  //       },
-  //       beforeInit: function (chart, options) {
-  //         console.log("a");
-  //         chart.legend.afterFit = function () {
-  //           console.log("aa");
-  //           this.height = this.height + 100;
-  //         };
-  //       },
-  //     });
-  //     return () => {
-  //       //   Chart.pluginService.unregister(this.horizonalLinePlugin);
-  //     };
-  //   }, []);
   /**
    * @type Chart.ChartData
    */
   const data = {
     // labels: chartData.labels,
-    labels: ["", "", "", ""],
+    labels: images && images.length ? values.map(() => "") : labels,
+    // labels: ["", ""],
     datasets: [
       {
-        data: chartData.values,
+        data: values,
         barThickness: 24,
         maxBarThickness: 24,
         //     // barPercentage: 0.5,
         //   label: "group 1",
         // backgroundColor: colorsOptions.backgroundColor,
-        backgroundColor: chartData.values.map((v) => (v < 0 ? "#f63f82" : "#08a441")),
+        backgroundColor: values.map((v) => (v < 0 ? "#f63f82" : "#08a441")),
         // borderColor: colorsOptions.borderColor,
         // borderWidth: 24,
         //     fill: false,
@@ -138,20 +115,33 @@ const BarChart = (props) => {
         label: tooltipFormat,
       },
     },
+    plugins: {
+      legendImages: images
+        ? {
+            images,
+          }
+        : false,
+    },
   };
 
   const plugins = [
     {
+      id: "legendImages",
       // Draw images at the bottom of the graph
       afterDraw: (chart, easing) => {
+        const { images } = chart.options.plugins.legendImages;
         var ctx = chart.chart.ctx;
         var xAxis = chart.scales["x-axis-0"];
         var yAxis = chart.scales["y-axis-0"];
+
         xAxis.ticks.forEach((value, index) => {
           var x = xAxis.getPixelForTick(index);
-          var image = new Image();
-          image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
-          ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
+          const imageOptions = images[index];
+          if (imageOptions) {
+            var image = new Image();
+            image.src = imageOptions.src;
+            ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
+          }
         });
       },
     },
