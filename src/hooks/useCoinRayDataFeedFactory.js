@@ -5,7 +5,12 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 
-export const useCoinRayDataFeedFactory = () => {
+/**
+ * Hook to create CoinRay Data Feed instance.
+ *
+ * @returns {CoinRayDataFeed|null} Data feed instance or null.
+ */
+const useCoinRayDataFeedFactory = () => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [coinRayToken, setCoinRayToken] = useState("");
@@ -80,3 +85,5 @@ export const useCoinRayDataFeedFactory = () => {
 
   return null;
 };
+
+export default useCoinRayDataFeedFactory;
