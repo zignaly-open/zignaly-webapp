@@ -94,17 +94,17 @@ const BarChart = (props) => {
       yAxes: [
         {
           ticks: {
-            beginAtZero: true,
-            fontColor: "#787878",
+            fontColor: "#191927",
             fontSize: 14,
-            padding: 75,
+            // padding: 75,
+            padding: 0,
+            // stepSize: 1,
           },
           gridLines: {
-            zeroLineColor: "#fff",
-            color: "#fff",
+            color: "transparent",
+            display: true,
             drawBorder: false,
-            //        lineWidth: 50
-            //         tickMarkLength: 0,
+            zeroLineColor: "rgba(0, 0, 0, 0.1)",
           },
         },
       ],
@@ -112,19 +112,17 @@ const BarChart = (props) => {
         {
           gridLines: {
             display: false,
-            tickMarkLength: 8,
           },
           ticks: {
-            fontSize: 12,
-            //         display: false,
-            //         min: 0,
+            display: false,
           },
         },
       ],
     },
     layout: {
       padding: {
-        left: 25,
+        // left: 25,
+        left: 0,
         right: 0,
         top: 20,
         bottom: 56,
@@ -137,92 +135,23 @@ const BarChart = (props) => {
       mode: "index",
       position: "nearest",
       callbacks: {
-        // label: function (tooltipItems, data) {
-        //   console.log(tooltipItems, data);
-        //   return tooltipItems.yLabel + "%";
-        // },
         label: tooltipFormat,
       },
     },
-    // hover: {
-    //   intersect: false,
-    //   mode: "index",
-    // },
-
-    // plugins: {
-    //   datalabels: {
-    //     anchor: "center",
-    //     align: "center",
-    //   },
-    //   labels: {
-    //     // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
-    //     render: "image",
-
-    //     // identifies whether or not labels of value 0 are displayed, default is false
-    //     showZero: true,
-
-    //     // position to draw label, available value is 'default', 'border' and 'outside'
-    //     // bar chart ignores this
-    //     // default is 'default'
-    //     position: "outside",
-
-    //     // set images when `render` is 'image'
-    //     images: chartData.labels,
-
-    //     // add padding when position is `outside`
-    //     // default is 2
-    //     outsidePadding: 4,
-
-    //     // add margin of text when position is `outside` or `border`
-    //     // default is 2
-    //     textMargin: 4,
-    //   },
-    // },
-    // animation: {
-    //   duration: 1000,
-    //   onProgress(chartAnimation) {
-    //     // let chartInstance = this.chart;
-    //     const chart = chartAnimation.chart;
-    //     let ctx = chart.ctx;
-    //     console.log(chart);
-
-    //     // ctx.fillStyle = this.scale.textColor
-
-    //     ctx.textAlign = "center";
-    //     ctx.textBaseline = "middle";
-    //     ctx.fillStyle = "#fff";
-
-    //     // chartData.values.forEach(function (dataset, i) {
-    //     chart.data.datasets.forEach(function (dataset, i) {
-    //       //   var label = dataset.label;
-    //       var meta = chart.controller.getDatasetMeta(i);
-    //       //   var total = dataset.data.reduce(function (total, num) {
-    //       //     return total + num;
-    //       //   });
-
-    //       meta.data.forEach(function (bar, index) {
-    //         // var data = (dataset.data[index] / total) * 100;
-    //         // data = Math.ceil(data) + "%";
-    //         console.log(bar);
-    //         ctx.fillText("AAAAAAAAAAAAAAAAA", bar._model.x - 15, bar._model.y);
-    //       });
-    //     });
-    //   },
-    // },
   };
 
   const plugins = [
     {
+      // Draw images at the bottom of the graph
       afterDraw: (chart, easing) => {
         var ctx = chart.chart.ctx;
         var xAxis = chart.scales["x-axis-0"];
         var yAxis = chart.scales["y-axis-0"];
         xAxis.ticks.forEach((value, index) => {
           var x = xAxis.getPixelForTick(index);
-          console.log(x);
           var image = new Image();
           image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
-          ctx.drawImage(image, x - 20, yAxis.bottom + 33, 40, 40);
+          ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
         });
       },
     },
