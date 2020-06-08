@@ -1227,6 +1227,35 @@ export function coinRayTokenResponseTransform(response) {
   return assign(createCoinRayTokenEmptyValueObject(), response);
 }
 
+function createMarketSymbolEmptyValueObject() {
+  return {
+    id: "",
+    symbol: "",
+    base: "",
+    quote: "",
+    baseId: "",
+    quoteId: "",
+    precision: { amount: 0, price: 0 },
+    limits: {
+      cost: { min: 0, max: 0 },
+      price: { min: 0, max: 0 },
+      amount: { min: 0, max: 0 },
+    },
+    coinrayQuote: "",
+    coinrayBase: "",
+  };
+}
+
+/**
+ * Transform exchange connection market data response to typed ExchangeSymbol.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {CoinRayToken} Coinray token value object.
+ */
+export function exchangeMarketDataResponseTransform(response) {
+  return assign(createMarketSymbolEmptyValueObject(), response);
+}
+
 /**
  * Transform quote assets response to typed QuoteAssetsDict.
  *

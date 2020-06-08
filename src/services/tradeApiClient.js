@@ -346,6 +346,21 @@ class TradeApiClient {
   }
 
   /**
+   * Get user exchange connnection market data.
+   *
+   * @param {AuthorizationPayload} payload Authorized exchange data payload.
+   * @returns {Promise<CoinRayToken>} Promise that resolves exchange market (symbols) data collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async getExchangeConnectionMarketData(payload) {
+    const endpointPath = "/fe/api.php?action=getPairsNew";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeMarketDataResponseTransform(responseData);
+  }
+
+  /**
    *
    * Get quote assets.
    *
