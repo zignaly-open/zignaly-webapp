@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import "./TradingView.scss";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
-import { useCoinRayDataFeedFactory } from "../../../hooks/useCoinRayDataFeedFactory";
+import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 
 const TradingView = () => {
   const dataFeed = useCoinRayDataFeedFactory();

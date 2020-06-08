@@ -4,11 +4,12 @@ import { throttle } from "lodash";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
+import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions";
 
 /**
  * Hook to create CoinRay Data Feed instance.
  *
- * @returns {CoinRayDataFeed|null} Data feed instance or null.
+ * @returns {CoinRayDataFeed|null} Data feed instance or null
  */
 const useCoinRayDataFeedFactory = () => {
   const storeSession = useStoreSessionSelector();
@@ -16,8 +17,7 @@ const useCoinRayDataFeedFactory = () => {
   const [coinRayToken, setCoinRayToken] = useState("");
   const [marketSymbolsData, setMarketSymbolsData] = useState([]);
   const symbol = "BTC/USDT";
-  // const exchangeKey = resolveCoinRayExchangeKey(exchangeData);
-  const exchangeKey = "BINA";
+  const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
