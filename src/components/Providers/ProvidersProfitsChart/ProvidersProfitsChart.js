@@ -1,8 +1,8 @@
 import React from "react";
-import { Paper } from "@material-ui/core";
+import { Paper, Box } from "@material-ui/core";
 import BarChart from "../../Graphs/BarChart";
 import { useIntl } from "react-intl";
-import Table from "../../Table";
+import "./ProvidersProfitsChart.scss";
 
 /**
  * @typedef {import("../../Graphs/LineChart/LineChart").ChartColorOptions} ChartColorOptions
@@ -25,25 +25,14 @@ import Table from "../../Table";
  * @param {ProvidersAnalyticsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats0 }) => {
+const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   const intl = useIntl();
   // todo: pass as props directly?
   /**
    * @type {ChartData}
    */
-  //   console.log(stats);
-  //   const values = stats.map((s) => s.percentageProfit);
-  const stats = [
-    {
-      percentageProfitW1: -1,
-      percentageProfitW2: 1,
-      percentageProfitW3: 0.5,
-    },
-  ];
-  const values = [-1, 1, 0.5];
-  const labels = ["W1", "W2", "W3"];
-  //   const labels = stats.map((s) => "W");
-  //   const labels = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
+  const values = stats.map((s) => s.percentageProfit);
+  const labels = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
   let chartData = { values, labels };
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -55,65 +44,14 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats0 }) => {
     gradientColor2: "#e5f8ed",
   };
 
-  let columns = [
-    {
-      name: "todo",
-      label: "--",
-      options: {
-        display: "true",
-        // customBodyRender: (val, tableMeta) => (
-        //   <img src={val} title={tableMeta.rowData[2]} width="30px" />
-        // ),
-        // setCellProps: (value) => ({
-        //   className: "test",
-        //   style: {
-        //     textAlign: "center",
-        //   },
-        // }),
-        // setCellHeaderProps: () => ({ style: { maxWidth: "140px" } }),
-        setCellProps: () => ({ width: "140px" }),
-        sort: false,
-        // viewColumns: false,
-        // sort: false,
-      },
-    },
-    {
-      name: "percentageProfitW1",
-      label: "w1",
-      options: {
-        display: "true",
-        setCellHeaderProps: () => ({ align: "center" }),
-        setCellProps: () => ({ align: "center" }),
-        sort: false,
-      },
-    },
-    {
-      name: "percentageProfitW2",
-      label: "w2",
-      options: {
-        display: "true",
-        setCellHeaderProps: () => ({ align: "center" }),
-        sort: false,
-      },
-    },
-    {
-      name: "percentageProfitW3",
-      label: "w3",
-      options: {
-        display: "true",
-        setCellHeaderProps: () => ({ align: "center" }),
-        sort: false,
-      },
-    },
-  ];
   return (
     <Paper
       title={intl.formatMessage({
         id: "srv.profitspercentage",
       })}
+      className="providersProfitsChart"
     >
       <BarChart chartData={chartData} />
-      <Table data={stats} columns={columns} />
     </Paper>
   );
 };

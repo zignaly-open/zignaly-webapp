@@ -90,6 +90,9 @@ const useProvidersAnalytics = (type) => {
           copyTradersOnly: type === "copyt",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
+        responseData.push(responseData[0]);
+        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -1.5 }));
+        responseData.push(responseData[0]);
         setStats(responseData);
       } catch (e) {
         // TODO: Display error in alert.

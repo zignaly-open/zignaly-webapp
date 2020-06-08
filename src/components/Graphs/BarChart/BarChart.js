@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import "./BarChart.scss";
 import { Box } from "@material-ui/core";
-import { Bar } from "react-chartjs-2";
+import { Chart, Bar, HorizontalBar } from "react-chartjs-2";
 // import "../chartjs-plugin-labels";
-import "chartjs-plugin-labels";
+// import "chartjs-plugin-labels";
+import "../Chart.roundedBarCharts";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
@@ -28,144 +29,55 @@ import "chartjs-plugin-labels";
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
-  const { chartData } = props;
+  const { chartData, horizontal } = props;
   const chartRef = useRef(null);
 
+  //   useEffect(() => {
+  //     Chart.pluginService.register({
+  //       afterDraw: (chart, easing) => {
+  //         var ctx = chart.chart.ctx;
+  //         var xAxis = chart.scales["x-axis-0"];
+  //         var yAxis = chart.scales["y-axis-0"];
+  //         xAxis.ticks.forEach((value, index) => {
+  //           var x = xAxis.getPixelForTick(index);
+  //           console.log(x);
+  //           var image = new Image();
+  //           image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
+  //           ctx.drawImage(image, x - 40, yAxis.bottom - 36 - 40, 40, 40);
+  //         });
+  //       },
+  //       beforeInit: function (chart, options) {
+  //         console.log("a");
+  //         chart.legend.afterFit = function () {
+  //           console.log("aa");
+  //           this.height = this.height + 100;
+  //         };
+  //       },
+  //     });
+  //     return () => {
+  //       //   Chart.pluginService.unregister(this.horizonalLinePlugin);
+  //     };
+  //   }, []);
   /**
    * @type Chart.ChartData
    */
   const data = {
-    labels: chartData.labels,
-    // labels: ["W1-W4", "W5-W9", "W10-W13"],
-
-    // labels: ["30.08.2019 00:08:00", "31.08.2019 00:08:00", "01.09.2019 00:08:00"],
-    // labels: ["W1", "W2", "W3", "W4"],
-    // data: [
-    //   [0.2, 0.8, -1.5, 0.4],
-    //   [1.2, 0.8, -1.5, 0.4],
-    //   [-0.2, 0.8, -1.5, 0.4],
-    //   [0.5, 0.8, -1.5, 0.4],
-    // ],
+    // labels: chartData.labels,
+    labels: ["", "", "", ""],
     datasets: [
-      //   {
-      //     label: "Float",
-      //     data: [
-      //       [0, 1],
-      //       [0, -1],
-      //       [0, 0.5],
-      //     ],
-      //     backgroundColor: "rgba(75, 192, 192, 0.2)",
-      //     borderColor: "rgba(75, 192, 192, 1)",
-      //     borderWidth: 1,
-      //     fill: false,
-      //     lineTension: 0,
-      //     type: "bar",
-      //   },
-      //   {
-      //     label: "Blue",
-      //     backgroundColor: "blue",
-      //     data: [3, 7, 4],
-      //     // barPercentage: 0.5,
-      //     // categoryPercentage: 0.3,
-      //   },
-      //   {
-      //     label: "Red",
-      //     backgroundColor: "red",
-      //     data: [4, 3, 5],
-      //   },
-      //   {
-      //     label: "Green",
-      //     backgroundColor: "green",
-      //     data: [7, 2, 6],
-      //   },
       {
         data: chartData.values,
-        barThickness: 6,
-        maxBarThickness: 8,
+        barThickness: 24,
+        maxBarThickness: 24,
         //     // barPercentage: 0.5,
-
-        //   data: [0.2, 0.8, -1.5, 0.4],
         //   label: "group 1",
         // backgroundColor: colorsOptions.backgroundColor,
-        // borderColor: colorsOptions.borderColor,
-      },
-      //   {
-      //     data: [0.2, 0.8, -1.5, 0.4],
-      //     label: "group 2",
-      //   },
-      //   {
-      //     data: [0.2, 0.8, -1.5, 0.4],
-      //     label: "group 3",
-      //   },
-      //   {
-      //     data: [0.2, 0.8, -1.5, 0.4],
-      //     label: "group 4",
-      //   },
-    ],
-  };
-
-  const data1 = {
-    labels: ["January", "February", "March"],
-    datasets: [
-      {
-        label: "January",
-        data: [
-          {
-            x: -10,
-            y: "January",
-          },
-          {
-            x: 0,
-            y: "February",
-          },
-          {
-            x: 10,
-            y: "February",
-          },
-        ],
-      },
-    ],
-  };
-
-  var data22 = {
-    labels: ["W1-W4", "W5-W9", "W10-W13"],
-    datasets: [
-      {
-        label: "Blue",
-        backgroundColor: "blue",
-        data: [3, 7, 4],
-      },
-      {
-        label: "Red",
         backgroundColor: "red",
-        data: [4, 3, 5],
+        // borderColor: colorsOptions.borderColor,
+        // borderWidth: 24,
+        //     fill: false,
+        //     lineTension: 0,
       },
-      {
-        label: "Green",
-        backgroundColor: "green",
-        data: [7, 2, 6],
-      },
-    ],
-  };
-
-  var dataa = {
-    labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W"],
-    datasets: [
-      {
-        label: "Blue",
-        backgroundColor: "blue",
-        data: [3, 7, 4, 8, 7, 4, -3, 0.7, 4],
-      },
-      //   {
-      //     label: "Red",
-      //     backgroundColor: "red",
-      //     data: [4, 3, 5],
-      //   },
-      //   {
-      //     label: "Green",
-      //     backgroundColor: "green",
-      //     data: [7, 2, 6],
-      //   },
     ],
   };
 
@@ -178,7 +90,6 @@ const BarChart = (props) => {
     legend: {
       display: false,
     },
-    barValueSpacing: 20,
     scales: {
       yAxes: [
         {
@@ -193,6 +104,7 @@ const BarChart = (props) => {
             color: "#fff",
             drawBorder: false,
             //        lineWidth: 50
+            //         tickMarkLength: 0,
           },
         },
       ],
@@ -210,6 +122,15 @@ const BarChart = (props) => {
         },
       ],
     },
+    layout: {
+      padding: {
+        // left: 50,
+        right: 0,
+        top: 0,
+        bottom: 100,
+      },
+    },
+    cornerRadius: 4,
     // plugins: {
     //   datalabels: {
     //     anchor: "center",
@@ -245,7 +166,7 @@ const BarChart = (props) => {
     //     // let chartInstance = this.chart;
     //     const chart = chartAnimation.chart;
     //     let ctx = chart.ctx;
-    //     console.log(chart, chartRef);
+    //     console.log(chart);
 
     //     // ctx.fillStyle = this.scale.textColor
 
@@ -253,7 +174,8 @@ const BarChart = (props) => {
     //     ctx.textBaseline = "middle";
     //     ctx.fillStyle = "#fff";
 
-    //     chartData.values.forEach(function (dataset, i) {
+    //     // chartData.values.forEach(function (dataset, i) {
+    //     chart.data.datasets.forEach(function (dataset, i) {
     //       //   var label = dataset.label;
     //       var meta = chart.controller.getDatasetMeta(i);
     //       //   var total = dataset.data.reduce(function (total, num) {
@@ -263,56 +185,41 @@ const BarChart = (props) => {
     //       meta.data.forEach(function (bar, index) {
     //         // var data = (dataset.data[index] / total) * 100;
     //         // data = Math.ceil(data) + "%";
+    //         console.log(bar);
     //         ctx.fillText("AAAAAAAAAAAAAAAAA", bar._model.x - 15, bar._model.y);
     //       });
     //     });
     //   },
     // },
-
-    // hover: {
-    //   intersect: false,
-    //   mode: "index",
-    //   animationDuration: 0,
-    // },
-    // tooltips: {
-    //   mode: "index",
-    //   intersect: false,
-    //   position: "nearest",
-    //   displayColors: false,
-    //   enabled: false,
-    // },
-    // scales: {
-    //   xAxes: [
-    //     {
-    //       ticks: {
-    //         display: false,
-    //         fontFamily: "PlexSans-Bold",
-    //       },
-    //       gridLines: {
-    //         display: false,
-    //         tickMarkLength: 0,
-    //       },
-    //     },
-    //   ],
-    //   yAxes: [
-    //     {
-    //       stacked: true,
-    //       ticks: {
-    //         display: false,
-    //       },
-    //       gridLines: {
-    //         display: false,
-    //         tickMarkLength: 0,
-    //       },
-    //     },
-    //   ],
-    // },
   };
 
-  console.log(chartData);
+  const plugins = [
+    {
+      afterDraw: (chart, easing) => {
+        var ctx = chart.chart.ctx;
+        var xAxis = chart.scales["x-axis-0"];
+        var yAxis = chart.scales["y-axis-0"];
+        xAxis.ticks.forEach((value, index) => {
+          var x = xAxis.getPixelForTick(index);
+          console.log(x);
+          var image = new Image();
+          image.src = "https://zignaly.com/images/providersLogo/5c0e732a6c20cd6ad01f0522.png";
+          ctx.drawImage(image, x - 20, yAxis.bottom + 36 + 40, 40, 40);
+        });
+      },
+      //   beforeInit: function (chart, options) {
+      //     chart.legend.afterFit = function () {
+      //       this.height = this.height + 1050;
+      //     };
+      //   },
+    },
+  ];
+
+  const BarComponent = horizontal ? HorizontalBar : Bar;
+
   return (
     <Box className="barChart">
-      <Bar data={data} options={options} ref={chartRef} />
+      <BarComponent data={data} options={options} ref={chartRef} plugins={plugins} />
     </Box>
   );
 };
