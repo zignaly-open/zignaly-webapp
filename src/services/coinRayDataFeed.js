@@ -17,6 +17,7 @@ import tradeApi from "./tradeApiClient";
  * @typedef {import("../tradingView/datafeed-api").HistoryCallback} HistoryCallback
  * @typedef {import("../tradingView/datafeed-api").Bar} Bar
  * @typedef {import("../tradingView/datafeed-api").SubscribeBarsCallback} SubscribeBarsCallback
+ * @typedef {import("../tradingView/datafeed-api").LibrarySymbolInfo} LibrarySymbolInfo
  */
 
 /**
@@ -165,29 +166,32 @@ class CoinRayDataFeed {
       const pricescale = Math.round(1 / symbol.limits.price.min);
 
       if (symbolBaseQuote === symbolName || symbolQuoteBase === symbolName) {
+        /**
+         * @type LibrarySymbolInfo
+         */
         const symbolFound = {
           base_name: [symbol.base],
+          // @ts-ignore
           coinrayBase: symbol.coinrayBase,
+          // @ts-ignore
           coinrayQuote: symbol.coinrayQuote,
-          currency_code: symbol.quote,
-          data_status: "streaming",
           description: symbol.base + " / " + symbol.quote,
           exchange: this.exchange,
-          full_name: symbol.base + "/" + symbol.quote,
+          full_name: symbolBaseQuote,
           has_daily: true,
           has_intraday: true,
           has_weekly_and_monthly: true,
+          listed_exchange: this.exchange,
           minmov: 1,
           name: symbolBaseQuote,
           pricescale: pricescale,
-          quote: symbol.quote,
           session: "24x7",
+          data_status: "streaming",
           ticker: symbolBaseQuote,
           timezone: "Etc/UTC",
-          type: "",
+          type: "spot",
         };
 
-        // @ts-ignore
         onSymbolResolvedCallback(symbolFound);
       }
     }
