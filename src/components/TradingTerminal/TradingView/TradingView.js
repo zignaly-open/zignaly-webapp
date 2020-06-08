@@ -79,16 +79,26 @@ const TradingView = () => {
       });
   }, []);
 
-  // Create Trading View widget when data feed token is ready.
-  useEffect(() => {
-    if (coinRayToken !== "" && !isEmpty(marketSymbolsData)) {
-      const tvInstance = createTradigViewWidget();
+  const bootstrapWidget = () => {
+    /**
+     * @typedef {import("../../../tradingView/charting_library.min.js").IChartingLibraryWidget} Widget
+     * @type {Widget|null} tvInstacne
+     */
+    let tvInstance = null;
 
-      return () => {
-        tvInstance.remove();
-      };
+    if (coinRayToken !== "" && !isEmpty(marketSymbolsData)) {
+      tvInstance = createTradigViewWidget();
     }
-  }, [coinRayToken]);
+
+    return () => {
+      if (tvInstance) {
+        tvInstance.remove();
+      }
+    };
+  };
+
+  // Create Trading View widget when data feed token is ready.
+  useEffect(bootstrapWidget, [coinRayToken, marketSymbolsData]);
 
   return <div className="tradingView" id="trading_view_chart" />;
 };
