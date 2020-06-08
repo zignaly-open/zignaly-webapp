@@ -1,3 +1,5 @@
+const express = require(`express`);
+
 /**
  * Implement Gatsby's Node APIs in this file.
  *
@@ -29,4 +31,11 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
+};
+
+// Enable development support for serving Trading View static assets. Workaround
+// until a fix is implemented for:
+// https://github.com/gatsbyjs/gatsby/issues/13072
+exports.onCreateDevServer = ({ app }) => {
+  app.use(express.static("public"));
 };
