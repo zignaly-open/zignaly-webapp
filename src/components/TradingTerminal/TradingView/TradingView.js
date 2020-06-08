@@ -6,11 +6,6 @@ import { useCoinRayDataFeedFactory } from "../../../hooks/useCoinRayDataFeedFact
 
 const TradingView = () => {
   const dataFeed = useCoinRayDataFeedFactory();
-  const createTradigViewWidget = () => {
-    const widgetOptions = createWidgetOptions(dataFeed, "BTCUSDT");
-    return new TradingViewWidget(widgetOptions);
-  };
-
   const bootstrapWidget = () => {
     /**
      * @typedef {import("../../../tradingView/charting_library.min.js").IChartingLibraryWidget} Widget
@@ -19,7 +14,8 @@ const TradingView = () => {
     let tvInstance = null;
 
     if (dataFeed) {
-      tvInstance = createTradigViewWidget();
+      const widgetOptions = createWidgetOptions(dataFeed, "BTCUSDT");
+      tvInstance = new TradingViewWidget(widgetOptions);
     }
 
     return () => {
