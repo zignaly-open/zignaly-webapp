@@ -14,10 +14,39 @@ const TradingView = () => {
    */
   let tvInstance = null;
 
+  const drawLine = () => {
+    const orderPrice = 9600;
+    const chart = tvInstance.chart();
+    const coloring3 = "rgb(117, 16, 197)";
+    chart
+      .createPositionLine({})
+      .setPrice(orderPrice)
+      .setQuantity(`${orderPrice}`)
+      .setText("Price")
+      // horizontal line
+      .setLineColor(coloring3)
+      // content text
+      .setBodyTextColor(coloring3)
+      // content text border
+      .setBodyBorderColor(coloring3)
+      // accompanying number
+      .setQuantityBackgroundColor(coloring3)
+      // accompanying number border
+      .setQuantityBorderColor(coloring3);
+  };
+
+  const customizeChart = () => {
+    console.log("Chart is ready.");
+    if (tvInstance) {
+      drawLine();
+    }
+  };
+
   const bootstrapWidget = () => {
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
       tvInstance = new TradingViewWidget(widgetOptions);
+      tvInstance.onChartReady(customizeChart);
     }
 
     return () => {
