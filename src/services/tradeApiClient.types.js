@@ -1262,6 +1262,10 @@ export function coinRayTokenResponseTransform(response) {
  */
 
 /**
+ * @typedef {Array<MarketSymbol>} MarketSymbolsCollection
+ */
+
+/**
  * Create empty market symbol value object.
  *
  * @returns {MarketSymbol} Empty market symbol value object.
@@ -1286,13 +1290,27 @@ function createMarketSymbolEmptyValueObject() {
 }
 
 /**
- * Transform exchange connection market data response to typed ExchangeSymbol.
+ * Transform exchange connection market data response to typed collection.
  *
  * @param {*} response Trade API get quotes list raw response.
- * @returns {MarketSymbol} Coinray token value object.
+ * @returns {MarketSymbolsCollection} Coinray token value object.
  */
 export function exchangeMarketDataResponseTransform(response) {
-  return assign(createMarketSymbolEmptyValueObject(), response);
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of market symbols.");
+  }
+
+  return response.map(exchangeMarketDataItemTransform);
+}
+
+/**
+ * Transform market data response item to typed MarketSymbol.
+ *
+ * @param {*} symbolsDataItem Market data symbol.
+ * @returns {MarketSymbol} Market data symbol value object.
+ */
+function exchangeMarketDataItemTransform(symbolsDataItem) {
+  return assign(createMarketSymbolEmptyValueObject(), symbolsDataItem);
 }
 
 /**

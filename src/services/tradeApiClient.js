@@ -14,6 +14,7 @@ import {
   connectedProviderUserInfoResponseTransform,
   serverTimeResponseTransform,
   coinRayTokenResponseTransform,
+  exchangeMarketDataResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -35,6 +36,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
+ * @typedef {import('./tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -349,11 +351,11 @@ class TradeApiClient {
    * Get user exchange connnection market data.
    *
    * @param {AuthorizationPayload} payload Authorized exchange data payload.
-   * @returns {Promise<CoinRayToken>} Promise that resolves exchange market (symbols) data collection.
+   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market (symbols) data collection.
    *
    * @memberof TradeApiClient
    */
-  async getExchangeConnectionMarketData(payload) {
+  async exchangeConnectionMarketDataGet(payload) {
     const endpointPath = "/fe/api.php?action=getPairsNew";
     const responseData = await this.doRequest(endpointPath, payload);
 
