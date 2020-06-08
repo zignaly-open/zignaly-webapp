@@ -7,6 +7,8 @@ import tradeApi from "./tradeApiClient";
  */
 
 /**
+ *
+ * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
  * @typedef {import("../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
@@ -34,8 +36,9 @@ import tradeApi from "./tradeApiClient";
 /**
  * Prices data feed from CoinRay provider.
  *
- * @class CoinRayDataFeed
+ * @implements {IBasicDataFeed}
  * @property {TradeApiClient} tradeApi API client.
+ * @returns {IBasicDataFeed} Trading View Chart data feed.
  */
 class CoinRayDataFeed {
   /**
@@ -234,7 +237,7 @@ class CoinRayDataFeed {
   /**
    * Get price bar for a given symbol.
    *
-   * @param {MarketSymbol} symbolData Market symbol data.
+   * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Data resolution.
    * @param {number} startDate Get data since.
    * @param {number} endDate Get data to.
@@ -267,7 +270,9 @@ class CoinRayDataFeed {
     };
 
     this.getCandlesData(
+      // @ts-ignore
       symbolData.coinrayBase,
+      // @ts-ignore
       symbolData.coinrayQuote,
       resolution,
       startDate,
@@ -298,7 +303,7 @@ class CoinRayDataFeed {
   /**
    * Subscribe Trading View to real time data websocket.
    *
-   * @param {MarketSymbol} symbolData Market symbol data.
+   * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Prices data resolution.
    * @param {SubscribeBarsCallback} onTick Notify tick to chart.
    * @returns {Void} None.
@@ -308,6 +313,7 @@ class CoinRayDataFeed {
   // eslint-disable-next-line max-params
   subscribeBars(symbolData, resolution, onTick) {
     const exchangeCode = this.exchangeKey;
+    // @ts-ignore
     const symbolForCoinray = `${exchangeCode}_${symbolData.coinrayQuote}_${symbolData.coinrayBase}`;
 
     /**

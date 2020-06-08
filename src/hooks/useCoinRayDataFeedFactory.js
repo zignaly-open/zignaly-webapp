@@ -84,7 +84,9 @@ const useCoinRayDataFeedFactory = (symbol) => {
   };
 
   if (coinRayToken && marketSymbolsData) {
-    return new CoinRayDataFeed(options);
+    const dataFeed = new CoinRayDataFeed(options);
+
+    return /** @type IBasicDataFeed */ (dataFeed);
   }
 
   return null;
