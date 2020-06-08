@@ -5,16 +5,18 @@ import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 
 const TradingView = () => {
-  const dataFeed = useCoinRayDataFeedFactory();
-  const bootstrapWidget = () => {
-    /**
-     * @typedef {import("../../../tradingView/charting_library.min.js").IChartingLibraryWidget} Widget
-     * @type {Widget|null} tvInstacne
-     */
-    let tvInstance = null;
+  const selectedSymbol = "BTCUSDT";
+  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
+  /**
+   * @typedef {import("../../../tradingView/charting_library.min.js").IChartingLibraryWidget} Widget
+   * @type {Widget|null} tvInstacne
+   */
+  let tvInstance = null;
+
+  const bootstrapWidget = () => {
     if (dataFeed) {
-      const widgetOptions = createWidgetOptions(dataFeed, "BTCUSDT");
+      const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
       tvInstance = new TradingViewWidget(widgetOptions);
     }
 

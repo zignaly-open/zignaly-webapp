@@ -13,14 +13,14 @@ import { mapExchangeConnectionToCoinRayId } from "../../types/utils/exchangeMapp
 /**
  * Hook to create CoinRay Data Feed instance.
  *
+ * @param {string} symbol Market symbol to load data form.
  * @returns {IBasicDataFeed|null} Data feed instance or null
  */
-const useCoinRayDataFeedFactory = () => {
+const useCoinRayDataFeedFactory = (symbol) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [coinRayToken, setCoinRayToken] = useState("");
   const [marketSymbolsData, setMarketSymbolsData] = useState([]);
-  const symbol = "BTC/USDT";
   const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
   const getCoinrayToken = async () => {
