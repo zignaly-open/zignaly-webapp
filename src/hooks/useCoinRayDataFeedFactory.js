@@ -4,12 +4,16 @@ import { throttle } from "lodash";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
-import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions";
+import { mapExchangeConnectionToCoinRayId } from "../../types/utils/exchangeMapping";
+
+/**
+ * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
+ */
 
 /**
  * Hook to create CoinRay Data Feed instance.
  *
- * @returns {CoinRayDataFeed|null} Data feed instance or null
+ * @returns {IBasicDataFeed|null} Data feed instance or null
  */
 const useCoinRayDataFeedFactory = () => {
   const storeSession = useStoreSessionSelector();
