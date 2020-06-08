@@ -5,10 +5,14 @@ import CoinRayDataFeed from "../../../services/coinRayDataFeed";
 import tradeApi from "../../../services/tradeApiClient";
 import { throttle } from "lodash";
 import "./TradingView.scss";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { isEmpty } from "lodash";
 
 const TradingView = () => {
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const [coinRayToken, setCoinRayToken] = useState("");
+  const [marketSymbolsData, setMarketSymbolsData] = useState([]);
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
@@ -38,7 +42,7 @@ const TradingView = () => {
       exchange: "Binance",
       exchangeKey,
       symbol,
-      symbolsData: "",
+      symbolsData: marketSymbolsData,
       tradeApiToken: storeSession.tradeApi.accessToken,
       coinRayToken: coinRayToken,
       regenerateAccessToken: getCoinrayToken,
@@ -83,11 +87,26 @@ const TradingView = () => {
     getCoinrayToken().then((token) => {
       setCoinRayToken(token);
     });
+
+    const marketDataPayload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: storeSettings.selectedExchange.internalId,
+    };
+
+    tradeApi
+      .exchangeConnectionMarketDataGet(marketDataPayload)
+      .then((data) => {
+        console.log("Market data: ", data);
+        setMarketSymbolsData(data);
+      })
+      .catch((e) => {
+        alert(`ERROR: ${e.message}`);
+      });
   }, []);
 
   // Create Trading View widget when data feed token is ready.
   useEffect(() => {
-    if (coinRayToken !== "") {
+    if (coinRayToken !== "" && !isEmpty(marketSymbolsData)) {
       const tvInstance = createTradigViewWidget();
 
       return () => {
