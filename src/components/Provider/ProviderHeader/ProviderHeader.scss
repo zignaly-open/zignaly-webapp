@@ -1,12 +1,5 @@
 .providerHeader {
   width: 100%;
-
-  .titleBox {
-    box-sizing: border-box;
-    height: 50px;
-    margin-bottom: 16px;
-    width: 100%;
-  }
 }
 
 @include media("<=sm") {

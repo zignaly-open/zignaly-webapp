@@ -1350,7 +1350,7 @@ function createConnectedProviderUserInfoEntity(response) {
 /**
  *
  * @param {*} response
- * @returns {DefaulProviderGetObject}
+ * @returns {DefaultProviderGetObject}
  */
 
 export function providerGetResponseTransform(response) {

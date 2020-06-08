@@ -7,7 +7,7 @@
   min-width: 250px;
 
   span {
-    font-family: "PlexSans-Medium";
+    font-family: "PlexSans-SemiBold";
     font-size: 16px;
     letter-spacing: 1px;
     text-transform: capitalize;
@@ -39,7 +39,7 @@
   }
 
   &.loadMoreButton {
-    background: $white;
+    background: transparent;
     border: 2px solid $purple;
     color: $purple;
     min-width: 250px;

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./ProviderHeader.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
 import { createProviderRoutes } from "../../../utils/routesMapping";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import ProviderHeaderActions from "./ProviderHeaderActions";
+import ProviderHeaderInfo from "./ProviderHeaderInfo";
 
 /**
  * Provides the navigation bar for the dashboard.
  *
  * @returns {JSX.Element} Component JSX.
  */
-const DashboardHeader = () => {
+const ProviderHeader = () => {
   const storeViews = useStoreViewsSelector();
   const providerId = location.pathname.split("/")[2];
   const [links, setLinks] = useState(createProviderRoutes(providerId, storeViews.provider).links);
@@ -22,19 +24,17 @@ const DashboardHeader = () => {
   }, [storeViews.provider.id]);
 
   return (
-    <Box className="providerHeader">
-      <Box
-        alignItems="center"
-        className="titleBox"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-start"
-      >
-        <Typography variant="h1">{storeViews.provider.name}</Typography>
-      </Box>
+    <Box
+      className="providerHeader"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
+      <ProviderHeaderActions />
+      <ProviderHeaderInfo />
       <SubNavHeader links={links} />
     </Box>
   );
 };
 
-export default DashboardHeader;
+export default ProviderHeader;
