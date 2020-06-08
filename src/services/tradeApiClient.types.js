@@ -1227,6 +1227,45 @@ export function coinRayTokenResponseTransform(response) {
   return assign(createCoinRayTokenEmptyValueObject(), response);
 }
 
+/**
+ * @typedef {Object} MarketSymbol
+ * @property {string} id
+ * @property {string} symbol
+ * @property {string} base
+ * @property {string} quote
+ * @property {string} baseId
+ * @property {string} quoteId
+ * @property {PricePrecision} precision
+ * @property {SymbolLimits} limits
+ * @property {string} coinrayQuote
+ * @property {string} coinrayBase
+ */
+
+/**
+ * @typedef {Object} SymbolLimits
+ * @property {AmountLimit} cost:
+ * @property {AmountLimit} price:
+ * @property {AmountLimit} amount:
+ */
+
+/**
+ * @typedef {Object} AmountLimit
+ * @property {number} min:
+ * @property {number} max:
+ */
+
+/**
+ * @typedef {Object} PricePrecision
+ *
+ * @property {number} amount:
+ * @property {number} price:
+ */
+
+/**
+ * Create empty market symbol value object.
+ *
+ * @returns {MarketSymbol} Empty market symbol value object.
+ */
 function createMarketSymbolEmptyValueObject() {
   return {
     id: "",
@@ -1250,7 +1289,7 @@ function createMarketSymbolEmptyValueObject() {
  * Transform exchange connection market data response to typed ExchangeSymbol.
  *
  * @param {*} response Trade API get quotes list raw response.
- * @returns {CoinRayToken} Coinray token value object.
+ * @returns {MarketSymbol} Coinray token value object.
  */
 export function exchangeMarketDataResponseTransform(response) {
   return assign(createMarketSymbolEmptyValueObject(), response);
