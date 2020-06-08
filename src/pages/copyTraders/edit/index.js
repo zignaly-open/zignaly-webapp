@@ -19,7 +19,7 @@ import { compose } from "recompose";
 
 const CopyTradersProfile = (props) => {
   const storeViews = useStoreViewsSelector();
-  return <Box>dynamic route for profile </Box>;
+  return <Box>dynamic route for edit </Box>;
 };
 
 export default compose(withProviderLayout)(CopyTradersProfile);

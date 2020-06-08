@@ -1,4 +1,8 @@
 /**
+ *
+ * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ */
+/**
  * @typedef {Object} NavigationLink Navigation link object.
  * @property {string} id Link ID.
  * @property {string} to Link path.
@@ -134,5 +138,72 @@ export const routesMapping = (path) => {
           },
         ],
       };
+  }
+};
+
+/**
+ * Map path to section navigation object.
+ *
+ * @param {DefaultProviderGetObject} provider Path to map section links for.
+ * @param {String} providerId
+ * @returns {SectionNavigation} A section navigation object.
+ */
+
+export const createProviderRoutes = (providerId, provider) => {
+  if (provider.id) {
+    let data = {
+      id: "providerProfile",
+      subtitleId: "",
+      subtitle2Id: "",
+      links: [
+        {
+          id: "srv.profile",
+          to: `/copyTraders/${provider.id}/profile`,
+        },
+        {
+          id: "srv.analytics",
+          to: `/copyTraders/${provider.id}/analytics`,
+        },
+      ],
+    };
+    if (provider.isCopyTrading) {
+      data.links.push({
+        id: "srv.positions",
+        to: `/copyTraders/${provider.id}/positions`,
+      });
+      if (provider.isAdmin) {
+        data.links.push({
+          id: "srv.management",
+          to: `/copyTraders/${provider.id}/management`,
+        });
+      }
+    }
+    if (provider.isAdmin) {
+      data.links.push({
+        id: "srv.edit",
+        to: `/copyTraders/${provider.id}/edit`,
+      });
+      data.links.push({
+        id: "srv.users",
+        to: `/copyTraders/${provider.id}/users`,
+      });
+    }
+    return data;
+  } else {
+    return {
+      id: "providerProfile",
+      subtitleId: "",
+      subtitle2Id: "",
+      links: [
+        {
+          id: "srv.profile",
+          to: `/copyTraders/${providerId}/profile`,
+        },
+        {
+          id: "srv.analytics",
+          to: `/copyTraders/${providerId}/analytics`,
+        },
+      ],
+    };
   }
 };
