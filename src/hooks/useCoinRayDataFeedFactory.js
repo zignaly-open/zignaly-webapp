@@ -57,7 +57,8 @@ export const useCoinRayDataFeedFactory = () => {
     const marketDataPromise = getMarketData();
 
     Promise.all([tokenPromise, marketDataPromise]).then((data) => {
-      console.log("Dependend data: ", data);
+      setCoinRayToken(data[0]);
+      setMarketSymbolsData(data[1]);
     });
   };
 
