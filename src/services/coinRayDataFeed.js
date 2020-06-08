@@ -372,6 +372,16 @@ class CoinRayDataFeed {
       );
     }
   }
+
+  /**
+   * Get symbols data.
+   *
+   * @returns {MarketSymbolsCollection} Market symbols collection.
+   * @memberof CoinRayDataFeed
+   */
+  getSymbolsData() {
+    return this.symbolsData;
+  }
 }
 
 export default CoinRayDataFeed;
