@@ -36,7 +36,6 @@ const TradingView = () => {
   };
 
   const customizeChart = () => {
-    console.log("Chart is ready.");
     if (tvInstance) {
       drawLine();
     }
