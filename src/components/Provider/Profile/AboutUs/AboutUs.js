@@ -10,7 +10,7 @@ import { FormattedMessage } from "react-intl";
 /**
  * Provides the navigation bar for the dashboard.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const AboutUs = ({ provider }) => {

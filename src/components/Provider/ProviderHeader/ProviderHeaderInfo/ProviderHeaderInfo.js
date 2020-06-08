@@ -28,7 +28,7 @@ const ProviderHeaderInfo = () => {
         <FormattedMessage id="copyt.trading" />
         <Box className="imageBox">
           {storeViews.provider.exchanges.map((item, index) => (
-            <ExchangeIcon key={index} exchange={item} size="small" />
+            <ExchangeIcon exchange={item} key={index} size="small" />
           ))}
         </Box>
       </Typography>

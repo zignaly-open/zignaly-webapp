@@ -47,16 +47,17 @@ const CopyTraders = ({ location }) => {
     if (storeViews.provider.id !== providerId) {
       loadProvider();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
 
   return (
     <Router>
-      <Profile providerId={providerId} path="/copyTraders/:providerId/profile" />
-      <Edit providerId={providerId} path="/copyTraders/:providerId/edit" />
-      <Management providerId={providerId} path="/copyTraders/:providerId/management" />
-      <Analytics providerId={providerId} path="/copyTraders/:providerId/analytics" />
-      <Users providerId={providerId} path="/copyTraders/:providerId/users" />
-      <Positions providerId={providerId} path="/copyTraders/:providerId/positions" />
+      <Profile path="/copyTraders/:providerId/profile" providerId={providerId} />
+      <Edit path="/copyTraders/:providerId/edit" providerId={providerId} />
+      <Management path="/copyTraders/:providerId/management" providerId={providerId} />
+      <Analytics path="/copyTraders/:providerId/analytics" providerId={providerId} />
+      <Users path="/copyTraders/:providerId/users" providerId={providerId} />
+      <Positions path="/copyTraders/:providerId/positions" providerId={providerId} />
     </Router>
   );
 };

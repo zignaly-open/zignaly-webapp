@@ -1,4 +1,5 @@
 import tradeApi from "../../services/tradeApiClient";
+import { showLoader } from "./ui";
 
 export const GET_PROVIDER = "GET_PROVIDER_ACTION";
 
@@ -17,6 +18,7 @@ export const GET_PROVIDER = "GET_PROVIDER_ACTION";
 export const setProvider = (payload) => {
   return async (dispatch) => {
     try {
+      dispatch(showLoader(true));
       const responseData = await tradeApi.providerGet(payload);
       const action = {
         type: GET_PROVIDER,
@@ -24,6 +26,7 @@ export const setProvider = (payload) => {
       };
 
       dispatch(action);
+      dispatch(showLoader(false));
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }

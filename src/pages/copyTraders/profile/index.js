@@ -26,12 +26,12 @@ const CopyTradersProfile = (props) => {
   const storeViews = useStoreViewsSelector();
   return (
     <Box
+      alignItems="flex-start"
       className="profilePage"
       display="flex"
       flexDirection="row"
-      justifyContent="space-between"
-      alignItems="flex-start"
       flexWrap="wrap"
+      justifyContent="space-between"
     >
       <Box bgcolor="grid.main" className="aboutBox">
         <AboutUs provider={storeViews.provider} />

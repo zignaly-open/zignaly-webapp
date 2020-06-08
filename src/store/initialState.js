@@ -68,6 +68,7 @@
  * @typedef {Object} DefaultUIObject
  * @property {DefaultUIModalObject} modal
  * @property {DefaultUIAlertsObject} alerts
+ * @property {Boolean} loader
  */
 
 /**
@@ -218,6 +219,7 @@ const initialState = {
       success: {},
       error: {},
     },
+    loader: false,
   },
   views: {
     provider: {

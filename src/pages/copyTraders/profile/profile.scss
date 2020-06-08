@@ -2,27 +2,30 @@
   width: 100%;
 
   .aboutBox {
-    width: calc(46% - 20px);
     box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-right: 20px;
     margin-bottom: 20px;
+    margin-right: 20px;
     min-height: 250px;
+    width: calc(46% - 20px);
   }
+
   .whoWeAreBox {
-    width: 54%;
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     min-height: 250px;
-  }
-  .strategyBox {
-    width: calc(46% - 20px);
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    min-height: 430px;
-  }
-  .performanceBox {
     width: 54%;
+  }
+
+  .strategyBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    min-height: 430px;
+    width: calc(46% - 20px);
+  }
+
+  .performanceBox {
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     min-height: 430px;
+    width: 54%;
   }
 }

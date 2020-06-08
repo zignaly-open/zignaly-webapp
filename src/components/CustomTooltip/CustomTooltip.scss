@@ -12,8 +12,8 @@
     color: $tooltipText;
     font-size: 12px;
     padding: 5px 10px;
-    transform: translate(-50%, 0) !important; // sass-lint:disable-line no-important
-    transition: none !important; // sass-lint:disable-line no-important
+    transform: translate(-50%, 0) ; // sass-lint:disable-line no-important
+    transition: none ; // sass-lint:disable-line no-important
 
     .label {
       font-family: "PlexSans-Regular";

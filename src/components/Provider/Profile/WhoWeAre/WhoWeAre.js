@@ -8,20 +8,19 @@ import { FormattedMessage } from "react-intl";
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const Strategy = ({ provider }) => {
   return (
     <Box
       alignItems="flex-start"
+      bgcolor="grid.main"
       className="whoWeAre"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      bgcolor="grid.main"
     >
       <Box
         alignItems="flex-start"
@@ -50,7 +49,7 @@ const Strategy = ({ provider }) => {
           display="flex"
           flexDirection="row"
           justifyContent="flex-start"
-        ></Box>
+        />
       </Box>
       <Typography variant="body1">{provider.website}</Typography>
     </Box>

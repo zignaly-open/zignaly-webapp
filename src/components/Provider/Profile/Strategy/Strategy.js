@@ -10,26 +10,26 @@ import { FormattedMessage } from "react-intl";
 /**
  * Provides the navigation bar for the dashboard.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const Strategy = ({ provider }) => {
   return (
     <Box
       alignItems="flex-start"
+      bgcolor="grid.main"
       className="strategy"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      bgcolor="grid.main"
     >
       <Box
-        width="100%"
+        alignItems="center"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
         mb={2}
+        width="100%"
       >
         <Typography variant="h3">
           <FormattedMessage id="srv.strategy" />

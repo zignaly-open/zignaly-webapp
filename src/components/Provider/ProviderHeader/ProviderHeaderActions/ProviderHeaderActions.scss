@@ -3,9 +3,9 @@
   width: 100%;
 
   .providerLogo {
-    width: 40px;
     height: 40px;
     margin-right: 16px;
+    width: 40px;
   }
 
   h1,
@@ -16,14 +16,14 @@
   h4 {
     font-family: "PlexSans-Regular";
     b {
-      margin-left: 5px;
       font-family: "PlexSans-Bold";
+      margin-left: 5px;
     }
   }
 
   .submitButton,
   .loadMoreButton {
-    min-width: 215px;
     margin-right: 40px;
+    min-width: 215px;
   }
 }

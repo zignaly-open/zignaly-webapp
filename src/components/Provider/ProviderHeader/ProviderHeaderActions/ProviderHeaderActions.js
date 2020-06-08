@@ -24,9 +24,9 @@ const ProviderHeaderActions = () => {
       justifyContent="flex-start"
     >
       <img
-        src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
-        onError={(e) => (e.target.src = LogoIcon)}
         className="providerLogo"
+        onError={(e) => (e.target.src = LogoIcon)}
+        src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
       />
       <Typography variant="h1">{storeViews.provider.name}</Typography>
       {storeViews.provider.exchangeInternalId && (

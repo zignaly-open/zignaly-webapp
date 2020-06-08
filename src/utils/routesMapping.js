@@ -189,7 +189,7 @@ export const createProviderRoutes = (providerId, provider) => {
       });
     }
     return data;
-  } else {
+  }
     return {
       id: "providerProfile",
       subtitleId: "",
@@ -205,5 +205,4 @@ export const createProviderRoutes = (providerId, provider) => {
         },
       ],
     };
-  }
 };
