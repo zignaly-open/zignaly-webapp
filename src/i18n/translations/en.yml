@@ -329,6 +329,7 @@ srv.profitweeks: "Profitable Weeks"
 srv.strategy: "Strategy"
 srv.totalvol: "Total Trading Volume"
 srv.who: "Who are we"
+srv.strategy.subtitle: "Open positions will not be copied."
 
 signalp.title: "SIGNAL-PROVIDERS"
 signalp.subtitle: "Set up automatic trading based on trading signals provided by expert traders."

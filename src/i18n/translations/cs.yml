@@ -329,6 +329,7 @@ srv.profitweeks: "CH-Profitable Weeks"
 srv.strategy: "CH-Strategy"
 srv.totalvol: "CH-Total Trading Volume"
 srv.who: "CH-Who are we"
+srv.strategy.subtitle: "CH-Open positions will not be copied."
 
 signalp.title: "CH-SIGNAL-PROVIDERS"
 signalp.subtitle: "CH-Set up automatic trading based on trading signals provided by expert traders."
