@@ -6,6 +6,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { isEmpty, throttle } from "lodash";
 import "./TradingView.scss";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 
 const TradingView = () => {
   const storeSession = useStoreSessionSelector();
@@ -52,31 +53,7 @@ const TradingView = () => {
 
   const createTradigViewWidget = () => {
     const dataFeed = getDataFeedService();
-    console.log("Data Feed: ", dataFeed);
-
-    /**
-     * @typedef {import("../../../tradingView/charting_library.min").TradingTerminalWidgetOptions} TTWOptions
-     * @type {TTWOptions} widgetOptions
-     */
-    const widgetOptions = {
-      datafeed: dataFeed,
-      symbol: "BTCUSDT",
-      interval: "30",
-      // eslint-disable-next-line camelcase
-      container_id: "trading_view_chart",
-      library_path: "/trading-view/",
-      locale: "en",
-      disabled_features: ["use_localstorage_for_settings"],
-      enabled_features: ["study_templates"],
-      charts_storage_url: "https://saveload.tradingview.com",
-      charts_storage_api_version: "1.1",
-      client_id: "tradingview.com",
-      user_id: "public_user_id",
-      fullscreen: false,
-      autosize: true,
-      studies_overrides: {},
-      user_exchanges: [],
-    };
+    const widgetOptions = createWidgetOptions(dataFeed, "BTCUSDT");
 
     return new TradingViewWidget(widgetOptions);
   };
@@ -95,7 +72,6 @@ const TradingView = () => {
     tradeApi
       .exchangeConnectionMarketDataGet(marketDataPayload)
       .then((data) => {
-        console.log("Market data: ", data);
         setMarketSymbolsData(data);
       })
       .catch((e) => {
