@@ -32,10 +32,14 @@ const CopyTraderButton = ({ provider }) => {
 
   const copyThisTrader = () => {
     if (storeUser.exchangeConnections.length > 0) {
-      if (provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase())) {
-        showCopyModal(true);
+      if (provider.exchanges.length && provider.exchanges[0] !== "") {
+        if (provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase())) {
+          showCopyModal(true);
+        } else {
+          alert("this trader doesn't trade with your selected exchange.");
+        }
       } else {
-        alert("this trader doesn't trade with your selected exchange.");
+        showCopyModal(true);
       }
     } else {
       alert("You need to add an exchange in order to copy this trader.");
@@ -77,9 +81,14 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {provider.exchangeInternalId && (
+      {provider.exchangeInternalId && !provider.disable && (
         <CustomButton className="loadMoreButton" onClick={stopCopying} loading={stopCopyLoader}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
+        </CustomButton>
+      )}
+      {provider.exchangeInternalId && provider.disable && (
+        <CustomButton className="submitButton" onClick={copyThisTrader}>
+          <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       )}
       {!provider.exchangeInternalId && (

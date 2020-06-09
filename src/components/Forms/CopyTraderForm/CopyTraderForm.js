@@ -23,7 +23,7 @@ import { setProvider } from "../../../store/actions/views";
  */
 const CopyTraderForm = ({ provider, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const { errors, handleSubmit, register } = useForm();
+  const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -39,24 +39,33 @@ const CopyTraderForm = ({ provider, onClose }) => {
    */
   const onSubmit = async (data) => {
     try {
-      setLoading(true);
-      const payload = {
-        allocatedBalance: data.allocatedBalance,
-        balanceFilter: true,
-        connected: provider.connected ? provider.connected : false,
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-        exchangeInternalId: storeSettings.selectedExchange.internalId,
-      };
-      const response = await tradeApi.providerConnect(payload);
-      if (response) {
-        const payload2 = {
+      let added = parseFloat(data.allocatedBalance);
+      let needed =
+        typeof provider.minAllocatedBalance === "string"
+          ? parseFloat(provider.minAllocatedBalance)
+          : provider.minAllocatedBalance;
+      if (added >= needed) {
+        setLoading(true);
+        const payload = {
+          allocatedBalance: data.allocatedBalance,
+          balanceFilter: true,
+          connected: provider.connected ? provider.connected : false,
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
+          exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        dispatch(setProvider(payload2));
-        setLoading(false);
-        onClose();
+        const response = await tradeApi.providerConnect(payload);
+        if (response) {
+          const payload2 = {
+            token: storeSession.tradeApi.accessToken,
+            providerId: provider.id,
+          };
+          dispatch(setProvider(payload2));
+          setLoading(false);
+          onClose();
+        }
+      } else {
+        setError("allocatedBalance", "invalid amount");
       }
     } catch (e) {
       alert(e.message);
@@ -108,10 +117,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
               fullWidth
               inputRef={register({
                 required: true,
-                min: provider.minAllocatedBalance,
               })}
               name="allocatedBalance"
-              type="text"
               variant="outlined"
             />
             <span className={errors.allocatedBalance ? "errorText" : ""}>
