@@ -1,23 +1,20 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, Tab, Tabs, useMediaQuery, useTheme } from "@material-ui/core";
+import { Paper, Box, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import BarChart from "../../Graphs/BarChart";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import "./ProvidersProfitsChart.scss";
 import { formatFloat2Dec } from "../../../utils/format";
 
 /**
- * @typedef {import("../../Graphs/LineChart/LineChart").ChartColorOptions} ChartColorOptions
- * @typedef {import("../../Graphs/LineChart/LineChart").ChartData} ChartData
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  */
 
 /**
  * @typedef {Object} ProvidersAnalyticsPropTypes
- * @property {string} type Type of provider to retreive.
- * @property {string} quote
- * @property {OptionType} base
- * @property {string} timeFrame
  * @property {ProvidersStatsCollection} stats Table stats data.
+ * @property {string} quote Selected quote (base currency).
+ * @property {string} base Selected base (pair).
+ * @property {string} timeFrame Selected time frame.
  */
 
 /**
@@ -26,19 +23,17 @@ import { formatFloat2Dec } from "../../../utils/format";
  * @param {ProvidersAnalyticsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
-  const intl = useIntl();
+const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  /**
-   * @type {ChartData}
-   */
-  const values = stats.map((s) => formatFloat2Dec(s.percentageProfit));
+  const values = stats.map((s) => s.percentageProfit);
   const images = stats.map((s) => s.logoUrl);
   const options = {};
-  const tooltipFormat = (tooltipItems, data) =>
-    `${stats[tooltipItems.index].name}: ${tooltipItems[isMobile ? "xLabel" : "yLabel"]} %`;
+  const tooltipFormat = (tooltipItems /* data */) =>
+    `${stats[tooltipItems.index].name}: ${formatFloat2Dec(
+      tooltipItems[isMobile ? "xLabel" : "yLabel"],
+    )} %`;
 
   const [tabValue, setTabValue] = useState(0);
 
@@ -47,15 +42,15 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
    *
    * @returns {PositionsCollectionType} Collection type.
    */
-  const mapIndexToCollectionType = () => {
-    switch (tabValue) {
-      case 1:
-        return "sumProfit";
+  //   const mapIndexToCollectionType = () => {
+  //     switch (tabValue) {
+  //       case 1:
+  //         return "sumProfit";
 
-      default:
-        return "percentageProfit";
-    }
-  };
+  //       default:
+  //         return "percentageProfit";
+  //     }
+  //   };
 
   /**
    * Event handler to change tab value.
@@ -64,46 +59,47 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
    * @param {Number} val Tab index to set active.
    * @returns {void}
    */
-  const changeTab = (event, val) => {
-    setTabValue(val);
-  };
+  //   const changeTab = (event, val) => {
+  //     setTabValue(val);
+  //   };
 
-  const selectedType = mapIndexToCollectionType();
+  //   const selectedType = mapIndexToCollectionType();
 
   return (
     <Paper className="providersProfitsChart">
       <Box
+        className="profitsHeader"
         display="flex"
         flexDirection="row"
-        justifyContent="space-between"
-        className="profitsHeader"
         flexWrap="wrap"
+        justifyContent="space-between"
       >
         <Box display="flex" flexDirection="row">
           <Typography
-            variant="h4"
             className={tabValue === 0 ? "selected" : null}
             onClick={() => setTabValue(0)}
+            variant="h4"
           >
             <FormattedMessage id="srv.profitspercentage" />
           </Typography>
           <Typography
-            variant="h4"
             className={tabValue === 1 ? "selected" : null}
             onClick={() => setTabValue(1)}
+            variant="h4"
           >
             <FormattedMessage id="srv.netprofit" />
           </Typography>
         </Box>
-        <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography>
+        {/* <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography> */}
+        <Typography variant="h3">{`${timeFrame} / ${quote} / ${base}`}</Typography>
       </Box>
       <BarChart
-        options={options}
-        values={values}
-        tooltipFormat={tooltipFormat}
+        adjustHeightToContent={isMobile}
         horizontal={isMobile}
         images={images}
-        adjustHeightToContent={isMobile}
+        options={options}
+        tooltipFormat={tooltipFormat}
+        values={values}
       />
     </Paper>
   );

@@ -45,20 +45,17 @@ const ProvidersAnalytics = ({ type }) => {
         quotes={quotes}
         timeFrame={timeFrame}
         timeFrames={timeFrames}
-        // type={type}
       />
       <ProvidersProfitsChart
-        type={type}
-        timeFrame={timeFrame}
+        base={base.label}
         quote={quote}
-        base={base.val}
         stats={stats}
+        timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}
         stats={stats}
         title={<FormattedMessage id={`${type}.performance`} />}
-        // type={type}
       />
     </Box>
   );

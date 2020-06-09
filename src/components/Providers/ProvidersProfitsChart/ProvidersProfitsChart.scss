@@ -3,17 +3,17 @@
   padding-bottom: 24px;
 
   .profitsHeader {
-    padding: 24px 24px;
     border-bottom: solid 1px $borderColor;
+    padding: 24px;
 
     h3 {
       font-family: "PlexSans-Regular";
     }
 
     h4 {
+      cursor: pointer;
       margin-right: 27px;
       opacity: 0.6;
-      cursor: pointer;
 
       &.selected {
         color: $purple;
@@ -30,8 +30,8 @@
 @include media("<=sm") {
   .providersProfitsChart {
     h3 {
-      padding-top: 5px;
       font-size: 16px;
+      padding-top: 5px;
     }
   }
 }

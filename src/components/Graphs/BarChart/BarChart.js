@@ -1,40 +1,32 @@
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, { useRef } from "react";
 import "./BarChart.scss";
 import { Box } from "@material-ui/core";
-import { Chart, Bar, HorizontalBar } from "react-chartjs-2";
+import { Bar, HorizontalBar } from "react-chartjs-2";
 import "../Chart.roundedBarCharts";
-import { isEqual } from "lodash";
 
 /**
- * @typedef {import('chart.js').ChartData} Chart.ChartData
- * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
+ * @typedef {import('chart.js').ChartData} ChartData
+ * @typedef {import('chart.js').ChartOptions} ChartOptions
+ * @typedef {import('chart.js').ChartPluginsOptions} ChartPluginsOptions
+//  * @typedef {import('chart.js').ChartTooltipCallback} ChartTooltipCallback
+ * @typedef {import('chart.js').Chart} Chart
  */
 
 /**
- * @typedef {Object} ChartData
+ * @typedef {Object} BarChartPropTypes
  * @property {Array<Number>} values Chart values.
- * @property {Array<String>} labels Chart labels.
+ * @property {Array<String>} [labels] Chart labels.
+ * @property {Array<String>} [images] Chart images (used instead of labels).
+ * @property {boolean} [horizontal] Flag to display the bars horizontally.
+ * @property {boolean} [adjustHeightToContent] Adjust thw height of the canvas dynamicaly to fit its content. (Horizontal only)
+ * @property {function} tooltipFormat Function to format data based on selected value.
+ * @property {ChartOptions} options Custom user options to override.
  */
-
-/**
- * @typedef {Object} LineChartPropTypes
- * @property {ChartData} chartData Chart dataset.
- */
-
-const MemoizedBar = React.memo(Bar, (prevProps, nextProps) =>
-  isEqual(prevProps.data, nextProps.data),
-);
-
-const MemoizedHorizontalBar = React.memo(
-  HorizontalBar,
-  (prevProps, nextProps) =>
-    isEqual(prevProps.data, nextProps.data) && prevProps.height === nextProps.height,
-);
 
 /**
  * Provides a wrapper to display a bar chart.
  *
- * @param {LineChartPropTypes} props Component properties.
+ * @param {BarChartPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
@@ -50,7 +42,7 @@ const BarChart = (props) => {
   const chartRef = useRef(null);
 
   /**
-   * @type Chart.ChartData
+   * @type ChartData
    */
   const data = {
     labels: images && images.length ? values.map(() => "") : labels,
@@ -90,14 +82,14 @@ const BarChart = (props) => {
     },
     ticks: {
       display: true,
-      //   padding: horizontal ? 10 : 0,
+      padding: horizontal ? 10 : 0,
     },
     // categoryPercentage: 1.0,
     // barPercentage: 1.0,
   };
 
   /**
-   * @type Chart.ChartOptions
+   * @type ChartOptions
    */
   let options = {
     responsive: true,
@@ -125,7 +117,7 @@ const BarChart = (props) => {
       mode: "index",
       position: "nearest",
       callbacks: {
-        title: (tooltipItems, data) => "",
+        title: (/** tooltipItems, data**/) => "",
         label: tooltipFormat,
       },
     },
@@ -139,19 +131,40 @@ const BarChart = (props) => {
     },
   };
 
+  /**
+   * @type {ChartPluginsOptions}
+   */
   const plugins = [
     {
       id: "legendImages",
-      // Draw images at the bottom of the graph
-      afterDraw: (chart, easing) => {
+      /**
+       * @typedef {Object} ChartWithScales
+       * @property {*} scales
+       *
+       * @typedef {Chart & ChartWithScales} ExtendedChart
+       */
+      /**
+       * Draw images at the bottom of the graph
+       * @param {ExtendedChart} chart Chart instance.
+       * @returns {void}
+       */
+      afterDraw: (chart) => {
         if (!chart.data.datasets) return;
-        const { images, horizontal } = chart.options.plugins.legendImages;
-        var ctx = chart.chart.ctx;
-        var xAxis = chart.scales["x-axis-0"];
-        var yAxis = chart.scales["y-axis-0"];
+        const {
+          images: legendImages,
+          horizontal: isHorizontal,
+        } = chart.options.plugins.legendImages;
+        let ctx = chart.chart.ctx;
+        let xAxis = chart.scales["x-axis-0"];
+        let yAxis = chart.scales["y-axis-0"];
 
+        /**
+         * @param {HTMLImageElement} image The image to draw.
+         * @param {number} index Data infex.
+         * @returns {void}
+         */
         const drawImage = (image, index) => {
-          if (horizontal) {
+          if (isHorizontal) {
             // Draw image on the left
             const y = yAxis.getPixelForTick(index);
             const size = 26;
@@ -165,8 +178,8 @@ const BarChart = (props) => {
         };
 
         chart.data.datasets[0].data.forEach((value, index) => {
-          const imageSrc = images[index];
-          var image = new Image();
+          const imageSrc = legendImages[index];
+          let image = new Image();
           image.src = imageSrc;
           if (!image.complete) {
             image.onload = () => drawImage(image, index);
@@ -181,19 +194,21 @@ const BarChart = (props) => {
   // Merge user options
   options = Object.assign(options, customOptions);
 
-  const BarComponent = horizontal ? HorizontalBar : MemoizedBar;
+  const BarComponent = horizontal ? HorizontalBar : Bar;
 
   let height = 0;
   if (horizontal && adjustHeightToContent) {
     // Calculate optimal height to display all the bars.
     const BAR_GAP = 3;
     const X_AXIS_HEIGHT = 60;
-    height = values.length * (data.datasets[0].barThickness + BAR_GAP * 2) + X_AXIS_HEIGHT;
+    let barThickness = data.datasets[0].barThickness;
+    barThickness = typeof barThickness === "number" ? barThickness : 0;
+    height = values.length * (barThickness + BAR_GAP * 2) + X_AXIS_HEIGHT;
   }
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <BarComponent data={data} options={options} ref={chartRef} redraw={true} plugins={plugins} />
+      <BarComponent data={data} options={options} plugins={plugins} redraw={true} ref={chartRef} />
     </Box>
   );
 };
