@@ -6,6 +6,7 @@ import "./ProvidersProfitsChart.scss";
 import { formatFloat2Dec } from "../../../utils/format";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderStats} ProviderStats
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
@@ -27,10 +28,22 @@ import { formatFloat2Dec } from "../../../utils/format";
 const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [tabValue, setTabValue] = useState(0);
 
-  const values = stats.map((s) => parseFloat(s.percentageProfit));
+  /**
+   * @type {'percentageProfit'|'sumTotalProfit'}
+   */
+  let key = "percentageProfit";
+  let unit = "%";
+  if (tabValue === 1) {
+    key = "sumTotalProfit";
+    unit = quote;
+  }
+
+  const values = stats.map((s) => parseFloat(s[key])).sort((a, b) => b - a);
   const images = stats.map((s) => s.logoUrl);
   const options = {};
+
   /**
    * @param {ChartTooltipItem} tooltipItems Tooltip itwm.
    * @returns {string} Tooltip text.
@@ -38,9 +51,7 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const tooltipFormat = (tooltipItems /* data */) =>
     `${stats[tooltipItems.index].name}: ${formatFloat2Dec(
       tooltipItems[isMobile ? "xLabel" : "yLabel"],
-    )} %`;
-
-  const [tabValue, setTabValue] = useState(0);
+    )} ${unit}`;
 
   /**
    * Map tab index to positions collection type.
@@ -95,7 +106,6 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
             <FormattedMessage id="srv.netprofit" />
           </Typography>
         </Box>
-        {/* <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography> */}
         <Typography variant="h3">{`${timeFrame} / ${quote} / ${base}`}</Typography>
       </Box>
       <BarChart
