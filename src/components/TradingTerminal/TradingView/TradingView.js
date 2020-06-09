@@ -153,7 +153,7 @@ const TradingView = () => {
           size="small"
           state={modalVisible}
         >
-          <LeverageForm />
+          <LeverageForm max={125} min={1} value={1} />
         </Modal>
         <Box
           className="leverageButton"
