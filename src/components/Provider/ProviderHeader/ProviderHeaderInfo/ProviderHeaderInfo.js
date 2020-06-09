@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProviderHeaderInfo.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
+
 /**
  * Provides the navigation bar for the dashboard.
  *

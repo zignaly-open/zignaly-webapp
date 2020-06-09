@@ -274,6 +274,7 @@ srv.returns.tooltip: "CH-The calculated net profit after applying the exchange f
 trader.others: "CH-You and {count} others are copying this trader"
 trader.people: "CH-people copying this trader"
 trader.returnsice: "CH-Return since copying"
+trader.start: "CH-Start Copying"
 trader.stop: "CH-STOP COPYING"
 trader.view: "CH-VIEW TRADER"
 provider.others: "CH-You and {count} others are listening this provider"

@@ -31,6 +31,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
+ * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
@@ -356,6 +357,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return connectedProviderUserInfoResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {ConnectProviderPayload} payload Get providers stats payload.
+
+   * @returns
+   *
+   * @memberof TradeApiClient
+   */
+  async providerConnect(payload) {
+    const endpointPath = "/fe/api.php?action=createProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

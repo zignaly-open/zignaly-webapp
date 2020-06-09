@@ -5,6 +5,7 @@ import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
+import CopyTraderButton from "../CopyTraderButton";
 /**
  * Provides the navigation bar for the dashboard.
  *
@@ -13,7 +14,7 @@ import LogoIcon from "../../../../images/logo/logoIcon.svg";
 const ProviderHeaderActions = () => {
   const storeViews = useStoreViewsSelector();
 
-  const copyThisTrader = () => {};
+  const payFee = () => {};
 
   return (
     <Box
@@ -29,16 +30,7 @@ const ProviderHeaderActions = () => {
         src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
       />
       <Typography variant="h1">{storeViews.provider.name}</Typography>
-      {storeViews.provider.exchangeInternalId && (
-        <CustomButton className="loadMoreButton" onClick={copyThisTrader}>
-          <FormattedMessage id="copyt.stopcopyingtrader" />
-        </CustomButton>
-      )}
-      {!storeViews.provider.exchangeInternalId && (
-        <CustomButton className="submitButton" onClick={copyThisTrader}>
-          <FormattedMessage id="copyt.copythistrader" />
-        </CustomButton>
-      )}
+      <CopyTraderButton provider={storeViews.provider} />
       <Typography variant="h4">
         <FormattedMessage id="copyt.trial" />
         <b>
@@ -47,7 +39,7 @@ const ProviderHeaderActions = () => {
             : 0}
         </b>
       </Typography>
-      <CustomButton className="textPurple" onClick={copyThisTrader}>
+      <CustomButton className="textPurple" onClick={payFee}>
         <FormattedMessage id="copyt.paymonthlyfee" />
       </CustomButton>
     </Box>

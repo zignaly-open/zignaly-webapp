@@ -35,6 +35,16 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ConnectProviderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} allocatedBalance
+ * @property {String} exchangeInternalId
+ * @property {Boolean} balanceFilter
+ * @property {Boolean} connected
+ */
+
+/**
  * @typedef {Object} UserLoginResponse
  * @property {string} token User access token.
  * @property {string} firstName User first name.
