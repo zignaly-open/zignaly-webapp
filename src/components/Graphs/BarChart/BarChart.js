@@ -217,7 +217,7 @@ const BarChart = (props) => {
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <BarComponent data={data} options={options} plugins={plugins} redraw={true} ref={chartRef} />
+      <BarComponent data={data} options={options} plugins={plugins} ref={chartRef} />
     </Box>
   );
 };
