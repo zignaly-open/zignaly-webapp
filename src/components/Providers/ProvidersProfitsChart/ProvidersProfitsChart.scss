@@ -25,3 +25,12 @@
     padding: 0 24px 16px;
   }
 }
+
+@include media("<=sm") {
+  .providersProfitsChart {
+    h3 {
+      padding-top: 5px;
+      font-size: 16px;
+    }
+  }
+}

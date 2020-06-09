@@ -86,6 +86,7 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
         flexDirection="row"
         justifyContent="space-between"
         className="profitsHeader"
+        flexWrap="wrap"
       >
         <Box display="flex" flexDirection="row">
           <Typography

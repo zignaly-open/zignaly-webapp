@@ -135,6 +135,20 @@ const Table = ({ columns, data, persistKey, title }) => {
             },
           },
         },
+        MUIDataTablePagination: {
+          root: {
+            [theme.breakpoints.down("sm")]: {
+              "&:last-child": {
+                paddingLeft: 0,
+              },
+            },
+          },
+          toolbar: {
+            [theme.breakpoints.down("sm")]: {
+              paddingLeft: 0,
+            },
+          },
+        },
       },
     });
 
