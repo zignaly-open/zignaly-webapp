@@ -24,12 +24,20 @@ const ProviderHeaderActions = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <img
-        className="providerLogo"
-        onError={(e) => (e.target.src = LogoIcon)}
-        src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
-      />
-      <Typography variant="h1">{storeViews.provider.name}</Typography>
+      <Box
+        className="titleBox"
+        alignItems="center"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
+        <img
+          className="providerLogo"
+          onError={(e) => (e.target.src = LogoIcon)}
+          src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
+        />
+        <Typography variant="h1">{storeViews.provider.name}</Typography>
+      </Box>
       <CopyTraderButton provider={storeViews.provider} />
       <Typography variant="h4">
         <FormattedMessage id="copyt.trial" />
