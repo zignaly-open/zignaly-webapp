@@ -45,4 +45,12 @@
       }
     }
   }
+
+  .leverageButton {
+    button {
+      border: $purple solid 1px;
+      padding: 3px;
+      text-transform: lowercase;
+    }
+  }
 }
