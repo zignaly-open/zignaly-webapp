@@ -126,26 +126,19 @@ const BarChart = (props) => {
         label: tooltipFormat,
       },
     },
-    plugins: {
-      legendImages: images
-        ? {
-            images,
-          }
-        : false,
-    },
-  };
+    // plugins: {
+    //   legendImages: images
+    //     ? {
+    //         images,
+    //       }
+    //     : false,
+    // },
+    animation: {
+      duration: 1000,
+      onProgress(chartAnimation) {
+        if (!images) return;
 
-  if (horizontal) {
-    // options.scales.xAxes = [yAxes];
-    // options.scales.yAxes = [xAxes];
-  }
-
-  const plugins = [
-    {
-      id: "legendImages",
-      // Draw images at the bottom of the graph
-      afterDraw: (chart, easing) => {
-        const { images } = chart.options.plugins.legendImages;
+        const chart = chartAnimation.chart;
         var ctx = chart.chart.ctx;
         var xAxis = chart.scales["x-axis-0"];
         var yAxis = chart.scales["y-axis-0"];
@@ -185,6 +178,41 @@ const BarChart = (props) => {
         });
       },
     },
+  };
+
+  if (horizontal) {
+    // options.scales.xAxes = [yAxes];
+    // options.scales.yAxes = [xAxes];
+  }
+
+  const plugins = [
+    // {
+    //   id: "legendImages",
+    //   // Draw images at the bottom of the graph
+    //   afterDraw: (chart, easing) => {
+    //     const { images } = chart.options.plugins.legendImages;
+    //     var ctx = chart.chart.ctx;
+    //     var xAxis = chart.scales["x-axis-0"];
+    //     var yAxis = chart.scales["y-axis-0"];
+    //     values.forEach((value, index) => {
+    //       var x = xAxis.getPixelForTick(index);
+    //       var y = yAxis.getPixelForTick(index);
+    //       const imageOptions = images[index];
+    //       //   console.log(chart.scales);
+    //       if (imageOptions) {
+    //         var image = new Image();
+    //         image.src = imageOptions.src;
+    //         // console.log(index, x, y);
+    //         if (horizontal) {
+    //           //   console.log(index, y);
+    //           ctx.drawImage(image, 0, y - 13, 26, 26);
+    //         } else {
+    //           ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
+    //         }
+    //       }
+    //     });
+    //   },
+    // },
   ];
 
   const BarComponent = horizontal ? MemoizedHorizontalBar : MemoizedBar;
