@@ -6,7 +6,8 @@ import "./LeverageForm.scss";
  * @typedef {Object} LeverageFormProps
  * @property {number} min Minimum leverage limit.
  * @property {number} max Maximum leverage limit.
- * @property {number} value Default leverage value.
+ * @property {number} currentValue Default leverage value.
+ * @property {function} setCurrentValue Set state callback to store new value.
  */
 
 /**
@@ -16,8 +17,7 @@ import "./LeverageForm.scss";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max, value } = props;
-  const [currentValue, setCurrentValue] = useState(value);
+  const { min, max, currentValue, setCurrentValue } = props;
 
   /**
    * Leverage slided change handler.
