@@ -34,20 +34,11 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   /**
    * @type {ChartData}
    */
-  const data = stats.map((s) => formatFloat2Dec(s.percentageProfit));
-  const images = stats.map((s) => ({ src: s.logoUrl, width: 40, height: 40 }));
+  const values = stats.map((s) => formatFloat2Dec(s.percentageProfit));
+  const images = stats.map((s) => s.logoUrl);
+  const options = {};
   const tooltipFormat = (tooltipItems, data) =>
     `${stats[tooltipItems.index].name}: ${tooltipItems.yLabel} %`;
-
-  /**
-   * @type {ChartColorOptions} colorsOptions
-   */
-  let colorsOptions = {
-    backgroundColor: "",
-    borderColor: "#00cb3a",
-    gradientColor1: "#b6f2cb",
-    gradientColor2: "#e5f8ed",
-  };
 
   const [tabValue, setTabValue] = useState(0);
 
@@ -107,10 +98,10 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
         <Typography variant="h3">Last 7 days / BTC / All Pairs</Typography>
       </Box>
       <BarChart
-        data={data}
+        options={options}
+        values={values}
         tooltipFormat={tooltipFormat}
         horizontal={isMobile}
-        labels={[]}
         images={images}
         adjustHeightToContent={isMobile}
       />

@@ -38,16 +38,22 @@ const MemoizedHorizontalBar = React.memo(
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
-  const { data: values, labels, horizontal, tooltipFormat, images, adjustHeightToContent } = props;
+  const {
+    values,
+    labels,
+    horizontal,
+    tooltipFormat,
+    images,
+    adjustHeightToContent,
+    options: customOptions,
+  } = props;
   const chartRef = useRef(null);
-  //   const [height, setHeight] = useState(0);
+
   /**
    * @type Chart.ChartData
    */
   const data = {
-    // labels: chartData.labels,
     labels: images && images.length ? values.map(() => "") : labels,
-    // labels: ["", ""],
     datasets: [
       {
         data: values,
@@ -57,8 +63,6 @@ const BarChart = (props) => {
         //   label: "group 1",
         // backgroundColor: colorsOptions.backgroundColor,
         backgroundColor: values.map((v) => (v < 0 ? "#f63f82" : "#08a441")),
-        // borderColor: colorsOptions.borderColor,
-        // borderWidth: 24,
       },
     ],
   };
@@ -88,16 +92,15 @@ const BarChart = (props) => {
     ticks: {
       display: true,
       padding: horizontal ? 10 : 40,
-      //   min: -2,
     },
-    //   categoryPercentage: 1.0,
+    // categoryPercentage: 1.0,
     // barPercentage: 1.0,
   };
 
   /**
    * @type Chart.ChartOptions
    */
-  const options = {
+  let options = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
@@ -132,95 +135,55 @@ const BarChart = (props) => {
         if (!images) return;
 
         const chart = chartAnimation.chart;
-        var ctx = chart.chart.ctx;
-        var xAxis = chart.scales["x-axis-0"];
-        var yAxis = chart.scales["y-axis-0"];
+        const ctx = chart.chart.ctx;
+        const xAxis = chart.scales["x-axis-0"];
+        const yAxis = chart.scales["y-axis-0"];
 
-        //     // chartData.values.forEach(function (dataset, i) {
         //     chart.data.datasets.forEach(function (dataset, i) {
-        //       //   var label = dataset.label;
         //       var meta = chart.controller.getDatasetMeta(i);
-        //       //   var total = dataset.data.reduce(function (total, num) {
-        //       //     return total + num;
-        //       //   });
-
         //       meta.data.forEach(function (bar, index) {
         //         // var data = (dataset.data[index] / total) * 100;
-        //         // data = Math.ceil(data) + "%";
-        //         console.log(bar);
-        //         ctx.fillText("AAAAAAAAAAAAAAAAA", bar._model.x - 15, bar._model.y);
+        //         ctx.fillText(data, bar._model.x - 15, bar._model.y);
         //       });
         //     });
 
         values.forEach((value, index) => {
-          var x = xAxis.getPixelForTick(index);
-          var y = yAxis.getPixelForTick(index);
-          const imageOptions = images[index];
-          //   console.log(chart.scales);
-          if (imageOptions) {
-            var image = new Image();
-            image.src = imageOptions.src;
-            // console.log(index, x, y);
-            if (horizontal) {
-              //   console.log(index, y);
-              ctx.drawImage(image, 0, y - 13, 26, 26);
-            } else {
-              ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
-            }
+          const imageSrc = images[index];
+          var image = new Image();
+          image.src = imageSrc;
+
+          if (horizontal) {
+            // Draw image on the left
+            const y = yAxis.getPixelForTick(index);
+            const size = 26;
+            ctx.drawImage(image, 0, y - size / 2, size, size);
+          } else {
+            // Draw image at the bottom
+            const x = xAxis.getPixelForTick(index);
+            const size = 40;
+            ctx.drawImage(image, x - size / 2, yAxis.bottom + 20, size, size);
           }
         });
       },
     },
   };
 
-  if (horizontal) {
-    // options.scales.xAxes = [yAxes];
-    // options.scales.yAxes = [xAxes];
-  }
-
-  const plugins = [
-    // {
-    //   id: "legendImages",
-    //   // Draw images at the bottom of the graph
-    //   afterDraw: (chart, easing) => {
-    //     const { images } = chart.options.plugins.legendImages;
-    //     var ctx = chart.chart.ctx;
-    //     var xAxis = chart.scales["x-axis-0"];
-    //     var yAxis = chart.scales["y-axis-0"];
-    //     values.forEach((value, index) => {
-    //       var x = xAxis.getPixelForTick(index);
-    //       var y = yAxis.getPixelForTick(index);
-    //       const imageOptions = images[index];
-    //       //   console.log(chart.scales);
-    //       if (imageOptions) {
-    //         var image = new Image();
-    //         image.src = imageOptions.src;
-    //         // console.log(index, x, y);
-    //         if (horizontal) {
-    //           //   console.log(index, y);
-    //           ctx.drawImage(image, 0, y - 13, 26, 26);
-    //         } else {
-    //           ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
-    //         }
-    //       }
-    //     });
-    //   },
-    // },
-  ];
+  // Merge user options
+  options = Object.assign(options, customOptions);
 
   const BarComponent = horizontal ? MemoizedHorizontalBar : MemoizedBar;
 
   let height;
   if (horizontal && adjustHeightToContent) {
     // Calculate optimal height to display all the bars
-    const BAR_GAPS = 3;
-    const xAxisHeight = 60;
-    height = values.length * (data.datasets[0].barThickness + BAR_GAPS * 2) + xAxisHeight;
+    const BAR_GAP = 3;
+    const X_AXIS_HEIGHT = 60;
+    height = values.length * (data.datasets[0].barThickness + BAR_GAP * 2) + X_AXIS_HEIGHT;
   }
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <BarComponent data={data} options={options} ref={chartRef} plugins={plugins} redraw={true} />
+      <BarComponent data={data} options={options} ref={chartRef} redraw={true} />
     </Box>
   );
 };
