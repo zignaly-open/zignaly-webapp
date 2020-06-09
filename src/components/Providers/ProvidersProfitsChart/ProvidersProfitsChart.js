@@ -7,6 +7,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
+ * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
@@ -27,9 +28,13 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const values = stats.map((s) => s.percentageProfit);
+  const values = stats.map((s) => parseFloat(s.percentageProfit));
   const images = stats.map((s) => s.logoUrl);
   const options = {};
+  /**
+   * @param {ChartTooltipItem} tooltipItems Tooltip itwm.
+   * @returns {string} Tooltip text.
+   */
   const tooltipFormat = (tooltipItems /* data */) =>
     `${stats[tooltipItems.index].name}: ${formatFloat2Dec(
       tooltipItems[isMobile ? "xLabel" : "yLabel"],

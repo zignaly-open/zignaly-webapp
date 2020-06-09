@@ -1,4 +1,6 @@
-/* eslint-disable tslint:disable */
+// @ts-nocheck
+/* eslint-disable */
+
 /*
  *   Rounded Rectangle Extension for Bar Charts and Horizontal Bar Charts
  *   Tested with Charts.js 2.7.0

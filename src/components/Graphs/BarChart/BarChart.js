@@ -8,8 +8,14 @@ import "../Chart.roundedBarCharts";
  * @typedef {import('chart.js').ChartData} ChartData
  * @typedef {import('chart.js').ChartOptions} ChartOptions
  * @typedef {import('chart.js').ChartPluginsOptions} ChartPluginsOptions
-//  * @typedef {import('chart.js').ChartTooltipCallback} ChartTooltipCallback
+ * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import('chart.js').Chart} Chart
+ */
+
+/**
+ * @callback ChartTooltipCallback
+ * @param {ChartTooltipItem} tooltipItem:
+ * @param {ChartData} data
  */
 
 /**
@@ -19,7 +25,7 @@ import "../Chart.roundedBarCharts";
  * @property {Array<String>} [images] Chart images (used instead of labels).
  * @property {boolean} [horizontal] Flag to display the bars horizontally.
  * @property {boolean} [adjustHeightToContent] Adjust thw height of the canvas dynamicaly to fit its content. (Horizontal only)
- * @property {function} tooltipFormat Function to format data based on selected value.
+ * @property {ChartTooltipCallback} tooltipFormat Function to format data based on selected value.
  * @property {ChartOptions} options Custom user options to override.
  */
 
@@ -89,7 +95,13 @@ const BarChart = (props) => {
   };
 
   /**
-   * @type ChartOptions
+   * @typedef {Object} RoundedChartOptions
+   * @property {number} cornerRadius:
+   *
+   * @typedef {ChartOptions & RoundedChartOptions} ExtendedChartOptions
+   */
+  /**
+   * @type ExtendedChartOptions
    */
   let options = {
     responsive: true,
@@ -131,9 +143,6 @@ const BarChart = (props) => {
     },
   };
 
-  /**
-   * @type {ChartPluginsOptions}
-   */
   const plugins = [
     {
       id: "legendImages",
@@ -154,7 +163,7 @@ const BarChart = (props) => {
           images: legendImages,
           horizontal: isHorizontal,
         } = chart.options.plugins.legendImages;
-        let ctx = chart.chart.ctx;
+        let ctx = chart.ctx;
         let xAxis = chart.scales["x-axis-0"];
         let yAxis = chart.scales["y-axis-0"];
 
@@ -177,7 +186,7 @@ const BarChart = (props) => {
           }
         };
 
-        chart.data.datasets[0].data.forEach((value, index) => {
+        for (const [index] of chart.data.datasets[0].data.entries()) {
           const imageSrc = legendImages[index];
           let image = new Image();
           image.src = imageSrc;
@@ -186,7 +195,7 @@ const BarChart = (props) => {
           } else {
             drawImage(image, index);
           }
-        });
+        }
       },
     },
   ];
