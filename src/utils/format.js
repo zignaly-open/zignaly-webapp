@@ -1,5 +1,5 @@
 import moment from "moment";
-import { capitalize } from "lodash";
+import { capitalize, isNil } from "lodash";
 
 /**
  * Format string to float with 2 decimals.
@@ -9,6 +9,9 @@ import { capitalize } from "lodash";
  */
 export const formatFloat2Dec = (val) => {
   const valueFloat = typeof val === "string" ? parseFloat(val) : val;
+  if (isNil(valueFloat)) {
+    return "-";
+  }
   return (Math.round(valueFloat * 100) / 100).toString();
 };
 
@@ -20,6 +23,9 @@ export const formatFloat2Dec = (val) => {
  */
 export const formatFloat = (val) => {
   const valueFloat = typeof val === "string" ? parseFloat(val) : val;
+  if (isNil(valueFloat)) {
+    return "-";
+  }
   return valueFloat >= 1 || valueFloat <= -1 ? valueFloat.toFixed(2) : valueFloat.toFixed(8);
 };
 

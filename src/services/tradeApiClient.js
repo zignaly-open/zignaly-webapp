@@ -13,6 +13,9 @@ import {
   basesResponseTransform,
   connectedProviderUserInfoResponseTransform,
   providerGetResponseTransform,
+  serverTimeResponseTransform,
+  coinRayTokenResponseTransform,
+  exchangeMarketDataResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -36,6 +39,8 @@ import {
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
+ * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
+ * @typedef {import('./tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -326,6 +331,54 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerGetResponseTransform(responseData);
+  }
+  /**
+   * @typedef {import('./tradeApiClient.types').ServerTime} ServerTime
+   */
+
+  /**
+   * Get Trade API server time.
+   *
+   * @param {AuthorizationPayload} payload User authorization.
+   * @returns {Promise<ServerTime>} Promise that resolves server time value object.
+   *
+   * @memberof TradeApiClient
+   */
+  async serverTimeGet(payload) {
+    const endpointPath = "/fe/ohlc.php?action=fetchTime";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return serverTimeResponseTransform(responseData);
+  }
+
+  /**
+   * Get a coinray access token for authenticated Trade API user.
+   *
+   * @param {AuthorizationPayload} payload User authorization.
+   * @returns {Promise<CoinRayToken>} Promise that resolves server time value object.
+   *
+   * @memberof TradeApiClient
+   */
+  async coinRayTokenGet(payload) {
+    const endpointPath = "/fe/api.php?action=getCoinRayToken";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return coinRayTokenResponseTransform(responseData);
+  }
+
+  /**
+   * Get user exchange connnection market data.
+   *
+   * @param {AuthorizationPayload} payload Authorized exchange data payload.
+   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market (symbols) data collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeConnectionMarketDataGet(payload) {
+    const endpointPath = "/fe/api.php?action=getPairsNew";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeMarketDataResponseTransform(responseData);
   }
 
   /**

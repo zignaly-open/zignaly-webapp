@@ -1196,6 +1196,148 @@ function createProviderStatsEmptyEntity() {
 }
 
 /**
+ * @typedef {Object} ServerTime
+ * @property {number} serverTime
+ * @property {number} dbTime
+ */
+
+/**
+ * Create empty ServerTime value object.
+ *
+ * @returns {ServerTime} Empty object of this type.
+ */
+function createServerTimeEmptyValueObject() {
+  return {
+    serverTime: 0,
+    dbTime: 0,
+  };
+}
+
+/**
+ * Transform server time response to typed ServerTime.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {ServerTime} Quote assets.
+ */
+export function serverTimeResponseTransform(response) {
+  return assign(createServerTimeEmptyValueObject(), response, {
+    dbTime: parseInt(response.dbTime),
+  });
+}
+
+/**
+ * @typedef {Object} CoinRayToken
+ * @property {string} jwt
+ */
+
+/**
+ * Create empty CoinRayToken value object.
+ *
+ * @returns {CoinRayToken} Empty object of this type.
+ */
+function createCoinRayTokenEmptyValueObject() {
+  return {
+    jwt: "",
+  };
+}
+
+/**
+ * Transform coinray token response to typed CoinRayToken
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {CoinRayToken} Coinray token value object.
+ */
+export function coinRayTokenResponseTransform(response) {
+  return assign(createCoinRayTokenEmptyValueObject(), response);
+}
+
+/**
+ * @typedef {Object} MarketSymbol
+ * @property {string} id
+ * @property {string} symbol
+ * @property {string} base
+ * @property {string} quote
+ * @property {string} baseId
+ * @property {string} quoteId
+ * @property {PricePrecision} precision
+ * @property {SymbolLimits} limits
+ * @property {string} coinrayQuote
+ * @property {string} coinrayBase
+ */
+
+/**
+ * @typedef {Object} SymbolLimits
+ * @property {AmountLimit} cost:
+ * @property {AmountLimit} price:
+ * @property {AmountLimit} amount:
+ */
+
+/**
+ * @typedef {Object} AmountLimit
+ * @property {number} min:
+ * @property {number} max:
+ */
+
+/**
+ * @typedef {Object} PricePrecision
+ *
+ * @property {number} amount:
+ * @property {number} price:
+ */
+
+/**
+ * @typedef {Array<MarketSymbol>} MarketSymbolsCollection
+ */
+
+/**
+ * Create empty market symbol value object.
+ *
+ * @returns {MarketSymbol} Empty market symbol value object.
+ */
+function createMarketSymbolEmptyValueObject() {
+  return {
+    id: "",
+    symbol: "",
+    base: "",
+    quote: "",
+    baseId: "",
+    quoteId: "",
+    precision: { amount: 0, price: 0 },
+    limits: {
+      cost: { min: 0, max: 0 },
+      price: { min: 0, max: 0 },
+      amount: { min: 0, max: 0 },
+    },
+    coinrayQuote: "",
+    coinrayBase: "",
+  };
+}
+
+/**
+ * Transform exchange connection market data response to typed collection.
+ *
+ * @param {*} response Trade API get quotes list raw response.
+ * @returns {MarketSymbolsCollection} Coinray token value object.
+ */
+export function exchangeMarketDataResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of market symbols.");
+  }
+
+  return response.map(exchangeMarketDataItemTransform);
+}
+
+/**
+ * Transform market data response item to typed MarketSymbol.
+ *
+ * @param {*} symbolsDataItem Market data symbol.
+ * @returns {MarketSymbol} Market data symbol value object.
+ */
+function exchangeMarketDataItemTransform(symbolsDataItem) {
+  return assign(createMarketSymbolEmptyValueObject(), symbolsDataItem);
+}
+
+/**
  * Transform quote assets response to typed QuoteAssetsDict.
  *
  * @param {*} response Trade API get quotes list raw response.
