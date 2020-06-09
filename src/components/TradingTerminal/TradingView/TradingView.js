@@ -10,6 +10,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import "./TradingView.scss";
+import LeverageForm from "../LeverageForm/LeverageForm";
 import { Button } from "@material-ui/core";
 
 const TradingView = () => {
@@ -152,7 +153,7 @@ const TradingView = () => {
           size="small"
           state={modalVisible}
         >
-          <h1>Leverage</h1>
+          <LeverageForm />
         </Modal>
         <Box
           className="leverageButton"
