@@ -90,20 +90,7 @@ const useProvidersAnalytics = (type) => {
           copyTradersOnly: type === "copyt",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
-        for (let i = 0; i < 5; i++) {
-          responseData.push(
-            Object.assign({}, responseData[0], { percentageProfit: Math.random() - 2 }),
-          );
-        }
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
-        setTimeout(() => {
-          setStats(responseData);
-        }, 5000);
+        setStats(responseData);
       } catch (e) {
         // TODO: Display error in alert.
       }

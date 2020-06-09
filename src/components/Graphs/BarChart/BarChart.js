@@ -125,6 +125,7 @@ const BarChart = (props) => {
       mode: "index",
       position: "nearest",
       callbacks: {
+        title: (tooltipItems, data) => "",
         label: tooltipFormat,
       },
     },

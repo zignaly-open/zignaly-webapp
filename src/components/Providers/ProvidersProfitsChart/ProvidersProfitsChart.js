@@ -38,7 +38,7 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   const images = stats.map((s) => s.logoUrl);
   const options = {};
   const tooltipFormat = (tooltipItems, data) =>
-    `${stats[tooltipItems.index].name}: ${tooltipItems.yLabel} %`;
+    `${stats[tooltipItems.index].name}: ${tooltipItems[isMobile ? "xLabel" : "yLabel"]} %`;
 
   const [tabValue, setTabValue] = useState(0);
 
