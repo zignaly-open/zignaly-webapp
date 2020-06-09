@@ -1374,7 +1374,7 @@ export function connectedProviderUserInfoResponseTransform(response) {
 }
 
 /**
- * Create onnected provider user info entity.
+ * Create connected provider user info entity.
  *
  * @param {*} response Trade API user balance raw raw response.
  * @returns {ConnectedProviderUserInfo} User balance entity.
@@ -1383,5 +1383,60 @@ function createConnectedProviderUserInfoEntity(response) {
   return {
     currentAllocated: response.currentAllocated,
     profitsSinceCopying: response.profitsSinceCopying,
+  };
+}
+
+/**
+ * @typedef {Object} CopyTradersProvidersOptionsPayload
+ * @property {string} token User access token.
+ * @property {String} internalExchangeId
+ */
+
+/**
+ * @typedef {Object} CopyTradersProvidersOption
+ * @property {number} providerId
+ * @property {string} providerName
+ * @property {boolean} providerQuote
+ */
+
+/**
+ * @typedef {Array<CopyTradersProvidersOption>} CopyTradersProvidersOptionsCollection
+ */
+
+/**
+ * Transform own copy traders providers options to typed CopyTradersProvidersOptionsCollection.
+ *
+ * @param {*} response Trade API own copy traders providers options raw response.
+ * @returns {CopyTradersProvidersOptionsCollection} Options collection.
+ */
+export function ownCopyTraderProvidersOptionsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of copy trader providers options.");
+  }
+
+  return response.map(ownCopyTraderProviderOptionResponseTransform);
+}
+
+/**
+ * Transform own copy traders providers option to typed CopyTradersProvidersOption.
+ *
+ * @param {*} option Trade API own copy traders providers options raw response.
+ * @returns {CopyTradersProvidersOption} Options collection.
+ */
+
+function ownCopyTraderProviderOptionResponseTransform(option) {
+  return assign(createEmptyOwnCopyTraderProviderOption(), option);
+}
+
+/**
+ * Create empty own copy trader option.
+ *
+ * @returns {CopyTradersProvidersOption} Own copy trader empty option.
+ */
+function createEmptyOwnCopyTraderProviderOption() {
+  return {
+    providerId: 0,
+    providerName: "",
+    providerQuote: false,
   };
 }
