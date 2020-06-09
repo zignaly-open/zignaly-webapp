@@ -29,7 +29,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
   const intl = useIntl();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   /**
    * @type {ChartData}
@@ -108,7 +108,8 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
       <BarChart
         data={data}
         tooltipFormat={tooltipFormat}
-        type={selectedType}
+        // type={selectedType}
+        horizontal={isMobile}
         labels={[]}
         images={images}
       />
