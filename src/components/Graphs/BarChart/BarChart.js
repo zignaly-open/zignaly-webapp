@@ -38,7 +38,7 @@ const MemoizedHorizontalBar = React.memo(
  * @returns {JSX.Element} Component JSX.
  */
 const BarChart = (props) => {
-  const { data: values, labels, horizontal, tooltipFormat, images } = props;
+  const { data: values, labels, horizontal, tooltipFormat, images, adjustHeightToContent } = props;
   const chartRef = useRef(null);
   //   const [height, setHeight] = useState(0);
   /**
@@ -126,13 +126,6 @@ const BarChart = (props) => {
         label: tooltipFormat,
       },
     },
-    // plugins: {
-    //   legendImages: images
-    //     ? {
-    //         images,
-    //       }
-    //     : false,
-    // },
     animation: {
       duration: 1000,
       onProgress(chartAnimation) {
@@ -217,20 +210,13 @@ const BarChart = (props) => {
 
   const BarComponent = horizontal ? MemoizedHorizontalBar : MemoizedBar;
 
-  const { top, bottom } = options.layout.padding;
-  const BAR_GAPS = 3;
-  //   const xAxisHeight = chartRef.current
-  //     ? chartRef.current.chartInstance.scales["y-axis-0"].height
-  //     : 0;
-  const xAxisHeight = 60;
-  //   console.log(chartRef);
-  const height = values.length * (data.datasets[0].barThickness + BAR_GAPS * 2) + xAxisHeight;
-  //   console.log(height);
-  //   if (height !== newHeight) {
-  //     setHeight(newHeight);
-  //   }
-  //   console.log(chartRef.current && chartRef.current.chartInstance);
-  //   console.log(xAxisHeight);
+  let height;
+  if (horizontal && adjustHeightToContent) {
+    // Calculate optimal height to display all the bars
+    const BAR_GAPS = 3;
+    const xAxisHeight = 60;
+    height = values.length * (data.datasets[0].barThickness + BAR_GAPS * 2) + xAxisHeight;
+  }
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>

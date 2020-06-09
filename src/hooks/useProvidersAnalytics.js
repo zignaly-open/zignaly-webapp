@@ -98,6 +98,9 @@ const useProvidersAnalytics = (type) => {
         responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
         responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
         responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
+        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
+        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
+        responseData.push(Object.assign({}, responseData[0], { percentageProfit: -3 }));
         setStats(responseData);
       } catch (e) {
         // TODO: Display error in alert.

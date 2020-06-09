@@ -108,10 +108,10 @@ const ProvidersProfitsChart = ({ type, timeFrame, quote, base, stats }) => {
       <BarChart
         data={data}
         tooltipFormat={tooltipFormat}
-        // type={selectedType}
         horizontal={isMobile}
         labels={[]}
         images={images}
+        adjustHeightToContent={isMobile}
       />
     </Paper>
   );
