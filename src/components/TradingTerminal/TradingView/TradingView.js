@@ -6,11 +6,17 @@ import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import { FormattedMessage } from "react-intl";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
+  const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+  const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
 
   const drawLine = () => {
     const orderPrice = 9600;
@@ -38,6 +44,26 @@ const TradingView = () => {
       drawLine();
     }
   };
+
+  const loadOwnCopyTradersProviders = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+    };
+
+    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((copyTradersProvidersOptions) => {
+      const digestedOptions = copyTradersProvidersOptions.map((copyTradersProvidersOption) => {
+        return {
+          label: copyTradersProvidersOption.providerName,
+          val: copyTradersProvidersOption.providerId,
+        };
+      });
+
+      setOwnCopyTradersProviders(digestedOptions);
+    });
+  };
+
+  useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
     if (dataFeed) {
@@ -87,9 +113,26 @@ const TradingView = () => {
     }
   };
 
+  const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
+
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
       <Box bgcolor="grid.content" className="controlsBar">
+        <Box
+          alignContent="left"
+          className="providersSelector"
+          display="flex"
+          flexDirection="column"
+        >
+          <FormattedMessage id="terminal.providers" />
+          <CustomSelect
+            label=""
+            onChange={handleSymbolChange}
+            options={ownCopyTradersProviders}
+            search={true}
+            value={selectedProviderValue}
+          />
+        </Box>
         <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
           <FormattedMessage id="terminal.browsecoins" />
           <CustomSelect
