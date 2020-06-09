@@ -13,10 +13,11 @@ import { Dialog } from "@material-ui/core";
  */
 
 /**
+ * Provides display of children elements in a modal.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Modal props.
+ * @returns {JSX.Element} Modal element.
  */
-
 const GenericModal = (props) => {
   const { state, onClose, persist, children, size } = props;
 
