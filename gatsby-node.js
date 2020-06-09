@@ -39,3 +39,20 @@ exports.onCreatePage = ({ page, actions }) => {
 exports.onCreateDevServer = ({ app }) => {
   app.use(express.static("public"));
 };
+
+// Fix WebpackError: ReferenceError: window is not defined
+// https://www.gatsbyjs.org/docs/debugging-html-builds/
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /charting_library/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    });
+  }
+};
