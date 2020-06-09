@@ -86,7 +86,9 @@ const TradingView = () => {
   // Create Trading View widget when data feed token is ready.
   useEffect(bootstrapWidget, [dataFeed]);
 
+  // @ts-ignore
   const symbolsList = dataFeed ? dataFeed.getSymbolsData() : [];
+  // @ts-ignore
   const symbolsOptions = symbolsList.map((symbolItem) => {
     return {
       label: symbolItem.symbol,

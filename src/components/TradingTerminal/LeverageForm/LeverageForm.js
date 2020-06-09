@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
 import "./LeverageForm.scss";
 
