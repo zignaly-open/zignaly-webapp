@@ -53,34 +53,6 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
       tooltipItems[isMobile ? "xLabel" : "yLabel"],
     )} ${unit}`;
 
-  /**
-   * Map tab index to positions collection type.
-   *
-   * @returns {PositionsCollectionType} Collection type.
-   */
-  //   const mapIndexToCollectionType = () => {
-  //     switch (tabValue) {
-  //       case 1:
-  //         return "sumProfit";
-
-  //       default:
-  //         return "percentageProfit";
-  //     }
-  //   };
-
-  /**
-   * Event handler to change tab value.
-   *
-   * @param {React.ChangeEvent<{checked: boolean}>} event Tab index to set active.
-   * @param {Number} val Tab index to set active.
-   * @returns {void}
-   */
-  //   const changeTab = (event, val) => {
-  //     setTabValue(val);
-  //   };
-
-  //   const selectedType = mapIndexToCollectionType();
-
   return (
     <Paper className="providersProfitsChart">
       <Box
