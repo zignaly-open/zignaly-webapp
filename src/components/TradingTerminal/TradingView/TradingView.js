@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
-import "./TradingView.scss";
-import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
-import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import CustomSelect from "../../CustomSelect/CustomSelect";
+import Modal from "../../Modal";
+import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import { FormattedMessage } from "react-intl";
-import tradeApi from "../../../services/tradeApiClient";
+import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import tradeApi from "../../../services/tradeApiClient";
+import "./TradingView.scss";
+import { Button } from "@material-ui/core";
 
 const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
@@ -114,6 +116,7 @@ const TradingView = () => {
   };
 
   const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
@@ -142,6 +145,22 @@ const TradingView = () => {
             search={true}
             value={selectedProviderValue}
           />
+        </Box>
+        <Modal
+          onClose={() => setModalVisible(false)}
+          persist={false}
+          size="small"
+          state={modalVisible}
+        >
+          <h1>Leverage</h1>
+        </Modal>
+        <Box
+          className="leverageButton"
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-end"
+        >
+          <Button onClick={() => setModalVisible(true)}>10x</Button>
         </Box>
       </Box>
       <Box
