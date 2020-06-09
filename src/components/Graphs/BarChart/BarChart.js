@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import "./BarChart.scss";
 import { Box } from "@material-ui/core";
 import { Chart, Bar, HorizontalBar } from "react-chartjs-2";
@@ -25,8 +25,10 @@ const MemoizedBar = React.memo(Bar, (prevProps, nextProps) =>
   isEqual(prevProps.data, nextProps.data),
 );
 
-const MemoizedHorizontalBar = React.memo(HorizontalBar, (prevProps, nextProps) =>
-  isEqual(prevProps.data, nextProps.data),
+const MemoizedHorizontalBar = React.memo(
+  HorizontalBar,
+  (prevProps, nextProps) =>
+    isEqual(prevProps.data, nextProps.data) && prevProps.height === nextProps.height,
 );
 
 /**
@@ -38,6 +40,7 @@ const MemoizedHorizontalBar = React.memo(HorizontalBar, (prevProps, nextProps) =
 const BarChart = (props) => {
   const { data: values, labels, horizontal, tooltipFormat, images } = props;
   const chartRef = useRef(null);
+  //   const [height, setHeight] = useState(0);
   /**
    * @type Chart.ChartData
    */
@@ -60,7 +63,7 @@ const BarChart = (props) => {
     ],
   };
 
-  const xAxes = {
+  const yAxes = {
     ticks: {
       fontColor: "#191927",
       fontSize: 14,
@@ -78,13 +81,14 @@ const BarChart = (props) => {
     },
   };
 
-  const yAxes = {
+  const xAxes = {
     gridLines: {
       display: false,
     },
     ticks: {
       display: true,
       padding: horizontal ? 10 : 40,
+      //   min: -2,
     },
     //   categoryPercentage: 1.0,
     // barPercentage: 1.0,
@@ -100,8 +104,8 @@ const BarChart = (props) => {
       display: false,
     },
     scales: {
-      yAxes: [xAxes],
-      xAxes: [yAxes],
+      yAxes: [horizontal ? xAxes : yAxes],
+      xAxes: [horizontal ? yAxes : xAxes],
     },
     layout: {
       padding: {
@@ -132,8 +136,8 @@ const BarChart = (props) => {
   };
 
   if (horizontal) {
-    options.scales.xAxes = [yAxes];
-    options.scales.yAxes = [xAxes];
+    // options.scales.xAxes = [yAxes];
+    // options.scales.yAxes = [xAxes];
   }
 
   const plugins = [
@@ -162,7 +166,7 @@ const BarChart = (props) => {
         //       });
         //     });
 
-        xAxis.ticks.forEach((value, index) => {
+        values.forEach((value, index) => {
           var x = xAxis.getPixelForTick(index);
           var y = yAxis.getPixelForTick(index);
           const imageOptions = images[index];
@@ -172,6 +176,7 @@ const BarChart = (props) => {
             image.src = imageOptions.src;
             // console.log(index, x, y);
             if (horizontal) {
+              //   console.log(index, y);
               ctx.drawImage(image, 0, y - 13, 26, 26);
             } else {
               ctx.drawImage(image, x - 20, yAxis.bottom + 20, 40, 40);
@@ -192,12 +197,15 @@ const BarChart = (props) => {
   const xAxisHeight = 60;
   //   console.log(chartRef);
   const height = values.length * (data.datasets[0].barThickness + BAR_GAPS * 2) + xAxisHeight;
-  console.log(height);
+  //   console.log(height);
+  //   if (height !== newHeight) {
+  //     setHeight(newHeight);
+  //   }
   //   console.log(chartRef.current && chartRef.current.chartInstance);
   //   console.log(xAxisHeight);
 
   return (
-    <Box className="barChart" style={{ height }}>
+    <Box className="barChart" style={{ ...(height && { height }) }}>
       <BarComponent data={data} options={options} ref={chartRef} plugins={plugins} redraw={true} />
     </Box>
   );
