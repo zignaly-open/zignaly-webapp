@@ -1,3 +1,5 @@
+const express = require(`express`);
+
 /**
  * Implement Gatsby's Node APIs in this file.
  *
@@ -28,5 +30,29 @@ exports.onCreatePage = ({ page, actions }) => {
     page.matchPath = "/signalProviders/*";
     createPage(page);
     return;
+  }
+};
+
+// Enable development support for serving Trading View static assets. Workaround
+// until a fix is implemented for:
+// https://github.com/gatsbyjs/gatsby/issues/13072
+exports.onCreateDevServer = ({ app }) => {
+  app.use(express.static("public"));
+};
+
+// Fix WebpackError: ReferenceError: window is not defined
+// https://www.gatsbyjs.org/docs/debugging-html-builds/
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /charting_library/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    });
   }
 };
