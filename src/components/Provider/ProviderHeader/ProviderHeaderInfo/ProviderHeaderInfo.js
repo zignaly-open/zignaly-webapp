@@ -48,7 +48,9 @@ const ProviderHeaderInfo = () => {
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="srv.minimum" />
-        <b> {storeViews.provider.minAllocatedBalance} </b>
+        <b>
+          {storeViews.provider.minAllocatedBalance} {storeViews.provider.copyTradingQuote}
+        </b>
       </Typography>
     </Box>
   );
