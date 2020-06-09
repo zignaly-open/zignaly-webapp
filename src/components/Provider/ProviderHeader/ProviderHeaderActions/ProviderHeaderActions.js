@@ -16,6 +16,16 @@ const ProviderHeaderActions = () => {
 
   const payFee = () => {};
 
+  /**
+   *
+   * @param {React.SyntheticEvent} e event received.
+   * @returns {void} Return nothing.
+   */
+  const onLogoError = (e) => {
+    const targetElement = /** @type {HTMLInputElement} */ (e.target);
+    targetElement.src = LogoIcon;
+  };
+
   return (
     <Box
       alignItems="center"
@@ -25,15 +35,15 @@ const ProviderHeaderActions = () => {
       justifyContent="flex-start"
     >
       <Box
-        className="titleBox"
         alignItems="center"
+        className="titleBox"
         display="flex"
         flexDirection="row"
         justifyContent="flex-start"
       >
         <img
           className="providerLogo"
-          onError={(e) => (e.target.src = LogoIcon)}
+          onError={onLogoError}
           src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
         />
         <Typography variant="h1">{storeViews.provider.name}</Typography>

@@ -317,7 +317,7 @@ class TradeApiClient {
    *
    * @param {GetProviderPayload} payload Get providers stats payload.
 
-   * @returns
+   * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -365,7 +365,7 @@ class TradeApiClient {
    *
    * @param {ConnectProviderPayload} payload Get providers stats payload.
 
-   * @returns
+   * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
    */

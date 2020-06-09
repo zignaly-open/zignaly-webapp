@@ -82,7 +82,7 @@ const CopyTraderButton = ({ provider }) => {
       justifyContent="flex-start"
     >
       {provider.exchangeInternalId && !provider.disable && (
-        <CustomButton className="loadMoreButton" onClick={stopCopying} loading={stopCopyLoader}>
+        <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={stopCopying}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       )}
@@ -96,8 +96,8 @@ const CopyTraderButton = ({ provider }) => {
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       )}
-      <Modal state={copyModal} persist={false} size="small" onClose={handleCopyModalClose}>
-        <CopyTraderForm provider={provider} onClose={handleCopyModalClose} />
+      <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
+        <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
       </Modal>
     </Box>
   );

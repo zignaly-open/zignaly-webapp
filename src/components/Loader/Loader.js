@@ -10,16 +10,16 @@ const Loader = () => {
 
   return (
     <Box
+      alignItems="center"
+      bgcolor="background.paper"
       className="wrapper"
       display="flex"
       flexDirection="row"
       justifyContent="center"
-      alignItems="center"
-      bgcolor="background.paper"
     >
       <Box>
-        <Box className={"loader " + (storeSettings.darkStyle ? "dark" : "light")}></Box>
-        <img src={storeSettings.darkStyle ? LogoWhite : LogoBlack} alt="logo" className="logo" />
+        <Box className={"loader " + (storeSettings.darkStyle ? "dark" : "light")} />
+        <img alt="logo" className="logo" src={storeSettings.darkStyle ? LogoWhite : LogoBlack} />
       </Box>
     </Box>
   );

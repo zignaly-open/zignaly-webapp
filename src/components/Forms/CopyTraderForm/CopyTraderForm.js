@@ -35,7 +35,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
    */
   /**
    *
-   * @param {SubmitObject} data
+   * @param {SubmitObject} data Form data.
+   * @returns {Promise<*>} Returns promise.
    */
   const onSubmit = async (data) => {
     try {
@@ -96,8 +97,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
           Copy every move proportionately with thie followong amount.
         </Typography>
         <Box
-          className="fieldBox"
           alignItems="center"
+          className="fieldBox"
           display="flex"
           flexDirection="row"
           justifyContent="flex-start"
@@ -113,7 +114,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <label className="customLabel">Choose allocated amount</label>
             <TextField
               className="customInput"
-              error={errors.allocatedBalance ? true : false}
+              error={!!errors.allocatedBalance}
               fullWidth
               inputRef={register({
                 required: true,

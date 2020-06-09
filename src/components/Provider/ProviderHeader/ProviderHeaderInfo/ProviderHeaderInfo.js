@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ProviderHeaderInfo.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";

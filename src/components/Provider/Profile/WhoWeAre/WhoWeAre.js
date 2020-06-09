@@ -56,11 +56,11 @@ const Strategy = ({ provider }) => {
           flexDirection="row"
           justifyContent="flex-start"
         >
-          <img src={FacebookIcon} alt="faceook-icon" className="icon" />
-          <img src={TwitterIcon} alt="twitter-icon" className="icon" />
-          <img src={LinkedinIcon} alt="linkedin-icon" className="icon" />
-          <img src={TTTT} alt="tttt-icon" className="icon" />
-          <img src={DiscordIcon} alt="discord-icon" className="icon" />
+          <img alt="faceook-icon" className="icon" src={FacebookIcon} />
+          <img alt="twitter-icon" className="icon" src={TwitterIcon} />
+          <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
+          <img alt="tttt-icon" className="icon" src={TTTT} />
+          <img alt="discord-icon" className="icon" src={DiscordIcon} />
         </Box>
       </Box>
       <Typography variant="body1">{provider.website}</Typography>

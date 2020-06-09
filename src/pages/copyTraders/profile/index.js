@@ -9,20 +9,7 @@ import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
 
-/**
- * @typedef {Object} CopyTradersProfilePageProps
- * @property {String} path
- * @property {String} providerId
- */
-
-/**
- * Position detail page component.
- *
- * @param {CopyTradersProfilePageProps} props Component properties.
- * @returns {JSX.Element} Position page element.
- */
-
-const CopyTradersProfile = (props) => {
+const CopyTradersProfile = () => {
   const storeViews = useStoreViewsSelector();
   return (
     <Box
@@ -43,7 +30,7 @@ const CopyTradersProfile = (props) => {
         <Strategy provider={storeViews.provider} />
       </Box>
       <Box bgcolor="grid.main" className="performanceBox">
-        <Performance provider={storeViews.provider} />
+        <Performance />
       </Box>
     </Box>
   );

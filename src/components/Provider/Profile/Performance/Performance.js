@@ -3,17 +3,17 @@ import "./Performance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
-/**
- * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
- */
-/**
- * Provides the navigation bar for the dashboard.
- *
- * @param {DefaultProps} props Default props
- * @returns {JSX.Element} Component JSX.
- */
-const AboutUs = ({ provider }) => {
+// /**
+//  * @typedef {Object} DefaultProps
+//  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+//  */
+// /**
+//  * Provides the navigation bar for the dashboard.
+//  *
+//  * @param {DefaultProps} props Default props
+//  * @returns {JSX.Element} Component JSX.
+//  */
+const AboutUs = () => {
   return (
     <Box
       alignItems="flex-start"

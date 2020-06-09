@@ -5,20 +5,20 @@
   z-index: 10000;
 
   .logo {
-    width: 150px;
     height: 50px;
+    width: 150px;
   }
 
   .loader {
     animation: load1 1s infinite ease-in-out;
-    height: 3em;
-    width: 0.8em;
     animation-delay: -0.16s;
     font-size: 11px;
+    height: 3em;
     margin: 20px auto;
     position: relative;
     text-indent: -9999em;
     transform: translateZ(0);
+    width: 0.8em;
 
     &.dark {
       background: $white;
@@ -43,11 +43,11 @@
     &::before,
     &::after {
       animation: load1 1s infinite ease-in-out;
-      height: 3em;
-      width: 0.8em;
       content: "";
+      height: 3em;
       position: absolute;
       top: 0;
+      width: 0.8em;
     }
 
     &::before {
