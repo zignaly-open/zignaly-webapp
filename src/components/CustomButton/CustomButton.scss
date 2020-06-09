@@ -43,6 +43,10 @@
     border: 2px solid $purple;
     color: $purple;
     min-width: 250px;
+
+    .loader {
+      color: $purple;
+    }
   }
 
   &.textPurple {

@@ -28,8 +28,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
 
-  console.log(storeSettings.selectedExchange);
-
   /**
    *
    * @typedef {Object} SubmitObject
@@ -40,24 +38,29 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @param {SubmitObject} data
    */
   const onSubmit = async (data) => {
-    setLoading(true);
-    const payload = {
-      allocatedBalance: data.allocatedBalance,
-      balanceFilter: true,
-      connected: provider.connected ? provider.connected : false,
-      token: storeSession.tradeApi.accessToken,
-      providerId: provider.id,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
-    };
-    const response = await tradeApi.providerConnect(payload);
-    console.log(response);
-    const payload2 = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: provider.id,
-    };
-    dispatch(setProvider(payload2));
-    setLoading(false);
-    onClose();
+    try {
+      setLoading(true);
+      const payload = {
+        allocatedBalance: data.allocatedBalance,
+        balanceFilter: true,
+        connected: provider.connected ? provider.connected : false,
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        exchangeInternalId: storeSettings.selectedExchange.internalId,
+      };
+      const response = await tradeApi.providerConnect(payload);
+      if (response) {
+        const payload2 = {
+          token: storeSession.tradeApi.accessToken,
+          providerId: provider.id,
+        };
+        dispatch(setProvider(payload2));
+        setLoading(false);
+        onClose();
+      }
+    } catch (e) {
+      alert(e.message);
+    }
   };
 
   /**
@@ -108,7 +111,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 min: provider.minAllocatedBalance,
               })}
               name="allocatedBalance"
-              type="number"
+              type="text"
               variant="outlined"
             />
             <span className={errors.allocatedBalance ? "errorText" : ""}>

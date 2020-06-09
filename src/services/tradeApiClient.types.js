@@ -45,6 +45,14 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} DisableProviderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} type
+ * @property {Boolean} disable
+ */
+
+/**
  * @typedef {Object} UserLoginResponse
  * @property {string} token User access token.
  * @property {string} firstName User first name.

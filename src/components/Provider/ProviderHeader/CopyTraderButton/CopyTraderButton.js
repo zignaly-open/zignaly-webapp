@@ -4,7 +4,13 @@ import { Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
+import { ConfirmDialog } from "../../../Dialogs";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
+import tradeApi from "../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { useDispatch } from "react-redux";
+import { setProvider } from "../../../../store/actions/views";
 
 /**
  * @typedef {Object} DefaultProps
@@ -17,16 +23,49 @@ import CopyTraderForm from "../../../Forms/CopyTraderForm";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const [modal, showModal] = useState(false);
-
-  const copyThisTrader = () => {
-    showModal(true);
+  const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
+  const [copyModal, showCopyModal] = useState(false);
+  const [stopCopyLoader, setStopCopyLoader] = useState(false);
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
   };
 
-  const stopCopying = () => {};
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
 
-  const handleModalClose = () => {
-    showModal(false);
+  const copyThisTrader = () => {
+    showCopyModal(true);
+  };
+
+  const stopCopying = async () => {
+    try {
+      setStopCopyLoader(true);
+      const payload = {
+        disable: true,
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        type: "connected",
+      };
+      const response = await tradeApi.providerDisable(payload);
+      console.log(response);
+      if (response) {
+        const payload2 = {
+          token: storeSession.tradeApi.accessToken,
+          providerId: provider.id,
+        };
+        dispatch(setProvider(payload2));
+        setStopCopyLoader(false);
+      }
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const handleCopyModalClose = () => {
+    showCopyModal(false);
   };
 
   return (
@@ -38,7 +77,7 @@ const CopyTraderButton = ({ provider }) => {
       justifyContent="flex-start"
     >
       {provider.exchangeInternalId && (
-        <CustomButton className="loadMoreButton" onClick={stopCopying}>
+        <CustomButton className="loadMoreButton" onClick={stopCopying} loading={stopCopyLoader}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       )}
@@ -47,9 +86,14 @@ const CopyTraderButton = ({ provider }) => {
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       )}
-      <Modal state={modal} persist={false} size="small" onClose={handleModalClose}>
-        <CopyTraderForm provider={provider} onClose={handleModalClose} />
+      <Modal state={copyModal} persist={false} size="small" onClose={handleCopyModalClose}>
+        <CopyTraderForm provider={provider} onClose={handleCopyModalClose} />
       </Modal>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={stopCopying}
+        setConfirmConfig={setConfirmConfig}
+      />
     </Box>
   );
 };
