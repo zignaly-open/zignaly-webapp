@@ -1,4 +1,28 @@
-.tradingView {
-  height: 500px;
-  width: 100%;
+%box-shadow {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+}
+
+.tradingTerminal {
+  .controlsBar {
+    @extend %box-shadow;
+    margin-bottom: 17px;
+    padding: 24px;
+  }
+
+  .tradingViewContainer {
+    @extend %box-shadow;
+    height: 700px;
+    padding: 30px 24px;
+  }
+
+  .tradingViewChart {
+    margin-right: 15px;
+    width: 70%;
+  }
+
+  .strategyPanels {
+    background-color: $paleGrey;
+    width: 30%;
+  }
 }

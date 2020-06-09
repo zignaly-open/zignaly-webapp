@@ -9,9 +9,7 @@ const TradingTerminal = () => {
       <Helmet>
         <title>Trading Terminal</title>
       </Helmet>
-      <Box className="dashboard" display="flex" flexDirection="row" justifyContent="left">
-        <TradingView />
-      </Box>
+      <TradingView />
     </>
   );
 };

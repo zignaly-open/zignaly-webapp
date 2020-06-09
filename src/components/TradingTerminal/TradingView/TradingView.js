@@ -87,15 +87,28 @@ const TradingView = () => {
   };
 
   return (
-    <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-      <CustomSelect
-        label="Symbols"
-        onChange={handleSymbolChange}
-        options={symbolsOptions}
-        search={true}
-        value={selectedSymbol}
-      />
-      <div className="tradingView" id="trading_view_chart" />
+    <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+      <Box bgcolor="grid.content" className="controlsBar">
+        <CustomSelect
+          label="Browse all coin pairs"
+          onChange={handleSymbolChange}
+          options={symbolsOptions}
+          search={true}
+          value={selectedSymbol}
+        />
+      </Box>
+      <Box
+        bgcolor="grid.content"
+        className="tradingViewContainer"
+        display="flex"
+        flexDirection="row"
+        width={1}
+      >
+        <Box className="tradingViewChart" id="trading_view_chart" />
+        <Box className="strategyPanels" textAlign="center">
+          <h3>Strategy</h3>
+        </Box>
+      </Box>
     </Box>
   );
 };
