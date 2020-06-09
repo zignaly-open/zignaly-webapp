@@ -60,7 +60,6 @@ const BarChart = (props) => {
         barThickness: 20,
         maxBarThickness: 24,
         // barPercentage: 0.5,
-        //   label: "group 1",
         // backgroundColor: colorsOptions.backgroundColor,
         backgroundColor: values.map((v) => (v < 0 ? "#f63f82" : "#08a441")),
       },
@@ -91,7 +90,7 @@ const BarChart = (props) => {
     },
     ticks: {
       display: true,
-      padding: horizontal ? 10 : 40,
+      //   padding: horizontal ? 10 : 0,
     },
     // categoryPercentage: 1.0,
     // barPercentage: 1.0,
@@ -116,7 +115,7 @@ const BarChart = (props) => {
         left: horizontal ? 15 : 0,
         right: 0,
         top: 20,
-        bottom: horizontal ? 0 : 56,
+        bottom: horizontal ? 10 : images ? 25 : 0,
       },
     },
     cornerRadius: 4,
@@ -129,29 +128,28 @@ const BarChart = (props) => {
         label: tooltipFormat,
       },
     },
-    animation: {
-      duration: 1000,
-      onProgress(chartAnimation) {
-        if (!images) return;
+    plugins: {
+      legendImages: images
+        ? {
+            images,
+            horizontal,
+          }
+        : false,
+    },
+  };
 
-        const chart = chartAnimation.chart;
-        const ctx = chart.chart.ctx;
-        const xAxis = chart.scales["x-axis-0"];
-        const yAxis = chart.scales["y-axis-0"];
+  const plugins = [
+    {
+      id: "legendImages",
+      // Draw images at the bottom of the graph
+      afterDraw: (chart, easing) => {
+        if (!chart.data.datasets) return;
+        const { images, horizontal } = chart.options.plugins.legendImages;
+        var ctx = chart.chart.ctx;
+        var xAxis = chart.scales["x-axis-0"];
+        var yAxis = chart.scales["y-axis-0"];
 
-        //     chart.data.datasets.forEach(function (dataset, i) {
-        //       var meta = chart.controller.getDatasetMeta(i);
-        //       meta.data.forEach(function (bar, index) {
-        //         // var data = (dataset.data[index] / total) * 100;
-        //         ctx.fillText(data, bar._model.x - 15, bar._model.y);
-        //       });
-        //     });
-
-        values.forEach((value, index) => {
-          const imageSrc = images[index];
-          var image = new Image();
-          image.src = imageSrc;
-
+        const drawImage = (image, index) => {
           if (horizontal) {
             // Draw image on the left
             const y = yAxis.getPixelForTick(index);
@@ -163,19 +161,30 @@ const BarChart = (props) => {
             const size = 40;
             ctx.drawImage(image, x - size / 2, yAxis.bottom + 20, size, size);
           }
+        };
+
+        chart.data.datasets[0].data.forEach((value, index) => {
+          const imageSrc = images[index];
+          var image = new Image();
+          image.src = imageSrc;
+          if (!image.complete) {
+            image.onload = () => drawImage(image, index);
+          } else {
+            drawImage(image, index);
+          }
         });
       },
     },
-  };
+  ];
 
   // Merge user options
   options = Object.assign(options, customOptions);
 
-  const BarComponent = horizontal ? MemoizedHorizontalBar : MemoizedBar;
+  const BarComponent = horizontal ? HorizontalBar : MemoizedBar;
 
-  let height;
+  let height = 0;
   if (horizontal && adjustHeightToContent) {
-    // Calculate optimal height to display all the bars
+    // Calculate optimal height to display all the bars.
     const BAR_GAP = 3;
     const X_AXIS_HEIGHT = 60;
     height = values.length * (data.datasets[0].barThickness + BAR_GAP * 2) + X_AXIS_HEIGHT;
@@ -183,7 +192,7 @@ const BarChart = (props) => {
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <BarComponent data={data} options={options} ref={chartRef} redraw={true} />
+      <BarComponent data={data} options={options} ref={chartRef} redraw={true} plugins={plugins} />
     </Box>
   );
 };
