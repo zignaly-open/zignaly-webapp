@@ -5,6 +5,7 @@ import "./TradingView.scss";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import CustomSelect from "../../CustomSelect/CustomSelect";
+import { FormattedMessage } from "react-intl";
 
 const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
@@ -89,13 +90,16 @@ const TradingView = () => {
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
       <Box bgcolor="grid.content" className="controlsBar">
-        <CustomSelect
-          label="Browse all coin pairs"
-          onChange={handleSymbolChange}
-          options={symbolsOptions}
-          search={true}
-          value={selectedSymbol}
-        />
+        <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
+          <FormattedMessage id="terminal.browsecoins" />
+          <CustomSelect
+            label=""
+            onChange={handleSymbolChange}
+            options={symbolsOptions}
+            search={true}
+            value={selectedSymbol}
+          />
+        </Box>
       </Box>
       <Box
         bgcolor="grid.content"
@@ -106,7 +110,7 @@ const TradingView = () => {
       >
         <Box className="tradingViewChart" id="trading_view_chart" />
         <Box className="strategyPanels" textAlign="center">
-          <h3>Strategy</h3>
+          <FormattedMessage id="terminal.strategy" />
         </Box>
       </Box>
     </Box>

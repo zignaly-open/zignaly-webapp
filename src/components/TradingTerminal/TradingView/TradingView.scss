@@ -23,6 +23,23 @@
 
   .strategyPanels {
     background-color: $paleGrey;
+    padding-top: 10px;
     width: 30%;
+  }
+
+  .symbolsSelector {
+    .customSelect {
+      align-items: flex-start;
+      flex-direction: column;
+      margin: 10px 0 0;
+    }
+
+    .callout {
+      > div {
+        margin: 0;
+        padding: 0;
+        width: 250px;
+      }
+    }
   }
 }
