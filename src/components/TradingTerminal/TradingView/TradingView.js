@@ -117,7 +117,17 @@ const TradingView = () => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      <Box bgcolor="grid.content" className="controlsBar">
+      <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
+        <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
+          <FormattedMessage id="terminal.browsecoins" />
+          <CustomSelect
+            label=""
+            onChange={handleSymbolChange}
+            options={symbolsOptions}
+            search={true}
+            value={selectedSymbol}
+          />
+        </Box>
         <Box
           alignContent="left"
           className="providersSelector"
@@ -131,16 +141,6 @@ const TradingView = () => {
             options={ownCopyTradersProviders}
             search={true}
             value={selectedProviderValue}
-          />
-        </Box>
-        <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
-          <FormattedMessage id="terminal.browsecoins" />
-          <CustomSelect
-            label=""
-            onChange={handleSymbolChange}
-            options={symbolsOptions}
-            search={true}
-            value={selectedSymbol}
           />
         </Box>
       </Box>

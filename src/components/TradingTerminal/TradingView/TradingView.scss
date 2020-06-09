@@ -27,7 +27,10 @@
     width: 30%;
   }
 
-  .symbolsSelector {
+  .symbolsSelector,
+  .providersSelector {
+    margin-right: 10px;
+
     .customSelect {
       align-items: flex-start;
       flex-direction: column;
