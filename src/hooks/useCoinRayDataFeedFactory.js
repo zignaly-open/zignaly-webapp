@@ -19,8 +19,7 @@ import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions
 const useCoinRayDataFeedFactory = (symbol) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [coinRayToken, setCoinRayToken] = useState("");
-  const [marketSymbolsData, setMarketSymbolsData] = useState([]);
+  const [dataFeed, setDataFeed] = useState(null);
   const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
   const getCoinrayToken = async () => {
@@ -65,31 +64,31 @@ const useCoinRayDataFeedFactory = (symbol) => {
     const tokenPromise = getCoinrayToken();
     const marketDataPromise = getMarketData();
 
-    Promise.all([tokenPromise, marketDataPromise]).then((data) => {
-      setCoinRayToken(data[0]);
-      setMarketSymbolsData(data[1]);
-    });
+    Promise.all([tokenPromise, marketDataPromise])
+      .then((data) => {
+        const coinRayToken = data[0];
+        const marketSymbolsData = data[1];
+
+        const options = {
+          exchange: "Binance",
+          exchangeKey,
+          symbol,
+          symbolsData: marketSymbolsData,
+          tradeApiToken: storeSession.tradeApi.accessToken,
+          coinRayToken: coinRayToken,
+          regenerateAccessToken: getCoinrayToken,
+        };
+
+        setDataFeed(new CoinRayDataFeed(options));
+      })
+      .catch((e) => {
+        alert(`ERROR: ${e.message}`);
+      });
   };
 
   useEffect(resolveDataDependencies, []);
 
-  const options = {
-    exchange: "Binance",
-    exchangeKey,
-    symbol,
-    symbolsData: marketSymbolsData,
-    tradeApiToken: storeSession.tradeApi.accessToken,
-    coinRayToken: coinRayToken,
-    regenerateAccessToken: getCoinrayToken,
-  };
-
-  if (coinRayToken && marketSymbolsData) {
-    const dataFeed = new CoinRayDataFeed(options);
-
-    return /** @type IBasicDataFeed */ (dataFeed);
-  }
-
-  return null;
+  return dataFeed;
 };
 
 export default useCoinRayDataFeedFactory;

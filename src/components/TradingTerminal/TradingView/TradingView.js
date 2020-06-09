@@ -8,17 +8,12 @@ import CustomSelect from "../../CustomSelect/CustomSelect";
 
 const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
+  const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
-
-  /**
-   * @typedef {import("../../../tradingView/charting_library.min.js").IChartingLibraryWidget} Widget
-   * @type {Widget|null} tvInstacne
-   */
-  let tvInstance = null;
 
   const drawLine = () => {
     const orderPrice = 9600;
-    const chart = tvInstance.chart();
+    const chart = tradingViewWidget.chart();
     const coloring3 = "rgb(117, 16, 197)";
     chart
       .createPositionLine({})
@@ -38,7 +33,7 @@ const TradingView = () => {
   };
 
   const customizeChart = () => {
-    if (tvInstance) {
+    if (tradingViewWidget !== null) {
       drawLine();
     }
   };
@@ -46,13 +41,14 @@ const TradingView = () => {
   const bootstrapWidget = () => {
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
-      tvInstance = new TradingViewWidget(widgetOptions);
-      tvInstance.onChartReady(customizeChart);
+      const widgetInstance = new TradingViewWidget(widgetOptions);
+      widgetInstance.onChartReady(customizeChart);
+      setTradingViewWidget(widgetInstance);
     }
 
     return () => {
-      if (tvInstance) {
-        tvInstance.remove();
+      if (tradingViewWidget) {
+        tradingViewWidget.remove();
       }
     };
   };
@@ -82,11 +78,23 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(/** @type {string} */ (selectedOption.value));
+
+    // Change chart data to the new selected symbol.
+    if (tradingViewWidget) {
+      const chart = tradingViewWidget.chart();
+      chart.setSymbol(selectedOption.value, () => {});
+    }
   };
 
   return (
     <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-      <CustomSelect onChange={handleSymbolChange} options={symbolsOptions} search={true} />
+      <CustomSelect
+        label="Symbols"
+        onChange={handleSymbolChange}
+        options={symbolsOptions}
+        search={true}
+        value={selectedSymbol}
+      />
       <div className="tradingView" id="trading_view_chart" />
     </Box>
   );
