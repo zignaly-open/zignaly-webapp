@@ -1,0 +1,19 @@
+.exchangeAccountInfo {
+  width: 100%;
+
+  .equityBox {
+    min-height: 270px;
+    width: 62%;
+  }
+
+  .cryptoBox {
+    min-height: 250px;
+    width: 38%;
+  }
+
+  .balanceBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-top: 30px;
+    width: 100%;
+  }
+}

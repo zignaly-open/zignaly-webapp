@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Doughnut.scss";
 import { Box } from "@material-ui/core";
-import { preparePieChartOptions, generateChart, getCanvasContext } from "../../../utils/chart";
+import { Doughnut as DoughnutChart } from "react-chartjs-2";
 
 /**
- *
- * @typedef {import("../../../utils/chart").ChartData} ChartData
+ * @typedef {import('chart.js').ChartData} ChartData
+ * @typedef {import('chart.js').ChartOptions} ChartOptions
  * @typedef {import("../../../utils/chart").DoughnutColorOptions} DoughnutColorOptions
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {ChartData} chartData
+ * @property {Array<Number>} values Chart values.
+ * @property {Array<String>} labels Chart labels.
  * @property {DoughnutColorOptions} colorOptions
  */
 
@@ -22,17 +23,40 @@ import { preparePieChartOptions, generateChart, getCanvasContext } from "../../.
  */
 
 const Doughnut = (props) => {
-  const { chartData, colorOptions } = props;
+  const { values, labels, colorOptions } = props;
+  /**
+   * @type Chart.ChartData
+   */
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        data: values,
+        backgroundColor: colorOptions.backgroundColor,
+        borderColor: colorOptions.borderColor,
+      },
+    ],
+  };
 
-  useEffect(() => {
-    const canvasContext = getCanvasContext("myDoughnut");
-    generateChart(canvasContext, preparePieChartOptions(chartData, colorOptions));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chartData.values]);
+  /**
+   * @type Chart.ChartOptions
+   */
+  const options = {
+    responsive: true,
+    legend: {
+      display: true,
+      position: "right",
+    },
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
+  };
 
   return (
     <Box className="doughnut">
-      <canvas className="doughnutCanvas" id="myDoughnut" />
+      <DoughnutChart data={data} options={options} />
     </Box>
   );
 };

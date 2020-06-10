@@ -1,5 +1,4 @@
 import React from "react";
-import "./CompositionGraph.scss";
 import Doughnut from "../../../Graphs/Doughnut";
 
 /**
@@ -34,10 +33,14 @@ const CompositionGraph = ({ list, quotes }) => {
   ];
 
   /**
-   * @typedef {import("../../../Graphs/LineChart/LineChart").ChartData} ChartData
-   * @type {ChartData}
+   * @type {Array<Number>}
    */
-  let chartData = { values: [], labels: [] };
+  let values = [];
+
+  /**
+   * @type {Array<String>}
+   */
+  let labels = [];
 
   const colorsOptions = {
     backgroundColor: sectionColors,
@@ -52,18 +55,18 @@ const CompositionGraph = ({ list, quotes }) => {
       for (let a = 0; a < quotes.length; a++) {
         let property = quotes[a] + "percantage";
         if (equity[property]) {
-          chartData.values.push(equity[property]);
-          chartData.labels.push(quotes[a]);
+          values.push(equity[property]);
+          labels.push(quotes[a]);
         }
       }
-      chartData.values.push(equity.otherPercentage);
-      chartData.labels.push("Others");
+      values.push(equity.otherPercentage);
+      labels.push("Others");
     }
   };
 
   prepareChartData();
 
-  return <Doughnut chartData={chartData} colorOptions={colorsOptions} />;
+  return <Doughnut values={values} labels={labels} colorOptions={colorsOptions} />;
 };
 
 export default CompositionGraph;

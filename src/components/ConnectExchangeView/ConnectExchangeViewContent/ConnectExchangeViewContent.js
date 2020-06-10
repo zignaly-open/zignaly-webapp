@@ -6,7 +6,10 @@ import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
 
 const ConnectExchangeViewContent = () => {
   //   console.log(window.location.pathname, window.location.hash);
-  const hash = window.location.hash ? window.location.hash.substr(1) : "";
+  let hash = window.location.hash ? window.location.hash.substr(1) : "";
+  if (!hash) {
+    // get hash by looking at selected exchange
+  }
   switch (hash) {
     case "realAccount":
     case "demoAccount":
