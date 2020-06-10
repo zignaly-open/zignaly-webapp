@@ -1,0 +1,38 @@
+.copyTraderForm {
+  padding: 40px 20px;
+
+  h3 {
+    font-family: "PlexSans-Medium";
+    font-size: 21px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: initial;
+    width: 80%;
+  }
+
+  p {
+    margin-bottom: 20px;
+    text-align: center;
+    width: 80%;
+  }
+
+  .fieldBox {
+    margin-bottom: 40px;
+    width: 100%;
+
+    h4 {
+      margin-top: 10px;
+      text-align: center;
+      width: 23%;
+    }
+
+    .inputBox {
+      width: 264px;
+
+      .customLabel {
+        text-align: left;
+        width: 100%;
+      }
+    }
+  }
+}

@@ -204,7 +204,7 @@ const TraderCard = (props) => {
             )}
             <CustomButton
               className={darkStyle ? "textPurple" : "textDefault"}
-              onClick={() => navigate("/copyTrader/profile")}
+              onClick={() => navigate(`/copyTraders/${provider.id}/profile`)}
             >
               <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
             </CustomButton>

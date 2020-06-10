@@ -1,0 +1,31 @@
+.profilePage {
+  width: 100%;
+
+  .aboutBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    min-height: 250px;
+    width: calc(46% - 20px);
+  }
+
+  .whoWeAreBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 250px;
+    width: 54%;
+  }
+
+  .strategyBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    min-height: 430px;
+    width: calc(46% - 20px);
+  }
+
+  .performanceBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 430px;
+    width: 54%;
+  }
+}

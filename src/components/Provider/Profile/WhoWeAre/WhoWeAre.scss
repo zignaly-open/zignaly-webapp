@@ -1,0 +1,20 @@
+.whoWeAre {
+  min-height: inherit;
+  padding: 30px 20px;
+  width: 100%;
+
+  p {
+    color: $purple;
+  }
+
+  .bottomBox {
+    .socialBox {
+      .icon {
+        height: 39px;
+        margin-right: 30px;
+        margin-top: 16px;
+        width: 39px;
+      }
+    }
+  }
+}

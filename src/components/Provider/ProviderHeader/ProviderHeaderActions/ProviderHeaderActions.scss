@@ -1,0 +1,33 @@
+.providerHeaderActions {
+  margin-bottom: 50px;
+  width: 100%;
+
+  .titleBox {
+    max-width: 650px;
+
+    .providerLogo {
+      height: 40px;
+      margin-right: 16px;
+      width: 40px;
+    }
+
+    h1 {
+      margin-right: 40px;
+    }
+  }
+
+  h4 {
+    font-family: "PlexSans-Regular";
+    margin-right: 40px;
+
+    b {
+      font-family: "PlexSans-Bold";
+      margin-left: 5px;
+    }
+  }
+
+  .loadMoreButton {
+    margin-right: 40px;
+    min-width: 215px;
+  }
+}

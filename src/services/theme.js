@@ -203,6 +203,10 @@ const theme = (darkStyle) => {
         wordSpacing: "5px",
         textTransform: "capitalize",
       },
+      body1: {
+        fontSize: "16px",
+        fontFamily: "PlexSans-Regular",
+      },
     },
     overrides: {
       MuiCssBaseline: {
