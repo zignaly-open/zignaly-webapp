@@ -1,7 +1,7 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import Link from "../LocalizedLink";
+import GatsbyLink from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
 /**
@@ -28,7 +28,13 @@ const SubNavHeader = ({ links, rightComponent }) => {
       justifyContent="flex-start"
     >
       {links.map((item, index) => (
-        <Link activeClassName="active" className="dashboardLink" key={index} to={item.to}>
+        <Link
+          activeClassName="active"
+          className="dashboardLink"
+          key={index}
+          href={item.to}
+          onClick={item.onClick}
+        >
           <FormattedMessage id={item.id} />
         </Link>
       ))}

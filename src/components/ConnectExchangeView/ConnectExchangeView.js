@@ -2,6 +2,7 @@ import React from "react";
 import "./ConnectExchangeView.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
+import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -26,6 +27,18 @@ const ConnectExchangeView = (props) => {
     props.onClose();
   };
 
+  const tabs = [
+    {
+      id: "accounts.real",
+      to: "#",
+      //   onClick: ()=> dispatch(openExchangeConnectionView(false))}
+    },
+    {
+      id: "accounts.demo",
+      to: "#",
+    },
+  ];
+
   return (
     <Box
       alignItems="center"
@@ -36,7 +49,7 @@ const ConnectExchangeView = (props) => {
     >
       <Box className="actionBar">
         <CustomButton className="submitButton" onClick={handleClick}>
-          Done
+          <FormattedMessage id="accounts.done" />
         </CustomButton>
       </Box>
       <Box className="titleBar">
@@ -44,6 +57,7 @@ const ConnectExchangeView = (props) => {
           <FormattedMessage id="dashboard.connectexchange.bold.title" />
         </Typography>
       </Box>
+      <SubNavHeader links={tabs} />
     </Box>
   );
 };

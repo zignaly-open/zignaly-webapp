@@ -29,7 +29,7 @@ const SettingsView = (props) => {
   return (
     <Box
       alignItems="center"
-      className="connectExchangeView"
+      className="settingsView"
       display="flex"
       flexDirection="column"
       justifyContent="center"
