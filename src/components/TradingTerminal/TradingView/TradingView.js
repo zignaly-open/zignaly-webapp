@@ -158,14 +158,16 @@ const TradingView = () => {
         >
           <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
         </Modal>
-        <Box
-          className="leverageButton"
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-end"
-        >
-          <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
-        </Box>
+        {storeSettings.selectedExchange.exchangeType === "futures" && (
+          <Box
+            className="leverageButton"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-end"
+          >
+            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+          </Box>
+        )}
       </Box>
       <Box
         bgcolor="grid.content"
