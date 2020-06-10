@@ -1,0 +1,64 @@
+.countrySelect {
+  margin-bottom: 20px;
+  width: 100%;
+
+  input {
+    padding-left: 1rem;
+  }
+
+  & > div {
+    div {
+      padding: 0;
+    }
+  }
+
+  .chip {
+    font-size: 12px;
+    height: 30px;
+    padding: 0;
+  }
+
+  &.dark {
+    fieldset {
+      border-color: $white;
+    }
+
+    .downBtn {
+      color: $white;
+    }
+
+    .clearIcon {
+      color: $white;
+    }
+
+    .chip {
+      svg {
+        color: $black2;
+      }
+    }
+  }
+
+  &.light {
+    fieldset {
+      border-color: $black2;
+    }
+
+    .downBtn {
+      color: $black2;
+    }
+
+    .clearIcon {
+      color: $black2;
+    }
+
+    .chip {
+      svg {
+        color: $black2;
+      }
+    }
+  }
+}
+
+.mr {
+  margin-right: 8px;
+}

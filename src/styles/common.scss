@@ -75,10 +75,17 @@ body {
 }
 
 .customLabel {
-  color: $black;
   font-family: "PlexSans-Regular";
   font-size: 16px;
   margin-bottom: 12px;
+
+  &.dark {
+    color: $white;
+  }
+
+  &.light {
+    color: $black;
+  }
 }
 
 .customInput {
@@ -92,6 +99,18 @@ body {
 
   & > div {
     padding-right: 10px;
+  }
+
+  &.dark {
+    fieldset {
+      border-color: $white;
+    }
+  }
+
+  &.light {
+    fieldset {
+      border-color: $black2;
+    }
   }
 }
 
