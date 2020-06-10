@@ -6,14 +6,8 @@
   }
 
   .customTooltip {
-    @extend %body1;
-    background-color: $tooltipBackground;
-    border: solid 1px $tooltipBorder;
-    color: $tooltipText;
-    font-size: 12px;
     padding: 5px 10px;
-    transform: translate(-50%, 0); // sass-lint:disable-line no-important
-    transition: none; // sass-lint:disable-line no-important
+    text-align: left;
 
     .label {
       font-family: "PlexSans-Regular";
@@ -39,4 +33,5 @@
   border: solid 1px $tooltipBorder;
   color: $tooltipText;
   padding: 16px;
+  text-align: center;
 }

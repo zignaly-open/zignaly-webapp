@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
-import "./providersList.scss";
+import "./ProvidersList.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection

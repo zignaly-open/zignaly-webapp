@@ -25,7 +25,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<MUIDataTableColumn>} columns Table Columns.
  * @property {Array<Object>} data Table Data.
- * @property {string} persistKey Key to save display columns settings.
+ * @property {string} [persistKey] Key to save display columns settings.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -49,7 +49,7 @@ const Table = ({ columns, data, persistKey, title }) => {
       display:
         (c.options && c.options.display) ||
         ((c.options && c.options.viewColumns === false) ||
-        storeSettings.displayColumns[persistKey].includes(c.name)
+        (persistKey && storeSettings.displayColumns[persistKey].includes(c.name))
           ? "true"
           : "false"),
     },
@@ -132,6 +132,20 @@ const Table = ({ columns, data, persistKey, title }) => {
             [theme.breakpoints.down("sm")]: {
               height: "auto",
               textAlign: "left",
+            },
+          },
+        },
+        MUIDataTablePagination: {
+          root: {
+            [theme.breakpoints.down("sm")]: {
+              "&:last-child": {
+                paddingLeft: 0,
+              },
+            },
+          },
+          toolbar: {
+            [theme.breakpoints.down("sm")]: {
+              paddingLeft: 0,
             },
           },
         },

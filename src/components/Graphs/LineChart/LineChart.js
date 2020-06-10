@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import "./Chart.scss";
+import "./LineChart.scss";
 import { Box } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
@@ -40,7 +40,7 @@ const MemoizedLine = React.memo(Line, (prevProps, nextProps) =>
  */
 
 /**
- * Provides a wrapper to display a chart.
+ * Provides a wrapper to display a line chart.
  *
  * @param {LineChartPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
