@@ -67,7 +67,7 @@ const TotalEquityGraph = ({ list }) => {
           </span>
         </Box>
         <Box>
-          <span className="label">Total BTC:</span>
+          <span className="label">BTC:</span>
           <span>
             {list[list.length - tooltipItem.index]
               ? +toNumber(list[list.length - tooltipItem.index].totalBTC).toFixed(8)
@@ -75,7 +75,7 @@ const TotalEquityGraph = ({ list }) => {
           </span>
         </Box>
         <Box>
-          <span className="label">Total USDT:</span>
+          <span className="label">USDT:</span>
           <span>
             {list[list.length - tooltipItem.index]
               ? +toNumber(list[list.length - tooltipItem.index].totalUSDT).toFixed(8)

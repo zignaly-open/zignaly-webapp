@@ -281,6 +281,8 @@ provider.stop: "CH-STOP LISTENING"
 provider.view: "CH-VIEW PROVIDER"
 provider.people: "CH-people copying this provider"
 
+graph.others: "CH-Others"
+
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "CH-COPY-TRADERS"
 copyt.subtitle: "CH-Copy experienced traders who trade with the currencies you own."

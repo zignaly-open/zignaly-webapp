@@ -281,6 +281,8 @@ provider.stop: "STOP LISTENING"
 provider.view: "VIEW PROVIDER"
 provider.people: "people copying this provider"
 
+graph.others: "Others"
+
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "COPY-TRADERS"
 copyt.subtitle: "Copy experienced traders who trade with the currencies you own."
