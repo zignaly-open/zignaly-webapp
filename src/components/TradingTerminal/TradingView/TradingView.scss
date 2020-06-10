@@ -8,28 +8,53 @@
     @extend %box-shadow;
     margin-bottom: 17px;
     padding: 24px;
+
+    @include media("<=sm") {
+      flex-direction: column;
+    }
   }
 
   .tradingViewContainer {
     @extend %box-shadow;
-    height: 700px;
     padding: 30px 24px;
+
+    @include media("<=sm") {
+      flex-direction: column;
+      padding: 0;
+    }
   }
 
   .tradingViewChart {
+    height: 700px;
     margin-right: 15px;
     width: 70%;
+
+    @include media("<=sm") {
+      height: 400px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
   }
 
   .strategyPanels {
     background-color: $paleGrey;
+    height: 700px;
     padding-top: 10px;
     width: 30%;
+
+    @include media("<=sm") {
+      height: 400px;
+      width: 100%;
+    }
   }
 
   .symbolsSelector,
   .providersSelector {
     margin-right: 10px;
+
+    @include media("<=sm") {
+      margin-bottom: 15px;
+    }
 
     .customSelect {
       align-items: flex-start;
@@ -47,6 +72,8 @@
   }
 
   .leverageButton {
+    width: 50px;
+
     button {
       border: $purple solid 1px;
       font-size: 15px;
