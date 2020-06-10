@@ -29,5 +29,6 @@ module.exports = {
       resolve: "gatsby-plugin-layout",
       options: {},
     },
+    "gatsby-plugin-modal-routing",
   ],
 };

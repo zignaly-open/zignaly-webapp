@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
+import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
 
 /**
  * @typedef {Object} DefaultProps
@@ -30,12 +31,12 @@ const ConnectExchangeView = (props) => {
   const tabs = [
     {
       id: "accounts.real",
-      to: "#",
-      //   onClick: ()=> dispatch(openExchangeConnectionView(false))}
+      to: "#realAccount",
+      // onClick: ()=> dispatch(openExchangeConnectionView(false))}
     },
     {
       id: "accounts.demo",
-      to: "#",
+      to: "#demoAccount",
     },
   ];
 
@@ -58,6 +59,7 @@ const ConnectExchangeView = (props) => {
         </Typography>
       </Box>
       <SubNavHeader links={tabs} />
+      <ConnectExchangeViewContent />
     </Box>
   );
 };

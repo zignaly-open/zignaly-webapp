@@ -27,17 +27,17 @@ const SubNavHeader = ({ links, rightComponent }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {links.map((item, index) => (
-        <Link
-          activeClassName="active"
-          className="dashboardLink"
-          key={index}
-          href={item.to}
-          onClick={item.onClick}
-        >
-          <FormattedMessage id={item.id} />
-        </Link>
-      ))}
+      {links.map((item, index) =>
+        true ? (
+          <a className={"dashboardLink active"} key={index} onClicka={item.onClick} href={item.to}>
+            <FormattedMessage id={item.id} />
+          </a>
+        ) : (
+          <GatsbyLink activeClassName="active" className="dashboardLink" key={index} to={item.to}>
+            <FormattedMessage id={item.id} />
+          </GatsbyLink>
+        ),
+      )}
       {rightComponent && rightComponent}
     </Box>
   );

@@ -18,7 +18,7 @@ import { Dialog } from "@material-ui/core";
  */
 
 const GenericModal = (props) => {
-  const { state, onClose, persist, children, size } = props;
+  const { state, onClose, persist, children, size, ...others } = props;
 
   return (
     <Dialog
@@ -27,6 +27,7 @@ const GenericModal = (props) => {
       maxWidth="lg"
       onClose={onClose}
       open={state}
+      {...others}
     >
       {children}
     </Dialog>

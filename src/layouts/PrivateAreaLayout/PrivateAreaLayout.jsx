@@ -45,7 +45,10 @@ const PrivateAreaLayout = (props) => {
         <Modal
           onClose={() => dispatch(openExchangeConnectionView(false))}
           persist={false}
-          size="large"
+          //   size="large"
+          maxWidth={false}
+          fullScreen={true}
+          size="fullscreen"
           state={storeModal.exchangeConnectionView}
         >
           <ConnectExchangeView onClose={() => dispatch(openExchangeConnectionView(false))} />

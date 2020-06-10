@@ -12,6 +12,8 @@ import { endTradeApiSession } from "../../../store/actions/session";
 import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import { openExchangeConnectionView, openSettingsView } from "../../../store/actions/ui";
+// import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-modal-routing";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ const UserMenu = () => {
 
   const showExchangeConnectionView = () => {
     dispatch(openExchangeConnectionView(true));
+    // navigate("/exchangeAccounts");
   };
 
   const showSettingsView = () => {
