@@ -16,6 +16,7 @@ import {
   serverTimeResponseTransform,
   coinRayTokenResponseTransform,
   exchangeMarketDataResponseTransform,
+  exchangeListResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -434,7 +435,7 @@ class TradeApiClient {
    *
    * @param {DisableProviderPayload} payload Get providers stats payload.
 
-   * @returns
+   * @returns {Promise<*>}
    *
    * @memberof TradeApiClient
    */
@@ -444,6 +445,23 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {AuthorizationPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>}
+   *
+   * @memberof TradeApiClient
+   */
+
+  async exchangeListGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeList";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeListResponseTransform(responseData);
   }
 }
 

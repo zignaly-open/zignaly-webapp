@@ -14,8 +14,32 @@
       margin-bottom: 16px;
       width: calc(50% - 40px);
 
+      &.switches {
+        min-width: 65%;
+
+        .customLabel {
+          margin-bottom: 0;
+        }
+      }
+
       .customLabel {
         margin-bottom: 8px;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .icon {
+          margin-left: 10px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .customInput {
+        fieldset {
+          border-color: $lightGrey;
+        }
       }
     }
 
@@ -24,37 +48,34 @@
     .strategyBox,
     .performanceBox {
       padding: 20px;
+      width: 50%;
     }
 
     .aboutBox {
-      min-height: auto;
-      min-height: 300px;
-      width: 46%;
+      min-height: 250px;
       .editor {
         min-height: inherit;
       }
     }
 
     .whoWeAreBox {
-      min-height: 250px;
-      width: 54%;
+      min-height: 100px;
     }
 
     .strategyBox {
-      min-height: 430px;
-      width: 46%;
+      min-height: 200px;
       .editor {
-        min-height: inherit;
+        min-height: 400px;
       }
     }
 
     .performanceBox {
       min-height: 430px;
-      width: 54%;
     }
 
     .formAction {
       width: 100%;
+      padding: 20px;
 
       .submitButton {
         width: 220px;

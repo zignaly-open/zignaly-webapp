@@ -19,7 +19,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 const CountrySelect = ({ onChange }) => {
   const storeSettings = useStoreSettingsSelector();
   const list = Object.values(countries);
-  const [selected, setSelected] = useState([list[0]]);
+  const [selected, setSelected] = useState([]);
 
   /**
    *
@@ -41,7 +41,9 @@ const CountrySelect = ({ onChange }) => {
       multiple
       onChange={hanldeChange}
       options={list}
-      renderInput={(params) => <TextField {...params} variant="outlined" />}
+      renderInput={(params) => (
+        <TextField {...params} placeholder="Select countries" variant="outlined" />
+      )}
       renderOption={(option) => (
         <>
           <span className="mr">{option.emoji}</span>

@@ -1585,3 +1585,54 @@ function createEmptyProviderGetEntity() {
     terms: false,
   };
 }
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ExchangeListEntity>} User exchange connections collection.
+ */
+
+export function exchangeListResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((exchangeConnectionItem) => {
+    return exchangeListResponseItemTransform(exchangeConnectionItem);
+  });
+}
+
+/**
+ * @typedef {Object} ExchangeListEntity
+ * @property {String} id
+ * @property {String} name
+ * @property {Boolean} enabled
+ * @property {Array<String>} type
+ * @property {Array<String>} testNet
+ * @property {Array<String>} requiredAuthFields
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} exchangeConnectionItem Trade API exchange connection item.
+ * @returns {ExchangeListEntity} Exchange connection entity.
+ */
+function exchangeListResponseItemTransform(exchangeConnectionItem) {
+  const emptyExchangeListEntity = createExchangeListEmptyEntity();
+  const transformedResponse = assign(emptyExchangeListEntity, exchangeConnectionItem);
+
+  return transformedResponse;
+}
+
+function createExchangeListEmptyEntity() {
+  return {
+    enabled: false,
+    id: "",
+    name: "",
+    requiredAuthFields: [""],
+    testNet: [""],
+    type: [""],
+  };
+}
