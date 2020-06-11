@@ -36,6 +36,7 @@ import SocialSelect from "./SocialSelect";
  * Copy trader profile edit component.
  *
  * @param {DefaultProps} props Default component props.
+ * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [loading, setLoading] = useState(false);
@@ -164,6 +165,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   /**
    *
    * @param {*} list Array of selected countries received.
+   * @returns {void} None.
    */
   const handleCountryChange = (list) => {
     setSelectedCountries(list);
@@ -172,6 +174,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   /**
    *
    * @param {*} list Array of social object received.
+   * @returns {void} None.
    */
   const handleSocialLinkChange = (list) => {
     setSelectedSocials(list);
@@ -190,6 +193,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   /**
    *
    * @param {*} value Editor object received by the functions
+   * @returns {void} None.
    */
   const handleAboutChange = (value) => {
     setAbout(value);
@@ -198,6 +202,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   /**
    *
    * @param {*} value Editor object received by the functions
+   * @returns {void} None.
    */
   const handleStrategyChange = (value) => {
     setStrategy(value);
@@ -208,7 +213,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="flex-start"
-          className="copyTraderEditProfileForm"
+          className="editProfileForm"
           display="flex"
           flexDirection="row"
           flexWrap="wrap"
@@ -247,7 +252,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
           <Box
             bgcolor="grid.main"
-            className="performanceBox"
+            className="profileBox"
             display="flex"
             flexDirection="row"
             flexWrap="wrap"
@@ -331,85 +336,6 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                <FormattedMessage id="srv.edit.merchantid" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                    error={!!errors.merchantId}
-                    fullWidth
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={storeViews.provider.internalPaymentInfo.merchantId}
-                name="merchantId"
-                rules={{ required: true }}
-              />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.price" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                    error={!!errors.price}
-                    fullWidth
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={storeViews.provider.internalPaymentInfo.price}
-                name="price"
-                rules={{ required: true }}
-              />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.ipn" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                    error={!!errors.ipnSecret}
-                    fullWidth
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                name="ipnSecret"
-                rules={{ required: true }}
-              />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.trial" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                    error={!!errors.trial}
-                    fullWidth
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={storeViews.provider.internalPaymentInfo.trial}
-                name="trial"
-                rules={{ required: true }}
-              />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.exchanges" />
               </label>
@@ -465,6 +391,101 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                     ))}
                 </Select>
               </FormControl>
+            </Box>
+
+            <Box
+              display="flex"
+              flexDirection="row"
+              flexWrap="wrap"
+              justifyContent="space-between"
+              className="paymentBox"
+            >
+              <a
+                className="paymentDocsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.zignaly.com/providers/how-to-create-a-public-provider#our-payment-system"
+              >
+                <FormattedMessage id="srv.payment.docs" />
+              </a>
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+                  <FormattedMessage id="srv.edit.merchantid" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                      error={!!errors.merchantId}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  defaultValue={storeViews.provider.internalPaymentInfo.merchantId}
+                  name="merchantId"
+                  rules={{ required: true }}
+                />
+              </Box>
+
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.price" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                      error={!!errors.price}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  defaultValue={storeViews.provider.internalPaymentInfo.price}
+                  name="price"
+                  rules={{ required: true }}
+                />
+              </Box>
+
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.ipn" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                      error={!!errors.ipnSecret}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  name="ipnSecret"
+                  rules={{ required: true }}
+                />
+              </Box>
+
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.trial" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                      error={!!errors.trial}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  defaultValue={storeViews.provider.internalPaymentInfo.trial}
+                  name="trial"
+                  rules={{ required: true }}
+                />
+              </Box>
             </Box>
 
             <Box

@@ -2,7 +2,7 @@
   box-shadow: 0 2px 8px 0 $boxShadowColor;
   width: 100%;
 
-  .copyTraderEditProfileForm {
+  .editProfileForm {
     width: 100%;
 
     h3 {
@@ -46,7 +46,7 @@
     .aboutBox,
     .whoWeAreBox,
     .strategyBox,
-    .performanceBox {
+    .profileBox {
       padding: 20px;
       width: 50%;
     }
@@ -71,8 +71,24 @@
       }
     }
 
-    .performanceBox {
+    .profileBox {
       min-height: 430px;
+
+      .paymentBox {
+        width: 100%;
+        padding: 20px 0;
+
+        .paymentDocsLink {
+          color: $blue;
+          width: 100%;
+          margin-bottom: 20px;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
     }
 
     .formAction {

@@ -12,7 +12,8 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /**
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
+ * @returns {JSX.Element} Component JSX.
  */
 const SocialSelect = ({ onChange }) => {
   const socialObject = { id: Math.random(), type: "facebook", url: "", delete: false };
@@ -24,7 +25,7 @@ const SocialSelect = ({ onChange }) => {
    * Function to handle input changes for select and text input.
    *
    * @param {React.ChangeEvent<*>} e Change event.
-   * @param {Number|String} id
+   * @param {Number|String} id ID of the dynamic field object.
    * @returns {void}
    */
   const handleChange = (e, id) => {

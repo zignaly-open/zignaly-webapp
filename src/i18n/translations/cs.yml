@@ -345,6 +345,7 @@ srv.edit.quotes: "CH-Quotes"
 srv.edit.public: "CH-Make it Public"
 srv.edit.list: "CH-Get Listed in the Marketplace"
 srv.edit.countries: "CH-Select Countries"
+srv.payment.docs: "CH-How to get Merchant ID and IPN Secret"
 
 signalp.title: "CH-SIGNAL-PROVIDERS"
 signalp.subtitle: "CH-Set up automatic trading based on trading signals provided by expert traders."

@@ -13,8 +13,10 @@ import { useIntl } from "react-intl";
  */
 
 /**
+ * Default component props.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
+ * @returns {JSX.Element} Component JSX.
  */
 const CountrySelect = ({ onChange }) => {
   const storeSettings = useStoreSettingsSelector();
@@ -27,6 +29,7 @@ const CountrySelect = ({ onChange }) => {
    *
    * @param {React.ChangeEvent} event Change event.
    * @param {*} newVal countries array received on value change.
+   * @returns {void} None.
    */
   const hanldeChange = (event, newVal) => {
     setSelected(newVal);

@@ -345,6 +345,7 @@ srv.edit.quotes: "Quotes"
 srv.edit.public: "Make it Public"
 srv.edit.list: "Get Listed in the Marketplace"
 srv.edit.countries: "Select Countries"
+srv.payment.docs: "How to get Merchant ID and IPN Secret"
 
 signalp.title: "SIGNAL-PROVIDERS"
 signalp.subtitle: "Set up automatic trading based on trading signals provided by expert traders."
