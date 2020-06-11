@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "countries-list";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { FormattedMessage, useIntl } from "react-intl";
 
 /**
  *
@@ -20,6 +21,7 @@ const CountrySelect = ({ onChange }) => {
   const storeSettings = useStoreSettingsSelector();
   const list = Object.values(countries);
   const [selected, setSelected] = useState([]);
+  const intl = useIntl();
 
   /**
    *
@@ -42,7 +44,11 @@ const CountrySelect = ({ onChange }) => {
       onChange={hanldeChange}
       options={list}
       renderInput={(params) => (
-        <TextField {...params} placeholder="Select countries" variant="outlined" />
+        <TextField
+          {...params}
+          placeholder={intl.formatMessage({ id: "srv.edit.countries" })}
+          variant="outlined"
+        />
       )}
       renderOption={(option) => (
         <>

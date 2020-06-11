@@ -229,7 +229,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
           >
             <Box className="inputBox" display="flex" flexDirection="column">
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Title
+                <FormattedMessage id="srv.edit.title" />
               </label>
               <Controller
                 as={
@@ -249,7 +249,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
             <Box className="inputBox" display="flex" flexDirection="column">
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Logo Url
+                <FormattedMessage id="srv.edit.logo" />
               </label>
               <Controller
                 as={
@@ -267,7 +267,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
             <Box className="inputBox" display="flex" flexDirection="column">
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Website
+                <FormattedMessage id="srv.edit.website" />
               </label>
               <Controller
                 as={
@@ -286,7 +286,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
             <Box className="inputBox" display="flex" flexDirection="column">
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Minimum Allocated Balance
+                <FormattedMessage id="srv.edit.minbalance" />
               </label>
               <Controller
                 as={
@@ -305,7 +305,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Merchant ID</label>
+              <FormattedMessage id="srv.edit.merchantid" />
               <Controller
                 as={
                   <TextField
@@ -323,7 +323,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Price in USD</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.price" />
+              </label>
               <Controller
                 as={
                   <TextField
@@ -341,7 +343,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">IPN Secret</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.ipn" />
+              </label>
               <Controller
                 as={
                   <TextField
@@ -358,7 +362,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Trial</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.trial" />
+              </label>
               <Controller
                 as={
                   <TextField
@@ -376,7 +382,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Exchanges</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.exchanges" />
+              </label>
               <FormControl className="selectInput" variant="outlined">
                 <Select
                   className="select"
@@ -396,7 +404,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Exchange Type</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.exchangetype" />
+              </label>
               <FormControl className="selectInput" variant="outlined">
                 <Select
                   className="select"
@@ -414,7 +424,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">Quotes</label>
+              <label className="customLabel">
+                <FormattedMessage id="srv.edit.quotes" />
+              </label>
               <FormControl className="selectInput" variant="outlined">
                 <Select className="select" value={selectedQuote} onChange={handleQuoteChange}>
                   {Object.values(quotes).length &&
@@ -436,7 +448,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               alignItems="center"
             >
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Make it Public
+                <FormattedMessage id="srv.edit.public" />
                 <Tooltip
                   title="If you check this option, everybody with the provider url will be able to connect to your service."
                   placement="top"
@@ -461,7 +473,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               alignItems="center"
             >
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
-                Get listed in the Marketplace.
+                <FormattedMessage id="srv.edit.list" />
                 <Tooltip
                   title="Checking this option will list your service in the marketplace."
                   placement="top"
