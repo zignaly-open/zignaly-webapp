@@ -8,7 +8,7 @@ import ProviderHeaderActions from "./ProviderHeaderActions";
 import ProviderHeaderInfo from "./ProviderHeaderInfo";
 
 /**
- * Provides the navigation bar for the dashboard.
+ * Provides the navigation bar for the opened provider.
  *
  * @returns {JSX.Element} Component JSX.
  */

@@ -13,7 +13,7 @@ import ProviderHeader from "../../components/Provider/ProviderHeader";
  *
  * @returns {Function} Wrap component function.
  */
-const withDashboardLayout = (Component) => {
+const withProviderLayout = (Component) => {
   /**
    * @param {Object} props Default params.
    * @returns {JSX.Element} Component JSX.
@@ -40,4 +40,4 @@ const withDashboardLayout = (Component) => {
   return WrapperComponent;
 };
 
-export default withDashboardLayout;
+export default withProviderLayout;
