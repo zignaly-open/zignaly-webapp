@@ -11,7 +11,14 @@
 
     .title {
       text-align: center;
-      width: calc(100% - 80px);
+
+      &.expandable {
+        width: calc(100% - 80px);
+      }
+
+      .customSelect {
+        margin: 0 0 0 7px;
+      }
     }
   }
 

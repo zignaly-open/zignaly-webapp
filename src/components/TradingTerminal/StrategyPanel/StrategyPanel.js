@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
+import CustomSelect from "../../CustomSelect";
 import { Switch, Typography } from "@material-ui/core";
 
 const StrategyPanel = (props) => {
@@ -20,12 +21,21 @@ const StrategyPanel = (props) => {
     setExpand(targetElement.checked);
   };
 
+  const entryOptions = ["Limit Order", "Market Order", "Stop-Limit Order", "Import from Exchange"];
+  const [entryOption, setEntryOption] = useState(entryOptions[0]);
+
   return (
     <Box className={`strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {!disableExpand && <Switch onChange={handleToggle} size="small" />}
-        <Box className="title">
+        <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">Entry strategy</Typography>
+          <CustomSelect
+            label=""
+            onChange={setEntryOption}
+            options={entryOptions}
+            value={entryOption}
+          />
         </Box>
       </Box>
       {expand && (
