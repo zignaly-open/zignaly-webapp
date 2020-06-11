@@ -3,8 +3,7 @@ import "./History.scss";
 import { Box } from "@material-ui/core";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import HistoryTable from "./HistoryTable";
-import { FormattedMessage } from "react-intl";
-import EquityFilter from "../TotalEquity/EquityFilter";
+import HistoryFilter from "./HistoryFilter";
 
 const History = () => {
   const [list, setList] = useState([]);
@@ -29,6 +28,10 @@ const History = () => {
     setList(data);
   };
 
+  const embedFilter = (
+    <HistoryFilter onChange={handleChange} list={storeUser.dailyBalance.balances} />
+  );
+
   return (
     <Box
       alignItems="flex-start"
@@ -44,14 +47,12 @@ const History = () => {
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-      >
-        <EquityFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
-      </Box>
+      ></Box>
       <HistoryTable
         list={list}
         persistKey="dailyBalance"
         quotes={storeUser.dailyBalance.quotes}
-        title={<FormattedMessage id="dashboard.balance.historical" />}
+        title={embedFilter}
       />
     </Box>
   );
