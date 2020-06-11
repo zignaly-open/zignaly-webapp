@@ -1,7 +1,7 @@
 import React from "react";
 import "./TraderCardBody.scss";
 import { Box, Typography } from "@material-ui/core";
-import LineChart from "../../Graphs/Chart";
+import LineChart from "../../Graphs/LineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
@@ -11,8 +11,8 @@ import { toNumber } from "lodash";
 import { useSelector } from "react-redux";
 
 /**
- * @typedef {import("../../Graphs/Chart/Chart").ChartColorOptions} ChartColorOptions
- * @typedef {import("../../Graphs/Chart/Chart").ChartData} ChartData
+ * @typedef {import("../../Graphs/LineChart/LineChart").ChartColorOptions} ChartColorOptions
+ * @typedef {import("../../Graphs/LineChart/LineChart").ChartData} ChartData
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider

@@ -2,6 +2,7 @@ import React from "react";
 import useProvidersAnalytics from "../../../hooks/useProvidersAnalytics";
 import ProvidersProfitsTable from "../../Providers/ProvidersProfitsTable";
 import AnalyticsFilters from "../../Providers/AnalyticsFilters";
+import ProvidersProfitsChart from "../../Providers/ProvidersProfitsChart";
 import { FormattedMessage } from "react-intl";
 import { Box } from "@material-ui/core";
 
@@ -44,13 +45,17 @@ const ProvidersAnalytics = ({ type }) => {
         quotes={quotes}
         timeFrame={timeFrame}
         timeFrames={timeFrames}
-        // type={type}
+      />
+      <ProvidersProfitsChart
+        base={base.label}
+        quote={quote}
+        stats={stats}
+        timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}
         stats={stats}
         title={<FormattedMessage id={`${type}.performance`} />}
-        // type={type}
       />
     </Box>
   );
