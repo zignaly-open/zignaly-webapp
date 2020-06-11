@@ -22,9 +22,11 @@ const StrategyPanel = (props) => {
 
   return (
     <Box className={`strategyPanel ${expandClass}`}>
-      <Box className="panelHeader">
+      <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         <Switch onChange={handleToggle} size="small" />
-        <Typography variant="h5">Entry strategy</Typography>
+        <Box className="title">
+          <Typography variant="h5">Entry strategy</Typography>
+        </Box>
       </Box>
       {expand && (
         <Box className="panelContent">

@@ -8,6 +8,11 @@
     background-color: $mediumGrey;
     border-bottom: $greyBackground solid 1px;
     padding: 13px 20px;
+
+    .title {
+      text-align: center;
+      width: calc(100% - 80px);
+    }
   }
 
   .panelContent {
