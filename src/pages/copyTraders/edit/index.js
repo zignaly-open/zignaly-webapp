@@ -38,7 +38,7 @@ const CopyTradersProfile = () => {
 
   return (
     <Box className="profileEditPage">
-      <EditProfileForm quotes={quotes} exchanges={exchanges} />
+      <EditProfileForm exchanges={exchanges} quotes={quotes} />
     </Box>
   );
 };

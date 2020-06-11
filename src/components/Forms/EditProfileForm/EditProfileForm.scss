@@ -23,16 +23,16 @@
       }
 
       .customLabel {
-        margin-bottom: 8px;
-        font-size: 14px;
+        align-items: center;
         display: flex;
         flex-direction: row;
-        align-items: center;
+        font-size: 14px;
+        margin-bottom: 8px;
 
         .icon {
+          height: 16px;
           margin-left: 10px;
           width: 16px;
-          height: 16px;
         }
       }
 
@@ -53,6 +53,7 @@
 
     .aboutBox {
       min-height: 250px;
+
       .editor {
         min-height: inherit;
       }
@@ -64,6 +65,7 @@
 
     .strategyBox {
       min-height: 200px;
+
       .editor {
         min-height: 400px;
       }
@@ -74,8 +76,8 @@
     }
 
     .formAction {
-      width: 100%;
       padding: 20px;
+      width: 100%;
 
       .submitButton {
         width: 220px;

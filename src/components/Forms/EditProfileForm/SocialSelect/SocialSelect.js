@@ -22,9 +22,11 @@ const SocialSelect = ({ onChange }) => {
   const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram"];
 
   /**
+   * Function to handle input changes for select and text input.
    *
-   * @param {React.ChangeEvent<*>} e
+   * @param {React.ChangeEvent<*>} e Change event.
    * @param {Number|String} id
+   * @returns {void}
    */
 
   const handleChange = (e, id) => {
@@ -39,6 +41,7 @@ const SocialSelect = ({ onChange }) => {
     }
     list[index] = field;
     setValues(list);
+    onChange(list);
   };
 
   const addField = () => {
@@ -51,8 +54,10 @@ const SocialSelect = ({ onChange }) => {
   };
 
   /**
+   * Function to add new field.
    *
-   * @param {Number|String} id
+   * @param {Number|String} id id of the field object.
+   * @returns {void}
    */
   const removeField = (id) => {
     let list = [...values];
@@ -67,19 +72,19 @@ const SocialSelect = ({ onChange }) => {
     <Box className="socialSelect">
       {values.map((obj, index) => (
         <Box
+          alignItems="center"
           className="fieldBox"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
           key={index}
         >
           <FormControl className="selectInput" variant="outlined">
             <Select
               className="select"
               name="select"
-              value={obj.type}
               onChange={(e) => handleChange(e, obj.id)}
+              value={obj.type}
             >
               {socialList.map((item) => (
                 <MenuItem key={item} value={item.toLowerCase()}>
@@ -90,11 +95,11 @@ const SocialSelect = ({ onChange }) => {
           </FormControl>
           <TextField
             className="customInput"
-            variant="outlined"
             name="input"
-            value={obj.url}
-            placeholder="url"
             onChange={(e) => handleChange(e, obj.id)}
+            placeholder="url"
+            value={obj.url}
+            variant="outlined"
           />
           {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
           {obj.delete && (

@@ -2,8 +2,8 @@
   width: 100%;
 
   .fieldBox {
-    width: 100%;
     margin-bottom: 10px;
+    width: 100%;
 
     .selectInput {
       width: 30%;
@@ -14,10 +14,10 @@
     }
 
     .icon {
-      width: 32px;
-      height: 32px;
       color: $lightGrey;
       cursor: pointer;
+      height: 32px;
+      width: 32px;
 
       &.add {
         color: $green;
