@@ -18,6 +18,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
 import HelpIcon from "@material-ui/icons/Help";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import SocialSelect from "./SocialSelect";
 
 /**
  *
@@ -159,13 +160,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
   /**
    *
-   * @typedef {Object} EditorObject
-   * @property {Function} toString
-   */
-
-  /**
-   *
-   * @param {EditorObject} value
+   * @param {*} value
    */
 
   const handleAboutChange = (value) => {
@@ -174,7 +169,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
   /**
    *
-   * @param {EditorObject} value
+   * @param {*} value
    */
 
   const handleStrategyChange = (value) => {
@@ -210,6 +205,10 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <FormattedMessage id="srv.who" />
             </Typography>
             <CountrySelect onChange={handleCountryChange} />
+            <Typography variant="h3">
+              <FormattedMessage id="srv.find" />
+            </Typography>
+            <SocialSelect onChange={handleCountryChange} />
           </Box>
 
           <Box bgcolor="grid.main" className="strategyBox">

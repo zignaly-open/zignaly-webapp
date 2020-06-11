@@ -4,7 +4,7 @@ import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "countries-list";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 /**
  *
