@@ -330,7 +330,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <FormattedMessage id="srv.edit.merchantid" />
+              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+                <FormattedMessage id="srv.edit.merchantid" />
+              </label>
               <Controller
                 as={
                   <TextField
