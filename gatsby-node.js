@@ -35,6 +35,22 @@ exports.onCreatePage = ({ page, actions }) => {
     return;
   }
 
+  if (page.path.match(/^\/\/$/)) {
+    // page.matchPath = "/exchangeAccounts/";
+    // page.componentPath =
+    //   "/Users/chris/Dev/Projects/zignaly-api-php/webapp2/src/pages/dashboard/positions/index.js";
+    // page.component =
+    //   "/Users/chris/Dev/Projects/zignaly-api-php/webapp2/src/pages/dashboard/positions/index.js";
+    // console.log(page, actions);
+    // // createPage(page);
+    // console.log(action);
+    // dispatch(openExchangeConnectionView(true));
+    //   createPage({ path: "/dashboard/balance/index.js" });
+    createPage(page);
+
+    return;
+  }
+
   if (page.path.match(/^\/exchangeAccounts\/$/)) {
     page.matchPath = "/exchangeAccounts/";
     page.componentPath =

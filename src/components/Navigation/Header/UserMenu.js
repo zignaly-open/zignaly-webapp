@@ -9,10 +9,9 @@ import { Box, MenuItem } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
-import { navigate } from "gatsby";
 // import { navigate, History } from "@reach/router";
 import { useNavigate } from "@reach/router";
-import { Router, Link as LinkLocal } from "@reach/router";
+import { navigate } from "@reach/router";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import { openExchangeConnectionView, openSettingsView } from "../../../store/actions/ui";
 import { Link } from "gatsby";
@@ -36,7 +35,7 @@ const UserMenu = () => {
 
   const showExchangeConnectionView = () => {
     // dispatch(openExchangeConnectionView(true));
-    navigate("#exchangeAccounts");
+    navigate("exchangeAccounts");
     //   window.location.pathname = "exchangeAccounts";
     //   window.history.replaceState("exchangeAccounts");
     // window.history.pushState(null, "", "/exchangeAccounts");
@@ -48,18 +47,17 @@ const UserMenu = () => {
 
   return (
     <Box alignItems="flex-start" className="userMenu" display="flex" flexDirection="column">
-      {/* <LinkLocal
-        to="exchangeAccounts"
-        hhref="/exchangeAccounts"
-        honClick={(e) => e.preventDefault()}
-      > */}
-      <MenuItem className="userMenuItem" onClick={showExchangeConnectionView}>
+      <MenuItem
+        className="userMenuItem"
+        onClick={() => {
+          navigate("#exchangeAccounts");
+        }}
+      >
         <img alt="zignaly" src={MyExchange} />
         <span className="item">
           <FormattedMessage id="menu.exchangeaccount" />
         </span>
       </MenuItem>
-      {/* </LinkLocal> */}
       <MenuItem className="userMenuItem" onClick={showSettingsView}>
         <img alt="zignaly" src={Settings} />
         <span className="item">

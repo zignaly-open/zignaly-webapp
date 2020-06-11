@@ -5,6 +5,7 @@ import CustomButton from "../CustomButton";
 import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
+import { navigate } from "gatsby";
 
 /**
  * @typedef {Object} DefaultProps
