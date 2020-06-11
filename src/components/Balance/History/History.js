@@ -29,7 +29,7 @@ const History = () => {
   };
 
   const embedFilter = (
-    <HistoryFilter onChange={handleChange} list={storeUser.dailyBalance.balances} />
+    <HistoryFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
   );
 
   return (
@@ -47,7 +47,7 @@ const History = () => {
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-      ></Box>
+       />
       <HistoryTable
         list={list}
         persistKey="dailyBalance"

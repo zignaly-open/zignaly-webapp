@@ -10,14 +10,15 @@ import EquityFilter from "../../TotalEquity/EquityFilter";
  */
 
 /**
+ * Filter component to filter table data.
  *
- * @typedef {Object} DefaultProps
- * @property {Array<UserEquityEntity>} list
- * @property {Function} onChange
+ * @typedef {Object} DefaultProps Default component props.
+ * @property {Array<UserEquityEntity>} list original list passed to the filter.
+ * @property {Function} onChange Function to handle data changes.
  */
 /**
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  */
 
 const HistoryFilter = ({ list, onChange }) => {
