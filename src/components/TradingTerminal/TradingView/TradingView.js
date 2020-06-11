@@ -11,6 +11,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import "./TradingView.scss";
 import LeverageForm from "../LeverageForm/LeverageForm";
+import StrategyForm from "../StrategyForm/StrategyForm";
 import { Button } from "@material-ui/core";
 
 const TradingView = () => {
@@ -177,9 +178,7 @@ const TradingView = () => {
         width={1}
       >
         <Box className="tradingViewChart" id="trading_view_chart" />
-        <Box className="strategyPanels" textAlign="center">
-          <FormattedMessage id="terminal.strategy" />
-        </Box>
+        <StrategyForm />
       </Box>
     </Box>
   );

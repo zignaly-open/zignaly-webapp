@@ -36,18 +36,6 @@
     }
   }
 
-  .strategyPanels {
-    background-color: $paleGrey;
-    height: 700px;
-    padding-top: 10px;
-    width: 30%;
-
-    @include media("<=sm") {
-      height: 400px;
-      width: 100%;
-    }
-  }
-
   .symbolsSelector,
   .providersSelector {
     margin-right: 10px;

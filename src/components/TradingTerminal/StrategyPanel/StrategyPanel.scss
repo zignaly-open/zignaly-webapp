@@ -1,0 +1,16 @@
+.strategyPanel {
+  background-color: $paleGrey;
+  border: $greyBackground solid 1px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+
+  .panelHeader {
+    background-color: $mediumGrey;
+    border-bottom: $greyBackground solid 1px;
+    padding: 13px 20px;
+  }
+
+  .panelContent {
+    min-height: 200px;
+  }
+}
