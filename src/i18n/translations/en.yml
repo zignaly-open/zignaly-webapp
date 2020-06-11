@@ -401,6 +401,7 @@ terminal.distance.help: "If the trialing stop is active and there is a distance 
 terminal.entryexpiration: "Entry Order Expiration"
 terminal.entryexpiration.help: "If the entry order hasn't been filled before this time, the order will be removed."
 terminal.open: "Open Position"
+terminal.providers: "Copy trader providers"
 terminal.position.size: "Position Size"
 terminal.price: "Price"
 terminal.rebuy: "Rebuy percentage from the total position size"

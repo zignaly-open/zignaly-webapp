@@ -1,0 +1,35 @@
+.leverageForm {
+  padding: 20px;
+
+  .title {
+    margin-bottom: 25px;
+  }
+
+  .slider {
+    margin-top: 20px;
+
+    :first-child {
+      height: 4px;
+    }
+  }
+
+  .inputValue {
+    button {
+      background-color: transparent;
+      border: 0;
+      color: $purple;
+      font-size: 25px;
+      font-weight: bold;
+      padding: 0;
+      width: 20px;
+    }
+
+    input {
+      border: 0;
+      font-size: 25px;
+      padding: 5px;
+      text-align: center;
+      width: 60px;
+    }
+  }
+}

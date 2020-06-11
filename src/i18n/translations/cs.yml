@@ -401,6 +401,7 @@ terminal.distance.help: "CH-If the trialing stop is active and there is a distan
 terminal.entryexpiration: "CH-Entry Order Expiration"
 terminal.entryexpiration.help: "CH-If the entry order hasn't been filled before this time, the order will be removed."
 terminal.open: "CH-Open Position"
+terminal.providers: "CH-Copy trader providers"
 terminal.position.size: "CH-Position Size"
 terminal.price: "CH-Price"
 terminal.rebuy: "CH-Rebuy percentage from the total position size"

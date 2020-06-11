@@ -17,6 +17,7 @@ import {
   coinRayTokenResponseTransform,
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
+  ownCopyTraderProvidersOptionsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -42,6 +43,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
  * @typedef {import('./tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsPayload} CopyTradersProvidersOptionsPayload
+ * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsCollection} CopyTradersProvidersOptionsCollection
  */
 
 /**
@@ -462,6 +465,19 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeListResponseTransform(responseData);
+  }
+  /**
+   * Get copy trader providers options.
+   *
+   * @param {CopyTradersProvidersOptionsPayload} payload Get own copy trader providers options payload.
+   * @returns {Promise<CopyTradersProvidersOptionsCollection>} Promise that resolves own copy trader providers options.
+   * @memberof TradeApiClient
+   */
+  async userOwnCopyTradersProvidersOptions(payload) {
+    const endpointPath = "/fe/api.php?action=getCopyTradingProvidersOptions";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return ownCopyTraderProvidersOptionsResponseTransform(responseData);
   }
 }
 
