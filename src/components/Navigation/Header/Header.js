@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Header.scss";
-import { Box, Popover, Grow, Typography } from "@material-ui/core";
+import { Box, Popover, Grow, Typography, Menu } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
@@ -109,7 +109,17 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Popover
+          <Menu
+            // id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+          >
+            <UserMenu />
+          </Menu>
+
+          {/* <Popover
             anchorEl={anchorEl}
             anchorOrigin={{
               vertical: "bottom",
@@ -124,6 +134,15 @@ const Header = () => {
           >
             <UserMenu />
           </Popover>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <UserMenu />
+          </Menu> */}
         </Box>
       </Box>
     </Box>
