@@ -52,11 +52,11 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
 
-  console.log(storeViews.provider);
-
   useEffect(() => {
     let list = Object.values(quotes);
-    setSelectedQuote(storeViews.provider.copyTradingQuote.toLowerCase());
+    if (list.length) {
+      setSelectedQuote(storeViews.provider.copyTradingQuote.toLowerCase());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quotes]);
 
