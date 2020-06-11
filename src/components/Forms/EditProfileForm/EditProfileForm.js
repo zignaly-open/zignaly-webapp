@@ -52,14 +52,25 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
 
+  console.log(storeViews.provider);
+
   useEffect(() => {
     let list = Object.values(quotes);
-    setSelectedQuote(list.length ? list[0].quote.toLowerCase() : "");
+    setSelectedQuote(storeViews.provider.copyTradingQuote.toLowerCase());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quotes]);
 
   useEffect(() => {
-    setSelectedExchange(exchanges.length ? exchanges[0] : { id: "", type: [] });
+    if (exchanges.length) {
+      let found = exchanges.find(
+        (item) => item.name.toLowerCase() === storeViews.provider.exchanges[0].toLowerCase(),
+      );
+      if (found) {
+        setSelectedExchange(found);
+      }
+    } else {
+      setSelectedExchange({ id: "", type: [] });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchanges]);
 
@@ -67,7 +78,11 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
     if (exchanges.length && selectedExchange.id) {
       let found = exchanges.find((item) => item.id === selectedExchange.id);
       if (found) {
-        setSelectedExchangeType(found.type[0]);
+        if (found.name.toLowerCase() === storeViews.provider.exchanges[0].toLowerCase()) {
+          setSelectedExchangeType(storeViews.provider.exchangeType);
+        } else {
+          setSelectedExchangeType(found.type[0]);
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
