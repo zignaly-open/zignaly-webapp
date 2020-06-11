@@ -75,14 +75,14 @@
       min-height: 430px;
 
       .paymentBox {
-        width: 100%;
         padding: 20px 0;
+        width: 100%;
 
         .paymentDocsLink {
           color: $blue;
-          width: 100%;
           margin-bottom: 20px;
           text-decoration: none;
+          width: 100%;
 
           &:hover {
             text-decoration: underline;

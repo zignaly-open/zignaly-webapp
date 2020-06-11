@@ -394,17 +394,17 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             </Box>
 
             <Box
+              className="paymentBox"
               display="flex"
               flexDirection="row"
               flexWrap="wrap"
               justifyContent="space-between"
-              className="paymentBox"
             >
               <a
                 className="paymentDocsLink"
-                target="_blank"
-                rel="noopener noreferrer"
                 href="https://docs.zignaly.com/providers/how-to-create-a-public-provider#our-payment-system"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 <FormattedMessage id="srv.payment.docs" />
               </a>
