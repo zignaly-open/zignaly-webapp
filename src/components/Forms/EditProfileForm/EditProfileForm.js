@@ -33,6 +33,7 @@ import SocialSelect from "./SocialSelect";
  */
 
 /**
+ * Copy trader profile edit component.
  *
  * @param {DefaultProps} props Default component props.
  */

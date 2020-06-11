@@ -5,7 +5,7 @@ import { Box } from "@material-ui/core";
 import ProviderHeader from "../../components/Provider/ProviderHeader";
 
 /**
- * HOC wrap component with dashboard layout.
+ * HOC wrap component with provider layout.
  *
  * App layout is defined here, the placement of header, sidebar, mobile appbar.
  *
