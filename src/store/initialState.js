@@ -118,10 +118,10 @@ const initialState = {
       dailyBalance: [
         "date",
         "totalUSDT",
-        "freeUSDT",
+        "totalFreeUSDT",
         "lockedUSDT",
         "totalBTC",
-        "freeBTC",
+        "totalFreeBTC",
         "lockedBTC",
         "freeETH",
         "freeBNB",
