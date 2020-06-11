@@ -1,6 +1,6 @@
 import React from "react";
 import "./TotalEquityGraph.scss";
-import GenericChart from "../../../Graphs/Chart";
+import GenericChart from "../../../Graphs/LineChart";
 import { Box } from "@material-ui/core";
 import { toNumber } from "lodash";
 
@@ -22,7 +22,7 @@ import { toNumber } from "lodash";
 
 const TotalEquityGraph = ({ list }) => {
   /**
-   * @typedef {import("../../../Graphs/Chart/Chart").ChartData} ChartData
+   * @typedef {import("../../../Graphs/LineChart/LineChart").ChartData} ChartData
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
