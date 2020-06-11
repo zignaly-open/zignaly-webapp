@@ -4,8 +4,11 @@ import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
 import {
-  FormControl,
+  Divider,
+  OutlinedInput,
   FormControlLabel,
+  FormHelperText,
+  FormControl,
   RadioGroup,
   Radio,
   Switch,
@@ -52,8 +55,8 @@ const StrategyPanel = (props) => {
       </Box>
       {expand && (
         <Box className="panelContent">
-          <FormControl component="fieldset">
-            <RadioGroup aria-label="Entry Type" name="entryType">
+          <FormControl>
+            <RadioGroup aria-label="Entry Type" className="entryType" name="entryType">
               <FormControlLabel control={<Radio />} inputRef={register} label="LONG" value="LONG" />
               <FormControlLabel
                 control={<Radio />}
@@ -62,6 +65,38 @@ const StrategyPanel = (props) => {
                 value="SHORT"
               />
             </RadioGroup>
+          </FormControl>
+          <FormControl>
+            <FormHelperText>Price</FormHelperText>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput inputRef={register} name="price" />
+              <Divider className="divider" orientation="vertical" />
+              <div>USDT</div>
+            </Box>
+          </FormControl>
+          <FormControl>
+            <FormHelperText>Real Investment</FormHelperText>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput inputRef={register} name="realInvestment" />
+              <Divider className="divider" orientation="vertical" />
+              <div>USDT</div>
+            </Box>
+          </FormControl>
+          <FormControl>
+            <FormHelperText>Position Size</FormHelperText>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput inputRef={register} name="positionSize" />
+              <Divider className="divider" orientation="vertical" />
+              <div>USDT</div>
+            </Box>
+          </FormControl>
+          <FormControl>
+            <FormHelperText>Units</FormHelperText>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput inputRef={register} name="units" />
+              <Divider className="divider" orientation="vertical" />
+              <div>USDT</div>
+            </Box>
           </FormControl>
         </Box>
       )}
