@@ -1,8 +1,11 @@
 .modal {
   border-radius: 4px;
   height: fit-content;
-  max-height: 700px;
   min-height: 300px;
+
+  &:not(.fullscreen) {
+    max-height: 700px;
+  }
 
   &.small {
     width: 500px;

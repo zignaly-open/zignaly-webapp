@@ -1,3 +1,5 @@
+// import { openExchangeConnectionView, openSettingsView } from "./src/store/actions/ui";
+// import { useDispatch } from "react-redux";
 const express = require(`express`);
 
 /**
@@ -8,6 +10,7 @@ const express = require(`express`);
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
+  //   const dispatch = useDispatch();
 
   if (page.internalComponentName === "ComponentDev404Page") {
     return;
@@ -29,6 +32,22 @@ exports.onCreatePage = ({ page, actions }) => {
   if (page.path.match(/^\/signalProviders\/$/)) {
     page.matchPath = "/signalProviders/*";
     createPage(page);
+    return;
+  }
+
+  if (page.path.match(/^\/exchangeAccounts\/$/)) {
+    page.matchPath = "/exchangeAccounts/";
+    page.componentPath =
+      "/Users/chris/Dev/Projects/zignaly-api-php/webapp2/src/pages/dashboard/positions/index.js";
+    page.component =
+      "/Users/chris/Dev/Projects/zignaly-api-php/webapp2/src/pages/dashboard/positions/index.js";
+    console.log(page, actions);
+    // createPage(page);
+    // console.log(action);
+    // dispatch(openExchangeConnectionView(true));
+    //   createPage({ path: "/dashboard/balance/index.js" });
+    createPage(page);
+
     return;
   }
 };

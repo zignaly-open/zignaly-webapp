@@ -19,11 +19,23 @@ import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import { Router, Link } from "@reach/router";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
  * @property {Object} children
  */
+
+const Test = () => {
+  console.log("aa");
+  return <Box>aaaa</Box>;
+};
+
+const Dashboard = () => (
+  <div>
+    <h2>Dashboard</h2>
+  </div>
+);
 
 /**
  * Default component props.
@@ -46,17 +58,23 @@ const PrivateAreaLayout = (props) => {
         <CssBaseline />
         <Alert />
         {storeLoader && <Loader />}
-        <Modal
+        <Router>
+          <Test path="#exchangeAccounts"></Test>
+        </Router>
+        <nav>
+          <Link to="/">Home</Link> <Link to="dashboard">Dashboard</Link>
+        </nav>
+        {/* <Router>
+          <Dashboard path="/dashboard" />
+        </Router> */}
+        {/* <Modal
           onClose={() => dispatch(openExchangeConnectionView(false))}
           persist={false}
-          //   size="large"
-          maxWidth={false}
-          fullScreen={true}
           size="fullscreen"
           state={storeModal.exchangeConnectionView}
         >
           <ConnectExchangeView onClose={() => dispatch(openExchangeConnectionView(false))} />
-        </Modal>
+        </Modal> */}
         <Modal
           onClose={() => dispatch(openSettingsView(false))}
           persist={false}

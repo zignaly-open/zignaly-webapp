@@ -3,17 +3,22 @@ import { Box, Typography } from "@material-ui/core";
 import TotalEquity from "../../Balance/TotalEquity";
 import CryptoComposition from "../../Balance/CryptoComposition";
 import AvailableBalance from "../../Balance/AvailableBalance";
+import ExchangeIcon from "../../ExchangeIcon";
 import "./ExchangeAccountInfo.scss";
 
 const ExchangeAccountInfo = ({ type }) => {
   return (
     <Box className="exchangeAccountInfo">
-      {type}
-      <Box className="equityBox">
-        <TotalEquity />
+      <Box className="accountInfoHeader">
+        {/* <ExchangeIcon exchange={item.name.toLowerCase()} size="small" /> */}
       </Box>
-      <Box className="cryptoBox">
-        <CryptoComposition />
+      <Box display="flex" flexDirection="row" className="accountData">
+        <Box className="equityBox">
+          <TotalEquity />
+        </Box>
+        <Box className="cryptoBox">
+          <CryptoComposition />
+        </Box>
       </Box>
       <Box className="balanceBox">
         <AvailableBalance />
