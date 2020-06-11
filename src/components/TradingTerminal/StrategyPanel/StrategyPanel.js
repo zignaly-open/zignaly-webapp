@@ -23,7 +23,7 @@ const StrategyPanel = (props) => {
   return (
     <Box className={`strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch onChange={handleToggle} size="small" />
+        {!disableExpand && <Switch onChange={handleToggle} size="small" />}
         <Box className="title">
           <Typography variant="h5">Entry strategy</Typography>
         </Box>
