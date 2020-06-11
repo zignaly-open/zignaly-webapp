@@ -86,7 +86,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
       });
   };
 
-  useEffect(resolveDataDependencies, []);
+  useEffect(resolveDataDependencies, [storeSettings.selectedExchange]);
 
   return dataFeed;
 };
