@@ -60,6 +60,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           const payload2 = {
             token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
+            version: 2,
           };
           dispatch(setProvider(payload2));
           setLoading(false);

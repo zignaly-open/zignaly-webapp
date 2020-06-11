@@ -32,6 +32,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @typedef {Object} GetProviderPayload
  * @property {string} token
  * @property {string} providerId
+ * @property {Number} version
  */
 
 /**

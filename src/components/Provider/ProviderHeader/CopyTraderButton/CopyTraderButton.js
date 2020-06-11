@@ -60,6 +60,7 @@ const CopyTraderButton = ({ provider }) => {
         const payload2 = {
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
+          version: 2,
         };
         dispatch(setProvider(payload2));
         setStopCopyLoader(false);
