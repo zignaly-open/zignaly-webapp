@@ -20,7 +20,6 @@ const useCoinRayDataFeedFactory = (symbol) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [dataFeed, setDataFeed] = useState(null);
-  const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
@@ -63,6 +62,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
   const resolveDataDependencies = () => {
     const tokenPromise = getCoinrayToken();
     const marketDataPromise = getMarketData();
+    const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
     Promise.all([tokenPromise, marketDataPromise])
       .then((data) => {
@@ -70,7 +70,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
         const marketSymbolsData = data[1];
 
         const options = {
-          exchange: "Binance",
+          exchange: storeSettings.selectedExchange.exchangeName,
           exchangeKey,
           symbol,
           symbolsData: marketSymbolsData,

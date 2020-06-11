@@ -47,14 +47,14 @@ class CoinRayDataFeed {
    * @memberof CoinRayDataFeed
    */
   constructor(options) {
-    this.symbol = options.symbol || "BINANCE:ETHBTC";
+    this.symbol = options.symbol || "";
     this.symbolsData = options.symbolsData || null;
     this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
-    this.exchange = options.exchange || "BINANCE";
+    this.exchange = options.exchange || "";
     this.coinray = new Coinray(options.coinRayToken);
     this.coinray.onTokenExpired(options.regenerateAccessToken);
-    this.exchangeKey = options.exchangeKey || "BINA";
+    this.exchangeKey = options.exchangeKey || "";
     this.baseUrl = "https://coinray.io/api/v1";
   }
 
@@ -155,22 +155,18 @@ class CoinRayDataFeed {
   /**
    * Resolve symbol data with structure required by Trading View chart.
    *
-   * @param {string} symbolName Symbol name.
+   * @param {string} symbolId Symbol ID.
    * @param {ResolveCallback} onSymbolResolvedCallback Notify symbol resolved.
    * @param {ErrorCallback} onResolveErrorCallback Notify symbol resolve error.
    * @returns {Void} None.
    * @memberof CoinRayDataFeed
    */
-  resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
-    const comps = symbolName.split(":");
-    symbolName = (comps.length > 1 ? comps[1] : symbolName).toUpperCase();
-
+  resolveSymbol(symbolId, onSymbolResolvedCallback, onResolveErrorCallback) {
     for (let symbol of this.symbolsData) {
       const symbolBaseQuote = symbol.base + symbol.quote;
-      const symbolQuoteBase = symbol.quote + symbol.base;
       const pricescale = Math.round(1 / symbol.limits.price.min);
 
-      if (symbolBaseQuote === symbolName || symbolQuoteBase === symbolName) {
+      if (symbol.id === symbolId) {
         /**
          * @type LibrarySymbolInfo
          */
