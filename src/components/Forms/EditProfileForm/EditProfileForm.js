@@ -34,9 +34,8 @@ import SocialSelect from "./SocialSelect";
 
 /**
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  */
-
 const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
@@ -128,10 +127,21 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
    *
    * @typedef {Object} SubmitObject
    * @property {String} name
+   * @property {String} logoUrl
+   * @property {String} website
+   * @property {String} minAllocatedBalance
+   * @property {String} merchantId
+   * @property {String} price
+   * @property {String} ipnSecret
+   * @property {String} trial
+   * @property {boolean} public
+   * @property {Boolean} list
    */
+
   /**
+   * Function to submit edit form.
    *
-   * @param {SubmitObject} data Form data.
+   * @param {SubmitObject} data Form data received at submit.
    * @returns {Promise<*>} Returns promise.
    */
   const onSubmit = async (data) => {
@@ -152,18 +162,16 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
   /**
    *
-   * @param {*} list
+   * @param {*} list Array of selected countries received.
    */
-
   const handleCountryChange = (list) => {
     setSelectedCountries(list);
   };
 
   /**
    *
-   * @param {*} list
+   * @param {*} list Array of social object received.
    */
-
   const handleSocialLinkChange = (list) => {
     setSelectedSocials(list);
   };
@@ -180,18 +188,16 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
 
   /**
    *
-   * @param {*} value
+   * @param {*} value Editor object received by the functions
    */
-
   const handleAboutChange = (value) => {
     setAbout(value);
   };
 
   /**
    *
-   * @param {*} value
+   * @param {*} value Editor object received by the functions
    */
-
   const handleStrategyChange = (value) => {
     setStrategy(value);
   };

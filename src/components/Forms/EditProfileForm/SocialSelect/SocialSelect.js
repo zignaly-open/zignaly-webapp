@@ -14,7 +14,6 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  *
  * @param {DefaultProps} props
  */
-
 const SocialSelect = ({ onChange }) => {
   const socialObject = { id: Math.random(), type: "facebook", url: "", delete: false };
 
@@ -28,7 +27,6 @@ const SocialSelect = ({ onChange }) => {
    * @param {Number|String} id
    * @returns {void}
    */
-
   const handleChange = (e, id) => {
     let target = e.target;
     let list = [...values];
