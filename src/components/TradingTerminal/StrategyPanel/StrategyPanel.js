@@ -2,13 +2,25 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
-import { Switch, Typography } from "@material-ui/core";
+import { useFormContext } from "react-hook-form";
+import {
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Switch,
+  Typography,
+} from "@material-ui/core";
 
 const StrategyPanel = (props) => {
-  const { child, disableExpand } = props;
+  const { disableExpand } = props;
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
+  const {
+    register,
+    formState: { dirty },
+  } = useFormContext();
 
   /**
    * Handle toggle switch action.
@@ -40,7 +52,17 @@ const StrategyPanel = (props) => {
       </Box>
       {expand && (
         <Box className="panelContent">
-          <h3>Field Set</h3>
+          <FormControl component="fieldset">
+            <RadioGroup aria-label="Entry Type" name="entryType">
+              <FormControlLabel control={<Radio />} inputRef={register} label="LONG" value="LONG" />
+              <FormControlLabel
+                control={<Radio />}
+                inputRef={register}
+                label="SHORT"
+                value="SHORT"
+              />
+            </RadioGroup>
+          </FormControl>
         </Box>
       )}
     </Box>

@@ -1,15 +1,23 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { useForm, FormContext, useFormContext } from "react-hook-form";
 import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 
 const StrategyForm = () => {
+  const methods = useForm();
+  const onSubmit = (data) => console.log(data);
+
   return (
-    <Box className="strategyForm" textAlign="center">
-      <StrategyPanel disableExpand={true} />
-      <StrategyPanel />
-    </Box>
+    <FormContext {...methods}>
+      <Box className="strategyForm" textAlign="center">
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <StrategyPanel disableExpand={true} />
+          <StrategyPanel />
+          <Button type="submit">Open Position</Button>
+        </form>
+      </Box>
+    </FormContext>
   );
 };
 
