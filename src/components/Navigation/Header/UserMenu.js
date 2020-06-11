@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
 import SignOut from "../../../images/header/signOut.svg";
 import Support from "../../../images/header/support.svg";
 import Settings from "../../../images/dashboard/settings.svg";
-import { Box, MenuItem, Menu } from "@material-ui/core";
+import { Box, MenuItem } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
@@ -19,7 +19,6 @@ import { Link } from "gatsby";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  //   const [anchorEl, setAnchorEl] = useState(null);
 
   const logout = () => {
     dispatch(endTradeApiSession());
@@ -59,6 +58,7 @@ const UserMenu = () => {
           <FormattedMessage id="menu.exchangeaccount" />
         </span>
       </MenuItem>
+      {/* </Link> */}
       <MenuItem className="userMenuItem" onClick={showSettingsView}>
         <img alt="zignaly" src={Settings} />
         <span className="item">
