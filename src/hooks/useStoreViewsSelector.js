@@ -6,20 +6,20 @@ import { useSelector } from "react-redux";
  */
 
 /**
- * Select Redux store session data.
+ * Select Redux store views data.
  *
- * @returns {DefaultViewsObject} Store session state.
+ * @returns {DefaultViewsObject} Views object from redux store.
  */
 const useStoreViewsSelector = () => {
   /**
-   * Select store session data.
+   * Select store views data.
    *
    * @param {DefaultStateType} state Application store data.
-   * @returns {DefaultViewsObject} Store session data.
+   * @returns {DefaultViewsObject} Store views data.
    */
-  const selectStoreSettings = (state) => state.views;
+  const selectStoreViews = (state) => state.views;
 
-  return useSelector(selectStoreSettings);
+  return useSelector(selectStoreViews);
 };
 
 export default useStoreViewsSelector;
