@@ -30,36 +30,34 @@ const TradingView = () => {
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
-  const chartReady = tradingViewWidgetTyped !== null;
 
   const drawLine = () => {
-    const orderPrice = 9600;
-    const chart = tradingViewWidgetTyped.chart();
-    const coloring3 = "rgb(117, 16, 197)";
-    chart
-      .createPositionLine({})
-      .setPrice(orderPrice)
-      .setQuantity(`${orderPrice}`)
-      .setText("Price")
-      // horizontal line
-      .setLineColor(coloring3)
-      // content text
-      .setBodyTextColor(coloring3)
-      // content text border
-      .setBodyBorderColor(coloring3)
-      // accompanying number
-      .setQuantityBackgroundColor(coloring3)
-      // accompanying number border
-      .setQuantityBorderColor(coloring3);
+    if (tradingViewWidget) {
+      const orderPrice = 9600;
+      const chart = tradingViewWidget.chart();
+      const coloring3 = "rgb(117, 16, 197)";
+      chart
+        .createPositionLine({})
+        .setPrice(orderPrice)
+        .setQuantity(`${orderPrice}`)
+        .setText("Price")
+        // horizontal line
+        .setLineColor(coloring3)
+        // content text
+        .setBodyTextColor(coloring3)
+        // content text border
+        .setBodyBorderColor(coloring3)
+        // accompanying number
+        .setQuantityBackgroundColor(coloring3)
+        // accompanying number border
+        .setQuantityBorderColor(coloring3);
+    }
   };
 
-  if (chartReady) {
-    drawLine();
-    if (!lastPriceCandle) {
-      // @ts-ignore
-      const priceCandle = dataFeed.getLastCandle();
-      setLastPriceCandle(priceCandle);
-    }
+  if (tradingViewWidget && !lastPriceCandle) {
+    // @ts-ignore
+    const priceCandle = dataFeed.getLastCandle();
+    setLastPriceCandle(priceCandle);
   }
 
   const loadOwnCopyTradersProviders = () => {
@@ -88,6 +86,7 @@ const TradingView = () => {
       const widgetInstance = new TradingViewWidget(widgetOptions);
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
+        drawLine();
         setTradingViewWidget(widgetInstance);
       });
     }
