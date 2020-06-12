@@ -26,13 +26,17 @@ const StrategyForm = (props) => {
   const { dataFeed, lastPriceCandle, selectedSymbol } = props;
   const methods = useForm({
     mode: "onChange",
+    defaultValues: {
+      price: lastPriceCandle[1],
+      realInvestment: 0,
+      positionSize: 0,
+      units: 0,
+    },
   });
   // Receives submitted data.
   const onSubmit = () => {};
   // @ts-ignore
   const symbolsData = dataFeed.getSymbolsData();
-
-  console.log("last candle: ", lastPriceCandle);
 
   /**
    * Match current symbol against market symbols collection item.
