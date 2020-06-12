@@ -27,7 +27,7 @@ import { Help } from "@material-ui/icons";
  * @property {boolean} disableExpand
  * @property {MarketSymbol} symbolData
  * @property {CoinRayCandle} lastPriceCandle
- * @property {number} leverage
+ * @property {string} leverage
  */
 
 /**
@@ -92,7 +92,7 @@ const StrategyPanel = (props) => {
     setValue("positionSize", positionSize.toFixed(8));
 
     const realInvestment = positionSize / parseFloat(leverage);
-    setValue("realinvest", realInvestment.toFixed(8));
+    setValue("realInvestment", realInvestment.toFixed(8));
   };
 
   return (
