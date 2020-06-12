@@ -463,6 +463,7 @@ accounts.powered: "Powered by Binance"
 accounts.settings: "Settings"
 accounts.equity.total: "Total Equity"
 accounts.withdraw: "Withdraw"
+accounts.selected: "Selected"
 
 accounts.options.blacklist: "Global Blacklist"
 accounts.options.blacklist.help: "It won't open any position for symbols include here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

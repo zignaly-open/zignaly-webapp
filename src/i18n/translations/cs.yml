@@ -463,6 +463,7 @@ accounts.powered: "CH-Powered by Binance"
 accounts.settings: "CH-Settings"
 accounts.equity.total: "CH-Total Equity"
 accounts.withdraw: "CH-Withdraw"
+accounts.selected: "CH-Selected"
 
 accounts.options.blacklist: "CH-Global Blacklist"
 accounts.options.blacklist.help: "CH-It won't open any position for symbols include here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

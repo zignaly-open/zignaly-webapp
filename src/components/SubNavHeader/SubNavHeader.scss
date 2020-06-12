@@ -14,6 +14,7 @@
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
+    cursor: pointer;
 
     &.active {
       border-bottom: 2px solid $purple;
