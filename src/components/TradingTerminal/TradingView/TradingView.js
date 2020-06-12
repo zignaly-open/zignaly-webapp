@@ -14,6 +14,10 @@ import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Button } from "@material-ui/core";
 
+/**
+ * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ */
+
 const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
@@ -21,10 +25,14 @@ const TradingView = () => {
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  /**
+   * @type {TVWidget} tradingViewWidgetPointer
+   */
+  const tradingViewWidgetTyped = tradingViewWidget;
 
   const drawLine = () => {
     const orderPrice = 9600;
-    const chart = tradingViewWidget.chart();
+    const chart = tradingViewWidgetTyped.chart();
     const coloring3 = "rgb(117, 16, 197)";
     chart
       .createPositionLine({})
@@ -44,7 +52,7 @@ const TradingView = () => {
   };
 
   const customizeChart = () => {
-    if (tradingViewWidget !== null) {
+    if (tradingViewWidgetTyped !== null) {
       drawLine();
     }
   };
@@ -78,8 +86,8 @@ const TradingView = () => {
     }
 
     return () => {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
+      if (tradingViewWidgetTyped) {
+        tradingViewWidgetTyped.remove();
       }
     };
   };
@@ -113,8 +121,8 @@ const TradingView = () => {
     setSelectedSymbol(/** @type {string} */ (selectedOption.value));
 
     // Change chart data to the new selected symbol.
-    if (tradingViewWidget) {
-      const chart = tradingViewWidget.chart();
+    if (tradingViewWidgetTyped) {
+      const chart = tradingViewWidgetTyped.chart();
       chart.setSymbol(selectedOption.value, () => {});
     }
   };
