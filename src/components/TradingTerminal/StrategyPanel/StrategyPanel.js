@@ -121,7 +121,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput inputRef={register} name="units" />
               <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.quote}</div>
+              <div>{symbolData.base}</div>
             </Box>
           </FormControl>
         </Box>
