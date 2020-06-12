@@ -32,6 +32,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @typedef {Object} GetProviderPayload
  * @property {string} token
  * @property {string} providerId
+ * @property {Number} version
  */
 
 /**
@@ -1398,7 +1399,7 @@ export function connectedProviderUserInfoResponseTransform(response) {
 }
 
 /**
- * Create onnected provider user info entity.
+ * Create connected provider user info entity.
  *
  * @param {*} response Trade API user balance raw raw response.
  * @returns {ConnectedProviderUserInfo} User balance entity.
@@ -1583,5 +1584,110 @@ function createEmptyProviderGetEntity() {
     riskFilter: false,
     successRateFilter: false,
     terms: false,
+  };
+}
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ExchangeListEntity>} User exchange connections collection.
+ */
+
+export function exchangeListResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((exchangeConnectionItem) => {
+    return exchangeListResponseItemTransform(exchangeConnectionItem);
+  });
+}
+
+/**
+ * @typedef {Object} ExchangeListEntity
+ * @property {String} id
+ * @property {String} name
+ * @property {Boolean} enabled
+ * @property {Array<String>} type
+ * @property {Array<String>} testNet
+ * @property {Array<String>} requiredAuthFields
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} exchangeConnectionItem Trade API exchange connection item.
+ * @returns {ExchangeListEntity} Exchange connection entity.
+ */
+function exchangeListResponseItemTransform(exchangeConnectionItem) {
+  const emptyExchangeListEntity = createExchangeListEmptyEntity();
+  const transformedResponse = assign(emptyExchangeListEntity, exchangeConnectionItem);
+
+  return transformedResponse;
+}
+
+function createExchangeListEmptyEntity() {
+  return {
+    enabled: false,
+    id: "",
+    name: "",
+    requiredAuthFields: [""],
+    testNet: [""],
+    type: [""],
+  };
+}
+/**
+ * @typedef {Object} CopyTradersProvidersOptionsPayload
+ * @property {string} token User access token.
+ * @property {String} internalExchangeId
+ */
+
+/**
+ * @typedef {Object} CopyTradersProvidersOption
+ * @property {number} providerId
+ * @property {string} providerName
+ * @property {boolean} providerQuote
+ */
+
+/**
+ * @typedef {Array<CopyTradersProvidersOption>} CopyTradersProvidersOptionsCollection
+ */
+
+/**
+ * Transform own copy traders providers options to typed CopyTradersProvidersOptionsCollection.
+ *
+ * @param {*} response Trade API own copy traders providers options raw response.
+ * @returns {CopyTradersProvidersOptionsCollection} Options collection.
+ */
+export function ownCopyTraderProvidersOptionsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of copy trader providers options.");
+  }
+
+  return response.map(ownCopyTraderProviderOptionResponseTransform);
+}
+
+/**
+ * Transform own copy traders providers option to typed CopyTradersProvidersOption.
+ *
+ * @param {*} option Trade API own copy traders providers options raw response.
+ * @returns {CopyTradersProvidersOption} Options collection.
+ */
+
+function ownCopyTraderProviderOptionResponseTransform(option) {
+  return assign(createEmptyOwnCopyTraderProviderOption(), option);
+}
+
+/**
+ * Create empty own copy trader option.
+ *
+ * @returns {CopyTradersProvidersOption} Own copy trader empty option.
+ */
+function createEmptyOwnCopyTraderProviderOption() {
+  return {
+    providerId: 0,
+    providerName: "",
+    providerQuote: false,
   };
 }

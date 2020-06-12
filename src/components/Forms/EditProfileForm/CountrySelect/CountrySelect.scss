@@ -1,0 +1,44 @@
+.countrySelect {
+  margin-bottom: 20px;
+  width: 100%;
+
+  input {
+    padding-left: 1rem;
+  }
+
+  div {
+    div {
+      padding: 0;
+    }
+  }
+
+  .chip {
+    font-size: 12px;
+    height: 30px;
+    padding: 0;
+
+    svg {
+      color: $black2;
+    }
+  }
+
+  fieldset {
+    border-color: $lightGrey;
+
+    &:hover {
+      border-color: $lightGrey;
+    }
+  }
+
+  .downBtn {
+    color: $lightGrey;
+  }
+
+  .clearIcon {
+    color: $lightGrey;
+  }
+}
+
+.mr {
+  margin-right: 8px;
+}

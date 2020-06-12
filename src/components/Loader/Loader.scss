@@ -13,7 +13,7 @@
     animation: load1 1s infinite ease-in-out;
     animation-delay: -0.16s;
     font-size: 11px;
-    height: 3em;
+    height: 2.5em;
     margin: 20px auto;
     position: relative;
     text-indent: -9999em;
@@ -66,11 +66,11 @@
   80%,
   100% {
     box-shadow: 0 0;
-    height: 3em;
+    height: 2.5em;
   }
 
   40% {
     box-shadow: 0 -2em;
-    height: 5em;
+    height: 4em;
   }
 }

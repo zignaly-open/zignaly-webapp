@@ -41,6 +41,7 @@ const CopyTraders = ({ location }) => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,
+        version: 2,
       };
       dispatch(setProvider(payload));
     };

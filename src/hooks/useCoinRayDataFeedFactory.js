@@ -19,9 +19,7 @@ import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions
 const useCoinRayDataFeedFactory = (symbol) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [coinRayToken, setCoinRayToken] = useState("");
-  const [marketSymbolsData, setMarketSymbolsData] = useState([]);
-  const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
+  const [dataFeed, setDataFeed] = useState(null);
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
@@ -64,32 +62,33 @@ const useCoinRayDataFeedFactory = (symbol) => {
   const resolveDataDependencies = () => {
     const tokenPromise = getCoinrayToken();
     const marketDataPromise = getMarketData();
+    const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
 
-    Promise.all([tokenPromise, marketDataPromise]).then((data) => {
-      setCoinRayToken(data[0]);
-      setMarketSymbolsData(data[1]);
-    });
+    Promise.all([tokenPromise, marketDataPromise])
+      .then((data) => {
+        const coinRayToken = data[0];
+        const marketSymbolsData = data[1];
+
+        const options = {
+          exchange: storeSettings.selectedExchange.exchangeName,
+          exchangeKey,
+          symbol,
+          symbolsData: marketSymbolsData,
+          tradeApiToken: storeSession.tradeApi.accessToken,
+          coinRayToken: coinRayToken,
+          regenerateAccessToken: getCoinrayToken,
+        };
+
+        setDataFeed(new CoinRayDataFeed(options));
+      })
+      .catch((e) => {
+        alert(`ERROR: ${e.message}`);
+      });
   };
 
-  useEffect(resolveDataDependencies, []);
+  useEffect(resolveDataDependencies, [storeSettings.selectedExchange]);
 
-  const options = {
-    exchange: "Binance",
-    exchangeKey,
-    symbol,
-    symbolsData: marketSymbolsData,
-    tradeApiToken: storeSession.tradeApi.accessToken,
-    coinRayToken: coinRayToken,
-    regenerateAccessToken: getCoinrayToken,
-  };
-
-  if (coinRayToken && marketSymbolsData) {
-    const dataFeed = new CoinRayDataFeed(options);
-
-    return /** @type IBasicDataFeed */ (dataFeed);
-  }
-
-  return null;
+  return dataFeed;
 };
 
 export default useCoinRayDataFeedFactory;

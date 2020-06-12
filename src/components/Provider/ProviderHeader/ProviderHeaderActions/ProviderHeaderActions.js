@@ -17,9 +17,10 @@ const ProviderHeaderActions = () => {
   const payFee = () => {};
 
   /**
+   * Funcrtion to handle image url loading error.
    *
-   * @param {React.SyntheticEvent} e event received.
-   * @returns {void} Return nothing.
+   * @param {React.SyntheticEvent} e Error event received.
+   * @returns {void} None.
    */
   const onLogoError = (e) => {
     const targetElement = /** @type {HTMLInputElement} */ (e.target);

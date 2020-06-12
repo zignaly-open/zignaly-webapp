@@ -6,7 +6,7 @@ import FacebookIcon from "../../../../images/ct/facebook.svg";
 import TwitterIcon from "../../../../images/ct/twitter.svg";
 import DiscordIcon from "../../../../images/ct/discord.svg";
 import LinkedinIcon from "../../../../images/ct/linkedin.svg";
-import TTTT from "../../../../images/ct/tttt.svg";
+import TelegramIcon from "../../../../images/ct/telegram.svg";
 
 /**
  * @typedef {Object} DefaultProps
@@ -59,7 +59,7 @@ const Strategy = ({ provider }) => {
           <img alt="faceook-icon" className="icon" src={FacebookIcon} />
           <img alt="twitter-icon" className="icon" src={TwitterIcon} />
           <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
-          <img alt="tttt-icon" className="icon" src={TTTT} />
+          <img alt="tttt-icon" className="icon" src={TelegramIcon} />
           <img alt="discord-icon" className="icon" src={DiscordIcon} />
         </Box>
       </Box>
