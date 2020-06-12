@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
-  Divider,
   OutlinedInput,
   FormControlLabel,
   FormHelperText,
@@ -14,6 +13,7 @@ import {
   Switch,
   Typography,
 } from "@material-ui/core";
+import { Help } from "@material-ui/icons";
 
 const StrategyPanel = (props) => {
   const { disableExpand, symbolData } = props;
@@ -21,7 +21,6 @@ const StrategyPanel = (props) => {
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { getValues, register, setValue } = useFormContext();
-  console.log("Current Symbol: ", symbolData);
 
   /**
    * Handle toggle switch action.
@@ -78,7 +77,10 @@ const StrategyPanel = (props) => {
           </FormControl>
           {entryStrategy === "stop-limit" && (
             <FormControl>
-              <FormHelperText>Stop Price</FormHelperText>
+              <Box alignItems="center" className="help" display="flex">
+                <FormHelperText>Stop Price</FormHelperText>
+                <Help />
+              </Box>
               <Box alignItems="center" display="flex">
                 <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
                 <div className="currencyBox">{symbolData.quote}</div>
@@ -87,7 +89,10 @@ const StrategyPanel = (props) => {
           )}
           {entryStrategy !== "market" && (
             <FormControl>
-              <FormHelperText>Price</FormHelperText>
+              <Box alignItems="center" className="help" display="flex">
+                <FormHelperText>Price</FormHelperText>
+                <Help />
+              </Box>
               <Box alignItems="center" display="flex">
                 <OutlinedInput className="outlineInput" inputRef={register} name="price" />
                 <div className="currencyBox">{symbolData.quote}</div>
@@ -95,7 +100,10 @@ const StrategyPanel = (props) => {
             </FormControl>
           )}
           <FormControl>
-            <FormHelperText>Real Investment</FormHelperText>
+            <Box alignItems="center" className="help" display="flex">
+              <FormHelperText>Real Investment</FormHelperText>
+              <Help />
+            </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
@@ -107,14 +115,20 @@ const StrategyPanel = (props) => {
             </Box>
           </FormControl>
           <FormControl>
-            <FormHelperText>Position Size</FormHelperText>
+            <Box alignItems="center" className="help" display="flex">
+              <FormHelperText>Position Size</FormHelperText>
+              <Help />
+            </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput className="outlineInput" inputRef={register} name="positionSize" />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
-            <FormHelperText>Units</FormHelperText>
+            <Box alignItems="center" className="help" display="flex">
+              <FormHelperText>Units</FormHelperText>
+              <Help />
+            </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput className="outlineInput" inputRef={register} name="units" />
               <div className="currencyBox">{symbolData.base}</div>

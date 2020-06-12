@@ -26,6 +26,20 @@
     min-height: 200px;
     padding-bottom: 25px;
 
+    .help {
+      p {
+        font-size: 12px;
+        word-spacing: 0;
+        margin-right: 5px;
+      }
+
+      svg {
+        color: $darkGrey;
+        height: 14px;
+        width: 14px;
+      }
+    }
+
     .outlineInput {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
