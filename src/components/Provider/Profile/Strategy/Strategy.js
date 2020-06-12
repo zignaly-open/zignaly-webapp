@@ -2,6 +2,7 @@ import React from "react";
 import "./Strategy.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import ReactMarkdown from "react-markdown";
 
 /**
  * @typedef {Object} DefaultProps
@@ -38,7 +39,7 @@ const Strategy = ({ provider }) => {
           <FormattedMessage id="srv.strategy.subtitle" />
         </Typography>
       </Box>
-      <Typography variant="body1">{provider.longDesc}</Typography>
+      <ReactMarkdown source={provider.longDesc} />
     </Box>
   );
 };

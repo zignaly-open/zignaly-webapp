@@ -2,6 +2,7 @@ import React from "react";
 import "./AboutUs.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import ReactMarkdown from "react-markdown";
 
 /**
  * @typedef {Object} DefaultProps
@@ -25,7 +26,8 @@ const AboutUs = ({ provider }) => {
       <Typography variant="h3">
         <FormattedMessage id="srv.about" />
       </Typography>
-      <Typography variant="body1">{provider.shortDesc}</Typography>
+      <ReactMarkdown source={provider.shortDesc} />
+      {/* <Typography variant="body1">{provider.shortDesc}</Typography> */}
     </Box>
   );
 };
