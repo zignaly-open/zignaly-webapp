@@ -8,6 +8,18 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  */
 
+/**
+ * @typedef {Object} StrategyFormProps
+ * @property {Object} dataFeed
+ * @property {string} selectedSymbol
+ */
+
+/**
+ * Strategy panels form component.
+ *
+ * @param {StrategyFormProps} props Component props.
+ * @returns {JSX.Element} Strategy form element.
+ */
 const StrategyForm = (props) => {
   const { dataFeed, selectedSymbol } = props;
   const methods = useForm({
@@ -15,6 +27,7 @@ const StrategyForm = (props) => {
   });
   // Receives submitted data.
   const onSubmit = () => {};
+  // @ts-ignore
   const symbolsData = dataFeed.getSymbolsData();
 
   /**
