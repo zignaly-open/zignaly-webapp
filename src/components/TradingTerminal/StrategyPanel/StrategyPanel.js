@@ -41,7 +41,7 @@ const StrategyPanel = (props) => {
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { getValues, register, setValue } = useFormContext();
+  const { errors, getValues, register, setError, setValue } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
 
@@ -93,6 +93,15 @@ const StrategyPanel = (props) => {
 
     const realInvestment = positionSize / parseFloat(leverage);
     setValue("realInvestment", realInvestment.toFixed(8));
+  };
+
+  const priceChange = () => {
+    const draftPosition = getValues();
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const minPrice = 10;
+    if (price < minPrice) {
+      setError("price", "invalid", `Price must be greater than ${minPrice}`);
+    }
   };
 
   return (
@@ -154,9 +163,15 @@ const StrategyPanel = (props) => {
                 <Help />
               </Box>
               <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" inputRef={register} name="price" />
+                <OutlinedInput
+                  className="outlineInput"
+                  inputRef={register}
+                  name="price"
+                  onChange={priceChange}
+                />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
+              {errors.price && <span className="errorText">{errors.price.message}</span>}
             </FormControl>
           )}
           {selectedExchange.exchangeType === "futures" && (
@@ -194,6 +209,9 @@ const StrategyPanel = (props) => {
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
+            {errors.positionSize && (
+              <span className="errorText">{errors.positionSize.message}</span>
+            )}
           </FormControl>
           <FormControl>
             <Box alignItems="center" className="help" display="flex">
@@ -211,6 +229,7 @@ const StrategyPanel = (props) => {
               />
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
+            {errors.units && <span className="errorText">{errors.positionSize.units}</span>}
           </FormControl>
         </Box>
       )}
