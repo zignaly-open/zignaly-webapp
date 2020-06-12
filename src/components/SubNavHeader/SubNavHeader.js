@@ -30,9 +30,9 @@ const SubNavHeader = ({ links, rightComponent }) => {
     >
       {links.map((item, index) =>
         item.onClick ? (
-          <a
+          <Link
             // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
-            className={"dashboardLink " + selectedLink === item.id ? "active" : null}
+            className={`dashboardLink ${selectedLink === item.id ? "active" : null}`}
             key={index}
             // href={item.to}
             onClick={() => {
@@ -41,7 +41,7 @@ const SubNavHeader = ({ links, rightComponent }) => {
             }}
           >
             <FormattedMessage id={item.id} />
-          </a>
+          </Link>
         ) : (
           <GatsbyLink activeClassName="active" className="dashboardLink" key={index} to={item.to}>
             <FormattedMessage id={item.id} />

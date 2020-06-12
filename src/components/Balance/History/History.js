@@ -6,8 +6,8 @@ import HistoryTable from "./HistoryTable";
 import { FormattedMessage } from "react-intl";
 import EquityFilter from "../TotalEquity/EquityFilter";
 
-const History = ({ balances, quotes }) => {
-  const [list, setList] = useState(balances);
+const History = ({ dailyBalance }) => {
+  const [list, setList] = useState(dailyBalance.balances);
   //   const storeUser = useStoreUserSelector();
 
   //   useEffect(() => {
@@ -45,12 +45,12 @@ const History = ({ balances, quotes }) => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <EquityFilter list={balances} onChange={handleChange} />
+        <EquityFilter list={dailyBalance.balances} onChange={handleChange} />
       </Box>
       <HistoryTable
         list={list}
         persistKey="dailyBalance"
-        quotes={quotes}
+        quotes={dailyBalance.quotes}
         title={<FormattedMessage id="dashboard.balance.historical" />}
       />
     </Box>

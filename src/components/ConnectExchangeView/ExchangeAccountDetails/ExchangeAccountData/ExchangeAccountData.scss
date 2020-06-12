@@ -1,6 +1,7 @@
 .exchangeAccountData {
   width: 100%;
   padding: 24px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
 
   .equityBox {
     min-height: 270px;
@@ -8,6 +9,14 @@
 
     .totalEquity {
       border: none;
+    }
+
+    .boxTitle {
+      display: none;
+    }
+
+    h4 {
+      margin-top: -8px;
     }
   }
 

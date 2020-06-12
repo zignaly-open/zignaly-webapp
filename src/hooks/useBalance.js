@@ -34,7 +34,7 @@ const useBalance = (internalId) => {
       };
 
       tradeApi
-        .userEquityGet(payload)
+        .userBalanceGet(payload)
         .then((data) => {
           setBalance(data);
         })

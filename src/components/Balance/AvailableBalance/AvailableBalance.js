@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
-const AvailableBalance = (balance) => {
+const AvailableBalance = ({ balance }) => {
   return (
     <Box
       alignItems="center"

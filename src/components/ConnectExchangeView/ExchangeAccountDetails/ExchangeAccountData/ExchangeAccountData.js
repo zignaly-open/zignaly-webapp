@@ -11,16 +11,14 @@ const ExchangeAccountData = ({ internalId }) => {
   const dailyBalance = useEquity(internalId);
   const balance = useBalance(internalId);
 
-  console.log(internalId);
-  console.log(dailyBalance);
-  console.log(balance);
-
   return (
     <Box className="exchangeAccountData">
       <Box display="flex" flexDirection="row">
-        <Box className="equityBox">{<TotalEquity balances={dailyBalance.balances} />}</Box>
+        <Box className="equityBox">
+          {<TotalEquity balance={balance} dailyBalance={dailyBalance} />}
+        </Box>
         <Box className="cryptoBox">
-          <CryptoComposition balances={dailyBalance.balances} quotes={dailyBalance.quotes} />
+          <CryptoComposition dailyBalance={dailyBalance} />
         </Box>
       </Box>
       <Box className="balanceBox">

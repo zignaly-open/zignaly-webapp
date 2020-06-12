@@ -13,8 +13,6 @@ import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 const Balance = () => {
   const storeUser = useStoreUserSelector();
 
-  console.log(storeUser.dailyBalance);
-
   return (
     <>
       <Helmet>
@@ -28,22 +26,16 @@ const Balance = () => {
         justifyContent="center"
       >
         <Box className="equityBox">
-          <TotalEquity balances={storeUser.dailyBalance.balances} />
+          <TotalEquity balance={storeUser.balance} dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="cryptoBox">
-          <CryptoComposition
-            balances={storeUser.dailyBalance.balances}
-            quotes={storeUser.dailyBalance.quotes}
-          />
+          <CryptoComposition dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="balanceBox">
           <AvailableBalance balance={storeUser.balance} />
         </Box>
         <Box className="historyBox">
-          <History
-            balances={storeUser.dailyBalance.balances}
-            quotes={storeUser.dailyBalance.quotes}
-          />
+          <History dailyBalance={storeUser.dailyBalance} />
         </Box>
       </Box>
     </>

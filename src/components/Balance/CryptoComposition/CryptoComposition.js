@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CompositionGraph from "./CompositionGraph";
 
-const CryptoComposition = ({ balances, quotes }) => {
+const CryptoComposition = ({ dailyBalance }) => {
   return (
     <Box
       alignItems="flex-start"
@@ -16,7 +16,7 @@ const CryptoComposition = ({ balances, quotes }) => {
       <Typography className="boxTitle" variant="h3">
         <FormattedMessage id="dashboard.balance.cryptocompo" />
       </Typography>
-      <CompositionGraph list={balances} quotes={quotes} />
+      <CompositionGraph list={dailyBalance.balances} quotes={dailyBalance.quotes} />
     </Box>
   );
 };
