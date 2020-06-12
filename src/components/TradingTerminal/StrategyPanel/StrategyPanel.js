@@ -3,6 +3,7 @@ import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
+import { useIntl, FormattedMessage } from "react-intl";
 import {
   OutlinedInput,
   FormControlLabel,
@@ -21,6 +22,7 @@ const StrategyPanel = (props) => {
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { getValues, register, setValue } = useFormContext();
+  const intl = useIntl();
 
   /**
    * Handle toggle switch action.
@@ -34,10 +36,10 @@ const StrategyPanel = (props) => {
   };
 
   const entryStrategyOptions = [
-    { label: "Limit Order", val: "limit" },
-    { label: "Market Order", val: "market" },
-    { label: "Stop-Limit Order", val: "stop-limit" },
-    { label: "Import from Exchange", val: "import" },
+    { label: intl.formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
+    { label: intl.formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    { label: intl.formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
+    { label: intl.formatMessage({ id: "terminal.strategy.import" }), val: "import" },
   ];
 
   const [entryStrategy, setEntryStrategy] = useState(entryStrategyOptions[0].val);
@@ -53,7 +55,9 @@ const StrategyPanel = (props) => {
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {!disableExpand && <Switch onChange={handleToggle} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
-          <Typography variant="h5">Entry strategy</Typography>
+          <Typography variant="h5">
+            <FormattedMessage id="terminal.strategy" />
+          </Typography>
           <CustomSelect
             label=""
             onChange={setEntryStrategy}
@@ -66,11 +70,16 @@ const StrategyPanel = (props) => {
         <Box className="panelContent">
           <FormControl>
             <RadioGroup aria-label="Entry Type" className="entryType" name="entryType">
-              <FormControlLabel control={<Radio />} inputRef={register} label="LONG" value="LONG" />
               <FormControlLabel
                 control={<Radio />}
                 inputRef={register}
-                label="SHORT"
+                label={<FormattedMessage id="col.side.long" />}
+                value="LONG"
+              />
+              <FormControlLabel
+                control={<Radio />}
+                inputRef={register}
+                label={<FormattedMessage id="col.side.short" />}
                 value="SHORT"
               />
             </RadioGroup>
@@ -78,7 +87,9 @@ const StrategyPanel = (props) => {
           {entryStrategy === "stop-limit" && (
             <FormControl>
               <Box alignItems="center" className="help" display="flex">
-                <FormHelperText>Stop Price</FormHelperText>
+                <FormHelperText>
+                  <FormattedMessage id="terminal.stopprice" />
+                </FormHelperText>
                 <Help />
               </Box>
               <Box alignItems="center" display="flex">
@@ -90,7 +101,9 @@ const StrategyPanel = (props) => {
           {entryStrategy !== "market" && (
             <FormControl>
               <Box alignItems="center" className="help" display="flex">
-                <FormHelperText>Price</FormHelperText>
+                <FormHelperText>
+                  <FormattedMessage id="terminal.price" />
+                </FormHelperText>
                 <Help />
               </Box>
               <Box alignItems="center" display="flex">
@@ -101,7 +114,9 @@ const StrategyPanel = (props) => {
           )}
           <FormControl>
             <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>Real Investment</FormHelperText>
+              <FormHelperText>
+                <FormattedMessage id="terminal.realinvest" />
+              </FormHelperText>
               <Help />
             </Box>
             <Box alignItems="center" display="flex">
@@ -116,7 +131,9 @@ const StrategyPanel = (props) => {
           </FormControl>
           <FormControl>
             <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>Position Size</FormHelperText>
+              <FormHelperText>
+                <FormattedMessage id="terminal.position.size" />
+              </FormHelperText>
               <Help />
             </Box>
             <Box alignItems="center" display="flex">
@@ -126,7 +143,9 @@ const StrategyPanel = (props) => {
           </FormControl>
           <FormControl>
             <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>Units</FormHelperText>
+              <FormHelperText>
+                <FormattedMessage id="terminal.units" />
+              </FormHelperText>
               <Help />
             </Box>
             <Box alignItems="center" display="flex">
