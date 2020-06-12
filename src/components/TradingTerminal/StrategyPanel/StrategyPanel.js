@@ -41,7 +41,7 @@ const StrategyPanel = (props) => {
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { errors, getValues, register, setError, setValue } = useFormContext();
+  const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
 
@@ -99,6 +99,8 @@ const StrategyPanel = (props) => {
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const minPrice = 10;
+
+    clearError("price");
     if (price < minPrice) {
       setError("price", "invalid", `Price must be greater than ${minPrice}`);
     }
