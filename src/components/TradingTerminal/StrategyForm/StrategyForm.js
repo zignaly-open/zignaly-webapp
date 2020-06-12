@@ -1,17 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Button } from "@material-ui/core";
-import { useForm, FormContext, useFormContext } from "react-hook-form";
+import { useForm, FormContext } from "react-hook-form";
 import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
+
+/**
+ * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ */
 
 const StrategyForm = (props) => {
   const { dataFeed, selectedSymbol } = props;
   const methods = useForm({
     mode: "onChange",
   });
-  const onSubmit = (data) => console.log(data);
+  // Receives submitted data.
+  const onSubmit = () => {};
   const symbolsData = dataFeed.getSymbolsData();
-  const currentSymbolData = symbolsData.find((item) => item.id === selectedSymbol);
+
+  /**
+   * Match current symbol against market symbols collection item.
+   *
+   * @param {MarketSymbol} item Market symbol item.
+   * @returns {boolean} TRUE when ID matches, FALSE otherwise.
+   */
+  const matchCurrentSymbol = (item) => item.id === selectedSymbol;
+  const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
   return (
     <FormContext {...methods}>
