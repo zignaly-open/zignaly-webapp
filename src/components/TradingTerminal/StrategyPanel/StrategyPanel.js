@@ -4,6 +4,7 @@ import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import {
   OutlinedInput,
   FormControlLabel,
@@ -23,6 +24,7 @@ const StrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { getValues, register, setValue } = useFormContext();
   const intl = useIntl();
+  const { selectedExchange } = useStoreSettingsSelector();
 
   /**
    * Handle toggle switch action.
@@ -68,22 +70,24 @@ const StrategyPanel = (props) => {
       </Box>
       {expand && (
         <Box className="panelContent">
-          <FormControl>
-            <RadioGroup aria-label="Entry Type" className="entryType" name="entryType">
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.long" />}
-                value="LONG"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.short" />}
-                value="SHORT"
-              />
-            </RadioGroup>
-          </FormControl>
+          {selectedExchange.exchangeType === "futures" && (
+            <FormControl>
+              <RadioGroup aria-label="Entry Type" className="entryType" name="entryType">
+                <FormControlLabel
+                  control={<Radio />}
+                  inputRef={register}
+                  label={<FormattedMessage id="col.side.long" />}
+                  value="LONG"
+                />
+                <FormControlLabel
+                  control={<Radio />}
+                  inputRef={register}
+                  label={<FormattedMessage id="col.side.short" />}
+                  value="SHORT"
+                />
+              </RadioGroup>
+            </FormControl>
+          )}
           {entryStrategy === "stop-limit" && (
             <FormControl>
               <Box alignItems="center" className="help" display="flex">
@@ -112,23 +116,25 @@ const StrategyPanel = (props) => {
               </Box>
             </FormControl>
           )}
-          <FormControl>
-            <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>
-                <FormattedMessage id="terminal.realinvest" />
-              </FormHelperText>
-              <Help />
-            </Box>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register}
-                name="realInvestment"
-                onChange={realInvestmentChange}
-              />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-          </FormControl>
+          {selectedExchange.exchangeType === "futures" && (
+            <FormControl>
+              <Box alignItems="center" className="help" display="flex">
+                <FormHelperText>
+                  <FormattedMessage id="terminal.realinvest" />
+                </FormHelperText>
+                <Help />
+              </Box>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  inputRef={register}
+                  name="realInvestment"
+                  onChange={realInvestmentChange}
+                />
+                <div className="currencyBox">{symbolData.quote}</div>
+              </Box>
+            </FormControl>
+          )}
           <FormControl>
             <Box alignItems="center" className="help" display="flex">
               <FormHelperText>
