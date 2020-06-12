@@ -17,6 +17,22 @@ import {
 } from "@material-ui/core";
 import { Help } from "@material-ui/icons";
 
+/**
+ * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ */
+
+/**
+ * @typedef {Object} StrategyPanelProps
+ * @property {boolean} disableExpand
+ * @property {MarketSymbol} symbolData
+ */
+
+/**
+ * Manual trading strategy panel component.
+ *
+ * @param {StrategyPanelProps} props Component props.
+ * @returns {JSX.Element} Strategy panel element.
+ */
 const StrategyPanel = (props) => {
   const { disableExpand, symbolData } = props;
   const defaultExpand = !!disableExpand;

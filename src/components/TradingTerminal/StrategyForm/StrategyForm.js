@@ -15,7 +15,7 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  */
 
 /**
- * Strategy panels form component.
+ * Manual trading strategy form component.
  *
  * @param {StrategyFormProps} props Component props.
  * @returns {JSX.Element} Strategy form element.
