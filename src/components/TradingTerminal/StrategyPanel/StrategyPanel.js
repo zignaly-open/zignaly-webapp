@@ -34,14 +34,14 @@ const StrategyPanel = (props) => {
     setExpand(targetElement.checked);
   };
 
-  const entryOptions = [
+  const entryStrategyOptions = [
     { label: "Limit Order", val: "limit" },
     { label: "Market Order", val: "market" },
     { label: "Stop-Limit Order", val: "stop-limit" },
     { label: "Import from Exchange", val: "import" },
   ];
 
-  const [entryOption, setEntryOption] = useState(entryOptions[0].val);
+  const [entryStrategy, setEntryStrategy] = useState(entryStrategyOptions[0].val);
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
@@ -57,9 +57,9 @@ const StrategyPanel = (props) => {
           <Typography variant="h5">Entry strategy</Typography>
           <CustomSelect
             label=""
-            onChange={setEntryOption}
-            options={entryOptions}
-            value={entryOption}
+            onChange={setEntryStrategy}
+            options={entryStrategyOptions}
+            value={entryStrategy}
           />
         </Box>
       </Box>
@@ -76,7 +76,7 @@ const StrategyPanel = (props) => {
               />
             </RadioGroup>
           </FormControl>
-          {entryOption === "stop-limit" && (
+          {entryStrategy === "stop-limit" && (
             <FormControl>
               <FormHelperText>Stop Price</FormHelperText>
               <Box alignItems="center" display="flex">
@@ -86,7 +86,7 @@ const StrategyPanel = (props) => {
               </Box>
             </FormControl>
           )}
-          {entryOption !== "market" && (
+          {entryStrategy !== "market" && (
             <FormControl>
               <FormHelperText>Price</FormHelperText>
               <Box alignItems="center" display="flex">
