@@ -6,11 +6,13 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  */
 
 /**
  * @typedef {Object} StrategyFormProps
  * @property {Object} dataFeed
+ * @property {CoinRayCandle} lastPriceCandle
  * @property {string} selectedSymbol
  */
 
@@ -21,7 +23,7 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  * @returns {JSX.Element} Strategy form element.
  */
 const StrategyForm = (props) => {
-  const { dataFeed, selectedSymbol } = props;
+  const { dataFeed, lastPriceCandle, selectedSymbol } = props;
   const methods = useForm({
     mode: "onChange",
   });
@@ -29,6 +31,8 @@ const StrategyForm = (props) => {
   const onSubmit = () => {};
   // @ts-ignore
   const symbolsData = dataFeed.getSymbolsData();
+
+  console.log("last candle: ", lastPriceCandle);
 
   /**
    * Match current symbol against market symbols collection item.

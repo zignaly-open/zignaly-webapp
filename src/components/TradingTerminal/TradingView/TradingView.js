@@ -22,6 +22,7 @@ const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
+  const [lastPriceCandle, setLastPriceCandle] = useState(null);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -29,6 +30,7 @@ const TradingView = () => {
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
+  const chartReady = tradingViewWidgetTyped !== null;
 
   const drawLine = () => {
     const orderPrice = 9600;
@@ -51,11 +53,14 @@ const TradingView = () => {
       .setQuantityBorderColor(coloring3);
   };
 
-  const customizeChart = () => {
-    if (tradingViewWidgetTyped !== null) {
-      drawLine();
+  if (chartReady) {
+    drawLine();
+    if (!lastPriceCandle) {
+      // @ts-ignore
+      const priceCandle = dataFeed.getLastCandle();
+      setLastPriceCandle(priceCandle);
     }
-  };
+  }
 
   const loadOwnCopyTradersProviders = () => {
     const payload = {
@@ -81,8 +86,10 @@ const TradingView = () => {
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
       const widgetInstance = new TradingViewWidget(widgetOptions);
-      widgetInstance.onChartReady(customizeChart);
-      setTradingViewWidget(widgetInstance);
+      // Store to state only when chart is ready so prices are resolved.
+      widgetInstance.onChartReady(() => {
+        setTradingViewWidget(widgetInstance);
+      });
     }
 
     return () => {
@@ -123,7 +130,11 @@ const TradingView = () => {
     // Change chart data to the new selected symbol.
     if (tradingViewWidgetTyped) {
       const chart = tradingViewWidgetTyped.chart();
-      chart.setSymbol(selectedOption.value, () => {});
+      chart.setSymbol(selectedOption.value, () => {
+        // @ts-ignore
+        const priceCandle = dataFeed.getLastCandle();
+        setLastPriceCandle(priceCandle);
+      });
     }
   };
 
@@ -186,7 +197,13 @@ const TradingView = () => {
         width={1}
       >
         <Box className="tradingViewChart" id="trading_view_chart" />
-        {dataFeed && <StrategyForm dataFeed={dataFeed} selectedSymbol={selectedSymbol} />}
+        {lastPriceCandle && (
+          <StrategyForm
+            dataFeed={dataFeed}
+            lastPriceCandle={lastPriceCandle}
+            selectedSymbol={selectedSymbol}
+          />
+        )}
       </Box>
     </Box>
   );

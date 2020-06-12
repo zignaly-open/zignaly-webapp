@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import Coinray from "coinrayjs";
 import tradeApi from "./tradeApiClient";
-import { isEmpty } from "lodash";
+import { isEmpty, last } from "lodash";
 
 /**
  * @typedef {Array<string>} CoinRayCandle
@@ -393,7 +393,7 @@ class CoinRayDataFeed {
       return null;
     }
 
-    return this.allCandles[0];
+    return last(this.allCandles);
   }
 }
 
