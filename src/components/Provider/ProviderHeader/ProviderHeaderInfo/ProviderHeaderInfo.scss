@@ -1,0 +1,35 @@
+.providerHeaderInfo {
+  margin-bottom: 40px;
+  width: 100%;
+
+  h4 {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    font-family: "PlexSans-Regular";
+    justify-content: flex-start;
+    margin-right: 50px;
+    text-transform: capitalize;
+
+    b {
+      font-family: "PlexSans-Bold";
+      margin-left: 5px;
+    }
+
+    .imageBox {
+      margin-left: 8px;
+      width: fit-content;
+
+      .exchangeIcon {
+        height: 17px;
+        width: 17px;
+      }
+    }
+  }
+
+  .submitButton,
+  .loadMoreButton {
+    margin-right: 40px;
+    min-width: 215px;
+  }
+}

@@ -35,29 +35,24 @@ body {
 }
 
 .selectInput {
-  background-image: $purpleLightGradient;
   border-radius: 4px;
-  height: 40px;
+  height: 32px;
 
-  div {
-    color: $white;
-    height: 40px;
-    max-height: 40px;
-    padding-bottom: 0;
-    padding-left: 0.5rem;
-    padding-right: 0;
-    padding-top: 0;
+  .select {
+    > div {
+      align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
+      padding: 0 14px;
+    }
 
-    &::before,
-    &::after {
-      border: 0;
-      display: none;
+    fieldset {
+      border-color: $lightGrey;
     }
 
     svg {
-      color: $white;
-      font-size: 28px;
-      margin-top: -2px;
+      color: $lightGrey;
     }
   }
 
@@ -75,10 +70,17 @@ body {
 }
 
 .customLabel {
-  color: $black;
   font-family: "PlexSans-Regular";
   font-size: 16px;
   margin-bottom: 12px;
+
+  &.dark {
+    color: $white;
+  }
+
+  &.light {
+    color: $black;
+  }
 }
 
 .customInput {
@@ -92,6 +94,18 @@ body {
 
   & > div {
     padding-right: 10px;
+  }
+
+  &.dark {
+    fieldset {
+      border-color: $white;
+    }
+  }
+
+  &.light {
+    fieldset {
+      border-color: $black2;
+    }
   }
 }
 

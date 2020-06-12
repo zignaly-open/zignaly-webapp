@@ -1,4 +1,84 @@
-.tradingView {
-  height: 500px;
-  width: 100%;
+%box-shadow {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+}
+
+.tradingTerminal {
+  .controlsBar {
+    @extend %box-shadow;
+    margin-bottom: 17px;
+    padding: 24px;
+
+    @include media("<=sm") {
+      flex-direction: column;
+    }
+  }
+
+  .tradingViewContainer {
+    @extend %box-shadow;
+    padding: 30px 24px;
+
+    @include media("<=sm") {
+      flex-direction: column;
+      padding: 0;
+    }
+  }
+
+  .tradingViewChart {
+    height: 700px;
+    margin-right: 15px;
+    width: 70%;
+
+    @include media("<=sm") {
+      height: 400px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+  }
+
+  .strategyPanels {
+    background-color: $paleGrey;
+    height: 700px;
+    padding-top: 10px;
+    width: 30%;
+
+    @include media("<=sm") {
+      height: 400px;
+      width: 100%;
+    }
+  }
+
+  .symbolsSelector,
+  .providersSelector {
+    margin-right: 10px;
+
+    @include media("<=sm") {
+      margin-bottom: 15px;
+    }
+
+    .customSelect {
+      align-items: flex-start;
+      flex-direction: column;
+      margin: 10px 0 0;
+    }
+
+    .callout {
+      > div {
+        margin: 0;
+        padding: 0;
+        width: 250px;
+      }
+    }
+  }
+
+  .leverageButton {
+    width: 50px;
+
+    button {
+      border: $purple solid 1px;
+      font-size: 15px;
+      padding: 3px;
+      text-transform: lowercase;
+    }
+  }
 }

@@ -17,6 +17,8 @@ import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
 import { openExchangeConnectionView, openSettingsView } from "../../store/actions/ui";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
+import Loader from "../../components/Loader";
+import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -33,6 +35,7 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
   const storeModal = userStoreUIModalSelector();
+  const storeLoader = useStoreUILoaderSelector();
   const dispatch = useDispatch();
   const options = themeData(storeSettings.darkStyle);
   const theme = useMemo(() => createMuiTheme(options), [options]);
@@ -42,6 +45,7 @@ const PrivateAreaLayout = (props) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Alert />
+        {storeLoader && <Loader />}
         <Modal
           onClose={() => dispatch(openExchangeConnectionView(false))}
           persist={false}

@@ -1,0 +1,31 @@
+.socialSelect {
+  width: 100%;
+
+  .fieldBox {
+    margin-bottom: 10px;
+    width: 100%;
+
+    .selectInput {
+      width: 30%;
+    }
+
+    .customInput {
+      width: calc(70% - 64px);
+    }
+
+    .icon {
+      color: $lightGrey;
+      cursor: pointer;
+      height: 24px;
+      width: 24px;
+
+      &.add {
+        color: $green;
+      }
+
+      &.delete {
+        color: $red2;
+      }
+    }
+  }
+}

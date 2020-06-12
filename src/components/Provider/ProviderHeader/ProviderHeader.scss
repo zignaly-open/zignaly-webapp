@@ -1,0 +1,9 @@
+.providerHeader {
+  width: 100%;
+}
+
+@include media("<=sm") {
+  .providerHeader {
+    overflow: scroll;
+  }
+}

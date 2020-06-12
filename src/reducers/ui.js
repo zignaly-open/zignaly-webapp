@@ -1,6 +1,10 @@
 import initialState from "../store/initialState";
 import { assign } from "lodash";
-import { OPEN_EXCHANGE_CONNECTION_VIEW, OPEN_SSETTINGS_VIEW } from "../store/actions/ui";
+import {
+  OPEN_EXCHANGE_CONNECTION_VIEW,
+  OPEN_SSETTINGS_VIEW,
+  SHOW_LOADER,
+} from "../store/actions/ui";
 
 /**
  * @typedef {import("../store/initialState").DefaultUIObject} DefaultUIObject
@@ -26,6 +30,9 @@ const ui = (state, action) => {
       break;
     case OPEN_SSETTINGS_VIEW:
       newState.modal.settingsView = action.payload;
+      break;
+    case SHOW_LOADER:
+      newState.loader = action.payload;
       break;
 
     default:
