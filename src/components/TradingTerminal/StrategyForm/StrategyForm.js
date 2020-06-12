@@ -13,6 +13,7 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  * @typedef {Object} StrategyFormProps
  * @property {Object} dataFeed
  * @property {CoinRayCandle} lastPriceCandle
+ * @property {number} leverage
  * @property {string} selectedSymbol
  */
 
@@ -23,7 +24,7 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  * @returns {JSX.Element} Strategy form element.
  */
 const StrategyForm = (props) => {
-  const { dataFeed, lastPriceCandle, selectedSymbol } = props;
+  const { dataFeed, lastPriceCandle, leverage, selectedSymbol } = props;
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
@@ -54,6 +55,7 @@ const StrategyForm = (props) => {
           <StrategyPanel
             disableExpand={true}
             lastPriceCandle={lastPriceCandle}
+            leverage={leverage}
             symbolData={currentSymbolData}
           />
           <Button type="submit">Open Position</Button>

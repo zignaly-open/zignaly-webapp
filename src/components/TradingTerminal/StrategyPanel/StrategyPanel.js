@@ -27,6 +27,7 @@ import { Help } from "@material-ui/icons";
  * @property {boolean} disableExpand
  * @property {MarketSymbol} symbolData
  * @property {CoinRayCandle} lastPriceCandle
+ * @property {number} leverage
  */
 
 /**
@@ -36,14 +37,13 @@ import { Help } from "@material-ui/icons";
  * @returns {JSX.Element} Strategy panel element.
  */
 const StrategyPanel = (props) => {
-  const { disableExpand, symbolData, lastPriceCandle } = props;
+  const { disableExpand, symbolData, lastPriceCandle, leverage } = props;
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { getValues, register, setValue } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
-  const leverage = "10";
 
   /**
    * Handle toggle switch action.

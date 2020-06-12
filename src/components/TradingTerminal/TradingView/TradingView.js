@@ -200,6 +200,7 @@ const TradingView = () => {
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPriceCandle}
+            leverage={leverage}
             selectedSymbol={selectedSymbol}
           />
         )}
