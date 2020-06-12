@@ -34,8 +34,14 @@ const StrategyPanel = (props) => {
     setExpand(targetElement.checked);
   };
 
-  const entryOptions = ["Limit Order", "Market Order", "Stop-Limit Order", "Import from Exchange"];
-  const [entryOption, setEntryOption] = useState(entryOptions[0]);
+  const entryOptions = [
+    { label: "Limit Order", val: "limit" },
+    { label: "Market Order", val: "market" },
+    { label: "Stop-Limit Order", val: "stop-limit" },
+    { label: "Import from Exchange", val: "import" },
+  ];
+
+  const [entryOption, setEntryOption] = useState(entryOptions[0].val);
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
@@ -70,22 +76,26 @@ const StrategyPanel = (props) => {
               />
             </RadioGroup>
           </FormControl>
-          <FormControl>
-            <FormHelperText>Stop Price</FormHelperText>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput inputRef={register} name="stopPrice" />
-              <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.quote}</div>
-            </Box>
-          </FormControl>
-          <FormControl>
-            <FormHelperText>Price</FormHelperText>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput inputRef={register} name="price" />
-              <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.quote}</div>
-            </Box>
-          </FormControl>
+          {entryOption === "stop-limit" && (
+            <FormControl>
+              <FormHelperText>Stop Price</FormHelperText>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput inputRef={register} name="stopPrice" />
+                <Divider className="divider" orientation="vertical" />
+                <div>{symbolData.quote}</div>
+              </Box>
+            </FormControl>
+          )}
+          {entryOption !== "market" && (
+            <FormControl>
+              <FormHelperText>Price</FormHelperText>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput inputRef={register} name="price" />
+                <Divider className="divider" orientation="vertical" />
+                <div>{symbolData.quote}</div>
+              </Box>
+            </FormControl>
+          )}
           <FormControl>
             <FormHelperText>Real Investment</FormHelperText>
             <Box alignItems="center" display="flex">
