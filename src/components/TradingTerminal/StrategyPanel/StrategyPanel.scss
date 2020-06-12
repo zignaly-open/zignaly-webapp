@@ -24,5 +24,35 @@
 
   .panelContent {
     min-height: 200px;
+    padding-bottom: 25px;
+
+    .outlineInput {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+
+      input {
+        padding: 8px 12px;
+      }
+    }
+
+    .entryType {
+      display: flex;
+      flex-direction: row;
+
+      svg {
+        width: 18px;
+      }
+    }
+
+    .currencyBox {
+      background-color: $mediumDarkGrey;
+      border: 1px solid $darkLightGrey;
+      border-bottom-right-radius: 3px;
+      border-left: 0;
+      border-top-right-radius: 3px;
+      height: 35px;
+      padding: 6px 12px;
+      width: 70px;
+    }
   }
 }

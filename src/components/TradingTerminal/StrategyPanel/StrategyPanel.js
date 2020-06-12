@@ -80,9 +80,8 @@ const StrategyPanel = (props) => {
             <FormControl>
               <FormHelperText>Stop Price</FormHelperText>
               <Box alignItems="center" display="flex">
-                <OutlinedInput inputRef={register} name="stopPrice" />
-                <Divider className="divider" orientation="vertical" />
-                <div>{symbolData.quote}</div>
+                <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+                <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </FormControl>
           )}
@@ -90,9 +89,8 @@ const StrategyPanel = (props) => {
             <FormControl>
               <FormHelperText>Price</FormHelperText>
               <Box alignItems="center" display="flex">
-                <OutlinedInput inputRef={register} name="price" />
-                <Divider className="divider" orientation="vertical" />
-                <div>{symbolData.quote}</div>
+                <OutlinedInput className="outlineInput" inputRef={register} name="price" />
+                <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </FormControl>
           )}
@@ -100,28 +98,26 @@ const StrategyPanel = (props) => {
             <FormHelperText>Real Investment</FormHelperText>
             <Box alignItems="center" display="flex">
               <OutlinedInput
+                className="outlineInput"
                 inputRef={register}
                 name="realInvestment"
                 onChange={realInvestmentChange}
               />
-              <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.quote}</div>
+              <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
             <FormHelperText>Position Size</FormHelperText>
             <Box alignItems="center" display="flex">
-              <OutlinedInput inputRef={register} name="positionSize" />
-              <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.quote}</div>
+              <OutlinedInput className="outlineInput" inputRef={register} name="positionSize" />
+              <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
             <FormHelperText>Units</FormHelperText>
             <Box alignItems="center" display="flex">
-              <OutlinedInput inputRef={register} name="units" />
-              <Divider className="divider" orientation="vertical" />
-              <div>{symbolData.base}</div>
+              <OutlinedInput className="outlineInput" inputRef={register} name="units" />
+              <div className="currencyBox">{symbolData.base}</div>
             </Box>
           </FormControl>
         </Box>
