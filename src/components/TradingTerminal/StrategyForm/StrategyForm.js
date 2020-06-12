@@ -27,7 +27,7 @@ const StrategyForm = (props) => {
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
-      price: lastPriceCandle[1],
+      price: parseFloat(lastPriceCandle[1]).toFixed(8),
       realInvestment: 0,
       positionSize: 0,
       units: 0,
@@ -51,7 +51,11 @@ const StrategyForm = (props) => {
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <StrategyPanel disableExpand={true} symbolData={currentSymbolData} />
+          <StrategyPanel
+            disableExpand={true}
+            lastPriceCandle={lastPriceCandle}
+            symbolData={currentSymbolData}
+          />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>

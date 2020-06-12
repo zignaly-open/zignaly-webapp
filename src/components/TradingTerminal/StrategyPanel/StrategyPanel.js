@@ -19,12 +19,14 @@ import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  */
 
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {boolean} disableExpand
  * @property {MarketSymbol} symbolData
+ * @property {CoinRayCandle} lastPriceCandle
  */
 
 /**
@@ -34,13 +36,14 @@ import { Help } from "@material-ui/icons";
  * @returns {JSX.Element} Strategy panel element.
  */
 const StrategyPanel = (props) => {
-  const { disableExpand, symbolData } = props;
+  const { disableExpand, symbolData, lastPriceCandle } = props;
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { getValues, register, setValue } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
+  const leverage = "10";
 
   /**
    * Handle toggle switch action.
@@ -64,8 +67,32 @@ const StrategyPanel = (props) => {
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
-    const units = draftPosition.realInvestment / 2;
-    setValue("units", units);
+    const positionSize = parseFloat(draftPosition.realInvestment) * parseFloat(leverage);
+    setValue("positionSize", positionSize);
+
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const units = positionSize / price;
+    setValue("units", units.toFixed(8));
+  };
+
+  const positionSizeChange = () => {
+    const draftPosition = getValues();
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const units = parseFloat(draftPosition.positionSize) / price;
+    setValue("units", units.toFixed(8));
+
+    const realInvestment = parseFloat(draftPosition.positionSize) / parseFloat(leverage);
+    setValue("realInvestment", realInvestment.toFixed(8));
+  };
+
+  const unitsChange = () => {
+    const draftPosition = getValues();
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const positionSize = parseFloat(draftPosition.units) * price;
+    setValue("positionSize", positionSize.toFixed(8));
+
+    const realInvestment = positionSize / parseFloat(leverage);
+    setValue("realinvest", realInvestment.toFixed(8));
   };
 
   return (
@@ -159,7 +186,12 @@ const StrategyPanel = (props) => {
               <Help />
             </Box>
             <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="positionSize" />
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register}
+                name="positionSize"
+                onChange={positionSizeChange}
+              />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
@@ -171,7 +203,12 @@ const StrategyPanel = (props) => {
               <Help />
             </Box>
             <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="units" />
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register}
+                name="units"
+                onChange={unitsChange}
+              />
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
           </FormControl>
