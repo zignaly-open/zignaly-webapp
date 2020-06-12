@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import {
   Divider,
   OutlinedInput,
@@ -21,8 +21,12 @@ const StrategyPanel = (props) => {
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const {
-    register,
+    control,
     formState: { dirty },
+    getValues,
+    register,
+    setValue,
+    watch,
   } = useFormContext();
 
   /**
@@ -38,6 +42,14 @@ const StrategyPanel = (props) => {
 
   const entryOptions = ["Limit Order", "Market Order", "Stop-Limit Order", "Import from Exchange"];
   const [entryOption, setEntryOption] = useState(entryOptions[0]);
+  const realInvestment = watch("realInvestment");
+  console.log("realInvestment: ", realInvestment);
+
+  const realInvestmentChange = () => {
+    const draftPosition = getValues();
+    const units = draftPosition.realInvestment / 2;
+    setValue("units", units);
+  };
 
   return (
     <Box className={`strategyPanel ${expandClass}`}>
@@ -77,7 +89,11 @@ const StrategyPanel = (props) => {
           <FormControl>
             <FormHelperText>Real Investment</FormHelperText>
             <Box alignItems="center" display="flex">
-              <OutlinedInput inputRef={register} name="realInvestment" />
+              <OutlinedInput
+                inputRef={register}
+                name="realInvestment"
+                onChange={realInvestmentChange}
+              />
               <Divider className="divider" orientation="vertical" />
               <div>USDT</div>
             </Box>

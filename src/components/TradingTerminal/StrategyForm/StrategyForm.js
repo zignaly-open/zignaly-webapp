@@ -5,7 +5,9 @@ import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 
 const StrategyForm = () => {
-  const methods = useForm();
+  const methods = useForm({
+    mode: "onChange",
+  });
   const onSubmit = (data) => console.log(data);
 
   return (
@@ -13,7 +15,6 @@ const StrategyForm = () => {
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <StrategyPanel disableExpand={true} />
-          <StrategyPanel />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>
