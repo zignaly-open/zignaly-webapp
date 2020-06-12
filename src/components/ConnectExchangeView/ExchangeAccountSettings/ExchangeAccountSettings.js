@@ -1,20 +1,8 @@
 import React from "react";
+import { Box, Typography } from "@material-ui/core";
 
-const ExchangeAccountSettings = () => {
-  path = "demoAccount";
-  switch (path) {
-    case "realAccount":
-    case "demoAccount":
-      return <ExchangeAccountInfo type={path} />;
-    case "settings":
-      return <ExchangeAccountSettings />;
-    case "deposit":
-      return <ExchangeAccountDeposit />;
-    case "withdraw":
-      return <ExchangeAccountWithdraw />;
-    default:
-      return <ExchangeAccountInfo type="realAccount" />;
-  }
+const ExchangeAccountSettings = ({ internalId }) => {
+  return <Box>{internalId}</Box>;
 };
 
 export default ExchangeAccountSettings;

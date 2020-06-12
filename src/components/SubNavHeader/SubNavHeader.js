@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Link } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";
@@ -19,6 +19,7 @@ import "./SubNavHeader.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const SubNavHeader = ({ links, rightComponent }) => {
+  const [selectedLink, setSelectedLink] = useState(links.length ? links[0].id : "");
   return (
     <Box
       alignItems="center"
@@ -28,8 +29,17 @@ const SubNavHeader = ({ links, rightComponent }) => {
       justifyContent="flex-start"
     >
       {links.map((item, index) =>
-        true ? (
-          <a className={"dashboardLink active"} key={index} onClicka={item.onClick} href={item.to}>
+        item.onClick ? (
+          <a
+            // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
+            className={"dashboardLink " + selectedLink === item.id ? "active" : null}
+            key={index}
+            // href={item.to}
+            onClick={() => {
+              setSelectedLink(item.id);
+              item.onClick();
+            }}
+          >
             <FormattedMessage id={item.id} />
           </a>
         ) : (

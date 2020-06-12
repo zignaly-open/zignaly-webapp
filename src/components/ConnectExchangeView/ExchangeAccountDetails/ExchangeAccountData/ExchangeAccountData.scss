@@ -1,19 +1,14 @@
-.exchangeAccountInfo {
+.exchangeAccountData {
   width: 100%;
-
-  .accountInfoHeader {
-    height: 80px;
-    border-radius: 4px;
-    background-image: linear-gradient(94deg, $purple 5%, $purpleMedium 96%);
-  }
-
-  .accountData {
-    padding: 24px;
-  }
+  padding: 24px;
 
   .equityBox {
     min-height: 270px;
     width: 33%;
+
+    .totalEquity {
+      border: none;
+    }
   }
 
   .cryptoBox {

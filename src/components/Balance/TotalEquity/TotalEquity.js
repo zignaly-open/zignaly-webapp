@@ -7,14 +7,14 @@ import EquityFilter from "./EquityFilter";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import EquityGraphLabels from "./EquityGraphLabels";
 
-const TotalEquity = () => {
-  const [list, setList] = useState([]);
-  const storeUser = useStoreUserSelector();
+const TotalEquity = ({ balances }) => {
+  console.log("tot", balances);
+  const [list, setList] = useState(balances);
 
   useEffect(() => {
-    setList(storeUser.dailyBalance.balances);
+    setList(balances);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeUser.dailyBalance]);
+  }, [balances]);
 
   /**
    * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
@@ -42,7 +42,7 @@ const TotalEquity = () => {
         width="100%"
       >
         <TitleBar />
-        <EquityFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
+        <EquityFilter list={list} onChange={handleChange} />
       </Box>
       <TotalEquityGraph list={list} />
       <EquityGraphLabels list={list} />

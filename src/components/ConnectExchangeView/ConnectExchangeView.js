@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ConnectExchangeView.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
@@ -19,6 +19,8 @@ import { navigate } from "gatsby";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
+  const [path, setPath] = useState("realAccount");
+
   /**
    * Handle submit buttton click.
    *
@@ -32,12 +34,17 @@ const ConnectExchangeView = (props) => {
   const tabs = [
     {
       id: "accounts.real",
-      to: "#realAccount",
-      // onClick: ()=> dispatch(openExchangeConnectionView(false))}
+      //   to: "#realAccount",
+      onClick: () => {
+        setPath("realAccount");
+      },
     },
     {
       id: "accounts.demo",
-      to: "#demoAccount",
+      //   to: "#demoAccount",
+      onClick: () => {
+        setPath("demoAccount");
+      },
     },
   ];
 
@@ -60,7 +67,7 @@ const ConnectExchangeView = (props) => {
         </Typography>
       </Box>
       <SubNavHeader links={tabs} />
-      <ConnectExchangeViewContent />
+      <ConnectExchangeViewContent path={path} setPath={setPath} />
     </Box>
   );
 };

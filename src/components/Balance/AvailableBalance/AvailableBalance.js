@@ -4,9 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
-const AvailableBalance = () => {
-  const storeUser = useStoreUserSelector();
-
+const AvailableBalance = (balance) => {
   return (
     <Box
       alignItems="center"
@@ -33,10 +31,10 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.available" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {storeUser.balance.totalFreeUSDT}
+            = USD {balance.totalFreeUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {storeUser.balance.totalFreeBTC}</Typography>
+        <Typography variant="h5">BTC {balance.totalFreeBTC}</Typography>
       </Box>
       <span className="operator">+</span>
       <Box
@@ -57,10 +55,10 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.invested" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {storeUser.balance.totalLockedUSDT}
+            = USD {balance.totalLockedUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {storeUser.balance.totalLockedBTC}</Typography>
+        <Typography variant="h5">BTC {balance.totalLockedBTC}</Typography>
       </Box>
       <span className="operator">+</span>
       <Box
@@ -81,10 +79,10 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.profit" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {storeUser.balance.pnlUSDT}
+            = USD {balance.pnlUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {storeUser.balance.pnlBTC}</Typography>
+        <Typography variant="h5">BTC {balance.pnlBTC}</Typography>
       </Box>
       <span className="operator">=</span>
       <Box
@@ -105,10 +103,10 @@ const AvailableBalance = () => {
             <FormattedMessage id="balance.total" />
           </Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USD {storeUser.balance.totalUSDT}
+            = USD {balance.totalUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {storeUser.balance.totalBTC}</Typography>
+        <Typography variant="h5">BTC {balance.totalBTC}</Typography>
       </Box>
     </Box>
   );

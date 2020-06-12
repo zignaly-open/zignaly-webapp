@@ -12,16 +12,10 @@ import tradeApi from "../services/tradeApiClient";
  * @param {string} quote Quote of the bases.
  * @returns {BaseAssetsDict} Quote Assets.
  */
-const useBalance = (internalId) => {
-  const [balance, setBalance] = useState({
-    pnlBTC: 0,
-    pnlUSDT: 0,
-    totalBTC: 0,
-    totalFreeBTC: 0,
-    totalFreeUSDT: 0,
-    totalLockedBTC: 0,
-    totalLockedUSDT: 0,
-    totalUSDT: 0,
+const useEquity = (internalId) => {
+  const [equity, setEquity] = useState({
+    balances: [],
+    quotes: [],
   });
 
   const storeSession = useStoreSessionSelector();
@@ -36,7 +30,7 @@ const useBalance = (internalId) => {
       tradeApi
         .userEquityGet(payload)
         .then((data) => {
-          setBalance(data);
+          setEquity(data);
         })
         .catch((e) => {
           alert(`ERROR: ${e.message}`);
@@ -45,7 +39,7 @@ const useBalance = (internalId) => {
     loadData();
   }, [internalId, storeSession.tradeApi.accessToken]);
 
-  return balance;
+  return equity;
 };
 
-export default useBalance;
+export default useEquity;
