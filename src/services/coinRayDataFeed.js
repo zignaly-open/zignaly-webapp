@@ -376,7 +376,7 @@ class CoinRayDataFeed {
    * @memberof CoinRayDataFeed
    */
   getSymbolsData() {
-    return this.symbolsData;
+    return this.symbolsData || [];
   }
 }
 

@@ -178,7 +178,7 @@ const TradingView = () => {
         width={1}
       >
         <Box className="tradingViewChart" id="trading_view_chart" />
-        <StrategyForm />
+        {dataFeed && <StrategyForm dataFeed={dataFeed} selectedSymbol={selectedSymbol} />}
       </Box>
     </Box>
   );

@@ -16,18 +16,12 @@ import {
 } from "@material-ui/core";
 
 const StrategyPanel = (props) => {
-  const { disableExpand } = props;
+  const { disableExpand, symbolData } = props;
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const {
-    control,
-    formState: { dirty },
-    getValues,
-    register,
-    setValue,
-    watch,
-  } = useFormContext();
+  const { getValues, register, setValue } = useFormContext();
+  console.log("Current Symbol: ", symbolData);
 
   /**
    * Handle toggle switch action.
@@ -42,8 +36,6 @@ const StrategyPanel = (props) => {
 
   const entryOptions = ["Limit Order", "Market Order", "Stop-Limit Order", "Import from Exchange"];
   const [entryOption, setEntryOption] = useState(entryOptions[0]);
-  const realInvestment = watch("realInvestment");
-  console.log("realInvestment: ", realInvestment);
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
@@ -79,11 +71,19 @@ const StrategyPanel = (props) => {
             </RadioGroup>
           </FormControl>
           <FormControl>
+            <FormHelperText>Stop Price</FormHelperText>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput inputRef={register} name="stopPrice" />
+              <Divider className="divider" orientation="vertical" />
+              <div>{symbolData.quote}</div>
+            </Box>
+          </FormControl>
+          <FormControl>
             <FormHelperText>Price</FormHelperText>
             <Box alignItems="center" display="flex">
               <OutlinedInput inputRef={register} name="price" />
               <Divider className="divider" orientation="vertical" />
-              <div>USDT</div>
+              <div>{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
@@ -95,7 +95,7 @@ const StrategyPanel = (props) => {
                 onChange={realInvestmentChange}
               />
               <Divider className="divider" orientation="vertical" />
-              <div>USDT</div>
+              <div>{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
@@ -103,7 +103,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput inputRef={register} name="positionSize" />
               <Divider className="divider" orientation="vertical" />
-              <div>USDT</div>
+              <div>{symbolData.quote}</div>
             </Box>
           </FormControl>
           <FormControl>
@@ -111,7 +111,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput inputRef={register} name="units" />
               <Divider className="divider" orientation="vertical" />
-              <div>USDT</div>
+              <div>{symbolData.quote}</div>
             </Box>
           </FormControl>
         </Box>
