@@ -57,7 +57,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "freeUSDT",
+      name: "totalFreeUSDT",
       label: "col.totalUSDTfree",
       options: {
         display: "true",
@@ -66,7 +66,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "freeBTC",
+      name: "totalFreeBTC",
       label: "col.totalBTCfree",
       options: {
         display: "true",
