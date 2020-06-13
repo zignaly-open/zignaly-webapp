@@ -75,6 +75,16 @@ const TradingView = () => {
 
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
+  const onExchangeChange = () => {
+    if (tradingViewWidget) {
+      tradingViewWidget.remove();
+      setTradingViewWidget(null);
+      setLastPrice(null);
+    }
+  };
+
+  useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
+
   const bootstrapWidget = () => {
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
