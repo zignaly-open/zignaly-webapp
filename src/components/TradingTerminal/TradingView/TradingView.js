@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@material-ui/core";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import Modal from "../../Modal";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import { FormattedMessage } from "react-intl";
-import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import "./TradingView.scss";
 import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Button } from "@material-ui/core";
+import { Box, Button, CircularProgress } from "@material-ui/core";
+import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -22,7 +21,7 @@ const TradingView = () => {
   const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
-  const [lastPriceCandle, setLastPriceCandle] = useState(null);
+  const [lastPrice, setLastPrice] = useState(null);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -30,6 +29,8 @@ const TradingView = () => {
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
+  const isChartLoading = tradingViewWidget === null;
+  const isLastPriceLoading = lastPrice === null;
 
   const drawLine = () => {
     if (tradingViewWidget) {
@@ -84,7 +85,7 @@ const TradingView = () => {
         setTradingViewWidget(widgetInstance);
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
-        setLastPriceCandle(priceCandle);
+        setLastPrice(priceCandle);
       });
     }
 
@@ -130,7 +131,7 @@ const TradingView = () => {
       chart.setSymbol(selectedOption.value, () => {
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
-        setLastPriceCandle(priceCandle);
+        setLastPrice(priceCandle);
       });
     }
   };
@@ -141,63 +142,76 @@ const TradingView = () => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
-        <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
-          <FormattedMessage id="terminal.browsecoins" />
-          <CustomSelect
-            label=""
-            onChange={handleSymbolChange}
-            options={symbolsOptions}
-            search={true}
-            value={selectedSymbol}
-          />
-        </Box>
-        <Box
-          alignContent="left"
-          className="providersSelector"
-          display="flex"
-          flexDirection="column"
-        >
-          <FormattedMessage id="terminal.providers" />
-          <CustomSelect
-            label=""
-            onChange={handleSymbolChange}
-            options={ownCopyTradersProviders}
-            search={true}
-            value={selectedProviderValue}
-          />
-        </Box>
-        <Modal
-          onClose={() => setModalVisible(false)}
-          persist={false}
-          size="small"
-          state={modalVisible}
-        >
-          <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
-        </Modal>
-        {storeSettings.selectedExchange.exchangeType === "futures" && (
+      {!isChartLoading && (
+        <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
           <Box
-            className="leverageButton"
+            alignContent="left"
+            className="symbolsSelector"
             display="flex"
             flexDirection="column"
-            justifyContent="flex-end"
           >
-            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+            <FormattedMessage id="terminal.browsecoins" />
+            <CustomSelect
+              label=""
+              onChange={handleSymbolChange}
+              options={symbolsOptions}
+              search={true}
+              value={selectedSymbol}
+            />
           </Box>
-        )}
-      </Box>
+          <Box
+            alignContent="left"
+            className="providersSelector"
+            display="flex"
+            flexDirection="column"
+          >
+            <FormattedMessage id="terminal.providers" />
+            <CustomSelect
+              label=""
+              onChange={handleSymbolChange}
+              options={ownCopyTradersProviders}
+              search={true}
+              value={selectedProviderValue}
+            />
+          </Box>
+          <Modal
+            onClose={() => setModalVisible(false)}
+            persist={false}
+            size="small"
+            state={modalVisible}
+          >
+            <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
+          </Modal>
+          {storeSettings.selectedExchange.exchangeType === "futures" && (
+            <Box
+              className="leverageButton"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-end"
+            >
+              <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+            </Box>
+          )}
+        </Box>
+      )}
       <Box
         bgcolor="grid.content"
         className="tradingViewContainer"
         display="flex"
         flexDirection="row"
+        flexWrap="wrap"
         width={1}
       >
+        {isChartLoading && (
+          <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
+            <CircularProgress disableShrink />
+          </Box>
+        )}
         <Box className="tradingViewChart" id="trading_view_chart" />
-        {lastPriceCandle && (
+        {!isLastPriceLoading && (
           <StrategyForm
             dataFeed={dataFeed}
-            lastPriceCandle={lastPriceCandle}
+            lastPriceCandle={lastPrice}
             leverage={leverage}
             selectedSymbol={selectedSymbol}
           />

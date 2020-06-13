@@ -1,7 +1,7 @@
 .strategyForm {
-  width: 30%;
+  flex: 0 0 30%;
 
   @include media("<=sm") {
-    width: 100%;
+    flex: 0 0 100%;
   }
 }

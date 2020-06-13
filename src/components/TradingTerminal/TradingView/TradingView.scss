@@ -24,15 +24,21 @@
     }
   }
 
+  .loadProgress {
+    flex: 0 0 100%;
+    margin-bottom: 20px;
+    padding: 30px;
+  }
+
   .tradingViewChart {
+    flex: 0 0 calc(70% - 15px);
     height: 700px;
     margin-right: 15px;
-    width: 70%;
 
     @include media("<=sm") {
+      flex: 0 0 100%;
       height: 400px;
       margin-bottom: 15px;
-      width: 100%;
     }
   }
 
