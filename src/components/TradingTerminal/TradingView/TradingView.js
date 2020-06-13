@@ -18,13 +18,24 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 
 const TradingView = () => {
-  const [selectedSymbol, setSelectedSymbol] = useState("BTCUSDT");
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const [lastPrice, setLastPrice] = useState(null);
-  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  /**
+   * @type {Object<string, string>}
+   */
+  const defaultSymbol = {
+    KuCoin: "BTC-USDT",
+    Binance: "BTCUSDT",
+    Zignaly: "BTCUSDT",
+  };
+
+  const currentExchangeName = storeSettings.selectedExchange.exchangeName;
+  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol[currentExchangeName]);
+  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+
   /**
    * @type {TVWidget} tradingViewWidgetPointer
    */
@@ -76,10 +87,12 @@ const TradingView = () => {
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const onExchangeChange = () => {
+    const newExchangeName = storeSettings.selectedExchange.exchangeName;
     if (tradingViewWidget) {
       tradingViewWidget.remove();
       setTradingViewWidget(null);
       setLastPrice(null);
+      setSelectedSymbol(defaultSymbol[newExchangeName]);
     }
   };
 
