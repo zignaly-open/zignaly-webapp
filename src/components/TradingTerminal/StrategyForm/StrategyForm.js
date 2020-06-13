@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
 import "./StrategyForm.scss";
@@ -25,10 +25,11 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  */
 const StrategyForm = (props) => {
   const { dataFeed, lastPriceCandle, leverage, selectedSymbol } = props;
+  const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
-      price: parseFloat(lastPriceCandle[1]).toFixed(8),
+      price: currentPrice,
       realInvestment: "",
       positionSize: "",
       units: "",
@@ -38,6 +39,11 @@ const StrategyForm = (props) => {
   const onSubmit = () => {};
   // @ts-ignore
   const symbolsData = dataFeed.getSymbolsData();
+  const updatePriceField = () => {
+    methods.setValue("price", currentPrice);
+  };
+
+  useEffect(updatePriceField, [currentPrice]);
 
   /**
    * Match current symbol against market symbols collection item.

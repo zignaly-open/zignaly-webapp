@@ -93,6 +93,7 @@ const TradingView = () => {
 
     return () => {
       if (tradingViewWidgetTyped) {
+        setTradingViewWidget(null);
         tradingViewWidgetTyped.remove();
       }
     };
@@ -127,7 +128,7 @@ const TradingView = () => {
     setSelectedSymbol(/** @type {string} */ (selectedOption.value));
 
     // Change chart data to the new selected symbol.
-    if (tradingViewWidgetTyped) {
+    if (tradingViewWidget) {
       const chart = tradingViewWidgetTyped.chart();
       chart.setSymbol(selectedOption.value, () => {
         // @ts-ignore
