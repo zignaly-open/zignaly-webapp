@@ -26,11 +26,15 @@
     min-height: 200px;
     padding-bottom: 25px;
 
+    > div {
+      flex: 0 0 auto;
+    }
+
     .help {
       p {
         font-size: 12px;
-        word-spacing: 0;
         margin-right: 5px;
+        word-spacing: 0;
       }
 
       svg {
@@ -38,6 +42,11 @@
         height: 14px;
         width: 14px;
       }
+    }
+
+    .errorText {
+      max-width: 250px;
+      text-align: left;
     }
 
     .outlineInput {
@@ -50,8 +59,13 @@
     }
 
     .entryType {
-      display: flex;
-      flex-direction: row;
+      flex: 0 0 100%;
+
+      [role="radiogroup"] {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
 
       svg {
         width: 18px;

@@ -65,6 +65,7 @@ const StrategyPanel = (props) => {
 
   const [entryStrategy, setEntryStrategy] = useState(entryStrategyOptions[0].val);
   const { limits } = symbolData;
+  console.log("Limits:", limits);
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
@@ -147,10 +148,16 @@ const StrategyPanel = (props) => {
         </Box>
       </Box>
       {expand && (
-        <Box className="panelContent">
+        <Box
+          className="panelContent"
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+          justifyContent="space-around"
+        >
           {selectedExchange.exchangeType === "futures" && (
-            <FormControl>
-              <RadioGroup aria-label="Entry Type" className="entryType" name="entryType">
+            <FormControl className="entryType">
+              <RadioGroup aria-label="Entry Type" name="entryType">
                 <FormControlLabel
                   control={<Radio />}
                   inputRef={register}
