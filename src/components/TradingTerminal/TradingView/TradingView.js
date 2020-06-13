@@ -54,12 +54,6 @@ const TradingView = () => {
     }
   };
 
-  if (tradingViewWidget && !lastPriceCandle) {
-    // @ts-ignore
-    const priceCandle = dataFeed.getLastCandle();
-    setLastPriceCandle(priceCandle);
-  }
-
   const loadOwnCopyTradersProviders = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -88,13 +82,16 @@ const TradingView = () => {
       widgetInstance.onChartReady(() => {
         drawLine();
         setTradingViewWidget(widgetInstance);
+        // @ts-ignore
+        const priceCandle = dataFeed.getLastCandle();
+        setLastPriceCandle(priceCandle);
       });
     }
 
     return () => {
-      if (tradingViewWidgetTyped) {
+      if (tradingViewWidget) {
+        tradingViewWidget.remove();
         setTradingViewWidget(null);
-        tradingViewWidgetTyped.remove();
       }
     };
   };
