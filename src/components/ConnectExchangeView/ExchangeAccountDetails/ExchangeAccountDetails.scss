@@ -23,27 +23,28 @@
       letter-spacing: 0.42px;
       color: rgba(255, 255, 255, 0.94);
     }
-  }
-  .accountName {
-    padding-left: 16px;
-  }
 
-  h3 {
-    font-family: "PlexSans-Bold";
-    color: $white;
-  }
+    .accountName {
+      padding-left: 16px;
+    }
 
-  .customButton {
-    margin-left: 32px;
-    height: 40px;
-  }
+    h3 {
+      font-family: "PlexSans-Bold";
+      color: $white;
+    }
 
-  .textPurple {
-    background: $white;
-  }
+    .customButton {
+      margin-left: 32px;
+      height: 40px;
+    }
 
-  .textDefault {
-    color: $white;
+    .textPurple {
+      background: $white;
+    }
+
+    .textDefault {
+      color: $white;
+    }
   }
 
   .exchangeAccountInfo {

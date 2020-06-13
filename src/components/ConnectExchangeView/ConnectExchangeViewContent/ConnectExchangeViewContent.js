@@ -18,7 +18,7 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
   //     // get hash by looking at selected exchange
   //   }
 
-  const openExchangeAction = (internalId, path) => {
+  const openExchangeAccountAction = (internalId, path) => {
     setExchangeInternalId(internalId);
     setPath(path);
   };
@@ -27,7 +27,9 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
     case "realAccount":
     case "demoAccount":
     default:
-      return <ExchangeAccountDetails type={path} openExchangeAction={openExchangeAction} />;
+      return (
+        <ExchangeAccountDetails type={path} openExchangeAccountAction={openExchangeAccountAction} />
+      );
     case "settings":
       return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;
     case "deposit":

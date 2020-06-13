@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 import "./ExchangeAccountDetails.scss";
@@ -8,7 +8,7 @@ import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 
-const ExchangeAccountDetails = ({ type, openExchangeAction }) => {
+const ExchangeAccountDetails = ({ type, openExchangeAccountAction }) => {
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
@@ -42,7 +42,7 @@ const ExchangeAccountDetails = ({ type, openExchangeAction }) => {
             </Box>
             <Box display="flex" flexDirection="row" alignItems="center">
               <CustomButton
-                onClick={() => openExchangeAction(item.internalId, "settings")}
+                onClick={() => openExchangeAccountAction(item.internalId, "settings")}
                 className="textDefault"
               >
                 <FormattedMessage id="accounts.settings" />

@@ -3,9 +3,17 @@
   padding: 24px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
 
+  .topBoxData {
+    min-height: 260px;
+    max-height: 360px;
+    position: relative;
+  }
+
   .equityBox {
-    min-height: 270px;
-    width: 33%;
+    // width: 33%;
+    flex: 1;
+    // min-width: 0;
+    // flex-grow: 1;
 
     .totalEquity {
       border: none;
@@ -21,13 +29,34 @@
   }
 
   .cryptoBox {
-    min-height: 250px;
-    width: 33%;
+    // width: 33%;
+    flex: 1;
+    // min-width: 0;
+    // flex-grow: 1;
+  }
+
+  .cardsBox {
+    // width: 33%;
+    flex: 1;
+    // position: relative;
+    // min-width: 0;
+    // flex-grow: 1;
+
+    .traderMiniCard {
+      min-height: 80px;
+      //   flex: 1 1 50%;
+      //   max-width: 50%;
+      //   max-height: ;
+    }
   }
 
   .balanceBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    border-top: 1px solid $borderColor;
     margin-top: 30px;
     width: 100%;
+  }
+
+  .availableBalance {
+    padding: 0;
   }
 }

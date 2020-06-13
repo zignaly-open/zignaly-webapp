@@ -1,0 +1,13 @@
+.traderMiniCard {
+  width: 272px;
+  height: 80px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  background-color: $white;
+  padding: 5px 16px 12px;
+
+  .logoIcon {
+    height: 32px;
+    width: 32px;
+  }
+}

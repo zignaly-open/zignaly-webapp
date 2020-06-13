@@ -5,8 +5,7 @@ import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import tradeApi from "../../../services/tradeApiClient";
+import useConnectedProviders from "../../../hooks/useConnectedProviders";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -15,35 +14,17 @@ import tradeApi from "../../../services/tradeApiClient";
  */
 const DashboardHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
   const [links, setLinks] = useState(routesMapping("dashboard").links);
+  const providers = useConnectedProviders(1);
 
-  useEffect(() => {
-    const loadProviders = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          copyTradersOnly: false,
-          type: "connected",
-          timeFrame: 1,
-        };
-        const response = await tradeApi.providersGet(payload);
-        if (response.length > 0) {
-          let data = [...links];
-          data.push({
-            id: "dashboard.providers",
-            to: "/dashboard/connectedProviders",
-          });
-          setLinks(data);
-        }
-      } catch (e) {
-        alert(e.message);
-      }
-    };
-
-    loadProviders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (providers.length > 0) {
+    let data = [...links];
+    data.push({
+      id: "dashboard.providers",
+      to: "/dashboard/connectedProviders",
+    });
+    // setLinks(data);
+  }
 
   return (
     <Box className="dashboardHeader">

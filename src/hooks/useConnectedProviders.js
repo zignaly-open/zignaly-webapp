@@ -3,17 +3,17 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+ * @typedef {import("../services/tradeApiClient.types").BaseAssetsDict} BaseAssetsDict
  */
 
 /**
- * Provides quotes assets.
+ * Provides bases assets.
  *
- * @returns {QuoteAssetsDict} Quote Assets.
+ * @param {string} timeFrame Quote of the bases.
+ * @returns {BaseAssetsDict} Quote Assets.
  */
-const useQuoteAssets = () => {
-  const [quotes, setQuotes] = useState({});
-
+const useConnectedProviders = (timeFrame, internalExchangeId) => {
+  const [providers, setProviders] = useState([]);
   const storeSession = useStoreSessionSelector();
 
   useEffect(() => {
@@ -21,12 +21,14 @@ const useQuoteAssets = () => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
+        timeFrame,
+        ...(internalExchangeId && { internalExchangeId }),
       };
 
       tradeApi
-        .quotesAssetsGet(payload)
+        .providersGet(payload)
         .then((data) => {
-          setQuotes(data);
+          setProviders(data);
         })
         .catch((e) => {
           alert(`ERROR: ${e.message}`);
@@ -35,7 +37,7 @@ const useQuoteAssets = () => {
     loadData();
   }, [storeSession.tradeApi.accessToken]);
 
-  return quotes;
+  return providers;
 };
 
-export default useQuoteAssets;
+export default useConnectedProviders;
