@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
 import AvailableBalance from "../../../Balance/AvailableBalance";
@@ -9,6 +9,16 @@ import useEquity from "../../../../hooks/useEquity";
 import useBalance from "../../../../hooks/useBalance";
 import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 
+/**
+ * @typedef {Object} DefaultProps
+ * @property {string} internalId Exchange internal Id.
+ */
+
+/**
+ * Provides data about the exchange account.
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const ExchangeAccountData = ({ internalId }) => {
   const dailyBalance = useEquity(internalId);
   const balance = useBalance(internalId);
@@ -16,7 +26,7 @@ const ExchangeAccountData = ({ internalId }) => {
 
   return (
     <Box className="exchangeAccountData">
-      <Box display="flex" flexDirection="row" className="topBoxData">
+      <Box className="topBoxData" display="flex" flexDirection="row">
         <Box className="equityBox">
           {<TotalEquity balance={balance} dailyBalance={dailyBalance} />}
         </Box>

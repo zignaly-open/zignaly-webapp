@@ -5,7 +5,8 @@
 /**
  * @typedef {Object} NavigationLink Navigation link object.
  * @property {string} id Link ID.
- * @property {string} to Link path.
+ * @property {string} [to] Link path.
+ * @property {function} [onClick] onClick callback.
  */
 
 /**
@@ -190,19 +191,19 @@ export const createProviderRoutes = (providerId, provider) => {
     }
     return data;
   }
-    return {
-      id: "providerProfile",
-      subtitleId: "",
-      subtitle2Id: "",
-      links: [
-        {
-          id: "srv.profile",
-          to: `/copyTraders/${providerId}/profile`,
-        },
-        {
-          id: "srv.analytics",
-          to: `/copyTraders/${providerId}/analytics`,
-        },
-      ],
-    };
+  return {
+    id: "providerProfile",
+    subtitleId: "",
+    subtitle2Id: "",
+    links: [
+      {
+        id: "srv.profile",
+        to: `/copyTraders/${providerId}/profile`,
+      },
+      {
+        id: "srv.analytics",
+        to: `/copyTraders/${providerId}/analytics`,
+      },
+    ],
+  };
 };

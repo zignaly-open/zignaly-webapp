@@ -6,7 +6,9 @@ import { Doughnut as DoughnutChart } from "react-chartjs-2";
 /**
  * @typedef {import('chart.js').ChartData} ChartData
  * @typedef {import('chart.js').ChartOptions} ChartOptions
- * @typedef {import("../../../utils/chart").DoughnutColorOptions} DoughnutColorOptions
+ * @typedef {Object} DoughnutColorOptions
+ * @property {Array<String>} backgroundColor Background HTML color.
+ * @property {string} [borderColor] Border HTML color.
  */
 
 /**

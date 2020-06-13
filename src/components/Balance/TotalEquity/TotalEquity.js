@@ -4,9 +4,20 @@ import { Box } from "@material-ui/core";
 import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import EquityGraphLabels from "./EquityGraphLabels";
 
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {UserBalanceEntity} balance Balance
+ * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const TotalEquity = ({ balance, dailyBalance }) => {
   const [list, setList] = useState(dailyBalance.balances);
 

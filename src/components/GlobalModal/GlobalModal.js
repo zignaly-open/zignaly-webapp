@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "../Modal";
-import useLocationHash from "../../hooks/useLocationHash";
 import { navigate } from "@reach/router";
 
 /**
- * @typedef {import('@material-ui/core/Dialog').DialogProps} DialogProps
  * @typedef {Object} DefaultProps
- * @property {Boolean} state
- * @property {DialogProps["onClose"]} onClose
- * @property {Boolean} persist
- * @property {Object} children
- * @property {String} size
+ * @property {String} hash Hash that opens the modal.
+ * @property {function} content Component to display inside the modal.
  */
 
 /**
@@ -20,7 +15,7 @@ import { navigate } from "@reach/router";
 
 const GlobalModal = (props) => {
   const { hash, content } = props;
-  const currentHash = useLocationHash();
+  const currentHash = window.location.hash ? window.location.hash.substr(1) : "";
   const isOpen = currentHash === hash;
   const onClose = () => {
     navigate("#");

@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import ExchangeAccountDetails from "../ExchangeAccountDetails";
+import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
 import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useLocationHash from "../../../hooks/useLocationHash";
-import { Tabs, TabPanel, Box } from "@material-ui/core";
 
+/**
+ * @typedef {Object} DefaultProps
+ * @property {string} path Current step path.
+ * @property {function} setPath Set current step path function.
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const ConnectExchangeViewContent = ({ path, setPath }) => {
   //   const [path, setPath] = useState("realAccount");
   const [selectedExchangeInternalId, setExchangeInternalId] = useState("realAccount");
@@ -18,9 +25,15 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
   //     // get hash by looking at selected exchange
   //   }
 
-  const openExchangeAccountAction = (internalId, path) => {
+  /**
+   * Navigate to an action page for the selected exchange.
+   * @param {string} internalId Selected internal exchange id.
+   * @param {string} selectedPath Action step path.
+   * @returns {void}
+   */
+  const openExchangeAccountAction = (internalId, selectedPath) => {
     setExchangeInternalId(internalId);
-    setPath(path);
+    setPath(selectedPath);
   };
 
   switch (path) {
@@ -28,7 +41,7 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
     case "demoAccount":
     default:
       return (
-        <ExchangeAccountDetails type={path} openExchangeAccountAction={openExchangeAccountAction} />
+        <ExchangeAccountList openExchangeAccountAction={openExchangeAccountAction} type={path} />
       );
     case "settings":
       return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;

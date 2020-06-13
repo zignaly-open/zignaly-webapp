@@ -1,11 +1,11 @@
 .exchangeAccountData {
-  width: 100%;
-  padding: 24px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
+  padding: 24px;
+  width: 100%;
 
   .topBoxData {
-    min-height: 260px;
     max-height: 360px;
+    min-height: 260px;
     position: relative;
   }
 
@@ -16,7 +16,7 @@
     // flex-grow: 1;
 
     .totalEquity {
-      border: none;
+      border: 0;
     }
 
     .boxTitle {

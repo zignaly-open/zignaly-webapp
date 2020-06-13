@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./DashboardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
@@ -14,16 +14,14 @@ import useConnectedProviders from "../../../hooks/useConnectedProviders";
  */
 const DashboardHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-  const [links, setLinks] = useState(routesMapping("dashboard").links);
+  const links = routesMapping("dashboard").links;
   const providers = useConnectedProviders(1);
 
   if (providers.length > 0) {
-    let data = [...links];
-    data.push({
+    links.push({
       id: "dashboard.providers",
       to: "/dashboard/connectedProviders",
     });
-    // setLinks(data);
   }
 
   return (

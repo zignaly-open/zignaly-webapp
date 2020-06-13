@@ -3,6 +3,16 @@ import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {UserBalanceEntity} balance Balance
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const AvailableBalance = ({ balance }) => {
   return (
     <Box

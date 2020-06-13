@@ -1,27 +1,26 @@
-.exchangeAccountDetails {
+.exchangeAccountList {
   width: 100%;
 
   .accountInfoHeader {
-    height: 80px;
+    background-image: $greyDarkGradient;
     border-radius: 4px;
+    height: 80px;
     padding: 24px;
     padding-bottom: 16px;
-    background-image: linear-gradient(to bottom, $grey, $grey),
-      linear-gradient(94deg, $black 5%, $darkestGrey 96%);
 
     &.active {
       background-image: linear-gradient(94deg, $purple 5%, $purpleMedium 96%);
     }
 
     .selected {
-      width: 49px;
-      height: 13px;
-      opacity: 0.6;
-      font-size: 11px;
-      text-transform: initial;
-      line-height: 1.18;
-      letter-spacing: 0.42px;
       color: rgba(255, 255, 255, 0.94);
+      font-size: 11px;
+      height: 13px;
+      letter-spacing: 0.42px;
+      line-height: 1.18;
+      opacity: 0.6;
+      text-transform: initial;
+      width: 49px;
     }
 
     .accountName {
@@ -29,13 +28,13 @@
     }
 
     h3 {
-      font-family: "PlexSans-Bold";
       color: $white;
+      font-family: "PlexSans-Bold";
     }
 
     .customButton {
-      margin-left: 32px;
       height: 40px;
+      margin-left: 32px;
       width: auto;
     }
 
@@ -54,10 +53,10 @@
 }
 
 @include media("<=sm") {
-  .exchangeAccountDetails {
+  .exchangeAccountList {
     .accountInfoHeader {
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
       height: auto;
       padding: 10px 5px;
 

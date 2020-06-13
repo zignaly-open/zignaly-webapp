@@ -3,14 +3,14 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
- * @typedef {import('../../../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
+ * @typedef {import('../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  */
 
 /**
- * Provides bases assets.
+ * Get user info for a connected provider.
  *
  * @param {string} providerId Quote of the bases.
- * @returns {BaseAssetsDict} Quote Assets.
+ * @returns {ConnectedProviderUserInfo} Provider user info.
  */
 const useProviderUserInfo = (providerId) => {
   /**

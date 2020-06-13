@@ -1,30 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./History.scss";
 import { Box } from "@material-ui/core";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import HistoryTable from "./HistoryTable";
 import { FormattedMessage } from "react-intl";
 import EquityFilter from "../TotalEquity/EquityFilter";
 
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const History = ({ dailyBalance }) => {
   const [list, setList] = useState(dailyBalance.balances);
-  //   const storeUser = useStoreUserSelector();
-
-  //   useEffect(() => {
-  //     setList(storeUser.dailyBalance.balances);
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [storeUser.dailyBalance]);
-
   /**
    *
    * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
    */
 
   /**
-   *
-   * @param {Array<UserEquityEntity>} data
+   * @param {Array<UserEquityEntity>} data Filtered equity data.
+   * @returns {void}
    */
-
   const handleChange = (data) => {
     setList(data);
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./balance.scss";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";

@@ -15,28 +15,16 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
-import { openExchangeConnectionView, openSettingsView } from "../../store/actions/ui";
+import { openSettingsView } from "../../store/actions/ui";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
-import { Router, Link } from "@reach/router";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
  * @property {Object} children
  */
-
-const Test = () => {
-  console.log("aa");
-  return <Box>aaaa</Box>;
-};
-
-const Dashboard = () => (
-  <div>
-    <h2>Dashboard</h2>
-  </div>
-);
 
 /**
  * Default component props.
@@ -59,7 +47,7 @@ const PrivateAreaLayout = (props) => {
         <CssBaseline />
         <Alert />
         {storeLoader && <Loader />}
-        <GlobalModal hash="exchangeAccounts" content={ConnectExchangeView} />
+        <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
         <Modal
           onClose={() => dispatch(openSettingsView(false))}
           persist={false}

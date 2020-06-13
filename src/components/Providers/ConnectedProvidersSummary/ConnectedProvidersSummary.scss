@@ -1,14 +1,14 @@
 .connectedProvidersSummary {
-  position: absolute;
   height: 100%;
+  position: absolute;
 
   a {
     text-decoration: none;
   }
 
   .boxTitle {
-    margin: 0 36px;
     height: 40px;
+    margin: 0 36px;
 
     h3 {
       font-family: "PlexSans-Regular";
@@ -31,9 +31,9 @@
   }
 
   .customButton {
-    margin-top: 7px;
     border: 2px solid $purple;
     margin: 0 36px;
+    margin-top: 7px;
   }
 }
 

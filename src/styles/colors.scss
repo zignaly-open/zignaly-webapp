@@ -81,3 +81,5 @@ $yelloGradient: linear-gradient(99deg, $yellow2, $yellow3 96%);
 $redGradient: linear-gradient(99deg, $red2, $red3 96%);
 
 $purpleDarkGradient: $greyGradient, linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
+
+$greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey 96%);

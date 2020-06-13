@@ -66,7 +66,7 @@ const CompositionGraph = ({ list, quotes }) => {
 
   prepareChartData();
 
-  return <Doughnut values={values} labels={labels} colorOptions={colorsOptions} />;
+  return <Doughnut colorOptions={colorsOptions} labels={labels} values={values} />;
 };
 
 export default CompositionGraph;

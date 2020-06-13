@@ -9,13 +9,9 @@ import { Box, MenuItem } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
-// import { navigate, History } from "@reach/router";
-import { useNavigate } from "@reach/router";
 import { navigate } from "@reach/router";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
-import { openExchangeConnectionView, openSettingsView } from "../../../store/actions/ui";
-import { Link } from "gatsby";
-// import { Link } from "gatsby-plugin-modal-routing";
+import { openSettingsView } from "../../../store/actions/ui";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
@@ -31,14 +27,6 @@ const UserMenu = () => {
 
   const showDocs = () => {
     window.open(docsURL, "_blank");
-  };
-
-  const showExchangeConnectionView = () => {
-    // dispatch(openExchangeConnectionView(true));
-    navigate("exchangeAccounts");
-    //   window.location.pathname = "exchangeAccounts";
-    //   window.history.replaceState("exchangeAccounts");
-    // window.history.pushState(null, "", "/exchangeAccounts");
   };
 
   const showSettingsView = () => {

@@ -1,14 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
-import "./ExchangeAccountDetails.scss";
+import "./ExchangeAccountList.scss";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 
-const ExchangeAccountDetails = ({ type, openExchangeAccountAction }) => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {function} openExchangeAccountAction Callback to navigate to action.
+ * @property {string} type Type of exchanges to display.
+ */
+
+/**
+ * Provides list to display exchanges accounts details.
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const ExchangeAccountList = ({ type, openExchangeAccountAction }) => {
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
@@ -17,33 +28,33 @@ const ExchangeAccountDetails = ({ type, openExchangeAccountAction }) => {
   );
 
   return (
-    <Box className="exchangeAccountDetails">
+    <Box className="exchangeAccountList">
       {exchanges.map((item) => (
         <Box className="exchangeAccountInfo" key={item.internalId}>
           <Box
+            alignItems="center"
             className={`accountInfoHeader ${
               selectedExchangeInternalId === item.internalId ? "active" : ""
             }`}
             display="flex"
             flexDirection="row"
-            alignItems="center"
             justifyContent="space-between"
           >
-            <Box display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" display="flex" flexDirection="row">
               <ExchangeIcon exchange={item.name.toLowerCase()} size="xlarge" />
-              <Box display="flex" flexDirection="column" className="accountName">
+              <Box className="accountName" display="flex" flexDirection="column">
                 <Typography variant="h3">{item.internalName}</Typography>
                 {selectedExchangeInternalId === item.internalId && (
-                  <Typography variant="subtitle1" className="selected">
+                  <Typography className="selected" variant="subtitle1">
                     <FormattedMessage id="accounts.selected" />
                   </Typography>
                 )}
               </Box>
             </Box>
-            <Box display="flex" flexDirection="row" alignItems="center" className="actionsBox">
+            <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
               <CustomButton
-                onClick={() => openExchangeAccountAction(item.internalId, "settings")}
                 className="textDefault"
+                onClick={() => openExchangeAccountAction(item.internalId, "settings")}
               >
                 <FormattedMessage id="accounts.settings" />
               </CustomButton>
@@ -62,4 +73,4 @@ const ExchangeAccountDetails = ({ type, openExchangeAccountAction }) => {
   );
 };
 
-export default ExchangeAccountDetails;
+export default ExchangeAccountList;

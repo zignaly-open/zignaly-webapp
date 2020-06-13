@@ -26,8 +26,8 @@ const GenericModal = (props) => {
     <Dialog
       classes={{ paper: "modal " + (size ? size : " ") }}
       disableBackdropClick={persist}
-      maxWidth={fullScreen ? false : "lg"}
       fullScreen={fullScreen}
+      maxWidth={fullScreen ? false : "lg"}
       onClose={onClose}
       open={state}
     >

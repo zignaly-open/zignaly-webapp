@@ -3,14 +3,15 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").BaseAssetsDict} BaseAssetsDict
+ * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  */
 
 /**
- * Provides bases assets.
+ * Get list of connected providers.
  *
- * @param {string} timeFrame Quote of the bases.
- * @returns {BaseAssetsDict} Quote Assets.
+ * @param {number} timeFrame Quote of the bases.
+ * @param {string} [internalExchangeId] Filter by internal exchange id.
+ * @returns {ProvidersCollection} Quote Assets.
  */
 const useConnectedProviders = (timeFrame, internalExchangeId) => {
   const [providers, setProviders] = useState([]);
@@ -22,6 +23,8 @@ const useConnectedProviders = (timeFrame, internalExchangeId) => {
         token: storeSession.tradeApi.accessToken,
         ro: true,
         timeFrame,
+        copyTradersOnly: false,
+        type: "connected",
         ...(internalExchangeId && { internalExchangeId }),
       };
 
@@ -35,7 +38,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId) => {
         });
     };
     loadData();
-  }, [storeSession.tradeApi.accessToken]);
+  }, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame]);
 
   return providers;
 };

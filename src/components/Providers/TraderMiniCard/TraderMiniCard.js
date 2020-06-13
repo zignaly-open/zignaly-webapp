@@ -7,16 +7,15 @@ import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { FormattedMessage } from "react-intl";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
- * @typedef {Object} ProvidersListPropTypes
- * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
- * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {Object} TraderMiniCardPropTypes
+ * @property {ProviderEntity} provider Provider
  */
 
 /**
  * Provides a list of signal providers cards.
  *
- * @param {ProvidersListPropTypes} props Component properties.
+ * @param {TraderMiniCardPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 const TraderMiniCard = ({ provider }) => {
@@ -31,13 +30,13 @@ const TraderMiniCard = ({ provider }) => {
       flexDirection="column"
       justifyContent="space-between"
     >
-      <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h4" className="name">
+      <Box alignItems="center" display="flex" flexDirection="row" justifyContent="space-between">
+        <Typography className="name" variant="h4">
           {name}
         </Typography>
         <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
       </Box>
-      <Box justifyContent="space-between" display="flex" flexDirection="row">
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">
           {quote} {formatFloat(providerUserInfo.currentAllocated)}
         </Typography>
@@ -46,7 +45,7 @@ const TraderMiniCard = ({ provider }) => {
             <FormattedMessage id="col.plpercentage" />
           </Typography>
           <Box pl="7px">
-            <Typography variant="h5" className={color}>
+            <Typography className={color} variant="h5">
               {formatFloat2Dec(returns)}
             </Typography>
           </Box>

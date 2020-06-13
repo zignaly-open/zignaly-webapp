@@ -5,7 +5,6 @@ import CustomButton from "../CustomButton";
 import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
-import { navigate } from "gatsby";
 
 /**
  * @typedef {Object} DefaultProps
@@ -34,14 +33,12 @@ const ConnectExchangeView = (props) => {
   const tabs = [
     {
       id: "accounts.real",
-      //   to: "#realAccount",
       onClick: () => {
         setPath("realAccount");
       },
     },
     {
       id: "accounts.demo",
-      //   to: "#demoAccount",
       onClick: () => {
         setPath("demoAccount");
       },

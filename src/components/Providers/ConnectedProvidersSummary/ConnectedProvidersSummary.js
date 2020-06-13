@@ -9,8 +9,7 @@ import CustomButton from "../../CustomButton";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {Object} ProvidersListPropTypes
- * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
- * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+ * @property {ProvidersCollection} providers Providers.
  */
 
 /**
@@ -22,22 +21,22 @@ import CustomButton from "../../CustomButton";
 const ConnectedProvidersSummary = ({ providers }) => {
   return (
     <Box className="connectedProvidersSummary">
-      <Box display="flex" flexDirection="row" alignItems="flex-start" className="boxTitle">
-        <Box display="flex" flexDirection="row" alignItems="center">
+      <Box alignItems="flex-start" className="boxTitle" display="flex" flexDirection="row">
+        <Box alignItems="center" display="flex" flexDirection="row">
           <Typography variant="h3">
             <FormattedMessage id="accounts.copying" />
           </Typography>
 
           <Link to="dashboard/connectedTraders">
-            <Typography variant="subtitle1" className="textPurple">
+            <Typography className="textPurple" variant="subtitle1">
               <FormattedMessage id="accounts.connected" />
             </Typography>
           </Link>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="column" className="scrollCards">
+      <Box className="scrollCards" display="flex" flexDirection="column">
         {providers.map((p) => (
-          <TraderMiniCard provider={p} key={p.id} />
+          <TraderMiniCard key={p.id} provider={p} />
         ))}
         <CustomButton className="textPurple">
           <Link to="dashboard/connectedTraders">

@@ -4,6 +4,16 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CompositionGraph from "./CompositionGraph";
 
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
 const CryptoComposition = ({ dailyBalance }) => {
   return (
     <Box

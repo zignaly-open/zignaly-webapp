@@ -3,14 +3,14 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").BaseAssetsDict} BaseAssetsDict
+ * @typedef {import("../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
  */
 
 /**
- * Provides bases assets.
+ * Provides balance summary for exchange.
  *
- * @param {string} quote Quote of the bases.
- * @returns {BaseAssetsDict} Quote Assets.
+ * @param {string} internalId Internal exchange id.
+ * @returns {UserBalanceEntity} Balance.
  */
 const useBalance = (internalId) => {
   const [balance, setBalance] = useState({

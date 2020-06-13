@@ -7,6 +7,7 @@
   .dashboardLink {
     box-sizing: border-box;
     color: inherit;
+    cursor: pointer;
     font-family: "PlexSans-Medium";
     font-size: 21px;
     margin: 0 16px 0 0;
@@ -14,7 +15,6 @@
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
-    cursor: pointer;
 
     &.active {
       border-bottom: 2px solid $purple;
