@@ -3,6 +3,8 @@ import { Box, Typography } from "@material-ui/core";
 import TraderMiniCard from "../TraderMiniCard";
 import "./ConnectedProvidersSummary.scss";
 import { FormattedMessage } from "react-intl";
+import { Link } from "gatsby";
+import CustomButton from "../../CustomButton";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -24,14 +26,22 @@ const ConnectedProvidersSummary = ({ providers }) => {
         <Typography variant="h3">
           <FormattedMessage id="accounts.copying" />
         </Typography>
-        <Typography variant="subtitle1" className="textPurple">
-          <FormattedMessage id="accounts.connected" />
-        </Typography>
+
+        <Link to="dashboard/connectedTraders">
+          <Typography variant="subtitle1" className="textPurple">
+            <FormattedMessage id="accounts.connected" />
+          </Typography>
+        </Link>
       </Box>
       <Box display="flex" flexDirection="column" className="scrollCards">
         {providers.map((p) => (
           <TraderMiniCard provider={p} key={p.id} />
         ))}
+        <CustomButton className="textPurple">
+          <Link to="dashboard/connectedTraders">
+            <FormattedMessage id="accounts.browse" />
+          </Link>
+        </CustomButton>
       </Box>
     </Box>
   );
