@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import Coinray from "coinrayjs";
 import tradeApi from "./tradeApiClient";
+import { isEmpty, last } from "lodash";
 
 /**
  * @typedef {Array<string>} CoinRayCandle
@@ -56,6 +57,11 @@ class CoinRayDataFeed {
     this.coinray.onTokenExpired(options.regenerateAccessToken);
     this.exchangeKey = options.exchangeKey || "";
     this.baseUrl = "https://coinray.io/api/v1";
+
+    /**
+     * @type CoinRayCandle[]
+     */
+    this.allCandles = [];
   }
 
   /**
@@ -250,10 +256,7 @@ class CoinRayDataFeed {
    */
   // eslint-disable-next-line max-params
   getBars(symbolData, resolution, startDate, endDate, onResultCallback, onErrorCallback) {
-    /**
-     * @type CoinRayCandle[]
-     */
-    let allCandles = [];
+    this.allCandles = [];
 
     /**
      * Notify symbol prices in Trading View bars format so chart widget.
@@ -262,7 +265,7 @@ class CoinRayDataFeed {
      * @returns {Void} None.
      */
     const notifyPricesData = (formattedCandles) => {
-      if (allCandles.length === 0) {
+      if (this.allCandles.length === 0) {
         onResultCallback([], { noData: true });
       } else {
         onResultCallback(formattedCandles, {
@@ -282,9 +285,9 @@ class CoinRayDataFeed {
     )
       .then((newCandles) => {
         // Accumulate candles.
-        allCandles = allCandles.concat(newCandles);
+        this.allCandles = this.allCandles.concat(newCandles);
 
-        const formattedCandles = allCandles.map((candle) => {
+        const formattedCandles = this.allCandles.map((candle) => {
           return {
             time: parseInt(candle[0]) * 1000,
             open: parseFloat(candle[1]),
@@ -376,7 +379,21 @@ class CoinRayDataFeed {
    * @memberof CoinRayDataFeed
    */
   getSymbolsData() {
-    return this.symbolsData;
+    return this.symbolsData || [];
+  }
+
+  /**
+   * Get last price candle.
+   *
+   * @returns {CoinRayCandle|null} Price candle.
+   * @memberof CoinRayDataFeed
+   */
+  getLastCandle() {
+    if (isEmpty(this.allCandles)) {
+      return null;
+    }
+
+    return last(this.allCandles);
   }
 }
 
