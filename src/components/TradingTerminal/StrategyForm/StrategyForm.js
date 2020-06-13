@@ -29,9 +29,9 @@ const StrategyForm = (props) => {
     mode: "onChange",
     defaultValues: {
       price: parseFloat(lastPriceCandle[1]).toFixed(8),
-      realInvestment: 0,
-      positionSize: 0,
-      units: 0,
+      realInvestment: "",
+      positionSize: "",
+      units: "",
     },
   });
   // Receives submitted data.

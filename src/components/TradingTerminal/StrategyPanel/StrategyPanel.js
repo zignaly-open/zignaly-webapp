@@ -214,6 +214,7 @@ const StrategyPanel = (props) => {
                   inputRef={register}
                   name="realInvestment"
                   onChange={realInvestmentChange}
+                  placeholder={"0"}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -232,6 +233,7 @@ const StrategyPanel = (props) => {
                 inputRef={register}
                 name="positionSize"
                 onChange={positionSizeChange}
+                placeholder={"0"}
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
@@ -252,6 +254,7 @@ const StrategyPanel = (props) => {
                 inputRef={register}
                 name="units"
                 onChange={unitsChange}
+                placeholder={"0"}
               />
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
