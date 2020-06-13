@@ -214,6 +214,7 @@ const StrategyPanel = (props) => {
                 </FormHelperText>
                 <Tooltip
                   arrow
+                  enterTouchDelay={50}
                   placement="left-end"
                   title={intl.formatMessage({ id: "terminal.stoploss.help" })}
                 >
@@ -234,6 +235,7 @@ const StrategyPanel = (props) => {
                 </FormHelperText>
                 <Tooltip
                   arrow
+                  enterTouchDelay={50}
                   placement="left-end"
                   title={intl.formatMessage({ id: "terminal.stoploss.help" })}
                 >
@@ -260,6 +262,7 @@ const StrategyPanel = (props) => {
                 </FormHelperText>
                 <Tooltip
                   arrow
+                  enterTouchDelay={50}
                   placement="left-end"
                   title={intl.formatMessage({ id: "terminal.stoploss.help" })}
                 >
@@ -285,6 +288,7 @@ const StrategyPanel = (props) => {
               </FormHelperText>
               <Tooltip
                 arrow
+                enterTouchDelay={50}
                 placement="left-end"
                 title={intl.formatMessage({ id: "terminal.stoploss.help" })}
               >
@@ -312,6 +316,7 @@ const StrategyPanel = (props) => {
               </FormHelperText>
               <Tooltip
                 arrow
+                enterTouchDelay={50}
                 placement="left-end"
                 title={intl.formatMessage({ id: "terminal.stoploss.help" })}
               >
