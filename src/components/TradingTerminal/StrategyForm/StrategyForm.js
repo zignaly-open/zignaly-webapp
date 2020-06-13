@@ -13,7 +13,7 @@ import StrategyPanel from "../StrategyPanel/StrategyPanel";
  * @typedef {Object} StrategyFormProps
  * @property {Object} dataFeed
  * @property {CoinRayCandle} lastPriceCandle
- * @property {string} leverage
+ * @property {number} leverage
  * @property {string} selectedSymbol
  */
 

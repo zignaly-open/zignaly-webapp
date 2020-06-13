@@ -27,7 +27,7 @@ import { Help } from "@material-ui/icons";
  * @property {boolean} disableExpand
  * @property {MarketSymbol} symbolData
  * @property {CoinRayCandle} lastPriceCandle
- * @property {string} leverage
+ * @property {number} leverage
  */
 
 /**
@@ -119,7 +119,7 @@ const StrategyPanel = (props) => {
 
   const realInvestmentChange = () => {
     const draftPosition = getValues();
-    const positionSize = parseFloat(draftPosition.realInvestment) * parseFloat(leverage);
+    const positionSize = parseFloat(draftPosition.realInvestment) * leverage;
     setValue("positionSize", positionSize);
     validatePositionSize(positionSize);
 
@@ -139,7 +139,7 @@ const StrategyPanel = (props) => {
     setValue("units", units.toFixed(8));
     validateUnits(units);
 
-    const realInvestment = parseFloat(draftPosition.positionSize) / parseFloat(leverage);
+    const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
   };
 
@@ -153,7 +153,7 @@ const StrategyPanel = (props) => {
     setValue("positionSize", positionSize.toFixed(8));
     validatePositionSize(positionSize);
 
-    const realInvestment = positionSize / parseFloat(leverage);
+    const realInvestment = positionSize / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
   };
 
