@@ -22,16 +22,18 @@ import CustomButton from "../../CustomButton";
 const ConnectedProvidersSummary = ({ providers }) => {
   return (
     <Box className="connectedProvidersSummary">
-      <Box display="flex" flexDirection="row" alignItems="center" className="boxTitle">
-        <Typography variant="h3">
-          <FormattedMessage id="accounts.copying" />
-        </Typography>
-
-        <Link to="dashboard/connectedTraders">
-          <Typography variant="subtitle1" className="textPurple">
-            <FormattedMessage id="accounts.connected" />
+      <Box display="flex" flexDirection="row" alignItems="flex-start" className="boxTitle">
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Typography variant="h3">
+            <FormattedMessage id="accounts.copying" />
           </Typography>
-        </Link>
+
+          <Link to="dashboard/connectedTraders">
+            <Typography variant="subtitle1" className="textPurple">
+              <FormattedMessage id="accounts.connected" />
+            </Typography>
+          </Link>
+        </Box>
       </Box>
       <Box display="flex" flexDirection="column" className="scrollCards">
         {providers.map((p) => (

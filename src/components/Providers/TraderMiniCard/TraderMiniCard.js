@@ -32,7 +32,9 @@ const TraderMiniCard = ({ provider }) => {
       justifyContent="space-between"
     >
       <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h4">{name}</Typography>
+        <Typography variant="h4" className="name">
+          {name}
+        </Typography>
         <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
       </Box>
       <Box justifyContent="space-between" display="flex" flexDirection="row">

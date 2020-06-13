@@ -1,5 +1,5 @@
 .traderMiniCard {
-  width: 272px;
+  min-width: 272px;
   height: 80px;
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
@@ -9,5 +9,9 @@
   .logoIcon {
     height: 32px;
     width: 32px;
+  }
+
+  .name {
+    padding-right: 5px;
   }
 }

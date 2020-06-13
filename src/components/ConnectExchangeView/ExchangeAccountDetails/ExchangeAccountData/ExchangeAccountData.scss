@@ -29,24 +29,19 @@
   }
 
   .cryptoBox {
-    // width: 33%;
     flex: 1;
-    // min-width: 0;
-    // flex-grow: 1;
+
+    h3 {
+      font-family: "PlexSans-Regular";
+      font-size: 21px;
+    }
   }
 
   .cardsBox {
-    // width: 33%;
     flex: 1;
-    // position: relative;
-    // min-width: 0;
-    // flex-grow: 1;
 
     .traderMiniCard {
       min-height: 80px;
-      //   flex: 1 1 50%;
-      //   max-width: 50%;
-      //   max-height: ;
     }
   }
 
