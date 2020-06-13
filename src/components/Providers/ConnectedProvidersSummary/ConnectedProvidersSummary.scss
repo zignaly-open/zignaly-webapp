@@ -36,3 +36,9 @@
     margin: 0 36px;
   }
 }
+
+@include media("<=sm") {
+  .connectedProvidersSummary {
+    position: static;
+  }
+}

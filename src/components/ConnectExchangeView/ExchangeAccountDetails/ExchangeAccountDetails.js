@@ -40,7 +40,7 @@ const ExchangeAccountDetails = ({ type, openExchangeAccountAction }) => {
                 )}
               </Box>
             </Box>
-            <Box display="flex" flexDirection="row" alignItems="center">
+            <Box display="flex" flexDirection="row" alignItems="center" className="actionsBox">
               <CustomButton
                 onClick={() => openExchangeAccountAction(item.internalId, "settings")}
                 className="textDefault"

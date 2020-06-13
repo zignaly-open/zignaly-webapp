@@ -23,3 +23,11 @@
     margin: 0 100px;
   }
 }
+
+@include media("<=sm") {
+  .modal {
+    &.fullscreen {
+      margin: 0;
+    }
+  }
+}

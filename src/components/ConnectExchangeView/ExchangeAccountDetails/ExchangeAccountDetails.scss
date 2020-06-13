@@ -36,6 +36,7 @@
     .customButton {
       margin-left: 32px;
       height: 40px;
+      width: auto;
     }
 
     .textPurple {
@@ -49,5 +50,29 @@
 
   .exchangeAccountInfo {
     padding: 0 24px 12px;
+  }
+}
+
+@include media("<=sm") {
+  .exchangeAccountDetails {
+    .accountInfoHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+      padding: 10px 5px;
+
+      .actionsBox {
+        flex-wrap: wrap;
+      }
+
+      .customButton {
+        margin: 0 10px 0 0;
+        min-width: auto;
+      }
+    }
+
+    .exchangeAccountInfo {
+      padding: 0 0 12px;
+    }
   }
 }

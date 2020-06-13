@@ -55,3 +55,31 @@
     padding: 0;
   }
 }
+
+@include media("<=sm") {
+  .exchangeAccountData {
+    padding: 12px;
+
+    .topBoxData {
+      align-items: flex-start;
+      flex-direction: column;
+      max-height: none;
+    }
+
+    .balanceBox {
+      //   box-shadow: none;
+    }
+
+    .equityBox {
+      width: 100%;
+    }
+
+    .cryptoBox {
+      min-height: 200px;
+    }
+
+    .cryptoBox {
+      width: 100%;
+    }
+  }
+}
