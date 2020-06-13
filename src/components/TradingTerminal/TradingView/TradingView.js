@@ -191,7 +191,7 @@ const TradingView = () => {
             <FormattedMessage id="terminal.providers" />
             <CustomSelect
               label=""
-              onChange={handleSymbolChange}
+              onChange={() => {}}
               options={ownCopyTradersProviders}
               search={true}
               value={selectedProviderValue}
