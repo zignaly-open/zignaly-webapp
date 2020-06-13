@@ -5,6 +5,7 @@ import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import {
   OutlinedInput,
   FormControlLabel,
@@ -45,6 +46,28 @@ const StrategyPanel = (props) => {
   const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
+  const storeUser = useStoreUserSelector();
+  const lastDayBalance = storeUser.dailyBalance.balances[0] || null;
+
+  const getQuoteBalance = () => {
+    if (!lastDayBalance) {
+      return 0;
+    }
+
+    const propertyKey = `totalFree${symbolData.quote}`;
+    // @ts-ignore
+    return lastDayBalance[propertyKey] || 0;
+  };
+
+  const getBaseBalance = () => {
+    if (!lastDayBalance) {
+      return 0;
+    }
+
+    const propertyKey = `totalFree${symbolData.base}`;
+    // @ts-ignore
+    return lastDayBalance[propertyKey] || 0;
+  };
 
   /**
    * Handle toggle switch action.
@@ -279,6 +302,9 @@ const StrategyPanel = (props) => {
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
+              <FormHelperText>
+                <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+              </FormHelperText>
             </FormControl>
           )}
           <FormControl>
@@ -305,6 +331,9 @@ const StrategyPanel = (props) => {
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
+            <FormHelperText>
+              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+            </FormHelperText>
             {errors.positionSize && (
               <span className="errorText">{errors.positionSize.message}</span>
             )}
@@ -333,6 +362,9 @@ const StrategyPanel = (props) => {
               />
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
+            <FormHelperText>
+              <FormattedMessage id="terminal.available" /> {getBaseBalance()}
+            </FormHelperText>
             {errors.units && <span className="errorText">{errors.units.message}</span>}
           </FormControl>
         </Box>
