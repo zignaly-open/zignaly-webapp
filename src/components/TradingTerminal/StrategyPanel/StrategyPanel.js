@@ -13,6 +13,7 @@ import {
   RadioGroup,
   Radio,
   Switch,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { Help } from "@material-ui/icons";
@@ -211,7 +212,13 @@ const StrategyPanel = (props) => {
                 <FormHelperText>
                   <FormattedMessage id="terminal.stopprice" />
                 </FormHelperText>
-                <Help />
+                <Tooltip
+                  arrow
+                  placement="left-end"
+                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
+                >
+                  <Help />
+                </Tooltip>
               </Box>
               <Box alignItems="center" display="flex">
                 <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
@@ -225,7 +232,13 @@ const StrategyPanel = (props) => {
                 <FormHelperText>
                   <FormattedMessage id="terminal.price" />
                 </FormHelperText>
-                <Help />
+                <Tooltip
+                  arrow
+                  placement="left-end"
+                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
+                >
+                  <Help />
+                </Tooltip>
               </Box>
               <Box alignItems="center" display="flex">
                 <OutlinedInput
@@ -245,7 +258,13 @@ const StrategyPanel = (props) => {
                 <FormHelperText>
                   <FormattedMessage id="terminal.realinvest" />
                 </FormHelperText>
-                <Help />
+                <Tooltip
+                  arrow
+                  placement="left-end"
+                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
+                >
+                  <Help />
+                </Tooltip>
               </Box>
               <Box alignItems="center" display="flex">
                 <OutlinedInput
@@ -264,7 +283,13 @@ const StrategyPanel = (props) => {
               <FormHelperText>
                 <FormattedMessage id="terminal.position.size" />
               </FormHelperText>
-              <Help />
+              <Tooltip
+                arrow
+                placement="left-end"
+                title={intl.formatMessage({ id: "terminal.stoploss.help" })}
+              >
+                <Help />
+              </Tooltip>
             </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput
@@ -285,7 +310,13 @@ const StrategyPanel = (props) => {
               <FormHelperText>
                 <FormattedMessage id="terminal.units" />
               </FormHelperText>
-              <Help />
+              <Tooltip
+                arrow
+                placement="left-end"
+                title={intl.formatMessage({ id: "terminal.stoploss.help" })}
+              >
+                <Help />
+              </Tooltip>
             </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput
