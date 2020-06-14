@@ -199,9 +199,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   };
 
   const prepareTeamData = () => {
-    let obj = { name: "", countryCode: "" };
     let list = [];
     for (let a = 0; a < selectedCountires.length; a++) {
+      let obj = { name: "", countryCode: "" };
       if (selectedCountires[a].name) {
         obj.name = selectedCountires[a].name;
         obj.countryCode = selectedCountires[a].countryCode;
