@@ -9,7 +9,7 @@ import tradeApi from "../services/tradeApiClient";
 /**
  * Get list of connected providers.
  *
- * @param {number} timeFrame Quote of the bases.
+ * @param {number} timeFrame TimeFrame for returns.
  * @param {string} [internalExchangeId] Filter by internal exchange id.
  * @returns {ProvidersCollection} Quote Assets.
  */
