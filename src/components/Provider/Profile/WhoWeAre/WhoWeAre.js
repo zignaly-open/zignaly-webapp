@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./WhoWeAre.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -8,6 +8,7 @@ import DiscordIcon from "../../../../images/ct/discord.svg";
 import LinkedinIcon from "../../../../images/ct/linkedin.svg";
 import TelegramIcon from "../../../../images/ct/telegram.svg";
 import { countries } from "countries-list";
+import EmailIcon from "@material-ui/icons/Email";
 
 /**
  * @typedef {Object} DefaultProps
@@ -59,6 +60,16 @@ const Strategy = ({ provider }) => {
   };
 
   useEffect(initializeCounties, [provider.team]);
+
+  /**
+   * Function to redirect to social profile.
+   *
+   * @param {String} link Link to the social media.
+   */
+
+  const redirectToSocial = (link) => {
+    window.open(link, "_blank");
+  };
 
   return (
     <Box
@@ -112,11 +123,57 @@ const Strategy = ({ provider }) => {
           flexDirection="row"
           justifyContent="flex-start"
         >
-          <img alt="faceook-icon" className="icon" src={FacebookIcon} />
-          <img alt="twitter-icon" className="icon" src={TwitterIcon} />
-          <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
-          <img alt="tttt-icon" className="icon" src={TelegramIcon} />
-          <img alt="discord-icon" className="icon" src={DiscordIcon} />
+          {provider.social &&
+            provider.social.length > 0 &&
+            provider.social.map((item, index) => (
+              <Fragment key={index}>
+                {item.network.toLowerCase() === "facebook" && (
+                  <img
+                    alt="faceook-icon"
+                    className="icon"
+                    src={FacebookIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
+                )}
+                {item.network.toLowerCase() === "twitter" && (
+                  <img
+                    alt="twitter-icon"
+                    className="icon"
+                    src={TwitterIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
+                )}
+                {item.network.toLowerCase() === "linkedin" && (
+                  <img
+                    alt="linkedin-icon"
+                    className="icon"
+                    src={LinkedinIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
+                )}
+                {item.network.toLowerCase() === "telegram" && (
+                  <img
+                    alt="tttt-icon"
+                    className="icon"
+                    src={TelegramIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
+                )}
+                {item.network.toLowerCase() === "discord" && (
+                  <img
+                    alt="discord-icon"
+                    className="icon"
+                    src={DiscordIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
+                )}
+                {item.network.toLowerCase() === "email" && (
+                  <a href={"mailto:" + item.link} target="_blank">
+                    <EmailIcon className="icon" />
+                  </a>
+                )}
+              </Fragment>
+            ))}
         </Box>
       </Box>
       <Typography variant="body1">{provider.website}</Typography>
