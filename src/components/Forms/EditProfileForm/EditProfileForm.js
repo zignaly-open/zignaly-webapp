@@ -49,10 +49,10 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control } = useForm();
   const [about, setAbout] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"),
+    RichTextEditor.createValueFromString(storeViews.provider.about, "markdown"),
   );
   const [strategy, setStrategy] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"),
+    RichTextEditor.createValueFromString(storeViews.provider.strategy, "markdown"),
   );
   const [selectedCountires, setSelectedCountries] = useState([]);
   const [selectedSocials, setSelectedSocials] = useState([]);
