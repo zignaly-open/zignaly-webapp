@@ -38,6 +38,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
+ * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
@@ -478,6 +479,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return ownCopyTraderProvidersOptionsResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {EditProvderPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerEdit(payload) {
+    const endpointPath = "/fe/api.php?action=editProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

@@ -40,6 +40,11 @@
         fieldset {
           border-color: $lightGrey;
         }
+        &.error {
+          fieldset {
+            border-color: $red;
+          }
+        }
       }
     }
 

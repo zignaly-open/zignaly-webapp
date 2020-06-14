@@ -19,6 +19,10 @@ import CountrySelect from "./CountrySelect";
 import HelpIcon from "@material-ui/icons/Help";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import SocialSelect from "./SocialSelect";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { setProvider } from "../../../store/actions/views";
 
 /**
  *
@@ -41,6 +45,7 @@ import SocialSelect from "./SocialSelect";
 const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control } = useForm();
   const [about, setAbout] = useState(
@@ -54,6 +59,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let list = Object.values(quotes);
@@ -144,22 +150,75 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
    * Function to submit edit form.
    *
    * @param {SubmitObject} data Form data received at submit.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {void} None.
    */
-  const onSubmit = async (data) => {
-    const params = {
-      countries: selectedCountires,
-      name: data.name,
-      social: selectedSocials,
+  const onSubmit = (data) => {
+    setLoading(true);
+    let exchange = exchanges.find((item) => item.id === selectedExchange.id);
+    const payload = {
+      ...data,
+      social: prepareSocialData(),
+      team: prepareTeamData(),
+      exchange: exchange.name,
+      exchangeType: selectedExchangeType,
+      quote: selectedQuote,
+      about: about.toString("markdown"),
+      strategy: strategy.toString("markdown"),
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
     };
-    if (params.name) {
-      setLoading(true);
+    console.log(payload);
+    tradeApi
+      .providerEdit(payload)
+      .then(() => {
+        setLoading(false);
+        const payload2 = {
+          token: payload.token,
+          providerId: payload.providerId,
+          version: 2,
+        };
+        dispatch(setProvider(payload2));
+      })
+      .catch((error) => {
+        alert(error.message);
+        setLoading(false);
+      });
+  };
+
+  const prepareSocialData = () => {
+    let obj = { network: "", link: "" };
+    let list = [];
+    for (let a = 0; a < selectedSocials.length; a++) {
+      if (selectedSocials[a].link) {
+        obj.link = selectedSocials[a].link;
+        obj.network = selectedSocials[a].network;
+      }
+      list.push(obj);
     }
-    try {
-      setLoading(true);
-    } catch (e) {
-      alert(e.message);
+    return list;
+  };
+
+  const prepareTeamData = () => {
+    let obj = { name: "", countryCode: "" };
+    let list = [];
+    for (let a = 0; a < selectedCountires.length; a++) {
+      if (selectedCountires[a].name) {
+        obj.name = selectedCountires[a].name;
+        obj.countryCode = selectedCountires[a].countryCode;
+      }
+      list.push(obj);
     }
+    return list;
+  };
+
+  /**
+   * Handle submit buttton click.
+   *
+   * @type {React.MouseEventHandler} handleClickSubmit
+   * @returns {void}
+   */
+  const handleSubmitClick = () => {
+    handleSubmit(onSubmit);
   };
 
   /**
@@ -178,16 +237,6 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
    */
   const handleSocialLinkChange = (list) => {
     setSelectedSocials(list);
-  };
-
-  /**
-   * Handle submit buttton click.
-   *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
-   */
-  const handleSubmitClick = () => {
-    handleSubmit(onSubmit);
   };
 
   /**
@@ -236,11 +285,14 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.who" />
             </Typography>
-            <CountrySelect onChange={handleCountryChange} />
+            <CountrySelect defaultValue={storeViews.provider.team} onChange={handleCountryChange} />
             <Typography variant="h3">
               <FormattedMessage id="srv.find" />
             </Typography>
-            <SocialSelect onChange={handleSocialLinkChange} />
+            <SocialSelect
+              defaultValue={storeViews.provider.social}
+              onChange={handleSocialLinkChange}
+            />
           </Box>
 
           <Box bgcolor="grid.main" className="strategyBox">
@@ -265,16 +317,19 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <Controller
                 as={
                   <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                    error={!!errors.name}
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.name ? "error" : "")
+                    }
                     fullWidth
                     variant="outlined"
                   />
                 }
                 control={control}
                 defaultValue={storeViews.provider.name}
-                name="title"
-                rules={{ required: true }}
+                name="name"
+                rules={{ required: false }}
               />
             </Box>
 
@@ -285,7 +340,11 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <Controller
                 as={
                   <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.logoUrl ? "error" : "")
+                    }
                     fullWidth
                     variant="outlined"
                   />
@@ -303,15 +362,20 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <Controller
                 as={
                   <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.website ? "error" : "")
+                    }
                     fullWidth
                     variant="outlined"
+                    error={errors.website ? true : false}
                   />
                 }
                 control={control}
-                defaultValue={storeViews.provider.website}
+                defaultValue={storeViews.provider.website ? storeViews.provider.website : ""}
                 name="website"
-                rules={{ required: true }}
+                rules={{ required: false }}
               />
             </Box>
 
@@ -322,7 +386,11 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <Controller
                 as={
                   <TextField
-                    className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.minAllocatedBalance ? "error" : "")
+                    }
                     error={!!errors.minAllocatedBalance}
                     fullWidth
                     variant="outlined"
@@ -331,7 +399,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 control={control}
                 defaultValue={storeViews.provider.minAllocatedBalance}
                 name="minAllocatedBalance"
-                rules={{ required: true }}
+                rules={{ required: false }}
               />
             </Box>
 
@@ -415,16 +483,23 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                      error={!!errors.merchantId}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.merchantId ? "error" : "")
+                      }
                       fullWidth
                       variant="outlined"
                     />
                   }
                   control={control}
-                  defaultValue={storeViews.provider.internalPaymentInfo.merchantId}
+                  defaultValue={
+                    storeViews.provider.internalPaymentInfo
+                      ? storeViews.provider.internalPaymentInfo.merchantId
+                      : ""
+                  }
                   name="merchantId"
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                 />
               </Box>
 
@@ -435,16 +510,23 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                      error={!!errors.price}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.price ? "error" : "")
+                      }
                       fullWidth
                       variant="outlined"
                     />
                   }
                   control={control}
-                  defaultValue={storeViews.provider.internalPaymentInfo.price}
+                  defaultValue={
+                    storeViews.provider.internalPaymentInfo
+                      ? storeViews.provider.internalPaymentInfo.price
+                      : ""
+                  }
                   name="price"
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                 />
               </Box>
 
@@ -455,15 +537,23 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                      error={!!errors.ipnSecret}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.ipnSecret ? "error" : "")
+                      }
                       fullWidth
                       variant="outlined"
                     />
                   }
                   control={control}
                   name="ipnSecret"
-                  rules={{ required: true }}
+                  defaultValue={
+                    storeViews.provider.internalPaymentInfo
+                      ? storeViews.provider.internalPaymentInfo.ipnSecret
+                      : ""
+                  }
+                  rules={{ required: false }}
                 />
               </Box>
 
@@ -474,16 +564,23 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? "dark" : "light")}
-                      error={!!errors.trial}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.trial ? "error" : "")
+                      }
                       fullWidth
                       variant="outlined"
                     />
                   }
                   control={control}
-                  defaultValue={storeViews.provider.internalPaymentInfo.trial}
+                  defaultValue={
+                    storeViews.provider.internalPaymentInfo
+                      ? storeViews.provider.internalPaymentInfo.trial
+                      : 0
+                  }
                   name="trial"
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                 />
               </Box>
             </Box>
