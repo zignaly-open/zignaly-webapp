@@ -17,6 +17,7 @@
     "@types/jquery": "^3.3.38",
     "@types/react-rte": "^0.16.1",
     "acorn": "^6.4.1",
+    "babel-plugin-transform-imports": "^2.0.0",
     "chart.js": "^2.9.3",
     "coinrayjs": "^1.4.7",
     "countries-list": "^2.5.4",
