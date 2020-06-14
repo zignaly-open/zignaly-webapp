@@ -1,6 +1,7 @@
 import React from "react";
 import "./HistoryTable.scss";
-import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { formatFloat } from "../../../../utils/format";
 import Table from "../../../Table";
 

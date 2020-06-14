@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Paper, Box, Typography, useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage } from "react-intl";
 import "./ProvidersProfitsChart.scss";
