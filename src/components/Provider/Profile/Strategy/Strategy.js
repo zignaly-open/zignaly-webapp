@@ -26,11 +26,11 @@ const Strategy = ({ provider }) => {
     >
       <Box
         alignItems="center"
+        className="strategyHead"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
         width="100%"
-        className="strategyHead"
       >
         <Typography variant="h3">
           <FormattedMessage id="srv.strategy" />

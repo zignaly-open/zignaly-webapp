@@ -78,10 +78,10 @@ const CountrySelect = ({ onChange, defaultValue }) => {
 
   return (
     <Autocomplete
-      freeSolo
       autoHighlight
       className={"countrySelect " + (storeSettings.darkStyle ? "dark" : "light")}
       classes={{ tag: "chip", endAdornment: "clearIcon", popupIndicator: "downBtn" }}
+      freeSolo
       getOptionLabel={(option) => option.name}
       multiple
       onChange={hanldeChange}

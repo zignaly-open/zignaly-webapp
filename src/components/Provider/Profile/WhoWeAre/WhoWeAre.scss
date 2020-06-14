@@ -11,12 +11,14 @@
     h3 {
       margin-bottom: 16px;
     }
+
     .teamItem {
-      width: fit-content;
       margin-right: 15px;
+      width: fit-content;
+
       .name {
-        font-size: 16px;
         font-family: "PlexSans-Regular";
+        font-size: 16px;
         margin-right: 5px;
       }
     }

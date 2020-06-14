@@ -1,16 +1,16 @@
 .strategy {
   margin-bottom: 30px;
+  min-height: inherit;
   padding: 30px 20px;
   width: 100%;
-  min-height: inherit;
 
   .strategyHead {
     margin-bottom: 20px;
   }
 
   p {
+    margin: 0;
     width: 100%;
     word-wrap: break-word;
-    margin: 0;
   }
 }

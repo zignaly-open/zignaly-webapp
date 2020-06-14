@@ -82,11 +82,11 @@ const Strategy = ({ provider }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {team.map((item, index) => (
             <Box
+              alignItems="center"
+              className="teamItem"
               display="flex"
               flexDirection="row"
-              alignItems="center"
               key={index}
-              className="teamItem"
             >
               <span className="name">{item.name}</span>
               <span className="flag">{item.emoji}</span>,

@@ -54,22 +54,23 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [strategy, setStrategy] = useState(
     RichTextEditor.createValueFromString(storeViews.provider.strategy, "markdown"),
   );
-  const [selectedCountires, setSelectedCountries] = useState([]);
-  const [selectedSocials, setSelectedSocials] = useState([]);
+  const [selectedCountires, setSelectedCountries] = useState(storeViews.provider.team);
+  const [selectedSocials, setSelectedSocials] = useState(storeViews.provider.social);
   const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const initializeQuote = () => {
     let list = Object.values(quotes);
     if (list.length) {
       setSelectedQuote(storeViews.provider.copyTradingQuote.toLowerCase());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quotes]);
+  };
 
-  useEffect(() => {
+  useEffect(initializeQuote, [quotes]);
+
+  const initializeExchange = () => {
     if (exchanges.length) {
       let found = exchanges.find(
         (item) => item.name.toLowerCase() === storeViews.provider.exchanges[0].toLowerCase(),
@@ -80,10 +81,11 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
     } else {
       setSelectedExchange({ id: "", type: [] });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exchanges]);
+  };
 
-  useEffect(() => {
+  useEffect(initializeExchange, [exchanges]);
+
+  const initializeSelectedExchange = () => {
     if (exchanges.length && selectedExchange.id) {
       let found = exchanges.find((item) => item.id === selectedExchange.id);
       if (found) {
@@ -94,8 +96,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedExchange]);
+  };
+
+  useEffect(initializeSelectedExchange, [selectedExchange]);
 
   /**
    * Function to handle exchange changes.
@@ -366,9 +369,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                       (storeSettings.darkStyle ? " dark " : " light ") +
                       (errors.website ? "error" : "")
                     }
+                    error={!!errors.website}
                     fullWidth
                     variant="outlined"
-                    error={errors.website ? true : false}
                   />
                 }
                 control={control}
@@ -546,12 +549,12 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                     />
                   }
                   control={control}
-                  name="ipnSecret"
                   defaultValue={
                     storeViews.provider.internalPaymentInfo
                       ? storeViews.provider.internalPaymentInfo.ipnSecret
                       : ""
                   }
+                  name="ipnSecret"
                   rules={{ required: false }}
                 />
               </Box>
