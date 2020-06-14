@@ -2,6 +2,7 @@ import tradeApi from "../../services/tradeApiClient";
 import { showLoader } from "./ui";
 
 export const GET_PROVIDER = "GET_PROVIDER_ACTION";
+export const REMOVE_PROVIDER = "REMOVE_PROVIDER_ACTION";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").GetProviderPayload} GetProviderPayload
@@ -30,5 +31,11 @@ export const setProvider = (payload) => {
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
+  };
+};
+
+export const unsetProvider = () => {
+  return {
+    type: REMOVE_PROVIDER,
   };
 };
