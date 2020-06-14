@@ -29,3 +29,29 @@
     width: 54%;
   }
 }
+
+@include media("<=sm") {
+  .profilePage {
+    width: 100%;
+
+    .aboutBox {
+      width: 100%;
+      margin: 0 0 20px 0;
+    }
+
+    .whoWeAreBox {
+      width: 100%;
+      margin: 0 0 20px 0;
+    }
+
+    .strategyBox {
+      width: 100%;
+      margin: 0 0 20px 0;
+    }
+
+    .performanceBox {
+      width: 100%;
+      margin: 0 0 20px 0;
+    }
+  }
+}

@@ -70,10 +70,10 @@
     }
 
     .strategyBox {
-      min-height: 200px;
+      min-height: 400px;
 
       .editor {
-        min-height: 400px;
+        min-height: inherit;
       }
     }
 
@@ -103,6 +103,51 @@
 
       .submitButton {
         width: 220px;
+      }
+    }
+  }
+}
+
+@include media("<=sm") {
+  .formWrapper {
+    .editProfileForm {
+      width: 100%;
+
+      h3 {
+        text-align: center;
+      }
+
+      .inputBox {
+        margin-bottom: 16px;
+        width: 100%;
+
+        &.switches {
+          min-width: 100%;
+        }
+      }
+
+      .aboutBox,
+      .whoWeAreBox,
+      .strategyBox,
+      .profileBox {
+        padding: 20px 10px;
+        width: 100%;
+      }
+
+      .aboutBox {
+        min-height: 350px;
+      }
+
+      .whoWeAreBox {
+        min-height: 300px;
+      }
+
+      .formAction {
+        justify-content: center;
+
+        .submitButton {
+          width: 100%;
+        }
       }
     }
   }
