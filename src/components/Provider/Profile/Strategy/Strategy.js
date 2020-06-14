@@ -29,8 +29,8 @@ const Strategy = ({ provider }) => {
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        mb={2}
         width="100%"
+        className="strategyHead"
       >
         <Typography variant="h3">
           <FormattedMessage id="srv.strategy" />
@@ -39,7 +39,7 @@ const Strategy = ({ provider }) => {
           <FormattedMessage id="srv.strategy.subtitle" />
         </Typography>
       </Box>
-      <ReactMarkdown source={provider.longDesc} />
+      <ReactMarkdown source={provider.strategy} />
     </Box>
   );
 };

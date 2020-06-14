@@ -60,8 +60,6 @@ const Strategy = ({ provider }) => {
 
   useEffect(initializeCounties, [provider.team]);
 
-  console.log(provider.team);
-
   return (
     <Box
       alignItems="flex-start"

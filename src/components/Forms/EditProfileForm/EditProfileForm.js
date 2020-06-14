@@ -167,7 +167,6 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
     };
-    console.log(payload);
     tradeApi
       .providerEdit(payload)
       .then(() => {

@@ -1,13 +1,15 @@
 .aboutUs {
   padding: 30px 20px;
   width: 100%;
+  min-height: inherit;
 
   h3 {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   p {
     width: 100%;
     word-wrap: break-word;
+    margin: 0;
   }
 }
