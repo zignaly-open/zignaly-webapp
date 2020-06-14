@@ -5,6 +5,7 @@ import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 import Table from "../../Table";
+import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -39,9 +40,11 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       name: "logoUrl",
       label: "col.provider.logo",
       options: {
-        customBodyRender: (val, tableMeta) => (
-          <img src={val} title={tableMeta.rowData[2]} width="30px" />
-        ),
+        customBodyRender: (val, tableMeta) => {
+          // Handle no prpvider logo, returned as "images/providersLogo/default.png"
+          const logo = val.startsWith("http") ? val : DefaultProviderLogo;
+          return <img src={logo} title={tableMeta.rowData[2]} width="30px" />;
+        },
         // setCellProps: (value) => ({
         //   className: "test",
         //   style: {
@@ -179,6 +182,10 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       label: "col.position.closed",
     },
     {
+      name: "sumUnclosedPositions",
+      label: "col.positions.stillopened",
+    },
+    {
       name: "sumWins",
       label: "col.positions.won",
     },
@@ -214,10 +221,9 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     {
       name: "avgAverageDCAsPerPosition",
       label: "col.position.dca.avg",
-    },
-    {
-      name: "sumUnclosedPositions",
-      label: "col.positions.stillopened",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
     },
     {
       name: "sumDCAWins",
@@ -229,11 +235,11 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     },
     {
       name: "sumSoldBySignal",
-      label: "col.soldbysignal",
+      label: "col.exit.signal",
     },
     {
       name: "sumSoldByStopLoss",
-      label: "col.soldbystop",
+      label: "col.exit.stoploss",
     },
     {
       name: "sumSoldByTTL",
@@ -241,7 +247,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     },
     {
       name: "sumSoldByTakeProfit",
-      label: "col.soldbytake",
+      label: "col.exit.takeprofit",
     },
     {
       name: "sumSoldByTrailingStop",

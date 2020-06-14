@@ -244,7 +244,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro
- * @property {boolean} copyTradersOnly
+ * @property {boolean} isCopyTrading
  */
 
 /**

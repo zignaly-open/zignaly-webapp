@@ -87,7 +87,7 @@ const useProvidersAnalytics = (type) => {
           base: base.val,
           timeFrame,
           DCAFilter: "anyDCA",
-          copyTradersOnly: type === "copyt",
+          isCopyTrading: type === "copyt",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
         setStats(responseData);

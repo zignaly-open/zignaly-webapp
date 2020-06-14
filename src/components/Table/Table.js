@@ -60,12 +60,12 @@ const Table = ({ columns, data, persistKey, title }) => {
    */
   const options = {
     selectableRows: "none",
-    responsive: "stacked",
+    responsive: "vertical",
     filter: false,
     search: false,
     print: false,
     sort: true,
-    onColumnViewChange: (changedColumn, action) => {
+    onViewColumnsChange: (changedColumn, action) => {
       dispatch(
         setDisplayColumn({
           table: persistKey,
@@ -74,10 +74,7 @@ const Table = ({ columns, data, persistKey, title }) => {
         }),
       );
     },
-    fixedHeaderOptions: {
-      xAxis: true,
-      yAxis: true,
-    },
+    fixedHeader: true,
   };
 
   /**
@@ -114,24 +111,25 @@ const Table = ({ columns, data, persistKey, title }) => {
             opacity: "0.6",
             lineHeight: 1.45,
             letterSpacing: "0.42px",
-            minWidth: "80px",
-            maxWidth: "120px",
+            minWidth: "112px",
             padding: "12px",
-            whiteSpace: "nowrap",
           },
         },
         MUIDataTableBodyCell: {
-          root: {
+          stackedParent: {
+            padding: 0,
+          },
+          stackedCommon: {
             fontSize: "14px",
             fontFamily: "PlexSans-Medium",
             minWidth: "80px",
             padding: "12px",
             whiteSpace: "nowrap",
-          },
-          stackedCommon: {
             [theme.breakpoints.down("sm")]: {
               height: "auto",
               textAlign: "left",
+              whiteSpace: "normal",
+              padding: "5px",
             },
           },
         },
