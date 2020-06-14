@@ -30,7 +30,7 @@
     "moment": "^2.26.0",
     "mui-datatables": "^2.14.0",
     "node-jose": "^1.1.4",
-    "node-sass": "^4.14.1",
+    "node-sass-chokidar": "^1.4.0",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
