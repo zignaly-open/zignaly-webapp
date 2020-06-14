@@ -131,44 +131,44 @@ const Strategy = ({ provider }) => {
                   <img
                     alt="faceook-icon"
                     className="icon"
-                    src={FacebookIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={FacebookIcon}
                   />
                 )}
                 {item.network.toLowerCase() === "twitter" && (
                   <img
                     alt="twitter-icon"
                     className="icon"
-                    src={TwitterIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={TwitterIcon}
                   />
                 )}
                 {item.network.toLowerCase() === "linkedin" && (
                   <img
                     alt="linkedin-icon"
                     className="icon"
-                    src={LinkedinIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={LinkedinIcon}
                   />
                 )}
                 {item.network.toLowerCase() === "telegram" && (
                   <img
                     alt="tttt-icon"
                     className="icon"
-                    src={TelegramIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={TelegramIcon}
                   />
                 )}
                 {item.network.toLowerCase() === "discord" && (
                   <img
                     alt="discord-icon"
                     className="icon"
-                    src={DiscordIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={DiscordIcon}
                   />
                 )}
                 {item.network.toLowerCase() === "email" && (
-                  <a href={"mailto:" + item.link} target="_blank">
+                  <a href={"mailto:" + item.link} rel="noreferrer" target="_blank">
                     <EmailIcon className="icon" />
                   </a>
                 )}
