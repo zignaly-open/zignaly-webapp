@@ -67,10 +67,6 @@ const Strategy = ({ provider }) => {
    * @param {String} link Link to the social media.
    */
 
-  const redirectToSocial = (link) => {
-    window.open(link, "_blank");
-  };
-
   return (
     <Box
       alignItems="flex-start"
@@ -128,44 +124,29 @@ const Strategy = ({ provider }) => {
             provider.social.map((item, index) => (
               <Fragment key={index}>
                 {item.network.toLowerCase() === "facebook" && (
-                  <img
-                    alt="faceook-icon"
-                    className="icon"
-                    onClick={() => redirectToSocial(item.link)}
-                    src={FacebookIcon}
-                  />
+                  <a href={item.link} rel="noreferrer" target="_blank">
+                    <img alt="faceook-icon" className="icon" src={FacebookIcon} />
+                  </a>
                 )}
                 {item.network.toLowerCase() === "twitter" && (
-                  <img
-                    alt="twitter-icon"
-                    className="icon"
-                    onClick={() => redirectToSocial(item.link)}
-                    src={TwitterIcon}
-                  />
+                  <a href={item.link} rel="noreferrer" target="_blank">
+                    <img alt="twitter-icon" className="icon" src={TwitterIcon} />
+                  </a>
                 )}
                 {item.network.toLowerCase() === "linkedin" && (
-                  <img
-                    alt="linkedin-icon"
-                    className="icon"
-                    onClick={() => redirectToSocial(item.link)}
-                    src={LinkedinIcon}
-                  />
+                  <a href={item.link} rel="noreferrer" target="_blank">
+                    <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
+                  </a>
                 )}
                 {item.network.toLowerCase() === "telegram" && (
-                  <img
-                    alt="tttt-icon"
-                    className="icon"
-                    onClick={() => redirectToSocial(item.link)}
-                    src={TelegramIcon}
-                  />
+                  <a href={item.link} rel="noreferrer" target="_blank">
+                    <img alt="tttt-icon" className="icon" src={TelegramIcon} />
+                  </a>
                 )}
                 {item.network.toLowerCase() === "discord" && (
-                  <img
-                    alt="discord-icon"
-                    className="icon"
-                    onClick={() => redirectToSocial(item.link)}
-                    src={DiscordIcon}
-                  />
+                  <a href={item.link} rel="noreferrer" target="_blank">
+                    <img alt="discord-icon" className="icon" src={DiscordIcon} />
+                  </a>
                 )}
                 {item.network.toLowerCase() === "email" && (
                   <a href={"mailto:" + item.link} rel="noreferrer" target="_blank">
