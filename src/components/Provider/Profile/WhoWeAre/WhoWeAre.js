@@ -44,11 +44,13 @@ const Strategy = ({ provider }) => {
   const list = createList();
 
   const initializeCounties = () => {
-    if (provider.team && provider.team.length) {
+    if (provider.team && provider.team.length > 0) {
       let data = [];
       for (let a = 0; a < provider.team.length; a++) {
         let found = list.find(
-          (item) => item.countryCode.toLowerCase() === provider.team[a].countryCode.toLowerCase(),
+          (item) =>
+            provider.team[a].countryCode &&
+            item.countryCode.toLowerCase() === provider.team[a].countryCode.toLowerCase(),
         );
         if (found) {
           data.push(found);
@@ -123,32 +125,32 @@ const Strategy = ({ provider }) => {
             provider.social.length > 0 &&
             provider.social.map((item, index) => (
               <Fragment key={index}>
-                {item.network.toLowerCase() === "facebook" && (
+                {item.network && item.network.toLowerCase() === "facebook" && (
                   <a href={item.link} rel="noreferrer" target="_blank">
                     <img alt="faceook-icon" className="icon" src={FacebookIcon} />
                   </a>
                 )}
-                {item.network.toLowerCase() === "twitter" && (
+                {item.network && item.network.toLowerCase() === "twitter" && (
                   <a href={item.link} rel="noreferrer" target="_blank">
                     <img alt="twitter-icon" className="icon" src={TwitterIcon} />
                   </a>
                 )}
-                {item.network.toLowerCase() === "linkedin" && (
+                {item.network && item.network.toLowerCase() === "linkedin" && (
                   <a href={item.link} rel="noreferrer" target="_blank">
                     <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
                   </a>
                 )}
-                {item.network.toLowerCase() === "telegram" && (
+                {item.network && item.network.toLowerCase() === "telegram" && (
                   <a href={item.link} rel="noreferrer" target="_blank">
                     <img alt="tttt-icon" className="icon" src={TelegramIcon} />
                   </a>
                 )}
-                {item.network.toLowerCase() === "discord" && (
+                {item.network && item.network.toLowerCase() === "discord" && (
                   <a href={item.link} rel="noreferrer" target="_blank">
                     <img alt="discord-icon" className="icon" src={DiscordIcon} />
                   </a>
                 )}
-                {item.network.toLowerCase() === "email" && (
+                {item.network && item.network.toLowerCase() === "email" && (
                   <a href={"mailto:" + item.link} rel="noreferrer" target="_blank">
                     <EmailIcon className="icon" />
                   </a>
