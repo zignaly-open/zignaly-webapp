@@ -3,7 +3,7 @@ import "./NoPositions.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 
 const NoPositions = () => {
   const redirect = () => {

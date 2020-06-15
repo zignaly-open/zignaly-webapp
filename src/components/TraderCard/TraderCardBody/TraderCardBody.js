@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/LineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 import { FormattedMessage } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { toNumber } from "lodash";
