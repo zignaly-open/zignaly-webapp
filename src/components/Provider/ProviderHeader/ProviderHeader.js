@@ -14,7 +14,7 @@ import ProviderHeaderInfo from "./ProviderHeaderInfo";
  */
 const ProviderHeader = () => {
   const storeViews = useStoreViewsSelector();
-  const providerId = location.pathname.split("/")[2];
+  const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
   const [links, setLinks] = useState(createProviderRoutes(providerId, storeViews.provider).links);
 
   useEffect(() => {

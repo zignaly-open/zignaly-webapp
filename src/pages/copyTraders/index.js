@@ -10,6 +10,7 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
+import { withPrefix } from "gatsby";
 
 /**
  *
@@ -53,12 +54,15 @@ const CopyTraders = ({ location }) => {
 
   return (
     <Router>
-      <Profile path="/copyTraders/:providerId/profile" providerId={providerId} />
-      <Edit path="/copyTraders/:providerId/edit" providerId={providerId} />
-      <Management path="/copyTraders/:providerId/management" providerId={providerId} />
-      <Analytics path="/copyTraders/:providerId/analytics" providerId={providerId} />
-      <Users path="/copyTraders/:providerId/users" providerId={providerId} />
-      <Positions path="/copyTraders/:providerId/positions" providerId={providerId} />
+      <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
+      <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
+      <Management
+        path={withPrefix("/copyTraders/:providerId/management")}
+        providerId={providerId}
+      />
+      <Analytics path={withPrefix("/copyTraders/:providerId/analytics")} providerId={providerId} />
+      <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
+      <Positions path={withPrefix("/copyTraders/:providerId/positions")} providerId={providerId} />
     </Router>
   );
 };

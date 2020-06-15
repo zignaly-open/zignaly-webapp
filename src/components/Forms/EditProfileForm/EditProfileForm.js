@@ -25,12 +25,10 @@ import { useDispatch } from "react-redux";
 import { setProvider } from "../../../store/actions/views";
 
 /**
- *
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
  */
 
 /**
- *
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
  * @property {Array<ExchangeListEntity>} exchanges
@@ -48,18 +46,21 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control } = useForm();
-  const [about, setAbout] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.about, "markdown"),
-  );
-  const [strategy, setStrategy] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.strategy, "markdown"),
-  );
+  const [about, setAbout] = useState(null);
+  const [strategy, setStrategy] = useState(null);
   const [selectedCountires, setSelectedCountries] = useState(storeViews.provider.team);
   const [selectedSocials, setSelectedSocials] = useState(storeViews.provider.social);
   const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
+
+  const initEditorValues = () => {
+    setAbout(RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"));
+    setStrategy(RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"));
+  };
+
+  useEffect(initEditorValues, []);
 
   const initializeQuote = () => {
     let list = Object.values(quotes);
@@ -274,7 +275,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.about" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            {about && (
+              <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            )}
           </Box>
 
           <Box
@@ -301,7 +304,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.strategy" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            {strategy && (
+              <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            )}
           </Box>
 
           <Box
