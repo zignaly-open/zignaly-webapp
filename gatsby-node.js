@@ -55,6 +55,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
             test: /react-rte/,
             use: loaders.null(),
           },
+          {
+            test: /roundedBarCharts/,
+            use: loaders.null(),
+          },
         ],
       },
     });
