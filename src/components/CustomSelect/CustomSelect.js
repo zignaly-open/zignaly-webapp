@@ -18,6 +18,11 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  */
 
 /**
+ * @typedef {Object} LabelExtraProps
+ * @property {("start")} [labelPlacement]
+ */
+
+/**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
  * @property {OptionType|string|number} value Assign the selected value.
@@ -35,6 +40,11 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 const CustomSelect = (props) => {
   const { label, onChange, options, value, search } = props;
   const storeSettings = useStoreSettingsSelector();
+
+  /**
+   * @type {LabelExtraProps} extraProps
+   */
+  const extraProps = label === "" ? {} : { labelPlacement: "start" };
 
   return (
     <FormControlLabel
@@ -79,7 +89,7 @@ const CustomSelect = (props) => {
         </FormControl>
       }
       label={label ? <Typography className="callout2">{label}</Typography> : null}
-      labelPlacement="start"
+      {...extraProps}
     />
   );
 };
