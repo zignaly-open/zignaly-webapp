@@ -31,17 +31,17 @@ const TraderCardHeader = (props) => {
         justifyContent="space-between"
       >
         <Box
+          className="nameBox"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          className="nameBox"
         >
           <Box
             alignItems="flex-start"
+            className="nameWrapper"
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
-            className="nameWrapper"
           >
             <Typography className="name" variant="h4">
               {name}

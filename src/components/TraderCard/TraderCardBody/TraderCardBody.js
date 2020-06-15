@@ -7,7 +7,6 @@ import CustomButton from "../../CustomButton";
 import { navigate } from "@reach/router";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
-import { toNumber } from "lodash";
 import { useSelector } from "react-redux";
 import { formatFloat2Dec } from "../../../utils/format";
 

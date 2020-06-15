@@ -106,7 +106,7 @@ const useProvidersList = (options) => {
   const filterProviders = useCallback(() => {
     const _providersFiltered = providers.filter(
       (p) =>
-        (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+        (!coin || p.quote === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
     );
     sortProviders(_providersFiltered);
     // eslint-disable-next-line react-hooks/exhaustive-deps

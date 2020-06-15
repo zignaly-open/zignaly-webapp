@@ -60,12 +60,13 @@ const Table = ({ columns, data, persistKey, title }) => {
    */
   const options = {
     selectableRows: "none",
-    responsive: "vertical",
+    responsive: "stacked", // vertical
     filter: false,
     search: false,
     print: false,
     sort: true,
-    onViewColumnsChange: (changedColumn, action) => {
+    // onViewColumnsChange
+    onColumnViewChange: (changedColumn, action) => {
       dispatch(
         setDisplayColumn({
           table: persistKey,

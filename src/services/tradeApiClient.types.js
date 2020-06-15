@@ -2,7 +2,6 @@ import moment from "moment";
 import { assign, isArray, isObject } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
-import { formatFloat2Dec } from "../utils/format";
 
 /**
  * @typedef {Object} PositionActionPayload
@@ -470,8 +469,7 @@ function providerItemTransform(providerItem) {
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem);
 
-  let returns = 0;
-  transformedResponse.dailyReturns.forEach((item, index) => {
+  transformedResponse.dailyReturns.forEach((item) => {
     // if (isCopyTrading) {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
     transformedResponse.returns += item.returns;
@@ -520,7 +518,6 @@ function createEmptyProviderEntity() {
     dailyReturns: [],
     returns: 0,
     risk: 0,
-    coin: "",
     followers: 0,
     floating: "",
     openPositions: 0,
