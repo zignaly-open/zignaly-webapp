@@ -19,7 +19,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 /**
  * @typedef {Object} ProvidersData
  * @property {ProvidersCollection} providers
- * @property {number} timeFrame // todo: check with Bart
+ * @property {number} timeFrame
  * @property {function} setTimeFrame
  * @property {string} coin
  * @property {function} setCoin

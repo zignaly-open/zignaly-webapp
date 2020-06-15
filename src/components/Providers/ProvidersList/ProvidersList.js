@@ -8,6 +8,7 @@ import "./ProvidersList.scss";
  * @typedef {Object} ProvidersListPropTypes
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
+ * @property {number} timeFrame Selected timeFrame.
  */
 
 /**
@@ -17,7 +18,7 @@ import "./ProvidersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers, showSummary } = props;
+  const { providers, showSummary, timeFrame } = props;
   return (
     <Box
       className="providersList"
@@ -28,7 +29,12 @@ const ProvidersList = (props) => {
       <Box className="tradersBox">
         {providers &&
           providers.map((provider) => (
-            <TraderCard key={provider.id} provider={provider} showSummary={showSummary} />
+            <TraderCard
+              key={provider.id}
+              provider={provider}
+              showSummary={showSummary}
+              timeFrame={timeFrame}
+            />
           ))}
       </Box>
     </Box>
