@@ -5,7 +5,7 @@ import { Box, Typography } from "@material-ui/core";
 import tradeApi from "../../../services/tradeApiClient";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import { FormattedMessage } from "react-intl";
-
+import CustomTooltip from "../../CustomTooltip";
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  */
@@ -67,15 +67,20 @@ const UserSummary = ({ providerId, quote }) => {
         {/* <Typography variant="h5">$1280,46</Typography> */}
       </Box>
       <Typography variant="subtitle1">
-        <FormattedMessage id="trader.returnsince" />
+        <FormattedMessage id="sort.return" />
       </Typography>
+
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography className={color} variant="h5">
-          {formatFloat2Dec(profitPerc)}%
-        </Typography>
-        <Typography className={color} variant="h5">
-          {quote} {formatFloat(providerUserInfo.profitsSinceCopying)}
-        </Typography>
+        <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
+          <Typography className={color} variant="h5">
+            {formatFloat2Dec(profitPerc)}%
+          </Typography>
+        </CustomTooltip>
+        <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
+          <Typography className={color} variant="h5">
+            {quote} {formatFloat(providerUserInfo.profitsSinceCopying)}
+          </Typography>
+        </CustomTooltip>
       </Box>
       {/* <Typography variant="subtitle1">Open positions now</Typography>
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
