@@ -21,12 +21,10 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import SocialSelect from "./SocialSelect";
 
 /**
- *
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
  */
 
 /**
- *
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
  * @property {Array<ExchangeListEntity>} exchanges
@@ -43,17 +41,20 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const storeSettings = useStoreSettingsSelector();
   const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control } = useForm();
-  const [about, setAbout] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"),
-  );
-  const [strategy, setStrategy] = useState(
-    RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"),
-  );
+  const [about, setAbout] = useState(null);
+  const [strategy, setStrategy] = useState(null);
   const [selectedCountires, setSelectedCountries] = useState([]);
   const [selectedSocials, setSelectedSocials] = useState([]);
   const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
+
+  const initEditorValues = () => {
+    setAbout(RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"));
+    setStrategy(RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"));
+  };
+
+  useEffect(initEditorValues, []);
 
   useEffect(() => {
     let list = Object.values(quotes);
@@ -223,7 +224,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.about" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            {about && (
+              <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            )}
           </Box>
 
           <Box
@@ -247,7 +250,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.strategy" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            {strategy && (
+              <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            )}
           </Box>
 
           <Box
