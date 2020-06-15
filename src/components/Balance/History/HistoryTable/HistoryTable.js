@@ -1,6 +1,7 @@
 import React from "react";
 import "./HistoryTable.scss";
-import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { formatFloat } from "../../../../utils/format";
 import Table from "../../../Table";
 
@@ -57,7 +58,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "freeUSDT",
+      name: "totalFreeUSDT",
       label: "col.totalUSDTfree",
       options: {
         display: "true",
@@ -66,7 +67,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "freeBTC",
+      name: "totalFreeBTC",
       label: "col.totalBTCfree",
       options: {
         display: "true",

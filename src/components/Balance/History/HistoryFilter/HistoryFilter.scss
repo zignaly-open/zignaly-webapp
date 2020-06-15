@@ -1,0 +1,17 @@
+.titleBar {
+  width: fit-content;
+
+  h3 {
+    font-family: "PlexSans-Bold";
+  }
+
+  .smallText {
+    margin-left: 12px;
+  }
+
+  label {
+    font-family: "PlexSans-Regular";
+    font-size: 16px;
+    margin-right: 12px;
+  }
+}

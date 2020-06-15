@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import "./History.scss";
 import { Box } from "@material-ui/core";
 import HistoryTable from "./HistoryTable";
-import { FormattedMessage } from "react-intl";
-import EquityFilter from "../TotalEquity/EquityFilter";
+import HistoryFilter from "./HistoryFilter";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -31,6 +30,8 @@ const History = ({ dailyBalance }) => {
     setList(data);
   };
 
+  const embedFilter = <HistoryFilter list={dailyBalance.balances} onChange={handleChange} />;
+
   return (
     <Box
       alignItems="flex-start"
@@ -46,14 +47,12 @@ const History = ({ dailyBalance }) => {
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-      >
-        <EquityFilter list={dailyBalance.balances} onChange={handleChange} />
-      </Box>
+      />
       <HistoryTable
         list={list}
         persistKey="dailyBalance"
         quotes={dailyBalance.quotes}
-        title={<FormattedMessage id="dashboard.balance.historical" />}
+        title={embedFilter}
       />
     </Box>
   );
