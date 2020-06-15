@@ -8,7 +8,7 @@ import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import NoRealAccount from "./NoRealAccount";
-import NoDemoAccount from "./NoRealAccount";
+import NoDemoAccount from "./NoDemoAccount";
 
 /**
  * @typedef {Object} DefaultProps

@@ -34,7 +34,6 @@
 @include media("<=sm") {
   .noRealAccount {
     .buttonsContainer {
-      padding: 0 24px;
       flex-direction: column;
       text-align: center;
 
