@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import Coinray from "coinrayjs";
+import Coinray from "coinrayjs/dist/coinray";
 import tradeApi from "./tradeApiClient";
 import { isEmpty, last } from "lodash";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import "./ProvidersProfitsTable.scss";
-import { Box, createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
