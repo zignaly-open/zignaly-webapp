@@ -12,30 +12,29 @@
     padding: 0 10px;
   }
 
-  .buttonsContainer {
+  .exchangeButtons {
     padding: 0 24px;
+
+    > div {
+      flex: 1;
+    }
+  }
+
+  .exchangeSubtitle {
+    text-align: center;
   }
 
   .customButton {
     margin: 15px 0 11px;
-    min-width: 336px;
-  }
-
-  .exchange {
-    font-family: "PlexSans-Regular";
-    font-size: 14px;
-    font-style: italic;
-    line-height: 1.43;
-    letter-spacing: 0.53px;
-    text-align: center;
   }
 }
 
 @include media("<=sm") {
   .noRealAccount {
-    .buttonsContainer {
+    .exchangeButtons {
       flex-direction: column;
       text-align: center;
+      padding: 0 12px;
 
       > div {
         margin-bottom: 50px;

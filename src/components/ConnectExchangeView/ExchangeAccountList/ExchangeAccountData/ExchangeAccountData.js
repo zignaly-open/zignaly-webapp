@@ -8,6 +8,8 @@ import "./ExchangeAccountData.scss";
 import useEquity from "../../../../hooks/useEquity";
 import useBalance from "../../../../hooks/useBalance";
 import useConnectedProviders from "../../../../hooks/useConnectedProviders";
+import { FormattedMessage } from "react-intl";
+import CustomButton from "../../../CustomButton";
 
 /**
  * @typedef {Object} DefaultProps

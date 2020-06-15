@@ -26,13 +26,15 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
   //   }
 
   /**
-   * Navigate to an action page for the selected exchange.
-   * @param {string} internalId Selected internal exchange id.
-   * @param {string} selectedPath Action step path.
+   * Navigate to action page.
+   * @param {string} [internalId] Selected internal exchange id.
+   * @param {string} selectedPath Action path.
    * @returns {void}
    */
-  const openExchangeAccountAction = (internalId, selectedPath) => {
-    setExchangeInternalId(internalId);
+  const navigateToAction = (selectedPath, internalId) => {
+    if (internalId) {
+      setExchangeInternalId(internalId);
+    }
     setPath(selectedPath);
   };
 
@@ -40,9 +42,7 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
     case "realAccount":
     case "demoAccount":
     default:
-      return (
-        <ExchangeAccountList openExchangeAccountAction={openExchangeAccountAction} type={path} />
-      );
+      return <ExchangeAccountList navigateToAction={navigateToAction} type={path} />;
     case "settings":
       return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;
     case "deposit":

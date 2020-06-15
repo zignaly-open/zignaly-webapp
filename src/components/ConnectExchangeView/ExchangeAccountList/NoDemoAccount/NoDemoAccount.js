@@ -7,22 +7,25 @@ import { Typography } from "@material-ui/core";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {string} internalId Exchange internal Id.
+ * @property {function} navigateToAction Callback to navigate to action.
  */
 
 /**
- * Provides data about the exchange account.
+ * Displays buttons to create demo exchange account.
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const NoDemoAccount = ({ internalId }) => {
+const NoDemoAccount = ({ navigateToAction }) => {
   return (
     <Box className="noDemoAccount">
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography variant="h3" className="connectHead">
           <FormattedMessage id="accounts.connect.experiment" />
         </Typography>
-        <CustomButton className="body2 textPurple borderPurple">
+        <CustomButton
+          className="body2 textPurple borderPurple exchangeButton"
+          onClick={() => navigateToAction("createDemoAccount")}
+        >
           <FormattedMessage id="accounts.create.demo" />
         </CustomButton>
         <Typography variant="h4">

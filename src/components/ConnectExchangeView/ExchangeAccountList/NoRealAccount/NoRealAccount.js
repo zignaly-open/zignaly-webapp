@@ -7,15 +7,15 @@ import { Typography } from "@material-ui/core";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {string} internalId Exchange internal Id.
+ * @property {function} navigateToAction Callback to navigate to action.
  */
 
 /**
- * Provides data about the exchange account.
+ * Displays buttons to connect or create real exchange account.
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const NoRealAccount = ({ internalId }) => {
+const NoRealAccount = ({ navigateToAction }) => {
   return (
     <Box className="noRealAccount">
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -30,16 +30,19 @@ const NoRealAccount = ({ internalId }) => {
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        className="buttonsContainer"
+        className="exchangeButtons"
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.noaccount" />
           </Typography>
-          <CustomButton className="body2 bgPurple">
+          <CustomButton
+            className="body2 bgPurple exchangeButton"
+            onClick={() => navigateToAction("createAccount")}
+          >
             <FormattedMessage id="accounts.create.exchange" />
           </CustomButton>
-          <Box className="exchange">
+          <Box className="exchangeSubtitle">
             <FormattedMessage id="accounts.powered" />
           </Box>
         </Box>
@@ -47,10 +50,13 @@ const NoRealAccount = ({ internalId }) => {
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.haveaccount" />
           </Typography>
-          <CustomButton className="body2 textPurple borderPurple">
+          <CustomButton
+            className="body2 textPurple borderPurple exchangeButton"
+            onClick={() => navigateToAction("connectAccount")}
+          >
             <FormattedMessage id="accounts.connect.existing" />
           </CustomButton>
-          <Box className="exchange">
+          <Box className="exchangeSubtitle">
             <FormattedMessage id="accounts.exchanges" />
           </Box>
         </Box>
@@ -58,7 +64,10 @@ const NoRealAccount = ({ internalId }) => {
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.experiment" />
           </Typography>
-          <CustomButton className="body2 textPurple">
+          <CustomButton
+            className="body2 textPurple exchangeButton"
+            onClick={() => navigateToAction("createDemoAccount")}
+          >
             <FormattedMessage id="accounts.create.demo" />
           </CustomButton>
         </Box>

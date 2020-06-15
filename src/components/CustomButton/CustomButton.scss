@@ -3,7 +3,7 @@
     width: 90%;
   }
 
-  height: 48px;
+  min-height: 48px;
   min-width: 250px;
 
   span {
@@ -84,5 +84,9 @@
     &:hover {
       background: $green;
     }
+  }
+
+  &.exchangeButton {
+    min-width: 336px;
   }
 }
