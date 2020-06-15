@@ -33,8 +33,9 @@ import { withPrefix } from "gatsby";
 const CopyTraders = ({ location }) => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
-
-  const providerId = location.pathname.split("/")[2];
+  // On production the application is served through an /app directory, ID position is +1 level.
+  const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
+  const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
 
   useEffect(() => {
