@@ -55,12 +55,12 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
 
-    const initEditorValues = () => {
-        setAbout(RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"));
-        setStrategy(RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"));
-    };
+  const initEditorValues = () => {
+    setAbout(RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"));
+    setStrategy(RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"));
+  };
 
-    useEffect(initEditorValues, []);
+  useEffect(initEditorValues, []);
 
   const initializeQuote = () => {
     let list = Object.values(quotes);
