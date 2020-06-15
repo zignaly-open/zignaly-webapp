@@ -1,0 +1,34 @@
+.noRealAccount {
+  width: 100%;
+
+  .connectHead {
+    margin: 49px 0 11px;
+  }
+
+  .connectDesc {
+    max-width: 456px;
+    margin-bottom: 56px;
+    text-align: center;
+  }
+
+  .buttonsContainer {
+    padding: 0 24px;
+  }
+
+  .customButton {
+    margin: 15px 0 11px;
+    min-width: 336px;
+  }
+
+  .exchange {
+    font-family: "PlexSans-Regular";
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.43;
+    letter-spacing: 0.53px;
+    text-align: center;
+  }
+}
+
+@include media("<=sm") {
+}

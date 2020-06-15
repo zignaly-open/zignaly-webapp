@@ -55,6 +55,15 @@
     min-width: 120px;
   }
 
+  &.bgPurple {
+    background: $purple;
+    color: $white;
+  }
+
+  &.borderPurple {
+    border: 2px solid $purple;
+  }
+
   &.textDefault {
     background: transparent;
     min-width: 120px;

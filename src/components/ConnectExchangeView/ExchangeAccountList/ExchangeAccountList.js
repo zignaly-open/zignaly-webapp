@@ -7,6 +7,8 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
+import NoRealAccount from "./NoRealAccount";
+import NoDemoAccount from "./NoRealAccount";
 
 /**
  * @typedef {Object} DefaultProps
@@ -26,6 +28,8 @@ const ExchangeAccountList = ({ type, openExchangeAccountAction }) => {
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? type === "demoAccount" : type === "realAccount",
   );
+
+  if (![].length) return type === "realAccount" ? <NoRealAccount /> : <NoDemoAccount />;
 
   return (
     <Box className="exchangeAccountList">

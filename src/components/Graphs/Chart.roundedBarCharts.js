@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* eslint-disable */
 
-import { Chart } from "react-chartjs-2";
+// import { Chart } from "chart.js";
 
 /*
  *   Rounded Rectangle Extension for Bar Charts and Horizontal Bar Charts
