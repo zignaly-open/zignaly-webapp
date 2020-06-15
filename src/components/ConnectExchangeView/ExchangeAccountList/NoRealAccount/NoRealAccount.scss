@@ -9,6 +9,7 @@
     max-width: 456px;
     margin-bottom: 56px;
     text-align: center;
+    padding: 0 10px;
   }
 
   .buttonsContainer {
@@ -31,4 +32,15 @@
 }
 
 @include media("<=sm") {
+  .noRealAccount {
+    .buttonsContainer {
+      padding: 0 24px;
+      flex-direction: column;
+      text-align: center;
+
+      > div {
+        margin-bottom: 50px;
+      }
+    }
+  }
 }
