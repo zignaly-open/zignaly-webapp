@@ -265,7 +265,6 @@ import { formatFloat2Dec } from "../utils/format";
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
  * @property {string} logoUrl
- * @property {string} coin
  * @property {boolean} hasBeenUsed
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading

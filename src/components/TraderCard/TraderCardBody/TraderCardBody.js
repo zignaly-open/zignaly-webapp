@@ -158,7 +158,7 @@ const TraderCard = (props) => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography className="green" variant="h4">
+            <Typography className={colorClass} variant="h4">
               {formatFloat2Dec(floating)}%
             </Typography>
             <Typography variant="subtitle1">
@@ -185,7 +185,7 @@ const TraderCard = (props) => {
         >
           <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {!disable ? (
-              <h6 className="callout2 green">
+              <h6 className={`callout2 ${colorClass}`}>
                 <FormattedMessage
                   id={isCopyTrading ? "trader.others" : "provider.others"}
                   values={{

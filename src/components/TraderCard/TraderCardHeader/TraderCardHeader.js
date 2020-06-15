@@ -19,7 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { price, name, logoUrl, coin, exchanges } = props.provider;
+  const { price, name, logoUrl, quote, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
@@ -53,7 +53,7 @@ const TraderCardHeader = (props) => {
               <FormattedMessage
                 id="srv.trades"
                 values={{
-                  coin,
+                  coin: quote || "",
                 }}
               />
             </Typography>

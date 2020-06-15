@@ -77,15 +77,16 @@ const useProvidersList = (options) => {
         let res = 0;
         switch (key) {
           case "RETURNS":
-            res = a.returns < b.returns ? 1 : -1;
+            res = a.returns - b.returns;
             break;
           case "DATE":
-            res = a.createdAt < b.createdAt ? 1 : -1;
+            res = a.createdAt - b.createdAt;
             break;
           case "NAME":
             res = a.name.localeCompare(b.name);
             break;
           case "FEE":
+            res = a.price - b.price;
             break;
           default:
             break;
