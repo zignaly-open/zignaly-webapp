@@ -224,7 +224,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.about" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            {about && (
+              <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
+            )}
           </Box>
 
           <Box
@@ -248,7 +250,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.strategy" />
             </Typography>
-            <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            {strategy && (
+              <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
+            )}
           </Box>
 
           <Box
