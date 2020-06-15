@@ -521,7 +521,7 @@ function createEmptyProviderEntity() {
     dailyReturns: [],
     returns: 0,
     risk: 0,
-    coin: "BTC",
+    coin: "",
     followers: 0,
     floating: "",
     openPositions: 0,

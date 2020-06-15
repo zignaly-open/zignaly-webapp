@@ -4,7 +4,6 @@ import { Box, Typography } from "@material-ui/core";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
-import CustomToolip from "../../CustomTooltip";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
@@ -25,23 +24,24 @@ const TraderCardHeader = (props) => {
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
       <Box
-        alignItems="center"
+        alignItems="flex-start"
         className="traderCardHeaderTitleBox"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
       >
         <Box
-          className="nameBox"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          className="nameBox"
         >
           <Box
             alignItems="flex-start"
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
+            className="nameWrapper"
           >
             <Typography className="name" variant="h4">
               {name}
@@ -63,21 +63,19 @@ const TraderCardHeader = (props) => {
           </Box>
         </Box>
 
-        <CustomToolip
+        {/* <CustomToolip
           title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: price || 0 }} />}
-        >
-          <Box
-            alignItems="flex-end"
-            className="commissionBox"
-            display="flex"
-            flexDirection="column"
-          >
-            <Typography variant="h4">{price || 0}</Typography>
-            <Typography variant="subtitle1">
-              <FormattedMessage id="srv.comision" />
-            </Typography>
-          </Box>
-        </CustomToolip>
+        > */}
+        <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
+          <Typography variant="h4">
+            {price || 0}
+            <FormattedMessage id="srv.pricemonth" />
+          </Typography>
+          <Typography variant="subtitle1">
+            <FormattedMessage id="srv.edit.price" />
+          </Typography>
+        </Box>
+        {/* </CustomToolip> */}
       </Box>
     </Box>
   );
