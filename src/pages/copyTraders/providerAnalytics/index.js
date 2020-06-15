@@ -1,11 +1,26 @@
 import React from "react";
 import "./providerAnalytics.scss";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
+import { FormattedMessage } from "react-intl";
 
 const CopyTradersAnalytics = () => {
-  return <Box>dynamic route for analytics </Box>;
+  return (
+    <Box className="profileAnalyticsPage">
+      <Box bgcolor="grid.main" className="tradingPerformanceBox">
+        <Typography variant="h3">
+          <FormattedMessage id="copyt.tradingperformance" />
+        </Typography>
+      </Box>
+
+      <Box bgcolor="grid.main" className="tradingPerformanceBox">
+        <Typography variant="h3">
+          <FormattedMessage id="copyt.tradingperformance" />
+        </Typography>
+      </Box>
+    </Box>
+  );
 };
 
 export default compose(withProviderLayout)(CopyTradersAnalytics);
