@@ -54,23 +54,15 @@ const CopyTraders = ({ location }) => {
 
   return (
     <Router>
-      <Router>
-        <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
-        <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
-        <Management
-          path={withPrefix("/copyTraders/:providerId/management")}
-          providerId={providerId}
-        />
-        <Analytics
-          path={withPrefix("/copyTraders/:providerId/analytics")}
-          providerId={providerId}
-        />
-        <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
-        <Positions
-          path={withPrefix("/copyTraders/:providerId/positions")}
-          providerId={providerId}
-        />
-      </Router>
+      <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
+      <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
+      <Management
+        path={withPrefix("/copyTraders/:providerId/management")}
+        providerId={providerId}
+      />
+      <Analytics path={withPrefix("/copyTraders/:providerId/analytics")} providerId={providerId} />
+      <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
+      <Positions path={withPrefix("/copyTraders/:providerId/positions")} providerId={providerId} />
     </Router>
   );
 };
