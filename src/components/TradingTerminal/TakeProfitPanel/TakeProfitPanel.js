@@ -5,6 +5,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { OutlinedInput } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";
 import { Button, Box, Switch, Typography } from "@material-ui/core";
+import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { range } from "lodash";
 import "./TakeProfitPanel.scss";
 
@@ -93,11 +94,13 @@ const TakeProfitPanel = (props) => {
               </Box>
             </FormControl>
           ))}
-          <Box className="actions" display="flex" flexDirection="row" flexWrap="wrap">
-            <Button onClick={handleTargetRemove}>
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            <Button className="removeTarget" onClick={handleTargetRemove}>
+              <RemoveCircle />
               <FormattedMessage id="terminal.target.remove" />
             </Button>
-            <Button onClick={handleTargetAdd}>
+            <Button className="addTarget" onClick={handleTargetAdd}>
+              <AddCircle />
               <FormattedMessage id="terminal.target.add" />
             </Button>
           </Box>
