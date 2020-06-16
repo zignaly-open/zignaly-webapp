@@ -23,13 +23,27 @@ const ExchangeAccountCreate = ({}) => {
   const { register, handleSubmit, errors, control, getValues } = useForm();
   const intl = useIntl();
   const exchanges = useExchangeList();
-  const [selectedExchange, setExchange] = useState(undefined);
-  if (!selectedExchange && exchanges.length) setExchange(exchanges[0]);
+  const [selectedExchange, setExchange] = useState(
+    /** @type {ExchangeListEntity} */ ({
+      type: [],
+      requiredAuthFields: [],
+      name: "",
+    }),
+  );
+  // Select first option when available
+  if (!selectedExchange.name && exchanges.length) setExchange(exchanges[0]);
   console.log(exchanges, selectedExchange);
 
+  // Exchange options
   const exchangesOptions = exchanges
     .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
     .map((e) => e.name);
+
+  // Eschange types
+  const typeOptions = selectedExchange.type.map((t) => ({
+    val: t,
+    label: t.charAt(0).toUpperCase() + t.slice(1),
+  }));
 
   //   const selectedExchange = getValues("exchangeName");
   const create = false;
@@ -71,7 +85,7 @@ const ExchangeAccountCreate = ({}) => {
           //   />
           <CustomSelect
             options={exchangesOptions}
-            value={selectedExchange ? selectedExchange.name : ""}
+            value={selectedExchange.name}
             label={intl.formatMessage({ id: "accounts.exchange" })}
             onChange={handleExchangeChange}
           />
@@ -93,12 +107,12 @@ const ExchangeAccountCreate = ({}) => {
           </RadioGroup>
         </FormControl> */}
         {/* <CustomSelect name="accountType" options={accountTypes} /> */}
-        {selectedExchange && selectedExchange.type.length > 1 && (
+        {selectedExchange.type.length > 1 && (
           <Controller
             as={CustomSelect}
-            options={selectedExchange.type}
+            options={typeOptions}
             control={control}
-            defaultValue={selectedExchange.type.length ? selectedExchange.type[0] : null}
+            defaultValue={typeOptions.length ? typeOptions[0].val : null}
             name="exchangeType"
             rules={{ required: true }}
             label={intl.formatMessage({ id: "accounts.exchange.type" })}
@@ -109,15 +123,14 @@ const ExchangeAccountCreate = ({}) => {
           name="internalAccountName"
           label="accounts.exchange.name"
         />
-        {selectedExchange &&
-          selectedExchange.requiredAuthFields.map((field) => (
-            <CustomInput
-              inputRef={register}
-              name={field}
-              label={`accounts.exchange.${field}`}
-              key={field}
-            />
-          ))}
+        {selectedExchange.requiredAuthFields.map((field) => (
+          <CustomInput
+            inputRef={register}
+            name={field}
+            label={`accounts.exchange.${field}`}
+            key={field}
+          />
+        ))}
       </Box>
     </form>
   );
