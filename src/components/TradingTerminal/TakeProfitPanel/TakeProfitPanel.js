@@ -6,7 +6,7 @@ import { OutlinedInput } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";
 import { Button, Box, Switch, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { range } from "lodash";
+import { range, sum } from "lodash";
 import "./TakeProfitPanel.scss";
 
 const TakeProfitPanel = (props) => {
@@ -36,6 +36,36 @@ const TakeProfitPanel = (props) => {
   const handleTargetRemove = () => {
     if (cardinality > 0) {
       setCardinality(cardinality - 1);
+    }
+  };
+
+  /**
+   * Validate result of changed target units event.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const validateExitUnits = (event) => {
+    const draftPosition = getValues();
+    const allUnitsPercentage = cardinalityRange.map((index) => {
+      return parseFloat(draftPosition[`exitUnitsPercentage${index}`]) || 0;
+    });
+
+    const targetId = getGroupTargetId(event);
+    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
+    const unitsProperty = `exitUnits${targetId}`;
+    const exitUnits = parseFloat(draftPosition[unitsProperty]);
+    const allUnitsPercentageTotal = sum(allUnitsPercentage);
+
+    clearError(unitsPercentageProperty);
+    if (exitUnits <= 0) {
+      setError(unitsPercentageProperty, "error", "Units must be greater than zero.");
+    } else if (allUnitsPercentageTotal > 100) {
+      setError(
+        unitsPercentageProperty,
+        "error",
+        "Total units (cumulative) cannot be greater than 100%.",
+      );
     }
   };
 
@@ -109,6 +139,8 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(unitsProperty, "");
     }
+
+    validateExitUnits(event);
   };
 
   /**
@@ -132,11 +164,12 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(unitsPercentageProperty, "");
     }
+
+    validateExitUnits(event);
   };
 
   useEffect(() => {
-    const currentValues = getValues();
-    console.log("Values: ", currentValues);
+    // TODO: Handle set state negative sign on short.
   }, [cardinality]);
 
   return (
@@ -203,6 +236,9 @@ const TakeProfitPanel = (props) => {
                   />
                   <div className="currencyBox">{symbolData.base}</div>
                 </Box>
+                {errors[`exitUnitsPercentage${index}`] && (
+                  <span className="errorText">{errors[`exitUnitsPercentage${index}`].message}</span>
+                )}
               </Box>
             </FormControl>
           ))}
