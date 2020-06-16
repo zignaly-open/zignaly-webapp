@@ -40,17 +40,29 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Get target group ID for changed input element event.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {string} Target group ID (cardinality);
+   */
+  const getGroupTargetId = (event) => {
+    const targetElement = event.currentTarget;
+    const targetGroup = targetElement.closest(".targetGroup");
+    const targetId = targetGroup.getAttribute("data-target-id");
+
+    return targetId;
+  };
+
+  /**
    * Calculate price based on percentage change for a given target.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
   const targetPricePercentageChange = (event) => {
-    const targetElement = event.currentTarget;
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-    const targetGroup = targetElement.closest(".targetGroup");
-    const targetId = targetGroup.getAttribute("data-target-id");
+    const targetId = getGroupTargetId(event);
     const pricePercentageProperty = `targetPricePercentage${targetId}`;
     const priceProperty = `targetPrice${targetId}`;
     const targetPercentage = parseFloat(draftPosition[pricePercentageProperty]) || 100;
@@ -59,7 +71,23 @@ const TakeProfitPanel = (props) => {
     setValue(priceProperty, targetPrice);
   };
 
-  const targetPriceChange = () => {};
+  /**
+   * Calculate percentage based on price change for a given target.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const targetPriceChange = (event) => {
+    const draftPosition = getValues();
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const targetId = getGroupTargetId(event);
+    const pricePercentageProperty = `targetPricePercentage${targetId}`;
+    const priceProperty = `targetPrice${targetId}`;
+    const priceDiff = parseFloat(draftPosition[priceProperty]) - price;
+    const targetPercentage = (priceDiff / price) * 100;
+
+    setValue(pricePercentageProperty, targetPercentage || 0);
+  };
 
   const exitUnitsPercentageChange = () => {};
 
@@ -106,6 +134,7 @@ const TakeProfitPanel = (props) => {
                     className="outlineInput"
                     inputRef={register}
                     name={`targetPrice${index}`}
+                    onChange={targetPriceChange}
                   />
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
