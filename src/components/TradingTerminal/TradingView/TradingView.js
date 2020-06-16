@@ -26,7 +26,7 @@ const TradingView = () => {
   /**
    * @type {Object<string, string>}
    */
-  const defaultSymbol = {
+  const defaultExchangeSymbol = {
     KuCoin: "BTC-USDT",
     Binance: "BTCUSDT",
     Zignaly: "BTCUSDT",
@@ -34,9 +34,9 @@ const TradingView = () => {
 
   const exchangeName =
     storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol[exchangeName]);
-  console.log("Name: ", selectedSymbol);
-  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol || "BTCUSDT");
+  const defaultSymbol = defaultExchangeSymbol[exchangeName] || "BTCUSDT";
+  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
+  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
   /**
    * @type {TVWidget} tradingViewWidgetPointer
@@ -89,12 +89,14 @@ const TradingView = () => {
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const onExchangeChange = () => {
-    const newExchangeName = storeSettings.selectedExchange.exchangeName;
+    const newExchangeName =
+      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+    const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
     if (tradingViewWidget) {
       tradingViewWidget.remove();
       setTradingViewWidget(null);
       setLastPrice(null);
-      setSelectedSymbol(defaultSymbol[newExchangeName]);
+      setSelectedSymbol(newDefaultSymbol);
     }
   };
 
