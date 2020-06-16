@@ -89,9 +89,35 @@ const TakeProfitPanel = (props) => {
     setValue(pricePercentageProperty, targetPercentage || 0);
   };
 
-  const exitUnitsPercentageChange = () => {};
+  /**
+   * Calculate units based on units percentage change for a given target.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const exitUnitsPercentageChange = (event) => {
+    const draftPosition = getValues();
+    const units = parseFloat(draftPosition.units) || 0;
+    const targetId = getGroupTargetId(event);
+    const unitsProperty = `exitUnits${targetId}`;
+    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
+    const unitsPercentage = parseFloat(draftPosition[unitsPercentageProperty]);
+    let targetUnits = 0;
 
-  const exitUnitsChange = () => {};
+    if (unitsPercentage > 0) {
+      targetUnits = units * (unitsPercentage / 100);
+    }
+
+    setValue(unitsProperty, targetUnits > 0 ? targetUnits : "");
+  };
+
+  /**
+   * Calculate units percentage based on units change for a given target.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const exitUnitsChange = (event) => {};
 
   useEffect(() => {
     const currentValues = getValues();
@@ -149,6 +175,7 @@ const TakeProfitPanel = (props) => {
                     className="outlineInput"
                     inputRef={register}
                     name={`exitUnitsPercentage${index}`}
+                    onChange={exitUnitsPercentageChange}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
@@ -157,8 +184,9 @@ const TakeProfitPanel = (props) => {
                     className="outlineInput"
                     inputRef={register}
                     name={`exitUnits${index}`}
+                    onChange={exitUnitsChange}
                   />
-                  <div className="currencyBox">{symbolData.quote}</div>
+                  <div className="currencyBox">{symbolData.base}</div>
                 </Box>
               </Box>
             </FormControl>
