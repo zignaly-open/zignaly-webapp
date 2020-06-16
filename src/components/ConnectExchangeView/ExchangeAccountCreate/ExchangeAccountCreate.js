@@ -5,6 +5,11 @@ import { useForm, FormContext, Controller } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
+
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
+ */
+
 /**
  * @typedef {Object} DefaultProps
  * @property {string} internalId Internal Exchange id.
@@ -18,24 +23,28 @@ const ExchangeAccountCreate = ({}) => {
   const { register, handleSubmit, errors, control, getValues } = useForm();
   const intl = useIntl();
   const exchanges = useExchangeList();
+  const [selectedExchange, setExchange] = useState(undefined);
+  if (!selectedExchange && exchanges.length) setExchange(exchanges[0]);
+  console.log(exchanges, selectedExchange);
 
   const exchangesOptions = exchanges
-    .filter((e) => e.enabled && e.name !== "Zignaly")
+    .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
     .map((e) => e.name);
-  const [selectedExchange, setExchange] = useState("Binance");
+
   //   const selectedExchange = getValues("exchangeName");
   const create = false;
 
-  let exchangeTypes = [];
-  if (selectedExchange) {
-    const exchange = exchanges.find((e) => e.name === selectedExchange);
-    if (exchange) {
-      exchangeTypes = exchange.type;
-    }
-  }
+  //   let exchangeTypes = [];
+  //   if (selectedExchange) {
+  //     exchangeTypes = exchange.type;
+  //   }
 
   const onSubmit = (data) => {
     console.log(data);
+  };
+
+  const handleExchangeChange = (exchangeName) => {
+    setExchange(exchanges.find((e) => e.name === exchangeName));
   };
 
   return (
@@ -57,9 +66,9 @@ const ExchangeAccountCreate = ({}) => {
           //   />
           <CustomSelect
             options={exchangesOptions}
-            value={selectedExchange}
+            value={selectedExchange ? selectedExchange.name : ""}
             label={intl.formatMessage({ id: "accounts.exchange" })}
-            onChange={setExchange}
+            onChange={handleExchangeChange}
           />
         )}
         {/* <FormControl className="entryType">
@@ -79,31 +88,46 @@ const ExchangeAccountCreate = ({}) => {
           </RadioGroup>
         </FormControl> */}
         {/* <CustomSelect name="accountType" options={accountTypes} /> */}
-        {exchangeTypes.length > 1 && (
+        {selectedExchange && selectedExchange.type.length > 1 && (
           <Controller
             as={CustomSelect}
-            options={exchangeTypes}
+            options={selectedExchange.type}
             control={control}
-            defaultValue={exchangeTypes.length ? exchangeTypes[0] : null}
+            defaultValue={selectedExchange.type.length ? selectedExchange.type[0] : null}
             name="exchangeType"
             rules={{ required: true }}
             label={intl.formatMessage({ id: "accounts.exchange.type" })}
           />
         )}
-        <FormControlLabel
-          control={
-            <OutlinedInput className="customInput" inputRef={register} name="internalName" />
-          }
-          label={
-            <Typography className="callout2">
-              <FormattedMessage id="accounts.exchange.name" />
-            </Typography>
-          }
-          labelPlacement="start"
+        <CustomInput
+          inputRef={register}
+          name="internalAccountName"
+          label="accounts.exchange.name"
         />
+        {selectedExchange &&
+          selectedExchange.requiredAuthFields.map((field) => (
+            <CustomInput
+              inputRef={register}
+              name={field}
+              label={`accounts.exchange.${field}`}
+              key={field}
+            />
+          ))}
       </Box>
     </form>
   );
 };
+
+const CustomInput = ({ inputRef, name, label }) => (
+  <FormControlLabel
+    control={<OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
+    label={
+      <Typography className="callout2">
+        <FormattedMessage id={label} />
+      </Typography>
+    }
+    labelPlacement="start"
+  />
+);
 
 export default ExchangeAccountCreate;
