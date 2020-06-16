@@ -4,7 +4,8 @@ import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { OutlinedInput } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";
-import { Box, Switch, Typography } from "@material-ui/core";
+import { Button, Box, Switch, Typography } from "@material-ui/core";
+import { range } from "lodash";
 
 const TakeProfitPanel = (props) => {
   const { symbolData } = props;
@@ -12,6 +13,8 @@ const TakeProfitPanel = (props) => {
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
+  const [cardinality, setCardinality] = useState(1);
+  const cardinalityRange = range(1, cardinality + 1, 1);
 
   /**
    * Handle toggle switch action.
@@ -22,6 +25,16 @@ const TakeProfitPanel = (props) => {
   const handleToggle = (event) => {
     const targetElement = event.currentTarget;
     setExpand(targetElement.checked);
+  };
+
+  const handleTargetAdd = () => {
+    if (cardinality > 0) {
+      setCardinality(cardinality - 1);
+    }
+  };
+
+  const handleTargetRemove = () => {
+    setCardinality(cardinality + 1);
   };
 
   return (
@@ -53,6 +66,12 @@ const TakeProfitPanel = (props) => {
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
+          <Button onClick={handleTargetAdd}>
+            <FormattedMessage id="terminal.target.add" />
+          </Button>
+          <Button onClick={handleTargetRemove}>
+            <FormattedMessage id="terminal.target.remove" />
+          </Button>
         </Box>
       )}
     </Box>
