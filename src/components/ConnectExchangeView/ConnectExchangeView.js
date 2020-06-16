@@ -18,7 +18,7 @@ import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
-  const [path, setPath] = useState("realAccount");
+  const [path, setPath] = useState("createAccount");
 
   /**
    * Handle submit buttton click.

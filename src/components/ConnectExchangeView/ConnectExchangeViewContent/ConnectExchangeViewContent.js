@@ -3,6 +3,7 @@ import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
 import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
+import ExchangeAccountCreate from "../ExchangeAccountCreate";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,15 +16,7 @@ import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchangeViewContent = ({ path, setPath }) => {
-  //   const [path, setPath] = useState("realAccount");
-  const [selectedExchangeInternalId, setExchangeInternalId] = useState("realAccount");
-  //   const storeSettings = useStoreSettingsSelector();
-  //   const location = useLocationHash();
-
-  //   let hash = window.location.hash ? window.location.hash.substr(1) : "";
-  //   if (!hash) {
-  //     // get hash by looking at selected exchange
-  //   }
+  const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
 
   /**
    * Navigate to action page.
@@ -43,6 +36,12 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
     case "demoAccount":
     default:
       return <ExchangeAccountList navigateToAction={navigateToAction} type={path} />;
+    case "createAccount":
+      return <ExchangeAccountCreate />;
+    case "createDemoAccount":
+      return <ExchangeAccountWithdraw />;
+    case "connectAccount":
+      return <ExchangeAccountWithdraw />;
     case "settings":
       return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;
     case "deposit":

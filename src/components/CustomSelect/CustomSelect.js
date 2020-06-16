@@ -38,7 +38,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = (props) => {
-  const { label, onChange, options, value, search } = props;
+  const { label, onChange, options, value, search, ref } = props;
   const storeSettings = useStoreSettingsSelector();
 
   /**
@@ -61,6 +61,7 @@ const CustomSelect = (props) => {
               onChange={(e) => onChange(e.target.value)}
               value={value}
               variant="outlined"
+              ref={ref}
             >
               {options.map((item, index) => (
                 <MenuItem key={index} value={typeof item === "object" ? item.val : item}>

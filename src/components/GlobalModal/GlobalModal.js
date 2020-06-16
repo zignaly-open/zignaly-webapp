@@ -9,13 +9,13 @@ import { navigate } from "@reach/router";
  */
 
 /**
- *
+ * Provides a modal that opens when the current url has the passed hash.
  * @param {DefaultProps} props
  */
-
 const GlobalModal = (props) => {
   const { hash, content } = props;
-  const currentHash = window.location.hash ? window.location.hash.substr(1) : "";
+  const currentHash =
+    typeof window !== `undefined` && window.location.hash ? window.location.hash.substr(1) : "";
   const isOpen = currentHash === hash;
   const onClose = () => {
     navigate("#");
