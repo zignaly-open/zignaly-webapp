@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
 import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
 import ExchangeAccountCreate from "../ExchangeAccountCreate";
+import ModalHeaderContext from "../ModalHeaderContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -16,7 +17,8 @@ import ExchangeAccountCreate from "../ExchangeAccountCreate";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchangeViewContent = ({ path, setPath }) => {
-  const [selectedExchangeInternalId, setExchangeInternalId] = useState("realAccount");
+  const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
+  const { setPreviousPath, setPathParams, pathParams } = useContext(ModalHeaderContext);
 
   /**
    * Navigate to action page.
@@ -25,25 +27,41 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
    * @returns {void}
    */
   const navigateToAction = (selectedPath, internalId) => {
-    if (internalId) {
-      setExchangeInternalId(internalId);
-    }
-    setPath(selectedPath);
+    // if (internalId) {
+    //   setExchangeInternalId(internalId);
+    // }
+    // setPath(selectedPath);
+
+    setPathParams({
+      selectedExchangeInternalId: internalId,
+      path: selectedPath,
+    });
   };
 
+  console.log("render", path);
+  useEffect(() => {
+    // setParam and return element here
+    console.log(path);
+    if (path === "realAccounts") {
+      setPathParams({});
+    }
+  }, [path]);
+
   switch (path) {
-    case "realAccount":
-    case "demoAccount":
+    case "realAccounts":
+    case "demoAccounts":
     default:
+      //   setPathParams({});
       return <ExchangeAccountList navigateToAction={navigateToAction} type={path} />;
     case "createAccount":
     case "createDemoAccount":
+      const demo = path === "createDemoAccount";
+      //   setPathParams({
+      //     previousPath: demo ? "demoAccounts" : "realAccounts",
+      //   });
+
       return (
-        <ExchangeAccountCreate
-          navigateToAction={navigateToAction}
-          create={true}
-          demo={path === "createDemoAccount"}
-        />
+        <ExchangeAccountCreate navigateToAction={navigateToAction} create={true} demo={demo} />
       );
     case "connectAccount":
     case "connectDemoAccount":

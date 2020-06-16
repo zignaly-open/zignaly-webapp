@@ -441,6 +441,7 @@ accounts.title: "My Exchange Accounts"
 accounts.real: "Real accounts"
 accounts.demo: "Demo accounts"
 
+accounts.back: "Back"
 accounts.balance: "Balance"
 accounts.browse: "Browse Traders to Copy"
 accounts.connect: "Connect Exchange Account"

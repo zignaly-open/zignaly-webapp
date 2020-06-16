@@ -26,7 +26,7 @@ const ExchangeAccountList = ({ type, navigateToAction }) => {
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
   const exchanges = storeUser.exchangeConnections.filter((e) =>
-    e.paperTrading || e.isTestnet ? type === "demoAccount" : type === "realAccount",
+    e.paperTrading || e.isTestnet ? type === "demoAccounts" : type === "realAccounts",
   );
 
   return (

@@ -440,6 +440,7 @@ accounts.title: "CH-My Exchange Accounts"
 accounts.real: "CH-Real accounts"
 accounts.demo: "CH-Demo accounts"
 
+accounts.back: "CH-Back"
 accounts.balance: "CH-Balance"
 accounts.browse: "CH-Browse Traders to Copy"
 accounts.connect: "CH-Connect Exchange Account"

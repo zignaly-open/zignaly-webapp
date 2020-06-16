@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
 import "./ExchangeAccountCreate.scss";
 import { useForm, FormContext, Controller } from "react-hook-form";
@@ -8,6 +8,7 @@ import useExchangeList from "../../../hooks/useExchangeList";
 import useEvent from "../../../hooks/useEvent";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import ModalHeaderContext from "../ModalHeaderContext";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -26,6 +27,13 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   const { register, handleSubmit, errors, control, getValues } = useForm();
   const intl = useIntl();
   const storeSession = useStoreSessionSelector();
+  const { setPathParams } = useContext(ModalHeaderContext);
+  useEffect(() => {
+    // setPreviousPath(demo ? "demoAccounts" : "realAccounts");
+    setPathParams({
+      previousPath: demo ? "demoAccounts" : "realAccounts",
+    });
+  }, []);
   const exchanges = useExchangeList();
   const [selectedExchange, setExchange] = useState(
     /** @type {ExchangeListEntity} */ ({

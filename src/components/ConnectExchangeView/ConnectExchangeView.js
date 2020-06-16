@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useReducer } from "react";
 import "./ConnectExchangeView.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
+import ModalHeaderContext from "./ModalHeaderContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -20,7 +21,9 @@ import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
 const ConnectExchangeView = (props) => {
   const [path, setPath] = useState("connectAccount");
   const [isLoading, setIsLoading] = useState(false);
-  const formRef = useRef(null);
+  //   const formRef = useRef(null);
+  //   const [state, dispatch] = useReducer({});
+  //   const ModalHeaderContext = React.createContext({});
 
   /**
    * Handle submit buttton click.
@@ -39,38 +42,53 @@ const ConnectExchangeView = (props) => {
     {
       id: "accounts.real",
       onClick: () => {
-        setPath("realAccount");
+        setPath("realAccounts");
       },
     },
     {
       id: "accounts.demo",
       onClick: () => {
-        setPath("demoAccount");
+        setPath("demoAccounts");
       },
     },
   ];
 
+  //   const [previousPath, setPreviousPath] = useState("");
+  const [pathParams, setPathParams] = useState({});
+  const value = { pathParams, setPathParams };
+
   return (
-    <Box
-      alignItems="center"
-      className="connectExchangeView"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <Box className="actionBar">
-        <CustomButton className="submitButton" onClick={handleClick} loading={isLoading}>
-          <FormattedMessage id="accounts.done" />
-        </CustomButton>
+    <ModalHeaderContext.Provider value={value}>
+      <Box
+        alignItems="center"
+        className="connectExchangeView"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+      >
+        <Box className="actionBar">
+          {pathParams.previousPath && (
+            <CustomButton
+              className="submitButton"
+              onClick={() => setPath(pathParams.previousPath)}
+              loading={isLoading}
+            >
+              <FormattedMessage id="accounts.back" />
+            </CustomButton>
+          )}
+          <CustomButton className="submitButton" onClick={handleClick} loading={isLoading}>
+            <FormattedMessage id="accounts.done" />
+          </CustomButton>
+        </Box>
+        <Box className="titleBar">
+          <Typography variant="h1">
+            <FormattedMessage id="dashboard.connectexchange.bold.title" />
+          </Typography>
+        </Box>
+        <SubNavHeader links={tabs} />
+        <ConnectExchangeViewContent path={path} setPath={setPath} />
       </Box>
-      <Box className="titleBar">
-        <Typography variant="h1">
-          <FormattedMessage id="dashboard.connectexchange.bold.title" />
-        </Typography>
-      </Box>
-      <SubNavHeader links={tabs} />
-      <ConnectExchangeViewContent path={path} setPath={setPath} />
-    </Box>
+    </ModalHeaderContext.Provider>
   );
 };
 
