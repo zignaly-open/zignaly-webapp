@@ -36,6 +36,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} GetProviderFollowersPayload
+ * @property {string} token
+ * @property {string} providerId
+ */
+
+/**
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -1761,5 +1767,53 @@ function createEmptyOwnCopyTraderProviderOption() {
     providerId: 0,
     providerName: "",
     providerQuote: false,
+  };
+}
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ProviderFollowerEntity>} User exchange connections collection.
+ */
+
+export function providerFollowersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((providerFollowersItem) => {
+    return providerFollowersResponseItemTransform(providerFollowersItem);
+  });
+}
+
+/**
+ * @typedef {Object} ProviderFollowerEntity
+ * @property {String} date
+ * @property {Number} followers
+ * @property {Number} totalFollowers
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} providerFollowersItem Trade API exchange connection item.
+ * @returns {ProviderFollowerEntity} Exchange connection entity.
+ */
+function providerFollowersResponseItemTransform(providerFollowersItem) {
+  const emptyExchangeListEntity = createProviderFollowersEmptyEntity();
+  const transformedResponse = assign(emptyExchangeListEntity, providerFollowersItem);
+
+  return transformedResponse;
+}
+
+function createProviderFollowersEmptyEntity() {
+  return {
+    enabled: false,
+    id: "",
+    name: "",
+    requiredAuthFields: [""],
+    testNet: [""],
+    type: [""],
   };
 }

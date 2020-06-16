@@ -35,7 +35,7 @@ const CompositionGraph = ({ list, quotes }) => {
   ];
 
   /**
-   * @typedef {import("../../../Graphs/LineChart/LineChart").ChartData} ChartData
+   * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };

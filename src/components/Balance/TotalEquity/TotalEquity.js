@@ -5,7 +5,7 @@ import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
-import EquityGraphLabels from "./EquityGraphLabels";
+import EquityGraphLabels from "./GraphLabels";
 
 const TotalEquity = () => {
   const [list, setList] = useState([]);

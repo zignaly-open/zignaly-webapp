@@ -1,26 +1,25 @@
 import React from "react";
-import "./TotalEquityGraph.scss";
-import GenericChart from "../../../Graphs/GradientLineChart";
+import "./CopiersGraph.scss";
+import GenericChart from "../../../Graphs/LineChart";
 import { Box } from "@material-ui/core";
-import { toNumber } from "lodash";
 
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowerEntity} ProviderFollowerEntity
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserEquityEntity>} list
+ * @property {Array<ProviderFollowerEntity>} list
  */
 
 /**
+ * Copier chart component.
  *
  * @param {DefaultProps} props Default props.
  */
-
-const TotalEquityGraph = ({ list }) => {
+const CopiersGraph = ({ list }) => {
   /**
    * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
@@ -28,16 +27,13 @@ const TotalEquityGraph = ({ list }) => {
   let chartData = { values: [], labels: [] };
 
   const colorsOptions = {
-    backgroundColor: "",
     borderColor: "#a946f6",
-    gradientColor1: "#a946f6",
-    gradientColor2: "#fafafa",
   };
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.unshift(parseFloat(item.totalUSDT));
-      chartData.labels.unshift("");
+      chartData.values.push(item.totalFollowers);
+      chartData.labels.push("");
     });
   };
 
@@ -67,18 +63,10 @@ const TotalEquityGraph = ({ list }) => {
           </span>
         </Box>
         <Box>
-          <span className="label">BTC:</span>
+          <span className="label">Followers:</span>
           <span>
             {list[list.length - tooltipItem.index]
-              ? +toNumber(list[list.length - tooltipItem.index].totalBTC).toFixed(8)
-              : "0"}
-          </span>
-        </Box>
-        <Box>
-          <span className="label">USDT:</span>
-          <span>
-            {list[list.length - tooltipItem.index]
-              ? +toNumber(list[list.length - tooltipItem.index].totalUSDT).toFixed(8)
+              ? list[list.length - tooltipItem.index].totalFollowers
               : "0"}
           </span>
         </Box>
@@ -95,4 +83,4 @@ const TotalEquityGraph = ({ list }) => {
   );
 };
 
-export default TotalEquityGraph;
+export default CopiersGraph;
