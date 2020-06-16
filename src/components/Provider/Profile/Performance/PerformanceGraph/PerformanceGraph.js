@@ -61,10 +61,10 @@ const PerformanceGraph = ({ provider }) => {
       <BarChart
         adjustHeightToContent={isMobile}
         horizontal={isMobile}
+        labels={labels}
         options={options}
         tooltipFormat={tooltipFormat}
         values={values}
-        labels={labels}
       />
     </Box>
   );

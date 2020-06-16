@@ -15,22 +15,22 @@ const CopyTradersAnalytics = () => {
   const storeViews = useStoreViewsSelector();
   const [followers, setFollowers] = useState([]);
 
-  useEffect(() => {
-    const getProviderFollowers = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          providerId: storeViews.provider.id,
-        };
-        const response = await tradeApi.providerFollowersGet(payload);
-        setFollowers(response);
-      } catch (e) {
-        alert(e.message);
-      }
+  const getProviderFollowers = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
     };
+    tradeApi
+      .providerFollowersGet(payload)
+      .then((response) => {
+        setFollowers(response);
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
+  };
 
-    getProviderFollowers();
-  }, []);
+  useEffect(getProviderFollowers, []);
 
   return (
     <Box className="profileAnalyticsPage">

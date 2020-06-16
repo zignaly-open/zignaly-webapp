@@ -28,13 +28,13 @@ const PerformanceOverview = ({ provider }) => {
         <FormattedMessage id="srv.performanceoverview" />
       </Typography>
 
-      <Box className="infoBox" display="flex" flexDirection="column" alignItems="flex-start">
+      <Box alignItems="flex-start" className="infoBox" display="flex" flexDirection="column">
         <Box
+          alignItems="center"
           className="infoRow"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Typography variant="body1">
             <FormattedMessage id="srv.positionsopened" />
@@ -43,27 +43,27 @@ const PerformanceOverview = ({ provider }) => {
         </Box>
 
         <Box
+          alignItems="center"
           className="infoRow"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Typography variant="body1">
             {provider.copyTradingQuote}&nbsp;
             <FormattedMessage id="accounts.balance" />
           </Typography>
-          <Typography variant="h4" className="green">
+          <Typography className="green" variant="h4">
             {formatCurrency(provider.performance.totalBalance)}
           </Typography>
         </Box>
 
         <Box
+          alignItems="center"
           className="infoRow"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
         >
           <Typography variant="body1">
             <FormattedMessage id="srv.totalvol" />

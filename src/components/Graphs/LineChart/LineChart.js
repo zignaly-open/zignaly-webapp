@@ -168,14 +168,6 @@ const LineChart = (props) => {
        *
        * @typedef {Chart & ChartWithScales} ExtendedChart
        */
-
-      /**
-       * Fill chart with gradient on layout change.
-       *
-       * @param {ExtendedChart} chart Chart instance.
-       * @returns {void}
-       */
-      afterLayout: (chart /* options */) => {},
     },
   ];
 

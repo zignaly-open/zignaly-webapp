@@ -18,6 +18,7 @@ import { Box } from "@material-ui/core";
  * Copier chart component.
  *
  * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX component.
  */
 const CopiersGraph = ({ list }) => {
   /**
