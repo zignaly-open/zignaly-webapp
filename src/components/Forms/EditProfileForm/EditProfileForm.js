@@ -56,7 +56,9 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
+  // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
+  // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
 
   const initializeQuote = () => {
@@ -273,13 +275,14 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <FormattedMessage id="srv.about" />
             </Typography>
             <ReactMde
-              value={about}
-              onChange={handleAboutChange}
-              selectedTab={aboutTab}
-              onTabChange={setAboutTab}
               generateMarkdownPreview={(markdown) =>
                 Promise.resolve(<ReactMarkdown source={markdown} />)
               }
+              onChange={handleAboutChange}
+              onTabChange={setAboutTab}
+              // @ts-ignore
+              selectedTab={aboutTab}
+              value={about}
             />
           </Box>
 
@@ -308,13 +311,14 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
               <FormattedMessage id="srv.strategy" />
             </Typography>
             <ReactMde
-              value={strategy}
-              onChange={handleStrategyChange}
-              selectedTab={strategyTab}
-              onTabChange={setStrategyTab}
               generateMarkdownPreview={(markdown) =>
                 Promise.resolve(<ReactMarkdown source={markdown} />)
               }
+              onChange={handleStrategyChange}
+              onTabChange={setStrategyTab}
+              // @ts-ignore
+              selectedTab={strategyTab}
+              value={strategy}
             />
           </Box>
 
