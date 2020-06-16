@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
@@ -10,7 +10,7 @@ import { range } from "lodash";
 import "./TakeProfitPanel.scss";
 
 const TakeProfitPanel = (props) => {
-  const { symbolData } = props;
+  const { symbolData, lastPriceCandle } = props;
   const defaultExpand = true;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
@@ -39,6 +39,37 @@ const TakeProfitPanel = (props) => {
     }
   };
 
+  /**
+   * Calculate price based on percentage change for a given target.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const targetPricePercentageChange = (event) => {
+    const targetElement = event.currentTarget;
+    const draftPosition = getValues();
+    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const targetGroup = targetElement.closest(".targetGroup");
+    const targetId = targetGroup.getAttribute("data-target-id");
+    const pricePercentageProperty = `targetPricePercentage${targetId}`;
+    const priceProperty = `targetPrice${targetId}`;
+    const targetPercentage = parseFloat(draftPosition[pricePercentageProperty]) || 100;
+    const targetPrice = price * ((targetPercentage + 100) / 100);
+
+    setValue(priceProperty, targetPrice);
+  };
+
+  const targetPriceChange = () => {};
+
+  const exitUnitsPercentageChange = () => {};
+
+  const exitUnitsChange = () => {};
+
+  useEffect(() => {
+    const currentValues = getValues();
+    console.log("Values: ", currentValues);
+  }, [cardinality]);
+
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -58,19 +89,24 @@ const TakeProfitPanel = (props) => {
           justifyContent="space-around"
         >
           {cardinalityRange.map((index) => (
-            <FormControl className="targetGroup" key={`target${index}`}>
+            <FormControl className="targetGroup" data-target-id={index} key={`target${index}`}>
               <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name="targetPercentage"
+                    name={`targetPricePercentage${index}`}
+                    onChange={targetPricePercentageChange}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
                 <Box alignItems="center" display="flex">
-                  <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
+                  <OutlinedInput
+                    className="outlineInput"
+                    inputRef={register}
+                    name={`targetPrice${index}`}
+                  />
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
@@ -83,12 +119,16 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name="targetPercentage"
+                    name={`exitUnitsPercentage${index}`}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
                 <Box alignItems="center" display="flex">
-                  <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
+                  <OutlinedInput
+                    className="outlineInput"
+                    inputRef={register}
+                    name={`exitUnits${index}`}
+                  />
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>

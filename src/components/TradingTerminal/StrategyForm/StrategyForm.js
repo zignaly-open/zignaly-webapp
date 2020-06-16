@@ -65,7 +65,7 @@ const StrategyForm = (props) => {
             leverage={leverage}
             symbolData={currentSymbolData}
           />
-          <TakeProfitPanel symbolData={currentSymbolData} />
+          <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>
