@@ -28,14 +28,16 @@ const TakeProfitPanel = (props) => {
   };
 
   const handleTargetAdd = () => {
+    setCardinality(cardinality + 1);
+  };
+
+  const handleTargetRemove = () => {
     if (cardinality > 0) {
       setCardinality(cardinality - 1);
     }
   };
 
-  const handleTargetRemove = () => {
-    setCardinality(cardinality + 1);
-  };
+  console.log("Range: ", cardinalityRange);
 
   return (
     <Box className={`strategyPanel ${expandClass}`}>
@@ -55,17 +57,23 @@ const TakeProfitPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          <FormControl>
-            <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="targetPercentage" />
-              <div className="currencyBox">%</div>
-            </Box>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-          </FormControl>
+          {cardinalityRange.map((index) => (
+            <FormControl key={`target${index}`}>
+              <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  inputRef={register}
+                  name="targetPercentage"
+                />
+                <div className="currencyBox">%</div>
+              </Box>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
+                <div className="currencyBox">{symbolData.quote}</div>
+              </Box>
+            </FormControl>
+          ))}
           <Button onClick={handleTargetAdd}>
             <FormattedMessage id="terminal.target.add" />
           </Button>

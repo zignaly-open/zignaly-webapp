@@ -34,8 +34,9 @@ const TradingView = () => {
 
   const exchangeName =
     storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol[exchangeName] || "BTCUSDT");
-  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol[exchangeName]);
+  console.log("Name: ", selectedSymbol);
+  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol || "BTCUSDT");
 
   /**
    * @type {TVWidget} tradingViewWidgetPointer
@@ -102,7 +103,6 @@ const TradingView = () => {
   const bootstrapWidget = () => {
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
-      console.log("widget options:", widgetOptions);
       const widgetInstance = new TradingViewWidget(widgetOptions);
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {

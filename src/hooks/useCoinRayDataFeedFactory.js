@@ -81,6 +81,8 @@ const useCoinRayDataFeedFactory = (symbol) => {
           regenerateAccessToken: getCoinrayToken,
         };
 
+        console.log("Options: ", options);
+
         setDataFeed(new CoinRayDataFeed(options));
       })
       .catch((e) => {
