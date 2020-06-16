@@ -6,10 +6,11 @@ import { OutlinedInput } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";
 import { Button, Box, Switch, Typography } from "@material-ui/core";
 import { range } from "lodash";
+import "./TakeProfitPanel.scss";
 
 const TakeProfitPanel = (props) => {
   const { symbolData } = props;
-  const defaultExpand = false;
+  const defaultExpand = true;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
@@ -37,10 +38,8 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  console.log("Range: ", cardinalityRange);
-
   return (
-    <Box className={`strategyPanel ${expandClass}`}>
+    <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         <Switch onChange={handleToggle} size="small" />
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
@@ -58,28 +57,50 @@ const TakeProfitPanel = (props) => {
           justifyContent="space-around"
         >
           {cardinalityRange.map((index) => (
-            <FormControl key={`target${index}`}>
-              <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  inputRef={register}
-                  name="targetPercentage"
-                />
-                <div className="currencyBox">%</div>
+            <FormControl className="targetGroup" key={`target${index}`}>
+              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+                <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
+                <Box alignItems="center" display="flex">
+                  <OutlinedInput
+                    className="outlineInput"
+                    inputRef={register}
+                    name="targetPercentage"
+                  />
+                  <div className="currencyBox">%</div>
+                </Box>
+                <Box alignItems="center" display="flex">
+                  <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
+                  <div className="currencyBox">{symbolData.quote}</div>
+                </Box>
               </Box>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
-                <div className="currencyBox">{symbolData.quote}</div>
+              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+                <HelperLabel
+                  descriptionId="terminal.unitstoexit.help"
+                  labelId="terminal.unitstoexit"
+                />
+                <Box alignItems="center" display="flex">
+                  <OutlinedInput
+                    className="outlineInput"
+                    inputRef={register}
+                    name="targetPercentage"
+                  />
+                  <div className="currencyBox">%</div>
+                </Box>
+                <Box alignItems="center" display="flex">
+                  <OutlinedInput className="outlineInput" inputRef={register} name="targetPrice" />
+                  <div className="currencyBox">{symbolData.quote}</div>
+                </Box>
               </Box>
             </FormControl>
           ))}
-          <Button onClick={handleTargetAdd}>
-            <FormattedMessage id="terminal.target.add" />
-          </Button>
-          <Button onClick={handleTargetRemove}>
-            <FormattedMessage id="terminal.target.remove" />
-          </Button>
+          <Box className="actions" display="flex" flexDirection="row" flexWrap="wrap">
+            <Button onClick={handleTargetRemove}>
+              <FormattedMessage id="terminal.target.remove" />
+            </Button>
+            <Button onClick={handleTargetAdd}>
+              <FormattedMessage id="terminal.target.add" />
+            </Button>
+          </Box>
         </Box>
       )}
     </Box>

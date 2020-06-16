@@ -1,0 +1,24 @@
+.takeProfitPanel {
+  .panelContent {
+    > div {
+      flex: 0 0 100%;
+    }
+
+    .targetPrice,
+    .targetUnits {
+      justify-content: space-between;
+
+      > :nth-child(1) {
+        flex: 0 0 100%;
+      }
+
+      > :nth-child(2) {
+        flex: 0 0 calc(30% - 25px);
+      }
+
+      > :nth-child(3) {
+        flex: 0 0 calc(70% - 25px);
+      }
+    }
+  }
+}
