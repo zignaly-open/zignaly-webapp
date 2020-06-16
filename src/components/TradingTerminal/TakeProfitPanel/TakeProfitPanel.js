@@ -102,13 +102,13 @@ const TakeProfitPanel = (props) => {
     const unitsProperty = `exitUnits${targetId}`;
     const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
     const unitsPercentage = parseFloat(draftPosition[unitsPercentageProperty]);
-    let targetUnits = 0;
 
     if (unitsPercentage > 0) {
-      targetUnits = units * (unitsPercentage / 100);
+      const targetUnits = units * (unitsPercentage / 100);
+      setValue(unitsProperty, targetUnits);
+    } else {
+      setValue(unitsProperty, "");
     }
-
-    setValue(unitsProperty, targetUnits > 0 ? targetUnits : "");
   };
 
   /**
@@ -117,7 +117,22 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const exitUnitsChange = (event) => {};
+  const exitUnitsChange = (event) => {
+    const draftPosition = getValues();
+    const units = parseFloat(draftPosition.units) || 0;
+    const targetId = getGroupTargetId(event);
+    const unitsProperty = `exitUnits${targetId}`;
+    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
+    const exitUnits = parseFloat(draftPosition[unitsProperty]);
+
+    if (units > 0 && exitUnits > 0) {
+      const unitsDiff = units - exitUnits;
+      const unitsPercentage = (1 - unitsDiff / units) * 100;
+      setValue(unitsPercentageProperty, unitsPercentage);
+    } else {
+      setValue(unitsPercentageProperty, "");
+    }
+  };
 
   useEffect(() => {
     const currentValues = getValues();
