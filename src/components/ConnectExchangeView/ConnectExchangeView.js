@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ConnectExchangeView.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
@@ -18,7 +18,9 @@ import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
-  const [path, setPath] = useState("createAccount");
+  const [path, setPath] = useState("connectAccount");
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef(null);
 
   /**
    * Handle submit buttton click.
@@ -27,7 +29,10 @@ const ConnectExchangeView = (props) => {
    * @returns {void}
    */
   const handleClick = () => {
-    props.onClose();
+    setIsLoading(true);
+    // console.log(formRef);
+    window.dispatchEvent(new Event("submit"));
+    // props.onClose();
   };
 
   const tabs = [
@@ -54,7 +59,7 @@ const ConnectExchangeView = (props) => {
       justifyContent="center"
     >
       <Box className="actionBar">
-        <CustomButton className="submitButton" onClick={handleClick}>
+        <CustomButton className="submitButton" onClick={handleClick} loading={isLoading}>
           <FormattedMessage id="accounts.done" />
         </CustomButton>
       </Box>

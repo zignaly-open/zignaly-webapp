@@ -16,7 +16,7 @@ import ExchangeAccountCreate from "../ExchangeAccountCreate";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchangeViewContent = ({ path, setPath }) => {
-  const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
+  const [selectedExchangeInternalId, setExchangeInternalId] = useState("realAccount");
 
   /**
    * Navigate to action page.
@@ -37,11 +37,23 @@ const ConnectExchangeViewContent = ({ path, setPath }) => {
     default:
       return <ExchangeAccountList navigateToAction={navigateToAction} type={path} />;
     case "createAccount":
-      return <ExchangeAccountCreate />;
     case "createDemoAccount":
-      return <ExchangeAccountWithdraw />;
+      return (
+        <ExchangeAccountCreate
+          navigateToAction={navigateToAction}
+          create={true}
+          demo={path === "createDemoAccount"}
+        />
+      );
     case "connectAccount":
-      return <ExchangeAccountWithdraw />;
+    case "connectDemoAccount":
+      return (
+        <ExchangeAccountCreate
+          navigateToAction={navigateToAction}
+          create={false}
+          demo={path === "connectDemoAccount"}
+        />
+      );
     case "settings":
       return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;
     case "deposit":

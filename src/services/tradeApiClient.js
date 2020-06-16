@@ -45,6 +45,7 @@ import {
  * @typedef {import('./tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsPayload} CopyTradersProvidersOptionsPayload
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsCollection} CopyTradersProvidersOptionsCollection
+ * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
  */
 
 /**
@@ -478,6 +479,19 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return ownCopyTraderProvidersOptionsResponseTransform(responseData);
+  }
+
+  /**
+   * Connect to a new exchange.
+   *
+   * @param {ExchangeAddPayload} payload Payload
+   * @returns {Promise<boolean>}
+   * @memberof TradeApiClient
+   */
+  async exchangeAdd(payload) {
+    const endpointPath = "/fe/api.php?action=addExchange";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
   }
 }
 

@@ -394,6 +394,19 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ExchangeAddPayload
+ * @property {string} exchangeId
+ * @property {string} internalName
+ * @property {string} exchangeType
+ * @property {string} key
+ * @property {string} secret
+ * @property {string} [password]
+ * @property {boolean} mainAccount
+ * @property {boolean} isPaperTrading
+ * @property {boolean} testNet
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

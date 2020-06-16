@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
 import "./ExchangeAccountCreate.scss";
 import { useForm, FormContext, Controller } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
+import useEvent from "../../../hooks/useEvent";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -19,9 +22,10 @@ import useExchangeList from "../../../hooks/useExchangeList";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountCreate = ({}) => {
+const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction }) => {
   const { register, handleSubmit, errors, control, getValues } = useForm();
   const intl = useIntl();
+  const storeSession = useStoreSessionSelector();
   const exchanges = useExchangeList();
   const [selectedExchange, setExchange] = useState(
     /** @type {ExchangeListEntity} */ ({
@@ -45,17 +49,26 @@ const ExchangeAccountCreate = ({}) => {
     label: t.charAt(0).toUpperCase() + t.slice(1),
   }));
 
-  //   const selectedExchange = getValues("exchangeName");
-  const create = false;
-
-  //   let exchangeTypes = [];
-  //   if (selectedExchange) {
-  //     exchangeTypes = exchange.type;
-  //   }
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const onSubmit = useCallback(() => {
+    handleSubmit((data) => {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        exchangeId: selectedExchange.id,
+        internalName: getValues("internalAccountName"),
+        exchangeType: getValues("exchangeType"),
+        key: getValues("key"),
+        secret: getValues("secret"),
+        password: getValues("password"),
+        mainAccount: false,
+        isPaperTrading: demo,
+        testNet: false,
+      };
+      tradeApi.exchangeAdd(payload).then(() => {
+        navigateToAction(demo ? "demoAccounts" : "realAccounts");
+      });
+    })();
+  }, [selectedExchange]);
+  useEvent("submit", onSubmit);
 
   const handleExchangeChange = (exchangeName) => {
     setExchange(exchanges.find((e) => e.name === exchangeName));
