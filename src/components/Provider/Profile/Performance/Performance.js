@@ -50,7 +50,8 @@ const PerformanceOverview = ({ provider }) => {
           alignItems="center"
         >
           <Typography variant="body1">
-            <FormattedMessage id="srv.btcbalance" />
+            {provider.copyTradingQuote}&nbsp;
+            <FormattedMessage id="accounts.balance" />
           </Typography>
           <Typography variant="h4" className="green">
             {formatCurrency(provider.performance.totalBalance)}
@@ -68,7 +69,7 @@ const PerformanceOverview = ({ provider }) => {
             <FormattedMessage id="srv.totalvol" />
           </Typography>
           <Typography variant="h4">
-            {formatCurrency(provider.performance.totalTradingVolume)} USDT
+            {formatCurrency(provider.performance.totalTradingVolume)} {provider.copyTradingQuote}
           </Typography>
         </Box>
       </Box>
