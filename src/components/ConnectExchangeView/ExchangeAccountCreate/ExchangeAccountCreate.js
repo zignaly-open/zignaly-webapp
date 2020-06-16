@@ -48,8 +48,13 @@ const ExchangeAccountCreate = ({}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box display="flex" flexDirection="column" className="exchangeAccountCreate">
+    <form onSubmit={handleSubmit(onSubmit)} className="exchangeAccountCreate">
+      <Box
+        display="flex"
+        flexDirection="column"
+        className="exchangeAccountForm"
+        alignItems="flex-start"
+      >
         {create ? (
           <Box>Zignaly Exchange</Box>
         ) : (
@@ -122,7 +127,7 @@ const CustomInput = ({ inputRef, name, label }) => (
   <FormControlLabel
     control={<OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
     label={
-      <Typography className="callout2">
+      <Typography className="accountLabel">
         <FormattedMessage id={label} />
       </Typography>
     }

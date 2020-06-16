@@ -50,7 +50,7 @@
 
 @include media("<=sm") {
   .customSelect {
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: fit-content;
     justify-content: flex-end;
 
@@ -60,8 +60,6 @@
     }
 
     .callout {
-      order: 2;
-
       & + span {
         margin-bottom: 5px;
         order: 1;

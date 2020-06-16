@@ -50,7 +50,7 @@ const CustomSelect = (props) => {
     <FormControlLabel
       className={"customSelect " + (storeSettings.darkStyle ? "dark" : "light")}
       control={
-        <FormControl className="callout" variant="outlined">
+        <FormControl className="callout customSelectControl" variant="outlined">
           {!search ? (
             <Select
               className="select"
@@ -89,7 +89,7 @@ const CustomSelect = (props) => {
           )}
         </FormControl>
       }
-      label={label ? <Typography className="callout2">{label}</Typography> : null}
+      label={label ? <Typography className="callout2 selectLabel">{label}</Typography> : null}
       {...extraProps}
     />
   );
