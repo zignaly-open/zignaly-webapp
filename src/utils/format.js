@@ -65,3 +65,41 @@ export const toCamelCaseKeys = (obj) => {
     {},
   );
 };
+
+/**
+ *
+ * @param {Number} value
+ * @returns {String | Number}
+ */
+export const formatCurrency = (value) => {
+  /**
+   *
+   * @param {Number} n
+   */
+  function log10(n) {
+    return Math.round((100 * Math.log(n)) / Math.log(10)) / 100;
+  }
+
+  switch (Math.round(log10(value))) {
+    case 1:
+      return `${value}`;
+    case 2:
+      return `${value}`;
+    case 3:
+      return `${(value / 1000).toFixed(1)} Thousand`;
+    case 4:
+      return `${(value / 1000).toFixed(1)} Thousand`;
+    case 5:
+      return `${(value / 100000).toFixed(1)} Thousand`;
+    case 6:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 7:
+      return `${(value / 1000000).toFixed(1)}. Million`;
+    case 8:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 9:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 10:
+      return `${(value / 1000000).toFixed(1)} Million`;
+  }
+};

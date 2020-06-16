@@ -9,7 +9,7 @@ import ReactMarkdown from "react-markdown";
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * About us compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
