@@ -55,7 +55,7 @@ const CompositionGraph = ({ list, quotes }) => {
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          chartData.values.push(value);
+          chartData.values.push(value.toFixed(2));
           chartData.labels.push(quotes[a]);
         }
       }
