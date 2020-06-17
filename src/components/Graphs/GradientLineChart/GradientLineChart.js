@@ -191,7 +191,7 @@ const LineChart = (props) => {
   ];
 
   return (
-    <Box className="chart">
+    <Box className="gradientChart">
       <CustomToolip
         classes={{ tooltip: "customTooltip" }}
         open={isTooltipVisible}
