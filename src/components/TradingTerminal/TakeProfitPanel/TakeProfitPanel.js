@@ -216,7 +216,7 @@ const TakeProfitPanel = (props) => {
           justifyContent="space-around"
         >
           {cardinalityRange.map((index) => (
-            <FormControl className="targetGroup" data-target-id={index} key={`target${index}`}>
+            <Box className="targetGroup" data-target-id={index} key={`target${index}`}>
               <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
                 <Box alignItems="center" display="flex">
@@ -265,7 +265,7 @@ const TakeProfitPanel = (props) => {
                   <span className="errorText">{errors[`exitUnitsPercentage${index}`].message}</span>
                 )}
               </Box>
-            </FormControl>
+            </Box>
           ))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             <Button className="removeTarget" onClick={handleTargetRemove}>
