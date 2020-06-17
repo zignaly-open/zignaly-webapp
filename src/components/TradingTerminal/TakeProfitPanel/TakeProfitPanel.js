@@ -10,6 +10,23 @@ import "./TakeProfitPanel.scss";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 
+/**
+ * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ */
+
+/**
+ * @typedef {Object} StrategyPanelProps
+ * @property {MarketSymbol} symbolData
+ * @property {CoinRayCandle} lastPriceCandle
+ */
+
+/**
+ * Manual trading take profit panel component.
+ *
+ * @param {TakeProfitPanelProps} props Component props.
+ * @returns {JSX.Element} Take profit panel element.
+ */
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
   const defaultExpand = true;
