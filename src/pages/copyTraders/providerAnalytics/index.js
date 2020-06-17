@@ -9,6 +9,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
+import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 
 const CopyTradersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
@@ -46,6 +47,10 @@ const CopyTradersAnalytics = () => {
         </Typography>
         <CopiersGraph list={followers} />
         <GraphLabels list={followers} />
+      </Box>
+
+      <Box bgcolor="grid.main" className="moreInfoBox">
+        <MoreInfo provider={storeViews.provider} />
       </Box>
     </Box>
   );

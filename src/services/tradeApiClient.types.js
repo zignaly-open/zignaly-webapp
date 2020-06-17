@@ -1572,6 +1572,10 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {String} about
  * @property {String} strategy
  * @property {DefaultProviderPermormanceObject} performance
+ * @property {Number} avgHoldingTime
+ * @property {Number} activeSince
+ * @property {Number} avgTradesPerWeek
+ * @property {Number} profitableWeeks
  */
 
 /**
@@ -1655,13 +1659,17 @@ function createEmptyProviderGetEntity() {
     social: [{}],
     about: "",
     performance: {
-      closePositions: 234,
+      closePositions: 0,
       last12WeeksStats: [{}],
-      openPositions: 12,
-      totalBalance: 12313123.23,
-      totalTradingVolume: 234248234,
+      openPositions: 0,
+      totalBalance: 0,
+      totalTradingVolume: 0,
     },
     strategy: "",
+    avgHoldingTime: 0,
+    activeSince: 0,
+    avgTradesPerWeek: 0,
+    profitableWeeks: 0,
   };
 }
 
