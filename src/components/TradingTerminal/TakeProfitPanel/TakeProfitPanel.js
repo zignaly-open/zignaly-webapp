@@ -19,6 +19,7 @@ const TakeProfitPanel = (props) => {
   const [cardinality, setCardinality] = useState(1);
   const cardinalityRange = range(1, cardinality + 1, 1);
   const entryType = watch("entryType");
+  const limitPrice = watch("price");
 
   /**
    * Handle toggle switch action.
@@ -133,7 +134,6 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const targetPricePercentageChange = (event) => {
-    console.log("Event dispatched: ", event);
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
@@ -230,17 +230,23 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
       }
 
-      document
-        .getElementsByName(composeTargetPropertyName("targetPricePercentage", targetId))
-        .forEach((item) => {
-          console.log("Item: ", item);
-          const event = new Event("input", { bubbles: true });
-          item.dispatchEvent(event);
-        });
+      const matches = document.getElementsByName(
+        composeTargetPropertyName("targetPricePercentage", targetId),
+      );
+
+      const item = matches[0] || null;
+      // @ts-ignore
+      if (item && item._valueTracker) {
+        // @ts-ignore
+        item._valueTracker.setValue("");
+        // Programatically invoke change event.
+        const event = new Event("input", { bubbles: true });
+        item.dispatchEvent(event);
+      }
     });
   };
 
-  useEffect(invertPricePercentage, [entryType, cardinality]);
+  useEffect(invertPricePercentage, [entryType, cardinality, limitPrice]);
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
