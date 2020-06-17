@@ -1,1 +1,1 @@
-export { default } from "./ExchangeAccountForm";
+export { default, CustomInput } from "./ExchangeAccountForm";

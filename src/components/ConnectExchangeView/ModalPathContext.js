@@ -4,7 +4,7 @@ const ModalPathContext = React.createContext({
   previousPath: "",
   setPreviousPath: () => {},
   setPathParams: () => {},
-  resetPath: () => {},
+  resetToPath: () => {},
   setTitle: () => {},
   pathParams: {},
   currentPath: "",

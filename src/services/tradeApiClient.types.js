@@ -407,6 +407,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ExchangeDeletePayload
+ * @property {string} internalId
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

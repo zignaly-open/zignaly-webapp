@@ -46,6 +46,7 @@ import {
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsPayload} CopyTradersProvidersOptionsPayload
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsCollection} CopyTradersProvidersOptionsCollection
  * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
  */
 
 /**
@@ -490,6 +491,19 @@ class TradeApiClient {
    */
   async exchangeAdd(payload) {
     const endpointPath = "/fe/api.php?action=addExchange";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete an exchange.
+   *
+   * @param {ExchangeDeletePayload} payload Payload
+   * @returns {Promise<boolean>}
+   * @memberof TradeApiClient
+   */
+  async exchangeDelete(payload) {
+    const endpointPath = "/fe/api.php?action=delNewExchange";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

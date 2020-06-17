@@ -27,7 +27,7 @@ const ExchangeAccountList = ({ demo }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
-    resetPath,
+    resetToPath,
   } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -40,13 +40,13 @@ const ExchangeAccountList = ({ demo }) => {
     {
       id: "accounts.real",
       onClick: () => {
-        resetPath("realAccounts");
+        resetToPath("realAccounts");
       },
     },
     {
       id: "accounts.demo",
       onClick: () => {
-        resetPath("demoAccounts");
+        resetToPath("demoAccounts");
       },
     },
   ];

@@ -19,11 +19,7 @@ import ModalPathContext from "./ModalPathContext";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
-  const [path, setPath] = useState("realAccounts");
   const [isLoading, setIsLoading] = useState(false);
-  //   const formRef = useRef(null);
-  //   const [state, dispatch] = useReducer({});
-  //   const ModalPathContext = React.createContext({});
 
   /**
    * Handle submit buttton click.
@@ -33,12 +29,10 @@ const ConnectExchangeView = (props) => {
    */
   const handleClick = () => {
     setIsLoading(true);
-    // console.log(formRef);
     window.dispatchEvent(new Event("submit"));
     // props.onClose();
   };
 
-  //   const [previousPath, setPreviousPath] = useState("");
   const [pathParams, setPathParams] = useState({
     currentPath: "realAccounts",
   });
@@ -51,7 +45,7 @@ const ConnectExchangeView = (props) => {
     });
   };
 
-  const resetPath = (path) => {
+  const resetToPath = (path) => {
     setPathParams({
       currentPath: path,
     });
@@ -63,49 +57,7 @@ const ConnectExchangeView = (props) => {
       title,
     });
   };
-  const value = { pathParams, setPathParams, navigateToPath, resetPath, setTitle };
-
-  //   const navigateToPath = (path, selectedAccount) => {
-  //     setState({
-  //       ...state,
-  //       pathParams: {
-  //         currentPath: path,
-  //         previousPath: state.pathParams.currentPath,
-  //         selectedAccount,
-  //       },
-  //     });
-  //   };
-
-  //   const resetToPath = (path) => {
-  //     setState({
-  //       ...state,
-  //       pathParams: {
-  //         currentPath: path,
-  //       },
-  //     });
-  //   };
-
-  //   const initState = {
-  //     language: "en",
-  //     setLanguage: setLanguage,
-  //   };
-
-  //   const [state, setState] = useState(initState);
-
-  //   const tabs = [
-  //     {
-  //       id: "accounts.real",
-  //       onClick: () => {
-  //         resetPath("realAccounts");
-  //       },
-  //     },
-  //     {
-  //       id: "accounts.demo",
-  //       onClick: () => {
-  //         resetPath("demoAccounts");
-  //       },
-  //     },
-  //   ];
+  const value = { pathParams, setPathParams, navigateToPath, resetToPath, setTitle };
 
   return (
     <ModalPathContext.Provider value={value}>
@@ -120,7 +72,7 @@ const ConnectExchangeView = (props) => {
           {pathParams.previousPath && (
             <CustomButton
               className="submitButton"
-              onClick={() => resetPath(pathParams.previousPath)}
+              onClick={() => resetToPath(pathParams.previousPath)}
             >
               <FormattedMessage id="accounts.back" />
             </CustomButton>

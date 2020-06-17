@@ -9,9 +9,10 @@ import useEvent from "../../../hooks/useEvent";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../../../store/actions/ui";
 import Loader from "../../Loader";
+import { useDispatch } from "react-redux";
+import { setUserExchanges } from "../../../store/actions/user";
+import ExchangeAccountForm, { CustomInput } from "../ExchangeAccountForm";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -29,8 +30,12 @@ import Loader from "../../Loader";
 const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction }) => {
   const { register, handleSubmit, errors, control, getValues, setValue, watch, reset } = useForm();
   const intl = useIntl();
+  const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const { resetToPath } = useContext(ModalPathContext);
+  const {
+    resetToPath,
+    pathParams: { previousPath },
+  } = useContext(ModalPathContext);
 
   const exchanges = useExchangeList();
 
@@ -70,16 +75,15 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
 
   const onSubmit = useCallback(() => {
     handleSubmit((data) => {
-      console.log(data);
-      const { internalName, exchangeType, password } = data;
+      const { internalName, exchangeType, key, secret, password } = data;
       const payload = {
         token: storeSession.tradeApi.accessToken,
         exchangeId: selectedExchange.id,
         internalName,
         exchangeType,
-        ...(create && {
-          key: getValues("key"),
-          secret: getValues("secret"),
+        ...(!create && {
+          key,
+          secret,
           ...(password && { password }),
         }),
         mainAccount: false,
@@ -88,7 +92,11 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
       };
 
       tradeApi.exchangeAdd(payload).then(() => {
-        resetToPath(demo ? "demoAccounts" : "realAccounts");
+        const authorizationPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(setUserExchanges(authorizationPayload));
+        resetToPath(previousPath);
       });
     })();
   }, [selectedExchange]);
@@ -99,12 +107,7 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   //  }
   return (
     <form className="exchangeAccountCreate">
-      <Box
-        display="flex"
-        flexDirection="column"
-        className="exchangeAccountForm"
-        alignItems="flex-start"
-      >
+      <ExchangeAccountForm>
         {create ? (
           <Box>Zignaly Exchange</Box>
         ) : (
@@ -144,21 +147,9 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
               key={field}
             />
           ))}
-      </Box>
+      </ExchangeAccountForm>
     </form>
   );
 };
-
-const CustomInput = ({ inputRef, name, label }) => (
-  <FormControlLabel
-    control={<OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
-    label={
-      <Typography className="accountLabel">
-        <FormattedMessage id={label} />
-      </Typography>
-    }
-    labelPlacement="start"
-  />
-);
 
 export default ExchangeAccountCreate;
