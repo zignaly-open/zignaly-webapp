@@ -1,5 +1,6 @@
 .connectExchangeViewHead {
   width: 100%;
+  padding-bottom: 24px;
 
   .actionBar {
     border-bottom: 1px solid $borderColor;
@@ -17,7 +18,7 @@
   }
 
   > .titleBar {
-    padding: 32px 14px 0;
+    padding: 32px 24px 0;
     width: 100%;
   }
 }

@@ -1,17 +1,9 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
-import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, FormControlLabel, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import "./ExchangeAccountForm.scss";
-import { useForm, FormContext, Controller } from "react-hook-form";
-import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
-import useExchangeList from "../../../hooks/useExchangeList";
-import useEvent from "../../../hooks/useEvent";
-import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import ModalPathContext from "../ModalPathContext";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../../../store/actions/ui";
-import Loader from "../../Loader";
+import { Help } from "@material-ui/icons";
+import CustomTooltip from "../../CustomTooltip";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -49,6 +41,42 @@ export const CustomInput = ({ inputRef, name, label }) => (
     }
     labelPlacement="start"
   />
+);
+
+const SwitchInputComponent = ({ inputRef, tooltip }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Box display="flex" flexDirection="row" alignItems="center">
+      <Switch
+        onChange={(e, checked) => {
+          setIsOpen(checked);
+        }}
+        size="small"
+        className="switch"
+      />
+      {isOpen && <OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
+    </Box>
+  );
+};
+
+export const CustomSwitchInput = ({ inputRef, tooltip, label }) => (
+  <>
+    <FormControlLabel
+      control={<SwitchInputComponent inputRef={inputRef} tooltip={tooltip} />}
+      label={
+        <Box display="flex" flexDirection="row" className="accountLabel">
+          <Typography>
+            <FormattedMessage id={label} />
+          </Typography>
+          <CustomTooltip title={<FormattedMessage id={tooltip} />}>
+            <Help />
+          </CustomTooltip>
+        </Box>
+      }
+      labelPlacement="start"
+    />
+  </>
 );
 
 export default ExchangeAccountForm;

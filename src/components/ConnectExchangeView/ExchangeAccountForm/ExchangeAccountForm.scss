@@ -1,10 +1,13 @@
 .exchangeAccountForm {
-  width: 40%;
+  //   width: 40%;
+  margin: 0 24px;
 
   label {
-    justify-content: center;
+    justify-content: flex-end;
     margin-bottom: 20px;
+    margin-left: 0;
     width: 100%;
+    min-height: 32px;
   }
 
   .customSelectControl,
@@ -28,9 +31,18 @@
     letter-spacing: 0.53px;
     line-height: 1.43;
     margin: 0;
-    margin-right: 20px;
-    width: 200px;
-    text-align: right;
+    min-width: 337px;
+    // margin-right: 20px;
+    // width: 200px;
+    // text-align: right;
+  }
+
+  .accountLabel svg {
+    margin-left: 5px;
+  }
+
+  .switch {
+    margin-right: 10px;
   }
 }
 

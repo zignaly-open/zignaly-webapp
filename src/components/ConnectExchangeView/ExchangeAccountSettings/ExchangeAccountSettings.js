@@ -3,14 +3,13 @@ import { Box, Switch, FormControlLabel } from "@material-ui/core";
 import ModalPathContext from "../ModalPathContext";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomButton from "../../CustomButton";
-import CustomTooltip from "../../CustomTooltip";
-import { Help } from "@material-ui/icons";
-import ExchangeAccountForm from "../ExchangeAccountForm";
+import ExchangeAccountForm, { CustomSwitchInput } from "../ExchangeAccountForm";
 import { ConfirmDialog } from "../../Dialogs";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { removeUserExchange } from "../../../store/actions/user";
+import "./ExchangeAccountSettings.scss";
 
 /**
  * @typedef {Object} DefaultProps
@@ -76,22 +75,13 @@ const ExchangeAccountSettings = ({ internalId }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <ExchangeAccountForm>
-        <FormControlLabel
-          control={<Switch onChange={() => {}} size="small" />}
-          label={<FormattedMessage id="accounts.options.maxconcurrent" />}
-          labelPlacement="start"
+        <CustomSwitchInput
+          label={"accounts.options.maxconcurrent"}
+          tooltip={"accounts.options.maxconcurrent.help"}
         />
-        <CustomTooltip
-          title={intl.formatMessage({
-            id: "terminal.stoploss.help",
-          })}
-        >
-          <Help />
-        </CustomTooltip>
-        <FormControlLabel
-          control={<Switch onChange={() => {}} size="small" />}
-          label={<FormattedMessage id="accounts.options.minvolume" />}
-          labelPlacement="start"
+        <CustomSwitchInput
+          label={"accounts.options.minvolume"}
+          tooltip={"accounts.options.minvolume.help"}
         />
         <CustomButton className="body2 text-default" onClick={deleteExchangeShow}>
           <FormattedMessage id="accounts.delete.exchange" />

@@ -21,6 +21,9 @@
 
   &.fullscreen {
     margin: 0 100px;
+    height: auto;
+    max-height: 100%;
+    min-height: 75%;
   }
 }
 
@@ -28,6 +31,7 @@
   .modal {
     &.fullscreen {
       margin: 0;
+      height: 100%;
     }
   }
 }

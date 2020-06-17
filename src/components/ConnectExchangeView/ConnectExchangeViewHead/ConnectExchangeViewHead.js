@@ -41,13 +41,13 @@ const ConnectExchangeViewHead = ({}) => {
   };
 
   useEffect(() => {
-    // let timeoutId;
-    // if (tempMessage) {
-    console.log(tempMessage);
-    let timeoutId = setTimeout(() => {
-      setPathParams({ ...pathParams, isLoading: false });
-    }, 5000);
-    // }
+    let timeoutId;
+    if (tempMessage) {
+      console.log(tempMessage);
+      timeoutId = setTimeout(() => {
+        setPathParams({ ...pathParams, isLoading: false });
+      }, 5000);
+    }
     return () => {
       clearTimeout(timeoutId);
     };
