@@ -20,56 +20,20 @@ const ConnectExchangeViewContent = ({}) => {
   const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
   const { setPathParams, pathParams } = useContext(ModalPathContext);
 
-  /**
-   * Navigate to action page.
-   * @param {string} [internalId] Selected internal exchange id.
-   * @param {string} selectedPath Action path.
-   * @returns {void}
-   */
-  //   const navigateToAction = (selectedPath, internalId) => {
-  //     // if (internalId) {
-  //     //   setExchangeInternalId(internalId);
-  //     // }
-  //     // setPath(selectedPath);
-
-  //     setPathParams({
-  //       selectedExchangeInternalId: internalId,
-  //       path: selectedPath,
-  //     });
-  //   };
-
-  //   console.log("render", path);
-  //   useEffect(() => {
-  //     // setParam and return element here
-  //     console.log(path);
-  //     if (path === "realAccounts") {
-  //       setPathParams({});
-  //     }
-  //   }, [path]);
-
   const path = pathParams.currentPath;
   switch (path) {
     case "realAccounts":
     case "demoAccounts":
-    default: {
-      //   setPathParams({});
-      const demo = path === "demoAccounts";
-      return <ExchangeAccountList demo={demo} />;
-    }
+    default:
+      return <ExchangeAccountList demo={path === "demoAccounts"} />;
     case "createAccount":
-    case "createDemoAccount": {
-      const demo = path === "createDemoAccount";
-      //   setPathParams({
-      //     previousPath: demo ? "demoAccounts" : "realAccounts",
-      //   });
-
-      return <ExchangeAccountCreate create={true} demo={demo} />;
-    }
+    case "createDemoAccount":
+      return <ExchangeAccountCreate create={true} demo={path === "createDemoAccount"} />;
     case "connectAccount":
     case "connectDemoAccount":
       return <ExchangeAccountCreate create={false} demo={path === "connectDemoAccount"} />;
     case "settings":
-      return <ExchangeAccountSettings internalId={selectedExchangeInternalId} />;
+      return <ExchangeAccountSettings />;
     case "deposit":
       return <ExchangeAccountDeposit />;
     case "withdraw":

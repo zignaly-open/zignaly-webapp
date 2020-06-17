@@ -50,12 +50,20 @@ const ConnectExchangeView = (props) => {
       selectedAccount,
     });
   };
+
   const resetPath = (path) => {
     setPathParams({
       currentPath: path,
     });
   };
-  const value = { pathParams, setPathParams, navigateToPath, resetPath };
+
+  const setTitle = (title) => {
+    setPathParams({
+      ...pathParams,
+      title,
+    });
+  };
+  const value = { pathParams, setPathParams, navigateToPath, resetPath, setTitle };
 
   //   const navigateToPath = (path, selectedAccount) => {
   //     setState({
@@ -84,20 +92,20 @@ const ConnectExchangeView = (props) => {
 
   //   const [state, setState] = useState(initState);
 
-  const tabs = [
-    {
-      id: "accounts.real",
-      onClick: () => {
-        resetPath("realAccounts");
-      },
-    },
-    {
-      id: "accounts.demo",
-      onClick: () => {
-        resetPath("demoAccounts");
-      },
-    },
-  ];
+  //   const tabs = [
+  //     {
+  //       id: "accounts.real",
+  //       onClick: () => {
+  //         resetPath("realAccounts");
+  //       },
+  //     },
+  //     {
+  //       id: "accounts.demo",
+  //       onClick: () => {
+  //         resetPath("demoAccounts");
+  //       },
+  //     },
+  //   ];
 
   return (
     <ModalPathContext.Provider value={value}>
@@ -123,10 +131,10 @@ const ConnectExchangeView = (props) => {
         </Box>
         <Box className="titleBar">
           <Typography variant="h1">
-            <FormattedMessage id="dashboard.connectexchange.bold.title" />
+            {pathParams.title || <FormattedMessage id="dashboard.connectexchange.bold.title" />}
           </Typography>
         </Box>
-        <SubNavHeader links={tabs} />
+        {/* <SubNavHeader links={tabs} /> */}
         <ConnectExchangeViewContent />
       </Box>
     </ModalPathContext.Provider>

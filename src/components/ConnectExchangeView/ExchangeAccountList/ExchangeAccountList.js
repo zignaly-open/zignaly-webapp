@@ -10,6 +10,7 @@ import { FormattedMessage } from "react-intl";
 import NoRealAccount from "./NoRealAccount";
 import NoDemoAccount from "./NoDemoAccount";
 import ModalPathContext from "../ModalPathContext";
+import SubNavHeader from "../../SubNavHeader";
 
 /**
  * @typedef {Object} DefaultProps
@@ -26,6 +27,7 @@ const ExchangeAccountList = ({ demo }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
+    resetPath,
   } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -34,8 +36,24 @@ const ExchangeAccountList = ({ demo }) => {
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
 
+  const tabs = [
+    {
+      id: "accounts.real",
+      onClick: () => {
+        resetPath("realAccounts");
+      },
+    },
+    {
+      id: "accounts.demo",
+      onClick: () => {
+        resetPath("demoAccounts");
+      },
+    },
+  ];
+
   return (
     <Box className="exchangeAccountList">
+      <SubNavHeader links={tabs} />
       {!exchanges.length ? (
         !demo ? (
           <NoRealAccount />
