@@ -42,11 +42,12 @@ const StrategyPanel = (props) => {
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
+  const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const storeUser = useStoreUserSelector();
   const lastDayBalance = storeUser.dailyBalance.balances[0] || null;
+  const entryType = watch("entryType");
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
@@ -212,7 +213,7 @@ const StrategyPanel = (props) => {
         >
           {selectedExchange.exchangeType === "futures" && (
             <FormControl className="entryType">
-              <RadioGroup aria-label="Entry Type" name="entryType">
+              <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
                 <FormControlLabel
                   control={<Radio />}
                   inputRef={register}

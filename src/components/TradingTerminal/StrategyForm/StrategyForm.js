@@ -34,6 +34,7 @@ const StrategyForm = (props) => {
       realInvestment: "",
       positionSize: "",
       units: "",
+      entryType: "LONG",
     },
   });
   // Receives submitted data.
