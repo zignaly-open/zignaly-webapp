@@ -54,6 +54,20 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Get target property form state value.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {string} targetId Target index ID.
+   * @returns {number} Target property value.
+   */
+  const getTargetPropertyValue = (propertyName, targetId) => {
+    const draftPosition = getValues();
+    const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
+
+    return parseFloat(draftPosition[targetPropertyName]) || 0;
+  };
+
+  /**
    * Validate result of changed target units event.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
@@ -62,13 +76,13 @@ const TakeProfitPanel = (props) => {
   const validateExitUnits = (event) => {
     const draftPosition = getValues();
     const allUnitsPercentage = cardinalityRange.map((index) => {
-      return parseFloat(draftPosition[`exitUnitsPercentage${index}`]) || 0;
+      const targetProperty = composeTargetPropertyName("exitUnitsPercentage", String(index));
+      return parseFloat(draftPosition[targetProperty]) || 0;
     });
 
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const exitUnits = parseFloat(draftPosition[unitsProperty]);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
     const allUnitsPercentageTotal = sum(allUnitsPercentage);
 
     clearError(unitsPercentageProperty);
@@ -107,9 +121,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const targetPercentage = parseFloat(draftPosition[pricePercentageProperty]) || 100;
+    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId) || 100;
     const targetPrice = price * ((targetPercentage + 100) / 100);
 
     setValue(priceProperty, targetPrice);
@@ -126,8 +139,7 @@ const TakeProfitPanel = (props) => {
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const priceDiff = parseFloat(draftPosition[priceProperty]) - price;
+    const priceDiff = getTargetPropertyValue("priceProperty", targetId) - price;
     const targetPercentage = (priceDiff / price) * 100;
 
     setValue(pricePercentageProperty, targetPercentage || 0);
@@ -144,8 +156,7 @@ const TakeProfitPanel = (props) => {
     const units = parseFloat(draftPosition.units) || 0;
     const targetId = getGroupTargetId(event);
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const unitsPercentage = parseFloat(draftPosition[unitsPercentageProperty]);
+    const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
     if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
@@ -167,9 +178,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units) || 0;
     const targetId = getGroupTargetId(event);
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const exitUnits = parseFloat(draftPosition[unitsProperty]);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
     if (units > 0 && exitUnits > 0) {
       const unitsDiff = units - exitUnits;
