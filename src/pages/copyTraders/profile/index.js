@@ -8,6 +8,7 @@ import AboutUs from "../../../components/Provider/Profile/AboutUs";
 import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
+import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
 
 const CopyTradersProfile = () => {
   const storeViews = useStoreViewsSelector();
@@ -18,7 +19,7 @@ const CopyTradersProfile = () => {
       display="flex"
       flexDirection="row"
       flexWrap="wrap"
-      justifyContent="space-between"
+      justifyContent="center"
     >
       <Box bgcolor="grid.main" className="aboutBox">
         <AboutUs provider={storeViews.provider} />
@@ -32,6 +33,7 @@ const CopyTradersProfile = () => {
       <Box bgcolor="grid.main" className="performanceBox">
         <Performance provider={storeViews.provider} />
       </Box>
+      <Disclaimer />
     </Box>
   );
 };

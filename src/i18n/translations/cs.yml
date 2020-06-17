@@ -303,6 +303,8 @@ copyt.trial: "CH-Trial"
 copyt.paymonthlyfee: "CH-Pay Monthly Fee"
 copyt.fee: "CH-Fee"
 
+srv.disclaimer.title: "CH-Disclaimer"
+srv.disclaimer.text: "CH-Your are paying the fee directly to the signal provider or copy trader. Zignaly doesn't provide any trading advise or recommendation."
 srv.about: "CH-About us"
 srv.active: "CH-Active since"
 srv.analytics: "CH-Analytics"
