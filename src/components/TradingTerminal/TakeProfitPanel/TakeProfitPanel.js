@@ -133,6 +133,7 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const targetPricePercentageChange = (event) => {
+    console.log("Event dispatched: ", event);
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
@@ -228,6 +229,14 @@ const TakeProfitPanel = (props) => {
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
       }
+
+      document
+        .getElementsByName(composeTargetPropertyName("targetPricePercentage", targetId))
+        .forEach((item) => {
+          console.log("Item: ", item);
+          const event = new Event("input", { bubbles: true });
+          item.dispatchEvent(event);
+        });
     });
   };
 
