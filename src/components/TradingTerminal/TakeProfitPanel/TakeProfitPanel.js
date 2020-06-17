@@ -69,6 +69,20 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Set target property form state value.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {string} targetId Target index ID.
+   * @param {string} value Value to set.
+   * @returns {Void} None.
+   */
+  const setTargetPropertyValue = (propertyName, targetId, value) => {
+    const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
+
+    return setValue(targetPropertyName, value);
+  };
+
+  /**
    * Validate result of changed target units event.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
@@ -202,10 +216,22 @@ const TakeProfitPanel = (props) => {
     validateExitUnits(event);
   };
 
-  useEffect(() => {
-    cardinalityRange.forEach((index) => {});
-    console.log("Entry type changed: ", entryType);
-  }, [entryType]);
+  const invertPricePercentage = () => {
+    cardinalityRange.forEach((index) => {
+      const targetId = String(index);
+      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+      const newValue = formatFloat2Dec(Math.abs(currentValue));
+      const sign = entryType === "SHORT" ? "-" : "";
+
+      if (currentValue === 0) {
+        setTargetPropertyValue("targetPricePercentage", targetId, sign);
+      } else {
+        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+      }
+    });
+  };
+
+  useEffect(invertPricePercentage, [entryType, cardinality]);
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
