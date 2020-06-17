@@ -31,9 +31,17 @@ const ExchangeAccountForm = ({ children }) => {
   );
 };
 
-export const CustomInput = ({ inputRef, name, label }) => (
+export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) => (
   <FormControlLabel
-    control={<OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
+    control={
+      <OutlinedInput
+        className="customInput"
+        inputRef={inputRef}
+        name={name}
+        defaultValue={defaultValue || ""}
+        {...others}
+      />
+    }
     label={
       <Typography className="accountLabel">
         <FormattedMessage id={label} />
@@ -43,30 +51,38 @@ export const CustomInput = ({ inputRef, name, label }) => (
   />
 );
 
-const SwitchInputComponent = ({ inputRef, tooltip }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const SwitchInputComponent = ({ inputRef, defaultValue }) => {
+  const [checked, setChecked] = useState(!!defaultValue);
 
   return (
     <Box display="flex" flexDirection="row" alignItems="center">
       <Switch
         onChange={(e, checked) => {
-          setIsOpen(checked);
+          setChecked(checked);
         }}
         size="small"
         className="switch"
+        checked={checked}
       />
-      {isOpen && <OutlinedInput className="customInput" inputRef={inputRef} name={name} />}
+      {checked && (
+        <OutlinedInput
+          className="customInput"
+          inputRef={inputRef}
+          name={name}
+          defaultValue={defaultValue || ""}
+        />
+      )}
     </Box>
   );
 };
 
-export const CustomSwitchInput = ({ inputRef, tooltip, label }) => (
+export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue }) => (
   <>
     <FormControlLabel
-      control={<SwitchInputComponent inputRef={inputRef} tooltip={tooltip} />}
+      control={<SwitchInputComponent inputRef={inputRef} defaultValue={defaultValue} />}
       label={
-        <Box display="flex" flexDirection="row" className="accountLabel">
-          <Typography>
+        <Box display="flex" flexDirection="row" className="accountLabelWrapper">
+          <Typography className="accountLabel">
             <FormattedMessage id={label} />
           </Typography>
           <CustomTooltip title={<FormattedMessage id={tooltip} />}>

@@ -412,6 +412,20 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ExchangeUpdatePayload
+ * @property {string} internalId
+ * @property {string} exchangeId
+ * @property {string} internalName
+ * @property {string|boolean} globalMaxPositions
+ * @property {string|boolean} globalMinVolume
+ * @property {string|boolean} globalPositionsPerMarket
+ * @property {string|boolean} globalBlacklist
+ * @property {string|boolean} globalWhitelist
+ * @property {string|boolean} globalDelisting
+
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

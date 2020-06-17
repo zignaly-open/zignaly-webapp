@@ -92,6 +92,7 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
       };
 
       tradeApi.exchangeAdd(payload).then(() => {
+        // Reload user exchanges
         const authorizationPayload = {
           token: storeSession.tradeApi.accessToken,
         };
@@ -99,6 +100,7 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
         resetToPath(previousPath);
       });
     })();
+    //   todo: remove selectedExchange and use form data?
   }, [selectedExchange]);
   useEvent("submit", onSubmit);
 

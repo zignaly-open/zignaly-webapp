@@ -31,14 +31,19 @@
     letter-spacing: 0.53px;
     line-height: 1.43;
     margin: 0;
-    min-width: 337px;
-    // margin-right: 20px;
-    // width: 200px;
-    // text-align: right;
+    min-width: 360px;
   }
 
-  .accountLabel svg {
-    margin-left: 5px;
+  .accountLabelWrapper {
+    min-width: 360px;
+
+    .accountLabel {
+      min-width: auto;
+    }
+
+    svg {
+      margin-left: 5px;
+    }
   }
 
   .switch {

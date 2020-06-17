@@ -1,15 +1,18 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useCallback } from "react";
 import { Box, Switch, FormControlLabel } from "@material-ui/core";
 import ModalPathContext from "../ModalPathContext";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomButton from "../../CustomButton";
-import ExchangeAccountForm, { CustomSwitchInput } from "../ExchangeAccountForm";
+import ExchangeAccountForm, { CustomSwitchInput, CustomInput } from "../ExchangeAccountForm";
 import { ConfirmDialog } from "../../Dialogs";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { removeUserExchange } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
+import useEvent from "../../../hooks/useEvent";
+import { useForm, FormContext, Controller } from "react-hook-form";
+import useExchangeList from "../../../hooks/useExchangeList";
 
 /**
  * @typedef {Object} DefaultProps
@@ -29,6 +32,20 @@ const ExchangeAccountSettings = ({ internalId }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    getValues,
+    setValue,
+    watch,
+    reset,
+    formState,
+  } = useForm();
+  const { dirtyFields } = formState;
+  const exchanges = useExchangeList();
+  const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
 
   /**
    * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -67,6 +84,34 @@ const ExchangeAccountSettings = ({ internalId }) => {
       });
   };
 
+  const onSubmit = useCallback(() => {
+    handleSubmit((data) => {
+      console.log(dirtyFields, data);
+      const { internalName, key, secret, password } = data;
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        exchangeId: selectedAccount.internalId,
+        internalName,
+        ...((dirtyFields.has("key") ||
+          dirtyFields.has("secret") ||
+          dirtyFields.has("password")) && {
+          key,
+          secret,
+          ...(password && { password }),
+        }),
+      };
+
+      tradeApi.exchangeUpdate(payload).then(() => {
+        const authorizationPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(setUserExchanges(authorizationPayload));
+        resetToPath(previousPath);
+      });
+    })();
+  }, []);
+  useEvent("submit", onSubmit);
+
   return (
     <form className="exchangeAccountSettings">
       <ConfirmDialog
@@ -75,13 +120,33 @@ const ExchangeAccountSettings = ({ internalId }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <ExchangeAccountForm>
+        <CustomInput
+          inputRef={register}
+          name="internalName"
+          label="accounts.exchange.name"
+          defaultValue={selectedAccount.internalName}
+        />
+        {accountExchange &&
+          accountExchange.requiredAuthFields.map((field) => (
+            <CustomInput
+              inputRef={register}
+              name={field}
+              label={`accounts.exchange.${field}`}
+              key={field}
+              placeholder={
+                selectedAccount.areKeysValid ? "***************************************" : ""
+              }
+            />
+          ))}
         <CustomSwitchInput
           label={"accounts.options.maxconcurrent"}
           tooltip={"accounts.options.maxconcurrent.help"}
+          defaultValue={selectedAccount.globalMaxPositions}
         />
         <CustomSwitchInput
           label={"accounts.options.minvolume"}
           tooltip={"accounts.options.minvolume.help"}
+          defaultValue={selectedAccount.globalMinVolume}
         />
         <CustomButton className="body2 text-default" onClick={deleteExchangeShow}>
           <FormattedMessage id="accounts.delete.exchange" />
