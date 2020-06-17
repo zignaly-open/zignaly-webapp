@@ -17,7 +17,7 @@ const ErrorAlert = () => {
         horizontal: "right",
       }}
       TransitionComponent={Slide}
-      autoHideDuration={50000000}
+      autoHideDuration={5000}
       className="errorAlert"
       onClose={() => dispatch(hideErrorAlert())}
       open={storeAlerts.error.open}
