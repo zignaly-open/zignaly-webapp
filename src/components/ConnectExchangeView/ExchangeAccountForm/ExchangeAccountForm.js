@@ -77,22 +77,28 @@ const SwitchInputComponent = ({ inputRef, defaultValue }) => {
 };
 
 export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue }) => (
-  <>
-    <FormControlLabel
-      control={<SwitchInputComponent inputRef={inputRef} defaultValue={defaultValue} />}
-      label={
-        <Box display="flex" flexDirection="row" className="accountLabelWrapper">
-          <Typography className="accountLabel">
-            <FormattedMessage id={label} />
-          </Typography>
-          <CustomTooltip title={<FormattedMessage id={tooltip} />}>
-            <Help />
-          </CustomTooltip>
-        </Box>
-      }
-      labelPlacement="start"
-    />
-  </>
+  <CustomSwitch
+    tooltip={tooltip}
+    label={label}
+    defaultValue={defaultValue}
+    control={<SwitchInputComponent inputRef={inputRef} defaultValue={defaultValue} />}
+  />
+);
+export const CustomSwitch = ({ inputRef, tooltip, label, defaultValue, control }) => (
+  <FormControlLabel
+    control={control || <Switch defaultValue={defaultValue} inputRef={inputRef} />}
+    label={
+      <Box display="flex" flexDirection="row" className="accountLabelWrapper">
+        <Typography className="accountLabel">
+          <FormattedMessage id={label} />
+        </Typography>
+        <CustomTooltip title={<FormattedMessage id={tooltip} />}>
+          <Help />
+        </CustomTooltip>
+      </Box>
+    }
+    labelPlacement="start"
+  />
 );
 
 export default ExchangeAccountForm;

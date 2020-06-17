@@ -1,1 +1,1 @@
-export { default, CustomInput, CustomSwitchInput } from "./ExchangeAccountForm";
+export { default, CustomInput, CustomSwitchInput, CustomSwitch } from "./ExchangeAccountForm";
