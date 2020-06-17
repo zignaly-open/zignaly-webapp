@@ -25,9 +25,9 @@ const CompositionGraph = ({ list, quotes }) => {
 
   const sectionColors = [
     "#770fc8",
-    "#c12860",
     "#f63f82",
     "#b52a00",
+    "#c12860",
     "#c91919",
     "#08a441",
     "#f6ad3f",
@@ -35,7 +35,7 @@ const CompositionGraph = ({ list, quotes }) => {
   ];
 
   /**
-   * @typedef {import("../../../Graphs/LineChart/LineChart").ChartData} ChartData
+   * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
@@ -55,7 +55,7 @@ const CompositionGraph = ({ list, quotes }) => {
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          chartData.values.push(value);
+          chartData.values.push(value.toFixed(2));
           chartData.labels.push(quotes[a]);
         }
       }

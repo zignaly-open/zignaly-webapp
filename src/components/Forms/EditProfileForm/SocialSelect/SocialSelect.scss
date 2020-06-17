@@ -29,3 +29,22 @@
     }
   }
 }
+
+@include media("<=sm") {
+  .socialSelect {
+    width: 100%;
+
+    .fieldBox {
+      margin-bottom: 10px;
+      width: 100%;
+
+      .selectInput {
+        width: 35%;
+      }
+
+      .customInput {
+        width: calc(65% - 44px);
+      }
+    }
+  }
+}

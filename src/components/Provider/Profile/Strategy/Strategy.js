@@ -2,13 +2,14 @@ import React from "react";
 import "./Strategy.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import ReactMarkdown from "react-markdown";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * Strategy compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
@@ -25,10 +26,10 @@ const Strategy = ({ provider }) => {
     >
       <Box
         alignItems="center"
+        className="strategyHead"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        mb={2}
         width="100%"
       >
         <Typography variant="h3">
@@ -38,7 +39,7 @@ const Strategy = ({ provider }) => {
           <FormattedMessage id="srv.strategy.subtitle" />
         </Typography>
       </Box>
-      <Typography variant="body1">{provider.longDesc}</Typography>
+      <ReactMarkdown source={provider.strategy} />
     </Box>
   );
 };

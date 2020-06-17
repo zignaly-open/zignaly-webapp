@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./EquityGraphLabels.scss";
+import "./GraphLabels.scss";
 import { Box } from "@material-ui/core";
 /**
  *

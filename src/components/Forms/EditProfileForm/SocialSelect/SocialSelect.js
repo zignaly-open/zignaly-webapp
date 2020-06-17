@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SocialSelect.scss";
 import { Box, FormControl, Select, MenuItem, TextField } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /**
+ * Social select component to add social networks.
  *
- * @typedef {Object} DefaultProps
- * @property {Function} onChange
+ * @typedef {Object} DefaultProps Default props.
+ * @property {Function} onChange Change event.
+ * @property {Array<*>} defaultValue
  */
 
 /**
@@ -15,18 +17,31 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} Component JSX.
  */
-const SocialSelect = ({ onChange }) => {
-  const socialObject = { id: Math.random(), type: "facebook", url: "", delete: false };
+const SocialSelect = ({ onChange, defaultValue }) => {
+  const socialObject = { id: Math.random(), network: "facebook", link: "", delete: false };
 
   const [values, setValues] = useState([socialObject]);
-  const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram"];
+  const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram", "Email"];
+
+  const initializeSocials = () => {
+    if (defaultValue && defaultValue.length) {
+      for (let a = 0; a < defaultValue.length; a++) {
+        defaultValue[a].id = Math.random();
+        defaultValue[a].delete = true;
+      }
+      defaultValue[0].delete = false;
+      setValues(defaultValue);
+    }
+  };
+
+  useEffect(initializeSocials, [defaultValue]);
 
   /**
    * Function to handle input changes for select and text input.
    *
    * @param {React.ChangeEvent<*>} e Change event.
    * @param {Number|String} id ID of the dynamic field object.
-   * @returns {void}
+   * @returns {void} None.
    */
   const handleChange = (e, id) => {
     let target = e.target;
@@ -34,9 +49,9 @@ const SocialSelect = ({ onChange }) => {
     let index = list.findIndex((item) => item.id === id);
     let field = list.find((item) => item.id === id);
     if (target.name === "select") {
-      field.type = target.value;
+      field.network = target.value;
     } else {
-      field.url = target.value;
+      field.link = target.value;
     }
     list[index] = field;
     setValues(list);
@@ -56,7 +71,7 @@ const SocialSelect = ({ onChange }) => {
    * Function to add new field.
    *
    * @param {Number|String} id id of the field object.
-   * @returns {void}
+   * @returns {void} None.
    */
   const removeField = (id) => {
     let list = [...values];
@@ -83,7 +98,7 @@ const SocialSelect = ({ onChange }) => {
               className="select"
               name="select"
               onChange={(e) => handleChange(e, obj.id)}
-              value={obj.type}
+              value={obj.network}
             >
               {socialList.map((item) => (
                 <MenuItem key={item} value={item.toLowerCase()}>
@@ -97,7 +112,7 @@ const SocialSelect = ({ onChange }) => {
             name="input"
             onChange={(e) => handleChange(e, obj.id)}
             placeholder="url"
-            value={obj.url}
+            value={obj.link}
             variant="outlined"
           />
           {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}

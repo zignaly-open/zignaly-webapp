@@ -33,7 +33,7 @@ const userExchanges = (state, action) => {
       break;
 
     case REMOVE_USER_EXCHNAGES:
-      newState.exchangeConnections = [];
+      newState.exchangeConnections = initialState.user.exchangeConnections;
       break;
 
     case GET_USER_BALANCE:
@@ -41,7 +41,7 @@ const userExchanges = (state, action) => {
       break;
 
     case REMOVE_USER_BALANCE:
-      newState.balance = {};
+      newState.balance = initialState.user.balance;
       break;
 
     case GET_DAILY_USER_BALANCE:

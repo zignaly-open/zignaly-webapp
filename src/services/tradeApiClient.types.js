@@ -36,6 +36,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} GetProviderFollowersPayload
+ * @property {string} token
+ * @property {string} providerId
+ */
+
+/**
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -51,6 +57,29 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} providerId
  * @property {String} type
  * @property {Boolean} disable
+ */
+
+/**
+ * @typedef {Object} EditProvderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} name
+ * @property {String} logoUrl
+ * @property {String} website
+ * @property {Boolean} list
+ * @property {Boolean} public
+ * @property {String} minAllocatedBalance
+ * @property {String} merchantId
+ * @property {String} price
+ * @property {String} trial
+ * @property {String} ipnSecret
+ * @property {String} exchange
+ * @property {String} exchangeType
+ * @property {String} quote
+ * @property {String} about
+ * @property {String} strategy
+ * @property {Array<DefaultProviderSocialObject>} social
+ * @property {Array<DefaultProviderTeamObject>} team
  */
 
 /**
@@ -1459,6 +1488,38 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {String} merchantId
  * @property {Number} price
  * @property {Number} trial
+ * @property {String} ipnSecret
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderTeamObject
+ * @property {String} name
+ * @property {String} countryCode
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderSocialObject
+ * @property {String} network
+ * @property {String} link
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderPermormanceWeeklyStats
+ * @property {Number} week
+ * @property {Number} return
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderPermormanceObject
+ * @property {Number} closePositions
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} last12WeeksStats
+ * @property {Number} openPositions
+ * @property {Number} totalBalance
+ * @property {Number} totalTradingVolume
  */
 
 /**
@@ -1503,6 +1564,11 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} riskFilter
  * @property {Boolean} successRateFilter
  * @property {Boolean} terms
+ * @property {Array<DefaultProviderTeamObject>} team
+ * @property {Array<DefaultProviderSocialObject>} social
+ * @property {String} about
+ * @property {String} strategy
+ * @property {DefaultProviderPermormanceObject} performance
  */
 
 /**
@@ -1538,6 +1604,7 @@ function createEmptyProviderGetEntity() {
       merchantId: "",
       price: 0,
       trial: 0,
+      ipnSecret: "",
     },
     isAdmin: false,
     isClone: false,
@@ -1581,6 +1648,17 @@ function createEmptyProviderGetEntity() {
     riskFilter: false,
     successRateFilter: false,
     terms: false,
+    team: [{}],
+    social: [{}],
+    about: "",
+    performance: {
+      closePositions: 234,
+      last12WeeksStats: [{}],
+      openPositions: 12,
+      totalBalance: 12313123.23,
+      totalTradingVolume: 234248234,
+    },
+    strategy: "",
   };
 }
 
@@ -1686,5 +1764,53 @@ function createEmptyOwnCopyTraderProviderOption() {
     providerId: 0,
     providerName: "",
     providerQuote: false,
+  };
+}
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ProviderFollowerEntity>} User exchange connections collection.
+ */
+
+export function providerFollowersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((providerFollowersItem) => {
+    return providerFollowersResponseItemTransform(providerFollowersItem);
+  });
+}
+
+/**
+ * @typedef {Object} ProviderFollowerEntity
+ * @property {String} date
+ * @property {Number} followers
+ * @property {Number} totalFollowers
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} providerFollowersItem Trade API exchange connection item.
+ * @returns {ProviderFollowerEntity} Exchange connection entity.
+ */
+function providerFollowersResponseItemTransform(providerFollowersItem) {
+  const emptyExchangeListEntity = createProviderFollowersEmptyEntity();
+  const transformedResponse = assign(emptyExchangeListEntity, providerFollowersItem);
+
+  return transformedResponse;
+}
+
+function createProviderFollowersEmptyEntity() {
+  return {
+    enabled: false,
+    id: "",
+    name: "",
+    requiredAuthFields: [""],
+    testNet: [""],
+    type: [""],
   };
 }
