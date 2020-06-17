@@ -22,7 +22,7 @@ const Popup = () => {
       onClose={() => dispatch(hideErrorAlert())}
       open={storeAlerts.error.open}
     >
-      <Box bgcolor="grid.content" className="alertMessage">
+      <Box bgcolor="grid.main" className="alertMessage">
         {storeAlerts.error.title && (
           <Typography variant="h3" className="title red">
             <FormattedMessage id={storeAlerts.error.title} />
