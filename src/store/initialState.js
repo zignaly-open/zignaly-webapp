@@ -294,6 +294,10 @@ const initialState = {
         totalTradingVolume: 0,
       },
       strategy: "",
+      avgHoldingTime: 0,
+      activeSince: 0,
+      avgTradesPerWeek: 0,
+      profitableWeeks: 0,
     },
   },
 };
