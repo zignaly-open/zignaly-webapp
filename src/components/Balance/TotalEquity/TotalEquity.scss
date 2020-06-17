@@ -1,13 +1,13 @@
 .totalEquity {
   border-right: 2px solid $borderColor;
+  height: inherit;
   min-height: inherit;
   padding: 0 30px 0 0;
-  height: inherit;
 
   .gradientChart {
     canvas {
-      min-width: 100%;
       min-height: 200px;
+      min-width: 100%;
     }
   }
 

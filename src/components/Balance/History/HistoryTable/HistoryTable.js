@@ -30,8 +30,6 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
    * @type {Array<MUIDataTableColumn>} Table columns
    */
 
-  console.log(list);
-
   let columns = [
     {
       name: "date",
