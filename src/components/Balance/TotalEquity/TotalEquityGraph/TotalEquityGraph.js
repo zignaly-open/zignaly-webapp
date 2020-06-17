@@ -21,6 +21,8 @@ import { toNumber } from "lodash";
  */
 
 const TotalEquityGraph = ({ list }) => {
+  list = list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
   /**
    * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
@@ -36,8 +38,8 @@ const TotalEquityGraph = ({ list }) => {
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.unshift(parseFloat(item.totalUSDT));
-      chartData.labels.unshift("");
+      chartData.values.push(parseFloat(item.totalUSDT));
+      chartData.labels.push("");
     });
   };
 
@@ -60,17 +62,13 @@ const TotalEquityGraph = ({ list }) => {
       <Box className="equityTooltip">
         <Box>
           <span className="label"> Date:</span>
-          <span>
-            {list[list.length - tooltipItem.index]
-              ? list[list.length - tooltipItem.index].date
-              : "0"}
-          </span>
+          <span>{list[tooltipItem.index] ? list[tooltipItem.index].date : "0"}</span>
         </Box>
         <Box>
           <span className="label">BTC:</span>
           <span>
             {list[list.length - tooltipItem.index]
-              ? +toNumber(list[list.length - tooltipItem.index].totalBTC).toFixed(8)
+              ? +toNumber(list[tooltipItem.index].totalBTC).toFixed(8)
               : "0"}
           </span>
         </Box>
@@ -78,7 +76,7 @@ const TotalEquityGraph = ({ list }) => {
           <span className="label">USDT:</span>
           <span>
             {list[list.length - tooltipItem.index]
-              ? +toNumber(list[list.length - tooltipItem.index].totalUSDT).toFixed(8)
+              ? +toNumber(list[tooltipItem.index].totalUSDT).toFixed(8)
               : "0"}
           </span>
         </Box>
