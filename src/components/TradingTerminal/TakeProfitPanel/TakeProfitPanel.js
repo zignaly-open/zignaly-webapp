@@ -217,6 +217,26 @@ const TakeProfitPanel = (props) => {
     validateExitUnits(event);
   };
 
+  /**
+   * Progrmatically invoke change event simulation on a given element.
+   *
+   * @param {String} elementName Element name.
+   * @returns {Void} None.
+   */
+  const simulateInputChangeEvent = (elementName) => {
+    const matches = document.getElementsByName(elementName);
+    const item = matches[0] || null;
+
+    // @ts-ignore
+    if (item && item._valueTracker) {
+      // @ts-ignore
+      item._valueTracker.setValue("");
+      // Programatically invoke change event.
+      const event = new Event("input", { bubbles: true });
+      item.dispatchEvent(event);
+    }
+  };
+
   const invertPricePercentage = () => {
     cardinalityRange.forEach((index) => {
       const targetId = String(index);
@@ -230,19 +250,7 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
       }
 
-      const matches = document.getElementsByName(
-        composeTargetPropertyName("targetPricePercentage", targetId),
-      );
-
-      const item = matches[0] || null;
-      // @ts-ignore
-      if (item && item._valueTracker) {
-        // @ts-ignore
-        item._valueTracker.setValue("");
-        // Programatically invoke change event.
-        const event = new Event("input", { bubbles: true });
-        item.dispatchEvent(event);
-      }
+      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
     });
   };
 
