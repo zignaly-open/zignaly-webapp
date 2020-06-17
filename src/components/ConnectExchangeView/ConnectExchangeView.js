@@ -5,7 +5,7 @@ import CustomButton from "../CustomButton";
 import SubNavHeader from "../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
-import ModalHeaderContext from "./ModalHeaderContext";
+import ModalPathContext from "./ModalPathContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,7 +23,7 @@ const ConnectExchangeView = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   //   const formRef = useRef(null);
   //   const [state, dispatch] = useReducer({});
-  //   const ModalHeaderContext = React.createContext({});
+  //   const ModalPathContext = React.createContext({});
 
   /**
    * Handle submit buttton click.
@@ -57,6 +57,33 @@ const ConnectExchangeView = (props) => {
   };
   const value = { pathParams, setPathParams, navigateToPath, resetPath };
 
+  //   const navigateToPath = (path, selectedAccount) => {
+  //     setState({
+  //       ...state,
+  //       pathParams: {
+  //         currentPath: path,
+  //         previousPath: state.pathParams.currentPath,
+  //         selectedAccount,
+  //       },
+  //     });
+  //   };
+
+  //   const resetToPath = (path) => {
+  //     setState({
+  //       ...state,
+  //       pathParams: {
+  //         currentPath: path,
+  //       },
+  //     });
+  //   };
+
+  //   const initState = {
+  //     language: "en",
+  //     setLanguage: setLanguage,
+  //   };
+
+  //   const [state, setState] = useState(initState);
+
   const tabs = [
     {
       id: "accounts.real",
@@ -73,7 +100,7 @@ const ConnectExchangeView = (props) => {
   ];
 
   return (
-    <ModalHeaderContext.Provider value={value}>
+    <ModalPathContext.Provider value={value}>
       <Box
         alignItems="center"
         className="connectExchangeView"
@@ -85,8 +112,7 @@ const ConnectExchangeView = (props) => {
           {pathParams.previousPath && (
             <CustomButton
               className="submitButton"
-              onClick={() => setPathParams({ currentPath: pathParams.previousPath })}
-              loading={isLoading}
+              onClick={() => resetPath(pathParams.previousPath)}
             >
               <FormattedMessage id="accounts.back" />
             </CustomButton>
@@ -103,7 +129,7 @@ const ConnectExchangeView = (props) => {
         <SubNavHeader links={tabs} />
         <ConnectExchangeViewContent />
       </Box>
-    </ModalHeaderContext.Provider>
+    </ModalPathContext.Provider>
   );
 };
 

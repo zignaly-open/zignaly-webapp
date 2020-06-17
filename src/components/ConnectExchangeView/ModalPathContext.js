@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModalHeaderContext = React.createContext({
+const ModalPathContext = React.createContext({
   previousPath: "",
   setPreviousPath: () => {},
   setPathParams: () => {},
@@ -9,4 +9,4 @@ const ModalHeaderContext = React.createContext({
   currentPath: "",
 });
 
-export default ModalHeaderContext;
+export default ModalPathContext;

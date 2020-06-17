@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box } from "@material-ui/core";
 import "./NoRealAccount.scss";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
 import { Typography } from "@material-ui/core";
+import ModalPathContext from "../../ModalPathContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,7 +16,8 @@ import { Typography } from "@material-ui/core";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const NoRealAccount = ({ navigateToAction }) => {
+const NoRealAccount = () => {
+  const { navigateToPath } = useContext(ModalPathContext);
   return (
     <Box className="noRealAccount">
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -38,7 +40,7 @@ const NoRealAccount = ({ navigateToAction }) => {
           </Typography>
           <CustomButton
             className="body2 bgPurple exchangeButton"
-            onClick={() => navigateToAction("createAccount")}
+            onClick={() => navigateToPath("createAccount")}
           >
             <FormattedMessage id="accounts.create.exchange" />
           </CustomButton>
@@ -52,7 +54,7 @@ const NoRealAccount = ({ navigateToAction }) => {
           </Typography>
           <CustomButton
             className="body2 textPurple borderPurple exchangeButton"
-            onClick={() => navigateToAction("connectAccount")}
+            onClick={() => navigateToPath("connectAccount")}
           >
             <FormattedMessage id="accounts.connect.existing" />
           </CustomButton>
@@ -66,7 +68,7 @@ const NoRealAccount = ({ navigateToAction }) => {
           </Typography>
           <CustomButton
             className="body2 textPurple exchangeButton"
-            onClick={() => navigateToAction("createDemoAccount")}
+            onClick={() => navigateToPath("createDemoAccount")}
           >
             <FormattedMessage id="accounts.create.demo" />
           </CustomButton>

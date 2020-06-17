@@ -4,7 +4,7 @@ import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
 import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
 import ExchangeAccountCreate from "../ExchangeAccountCreate";
-import ModalHeaderContext from "../ModalHeaderContext";
+import ModalPathContext from "../ModalPathContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -18,7 +18,7 @@ import ModalHeaderContext from "../ModalHeaderContext";
  */
 const ConnectExchangeViewContent = ({}) => {
   const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
-  const { setPathParams, pathParams } = useContext(ModalHeaderContext);
+  const { setPathParams, pathParams } = useContext(ModalPathContext);
 
   /**
    * Navigate to action page.

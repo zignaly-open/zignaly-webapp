@@ -9,7 +9,7 @@ import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import NoRealAccount from "./NoRealAccount";
 import NoDemoAccount from "./NoDemoAccount";
-import ModalHeaderContext from "../ModalHeaderContext";
+import ModalPathContext from "../ModalPathContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -24,10 +24,9 @@ import ModalHeaderContext from "../ModalHeaderContext";
  */
 const ExchangeAccountList = ({ demo }) => {
   const {
-    setPathParams,
     pathParams: { currentPath },
     navigateToPath,
-  } = useContext(ModalHeaderContext);
+  } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
@@ -35,21 +34,13 @@ const ExchangeAccountList = ({ demo }) => {
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
 
-  //   const navigateToAction = (path, selectedAccount) => {
-  //     setPathParams({
-  //       currentPath: path,
-  //       previousPath: currentPath,
-  //       selectedAccount,
-  //     });
-  //   };
-
   return (
     <Box className="exchangeAccountList">
       {!exchanges.length ? (
         !demo ? (
-          <NoRealAccount navigateToAction={navigateToAction} />
+          <NoRealAccount />
         ) : (
-          <NoDemoAccount navigateToAction={navigateToAction} />
+          <NoDemoAccount />
         )
       ) : (
         <Box className={`exchangeAccountContainer ${currentPath}`}>
