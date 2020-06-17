@@ -33,50 +33,50 @@ const MoreInfo = ({ provider }) => {
       </Typography>
 
       <Box
+        alignItems="center"
+        className="infoBox"
         display="flex"
         flexDirection="row"
-        justifyContent="space-evenly"
-        alignItems="center"
         flexWrap="wrap"
-        className="infoBox"
+        justifyContent="space-evenly"
       >
         <Box
+          alignItems="center"
           className="dataBox"
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="center"
         >
-          <img src={ExchangeIcon} alt="zignaly" className="icon" />
-          <Typography variant="h3" className="tagline">
+          <img alt="zignaly" className="icon" src={ExchangeIcon} />
+          <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.tradesperweek" />
           </Typography>
           <Typography variant="h3">{provider.avgTradesPerWeek}</Typography>
         </Box>
 
         <Box
+          alignItems="center"
           className="dataBox"
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="center"
         >
-          <img src={TimeIcon} alt="zignaly" className="icon" />
-          <Typography variant="h3" className="tagline">
+          <img alt="zignaly" className="icon" src={TimeIcon} />
+          <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.avgholdingtime" />
           </Typography>
           <Typography variant="h3">{formatDuration(provider.avgHoldingTime)}</Typography>
         </Box>
 
         <Box
+          alignItems="center"
           className="dataBox"
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="center"
         >
-          <img src={CalendarIcon} alt="zignaly" className="icon" />
-          <Typography variant="h3" className="tagline">
+          <img alt="zignaly" className="icon" src={CalendarIcon} />
+          <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.active" />
           </Typography>
           <Typography variant="h3">
@@ -85,14 +85,14 @@ const MoreInfo = ({ provider }) => {
         </Box>
 
         <Box
+          alignItems="center"
           className="dataBox"
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="center"
         >
-          <img src={ProfitIcon} alt="zignaly" className="icon" />
-          <Typography variant="h3" className="tagline">
+          <img alt="zignaly" className="icon" src={ProfitIcon} />
+          <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.profitableweeks" />
           </Typography>
           <Typography variant="h3">{provider.profitableWeeks}</Typography>

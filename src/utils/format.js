@@ -112,7 +112,7 @@ export const formatCurrency = (value) => {
 /**
  * Function to format seconds to readable duration
  *
- * @param {Number} time
+ * @param {Number} time Time received in seconds format.
  * @returns {String} Formatted string.
  */
 export const formatDuration = (time) => {
@@ -151,4 +151,6 @@ export const formatDuration = (time) => {
   } else if (minutes > 0) {
     return (formatted += minutes + (minutes > 1 ? " Minutes " : " Minute "));
   }
+
+  return formatted;
 };

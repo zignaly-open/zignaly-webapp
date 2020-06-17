@@ -1,6 +1,6 @@
 .moreInfo {
-  width: 100%;
   min-height: inherit;
+  width: 100%;
 
   h3 {
     margin-bottom: 30px;
@@ -11,17 +11,17 @@
     width: 100%;
 
     .dataBox {
-      width: 200px;
       height: 250px;
+      width: 200px;
 
       h3 {
         width: fit-content;
       }
 
       .icon {
-        width: 48px;
         height: 48px;
         margin-bottom: 30px;
+        width: 48px;
       }
 
       .tagline {
