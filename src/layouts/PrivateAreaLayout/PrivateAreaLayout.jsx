@@ -9,7 +9,7 @@ import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
-import Alert from "../../components/Alert";
+import Alert from "../../components/Alerts/ErrorAlert";
 import Modal from "../../components/Modal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";

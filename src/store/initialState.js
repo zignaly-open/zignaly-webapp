@@ -59,9 +59,16 @@
  */
 
 /**
+ * @typedef {Object} ErrorAlertObject
+ * @property {Boolean} open
+ * @property {String} title
+ * @property {String} body
+ */
+
+/**
  * @typedef {Object} DefaultUIAlertsObject
  * @property {Object} success
- * @property {Object} error
+ * @property {ErrorAlertObject} error
  */
 
 /**
@@ -217,7 +224,11 @@ const initialState = {
     },
     alerts: {
       success: {},
-      error: {},
+      error: {
+        title: "",
+        body: "",
+        open: false,
+      },
     },
     loader: false,
   },

@@ -4,6 +4,8 @@ import {
   OPEN_EXCHANGE_CONNECTION_VIEW,
   OPEN_SSETTINGS_VIEW,
   SHOW_LOADER,
+  SHOW_ERROR_ALERT,
+  HIDE_ERROR_ALERT,
 } from "../store/actions/ui";
 
 /**
@@ -33,6 +35,12 @@ const ui = (state, action) => {
       break;
     case SHOW_LOADER:
       newState.loader = action.payload;
+      break;
+    case SHOW_ERROR_ALERT:
+      newState.alerts.error = action.payload;
+      break;
+    case HIDE_ERROR_ALERT:
+      newState.alerts.error = action.payload;
       break;
 
     default:

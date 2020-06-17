@@ -4,6 +4,8 @@ import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
 import { assign, filter, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -24,6 +26,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  */
 const usePositionsList = (type) => {
   const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
   const defaultFilters = {
     provider: "all",
     pair: "all",
@@ -96,7 +99,7 @@ const usePositionsList = (type) => {
           setPositions(newPositions);
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
   };

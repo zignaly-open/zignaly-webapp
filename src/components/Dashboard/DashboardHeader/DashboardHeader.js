@@ -7,6 +7,8 @@ import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -17,6 +19,7 @@ const DashboardHeader = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [links, setLinks] = useState(routesMapping("dashboard").links);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadProviders = async () => {
@@ -37,7 +40,7 @@ const DashboardHeader = () => {
           setLinks(data);
         }
       } catch (e) {
-        alert(e.message);
+        dispatch(showErrorAlert(e));
       }
     };
 

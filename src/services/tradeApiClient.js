@@ -91,14 +91,14 @@ class TradeApiClient {
       if (response.status === 200) {
         responseData = await response.json();
       } else {
-        responseData.error = await response.text();
+        responseData.error = await response.json();
       }
     } catch (e) {
       responseData.error = e.message;
     }
 
     if (responseData.error) {
-      const customError = new Error(`API ${requestUrl} request failed:` + responseData.error);
+      const customError = responseData.error.error;
       throw customError;
     }
 
