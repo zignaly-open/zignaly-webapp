@@ -16,7 +16,7 @@ import { formatPrice } from "../../../utils/formatters";
  */
 
 /**
- * @typedef {Object} StrategyPanelProps
+ * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
  * @property {CoinRayCandle} lastPriceCandle
  */
@@ -29,7 +29,7 @@ import { formatPrice } from "../../../utils/formatters";
  */
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
-  const defaultExpand = true;
+  const defaultExpand = false;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
   const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
