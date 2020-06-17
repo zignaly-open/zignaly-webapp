@@ -14,9 +14,10 @@ const TakeProfitPanel = (props) => {
   const defaultExpand = true;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
+  const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const [cardinality, setCardinality] = useState(1);
   const cardinalityRange = range(1, cardinality + 1, 1);
+  const entryType = watch("entryType");
 
   /**
    * Handle toggle switch action.
@@ -40,6 +41,19 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Compose dynamic target property name.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {string} targetId Target index ID.
+   * @returns {string} Property name for a given target index.
+   */
+  const composeTargetPropertyName = (propertyName, targetId) => {
+    const targetPropertyName = `${propertyName}${targetId}`;
+
+    return targetPropertyName;
+  };
+
+  /**
    * Validate result of changed target units event.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
@@ -52,8 +66,8 @@ const TakeProfitPanel = (props) => {
     });
 
     const targetId = getGroupTargetId(event);
-    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
-    const unitsProperty = `exitUnits${targetId}`;
+    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const exitUnits = parseFloat(draftPosition[unitsProperty]);
     const allUnitsPercentageTotal = sum(allUnitsPercentage);
 
@@ -93,8 +107,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
-    const pricePercentageProperty = `targetPricePercentage${targetId}`;
-    const priceProperty = `targetPrice${targetId}`;
+    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = parseFloat(draftPosition[pricePercentageProperty]) || 100;
     const targetPrice = price * ((targetPercentage + 100) / 100);
 
@@ -111,8 +125,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
-    const pricePercentageProperty = `targetPricePercentage${targetId}`;
-    const priceProperty = `targetPrice${targetId}`;
+    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const priceDiff = parseFloat(draftPosition[priceProperty]) - price;
     const targetPercentage = (priceDiff / price) * 100;
 
@@ -129,8 +143,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units) || 0;
     const targetId = getGroupTargetId(event);
-    const unitsProperty = `exitUnits${targetId}`;
-    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const unitsPercentage = parseFloat(draftPosition[unitsPercentageProperty]);
 
     if (unitsPercentage > 0) {
@@ -153,8 +167,8 @@ const TakeProfitPanel = (props) => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units) || 0;
     const targetId = getGroupTargetId(event);
-    const unitsProperty = `exitUnits${targetId}`;
-    const unitsPercentageProperty = `exitUnitsPercentage${targetId}`;
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = parseFloat(draftPosition[unitsProperty]);
 
     if (units > 0 && exitUnits > 0) {
@@ -169,8 +183,9 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(() => {
-    // TODO: Handle set state negative sign on short.
-  }, [cardinality]);
+    cardinalityRange.forEach((index) => {});
+    console.log("Entry type changed: ", entryType);
+  }, [entryType]);
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
