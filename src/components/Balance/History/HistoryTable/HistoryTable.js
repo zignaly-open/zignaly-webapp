@@ -76,7 +76,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "lockedUSDT",
+      name: "totalLockedUSDT",
       label: "col.totalUSDTalloc",
       options: {
         display: "true",
@@ -85,7 +85,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "lockedBTC",
+      name: "totalLockedBTC",
       label: "col.totalBTCalloc",
       options: {
         display: "true",
@@ -122,11 +122,11 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
           customBodyRender: formatFloat,
         },
       };
-      if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
+      if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "free" + quotes[a];
         obj.label = "col.free" + quotes[a];
+        columns.push(obj);
       }
-      columns.push(obj);
     }
     for (let a = 0; a < quotes.length; a++) {
       let obj = {
@@ -136,11 +136,11 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
           customBodyRender: formatFloat,
         },
       };
-      if (quotes[a] !== "ETH" || quotes[a] !== "BNB") {
+      if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "locked" + quotes[a];
         obj.label = "col.locked" + quotes[a];
+        columns.push(obj);
       }
-      columns.push(obj);
     }
   };
 

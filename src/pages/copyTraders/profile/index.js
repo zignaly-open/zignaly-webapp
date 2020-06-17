@@ -30,7 +30,7 @@ const CopyTradersProfile = () => {
         <Strategy provider={storeViews.provider} />
       </Box>
       <Box bgcolor="grid.main" className="performanceBox">
-        <Performance />
+        <Performance provider={storeViews.provider} />
       </Box>
     </Box>
   );

@@ -15,11 +15,12 @@ import EmailIcon from "@material-ui/icons/Email";
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
+ * Who we are compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const Strategy = ({ provider }) => {
+const WhoWeAre = ({ provider }) => {
   const [team, setTeam] = useState([]);
   const createList = () => {
     let obj = {
@@ -164,4 +165,4 @@ const Strategy = ({ provider }) => {
   );
 };
 
-export default Strategy;
+export default WhoWeAre;

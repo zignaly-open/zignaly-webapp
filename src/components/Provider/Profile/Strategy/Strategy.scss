@@ -1,5 +1,4 @@
 .strategy {
-  margin-bottom: 30px;
   min-height: inherit;
   padding: 30px 20px;
   width: 100%;
@@ -12,5 +11,21 @@
     margin: 0;
     width: 100%;
     word-wrap: break-word;
+  }
+}
+
+@include media("<=sm") {
+  .strategy {
+    padding: 20px;
+
+    .strategyHead {
+      flex-direction: column;
+      margin-bottom: 20px;
+
+      h3 {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+    }
   }
 }

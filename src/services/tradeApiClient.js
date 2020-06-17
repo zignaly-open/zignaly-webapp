@@ -18,6 +18,7 @@ import {
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
   ownCopyTraderProvidersOptionsResponseTransform,
+  providerFollowersResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -36,6 +37,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
+ * @typedef {import('./tradeApiClient.types').GetProviderFollowersPayload} GetProviderFollowersPayload
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
@@ -495,6 +497,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerFollowersGet(payload) {
+    const endpointPath = "/fe/api.php?action=getFollowersChartForProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerFollowersResponseTransform(responseData);
   }
 }
 

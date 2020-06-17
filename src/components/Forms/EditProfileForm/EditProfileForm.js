@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import RichTextEditor from "react-rte";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
@@ -23,6 +22,9 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../store/actions/views";
+import ReactMde from "react-mde";
+import ReactMarkdown from "react-markdown";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
@@ -46,21 +48,18 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control } = useForm();
-  const [about, setAbout] = useState(null);
-  const [strategy, setStrategy] = useState(null);
+  const [about, setAbout] = useState(storeViews.provider.about);
+  const [strategy, setStrategy] = useState(storeViews.provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(storeViews.provider.team);
   const [selectedSocials, setSelectedSocials] = useState(storeViews.provider.social);
   const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
   const [selectedQuote, setSelectedQuote] = useState("");
   const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
-
-  const initEditorValues = () => {
-    setAbout(RichTextEditor.createValueFromString(storeViews.provider.shortDesc, "html"));
-    setStrategy(RichTextEditor.createValueFromString(storeViews.provider.longDesc, "html"));
-  };
-
-  useEffect(initEditorValues, []);
+  // @ts-ignore
+  const [aboutTab, setAboutTab] = useState("write");
+  // @ts-ignore
+  const [strategyTab, setStrategyTab] = useState("write");
 
   const initializeQuote = () => {
     let list = Object.values(quotes);
@@ -166,8 +165,8 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
       exchange: exchange.name,
       exchangeType: selectedExchangeType,
       quote: selectedQuote,
-      about: about.toString("markdown"),
-      strategy: strategy.toString("markdown"),
+      about: about,
+      strategy: strategy,
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
     };
@@ -275,9 +274,16 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.about" />
             </Typography>
-            {about && (
-              <RichTextEditor className="editor" onChange={handleAboutChange} value={about} />
-            )}
+            <ReactMde
+              generateMarkdownPreview={(markdown) =>
+                Promise.resolve(<ReactMarkdown source={markdown} />)
+              }
+              onChange={handleAboutChange}
+              onTabChange={setAboutTab}
+              // @ts-ignore
+              selectedTab={aboutTab}
+              value={about}
+            />
           </Box>
 
           <Box
@@ -304,9 +310,16 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.strategy" />
             </Typography>
-            {strategy && (
-              <RichTextEditor className="editor" onChange={handleStrategyChange} value={strategy} />
-            )}
+            <ReactMde
+              generateMarkdownPreview={(markdown) =>
+                Promise.resolve(<ReactMarkdown source={markdown} />)
+              }
+              onChange={handleStrategyChange}
+              onTabChange={setStrategyTab}
+              // @ts-ignore
+              selectedTab={strategyTab}
+              value={strategy}
+            />
           </Box>
 
           <Box
