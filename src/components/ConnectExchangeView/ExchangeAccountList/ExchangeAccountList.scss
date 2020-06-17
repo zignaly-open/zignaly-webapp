@@ -1,6 +1,6 @@
 .exchangeAccountList {
   width: 100%;
-  padding: 0 24px 12px;
+  padding-bottom: 12px;
 
   .accountInfoHeader {
     background-image: $greyDarkGradient;
@@ -49,6 +49,8 @@
   }
 
   .exchangeAccountContainer {
+    padding: 0 24px;
+
     .exchangeButtons {
       margin-top: 40px;
     }

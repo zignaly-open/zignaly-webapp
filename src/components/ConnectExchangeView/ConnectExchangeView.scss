@@ -1,29 +1,12 @@
 .connectExchangeView {
-  .actionBar {
-    border-bottom: 1px solid $borderColor;
-    padding: 10px;
-    width: 100%;
-
-    .submitButton {
-      height: 40px;
-      min-width: 102px;
-    }
-  }
-
-  > .titleBar {
-    padding: 32px 14px 0;
-    width: 100%;
-  }
-
   .subNavHeader {
     padding: 24px;
     padding-bottom: 0;
     width: 100%;
   }
-
   // loader
-  .wrapper {
-    height: auto;
-    position: static;
-  }
+  //   .wrapper {
+  //     height: auto;
+  //     position: static;
+  //   }
 }

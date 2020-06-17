@@ -35,6 +35,7 @@ const ExchangeAccountList = ({ demo }) => {
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
+  console.log(exchanges);
 
   const tabs = [
     {
@@ -91,18 +92,22 @@ const ExchangeAccountList = ({ demo }) => {
                   >
                     <FormattedMessage id="accounts.settings" />
                   </CustomButton>
-                  <CustomButton
-                    className="textPurple"
-                    onClick={() => navigateToPath("deposit", item)}
-                  >
-                    <FormattedMessage id="accounts.deposit" />
-                  </CustomButton>
-                  <CustomButton
-                    className="textPurple"
-                    onClick={() => navigateToPath("withdraw", item)}
-                  >
-                    <FormattedMessage id="accounts.withdraw" />
-                  </CustomButton>
+                  {item.isBrokerAccount && (
+                    <>
+                      <CustomButton
+                        className="textPurple"
+                        onClick={() => navigateToPath("deposit", item)}
+                      >
+                        <FormattedMessage id="accounts.deposit" />
+                      </CustomButton>
+                      <CustomButton
+                        className="textPurple"
+                        onClick={() => navigateToPath("withdraw", item)}
+                      >
+                        <FormattedMessage id="accounts.withdraw" />
+                      </CustomButton>
+                    </>
+                  )}
                 </Box>
               </Box>
               <ExchangeAccountData internalId={item.internalId} />
