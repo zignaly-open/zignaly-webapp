@@ -32,7 +32,7 @@ const ExchangeAccountList = ({ demo }) => {
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
   const exchanges = storeUser.exchangeConnections.filter((e) =>
-    e.paperTrading || e.isTestnet ? demo : true,
+    e.paperTrading || e.isTestnet ? demo : !demo,
   );
 
   //   const navigateToAction = (path, selectedAccount) => {

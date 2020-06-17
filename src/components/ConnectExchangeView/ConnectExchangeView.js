@@ -38,21 +38,6 @@ const ConnectExchangeView = (props) => {
     // props.onClose();
   };
 
-  const tabs = [
-    {
-      id: "accounts.real",
-      onClick: () => {
-        setPath("realAccounts");
-      },
-    },
-    {
-      id: "accounts.demo",
-      onClick: () => {
-        setPath("demoAccounts");
-      },
-    },
-  ];
-
   //   const [previousPath, setPreviousPath] = useState("");
   const [pathParams, setPathParams] = useState({
     currentPath: "realAccounts",
@@ -65,7 +50,27 @@ const ConnectExchangeView = (props) => {
       selectedAccount,
     });
   };
-  const value = { pathParams, setPathParams, navigateToPath };
+  const resetPath = (path) => {
+    setPathParams({
+      currentPath: path,
+    });
+  };
+  const value = { pathParams, setPathParams, navigateToPath, resetPath };
+
+  const tabs = [
+    {
+      id: "accounts.real",
+      onClick: () => {
+        resetPath("realAccounts");
+      },
+    },
+    {
+      id: "accounts.demo",
+      onClick: () => {
+        resetPath("demoAccounts");
+      },
+    },
+  ];
 
   return (
     <ModalHeaderContext.Provider value={value}>
@@ -96,7 +101,7 @@ const ConnectExchangeView = (props) => {
           </Typography>
         </Box>
         <SubNavHeader links={tabs} />
-        <ConnectExchangeViewContent path={path} setPath={setPath} />
+        <ConnectExchangeViewContent />
       </Box>
     </ModalHeaderContext.Provider>
   );
