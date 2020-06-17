@@ -3,11 +3,12 @@ import { FormattedMessage } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { OutlinedInput } from "@material-ui/core";
-import { FormControl } from "@material-ui/core";
 import { Button, Box, Switch, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { range, sum } from "lodash";
+import { isNumber, range, sum } from "lodash";
 import "./TakeProfitPanel.scss";
+import { formatFloat2Dec } from "../../../utils/format";
+import { formatPrice } from "../../../utils/formatters";
 
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
@@ -122,10 +123,14 @@ const TakeProfitPanel = (props) => {
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId) || 100;
+    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * ((targetPercentage + 100) / 100);
 
-    setValue(priceProperty, targetPrice);
+    if (isNumber(targetPercentage) && targetPercentage !== 0) {
+      setValue(priceProperty, formatPrice(targetPrice));
+    } else {
+      setValue(priceProperty, "");
+    }
   };
 
   /**
@@ -139,10 +144,15 @@ const TakeProfitPanel = (props) => {
     const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    const priceDiff = getTargetPropertyValue("priceProperty", targetId) - price;
-    const targetPercentage = (priceDiff / price) * 100;
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
 
-    setValue(pricePercentageProperty, targetPercentage || 0);
+    if (isNumber(targetPrice) && targetPrice !== 0) {
+      const priceDiff = targetPrice - price;
+      const targetPercentage = (priceDiff / price) * 100;
+      setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
+    } else {
+      setValue(pricePercentageProperty, "");
+    }
   };
 
   /**
@@ -160,7 +170,7 @@ const TakeProfitPanel = (props) => {
 
     if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
-      setValue(unitsProperty, targetUnits);
+      setValue(unitsProperty, formatPrice(targetUnits));
     } else {
       setValue(unitsProperty, "");
     }
@@ -184,7 +194,7 @@ const TakeProfitPanel = (props) => {
     if (units > 0 && exitUnits > 0) {
       const unitsDiff = units - exitUnits;
       const unitsPercentage = (1 - unitsDiff / units) * 100;
-      setValue(unitsPercentageProperty, unitsPercentage);
+      setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
     } else {
       setValue(unitsPercentageProperty, "");
     }
