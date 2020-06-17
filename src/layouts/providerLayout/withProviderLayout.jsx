@@ -3,6 +3,7 @@ import "./providerLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box } from "@material-ui/core";
 import ProviderHeader from "../../components/Provider/ProviderHeader";
+import FAQ from "../../components/FAQ";
 
 /**
  * HOC wrap component with provider layout.
@@ -30,6 +31,9 @@ const withProviderLayout = (Component) => {
         <ProviderHeader />
         <Box className="pageContent">
           <Component {...props} />
+        </Box>
+        <Box className="faq">
+          <FAQ />
         </Box>
       </Box>
     );

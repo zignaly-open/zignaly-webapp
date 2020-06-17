@@ -10,11 +10,14 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 const CopyTradersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const [followers, setFollowers] = useState([]);
+  const dispatch = useDispatch();
 
   const getProviderFollowers = () => {
     const payload = {
@@ -27,7 +30,7 @@ const CopyTradersAnalytics = () => {
         setFollowers(response);
       })
       .catch((e) => {
-        alert(e.message);
+        dispatch(showErrorAlert(e));
       });
   };
 

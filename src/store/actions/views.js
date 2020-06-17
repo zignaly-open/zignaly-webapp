@@ -1,5 +1,5 @@
 import tradeApi from "../../services/tradeApiClient";
-import { showLoader } from "./ui";
+import { showLoader, showErrorAlert } from "./ui";
 
 export const GET_PROVIDER = "GET_PROVIDER_ACTION";
 export const REMOVE_PROVIDER = "REMOVE_PROVIDER_ACTION";
@@ -29,7 +29,7 @@ export const setProvider = (payload) => {
       dispatch(action);
       dispatch(showLoader(false));
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };
