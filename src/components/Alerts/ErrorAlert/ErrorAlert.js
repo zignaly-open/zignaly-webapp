@@ -1,6 +1,6 @@
 import React from "react";
 import "./ErrorAlert.scss";
-import { Snackbar, Box, Typography } from "@material-ui/core";
+import { Snackbar, Box, Typography, Slide } from "@material-ui/core";
 import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideErrorAlert } from "../../../store/actions/ui";
@@ -16,6 +16,7 @@ const Popup = () => {
         vertical: "top",
         horizontal: "right",
       }}
+      TransitionComponent={Slide}
       autoHideDuration={50000000}
       className="errorAlert"
       onClose={() => dispatch(hideErrorAlert())}
