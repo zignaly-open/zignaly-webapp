@@ -28,12 +28,12 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   const intl = useIntl();
   const storeSession = useStoreSessionSelector();
   const { setPathParams } = useContext(ModalHeaderContext);
-  useEffect(() => {
-    // setPreviousPath(demo ? "demoAccounts" : "realAccounts");
-    setPathParams({
-      previousPath: demo ? "demoAccounts" : "realAccounts",
-    });
-  }, []);
+  //   useEffect(() => {
+  //     // setPreviousPath(demo ? "demoAccounts" : "realAccounts");
+  //     setPathParams({
+  //       previousPath: demo ? "demoAccounts" : "realAccounts",
+  //     });
+  //   }, []);
   const exchanges = useExchangeList();
   const [selectedExchange, setExchange] = useState(
     /** @type {ExchangeListEntity} */ ({

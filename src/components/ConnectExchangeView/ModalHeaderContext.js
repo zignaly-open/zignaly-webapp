@@ -5,6 +5,7 @@ const ModalHeaderContext = React.createContext({
   setPreviousPath: () => {},
   setPathParams: () => {},
   pathParams: {},
+  currentPath: "",
 });
 
 export default ModalHeaderContext;

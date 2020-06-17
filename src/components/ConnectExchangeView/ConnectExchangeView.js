@@ -19,7 +19,7 @@ import ModalHeaderContext from "./ModalHeaderContext";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = (props) => {
-  const [path, setPath] = useState("connectAccount");
+  const [path, setPath] = useState("realAccounts");
   const [isLoading, setIsLoading] = useState(false);
   //   const formRef = useRef(null);
   //   const [state, dispatch] = useReducer({});
@@ -54,8 +54,18 @@ const ConnectExchangeView = (props) => {
   ];
 
   //   const [previousPath, setPreviousPath] = useState("");
-  const [pathParams, setPathParams] = useState({});
-  const value = { pathParams, setPathParams };
+  const [pathParams, setPathParams] = useState({
+    currentPath: "realAccounts",
+  });
+
+  const navigateToPath = (path, selectedAccount) => {
+    setPathParams({
+      currentPath: path,
+      previousPath: pathParams.currentPath,
+      selectedAccount,
+    });
+  };
+  const value = { pathParams, setPathParams, navigateToPath };
 
   return (
     <ModalHeaderContext.Provider value={value}>
@@ -70,7 +80,7 @@ const ConnectExchangeView = (props) => {
           {pathParams.previousPath && (
             <CustomButton
               className="submitButton"
-              onClick={() => setPath(pathParams.previousPath)}
+              onClick={() => setPathParams({ currentPath: pathParams.previousPath })}
               loading={isLoading}
             >
               <FormattedMessage id="accounts.back" />

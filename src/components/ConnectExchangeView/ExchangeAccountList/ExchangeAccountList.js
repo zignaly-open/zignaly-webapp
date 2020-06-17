@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 import "./ExchangeAccountList.scss";
@@ -9,6 +9,7 @@ import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import NoRealAccount from "./NoRealAccount";
 import NoDemoAccount from "./NoDemoAccount";
+import ModalHeaderContext from "../ModalHeaderContext";
 
 /**
  * @typedef {Object} DefaultProps
@@ -21,24 +22,37 @@ import NoDemoAccount from "./NoDemoAccount";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountList = ({ type, navigateToAction }) => {
+const ExchangeAccountList = ({ demo }) => {
+  const {
+    setPathParams,
+    pathParams: { currentPath },
+    navigateToPath,
+  } = useContext(ModalHeaderContext);
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
   const exchanges = storeUser.exchangeConnections.filter((e) =>
-    e.paperTrading || e.isTestnet ? type === "demoAccounts" : type === "realAccounts",
+    e.paperTrading || e.isTestnet ? demo : true,
   );
+
+  //   const navigateToAction = (path, selectedAccount) => {
+  //     setPathParams({
+  //       currentPath: path,
+  //       previousPath: currentPath,
+  //       selectedAccount,
+  //     });
+  //   };
 
   return (
     <Box className="exchangeAccountList">
       {!exchanges.length ? (
-        type === "realAccount" ? (
+        !demo ? (
           <NoRealAccount navigateToAction={navigateToAction} />
         ) : (
           <NoDemoAccount navigateToAction={navigateToAction} />
         )
       ) : (
-        <Box className={`exchangeAccountContainer ${type}`}>
+        <Box className={`exchangeAccountContainer ${currentPath}`}>
           {exchanges.map((item) => (
             <Box className="exchangeAccountInfo" key={item.internalId}>
               <Box
@@ -64,19 +78,19 @@ const ExchangeAccountList = ({ type, navigateToAction }) => {
                 <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
                   <CustomButton
                     className="textDefault"
-                    onClick={() => navigateToAction("settings", item.internalId)}
+                    onClick={() => navigateToPath("settings", item)}
                   >
                     <FormattedMessage id="accounts.settings" />
                   </CustomButton>
                   <CustomButton
                     className="textPurple"
-                    onClick={() => navigateToAction("deposit", item.internalId)}
+                    onClick={() => navigateToPath("deposit", item)}
                   >
                     <FormattedMessage id="accounts.deposit" />
                   </CustomButton>
                   <CustomButton
                     className="textPurple"
-                    onClick={() => navigateToAction("withdraw", item.internalId)}
+                    onClick={() => navigateToPath("withdraw", item)}
                   >
                     <FormattedMessage id="accounts.withdraw" />
                   </CustomButton>
@@ -85,12 +99,12 @@ const ExchangeAccountList = ({ type, navigateToAction }) => {
               <ExchangeAccountData internalId={item.internalId} />
             </Box>
           ))}
-          {type === "realAccount" ? (
+          {!demo ? (
             <Box className="exchangeButtons" display="flex" justifyContent="flex-start">
               <Box display="flex" flexDirection="column">
                 <CustomButton
                   className="body2 bgPurple exchangeButton"
-                  onClick={() => navigateToAction("createAccount")}
+                  onClick={() => navigateToPath("createAccount")}
                 >
                   <FormattedMessage id="accounts.create.exchange" />
                 </CustomButton>
@@ -101,7 +115,7 @@ const ExchangeAccountList = ({ type, navigateToAction }) => {
               <Box display="flex" flexDirection="column">
                 <CustomButton
                   className="body2 textPurple borderPurple exchangeButton"
-                  onClick={() => navigateToAction("connectAccount")}
+                  onClick={() => navigateToPath("connectAccount")}
                 >
                   <FormattedMessage id="accounts.connect.existing" />
                 </CustomButton>
@@ -118,7 +132,7 @@ const ExchangeAccountList = ({ type, navigateToAction }) => {
                 </Typography>
                 <CustomButton
                   className="body2 textPurple borderPurple exchangeButton"
-                  onClick={() => navigateToAction("createDemoAccount")}
+                  onClick={() => navigateToPath("createDemoAccount")}
                 >
                   <FormattedMessage id="accounts.create.demo" />
                 </CustomButton>
