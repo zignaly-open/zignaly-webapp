@@ -1573,6 +1573,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} activeSince
  * @property {Number} avgTradesPerWeek
  * @property {Number} profitableWeeks
+ * @property {Number} followers
  */
 
 /**
@@ -1667,6 +1668,7 @@ function createEmptyProviderGetEntity() {
     activeSince: 0,
     avgTradesPerWeek: 0,
     profitableWeeks: 0,
+    followers: 0,
   };
 }
 

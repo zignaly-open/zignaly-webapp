@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import "./ProviderHeaderInfo.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
+import EditIcon from "../../../../images/ct/edit.svg";
+import Modal from "../../../Modal";
+import CopyTraderForm from "../../../Forms/CopyTraderForm";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -12,6 +15,11 @@ import ExchangeIcon from "../../../ExchangeIcon";
  */
 const ProviderHeaderInfo = () => {
   const storeViews = useStoreViewsSelector();
+  const [copyModal, showCopyModal] = useState(false);
+
+  const handleCopyModalClose = () => {
+    showCopyModal(false);
+  };
 
   return (
     <Box
@@ -23,7 +31,7 @@ const ProviderHeaderInfo = () => {
     >
       <Typography variant="h4">
         <FormattedMessage id="srv.basecurrency" />
-        <b> {storeViews.provider.copyTradingQuote} </b>
+        <b> {storeViews.provider.copyTradingQuote.toUpperCase()} </b>
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="copyt.trading" />
@@ -34,8 +42,12 @@ const ProviderHeaderInfo = () => {
         </Box>
       </Typography>
       <Typography variant="h4">
+        <FormattedMessage id="accounts.exchange.type" />
+        <b> {storeViews.provider.exchangeType.toUpperCase()} </b>
+      </Typography>
+      <Typography variant="h4">
         <FormattedMessage id="copyt.copiers" />
-        <b> {storeViews.provider.copyTradingQuote} </b>
+        <b> {storeViews.provider.followers} </b>
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="copyt.fee" />
@@ -48,11 +60,35 @@ const ProviderHeaderInfo = () => {
         </b>
       </Typography>
       <Typography variant="h4">
-        <FormattedMessage id="srv.minimum" />
-        <b>
-          {storeViews.provider.minAllocatedBalance} {storeViews.provider.copyTradingQuote}
-        </b>
+        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
+          <Fragment>
+            <FormattedMessage id="srv.allocated" />
+            <b>
+              {storeViews.provider.allocatedBalance}{" "}
+              {storeViews.provider.copyTradingQuote.toUpperCase()}
+            </b>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <FormattedMessage id="srv.minimum" />
+            <b>
+              {storeViews.provider.minAllocatedBalance}{" "}
+              {storeViews.provider.copyTradingQuote.toUpperCase()}
+            </b>
+          </Fragment>
+        )}
+        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
+          <img
+            src={EditIcon}
+            className="editIcon"
+            alt="zignaly"
+            onClick={() => showCopyModal(true)}
+          />
+        )}
       </Typography>
+      <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
+        <CopyTraderForm onClose={handleCopyModalClose} provider={storeViews.provider} />
+      </Modal>
     </Box>
   );
 };

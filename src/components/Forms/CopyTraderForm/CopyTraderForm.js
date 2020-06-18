@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CopyTraderForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -23,10 +23,18 @@ import { setProvider } from "../../../store/actions/views";
  */
 const CopyTraderForm = ({ provider, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const { errors, handleSubmit, register, setError } = useForm();
+  const { errors, handleSubmit, register, setError, setValue } = useForm();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+
+  const initFormData = () => {
+    if (provider.exchangeInternalId && !provider.disable) {
+      setValue("allocatedBalance", provider.allocatedBalance);
+    }
+  };
+
+  useEffect(initFormData, []);
 
   /**
    *
@@ -102,9 +110,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
           className="fieldBox"
           display="flex"
           flexDirection="row"
-          justifyContent="flex-start"
+          justifyContent="center"
         >
-          <Typography variant="h4">{provider.copyTradingQuote}</Typography>
           <Box
             alignItems="start"
             className="inputBox"
@@ -112,7 +119,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             flexDirection="column"
             justifyContent="start"
           >
-            <label className="customLabel">Choose allocated amount</label>
+            <label className="customLabel">Choose allocated amount </label>
             <TextField
               className="customInput"
               error={!!errors.allocatedBalance}
@@ -123,7 +130,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               name="allocatedBalance"
               variant="outlined"
             />
-            <span className={errors.allocatedBalance ? "errorText" : ""}>
+            <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
               {`Minimum allocated amount ${provider.copyTradingQuote}`}{" "}
               {provider.minAllocatedBalance}
             </span>

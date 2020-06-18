@@ -82,17 +82,11 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {provider.exchangeInternalId && !provider.disable && (
+      {provider.exchangeInternalId && !provider.disable ? (
         <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={stopCopying}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
-      )}
-      {provider.exchangeInternalId && provider.disable && (
-        <CustomButton className="submitButton" onClick={copyThisTrader}>
-          <FormattedMessage id="copyt.copythistrader" />
-        </CustomButton>
-      )}
-      {!provider.exchangeInternalId && (
+      ) : (
         <CustomButton className="submitButton" onClick={copyThisTrader}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>

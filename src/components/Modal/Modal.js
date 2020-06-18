@@ -1,6 +1,7 @@
 import React from "react";
 import "./Modal.scss";
 import { Dialog } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 /**
  * @typedef {import('@material-ui/core/Dialog').DialogProps} DialogProps
@@ -29,6 +30,7 @@ const GenericModal = (props) => {
       onClose={onClose}
       open={state}
     >
+      <CloseIcon className="closeIcon" onClick={onClose} />
       {children}
     </Dialog>
   );

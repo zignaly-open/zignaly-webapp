@@ -3,6 +3,14 @@
   height: fit-content;
   max-height: 700px;
   min-height: 300px;
+  position: relative;
+
+  .closeIcon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+  }
 
   &.small {
     width: 500px;

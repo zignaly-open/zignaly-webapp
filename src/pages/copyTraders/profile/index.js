@@ -21,14 +21,14 @@ const CopyTradersProfile = () => {
       let url = window.location.href;
       if (url.includes("error")) {
         let error = {
-          code: "payment",
+          code: "paymentnotcompleted",
         };
         history.pushState({}, "error", url.split("#")[0]);
         dispatch(showErrorAlert(error));
       }
       if (url.includes("success")) {
         let success = {
-          code: "payment",
+          code: "paymentnotcompleted",
         };
         history.pushState({}, "success", url.split("#")[0]);
         dispatch(showErrorAlert(success));

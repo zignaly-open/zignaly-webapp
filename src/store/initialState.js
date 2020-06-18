@@ -318,6 +318,7 @@ const initialState = {
       activeSince: 0,
       avgTradesPerWeek: 0,
       profitableWeeks: 0,
+      followers: 0,
     },
   },
 };

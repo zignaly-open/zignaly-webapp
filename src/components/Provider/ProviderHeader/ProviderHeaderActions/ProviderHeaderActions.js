@@ -55,6 +55,7 @@ const ProviderHeaderActions = () => {
           {storeViews.provider.internalPaymentInfo.trial
             ? storeViews.provider.internalPaymentInfo.trial
             : 0}
+          <b>Days</b>
         </b>
       </Typography>
       <PaymentButton provider={storeViews.provider} />
