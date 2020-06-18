@@ -36,9 +36,9 @@ exports.onCreatePage = ({ page, actions }) => {
 // Enable development support for serving Trading View static assets. Workaround
 // until a fix is implemented for:
 // https://github.com/gatsbyjs/gatsby/issues/13072
-exports.onCreateDevServer = ({ app }) => {
-  app.use(express.static("public"));
-};
+// exports.onCreateDevServer = ({ app }) => {
+//   app.use(express.static("public"));
+// };
 
 // Fix WebpackError: ReferenceError: window is not defined
 // https://www.gatsbyjs.org/docs/debugging-html-builds/
