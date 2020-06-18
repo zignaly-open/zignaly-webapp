@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -226,22 +225,30 @@ const TakeProfitPanel = (props) => {
   }
 
   /**
-   * Progrmatically invoke change event simulation on a given element.
+   * Validate that target units is within limits.
    *
-   * @param {String} elementName Element name.
+   * @param {string} targetId Target index ID.
    * @returns {Void} None.
    */
-  const simulateInputChangeEvent = (elementName) => {
-    const matches = document.getElementsByName(elementName);
-    const item = matches[0] || null;
+  const validateTargetExitUnitsLimits = (targetId) => {
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
-    // @ts-ignore
-    if (item && item._valueTracker) {
-      // @ts-ignore
-      item._valueTracker.setValue("");
-      // Programatically invoke change event.
-      const event = new Event("input", { bubbles: true });
-      item.dispatchEvent(event);
+    clearError(unitsProperty);
+    if (limits.amount.min && exitUnits < limits.amount.min) {
+      setError(
+        unitsProperty,
+        "error",
+        `Target units to exit cannot be lower than ${limits.amount.min}`,
+      );
+    }
+
+    if (limits.amount.max && exitUnits > limits.amount.max) {
+      setError(
+        unitsProperty,
+        "error",
+        `Target units to exit cannot be greater than ${limits.amount.max}`,
+      );
     }
   };
 
