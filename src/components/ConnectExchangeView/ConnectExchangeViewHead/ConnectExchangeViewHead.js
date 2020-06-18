@@ -25,13 +25,14 @@ import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchangeViewHead = ({ onClose }) => {
-  const { pathParams, setTitle, resetToPath, setPathParams, formRef } = useContext(
-    ModalPathContext,
-  );
-  const { selectedAccount, previousPath, title, tempMessage, isLoading } = pathParams;
+  const {
+    pathParams: { selectedAccount, previousPath, title, tempMessage, isLoading },
+    setTitle,
+    resetToPath,
+    setPathParams,
+    formRef,
+  } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
-
-  //   const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handle submit buttton click.
@@ -41,9 +42,14 @@ const ConnectExchangeViewHead = ({ onClose }) => {
    */
   const handleClick = async () => {
     if (formRef.current) {
-      setPathParams({ ...pathParams, isLoading: true });
+      setPathParams((state) => ({ ...state, isLoading: true }));
       await formRef.current.submitForm();
-      setPathParams({ ...pathParams, isLoading: true });
+      setPathParams((state) => ({
+        ...state,
+        currentPath: previousPath,
+        isLoading: false,
+        previousPath: null,
+      }));
     } else {
       onClose();
     }
@@ -52,9 +58,8 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   useEffect(() => {
     let timeoutId;
     if (tempMessage) {
-      console.log(tempMessage);
       timeoutId = setTimeout(() => {
-        setPathParams({ ...pathParams, isLoading: false });
+        setPathParams((state) => ({ ...state, tempMessage: "" }));
       }, 5000);
     }
     return () => {
@@ -64,7 +69,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
 
   return (
     <Box className="connectExchangeViewHead">
-      <Box className="actionBar" display="flex" flexDirection="row">
+      <Box className="actionBar" display="flex" flexDirection="row" alignItems="center">
         {previousPath && (
           <CustomButton
             className="textPurple borderPurple"
@@ -77,7 +82,9 @@ const ConnectExchangeViewHead = ({ onClose }) => {
         <CustomButton className="submitButton" onClick={handleClick} loading={isLoading}>
           <FormattedMessage id="accounts.done" />
         </CustomButton>
-        <Box className="tempMessage">{tempMessage}</Box>
+        <Typography variant="body1" className="tempMessage">
+          {tempMessage}
+        </Typography>
         {storeUser.exchangeConnections.length > 0 && <UserExchangeList />}
       </Box>
       <Box className="titleBar">

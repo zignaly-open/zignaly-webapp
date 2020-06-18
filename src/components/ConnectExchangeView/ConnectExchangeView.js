@@ -42,7 +42,21 @@ const ConnectExchangeView = ({ onClose }) => {
       title,
     });
   };
-  const value = { pathParams, setPathParams, navigateToPath, resetToPath, setTitle, formRef };
+  const setTempMessage = (tempMessage) => {
+    setPathParams({
+      ...pathParams,
+      tempMessage,
+    });
+  };
+  const value = {
+    pathParams,
+    setPathParams,
+    navigateToPath,
+    resetToPath,
+    setTitle,
+    setTempMessage,
+    formRef,
+  };
 
   return (
     <ModalPathContext.Provider value={value}>

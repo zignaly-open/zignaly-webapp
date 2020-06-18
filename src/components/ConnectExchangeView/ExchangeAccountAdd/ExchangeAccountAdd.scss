@@ -1,62 +1,9 @@
 .ExchangeAccountAdd {
   width: 100%;
 
-  //   label {
-  //     justify-content: center;
-  //     margin-bottom: 20px;
-  //     width: 100%;
-  //   }
-
-  //   .customSelectControl,
-  //   .customInput {
-  //     max-width: 580px;
-  //     min-width: 138px;
-  //   }
-
-  //   .customSelectControl {
-  //     width: 100%;
-  //   }
-
-  //   .select {
-  //     margin-right: 0;
-  //   }
-
-  //   .selectLabel,
-  //   .accountLabel {
-  //     font-family: "PlexSans-Bold";
-  //     font-size: 17px;
-  //     letter-spacing: 0.53px;
-  //     line-height: 1.43;
-  //     margin: 0;
-  //     margin-right: 20px;
-  //     width: 200px;
-  //     text-align: right;
-  //   }
-
-  //   .exchangeAccountForm {
-  //     width: 40%;
-  //   }
+  .loadProgress {
+    flex: 0 0 100%;
+    margin-bottom: 20px;
+    padding: 30px;
+  }
 }
-
-// @include media("<=sm") {
-//   .ExchangeAccountAdd {
-//     align-items: center;
-
-//     .exchangeAccountForm {
-//       width: 100%;
-//     }
-
-//     label {
-//       align-items: center;
-//       flex-direction: column-reverse;
-//       margin: 0 0 10px;
-//       padding: 0 10px;
-//     }
-
-//     .selectLabel,
-//     .accountLabel {
-//       width: auto;
-//       text-align: center;
-//     }
-//   }
-// }

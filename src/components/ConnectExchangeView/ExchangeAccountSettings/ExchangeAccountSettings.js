@@ -33,6 +33,8 @@ const ExchangeAccountSettings = ({ internalId }) => {
     setTitle,
     resetToPath,
     formRef,
+    setTempMessage,
+    setPathParams,
   } = useContext(ModalPathContext);
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -87,11 +89,16 @@ const ExchangeAccountSettings = ({ internalId }) => {
       internalId: selectedAccount.internalId,
     };
 
+    setPathParams((state) => ({ ...state, isLoading: true }));
+
     tradeApi
       .exchangeDelete(payload)
       .then(() => {
-        removeUserExchange(selectedAccount.internalId);
-        resetToPath(previousPath);
+        dispatch(removeUserExchange(selectedAccount.internalId));
+        setPathParams((state) => ({
+          tempMessage: <FormattedMessage id={"accounts.deleted"} />,
+          currentPath: previousPath,
+        }));
       })
       .catch((e) => {
         alert(`ERROR: ${e.message}`);
@@ -116,14 +123,13 @@ const ExchangeAccountSettings = ({ internalId }) => {
         ...(secret && { secret }),
         ...(password && { password }),
       };
-      console.log("payload", payload);
 
       return tradeApi.exchangeUpdate(payload).then(() => {
         const authorizationPayload = {
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(setUserExchanges(authorizationPayload));
-        resetToPath(previousPath);
+        setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
       });
     })();
   };

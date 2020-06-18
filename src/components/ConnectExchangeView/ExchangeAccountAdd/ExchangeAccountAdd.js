@@ -1,5 +1,11 @@
 import React, { useState, useCallback, useContext, useEffect, useImperativeHandle } from "react";
-import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
+import {
+  Box,
+  FormControlLabel,
+  OutlinedInput,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
 import { useForm, FormContext, Controller } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
@@ -37,7 +43,12 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     pathParams: { previousPath },
     setTitle,
     formRef,
+    setTempMessage,
   } = useContext(ModalPathContext);
+
+  useEffect(() => {
+    setTitle(<FormattedMessage id={create ? "accounts.create.exchange" : "accounts.connect"} />);
+  }, []);
 
   const exchanges = useExchangeList();
 
@@ -58,10 +69,6 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
       setValue("exchangeName", "Binance");
     }
   }, [exchangesOptions]);
-
-  useEffect(() => {
-    setTitle(<FormattedMessage id={create ? "accounts.create.exchange" : "accounts.connect"} />);
-  }, []);
 
   // Create account types options
   const typeOptions = selectedExchange
@@ -84,10 +91,10 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     () => ({
       submitForm,
     }),
-    [],
+    [selectedExchange],
   );
 
-  const submitForm = async (data) => {
+  const submitForm = async () => {
     return handleSubmit((data) => {
       const { internalName, exchangeType, key, secret, password } = data;
       const payload = {
@@ -111,55 +118,60 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(setUserExchanges(authorizationPayload));
-        resetToPath(previousPath);
+        setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
       });
     })();
   };
 
   return (
     <form className="ExchangeAccountAdd">
-      <ExchangeAccountForm>
-        {!create && (
-          <Controller
-            as={CustomSelect}
-            options={exchangesOptions}
-            control={control}
-            defaultValue={""}
-            name="exchangeName"
-            rules={{ required: true }}
-            label={intl.formatMessage({ id: "accounts.exchange" })}
-          />
-        )}
-        {typeOptions.length > 1 && (
-          <Controller
-            as={CustomSelect}
-            options={typeOptions}
-            control={control}
-            defaultValue={""}
-            name="exchangeType"
-            rules={{ required: true }}
-            label={intl.formatMessage({ id: "accounts.exchange.type" })}
-          />
-        )}
-        <CustomInput inputRef={register} name="internalName" label="accounts.exchange.name" />
-        {!create ? (
-          selectedExchange &&
-          selectedExchange.requiredAuthFields.map((field) => (
-            <CustomInput
-              inputRef={register}
-              name={field}
-              label={`accounts.exchange.${field}`}
-              key={field}
-              autoComplete="new-password"
-              type="password"
+      {!selectedExchange ? (
+        <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
+          <CircularProgress disableShrink />
+        </Box>
+      ) : (
+        <ExchangeAccountForm>
+          {!create && (
+            <Controller
+              as={CustomSelect}
+              options={exchangesOptions}
+              control={control}
+              defaultValue={""}
+              name="exchangeName"
+              rules={{ required: true }}
+              label={intl.formatMessage({ id: "accounts.exchange" })}
             />
-          ))
-        ) : (
-          <Box className="exchangeSubtitle">
-            <FormattedMessage id="accounts.powered" />
-          </Box>
-        )}
-      </ExchangeAccountForm>
+          )}
+          {typeOptions.length > 1 && (
+            <Controller
+              as={CustomSelect}
+              options={typeOptions}
+              control={control}
+              defaultValue={""}
+              name="exchangeType"
+              rules={{ required: true }}
+              label={intl.formatMessage({ id: "accounts.exchange.type" })}
+            />
+          )}
+          <CustomInput inputRef={register} name="internalName" label="accounts.exchange.name" />
+          {!create ? (
+            selectedExchange.requiredAuthFields.map((field) => (
+              <CustomInput
+                inputRef={register}
+                name={field}
+                label={`accounts.exchange.${field}`}
+                key={field}
+                autoComplete="new-password"
+                type="password"
+              />
+            ))
+          ) : (
+            <Box className="exchangeSubtitle">
+              <FormattedMessage id="accounts.powered" />
+            </Box>
+          )}
+        </ExchangeAccountForm>
+      )}
     </form>
   );
 };
