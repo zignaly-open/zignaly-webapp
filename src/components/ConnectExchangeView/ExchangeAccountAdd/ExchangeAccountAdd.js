@@ -41,25 +41,21 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
 
   const exchanges = useExchangeList();
 
-  // Connect exchange options
-  const exchangesOptions = exchanges
-    .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
-    .map((e) => e.name);
-
-  let exchangeName = "zignaly";
-  if (!create) {
-    exchangeName = watch("exchangeName");
-  }
+  let exchangeName = create ? "zignaly" : watch("exchangeName");
   const selectedExchange = exchanges.find(
     (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
   );
   console.log(exchangeName, selectedExchange);
 
+  // Connect exchange options
+  const exchangesOptions = exchanges
+    .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
+    .map((e) => e.name);
+
   useEffect(() => {
     //   Set default connect exchange
     if (!create && exchangesOptions.length && !exchangeName) {
-      const defaultExchangeName = exchanges.find((e) => e.name.toLowerCase() === "binance").name;
-      setValue("exchangeName", defaultExchangeName);
+      setValue("exchangeName", "Binance");
     }
   }, [exchangesOptions]);
 
