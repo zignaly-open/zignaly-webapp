@@ -19,6 +19,7 @@ import {
   exchangeListResponseTransform,
   ownCopyTraderProvidersOptionsResponseTransform,
   providerFollowersResponseTransform,
+  providerFollowersListResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -513,6 +514,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerFollowersResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerFollowersListGet(payload) {
+    const endpointPath = "/fe/api.php?action=getFollowersList";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerFollowersListResponseTransform(responseData);
   }
 }
 

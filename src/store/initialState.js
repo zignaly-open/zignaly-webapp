@@ -141,6 +141,15 @@ const initialState = {
         "freeETH",
         "freeBNB",
       ],
+      copytProfileUsers: [
+        "email",
+        "name",
+        "active",
+        "connected",
+        "allocatedBalance",
+        "suspended",
+        "profitsFromClosedBalance",
+      ],
       openPositions: [
         "col.date.open",
         "col.provider.logo",

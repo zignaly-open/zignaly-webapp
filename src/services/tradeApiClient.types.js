@@ -1825,3 +1825,66 @@ function createProviderFollowersEmptyEntity() {
     type: [""],
   };
 }
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ProviderFollowListEntity>} User exchange connections collection.
+ */
+
+export function providerFollowersListResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((providerFollowersListItem) => {
+    return providerFollowersListItemTransform(providerFollowersListItem);
+  });
+}
+
+/**
+ * @typedef {Object} ProviderFollowListEntity
+ * @property {String} userId
+ * @property {String} name
+ * @property {String} email
+ * @property {Boolean} connected
+ * @property {String} allocatedBalance
+ * @property {Boolean} active
+ * @property {String} cancelDate
+ * @property {String} code
+ * @property {String} profitsFromClosedBalance
+ * @property {Boolean} realExchangeConnected
+ * @property {Boolean} suspended
+ * @property {String} lastTransactionId
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} exchangeConnectionItem Trade API exchange connection item.
+ * @returns {ProviderFollowListEntity} Exchange connection entity.
+ */
+function providerFollowersListItemTransform(providerFollowersListItem) {
+  const emptyProviderFollowersListEntity = createProviderFollowersListEmptyEntity();
+  const transformedResponse = assign(emptyProviderFollowersListEntity, providerFollowersListItem);
+
+  return transformedResponse;
+}
+
+function createProviderFollowersListEmptyEntity() {
+  return {
+    active: false,
+    allocatedBalance: "",
+    cancelDate: "-",
+    code: "-",
+    connected: false,
+    email: "0",
+    lastTransactionId: "-",
+    name: "",
+    profitsFromClosedBalance: "",
+    realExchangeConnected: false,
+    suspended: false,
+    userId: "",
+  };
+}

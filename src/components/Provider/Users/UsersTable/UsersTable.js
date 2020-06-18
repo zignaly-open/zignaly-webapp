@@ -2,7 +2,6 @@ import React from "react";
 import "./UsersTable.scss";
 import { Box } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { formatFloat } from "../../../../utils/format";
 import Table from "../../../Table";
 
 /**]
@@ -22,7 +21,7 @@ import Table from "../../../Table";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ title, persistKey, list }) => {
+const UsersTable = ({ title, persistKey, list }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -30,14 +29,67 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
   let columns = [
     {
       name: "email",
-      label: "col.email",
+      label: "col.users.email",
+    },
+    {
+      name: "name",
+      label: "col.users.name",
+    },
+    {
+      name: "active",
+      label: "col.users.active",
+      options: {
+        customBodyRender: (val, tableMeta) => {
+          return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+        },
+      },
+    },
+    {
+      name: "connected",
+      label: "col.users.connected",
       options: {
         display: "true",
         viewColumns: true,
+        customBodyRender: (val, tableMeta) => {
+          return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+        },
       },
     },
+    {
+      name: "allocatedBalance",
+      label: "col.users.allocatedbalance",
+    },
+    {
+      name: "realExchangeConnected",
+      label: "col.users.realexchange",
+      options: {
+        customBodyRender: (val, tableMeta) => {
+          return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+        },
+      },
+    },
+    {
+      name: "profitsFromClosedBalance",
+      label: "col.users.profits",
+    },
+    {
+      name: "suspended",
+      label: "col.users.suspended",
+      options: {
+        customBodyRender: (val, tableMeta) => {
+          return <span className={val ? "greed" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+        },
+      },
+    },
+    {
+      name: "code",
+      label: "col.users.code",
+    },
+    {
+      name: "cancelDate",
+      label: "col.users.canceldate",
+    },
   ];
-
 
   const getMuiTheme = () =>
     createMuiTheme({
@@ -63,4 +115,4 @@ const ProvidersProfitsTable = ({ title, persistKey, list }) => {
   );
 };
 
-export default ProvidersProfitsTable;
+export default UsersTable;
