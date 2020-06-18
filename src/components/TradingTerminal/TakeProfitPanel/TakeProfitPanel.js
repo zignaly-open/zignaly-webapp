@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -30,17 +29,24 @@ import useTargetGroup from "../../../hooks/useTargetGroup";
  */
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
-  const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const { expanded, expandClass, expandableControl } = useExpandable();
   const {
+    cardinality,
     cardinalityRange,
+    clearError,
     composeTargetPropertyName,
+    errors,
     getGroupTargetId,
     getTargetPropertyValue,
+    getValues,
     handleTargetAdd,
     handleTargetRemove,
+    register,
+    setError,
     setTargetPropertyValue,
     simulateInputChangeEvent,
+    setValue,
+    watch,
   } = useTargetGroup();
   const entryType = watch("entryType");
   const limitPrice = watch("price");
@@ -182,7 +188,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(invertPricePercentage, [entryType, cardinalityRange, limitPrice]);
+  useEffect(invertPricePercentage, [entryType, cardinality, limitPrice]);
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>

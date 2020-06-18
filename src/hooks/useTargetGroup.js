@@ -4,7 +4,9 @@ import { range } from "lodash";
 
 const useTargetGroup = (defaultCardinality = 1) => {
   const [cardinality, setCardinality] = useState(defaultCardinality);
-  const { getValues, setValue } = useFormContext();
+  const formContext = useFormContext();
+  const { getValues, setValue } = formContext;
+
   const cardinalityRange = range(1, cardinality + 1, 1);
 
   const handleTargetAdd = () => {
@@ -37,12 +39,12 @@ const useTargetGroup = (defaultCardinality = 1) => {
    * @param {string} targetId Target index ID.
    * @returns {number} Target property value.
    */
-  const getTargetPropertyValue = (propertyName, targetId) => {
+  function getTargetPropertyValue(propertyName, targetId) {
     const draftPosition = getValues();
     const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
 
     return parseFloat(draftPosition[targetPropertyName]) || 0;
-  };
+  }
 
   /**
    * Set target property form state value.
@@ -52,11 +54,11 @@ const useTargetGroup = (defaultCardinality = 1) => {
    * @param {string} value Value to set.
    * @returns {Void} None.
    */
-  const setTargetPropertyValue = (propertyName, targetId, value) => {
+  function setTargetPropertyValue(propertyName, targetId, value) {
     const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
 
     return setValue(targetPropertyName, value);
-  };
+  }
 
   /**
    * Get target group ID for changed input element event.
@@ -64,13 +66,13 @@ const useTargetGroup = (defaultCardinality = 1) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {string} Target group ID (cardinality);
    */
-  const getGroupTargetId = (event) => {
+  function getGroupTargetId(event) {
     const targetElement = event.currentTarget;
     const targetGroup = targetElement.closest(".targetGroup");
     const targetId = targetGroup.getAttribute("data-target-id");
 
     return targetId;
-  };
+  }
 
   /**
    * Progrmatically invoke change event simulation on a given element.
@@ -78,7 +80,7 @@ const useTargetGroup = (defaultCardinality = 1) => {
    * @param {String} elementName Element name.
    * @returns {Void} None.
    */
-  const simulateInputChangeEvent = (elementName) => {
+  function simulateInputChangeEvent(elementName) {
     const matches = document.getElementsByName(elementName);
     const item = matches[0] || null;
 
@@ -90,9 +92,10 @@ const useTargetGroup = (defaultCardinality = 1) => {
       const event = new Event("input", { bubbles: true });
       item.dispatchEvent(event);
     }
-  };
+  }
 
   return {
+    cardinality,
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
@@ -101,6 +104,7 @@ const useTargetGroup = (defaultCardinality = 1) => {
     handleTargetRemove,
     setTargetPropertyValue,
     simulateInputChangeEvent,
+    ...formContext,
   };
 };
 
