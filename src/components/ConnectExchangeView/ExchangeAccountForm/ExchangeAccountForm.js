@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Help } from "@material-ui/icons";
 import CustomTooltip from "../../CustomTooltip";
 import { Controller } from "react-hook-form";
+import { uniqueId } from "lodash";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -39,36 +40,37 @@ const ExchangeAccountForm = ({ children }) => {
   );
 };
 
-export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) => (
-  <FormControlLabel
-    control={
+export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) => {
+  const labelId = uniqueId();
+  return (
+    <Box display="flex" flexDirection="row" alignItems="center" className="controlWrapper">
+      <label htmlFor={labelId}>
+        <Typography className="accountLabel">
+          <FormattedMessage id={label} />
+        </Typography>
+      </label>
       <OutlinedInput
         className="customInput"
         inputRef={inputRef}
         name={name}
         defaultValue={defaultValue || ""}
         {...others}
+        id={labelId}
       />
-    }
-    label={
-      <Typography className="accountLabel">
-        <FormattedMessage id={label} />
-      </Typography>
-    }
-    labelPlacement="start"
-  />
-);
+    </Box>
+  );
+};
 
 const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
   const [checked, setChecked] = useState(!!defaultValue);
 
   return (
-    <Box display="flex" flexDirection="row" alignItems="center">
+    <Box display="flex" flexDirection="row" alignItems="center" flex={1}>
       <Switch
         onChange={(e, checked) => {
           setChecked(checked);
         }}
-        size="small"
+        size="medium"
         className="switch"
         checked={checked}
       />
@@ -111,31 +113,32 @@ export const CustomSwitch = ({
   controlComponent,
   control,
   name,
-}) => (
-  <FormControlLabel
-    control={
-      controlComponent || (
+}) => {
+  const labelId = uniqueId();
+
+  return (
+    <Box display="flex" flexDirection="row" alignItems="center" className="controlWrapper">
+      <label htmlFor={labelId}>
+        <Box display="flex" flexDirection="row">
+          <Typography className="accountLabel">
+            <FormattedMessage id={label} />
+          </Typography>
+          <CustomTooltip title={<FormattedMessage id={tooltip} />}>
+            <Help />
+          </CustomTooltip>
+        </Box>
+      </label>
+      {controlComponent || (
         <Controller
-          as={Switch}
+          as={<Switch id={labelId} />}
           name={name}
           defaultValue={defaultValue}
           type="checkbox"
           control={control}
         />
-      )
-    }
-    label={
-      <Box display="flex" flexDirection="row" className="accountLabelWrapper">
-        <Typography className="accountLabel">
-          <FormattedMessage id={label} />
-        </Typography>
-        <CustomTooltip title={<FormattedMessage id={tooltip} />}>
-          <Help />
-        </CustomTooltip>
-      </Box>
-    }
-    labelPlacement="start"
-  />
-);
+      )}
+    </Box>
+  );
+};
 
 export default ExchangeAccountForm;

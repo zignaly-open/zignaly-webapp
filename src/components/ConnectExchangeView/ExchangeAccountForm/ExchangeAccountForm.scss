@@ -3,18 +3,19 @@
   max-width: 700px;
   margin: 0 24px;
 
-  label {
-    justify-content: flex-end;
+  .controlWrapper {
     margin-bottom: 20px;
-    margin-left: 0;
-    // width: 100%;
-    min-height: 32px;
+    // margin-left: 0;
+    width: 100%;
+    min-height: 37px;
   }
 
   .customSelectControl,
   .customInput {
-    max-width: 580px;
-    min-width: 138px;
+    // max-width: 580px;
+    // min-width: 138px;
+    width: 100%;
+    // min-width: auto;
   }
 
   .customSelectControl {
@@ -32,15 +33,19 @@
     letter-spacing: 0.53px;
     line-height: 1.43;
     margin: 0;
-    min-width: 360px;
+    // min-width: 360px;
   }
 
-  .accountLabelWrapper {
-    min-width: 360px;
-
-    .accountLabel {
-      min-width: auto;
-    }
+  label {
+    // width: 950px;
+    width: 60%;
+    // flex: 6;
+    // .accountLabel {
+    //   min-width: auto;
+    // }
+    // & + * {
+    //   flex: 4;
+    // }
 
     svg {
       margin-left: 5px;
