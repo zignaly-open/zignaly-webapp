@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CountrySelect.scss";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -10,6 +10,7 @@ import { useIntl } from "react-intl";
  *
  * @typedef {Object} DefaultProps
  * @property {Function} onChange
+ * @property {Array<*>} defaultValue
  */
 
 /**
@@ -18,11 +19,50 @@ import { useIntl } from "react-intl";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} Component JSX.
  */
-const CountrySelect = ({ onChange }) => {
+const CountrySelect = ({ onChange, defaultValue }) => {
   const storeSettings = useStoreSettingsSelector();
-  const list = Object.values(countries);
   const [selected, setSelected] = useState([]);
   const intl = useIntl();
+
+  const createList = () => {
+    let obj = {
+      name: "",
+      native: "",
+      phone: "",
+      continent: "",
+      capital: "",
+      currency: "",
+      languages: [""],
+      emoji: "",
+      emojiU: "",
+      countryCode: "",
+    };
+    return Object.entries(countries).map((item) => {
+      let val = { ...obj, ...item[1] };
+      val.countryCode = item[0];
+      return val;
+    });
+  };
+
+  const list = createList();
+
+  const initializeCounties = () => {
+    if (defaultValue && defaultValue.length) {
+      let data = [];
+      for (let a = 0; a < defaultValue.length; a++) {
+        let found = list.find(
+          (item) => item.countryCode.toLowerCase() === defaultValue[a].countryCode.toLowerCase(),
+        );
+        if (found) {
+          data.push(found);
+        }
+      }
+      // console.log(data);
+      setSelected(data);
+    }
+  };
+
+  useEffect(initializeCounties, [defaultValue]);
 
   /**
    * Function to handle countries selection.
@@ -41,6 +81,7 @@ const CountrySelect = ({ onChange }) => {
       autoHighlight
       className={"countrySelect " + (storeSettings.darkStyle ? "dark" : "light")}
       classes={{ tag: "chip", endAdornment: "clearIcon", popupIndicator: "downBtn" }}
+      freeSolo
       getOptionLabel={(option) => option.name}
       multiple
       onChange={hanldeChange}

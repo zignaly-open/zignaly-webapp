@@ -4,7 +4,8 @@ import { Box } from "@material-ui/core";
 import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
-import EquityGraphLabels from "./EquityGraphLabels";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import EquityGraphLabels from "./GraphLabels";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity

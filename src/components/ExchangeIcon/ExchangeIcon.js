@@ -19,6 +19,7 @@ import KucoinIcon from "../../images/exchanges/kucoin.svg";
 const ExchangeIcon = (props) => {
   const { exchange, size } = props;
   let icon = null;
+
   switch (exchange) {
     case "binance":
       icon = BinanceIcon;
@@ -32,6 +33,8 @@ const ExchangeIcon = (props) => {
     default:
       break;
   }
+
+  if (!exchange) return null;
   return (
     <img
       alt="zignaly"

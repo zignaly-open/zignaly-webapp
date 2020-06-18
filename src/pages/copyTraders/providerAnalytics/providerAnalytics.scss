@@ -1,0 +1,34 @@
+.profileAnalyticsPage {
+  width: 100%;
+
+  .tradingPerformanceBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 30px;
+    min-height: 500px;
+    padding: 30px 20px;
+    width: 100%;
+  }
+
+  .copiersBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 30px;
+    min-height: 500px;
+    padding: 30px 20px;
+    width: 100%;
+
+    h3 {
+      margin-bottom: 30px;
+    }
+
+    .lineChart {
+      height: 350px;
+    }
+  }
+
+  .moreInfoBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 300px;
+    padding: 30px 20px;
+    width: 100%;
+  }
+}

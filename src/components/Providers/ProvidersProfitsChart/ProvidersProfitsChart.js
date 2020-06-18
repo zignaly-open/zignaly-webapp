@@ -41,8 +41,11 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
     unit = quote;
   }
 
-  const values = stats.map((s) => parseFloat(s[key])).sort((a, b) => b - a);
-  const images = stats.map((s) => s.logoUrl);
+  const statsSorted = stats
+    .map((s) => ({ name: s.name, val: parseFloat(s[key]), logoUrl: s.logoUrl }))
+    .sort((a, b) => b.val - a.val);
+  const values = statsSorted.map((s) => s.val);
+  const images = statsSorted.map((s) => s.logoUrl);
   const options = {};
 
   /**
@@ -50,7 +53,7 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${stats[tooltipItems.index].name}: ${formatFloat2Dec(
+    `${statsSorted[tooltipItems.index].name}: ${formatFloat2Dec(
       tooltipItems[isMobile ? "xLabel" : "yLabel"],
     )} ${unit}`;
 

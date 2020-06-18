@@ -20,16 +20,16 @@ import { isEqual } from "lodash";
 
 /**
  * @typedef {Object} ChartColorOptions
- * @property {string} backgroundColor Background HTML color.
  * @property {string} borderColor Border HTML color.
- * @property {string} gradientColor1 Chart gradient color top.
- * @property {string} gradientColor2 Chart gradient color bottom.
+ *
  */
 
 // Memoize the chart and only re-renders when the data is updated.
 // Otherwise it will be rendered everytime the toolip is trigered(state update).
-const MemoizedLine = React.memo(Line, (prevProps, nextProps) =>
-  isEqual(prevProps.data, nextProps.data),
+const MemoizedLine = React.memo(
+  Line,
+  (prevProps, nextProps) =>
+    isEqual(prevProps.data, nextProps.data) && isEqual(prevProps.options, nextProps.options),
 );
 
 /**
@@ -92,10 +92,11 @@ const LineChart = (props) => {
     datasets: [
       {
         label: "",
+        fill: false,
         data: chartData.values,
-        backgroundColor: colorsOptions.backgroundColor,
         borderColor: colorsOptions.borderColor,
-        fill: "start",
+        backgroundColor: "transparent",
+        borderWidth: 3,
         // pointHitRadius: 20,
         pointHoverRadius: 8,
         pointHoverBorderWidth: 4,
@@ -109,6 +110,11 @@ const LineChart = (props) => {
    * @type Chart.ChartOptions
    */
   const options = {
+    layout: {
+      padding: {
+        top: 10,
+      },
+    },
     responsive: true,
     maintainAspectRatio: false,
     legend: {
@@ -131,32 +137,23 @@ const LineChart = (props) => {
       point: {
         radius: 0,
       },
-      line: {
-        tension: 0,
-      },
     },
     scales: {
       xAxes: [
         {
-          ticks: {
-            display: false,
-            fontFamily: "PlexSans-Bold",
-          },
           gridLines: {
             display: false,
-            tickMarkLength: 0,
           },
         },
       ],
       yAxes: [
         {
-          stacked: true,
+          stacked: false,
           ticks: {
             display: false,
           },
           gridLines: {
             display: false,
-            tickMarkLength: 0,
           },
         },
       ],
@@ -173,25 +170,11 @@ const LineChart = (props) => {
        *
        * @typedef {Chart & ChartWithScales} ExtendedChart
        */
-
-      /**
-       * Fill chart with gradient on layout change.
-       *
-       * @param {ExtendedChart} chart Chart instance.
-       * @returns {void}
-       */
-      afterLayout: (chart /* options */) => {
-        let scales = chart.scales;
-        let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-        color.addColorStop(0, colorsOptions.gradientColor2);
-        color.addColorStop(1, colorsOptions.gradientColor1);
-        chart.data.datasets[0].backgroundColor = color;
-      },
     },
   ];
 
   return (
-    <Box className="chart">
+    <Box className="lineChart">
       <CustomToolip
         classes={{ tooltip: "customTooltip" }}
         open={isTooltipVisible}

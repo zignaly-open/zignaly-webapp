@@ -59,7 +59,7 @@ const useProvidersAnalytics = (type) => {
   const baseAssets = useBaseAssets(quote);
   const bases = Object.entries(baseAssets).map(([key, val]) => ({
     val: key,
-    label: val.quote + "/" + val.base,
+    label: val.base + "/" + val.quote,
   }));
   bases.unshift({ val: "ALL", label: intl.formatMessage({ id: "fil.pairs" }) });
   const [base, setBase] = useState(bases[0]);
@@ -87,7 +87,7 @@ const useProvidersAnalytics = (type) => {
           base: base.val,
           timeFrame,
           DCAFilter: "anyDCA",
-          copyTradersOnly: type === "copyt",
+          isCopyTrading: type === "copyt",
         };
         const responseData = await tradeApi.providersStatsGet(payload);
         setStats(responseData);

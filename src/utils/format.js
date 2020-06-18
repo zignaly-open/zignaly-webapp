@@ -65,3 +65,92 @@ export const toCamelCaseKeys = (obj) => {
     {},
   );
 };
+
+/**
+ * Function to format a number according to unit places.
+ *
+ * @param {Number} value Number to format.
+ * @returns {String} Returns formatted unit value string.
+ */
+export const formatCurrency = (value) => {
+  /**
+   * Function to get unit places of a number.
+   *
+   * @param {Number} n Number to ghet unit places.
+   * @returns {Number} Unit places of the number.
+   */
+  function log10(n) {
+    return Math.round((100 * Math.log(n)) / Math.log(10)) / 100;
+  }
+
+  switch (Math.round(log10(value))) {
+    case 1:
+      return `${value}`;
+    case 2:
+      return `${value}`;
+    case 3:
+      return `${(value / 1000).toFixed(1)} Thousand`;
+    case 4:
+      return `${(value / 1000).toFixed(1)} Thousand`;
+    case 5:
+      return `${(value / 100000).toFixed(1)} Thousand`;
+    case 6:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 7:
+      return `${(value / 1000000).toFixed(1)}. Million`;
+    case 8:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 9:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    case 10:
+      return `${(value / 1000000).toFixed(1)} Million`;
+    default:
+      return "";
+  }
+};
+
+/**
+ * Function to format seconds to readable duration
+ *
+ * @param {Number} time Time received in seconds format.
+ * @returns {String} Formatted string.
+ */
+export const formatDuration = (time) => {
+  let duration = moment.duration(time * 1000);
+  let minutes = duration.get("minutes");
+  let hours = duration.get("hours");
+  let days = duration.get("days");
+  let months = duration.get("months");
+  let years = duration.get("years");
+  let formatted = "";
+
+  if (years > 0) {
+    formatted += years + (years > 1 ? " Years " : " Year ");
+    if (months > 0) {
+      formatted += months + (months > 1 ? " Months " : " Month ");
+    }
+    return formatted;
+  } else if (months > 0) {
+    formatted += months + (months > 1 ? " Months " : " Month ");
+    if (days > 0) {
+      formatted += days + (days > 1 ? " Days " : " Day ");
+    }
+    return formatted;
+  } else if (days > 0) {
+    formatted += days + (days > 1 ? " Days " : " Day ");
+    if (hours > 0) {
+      formatted += hours + (hours > 1 ? " Hours " : " Hour ");
+    }
+    return formatted;
+  } else if (hours > 0) {
+    formatted += hours + (hours > 1 ? " Days " : " Day ");
+    if (minutes > 0) {
+      formatted += minutes + (minutes > 1 ? " Minutes " : " Minute ");
+    }
+    return formatted;
+  } else if (minutes > 0) {
+    return (formatted += minutes + (minutes > 1 ? " Minutes " : " Minute "));
+  }
+
+  return formatted;
+};

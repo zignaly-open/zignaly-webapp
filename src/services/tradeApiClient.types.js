@@ -36,6 +36,12 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} GetProviderFollowersPayload
+ * @property {string} token
+ * @property {string} providerId
+ */
+
+/**
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -51,6 +57,29 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} providerId
  * @property {String} type
  * @property {Boolean} disable
+ */
+
+/**
+ * @typedef {Object} EditProvderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} name
+ * @property {String} logoUrl
+ * @property {String} website
+ * @property {Boolean} list
+ * @property {Boolean} public
+ * @property {String} minAllocatedBalance
+ * @property {String} merchantId
+ * @property {String} price
+ * @property {String} trial
+ * @property {String} ipnSecret
+ * @property {String} exchange
+ * @property {String} exchangeType
+ * @property {String} quote
+ * @property {String} about
+ * @property {String} strategy
+ * @property {Array<DefaultProviderSocialObject>} social
+ * @property {Array<DefaultProviderTeamObject>} team
  */
 
 /**
@@ -231,7 +260,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @typedef {Object} DailyReturn
  * @property {string} name
  * @property {number} [positions]
- * @property {string|number} returns
+ * @property {number} returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
  */
@@ -244,7 +273,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro
- * @property {boolean} copyTradersOnly
+ * @property {boolean} isCopyTrading
  */
 
 /**
@@ -264,7 +293,6 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
  * @property {string} logoUrl
- * @property {string} coin
  * @property {boolean} hasBeenUsed
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
@@ -278,6 +306,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} returns
  * @property {string} floating
  * @property {number} openPositions
+ * @property {number} closedPositions
  */
 
 /**
@@ -500,10 +529,12 @@ function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem);
-  transformedResponse.returns = transformedResponse.dailyReturns.reduce((acc, item) => {
+
+  transformedResponse.dailyReturns.forEach((item) => {
     // if (isCopyTrading) {
-    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
-    acc += returns;
+    item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    transformedResponse.returns += item.returns;
+    transformedResponse.closedPositions += item.positions;
     // } else {
     //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
     //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
@@ -511,12 +542,7 @@ function providerItemTransform(providerItem) {
     //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
     //   //   }
     // }
-    // chartData.push({
-    //   day: item.name,
-    //   returns: acc.toFixed(2),
-    // });
-    return acc;
-  }, 0);
+  });
 
   return transformedResponse;
 }
@@ -553,10 +579,10 @@ function createEmptyProviderEntity() {
     dailyReturns: [],
     returns: 0,
     risk: 0,
-    coin: "BTC",
     followers: 0,
     floating: "",
     openPositions: 0,
+    closedPositions: 0,
   };
 }
 
@@ -1494,6 +1520,38 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {String} merchantId
  * @property {Number} price
  * @property {Number} trial
+ * @property {String} ipnSecret
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderTeamObject
+ * @property {String} name
+ * @property {String} countryCode
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderSocialObject
+ * @property {String} network
+ * @property {String} link
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderPermormanceWeeklyStats
+ * @property {Number} week
+ * @property {Number} return
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderPermormanceObject
+ * @property {Number} closePositions
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} last12WeeksStats
+ * @property {Number} openPositions
+ * @property {Number} totalBalance
+ * @property {Number} totalTradingVolume
  */
 
 /**
@@ -1538,6 +1596,15 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} riskFilter
  * @property {Boolean} successRateFilter
  * @property {Boolean} terms
+ * @property {Array<DefaultProviderTeamObject>} team
+ * @property {Array<DefaultProviderSocialObject>} social
+ * @property {String} about
+ * @property {String} strategy
+ * @property {DefaultProviderPermormanceObject} performance
+ * @property {Number} avgHoldingTime
+ * @property {Number} activeSince
+ * @property {Number} avgTradesPerWeek
+ * @property {Number} profitableWeeks
  */
 
 /**
@@ -1573,6 +1640,7 @@ function createEmptyProviderGetEntity() {
       merchantId: "",
       price: 0,
       trial: 0,
+      ipnSecret: "",
     },
     isAdmin: false,
     isClone: false,
@@ -1616,6 +1684,21 @@ function createEmptyProviderGetEntity() {
     riskFilter: false,
     successRateFilter: false,
     terms: false,
+    team: [{}],
+    social: [{}],
+    about: "",
+    performance: {
+      closePositions: 0,
+      last12WeeksStats: [{}],
+      openPositions: 0,
+      totalBalance: 0,
+      totalTradingVolume: 0,
+    },
+    strategy: "",
+    avgHoldingTime: 0,
+    activeSince: 0,
+    avgTradesPerWeek: 0,
+    profitableWeeks: 0,
   };
 }
 
@@ -1721,5 +1804,53 @@ function createEmptyOwnCopyTraderProviderOption() {
     providerId: 0,
     providerName: "",
     providerQuote: false,
+  };
+}
+
+/**
+ * Transform user exchange connection to typed ExchangeConnectionEntity.
+ *
+ * @param {*} response Trade API get exchanges raw response.
+ * @returns {Array<ProviderFollowerEntity>} User exchange connections collection.
+ */
+
+export function providerFollowersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((providerFollowersItem) => {
+    return providerFollowersResponseItemTransform(providerFollowersItem);
+  });
+}
+
+/**
+ * @typedef {Object} ProviderFollowerEntity
+ * @property {String} date
+ * @property {Number} followers
+ * @property {Number} totalFollowers
+ */
+
+/**
+ * Transform API exchange connection item to typed object.
+ *
+ * @param {*} providerFollowersItem Trade API exchange connection item.
+ * @returns {ProviderFollowerEntity} Exchange connection entity.
+ */
+function providerFollowersResponseItemTransform(providerFollowersItem) {
+  const emptyExchangeListEntity = createProviderFollowersEmptyEntity();
+  const transformedResponse = assign(emptyExchangeListEntity, providerFollowersItem);
+
+  return transformedResponse;
+}
+
+function createProviderFollowersEmptyEntity() {
+  return {
+    enabled: false,
+    id: "",
+    name: "",
+    requiredAuthFields: [""],
+    testNet: [""],
+    type: [""],
   };
 }

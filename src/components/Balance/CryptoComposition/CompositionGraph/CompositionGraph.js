@@ -24,9 +24,9 @@ const CompositionGraph = ({ list, quotes }) => {
 
   const sectionColors = [
     "#770fc8",
-    "#c12860",
     "#f63f82",
     "#b52a00",
+    "#c12860",
     "#c91919",
     "#08a441",
     "#f6ad3f",
@@ -58,7 +58,7 @@ const CompositionGraph = ({ list, quotes }) => {
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          values.push(value);
+          values.push(value.toFixed(2));
           labels.push(quotes[a]);
         }
       }

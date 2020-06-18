@@ -2,13 +2,14 @@ import React from "react";
 import "./AboutUs.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import ReactMarkdown from "react-markdown";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * About us compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
@@ -25,7 +26,8 @@ const AboutUs = ({ provider }) => {
       <Typography variant="h3">
         <FormattedMessage id="srv.about" />
       </Typography>
-      <Typography variant="body1">{provider.shortDesc}</Typography>
+      <ReactMarkdown source={provider.about} />
+      {/* <Typography variant="body1">{provider.shortDesc}</Typography> */}
     </Box>
   );
 };

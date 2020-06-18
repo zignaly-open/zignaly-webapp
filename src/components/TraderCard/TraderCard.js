@@ -11,6 +11,7 @@ import TraderCardBody from "./TraderCardBody";
  * @typedef {Object} TraderCardPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {Provider} provider The provider to display.
+ * @property {number} timeFrame Selected timeFrame.
  */
 
 /**
@@ -20,7 +21,7 @@ import TraderCardBody from "./TraderCardBody";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { provider, showSummary } = props;
+  const { provider, showSummary, timeFrame } = props;
 
   return (
     <Box
@@ -31,7 +32,7 @@ const TraderCard = (props) => {
       justifyContent="flex-start"
     >
       <TraderCardHeader provider={provider} />
-      <TraderCardBody provider={provider} showSummary={showSummary} />
+      <TraderCardBody provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
     </Box>
   );
 };

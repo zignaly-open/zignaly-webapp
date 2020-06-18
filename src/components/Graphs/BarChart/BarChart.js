@@ -90,8 +90,8 @@ const BarChart = (props) => {
       display: true,
       padding: horizontal ? 10 : 0,
     },
-    // categoryPercentage: 1.0,
-    // barPercentage: 1.0,
+    // categoryPercentage: 1,
+    // barPercentage: 0.7,
   };
 
   /**
