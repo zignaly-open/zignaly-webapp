@@ -688,6 +688,7 @@ status.99: "Unknown Error, Pending Review"
 
 # ERROR CODES
 error.occured: "Error Occured"
+error.payment: "Payment not completed."
 error.1: "Email exists in our DB"
 error.2: "Error Storing the document in the DB"
 error.3: "First Name field is mandatory"

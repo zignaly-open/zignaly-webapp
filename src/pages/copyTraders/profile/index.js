@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./profile.scss";
 import { Box } from "@material-ui/core";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
@@ -9,9 +9,35 @@ import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
 import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 const CopyTradersProfile = () => {
   const storeViews = useStoreViewsSelector();
+  const dispatch = useDispatch();
+
+  const checkPaymentStatus = () => {
+    if (typeof window !== undefined) {
+      let url = window.location.href;
+      if (url.includes("error")) {
+        let error = {
+          code: "payment",
+        };
+        history.pushState({}, "error", url.split("#")[0]);
+        dispatch(showErrorAlert(error));
+      }
+      if (url.includes("success")) {
+        let success = {
+          code: "payment",
+        };
+        history.pushState({}, "success", url.split("#")[0]);
+        dispatch(showErrorAlert(success));
+      }
+    }
+  };
+
+  useEffect(checkPaymentStatus, []);
+
   return (
     <Box
       alignItems="flex-start"

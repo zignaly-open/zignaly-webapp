@@ -6,6 +6,7 @@ import { Box } from "@material-ui/core";
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
+
 /**
  * Provides the navigation bar for the dashboard.
  *
@@ -15,15 +16,25 @@ import { Box } from "@material-ui/core";
 const PaymentButton = ({ provider }) => {
   const ipnURL = "https://zignaly.com/api/cryptoPaymentListener.php";
 
-  const createReturnUrl = () => {
+  const createReturnSuccessUrl = () => {
     if (provider.isCopyTrading) {
-      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile`;
+      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#success`;
     } else {
-      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile`;
+      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
     }
   };
 
-  const returnURL = createReturnUrl();
+  const createReturnErrorUrl = () => {
+    if (provider.isCopyTrading) {
+      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#error`;
+    } else {
+      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
+    }
+  };
+
+  const returnSuccessURL = createReturnSuccessUrl();
+
+  const returnErrorURL = createReturnErrorUrl();
 
   return (
     <Box
@@ -44,8 +55,8 @@ const PaymentButton = ({ provider }) => {
           <input type="hidden" name="quantity" value="1" />
           <input type="hidden" name="allow_quantity" value="1" />
           <input type="hidden" name="want_shipping" value="0" />
-          <input type="hidden" name="success_url" value={returnURL} />
-          <input type="hidden" name="cancel_url" value={returnURL} />
+          <input type="hidden" name="success_url" value={returnSuccessURL} />
+          <input type="hidden" name="cancel_url" value={returnErrorURL} />
           <input type="hidden" name="allow_extra" value="0" />
           <input type="hidden" name="invoice" value={provider.id} />
           <input type="hidden" name="custom" value={provider.id} />
