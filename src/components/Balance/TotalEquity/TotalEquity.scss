@@ -4,15 +4,12 @@
   min-height: inherit;
   padding: 0 30px 0 0;
 
-  .gradientChart {
-    canvas {
-      min-height: 200px;
-      min-width: 100%;
-    }
-  }
-
   .equityHeader {
     margin-bottom: 20px;
+  }
+
+  .gradientChart {
+    height: 200px;
   }
 }
 
@@ -24,10 +21,18 @@
   }
 }
 
-@include media(">=xl") {
+@include media(">lg", "<=xl") {
   .totalEquity {
     .gradientChart {
       height: 280px;
+    }
+  }
+}
+
+@include media(">xl") {
+  .totalEquity {
+    .gradientChart {
+      height: 400px;
     }
   }
 }
