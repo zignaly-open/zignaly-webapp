@@ -37,6 +37,7 @@ const TakeProfitPanel = (props) => {
   const cardinalityRange = range(1, cardinality + 1, 1);
   const entryType = watch("entryType");
   const limitPrice = watch("price");
+  const { limits } = symbolData;
 
   /**
    * Handle toggle switch action.
@@ -232,6 +233,26 @@ const TakeProfitPanel = (props) => {
     }
 
     validateExitUnits(event);
+  };
+
+  /**
+   * Validate that position size is within limits.
+   *
+   * @param {string} targetId Target index ID.
+   * @returns {Void} None.
+   */
+  const validateTargetPrice = (targetId) => {
+    const priceProperty = composeTargetPropertyName("tagetPrice", targetId);
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+
+    clearError(priceProperty);
+    if (limits.cost.min && targetPrice < limits.cost.min) {
+      setError("targetPrice", "error", `Position size cannot be lower than ${limits.cost.min}`);
+    }
+
+    if (limits.cost.max && targetPrice > limits.cost.max) {
+      setError("targetPrice", "error", `Position size cannot be greater than ${limits.cost.max}`);
+    }
   };
 
   /**
