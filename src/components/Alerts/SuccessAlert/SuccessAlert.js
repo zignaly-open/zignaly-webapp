@@ -5,6 +5,7 @@ import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
+import CloseIcon from "@material-ui/icons/Close";
 
 const SuccessAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();
@@ -13,6 +14,7 @@ const SuccessAlert = () => {
   return (
     <Snackbar
       TransitionComponent={Slide}
+      id="successAlert"
       anchorOrigin={{
         vertical: "top",
         horizontal: "right",
@@ -20,9 +22,10 @@ const SuccessAlert = () => {
       autoHideDuration={50000000}
       className="successAlert"
       onClose={() => dispatch(hideErrorAlert())}
-      open={storeAlerts.error.open}
+      open={false}
     >
       <Box bgcolor="grid.main" className="alertMessage">
+        <CloseIcon className="closeIcon" onClick={() => dispatch(hideErrorAlert())} />
         {storeAlerts.error.title && (
           <Typography className="title green" variant="h3">
             <FormattedMessage id={storeAlerts.error.title} />

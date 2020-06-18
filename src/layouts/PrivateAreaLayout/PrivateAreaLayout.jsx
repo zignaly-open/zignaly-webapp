@@ -9,7 +9,8 @@ import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
-import Alert from "../../components/Alerts/ErrorAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import Modal from "../../components/Modal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
@@ -44,7 +45,8 @@ const PrivateAreaLayout = (props) => {
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Alert />
+        <ErrorAlert />
+        <SuccessAlert />
         {storeLoader && <Loader />}
         <Modal
           onClose={() => dispatch(openExchangeConnectionView(false))}

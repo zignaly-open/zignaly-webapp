@@ -14,6 +14,7 @@ const ErrorAlert = () => {
   return (
     <Snackbar
       TransitionComponent={Slide}
+      id="errorAlert"
       anchorOrigin={{
         vertical: "top",
         horizontal: "right",

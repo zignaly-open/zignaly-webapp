@@ -6,6 +6,15 @@
     min-height: 100px;
     padding: 15px;
     width: 400px;
+    position: relative;
+
+    .closeIcon {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      color: $green;
+      cursor: pointer;
+    }
 
     .title {
       margin-bottom: 20px;
