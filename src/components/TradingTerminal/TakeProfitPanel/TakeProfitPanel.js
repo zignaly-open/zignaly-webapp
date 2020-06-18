@@ -9,6 +9,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
+import { useFormContext } from "react-hook-form";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -30,24 +31,18 @@ import useTargetGroup from "../../../hooks/useTargetGroup";
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const {
     cardinality,
     cardinalityRange,
-    clearError,
     composeTargetPropertyName,
-    errors,
     getGroupTargetId,
     getTargetPropertyValue,
-    getValues,
     handleTargetAdd,
     handleTargetRemove,
-    register,
-    setError,
     setTargetPropertyValue,
     simulateInputChangeEvent,
-    setValue,
-    watch,
-  } = useTargetGroup();
+  } = useTargetGroup("takeProfit");
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
@@ -61,8 +56,8 @@ const TakeProfitPanel = (props) => {
    */
   const validateExitUnits = (event) => {
     const draftPosition = getValues();
-    const allUnitsPercentage = cardinalityRange.map((index) => {
-      const targetProperty = composeTargetPropertyName("exitUnitsPercentage", String(index));
+    const allUnitsPercentage = cardinalityRange.map((targetId) => {
+      const targetProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
       return parseFloat(draftPosition[targetProperty]) || 0;
     });
 
@@ -253,8 +248,7 @@ const TakeProfitPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    cardinalityRange.forEach((index) => {
-      const targetId = String(index);
+    cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
       const sign = entryType === "SHORT" ? "-" : "";
@@ -272,8 +266,7 @@ const TakeProfitPanel = (props) => {
   useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((index) => {
-      const targetId = String(index);
+    cardinalityRange.forEach((targetId) => {
       simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
     });
   };
@@ -284,11 +277,11 @@ const TakeProfitPanel = (props) => {
    * Compose dynamic target property errors.
    *
    * @param {string} propertyName Property base name.
-   * @param {number} targetId Target index ID.
+   * @param {string} targetId Target index ID.
    * @returns {JSX.Element|null} Errors JSX element.
    */
   const displayTargetFieldErrors = (propertyName, targetId) => {
-    const targetProperty = composeTargetPropertyName(propertyName, String(targetId));
+    const targetProperty = composeTargetPropertyName(propertyName, targetId);
     if (errors[targetProperty]) {
       return <span className="errorText">{errors[targetProperty].message}</span>;
     }

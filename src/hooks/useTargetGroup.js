@@ -2,12 +2,30 @@ import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { range } from "lodash";
 
-const useTargetGroup = (defaultCardinality = 1) => {
-  const [cardinality, setCardinality] = useState(defaultCardinality);
-  const formContext = useFormContext();
-  const { getValues, setValue } = formContext;
+/**
+ * @typedef {Object} TargetGroupHook
+ * @property {number} cardinality
+ * @property {Array<string>} cardinalityRange
+ * @property {function} composeTargetPropertyName
+ * @property {function} getGroupTargetId
+ * @property {function} getTargetPropertyValue
+ * @property {React.MouseEventHandler} handleTargetAdd
+ * @property {React.MouseEventHandler} handleTargetRemove
+ * @property {function} setTargetPropertyValue
+ * @property {function} simulateInputChangeEvent
+ */
 
-  const cardinalityRange = range(1, cardinality + 1, 1);
+/**
+ * Target group multi cardinality panel elements utilities.
+ *
+ * @param {string} groupName Target group base name, used for fields names composition.
+ * @param {number} [defaultCardinality=1] Default cardinality value.
+ * @returns {TargetGroupHook} Target group object.
+ */
+const useTargetGroup = (groupName, defaultCardinality = 1) => {
+  const [cardinality, setCardinality] = useState(defaultCardinality);
+  const { getValues, setValue } = useFormContext();
+  const cardinalityRange = range(1, cardinality + 1, 1).map(String);
 
   const handleTargetAdd = () => {
     setCardinality(cardinality + 1);
@@ -27,7 +45,7 @@ const useTargetGroup = (defaultCardinality = 1) => {
    * @returns {string} Property name for a given target index.
    */
   const composeTargetPropertyName = (propertyName, targetId) => {
-    const targetPropertyName = `${propertyName}${targetId}`;
+    const targetPropertyName = `${groupName}${propertyName}${targetId}`;
 
     return targetPropertyName;
   };
@@ -104,7 +122,6 @@ const useTargetGroup = (defaultCardinality = 1) => {
     handleTargetRemove,
     setTargetPropertyValue,
     simulateInputChangeEvent,
-    ...formContext,
   };
 };
 
