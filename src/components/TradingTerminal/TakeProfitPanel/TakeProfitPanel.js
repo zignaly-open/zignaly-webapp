@@ -102,6 +102,34 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Validate that target units is within limits.
+   *
+   * @param {string} targetId Target index ID.
+   * @returns {Void} None.
+   */
+  const validateTargetExitUnitsLimits = (targetId) => {
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+
+    clearError(unitsProperty);
+    if (limits.amount.min && exitUnits < limits.amount.min) {
+      setError(
+        unitsProperty,
+        "error",
+        `Target units to exit cannot be lower than ${limits.amount.min}`,
+      );
+    }
+
+    if (limits.amount.max && exitUnits > limits.amount.max) {
+      setError(
+        unitsProperty,
+        "error",
+        `Target units to exit cannot be greater than ${limits.amount.max}`,
+      );
+    }
+  };
+
+  /**
    * Validate result of changed target units event.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
@@ -129,6 +157,9 @@ const TakeProfitPanel = (props) => {
         "Total units (cumulative) cannot be greater than 100%.",
       );
     }
+
+    validateTargetExitUnitsLimits(targetId);
+    validateCostLimits(targetId);
   };
 
   /**
@@ -164,6 +195,8 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(priceProperty, "");
     }
+
+    validateTargetPriceLimits(targetId);
   };
 
   /**
@@ -186,6 +219,8 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(pricePercentageProperty, "");
     }
+
+    validateTargetPriceLimits(targetId);
   };
 
   /**
@@ -236,24 +271,48 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
-   * Validate that position size is within limits.
+   * Validate that target price is within limits.
    *
    * @param {string} targetId Target index ID.
    * @returns {Void} None.
    */
-  const validateTargetPrice = (targetId) => {
-    const priceProperty = composeTargetPropertyName("tagetPrice", targetId);
+  const validateTargetPriceLimits = (targetId) => {
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
 
     clearError(priceProperty);
-    if (limits.cost.min && targetPrice < limits.cost.min) {
-      setError("targetPrice", "error", `Position size cannot be lower than ${limits.cost.min}`);
+    if (limits.price.min && targetPrice < limits.price.min) {
+      setError(priceProperty, "error", `Target price cannot be lower than ${limits.price.min}`);
     }
 
-    if (limits.cost.max && targetPrice > limits.cost.max) {
-      setError("targetPrice", "error", `Position size cannot be greater than ${limits.cost.max}`);
+    if (limits.price.max && targetPrice > limits.price.max) {
+      setError(priceProperty, "error", `Target price cannot be greater than ${limits.price.max}`);
     }
+
+    validateCostLimits(targetId);
   };
+
+  /**
+   * Validate that cost is within limits.
+   *
+   * @param {string} targetId Target index ID.
+   * @returns {Void} None.
+   */
+  function validateCostLimits(targetId) {
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const cost = Math.abs(targetPrice * exitUnits);
+
+    clearError(unitsProperty);
+    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
+      setError(unitsProperty, "error", `Exit cost cannot be lower than ${limits.cost.min}`);
+    }
+
+    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
+      setError(unitsProperty, "error", `Exit cost cannot be greater than ${limits.cost.max}`);
+    }
+  }
 
   /**
    * Progrmatically invoke change event simulation on a given element.
@@ -293,6 +352,22 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(invertPricePercentage, [entryType, cardinality, limitPrice]);
+
+  /**
+   * Compose dynamic target property errors.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {number} targetId Target index ID.
+   * @returns {JSX.Element|null} Errors JSX element.
+   */
+  const displayTargetFieldErrors = (propertyName, targetId) => {
+    const targetProperty = composeTargetPropertyName(propertyName, String(targetId));
+    if (errors[targetProperty]) {
+      return <span className="errorText">{errors[targetProperty].message}</span>;
+    }
+
+    return null;
+  };
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
@@ -335,7 +410,8 @@ const TakeProfitPanel = (props) => {
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
-              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+              {displayTargetFieldErrors("targetPrice", index)}
+              <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
                   descriptionId="terminal.unitstoexit.help"
                   labelId="terminal.unitstoexit"
@@ -358,9 +434,8 @@ const TakeProfitPanel = (props) => {
                   />
                   <div className="currencyBox">{symbolData.base}</div>
                 </Box>
-                {errors[`exitUnitsPercentage${index}`] && (
-                  <span className="errorText">{errors[`exitUnitsPercentage${index}`].message}</span>
-                )}
+                {displayTargetFieldErrors("exitUnitsPercentage", index)}
+                {displayTargetFieldErrors("exitUnits", index)}
               </Box>
             </Box>
           ))}
