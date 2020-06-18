@@ -12,11 +12,11 @@ const ErrorAlert = () => {
 
   return (
     <Snackbar
+      TransitionComponent={Slide}
       anchorOrigin={{
         vertical: "top",
         horizontal: "right",
       }}
-      TransitionComponent={Slide}
       autoHideDuration={5000}
       className="errorAlert"
       onClose={() => dispatch(hideErrorAlert())}
@@ -24,12 +24,12 @@ const ErrorAlert = () => {
     >
       <Box bgcolor="grid.main" className="alertMessage">
         {storeAlerts.error.title && (
-          <Typography variant="h3" className="title red">
+          <Typography className="title red" variant="h3">
             <FormattedMessage id={storeAlerts.error.title} />
           </Typography>
         )}
         {storeAlerts.error.body && (
-          <Typography variant="body1" className="body red">
+          <Typography className="body red" variant="body1">
             <b>Error:</b>
             <FormattedMessage id={storeAlerts.error.body} />
           </Typography>

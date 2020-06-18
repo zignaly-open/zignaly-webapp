@@ -1827,10 +1827,10 @@ function createProviderFollowersEmptyEntity() {
 }
 
 /**
- * Transform user exchange connection to typed ExchangeConnectionEntity.
+ * Transform provider followers list response item to ProviderFollowersListEntity.
  *
- * @param {*} response Trade API get exchanges raw response.
- * @returns {Array<ProviderFollowListEntity>} User exchange connections collection.
+ * @param {*} response Trade API get provider followers list response.
+ * @returns {Array<ProviderFollowersListEntity>} Provider followers list collection.
  */
 
 export function providerFollowersListResponseTransform(response) {
@@ -1844,7 +1844,7 @@ export function providerFollowersListResponseTransform(response) {
 }
 
 /**
- * @typedef {Object} ProviderFollowListEntity
+ * @typedef {Object} ProviderFollowersListEntity
  * @property {String} userId
  * @property {String} name
  * @property {String} email
@@ -1860,10 +1860,10 @@ export function providerFollowersListResponseTransform(response) {
  */
 
 /**
- * Transform API exchange connection item to typed object.
+ * Transform provider followers list response item to typed object.
  *
- * @param {*} exchangeConnectionItem Trade API exchange connection item.
- * @returns {ProviderFollowListEntity} Exchange connection entity.
+ * @param {*} providerFollowersListItem Provider followers list response item.
+ * @returns {ProviderFollowersListEntity} Provider Followers List Item entity.
  */
 function providerFollowersListItemTransform(providerFollowersListItem) {
   const emptyProviderFollowersListEntity = createProviderFollowersListEmptyEntity();

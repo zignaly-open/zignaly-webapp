@@ -51,7 +51,7 @@ export const showLoader = (flag) => {
 /**
  * Action to show error alert.
  *
- * @param {*} error
+ * @param {*} error Error object from the backend
  * @returns {AppThunk} Action object.
  */
 export const showErrorAlert = (error) => {

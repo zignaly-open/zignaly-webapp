@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Table from "../../../Table";
 
-/**]
+/** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
@@ -39,7 +39,7 @@ const UsersTable = ({ title, persistKey, list }) => {
       name: "active",
       label: "col.users.active",
       options: {
-        customBodyRender: (val, tableMeta) => {
+        customBodyRender: (val) => {
           return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
         },
       },
@@ -50,7 +50,7 @@ const UsersTable = ({ title, persistKey, list }) => {
       options: {
         display: "true",
         viewColumns: true,
-        customBodyRender: (val, tableMeta) => {
+        customBodyRender: (val) => {
           return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
         },
       },
@@ -63,7 +63,7 @@ const UsersTable = ({ title, persistKey, list }) => {
       name: "realExchangeConnected",
       label: "col.users.realexchange",
       options: {
-        customBodyRender: (val, tableMeta) => {
+        customBodyRender: (val) => {
           return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
         },
       },
@@ -76,7 +76,7 @@ const UsersTable = ({ title, persistKey, list }) => {
       name: "suspended",
       label: "col.users.suspended",
       options: {
-        customBodyRender: (val, tableMeta) => {
+        customBodyRender: (val) => {
           return <span className={val ? "greed" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
         },
       },

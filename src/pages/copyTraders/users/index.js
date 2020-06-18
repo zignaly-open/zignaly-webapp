@@ -39,14 +39,14 @@ const CopyTradersUsers = () => {
 
   return (
     <Box
+      alignItems="center"
       className="profileUsersPage"
       display="flex"
       flexDirection="row"
       justifyContent="center"
-      alignItems="center"
     >
       {loading && <CircularProgress color="primary" />}
-      {!loading && <UsersTable title="srv.users" list={userList} persistKey="copytProfileUsers" />}
+      {!loading && <UsersTable list={userList} persistKey="copytProfileUsers" title="srv.users" />}
     </Box>
   );
 };
