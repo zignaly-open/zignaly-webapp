@@ -36,8 +36,8 @@ const TakeProfitPanel = (props) => {
   const [cardinality, setCardinality] = useState(1);
   const cardinalityRange = range(1, cardinality + 1, 1);
   const entryType = watch("entryType");
-  const limitPrice = watch("price");
-  const units = watch("units");
+  const strategyPrice = watch("price");
+  const strategyUnits = watch("units");
   const { limits } = symbolData;
 
   /**
@@ -352,7 +352,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [entryType, cardinality, limitPrice]);
+  useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((index) => {
@@ -361,7 +361,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedUnitsUpdates, [units]);
+  useEffect(chainedUnitsUpdates, [strategyUnits]);
 
   /**
    * Compose dynamic target property errors.
