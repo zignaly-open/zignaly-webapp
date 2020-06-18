@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -49,7 +50,9 @@ const TakeProfitPanel = (props) => {
     watch,
   } = useTargetGroup();
   const entryType = watch("entryType");
-  const limitPrice = watch("price");
+  const strategyPrice = watch("price");
+  const strategyUnits = watch("units");
+  const { limits } = symbolData;
 
   /**
    * Validate result of changed target units event.
@@ -79,6 +82,9 @@ const TakeProfitPanel = (props) => {
         "Total units (cumulative) cannot be greater than 100%.",
       );
     }
+
+    validateTargetExitUnitsLimits(targetId);
+    validateCostLimits(targetId);
   };
 
   /**
@@ -100,6 +106,8 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(priceProperty, "");
     }
+
+    validateTargetPriceLimits(targetId);
   };
 
   /**
@@ -122,6 +130,8 @@ const TakeProfitPanel = (props) => {
     } else {
       setValue(pricePercentageProperty, "");
     }
+
+    validateTargetPriceLimits(targetId);
   };
 
   /**
@@ -171,7 +181,71 @@ const TakeProfitPanel = (props) => {
     validateExitUnits(event);
   };
 
-  const invertPricePercentage = () => {
+  /**
+   * Validate that target price is within limits.
+   *
+   * @param {string} targetId Target index ID.
+   * @returns {Void} None.
+   */
+  const validateTargetPriceLimits = (targetId) => {
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+
+    clearError(priceProperty);
+    if (limits.price.min && targetPrice < limits.price.min) {
+      setError(priceProperty, "error", `Target price cannot be lower than ${limits.price.min}`);
+    }
+
+    if (limits.price.max && targetPrice > limits.price.max) {
+      setError(priceProperty, "error", `Target price cannot be greater than ${limits.price.max}`);
+    }
+
+    validateCostLimits(targetId);
+  };
+
+  /**
+   * Validate that cost is within limits.
+   *
+   * @param {string} targetId Target index ID.
+   * @returns {Void} None.
+   */
+  function validateCostLimits(targetId) {
+    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const cost = Math.abs(targetPrice * exitUnits);
+
+    clearError(unitsProperty);
+    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
+      setError(unitsProperty, "error", `Exit cost cannot be lower than ${limits.cost.min}`);
+    }
+
+    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
+      setError(unitsProperty, "error", `Exit cost cannot be greater than ${limits.cost.max}`);
+    }
+  }
+
+  /**
+   * Progrmatically invoke change event simulation on a given element.
+   *
+   * @param {String} elementName Element name.
+   * @returns {Void} None.
+   */
+  const simulateInputChangeEvent = (elementName) => {
+    const matches = document.getElementsByName(elementName);
+    const item = matches[0] || null;
+
+    // @ts-ignore
+    if (item && item._valueTracker) {
+      // @ts-ignore
+      item._valueTracker.setValue("");
+      // Programatically invoke change event.
+      const event = new Event("input", { bubbles: true });
+      item.dispatchEvent(event);
+    }
+  };
+
+  const chainedPriceUpdates = () => {
     cardinalityRange.forEach((index) => {
       const targetId = String(index);
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
@@ -188,7 +262,32 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(invertPricePercentage, [entryType, cardinality, limitPrice]);
+  useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
+
+  const chainedUnitsUpdates = () => {
+    cardinalityRange.forEach((index) => {
+      const targetId = String(index);
+      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+    });
+  };
+
+  useEffect(chainedUnitsUpdates, [strategyUnits]);
+
+  /**
+   * Compose dynamic target property errors.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {number} targetId Target index ID.
+   * @returns {JSX.Element|null} Errors JSX element.
+   */
+  const displayTargetFieldErrors = (propertyName, targetId) => {
+    const targetProperty = composeTargetPropertyName(propertyName, String(targetId));
+    if (errors[targetProperty]) {
+      return <span className="errorText">{errors[targetProperty].message}</span>;
+    }
+
+    return null;
+  };
 
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
@@ -231,7 +330,8 @@ const TakeProfitPanel = (props) => {
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
-              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+              {displayTargetFieldErrors("targetPrice", index)}
+              <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
                   descriptionId="terminal.unitstoexit.help"
                   labelId="terminal.unitstoexit"
@@ -254,9 +354,8 @@ const TakeProfitPanel = (props) => {
                   />
                   <div className="currencyBox">{symbolData.base}</div>
                 </Box>
-                {errors[`exitUnitsPercentage${index}`] && (
-                  <span className="errorText">{errors[`exitUnitsPercentage${index}`].message}</span>
-                )}
+                {displayTargetFieldErrors("exitUnitsPercentage", index)}
+                {displayTargetFieldErrors("exitUnits", index)}
               </Box>
             </Box>
           ))}
