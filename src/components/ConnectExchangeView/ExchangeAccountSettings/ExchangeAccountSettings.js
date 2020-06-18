@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useEffect, useContext, useState, useCallback, useImperativeHandle } from "react";
 import { Box, Switch, FormControlLabel } from "@material-ui/core";
 import ModalPathContext from "../ModalPathContext";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -12,7 +12,7 @@ import { ConfirmDialog } from "../../Dialogs";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { removeUserExchange } from "../../../store/actions/user";
+import { removeUserExchange, setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
 import useEvent from "../../../hooks/useEvent";
 import { useForm, FormContext, Controller } from "react-hook-form";
@@ -32,10 +32,21 @@ const ExchangeAccountSettings = ({ internalId }) => {
     pathParams: { selectedAccount, previousPath },
     setTitle,
     resetToPath,
+    formRef,
   } = useContext(ModalPathContext);
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+
+  // Submit form handle
+  useImperativeHandle(
+    formRef,
+    () => ({
+      submitForm,
+    }),
+    [],
+  );
+
   const {
     register,
     handleSubmit,
@@ -88,27 +99,29 @@ const ExchangeAccountSettings = ({ internalId }) => {
       });
   };
 
-  const onSubmit = useCallback(() => {
-    handleSubmit((data) => {
+  const submitForm = async () => {
+    //   const submitForm = useCallback(() => {
+    return handleSubmit((data) => {
       console.log(dirtyFields, data);
       const { internalName, key, secret, password } = data;
       const payload = {
         token: storeSession.tradeApi.accessToken,
-        exchangeId: selectedAccount.internalId,
+        exchangeId: selectedAccount.exchangeId,
+        internalId: selectedAccount.internalId,
         internalName,
         globalMaxPositions: data.globalMaxPositions || false,
         globalMinVolume: data.globalMinVolume || false,
         globalPositionsPerMarket: data.globalPositionsPerMarket || false,
-        globalBlacklist: data.globalBlacklist || false,
-        globalWhitelist: data.globalWhitelist || false,
+        globalBlacklist: data.globalWhitelist || false,
+        globalWhitelist: data.globalBlacklist || false,
         globalDelisting: data.globalDelisting || false,
-        key,
-        secret,
+        ...(key && { key }),
+        ...(secret && { secret }),
         ...(password && { password }),
       };
       console.log("payload", payload);
 
-      tradeApi.exchangeUpdate(payload).then(() => {
+      return tradeApi.exchangeUpdate(payload).then(() => {
         const authorizationPayload = {
           token: storeSession.tradeApi.accessToken,
         };
@@ -116,8 +129,8 @@ const ExchangeAccountSettings = ({ internalId }) => {
         resetToPath(previousPath);
       });
     })();
-  }, []);
-  useEvent("submit", onSubmit);
+  };
+  //   useEvent("submit", onSubmit);
 
   return (
     <form className="exchangeAccountSettings">
@@ -138,7 +151,6 @@ const ExchangeAccountSettings = ({ internalId }) => {
             <CustomInput
               inputRef={register}
               name={field}
-              //   name={`auth.${field}`}
               label={`accounts.exchange.${field}`}
               key={field}
               placeholder={
@@ -150,36 +162,49 @@ const ExchangeAccountSettings = ({ internalId }) => {
           label={"accounts.options.maxconcurrent"}
           tooltip={"accounts.options.maxconcurrent.help"}
           defaultValue={selectedAccount.globalMaxPositions}
+          inputRef={register}
+          name="globalMaxPositions"
+          type="number"
         />
         <CustomSwitchInput
           label={"accounts.options.minvolume"}
           tooltip={"accounts.options.minvolume.help"}
           defaultValue={selectedAccount.globalMinVolume}
+          name="globalMinVolume"
           inputRef={register}
+          type="number"
+          unit="BTC"
         />
         <CustomSwitchInput
           label={"accounts.options.limitpositions"}
           tooltip={"accounts.options.limitpositions.help"}
           defaultValue={selectedAccount.globalPositionsPerMarket}
+          name="globalPositionsPerMarket"
           inputRef={register}
+          type="number"
         />
         <CustomSwitchInput
           label={"accounts.options.blacklist"}
           tooltip={"accounts.options.blacklist.help"}
           defaultValue={selectedAccount.globalBlacklist}
+          name="globalBlacklist"
           inputRef={register}
+          type="textarea"
         />
         <CustomSwitchInput
           label={"accounts.options.whitelist"}
           tooltip={"accounts.options.whitelist.help"}
           defaultValue={selectedAccount.globalWhitelist}
+          name="globalWhitelist"
           inputRef={register}
+          type="textarea"
         />
         <CustomSwitch
           label={"accounts.options.delisted"}
           tooltip={"accounts.options.delisted.help"}
+          name="globalDelisting"
           defaultValue={selectedAccount.globalDelisting}
-          inputRef={register}
+          control={control}
         />
 
         <CustomButton className="body2 text-default" onClick={deleteExchangeShow}>

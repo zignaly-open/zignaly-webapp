@@ -421,7 +421,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string|boolean} globalPositionsPerMarket
  * @property {string|boolean} globalBlacklist
  * @property {string|boolean} globalWhitelist
- * @property {string|boolean} globalDelisting
+ * @property {boolean} globalDelisting
 
  */
 

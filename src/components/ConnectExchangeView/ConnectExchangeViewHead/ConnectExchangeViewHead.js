@@ -22,8 +22,10 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ConnectExchangeViewHead = ({}) => {
-  const { pathParams, setTitle, resetToPath, setPathParams } = useContext(ModalPathContext);
+const ConnectExchangeViewHead = ({ onClose }) => {
+  const { pathParams, setTitle, resetToPath, setPathParams, formRef } = useContext(
+    ModalPathContext,
+  );
   const { selectedAccount, previousPath, title, tempMessage, isLoading } = pathParams;
   //   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,11 +35,14 @@ const ConnectExchangeViewHead = ({}) => {
    * @type {React.MouseEventHandler} handleClickSubmit
    * @returns {void}
    */
-  const handleClick = () => {
-    // setIsLoading(true);
-    setPathParams({ ...pathParams, isLoading: true });
-    window.dispatchEvent(new Event("submit"));
-    // props.onClose();
+  const handleClick = async () => {
+    if (formRef.current) {
+      setPathParams({ ...pathParams, isLoading: true });
+      await formRef.current.submitForm();
+      setPathParams({ ...pathParams, isLoading: true });
+    } else {
+      onClose();
+    }
   };
 
   useEffect(() => {

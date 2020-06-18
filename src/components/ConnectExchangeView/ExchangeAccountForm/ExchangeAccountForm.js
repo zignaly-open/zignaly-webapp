@@ -1,9 +1,17 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
-import { Box, FormControlLabel, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import {
+  Box,
+  FormControlLabel,
+  OutlinedInput,
+  Typography,
+  Switch,
+  InputAdornment,
+} from "@material-ui/core";
 import "./ExchangeAccountForm.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Help } from "@material-ui/icons";
 import CustomTooltip from "../../CustomTooltip";
+import { Controller } from "react-hook-form";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -51,7 +59,7 @@ export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) 
   />
 );
 
-const SwitchInputComponent = ({ inputRef, defaultValue }) => {
+const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
   const [checked, setChecked] = useState(!!defaultValue);
 
   return (
@@ -70,23 +78,52 @@ const SwitchInputComponent = ({ inputRef, defaultValue }) => {
           inputRef={inputRef}
           name={name}
           defaultValue={defaultValue || ""}
+          endAdornment={unit ? <InputAdornment position="end">{unit}</InputAdornment> : null}
+          type={type || "string"}
+          multiline={type === "textarea"}
         />
       )}
     </Box>
   );
 };
 
-export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue }) => (
+export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name, type, unit }) => (
   <CustomSwitch
     tooltip={tooltip}
     label={label}
-    defaultValue={defaultValue}
-    control={<SwitchInputComponent inputRef={inputRef} defaultValue={defaultValue} />}
+    // defaultValue={defaultValue}
+    controlComponent={
+      <SwitchInputComponent
+        name={name}
+        inputRef={inputRef}
+        defaultValue={defaultValue}
+        type={type}
+        unit={unit}
+      />
+    }
   />
 );
-export const CustomSwitch = ({ inputRef, tooltip, label, defaultValue, control }) => (
+export const CustomSwitch = ({
+  inputRef,
+  tooltip,
+  label,
+  defaultValue,
+  controlComponent,
+  control,
+  name,
+}) => (
   <FormControlLabel
-    control={control || <Switch defaultValue={defaultValue} inputRef={inputRef} />}
+    control={
+      controlComponent || (
+        <Controller
+          as={Switch}
+          name={name}
+          defaultValue={defaultValue}
+          type="checkbox"
+          control={control}
+        />
+      )
+    }
     label={
       <Box display="flex" flexDirection="row" className="accountLabelWrapper">
         <Typography className="accountLabel">

@@ -8,6 +8,7 @@ const ModalPathContext = React.createContext({
   setTitle: () => {},
   pathParams: {},
   currentPath: "",
+  formRef: {},
 });
 
 export default ModalPathContext;

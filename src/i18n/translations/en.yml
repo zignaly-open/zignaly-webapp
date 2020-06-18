@@ -479,7 +479,7 @@ accounts.withdraw: "Withdraw"
 accounts.selected: "Selected"
 
 accounts.options.blacklist: "Global Blacklist"
-accounts.options.blacklist.help: "It won't open any position for symbols include here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
+accounts.options.blacklist.help: "It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
 accounts.options.delisted: "Avoid open position for delisted coins"
 accounts.options.delisted.help: "Don't open positions if the quote or base coin is delisted or marked for delisting. Disclaimer: Coins won't be added to this blacklist until we add them manually."
 accounts.options.limitpositions: "Global Limit Positions per Market"
@@ -489,7 +489,7 @@ accounts.options.maxconcurrent.help: "This is the maximum number of concurrent p
 accounts.options.minvolume: "Global Minimum Volume"
 accounts.options.minvolume.help: "Don't open positions for markets which daily volume is below this value in BTC for any provider."
 accounts.options.whitelist: "Global Whitelist"
-accounts.options.whitelist.help: "It will open positions only for symbols include here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
+accounts.options.whitelist.help: "It will open positions only for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
 
 convert.converto: "converted to: "
 convert.description: "Convert Small Balance to BNB"

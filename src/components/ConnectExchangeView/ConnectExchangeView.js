@@ -16,10 +16,11 @@ import ModalPathContext from "./ModalPathContext";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Connect exchange element.
  */
-const ConnectExchangeView = (props) => {
+const ConnectExchangeView = ({ onClose }) => {
   const [pathParams, setPathParams] = useState({
     currentPath: "realAccounts",
   });
+  const formRef = useRef(null);
 
   const navigateToPath = (path, selectedAccount) => {
     setPathParams({
@@ -41,7 +42,7 @@ const ConnectExchangeView = (props) => {
       title,
     });
   };
-  const value = { pathParams, setPathParams, navigateToPath, resetToPath, setTitle };
+  const value = { pathParams, setPathParams, navigateToPath, resetToPath, setTitle, formRef };
 
   return (
     <ModalPathContext.Provider value={value}>
@@ -52,7 +53,7 @@ const ConnectExchangeView = (props) => {
         flexDirection="column"
         justifyContent="center"
       >
-        <ConnectExchangeViewHead />
+        <ConnectExchangeViewHead onClose={onClose} />
         <ConnectExchangeViewContent />
       </Box>
     </ModalPathContext.Provider>
