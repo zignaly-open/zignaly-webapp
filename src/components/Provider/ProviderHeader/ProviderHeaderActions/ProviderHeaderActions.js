@@ -6,6 +6,7 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
 import CopyTraderButton from "../CopyTraderButton";
+import PaymentButton from "../PaymentButton";
 /**
  * Provides the navigation bar for the dashboard.
  *
@@ -13,8 +14,6 @@ import CopyTraderButton from "../CopyTraderButton";
  */
 const ProviderHeaderActions = () => {
   const storeViews = useStoreViewsSelector();
-
-  const payFee = () => {};
 
   /**
    * Funcrtion to handle image url loading error.
@@ -58,9 +57,7 @@ const ProviderHeaderActions = () => {
             : 0}
         </b>
       </Typography>
-      <CustomButton className="textPurple" onClick={payFee}>
-        <FormattedMessage id="copyt.paymonthlyfee" />
-      </CustomButton>
+      <PaymentButton provider={storeViews.provider} />
     </Box>
   );
 };

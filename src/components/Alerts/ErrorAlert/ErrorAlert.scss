@@ -5,7 +5,15 @@
     box-shadow: (-1px) 2px 10px $boxShadowColor;
     min-height: 100px;
     padding: 15px;
+    position: relative;
     width: 400px;
+
+    .closeIcon {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      color: $red;
+    }
 
     .title {
       margin-bottom: 20px;

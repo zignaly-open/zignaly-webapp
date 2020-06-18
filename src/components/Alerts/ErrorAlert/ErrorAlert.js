@@ -5,6 +5,7 @@ import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
+import CloseIcon from "@material-ui/icons/Close";
 
 const ErrorAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();
@@ -23,6 +24,7 @@ const ErrorAlert = () => {
       open={storeAlerts.error.open}
     >
       <Box bgcolor="grid.main" className="alertMessage">
+        <CloseIcon className="closeIcon" onClick={() => dispatch(hideErrorAlert())} />
         {storeAlerts.error.title && (
           <Typography className="title red" variant="h3">
             <FormattedMessage id={storeAlerts.error.title} />
