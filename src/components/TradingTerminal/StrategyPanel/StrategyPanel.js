@@ -14,10 +14,9 @@ import {
   RadioGroup,
   Radio,
   Switch,
-  Tooltip,
   Typography,
 } from "@material-ui/core";
-import { Help } from "@material-ui/icons";
+import HelperLabel from "../HelperLabel/HelperLabel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -43,11 +42,12 @@ const StrategyPanel = (props) => {
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { errors, getValues, register, clearError, setError, setValue } = useFormContext();
+  const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const storeUser = useStoreUserSelector();
   const lastDayBalance = storeUser.dailyBalance.balances[0] || null;
+  const entryType = watch("entryType");
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
@@ -213,7 +213,7 @@ const StrategyPanel = (props) => {
         >
           {selectedExchange.exchangeType === "futures" && (
             <FormControl className="entryType">
-              <RadioGroup aria-label="Entry Type" name="entryType">
+              <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
                 <FormControlLabel
                   control={<Radio />}
                   inputRef={register}
@@ -231,19 +231,7 @@ const StrategyPanel = (props) => {
           )}
           {entryStrategy === "stop-limit" && (
             <FormControl>
-              <Box alignItems="center" className="help" display="flex">
-                <FormHelperText>
-                  <FormattedMessage id="terminal.stopprice" />
-                </FormHelperText>
-                <Tooltip
-                  arrow
-                  enterTouchDelay={50}
-                  placement="left-end"
-                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
-                >
-                  <Help />
-                </Tooltip>
-              </Box>
+              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
                 <div className="currencyBox">{symbolData.quote}</div>
@@ -252,19 +240,7 @@ const StrategyPanel = (props) => {
           )}
           {entryStrategy !== "market" && (
             <FormControl>
-              <Box alignItems="center" className="help" display="flex">
-                <FormHelperText>
-                  <FormattedMessage id="terminal.price" />
-                </FormHelperText>
-                <Tooltip
-                  arrow
-                  enterTouchDelay={50}
-                  placement="left-end"
-                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
-                >
-                  <Help />
-                </Tooltip>
-              </Box>
+              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.price" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -279,19 +255,7 @@ const StrategyPanel = (props) => {
           )}
           {selectedExchange.exchangeType === "futures" && (
             <FormControl>
-              <Box alignItems="center" className="help" display="flex">
-                <FormHelperText>
-                  <FormattedMessage id="terminal.realinvest" />
-                </FormHelperText>
-                <Tooltip
-                  arrow
-                  enterTouchDelay={50}
-                  placement="left-end"
-                  title={intl.formatMessage({ id: "terminal.stoploss.help" })}
-                >
-                  <Help />
-                </Tooltip>
-              </Box>
+              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.realinvest" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -308,19 +272,7 @@ const StrategyPanel = (props) => {
             </FormControl>
           )}
           <FormControl>
-            <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>
-                <FormattedMessage id="terminal.position.size" />
-              </FormHelperText>
-              <Tooltip
-                arrow
-                enterTouchDelay={50}
-                placement="left-end"
-                title={intl.formatMessage({ id: "terminal.stoploss.help" })}
-              >
-                <Help />
-              </Tooltip>
-            </Box>
+            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.position.size" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
@@ -339,19 +291,7 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
           <FormControl>
-            <Box alignItems="center" className="help" display="flex">
-              <FormHelperText>
-                <FormattedMessage id="terminal.units" />
-              </FormHelperText>
-              <Tooltip
-                arrow
-                enterTouchDelay={50}
-                placement="left-end"
-                title={intl.formatMessage({ id: "terminal.stoploss.help" })}
-              >
-                <Help />
-              </Tooltip>
-            </Box>
+            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"

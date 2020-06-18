@@ -68,9 +68,11 @@ const useCoinRayDataFeedFactory = (symbol) => {
       .then((data) => {
         const coinRayToken = data[0];
         const marketSymbolsData = data[1];
+        const exchangeName =
+          storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
 
         const options = {
-          exchange: storeSettings.selectedExchange.exchangeName,
+          exchange: exchangeName,
           exchangeKey,
           symbol,
           symbolsData: marketSymbolsData,

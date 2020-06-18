@@ -26,8 +26,10 @@ import { isEqual } from "lodash";
 
 // Memoize the chart and only re-renders when the data is updated.
 // Otherwise it will be rendered everytime the toolip is trigered(state update).
-const MemoizedLine = React.memo(Line, (prevProps, nextProps) =>
-  isEqual(prevProps.data, nextProps.data),
+const MemoizedLine = React.memo(
+  Line,
+  (prevProps, nextProps) =>
+    isEqual(prevProps.data, nextProps.data) && isEqual(prevProps.options, nextProps.options),
 );
 
 /**

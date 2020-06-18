@@ -83,7 +83,7 @@ const ProvidersBrowse = ({
         })}`}
         value={timeFrame}
       />
-      <ProvidersList providers={providers} showSummary={connectedOnly} />
+      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
     </Box>
   );
 };

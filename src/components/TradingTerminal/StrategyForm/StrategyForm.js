@@ -3,6 +3,7 @@ import { Box, Button } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
 import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
+import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -33,6 +34,7 @@ const StrategyForm = (props) => {
       realInvestment: "",
       positionSize: "",
       units: "",
+      entryType: "LONG",
     },
   });
   // Receives submitted data.
@@ -64,6 +66,7 @@ const StrategyForm = (props) => {
             leverage={leverage}
             symbolData={currentSymbolData}
           />
+          <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>

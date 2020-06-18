@@ -19,7 +19,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 /**
  * @typedef {Object} ProvidersData
  * @property {ProvidersCollection} providers
- * @property {number} timeFrame // todo: check with Bart
+ * @property {number} timeFrame
  * @property {function} setTimeFrame
  * @property {string} coin
  * @property {function} setCoin
@@ -77,15 +77,16 @@ const useProvidersList = (options) => {
         let res = 0;
         switch (key) {
           case "RETURNS":
-            res = a.returns < b.returns ? 1 : -1;
+            res = a.returns - b.returns;
             break;
           case "DATE":
-            res = a.createdAt < b.createdAt ? 1 : -1;
+            res = a.createdAt - b.createdAt;
             break;
           case "NAME":
             res = a.name.localeCompare(b.name);
             break;
           case "FEE":
+            res = a.price - b.price;
             break;
           default:
             break;
@@ -105,7 +106,7 @@ const useProvidersList = (options) => {
   const filterProviders = useCallback(() => {
     const _providersFiltered = providers.filter(
       (p) =>
-        (!coin || p.coin === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+        (!coin || p.quote === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
     );
     sortProviders(_providersFiltered);
     // eslint-disable-next-line react-hooks/exhaustive-deps

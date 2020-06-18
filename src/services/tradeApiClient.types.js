@@ -260,7 +260,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @typedef {Object} DailyReturn
  * @property {string} name
  * @property {number} [positions]
- * @property {string|number} returns
+ * @property {number} returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
  */
@@ -273,7 +273,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro
- * @property {boolean} copyTradersOnly
+ * @property {boolean} isCopyTrading
  */
 
 /**
@@ -293,7 +293,6 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
  * @property {string} logoUrl
- * @property {string} coin
  * @property {boolean} hasBeenUsed
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
@@ -307,6 +306,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {number} returns
  * @property {string} floating
  * @property {number} openPositions
+ * @property {number} closedPositions
  */
 
 /**
@@ -497,10 +497,12 @@ function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem);
-  transformedResponse.returns = transformedResponse.dailyReturns.reduce((acc, item) => {
+
+  transformedResponse.dailyReturns.forEach((item) => {
     // if (isCopyTrading) {
-    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
-    acc += returns;
+    item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    transformedResponse.returns += item.returns;
+    transformedResponse.closedPositions += item.positions;
     // } else {
     //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
     //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
@@ -508,12 +510,7 @@ function providerItemTransform(providerItem) {
     //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
     //   //   }
     // }
-    // chartData.push({
-    //   day: item.name,
-    //   returns: acc.toFixed(2),
-    // });
-    return acc;
-  }, 0);
+  });
 
   return transformedResponse;
 }
@@ -550,10 +547,10 @@ function createEmptyProviderEntity() {
     dailyReturns: [],
     returns: 0,
     risk: 0,
-    coin: "BTC",
     followers: 0,
     floating: "",
     openPositions: 0,
+    closedPositions: 0,
   };
 }
 

@@ -4,18 +4,18 @@ import { Box, Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
-import { navigate } from "@reach/router";
-import { FormattedMessage } from "react-intl";
+import { navigate } from "gatsby";
+import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
-import { toNumber } from "lodash";
 import { useSelector } from "react-redux";
+import { formatFloat2Dec } from "../../../utils/format";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
- * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  */
@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
  */
 const tooltipFormat = (tooltipItem) => (
   <Box className="traderCardTooltip">
-    <Box>{+toNumber(tooltipItem.yLabel).toFixed(2) + "%"}</Box>
+    <Box>{formatFloat2Dec(tooltipItem.yLabel) + "%"}</Box>
     <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
   </Box>
 );
@@ -35,7 +35,8 @@ const tooltipFormat = (tooltipItem) => (
 /**
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
- * @property {Provider} provider The provider to display.
+ * @property {ProviderEntity} provider The provider to display.
+ * @property {number} timeFrame Selected timeFrame.
  */
 
 /**
@@ -45,7 +46,8 @@ const tooltipFormat = (tooltipItem) => (
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { provider, showSummary } = props;
+  const intl = useIntl();
+  const { provider, showSummary, timeFrame } = props;
   const {
     openPositions,
     floating,
@@ -55,6 +57,8 @@ const TraderCard = (props) => {
     dailyReturns,
     id,
     quote,
+    closedPositions,
+    returns,
   } = provider;
   /**
    * Settings darkStyle selector.
@@ -71,10 +75,9 @@ const TraderCard = (props) => {
   let chartData = { values: [], labels: [] };
   //   let cumulativeTotalProfits = 0;
   //   let cumulativeTotalInvested = 0;
-  const totalReturns = dailyReturns.reduce((acc, item) => {
+  dailyReturns.reduce((acc, item) => {
     // if (isCopyTrading) {
-    const returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
-    acc += returns;
+    acc += item.returns;
     // } else {
     //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
     //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
@@ -90,8 +93,8 @@ const TraderCard = (props) => {
     chartData.labels.push(item.name);
     return acc;
   }, 0);
-  let colorClass = "green";
 
+  let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
    */
@@ -102,7 +105,7 @@ const TraderCard = (props) => {
     gradientColor2: "#e5f8ed",
   };
 
-  if (totalReturns < 0) {
+  if (returns < 0) {
     colorClass = "red";
     colorsOptions = {
       ...colorsOptions,
@@ -121,7 +124,14 @@ const TraderCard = (props) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <CustomToolip title={<FormattedMessage id="srv.returns.tooltip" />}>
+        <CustomToolip
+          title={
+            <FormattedMessage
+              id="srv.closedpos.tooltip"
+              values={{ count: closedPositions, days: timeFrame }}
+            />
+          }
+        >
           <Box
             className="returns"
             display="flex"
@@ -129,11 +139,11 @@ const TraderCard = (props) => {
             justifyContent="space-between"
           >
             <Typography className={colorClass} variant="h4">
-              {+totalReturns.toFixed(2)}%
+              {formatFloat2Dec(returns)}%
             </Typography>
-            <Typography variant="subtitle1">
-              <FormattedMessage id="srv.returnsperiod" />
-            </Typography>
+            <Typography variant="subtitle1">{`${intl.formatMessage({
+              id: "sort.return",
+            })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
           </Box>
         </CustomToolip>
 
@@ -147,8 +157,8 @@ const TraderCard = (props) => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography className="green" variant="h4">
-              {+parseFloat(floating).toFixed(2)}%
+            <Typography className={colorClass} variant="h4">
+              {formatFloat2Dec(floating)}%
             </Typography>
             <Typography variant="subtitle1">
               <FormattedMessage id="srv.openpos" />
@@ -167,14 +177,14 @@ const TraderCard = (props) => {
           </Box>
         </Box>
         <Box
-          className={`actionsWrapper ${totalReturns >= 0 ? "positive" : "negative"}`}
+          className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}
           display="flex"
           flexDirection="column"
           justifyContent="center"
         >
           <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
             {!disable ? (
-              <h6 className="callout2 green">
+              <h6 className={`callout2 ${colorClass}`}>
                 <FormattedMessage
                   id={isCopyTrading ? "trader.others" : "provider.others"}
                   values={{
