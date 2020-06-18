@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { OutlinedInput } from "@material-ui/core";
-import { Button, Box, Switch, Typography } from "@material-ui/core";
+import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { isNumber, range, sum } from "lodash";
 import "./TakeProfitPanel.scss";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
+import useExpandable from "../../../hooks/useExpandable";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -29,25 +29,12 @@ import { formatPrice } from "../../../utils/formatters";
  */
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
-  const defaultExpand = false;
-  const [expand, setExpand] = useState(defaultExpand);
-  const expandClass = expand ? "expanded" : "collapsed";
   const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const [cardinality, setCardinality] = useState(1);
   const cardinalityRange = range(1, cardinality + 1, 1);
   const entryType = watch("entryType");
   const limitPrice = watch("price");
-
-  /**
-   * Handle toggle switch action.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Click event.
-   * @returns {Void} None.
-   */
-  const handleToggle = (event) => {
-    const targetElement = event.currentTarget;
-    setExpand(targetElement.checked);
-  };
+  const { expanded, expandClass, expandableControl } = useExpandable();
 
   const handleTargetAdd = () => {
     setCardinality(cardinality + 1);
@@ -276,14 +263,14 @@ const TakeProfitPanel = (props) => {
   return (
     <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch onChange={handleToggle} size="small" />
+        {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.takeprofit" />
           </Typography>
         </Box>
       </Box>
-      {expand && (
+      {expanded && (
         <Box
           className="panelContent"
           display="flex"
