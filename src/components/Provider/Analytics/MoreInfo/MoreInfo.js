@@ -80,7 +80,7 @@ const MoreInfo = ({ provider }) => {
             <FormattedMessage id="srv.active" />
           </Typography>
           <Typography variant="h3">
-            {moment(new Date(provider.activeSince)).format("DD MMM, YYYY")}
+            {moment(new Date(provider.activeSince * 1000)).format("DD MMM, YYYY")}
           </Typography>
         </Box>
 
