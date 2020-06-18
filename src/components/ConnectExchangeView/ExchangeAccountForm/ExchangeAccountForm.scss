@@ -1,12 +1,13 @@
 .exchangeAccountForm {
   //   width: 40%;
+  max-width: 700px;
   margin: 0 24px;
 
   label {
     justify-content: flex-end;
     margin-bottom: 20px;
     margin-left: 0;
-    width: 100%;
+    // width: 100%;
     min-height: 32px;
   }
 

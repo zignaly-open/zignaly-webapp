@@ -5,7 +5,7 @@ import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import ExchangeList from "../Header/ExchangeList";
+import ExchangeList from "../Header/UserExchangeList/ExchangeList";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState

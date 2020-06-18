@@ -11,6 +11,8 @@ import CustomButton from "../../CustomButton";
 import SubNavHeader from "../../SubNavHeader";
 import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
+import UserExchangeList from "../../Navigation/Header/UserExchangeList";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -27,6 +29,8 @@ const ConnectExchangeViewHead = ({ onClose }) => {
     ModalPathContext,
   );
   const { selectedAccount, previousPath, title, tempMessage, isLoading } = pathParams;
+  const storeUser = useStoreUserSelector();
+
   //   const [isLoading, setIsLoading] = useState(false);
 
   /**
@@ -60,7 +64,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
 
   return (
     <Box className="connectExchangeViewHead">
-      <Box className="actionBar">
+      <Box className="actionBar" display="flex" flexDirection="row">
         {previousPath && (
           <CustomButton
             className="textPurple borderPurple"
@@ -74,6 +78,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
           <FormattedMessage id="accounts.done" />
         </CustomButton>
         <Box className="tempMessage">{tempMessage}</Box>
+        {storeUser.exchangeConnections.length > 0 && <UserExchangeList />}
       </Box>
       <Box className="titleBar">
         <Typography variant="h1">

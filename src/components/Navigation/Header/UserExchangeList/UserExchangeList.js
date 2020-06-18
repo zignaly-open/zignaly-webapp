@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Box, Popover } from "@material-ui/core";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeList from "./ExchangeList";
-import ExchangeIcon from "../../ExchangeIcon";
+import ExchangeIcon from "../../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
+import "./UserExchangeList.scss";
+
 /**
- * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
  */
 
 const UserExchangeList = () => {
