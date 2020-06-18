@@ -65,6 +65,18 @@ const WhoWeAre = ({ provider }) => {
   useEffect(initializeCounties, [provider.team]);
 
   /**
+   * Function to redirect to social links.
+   *
+   * @param {String} link Link of the social accound.
+   * @returns {void} None.
+   */
+  const redirectToSocial = (link) => {
+    if (typeof window !== undefined) {
+      window.open(link, "_blank");
+    }
+  };
+
+  /**
    * Function to redirect to social profile.
    *
    * @param {String} link Link to the social media.
@@ -127,29 +139,44 @@ const WhoWeAre = ({ provider }) => {
             provider.social.map((item, index) => (
               <Fragment key={index}>
                 {item.network && item.network.toLowerCase() === "facebook" && (
-                  <a href={item.link} rel="noreferrer" target="_blank">
-                    <img alt="faceook-icon" className="icon" src={FacebookIcon} />
-                  </a>
+                  <img
+                    alt="faceook-icon"
+                    className="icon"
+                    src={FacebookIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
                 )}
                 {item.network && item.network.toLowerCase() === "twitter" && (
-                  <a href={item.link} rel="noreferrer" target="_blank">
-                    <img alt="twitter-icon" className="icon" src={TwitterIcon} />
-                  </a>
+                  <img
+                    alt="twitter-icon"
+                    className="icon"
+                    src={TwitterIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
                 )}
                 {item.network && item.network.toLowerCase() === "linkedin" && (
-                  <a href={item.link} rel="noreferrer" target="_blank">
-                    <img alt="linkedin-icon" className="icon" src={LinkedinIcon} />
-                  </a>
+                  <img
+                    alt="linkedin-icon"
+                    className="icon"
+                    src={LinkedinIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
                 )}
                 {item.network && item.network.toLowerCase() === "telegram" && (
-                  <a href={item.link} rel="noreferrer" target="_blank">
-                    <img alt="tttt-icon" className="icon" src={TelegramIcon} />
-                  </a>
+                  <img
+                    alt="tttt-icon"
+                    className="icon"
+                    src={TelegramIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
                 )}
                 {item.network && item.network.toLowerCase() === "discord" && (
-                  <a href={item.link} rel="noreferrer" target="_blank">
-                    <img alt="discord-icon" className="icon" src={DiscordIcon} />
-                  </a>
+                  <img
+                    alt="discord-icon"
+                    className="icon"
+                    src={DiscordIcon}
+                    onClick={() => redirectToSocial(item.link)}
+                  />
                 )}
                 {item.network && item.network.toLowerCase() === "email" && (
                   <a href={"mailto:" + item.link} rel="noreferrer" target="_blank">
@@ -160,7 +187,13 @@ const WhoWeAre = ({ provider }) => {
             ))}
         </Box>
       </Box>
-      <Typography variant="body1">{provider.website}</Typography>
+      <Typography
+        variant="body1"
+        className="website"
+        onClick={() => redirectToSocial(provider.website)}
+      >
+        {provider.website}
+      </Typography>
     </Box>
   );
 };

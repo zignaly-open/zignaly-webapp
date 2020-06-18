@@ -143,7 +143,7 @@ export const formatDuration = (time) => {
     }
     return formatted;
   } else if (hours > 0) {
-    formatted += hours + (hours > 1 ? " Days " : " Day ");
+    formatted += hours + (hours > 1 ? " Hours " : " Hour ");
     if (minutes > 0) {
       formatted += minutes + (minutes > 1 ? " Minutes " : " Minute ");
     }

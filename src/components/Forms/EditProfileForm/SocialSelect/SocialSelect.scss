@@ -11,6 +11,10 @@
 
     .customInput {
       width: calc(70% - 64px);
+
+      fieldset {
+        border-color: $lightGrey;
+      }
     }
 
     .icon {

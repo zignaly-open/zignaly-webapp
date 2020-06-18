@@ -80,7 +80,7 @@ const MoreInfo = ({ provider }) => {
             <FormattedMessage id="srv.active" />
           </Typography>
           <Typography variant="h3">
-            {moment(provider.activeSince).format("DD MMM, YYYY")}
+            {moment(new Date(provider.activeSince)).format("DD MMM, YYYY")}
           </Typography>
         </Box>
 
@@ -95,7 +95,9 @@ const MoreInfo = ({ provider }) => {
           <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.profitableweeks" />
           </Typography>
-          <Typography variant="h3">{provider.profitableWeeks}</Typography>
+          <Typography variant="h3">
+            {provider.profitableWeeks ? provider.profitableWeeks.toFixed(2) : 0}
+          </Typography>
         </Box>
       </Box>
     </Box>
