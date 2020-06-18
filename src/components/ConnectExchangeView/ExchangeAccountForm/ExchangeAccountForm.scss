@@ -1,5 +1,5 @@
 .exchangeAccountForm {
-  max-width: 700px;
+  max-width: 760px;
   margin: 8px 24px;
 
   .controlWrapper,
@@ -19,12 +19,20 @@
     margin: 0 0 20px;
 
     > span {
-      width: 60%;
+      width: 65%;
     }
   }
 
   .select {
     margin-right: 0;
+  }
+
+  label {
+    width: 65%;
+
+    svg {
+      margin-left: 5px;
+    }
   }
 
   .selectLabel,
@@ -34,23 +42,6 @@
     letter-spacing: 0.53px;
     line-height: 1.43;
     margin: 0;
-    // min-width: 360px;
-  }
-
-  label {
-    // width: 950px;
-    width: 60%;
-    // flex: 6;
-    // .accountLabel {
-    //   min-width: auto;
-    // }
-    // & + * {
-    //   flex: 4;
-    // }
-
-    svg {
-      margin-left: 5px;
-    }
   }
 
   .switch {

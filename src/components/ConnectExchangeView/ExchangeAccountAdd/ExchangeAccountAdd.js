@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useContext, useEffect, useImperativeHandle } from "react";
 import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
 import { useForm, FormContext, Controller } from "react-hook-form";
@@ -36,25 +36,29 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     resetToPath,
     pathParams: { previousPath },
     setTitle,
+    formRef,
   } = useContext(ModalPathContext);
 
   const exchanges = useExchangeList();
 
-  // Exchange options
+  // Connect exchange options
   const exchangesOptions = exchanges
     .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
     .map((e) => e.name);
 
-  const exchangeName = watch("exchangeName");
-  const selectedExchange = exchanges.find((e) => e.name === exchangeName);
+  let exchangeName = "zignaly";
+  if (!create) {
+    exchangeName = watch("exchangeName");
+  }
+  const selectedExchange = exchanges.find(
+    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
+  );
   console.log(exchangeName, selectedExchange);
 
   useEffect(() => {
-    //   Set default exchange
-    if (exchangesOptions.length && !exchangeName) {
-      const defaultExchangeName = exchanges.find(
-        (e) => e.name.toLowerCase() === (create ? "zignaly" : "binance"),
-      ).name;
+    //   Set default connect exchange
+    if (!create && exchangesOptions.length && !exchangeName) {
+      const defaultExchangeName = exchanges.find((e) => e.name.toLowerCase() === "binance").name;
       setValue("exchangeName", defaultExchangeName);
     }
   }, [exchangesOptions]);
@@ -78,8 +82,17 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     }
   }, [selectedExchange]);
 
-  const onSubmit = useCallback(() => {
-    handleSubmit((data) => {
+  // Submit form handle
+  useImperativeHandle(
+    formRef,
+    () => ({
+      submitForm,
+    }),
+    [],
+  );
+
+  const submitForm = async (data) => {
+    return handleSubmit((data) => {
       const { internalName, exchangeType, key, secret, password } = data;
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -96,7 +109,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
         testNet: false,
       };
 
-      tradeApi.exchangeAdd(payload).then(() => {
+      return tradeApi.exchangeAdd(payload).then(() => {
         // Reload user exchanges
         const authorizationPayload = {
           token: storeSession.tradeApi.accessToken,
@@ -105,19 +118,12 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
         resetToPath(previousPath);
       });
     })();
-    //   todo: remove selectedExchange and use form data?
-  }, [selectedExchange]);
-  useEvent("submit", onSubmit);
+  };
 
-  //  if (!exchanges.length) {
-  //    return <Loader />;
-  //  }
   return (
     <form className="ExchangeAccountAdd">
       <ExchangeAccountForm>
-        {create ? (
-          <Box>Zignaly Exchange</Box>
-        ) : (
+        {!create && (
           <Controller
             as={CustomSelect}
             options={exchangesOptions}
@@ -137,14 +143,10 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
             name="exchangeType"
             rules={{ required: true }}
             label={intl.formatMessage({ id: "accounts.exchange.type" })}
-            //   onChange={([e]) => {
-            //     console.log("e", e);
-            //     return { val: e };
-            //   }}
           />
         )}
         <CustomInput inputRef={register} name="internalName" label="accounts.exchange.name" />
-        {!create &&
+        {!create ? (
           selectedExchange &&
           selectedExchange.requiredAuthFields.map((field) => (
             <CustomInput
@@ -155,7 +157,12 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               autoComplete="new-password"
               type="password"
             />
-          ))}
+          ))
+        ) : (
+          <Box className="exchangeSubtitle">
+            <FormattedMessage id="accounts.powered" />
+          </Box>
+        )}
       </ExchangeAccountForm>
     </form>
   );

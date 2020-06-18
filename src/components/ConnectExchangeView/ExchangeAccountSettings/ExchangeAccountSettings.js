@@ -99,9 +99,7 @@ const ExchangeAccountSettings = ({ internalId }) => {
   };
 
   const submitForm = async () => {
-    //   const submitForm = useCallback(() => {
     return handleSubmit((data) => {
-      console.log(dirtyFields, data);
       const { internalName, key, secret, password } = data;
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -129,7 +127,6 @@ const ExchangeAccountSettings = ({ internalId }) => {
       });
     })();
   };
-  //   useEvent("submit", onSubmit);
 
   return (
     <form className="exchangeAccountSettings">
@@ -208,7 +205,7 @@ const ExchangeAccountSettings = ({ internalId }) => {
           control={control}
         />
 
-        <CustomButton className="body2 text-default" onClick={deleteExchangeShow}>
+        <CustomButton className="body2 textDefault deleteButton" onClick={deleteExchangeShow}>
           <FormattedMessage id="accounts.delete.exchange" />
         </CustomButton>
       </ExchangeAccountForm>
