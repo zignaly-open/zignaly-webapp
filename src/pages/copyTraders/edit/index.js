@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./edit.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
 import EditProfileForm from "../../../components/Forms/EditProfileForm";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../../../store/actions/ui";
 
 const CopyTradersProfile = () => {
   const storeSession = useStoreSessionSelector();
   const [quotes, setQuotes] = useState({});
+  const [loading, setLoading] = useState(false);
   const [exchanges, setExchanges] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(showLoader(true));
+      setLoading(true);
       const quotePayload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
@@ -29,7 +27,7 @@ const CopyTradersProfile = () => {
       const exchangeResponse = await tradeApi.exchangeListGet(exchangePayload);
       setExchanges(exchangeResponse);
       setQuotes(quotesResponse);
-      dispatch(showLoader(false));
+      setLoading(false);
     };
 
     fetchData();
@@ -37,8 +35,15 @@ const CopyTradersProfile = () => {
   }, []);
 
   return (
-    <Box className="profileEditPage">
-      <EditProfileForm exchanges={exchanges} quotes={quotes} />
+    <Box
+      className="profileEditPage"
+      display="flex"
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+    >
+      {loading && <CircularProgress color="primary" />}
+      {!loading && <EditProfileForm exchanges={exchanges} quotes={quotes} />}
     </Box>
   );
 };
