@@ -76,7 +76,6 @@ const ExchangeAccountSettings = ({ internalId }) => {
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.settings" />);
   }, []);
-  console.log(selectedAccount);
 
   const deleteExchangeShow = () => {
     setConfirmConfig({ ...initConfirmConfig, visible: true });
@@ -156,6 +155,8 @@ const ExchangeAccountSettings = ({ internalId }) => {
               placeholder={
                 selectedAccount.areKeysValid ? "***************************************" : ""
               }
+              autoComplete="new-password"
+              type="password"
             />
           ))}
         <CustomSwitchInput

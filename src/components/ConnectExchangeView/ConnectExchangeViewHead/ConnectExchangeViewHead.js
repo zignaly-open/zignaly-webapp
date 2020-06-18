@@ -3,7 +3,7 @@ import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
 import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
-import ExchangeAccountCreate from "../ExchangeAccountCreate";
+import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import { Box, Typography } from "@material-ui/core";

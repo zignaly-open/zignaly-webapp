@@ -1,9 +1,9 @@
 .exchangeAccountForm {
-  //   width: 40%;
   max-width: 700px;
-  margin: 0 24px;
+  margin: 8px 24px;
 
-  .controlWrapper {
+  .controlWrapper,
+  .customSelect {
     margin-bottom: 20px;
     // margin-left: 0;
     width: 100%;
@@ -12,14 +12,15 @@
 
   .customSelectControl,
   .customInput {
-    // max-width: 580px;
-    // min-width: 138px;
     width: 100%;
-    // min-width: auto;
   }
 
-  .customSelectControl {
-    width: 100%;
+  .customSelect {
+    margin: 0 0 20px;
+
+    > span {
+      width: 60%;
+    }
   }
 
   .select {

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import { Box, FormControlLabel, OutlinedInput, Typography } from "@material-ui/core";
-import "./ExchangeAccountCreate.scss";
+import "./ExchangeAccountAdd.scss";
 import { useForm, FormContext, Controller } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -27,7 +27,7 @@ import ExchangeAccountForm, { CustomInput } from "../ExchangeAccountForm";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction }) => {
+const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) => {
   const { register, handleSubmit, errors, control, getValues, setValue, watch, reset } = useForm();
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -35,6 +35,7 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   const {
     resetToPath,
     pathParams: { previousPath },
+    setTitle,
   } = useContext(ModalPathContext);
 
   const exchanges = useExchangeList();
@@ -57,6 +58,10 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
       setValue("exchangeName", defaultExchangeName);
     }
   }, [exchangesOptions]);
+
+  useEffect(() => {
+    setTitle(<FormattedMessage id={create ? "accounts.create.exchange" : "accounts.connect"} />);
+  }, []);
 
   // Create account types options
   const typeOptions = selectedExchange
@@ -108,7 +113,7 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   //    return <Loader />;
   //  }
   return (
-    <form className="exchangeAccountCreate">
+    <form className="ExchangeAccountAdd">
       <ExchangeAccountForm>
         {create ? (
           <Box>Zignaly Exchange</Box>
@@ -147,6 +152,8 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
               name={field}
               label={`accounts.exchange.${field}`}
               key={field}
+              autoComplete="new-password"
+              type="password"
             />
           ))}
       </ExchangeAccountForm>
@@ -154,4 +161,4 @@ const ExchangeAccountCreate = ({ create = false, demo = false, navigateToAction 
   );
 };
 
-export default ExchangeAccountCreate;
+export default ExchangeAccountAdd;
