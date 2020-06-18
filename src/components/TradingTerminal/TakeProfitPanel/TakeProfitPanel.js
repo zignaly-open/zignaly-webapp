@@ -37,6 +37,7 @@ const TakeProfitPanel = (props) => {
   const cardinalityRange = range(1, cardinality + 1, 1);
   const entryType = watch("entryType");
   const limitPrice = watch("price");
+  const units = watch("units");
   const { limits } = symbolData;
 
   /**
@@ -334,7 +335,7 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  const invertPricePercentage = () => {
+  const chainedPriceUpdates = () => {
     cardinalityRange.forEach((index) => {
       const targetId = String(index);
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
@@ -351,7 +352,16 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(invertPricePercentage, [entryType, cardinality, limitPrice]);
+  useEffect(chainedPriceUpdates, [entryType, cardinality, limitPrice]);
+
+  const chainedUnitsUpdates = () => {
+    cardinalityRange.forEach((index) => {
+      const targetId = String(index);
+      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+    });
+  };
+
+  useEffect(chainedUnitsUpdates, [units]);
 
   /**
    * Compose dynamic target property errors.
