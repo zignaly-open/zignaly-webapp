@@ -307,15 +307,15 @@ const TakeProfitPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          {cardinalityRange.map((index) => (
-            <Box className="targetGroup" data-target-id={index} key={`target${index}`}>
+          {cardinalityRange.map((targetId) => (
+            <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
               <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name={`targetPricePercentage${index}`}
+                    name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
                   />
                   <div className="currencyBox">%</div>
@@ -324,13 +324,13 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name={`targetPrice${index}`}
+                    name={composeTargetPropertyName("targetPrice", targetId)}
                     onChange={targetPriceChange}
                   />
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
-              {displayTargetFieldErrors("targetPrice", index)}
+              {displayTargetFieldErrors("targetPrice", targetId)}
               <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
                   descriptionId="terminal.unitstoexit.help"
@@ -340,7 +340,7 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name={`exitUnitsPercentage${index}`}
+                    name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
                     onChange={exitUnitsPercentageChange}
                   />
                   <div className="currencyBox">%</div>
@@ -349,13 +349,13 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     inputRef={register}
-                    name={`exitUnits${index}`}
+                    name={composeTargetPropertyName("exitUnits", targetId)}
                     onChange={exitUnitsChange}
                   />
                   <div className="currencyBox">{symbolData.base}</div>
                 </Box>
-                {displayTargetFieldErrors("exitUnitsPercentage", index)}
-                {displayTargetFieldErrors("exitUnits", index)}
+                {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
+                {displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
             </Box>
           ))}

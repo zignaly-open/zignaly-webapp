@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { range } from "lodash";
+import { camelCase, range, upperFirst } from "lodash";
 
 /**
  * @typedef {Object} TargetGroupHook
@@ -45,7 +45,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
    * @returns {string} Property name for a given target index.
    */
   const composeTargetPropertyName = (propertyName, targetId) => {
-    const targetPropertyName = `${groupName}${propertyName}${targetId}`;
+    const targetPropertyName = camelCase(groupName) + upperFirst(`${propertyName}${targetId}`);
 
     return targetPropertyName;
   };
