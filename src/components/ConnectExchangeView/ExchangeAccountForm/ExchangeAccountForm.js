@@ -136,7 +136,7 @@ export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name
 
 /**
  * @typedef {Object} CustomSwitchProps
- * @property {string} tooltip
+ * @property {string} [tooltip]
  * @property {string} label
  * @property {React.ReactElement} [controlComponent]
  */
@@ -160,9 +160,11 @@ export const CustomSwitch = ({ tooltip, label, defaultValue, controlComponent, n
           <Typography className="accountLabel">
             <FormattedMessage id={label} />
           </Typography>
-          <CustomTooltip title={<FormattedMessage id={tooltip} />}>
-            <Help />
-          </CustomTooltip>
+          {tooltip && (
+            <CustomTooltip title={<FormattedMessage id={tooltip} />}>
+              <Help />
+            </CustomTooltip>
+          )}
         </Box>
       </label>
       {controlComponent || (

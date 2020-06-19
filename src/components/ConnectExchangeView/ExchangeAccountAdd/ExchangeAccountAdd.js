@@ -45,14 +45,16 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   }, []);
 
   const exchanges = useExchangeList();
-
-  const exchangeType = watch("exchangeType");
   const zignalyOnly = create && !demo;
-  const zignalyIncluded = create;
-  const testnet = watch("testnet");
 
   // Initialize selected exchange
   let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName") || "binance";
+
+  const exchangeType = watch("exchangeType");
+  const testnet = watch("testnet");
+  // Show testnet only for binance demo futures
+  const showTestnet =
+    demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
 
   const selectedExchange = exchanges.find(
     (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
@@ -60,7 +62,8 @@ const ExchangeAccountAdd = ({ create, demo }) => {
 
   // Exchange options
   const exchangesOptions = exchanges
-    .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || zignalyIncluded))
+    // Filter disabled exchange and Zignaly if connection
+    .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
     .map((e) => ({
       val: e.name.toLowerCase(),
       label:
@@ -171,13 +174,12 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               options={typeOptions}
             />
           )}
-          {demo && exchangeType === "futures" && (
+          {showTestnet && (
             <CustomSwitch
               defaultValue={false}
               inputRef={register}
               label="menu.testnet"
               name="testnet"
-              tooltip=""
             />
           )}
           <CustomInput
