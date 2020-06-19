@@ -203,7 +203,7 @@ const TakeProfitPanel = (props) => {
    * @param {string} targetId Target index ID.
    * @returns {Void} None.
    */
-  function validateCostLimits(targetId) {
+  const validateCostLimits = (targetId) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
@@ -217,7 +217,7 @@ const TakeProfitPanel = (props) => {
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
       setError(unitsProperty, "error", `Exit cost cannot be greater than ${limits.cost.max}`);
     }
-  }
+  };
 
   /**
    * Validate that target units is within limits.

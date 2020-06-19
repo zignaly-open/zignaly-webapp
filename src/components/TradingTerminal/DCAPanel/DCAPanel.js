@@ -47,9 +47,121 @@ const DCAPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
 
-  const targetPricePercentageChange = (event) => {};
+  /**
+   * Validate that target price is within limits.
+   *
+   * @param {number} targetPrice Rebuy target price.
+   * @param {string} propertyName Property name that validation error attachs to.
+   * @returns {Void} None.
+   */
+  const validateTargetPriceLimits = (targetPrice, propertyName) => {
+    clearError(propertyName);
+    if (limits.price.min && targetPrice < limits.price.min) {
+      setError(
+        propertyName,
+        "error",
+        `Rebuy target price cannot be lower than ${limits.price.min}`,
+      );
+    }
 
-  const rebuyPercentageChange = (event) => {};
+    if (limits.price.max && targetPrice > limits.price.max) {
+      setError(
+        propertyName,
+        "error",
+        `Rebuy target price cannot be greater than ${limits.price.max}`,
+      );
+    }
+  };
+
+  /**
+   * Validate that cost is within limits.
+   *
+   * @param {number} cost Cost amount.
+   * @param {string} propertyName Property name that validation error attachs to.
+   * @returns {Void} None.
+   */
+  function validateCostLimits(cost, propertyName) {
+    clearError(propertyName);
+    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
+      setError(propertyName, "error", `Rebuy cost cannot be lower than ${limits.cost.min}`);
+    }
+
+    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
+      setError(propertyName, "error", `Rebuy cost cannot be greater than ${limits.cost.max}`);
+    }
+  }
+
+  /**
+   * Validate that target units is within limits.
+   *
+   * @param {number} units Rebuy units.
+   * @param {string} propertyName Property name that validation error attachs to.
+   * @returns {Void} None.
+   */
+  const validateUnitsLimits = (units, propertyName) => {
+    clearError(propertyName);
+    if (limits.amount.min && units < limits.amount.min) {
+      setError(
+        propertyName,
+        "error",
+        `Rebuy target units to exit cannot be lower than ${limits.amount.min}`,
+      );
+    }
+
+    if (limits.amount.max && units > limits.amount.max) {
+      setError(
+        propertyName,
+        "error",
+        `Rebuy target units to exit cannot be greater than ${limits.amount.max}`,
+      );
+    }
+  };
+
+  /**
+   * Calculate the target price and trigger validation.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const targetPricePercentageChange = (event) => {
+    const draftPosition = getValues();
+    const targetId = getGroupTargetId(event);
+    const price = parseFloat(draftPosition.price);
+    const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const targetPrice = price * (1 - targetPricePercentage / 100);
+    validateTargetPriceLimits(
+      targetPrice,
+      composeTargetPropertyName("targetPricePercentage", targetId),
+    );
+
+    const units = parseFloat(draftPosition.units);
+    const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
+    const rebuyUnits = units * (rebuyPercentage / 100);
+    const cost = Math.abs(targetPrice * rebuyUnits);
+
+    validateCostLimits(cost, composeTargetPropertyName("targetPricePercentage", targetId));
+  };
+
+  /**
+   * Calculate the target position size and trigger validation.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const rebuyPercentageChange = (event) => {
+    const draftPosition = getValues();
+    const targetId = getGroupTargetId(event);
+    const units = parseFloat(draftPosition.units);
+    const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
+    const rebuyUnits = units * (rebuyPercentage / 100);
+    validateUnitsLimits(rebuyUnits, composeTargetPropertyName("rebuyPercentage", targetId));
+
+    const price = parseFloat(draftPosition.price);
+    const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const targetPrice = price * (1 - targetPricePercentage / 100);
+    const cost = Math.abs(targetPrice * rebuyUnits);
+    validateCostLimits(cost, composeTargetPropertyName("rebuyPercentage", targetId));
+  };
 
   /**
    * Compose dynamic target property errors.
