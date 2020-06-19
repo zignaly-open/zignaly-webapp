@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
-import { isNumber } from "lodash";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-import useExpandable from "../../../hooks/useExpandable";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
+import useExpandable from "../../../hooks/useExpandable";
+import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./StopLossPanel.scss";
 
 /**
@@ -29,10 +29,10 @@ import "./StopLossPanel.scss";
 const StopLossPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { errors, getValues, register, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
-  const { limits } = symbolData;
+  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
 
   /**
    * Calculate price based on percentage when value is changed.
@@ -45,11 +45,13 @@ const StopLossPanel = (props) => {
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
 
-    if (isNumber(price) && price > 0) {
+    if (!isNaN(price) && price > 0) {
       setValue("stopLossPrice", formatPrice(stopLossPrice, ""));
     } else {
       setValue("stopLossPrice", "");
     }
+
+    validateTargetPriceLimits(stopLossPrice, "stopLossPrice");
   };
 
   /**
@@ -63,12 +65,14 @@ const StopLossPanel = (props) => {
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
-    if (isNumber(priceDiff) && priceDiff !== 0) {
+    if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
     } else {
-      setValue("stopLossPerentage", "");
+      setValue("stopLossPercentage", "");
     }
+
+    validateTargetPriceLimits(stopLossPrice, "stopLossPrice");
   };
 
   const chainedPriceUpdates = () => {

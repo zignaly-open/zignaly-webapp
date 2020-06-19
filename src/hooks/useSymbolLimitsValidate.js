@@ -31,19 +31,11 @@ const useSymbolLimitsValidate = (symbolData) => {
   const validateTargetPriceLimits = (targetPrice, propertyName) => {
     clearError(propertyName);
     if (limits.price.min && targetPrice < limits.price.min) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target price cannot be lower than ${limits.price.min}`,
-      );
+      setError(propertyName, "error", `Target price cannot be lower than ${limits.price.min}`);
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target price cannot be greater than ${limits.price.max}`,
-      );
+      setError(propertyName, "error", `Target price cannot be greater than ${limits.price.max}`);
     }
   };
 
@@ -56,11 +48,11 @@ const useSymbolLimitsValidate = (symbolData) => {
    */
   const validateCostLimits = (cost, propertyName) => {
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(propertyName, "error", `Rebuy cost cannot be lower than ${limits.cost.min}`);
+      setError(propertyName, "error", `Target cost cannot be lower than ${limits.cost.min}`);
     }
 
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(propertyName, "error", `Rebuy cost cannot be greater than ${limits.cost.max}`);
+      setError(propertyName, "error", `Target cost cannot be greater than ${limits.cost.max}`);
     }
   };
 
@@ -77,7 +69,7 @@ const useSymbolLimitsValidate = (symbolData) => {
       setError(
         propertyName,
         "error",
-        `Rebuy target units to exit cannot be lower than ${limits.amount.min}`,
+        `Target units to exit cannot be lower than ${limits.amount.min}`,
       );
     }
 
@@ -85,7 +77,7 @@ const useSymbolLimitsValidate = (symbolData) => {
       setError(
         propertyName,
         "error",
-        `Rebuy target units to exit cannot be greater than ${limits.amount.max}`,
+        `Target units to exit cannot be greater than ${limits.amount.max}`,
       );
     }
   };
