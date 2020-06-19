@@ -39,9 +39,8 @@ const DCAPanel = (props) => {
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
-    setTargetPropertyValue,
     simulateInputChangeEvent,
-  } = useTargetGroup("takeProfit");
+  } = useTargetGroup("dca");
   const { limits } = symbolData;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
@@ -81,7 +80,6 @@ const DCAPanel = (props) => {
    * @returns {Void} None.
    */
   function validateCostLimits(cost, propertyName) {
-    clearError(propertyName);
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
       setError(propertyName, "error", `Rebuy cost cannot be lower than ${limits.cost.min}`);
     }
@@ -128,7 +126,7 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price * (1 - targetPricePercentage / 100);
+    const targetPrice = (price * targetPricePercentage) / 100;
     validateTargetPriceLimits(
       targetPrice,
       composeTargetPropertyName("targetPricePercentage", targetId),
@@ -210,6 +208,7 @@ const DCAPanel = (props) => {
                   />
                   <div className="currencyBox">%</div>
                 </Box>
+                {displayTargetFieldErrors("targetPricePercentage", targetId)}
                 <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
@@ -221,7 +220,6 @@ const DCAPanel = (props) => {
                   <div className="currencyBox">%</div>
                 </Box>
               </Box>
-              {displayTargetFieldErrors("targetPricePercentage", targetId)}
               {displayTargetFieldErrors("rebuyPercentage", targetId)}
             </Box>
           ))}
