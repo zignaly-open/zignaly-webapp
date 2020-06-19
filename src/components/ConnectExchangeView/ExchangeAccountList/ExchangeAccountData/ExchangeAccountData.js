@@ -12,8 +12,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 
 /**
+ * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
+
+/**
  * @typedef {Object} DefaultProps
- * @property {string} internalId Exchange internal Id.
+ * @property {ExchangeConnectionEntity} account Exchange account.
  */
 
 /**

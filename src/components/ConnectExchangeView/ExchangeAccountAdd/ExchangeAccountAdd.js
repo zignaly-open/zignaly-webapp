@@ -18,7 +18,8 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
 
 /**
  * @typedef {Object} DefaultProps
- * @property {string} internalId Internal Exchange id.
+ * @property {boolean} create Flag to indicate if the user is creating or connecting an account.
+ * @property {boolean} demo Flag to indicate if it's a demo account.
  */
 
 /**
@@ -40,7 +41,8 @@ const ExchangeAccountAdd = ({ create, demo }) => {
         }
       />,
     );
-  }, [create, demo, setTitle]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const exchanges = useExchangeList();
 
@@ -63,7 +65,9 @@ const ExchangeAccountAdd = ({ create, demo }) => {
       val: e.name.toLowerCase(),
       label:
         e.name.toLowerCase() === "zignaly"
-          ? `${e.name} (${intl.formatMessage({ id: "accounts.powered" })})`
+          ? `${e.name} (${intl.formatMessage({
+              id: "accounts.powered",
+            })})`
           : e.name,
     }));
 
@@ -75,7 +79,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
 
-  // Submit form handle
+  // Expose submitForm handler to ref so it can be triggered from the parent.
   useImperativeHandle(
     formRef,
     () => ({
@@ -85,6 +89,21 @@ const ExchangeAccountAdd = ({ create, demo }) => {
     [selectedExchange],
   );
 
+  /**
+   * @typedef {Object} FormData
+   * @property {String} internalName
+   * @property {String} key
+   * @property {String} secret
+   * @property {String} password
+   * @property {Boolean} testNet
+   */
+
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {Promise<boolean>} API promise.
+   */
   const submitForm = async (data) => {
     const { internalName, key, secret, password, testNet } = data;
     const payload = {
@@ -127,7 +146,9 @@ const ExchangeAccountAdd = ({ create, demo }) => {
                 as={CustomSelect}
                 control={control}
                 defaultValue={selectedExchange.name.toLowerCase()}
-                label={intl.formatMessage({ id: "accounts.exchange" })}
+                label={intl.formatMessage({
+                  id: "accounts.exchange",
+                })}
                 name="exchangeName"
                 onChange={([e]) => {
                   setValue("exchangeType", typeOptions[0].val);
@@ -143,7 +164,9 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               as={CustomSelect}
               control={control}
               defaultValue={typeOptions[0].val}
-              label={intl.formatMessage({ id: "accounts.exchange.type" })}
+              label={intl.formatMessage({
+                id: "accounts.exchange.type",
+              })}
               name="exchangeType"
               options={typeOptions}
             />
@@ -158,7 +181,6 @@ const ExchangeAccountAdd = ({ create, demo }) => {
             />
           )}
           <CustomInput
-            errors={errors}
             inputRef={register({
               required: "name empty",
             })}
@@ -169,7 +191,6 @@ const ExchangeAccountAdd = ({ create, demo }) => {
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 autoComplete="new-password"
-                errors={errors}
                 inputRef={register({
                   required: "required",
                 })}

@@ -11,8 +11,7 @@ import { useFormContext } from "react-hook-form";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {string} path Current step path.
- * @property {function} setPath Set current step path function.
+ * @property {function} onClose Close modal callback.
  */
 
 /**
@@ -33,7 +32,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
    * Handle submit buttton click.
    *
    * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
+   * @returns {Promise<void>}
    */
   const handleClick = async () => {
     if (formRef.current) {
@@ -56,6 +55,9 @@ const ConnectExchangeViewHead = ({ onClose }) => {
 
   // Display temp message for 10 secs.
   useEffect(() => {
+    /**
+     * @type {NodeJS.Timeout}
+     */
     let timeoutId;
     if (tempMessage) {
       timeoutId = setTimeout(() => {

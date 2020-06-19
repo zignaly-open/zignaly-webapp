@@ -25,7 +25,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 /**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
- * @property {OptionType|string|number} value Assign the selected value.
+ * @property {OptionType|string|number} [value] Assign the selected value.
  * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  * @property {boolean} [search] Display autocomplete.
@@ -38,7 +38,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = (props) => {
-  const { label, onChange, options, value, search, ref } = props;
+  const { label, onChange, options, value, search } = props;
   const storeSettings = useStoreSettingsSelector();
 
   /**
@@ -59,7 +59,6 @@ const CustomSelect = (props) => {
               }}
               displayEmpty={true}
               onChange={(e) => onChange(e.target.value)}
-              ref={ref}
               value={value}
               variant="outlined"
             >

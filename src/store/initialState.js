@@ -191,6 +191,12 @@ const initialState = {
       subAccountId: "",
       binanceBrokerId: "",
       checkAuthCount: 0,
+      globalDelisting: false,
+      globalBlacklist: false,
+      globalMaxPositions: false,
+      globalMinVolume: false,
+      globalPositionsPerMarket: false,
+      globalWhitelist: false,
     },
   },
   user: {

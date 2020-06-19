@@ -14,8 +14,7 @@ import { SubNavModalHeader } from "../../SubNavHeader";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {function} navigateToAction Callback to navigate to action.
- * @property {string} type Type of exchanges to display.
+ * @property {boolean} demo Flag to indicate if displaying demo accounts.
  */
 
 /**

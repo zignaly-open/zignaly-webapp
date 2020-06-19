@@ -37,9 +37,20 @@ const SubNavHeader = ({ links, rightComponent }) => (
 );
 
 /**
+ * @typedef {Object} ModalNavigationLink Modal navigation link object.
+ * @property {string} id Path ID.
+ * @property {string} title Link title.
+ */
+
+/** *
+ * @typedef {Object} SubNavModalHeaderTypes
+ * @property {Array<ModalNavigationLink>} links Array of path id/title.
+ */
+
+/**
  * Provides a navigation bar to display links with optional elements.
  *
- * @param {SubNavHeaderPropTypes} props Component properties.
+ * @param {SubNavModalHeaderTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
 export const SubNavModalHeader = ({ links }) => {

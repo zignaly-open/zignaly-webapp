@@ -17,6 +17,10 @@ import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 
 /**
+ * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
+ */
+
+/**
  * Settings for selected exchange account.
  * @returns {JSX.Element} Component JSX.
  */
@@ -31,12 +35,10 @@ const ExchangeAccountSettings = () => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
 
-  // Submit form handle
+  // Expose submitForm handler to ref so it can be triggered from the parent.
   useImperativeHandle(
     formRef,
-    () => ({
-      submitForm,
-    }),
+    () => ({ submitForm }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
@@ -58,7 +60,8 @@ const ExchangeAccountSettings = () => {
 
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.settings" />);
-  }, [setTitle]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const deleteExchangeShow = () => {
     setConfirmConfig({ ...initConfirmConfig, visible: true });
@@ -86,6 +89,27 @@ const ExchangeAccountSettings = () => {
       });
   };
 
+  /**
+   *
+   * @typedef {Object} FormData
+   * @property {String} internalName
+   * @property {String} key
+   * @property {String} secret
+   * @property {String} password
+   * @property {string} globalMaxPositions
+   * @property {string} globalMinVolume
+   * @property {string} globalPositionsPerMarket
+   * @property {string} globalBlacklist
+   * @property {string} globalWhitelist
+   * @property {boolean} globalDelisting
+   */
+
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {Promise<boolean>} API promise.
+   */
   const submitForm = async (data) => {
     const { internalName, key, secret, password } = data;
     const payload = {
@@ -124,7 +148,6 @@ const ExchangeAccountSettings = () => {
       <ExchangeAccountForm>
         <CustomInput
           defaultValue={selectedAccount.internalName}
-          errors={errors}
           inputRef={register({
             required: "name empty",
           })}
@@ -147,7 +170,6 @@ const ExchangeAccountSettings = () => {
           ))}
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMaxPositions}
-          errors={errors}
           inputRef={register({
             required: "required",
           })}
@@ -158,7 +180,6 @@ const ExchangeAccountSettings = () => {
         />
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMinVolume}
-          errors={errors}
           inputRef={register({
             required: "required",
           })}
@@ -170,7 +191,6 @@ const ExchangeAccountSettings = () => {
         />
         <CustomSwitchInput
           defaultValue={selectedAccount.globalPositionsPerMarket}
-          errors={errors}
           inputRef={register({
             required: "required",
           })}
@@ -181,7 +201,6 @@ const ExchangeAccountSettings = () => {
         />
         <CustomSwitchInput
           defaultValue={selectedAccount.globalBlacklist}
-          errors={errors}
           inputRef={register({
             required: "required",
           })}
@@ -192,7 +211,6 @@ const ExchangeAccountSettings = () => {
         />
         <CustomSwitchInput
           defaultValue={selectedAccount.globalWhitelist}
-          errors={errors}
           inputRef={register({
             required: "required",
           })}
@@ -202,7 +220,6 @@ const ExchangeAccountSettings = () => {
           type="textarea"
         />
         <CustomSwitch
-          control={control}
           defaultValue={selectedAccount.globalDelisting}
           label="accounts.options.delisted"
           name="globalDelisting"

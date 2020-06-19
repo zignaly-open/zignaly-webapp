@@ -10,6 +10,7 @@ import {
 } from "../store/actions/user";
 
 /**
+ * @typedef {import("../store/initialState").UserObject} UserObject
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../services/tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  */
@@ -17,11 +18,11 @@ import {
 /**
  * @typedef {Object} ActionObject
  * @property {String} type
- * @property {UserBalanceEntity} payload
+ * @property {*} payload
  */
 
 /**
- * @param {*} state
+ * @param {UserObject} state Current user state.
  * @param {ActionObject} action
  */
 

@@ -87,10 +87,15 @@ export const unsetUserBalance = () => {
   };
 };
 
-export const removeUserExchange = (payload) => {
+/**
+ * Remove exchange from user exchanges list.
+ *
+ * @param {string} internalId
+ */
+export const removeUserExchange = (internalId) => {
   return {
     type: REMOVE_USER_EXCHANGE,
-    payload,
+    payload: internalId,
   };
 };
 

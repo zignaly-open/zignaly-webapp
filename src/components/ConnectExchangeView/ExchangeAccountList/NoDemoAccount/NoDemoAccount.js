@@ -1,21 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box } from "@material-ui/core";
 import "./NoDemoAccount.scss";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
 import { Typography } from "@material-ui/core";
-
-/**
- * @typedef {Object} DefaultProps
- * @property {function} navigateToAction Callback to navigate to action.
- */
+import ModalPathContext from "../../ModalPathContext";
 
 /**
  * Displays buttons to create demo exchange account.
- * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const NoDemoAccount = ({ navigateToAction }) => {
+const NoDemoAccount = () => {
+  const { navigateToPath } = useContext(ModalPathContext);
+
   return (
     <Box className="noDemoAccount">
       <Box alignItems="center" display="flex" flexDirection="column">
@@ -24,7 +21,7 @@ const NoDemoAccount = ({ navigateToAction }) => {
         </Typography>
         <CustomButton
           className="body2 textPurple borderPurple exchangeButton"
-          onClick={() => navigateToAction("createDemoAccount")}
+          onClick={() => navigateToPath("createDemoAccount")}
         >
           <FormattedMessage id="accounts.create.demo" />
         </CustomButton>

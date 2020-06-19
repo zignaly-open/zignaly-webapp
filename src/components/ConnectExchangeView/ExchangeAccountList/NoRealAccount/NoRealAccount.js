@@ -7,13 +7,7 @@ import { Typography } from "@material-ui/core";
 import ModalPathContext from "../../ModalPathContext";
 
 /**
- * @typedef {Object} DefaultProps
- * @property {function} navigateToAction Callback to navigate to action.
- */
-
-/**
  * Displays buttons to connect or create real exchange account.
- * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const NoRealAccount = () => {

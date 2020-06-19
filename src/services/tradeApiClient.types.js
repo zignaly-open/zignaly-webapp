@@ -839,6 +839,12 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} binanceBrokerId
  * @property {Number} checkAuthCount
  * @property {String} internalName
+ * @property {string|boolean} globalMaxPositions
+ * @property {string|boolean} globalMinVolume
+ * @property {string|boolean} globalPositionsPerMarket
+ * @property {string|boolean} globalBlacklist
+ * @property {string|boolean} globalWhitelist
+ * @property {boolean} globalDelisting
  */
 
 /**
@@ -880,6 +886,12 @@ function createExchangeConnectionEmptyEntity() {
     subAccountId: "",
     binanceBrokerId: "",
     checkAuthCount: 0,
+    globalDelisting: false,
+    globalBlacklist: false,
+    globalMaxPositions: false,
+    globalMinVolume: false,
+    globalPositionsPerMarket: false,
+    globalWhitelist: false,
   };
 }
 

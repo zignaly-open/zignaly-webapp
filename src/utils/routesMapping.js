@@ -5,8 +5,7 @@
 /**
  * @typedef {Object} NavigationLink Navigation link object.
  * @property {string} id Link ID.
- * @property {string} [to] Link path.
- * @property {function} [onClick] onClick callback.
+ * @property {string} to Link path.
  */
 
 /**
