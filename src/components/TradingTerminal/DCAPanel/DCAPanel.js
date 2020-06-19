@@ -98,6 +98,7 @@ const DCAPanel = (props) => {
                   />
                   <div className="currencyBox">%</div>
                 </Box>
+                <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
