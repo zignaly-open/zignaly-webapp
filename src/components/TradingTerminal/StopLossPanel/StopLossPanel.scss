@@ -1,0 +1,24 @@
+.stopLossPanel {
+  .panelContent {
+    > div {
+      flex: 0 0 100%;
+    }
+
+    .targetPrice,
+    .targetUnits {
+      justify-content: space-between;
+
+      > :nth-child(1) {
+        flex: 0 0 100%;
+      }
+
+      > :nth-child(2) {
+        flex: 0 0 35%;
+      }
+
+      > :nth-child(3) {
+        flex: 0 0 calc(65% - 15px);
+      }
+    }
+  }
+}

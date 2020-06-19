@@ -1,19 +1,19 @@
 import React from "react";
 import { Box, MenuItem } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { setSelectedExchange } from "../../../store/actions/settings";
+import { setSelectedExchange } from "../../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
-import ExchangeIcon from "../../ExchangeIcon";
-import MyExchange from "../../../images/header/myExchange.svg";
-import { openExchangeConnectionView } from "../../../store/actions/ui";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { setDailyUserBalance, setUserBalance } from "../../../store/actions/user";
+import ExchangeIcon from "../../../ExchangeIcon";
+import MyExchange from "../../../../images/header/myExchange.svg";
+import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { setDailyUserBalance, setUserBalance } from "../../../../store/actions/user";
+import { navigate } from "@reach/router";
 
 /**
- * @typedef {import('../../../store/initialState').DefaultState} DefaultState
- * @typedef {import("../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import("../../../../store/initialState").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -83,7 +83,9 @@ const ExchangeList = (props) => {
         ))}
       <MenuItem
         className="exchangeListItem action"
-        onClick={() => dispatch(openExchangeConnectionView(true))}
+        onClick={() => {
+          navigate("#exchangeAccounts");
+        }}
       >
         <img alt="zignaly" src={MyExchange} />
         <span className="name">

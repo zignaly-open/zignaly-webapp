@@ -423,6 +423,38 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ExchangeAddPayload
+ * @property {string} exchangeId
+ * @property {string} internalName
+ * @property {string} exchangeType
+ * @property {string} key
+ * @property {string} secret
+ * @property {string} [password]
+ * @property {boolean} mainAccount
+ * @property {boolean} isPaperTrading
+ * @property {boolean} testNet
+ */
+
+/**
+ * @typedef {Object} ExchangeDeletePayload
+ * @property {string} internalId
+ */
+
+/**
+ * @typedef {Object} ExchangeUpdatePayload
+ * @property {string} internalId
+ * @property {string} exchangeId
+ * @property {string} internalName
+ * @property {string|boolean} globalMaxPositions
+ * @property {string|boolean} globalMinVolume
+ * @property {string|boolean} globalPositionsPerMarket
+ * @property {string|boolean} globalBlacklist
+ * @property {string|boolean} globalWhitelist
+ * @property {boolean} globalDelisting
+
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -807,6 +839,12 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {String} binanceBrokerId
  * @property {Number} checkAuthCount
  * @property {String} internalName
+ * @property {string|boolean} globalMaxPositions
+ * @property {string|boolean} globalMinVolume
+ * @property {string|boolean} globalPositionsPerMarket
+ * @property {string|boolean} globalBlacklist
+ * @property {string|boolean} globalWhitelist
+ * @property {boolean} globalDelisting
  */
 
 /**
@@ -844,10 +882,16 @@ function createExchangeConnectionEmptyEntity() {
     positionSize: 0,
     managed: false,
     internal: false,
-    isBrokerAccount: true,
+    isBrokerAccount: false,
     subAccountId: "",
     binanceBrokerId: "",
     checkAuthCount: 0,
+    globalDelisting: false,
+    globalBlacklist: false,
+    globalMaxPositions: false,
+    globalMinVolume: false,
+    globalPositionsPerMarket: false,
+    globalWhitelist: false,
   };
 }
 

@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./UserSummary.scss";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { Box, Typography } from "@material-ui/core";
-import tradeApi from "../../../services/tradeApiClient";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";
-/**
- * @typedef {import('../../../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
- */
-
 /**
  * @typedef {Object} DefaultProps
  * @property {string} providerId Provider Id.
@@ -21,39 +16,11 @@ import CustomTooltip from "../../CustomTooltip";
  * @returns {JSX.Element} Component JSX.
  */
 const UserSummary = ({ providerId, quote }) => {
-  /**
-   * @type {ConnectedProviderUserInfo}
-   */
-  const initialState = {
-    currentAllocated: 0,
-    profitsSinceCopying: 0,
-  };
-  const [providerUserInfo, setProviderUserInfo] = useState(initialState);
+  const providerUserInfo = useProviderUserInfo(providerId);
   const profitPerc = providerUserInfo.currentAllocated
     ? (providerUserInfo.profitsSinceCopying / providerUserInfo.currentAllocated) * 100
     : 0;
   const color = profitPerc >= 0 ? "green" : "red";
-
-  const storeSession = useStoreSessionSelector();
-
-  const loadData = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      ro: true,
-      providerId,
-    };
-
-    tradeApi
-      .connectedProviderUserInfoGet(payload)
-      .then((data) => {
-        setProviderUserInfo(data);
-      })
-      .catch((e) => {
-        alert(`ERROR: ${e.message}`);
-      });
-  };
-
-  useEffect(loadData, [storeSession.tradeApi.accessToken]);
 
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">

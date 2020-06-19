@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./DashboardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import tradeApi from "../../../services/tradeApiClient";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import useConnectedProviders from "../../../hooks/useConnectedProviders";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -19,34 +16,13 @@ const DashboardHeader = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [links, setLinks] = useState(routesMapping("dashboard").links);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadProviders = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          copyTradersOnly: false,
-          type: "connected",
-          timeFrame: 1,
-        };
-        const response = await tradeApi.providersGet(payload);
-        if (response.length > 0) {
-          let data = [...links];
-          data.push({
-            id: "dashboard.providers",
-            to: "/dashboard/connectedProviders",
-          });
-          setLinks(data);
-        }
-      } catch (e) {
-        dispatch(showErrorAlert(e));
-      }
-    };
-
-    loadProviders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (providers.length > 0) {
+    links.push({
+      id: "dashboard.providers",
+      to: "/dashboard/connectedProviders",
+    });
+  }
 
   return (
     <Box className="dashboardHeader">

@@ -9,6 +9,7 @@ export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
+export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -88,6 +89,19 @@ export const setUserBalance = (payload) => {
 export const unsetUserBalance = () => {
   return {
     type: REMOVE_USER_BALANCE,
+  };
+};
+
+/**
+ * Remove exchange from user exchanges list.
+ *
+ * @param {string} internalId Exchange account internal id.
+ * @returns {Object} return action object.
+ */
+export const removeUserExchange = (internalId) => {
+  return {
+    type: REMOVE_USER_EXCHANGE,
+    payload: internalId,
   };
 };
 

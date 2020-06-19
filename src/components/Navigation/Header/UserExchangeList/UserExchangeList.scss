@@ -1,0 +1,22 @@
+.userExchangeList {
+  margin-right: 20px;
+
+  .currentSelectionBox {
+    background-image: $purpleLightGradient;
+    border-radius: 4px;
+    color: $white;
+    cursor: pointer;
+    height: 36px;
+    padding: 5px 10px;
+    width: 100%;
+
+    .name {
+      font-family: "PlexSans-Medium";
+      font-size: 14px;
+    }
+
+    .exchangeIcon {
+      margin-right: 5px;
+    }
+  }
+}

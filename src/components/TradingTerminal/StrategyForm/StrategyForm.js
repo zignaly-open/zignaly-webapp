@@ -4,6 +4,9 @@ import { useForm, FormContext } from "react-hook-form";
 import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
+import DCAPanel from "../DCAPanel/DCAPanel";
+import StopLossPanel from "../StopLossPanel/StopLossPanel";
+import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -67,6 +70,9 @@ const StrategyForm = (props) => {
             symbolData={currentSymbolData}
           />
           <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
+          <DCAPanel symbolData={currentSymbolData} />
+          <StopLossPanel symbolData={currentSymbolData} />
+          <TrailingStopPanel symbolData={currentSymbolData} />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>
