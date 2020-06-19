@@ -8,8 +8,11 @@ import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
 import AvailableBalance from "../../../components/Balance/AvailableBalance";
 import History from "../../../components/Balance/History";
+import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
 const Balance = () => {
+  const storeUser = useStoreUserSelector();
+
   return (
     <>
       <Helmet>
@@ -23,16 +26,16 @@ const Balance = () => {
         justifyContent="center"
       >
         <Box className="equityBox">
-          <TotalEquity />
+          <TotalEquity balance={storeUser.balance} dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="cryptoBox">
-          <CryptoComposition />
+          <CryptoComposition dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance />
+          <AvailableBalance balance={storeUser.balance} />
         </Box>
         <Box className="historyBox">
-          <History />
+          <History dailyBalance={storeUser.dailyBalance} />
         </Box>
       </Box>
     </>

@@ -1,8 +1,11 @@
 .modal {
   border-radius: 4px;
-  height: fit-content;
-  max-height: 700px;
   min-height: 300px;
+
+  &:not(.fullscreen) {
+    height: fit-content;
+    max-height: 700px;
+  }
 
   &.small {
     width: 500px;
@@ -14,5 +17,21 @@
 
   &.large {
     width: 1200px;
+  }
+
+  &.fullscreen {
+    height: auto;
+    margin: 0 100px;
+    max-height: 100%;
+    min-height: 75%;
+  }
+}
+
+@include media("<=sm") {
+  .modal {
+    &.fullscreen {
+      height: 100%;
+      margin: 0;
+    }
   }
 }

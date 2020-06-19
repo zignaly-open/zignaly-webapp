@@ -20,12 +20,14 @@ import { Dialog } from "@material-ui/core";
  */
 const GenericModal = (props) => {
   const { state, onClose, persist, children, size } = props;
+  const fullScreen = size === "fullscreen";
 
   return (
     <Dialog
       classes={{ paper: "modal " + (size ? size : " ") }}
       disableBackdropClick={persist}
-      maxWidth="lg"
+      fullScreen={fullScreen}
+      maxWidth={fullScreen ? false : "lg"}
       onClose={onClose}
       open={state}
     >

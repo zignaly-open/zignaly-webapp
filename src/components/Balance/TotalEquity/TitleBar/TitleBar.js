@@ -2,13 +2,18 @@ import React from "react";
 import "./TitleBar.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
 
-const TitleBar = () => {
-  const storeUser = useStoreUserSelector();
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {UserBalanceEntity} balance Balance
+ */
 
-  // console.log(storeUser.balance);
-
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const TitleBar = ({ balance }) => {
   return (
     <Box
       alignItems="center"
@@ -33,9 +38,9 @@ const TitleBar = () => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">BTC {storeUser.balance.totalBTC}</Typography>
+          <Typography variant="h4">BTC {balance.totalBTC}</Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USDT {storeUser.balance.totalUSDT}
+            = USDT {balance.totalUSDT}
           </Typography>
         </Box>
       </Box>

@@ -1,1 +1,1 @@
-export { default } from "./SubNavHeader";
+export { default, SubNavModalHeader } from "./SubNavHeader";

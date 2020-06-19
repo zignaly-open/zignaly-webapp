@@ -1,9 +1,13 @@
 .customButton {
   @include media("<=sm") {
     width: 90%;
+
+    &.exchangeButton {
+      min-width: 100%;
+    }
   }
 
-  height: 48px;
+  min-height: 48px;
   min-width: 250px;
 
   span {
@@ -55,6 +59,15 @@
     min-width: 120px;
   }
 
+  &.bgPurple {
+    background: $purple;
+    color: $white;
+  }
+
+  &.borderPurple {
+    border: 2px solid $purple;
+  }
+
   &.textDefault {
     background: transparent;
     min-width: 120px;
@@ -75,5 +88,9 @@
     &:hover {
       background: $green;
     }
+  }
+
+  &.exchangeButton {
+    min-width: 336px;
   }
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import "./CompositionGraph.scss";
 import Doughnut from "../../../Graphs/Doughnut";
 import { useIntl } from "react-intl";
 
@@ -35,10 +34,14 @@ const CompositionGraph = ({ list, quotes }) => {
   ];
 
   /**
-   * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
-   * @type {ChartData}
+   * @type {Array<Number>}
    */
-  let chartData = { values: [], labels: [] };
+  let values = [];
+
+  /**
+   * @type {Array<String>}
+   */
+  let labels = [];
 
   const colorsOptions = {
     backgroundColor: sectionColors,
@@ -55,22 +58,22 @@ const CompositionGraph = ({ list, quotes }) => {
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          chartData.values.push(value.toFixed(2));
-          chartData.labels.push(quotes[a]);
+          values.push(value.toFixed(2));
+          labels.push(quotes[a]);
         }
       }
-      chartData.values.push(
+      values.push(
         typeof equity.otherPercentage === "string"
           ? parseFloat(equity.otherPercentage)
           : equity.otherPercentage,
       );
-      chartData.labels.push(intl.formatMessage({ id: "graph.others" }));
+      labels.push(intl.formatMessage({ id: "graph.others" }));
     }
   };
 
   prepareChartData();
 
-  return <Doughnut chartData={chartData} colorOptions={colorsOptions} />;
+  return <Doughnut colorOptions={colorsOptions} labels={labels} values={values} />;
 };
 
 export default CompositionGraph;

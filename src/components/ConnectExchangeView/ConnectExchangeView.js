@@ -1,8 +1,12 @@
 import React from "react";
 import "./ConnectExchangeView.scss";
-import { Box, Typography } from "@material-ui/core";
-import CustomButton from "../CustomButton";
-import { FormattedMessage } from "react-intl";
+import { Box } from "@material-ui/core";
+import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
+import ConnectExchangeViewHead from "./ConnectExchangeViewHead";
+import ModalPathContext from "./ModalPathContext";
+import { useForm, FormContext } from "react-hook-form";
+import useModalPath from "../../hooks/useModalPath";
+import FAQ from "../FAQ";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,36 +19,26 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Connect exchange element.
  */
-const ConnectExchangeView = (props) => {
-  /**
-   * Handle submit buttton click.
-   *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
-   */
-  const handleClick = () => {
-    props.onClose();
-  };
+const ConnectExchangeView = ({ onClose }) => {
+  const methods = useForm();
+  const modalPath = useModalPath();
 
   return (
-    <Box
-      alignItems="center"
-      className="connectExchangeView"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <Box className="actionBar">
-        <CustomButton className="submitButton" onClick={handleClick}>
-          Done
-        </CustomButton>
-      </Box>
-      <Box className="titleBar">
-        <Typography variant="h1">
-          <FormattedMessage id="dashboard.connectexchange.bold.title" />
-        </Typography>
-      </Box>
-    </Box>
+    <ModalPathContext.Provider value={modalPath}>
+      <FormContext {...methods}>
+        <Box
+          alignItems="center"
+          className="connectExchangeView"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          <ConnectExchangeViewHead onClose={onClose} />
+          <ConnectExchangeViewContent />
+          <FAQ />
+        </Box>
+      </FormContext>
+    </ModalPathContext.Provider>
   );
 };
 

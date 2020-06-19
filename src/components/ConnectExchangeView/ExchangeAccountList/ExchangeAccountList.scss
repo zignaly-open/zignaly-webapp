@@ -1,0 +1,107 @@
+.exchangeAccountList {
+  padding-bottom: 12px;
+  width: 100%;
+
+  .accountInfoHeader {
+    background-image: $greyDarkGradient;
+    border-radius: 4px;
+    height: 80px;
+    padding: 24px;
+    padding-bottom: 16px;
+
+    &.active {
+      background-image: linear-gradient(94deg, $purple 5%, $purpleMedium 96%);
+    }
+
+    .selected {
+      color: $tooltipText;
+      font-size: 11px;
+      height: 13px;
+      letter-spacing: 0.42px;
+      line-height: 1.18;
+      opacity: 0.6;
+      text-transform: initial;
+      width: 49px;
+    }
+
+    .accountName {
+      padding-left: 16px;
+    }
+
+    h3 {
+      color: $white;
+      font-family: "PlexSans-Bold";
+    }
+
+    .customButton {
+      height: 40px;
+      margin-left: 32px;
+      width: auto;
+    }
+
+    .textPurple {
+      background: $white;
+    }
+
+    .textDefault {
+      color: $white;
+    }
+  }
+
+  .exchangeAccountContainer {
+    padding: 0 24px;
+
+    .exchangeButtons {
+      margin-top: 40px;
+    }
+
+    .exchangeButton {
+      margin: 0 24px 11px 0;
+    }
+
+    &.demoAccounts {
+      .exchangeButton {
+        margin-top: 11px;
+      }
+    }
+  }
+}
+
+@include media("<=sm") {
+  .exchangeAccountList {
+    .accountInfoHeader {
+      align-items: flex-start;
+      flex-direction: column;
+      height: auto;
+      padding: 10px 5px;
+
+      .actionsBox {
+        flex-wrap: wrap;
+      }
+
+      .customButton {
+        margin: 0 10px 0 0;
+        min-width: auto;
+      }
+    }
+
+    .exchangeAccountInfo {
+      padding: 0 0 12px;
+    }
+
+    .exchangeAccountContainer {
+      .exchangeButtons {
+        flex-direction: column;
+        margin-top: 0;
+
+        > div {
+          margin-top: 20px;
+        }
+
+        .exchangeButton {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

@@ -11,10 +11,11 @@ import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import Alert from "../../components/Alert";
 import Modal from "../../components/Modal";
+import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
-import { openExchangeConnectionView, openSettingsView } from "../../store/actions/ui";
+import { openSettingsView } from "../../store/actions/ui";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
@@ -46,14 +47,7 @@ const PrivateAreaLayout = (props) => {
         <CssBaseline />
         <Alert />
         {storeLoader && <Loader />}
-        <Modal
-          onClose={() => dispatch(openExchangeConnectionView(false))}
-          persist={false}
-          size="large"
-          state={storeModal.exchangeConnectionView}
-        >
-          <ConnectExchangeView onClose={() => dispatch(openExchangeConnectionView(false))} />
-        </Modal>
+        <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
         <Modal
           onClose={() => dispatch(openSettingsView(false))}
           persist={false}
