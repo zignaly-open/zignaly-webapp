@@ -28,6 +28,9 @@
 
   label {
     width: 60%;
+    &[for="testnet"] {
+      width: 36%;
+    }
 
     svg {
       margin-left: 5px;

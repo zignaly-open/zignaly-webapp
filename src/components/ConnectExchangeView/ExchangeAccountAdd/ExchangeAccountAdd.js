@@ -18,7 +18,7 @@ import ModalPathContext from "../ModalPathContext";
 import Loader from "../../Loader";
 import { useDispatch } from "react-redux";
 import { setUserExchanges } from "../../../store/actions/user";
-import ExchangeAccountForm, { CustomInput } from "../ExchangeAccountForm";
+import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -70,6 +70,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
   const exchangeType = watch("exchangeType");
   const zignalyOnly = create && !demo;
   const zignalyIncluded = create;
+  const testnet = watch("testnet");
 
   // Initialize selected exchange
   let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName") || "binance";
@@ -109,7 +110,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
   );
 
   const submitForm = async (data) => {
-    const { internalName, exchangeType, key, secret, password } = data;
+    const { internalName, exchangeType, key, secret, password, testNet } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
@@ -122,7 +123,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
       }),
       mainAccount: false,
       isPaperTrading: demo,
-      testNet: false,
+      testNet,
     };
 
     return tradeApi.exchangeAdd(payload).then(() => {
@@ -154,6 +155,11 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
                 name="exchangeName"
                 rules={{ required: true }}
                 label={intl.formatMessage({ id: "accounts.exchange" })}
+                onChange={([e]) => {
+                  setValue("exchangeType", typeOptions[0].val);
+                  setValue("testnet", false);
+                  return e;
+                }}
               />
             ))}
           {typeOptions.length > 1 && (
@@ -166,6 +172,15 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               label={intl.formatMessage({ id: "accounts.exchange.type" })}
             />
           )}
+          {demo && exchangeType === "futures" && (
+            <CustomSwitch
+              label="menu.testnet"
+              tooltip=""
+              name="testnet"
+              defaultValue={false}
+              inputRef={register}
+            />
+          )}
           <CustomInput
             inputRef={register({
               required: "name empty",
@@ -174,7 +189,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
             label="accounts.exchange.name"
             errors={errors}
           />
-          {(!create || exchangeType === "futures") &&
+          {(!create || testnet) &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 inputRef={register}
