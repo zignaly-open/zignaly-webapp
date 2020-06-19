@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Link } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";
+import ModalPathContext from "../ConnectExchangeView/ModalPathContext";
 import "./SubNavHeader.scss";
 
 /**
@@ -18,8 +19,35 @@ import "./SubNavHeader.scss";
  * @param {SubNavHeaderPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const SubNavHeader = ({ links, rightComponent }) => {
-  const [selectedLink, setSelectedLink] = useState(links.length ? links[0].id : "");
+const SubNavHeader = ({ links, rightComponent }) => (
+  <Box
+    alignItems="center"
+    className="subNavHeader hideScroll"
+    display="flex"
+    flexDirection="row"
+    justifyContent="flex-start"
+  >
+    {links.map((item, index) => (
+      <GatsbyLink activeClassName="active" className="dashboardLink" key={index} to={item.to}>
+        <FormattedMessage id={item.id} />
+      </GatsbyLink>
+    ))}
+    {rightComponent && rightComponent}
+  </Box>
+);
+
+/**
+ * Provides a navigation bar to display links with optional elements.
+ *
+ * @param {SubNavHeaderPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
+export const SubNavModalHeader = ({ links }) => {
+  const {
+    pathParams: { currentPath },
+    resetToPath,
+  } = useContext(ModalPathContext);
+
   return (
     <Box
       alignItems="center"
@@ -28,27 +56,17 @@ const SubNavHeader = ({ links, rightComponent }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {links.map((item, index) =>
-        item.onClick ? (
-          <Link
-            // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
-            className={`dashboardLink ${selectedLink === item.id ? "active" : null}`}
-            key={index}
-            // href={item.to}
-            onClick={() => {
-              setSelectedLink(item.id);
-              item.onClick();
-            }}
-          >
-            <FormattedMessage id={item.id} />
-          </Link>
-        ) : (
-          <GatsbyLink activeClassName="active" className="dashboardLink" key={index} to={item.to}>
-            <FormattedMessage id={item.id} />
-          </GatsbyLink>
-        ),
-      )}
-      {rightComponent && rightComponent}
+      {links.map((item, index) => (
+        <Link
+          // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
+          className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
+          key={index}
+          // href={item.to}
+          onClick={() => resetToPath(item.id)}
+        >
+          <FormattedMessage id={item.title} />
+        </Link>
+      ))}
     </Box>
   );
 };

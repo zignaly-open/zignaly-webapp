@@ -10,7 +10,7 @@ import { FormattedMessage } from "react-intl";
 import NoRealAccount from "./NoRealAccount";
 import NoDemoAccount from "./NoDemoAccount";
 import ModalPathContext from "../ModalPathContext";
-import SubNavHeader from "../../SubNavHeader";
+import { SubNavModalHeader } from "../../SubNavHeader";
 
 /**
  * @typedef {Object} DefaultProps
@@ -39,22 +39,18 @@ const ExchangeAccountList = ({ demo }) => {
 
   const tabs = [
     {
-      id: "accounts.real",
-      onClick: () => {
-        resetToPath("realAccounts");
-      },
+      id: "realAccounts",
+      title: "accounts.real",
     },
     {
-      id: "accounts.demo",
-      onClick: () => {
-        resetToPath("demoAccounts");
-      },
+      id: "demoAccounts",
+      title: "accounts.demo",
     },
   ];
 
   return (
     <Box className="exchangeAccountList">
-      <SubNavHeader links={tabs} />
+      <SubNavModalHeader links={tabs} />
       {!exchanges.length ? (
         !demo ? (
           <NoRealAccount />

@@ -8,7 +8,6 @@ import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton";
-import SubNavHeader from "../../SubNavHeader";
 import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
