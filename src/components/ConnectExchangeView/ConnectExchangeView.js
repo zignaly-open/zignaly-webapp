@@ -6,6 +6,7 @@ import ConnectExchangeViewHead from "./ConnectExchangeViewHead";
 import ModalPathContext from "./ModalPathContext";
 import { useForm, FormContext, useFormContext } from "react-hook-form";
 import useModalPath from "../../hooks/useModalPath";
+import FAQ from "../FAQ";
 
 /**
  * @typedef {Object} DefaultProps
@@ -34,6 +35,7 @@ const ConnectExchangeView = ({ onClose }) => {
         >
           <ConnectExchangeViewHead onClose={onClose} />
           <ConnectExchangeViewContent />
+          <FAQ />
         </Box>
       </FormContext>
     </ModalPathContext.Provider>

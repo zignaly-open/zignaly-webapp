@@ -38,7 +38,8 @@ const TraderMiniCard = ({ provider }) => {
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">
-          {quote} {formatFloat(providerUserInfo.currentAllocated)}
+          <FormattedMessage id="srv.allocated" /> {quote}{" "}
+          {formatFloat(providerUserInfo.currentAllocated)}
         </Typography>
         <Box display="flex" flexDirection="row">
           <Typography variant="h5">

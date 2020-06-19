@@ -1,5 +1,5 @@
 .exchangeAccountForm {
-  max-width: 760px;
+  max-width: 770px;
   padding: 8px 24px;
 
   .controlWrapper,
@@ -18,7 +18,7 @@
     margin: 0 0 20px;
 
     > span {
-      width: 65%;
+      width: 70%;
     }
   }
 
@@ -27,7 +27,7 @@
   }
 
   label {
-    width: 65%;
+    width: 60%;
 
     svg {
       margin-left: 5px;
@@ -45,6 +45,19 @@
 
   .switch {
     margin-right: 10px;
+  }
+
+  .textareaWrapper {
+    align-items: flex-start;
+
+    > div {
+      align-items: flex-start;
+    }
+
+    .customInput {
+      height: 100px;
+      align-items: flex-start;
+    }
   }
 }
 

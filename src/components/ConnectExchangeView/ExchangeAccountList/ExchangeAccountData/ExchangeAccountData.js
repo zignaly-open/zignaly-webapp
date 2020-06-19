@@ -21,20 +21,18 @@ import ModalPathContext from "../../ModalPathContext";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountData = ({ internalId }) => {
-  const dailyBalance = useEquity(internalId);
-  const balance = useBalance(internalId);
-  const providers = useConnectedProviders(30, internalId);
+const ExchangeAccountData = ({ account }) => {
   const { navigateToPath } = useContext(ModalPathContext);
+  const dailyBalance = useEquity(account.internalId);
+  const balance = useBalance(account.internalId);
+  const providers = useConnectedProviders(30, account.internalId);
   const intl = useIntl();
 
   return (
     <Box className="exchangeAccountData">
       <Box className="topBoxData" display="flex" flexDirection="row">
         <Box className="equityBox">
-          {balance.totalBTC ? (
-            <TotalEquity balance={balance} dailyBalance={dailyBalance} />
-          ) : (
+          {(!balance.totalBTC && account.isBrokerAccount && (
             <Box
               width={1}
               height={1}
@@ -56,7 +54,10 @@ const ExchangeAccountData = ({ internalId }) => {
                 />
               </Typography>
             </Box>
-          )}
+          )) ||
+            (!account.paperTrading && (
+              <TotalEquity balance={balance} dailyBalance={dailyBalance} />
+            ))}
         </Box>
         <Box className="cryptoBox">
           <CryptoComposition dailyBalance={dailyBalance} />

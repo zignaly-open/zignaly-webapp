@@ -59,22 +59,22 @@ const ExchangeAccountList = ({ demo }) => {
         )
       ) : (
         <Box className={`exchangeAccountContainer ${currentPath}`}>
-          {exchanges.map((item) => (
-            <Box className="exchangeAccountInfo" key={item.internalId}>
+          {exchanges.map((account) => (
+            <Box className="exchangeAccountInfo" key={account.internalId}>
               <Box
                 alignItems="center"
                 className={`accountInfoHeader ${
-                  selectedExchangeInternalId === item.internalId ? "active" : ""
+                  selectedExchangeInternalId === account.internalId ? "active" : ""
                 }`}
                 display="flex"
                 flexDirection="row"
                 justifyContent="space-between"
               >
                 <Box alignItems="center" display="flex" flexDirection="row">
-                  <ExchangeIcon exchange={item.name.toLowerCase()} size="xlarge" />
+                  <ExchangeIcon exchange={account.name.toLowerCase()} size="xlarge" />
                   <Box className="accountName" display="flex" flexDirection="column">
-                    <Typography variant="h3">{item.internalName}</Typography>
-                    {selectedExchangeInternalId === item.internalId && (
+                    <Typography variant="h3">{account.internalName}</Typography>
+                    {selectedExchangeInternalId === account.internalId && (
                       <Typography className="selected" variant="subtitle1">
                         <FormattedMessage id="accounts.selected" />
                       </Typography>
@@ -84,21 +84,21 @@ const ExchangeAccountList = ({ demo }) => {
                 <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
                   <CustomButton
                     className="textDefault"
-                    onClick={() => navigateToPath("settings", item)}
+                    onClick={() => navigateToPath("settings", account)}
                   >
                     <FormattedMessage id="accounts.settings" />
                   </CustomButton>
-                  {item.isBrokerAccount && (
+                  {account.isBrokerAccount && (
                     <>
                       <CustomButton
                         className="textPurple"
-                        onClick={() => navigateToPath("deposit", item)}
+                        onClick={() => navigateToPath("deposit", account)}
                       >
                         <FormattedMessage id="accounts.deposit" />
                       </CustomButton>
                       <CustomButton
                         className="textPurple"
-                        onClick={() => navigateToPath("withdraw", item)}
+                        onClick={() => navigateToPath("withdraw", account)}
                       >
                         <FormattedMessage id="accounts.withdraw" />
                       </CustomButton>
@@ -106,7 +106,7 @@ const ExchangeAccountList = ({ demo }) => {
                   )}
                 </Box>
               </Box>
-              <ExchangeAccountData internalId={item.internalId} />
+              <ExchangeAccountData account={account} />
             </Box>
           ))}
           {!demo ? (

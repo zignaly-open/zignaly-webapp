@@ -94,6 +94,7 @@ export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name
     tooltip={tooltip}
     label={label}
     // defaultValue={defaultValue}
+    type={type}
     controlComponent={
       <SwitchInputComponent
         name={name}
@@ -113,8 +114,14 @@ export const CustomSwitch = ({
   controlComponent,
   control,
   name,
+  type,
 }) => (
-  <Box display="flex" flexDirection="row" alignItems="center" className="controlWrapper">
+  <Box
+    display="flex"
+    flexDirection="row"
+    alignItems="center"
+    className={`controlWrapper ${type === "textarea" ? "textareaWrapper" : ""}`}
+  >
     <label htmlFor={name}>
       <Box display="flex" flexDirection="row">
         <Typography className="accountLabel">

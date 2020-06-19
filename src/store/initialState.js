@@ -187,7 +187,7 @@ const initialState = {
       positionSize: 0,
       managed: false,
       internal: false,
-      isBrokerAccount: true,
+      isBrokerAccount: false,
       subAccountId: "",
       binanceBrokerId: "",
       checkAuthCount: 0,
