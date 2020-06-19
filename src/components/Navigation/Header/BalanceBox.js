@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
@@ -26,16 +26,16 @@ const BalanceBox = () => {
   useInterval(loadBalance, 5000);
 
   return (
-    <Fragment>
+    <>
       {storeUser.balance.loading && (
         <Box
-          className="balanceContainer"
           alignItems="center"
+          className="balanceContainer"
           display="flex"
           flexDirection="row"
           justifyContent="center"
         >
-          <CircularProgress color="primary" />
+          <CircularProgress color="primary" size={30} />
         </Box>
       )}
       {!storeUser.balance.loading && (
@@ -96,7 +96,7 @@ const BalanceBox = () => {
           </Box>
         </Box>
       )}
-    </Fragment>
+    </>
   );
 };
 

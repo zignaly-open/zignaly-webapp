@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -44,7 +42,6 @@ const useProvidersList = (options) => {
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
   const { copyTradersOnly, connectedOnly } = options;
-  const dispatch = useDispatch();
 
   /**
    * @type {ProvidersCollection} initialState
@@ -138,7 +135,6 @@ const useProvidersList = (options) => {
         setProviders(responseData);
       } catch (e) {
         setProviders([]);
-        dispatch(showErrorAlert(e));
       }
     };
     loadProviders();

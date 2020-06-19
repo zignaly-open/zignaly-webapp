@@ -33,7 +33,7 @@ const Header = () => {
   const userExchangeSelector = (state) => state.user.exchangeConnections;
   const exchangeConnections = useSelector(userExchangeSelector);
 
-  const [showBalance, setShowBalance] = useState(false);
+  const [showBalance, setShowBalance] = useState(true);
   const [anchorEl, setAnchorEl] = useState(undefined);
 
   return (

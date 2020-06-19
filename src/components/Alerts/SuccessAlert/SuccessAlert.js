@@ -14,13 +14,13 @@ const SuccessAlert = () => {
   return (
     <Snackbar
       TransitionComponent={Slide}
-      id="successAlert"
       anchorOrigin={{
         vertical: "top",
         horizontal: "right",
       }}
       autoHideDuration={50000000}
       className="successAlert"
+      id="successAlert"
       onClose={() => dispatch(hideErrorAlert())}
       open={false}
     >

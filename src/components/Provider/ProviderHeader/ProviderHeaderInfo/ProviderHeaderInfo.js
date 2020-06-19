@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import "./ProviderHeaderInfo.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
@@ -61,28 +61,28 @@ const ProviderHeaderInfo = () => {
       </Typography>
       <Typography variant="h4">
         {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
-          <Fragment>
+          <>
             <FormattedMessage id="srv.allocated" />
             <b>
               {storeViews.provider.allocatedBalance}{" "}
               {storeViews.provider.copyTradingQuote.toUpperCase()}
             </b>
-          </Fragment>
+          </>
         ) : (
-          <Fragment>
+          <>
             <FormattedMessage id="srv.minimum" />
             <b>
               {storeViews.provider.minAllocatedBalance}{" "}
               {storeViews.provider.copyTradingQuote.toUpperCase()}
             </b>
-          </Fragment>
+          </>
         )}
         {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
           <img
-            src={EditIcon}
-            className="editIcon"
             alt="zignaly"
+            className="editIcon"
             onClick={() => showCopyModal(true)}
+            src={EditIcon}
           />
         )}
       </Typography>

@@ -19,17 +19,15 @@ const PaymentButton = ({ provider }) => {
   const createReturnSuccessUrl = () => {
     if (provider.isCopyTrading) {
       return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#success`;
-    } else {
-      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
     }
+      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
   };
 
   const createReturnErrorUrl = () => {
     if (provider.isCopyTrading) {
       return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#error`;
-    } else {
-      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
     }
+      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
   };
 
   const returnSuccessURL = createReturnSuccessUrl();
@@ -47,25 +45,25 @@ const PaymentButton = ({ provider }) => {
       {provider.id && (
         <Box>
           <form action="https://www.coinpayments.net/index.php" method="post">
-            <input type="hidden" name="cmd" value="_pay" />
-            <input type="hidden" name="reset" value="1" />
-            <input type="hidden" name="merchant" value={provider.internalPaymentInfo.merchantId} />
-            <input type="hidden" name="item_name" value="Zignaly Provider" />
-            <input type="hidden" name="currency" value="USD" />
-            <input type="hidden" name="amount" value={provider.internalPaymentInfo.price} />
-            <input type="hidden" name="quantity" value="1" />
-            <input type="hidden" name="allow_quantity" value="1" />
-            <input type="hidden" name="want_shipping" value="0" />
-            <input type="hidden" name="success_url" value={returnSuccessURL} />
-            <input type="hidden" name="cancel_url" value={returnErrorURL} />
-            <input type="hidden" name="allow_extra" value="0" />
-            <input type="hidden" name="invoice" value={provider.id} />
-            <input type="hidden" name="custom" value={provider.id} />
-            <input type="hidden" name="ipn_url" value={ipnURL} />
+            <input name="cmd" type="hidden" value="_pay" />
+            <input name="reset" type="hidden" value="1" />
+            <input name="merchant" type="hidden" value={provider.internalPaymentInfo.merchantId} />
+            <input name="item_name" type="hidden" value="Zignaly Provider" />
+            <input name="currency" type="hidden" value="USD" />
+            <input name="amount" type="hidden" value={provider.internalPaymentInfo.price} />
+            <input name="quantity" type="hidden" value="1" />
+            <input name="allow_quantity" type="hidden" value="1" />
+            <input name="want_shipping" type="hidden" value="0" />
+            <input name="success_url" type="hidden" value={returnSuccessURL} />
+            <input name="cancel_url" type="hidden" value={returnErrorURL} />
+            <input name="allow_extra" type="hidden" value="0" />
+            <input name="invoice" type="hidden" value={provider.id} />
+            <input name="custom" type="hidden" value={provider.id} />
+            <input name="ipn_url" type="hidden" value={ipnURL} />
             <input
-              type="image"
-              src="https://www.coinpayments.net/images/pub/checkout-grey.png"
               alt="Buy Now with CoinPayments.net"
+              src="https://www.coinpayments.net/images/pub/checkout-grey.png"
+              type="image"
             />
           </form>
         </Box>

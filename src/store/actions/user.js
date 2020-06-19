@@ -66,7 +66,7 @@ export const unsetUserExchanges = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const setUserBalance = (payload) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: SET_USER_BALANCE_LOADER,

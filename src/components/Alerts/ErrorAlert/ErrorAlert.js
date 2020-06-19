@@ -14,13 +14,13 @@ const ErrorAlert = () => {
   return (
     <Snackbar
       TransitionComponent={Slide}
-      id="errorAlert"
       anchorOrigin={{
         vertical: "top",
         horizontal: "right",
       }}
       autoHideDuration={5000}
       className="errorAlert"
+      id="errorAlert"
       onClose={() => dispatch(hideErrorAlert())}
       open={storeAlerts.error.open}
     >

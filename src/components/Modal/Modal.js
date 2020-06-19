@@ -30,6 +30,7 @@ const GenericModal = (props) => {
       onClose={onClose}
       open={state}
     >
+      {/* @ts-ignore */}
       <CloseIcon className="closeIcon" onClick={onClose} />
       {children}
     </Dialog>

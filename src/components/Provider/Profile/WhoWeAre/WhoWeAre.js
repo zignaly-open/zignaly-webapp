@@ -142,40 +142,40 @@ const WhoWeAre = ({ provider }) => {
                   <img
                     alt="faceook-icon"
                     className="icon"
-                    src={FacebookIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={FacebookIcon}
                   />
                 )}
                 {item.network && item.network.toLowerCase() === "twitter" && (
                   <img
                     alt="twitter-icon"
                     className="icon"
-                    src={TwitterIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={TwitterIcon}
                   />
                 )}
                 {item.network && item.network.toLowerCase() === "linkedin" && (
                   <img
                     alt="linkedin-icon"
                     className="icon"
-                    src={LinkedinIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={LinkedinIcon}
                   />
                 )}
                 {item.network && item.network.toLowerCase() === "telegram" && (
                   <img
                     alt="tttt-icon"
                     className="icon"
-                    src={TelegramIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={TelegramIcon}
                   />
                 )}
                 {item.network && item.network.toLowerCase() === "discord" && (
                   <img
                     alt="discord-icon"
                     className="icon"
-                    src={DiscordIcon}
                     onClick={() => redirectToSocial(item.link)}
+                    src={DiscordIcon}
                   />
                 )}
                 {item.network && item.network.toLowerCase() === "email" && (
@@ -188,9 +188,9 @@ const WhoWeAre = ({ provider }) => {
         </Box>
       </Box>
       <Typography
-        variant="body1"
         className="website"
         onClick={() => redirectToSocial(provider.website)}
+        variant="body1"
       >
         {provider.website}
       </Typography>

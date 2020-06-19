@@ -36,11 +36,11 @@ const CopyTradersProfile = () => {
 
   return (
     <Box
+      alignItems="center"
       className="profileEditPage"
       display="flex"
       flexDirection="row"
       justifyContent="center"
-      alignItems="center"
     >
       {loading && <CircularProgress color="primary" />}
       {!loading && <EditProfileForm exchanges={exchanges} quotes={quotes} />}

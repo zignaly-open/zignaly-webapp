@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import moment from "moment";
@@ -22,7 +22,7 @@ const TrialPeriod = ({ provider }) => {
 
   const Expiry = () => {
     return (
-      <Fragment>
+      <>
         {parseInt(provider.stripe.cancelDate) - currentTime > 0 ? (
           <Typography variant="h4">
             <b>
@@ -31,18 +31,18 @@ const TrialPeriod = ({ provider }) => {
             </b>
           </Typography>
         ) : (
-          <Typography variant="h4" className="red">
+          <Typography className="red" variant="h4">
             <b>
               <FormattedMessage id="srv.text.expired" />
             </b>
           </Typography>
         )}
-      </Fragment>
+      </>
     );
   };
 
   return (
-    <Fragment>
+    <>
       {provider.exchangeInternalId && !provider.disable ? (
         <Expiry />
       ) : (
@@ -56,7 +56,7 @@ const TrialPeriod = ({ provider }) => {
           </b>
         </Typography>
       )}
-    </Fragment>
+    </>
   );
 };
 
