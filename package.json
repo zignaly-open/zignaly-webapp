@@ -97,7 +97,7 @@
     "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
     "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\";exit 0",
     "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs;exit 0",
-    "reset": "rm -rf .cache/ public/",
+    "reset": "rm -rf .cache/ public/ types/",
     "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
     "sasslint": "env FORCE_COLOR=1 sass-lint -v",
     "serve": "gatsby serve",
