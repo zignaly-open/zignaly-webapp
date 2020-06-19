@@ -132,17 +132,18 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
         </Box>
       ) : (
         <ExchangeAccountForm>
-          {!create && (
-            <Controller
-              as={CustomSelect}
-              options={exchangesOptions}
-              control={control}
-              defaultValue={selectedExchange.name}
-              name="exchangeName"
-              rules={{ required: true }}
-              label={intl.formatMessage({ id: "accounts.exchange" })}
-            />
-          )}
+          {!create ||
+            (demo && (
+              <Controller
+                as={CustomSelect}
+                options={exchangesOptions}
+                control={control}
+                defaultValue={selectedExchange.name}
+                name="exchangeName"
+                rules={{ required: true }}
+                label={intl.formatMessage({ id: "accounts.exchange" })}
+              />
+            ))}
           {typeOptions.length > 1 && (
             <Controller
               as={CustomSelect}
@@ -162,7 +163,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
             label="accounts.exchange.name"
             errors={errors}
           />
-          {!create ? (
+          {!create || getValues("exchangeType").val === "futures" ? (
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 inputRef={register}
