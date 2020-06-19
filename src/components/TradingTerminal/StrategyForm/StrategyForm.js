@@ -5,6 +5,7 @@ import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
 import DCAPanel from "../DCAPanel/DCAPanel";
+import StopLossPanel from "../StopLossPanel/StopLossPanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -69,6 +70,7 @@ const StrategyForm = (props) => {
           />
           <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
           <DCAPanel symbolData={currentSymbolData} />
+          <StopLossPanel symbolData={currentSymbolData} />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>
