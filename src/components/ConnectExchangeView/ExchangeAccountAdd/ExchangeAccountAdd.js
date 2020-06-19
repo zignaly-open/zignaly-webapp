@@ -56,14 +56,21 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
   } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(<FormattedMessage id={create ? "accounts.create.exchange" : "accounts.connect"} />);
+    setTitle(
+      <FormattedMessage
+        id={
+          create ? (demo ? "accounts.create.demo" : "accounts.create.exchange") : "accounts.connect"
+        }
+      />,
+    );
   }, []);
 
   const exchanges = useExchangeList();
 
-  let exchangeName = create ? "zignaly" : watch("exchangeName");
-  const selectedExchange = exchanges.find(
-    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
+  // Initialize selected exchange
+  let exchangeName = create ? "zignaly" : watch("exchangeName") || "binance";
+  const selectedExchange = exchanges.find((e) =>
+    e.name.toLowerCase() === exchangeName ? exchangeName.toLowerCase() : "",
   );
   console.log(exchangeName, selectedExchange);
 
@@ -72,27 +79,13 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
     .map((e) => e.name);
 
-  useEffect(() => {
-    //   Set default connect exchange
-    if (!create && exchangesOptions.length && !exchangeName) {
-      setValue("exchangeName", "Binance");
-    }
-  }, [exchangesOptions]);
-
   // Create account types options
-  const typeOptions = selectedExchange
-    ? selectedExchange.type.map((t) => ({
-        val: t,
-        label: t.charAt(0).toUpperCase() + t.slice(1),
-      }))
-    : [];
-
-  useEffect(() => {
-    //   Set default account type
-    if (selectedExchange) {
-      setValue("exchangeType", typeOptions[0].val);
-    }
-  }, [selectedExchange]);
+  const typeOptions =
+    selectedExchange &&
+    selectedExchange.type.map((t) => ({
+      val: t,
+      label: t.charAt(0).toUpperCase() + t.slice(1),
+    }));
 
   // Submit form handle
   useImperativeHandle(
@@ -144,7 +137,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               as={CustomSelect}
               options={exchangesOptions}
               control={control}
-              defaultValue={""}
+              defaultValue={selectedExchange.name}
               name="exchangeName"
               rules={{ required: true }}
               label={intl.formatMessage({ id: "accounts.exchange" })}
@@ -155,7 +148,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               as={CustomSelect}
               options={typeOptions}
               control={control}
-              defaultValue={""}
+              defaultValue={typeOptions[0].val}
               name="exchangeType"
               rules={{ required: true }}
               label={intl.formatMessage({ id: "accounts.exchange.type" })}
