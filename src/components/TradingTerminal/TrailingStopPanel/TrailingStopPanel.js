@@ -77,7 +77,7 @@ const TrailingStopPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
-    const trailingStopPercentage = draftPosition.trailingStopPercentage || 0;
+    const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage) || 0;
     const newValue = formatFloat2Dec(Math.abs(trailingStopPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 

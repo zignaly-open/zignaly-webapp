@@ -77,7 +77,7 @@ const StopLossPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
-    const stopLossPercentage = draftPosition.stopLossPercentage || 0;
+    const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage) || 0;
     const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
