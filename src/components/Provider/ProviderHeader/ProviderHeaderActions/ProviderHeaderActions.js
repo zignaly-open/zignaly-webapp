@@ -2,11 +2,11 @@ import React from "react";
 import "./ProviderHeaderActions.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
-import CustomButton from "../../../CustomButton";
-import { FormattedMessage } from "react-intl";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
+import TrialPeriod from "./TrialPeriod";
+
 /**
  * Provides the navigation bar for the dashboard.
  *
@@ -49,15 +49,7 @@ const ProviderHeaderActions = () => {
         <Typography variant="h1">{storeViews.provider.name}</Typography>
       </Box>
       <CopyTraderButton provider={storeViews.provider} />
-      <Typography variant="h4">
-        <FormattedMessage id="copyt.trial" />
-        <b>
-          {storeViews.provider.internalPaymentInfo.trial
-            ? storeViews.provider.internalPaymentInfo.trial
-            : 0}
-          <b>Days</b>
-        </b>
-      </Typography>
+      <TrialPeriod provider={storeViews.provider} />
       <PaymentButton provider={storeViews.provider} />
     </Box>
   );

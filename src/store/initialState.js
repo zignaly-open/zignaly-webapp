@@ -319,6 +319,14 @@ const initialState = {
       avgTradesPerWeek: 0,
       profitableWeeks: 0,
       followers: 0,
+      stripe: {
+        cancelAtPeriodEnd: false,
+        cancelDate: "",
+        email: "",
+        enable: false,
+        paymentGateway: "",
+        trialStartedAt: "",
+      },
     },
   },
 };

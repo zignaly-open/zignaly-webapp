@@ -1483,6 +1483,17 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
+ * @typedef {Object} DefaultProviderStripeObject
+ * @property {Boolean} cancelAtPeriodEnd
+ * @property {String} cancelDate
+ * @property {String} email
+ * @property {Boolean} enable
+ * @property {String} paymentGateway
+ * @property {String} trialStartedAt
+ */
+
+/**
+ *
  * @typedef {Object} DefaulProviderInternalPaymentObject
  * @property {Boolean} isPremium
  * @property {String} merchantId
@@ -1574,6 +1585,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} avgTradesPerWeek
  * @property {Number} profitableWeeks
  * @property {Number} followers
+ * @property {DefaultProviderStripeObject} stripe
  */
 
 /**
@@ -1669,6 +1681,14 @@ function createEmptyProviderGetEntity() {
     avgTradesPerWeek: 0,
     profitableWeeks: 0,
     followers: 0,
+    stripe: {
+      cancelAtPeriodEnd: false,
+      cancelDate: "",
+      email: "",
+      enable: false,
+      paymentGateway: "",
+      trialStartedAt: "",
+    },
   };
 }
 
