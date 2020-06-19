@@ -13,13 +13,12 @@ import {
 /**
  * @typedef {import("../store/initialState").UserObject} UserObject
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import('../services/tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  */
 
 /**
  * @typedef {Object} ActionObject
  * @property {String} type
- * @property {UserBalanceEntity} payload
+ * @property {*} payload
  */
 
 /**

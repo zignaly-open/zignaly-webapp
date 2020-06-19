@@ -14,8 +14,8 @@ import useConnectedProviders from "../../../hooks/useConnectedProviders";
  */
 const DashboardHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
-  const [links, setLinks] = useState(routesMapping("dashboard").links);
+  const links = routesMapping("dashboard").links;
+  const providers = useConnectedProviders(1);
 
   if (providers.length > 0) {
     links.push({

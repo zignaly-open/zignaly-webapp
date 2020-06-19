@@ -896,7 +896,15 @@ function createExchangeConnectionEmptyEntity() {
 }
 
 /**
- * @typedef {import('../store/initialState').UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} UserBalanceEntity
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} totalBTC
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
+ * @property {Number} totalLockedBTC
+ * @property {Number} totalLockedUSDT
+ * @property {Number} totalUSDT
  */
 
 /**
@@ -937,7 +945,6 @@ function createUserBalanceEntity(response) {
     totalLockedBTC: response.totalLockedBTC,
     totalLockedUSDT: response.totalLockedUSDT,
     totalUSDT: response.totalUSDT,
-    loading: false,
   };
 }
 
