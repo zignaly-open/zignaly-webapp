@@ -61,9 +61,10 @@ const StopLossPanel = (props) => {
     const draftPosition = getValues();
     const price = parseFloat(draftPosition.price);
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
-    const stopLossPercentage = (stopLossPrice / price) * 100;
+    const priceDiff = stopLossPrice - price;
 
-    if (isNumber(price) && price > 0) {
+    if (isNumber(priceDiff) && priceDiff !== 0) {
+      const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
     } else {
       setValue("stopLossPerentage", "");
