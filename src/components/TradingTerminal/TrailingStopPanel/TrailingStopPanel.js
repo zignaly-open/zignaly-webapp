@@ -156,7 +156,7 @@ const TrailingStopPanel = (props) => {
                 inputRef={register}
                 name="trailingStopDistance"
               />
-              <div className="currencyBox">{symbolData.quote}</div>
+              <div className="currencyBox">%</div>
             </Box>
           </Box>
         </Box>
