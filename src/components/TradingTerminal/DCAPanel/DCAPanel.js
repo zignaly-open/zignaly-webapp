@@ -3,9 +3,7 @@ import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { isNumber } from "lodash";
 import { formatFloat2Dec } from "../../../utils/format";
-import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import { useFormContext } from "react-hook-form";
@@ -39,12 +37,13 @@ const DCAPanel = (props) => {
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
+    setTargetPropertyValue,
     simulateInputChangeEvent,
   } = useTargetGroup("dca");
   const { limits } = symbolData;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
-  const strategyUnits = watch("units");
+  const strategyPositionSize = watch("positionSize");
 
   /**
    * Validate that target price is within limits.
@@ -54,6 +53,7 @@ const DCAPanel = (props) => {
    * @returns {Void} None.
    */
   const validateTargetPriceLimits = (targetPrice, propertyName) => {
+    console.log("targetPrice: ", targetPrice);
     clearError(propertyName);
     if (limits.price.min && targetPrice < limits.price.min) {
       setError(
@@ -126,7 +126,7 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = (price * targetPricePercentage) / 100;
+    const targetPrice = price - (price * targetPricePercentage) / 100;
     validateTargetPriceLimits(
       targetPrice,
       composeTargetPropertyName("targetPricePercentage", targetId),
@@ -176,6 +176,32 @@ const DCAPanel = (props) => {
 
     return null;
   };
+
+  const chainedPriceUpdates = () => {
+    cardinalityRange.forEach((targetId) => {
+      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+      const newValue = formatFloat2Dec(Math.abs(currentValue));
+      const sign = entryType === "SHORT" ? "-" : "";
+
+      if (currentValue === 0) {
+        setTargetPropertyValue("targetPricePercentage", targetId, sign);
+      } else {
+        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+      }
+
+      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+    });
+  };
+
+  useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
+
+  const chainedUnitsUpdates = () => {
+    cardinalityRange.forEach((targetId) => {
+      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
+    });
+  };
+
+  useEffect(chainedUnitsUpdates, [strategyPositionSize]);
 
   return (
     <Box className={`strategyPanel dcaPanel ${expandClass}`}>
