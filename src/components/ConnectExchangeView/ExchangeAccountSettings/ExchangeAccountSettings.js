@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { removeUserExchange, setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
 import useEvent from "../../../hooks/useEvent";
-import { useForm, FormContext, Controller } from "react-hook-form";
+import { useForm, FormContext, Controller, useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 
 /**
@@ -59,7 +59,7 @@ const ExchangeAccountSettings = ({ internalId }) => {
     watch,
     reset,
     formState,
-  } = useForm();
+  } = useFormContext();
   const { dirtyFields } = formState;
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
@@ -105,33 +105,32 @@ const ExchangeAccountSettings = ({ internalId }) => {
       });
   };
 
-  const submitForm = async () => {
-    return handleSubmit((data) => {
-      const { internalName, key, secret, password } = data;
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeId: selectedAccount.exchangeId,
-        internalId: selectedAccount.internalId,
-        internalName,
-        globalMaxPositions: data.globalMaxPositions || false,
-        globalMinVolume: data.globalMinVolume || false,
-        globalPositionsPerMarket: data.globalPositionsPerMarket || false,
-        globalBlacklist: data.globalWhitelist || false,
-        globalWhitelist: data.globalBlacklist || false,
-        globalDelisting: data.globalDelisting || false,
-        ...(key && { key }),
-        ...(secret && { secret }),
-        ...(password && { password }),
-      };
+  const submitForm = async (data) => {
+    const { internalName, key, secret, password } = data;
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeId: selectedAccount.exchangeId,
+      internalId: selectedAccount.internalId,
+      internalName,
+      globalMaxPositions: data.globalMaxPositions || false,
+      globalMinVolume: data.globalMinVolume || false,
+      globalPositionsPerMarket: data.globalPositionsPerMarket || false,
+      globalBlacklist: data.globalBlacklist || false,
+      globalWhitelist: data.globalWhitelist || false,
+      globalDelisting: data.globalDelisting || false,
+      ...(key && { key }),
+      ...(secret && { secret }),
+      ...(password && { password }),
+    };
 
-      return tradeApi.exchangeUpdate(payload).then(() => {
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
-        setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
-      });
-    })();
+    return tradeApi.exchangeUpdate(payload).then(() => {
+      const authorizationPayload = {
+        token: storeSession.tradeApi.accessToken,
+      };
+      dispatch(setUserExchanges(authorizationPayload));
+      setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
+      return true;
+    });
   };
 
   return (
@@ -143,10 +142,13 @@ const ExchangeAccountSettings = ({ internalId }) => {
       />
       <ExchangeAccountForm>
         <CustomInput
-          inputRef={register}
+          inputRef={register({
+            required: "name empty",
+          })}
           name="internalName"
           label="accounts.exchange.name"
           defaultValue={selectedAccount.internalName}
+          errors={errors}
         />
         {accountExchange &&
           accountExchange.requiredAuthFields.map((field) => (
@@ -163,16 +165,16 @@ const ExchangeAccountSettings = ({ internalId }) => {
             />
           ))}
         <CustomSwitchInput
-          label={"accounts.options.maxconcurrent"}
-          tooltip={"accounts.options.maxconcurrent.help"}
+          label="accounts.options.maxconcurrent"
+          tooltip="accounts.options.maxconcurrent.help"
           defaultValue={selectedAccount.globalMaxPositions}
           inputRef={register}
           name="globalMaxPositions"
           type="number"
         />
         <CustomSwitchInput
-          label={"accounts.options.minvolume"}
-          tooltip={"accounts.options.minvolume.help"}
+          label="accounts.options.minvolume"
+          tooltip="accounts.options.minvolume.help"
           defaultValue={selectedAccount.globalMinVolume}
           name="globalMinVolume"
           inputRef={register}
@@ -180,32 +182,32 @@ const ExchangeAccountSettings = ({ internalId }) => {
           unit="BTC"
         />
         <CustomSwitchInput
-          label={"accounts.options.limitpositions"}
-          tooltip={"accounts.options.limitpositions.help"}
+          label="accounts.options.limitpositions"
+          tooltip="accounts.options.limitpositions.help"
           defaultValue={selectedAccount.globalPositionsPerMarket}
           name="globalPositionsPerMarket"
           inputRef={register}
           type="number"
         />
         <CustomSwitchInput
-          label={"accounts.options.blacklist"}
-          tooltip={"accounts.options.blacklist.help"}
+          label="accounts.options.blacklist"
+          tooltip="accounts.options.blacklist.help"
           defaultValue={selectedAccount.globalBlacklist}
           name="globalBlacklist"
           inputRef={register}
           type="textarea"
         />
         <CustomSwitchInput
-          label={"accounts.options.whitelist"}
-          tooltip={"accounts.options.whitelist.help"}
+          label="accounts.options.whitelist"
+          tooltip="accounts.options.whitelist.help"
           defaultValue={selectedAccount.globalWhitelist}
           name="globalWhitelist"
           inputRef={register}
           type="textarea"
         />
         <CustomSwitch
-          label={"accounts.options.delisted"}
-          tooltip={"accounts.options.delisted.help"}
+          label="accounts.options.delisted"
+          tooltip="accounts.options.delisted.help"
           name="globalDelisting"
           defaultValue={selectedAccount.globalDelisting}
           control={control}

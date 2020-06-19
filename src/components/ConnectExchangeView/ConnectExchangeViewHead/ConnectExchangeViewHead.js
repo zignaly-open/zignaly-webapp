@@ -13,6 +13,7 @@ import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useForm, FormContext, Controller, useFormContext, useFormMeta } from "react-hook-form";
 
 /**
  * @typedef {Object} DefaultProps
@@ -32,6 +33,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
     setPathParams,
     formRef,
   } = useContext(ModalPathContext);
+  const methods = useFormContext();
   const storeUser = useStoreUserSelector();
 
   /**
@@ -42,25 +44,30 @@ const ConnectExchangeViewHead = ({ onClose }) => {
    */
   const handleClick = async () => {
     if (formRef.current) {
-      setPathParams((state) => ({ ...state, isLoading: true }));
-      await formRef.current.submitForm();
-      setPathParams((state) => ({
-        ...state,
-        currentPath: previousPath,
-        isLoading: false,
-        previousPath: null,
-      }));
+      methods.handleSubmit(async (data) => {
+        setPathParams((state) => ({ ...state, isLoading: true }));
+        const res = await formRef.current.submitForm(data);
+        let params = {
+          isLoading: false,
+          ...(res && {
+            currentPath: previousPath,
+            previousPath: null,
+          }),
+        };
+        setPathParams((state) => ({ ...state, ...params }));
+      })();
     } else {
       onClose();
     }
   };
 
+  // Display temp message for 10 secs.
   useEffect(() => {
     let timeoutId;
     if (tempMessage) {
       timeoutId = setTimeout(() => {
         setPathParams((state) => ({ ...state, tempMessage: "" }));
-      }, 5000);
+      }, 10000);
     }
     return () => {
       clearTimeout(timeoutId);

@@ -7,7 +7,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
-import { useForm, FormContext, Controller } from "react-hook-form";
+import { useForm, FormContext, Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -34,7 +34,16 @@ import ExchangeAccountForm, { CustomInput } from "../ExchangeAccountForm";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) => {
-  const { register, handleSubmit, errors, control, getValues, setValue, watch, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    getValues,
+    setValue,
+    watch,
+    reset,
+  } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -94,33 +103,32 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     [selectedExchange],
   );
 
-  const submitForm = async () => {
-    return handleSubmit((data) => {
-      const { internalName, exchangeType, key, secret, password } = data;
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeId: selectedExchange.id,
-        internalName,
-        exchangeType,
-        ...(!create && {
-          key,
-          secret,
-          ...(password && { password }),
-        }),
-        mainAccount: false,
-        isPaperTrading: demo,
-        testNet: false,
-      };
+  const submitForm = async (data) => {
+    const { internalName, exchangeType, key, secret, password } = data;
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeId: selectedExchange.id,
+      internalName,
+      exchangeType,
+      ...(!create && {
+        key,
+        secret,
+        ...(password && { password }),
+      }),
+      mainAccount: false,
+      isPaperTrading: demo,
+      testNet: false,
+    };
 
-      return tradeApi.exchangeAdd(payload).then(() => {
-        // Reload user exchanges
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
-        setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
-      });
-    })();
+    return tradeApi.exchangeAdd(payload).then(() => {
+      // Reload user exchanges
+      const authorizationPayload = {
+        token: storeSession.tradeApi.accessToken,
+      };
+      dispatch(setUserExchanges(authorizationPayload));
+      setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
+      return true;
+    });
   };
 
   return (
@@ -153,7 +161,14 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               label={intl.formatMessage({ id: "accounts.exchange.type" })}
             />
           )}
-          <CustomInput inputRef={register} name="internalName" label="accounts.exchange.name" />
+          <CustomInput
+            inputRef={register({
+              required: "name empty",
+            })}
+            name="internalName"
+            label="accounts.exchange.name"
+            errors={errors}
+          />
           {!create ? (
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput

@@ -4,6 +4,8 @@ import { Box, Typography } from "@material-ui/core";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
 import ConnectExchangeViewHead from "./ConnectExchangeViewHead";
 import ModalPathContext from "./ModalPathContext";
+import { useForm, FormContext, useFormContext } from "react-hook-form";
+import useModalPath from "../../hooks/useModalPath";
 
 /**
  * @typedef {Object} DefaultProps
@@ -17,59 +19,23 @@ import ModalPathContext from "./ModalPathContext";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = ({ onClose }) => {
-  const [pathParams, setPathParams] = useState({
-    currentPath: "realAccounts",
-  });
-  const formRef = useRef(null);
-
-  const navigateToPath = (path, selectedAccount) => {
-    setPathParams({
-      currentPath: path,
-      previousPath: pathParams.currentPath,
-      selectedAccount,
-    });
-  };
-
-  const resetToPath = (path) => {
-    setPathParams({
-      currentPath: path,
-    });
-  };
-
-  const setTitle = (title) => {
-    setPathParams({
-      ...pathParams,
-      title,
-    });
-  };
-  const setTempMessage = (tempMessage) => {
-    setPathParams({
-      ...pathParams,
-      tempMessage,
-    });
-  };
-  const value = {
-    pathParams,
-    setPathParams,
-    navigateToPath,
-    resetToPath,
-    setTitle,
-    setTempMessage,
-    formRef,
-  };
+  const methods = useForm();
+  const modalPath = useModalPath();
 
   return (
-    <ModalPathContext.Provider value={value}>
-      <Box
-        alignItems="center"
-        className="connectExchangeView"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <ConnectExchangeViewHead onClose={onClose} />
-        <ConnectExchangeViewContent />
-      </Box>
+    <ModalPathContext.Provider value={modalPath}>
+      <FormContext {...methods}>
+        <Box
+          alignItems="center"
+          className="connectExchangeView"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          <ConnectExchangeViewHead onClose={onClose} />
+          <ConnectExchangeViewContent />
+        </Box>
+      </FormContext>
     </ModalPathContext.Provider>
   );
 };
