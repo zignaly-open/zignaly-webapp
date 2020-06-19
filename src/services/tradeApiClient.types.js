@@ -73,9 +73,9 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {String} price
  * @property {String} trial
  * @property {String} ipnSecret
- * @property {String} exchange
- * @property {String} exchangeType
- * @property {String} quote
+ * @property {String} [exchange]
+ * @property {String} [exchangeType]
+ * @property {String} [quote]
  * @property {String} about
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social

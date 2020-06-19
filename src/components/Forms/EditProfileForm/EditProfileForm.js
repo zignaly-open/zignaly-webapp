@@ -1,15 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./EditProfileForm.scss";
-import {
-  Box,
-  TextField,
-  Typography,
-  Switch,
-  Tooltip,
-  Select,
-  MenuItem,
-  FormControl,
-} from "@material-ui/core";
+import { Box, TextField, Typography, Switch, Tooltip } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -26,113 +17,24 @@ import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-/**
- * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
- */
-
-/**
- * @typedef {Object} DefaultProps
- * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
- * @property {Array<ExchangeListEntity>} exchanges
- */
-
-/**
- * Copy trader profile edit component.
- *
- * @param {DefaultProps} props Default component props.
- * @returns {JSX.Element} Component JSX.
- */
-const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
+const CopyTraderEditProfileForm = () => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
-  const { errors, handleSubmit, control } = useForm();
+  const { errors, handleSubmit, control, setError } = useForm();
   const [about, setAbout] = useState(storeViews.provider.about);
   const [strategy, setStrategy] = useState(storeViews.provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(storeViews.provider.team);
   const [selectedSocials, setSelectedSocials] = useState(storeViews.provider.social);
-  const [selectedExchange, setSelectedExchange] = useState({ id: "", type: [] });
-  const [selectedQuote, setSelectedQuote] = useState("");
-  const [selectedExchangeType, setSelectedExchangeType] = useState("");
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
   // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
 
-  const initializeQuote = () => {
-    let list = Object.values(quotes);
-    if (list.length) {
-      setSelectedQuote(storeViews.provider.copyTradingQuote.toLowerCase());
-    }
-  };
-
-  useEffect(initializeQuote, [quotes]);
-
-  const initializeExchange = () => {
-    if (exchanges.length) {
-      let found = exchanges.find(
-        (item) => item.name.toLowerCase() === storeViews.provider.exchanges[0].toLowerCase(),
-      );
-      if (found) {
-        setSelectedExchange(found);
-      }
-    } else {
-      setSelectedExchange({ id: "", type: [] });
-    }
-  };
-
-  useEffect(initializeExchange, [exchanges]);
-
-  const initializeSelectedExchange = () => {
-    if (exchanges.length && selectedExchange.id) {
-      let found = exchanges.find((item) => item.id === selectedExchange.id);
-      if (found) {
-        if (found.name.toLowerCase() === storeViews.provider.exchanges[0].toLowerCase()) {
-          setSelectedExchangeType(storeViews.provider.exchangeType);
-        } else {
-          setSelectedExchangeType(found.type[0]);
-        }
-      }
-    }
-  };
-
-  useEffect(initializeSelectedExchange, [selectedExchange]);
-
-  /**
-   * Function to handle exchange changes.
-   *
-   * @param {React.ChangeEvent<*>} e Change event.
-   * @returns {void}
-   */
-  const handleExchangeChange = (e) => {
-    let value = e.target.value;
-    let found = exchanges.find((item) => item.id === value);
-    if (found) {
-      setSelectedExchange(found);
-    }
-  };
-
-  /**
-   * Function to handle exchange type changes.
-   *
-   * @param {React.ChangeEvent<*>} e Change event.
-   * @return {void}
-   */
-  const handleExchangeTypeChange = (e) => {
-    setSelectedExchangeType(e.target.value);
-  };
-
-  /**
-   * Function to handle quote changes.
-   *
-   * @param {React.ChangeEvent<*>} e Change event.
-   * @returns {void}
-   */
-  const handleQuoteChange = (e) => {
-    setSelectedQuote(e.target.value);
-  };
+  const signalUrl = `https://test.zignaly.com/api/signals.php?key=${storeViews.provider.key}`;
+  const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
 
   /**
    *
@@ -156,41 +58,42 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    setLoading(true);
-    let exchange = exchanges.find((item) => item.id === selectedExchange.id);
-    const payload = {
-      ...data,
-      social: prepareSocialData(),
-      team: prepareTeamData(),
-      exchange: exchange.name,
-      exchangeType: selectedExchangeType,
-      quote: selectedQuote,
-      about: about,
-      strategy: strategy,
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-    };
-    tradeApi
-      .providerEdit(payload)
-      .then(() => {
-        setLoading(false);
-        const payload2 = {
-          token: payload.token,
-          providerId: payload.providerId,
-          version: 2,
-        };
-        dispatch(setProvider(payload2));
-      })
-      .catch((error) => {
-        alert(error.message);
-        setLoading(false);
-      });
+    if (validatePaymentFields(data)) {
+      setLoading(true);
+      if (data.ipnSecret === "**********") {
+        data.ipnSecret = "";
+      }
+      const payload = {
+        ...data,
+        social: prepareSocialData(),
+        team: prepareTeamData(),
+        about: about,
+        strategy: strategy,
+        token: storeSession.tradeApi.accessToken,
+        providerId: storeViews.provider.id,
+      };
+      tradeApi
+        .providerEdit(payload)
+        .then(() => {
+          setLoading(false);
+          const payload2 = {
+            token: payload.token,
+            providerId: payload.providerId,
+            version: 2,
+          };
+          dispatch(setProvider(payload2));
+        })
+        .catch((error) => {
+          alert(error.message);
+          setLoading(false);
+        });
+    }
   };
 
   const prepareSocialData = () => {
-    let obj = { network: "", link: "" };
     let list = [];
     for (let a = 0; a < selectedSocials.length; a++) {
+      let obj = { network: "", link: "" };
       if (selectedSocials[a].link) {
         obj.link = selectedSocials[a].link;
         obj.network = selectedSocials[a].network;
@@ -211,6 +114,61 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
       list.push(obj);
     }
     return list;
+  };
+
+  /**
+   * Function to submit edit form.
+   *
+   * @param {SubmitObject} data Form data received at submit.
+   * @returns {Boolean} Flag to indicate if fields are validated or not.
+   */
+  const validatePaymentFields = (data) => {
+    if (data.merchantId) {
+      if (!data.price) {
+        setError("price", "");
+        return false;
+      }
+      if (!data.trial) {
+        setError("trial", "");
+        return false;
+      }
+    }
+
+    if (data.price) {
+      if (!data.merchantId) {
+        setError("merchantId", "");
+        return false;
+      }
+      if (!data.trial) {
+        setError("trial", "");
+        return false;
+      }
+    }
+
+    if (data.trial) {
+      if (!data.merchantId) {
+        setError("merchantId", "");
+      }
+      if (!data.price) {
+        setError("price", "");
+      }
+    }
+
+    if (data.ipnSecret) {
+      if (!data.merchantId) {
+        setError("merchantId", "");
+        return false;
+      }
+      if (!data.price) {
+        setError("price", "");
+        return false;
+      }
+      if (!data.trial) {
+        setError("trial", "");
+        return false;
+      }
+    }
+    return true;
   };
 
   /**
@@ -330,6 +288,26 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
             flexWrap="wrap"
             justifyContent="space-between"
           >
+            <Box
+              alignItems="flex-start"
+              className="signalBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-start"
+            >
+              <Typography variant="h6">
+                <FormattedMessage id="srv.signalurl" />
+                <span className="signalUrl">{signalUrl}</span>
+              </Typography>
+              <a
+                className="howToUrl"
+                href={howToSendSignalsUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                How to send signals?
+              </a>
+            </Box>
             <Box className="inputBox" display="flex" flexDirection="column">
               <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
                 <FormattedMessage id="srv.edit.title" />
@@ -349,8 +327,14 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 control={control}
                 defaultValue={storeViews.provider.name}
                 name="name"
-                rules={{ required: false }}
+                rules={{ required: true, maxLength: 50, pattern: /^([a-zA-Z0-9 ()$_-]+)$/ }}
               />
+              {errors.name && (
+                <span className="errorText">
+                  Name is reuired of max 50 characters. (Allowed characters, Numbers, Letters,
+                  $,-,_)
+                </span>
+              )}
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
@@ -413,6 +397,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                     }
                     error={!!errors.minAllocatedBalance}
                     fullWidth
+                    type="number"
                     variant="outlined"
                   />
                 }
@@ -421,64 +406,6 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 name="minAllocatedBalance"
                 rules={{ required: false }}
               />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.exchanges" />
-              </label>
-              <FormControl className="selectInput" variant="outlined">
-                <Select
-                  className="select"
-                  onChange={handleExchangeChange}
-                  value={selectedExchange.id}
-                >
-                  {exchanges.map(
-                    (item, index) =>
-                      item.enabled && (
-                        <MenuItem key={index} value={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ),
-                  )}
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.exchangetype" />
-              </label>
-              <FormControl className="selectInput" variant="outlined">
-                <Select
-                  className="select"
-                  onChange={handleExchangeTypeChange}
-                  value={selectedExchangeType}
-                >
-                  {selectedExchange.id &&
-                    selectedExchange.type.map((item, index) => (
-                      <MenuItem key={index} value={item.toLowerCase()}>
-                        {item}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.quotes" />
-              </label>
-              <FormControl className="selectInput" variant="outlined">
-                <Select className="select" onChange={handleQuoteChange} value={selectedQuote}>
-                  {Object.values(quotes).length &&
-                    Object.values(quotes).map((item, index) => (
-                      <MenuItem key={index} value={item.quote.toLowerCase()}>
-                        {item.quote}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
             </Box>
 
             <Box
@@ -519,8 +446,13 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                       : ""
                   }
                   name="merchantId"
-                  rules={{ required: false }}
+                  rules={{ pattern: /^[0-9a-zA-Z]+$/, maxLength: 50 }}
                 />
+                {errors.merchantId && (
+                  <span className="errorText">
+                    Merchant ID is required and should only contains letetrs and numbers.
+                  </span>
+                )}
               </Box>
 
               <Box className="inputBox" display="flex" flexDirection="column">
@@ -536,6 +468,7 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                         (errors.price ? "error" : "")
                       }
                       fullWidth
+                      type="number"
                       variant="outlined"
                     />
                   }
@@ -568,12 +501,10 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                   }
                   control={control}
                   defaultValue={
-                    storeViews.provider.internalPaymentInfo
-                      ? storeViews.provider.internalPaymentInfo.ipnSecret
-                      : ""
+                    storeViews.provider.internalPaymentInfo.merchantId ? "**********" : ""
                   }
                   name="ipnSecret"
-                  rules={{ required: false }}
+                  rules={{ maxLength: 50 }}
                 />
               </Box>
 
@@ -617,13 +548,17 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <FormattedMessage id="srv.edit.public" />
                 <Tooltip
                   placement="top"
-                  title="If you check this option, everybody with the provider url will be able to connect to your service."
+                  title={
+                    <Typography variant="h5">
+                      <FormattedMessage id="srv.edit.public.tooltip" />
+                    </Typography>
+                  }
                 >
                   <HelpIcon className="icon" />
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch />}
+                as={<Switch disabled={!storeViews.provider.isAdmin} />}
                 control={control}
                 defaultValue={storeViews.provider.public}
                 name="public"
@@ -642,13 +577,17 @@ const CopyTraderEditProfileForm = ({ quotes, exchanges }) => {
                 <FormattedMessage id="srv.edit.list" />
                 <Tooltip
                   placement="top"
-                  title="Checking this option will list your service in the marketplace."
+                  title={
+                    <Typography variant="h5">
+                      <FormattedMessage id="srv.edit.list.tooltip" />
+                    </Typography>
+                  }
                 >
                   <HelpIcon className="icon" />
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch />}
+                as={<Switch disabled={!storeViews.provider.isAdmin} />}
                 control={control}
                 defaultValue={storeViews.provider.list}
                 name="list"

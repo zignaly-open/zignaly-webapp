@@ -170,7 +170,7 @@ const theme = (darkStyle) => {
         // for BTC counts inside Available Balance and Total Equity
         fontSize: "14px",
         fontFamily: "PlexSans-Medium",
-        wordSpacing: "5px",
+        wordSpacing: "2px",
         textTransform: "capitalize",
       },
       subtitle1: {
@@ -218,6 +218,13 @@ const theme = (darkStyle) => {
             PlexSansBold,
             PlexSansLight,
           ],
+        },
+      },
+      MuiTooltip: {
+        tooltip: {
+          fontSize: "14px",
+          color: colors.white,
+          backgroundColor: colors.black,
         },
       },
     },

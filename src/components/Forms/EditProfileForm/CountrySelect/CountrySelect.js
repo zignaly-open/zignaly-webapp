@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./CountrySelect.scss";
-import { TextField } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Box, TextField, FormControl, Select, MenuItem } from "@material-ui/core";
 import { countries } from "countries-list";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
-import { useIntl } from "react-intl";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /**
  *
@@ -20,9 +19,67 @@ import { useIntl } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const CountrySelect = ({ onChange, defaultValue }) => {
-  const storeSettings = useStoreSettingsSelector();
-  const [selected, setSelected] = useState([]);
-  const intl = useIntl();
+  const teamObject = { id: Math.random(), name: "", countryCode: "", delete: false };
+  const [values, setValues] = useState([teamObject]);
+
+  const initializeTeam = () => {
+    if (defaultValue && defaultValue.length) {
+      for (let a = 0; a < defaultValue.length; a++) {
+        defaultValue[a].id = Math.random();
+        defaultValue[a].delete = true;
+      }
+      defaultValue[0].delete = false;
+      setValues(defaultValue);
+    }
+  };
+
+  useEffect(initializeTeam, [defaultValue]);
+  /**
+   * Function to handle input changes for select and text input.
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @param {Number|String} id ID of the dynamic field object.
+   * @returns {void} None.
+   */
+  const handleChange = (e, id) => {
+    let target = e.target;
+    let list = [...values];
+    let index = list.findIndex((item) => item.id === id);
+    let field = list.find((item) => item.id === id);
+    if (target.name === "select") {
+      field.countryCode = target.value;
+    } else {
+      field.name = target.value;
+    }
+    list[index] = field;
+    setValues(list);
+    onChange(list);
+  };
+
+  const addField = () => {
+    let field = { ...teamObject };
+    let list = [...values];
+    field.delete = true;
+    field.id = Math.random();
+    list.push(field);
+    setValues(list);
+  };
+
+  /**
+   * Function to add new field.
+   *
+   * @param {Number|String} id id of the field object.
+   * @returns {void} None.
+   */
+  const removeField = (id) => {
+    let list = [...values];
+    let index = list.findIndex((item) => item.id === id);
+    if (index) {
+      list.splice(index, 1);
+    }
+    setValues(list);
+    onChange(list);
+  };
 
   const createList = () => {
     let obj = {
@@ -46,62 +103,52 @@ const CountrySelect = ({ onChange, defaultValue }) => {
 
   const list = createList();
 
-  const initializeCounties = () => {
-    if (defaultValue && defaultValue.length) {
-      let data = [];
-      for (let a = 0; a < defaultValue.length; a++) {
-        let found = list.find(
-          (item) => item.countryCode.toLowerCase() === defaultValue[a].countryCode.toLowerCase(),
-        );
-        if (found) {
-          data.push(found);
-        }
-      }
-      // console.log(data);
-      setSelected(data);
-    }
-  };
-
-  useEffect(initializeCounties, [defaultValue]);
-
-  /**
-   * Function to handle countries selection.
-   *
-   * @param {React.ChangeEvent} event Change event.
-   * @param {*} newVal countries array received on value change.
-   * @returns {void} None.
-   */
-  const hanldeChange = (event, newVal) => {
-    setSelected(newVal);
-    onChange(newVal);
-  };
-
   return (
-    <Autocomplete
-      autoHighlight
-      className={"countrySelect " + (storeSettings.darkStyle ? "dark" : "light")}
-      classes={{ tag: "chip", endAdornment: "clearIcon", popupIndicator: "downBtn" }}
-      freeSolo
-      getOptionLabel={(option) => option.name}
-      multiple
-      onChange={hanldeChange}
-      options={list}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder={intl.formatMessage({ id: "srv.edit.countries" })}
-          variant="outlined"
-        />
-      )}
-      renderOption={(option) => (
-        <>
-          <span className="mr">{option.emoji}</span>
-          <span className="mr">+{option.phone}</span>
-          <span className="mr">{option.name}</span>
-        </>
-      )}
-      value={selected}
-    />
+    <Box className="countrySelect">
+      {values.map((obj, index) => (
+        <Box
+          alignItems="center"
+          className="fieldBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          key={index}
+        >
+          <FormControl className="selectInput" variant="outlined">
+            <Select
+              className="select"
+              classes={{ select: "selected" }}
+              name="select"
+              onChange={(e) => handleChange(e, obj.id)}
+              value={obj.countryCode}
+            >
+              {list.map((item) => (
+                <MenuItem
+                  className="selectItem"
+                  key={item.countryCode}
+                  value={item.countryCode.toLowerCase()}
+                >
+                  <span className="mr">{item.emoji}</span>
+                  <span className="mr">{item.name}</span>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            className="customInput"
+            name="input"
+            onChange={(e) => handleChange(e, obj.id)}
+            placeholder="url"
+            value={obj.name}
+            variant="outlined"
+          />
+          {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
+          {obj.delete && (
+            <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
+          )}
+        </Box>
+      ))}
+    </Box>
   );
 };
 

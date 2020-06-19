@@ -39,15 +39,23 @@
     width: 100%;
 
     .fieldBox {
-      margin-bottom: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      position: relative;
       width: 100%;
 
       .selectInput {
-        width: 35%;
+        margin-bottom: 5px;
+        width: 90%;
       }
 
       .customInput {
-        width: calc(65% - 44px);
+        width: 90%;
+      }
+
+      .icon {
+        position: absolute;
+        right: 0;
       }
     }
   }

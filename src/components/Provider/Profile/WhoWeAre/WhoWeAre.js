@@ -48,13 +48,16 @@ const WhoWeAre = ({ provider }) => {
     if (provider.team && provider.team.length > 0) {
       let data = [];
       for (let a = 0; a < provider.team.length; a++) {
+        let obj = { name: "", country: {} };
         let found = list.find(
           (item) =>
             provider.team[a].countryCode &&
             item.countryCode.toLowerCase() === provider.team[a].countryCode.toLowerCase(),
         );
         if (found) {
-          data.push(found);
+          obj.name = provider.team[a].name;
+          obj.country = found;
+          data.push(obj);
         }
       }
       // console.log(data);
@@ -111,7 +114,7 @@ const WhoWeAre = ({ provider }) => {
               key={index}
             >
               <span className="name">{item.name}</span>
-              <span className="flag">{item.emoji}</span>,
+              <span className="flag">{item.country.emoji}</span>,
             </Box>
           ))}
         </Box>

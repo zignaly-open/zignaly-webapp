@@ -2,43 +2,70 @@
   margin-bottom: 20px;
   width: 100%;
 
-  input {
-    padding-left: 1rem;
-  }
+  .fieldBox {
+    margin-bottom: 10px;
+    width: 100%;
 
-  div {
-    div {
-      padding: 0;
+    .selectInput {
+      width: 40%;
     }
-  }
 
-  .chip {
-    font-size: 12px;
-    height: 30px;
-    padding: 0;
+    .selected {
+      padding: 0 8px;
 
-    svg {
-      color: $black2;
+      span {
+        margin-right: 5px;
+      }
     }
-  }
 
-  fieldset {
-    border-color: $lightGrey;
+    .customInput {
+      width: calc(60% - 64px);
 
-    &:hover {
-      border-color: $lightGrey;
+      fieldset {
+        border-color: $lightGrey;
+      }
     }
-  }
 
-  .downBtn {
-    color: $lightGrey;
-  }
+    .icon {
+      color: $lightGrey;
+      cursor: pointer;
+      height: 24px;
+      width: 24px;
 
-  .clearIcon {
-    color: $lightGrey;
+      &.add {
+        color: $green;
+      }
+
+      &.delete {
+        color: $red2;
+      }
+    }
   }
 }
 
-.mr {
-  margin-right: 8px;
+@include media("<=sm") {
+  .countrySelect {
+    width: 100%;
+
+    .fieldBox {
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      position: relative;
+      width: 100%;
+
+      .selectInput {
+        margin-bottom: 5px;
+        width: 90%;
+      }
+
+      .customInput {
+        width: 90%;
+      }
+
+      .icon {
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
 }

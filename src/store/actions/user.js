@@ -1,6 +1,7 @@
 import tradeApi from "../../services/tradeApiClient";
 import { SET_SELECTED_EXCHANGE } from "./settings";
 import initialState from "../initialState";
+import { showErrorAlert } from "./ui";
 
 export const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 export const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
@@ -79,7 +80,7 @@ export const setUserBalance = (payload) => {
 
       dispatch(action);
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };

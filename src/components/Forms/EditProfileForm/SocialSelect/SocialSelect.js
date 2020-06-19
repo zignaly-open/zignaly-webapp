@@ -80,6 +80,7 @@ const SocialSelect = ({ onChange, defaultValue }) => {
       list.splice(index, 1);
     }
     setValues(list);
+    onChange(list);
   };
 
   return (

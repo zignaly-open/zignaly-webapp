@@ -10,6 +10,32 @@
       width: 100%;
     }
 
+    .signalBox {
+      margin-bottom: 20px;
+      width: 100%;
+
+      h6 {
+        text-transform: initial;
+        width: 100%;
+
+        .signalUrl {
+          font-family: "PlexSans-Regular";
+          font-size: 0.75rem;
+          width: 100%;
+        }
+      }
+
+      .howToUrl {
+        color: $blue;
+        text-decoration: none;
+        width: 100%;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
     .inputBox {
       margin-bottom: 16px;
       width: calc(50% - 40px);
