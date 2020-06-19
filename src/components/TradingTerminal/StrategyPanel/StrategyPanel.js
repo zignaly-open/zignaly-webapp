@@ -204,13 +204,7 @@ const StrategyPanel = (props) => {
         </Box>
       </Box>
       {expand && (
-        <Box
-          className="panelContent"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="space-around"
-        >
+        <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           {selectedExchange.exchangeType === "futures" && (
             <FormControl className="entryType">
               <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
