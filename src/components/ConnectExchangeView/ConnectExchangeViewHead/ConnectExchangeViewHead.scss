@@ -32,11 +32,13 @@
 }
 
 @include media("<=sm") {
-  .connectExchangeViewHead .titleBar {
-    padding: 24px 10px 0;
+  .connectExchangeViewHead {
+    .titleBar {
+      padding: 24px 10px 0;
 
-    h1 {
-      font-size: 28px;
+      h1 {
+        font-size: 28px;
+      }
     }
   }
 }

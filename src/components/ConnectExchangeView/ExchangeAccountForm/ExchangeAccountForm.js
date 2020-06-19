@@ -125,7 +125,7 @@ const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
  */
 
 /**
- * @param {SwitchInputComponentPropsExtended} props Component props.
+ * @param {CustomSwitchInputPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
 export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name, type, unit }) => (

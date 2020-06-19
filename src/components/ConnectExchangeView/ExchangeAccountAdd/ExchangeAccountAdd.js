@@ -136,7 +136,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   };
 
   return (
-    <form className="ExchangeAccountAdd">
+    <form className="exchangeAccountAdd">
       {!selectedExchange ? (
         <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
           <CircularProgress disableShrink />

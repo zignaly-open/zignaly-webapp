@@ -14,7 +14,7 @@
     }
 
     .selected {
-      color: rgba(255, 255, 255, 0.94);
+      color: $tooltipText;
       font-size: 11px;
       height: 13px;
       letter-spacing: 0.42px;
@@ -89,16 +89,18 @@
       padding: 0 0 12px;
     }
 
-    .exchangeAccountContainer .exchangeButtons {
-      flex-direction: column;
-      margin-top: 0;
+    .exchangeAccountContainer {
+      .exchangeButtons {
+        flex-direction: column;
+        margin-top: 0;
 
-      > div {
-        margin-top: 20px;
-      }
+        > div {
+          margin-top: 20px;
+        }
 
-      .exchangeButton {
-        margin-right: 0;
+        .exchangeButton {
+          margin-right: 0;
+        }
       }
     }
   }
