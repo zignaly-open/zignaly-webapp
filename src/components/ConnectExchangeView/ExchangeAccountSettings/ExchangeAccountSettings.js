@@ -168,7 +168,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
           label="accounts.options.maxconcurrent"
           tooltip="accounts.options.maxconcurrent.help"
           defaultValue={selectedAccount.globalMaxPositions}
-          inputRef={register}
+          inputRef={register({
+            required: "required",
+          })}
+          errors={errors}
           name="globalMaxPositions"
           type="number"
         />
@@ -177,7 +180,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
           tooltip="accounts.options.minvolume.help"
           defaultValue={selectedAccount.globalMinVolume}
           name="globalMinVolume"
-          inputRef={register}
+          inputRef={register({
+            required: "required",
+          })}
+          errors={errors}
           type="number"
           unit="BTC"
         />
@@ -186,7 +192,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
           tooltip="accounts.options.limitpositions.help"
           defaultValue={selectedAccount.globalPositionsPerMarket}
           name="globalPositionsPerMarket"
-          inputRef={register}
+          inputRef={register({
+            required: "required",
+          })}
+          errors={errors}
           type="number"
         />
         <CustomSwitchInput
@@ -194,7 +203,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
           tooltip="accounts.options.blacklist.help"
           defaultValue={selectedAccount.globalBlacklist}
           name="globalBlacklist"
-          inputRef={register}
+          inputRef={register({
+            required: "required",
+          })}
+          errors={errors}
           type="textarea"
         />
         <CustomSwitchInput
@@ -202,7 +214,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
           tooltip="accounts.options.whitelist.help"
           defaultValue={selectedAccount.globalWhitelist}
           name="globalWhitelist"
-          inputRef={register}
+          inputRef={register({
+            required: "required",
+          })}
+          errors={errors}
           type="textarea"
         />
         <CustomSwitch

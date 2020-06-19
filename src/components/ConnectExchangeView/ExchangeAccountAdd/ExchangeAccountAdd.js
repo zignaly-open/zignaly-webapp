@@ -192,12 +192,15 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
           {(!create || testnet) &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
-                inputRef={register}
+                inputRef={register({
+                  required: "required",
+                })}
                 name={field}
                 label={`accounts.exchange.${field}`}
                 key={field}
                 autoComplete="new-password"
                 type="password"
+                errors={errors}
               />
             ))}
         </ExchangeAccountForm>
