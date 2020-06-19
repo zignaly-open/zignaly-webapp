@@ -5,6 +5,7 @@ import initialState from "../initialState";
 export const GET_USER_EXCHNAGES = "ADD_USER_EXCHNAGES_ACTION";
 export const REMOVE_USER_EXCHNAGES = "REMOVE_USER_EXCHNAGES_ACTION";
 export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
+export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 
@@ -65,8 +66,11 @@ export const unsetUserExchanges = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const setUserBalance = (payload) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
+      dispatch({
+        type: SET_USER_BALANCE_LOADER,
+      });
       const responseData = await tradeApi.userBalanceGet(payload);
       const action = {
         type: GET_USER_BALANCE,

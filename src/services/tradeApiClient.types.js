@@ -893,6 +893,7 @@ function createUserBalanceEntity(response) {
     totalLockedBTC: response.totalLockedBTC,
     totalLockedUSDT: response.totalLockedUSDT,
     totalUSDT: response.totalUSDT,
+    loading: false,
   };
 }
 

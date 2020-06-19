@@ -8,6 +8,7 @@
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
+ * @property {Boolean} loading
  */
 
 /**
@@ -220,6 +221,7 @@ const initialState = {
       totalLockedBTC: 0,
       totalLockedUSDT: 0,
       totalUSDT: 0,
+      loading: false,
     },
     dailyBalance: {
       balances: [],
