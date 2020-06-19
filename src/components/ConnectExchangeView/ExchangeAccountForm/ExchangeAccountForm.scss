@@ -77,17 +77,16 @@
 
     label,
     .customSelect > span {
-      //   align-items: center;
-      //   flex-direction: column-reverse;
       margin: 0 0 10px;
       width: auto;
-      //   padding: 0 10px;
     }
 
-    // .selectLabel,
-    // .accountLabel {
-    //   width: auto;
-    //   text-align: center;
-    // }
+    .customSelect {
+      align-items: flex-start;
+
+      > span {
+        text-align: left;
+      }
+    }
   }
 }
