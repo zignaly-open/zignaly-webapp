@@ -58,7 +58,7 @@ export const showErrorAlert = (error) => {
   return async (dispatch) => {
     let payload = {
       title: "error.occured",
-      body: "error." + error.code,
+      body: error.code ? `error.${error.code}` : "error.noidea",
       open: true,
     };
     const action = {

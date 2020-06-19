@@ -695,6 +695,7 @@ status.99: "CH-Unknown Error, Pending Review"
 
 # ERROR CODES
 error.occured: "CH-Error Occured"
+error.noidea: "Something went wrong!"
 error.1: "CH-Email exists in our DB"
 error.2: "CH-Error Storing the document in the DB"
 error.3: "CH-First Name field is mandatory"

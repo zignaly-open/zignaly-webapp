@@ -696,6 +696,7 @@ status.99: "Unknown Error, Pending Review"
 
 # ERROR CODES
 error.occured: "Error Occured"
+error.noidea: "Something went wrong!"
 error.paymentnotcompleted: "Payment not completed."
 error.1: "Email exists in our DB"
 error.2: "Error Storing the document in the DB"
