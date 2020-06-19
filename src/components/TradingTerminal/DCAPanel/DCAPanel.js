@@ -30,7 +30,6 @@ const DCAPanel = (props) => {
   const { expanded, expandClass, expandableControl } = useExpandable();
   const { clearError, errors, getValues, register, setError, watch } = useFormContext();
   const {
-    cardinality,
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
@@ -53,7 +52,6 @@ const DCAPanel = (props) => {
    * @returns {Void} None.
    */
   const validateTargetPriceLimits = (targetPrice, propertyName) => {
-    console.log("targetPrice: ", targetPrice);
     clearError(propertyName);
     if (limits.price.min && targetPrice < limits.price.min) {
       setError(
@@ -79,7 +77,7 @@ const DCAPanel = (props) => {
    * @param {string} propertyName Property name that validation error attachs to.
    * @returns {Void} None.
    */
-  function validateCostLimits(cost, propertyName) {
+  const validateCostLimits = (cost, propertyName) => {
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
       setError(propertyName, "error", `Rebuy cost cannot be lower than ${limits.cost.min}`);
     }
@@ -87,7 +85,7 @@ const DCAPanel = (props) => {
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
       setError(propertyName, "error", `Rebuy cost cannot be greater than ${limits.cost.max}`);
     }
-  }
+  };
 
   /**
    * Validate that target units is within limits.
@@ -131,13 +129,30 @@ const DCAPanel = (props) => {
       targetPrice,
       composeTargetPropertyName("targetPricePercentage", targetId),
     );
+    rebuyUnitsChange(targetId);
+  };
 
-    const units = parseFloat(draftPosition.units);
+  /**
+   * Effects for when rebuy units change.
+   *
+   * This is not tied to any input due to the fact that this is derived from
+   * position size and price.
+   *
+   * @param {string} targetId Target group ID.
+   * @returns {Void} None.
+   */
+  const rebuyUnitsChange = (targetId) => {
+    const draftPosition = getValues();
+    const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
-    const rebuyUnits = units * (rebuyPercentage / 100);
-    const cost = Math.abs(targetPrice * rebuyUnits);
-
-    validateCostLimits(cost, composeTargetPropertyName("targetPricePercentage", targetId));
+    const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
+    const price = parseFloat(draftPosition.price);
+    const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const targetPrice = price * (1 - targetPricePercentage / 100);
+    if (rebuyPositionSize > 0) {
+      const units = Math.abs(rebuyPositionSize / targetPrice);
+      validateUnitsLimits(units, composeTargetPropertyName("rebuyPercentage", targetId));
+    }
   };
 
   /**
@@ -149,16 +164,11 @@ const DCAPanel = (props) => {
   const rebuyPercentageChange = (event) => {
     const draftPosition = getValues();
     const targetId = getGroupTargetId(event);
-    const units = parseFloat(draftPosition.units);
+    const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
-    const rebuyUnits = units * (rebuyPercentage / 100);
-    validateUnitsLimits(rebuyUnits, composeTargetPropertyName("rebuyPercentage", targetId));
-
-    const price = parseFloat(draftPosition.price);
-    const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price * (1 - targetPricePercentage / 100);
-    const cost = Math.abs(targetPrice * rebuyUnits);
-    validateCostLimits(cost, composeTargetPropertyName("rebuyPercentage", targetId));
+    const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
+    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
+    rebuyUnitsChange(targetId);
   };
 
   /**
@@ -193,7 +203,7 @@ const DCAPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {
