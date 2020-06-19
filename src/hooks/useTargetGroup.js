@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { camelCase, range, upperFirst } from "lodash";
+import { simulateInputChangeEvent } from "../utils/events";
 
 /**
  * @typedef {Object} TargetGroupHook
@@ -90,26 +91,6 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
     const targetId = targetGroup.getAttribute("data-target-id");
 
     return targetId;
-  }
-
-  /**
-   * Progrmatically invoke change event simulation on a given element.
-   *
-   * @param {String} elementName Element name.
-   * @returns {Void} None.
-   */
-  function simulateInputChangeEvent(elementName) {
-    const matches = document.getElementsByName(elementName);
-    const item = matches[0] || null;
-
-    // @ts-ignore
-    if (item && item._valueTracker) {
-      // @ts-ignore
-      item._valueTracker.setValue("");
-      // Programatically invoke change event.
-      const event = new Event("input", { bubbles: true });
-      item.dispatchEvent(event);
-    }
   }
 
   return {

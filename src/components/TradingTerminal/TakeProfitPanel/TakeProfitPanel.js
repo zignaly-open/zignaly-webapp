@@ -4,12 +4,12 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { isNumber, sum } from "lodash";
-import "./TakeProfitPanel.scss";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import { useFormContext } from "react-hook-form";
+import "./TakeProfitPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -263,7 +263,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {
