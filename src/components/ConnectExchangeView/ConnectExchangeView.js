@@ -1,10 +1,10 @@
-import React, { useState, useRef, useReducer } from "react";
+import React from "react";
 import "./ConnectExchangeView.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
 import ConnectExchangeViewHead from "./ConnectExchangeViewHead";
 import ModalPathContext from "./ModalPathContext";
-import { useForm, FormContext, useFormContext } from "react-hook-form";
+import { useForm, FormContext } from "react-hook-form";
 import useModalPath from "../../hooks/useModalPath";
 import FAQ from "../FAQ";
 

@@ -6,10 +6,10 @@
   }
 
   .connectDesc {
-    max-width: 456px;
     margin-bottom: 56px;
-    text-align: center;
+    max-width: 456px;
     padding: 0 10px;
+    text-align: center;
   }
 
   .exchangeButtons {
@@ -33,8 +33,8 @@
   .noRealAccount {
     .exchangeButtons {
       flex-direction: column;
-      text-align: center;
       padding: 0 12px;
+      text-align: center;
 
       > div {
         margin-bottom: 50px;

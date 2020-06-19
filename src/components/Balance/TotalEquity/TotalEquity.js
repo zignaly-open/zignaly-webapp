@@ -4,7 +4,6 @@ import { Box } from "@material-ui/core";
 import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import EquityGraphLabels from "./GraphLabels";
 
 /**

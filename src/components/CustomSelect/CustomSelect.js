@@ -59,9 +59,9 @@ const CustomSelect = (props) => {
               }}
               displayEmpty={true}
               onChange={(e) => onChange(e.target.value)}
+              ref={ref}
               value={value}
               variant="outlined"
-              ref={ref}
             >
               {options.map((item, index) => (
                 <MenuItem key={index} value={typeof item === "object" ? item.val : item}>

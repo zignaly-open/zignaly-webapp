@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import ModalPathContext from "../components/ConnectExchangeView/ModalPathContext";
+import { useState, useRef } from "react";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict

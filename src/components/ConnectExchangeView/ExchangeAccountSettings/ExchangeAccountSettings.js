@@ -1,7 +1,6 @@
-import React, { useEffect, useContext, useState, useCallback, useImperativeHandle } from "react";
-import { Box, Switch, FormControlLabel } from "@material-ui/core";
+import React, { useEffect, useContext, useState, useImperativeHandle } from "react";
 import ModalPathContext from "../ModalPathContext";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
 import ExchangeAccountForm, {
   CustomSwitchInput,
@@ -14,29 +13,21 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { removeUserExchange, setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
-import useEvent from "../../../hooks/useEvent";
-import { useForm, FormContext, Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 
 /**
- * @typedef {Object} DefaultProps
- * @property {string} internalId Internal Exchange id.
- */
-
-/**
- * @param {DefaultProps} props Default props.
+ * Settings for selected exchange account.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountSettings = ({ internalId }) => {
+const ExchangeAccountSettings = () => {
   const {
     pathParams: { selectedAccount, previousPath },
     setTitle,
-    resetToPath,
     formRef,
     setTempMessage,
     setPathParams,
   } = useContext(ModalPathContext);
-  const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
 
@@ -46,21 +37,11 @@ const ExchangeAccountSettings = ({ internalId }) => {
     () => ({
       submitForm,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    getValues,
-    setValue,
-    watch,
-    reset,
-    formState,
-  } = useFormContext();
-  const { dirtyFields } = formState;
+  const { register, errors, control } = useFormContext();
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
 
@@ -77,7 +58,7 @@ const ExchangeAccountSettings = ({ internalId }) => {
 
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.settings" />);
-  }, []);
+  }, [setTitle]);
 
   const deleteExchangeShow = () => {
     setConfirmConfig({ ...initConfirmConfig, visible: true });
@@ -95,10 +76,10 @@ const ExchangeAccountSettings = ({ internalId }) => {
       .exchangeDelete(payload)
       .then(() => {
         dispatch(removeUserExchange(selectedAccount.internalId));
-        setPathParams((state) => ({
+        setPathParams({
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
           currentPath: previousPath,
-        }));
+        });
       })
       .catch((e) => {
         alert(`ERROR: ${e.message}`);
@@ -142,90 +123,90 @@ const ExchangeAccountSettings = ({ internalId }) => {
       />
       <ExchangeAccountForm>
         <CustomInput
+          defaultValue={selectedAccount.internalName}
+          errors={errors}
           inputRef={register({
             required: "name empty",
           })}
-          name="internalName"
           label="accounts.exchange.name"
-          defaultValue={selectedAccount.internalName}
-          errors={errors}
+          name="internalName"
         />
         {accountExchange &&
           accountExchange.requiredAuthFields.map((field) => (
             <CustomInput
+              autoComplete="new-password"
               inputRef={register}
-              name={field}
-              label={`accounts.exchange.${field}`}
               key={field}
+              label={`accounts.exchange.${field}`}
+              name={field}
               placeholder={
                 selectedAccount.areKeysValid ? "***************************************" : ""
               }
-              autoComplete="new-password"
               type="password"
             />
           ))}
         <CustomSwitchInput
-          label="accounts.options.maxconcurrent"
-          tooltip="accounts.options.maxconcurrent.help"
           defaultValue={selectedAccount.globalMaxPositions}
+          errors={errors}
           inputRef={register({
             required: "required",
           })}
-          errors={errors}
+          label="accounts.options.maxconcurrent"
           name="globalMaxPositions"
+          tooltip="accounts.options.maxconcurrent.help"
           type="number"
         />
         <CustomSwitchInput
-          label="accounts.options.minvolume"
-          tooltip="accounts.options.minvolume.help"
           defaultValue={selectedAccount.globalMinVolume}
-          name="globalMinVolume"
+          errors={errors}
           inputRef={register({
             required: "required",
           })}
-          errors={errors}
+          label="accounts.options.minvolume"
+          name="globalMinVolume"
+          tooltip="accounts.options.minvolume.help"
           type="number"
           unit="BTC"
         />
         <CustomSwitchInput
-          label="accounts.options.limitpositions"
-          tooltip="accounts.options.limitpositions.help"
           defaultValue={selectedAccount.globalPositionsPerMarket}
-          name="globalPositionsPerMarket"
+          errors={errors}
           inputRef={register({
             required: "required",
           })}
-          errors={errors}
+          label="accounts.options.limitpositions"
+          name="globalPositionsPerMarket"
+          tooltip="accounts.options.limitpositions.help"
           type="number"
         />
         <CustomSwitchInput
-          label="accounts.options.blacklist"
-          tooltip="accounts.options.blacklist.help"
           defaultValue={selectedAccount.globalBlacklist}
-          name="globalBlacklist"
+          errors={errors}
           inputRef={register({
             required: "required",
           })}
-          errors={errors}
+          label="accounts.options.blacklist"
+          name="globalBlacklist"
+          tooltip="accounts.options.blacklist.help"
           type="textarea"
         />
         <CustomSwitchInput
-          label="accounts.options.whitelist"
-          tooltip="accounts.options.whitelist.help"
           defaultValue={selectedAccount.globalWhitelist}
-          name="globalWhitelist"
+          errors={errors}
           inputRef={register({
             required: "required",
           })}
-          errors={errors}
+          label="accounts.options.whitelist"
+          name="globalWhitelist"
+          tooltip="accounts.options.whitelist.help"
           type="textarea"
         />
         <CustomSwitch
-          label="accounts.options.delisted"
-          tooltip="accounts.options.delisted.help"
-          name="globalDelisting"
-          defaultValue={selectedAccount.globalDelisting}
           control={control}
+          defaultValue={selectedAccount.globalDelisting}
+          label="accounts.options.delisted"
+          name="globalDelisting"
+          tooltip="accounts.options.delisted.help"
         />
 
         <CustomButton className="body2 textDefault deleteButton" onClick={deleteExchangeShow}>

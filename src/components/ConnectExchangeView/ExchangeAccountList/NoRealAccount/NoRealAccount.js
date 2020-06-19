@@ -20,21 +20,21 @@ const NoRealAccount = () => {
   const { navigateToPath } = useContext(ModalPathContext);
   return (
     <Box className="noRealAccount">
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" className="connectHead">
+      <Box alignItems="center" display="flex" flexDirection="column">
+        <Typography className="connectHead" variant="h4">
           <FormattedMessage id="accounts.connect" />
         </Typography>
-        <Typography variant="h4" className="body1 connectDesc">
+        <Typography className="body1 connectDesc" variant="h4">
           <FormattedMessage id="accounts.connect.first" />
         </Typography>
       </Box>
       <Box
+        className="exchangeButtons"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        className="exchangeButtons"
       >
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.noaccount" />
           </Typography>
@@ -48,7 +48,7 @@ const NoRealAccount = () => {
             <FormattedMessage id="accounts.powered" />
           </Box>
         </Box>
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.haveaccount" />
           </Typography>
@@ -62,7 +62,7 @@ const NoRealAccount = () => {
             <FormattedMessage id="accounts.exchanges" />
           </Box>
         </Box>
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.experiment" />
           </Typography>

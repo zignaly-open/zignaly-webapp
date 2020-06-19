@@ -1,18 +1,10 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
-import {
-  Box,
-  FormControlLabel,
-  OutlinedInput,
-  Typography,
-  Switch,
-  InputAdornment,
-  FormControl,
-} from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, OutlinedInput, Typography, Switch, InputAdornment } from "@material-ui/core";
 import "./ExchangeAccountForm.scss";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { Help } from "@material-ui/icons";
 import CustomTooltip from "../../CustomTooltip";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -30,10 +22,10 @@ import { Controller, useFormContext } from "react-hook-form";
 const ExchangeAccountForm = ({ children }) => {
   return (
     <Box
+      alignItems="flex-start"
+      className="exchangeAccountForm"
       display="flex"
       flexDirection="column"
-      className="exchangeAccountForm"
-      alignItems="flex-start"
     >
       {children}
     </Box>
@@ -41,7 +33,7 @@ const ExchangeAccountForm = ({ children }) => {
 };
 
 export const CustomInput = ({ inputRef, name, label, defaultValue, errors, ...others }) => (
-  <Box display="flex" flexDirection="row" alignItems="center" className="controlWrapper">
+  <Box alignItems="center" className="controlWrapper" display="flex" flexDirection="row">
     <label htmlFor={name}>
       <Typography className="accountLabel">
         <FormattedMessage id={label} />
@@ -50,10 +42,10 @@ export const CustomInput = ({ inputRef, name, label, defaultValue, errors, ...ot
     <Box width={1}>
       <OutlinedInput
         className="customInput"
-        inputRef={inputRef}
-        name={name}
         defaultValue={defaultValue || ""}
         id={name}
+        inputRef={inputRef}
+        name={name}
         {...others}
       />
       {errors && errors[name] && <span className="errorText">{errors[name].message}</span>}
@@ -65,24 +57,24 @@ const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
   const [checked, setChecked] = useState(!!defaultValue);
 
   return (
-    <Box display="flex" flexDirection="row" alignItems="center" flex={1}>
+    <Box alignItems="center" display="flex" flex={1} flexDirection="row">
       <Switch
-        onChange={(e, checked) => {
-          setChecked(checked);
+        checked={checked}
+        className="switch"
+        onChange={(e, value) => {
+          setChecked(value);
         }}
         size="medium"
-        className="switch"
-        checked={checked}
       />
       {checked && (
         <OutlinedInput
           className="customInput"
-          inputRef={inputRef}
-          name={name}
           defaultValue={defaultValue || ""}
           endAdornment={unit ? <InputAdornment position="end">{unit}</InputAdornment> : null}
-          type={type || "string"}
+          inputRef={inputRef}
           multiline={type === "textarea"}
+          name={name}
+          type={type || "string"}
         />
       )}
     </Box>
@@ -91,23 +83,22 @@ const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
 
 export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name, type, unit }) => (
   <CustomSwitch
-    tooltip={tooltip}
-    label={label}
-    // defaultValue={defaultValue}
-    type={type}
     controlComponent={
       <SwitchInputComponent
-        name={name}
-        inputRef={inputRef}
         defaultValue={defaultValue}
+        inputRef={inputRef}
+        name={name}
         type={type}
         unit={unit}
       />
     }
+    label={label}
+    // defaultValue={defaultValue}
+    tooltip={tooltip}
+    type={type}
   />
 );
 export const CustomSwitch = ({
-  inputRef,
   tooltip,
   label,
   defaultValue,
@@ -117,10 +108,10 @@ export const CustomSwitch = ({
   type,
 }) => (
   <Box
-    display="flex"
-    flexDirection="row"
     alignItems="center"
     className={`controlWrapper ${type === "textarea" ? "textareaWrapper" : ""}`}
+    display="flex"
+    flexDirection="row"
   >
     <label htmlFor={name}>
       <Box display="flex" flexDirection="row">
@@ -135,10 +126,10 @@ export const CustomSwitch = ({
     {controlComponent || (
       <Controller
         as={<Switch id={name} />}
-        name={name}
-        defaultValue={defaultValue}
-        type="checkbox"
         control={control}
+        defaultValue={defaultValue}
+        name={name}
+        type="checkbox"
       />
     )}
   </Box>

@@ -27,7 +27,6 @@ const ExchangeAccountList = ({ demo }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
-    resetToPath,
   } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -35,7 +34,6 @@ const ExchangeAccountList = ({ demo }) => {
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
-  console.log(exchanges);
 
   const tabs = [
     {

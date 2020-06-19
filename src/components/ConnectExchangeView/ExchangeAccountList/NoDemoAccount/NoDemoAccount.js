@@ -18,8 +18,8 @@ import { Typography } from "@material-ui/core";
 const NoDemoAccount = ({ navigateToAction }) => {
   return (
     <Box className="noDemoAccount">
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h3" className="connectHead">
+      <Box alignItems="center" display="flex" flexDirection="column">
+        <Typography className="connectHead" variant="h3">
           <FormattedMessage id="accounts.connect.experiment" />
         </Typography>
         <CustomButton
@@ -31,7 +31,7 @@ const NoDemoAccount = ({ navigateToAction }) => {
         <Typography variant="h4">
           <FormattedMessage id="accounts.connect.existing.or" />
         </Typography>
-        <Typography variant="h4" className="body1 connectDesc">
+        <Typography className="body1 connectDesc" variant="h4">
           <FormattedMessage id="accounts.connect.first" />
         </Typography>
       </Box>

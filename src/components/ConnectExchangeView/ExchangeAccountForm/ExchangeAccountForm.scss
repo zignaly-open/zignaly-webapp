@@ -5,8 +5,8 @@
   .controlWrapper,
   .customSelect {
     margin-bottom: 20px;
-    width: 100%;
     min-height: 37px;
+    width: 100%;
   }
 
   .customSelectControl,
@@ -58,8 +58,8 @@
     }
 
     .customInput {
-      height: 100px;
       align-items: flex-start;
+      height: 100px;
     }
   }
 }
@@ -67,12 +67,12 @@
 @include media("<=sm") {
   .exchangeAccountForm {
     align-items: center;
-    width: 100%;
     padding: 8px 12px;
+    width: 100%;
 
     .controlWrapper {
-      flex-direction: column;
       align-items: flex-start;
+      flex-direction: column;
     }
 
     label,

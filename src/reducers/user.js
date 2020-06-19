@@ -53,6 +53,7 @@ const userExchanges = (state, action) => {
       newState.exchangeConnections = newState.exchangeConnections.filter(
         (item) => item.internalId !== action.payload,
       );
+      break;
 
     default:
       break;

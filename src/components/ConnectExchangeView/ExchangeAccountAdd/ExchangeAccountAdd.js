@@ -1,21 +1,13 @@
-import React, { useState, useCallback, useContext, useEffect, useImperativeHandle } from "react";
-import {
-  Box,
-  FormControlLabel,
-  OutlinedInput,
-  Typography,
-  CircularProgress,
-} from "@material-ui/core";
+import React, { useContext, useEffect, useImperativeHandle } from "react";
+import { Box, CircularProgress } from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
-import { useForm, FormContext, Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
-import useEvent from "../../../hooks/useEvent";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
-import Loader from "../../Loader";
 import { useDispatch } from "react-redux";
 import { setUserExchanges } from "../../../store/actions/user";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
@@ -33,27 +25,12 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    getValues,
-    setValue,
-    watch,
-    reset,
-  } = useFormContext();
+const ExchangeAccountAdd = ({ create, demo }) => {
+  const { register, errors, control, setValue, watch } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const {
-    resetToPath,
-    pathParams: { previousPath },
-    setTitle,
-    formRef,
-    setTempMessage,
-  } = useContext(ModalPathContext);
+  const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
 
   useEffect(() => {
     setTitle(
@@ -63,7 +40,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
         }
       />,
     );
-  }, []);
+  }, [create, demo, setTitle]);
 
   const exchanges = useExchangeList();
 
@@ -78,8 +55,6 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
   const selectedExchange = exchanges.find(
     (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
   );
-  console.log(exchangeName, selectedExchange, exchanges);
-  console.log(exchangeType);
 
   // Exchange options
   const exchangesOptions = exchanges
@@ -106,11 +81,12 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
     () => ({
       submitForm,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedExchange],
   );
 
   const submitForm = async (data) => {
-    const { internalName, exchangeType, key, secret, password, testNet } = data;
+    const { internalName, key, secret, password, testNet } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
@@ -149,58 +125,58 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
             (demo && (
               <Controller
                 as={CustomSelect}
-                options={exchangesOptions}
                 control={control}
                 defaultValue={selectedExchange.name.toLowerCase()}
-                name="exchangeName"
-                rules={{ required: true }}
                 label={intl.formatMessage({ id: "accounts.exchange" })}
+                name="exchangeName"
                 onChange={([e]) => {
                   setValue("exchangeType", typeOptions[0].val);
                   setValue("testnet", false);
                   return e;
                 }}
+                options={exchangesOptions}
+                rules={{ required: true }}
               />
             ))}
           {typeOptions.length > 1 && (
             <Controller
               as={CustomSelect}
-              options={typeOptions}
               control={control}
               defaultValue={typeOptions[0].val}
-              name="exchangeType"
               label={intl.formatMessage({ id: "accounts.exchange.type" })}
+              name="exchangeType"
+              options={typeOptions}
             />
           )}
           {demo && exchangeType === "futures" && (
             <CustomSwitch
-              label="menu.testnet"
-              tooltip=""
-              name="testnet"
               defaultValue={false}
               inputRef={register}
+              label="menu.testnet"
+              name="testnet"
+              tooltip=""
             />
           )}
           <CustomInput
+            errors={errors}
             inputRef={register({
               required: "name empty",
             })}
-            name="internalName"
             label="accounts.exchange.name"
-            errors={errors}
+            name="internalName"
           />
           {(!create || testnet) &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
+                autoComplete="new-password"
+                errors={errors}
                 inputRef={register({
                   required: "required",
                 })}
-                name={field}
-                label={`accounts.exchange.${field}`}
                 key={field}
-                autoComplete="new-password"
+                label={`accounts.exchange.${field}`}
+                name={field}
                 type="password"
-                errors={errors}
               />
             ))}
         </ExchangeAccountForm>

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
@@ -7,18 +7,11 @@ import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 
 /**
- * @typedef {Object} DefaultProps
- * @property {string} path Current step path.
- * @property {function} setPath Set current step path function.
- */
-
-/**
- * @param {DefaultProps} props Default props.
+ * Render the content the account exchanges modal depending on the current path.
  * @returns {JSX.Element} Component JSX.
  */
-const ConnectExchangeViewContent = ({}) => {
-  const [selectedExchangeInternalId, setExchangeInternalId] = useState("");
-  const { setPathParams, pathParams } = useContext(ModalPathContext);
+const ConnectExchangeViewContent = () => {
+  const { pathParams } = useContext(ModalPathContext);
 
   const path = pathParams.currentPath;
   switch (path) {

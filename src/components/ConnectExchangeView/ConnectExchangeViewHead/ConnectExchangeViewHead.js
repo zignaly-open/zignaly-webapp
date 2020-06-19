@@ -1,9 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import ExchangeAccountList from "../ExchangeAccountList";
-import ExchangeAccountSettings from "../ExchangeAccountSettings";
-import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
-import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
-import ExchangeAccountAdd from "../ExchangeAccountAdd";
+import React, { useContext, useEffect } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import { Box, Typography } from "@material-ui/core";
@@ -12,7 +7,7 @@ import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
-import { useForm, FormContext, Controller, useFormContext, useFormMeta } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 /**
  * @typedef {Object} DefaultProps
@@ -26,8 +21,7 @@ import { useForm, FormContext, Controller, useFormContext, useFormMeta } from "r
  */
 const ConnectExchangeViewHead = ({ onClose }) => {
   const {
-    pathParams: { selectedAccount, previousPath, title, tempMessage, isLoading },
-    setTitle,
+    pathParams: { previousPath, title, tempMessage, isLoading },
     resetToPath,
     setPathParams,
     formRef,
@@ -71,11 +65,11 @@ const ConnectExchangeViewHead = ({ onClose }) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [tempMessage]);
+  }, [tempMessage, setPathParams]);
 
   return (
     <Box className="connectExchangeViewHead">
-      <Box className="actionBar" display="flex" flexDirection="row" alignItems="center">
+      <Box alignItems="center" className="actionBar" display="flex" flexDirection="row">
         {previousPath && (
           <CustomButton
             className="textPurple borderPurple"
@@ -85,10 +79,10 @@ const ConnectExchangeViewHead = ({ onClose }) => {
             <FormattedMessage id="accounts.back" />
           </CustomButton>
         )}
-        <CustomButton className="submitButton" onClick={handleClick} loading={isLoading}>
+        <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
           <FormattedMessage id="accounts.done" />
         </CustomButton>
-        <Typography variant="body1" className="tempMessage">
+        <Typography className="tempMessage" variant="body1">
           {tempMessage}
         </Typography>
         {storeUser.exchangeConnections.length > 0 && <UserExchangeList />}

@@ -34,12 +34,12 @@ const ExchangeAccountData = ({ account }) => {
         <Box className="equityBox">
           {(!balance.totalBTC && account.isBrokerAccount && (
             <Box
-              width={1}
+              alignItems="center"
+              className="noBalance"
+              display="flex"
               height={1}
               justifyContent="center"
-              alignItems="center"
-              display="flex"
-              className="noBalance"
+              width={1}
             >
               <Typography variant="h3">
                 <FormattedMessage

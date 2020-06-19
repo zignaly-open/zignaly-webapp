@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Box, Link } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";

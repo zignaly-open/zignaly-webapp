@@ -49,9 +49,9 @@
 
 @include media("<=sm") {
   .customSelect {
+    align-items: flex-start;
     flex-direction: column-reverse;
     height: fit-content;
-    align-items: flex-start;
 
     .select,
     .searchRoot {
