@@ -3,10 +3,11 @@ import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import { useFormContext } from "react-hook-form";
 import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
-import { useFormContext } from "react-hook-form";
+import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./DCAPanel.scss";
 
 /**
@@ -28,7 +29,7 @@ import "./DCAPanel.scss";
 const DCAPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setError, watch } = useFormContext();
+  const { errors, getValues, register, watch } = useFormContext();
   const {
     cardinalityRange,
     composeTargetPropertyName,
@@ -39,79 +40,15 @@ const DCAPanel = (props) => {
     setTargetPropertyValue,
     simulateInputChangeEvent,
   } = useTargetGroup("dca");
-  const { limits } = symbolData;
+  const {
+    validateCostLimits,
+    validateTargetPriceLimits,
+    validateUnitsLimits,
+  } = useSymbolLimitsValidate(symbolData);
+
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
-
-  /**
-   * Validate that target price is within limits.
-   *
-   * @param {number} targetPrice Rebuy target price.
-   * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
-   */
-  const validateTargetPriceLimits = (targetPrice, propertyName) => {
-    clearError(propertyName);
-    if (limits.price.min && targetPrice < limits.price.min) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target price cannot be lower than ${limits.price.min}`,
-      );
-    }
-
-    if (limits.price.max && targetPrice > limits.price.max) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target price cannot be greater than ${limits.price.max}`,
-      );
-    }
-  };
-
-  /**
-   * Validate that cost is within limits.
-   *
-   * @param {number} cost Cost amount.
-   * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
-   */
-  const validateCostLimits = (cost, propertyName) => {
-    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(propertyName, "error", `Rebuy cost cannot be lower than ${limits.cost.min}`);
-    }
-
-    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(propertyName, "error", `Rebuy cost cannot be greater than ${limits.cost.max}`);
-    }
-  };
-
-  /**
-   * Validate that target units is within limits.
-   *
-   * @param {number} units Rebuy units.
-   * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
-   */
-  const validateUnitsLimits = (units, propertyName) => {
-    clearError(propertyName);
-    if (limits.amount.min && units < limits.amount.min) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target units to exit cannot be lower than ${limits.amount.min}`,
-      );
-    }
-
-    if (limits.amount.max && units > limits.amount.max) {
-      setError(
-        propertyName,
-        "error",
-        `Rebuy target units to exit cannot be greater than ${limits.amount.max}`,
-      );
-    }
-  };
 
   /**
    * Calculate the target price and trigger validation.
