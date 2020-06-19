@@ -1,5 +1,3 @@
-// import { openExchangeConnectionView, openSettingsView } from "./src/store/actions/ui";
-// import { useDispatch } from "react-redux";
 const express = require(`express`);
 
 /**
@@ -10,7 +8,6 @@ const express = require(`express`);
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
-  //   const dispatch = useDispatch();
 
   if (page.internalComponentName === "ComponentDev404Page") {
     return;
