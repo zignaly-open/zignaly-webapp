@@ -67,17 +67,29 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
 
   const exchanges = useExchangeList();
 
+  const exchangeType = watch("exchangeType");
+  const zignalyOnly = create && !demo;
+  const zignalyIncluded = create;
+
   // Initialize selected exchange
-  let exchangeName = create ? "zignaly" : watch("exchangeName") || "binance";
+  let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName") || "binance";
+
   const selectedExchange = exchanges.find(
     (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
   );
   console.log(exchangeName, selectedExchange, exchanges);
+  console.log(exchangeType);
 
-  // Connect exchange options
+  // Exchange options
   const exchangesOptions = exchanges
-    .filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly")
-    .map((e) => e.name);
+    .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || zignalyIncluded))
+    .map((e) => ({
+      val: e.name.toLowerCase(),
+      label:
+        e.name.toLowerCase() === "zignaly"
+          ? `${e.name} (${intl.formatMessage({ id: "accounts.powered" })})`
+          : e.name,
+    }));
 
   // Create account types options
   const typeOptions =
@@ -138,7 +150,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
                 as={CustomSelect}
                 options={exchangesOptions}
                 control={control}
-                defaultValue={selectedExchange.name}
+                defaultValue={selectedExchange.name.toLowerCase()}
                 name="exchangeName"
                 rules={{ required: true }}
                 label={intl.formatMessage({ id: "accounts.exchange" })}
@@ -151,7 +163,6 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
               control={control}
               defaultValue={typeOptions[0].val}
               name="exchangeType"
-              rules={{ required: true }}
               label={intl.formatMessage({ id: "accounts.exchange.type" })}
             />
           )}
@@ -163,7 +174,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
             label="accounts.exchange.name"
             errors={errors}
           />
-          {!create || getValues("exchangeType").val === "futures" ? (
+          {(!create || exchangeType === "futures") &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 inputRef={register}
@@ -173,12 +184,7 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
                 autoComplete="new-password"
                 type="password"
               />
-            ))
-          ) : (
-            <Box className="exchangeSubtitle">
-              <FormattedMessage id="accounts.powered" />
-            </Box>
-          )}
+            ))}
         </ExchangeAccountForm>
       )}
     </form>
