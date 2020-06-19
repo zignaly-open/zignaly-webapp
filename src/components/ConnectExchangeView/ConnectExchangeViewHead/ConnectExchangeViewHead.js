@@ -31,8 +31,8 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   /**
    * Handle submit buttton click.
    *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {Promise<void>}
+   * @type {React.MouseEventHandler}
+   * @returns {Promise<void>} Form action async promise.
    */
   const handleClick = async () => {
     if (formRef.current) {

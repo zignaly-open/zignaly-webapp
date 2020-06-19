@@ -27,7 +27,7 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ create, demo }) => {
-  const { register, errors, control, setValue, watch } = useFormContext();
+  const { register, control, setValue, watch } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();

@@ -43,7 +43,7 @@ const ExchangeAccountSettings = () => {
     [],
   );
 
-  const { register, errors, control } = useFormContext();
+  const { register } = useFormContext();
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
 

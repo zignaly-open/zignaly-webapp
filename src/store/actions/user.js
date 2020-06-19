@@ -90,7 +90,8 @@ export const unsetUserBalance = () => {
 /**
  * Remove exchange from user exchanges list.
  *
- * @param {string} internalId
+ * @param {string} internalId Exchange account internal id.
+ * @returns {Object} return action object.
  */
 export const removeUserExchange = (internalId) => {
   return {

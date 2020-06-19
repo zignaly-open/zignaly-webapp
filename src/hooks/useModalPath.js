@@ -26,8 +26,9 @@ const useModalPath = () => {
   const formRef = useRef(null);
 
   /**
-   * @param {string} path
-   * @param {ExchangeConnectionEntity} selectedAccount
+   * @param {string} path Path to navigate to.
+   * @param {ExchangeConnectionEntity} selectedAccount Selected account used in sub paths
+   * @returns {void}
    */
   const navigateToPath = (path, selectedAccount) => {
     setPathParams({
@@ -38,7 +39,9 @@ const useModalPath = () => {
   };
 
   /**
-   * @param {string} path
+   * Navigate to path and reset all other params.
+   * @param {string} path Path to navigate to.
+   * @returns {void}
    */
   const resetToPath = (path) => {
     setPathParams({
@@ -47,7 +50,8 @@ const useModalPath = () => {
   };
 
   /**
-   * @param {string} title
+   * @param {string} title Modal title.
+   * @returns {void}
    */
   const setTitle = (title) => {
     setPathParams({
@@ -57,7 +61,9 @@ const useModalPath = () => {
   };
 
   /**
-   * @param {string} tempMessage
+   * Show a temporary message for 10 secs.
+   * @param {string} tempMessage Message
+   * @returns {void}
    */
   const setTempMessage = (tempMessage) => {
     setPathParams({

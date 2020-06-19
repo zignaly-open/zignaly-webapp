@@ -40,7 +40,11 @@ const ExchangeAccountForm = ({ children }) => {
  */
 
 /**
- * @param {CustomInputProps & OutlinedInputProps} props Component props.
+ * @typedef {CustomInputProps & OutlinedInputProps} CustomInputPropsExtended
+ */
+
+/**
+ * @param {CustomInputPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
 export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) => {
@@ -74,7 +78,11 @@ export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) 
  */
 
 /**
- * @param {SwitchInputComponentProps & OutlinedInputProps} props Component props.
+ * @typedef {SwitchInputComponentProps & OutlinedInputProps} SwitchInputComponentPropsExtended
+ */
+
+/**
+ * @param {SwitchInputComponentPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
 const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
@@ -113,7 +121,11 @@ const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
  */
 
 /**
- * @param {CustomSwitchInputProps & OutlinedInputProps} props Component props.
+ * @typedef {CustomSwitchInputProps & OutlinedInputProps} CustomSwitchInputPropsExtended
+ */
+
+/**
+ * @param {SwitchInputComponentPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
 export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name, type, unit }) => (
@@ -142,7 +154,11 @@ export const CustomSwitchInput = ({ inputRef, tooltip, label, defaultValue, name
  */
 
 /**
- * @param {CustomSwitchProps & OutlinedInputProps} props Component props.
+ * @typedef {CustomSwitchProps & OutlinedInputProps} CustomSwitchPropsExtended
+ */
+
+/**
+ * @param {CustomSwitchPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
 export const CustomSwitch = ({ tooltip, label, defaultValue, controlComponent, name, type }) => {
