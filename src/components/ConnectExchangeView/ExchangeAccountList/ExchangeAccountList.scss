@@ -88,5 +88,14 @@
     .exchangeAccountInfo {
       padding: 0 0 12px;
     }
+
+    .exchangeAccountContainer .exchangeButtons {
+      flex-direction: column;
+      margin-top: 0;
+
+      > div {
+        margin-top: 20px;
+      }
+    }
   }
 }

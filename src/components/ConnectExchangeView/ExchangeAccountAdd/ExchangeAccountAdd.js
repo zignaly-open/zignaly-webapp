@@ -69,10 +69,10 @@ const ExchangeAccountAdd = ({ create = false, demo = false, navigateToAction }) 
 
   // Initialize selected exchange
   let exchangeName = create ? "zignaly" : watch("exchangeName") || "binance";
-  const selectedExchange = exchanges.find((e) =>
-    e.name.toLowerCase() === exchangeName ? exchangeName.toLowerCase() : "",
+  const selectedExchange = exchanges.find(
+    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
   );
-  console.log(exchangeName, selectedExchange);
+  console.log(exchangeName, selectedExchange, exchanges);
 
   // Connect exchange options
   const exchangesOptions = exchanges
