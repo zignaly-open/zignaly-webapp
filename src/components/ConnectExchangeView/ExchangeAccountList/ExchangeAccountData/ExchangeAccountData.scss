@@ -51,8 +51,22 @@
     width: 100%;
   }
 
+  .cryptoComposition {
+    align-items: center;
+  }
+
   .availableBalance {
     padding: 0;
+  }
+
+  .noBalance h3 {
+    font-family: "PlexSans-Regular";
+    text-transform: initial;
+  }
+
+  a {
+    color: $purple;
+    cursor: pointer;
   }
 }
 
@@ -66,10 +80,6 @@
       max-height: none;
     }
 
-    .balanceBox {
-      //   box-shadow: none;
-    }
-
     .equityBox {
       width: 100%;
     }
@@ -80,6 +90,10 @@
 
     .cryptoBox {
       width: 100%;
+    }
+
+    .noBalance {
+      margin: 32px 0;
     }
   }
 }

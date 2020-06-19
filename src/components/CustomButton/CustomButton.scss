@@ -1,6 +1,10 @@
 .customButton {
   @include media("<=sm") {
     width: 90%;
+
+    &.exchangeButton {
+      min-width: 100%;
+    }
   }
 
   min-height: 48px;
