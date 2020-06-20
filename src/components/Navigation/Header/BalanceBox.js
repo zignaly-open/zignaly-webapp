@@ -23,7 +23,7 @@ const BalanceBox = () => {
     dispatch(setUserBalance(payload));
   };
 
-  useInterval(loadBalance, 5000000);
+  useInterval(loadBalance, 5000);
 
   return (
     <>
