@@ -40,7 +40,8 @@ const PrivateAreaLayout = (props) => {
   const storeLoader = useStoreUILoaderSelector();
   const dispatch = useDispatch();
   const options = themeData(storeSettings.darkStyle);
-  const theme = useMemo(() => createMuiTheme(options), [options]);
+  const createTheme = () => createMuiTheme(options);
+  const theme = useMemo(createTheme, [storeSettings.darkStyle]);
 
   return (
     <StylesProvider injectFirst>
