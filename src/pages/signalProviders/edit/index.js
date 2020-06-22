@@ -4,8 +4,11 @@ import { Box } from "@material-ui/core";
 import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
 import EditProfileForm from "../../../components/Forms/EditProfileForm";
+import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 
 const CopyTradersEdit = () => {
+  const storeViews = useStoreViewsSelector();
+
   return (
     <Box
       alignItems="center"
@@ -14,7 +17,7 @@ const CopyTradersEdit = () => {
       flexDirection="row"
       justifyContent="center"
     >
-      {<EditProfileForm />}
+      {<EditProfileForm provider={storeViews.provider} />}
     </Box>
   );
 };

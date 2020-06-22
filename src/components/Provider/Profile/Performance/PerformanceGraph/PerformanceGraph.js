@@ -24,8 +24,8 @@ import { useTheme } from "@material-ui/core/styles";
 const PerformanceGraph = ({ provider }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = provider.performance.last12WeeksStats.map((item) => item.return);
-  const labels = provider.performance.last12WeeksStats.map(() => "");
+  const values = provider.performance.weeklyStats.map((item) => item.return);
+  const labels = provider.performance.weeklyStats.map(() => "");
   const options = {
     scales: {
       xAxes: [

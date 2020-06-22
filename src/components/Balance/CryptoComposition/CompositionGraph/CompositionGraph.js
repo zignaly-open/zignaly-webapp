@@ -62,13 +62,13 @@ const CompositionGraph = ({ list, quotes }) => {
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
           values.push(value.toFixed(2));
-          labels.push(quotes[a]);
+          labels.push(quotes[a] + "%");
         }
       }
       values.push(
         typeof equity.otherPercentage === "string"
-          ? parseFloat(equity.otherPercentage)
-          : equity.otherPercentage,
+          ? parseFloat(equity.otherPercentage).toFixed(2)
+          : equity.otherPercentage.toFixed(2),
       );
       labels.push(intl.formatMessage({ id: "graph.others" }));
     }

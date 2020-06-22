@@ -9,6 +9,7 @@
       height: 40px;
       margin-right: 16px;
       width: 40px;
+      min-width: 40px;
     }
 
     h1 {
@@ -18,15 +19,11 @@
 
   h4 {
     font-family: "PlexSans-Regular";
-    margin-right: 40px;
+    margin-right: 30px;
 
     b {
       font-family: "PlexSans-Bold";
-      margin-left: 8px;
-
-      b {
-        margin-left: 5px;
-      }
+      margin-left: 5px;
     }
   }
 

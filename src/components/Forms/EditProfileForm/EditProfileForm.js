@@ -7,7 +7,6 @@ import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
 import HelpIcon from "@material-ui/icons/Help";
-import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import SocialSelect from "./SocialSelect";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
@@ -17,23 +16,33 @@ import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-const CopyTraderEditProfileForm = () => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ */
+/**
+ * About us compoennt for CT profile.
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+
+const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const storeViews = useStoreViewsSelector();
   const { errors, handleSubmit, control, setError } = useForm();
-  const [about, setAbout] = useState(storeViews.provider.about);
-  const [strategy, setStrategy] = useState(storeViews.provider.strategy);
-  const [selectedCountires, setSelectedCountries] = useState(storeViews.provider.team);
-  const [selectedSocials, setSelectedSocials] = useState(storeViews.provider.social);
+  const [about, setAbout] = useState(provider.about);
+  const [strategy, setStrategy] = useState(provider.strategy);
+  const [selectedCountires, setSelectedCountries] = useState(provider.team);
+  const [selectedSocials, setSelectedSocials] = useState(provider.social);
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
   // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
 
-  const signalUrl = `https://test.zignaly.com/api/signals.php?key=${storeViews.provider.key}`;
+  const signalUrl = `https://test.zignaly.com/api/signals.php?key=${provider.key}`;
   const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
 
   /**
@@ -70,7 +79,7 @@ const CopyTraderEditProfileForm = () => {
         about: about,
         strategy: strategy,
         token: storeSession.tradeApi.accessToken,
-        providerId: storeViews.provider.id,
+        providerId: provider.id,
       };
       tradeApi
         .providerEdit(payload)
@@ -254,14 +263,11 @@ const CopyTraderEditProfileForm = () => {
             <Typography variant="h3">
               <FormattedMessage id="srv.who" />
             </Typography>
-            <CountrySelect defaultValue={storeViews.provider.team} onChange={handleCountryChange} />
+            <CountrySelect defaultValue={provider.team} onChange={handleCountryChange} />
             <Typography variant="h3">
               <FormattedMessage id="srv.find" />
             </Typography>
-            <SocialSelect
-              defaultValue={storeViews.provider.social}
-              onChange={handleSocialLinkChange}
-            />
+            <SocialSelect defaultValue={provider.social} onChange={handleSocialLinkChange} />
           </Box>
 
           <Box bgcolor="grid.main" className="strategyBox">
@@ -325,7 +331,7 @@ const CopyTraderEditProfileForm = () => {
                   />
                 }
                 control={control}
-                defaultValue={storeViews.provider.name}
+                defaultValue={provider.name}
                 name="name"
                 rules={{ required: true, maxLength: 50, pattern: /^([a-zA-Z0-9 ()$_-]+)$/ }}
               />
@@ -354,7 +360,7 @@ const CopyTraderEditProfileForm = () => {
                   />
                 }
                 control={control}
-                defaultValue={storeViews.provider.logoUrl}
+                defaultValue={provider.logoUrl}
                 name="logoUrl"
               />
             </Box>
@@ -377,36 +383,38 @@ const CopyTraderEditProfileForm = () => {
                   />
                 }
                 control={control}
-                defaultValue={storeViews.provider.website ? storeViews.provider.website : ""}
+                defaultValue={provider.website ? provider.website : ""}
                 name="website"
                 rules={{ required: false }}
               />
             </Box>
 
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.minbalance" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.minAllocatedBalance ? "error" : "")
-                    }
-                    error={!!errors.minAllocatedBalance}
-                    fullWidth
-                    type="number"
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={storeViews.provider.minAllocatedBalance}
-                name="minAllocatedBalance"
-                rules={{ required: false }}
-              />
-            </Box>
+            {provider.isCopyTrading && (
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.minbalance" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.minAllocatedBalance ? "error" : "")
+                      }
+                      error={!!errors.minAllocatedBalance}
+                      fullWidth
+                      type="number"
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  defaultValue={provider.minAllocatedBalance}
+                  name="minAllocatedBalance"
+                  rules={{ required: false }}
+                />
+              </Box>
+            )}
 
             <Box
               className="paymentBox"
@@ -441,9 +449,7 @@ const CopyTraderEditProfileForm = () => {
                   }
                   control={control}
                   defaultValue={
-                    storeViews.provider.internalPaymentInfo
-                      ? storeViews.provider.internalPaymentInfo.merchantId
-                      : ""
+                    provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
                   }
                   name="merchantId"
                   rules={{ pattern: /^[0-9a-zA-Z]+$/, maxLength: 50 }}
@@ -474,9 +480,7 @@ const CopyTraderEditProfileForm = () => {
                   }
                   control={control}
                   defaultValue={
-                    storeViews.provider.internalPaymentInfo
-                      ? storeViews.provider.internalPaymentInfo.price
-                      : ""
+                    provider.internalPaymentInfo ? provider.internalPaymentInfo.price : ""
                   }
                   name="price"
                   rules={{ required: false }}
@@ -500,9 +504,7 @@ const CopyTraderEditProfileForm = () => {
                     />
                   }
                   control={control}
-                  defaultValue={
-                    storeViews.provider.internalPaymentInfo.merchantId ? "**********" : ""
-                  }
+                  defaultValue={provider.internalPaymentInfo.merchantId ? "**********" : ""}
                   name="ipnSecret"
                   rules={{ maxLength: 50 }}
                 />
@@ -526,9 +528,7 @@ const CopyTraderEditProfileForm = () => {
                   }
                   control={control}
                   defaultValue={
-                    storeViews.provider.internalPaymentInfo
-                      ? storeViews.provider.internalPaymentInfo.trial
-                      : 0
+                    provider.internalPaymentInfo ? provider.internalPaymentInfo.trial : 0
                   }
                   name="trial"
                   rules={{ required: false }}
@@ -558,9 +558,9 @@ const CopyTraderEditProfileForm = () => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!storeViews.provider.isAdmin} />}
+                as={<Switch disabled={!provider.isAdmin} />}
                 control={control}
-                defaultValue={storeViews.provider.public}
+                defaultValue={provider.public}
                 name="public"
               />
             </Box>
@@ -587,9 +587,9 @@ const CopyTraderEditProfileForm = () => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!storeViews.provider.isAdmin} />}
+                as={<Switch disabled={!provider.isAdmin} />}
                 control={control}
-                defaultValue={storeViews.provider.list}
+                defaultValue={provider.list}
                 name="list"
               />
             </Box>

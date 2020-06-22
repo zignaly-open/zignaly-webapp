@@ -1579,7 +1579,7 @@ function createConnectedProviderUserInfoEntity(response) {
  *
  * @typedef {Object} DefaultProviderPermormanceObject
  * @property {Number} closePositions
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} last12WeeksStats
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
@@ -1722,7 +1722,7 @@ function createEmptyProviderGetEntity() {
     about: "",
     performance: {
       closePositions: 0,
-      last12WeeksStats: [{}],
+      weeklyStats: [{ week: 0, return: 0 }],
       openPositions: 0,
       totalBalance: 0,
       totalTradingVolume: 0,
