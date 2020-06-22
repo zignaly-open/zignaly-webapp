@@ -77,11 +77,17 @@ const StrategyForm = (props) => {
    * Draw price line at Trading View Chart.
    *
    * @param {ChartLineParams} chartLineParams Chart line parameters object.
-   * @returns {TVChartLine} TV chart line object.
+   * @returns {TVChartLine|null} TV chart line object.
    */
   function drawLine(chartLineParams) {
     const { id, price, label, color } = chartLineParams;
     const existingChartLine = linesTracking[id] || null;
+
+    // Skip draw when price is empty.
+    if (price === 0) {
+      return null;
+    }
+
     // When line already exists, remove prior to draw to prevent duplication.
     if (existingChartLine) {
       const currentLinePrice = existingChartLine.getPrice();
@@ -133,7 +139,7 @@ const StrategyForm = (props) => {
   const drawStrategyPriceLine = () => {
     drawLine({
       id: "price",
-      price: parseFloat(strategyPrice),
+      price: parseFloat(strategyPrice) || 0,
       label: "Price",
       color: colors.purple,
     });
@@ -144,7 +150,7 @@ const StrategyForm = (props) => {
   const drawStopLossPriceLine = () => {
     drawLine({
       id: "stopLossPrice",
-      price: parseFloat(stopLossPrice),
+      price: parseFloat(stopLossPrice) || 0,
       label: "Stop loss",
       color: colors.yellow,
     });
@@ -155,7 +161,7 @@ const StrategyForm = (props) => {
   const drawTrailingStopPriceLine = () => {
     drawLine({
       id: "trailingStopPrice",
-      price: parseFloat(trailingStopPrice),
+      price: parseFloat(trailingStopPrice) || 0,
       label: "Trailing stop price",
       color: colors.blue,
     });
@@ -171,7 +177,7 @@ const StrategyForm = (props) => {
         const index = targetFieldName.substr(targetFieldName.length - 1);
         drawLine({
           id: targetFieldName,
-          price: parseFloat(targetPrice),
+          price: parseFloat(targetPrice) || 0,
           label: `Take profit target ${index}`,
           color: colors.green,
         });
@@ -187,7 +193,7 @@ const StrategyForm = (props) => {
       const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
       drawLine({
         id: "dcaTargetPricePercentage1",
-        price: Number(formatPrice(dcaTargetPrice1)),
+        price: Number(formatPrice(dcaTargetPrice1)) || 0,
         label: "DCA target 1",
         color: colors.black,
       });
