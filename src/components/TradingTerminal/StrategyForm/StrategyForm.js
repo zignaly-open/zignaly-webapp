@@ -11,6 +11,7 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
 import { range, forIn } from "lodash";
 import "./StrategyForm.scss";
+import { formatPrice } from "../../../../types/utils/formatters";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -87,6 +88,7 @@ const StrategyForm = (props) => {
       // Update existing line only if price changed.
       if (price !== currentLinePrice) {
         existingChartLine.setPrice(price);
+        existingChartLine.setQuantity(price);
       }
 
       return existingChartLine;
@@ -185,7 +187,7 @@ const StrategyForm = (props) => {
       const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
       drawLine({
         id: "dcaTargetPricePercentage1",
-        price: dcaTargetPrice1,
+        price: Number(formatPrice(dcaTargetPrice1)),
         label: "DCA target 1",
         color: colors.black,
       });
