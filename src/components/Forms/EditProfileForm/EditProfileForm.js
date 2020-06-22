@@ -137,8 +137,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         setError("price", "");
         return false;
       }
-      if (!data.trial) {
-        setError("trial", "");
+      if (!data.ipnSecret) {
+        setError("ipnSecret", "");
         return false;
       }
     }
@@ -148,18 +148,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         setError("merchantId", "");
         return false;
       }
-      if (!data.trial) {
-        setError("trial", "");
+      if (!data.ipnSecret) {
+        setError("ipnSecret", "");
         return false;
-      }
-    }
-
-    if (data.trial) {
-      if (!data.merchantId) {
-        setError("merchantId", "");
-      }
-      if (!data.price) {
-        setError("price", "");
       }
     }
 
@@ -170,10 +161,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       }
       if (!data.price) {
         setError("price", "");
-        return false;
-      }
-      if (!data.trial) {
-        setError("trial", "");
         return false;
       }
     }
@@ -485,6 +472,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   name="price"
                   rules={{ required: false }}
                 />
+                {errors.price && <span className="errorText">Price is required.</span>}
               </Box>
 
               <Box className="inputBox" display="flex" flexDirection="column">
@@ -508,6 +496,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   name="ipnSecret"
                   rules={{ maxLength: 50 }}
                 />
+                {errors.ipnSecret && <span className="errorText">IPN Secret is required.</span>}
               </Box>
 
               <Box className="inputBox" display="flex" flexDirection="column">
