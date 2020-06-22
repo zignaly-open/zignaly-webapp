@@ -149,7 +149,7 @@ export const routesMapping = (path) => {
  * @returns {SectionNavigation} A section navigation object.
  */
 
-export const createProviderRoutes = (providerId, provider) => {
+export const createTraderRoutes = (providerId, provider) => {
   if (provider.id) {
     let data = {
       id: "providerProfile",
@@ -164,21 +164,17 @@ export const createProviderRoutes = (providerId, provider) => {
           id: "srv.analytics",
           to: `/copyTraders/${provider.id}/analytics`,
         },
+        {
+          id: "srv.positions",
+          to: `/copyTraders/${provider.id}/positions`,
+        },
       ],
     };
-    if (provider.isCopyTrading) {
-      data.links.push({
-        id: "srv.positions",
-        to: `/copyTraders/${provider.id}/positions`,
-      });
-      if (provider.isAdmin) {
-        data.links.push({
-          id: "srv.management",
-          to: `/copyTraders/${provider.id}/management`,
-        });
-      }
-    }
     if (provider.isAdmin) {
+      data.links.push({
+        id: "srv.management",
+        to: `/copyTraders/${provider.id}/management`,
+      });
       data.links.push({
         id: "srv.edit",
         to: `/copyTraders/${provider.id}/edit`,
@@ -190,19 +186,46 @@ export const createProviderRoutes = (providerId, provider) => {
     }
     return data;
   }
-    return {
+};
+
+/**
+ * Map path to section navigation object.
+ *
+ * @param {DefaultProviderGetObject} provider Path to map section links for.
+ * @param {String} providerId
+ * @returns {SectionNavigation} A section navigation object.
+ */
+export const createProviderRoutes = (providerId, provider) => {
+  if (provider.id) {
+    let data = {
       id: "providerProfile",
       subtitleId: "",
       subtitle2Id: "",
       links: [
         {
           id: "srv.profile",
-          to: `/copyTraders/${providerId}/profile`,
+          to: `/signalProviders/${provider.id}/profile`,
         },
         {
           id: "srv.analytics",
-          to: `/copyTraders/${providerId}/analytics`,
+          to: `/signalProviders/${provider.id}/analytics`,
+        },
+        {
+          id: "srv.settings",
+          to: `/signalProviders/${provider.id}/settings`,
         },
       ],
     };
+    if (provider.isAdmin) {
+      data.links.push({
+        id: "srv.edit",
+        to: `/signalProviders/${provider.id}/edit`,
+      });
+      data.links.push({
+        id: "srv.users",
+        to: `/signalProviders/${provider.id}/users`,
+      });
+    }
+    return data;
+  }
 };

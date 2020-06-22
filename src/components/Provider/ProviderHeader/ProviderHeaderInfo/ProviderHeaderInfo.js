@@ -31,7 +31,11 @@ const ProviderHeaderInfo = () => {
     >
       <Typography variant="h4">
         <FormattedMessage id="srv.basecurrency" />
-        <b> {storeViews.provider.copyTradingQuote.toUpperCase()} </b>
+        <b>
+          {storeViews.provider.copyTradingQuote
+            ? storeViews.provider.copyTradingQuote.toUpperCase()
+            : ""}
+        </b>
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="copyt.trading" />
@@ -43,7 +47,11 @@ const ProviderHeaderInfo = () => {
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="accounts.exchange.type" />
-        <b> {storeViews.provider.exchangeType.toUpperCase()} </b>
+        <b>
+          {storeViews.provider.copyTradingQuote
+            ? storeViews.provider.copyTradingQuote.toUpperCase()
+            : ""}
+        </b>
       </Typography>
       <Typography variant="h4">
         <FormattedMessage id="copyt.copiers" />
@@ -65,7 +73,9 @@ const ProviderHeaderInfo = () => {
             <FormattedMessage id="srv.allocated" />
             <b>
               {storeViews.provider.allocatedBalance}{" "}
-              {storeViews.provider.copyTradingQuote.toUpperCase()}
+              {storeViews.provider.copyTradingQuote
+                ? storeViews.provider.copyTradingQuote.toUpperCase()
+                : ""}
             </b>
           </>
         ) : (
@@ -73,7 +83,9 @@ const ProviderHeaderInfo = () => {
             <FormattedMessage id="srv.minimum" />
             <b>
               {storeViews.provider.minAllocatedBalance}{" "}
-              {storeViews.provider.copyTradingQuote.toUpperCase()}
+              {storeViews.provider.copyTradingQuote
+                ? storeViews.provider.copyTradingQuote.toUpperCase()
+                : ""}
             </b>
           </>
         )}

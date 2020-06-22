@@ -115,6 +115,14 @@ const TraderCard = (props) => {
     };
   }
 
+  const redirectToProfile = () => {
+    if (isCopyTrading) {
+      navigate(`/copyTraders/${provider.id}/profile`);
+    } else {
+      navigate(`/signalProviders/${provider.id}/profile`);
+    }
+  };
+
   return (
     <Box className="traderCardBody">
       <Box
@@ -214,7 +222,7 @@ const TraderCard = (props) => {
             )}
             <CustomButton
               className={darkStyle ? "textPurple" : "textDefault"}
-              onClick={() => navigate(`/copyTraders/${provider.id}/profile`)}
+              onClick={redirectToProfile}
             >
               <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
             </CustomButton>

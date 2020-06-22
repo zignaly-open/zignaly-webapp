@@ -1,0 +1,57 @@
+.profilePage {
+  width: 100%;
+
+  .aboutBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    min-height: 280px;
+    width: calc(46% - 20px);
+  }
+
+  .whoWeAreBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 280px;
+    width: 54%;
+  }
+
+  .strategyBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    min-height: 430px;
+    width: calc(46% - 20px);
+  }
+
+  .performanceBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 430px;
+    width: 54%;
+  }
+}
+
+@include media("<=sm") {
+  .profilePage {
+    width: 100%;
+
+    .aboutBox {
+      margin: 0 0 20px;
+      width: 100%;
+    }
+
+    .whoWeAreBox {
+      margin: 0 0 20px;
+      width: 100%;
+    }
+
+    .strategyBox {
+      margin: 0 0 20px;
+      width: 100%;
+    }
+
+    .performanceBox {
+      margin: 0 0 20px;
+      width: 100%;
+    }
+  }
+}
