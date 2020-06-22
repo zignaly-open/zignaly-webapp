@@ -29,34 +29,44 @@ const ProviderHeaderInfo = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Typography variant="h4">
-        <FormattedMessage id="srv.basecurrency" />
-        <b>
-          {storeViews.provider.copyTradingQuote
-            ? storeViews.provider.copyTradingQuote.toUpperCase()
-            : ""}
-        </b>
-      </Typography>
-      <Typography variant="h4">
-        <FormattedMessage id="copyt.trading" />
-        <Box className="imageBox">
-          {storeViews.provider.exchanges.map((item, index) => (
-            <ExchangeIcon exchange={item} key={index} size="small" />
-          ))}
-        </Box>
-      </Typography>
-      <Typography variant="h4">
-        <FormattedMessage id="accounts.exchange.type" />
-        <b>
-          {storeViews.provider.copyTradingQuote
-            ? storeViews.provider.copyTradingQuote.toUpperCase()
-            : ""}
-        </b>
-      </Typography>
+      {storeViews.provider.isCopyTrading && (
+        <Typography variant="h4">
+          <FormattedMessage id="srv.basecurrency" />
+          <b>
+            {storeViews.provider.copyTradingQuote
+              ? storeViews.provider.copyTradingQuote.toUpperCase()
+              : ""}
+          </b>
+        </Typography>
+      )}
+
+      {storeViews.provider.isCopyTrading && (
+        <Typography variant="h4">
+          <FormattedMessage id="copyt.trading" />
+          <Box className="imageBox">
+            {storeViews.provider.exchanges.map((item, index) => (
+              <ExchangeIcon exchange={item} key={index} size="small" />
+            ))}
+          </Box>
+        </Typography>
+      )}
+
+      {storeViews.provider.isCopyTrading && (
+        <Typography variant="h4">
+          <FormattedMessage id="accounts.exchange.type" />
+          <b>
+            {storeViews.provider.copyTradingQuote
+              ? storeViews.provider.copyTradingQuote.toUpperCase()
+              : ""}
+          </b>
+        </Typography>
+      )}
+
       <Typography variant="h4">
         <FormattedMessage id="copyt.copiers" />
         <b> {storeViews.provider.followers} </b>
       </Typography>
+
       <Typography variant="h4">
         <FormattedMessage id="copyt.fee" />
         <b>
@@ -67,40 +77,45 @@ const ProviderHeaderInfo = () => {
           )}
         </b>
       </Typography>
-      <Typography variant="h4">
-        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
-          <>
-            <FormattedMessage id="srv.allocated" />
-            <b>
-              {storeViews.provider.allocatedBalance}{" "}
-              {storeViews.provider.copyTradingQuote
-                ? storeViews.provider.copyTradingQuote.toUpperCase()
-                : ""}
-            </b>
-          </>
-        ) : (
-          <>
-            <FormattedMessage id="srv.minimum" />
-            <b>
-              {storeViews.provider.minAllocatedBalance}{" "}
-              {storeViews.provider.copyTradingQuote
-                ? storeViews.provider.copyTradingQuote.toUpperCase()
-                : ""}
-            </b>
-          </>
-        )}
-        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
-          <img
-            alt="zignaly"
-            className="editIcon"
-            onClick={() => showCopyModal(true)}
-            src={EditIcon}
-          />
-        )}
-      </Typography>
-      <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm onClose={handleCopyModalClose} provider={storeViews.provider} />
-      </Modal>
+
+      {storeViews.provider.isCopyTrading && (
+        <>
+          <Typography variant="h4">
+            {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
+              <>
+                <FormattedMessage id="srv.allocated" />
+                <b>
+                  {storeViews.provider.allocatedBalance}{" "}
+                  {storeViews.provider.copyTradingQuote
+                    ? storeViews.provider.copyTradingQuote.toUpperCase()
+                    : ""}
+                </b>
+              </>
+            ) : (
+              <>
+                <FormattedMessage id="srv.minimum" />
+                <b>
+                  {storeViews.provider.minAllocatedBalance}{" "}
+                  {storeViews.provider.copyTradingQuote
+                    ? storeViews.provider.copyTradingQuote.toUpperCase()
+                    : ""}
+                </b>
+              </>
+            )}
+            {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
+              <img
+                alt="zignaly"
+                className="editIcon"
+                onClick={() => showCopyModal(true)}
+                src={EditIcon}
+              />
+            )}
+          </Typography>
+          <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
+            <CopyTraderForm onClose={handleCopyModalClose} provider={storeViews.provider} />
+          </Modal>
+        </>
+      )}
     </Box>
   );
 };
