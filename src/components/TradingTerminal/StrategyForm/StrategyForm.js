@@ -199,7 +199,7 @@ const StrategyForm = (props) => {
       });
     }
   };
-  useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
+  useEffect(drawDCATargetPriceLines, [strategyPrice, dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
