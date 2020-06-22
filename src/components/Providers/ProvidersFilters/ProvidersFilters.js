@@ -13,7 +13,7 @@ import { useIntl } from "react-intl";
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
- * @property {string} coin Selected coin.
+ * @property {OptionType} coin Selected coin.
  * @property {Array<OptionType>} coins Coins options.
  * @property {string} exchange Selected exchange.
  * @property {Array<OptionType>} exchanges Exchanges options.

@@ -4,17 +4,24 @@
   .settings {
     background: $white;
     border-radius: 4px;
-    bottom: 15px;
+    bottom: 0;
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     height: 56px;
+    margin-bottom: 15px;
+    padding: 16px 24px;
     position: absolute;
     right: 0;
-    width: 120px;
   }
 
   .icon {
     cursor: pointer;
     height: 24px;
     width: 24px;
+  }
+
+  span {
+    &:not(:first-child) {
+      margin-left: 24px;
+    }
   }
 }

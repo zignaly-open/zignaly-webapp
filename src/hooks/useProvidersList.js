@@ -24,7 +24,7 @@ import { useIntl } from "react-intl";
  * @property {ProvidersCollection} providers
  * @property {number} timeFrame
  * @property {function} setTimeFrame
- * @property {string} coin
+ * @property {OptionType} coin
  * @property {Array<OptionType>} coins
  * @property {function} setCoin
  * @property {string} exchange
@@ -126,7 +126,8 @@ const useProvidersList = (options) => {
   const filterProviders = useCallback(() => {
     const _providersFiltered = providers.filter(
       (p) =>
-        (!coin || p.quote === coin) && (!exchange || p.exchanges.includes(exchange.toLowerCase())),
+        (coin.val === "ALL" || p.quote === coin.val) &&
+        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())),
     );
     sortProviders(_providersFiltered);
     // eslint-disable-next-line react-hooks/exhaustive-deps
