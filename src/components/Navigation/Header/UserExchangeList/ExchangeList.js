@@ -8,7 +8,11 @@ import MyExchange from "../../../../images/header/myExchange.svg";
 import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import { setDailyUserBalance, setUserBalance } from "../../../../store/actions/user";
+import {
+  setDailyUserBalance,
+  setUserBalance,
+  setUserBalanceLoader,
+} from "../../../../store/actions/user";
 import { navigate } from "@reach/router";
 
 /**
@@ -47,6 +51,7 @@ const ExchangeList = (props) => {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: item.internalId,
     };
+    dispatch(setUserBalanceLoader());
     dispatch(setDailyUserBalance(payload));
     dispatch(setUserBalance(payload));
     if (onClose) {

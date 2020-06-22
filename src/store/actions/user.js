@@ -70,9 +70,6 @@ export const unsetUserExchanges = () => {
 export const setUserBalance = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch({
-        type: SET_USER_BALANCE_LOADER,
-      });
       const responseData = await tradeApi.userBalanceGet(payload);
       const action = {
         type: GET_USER_BALANCE,
@@ -83,6 +80,12 @@ export const setUserBalance = (payload) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+};
+
+export const setUserBalanceLoader = () => {
+  return {
+    type: SET_USER_BALANCE_LOADER,
   };
 };
 

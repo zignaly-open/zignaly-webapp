@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import "./ProviderHeader.scss";
 import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
 import { createProviderRoutes, createTraderRoutes } from "../../../utils/routesMapping";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import TraderHeaderActions from "./TraderHeaderActions";
+import TraderHeaderInfo from "./TraderHeaderInfo";
 import ProviderHeaderActions from "./ProviderHeaderActions";
-import ProviderHeaderInfo from "./ProviderHeaderInfo";
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -32,8 +33,14 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <ProviderHeaderActions />
-      <ProviderHeaderInfo />
+      {storeViews.provider.isCopyTrading ? (
+        <Fragment>
+          <TraderHeaderActions />
+          <TraderHeaderInfo />
+        </Fragment>
+      ) : (
+        <ProviderHeaderActions />
+      )}
       <SubNavHeader links={links} />
     </Box>
   );

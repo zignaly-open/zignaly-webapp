@@ -14,16 +14,16 @@ const BalanceBox = () => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
-  // const loadBalance = () => {
-  //   const payload = {
-  //     token: storeSession.tradeApi.accessToken,
-  //     exchangeInternalId: storeSettings.selectedExchange.internalId,
-  //   };
+  const loadBalance = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: storeSettings.selectedExchange.internalId,
+    };
 
-  //   dispatch(setUserBalance(payload));
-  // };
+    dispatch(setUserBalance(payload));
+  };
 
-  // useInterval(loadBalance, 5000);
+  useInterval(loadBalance, 5000);
 
   return (
     <>

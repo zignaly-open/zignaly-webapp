@@ -309,7 +309,7 @@ const CopyTraderEditProfileForm = () => {
               </a>
             </Box>
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className={"customLabel"}>
                 <FormattedMessage id="srv.edit.title" />
               </label>
               <Controller
@@ -338,7 +338,7 @@ const CopyTraderEditProfileForm = () => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className="customLabel">
                 <FormattedMessage id="srv.edit.logo" />
               </label>
               <Controller
@@ -360,7 +360,7 @@ const CopyTraderEditProfileForm = () => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className="customLabel">
                 <FormattedMessage id="srv.edit.website" />
               </label>
               <Controller
@@ -384,7 +384,7 @@ const CopyTraderEditProfileForm = () => {
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className="customLabel">
                 <FormattedMessage id="srv.edit.minbalance" />
               </label>
               <Controller
@@ -424,7 +424,7 @@ const CopyTraderEditProfileForm = () => {
                 <FormattedMessage id="srv.payment.docs" />
               </a>
               <Box className="inputBox" display="flex" flexDirection="column">
-                <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+                <label className="customLabel">
                   <FormattedMessage id="srv.edit.merchantid" />
                 </label>
                 <Controller
@@ -544,7 +544,7 @@ const CopyTraderEditProfileForm = () => {
               justifyContent="space-between"
               width="100%"
             >
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className="customLabel">
                 <FormattedMessage id="srv.edit.public" />
                 <Tooltip
                   placement="top"
@@ -573,7 +573,7 @@ const CopyTraderEditProfileForm = () => {
               justifyContent="space-between"
               width="100%"
             >
-              <label className={"customLabel " + (storeSettings.darkStyle ? "dark" : "light")}>
+              <label className="customLabel">
                 <FormattedMessage id="srv.edit.list" />
                 <Tooltip
                   placement="top"
