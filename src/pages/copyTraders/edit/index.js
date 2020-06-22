@@ -9,7 +9,7 @@ const CopyTradersEdit = () => {
   return (
     <Box
       alignItems="center"
-      className="profileEditPage"
+      className="copyTradersEditPage"
       display="flex"
       flexDirection="row"
       justifyContent="center"
