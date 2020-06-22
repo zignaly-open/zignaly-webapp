@@ -1,0 +1,52 @@
+.connectedProvidersSummary {
+  height: 100%;
+  position: absolute;
+
+  a {
+    text-decoration: none;
+  }
+
+  .boxTitle {
+    height: 40px;
+    margin: 0 36px;
+
+    h3 {
+      font-family: "PlexSans-Regular";
+      text-transform: initial;
+    }
+
+    h6 {
+      color: $purple;
+      padding-left: 16px;
+    }
+  }
+
+  .scrollCards {
+    height: calc(100% - 18px);
+    overflow-y: auto;
+  }
+
+  .traderMiniCard {
+    margin: 7px 36px;
+  }
+
+  .customButton {
+    border: 2px solid $purple;
+    margin: 0 36px;
+    margin-top: 7px;
+  }
+}
+
+@include media("<=sm") {
+  .connectedProvidersSummary {
+    position: static;
+  }
+
+  .traderMiniCard {
+    margin: 7px 0;
+  }
+
+  .customButton {
+    width: auto;
+  }
+}

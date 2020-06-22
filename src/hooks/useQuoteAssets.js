@@ -16,23 +16,24 @@ const useQuoteAssets = () => {
 
   const storeSession = useStoreSessionSelector();
 
-  const loadData = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      ro: true,
+  useEffect(() => {
+    const loadData = async () => {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        ro: true,
+      };
+
+      tradeApi
+        .quotesAssetsGet(payload)
+        .then((data) => {
+          setQuotes(data);
+        })
+        .catch((e) => {
+          alert(`ERROR: ${e.message}`);
+        });
     };
-
-    tradeApi
-      .quotesAssetsGet(payload)
-      .then((data) => {
-        setQuotes(data);
-      })
-      .catch((e) => {
-        alert(`ERROR: ${e.message}`);
-      });
-  };
-
-  useEffect(loadData, [storeSession.tradeApi.accessToken]);
+    loadData();
+  }, [storeSession.tradeApi.accessToken]);
 
   return quotes;
 };

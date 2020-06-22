@@ -1,0 +1,23 @@
+.trailingStopPanel {
+  .panelContent {
+    > div {
+      flex: 0 0 100%;
+    }
+
+    .trailingStop {
+      justify-content: space-between;
+
+      > div {
+        flex: 0 0 100%;
+      }
+
+      > :nth-child(2) {
+        flex: 0 0 35%;
+      }
+
+      > :nth-child(3) {
+        flex: 0 0 calc(65% - 15px);
+      }
+    }
+  }
+}

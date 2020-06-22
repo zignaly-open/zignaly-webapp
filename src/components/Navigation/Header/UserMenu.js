@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
 import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
-import { openExchangeConnectionView, openSettingsView } from "../../../store/actions/ui";
+import { openSettingsView } from "../../../store/actions/ui";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
@@ -29,22 +29,24 @@ const UserMenu = () => {
     window.open(docsURL, "_blank");
   };
 
-  const showExchangeConnectionView = () => {
-    dispatch(openExchangeConnectionView(true));
-  };
-
   const showSettingsView = () => {
     dispatch(openSettingsView(true));
   };
 
   return (
     <Box alignItems="flex-start" className="userMenu" display="flex" flexDirection="column">
-      <MenuItem className="userMenuItem" onClick={showExchangeConnectionView}>
+      <MenuItem
+        className="userMenuItem"
+        onClick={() => {
+          navigate("#exchangeAccounts");
+        }}
+      >
         <img alt="zignaly" src={MyExchange} />
         <span className="item">
           <FormattedMessage id="menu.exchangeaccount" />
         </span>
       </MenuItem>
+      {/* </Link> */}
       <MenuItem className="userMenuItem" onClick={showSettingsView}>
         <img alt="zignaly" src={Settings} />
         <span className="item">

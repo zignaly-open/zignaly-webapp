@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./History.scss";
 import { Box } from "@material-ui/core";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 import HistoryTable from "./HistoryTable";
 import HistoryFilter from "./HistoryFilter";
 
-const History = () => {
-  const [list, setList] = useState([]);
-  const storeUser = useStoreUserSelector();
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ */
 
-  useEffect(() => {
-    setList(storeUser.dailyBalance.balances);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeUser.dailyBalance]);
-
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const History = ({ dailyBalance }) => {
+  const [list, setList] = useState(dailyBalance.balances);
   /**
    *
    * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
    */
 
   /**
-   *
-   * @param {Array<UserEquityEntity>} data
+   * @param {Array<UserEquityEntity>} data Filtered equity data.
+   * @returns {void}
    */
-
   const handleChange = (data) => {
     setList(data);
   };
 
-  const embedFilter = (
-    <HistoryFilter list={storeUser.dailyBalance.balances} onChange={handleChange} />
-  );
+  const embedFilter = <HistoryFilter list={dailyBalance.balances} onChange={handleChange} />;
 
   return (
     <Box
@@ -47,11 +47,11 @@ const History = () => {
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
-       />
+      />
       <HistoryTable
         list={list}
         persistKey="dailyBalance"
-        quotes={storeUser.dailyBalance.quotes}
+        quotes={dailyBalance.quotes}
         title={embedFilter}
       />
     </Box>

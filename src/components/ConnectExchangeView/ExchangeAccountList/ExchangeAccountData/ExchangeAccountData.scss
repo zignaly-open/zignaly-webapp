@@ -1,0 +1,98 @@
+.exchangeAccountData {
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  padding: 24px;
+  width: 100%;
+
+  .topBoxData {
+    max-height: 360px;
+    min-height: 260px;
+    position: relative;
+  }
+
+  .equityBox {
+    flex: 1;
+
+    .totalEquity {
+      border: 0;
+    }
+
+    .boxTitle {
+      display: none;
+    }
+
+    h4 {
+      margin-top: -8px;
+    }
+  }
+
+  .cryptoBox {
+    flex: 1;
+
+    h3 {
+      font-family: "PlexSans-Regular";
+      font-size: 21px;
+    }
+  }
+
+  .cardsBox {
+    flex: 1;
+
+    .traderMiniCard {
+      min-height: 80px;
+    }
+  }
+
+  .balanceBox {
+    border-top: 1px solid $borderColor;
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  .cryptoComposition {
+    align-items: center;
+  }
+
+  .availableBalance {
+    padding: 0;
+  }
+
+  .noBalance {
+    h3 {
+      font-family: "PlexSans-Regular";
+      text-transform: initial;
+    }
+  }
+
+  a {
+    color: $purple;
+    cursor: pointer;
+  }
+}
+
+@include media("<=sm") {
+  .exchangeAccountData {
+    padding: 12px;
+
+    .topBoxData {
+      align-items: flex-start;
+      flex-direction: column;
+      max-height: none;
+    }
+
+    .equityBox {
+      width: 100%;
+    }
+
+    .cryptoBox {
+      min-height: 200px;
+    }
+
+    .cryptoBox {
+      width: 100%;
+    }
+
+    .noBalance {
+      margin: 32px 0;
+    }
+  }
+}

@@ -49,6 +49,9 @@ import {
  * @typedef {import('./tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsPayload} CopyTradersProvidersOptionsPayload
  * @typedef {import('./tradeApiClient.types').CopyTradersProvidersOptionsCollection} CopyTradersProvidersOptionsCollection
+ * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
+ * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
  */
 
 /**
@@ -482,6 +485,45 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return ownCopyTraderProvidersOptionsResponseTransform(responseData);
+  }
+
+  /**
+   * Connect to a new exchange.
+   *
+   * @param {ExchangeAddPayload} payload Payload
+   * @returns {Promise<boolean>} Result
+   * @memberof TradeApiClient
+   */
+  async exchangeAdd(payload) {
+    const endpointPath = "/fe/api.php?action=addExchange";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete an exchange.
+   *
+   * @param {ExchangeDeletePayload} payload Payload
+   * @returns {Promise<boolean>} Result
+   * @memberof TradeApiClient
+   */
+  async exchangeDelete(payload) {
+    const endpointPath = "/fe/api.php?action=delNewExchange";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Update an exchange.
+   *
+   * @param {ExchangeUpdatePayload} payload Payload
+   * @returns {Promise<boolean>} Result
+   * @memberof TradeApiClient
+   */
+  async exchangeUpdate(payload) {
+    const endpointPath = "/fe/api.php?action=updateNewExchange";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
   }
 
   /**

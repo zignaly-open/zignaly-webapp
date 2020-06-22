@@ -1,16 +1,18 @@
 .connectExchangeView {
-  .actionBar {
-    border-bottom: 1px solid $borderColor;
-    padding: 10px;
+  .subNavHeader {
+    padding: 0 24px;
     width: 100%;
-
-    .submitButton {
-      height: 40px;
-    }
   }
 
-  .titleBar {
-    padding: 10px;
-    width: 100%;
+  .faq {
+    padding: 18px 24px;
+  }
+
+  .exchangeSubtitle {
+    font-family: "PlexSans-Regular";
+    font-size: 14px;
+    font-style: italic;
+    letter-spacing: 0.53px;
+    line-height: 1.43;
   }
 }

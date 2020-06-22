@@ -7,21 +7,22 @@ import {
   REMOVE_USER_BALANCE,
   GET_DAILY_USER_BALANCE,
   SET_USER_BALANCE_LOADER,
+  REMOVE_USER_EXCHANGE,
 } from "../store/actions/user";
 
 /**
+ * @typedef {import("../store/initialState").UserObject} UserObject
  * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import('../services/tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  */
 
 /**
  * @typedef {Object} ActionObject
  * @property {String} type
- * @property {UserBalanceEntity} payload
+ * @property {*} payload
  */
 
 /**
- * @param {*} state
+ * @param {UserObject} state Current user state.
  * @param {ActionObject} action
  */
 
@@ -51,6 +52,12 @@ const userExchanges = (state, action) => {
 
     case GET_DAILY_USER_BALANCE:
       newState.dailyBalance = action.payload;
+      break;
+
+    case REMOVE_USER_EXCHANGE:
+      newState.exchangeConnections = newState.exchangeConnections.filter(
+        (item) => item.internalId !== action.payload,
+      );
       break;
 
     default:

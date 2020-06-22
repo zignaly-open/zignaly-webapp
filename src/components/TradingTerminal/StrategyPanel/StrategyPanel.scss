@@ -23,16 +23,23 @@
   }
 
   .panelContent {
+    justify-content: space-between;
     padding: 0 20px 20px;
 
     > div {
-      flex: 0 0 auto;
+      flex: 0 0 100%;
+
+      @include media(">=xl") {
+        flex: 0 0 calc(50% - 15px);
+      }
     }
 
     .help {
       p {
-        font-size: 14px;
+        line-height: 1.3em;
+        margin-bottom: 5px;
         margin-right: 5px;
+        text-transform: none;
         word-spacing: 0;
       }
 
@@ -51,6 +58,7 @@
     .outlineInput {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
+      width: 100%;
 
       input {
         padding: 8px 12px;

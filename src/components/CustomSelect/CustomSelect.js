@@ -25,7 +25,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 /**
  * @typedef {Object} CustomSelectPropTypes
  * @property {function} onChange Callback that delegate select changes to caller.
- * @property {OptionType|string|number} value Assign the selected value.
+ * @property {OptionType|string|number} [value] Assign the selected value.
  * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} label Label for the dropdown.
  * @property {boolean} [search] Display autocomplete.
@@ -50,7 +50,7 @@ const CustomSelect = (props) => {
     <FormControlLabel
       className={"customSelect " + (storeSettings.darkStyle ? "dark" : "light")}
       control={
-        <FormControl className="callout" variant="outlined">
+        <FormControl className="callout customSelectControl" variant="outlined">
           {!search ? (
             <Select
               className="select"
@@ -88,7 +88,7 @@ const CustomSelect = (props) => {
           )}
         </FormControl>
       }
-      label={label ? <Typography className="callout2">{label}</Typography> : null}
+      label={label ? <Typography className="callout2 selectLabel">{label}</Typography> : null}
       {...extraProps}
     />
   );

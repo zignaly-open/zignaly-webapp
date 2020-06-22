@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} UserBalanceEntity
+ * @typedef {Object} UserBalance
  * @property {Number} pnlBTC
  * @property {Number} pnlUSDT
  * @property {Number} totalBTC
@@ -21,7 +21,7 @@
 /**
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
- * @property {UserBalanceEntity} balance
+ * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
  */
 
@@ -204,10 +204,16 @@ const initialState = {
       positionSize: 0,
       managed: false,
       internal: false,
-      isBrokerAccount: true,
+      isBrokerAccount: false,
       subAccountId: "",
       binanceBrokerId: "",
       checkAuthCount: 0,
+      globalDelisting: false,
+      globalBlacklist: false,
+      globalMaxPositions: false,
+      globalMinVolume: false,
+      globalPositionsPerMarket: false,
+      globalWhitelist: false,
     },
   },
   user: {

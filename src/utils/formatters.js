@@ -20,12 +20,13 @@ export const formatNumber = (value, precision = 8) => {
  * Numbers greater than 1 show 2 digits precision, floats show 8 digits precision.
  *
  * @param {number} price Price to format.
+ * @param {string} nanDisplay Value to display when price is NaN.
  *
  * @returns {string} Formatter price for display.
  */
-export const formatPrice = (price) => {
+export const formatPrice = (price, nanDisplay = "-") => {
   if (isNaN(price)) {
-    return "-";
+    return nanDisplay;
   }
 
   if (price > 1) {

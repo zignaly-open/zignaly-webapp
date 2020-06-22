@@ -3,11 +3,18 @@ import "./CryptoComposition.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CompositionGraph from "./CompositionGraph";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
 
-const CryptoComposition = () => {
-  const storeUser = useStoreUserSelector();
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ */
 
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const CryptoComposition = ({ dailyBalance }) => {
   return (
     <Box
       alignItems="flex-start"
@@ -19,10 +26,7 @@ const CryptoComposition = () => {
       <Typography className="boxTitle" variant="h3">
         <FormattedMessage id="dashboard.balance.cryptocompo" />
       </Typography>
-      <CompositionGraph
-        list={storeUser.dailyBalance.balances}
-        quotes={storeUser.dailyBalance.quotes}
-      />
+      <CompositionGraph list={dailyBalance.balances} quotes={dailyBalance.quotes} />
     </Box>
   );
 };
