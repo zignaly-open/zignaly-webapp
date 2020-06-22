@@ -20,14 +20,14 @@ const PaymentButton = ({ provider }) => {
     if (provider.isCopyTrading) {
       return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#success`;
     }
-      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
+    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
   };
 
   const createReturnErrorUrl = () => {
     if (provider.isCopyTrading) {
       return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#error`;
     }
-      return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
+    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
   };
 
   const returnSuccessURL = createReturnSuccessUrl();
@@ -62,7 +62,7 @@ const PaymentButton = ({ provider }) => {
             <input name="ipn_url" type="hidden" value={ipnURL} />
             <input
               alt="Buy Now with CoinPayments.net"
-              src="https://www.coinpayments.net/images/pub/checkout-grey.png"
+              src="https://www.coinpayments.net/images/pub/CP-third-med.png"
               type="image"
             />
           </form>
