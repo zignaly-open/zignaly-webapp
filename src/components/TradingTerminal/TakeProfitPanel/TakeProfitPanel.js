@@ -290,7 +290,7 @@ const TakeProfitPanel = (props) => {
   };
 
   return (
-    <Box className={`strategyPanel takeProfitPanel ${expandClass}`}>
+    <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">

@@ -7,6 +7,8 @@ import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
 import DCAPanel from "../DCAPanel/DCAPanel";
 import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
+import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
+import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -73,6 +75,8 @@ const StrategyForm = (props) => {
           <DCAPanel symbolData={currentSymbolData} />
           <StopLossPanel symbolData={currentSymbolData} />
           <TrailingStopPanel symbolData={currentSymbolData} />
+          <EntryExpirationPanel />
+          <AutoclosePanel />
           <Button type="submit">Open Position</Button>
         </form>
       </Box>

@@ -1,7 +1,81 @@
 .strategyForm {
   flex: 0 0 30%;
+  height: 700px;
+  overflow-y: auto;
 
   @include media("<=sm") {
     flex: 0 0 100%;
+  }
+
+  .panel {
+    background-color: $paleGrey;
+    border: $greyBackground solid 1px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .panelHeader {
+    background-color: $mediumGrey;
+    border-bottom: $greyBackground solid 1px;
+    padding: 13px 20px;
+
+    .title {
+      text-align: center;
+
+      &.expandable {
+        width: calc(100% - 80px);
+      }
+
+      .customSelect {
+        margin: 0 0 0 7px;
+      }
+    }
+  }
+
+  .panelContent {
+    justify-content: space-between;
+    padding: 0 20px 20px;
+
+    .help {
+      p {
+        line-height: 1.3em;
+        margin-bottom: 5px;
+        margin-right: 5px;
+        text-transform: none;
+        word-spacing: 0;
+      }
+
+      svg {
+        color: $darkGrey;
+        height: 18px;
+        width: 18px;
+      }
+    }
+
+    .errorText {
+      max-width: 250px;
+      text-align: left;
+    }
+
+    .outlineInput {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      width: 100%;
+
+      input {
+        padding: 8px 12px;
+      }
+    }
+
+    .currencyBox {
+      background-color: $mediumDarkGrey;
+      border: 1px solid $darkLightGrey;
+      border-bottom-right-radius: 3px;
+      border-left: 0;
+      border-top-right-radius: 3px;
+      height: 35px;
+      padding: 6px 12px;
+      width: 70px;
+    }
   }
 }

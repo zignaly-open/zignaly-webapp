@@ -188,7 +188,7 @@ const StrategyPanel = (props) => {
   };
 
   return (
-    <Box className={`strategyPanel ${expandClass}`}>
+    <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {!disableExpand && <Switch onChange={handleToggle} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
