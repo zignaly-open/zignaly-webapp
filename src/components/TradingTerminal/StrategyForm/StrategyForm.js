@@ -9,6 +9,7 @@ import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
+import { colors } from "../../../services/theme";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -38,11 +39,13 @@ const StrategyForm = (props) => {
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
+      entryType: "LONG",
+      positionSize: "",
       price: currentPrice,
       realInvestment: "",
-      positionSize: "",
+      stopLossPrice: "",
+      trailingStopPrice: "",
       units: "",
-      entryType: "LONG",
     },
   });
   const { getValues, setValue, watch } = methods;
@@ -100,6 +103,7 @@ const StrategyForm = (props) => {
 
     // Track the chart line object.
     linesTracking[id] = chartLine;
+    console.log("New Line: ", chartLine);
 
     return chartLine;
   }
@@ -113,20 +117,35 @@ const StrategyForm = (props) => {
   };
 
   const strategyPrice = watch("price");
+  const stopLossPrice = watch("stopLossPrice");
+  const trailingStopPrice = watch("trailingStopPrice");
   const drawPriceLines = () => {
-    const linePriceColor = "rgb(117, 16, 197)";
     drawLine({
       id: "price",
       price: parseFloat(strategyPrice),
       label: "Price",
-      color: linePriceColor,
+      color: colors.purple,
+    });
+
+    drawLine({
+      id: "stopLossPrice",
+      price: parseFloat(stopLossPrice),
+      label: "Stop loss",
+      color: colors.yellow,
+    });
+
+    drawLine({
+      id: "trailingStopPrice",
+      price: parseFloat(trailingStopPrice),
+      label: "Trailing stop price",
+      color: colors.green,
     });
   };
 
   useEffect(updatePriceField, [currentPrice]);
 
   console.log("Values: ", getValues());
-  useEffect(drawPriceLines, [strategyPrice]);
+  useEffect(drawPriceLines, [strategyPrice, stopLossPrice, trailingStopPrice]);
 
   /**
    * Match current symbol against market symbols collection item.
