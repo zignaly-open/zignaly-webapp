@@ -45,7 +45,7 @@ const AutoclosePanel = () => {
   };
 
   return (
-    <Box className={`strategyPanel autoclosePanel ${expandClass}`}>
+    <Box className={`panel autoclosePanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">

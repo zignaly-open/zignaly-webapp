@@ -151,7 +151,7 @@ const DCAPanel = (props) => {
   useEffect(chainedUnitsUpdates, [strategyPositionSize]);
 
   return (
-    <Box className={`strategyPanel dcaPanel ${expandClass}`}>
+    <Box className={`panel dcaPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">

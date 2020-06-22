@@ -45,7 +45,7 @@ const EntryExpirationPanel = () => {
   };
 
   return (
-    <Box className={`strategyPanel entryExpirationPanel ${expandClass}`}>
+    <Box className={`panel entryExpirationPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">

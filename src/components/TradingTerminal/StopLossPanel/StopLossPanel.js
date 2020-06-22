@@ -107,7 +107,7 @@ const StopLossPanel = (props) => {
   };
 
   return (
-    <Box className={`strategyPanel stopLossPanel ${expandClass}`}>
+    <Box className={`panel stopLossPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
