@@ -2,12 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useQuoteAssets from "./useQuoteAssets";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
@@ -22,8 +25,10 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * @property {number} timeFrame
  * @property {function} setTimeFrame
  * @property {string} coin
+ * @property {Array<OptionType>} coins
  * @property {function} setCoin
  * @property {string} exchange
+ * @property {Array<OptionType>} exchanges
  * @property {function} setExchange
  * @property {string} sort
  * @property {function} setSort
@@ -38,6 +43,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * @returns {ProvidersData} Providers and filtering objects.
  */
 const useProvidersList = (options) => {
+  const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
@@ -50,17 +56,31 @@ const useProvidersList = (options) => {
   const [providers, setProviders] = useState(initialState);
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
-  const [coin, setCoin] = useState("");
-  const [exchange, setExchange] = useState("");
+
+  const createOption = (/** @type {string} **/ label) => ({ val: label.toLowerCase(), label });
+
+  // Coins
+  const quoteAssets = useQuoteAssets();
+  const coins = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allcoins" }) }].concat(
+    Object.keys(quoteAssets).map(createOption),
+  );
+  const [coin, setCoin] = useState(coins[0]);
+
+  // Exchanges
+  const exchanges = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allexchanges" }) }].concat(
+    ["Binance", "Zignaly", "KuCoin"].map(createOption),
+  );
+  const [exchange, setExchange] = useState("ALL");
+
   const [sort, setSort] = useState("RETURNS_DESC");
 
   const clearFilters = () => {
-    setCoin("");
-    setExchange("");
+    setCoin(coins[0]);
+    setExchange("ALL");
   };
 
   const clearSort = () => {
-    setSort("");
+    setSort("RETURNS_DESC");
   };
 
   /**
@@ -151,8 +171,10 @@ const useProvidersList = (options) => {
     timeFrame,
     setTimeFrame,
     coin,
+    coins,
     setCoin,
     exchange,
+    exchanges,
     setExchange,
     sort,
     setSort,
