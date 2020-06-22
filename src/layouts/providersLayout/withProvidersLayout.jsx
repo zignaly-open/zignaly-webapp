@@ -44,6 +44,7 @@ const withProvidersLayout = (Component) => {
     const filters = (
       <Box
         alignItems="center"
+        bgcolor="grid.main"
         className="settings"
         display="flex"
         flexDirection="row"

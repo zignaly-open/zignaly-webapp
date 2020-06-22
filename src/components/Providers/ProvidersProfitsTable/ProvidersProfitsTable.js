@@ -12,6 +12,8 @@ import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
+ * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
+ * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
 
 /**
@@ -432,8 +434,13 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
     },
   ];
 
-  const getMuiTheme = () =>
+  /**
+   * @param {ThemeOptions} theme Material UI theme options.
+   * @returns {Theme} Theme overridden.
+   */
+  const getMuiTheme = (theme) =>
     createMuiTheme({
+      ...theme,
       /**
        * @type {*}
        */
@@ -449,7 +456,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
 
   return (
     <Box className="providersProfitsTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
+      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
         <Table columns={columns} data={stats} persistKey={persistKey} title={title} />
       </MuiThemeProvider>
     </Box>
