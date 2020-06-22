@@ -47,6 +47,7 @@ const StrategyForm = (props) => {
       stopLossPrice: "",
       trailingStopPrice: "",
       units: "",
+      dcaTargetPricePercentage1: "",
     },
   });
   const { setValue, watch } = methods;
@@ -176,6 +177,21 @@ const StrategyForm = (props) => {
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
+
+  const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
+  const drawDCATargetPriceLines = () => {
+    if (dcaTargetPercentage1) {
+      const price = parseFloat(strategyPrice);
+      const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
+      drawLine({
+        id: "dcaTargetPricePercentage1",
+        price: dcaTargetPrice1,
+        label: "DCA target 1",
+        color: colors.black,
+      });
+    }
+  };
+  useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
