@@ -51,7 +51,7 @@ const MoreInfo = ({ provider }) => {
           <Typography className="tagline" variant="h3">
             <FormattedMessage id="srv.tradesperweek" />
           </Typography>
-          <Typography variant="h3">{provider.avgTradesPerWeek}</Typography>
+          <Typography variant="h3">{provider.avgTradesPerWeek.toFixed(2)}</Typography>
         </Box>
 
         <Box
@@ -96,7 +96,7 @@ const MoreInfo = ({ provider }) => {
             <FormattedMessage id="srv.profitableweeks" />
           </Typography>
           <Typography variant="h3">
-            {provider.profitableWeeks ? provider.profitableWeeks.toFixed(2) : 0}
+            {provider.profitableWeeks ? `${provider.profitableWeeks.toFixed(2)}%` : `${0}%`}
           </Typography>
         </Box>
       </Box>

@@ -20,8 +20,11 @@
       margin-bottom: 30px;
     }
 
-    .lineChart {
-      height: 300px;
+    .graphBox {
+      min-height: 250px;
+      .lineChart {
+        height: 300px;
+      }
     }
   }
 

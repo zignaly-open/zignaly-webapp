@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./providerAnalytics.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
 import { FormattedMessage } from "react-intl";
@@ -18,8 +18,10 @@ const CopyTradersAnalytics = () => {
   const storeViews = useStoreViewsSelector();
   const [followers, setFollowers] = useState([]);
   const dispatch = useDispatch();
+  const [copiersLoading, setCopiersLoading] = useState(false);
 
   const getProviderFollowers = () => {
+    setCopiersLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
@@ -28,6 +30,7 @@ const CopyTradersAnalytics = () => {
       .providerFollowersGet(payload)
       .then((response) => {
         setFollowers(response);
+        setCopiersLoading(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -48,8 +51,21 @@ const CopyTradersAnalytics = () => {
         <Typography variant="h3">
           <FormattedMessage id="trader.people" />
         </Typography>
-        <CopiersGraph list={followers} />
-        <GraphLabels list={followers} />
+        <Box
+          className="graphBox"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {copiersLoading && <CircularProgress size={50} color="primary" />}
+          {!copiersLoading && (
+            <>
+              <CopiersGraph list={followers} />
+              <GraphLabels list={followers} />
+            </>
+          )}
+        </Box>
       </Box>
 
       <Box bgcolor="grid.main" className="moreInfoBox">
