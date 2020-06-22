@@ -10,8 +10,8 @@ import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
 import { range, forIn } from "lodash";
+import { formatPrice } from "../../../utils/formatters";
 import "./StrategyForm.scss";
-import { formatPrice } from "../../../../types/utils/formatters";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
