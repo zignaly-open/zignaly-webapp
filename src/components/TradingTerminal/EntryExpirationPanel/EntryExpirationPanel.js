@@ -4,14 +4,14 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
-import "./ExpirationPanel.scss";
+import "./EntryExpirationPanel.scss";
 
 /**
  * Manual trading expiration panel component.
  *
  * @returns {JSX.Element} Take profit panel element.
  */
-const ExpirationPanel = () => {
+const EntryExpirationPanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
   const { errors, getValues, register, setError } = useFormContext();
 
@@ -83,4 +83,4 @@ const ExpirationPanel = () => {
   );
 };
 
-export default ExpirationPanel;
+export default EntryExpirationPanel;
