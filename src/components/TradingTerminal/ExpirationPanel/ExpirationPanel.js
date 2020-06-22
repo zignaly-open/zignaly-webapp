@@ -49,7 +49,7 @@ const ExpirationPanel = () => {
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
-            <FormattedMessage id="terminal.stoploss" />
+            <FormattedMessage id="terminal.entryexpiration" />
           </Typography>
         </Box>
       </Box>
@@ -61,23 +61,21 @@ const ExpirationPanel = () => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          <Box className="stopLoss">
-            <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-              <HelperLabel
-                descriptionId="terminal.entryexpiration.help"
-                labelId="terminal.entryexpiration"
+          <Box className="entryExpiration" display="flex" flexDirection="row" flexWrap="wrap">
+            <HelperLabel
+              descriptionId="terminal.entryexpiration.help"
+              labelId="terminal.entryexpiration"
+            />
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register}
+                name="entryExpirationMinutes"
+                onChange={expirationChange}
               />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  inputRef={register}
-                  name="entryExpirationMinutes"
-                  onChange={expirationChange}
-                />
-                <div className="currencyBox">Min</div>
-              </Box>
-              {displayFieldErrors("entryExpirationMinutes")}
+              <div className="currencyBox">Min</div>
             </Box>
+            {displayFieldErrors("entryExpirationMinutes")}
           </Box>
         </Box>
       )}
