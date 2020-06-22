@@ -1,5 +1,7 @@
 .strategyForm {
   flex: 0 0 30%;
+  height: 700px;
+  overflow-y: auto;
 
   @include media("<=sm") {
     flex: 0 0 100%;
