@@ -80,15 +80,15 @@ const StrategyForm = (props) => {
   function drawLine(chartLineParams) {
     const { id, price, label, color } = chartLineParams;
     const existingChartLine = linesTracking[id] || null;
-    console.log(linesTracking);
-    console.log("ID: ", id);
-    console.log("Existing line tracking: ", existingChartLine);
     // When line already exists, remove prior to draw to prevent duplication.
     if (existingChartLine) {
-      const currentPrice = existingChartLine.getPrice();
-      if (price !== currentPrice) {
+      const currentLinePrice = existingChartLine.getPrice();
+      // Update existing line only if price changed.
+      if (price !== currentLinePrice) {
         existingChartLine.setPrice(price);
       }
+
+      return existingChartLine;
     }
 
     const chart = tradingViewWidget.chart();
@@ -109,10 +109,10 @@ const StrategyForm = (props) => {
       .setQuantityBorderColor(color);
 
     // Track the chart line object.
-    linesTracking({
+    setLinesTracking({
       ...linesTracking,
       [id]: chartLine,
-    );
+    });
 
     return chartLine;
   }
