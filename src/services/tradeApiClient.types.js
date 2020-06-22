@@ -1049,6 +1049,7 @@ export function userEquityResponseTransform(response) {
   let balances = transformedResponse.balances.map((userEquityItem) => {
     return userEquityItemTransform(userEquityItem);
   });
+  balances = balances.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   transformedResponse = { ...transformedResponse, balances, quotes };
   return transformedResponse;
@@ -1861,9 +1862,11 @@ export function providerFollowersResponseTransform(response) {
     throw new Error("Response must be an array of positions.");
   }
 
-  return response.map((providerFollowersItem) => {
+  let list = response.map((providerFollowersItem) => {
     return providerFollowersResponseItemTransform(providerFollowersItem);
   });
+  list = list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  return list;
 }
 
 /**

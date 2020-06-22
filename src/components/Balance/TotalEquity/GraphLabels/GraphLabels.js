@@ -41,12 +41,12 @@ const EquityGraphLabels = ({ list }) => {
        * @type {Array<String>} data
        */
       let data = [];
-      for (let a = 0; a < list.length; a++) {
-        let date = new Date(list[a].date);
+      [...list].forEach((item) => {
+        let date = new Date(item.date);
         if (!data.includes(monthNames[date.getMonth()])) {
-          data.unshift(monthNames[date.getMonth()]);
+          data.push(monthNames[date.getMonth()]);
         }
-      }
+      });
       setLabels(data);
     };
 

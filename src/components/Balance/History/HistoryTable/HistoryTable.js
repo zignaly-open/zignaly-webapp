@@ -26,6 +26,7 @@ import Table from "../../../Table";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
+  let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -164,7 +165,7 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
   return (
     <Box className="historyTable" display="flex" flexDirection="column" width={1}>
       <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
-        <Table columns={columns} data={list} persistKey={persistKey} title={title} />
+        <Table columns={columns} data={data} persistKey={persistKey} title={title} />
       </MuiThemeProvider>
     </Box>
   );
