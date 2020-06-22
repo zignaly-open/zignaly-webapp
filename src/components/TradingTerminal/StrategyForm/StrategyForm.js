@@ -102,8 +102,10 @@ const StrategyForm = (props) => {
       .setQuantityBorderColor(color);
 
     // Track the chart line object.
-    linesTracking[id] = chartLine;
-    console.log("New Line: ", chartLine);
+    setLinesTracking({
+      linesTracking,
+      [id]: chartLine,
+    });
 
     return chartLine;
   }
@@ -115,25 +117,32 @@ const StrategyForm = (props) => {
   const updatePriceField = () => {
     setValue("price", currentPrice);
   };
+  useEffect(updatePriceField, [currentPrice]);
 
   const strategyPrice = watch("price");
-  const stopLossPrice = watch("stopLossPrice");
-  const trailingStopPrice = watch("trailingStopPrice");
-  const drawPriceLines = () => {
+  const drawStrategyPriceLine = () => {
     drawLine({
       id: "price",
       price: parseFloat(strategyPrice),
       label: "Price",
       color: colors.purple,
     });
+  };
+  useEffect(drawStrategyPriceLine, [strategyPrice]);
 
+  const stopLossPrice = watch("stopLossPrice");
+  const drawStopLossPriceLine = () => {
     drawLine({
       id: "stopLossPrice",
       price: parseFloat(stopLossPrice),
       label: "Stop loss",
       color: colors.yellow,
     });
+  };
+  useEffect(drawStopLossPriceLine, [stopLossPrice]);
 
+  const trailingStopPrice = watch("trailingStopPrice");
+  const drawTrailingStopPriceLine = () => {
     drawLine({
       id: "trailingStopPrice",
       price: parseFloat(trailingStopPrice),
@@ -141,11 +150,7 @@ const StrategyForm = (props) => {
       color: colors.green,
     });
   };
-
-  useEffect(updatePriceField, [currentPrice]);
-
-  console.log("Values: ", getValues());
-  useEffect(drawPriceLines, [strategyPrice, stopLossPrice, trailingStopPrice]);
+  useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
   /**
    * Match current symbol against market symbols collection item.
