@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
-import "./StrategyForm.scss";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
 import DCAPanel from "../DCAPanel/DCAPanel";
@@ -10,6 +9,8 @@ import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
+import { range, forIn } from "lodash";
+import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -48,7 +49,7 @@ const StrategyForm = (props) => {
       units: "",
     },
   });
-  const { getValues, setValue, watch } = methods;
+  const { setValue, watch } = methods;
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -79,9 +80,15 @@ const StrategyForm = (props) => {
   function drawLine(chartLineParams) {
     const { id, price, label, color } = chartLineParams;
     const existingChartLine = linesTracking[id] || null;
+    console.log(linesTracking);
+    console.log("ID: ", id);
+    console.log("Existing line tracking: ", existingChartLine);
     // When line already exists, remove prior to draw to prevent duplication.
     if (existingChartLine) {
-      existingChartLine.remove();
+      const currentPrice = existingChartLine.getPrice();
+      if (price !== currentPrice) {
+        existingChartLine.setPrice(price);
+      }
     }
 
     const chart = tradingViewWidget.chart();
@@ -102,10 +109,10 @@ const StrategyForm = (props) => {
       .setQuantityBorderColor(color);
 
     // Track the chart line object.
-    setLinesTracking({
-      linesTracking,
+    linesTracking({
+      ...linesTracking,
       [id]: chartLine,
-    });
+    );
 
     return chartLine;
   }
@@ -147,10 +154,28 @@ const StrategyForm = (props) => {
       id: "trailingStopPrice",
       price: parseFloat(trailingStopPrice),
       label: "Trailing stop price",
-      color: colors.green,
+      color: colors.blue,
     });
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
+
+  const targetGroupIndexes = range(1, 10, 1);
+  const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
+  const takeProfitTargetPrices = watch(takeProfitFields);
+  const drawTakeProfitTargetPriceLines = () => {
+    forIn(takeProfitTargetPrices, (targetPrice, targetFieldName) => {
+      if (targetPrice) {
+        const index = targetFieldName.substr(targetFieldName.length - 1);
+        drawLine({
+          id: targetFieldName,
+          price: parseFloat(targetPrice),
+          label: `Take profit target ${index}`,
+          color: colors.green,
+        });
+      }
+    });
+  };
+  useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
 
   /**
    * Match current symbol against market symbols collection item.
