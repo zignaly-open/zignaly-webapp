@@ -13,7 +13,7 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, setError } = useFormContext();
+  const { clearError, errors, getValues, register, setError } = useFormContext();
 
   /**
    * Validate that expiration time is greater than zero.
@@ -24,7 +24,8 @@ const EntryExpirationPanel = () => {
     const draftPosition = getValues();
     const entryExpiration = parseFloat(draftPosition.entryExpiration);
 
-    if (isNaN(entryExpiration) && entryExpiration <= 0) {
+    clearError("entryExpiration");
+    if (isNaN(entryExpiration) || entryExpiration <= 0) {
       setError("entryExpiration", "error", "Expiration minutes must be greater than zero.");
     }
   };
@@ -70,12 +71,12 @@ const EntryExpirationPanel = () => {
               <OutlinedInput
                 className="outlineInput"
                 inputRef={register}
-                name="entryExpirationMinutes"
+                name="entryExpiration"
                 onChange={expirationChange}
               />
               <div className="currencyBox">Min</div>
             </Box>
-            {displayFieldErrors("entryExpirationMinutes")}
+            {displayFieldErrors("entryExpiration")}
           </Box>
         </Box>
       )}

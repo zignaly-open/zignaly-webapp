@@ -7,16 +7,16 @@ import useExpandable from "../../../hooks/useExpandable";
 import "./AutoclosePanel.scss";
 
 /**
- * Manual trading expiration panel component.
+ * Manual trading autoclose panel component.
  *
  * @returns {JSX.Element} Take profit panel element.
  */
 const AutoclosePanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, setError } = useFormContext();
+  const { clearError, errors, getValues, register, setError } = useFormContext();
 
   /**
-   * Validate that expiration time is greater than zero.
+   * Validate that autoclose time is greater than zero.
    *
    * @return {Void} None.
    */
@@ -24,8 +24,9 @@ const AutoclosePanel = () => {
     const draftPosition = getValues();
     const autoclose = parseFloat(draftPosition.autoclose);
 
-    if (isNaN(autoclose) && autoclose <= 0) {
-      setError("entryExpiration", "error", "Autoclose hours must be greater than zero.");
+    clearError("autoclose");
+    if (isNaN(autoclose) || autoclose <= 0) {
+      setError("autoclose", "error", "Autoclose hours must be greater than zero.");
     }
   };
 
