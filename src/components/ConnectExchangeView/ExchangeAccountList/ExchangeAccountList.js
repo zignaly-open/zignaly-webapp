@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
-import ExchangeIcon from "../../ExchangeIcon";
 import "./ExchangeAccountList.scss";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
@@ -11,6 +9,7 @@ import NoRealAccount from "./NoRealAccount";
 import NoDemoAccount from "./NoDemoAccount";
 import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
+import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 
 /**
  * @typedef {Object} DefaultProps
@@ -28,8 +27,6 @@ const ExchangeAccountList = ({ demo }) => {
     navigateToPath,
   } = useContext(ModalPathContext);
   const storeUser = useStoreUserSelector();
-  const storeSettings = useStoreSettingsSelector();
-  const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
@@ -58,51 +55,7 @@ const ExchangeAccountList = ({ demo }) => {
         <Box className={`exchangeAccountContainer ${currentPath}`}>
           {exchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
-              <Box
-                alignItems="center"
-                className={`accountInfoHeader ${
-                  selectedExchangeInternalId === account.internalId ? "active" : ""
-                }`}
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                <Box alignItems="center" display="flex" flexDirection="row">
-                  <ExchangeIcon exchange={account.name.toLowerCase()} size="xlarge" />
-                  <Box className="accountName" display="flex" flexDirection="column">
-                    <Typography variant="h3">{account.internalName}</Typography>
-                    {selectedExchangeInternalId === account.internalId && (
-                      <Typography className="selected" variant="subtitle1">
-                        <FormattedMessage id="accounts.selected" />
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-                <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
-                  <CustomButton
-                    className="textDefault"
-                    onClick={() => navigateToPath("settings", account)}
-                  >
-                    <FormattedMessage id="accounts.settings" />
-                  </CustomButton>
-                  {account.isBrokerAccount && (
-                    <>
-                      <CustomButton
-                        className="textPurple"
-                        onClick={() => navigateToPath("deposit", account)}
-                      >
-                        <FormattedMessage id="accounts.deposit" />
-                      </CustomButton>
-                      <CustomButton
-                        className="textPurple"
-                        onClick={() => navigateToPath("withdraw", account)}
-                      >
-                        <FormattedMessage id="accounts.withdraw" />
-                      </CustomButton>
-                    </>
-                  )}
-                </Box>
-              </Box>
+              <ExchangeAccountTopBar account={account} />
               <ExchangeAccountData account={account} />
             </Box>
           ))}

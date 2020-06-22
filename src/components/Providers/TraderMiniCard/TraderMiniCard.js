@@ -29,6 +29,7 @@ const TraderMiniCard = ({ provider }) => {
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      bgcolor="grid.main"
     >
       <Box alignItems="center" display="flex" flexDirection="row" justifyContent="space-between">
         <Typography className="name" variant="h4">
