@@ -2,13 +2,19 @@ import React from "react";
 import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import useBalance from "../../../hooks/useBalance";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
-const AvailableBalance = () => {
-  const storeSettings = useStoreSettingsSelector();
-  const balance = useBalance(storeSettings.selectedExchange.internalId);
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {Object} DefaultProps
+ * @property {UserBalanceEntity} balance
+ */
 
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+
+const AvailableBalance = ({ balance }) => {
   return (
     <Box
       alignItems="center"
@@ -38,7 +44,7 @@ const AvailableBalance = () => {
             = USD {balance.totalFreeUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {balance.totalFreeBTC}</Typography>
+        <Typography variant="h5">BTC {balance.totalFreeBTC ? balance.totalFreeBTC : 0}</Typography>
       </Box>
       <span className="operator">+</span>
       <Box
@@ -62,7 +68,9 @@ const AvailableBalance = () => {
             = USD {balance.totalLockedUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {balance.totalLockedBTC}</Typography>
+        <Typography variant="h5">
+          BTC {balance.totalLockedBTC ? balance.totalLockedBTC : 0}
+        </Typography>
       </Box>
       <span className="operator">+</span>
       <Box

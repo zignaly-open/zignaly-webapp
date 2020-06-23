@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import "./ProviderHeader.scss";
 import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
@@ -34,10 +34,10 @@ const ProviderHeader = () => {
       justifyContent="flex-start"
     >
       {storeViews.provider.isCopyTrading ? (
-        <Fragment>
+        <>
           <TraderHeaderActions />
           <TraderHeaderInfo />
-        </Fragment>
+        </>
       ) : (
         <ProviderHeaderActions />
       )}

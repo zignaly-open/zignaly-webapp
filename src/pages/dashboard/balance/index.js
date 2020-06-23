@@ -9,9 +9,13 @@ import CryptoComposition from "../../../components/Balance/CryptoComposition";
 import AvailableBalance from "../../../components/Balance/AvailableBalance";
 import History from "../../../components/Balance/History";
 import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import useBalance from "../../../hooks/useBalance";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const Balance = () => {
   const storeUser = useStoreUserSelector();
+  const storeSettings = useStoreSettingsSelector();
+  const balance = useBalance(storeSettings.selectedExchange.internalId);
 
   return (
     <>
@@ -32,7 +36,7 @@ const Balance = () => {
           <CryptoComposition dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance />
+          <AvailableBalance balance={balance} />
         </Box>
         <Box className="historyBox">
           <History dailyBalance={storeUser.dailyBalance} />

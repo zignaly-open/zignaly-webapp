@@ -73,13 +73,13 @@ const CopyTradersAnalytics = () => {
         </Typography>
 
         <Box
+          alignItems="center"
           className="graphBox"
           display="flex"
           flexDirection="column"
-          alignItems="center"
           justifyContent="center"
         >
-          {performanceLoading && <CircularProgress size={50} color="primary" />}
+          {performanceLoading && <CircularProgress color="primary" size={50} />}
           {!performanceLoading && <TradingPerformance performance={performance} />}
         </Box>
       </Box>
@@ -89,13 +89,13 @@ const CopyTradersAnalytics = () => {
           <FormattedMessage id="trader.people" />
         </Typography>
         <Box
+          alignItems="center"
           className="graphBox"
           display="flex"
           flexDirection="column"
-          alignItems="center"
           justifyContent="center"
         >
-          {copiersLoading && <CircularProgress size={50} color="primary" />}
+          {copiersLoading && <CircularProgress color="primary" size={50} />}
           {!copiersLoading && (
             <>
               <CopiersGraph list={followers} />

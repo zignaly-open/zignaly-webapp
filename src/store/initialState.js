@@ -21,6 +21,7 @@
 /**
  * @typedef {Object} UserObject
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
+ * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
  */
 
@@ -217,6 +218,17 @@ const initialState = {
   },
   user: {
     exchangeConnections: [],
+    balance: {
+      pnlBTC: 0,
+      pnlUSDT: 0,
+      totalBTC: 0,
+      totalFreeBTC: 0,
+      totalFreeUSDT: 0,
+      totalLockedBTC: 0,
+      totalLockedUSDT: 0,
+      totalUSDT: 0,
+      loading: false,
+    },
     dailyBalance: {
       balances: [],
       quotes: [],

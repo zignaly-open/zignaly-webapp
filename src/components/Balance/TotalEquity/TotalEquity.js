@@ -8,8 +8,10 @@ import EquityGraphLabels from "./GraphLabels";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {UserBalanceEntity} [balance]
  */
 
 /**

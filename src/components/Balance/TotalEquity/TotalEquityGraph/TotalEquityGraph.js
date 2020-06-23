@@ -36,7 +36,7 @@ const TotalEquityGraph = ({ list }) => {
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.push(parseFloat(item.totalUSDT));
+      chartData.values.push(item.totalUSDT);
       chartData.labels.push("");
     });
   };

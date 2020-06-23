@@ -1153,12 +1153,12 @@ function createUserEquityEntity() {
     lockedKCS: 0,
     lockedNEO: 0,
     otherPercentage: 0,
-    totalBTC: "0",
-    totalFreeBTC: "0",
-    totalFreeUSDT: "0",
-    totalLockedBTC: "0",
-    totalLockedUSDT: "0",
-    totalUSDT: "0",
+    totalBTC: 0,
+    totalFreeBTC: 0,
+    totalFreeUSDT: 0,
+    totalLockedBTC: 0,
+    totalLockedUSDT: 0,
+    totalUSDT: 0,
   };
 }
 

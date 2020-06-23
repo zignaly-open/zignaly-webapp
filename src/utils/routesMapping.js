@@ -144,13 +144,13 @@ export const routesMapping = (path) => {
 /**
  * Map path to section navigation object.
  *
+ * @param {String} providerId Id of the opened copyTrader.
  * @param {DefaultProviderGetObject} provider Path to map section links for.
- * @param {String} providerId
  * @returns {SectionNavigation} A section navigation object.
  */
 
 export const createTraderRoutes = (providerId, provider) => {
-  if (provider.id) {
+  if (providerId) {
     let data = {
       id: "providerProfile",
       subtitleId: "",
@@ -186,17 +186,36 @@ export const createTraderRoutes = (providerId, provider) => {
     }
     return data;
   }
+  return {
+    id: "providerProfile",
+    subtitleId: "",
+    subtitle2Id: "",
+    links: [
+      {
+        id: "srv.profile",
+        to: `/copyTraders/${provider.id}/profile`,
+      },
+      {
+        id: "srv.analytics",
+        to: `/copyTraders/${provider.id}/analytics`,
+      },
+      {
+        id: "srv.positions",
+        to: `/copyTraders/${provider.id}/positions`,
+      },
+    ],
+  };
 };
 
 /**
  * Map path to section navigation object.
  *
+ * @param {String} providerId ID of the opened signalProvider.
  * @param {DefaultProviderGetObject} provider Path to map section links for.
- * @param {String} providerId
  * @returns {SectionNavigation} A section navigation object.
  */
 export const createProviderRoutes = (providerId, provider) => {
-  if (provider.id) {
+  if (providerId) {
     let data = {
       id: "providerProfile",
       subtitleId: "",
@@ -228,4 +247,24 @@ export const createProviderRoutes = (providerId, provider) => {
     }
     return data;
   }
+
+  return {
+    id: "providerProfile",
+    subtitleId: "",
+    subtitle2Id: "",
+    links: [
+      {
+        id: "srv.profile",
+        to: `/signalProviders/${provider.id}/profile`,
+      },
+      {
+        id: "srv.analytics",
+        to: `/signalProviders/${provider.id}/analytics`,
+      },
+      {
+        id: "srv.settings",
+        to: `/signalProviders/${provider.id}/settings`,
+      },
+    ],
+  };
 };

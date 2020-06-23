@@ -7,6 +7,10 @@
     min-height: 500px;
     padding: 30px 20px;
     width: 100%;
+
+    .graphBox {
+      min-height: 400px;
+    }
   }
 
   .copiersBox {
@@ -20,8 +24,12 @@
       margin-bottom: 30px;
     }
 
-    .lineChart {
-      height: 300px;
+    .graphBox {
+      min-height: 250px;
+
+      .lineChart {
+        height: 300px;
+      }
     }
   }
 

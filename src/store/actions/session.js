@@ -1,6 +1,6 @@
 import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
-import { unsetUserExchanges, unsetUserBalance } from "./user";
+import { unsetUserExchanges } from "./user";
 import { unsetProvider } from "./views";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";

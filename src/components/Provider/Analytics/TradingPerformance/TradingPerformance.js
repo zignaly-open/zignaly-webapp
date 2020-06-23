@@ -71,7 +71,7 @@ const TradingPerformance = ({ performance }) => {
   return (
     <Box className="tradingPerformance">
       <TradingPerformanceGraph quarter={selectedQuater} />
-      <WeeklyData list={list} selected={selectedQuater} onChange={handleChange} />
+      <WeeklyData list={list} onChange={handleChange} selected={selectedQuater} />
     </Box>
   );
 };

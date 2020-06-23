@@ -70,18 +70,18 @@ const WeeklyData = ({ list, selected, onChange }) => {
       justifyContent="flex-start"
     >
       <Box
+        alignItems="center"
         className="weekLabels"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
       >
         {weekLabels.map((item, index) => (
           <Typography key={index} variant="h4">
             {item}
           </Typography>
         ))}
-        <Typography variant="h4" className="total">
+        <Typography className="total" variant="h4">
           Total
         </Typography>
       </Box>
@@ -89,20 +89,20 @@ const WeeklyData = ({ list, selected, onChange }) => {
       <Box className="weekData">
         {list.map((item, index) => (
           <Box
-            key={index}
+            alignItems="center"
             className={"quarterBox " + (selected.id === item.id ? "selected" : "")}
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
-            alignItems="center"
+            key={index}
             onClick={() => handleChange(item.id)}
           >
             {item.weeklyStats.map((item2, index2) => (
-              <Typography key={index2} variant="h4" className={item2.return > 0 ? "green" : "red"}>
+              <Typography className={item2.return > 0 ? "green" : "red"} key={index2} variant="h4">
                 {item2.return.toFixed(2)}
               </Typography>
             ))}
-            <Typography variant="h4" className={"total " + (item.total > 0 ? "green" : "red")}>
+            <Typography className={"total " + (item.total > 0 ? "green" : "red")} variant="h4">
               {item.total.toFixed(2)}
             </Typography>
           </Box>
