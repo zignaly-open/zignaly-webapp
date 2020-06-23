@@ -10,7 +10,7 @@ import BalanceBox from "../Header/BalanceBox";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState

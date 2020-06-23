@@ -8,7 +8,7 @@ import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
 import AvailableBalance from "../../../components/Balance/AvailableBalance";
 import History from "../../../components/Balance/History";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 
 const Balance = () => {
   const storeUser = useStoreUserSelector();

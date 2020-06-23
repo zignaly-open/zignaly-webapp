@@ -10,7 +10,7 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
-import useStoreUserSelector from "../../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps

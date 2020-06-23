@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
 import { openExchangeConnectionView } from "../../store/actions/ui";
-import useStoreUserSelector from "../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
 
 /**
  * HOC wrap component with dashboard layout.
