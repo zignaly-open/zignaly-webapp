@@ -28,6 +28,11 @@
     min-height: 430px;
     width: 54%;
   }
+  .optionsBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    min-height: 400px;
+    width: calc(46% - 20px);
+  }
 }
 
 @include media("<=sm") {
@@ -50,6 +55,10 @@
     }
 
     .performanceBox {
+      margin: 0 0 20px;
+      width: 100%;
+    }
+    .optionsBox {
       margin: 0 0 20px;
       width: 100%;
     }

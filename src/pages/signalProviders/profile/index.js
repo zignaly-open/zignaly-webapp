@@ -9,6 +9,7 @@ import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
 import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
+import Options from "../../../components/Provider/Profile/Options";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 
@@ -45,7 +46,7 @@ const SignalProvidersProfile = () => {
       display="flex"
       flexDirection="row"
       flexWrap="wrap"
-      justifyContent="center"
+      justifyContent="flex-start"
     >
       <Box bgcolor="grid.main" className="aboutBox">
         <AboutUs provider={storeViews.provider} />
@@ -58,6 +59,9 @@ const SignalProvidersProfile = () => {
       </Box>
       <Box bgcolor="grid.main" className="performanceBox">
         <Performance provider={storeViews.provider} />
+      </Box>
+      <Box bgcolor="grid.main" className="optionsBox">
+        <Options provider={storeViews.provider} />
       </Box>
       <Disclaimer />
     </Box>

@@ -1,0 +1,28 @@
+.optionsFormWrapper {
+  width: 100%;
+}
+.providerOptionsForm {
+  width: 100%;
+
+  .inputBox {
+    width: 100%;
+    margin-bottom: 20px;
+
+    .checkboxInput {
+      margin: 0;
+      margin-right: 10px;
+    }
+
+    .customLabel {
+      margin-bottom: 0;
+    }
+  }
+
+  .formAction {
+    width: 100%;
+
+    .submitButton {
+      min-width: 160px;
+    }
+  }
+}

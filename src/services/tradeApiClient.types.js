@@ -1641,6 +1641,32 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} profitableWeeks
  * @property {Number} followers
  * @property {DefaultProviderStripeObject} stripe
+ * @property {Boolean} acceptUpdateSignal
+ * @property {Boolean} allowSendingBuyOrdersAsMarket
+ * @property {String} customerKey
+ * @property {Boolean} enablePanicSellSignals
+ * @property {Boolean} enableSellSignals
+ * @property {Boolean} limitPriceFromSignal
+ * @property {String} limitReBuys
+ * @property {Boolean} long
+ * @property {Boolean} mid
+ * @property {Number} quantityPercentage
+ * @property {Boolean} reBuyAll
+ * @property {Boolean} reBuyFirst
+ * @property {Boolean} reBuyLast
+ * @property {Boolean} reBuysFromSignal
+ * @property {Boolean} reUseSignalIdIfClosed
+ * @property {String} risk
+ * @property {Boolean} shortmid
+ * @property {Boolean} short
+ * @property {Boolean} stopLossFromSignal
+ * @property {String} successRate
+ * @property {Boolean} takeProfitAll
+ * @property {Boolean} takeProfitFirst
+ * @property {Boolean} takeProfitLast
+ * @property {Boolean} takeProfitsFromSignal
+ * @property {Boolean} trailingStopFromSignal
+ * @property {Boolean} useLeverageFromSignal
  */
 
 /**
@@ -1744,6 +1770,32 @@ function createEmptyProviderGetEntity() {
       paymentGateway: "",
       trialStartedAt: "",
     },
+    acceptUpdateSignal: false,
+    allowSendingBuyOrdersAsMarket: false,
+    customerKey: "",
+    enablePanicSellSignals: false,
+    enableSellSignals: false,
+    limitPriceFromSignal: false,
+    limitReBuys: "",
+    long: false,
+    mid: false,
+    quantityPercentage: 0,
+    reBuyAll: false,
+    reBuyFirst: false,
+    reBuyLast: false,
+    reBuysFromSignal: false,
+    reUseSignalIdIfClosed: false,
+    risk: "",
+    short: false,
+    shortmid: false,
+    stopLossFromSignal: false,
+    successRate: "",
+    takeProfitAll: false,
+    takeProfitFirst: false,
+    takeProfitLast: false,
+    takeProfitsFromSignal: false,
+    trailingStopFromSignal: false,
+    useLeverageFromSignal: false,
   };
 }
 

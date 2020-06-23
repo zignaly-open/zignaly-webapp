@@ -9,6 +9,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { setProvider } from "../../../store/actions/views";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -78,7 +79,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         setError("allocatedBalance", "invalid amount");
       }
     } catch (e) {
-      alert(e.message);
+      dispatch(showErrorAlert(e));
     }
   };
 
@@ -139,7 +140,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
         <Box className="inputBox">
           <CustomButton
-            className={"full submitButton"}
+            className="full submitButton"
             loading={loading}
             onClick={handleSubmitClick}
             type="submit"
