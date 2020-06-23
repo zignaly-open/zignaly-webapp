@@ -4,6 +4,39 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @typedef {Object} CreatePositionPayload
+ * @property {string} token
+ * @property {string} pair
+ * @property {string} limitPrice
+ * @property {string} positionSizeQuote
+ * @property {string} positionSize
+ * @property {("entry" | "exit")} type
+ * @property {("SHORT" | "LONG")} side
+ * @property {number} stopLossPercentage
+ * @property {number} buyTTL
+ * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
+ * @property {number} buyStopPrice
+ * @property {boolean} sellByTTL
+ * @property {Array<PositionPriceTarget>} takeProfitTargets
+ * @property {Array<PositionPriceTarget>} reBuyTargets
+ * @property {number} trailingStopTriggerPercentage
+ * @property {number} trailingStopPercentage
+ * @property {number} providerId
+ * @property {string} providerName
+ * @property {string} exchangeName
+ * @property {string} exchangeInternalId
+ */
+
+/**
+ * @typedef {Object} PositionPriceTarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {string} quoteTarget
+ * @property {number} amountPercentage
+ * @property {string} value
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
