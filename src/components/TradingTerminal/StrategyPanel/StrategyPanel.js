@@ -307,4 +307,4 @@ const StrategyPanel = (props) => {
   );
 };
 
-export default StrategyPanel;
+export default React.memo(StrategyPanel);

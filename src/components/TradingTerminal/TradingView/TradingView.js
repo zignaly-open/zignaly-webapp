@@ -224,4 +224,4 @@ const TradingView = () => {
   );
 };
 
-export default TradingView;
+export default React.memo(TradingView);

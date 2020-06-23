@@ -233,4 +233,4 @@ const StrategyForm = (props) => {
   );
 };
 
-export default StrategyForm;
+export default React.memo(StrategyForm);

@@ -84,4 +84,4 @@ const AutoclosePanel = () => {
   );
 };
 
-export default AutoclosePanel;
+export default React.memo(AutoclosePanel);

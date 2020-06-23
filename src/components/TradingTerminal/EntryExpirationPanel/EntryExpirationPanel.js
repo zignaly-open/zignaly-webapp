@@ -84,4 +84,4 @@ const EntryExpirationPanel = () => {
   );
 };
 
-export default EntryExpirationPanel;
+export default React.memo(EntryExpirationPanel);

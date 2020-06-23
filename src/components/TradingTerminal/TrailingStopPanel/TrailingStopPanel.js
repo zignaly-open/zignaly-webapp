@@ -165,4 +165,4 @@ const TrailingStopPanel = (props) => {
   );
 };
 
-export default TrailingStopPanel;
+export default React.memo(TrailingStopPanel);

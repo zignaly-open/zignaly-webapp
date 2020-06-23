@@ -375,4 +375,4 @@ const TakeProfitPanel = (props) => {
   );
 };
 
-export default TakeProfitPanel;
+export default React.memo(TakeProfitPanel);

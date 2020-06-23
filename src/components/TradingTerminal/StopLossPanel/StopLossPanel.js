@@ -155,4 +155,4 @@ const StopLossPanel = (props) => {
   );
 };
 
-export default StopLossPanel;
+export default React.memo(StopLossPanel);

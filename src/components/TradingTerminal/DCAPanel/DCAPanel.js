@@ -212,4 +212,4 @@ const DCAPanel = (props) => {
   );
 };
 
-export default DCAPanel;
+export default React.memo(DCAPanel);
