@@ -42,7 +42,7 @@ const StrategyPanel = (props) => {
   const defaultExpand = !!disableExpand;
   const [expand, setExpand] = useState(defaultExpand);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
@@ -93,35 +93,57 @@ const StrategyPanel = (props) => {
   /**
    * Validate that position size is within limits.
    *
-   * @param {number} positionSize Position size value.
-   * @returns {Void} None.
+   * @param {any} positionSize Position size value.
+   * @returns {boolean} Validation result.
    */
   function validatePositionSize(positionSize) {
+    const value = parseFloat(positionSize);
+
     clearError("positionSize");
-    if (limits.cost.min && positionSize < limits.cost.min) {
-      setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
+    if (isNaN(value)) {
+      setError("positionSize", "error", "Position size must be a numeric value.");
+      return false;
     }
 
-    if (limits.cost.max && positionSize > limits.cost.max) {
-      setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
+    if (limits.cost.min && value < limits.cost.min) {
+      setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
+      return false;
     }
+
+    if (limits.cost.max && value > limits.cost.max) {
+      setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
+      return false;
+    }
+
+    return true;
   }
 
   /**
    * Validate that units is within limits.
    *
-   * @param {number} units Units value.
-   * @returns {Void} None.
+   * @param {any} units Units value.
+   * @returns {boolean} Validation result.
    */
   function validateUnits(units) {
+    const value = parseFloat(units);
+
     clearError("units");
-    if (limits.amount.min && units < limits.amount.min) {
-      setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
+    if (isNaN(value)) {
+      setError("units", "error", "Position size must be a numeric value.");
+      return false;
     }
 
-    if (limits.amount.max && units > limits.amount.max) {
-      setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
+    if (limits.amount.min && value < limits.amount.min) {
+      setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
+      return false;
     }
+
+    if (limits.amount.max && value > limits.amount.max) {
+      setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -270,7 +292,10 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  required: "Position size is required.",
+                  validate: validatePositionSize,
+                })}
                 name="positionSize"
                 onChange={positionSizeChange}
                 placeholder={"0"}
@@ -307,4 +332,4 @@ const StrategyPanel = (props) => {
   );
 };
 
-export default StrategyPanel;
+export default React.memo(StrategyPanel);

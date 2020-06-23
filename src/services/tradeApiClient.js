@@ -53,6 +53,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
  * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
+ * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
  */
 
 /**
@@ -576,10 +577,25 @@ class TradeApiClient {
   }
 
   /**
+   * Create manual position.
+   *
+   * @param {CreatePositionPayload} payload Create manual position.
+
+   * @returns {Promise<string>} Promise that resolve created position ID.
+   *
+   * @memberof TradeApiClient
+   */
+  async manualPositionCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createManualPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient

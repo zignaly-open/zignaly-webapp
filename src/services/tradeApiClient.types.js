@@ -4,6 +4,86 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @type {('entry')}
+ */
+export const POSITION_TYPE_ENTRY = "entry";
+
+/**
+ * @type {('exit')}
+ */
+export const POSITION_TYPE_EXIT = "exit";
+
+/**
+ * @type {('LONG')}
+ */
+export const POSITION_SIDE_LONG = "LONG";
+
+/**
+ * @type {('SHORT')}
+ */
+export const POSITION_SIDE_SHORT = "SHORT";
+
+/**
+ * @type {('market')}
+ */
+export const POSITION_ENTRY_TYPE_MARKET = "market";
+
+/**
+ * @type {('limit')}
+ */
+export const POSITION_ENTRY_TYPE_LIMIT = "limit";
+
+/**
+ * @type {('stop_loss_limit')}
+ */
+export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
+
+/**
+ * @type {('import')}
+ */
+export const POSITION_ENTRY_TYPE_IMPORT = "import";
+
+/**
+ * @typedef {Object} CreatePositionPayload
+ * @property {string} token
+ * @property {string} pair
+ * @property {number} limitPrice
+ * @property {string} positionSizeQuote
+ * @property {number} positionSize
+ * @property {('entry' | 'exit')} type
+ * @property {('SHORT' | 'LONG')} side
+ * @property {number|boolean} stopLossPercentage
+ * @property {number|boolean} buyTTL
+ * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
+ * @property {number} buyStopPrice
+ * @property {number|boolean} sellByTTL
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets
+ * @property {number|boolean} trailingStopTriggerPercentage
+ * @property {number|boolean} trailingStopPercentage
+ * @property {number|string} providerId
+ * @property {string} providerName
+ * @property {string} exchangeName
+ * @property {string} exchangeInternalId
+ */
+
+/**
+ * @typedef {Object} PositionProfitTarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} quoteTarget
+ * @property {number} amountPercentage
+ * @property {number} value
+ */
+
+/**
+ * @typedef {Object} PositionDCATarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
