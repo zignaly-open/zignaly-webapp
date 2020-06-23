@@ -18,6 +18,7 @@ import { Button, CircularProgress } from "@material-ui/core";
  * @property {MouseEventHandler} [onClick] handle onClick event.
  * @property {Boolean} [disabled] disable button and all events.
  * @property {ButtonHTMLAttributes["type"]} [type] type can be "submit" in terms of form.
+ * @property {String} [target] open a link in a new tab.
  */
 
 /**

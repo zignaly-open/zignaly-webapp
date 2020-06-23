@@ -143,6 +143,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ExchangeAssetsPayload
+ * @property {string} internalId
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Array<ReBuyTarget>} reBuyTargets
  * @property {RealInvestment} realInvestment
@@ -1957,5 +1962,97 @@ function createProviderFollowersListEmptyEntity() {
     realExchangeConnected: false,
     suspended: false,
     userId: "",
+  };
+}
+
+/**
+ * @typedef {Object} CoinNetwork
+ * @property {string} name
+ * @property {string} network
+ * @property {string} coin
+ * @property {string} addressRegex
+ * @property {string} depositDesc
+ * @property {string} depositEnable
+ * @property {boolean} isDefault
+ * @property {string} memoRegex
+ * @property {boolean} resetAddressStatus
+ * @property {string} specialTips
+ * @property {string} withdrawDesc
+ * @property {boolean} withdrawEnable
+ * @property {string} withdrawFee
+ * @property {string} withdrawMin
+ */
+
+/**
+ * @typedef {Object} ExchangeAsset
+ * @property {string} name
+ * @property {string} balanceFree
+ * @property {string} balanceLocked
+ * @property {string} balanceTotal
+ * @property {string} balanceFreeBTC
+ * @property {string} balanceLockedBTC
+ * @property {string} balanceTotalBTC
+ * @property {string} balanceFreeUSDT
+ * @property {string} balanceLockedUSDT
+ * @property {string} balanceTotalUSDT
+ * @property {string} balanceTotalExchCoin
+ * @property {string} exchCoin
+ * @property {Array<CoinNetwork>} networks
+ */
+
+/**
+ * @typedef {Object.<string, ExchangeAsset>} ExchangeAssetsDict
+ */
+
+/**
+ * Transform provider followers list response item to ProviderFollowersListEntity.
+ *
+ * @param {*} response Trade API get exchange assets list response.
+ * @returns {ExchangeAssetsDict} Exchange asssets.
+ */
+
+export function exchangeAssetsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: exchangeAssetsItemTransform(val),
+    }),
+    {},
+  );
+}
+
+/**
+ *
+ * @param {*} exchangeAssetItem Exchange assets list response item.
+ * @returns {ExchangeAssetsDict} Exchange assets.
+ */
+function exchangeAssetsItemTransform(exchangeAssetItem) {
+  const emptyExchangeAssetsEntity = createExchangeAssetsEmptyEntity();
+  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem);
+
+  return transformedResponse;
+}
+
+/**
+ * @returns {ExchangeAsset} Exchange asset
+ */
+function createExchangeAssetsEmptyEntity() {
+  return {
+    name: "",
+    balanceFree: "0.000000000000",
+    balanceLocked: "0.000000000000",
+    balanceTotal: "0.000000000000",
+    balanceFreeBTC: "0.000000000000",
+    balanceLockedBTC: "0.000000000000",
+    balanceTotalBTC: "0.000000000000",
+    balanceFreeUSDT: "0.000000000000",
+    balanceLockedUSDT: "0.000000000000",
+    balanceTotalUSDT: "0.000000000000",
+    balanceTotalExchCoin: "0.000000000000",
+    exchCoin: "",
+    networks: [],
   };
 }

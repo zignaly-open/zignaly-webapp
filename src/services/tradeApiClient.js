@@ -20,6 +20,7 @@ import {
   ownCopyTraderProvidersOptionsResponseTransform,
   providerFollowersResponseTransform,
   providerFollowersListResponseTransform,
+  exchangeAssetsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -43,6 +44,7 @@ import {
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeAssetsPayload} ExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
@@ -52,6 +54,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
  * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
+ * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  */
 
 /**
@@ -406,6 +409,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return basesResponseTransform(responseData);
+  }
+
+  /**
+   *
+   * Get exchange assets.
+   *
+   * @param {ExchangeAssetsPayload} payload
+   * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+
+  async exchangeAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeAssetsResponseTransform(responseData);
   }
 
   /**
