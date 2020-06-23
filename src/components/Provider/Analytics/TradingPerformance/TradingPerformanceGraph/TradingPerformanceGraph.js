@@ -6,26 +6,35 @@ import { useTheme } from "@material-ui/core/styles";
 
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
  *
- * @typedef {Object} DefaultProps
- * @property {ProviderPerformanceEntity} performance
+ * @typedef {Object} DefaultQuarter
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Number} total
+ * @property {Number} id
  */
 
 /**
  *
- * @param {DefaultProps} props Default props.
+ * @typedef {Object} DefaultProps
+ * @property {DefaultQuarter} quarter
  */
 
-const PerformanceGraph = ({ performance }) => {
+/**
+ * Trading performance chart component.
+ *
+ * @param {DefaultProps} props Default props.
+ * @return {JSX.Element} JSX component.
+ */
+const PerformanceGraph = ({ quarter }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = performance.weeklyStats.map((item) => item.return);
-  const labels = performance.weeklyStats.map(() => "");
+  const values = quarter.weeklyStats.map((item) => item.return);
+  const labels = quarter.weeklyStats.map(() => "");
   const options = {
     scales: {
       xAxes: [
@@ -39,7 +48,7 @@ const PerformanceGraph = ({ performance }) => {
         {
           stacked: false,
           ticks: {
-            display: true,
+            display: false,
           },
           gridLines: {
             color: "transparent",
@@ -60,7 +69,7 @@ const PerformanceGraph = ({ performance }) => {
     `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}`;
 
   return (
-    <Box className="performanceGraph">
+    <Box className="tradingPerformanceGraph">
       <BarChart
         adjustHeightToContent={isMobile}
         horizontal={isMobile}

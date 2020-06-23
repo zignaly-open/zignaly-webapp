@@ -1,0 +1,100 @@
+import React from "react";
+import "./WeeklyData.scss";
+import { Box, Typography } from "@material-ui/core";
+
+/**
+ *
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultQuarter
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Number} total
+ * @property {Number} id
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Array<DefaultQuarter>} list
+ * @property {DefaultQuarter} selected
+ */
+
+/**
+ * Trading performance chart component.
+ *
+ * @param {DefaultProps} props Default props.
+ * @return {JSX.Element} JSX component.
+ */
+
+const WeeklyData = ({ list, selected }) => {
+  const weekLabels = [
+    "w1",
+    "w2",
+    "w3",
+    "w4",
+    "w5",
+    "w6",
+    "w7",
+    "w8",
+    "w9",
+    "w10",
+    "w11",
+    "w12",
+    "w13",
+  ];
+
+  return (
+    <Box
+      alignItems="flex-start"
+      className="weeklyData"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
+      <Box
+        className="weekLabels"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {weekLabels.map((item, index) => (
+          <Typography key={index} variant="h4">
+            {item}
+          </Typography>
+        ))}
+        <Typography variant="h4" className="total">
+          Total
+        </Typography>
+      </Box>
+
+      <Box className="weekData">
+        {list.map((item, index) => (
+          <Box
+            key={index}
+            className={"quarterBox " + (selected.id === item.id ? "selected" : "")}
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            {item.weeklyStats.map((item2, index2) => (
+              <Typography key={index2} variant="h4" className={item2.return > 0 ? "green" : "red"}>
+                {item2.return.toFixed(2)}
+              </Typography>
+            ))}
+            <Typography variant="h4" className={"total " + (item.total > 0 ? "green" : "red")}>
+              {item.total.toFixed(2)}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+};
+
+export default WeeklyData;
