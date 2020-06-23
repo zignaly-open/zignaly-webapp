@@ -47,7 +47,6 @@ export const endTradeApiSession = () => {
       dispatch(action);
       dispatch(unsetSelectedExchange());
       dispatch(unsetUserExchanges());
-      dispatch(unsetUserBalance());
       dispatch(unsetProvider());
     } catch (e) {
       alert(`ERROR: ${e.message}`);

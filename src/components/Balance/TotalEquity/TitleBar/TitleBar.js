@@ -4,9 +4,15 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ *
+ * @typedef {Object} BalanceObject
+ * @property {Number} totalBTC
+ * @property {Number} totalUSDT
+ */
+
+/**
  * @typedef {Object} DefaultProps
- * @property {UserBalanceEntity} balance Balance
+ * @property {BalanceObject} balance Balance
  */
 
 /**

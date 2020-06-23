@@ -5,7 +5,7 @@ import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
 import { FormattedMessage } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
-import TradingPerformanceGraph from "../../../components/Provider/Analytics/TradingPerformanceGraph";
+import TradingPerformance from "../../../components/Provider/Analytics/TradingPerformance";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
@@ -80,7 +80,7 @@ const CopyTradersAnalytics = () => {
           justifyContent="center"
         >
           {performanceLoading && <CircularProgress size={50} color="primary" />}
-          {!performanceLoading && <TradingPerformanceGraph performance={performance} />}
+          {!performanceLoading && <TradingPerformance performance={performance} />}
         </Box>
       </Box>
 

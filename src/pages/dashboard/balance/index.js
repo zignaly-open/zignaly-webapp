@@ -26,13 +26,13 @@ const Balance = () => {
         justifyContent="center"
       >
         <Box className="equityBox">
-          <TotalEquity balance={storeUser.balance} dailyBalance={storeUser.dailyBalance} />
+          <TotalEquity dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="cryptoBox">
           <CryptoComposition dailyBalance={storeUser.dailyBalance} />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance balance={storeUser.balance} />
+          <AvailableBalance />
         </Box>
         <Box className="historyBox">
           <History dailyBalance={storeUser.dailyBalance} />

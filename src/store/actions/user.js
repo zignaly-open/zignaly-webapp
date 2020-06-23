@@ -47,7 +47,6 @@ export const setUserExchanges = (payload) => {
        */
       let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
       dispatch(setDailyUserBalance(balancePayload));
-      dispatch(setUserBalance(balancePayload));
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
@@ -70,6 +69,9 @@ export const unsetUserExchanges = () => {
 export const setUserBalance = (payload) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_USER_BALANCE_LOADER,
+      });
       const responseData = await tradeApi.userBalanceGet(payload);
       const action = {
         type: GET_USER_BALANCE,
@@ -80,12 +82,6 @@ export const setUserBalance = (payload) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
-  };
-};
-
-export const setUserBalanceLoader = () => {
-  return {
-    type: SET_USER_BALANCE_LOADER,
   };
 };
 

@@ -1,12 +1,12 @@
 import React from "react";
 import "./TradingPerformanceGraph.scss";
-import BarChart from "../../../Graphs/BarChart";
+import BarChart from "../../../../Graphs/BarChart";
 import { Box, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 

@@ -2,18 +2,13 @@ import React from "react";
 import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import useBalance from "../../../hooks/useBalance";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
-/**
- * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
- * @typedef {Object} DefaultProps
- * @property {UserBalanceEntity} balance Balance
- */
+const AvailableBalance = () => {
+  const storeSettings = useStoreSettingsSelector();
+  const balance = useBalance(storeSettings.selectedExchange.internalId);
 
-/**
- * @param {DefaultProps} props Default props.
- * @returns {JSX.Element} Component JSX.
- */
-const AvailableBalance = ({ balance }) => {
   return (
     <Box
       alignItems="center"

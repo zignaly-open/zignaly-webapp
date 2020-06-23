@@ -1023,12 +1023,12 @@ function createUserBalanceEntity(response) {
  * @property {Number} lockedXRP
  * @property {Number} lockedZAR
  * @property {Number} otherPercentage
- * @property {String} totalBTC
- * @property {String} totalFreeBTC
- * @property {String} totalFreeUSDT
- * @property {String} totalLockedBTC
- * @property {String} totalLockedUSDT
- * @property {String} totalUSDT
+ * @property {Number} totalBTC
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
+ * @property {Number} totalLockedBTC
+ * @property {Number} totalLockedUSDT
+ * @property {Number} totalUSDT
  *
  */
 
