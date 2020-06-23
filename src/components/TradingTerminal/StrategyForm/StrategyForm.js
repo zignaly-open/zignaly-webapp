@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
 import { isEmpty, range, forIn } from "lodash";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
+import CustomButton from "../../CustomButton/CustomButton";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
@@ -23,6 +24,8 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import "./StrategyForm.scss";
+import { FormattedMessage } from "react-intl";
+import "../../CustomButton/CustomButton.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -378,15 +381,16 @@ const StrategyForm = (props) => {
           <TrailingStopPanel symbolData={currentSymbolData} />
           <EntryExpirationPanel />
           <AutoclosePanel />
-          <Button
+          <CustomButton
+            className={"full submitButton"}
             disabled={!isEmpty(errors)}
             onClick={() => {
               triggerValidation();
             }}
             type="submit"
           >
-            Open Position
-          </Button>
+            <FormattedMessage id="terminal.open" />
+          </CustomButton>
         </form>
       </Box>
     </FormContext>
