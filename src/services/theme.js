@@ -148,6 +148,7 @@ const theme = (darkStyle) => {
       text: {
         primary: darkStyle ? colors.white : colors.black,
       },
+      type: darkStyle ? "dark" : "light",
     },
     typography: {
       h1: {

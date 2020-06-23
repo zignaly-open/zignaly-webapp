@@ -243,6 +243,8 @@ col.users.realexchange: "Real Exchange Connected"
 col.users.suspended: "Suspended"
 
 # FILTERS AND SORT BY
+fil.allcoins: "All Coins"
+fil.allexchanges: "All Exchanges"
 fil.filters: "Filters"
 fil.clearall: "CLEAR ALL"
 fil.hide: "HIDE"
