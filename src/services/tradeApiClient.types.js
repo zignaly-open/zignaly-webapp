@@ -47,9 +47,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} CreatePositionPayload
  * @property {string} token
  * @property {string} pair
- * @property {string} limitPrice
+ * @property {number} limitPrice
  * @property {string} positionSizeQuote
- * @property {string} positionSize
+ * @property {number} positionSize
  * @property {('entry' | 'exit')} type
  * @property {('SHORT' | 'LONG')} side
  * @property {number|boolean} stopLossPercentage
@@ -57,8 +57,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
  * @property {number} buyStopPrice
  * @property {number|boolean} sellByTTL
- * @property {Array<PositionPriceTarget>|boolean} takeProfitTargets
- * @property {Array<PositionPriceTarget>|boolean} reBuyTargets
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets
  * @property {number|boolean} trailingStopTriggerPercentage
  * @property {number|boolean} trailingStopPercentage
  * @property {number|string} providerId
@@ -68,12 +68,19 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} PositionPriceTarget
+ * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
- * @property {string} quoteTarget
+ * @property {number} quoteTarget
  * @property {number} amountPercentage
- * @property {string} value
+ * @property {number} value
+ */
+
+/**
+ * @typedef {Object} PositionDCATarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
  */
 
 /**
