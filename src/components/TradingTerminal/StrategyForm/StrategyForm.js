@@ -21,6 +21,8 @@ import {
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./StrategyForm.scss";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -63,6 +65,7 @@ const StrategyForm = (props) => {
   const { errors, handleSubmit, setValue, triggerValidation, watch } = methods;
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -227,9 +230,10 @@ const StrategyForm = (props) => {
       .manualPositionCreate(payload)
       .then((positionId) => {
         // TODO: Navigate to position detail page.
+        alert(`Position was created succesfully with ID ${positionId}`);
       })
-      .catch((error) => {
-        alert(`ERROR: ${error.msg}`);
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
       });
   };
 
