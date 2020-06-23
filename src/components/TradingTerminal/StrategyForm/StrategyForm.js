@@ -72,6 +72,7 @@ const StrategyForm = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const [processing, setProcessing] = useState(false);
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -271,14 +272,17 @@ const StrategyForm = (props) => {
    */
   const onSubmit = (draftPosition) => {
     const payload = composePositionPayload(draftPosition);
+    setProcessing(true);
     tradeApi
       .manualPositionCreate(payload)
       .then((positionId) => {
         // TODO: Navigate to position detail page.
+        setProcessing(false);
         alert(`Position was created succesfully with ID ${positionId}`);
         reset();
       })
       .catch((e) => {
+        setProcessing(false);
         dispatch(showErrorAlert(e));
       });
   };
@@ -384,6 +388,7 @@ const StrategyForm = (props) => {
           <CustomButton
             className={"full submitButton"}
             disabled={!isEmpty(errors)}
+            loading={processing}
             onClick={() => {
               triggerValidation();
             }}
