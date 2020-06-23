@@ -9,9 +9,16 @@ import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
-import { range, forIn } from "lodash";
+import { isEmpty, range, forIn } from "lodash";
 import { formatPrice } from "../../../utils/formatters";
-import { isEmpty } from "lodash";
+import tradeApi from "../../../services/tradeApiClient";
+import {
+  POSITION_SIDE_LONG,
+  POSITION_TYPE_ENTRY,
+  POSITION_SIDE_SHORT,
+  POSITION_ENTRY_TYPE_MARKET,
+} from "../../../services/tradeApiClient.types";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./StrategyForm.scss";
 
 /**
@@ -53,6 +60,8 @@ const StrategyForm = (props) => {
     },
   });
   const { errors, handleSubmit, setValue, triggerValidation, watch } = methods;
+  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = storeSettings;
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -127,9 +136,104 @@ const StrategyForm = (props) => {
     return chartLine;
   }
 
+  const mapSideToEnum = (side) => {
+    switch (side) {
+      case "SHORT":
+        return POSITION_SIDE_SHORT;
+
+      case "LONG":
+        return POSITION_SIDE_LONG;
+
+      default:
+        return POSITION_SIDE_LONG;
+    }
+  };
+
+  const composePositionTakeProfitTargets = (draftPosition) => {
+    const targetRange = range(1, 10, 1);
+    const takeProfitTargets = [];
+
+    targetRange.forEach((targetId) => {
+      const targetPricePercentage = draftPosition[`profitTargetPricePercentage${targetId}`];
+      const targetPrice = draftPosition[`profitTargetPrice${targetId}`];
+      const targetExitUnitsPercetage = draftPosition[`profitExitUnitsPercentage${targetId}`];
+      const targetExitUnits = draftPosition[`profitExitUnits${targetId}`];
+
+      if (targetPricePercentage) {
+        takeProfitTargets.push({
+          targetId,
+          priceTargetPercentage: parseFloat(targetPricePercentage),
+          quoteTarget: parseFloat(targetPrice),
+          amountPercentage: parseFloat(targetExitUnitsPercetage),
+          value: parseFloat(targetExitUnits),
+        });
+      }
+    });
+
+    return takeProfitTargets;
+  };
+
+  const composePositionDcaTargets = (draftPosition) => {
+    const targetRange = range(1, 10, 1);
+    const dcaTargets = [];
+
+    targetRange.forEach((targetId) => {
+      const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
+      const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+
+      if (targetPricePercentage) {
+        dcaTargets.push({
+          targetId,
+          priceTargetPercentage: parseFloat(targetPricePercentage),
+          amountPercentage: parseFloat(targetRebuyPercentage),
+        });
+      }
+    });
+
+    return dcaTargets;
+  };
+
+  const composePositionPayload = (draftPosition) => {
+    const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
+    const payload = {
+      token: "123456",
+      pair: "BTC  USDT",
+      limitPrice: draftPosition.price || currentPrice,
+      positionSizeQuote: currentSymbolData.quote,
+      positionSize: parseFloat(draftPosition.positionSize) || 0,
+      side: mapSideToEnum(draftPosition.entryType),
+      type: POSITION_TYPE_ENTRY,
+      stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+      buyTTL: parseFloat(draftPosition.entryExpiration) || false,
+      buyType: POSITION_ENTRY_TYPE_MARKET,
+      buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
+      sellByTTL: parseFloat(draftPosition.autoclose) || 0,
+      takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
+      reBuyTargets: composePositionDcaTargets(draftPosition),
+      trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+      trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+      providerId: 1,
+      providerName: "Manual Trading",
+      exchangeName: exchangeName,
+      exchangeInternalId: selectedExchange.internalId,
+    };
+
+    console.log("Create position payload: ", payload);
+
+    tradeApi
+      .manualPositionCreate(payload)
+      .then((positionId) => {
+        // TODO: Navigate to position detail page.
+      })
+      .catch((error) => {
+        alert(`ERROR: ${error.message}`);
+      });
+  };
+
   // Receives submitted data.
-  const onSubmit = (values) => {
-    console.log("draftPosition: ", values);
+  const onSubmit = (draftPosition) => {
+    const payload = composePositionPayload(draftPosition);
+    console.log("payload: ", payload);
   };
 
   // @ts-ignore
@@ -213,8 +317,6 @@ const StrategyForm = (props) => {
    */
   const matchCurrentSymbol = (item) => item.id === selectedSymbol;
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
-
-  console.log("ERROR: ", errors);
 
   return (
     <FormContext {...methods}>
