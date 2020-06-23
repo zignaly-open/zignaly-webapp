@@ -20,6 +20,7 @@ import {
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./StrategyForm.scss";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -61,7 +62,7 @@ const StrategyForm = (props) => {
   });
   const { errors, handleSubmit, setValue, triggerValidation, watch } = methods;
   const storeSettings = useStoreSettingsSelector();
-  const { selectedExchange } = storeSettings;
+  const storeSession = useStoreSessionSelector();
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -194,12 +195,14 @@ const StrategyForm = (props) => {
   };
 
   const composePositionPayload = (draftPosition) => {
+    const { quote, base } = currentSymbolData;
+    const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
     const payload = {
-      token: "123456",
-      pair: "BTC  USDT",
+      token: storeSession.tradeApi.accessToken,
+      pair: `${base}  ${quote}`,
       limitPrice: draftPosition.price || currentPrice,
-      positionSizeQuote: currentSymbolData.quote,
+      positionSizeQuote: quote,
       positionSize: parseFloat(draftPosition.positionSize) || 0,
       side: mapSideToEnum(draftPosition.entryType),
       type: POSITION_TYPE_ENTRY,
@@ -226,7 +229,7 @@ const StrategyForm = (props) => {
         // TODO: Navigate to position detail page.
       })
       .catch((error) => {
-        alert(`ERROR: ${error.message}`);
+        alert(`ERROR: ${error.msg}`);
       });
   };
 
