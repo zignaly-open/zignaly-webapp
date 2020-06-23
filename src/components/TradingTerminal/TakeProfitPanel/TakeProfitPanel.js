@@ -31,7 +31,16 @@ import "./TakeProfitPanel.scss";
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const {
+    clearError,
+    errors,
+    getValues,
+    register,
+    reset,
+    setError,
+    setValue,
+    watch,
+  } = useFormContext();
   const {
     cardinality,
     cardinalityRange,
@@ -272,6 +281,19 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyUnits]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      cardinalityRange.forEach((targetId) => {
+        clearError(composeTargetPropertyName("exitUnitsPercentage", targetId));
+        clearError(composeTargetPropertyName("exitUnits", targetId));
+        clearError(composeTargetPropertyName("targetPrice", targetId));
+        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+      });
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   /**
    * Compose dynamic target property errors.

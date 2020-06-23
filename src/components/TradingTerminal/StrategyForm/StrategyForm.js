@@ -11,6 +11,7 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
 import { range, forIn } from "lodash";
 import { formatPrice } from "../../../utils/formatters";
+import { isEmpty } from "lodash";
 import "./StrategyForm.scss";
 
 /**
@@ -213,7 +214,7 @@ const StrategyForm = (props) => {
   const matchCurrentSymbol = (item) => item.id === selectedSymbol;
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
-  console.log("ERRORS: ", errors);
+  console.log("ERROR: ", errors);
 
   return (
     <FormContext {...methods}>
@@ -232,6 +233,7 @@ const StrategyForm = (props) => {
           <EntryExpirationPanel />
           <AutoclosePanel />
           <Button
+            disabled={!isEmpty(errors)}
             onClick={() => {
               triggerValidation();
             }}

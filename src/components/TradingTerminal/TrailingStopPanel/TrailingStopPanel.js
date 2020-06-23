@@ -29,7 +29,7 @@ import "./TrailingStopPanel.scss";
 const TrailingStopPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, setValue, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
@@ -105,6 +105,15 @@ const TrailingStopPanel = (props) => {
 
     return null;
   };
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      clearError("trailingStopPercentage");
+      clearError("trailingStopPrice");
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>

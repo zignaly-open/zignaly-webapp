@@ -29,7 +29,7 @@ import "./DCAPanel.scss";
 const DCAPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, watch } = useFormContext();
+  const { clearError, errors, getValues, register, watch } = useFormContext();
   const {
     cardinalityRange,
     composeTargetPropertyName,
@@ -149,6 +149,17 @@ const DCAPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyPositionSize]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      cardinalityRange.forEach((targetId) => {
+        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+      });
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
