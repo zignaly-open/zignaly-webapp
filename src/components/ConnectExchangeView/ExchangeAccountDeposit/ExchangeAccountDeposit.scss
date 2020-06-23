@@ -36,7 +36,7 @@
     }
 
     .transferDesc {
-      width: 50%;
+      max-width: 484px;
     }
 
     .customSelect {
@@ -63,13 +63,18 @@
     }
   }
 
-  .coinBox {
+  .coinColumn {
     width: 100%;
-    max-width: 600px;
-    margin-right: 70px;
+    max-width: 553px;
+    border-right: 1px solid $borderColor;
+    padding-right: 69px;
+
+    .tipBox {
+      margin-right: 69px;
+    }
   }
 
-  .networkBox {
+  .networkColumn {
     width: 100%;
     max-width: 460px;
     margin-left: 70px;
@@ -77,6 +82,10 @@
     .networkButtons {
       margin-top: 19px;
       width: 100%;
+
+      button {
+        flex: 1;
+      }
     }
 
     .address {
@@ -96,8 +105,30 @@
       }
     }
 
-    img {
+    .copy {
       cursor: pointer;
+      padding-left: 12px;
+    }
+  }
+
+  .coinColumn,
+  .networkColumn {
+    position: relative;
+    padding-bottom: 205px;
+  }
+
+  .tipBox {
+    padding: 15px 24px 34px;
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    position: absolute;
+    bottom: 0;
+
+    img {
+      margin-bottom: 11px;
+    }
+
+    img + p {
+      margin-bottom: 9px;
     }
   }
 }

@@ -82,30 +82,143 @@ const ExchangeAccountDeposit = () => {
   };
   const showQRCode = () => {};
 
+  const BuyCryptoBox = () => (
+    <Box className="buyCryptoBox">
+      <Typography variant="h3">
+        <FormattedMessage id="deposit.buy" />
+      </Typography>
+      <Typography variant="body1">
+        <FormattedMessage id="deposit.buy.how" />
+      </Typography>
+      <CustomButton
+        className="bgPurple"
+        href="https://changelly.com/?ref_id=q0s68wsie1uf9wza"
+        target="_blank"
+      >
+        <Typography variant="body2">
+          <FormattedMessage id="deposit.buy.creditcard" />
+        </Typography>
+      </CustomButton>
+      <Box className="creditCard" flexDirection="row">
+        <img alt="Visa" src={VisaIcon} />
+        <img alt="MasterCard" src={MastercardIcon} />
+      </Box>
+    </Box>
+  );
+
+  const CoinColumn = () => (
+    <Box className="coinColumn">
+      <CustomSelect
+        options={assetsOptions}
+        label={intl.formatMessage({ id: "deposit.choosecoin" })}
+        search={true}
+        onChange={setSelectedAsset}
+        value={selectedAssetName}
+        labelPlacement="top"
+      />
+      <Box className="balanceBox">
+        <BalanceLine
+          label="deposit.current"
+          amount={selectedAsset.balanceTotal}
+          unit={selectedAssetName}
+        />
+        <BalanceLine
+          label="deposit.inorder"
+          amount={selectedAsset.balanceLocked}
+          unit={selectedAssetName}
+        />
+        <BalanceLine
+          label="deposit.available"
+          amount={selectedAsset.balanceFree}
+          unit={selectedAssetName}
+        />
+      </Box>
+      <Box className="tipBox">
+        <img src={TimeIcon} />
+        <Typography variant="body2">
+          <FormattedMessage id="deposit.waitingtime" />
+        </Typography>
+        <Typography variant="body1">
+          <FormattedMessage id="deposit.processing" />
+        </Typography>
+      </Box>
+    </Box>
+  );
+
+  const NetworkColumn = () => (
+    <Box className="networkColumn">
+      <Typography variant="body1">
+        <FormattedMessage id="deposit.network" />
+      </Typography>
+
+      {selectedAsset.networks.length && (
+        <ToggleButtonGroup
+          exclusive
+          value={selectedNetwork}
+          onChange={(e, val) => setSelectedNetwork(val)}
+          className="networkButtons"
+        >
+          {selectedAsset.networks.map((n) => (
+            <ToggleButton key={n.name} value={n}>
+              {n.name}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      )}
+      <Typography variant="body1" className="address">
+        {selectedAssetName} <FormattedMessage id="deposit.address" />
+      </Typography>
+      <Box display="flex" flexDirection="row">
+        {depositAddress ? (
+          <Typography variant="body2">{depositAddress.address}</Typography>
+        ) : (
+          <CircularProgress disableShrink size={21} />
+        )}{" "}
+        <img src={CopyIcon} alt="copy" onClick={copyAddress} className="copy" />
+      </Box>
+      {depositAddress && depositAddress.tag && (
+        <Box>
+          <Typography variant="body1" className="address">
+            {selectedAssetName} <FormattedMessage id="withdraw.memo" />
+          </Typography>
+          <Box display="flex" flexDirection="row">
+            <Typography variant="body2">{depositAddress.tag}</Typography>
+            <img src={CopyIcon} alt="copy" onClick={copyMemo} className="copy" />
+          </Box>
+        </Box>
+      )}
+      <Box display="flex" flexDirection="row" className="addressButtons">
+        <CustomButton className="bgPurple" disabled={!depositAddress} onClick={copyAddress}>
+          <Typography variant="body2">
+            <FormattedMessage id="deposit.address.copy" />
+          </Typography>
+        </CustomButton>
+        <CustomButton
+          className="borderPurple textPurple"
+          disabled={!depositAddress}
+          onClick={showQRCode}
+        >
+          <Typography variant="body2">
+            <FormattedMessage id="deposit.address.qr" />
+          </Typography>
+        </CustomButton>
+      </Box>
+      <Box className="tipBox">
+        <img src={TimeIcon} />
+        <Typography variant="body2">
+          <FormattedMessage id="deposit.note.onlysend" values={{ coin: selectedAssetName }} />
+        </Typography>
+        <Typography variant="body1">
+          <FormattedMessage id="deposit.loss" />
+        </Typography>
+      </Box>
+    </Box>
+  );
+
   return (
     <Box className="exchangeAccountDeposit">
       <SubNavModalHeader links={tabs} />
-      <Box className="buyCryptoBox">
-        <Typography variant="h3">
-          <FormattedMessage id="deposit.buy" />
-        </Typography>
-        <Typography variant="body1">
-          <FormattedMessage id="deposit.buy.how" />
-        </Typography>
-        <CustomButton
-          className="bgPurple"
-          href="https://changelly.com/?ref_id=q0s68wsie1uf9wza"
-          target="_blank"
-        >
-          <Typography variant="body2">
-            <FormattedMessage id="deposit.buy.creditcard" />
-          </Typography>
-        </CustomButton>
-        <Box className="creditCard" flexDirection="row">
-          <img alt="Visa" src={VisaIcon} />
-          <img alt="MasterCard" src={MastercardIcon} />
-        </Box>
-      </Box>
+      <BuyCryptoBox />
       <Box className="transferBox">
         {!assetsOptions.length || !selectedNetwork ? (
           <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
@@ -122,95 +235,8 @@ const ExchangeAccountDeposit = () => {
               </Typography>
             </Box>
             <Box className="transferColumnsBox" display="flex" flexDirection="row">
-              <Box className="coinBox">
-                <CustomSelect
-                  options={assetsOptions}
-                  label={intl.formatMessage({ id: "deposit.choosecoin" })}
-                  search={true}
-                  onChange={setSelectedAsset}
-                  value={selectedAssetName}
-                  labelPlacement="top"
-                />
-                <Box className="balanceBox">
-                  <BalanceLine
-                    label="deposit.current"
-                    amount={selectedAsset.balanceTotal}
-                    unit={selectedAssetName}
-                  />
-                  <BalanceLine
-                    label="deposit.inorder"
-                    amount={selectedAsset.balanceLocked}
-                    unit={selectedAssetName}
-                  />
-                  <BalanceLine
-                    label="deposit.available"
-                    amount={selectedAsset.balanceFree}
-                    unit={selectedAssetName}
-                  />
-                </Box>
-              </Box>
-              <Box className="networkBox">
-                <Typography variant="body1">
-                  <FormattedMessage id="deposit.network" />
-                </Typography>
-
-                {selectedAsset.networks.length && (
-                  <ToggleButtonGroup
-                    exclusive
-                    value={selectedNetwork}
-                    onChange={setSelectedNetwork}
-                    className="networkButtons"
-                  >
-                    {selectedAsset.networks.map((n) => (
-                      <ToggleButton key={n.name} color="primary">
-                        {n.name}
-                      </ToggleButton>
-                    ))}
-                  </ToggleButtonGroup>
-                )}
-                <Typography variant="body1" className="address">
-                  {selectedAssetName} <FormattedMessage id="deposit.address" />
-                </Typography>
-                <Box display="flex" flexDirection="row">
-                  {depositAddress ? (
-                    <Typography variant="body2">{depositAddress.address}</Typography>
-                  ) : (
-                    <CircularProgress disableShrink />
-                  )}{" "}
-                  <img src={CopyIcon} alt="copy" onClick={copyAddress} />
-                </Box>
-                {depositAddress && depositAddress.tag && (
-                  <Box>
-                    <Typography variant="body1" className="address">
-                      {selectedAssetName} <FormattedMessage id="withdraw.memo" />
-                    </Typography>
-                    <Box display="flex" flexDirection="row">
-                      <Typography variant="body2">{depositAddress.tag}</Typography>
-                      <img src={CopyIcon} alt="copy" onClick={copyMemo} />
-                    </Box>
-                  </Box>
-                )}
-                <Box display="flex" flexDirection="row" className="addressButtons">
-                  <CustomButton
-                    className="bgPurple"
-                    disabled={!depositAddress}
-                    onClick={copyAddress}
-                  >
-                    <Typography variant="body2">
-                      <FormattedMessage id="deposit.address.copy" />
-                    </Typography>
-                  </CustomButton>
-                  <CustomButton
-                    className="borderPurple textPurple"
-                    disabled={!depositAddress}
-                    onClick={showQRCode}
-                  >
-                    <Typography variant="body2">
-                      <FormattedMessage id="deposit.address.qr" />
-                    </Typography>
-                  </CustomButton>
-                </Box>
-              </Box>
+              <CoinColumn />
+              <NetworkColumn />
             </Box>
           </Box>
         )}

@@ -235,6 +235,20 @@ const theme = (darkStyle) => {
           backgroundColor: colors.black,
         },
       },
+      MuiToggleButton: {
+        root: {
+          color: colors.purple,
+          backgroundColor: darkStyle ? colors.lightBlack : colors.white,
+          borderColor: colors.purple,
+          "&$selected": {
+            color: colors.white,
+            backgroundColor: colors.purple,
+            "&:hover": {
+              backgroundColor: colors.purpleLight,
+            },
+          },
+        },
+      },
     },
     props: {
       MuiButtonBase: {
