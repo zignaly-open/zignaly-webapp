@@ -51,7 +51,7 @@ const StrategyForm = (props) => {
       dcaTargetPricePercentage1: "",
     },
   });
-  const { setValue, watch } = methods;
+  const { errors, handleSubmit, setValue, triggerValidation, watch } = methods;
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -127,7 +127,10 @@ const StrategyForm = (props) => {
   }
 
   // Receives submitted data.
-  const onSubmit = () => {};
+  const onSubmit = (values) => {
+    console.log("draftPosition: ", values);
+  };
+
   // @ts-ignore
   const symbolsData = dataFeed.getSymbolsData();
   const updatePriceField = () => {
@@ -210,10 +213,12 @@ const StrategyForm = (props) => {
   const matchCurrentSymbol = (item) => item.id === selectedSymbol;
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
+  console.log("ERRORS: ", errors);
+
   return (
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <StrategyPanel
             disableExpand={true}
             lastPriceCandle={lastPriceCandle}
@@ -226,7 +231,14 @@ const StrategyForm = (props) => {
           <TrailingStopPanel symbolData={currentSymbolData} />
           <EntryExpirationPanel />
           <AutoclosePanel />
-          <Button type="submit">Open Position</Button>
+          <Button
+            onClick={() => {
+              triggerValidation();
+            }}
+            type="submit"
+          >
+            Open Position
+          </Button>
         </form>
       </Box>
     </FormContext>
