@@ -95,6 +95,15 @@ const TakeProfitPanel = (props) => {
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * ((targetPercentage + 100) / 100);
 
+    if (isNaN(targetPercentage)) {
+      setError(
+        composeTargetPropertyName("targetPricePercentage", targetId),
+        "error",
+        "Target percentage must be a number.",
+      );
+      return;
+    }
+
     if (isNumber(targetPercentage) && targetPercentage !== 0) {
       setValue(priceProperty, formatPrice(targetPrice));
     } else {
@@ -116,6 +125,15 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+
+    if (isNaN(targetPrice)) {
+      setError(
+        composeTargetPropertyName("targetPrice", targetId),
+        "error",
+        "Target price must be a number.",
+      );
+      return;
+    }
 
     if (isNumber(targetPrice) && targetPrice !== 0) {
       const priceDiff = targetPrice - price;
@@ -141,6 +159,15 @@ const TakeProfitPanel = (props) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
+    if (isNaN(unitsPercentage)) {
+      setError(
+        composeTargetPropertyName("exitUnitsPercentage", targetId),
+        "error",
+        "Exit units percentage must be a number.",
+      );
+      return;
+    }
+
     if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
       setValue(unitsProperty, formatPrice(targetUnits));
@@ -163,6 +190,15 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+
+    if (isNaN(exitUnits)) {
+      setError(
+        composeTargetPropertyName("exitUnits", targetId),
+        "error",
+        "Exit units must be a number.",
+      );
+      return;
+    }
 
     if (units > 0 && exitUnits > 0) {
       const unitsDiff = units - exitUnits;
@@ -253,7 +289,7 @@ const TakeProfitPanel = (props) => {
       const newValue = formatFloat2Dec(Math.abs(currentValue));
       const sign = entryType === "SHORT" ? "-" : "";
 
-      if (currentValue === 0) {
+      if (isNaN(currentValue)) {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
@@ -343,6 +379,7 @@ const TakeProfitPanel = (props) => {
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
+              {displayTargetFieldErrors("targetPricePercentage", targetId)}
               {displayTargetFieldErrors("targetPrice", targetId)}
               <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
