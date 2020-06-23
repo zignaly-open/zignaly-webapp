@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 import "./ExchangeAccountList.scss";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";

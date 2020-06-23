@@ -44,30 +44,6 @@ const TradingView = () => {
   const tradingViewWidgetTyped = tradingViewWidget;
   const isChartLoading = tradingViewWidget === null;
   const isLastPriceLoading = lastPrice === null;
-
-  const drawLine = () => {
-    if (tradingViewWidget) {
-      const orderPrice = 9600;
-      const chart = tradingViewWidget.chart();
-      const coloring3 = "rgb(117, 16, 197)";
-      chart
-        .createPositionLine({})
-        .setPrice(orderPrice)
-        .setQuantity(`${orderPrice}`)
-        .setText("Price")
-        // horizontal line
-        .setLineColor(coloring3)
-        // content text
-        .setBodyTextColor(coloring3)
-        // content text border
-        .setBodyBorderColor(coloring3)
-        // accompanying number
-        .setQuantityBackgroundColor(coloring3)
-        // accompanying number border
-        .setQuantityBorderColor(coloring3);
-    }
-  };
-
   const loadOwnCopyTradersProviders = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -108,7 +84,6 @@ const TradingView = () => {
       const widgetInstance = new TradingViewWidget(widgetOptions);
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
-        drawLine();
         setTradingViewWidget(widgetInstance);
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
@@ -235,12 +210,13 @@ const TradingView = () => {
           </Box>
         )}
         <Box className="tradingViewChart" id="trading_view_chart" />
-        {!isLastPriceLoading && (
+        {!isChartLoading && !isLastPriceLoading && (
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
             leverage={leverage}
             selectedSymbol={selectedSymbol}
+            tradingViewWidget={tradingViewWidget}
           />
         )}
       </Box>

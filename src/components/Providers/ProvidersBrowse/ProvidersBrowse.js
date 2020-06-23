@@ -38,8 +38,10 @@ const ProvidersBrowse = ({
     timeFrame,
     setTimeFrame,
     coin,
+    coins,
     setCoin,
     exchange,
+    exchanges,
     setExchange,
     sort,
     setSort,
@@ -54,7 +56,9 @@ const ProvidersBrowse = ({
         <ProvidersFilters
           clearFilters={clearFilters}
           coin={coin}
+          coins={coins}
           exchange={exchange}
+          exchanges={exchanges}
           onClose={toggleFilters}
           onCoinChange={setCoin}
           onExchangeChange={setExchange}

@@ -85,6 +85,7 @@ const Table = ({ columns, data, persistKey, title }) => {
    */
   const getMuiTheme = (theme) =>
     createMuiTheme({
+      ...theme,
       /**
        * @type {*}
        */
@@ -153,12 +154,7 @@ const Table = ({ columns, data, persistKey, title }) => {
 
   return (
     <Box className="customTable">
-      <MuiThemeProvider
-        theme={(outerTheme) => ({
-          ...getMuiTheme(outerTheme),
-          outerTheme,
-        })}
-      >
+      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
         <MUIDataTable columns={columnsCustom} data={data} options={options} title={title} />
       </MuiThemeProvider>
     </Box>

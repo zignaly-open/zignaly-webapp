@@ -107,7 +107,7 @@ const TrailingStopPanel = (props) => {
   };
 
   return (
-    <Box className={`strategyPanel trailingStopPanel ${expandClass}`}>
+    <Box className={`panel trailingStopPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">

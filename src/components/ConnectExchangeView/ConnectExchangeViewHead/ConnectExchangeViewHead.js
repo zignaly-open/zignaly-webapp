@@ -6,7 +6,7 @@ import CustomButton from "../../CustomButton";
 import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
 
 /**

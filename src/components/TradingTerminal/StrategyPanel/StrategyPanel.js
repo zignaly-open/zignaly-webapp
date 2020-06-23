@@ -5,7 +5,7 @@ import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import {
   OutlinedInput,
   FormControlLabel,
@@ -45,8 +45,8 @@ const StrategyPanel = (props) => {
   const { errors, getValues, register, clearError, setError, setValue, watch } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
-  const storeUser = useStoreUserSelector();
-  const lastDayBalance = storeUser.dailyBalance.balances[0] || null;
+  const dailyBalance = useStoreUserDailyBalance();
+  const lastDayBalance = dailyBalance.balances[0] || null;
   const entryType = watch("entryType");
 
   const getQuoteBalance = () => {
@@ -188,7 +188,7 @@ const StrategyPanel = (props) => {
   };
 
   return (
-    <Box className={`strategyPanel ${expandClass}`}>
+    <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {!disableExpand && <Switch onChange={handleToggle} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
