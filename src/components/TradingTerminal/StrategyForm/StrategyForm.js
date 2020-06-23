@@ -65,7 +65,7 @@ const StrategyForm = (props) => {
       dcaTargetPricePercentage1: "",
     },
   });
-  const { errors, handleSubmit, setValue, triggerValidation, watch } = methods;
+  const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = methods;
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
@@ -273,6 +273,7 @@ const StrategyForm = (props) => {
       .then((positionId) => {
         // TODO: Navigate to position detail page.
         alert(`Position was created succesfully with ID ${positionId}`);
+        reset();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
