@@ -1574,6 +1574,8 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaultProviderPermormanceWeeklyStats
  * @property {Number} week
  * @property {Number} return
+ * @property {String} day
+ * @property {Number} positions
  */
 
 /**
@@ -1960,5 +1962,40 @@ function createProviderFollowersListEmptyEntity() {
     realExchangeConnected: false,
     suspended: false,
     userId: "",
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderPerformanceEntity
+ * @property {Number} closePositions
+ * @property {Number} openPositions
+ * @property {Number} totalBalance
+ * @property {Number} totalTradingVolume
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ */
+
+/**
+ *
+ * @param {*} response
+ * @returns {ProviderPerformanceEntity}
+ */
+
+export function providerPerformanceResponseTransform(response) {
+  if (!isObject) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  let emptyProviderEntity = createProviderPerformanceEmptyEntity();
+  return { ...emptyProviderEntity, ...response };
+}
+
+function createProviderPerformanceEmptyEntity() {
+  return {
+    closePositions: 0,
+    openPositions: 0,
+    totalBalance: 0,
+    totalTradingVolume: 0,
+    weeklyStats: [{}],
   };
 }

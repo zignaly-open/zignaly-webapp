@@ -1,19 +1,19 @@
 import React from "react";
-import "./PerformanceGraph.scss";
-import BarChart from "../../../../Graphs/BarChart";
+import "./TradingPerformanceGraph.scss";
+import BarChart from "../../../Graphs/BarChart";
 import { Box, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {DefaultProviderGetObject} provider
+ * @property {ProviderPerformanceEntity} performance
  */
 
 /**
@@ -21,11 +21,11 @@ import { useTheme } from "@material-ui/core/styles";
  * @param {DefaultProps} props Default props.
  */
 
-const PerformanceGraph = ({ provider }) => {
+const PerformanceGraph = ({ performance }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = provider.performance.weeklyStats.map((item) => item.return);
-  const labels = provider.performance.weeklyStats.map(() => "");
+  const values = performance.weeklyStats.map((item) => item.return);
+  const labels = performance.weeklyStats.map(() => "");
   const options = {
     scales: {
       xAxes: [
@@ -39,7 +39,7 @@ const PerformanceGraph = ({ provider }) => {
         {
           stacked: false,
           ticks: {
-            display: false,
+            display: true,
           },
           gridLines: {
             color: "transparent",

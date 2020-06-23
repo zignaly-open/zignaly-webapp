@@ -5,6 +5,7 @@ import withProviderLayout from "../../../layouts/providerLayout";
 import { compose } from "recompose";
 import { FormattedMessage } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
+import TradingPerformanceGraph from "../../../components/Provider/Analytics/TradingPerformanceGraph";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
@@ -17,15 +18,40 @@ const CopyTradersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const [followers, setFollowers] = useState([]);
+  const emptyObject = {
+    closePositions: 0,
+    openPositions: 0,
+    totalBalance: 0,
+    totalTradingVolume: 0,
+    weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
+  };
+  const [performance, setPerformance] = useState(emptyObject);
   const dispatch = useDispatch();
   const [copiersLoading, setCopiersLoading] = useState(false);
+  const [performanceLoading, setPerformanceLoading] = useState(false);
+
+  const payload = {
+    token: storeSession.tradeApi.accessToken,
+    providerId: storeViews.provider.id,
+  };
+
+  const getProviderPerformance = () => {
+    setPerformanceLoading(true);
+    tradeApi
+      .providerPerformanceGet(payload)
+      .then((response) => {
+        setPerformance(response);
+        setPerformanceLoading(false);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(getProviderPerformance, []);
 
   const getProviderFollowers = () => {
     setCopiersLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-    };
     tradeApi
       .providerFollowersGet(payload)
       .then((response) => {
@@ -45,6 +71,17 @@ const CopyTradersAnalytics = () => {
         <Typography variant="h3">
           <FormattedMessage id="copyt.tradingperformance" />
         </Typography>
+
+        <Box
+          className="graphBox"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {performanceLoading && <CircularProgress size={50} color="primary" />}
+          {!performanceLoading && <TradingPerformanceGraph performance={performance} />}
+        </Box>
       </Box>
 
       <Box bgcolor="grid.main" className="copiersBox">
