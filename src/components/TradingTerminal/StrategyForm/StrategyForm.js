@@ -176,10 +176,10 @@ const StrategyForm = (props) => {
     const takeProfitTargets = [];
 
     targetRange.forEach((targetId) => {
-      const targetPricePercentage = draftPosition[`profitTargetPricePercentage${targetId}`];
-      const targetPrice = draftPosition[`profitTargetPrice${targetId}`];
-      const targetExitUnitsPercetage = draftPosition[`profitExitUnitsPercentage${targetId}`];
-      const targetExitUnits = draftPosition[`profitExitUnits${targetId}`];
+      const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
+      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
+      const targetExitUnitsPercetage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
+      const targetExitUnits = draftPosition[`takeProfitExitUnits${targetId}`];
 
       if (targetPricePercentage) {
         takeProfitTargets.push({
@@ -256,8 +256,6 @@ const StrategyForm = (props) => {
       exchangeName: exchangeName,
       exchangeInternalId: selectedExchange.internalId,
     };
-
-    console.log("Create position payload: ", payload);
 
     return payload;
   };
