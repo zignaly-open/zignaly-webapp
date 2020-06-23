@@ -58,10 +58,20 @@ const TradingPerformance = ({ performance }) => {
 
   useEffect(prepareData, [performance]);
 
+  /**
+   * Function to select a quarter.
+   *
+   * @param {*} data quarter object received.
+   * @returns {void} None.
+   */
+  const handleChange = (data) => {
+    setSelectedQuarter(data);
+  };
+
   return (
     <Box className="tradingPerformance">
       <TradingPerformanceGraph quarter={selectedQuater} />
-      <WeeklyData list={list} selected={selectedQuater} />
+      <WeeklyData list={list} selected={selectedQuater} onChange={handleChange} />
     </Box>
   );
 };

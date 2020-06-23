@@ -33,6 +33,7 @@
     .quarterBox {
       width: 100%;
       padding: 15px 12px 15px 20px;
+      cursor: pointer;
 
       &.selected {
         border-top: 2px solid $purple;

@@ -21,6 +21,7 @@ import { Box, Typography } from "@material-ui/core";
  * @typedef {Object} DefaultProps
  * @property {Array<DefaultQuarter>} list
  * @property {DefaultQuarter} selected
+ * @property {Function} onChange
  */
 
 /**
@@ -30,7 +31,7 @@ import { Box, Typography } from "@material-ui/core";
  * @return {JSX.Element} JSX component.
  */
 
-const WeeklyData = ({ list, selected }) => {
+const WeeklyData = ({ list, selected, onChange }) => {
   const weekLabels = [
     "w1",
     "w2",
@@ -46,6 +47,19 @@ const WeeklyData = ({ list, selected }) => {
     "w12",
     "w13",
   ];
+
+  /**
+   * Funciton to select a quarter.
+   *
+   * @param {Number} id id of the quarter on which user clicks.
+   * @returns {void} None.
+   */
+  const handleChange = (id) => {
+    let found = [...list].find((item) => item.id === id);
+    if (found) {
+      onChange(found);
+    }
+  };
 
   return (
     <Box
@@ -81,6 +95,7 @@ const WeeklyData = ({ list, selected }) => {
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
+            onClick={() => handleChange(item.id)}
           >
             {item.weeklyStats.map((item2, index2) => (
               <Typography key={index2} variant="h4" className={item2.return > 0 ? "green" : "red"}>
