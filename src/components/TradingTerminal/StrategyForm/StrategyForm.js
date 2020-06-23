@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
+import { isEmpty, range, forIn } from "lodash";
+import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
 import DCAPanel from "../DCAPanel/DCAPanel";
@@ -9,7 +11,6 @@ import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 import { colors } from "../../../services/theme";
-import { isEmpty, range, forIn } from "lodash";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
 import {
@@ -19,14 +20,16 @@ import {
   POSITION_ENTRY_TYPE_MARKET,
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import "./StrategyForm.scss";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
+ * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
+ * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
  */
@@ -140,6 +143,12 @@ const StrategyForm = (props) => {
     return chartLine;
   }
 
+  /**
+   * Map position side to typed side value.
+   *
+   * @param {string} side Side value.
+   * @returns {('SHORT' | 'LONG')} Typed side.
+   */
   const mapSideToEnum = (side) => {
     switch (side) {
       case "SHORT":
@@ -153,8 +162,17 @@ const StrategyForm = (props) => {
     }
   };
 
+  /**
+   * Compose position profit targets.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {PositionProfitTargets|boolean} Create position payload.
+   */
   const composePositionTakeProfitTargets = (draftPosition) => {
     const targetRange = range(1, 10, 1);
+    /**
+     * @type {PositionProfitTargets} takeProfitTargets
+     */
     const takeProfitTargets = [];
 
     targetRange.forEach((targetId) => {
@@ -177,8 +195,17 @@ const StrategyForm = (props) => {
     return takeProfitTargets;
   };
 
+  /**
+   * Compose position DCA targets.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {PositionDCATargets|boolean} Create position payload.
+   */
   const composePositionDcaTargets = (draftPosition) => {
     const targetRange = range(1, 10, 1);
+    /**
+     * @type {PositionDCATargets}
+     */
     const dcaTargets = [];
 
     targetRange.forEach((targetId) => {
@@ -194,9 +221,15 @@ const StrategyForm = (props) => {
       }
     });
 
-    return dcaTargets;
+    return isEmpty(dcaTargets) ? false : dcaTargets;
   };
 
+  /**
+   * Compose create position payload.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {CreatePositionPayload} Create position payload.
+   */
   const composePositionPayload = (draftPosition) => {
     const { quote, base } = currentSymbolData;
     const { selectedExchange } = storeSettings;
@@ -226,6 +259,17 @@ const StrategyForm = (props) => {
 
     console.log("Create position payload: ", payload);
 
+    return payload;
+  };
+
+  /**
+   * Handle create position form submission.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {Void} None.
+   */
+  const onSubmit = (draftPosition) => {
+    const payload = composePositionPayload(draftPosition);
     tradeApi
       .manualPositionCreate(payload)
       .then((positionId) => {
@@ -235,12 +279,6 @@ const StrategyForm = (props) => {
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
-  };
-
-  // Receives submitted data.
-  const onSubmit = (draftPosition) => {
-    const payload = composePositionPayload(draftPosition);
-    console.log("payload: ", payload);
   };
 
   // @ts-ignore
