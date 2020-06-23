@@ -31,16 +31,7 @@ import "./TakeProfitPanel.scss";
 const TakeProfitPanel = (props) => {
   const { symbolData, lastPriceCandle } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const {
-    clearError,
-    errors,
-    getValues,
-    register,
-    reset,
-    setError,
-    setValue,
-    watch,
-  } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const {
     cardinality,
     cardinalityRange,

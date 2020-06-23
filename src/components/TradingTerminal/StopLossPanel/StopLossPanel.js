@@ -29,7 +29,7 @@ import "./StopLossPanel.scss";
 const StopLossPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setValue, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
@@ -44,6 +44,11 @@ const StopLossPanel = (props) => {
     const price = parseFloat(draftPosition.price);
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
+
+    if (draftPosition.stopLossPercentage !== "-" && isNaN(stopLossPercentage)) {
+      setError("stopLossPercentage", "error", "Stop loss percentage must be a number.");
+      return;
+    }
 
     if (!isNaN(price) && price > 0) {
       setValue("stopLossPrice", formatPrice(stopLossPrice, ""));
@@ -64,6 +69,11 @@ const StopLossPanel = (props) => {
     const price = parseFloat(draftPosition.price);
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
+
+    if (isNaN(stopLossPrice)) {
+      setError("stopLossPrice", "error", "Stop loss price must be a number.");
+      return;
+    }
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
@@ -145,7 +155,6 @@ const StopLossPanel = (props) => {
                 />
                 <div className="currencyBox">%</div>
               </Box>
-              {displayFieldErrors("stopLossPercentage")}
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -156,6 +165,7 @@ const StopLossPanel = (props) => {
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </Box>
+            {displayFieldErrors("stopLossPercentage")}
             {displayFieldErrors("stopLossPrice")}
           </Box>
         </Box>
