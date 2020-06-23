@@ -18,23 +18,22 @@ const SuccessAlert = () => {
         vertical: "top",
         horizontal: "right",
       }}
-      autoHideDuration={50000000}
+      autoHideDuration={50000}
       className="successAlert"
       id="successAlert"
       onClose={() => dispatch(hideErrorAlert())}
-      open={false}
+      open={storeAlerts.success.open}
     >
       <Box bgcolor="grid.main" className="alertMessage">
         <CloseIcon className="closeIcon" onClick={() => dispatch(hideErrorAlert())} />
-        {storeAlerts.error.title && (
+        {storeAlerts.success.title && (
           <Typography className="title green" variant="h3">
-            <FormattedMessage id={storeAlerts.error.title} />
+            <FormattedMessage id={storeAlerts.success.title} />
           </Typography>
         )}
-        {storeAlerts.error.body && (
+        {storeAlerts.success.body && (
           <Typography className="body green" variant="body1">
-            <b>Error:</b>
-            <FormattedMessage id={storeAlerts.error.body} />
+            <FormattedMessage id={storeAlerts.success.body} />
           </Typography>
         )}
       </Box>

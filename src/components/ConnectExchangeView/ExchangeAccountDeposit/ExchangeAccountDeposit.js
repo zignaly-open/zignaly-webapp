@@ -12,8 +12,11 @@ import TimeIcon from "../../../images/exchangeAccount/time.svg";
 import CopyIcon from "../../../images/exchangeAccount/copy.svg";
 import CustomSelect from "../../CustomSelect";
 import useExchangeAssets from "../../../hooks/useExchangeAssets";
+import useExchangeDepositAddress from "../../../hooks/useExchangeDepositAddress";
 import { isEmpty } from "lodash";
 import { setSelectedExchange } from "../../../store/actions/settings";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 const ExchangeAccountDeposit = () => {
   const {
@@ -28,19 +31,27 @@ const ExchangeAccountDeposit = () => {
   const assets = useExchangeAssets(selectedAccount.internalId);
   const selectedAsset = assets[selectedAssetName];
   const assetsOptions = Object.keys(assets).sort();
-  const [selecteNetwork, setSelectedNetwork] = useState(null);
+  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const depositAddress = useExchangeDepositAddress(
+    selectedAccount.internalId,
+    selectedAssetName,
+    selectedNetwork && selectedNetwork.network,
+  );
+  const dispatch = useDispatch();
+
+  // Select default network
   useEffect(() => {
     if (selectedAsset) {
       setSelectedNetwork(selectedAsset.networks[0]);
     }
-    // if (selectedAsset.networks.)
   }, [selectedAsset]);
 
   useEffect(() => {
     setTitle(selectedAccount.internalName);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(selectedAsset, selecteNetwork);
+
+  console.log(selectedAsset, selectedNetwork);
 
   const tabs = [
     {
@@ -52,6 +63,24 @@ const ExchangeAccountDeposit = () => {
       title: "accounts.withdraw",
     },
   ];
+
+  const copyAddress = () => {
+    navigator.clipboard
+      .writeText(depositAddress.address)
+      .then(dispatch(showSuccessAlert("", "deposit.address.copied")))
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+  const copyMemo = () => {
+    navigator.clipboard
+      .writeText(depositAddress.tag)
+      .then(dispatch(showSuccessAlert("", "deposit.memo.copied")))
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+  const showQRCode = () => {};
 
   return (
     <Box className="exchangeAccountDeposit">
@@ -78,7 +107,7 @@ const ExchangeAccountDeposit = () => {
         </Box>
       </Box>
       <Box className="transferBox">
-        {!assetsOptions.length || !selecteNetwork ? (
+        {!assetsOptions.length || !selectedNetwork ? (
           <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
             <CircularProgress disableShrink />
           </Box>
@@ -128,30 +157,54 @@ const ExchangeAccountDeposit = () => {
                 {selectedAsset.networks.length && (
                   <ToggleButtonGroup
                     exclusive
-                    value={selecteNetwork}
+                    value={selectedNetwork}
                     onChange={setSelectedNetwork}
                     className="networkButtons"
                   >
                     {selectedAsset.networks.map((n) => (
-                      <ToggleButton key={n.name}>{n.name}</ToggleButton>
+                      <ToggleButton key={n.name} color="primary">
+                        {n.name}
+                      </ToggleButton>
                     ))}
                   </ToggleButtonGroup>
                 )}
                 <Typography variant="body1" className="address">
-                  {selectedAssetName}
-                  <FormattedMessage id="deposit.address" />
+                  {selectedAssetName} <FormattedMessage id="deposit.address" />
                 </Typography>
                 <Box display="flex" flexDirection="row">
-                  <Typography variant="body2">{selectedAssetName}</Typography>
-                  <img src={CopyIcon} alt="copy" />
+                  {depositAddress ? (
+                    <Typography variant="body2">{depositAddress.address}</Typography>
+                  ) : (
+                    <CircularProgress disableShrink />
+                  )}{" "}
+                  <img src={CopyIcon} alt="copy" onClick={copyAddress} />
                 </Box>
+                {depositAddress && depositAddress.tag && (
+                  <Box>
+                    <Typography variant="body1" className="address">
+                      {selectedAssetName} <FormattedMessage id="withdraw.memo" />
+                    </Typography>
+                    <Box display="flex" flexDirection="row">
+                      <Typography variant="body2">{depositAddress.tag}</Typography>
+                      <img src={CopyIcon} alt="copy" onClick={copyMemo} />
+                    </Box>
+                  </Box>
+                )}
                 <Box display="flex" flexDirection="row" className="addressButtons">
-                  <CustomButton className="bgPurple">
+                  <CustomButton
+                    className="bgPurple"
+                    disabled={!depositAddress}
+                    onClick={copyAddress}
+                  >
                     <Typography variant="body2">
                       <FormattedMessage id="deposit.address.copy" />
                     </Typography>
                   </CustomButton>
-                  <CustomButton className="borderPurple textPurple">
+                  <CustomButton
+                    className="borderPurple textPurple"
+                    disabled={!depositAddress}
+                    onClick={showQRCode}
+                  >
                     <Typography variant="body2">
                       <FormattedMessage id="deposit.address.qr" />
                     </Typography>

@@ -3,6 +3,7 @@ export const OPEN_SSETTINGS_VIEW = "OPEN_SETTINGS_VIEW_ACTION";
 export const SHOW_LOADER = "SHOW_LOADER_ACTION";
 export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT_ACTION";
 export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT_ACTION";
+export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 
 /**
  *
@@ -62,7 +63,7 @@ export const showErrorAlert = (error) => {
       open: true,
     };
     const action = {
-      type: HIDE_ERROR_ALERT,
+      type: SHOW_ERROR_ALERT,
       payload: payload,
     };
 
@@ -88,5 +89,22 @@ export const hideErrorAlert = () => {
     };
 
     dispatch(action);
+  };
+};
+
+/**
+ * Action to show error alert.
+ *
+ * @param {*} error Error object from the backend
+ * @returns {AppThunk} Action object.
+ */
+export const showSuccessAlert = (title, body) => {
+  return {
+    type: SHOW_SUCCESS_ALERT,
+    payload: {
+      title,
+      body,
+      open: true,
+    },
   };
 };

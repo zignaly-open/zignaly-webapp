@@ -6,6 +6,8 @@ import {
   SHOW_LOADER,
   SHOW_ERROR_ALERT,
   HIDE_ERROR_ALERT,
+  SHOW_SUCCESS_ALERT,
+  HIDE_SUCCESS_ALERT,
 } from "../store/actions/ui";
 
 /**
@@ -39,8 +41,20 @@ const ui = (state, action) => {
     case SHOW_ERROR_ALERT:
       newState.alerts.error = action.payload;
       break;
-    case HIDE_ERROR_ALERT:
-      newState.alerts.error = action.payload;
+    case SHOW_SUCCESS_ALERT:
+      const { title, body } = payload;
+      newState.alerts.success = {
+        title,
+        body,
+        open: true,
+      };
+      break;
+    case HIDE_SUCCESS_ALERT:
+      newState.alerts.success = {
+        title: "",
+        body: "",
+        open: false,
+      };
       break;
 
     default:

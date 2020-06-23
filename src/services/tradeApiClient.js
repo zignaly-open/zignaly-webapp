@@ -21,6 +21,7 @@ import {
   providerFollowersResponseTransform,
   providerFollowersListResponseTransform,
   exchangeAssetsResponseTransform,
+  exchangeDepositAddressResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -54,6 +55,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeAddPayload} ExchangeAddPayload
  * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
+ * @typedef {import('./tradeApiClient.types').DepositAddressGetPayload} DepositAddressGetPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  */
 
@@ -591,6 +593,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerFollowersListResponseTransform(responseData);
+  }
+
+  /**
+   * Get deposit address for coin.
+   *
+   * @param {DepositAddressGetPayload} payload
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeDepositAddressGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeDepositAddress";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeDepositAddressResponseTransform(responseData);
   }
 }
 

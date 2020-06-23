@@ -76,6 +76,7 @@
 
     .networkButtons {
       margin-top: 19px;
+      width: 100%;
     }
 
     .address {
@@ -93,6 +94,10 @@
           margin-left: 24px;
         }
       }
+    }
+
+    img {
+      cursor: pointer;
     }
   }
 }

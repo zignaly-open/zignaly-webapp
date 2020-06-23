@@ -456,7 +456,20 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {string|boolean} globalBlacklist
  * @property {string|boolean} globalWhitelist
  * @property {boolean} globalDelisting
+ */
 
+/**
+ * @typedef {Object} DepositAddressGetPayload
+ * @property {string} network
+ * @property {string} internalId
+ * @property {string} asset
+ */
+
+/**
+ * @typedef {Object} ExchangeDepositAddress
+ * @property {string} currency
+ * @property {string} address
+ * @property {string} tag
  */
 
 /**
@@ -2054,5 +2067,19 @@ function createExchangeAssetsEmptyEntity() {
     balanceTotalExchCoin: "0.000000000000",
     exchCoin: "",
     networks: [],
+  };
+}
+
+/**
+ * Create Exchange Deposit Address entity.
+ *
+ * @param {*} response Trade API user balance raw response.
+ * @returns {ExchangeDepositAddress} Exchange Deposit Address entity.
+ */
+export function exchangeDepositAddressResponseTransform({ currency, address, tag }) {
+  return {
+    currency,
+    address,
+    tag,
   };
 }
