@@ -5,7 +5,7 @@ import CustomSelect from "../../CustomSelect";
 import { useFormContext } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import {
   OutlinedInput,
   FormControlLabel,
