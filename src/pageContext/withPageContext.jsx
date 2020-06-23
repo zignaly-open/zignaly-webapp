@@ -25,8 +25,13 @@ const withPageContext = (Component) => {
    * @returns {JSX.Element} Componet JSX.
    */
   const WrapperComponent = (props) => {
+    const storeSettings = useStoreSettingsSelector();
+
     return (
-      <IntlProvider locale="en" messages={translations["en"]}>
+      <IntlProvider
+        locale={storeSettings.languageCode}
+        messages={translations[storeSettings.languageCode]}
+      >
         <Component {...props} />
       </IntlProvider>
     );
