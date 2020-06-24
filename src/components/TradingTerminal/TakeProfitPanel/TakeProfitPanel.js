@@ -33,6 +33,7 @@ import "./TakeProfitPanel.scss";
 const TakeProfitPanel = (props) => {
   const { symbolData, positionEntity = null } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
+  const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, expandableControl } = useExpandable(
     positionTargetsCardinality > 0,
   );
@@ -58,10 +59,40 @@ const TakeProfitPanel = (props) => {
   const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
 
+  const getFieldsDisabledStatus = () => {
+    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    targetIndexes.forEach((index) => {
+      const dcaTarget = positionEntity
+        ? positionEntity.takeProfitTargets[index]
+        : { done: false, skipped: false };
+
+      let disabled = false;
+      if (dcaTarget.done || dcaTarget.skipped) {
+        disabled = true;
+      } else if (isCopy || isClosed) {
+        disabled = true;
+      }
+
+      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("exitUnits", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPrice", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+    });
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
-      const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
-      profitTargetIndexes.forEach((index) => {
+      targetIndexes.forEach((index) => {
         const profitTarget = positionEntity.takeProfitTargets[index];
         const priceTargetPercentage = revertPercentageRange(profitTarget.priceTargetPercentage);
         const amountPercentage = revertPercentageRange(profitTarget.amountPercentage);
@@ -384,6 +415,9 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
@@ -393,6 +427,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
                     inputRef={register}
                     name={composeTargetPropertyName("targetPrice", targetId)}
                     onChange={targetPriceChange}
@@ -410,6 +445,9 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
                     onChange={exitUnitsPercentageChange}
@@ -419,6 +457,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
                     inputRef={register}
                     name={composeTargetPropertyName("exitUnits", targetId)}
                     onChange={exitUnitsChange}

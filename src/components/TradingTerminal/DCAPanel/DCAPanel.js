@@ -32,7 +32,7 @@ import "./DCAPanel.scss";
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.reBuyTargets) : 0;
-  const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
+  const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, expandableControl } = useExpandable(
     positionTargetsCardinality > 0,
   );
@@ -58,15 +58,18 @@ const DCAPanel = (props) => {
   const strategyPositionSize = watch("positionSize");
 
   const getFieldsDisabledStatus = () => {
-    const isCopy = positionEntity.isCopyTrading;
-    const isClosed = positionEntity.status !== 9;
+    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
 
     /**
      * @type {Object<string, boolean>}
      */
     const fieldsDisabled = {};
-    profitTargetIndexes.forEach((index) => {
-      const profitTarget = positionEntity.reBuyTargets[index];
+    targetIndexes.forEach((index) => {
+      const profitTarget = positionEntity
+        ? positionEntity.reBuyTargets[index]
+        : { done: false, buying: false, skipped: false };
+
       let disabled = false;
       if (profitTarget.done || profitTarget.buying || profitTarget.skipped) {
         disabled = true;
@@ -85,7 +88,7 @@ const DCAPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
-      profitTargetIndexes.forEach((index) => {
+      targetIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[index];
         const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
         const quantityPercentage = revertPercentageRange(profitTarget.quantity);
