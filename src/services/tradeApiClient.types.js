@@ -4,6 +4,86 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @type {('entry')}
+ */
+export const POSITION_TYPE_ENTRY = "entry";
+
+/**
+ * @type {('exit')}
+ */
+export const POSITION_TYPE_EXIT = "exit";
+
+/**
+ * @type {('LONG')}
+ */
+export const POSITION_SIDE_LONG = "LONG";
+
+/**
+ * @type {('SHORT')}
+ */
+export const POSITION_SIDE_SHORT = "SHORT";
+
+/**
+ * @type {('market')}
+ */
+export const POSITION_ENTRY_TYPE_MARKET = "market";
+
+/**
+ * @type {('limit')}
+ */
+export const POSITION_ENTRY_TYPE_LIMIT = "limit";
+
+/**
+ * @type {('stop_loss_limit')}
+ */
+export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
+
+/**
+ * @type {('import')}
+ */
+export const POSITION_ENTRY_TYPE_IMPORT = "import";
+
+/**
+ * @typedef {Object} CreatePositionPayload
+ * @property {string} token
+ * @property {string} pair
+ * @property {number} limitPrice
+ * @property {string} positionSizeQuote
+ * @property {number} positionSize
+ * @property {('entry' | 'exit')} type
+ * @property {('SHORT' | 'LONG')} side
+ * @property {number|boolean} stopLossPercentage
+ * @property {number|boolean} buyTTL
+ * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
+ * @property {number} buyStopPrice
+ * @property {number|boolean} sellByTTL
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets
+ * @property {number|boolean} trailingStopTriggerPercentage
+ * @property {number|boolean} trailingStopPercentage
+ * @property {number|string} providerId
+ * @property {string} providerName
+ * @property {string} exchangeName
+ * @property {string} exchangeInternalId
+ */
+
+/**
+ * @typedef {Object} PositionProfitTarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} quoteTarget
+ * @property {number} amountPercentage
+ * @property {number} value
+ */
+
+/**
+ * @typedef {Object} PositionDCATarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
@@ -1041,12 +1121,12 @@ function createUserBalanceEntity(response) {
  * @property {Number} lockedXRP
  * @property {Number} lockedZAR
  * @property {Number} otherPercentage
- * @property {String} totalBTC
- * @property {String} totalFreeBTC
- * @property {String} totalFreeUSDT
- * @property {String} totalLockedBTC
- * @property {String} totalLockedUSDT
- * @property {String} totalUSDT
+ * @property {Number} totalBTC
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
+ * @property {Number} totalLockedBTC
+ * @property {Number} totalLockedUSDT
+ * @property {Number} totalUSDT
  *
  */
 
@@ -1067,6 +1147,7 @@ export function userEquityResponseTransform(response) {
   let balances = transformedResponse.balances.map((userEquityItem) => {
     return userEquityItemTransform(userEquityItem);
   });
+  balances = balances.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   transformedResponse = { ...transformedResponse, balances, quotes };
   return transformedResponse;
@@ -1170,12 +1251,12 @@ function createUserEquityEntity() {
     lockedKCS: 0,
     lockedNEO: 0,
     otherPercentage: 0,
-    totalBTC: "0",
-    totalFreeBTC: "0",
-    totalFreeUSDT: "0",
-    totalLockedBTC: "0",
-    totalLockedUSDT: "0",
-    totalUSDT: "0",
+    totalBTC: 0,
+    totalFreeBTC: 0,
+    totalFreeUSDT: 0,
+    totalLockedBTC: 0,
+    totalLockedUSDT: 0,
+    totalUSDT: 0,
   };
 }
 
@@ -1591,13 +1672,15 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaultProviderPermormanceWeeklyStats
  * @property {Number} week
  * @property {Number} return
+ * @property {String} day
+ * @property {Number} positions
  */
 
 /**
  *
  * @typedef {Object} DefaultProviderPermormanceObject
  * @property {Number} closePositions
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} last12WeeksStats
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
@@ -1740,7 +1823,7 @@ function createEmptyProviderGetEntity() {
     about: "",
     performance: {
       closePositions: 0,
-      last12WeeksStats: [{}],
+      weeklyStats: [{ week: 0, return: 0 }],
       openPositions: 0,
       totalBalance: 0,
       totalTradingVolume: 0,
@@ -1879,9 +1962,11 @@ export function providerFollowersResponseTransform(response) {
     throw new Error("Response must be an array of positions.");
   }
 
-  return response.map((providerFollowersItem) => {
+  let list = response.map((providerFollowersItem) => {
     return providerFollowersResponseItemTransform(providerFollowersItem);
   });
+  list = list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  return list;
 }
 
 /**
@@ -2081,5 +2166,40 @@ export function exchangeDepositAddressResponseTransform({ currency, address, tag
     currency,
     address,
     tag,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderPerformanceEntity
+ * @property {Number} closePositions
+ * @property {Number} openPositions
+ * @property {Number} totalBalance
+ * @property {Number} totalTradingVolume
+ * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ */
+
+/**
+ *
+ * @param {*} response
+ * @returns {ProviderPerformanceEntity}
+ */
+
+export function providerPerformanceResponseTransform(response) {
+  if (!isObject) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  let emptyProviderEntity = createProviderPerformanceEmptyEntity();
+  return { ...emptyProviderEntity, ...response };
+}
+
+function createProviderPerformanceEmptyEntity() {
+  return {
+    closePositions: 0,
+    openPositions: 0,
+    totalBalance: 0,
+    totalTradingVolume: 0,
+    weeklyStats: [{}],
   };
 }

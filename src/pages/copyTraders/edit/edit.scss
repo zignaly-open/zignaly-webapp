@@ -1,13 +1,4 @@
-.profileEditPage {
+.copyTradersEditPage {
   min-height: inherit;
-  padding: 40px 20px;
   width: 100%;
-}
-
-@include media("<=sm") {
-  .profileEditPage {
-    min-height: inherit;
-    padding: 0;
-    width: 100%;
-  }
 }

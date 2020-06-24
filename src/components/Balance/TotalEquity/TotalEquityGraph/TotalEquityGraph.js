@@ -21,8 +21,6 @@ import { toNumber } from "lodash";
  */
 
 const TotalEquityGraph = ({ list }) => {
-  list = list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
   /**
    * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
@@ -38,7 +36,7 @@ const TotalEquityGraph = ({ list }) => {
 
   const prepareChartData = () => {
     [...list].forEach((item) => {
-      chartData.values.push(parseFloat(item.totalUSDT));
+      chartData.values.push(item.totalUSDT);
       chartData.labels.push("");
     });
   };

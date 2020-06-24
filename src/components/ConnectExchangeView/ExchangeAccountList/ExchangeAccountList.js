@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./ExchangeAccountList.scss";
-import useStoreUserSelector from "../../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";

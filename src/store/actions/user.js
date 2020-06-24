@@ -47,7 +47,6 @@ export const setUserExchanges = (payload) => {
        */
       let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
       dispatch(setDailyUserBalance(balancePayload));
-      dispatch(setUserBalance(balancePayload));
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }

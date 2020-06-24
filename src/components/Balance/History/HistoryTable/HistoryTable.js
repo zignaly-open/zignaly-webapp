@@ -11,6 +11,8 @@ import Table from "../../../Table";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
+ * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
+ * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
 
 /**
@@ -26,6 +28,7 @@ import Table from "../../../Table";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
+  let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -146,8 +149,13 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
 
   dynamicColumns();
 
-  const getMuiTheme = () =>
+  /**
+   * @param {ThemeOptions} theme Material UI theme options.
+   * @returns {Theme} Theme overridden.
+   */
+  const getMuiTheme = (theme) =>
     createMuiTheme({
+      ...theme,
       /**
        * @type {*}
        */
@@ -163,8 +171,8 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
 
   return (
     <Box className="historyTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
-        <Table columns={columns} data={list} persistKey={persistKey} title={title} />
+      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
+        <Table columns={columns} data={data} persistKey={persistKey} title={title} />
       </MuiThemeProvider>
     </Box>
   );

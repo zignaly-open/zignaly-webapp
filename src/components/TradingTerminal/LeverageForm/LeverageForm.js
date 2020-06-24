@@ -90,4 +90,4 @@ const LeverageForm = (props) => {
   );
 };
 
-export default LeverageForm;
+export default React.memo(LeverageForm);

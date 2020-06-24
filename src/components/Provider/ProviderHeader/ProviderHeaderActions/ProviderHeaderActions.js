@@ -6,6 +6,7 @@ import LogoIcon from "../../../../images/logo/logoIcon.svg";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
+import { FormattedMessage } from "react-intl";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -50,6 +51,23 @@ const ProviderHeaderActions = () => {
       </Box>
       <CopyTraderButton provider={storeViews.provider} />
       <TrialPeriod provider={storeViews.provider} />
+
+      <Typography variant="h4">
+        <FormattedMessage id="copyt.copiers" />
+        <b>{storeViews.provider.followers} </b>
+      </Typography>
+
+      <Typography variant="h4">
+        <FormattedMessage id="copyt.fee" />
+        <b>
+          {storeViews.provider.fee.toLowerCase() === "free" ? (
+            <FormattedMessage id="col.free" />
+          ) : (
+            storeViews.provider.fee
+          )}
+        </b>
+      </Typography>
+
       <PaymentButton provider={storeViews.provider} />
     </Box>
   );

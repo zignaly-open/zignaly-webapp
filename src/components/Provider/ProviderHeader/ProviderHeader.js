@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./ProviderHeader.scss";
 import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
-import { createProviderRoutes } from "../../../utils/routesMapping";
+import { createProviderRoutes, createTraderRoutes } from "../../../utils/routesMapping";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import TraderHeaderActions from "./TraderHeaderActions";
+import TraderHeaderInfo from "./TraderHeaderInfo";
 import ProviderHeaderActions from "./ProviderHeaderActions";
-import ProviderHeaderInfo from "./ProviderHeaderInfo";
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -15,11 +16,13 @@ import ProviderHeaderInfo from "./ProviderHeaderInfo";
 const ProviderHeader = () => {
   const storeViews = useStoreViewsSelector();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
-  const [links, setLinks] = useState(createProviderRoutes(providerId, storeViews.provider).links);
+  const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    const data = createProviderRoutes(providerId, storeViews.provider).links;
-    setLinks(data);
+    const data = storeViews.provider.isCopyTrading
+      ? createTraderRoutes(providerId, storeViews.provider)
+      : createProviderRoutes(providerId, storeViews.provider);
+    setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeViews.provider.id]);
 
@@ -30,8 +33,14 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <ProviderHeaderActions />
-      <ProviderHeaderInfo />
+      {storeViews.provider.isCopyTrading ? (
+        <>
+          <TraderHeaderActions />
+          <TraderHeaderInfo />
+        </>
+      ) : (
+        <ProviderHeaderActions />
+      )}
       <SubNavHeader links={links} />
     </Box>
   );

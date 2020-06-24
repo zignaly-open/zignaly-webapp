@@ -83,7 +83,9 @@ export const colors = {
   black2: "#1b1b2c",
   black: "#191927",
   darkGrey: "#808080",
+  blue: "#017aff",
   green: "#08a441",
+  yellow: "#f6ad3f",
   lightBlack: "#27273f",
   offWhite: "#fbfafc",
   purple: "#770fc8",
@@ -146,6 +148,7 @@ const theme = (darkStyle) => {
       text: {
         primary: darkStyle ? colors.white : colors.black,
       },
+      type: darkStyle ? "dark" : "light",
     },
     typography: {
       h1: {

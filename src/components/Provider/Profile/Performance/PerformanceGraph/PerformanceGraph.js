@@ -24,8 +24,8 @@ import { useTheme } from "@material-ui/core/styles";
 const PerformanceGraph = ({ provider }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = provider.performance.last12WeeksStats.map((item) => item.return);
-  const labels = provider.performance.last12WeeksStats.map(() => "");
+  const values = provider.performance.weeklyStats.map((item) => item.return);
+  const labels = provider.performance.weeklyStats.map(() => "");
   const options = {
     scales: {
       xAxes: [
@@ -42,7 +42,10 @@ const PerformanceGraph = ({ provider }) => {
             display: false,
           },
           gridLines: {
-            display: false,
+            color: "transparent",
+            display: true,
+            drawBorder: false,
+            zeroLineColor: "rgba(0, 0, 0, 0.2)",
           },
         },
       ],
@@ -54,7 +57,7 @@ const PerformanceGraph = ({ provider }) => {
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${values[tooltipItems.index]}: ${tooltipItems[isMobile ? "xLabel" : "yLabel"]}`;
+    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}`;
 
   return (
     <Box className="performanceGraph">

@@ -22,6 +22,7 @@ import {
   providerFollowersListResponseTransform,
   exchangeAssetsResponseTransform,
   exchangeDepositAddressResponseTransform,
+  providerPerformanceResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -57,6 +58,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
  * @typedef {import('./tradeApiClient.types').DepositAddressGetPayload} DepositAddressGetPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
+ * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
  */
 
 /**
@@ -609,6 +611,37 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeDepositAddressResponseTransform(responseData);
+  }
+
+  /**
+   * Create manual position.
+   *
+   * @param {CreatePositionPayload} payload Create manual position.
+
+   * @returns {Promise<string>} Promise that resolve created position ID.
+   *
+   * @memberof TradeApiClient
+   */
+  async manualPositionCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createManualPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerPerformanceGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderPerformance";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerPerformanceResponseTransform(responseData);
   }
 }
 

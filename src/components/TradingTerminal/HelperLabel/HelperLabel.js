@@ -36,4 +36,4 @@ const HelperLabel = (props) => {
   );
 };
 
-export default HelperLabel;
+export default React.memo(HelperLabel);

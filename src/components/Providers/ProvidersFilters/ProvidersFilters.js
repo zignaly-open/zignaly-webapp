@@ -1,8 +1,11 @@
 import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import { useIntl } from "react-intl";
+
+/**
+ * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
+ */
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
@@ -10,8 +13,10 @@ import { useIntl } from "react-intl";
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
- * @property {string} coin Selected coin.
+ * @property {OptionType} coin Selected coin.
+ * @property {Array<OptionType>} coins Coins options.
  * @property {string} exchange Selected exchange.
+ * @property {Array<OptionType>} exchanges Exchanges options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
  */
 
@@ -24,16 +29,15 @@ import { useIntl } from "react-intl";
 const ProvidersFilters = ({
   onClose,
   coin,
+  coins,
   exchange,
+  exchanges,
   onCoinChange,
   onExchangeChange,
   clearFilters,
   open,
 }) => {
   const intl = useIntl();
-  const quoteAssets = useQuoteAssets();
-  const coins = Object.keys(quoteAssets);
-  const exchanges = ["Binance", "Zignaly", "KuCoin"];
 
   return open ? (
     <CustomFilters

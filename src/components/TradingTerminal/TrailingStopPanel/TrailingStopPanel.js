@@ -29,10 +29,25 @@ import "./TrailingStopPanel.scss";
 const TrailingStopPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, setValue, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+
+  /**
+   * Validate trailing stop distance when change.
+   *
+   * @return {Void} None.
+   */
+  const trailingStopDistanceChange = () => {
+    const draftPosition = getValues();
+    const trailingStopDistance = parseFloat(draftPosition.trailingStopDistance);
+
+    if (isNaN(trailingStopDistance)) {
+      setError("trailingStopDistance", "error", "Trailing stop distance must be a number.");
+      return;
+    }
+  };
 
   /**
    * Calculate price based on percentage when value is changed.
@@ -45,7 +60,12 @@ const TrailingStopPanel = (props) => {
     const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
     const trailingStopPrice = (price * (100 + trailingStopPercentage)) / 100;
 
-    if (!isNaN(price) && price > 0) {
+    if (draftPosition.trailingStopPercentage !== "-" && isNaN(trailingStopPercentage)) {
+      setError("trailingStopPercentage", "error", "Trailing stop percentage must be a number.");
+      return;
+    }
+
+    if (price > 0) {
       setValue("trailingStopPrice", formatPrice(trailingStopPrice, ""));
     } else {
       setValue("trailingStopPrice", "");
@@ -64,6 +84,11 @@ const TrailingStopPanel = (props) => {
     const price = parseFloat(draftPosition.price);
     const trailingStopPrice = parseFloat(draftPosition.trailingStopPrice);
     const priceDiff = trailingStopPrice - price;
+
+    if (isNaN(trailingStopPrice)) {
+      setError("trailingStopPrice", "error", "Trailing stop price must be a number.");
+      return;
+    }
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const trailingStopPercentage = (priceDiff / price) * 100;
@@ -106,6 +131,15 @@ const TrailingStopPanel = (props) => {
     return null;
   };
 
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      clearError("trailingStopPercentage");
+      clearError("trailingStopPrice");
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -138,7 +172,6 @@ const TrailingStopPanel = (props) => {
               />
               <div className="currencyBox">%</div>
             </Box>
-            {displayFieldErrors("trailingStopPercentage")}
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
@@ -148,6 +181,7 @@ const TrailingStopPanel = (props) => {
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
+            {displayFieldErrors("trailingStopPercentage")}
             {displayFieldErrors("trailingStopPrice")}
             <HelperLabel descriptionId="terminal.distance.help" labelId="terminal.distance" />
             <Box alignItems="center" display="flex">
@@ -155,9 +189,11 @@ const TrailingStopPanel = (props) => {
                 className="outlineInput"
                 inputRef={register}
                 name="trailingStopDistance"
+                onChange={trailingStopDistanceChange}
               />
               <div className="currencyBox">%</div>
             </Box>
+            {displayFieldErrors("trailingStopDistance")}
           </Box>
         </Box>
       )}
@@ -165,4 +201,4 @@ const TrailingStopPanel = (props) => {
   );
 };
 
-export default TrailingStopPanel;
+export default React.memo(TrailingStopPanel);

@@ -57,19 +57,11 @@ const CopiersGraph = ({ list }) => {
       <Box className="equityTooltip">
         <Box>
           <span className="label"> Date:</span>
-          <span>
-            {list[list.length - tooltipItem.index]
-              ? list[list.length - tooltipItem.index].date
-              : "0"}
-          </span>
+          <span>{list[tooltipItem.index] ? list[tooltipItem.index].date : "0"}</span>
         </Box>
         <Box>
           <span className="label">Followers:</span>
-          <span>
-            {list[list.length - tooltipItem.index]
-              ? list[list.length - tooltipItem.index].totalFollowers
-              : "0"}
-          </span>
+          <span>{list[tooltipItem.index] ? list[tooltipItem.index].totalFollowers : "0"}</span>
         </Box>
       </Box>
     );

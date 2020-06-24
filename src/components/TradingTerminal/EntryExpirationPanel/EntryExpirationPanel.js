@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
@@ -44,6 +44,14 @@ const EntryExpirationPanel = () => {
     return null;
   };
 
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      clearError("entryExpiration");
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+
   return (
     <Box className={`panel entryExpirationPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -84,4 +92,4 @@ const EntryExpirationPanel = () => {
   );
 };
 
-export default EntryExpirationPanel;
+export default React.memo(EntryExpirationPanel);

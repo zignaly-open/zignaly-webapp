@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
@@ -44,6 +44,14 @@ const AutoclosePanel = () => {
     return null;
   };
 
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      clearError("autoclose");
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+
   return (
     <Box className={`panel autoclosePanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -84,4 +92,4 @@ const AutoclosePanel = () => {
   );
 };
 
-export default AutoclosePanel;
+export default React.memo(AutoclosePanel);

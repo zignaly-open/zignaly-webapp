@@ -6,13 +6,14 @@ import { FormattedMessage } from "react-intl";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
  * @typedef {Object} DefaultProps
- * @property {UserBalanceEntity} balance Balance
+ * @property {UserBalanceEntity} balance
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
+
 const AvailableBalance = ({ balance }) => {
   return (
     <Box
@@ -43,7 +44,7 @@ const AvailableBalance = ({ balance }) => {
             = USD {balance.totalFreeUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {balance.totalFreeBTC}</Typography>
+        <Typography variant="h5">BTC {balance.totalFreeBTC ? balance.totalFreeBTC : 0}</Typography>
       </Box>
       <span className="operator">+</span>
       <Box
@@ -67,7 +68,9 @@ const AvailableBalance = ({ balance }) => {
             = USD {balance.totalLockedUSDT}
           </Typography>
         </Box>
-        <Typography variant="h5">BTC {balance.totalLockedBTC}</Typography>
+        <Typography variant="h5">
+          BTC {balance.totalLockedBTC ? balance.totalLockedBTC : 0}
+        </Typography>
       </Box>
       <span className="operator">+</span>
       <Box

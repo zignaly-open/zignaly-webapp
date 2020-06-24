@@ -29,7 +29,7 @@ import "./DCAPanel.scss";
 const DCAPanel = (props) => {
   const { symbolData } = props;
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, watch } = useFormContext();
   const {
     cardinalityRange,
     composeTargetPropertyName,
@@ -62,6 +62,17 @@ const DCAPanel = (props) => {
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price - (price * targetPricePercentage) / 100;
+
+    if (isNaN(targetPricePercentage)) {
+      setError(
+        composeTargetPropertyName("targetPricePercentage", targetId),
+        "error",
+        "Rebuy price percentage must be a number.",
+      );
+
+      return;
+    }
+
     validateTargetPriceLimits(
       targetPrice,
       composeTargetPropertyName("targetPricePercentage", targetId),
@@ -86,6 +97,7 @@ const DCAPanel = (props) => {
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
+
     if (rebuyPositionSize > 0) {
       const units = Math.abs(rebuyPositionSize / targetPrice);
       validateUnitsLimits(units, composeTargetPropertyName("rebuyPercentage", targetId));
@@ -104,6 +116,17 @@ const DCAPanel = (props) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
+
+    if (isNaN(rebuyPercentage)) {
+      setError(
+        composeTargetPropertyName("rebuyPercentage", targetId),
+        "error",
+        "Rebuy percentage must be a number.",
+      );
+
+      return;
+    }
+
     validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
     rebuyUnitsChange(targetId);
   };
@@ -149,6 +172,17 @@ const DCAPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyPositionSize]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      cardinalityRange.forEach((targetId) => {
+        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+      });
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
@@ -212,4 +246,4 @@ const DCAPanel = (props) => {
   );
 };
 
-export default DCAPanel;
+export default React.memo(DCAPanel);

@@ -10,19 +10,33 @@ import EquityGraphLabels from "./GraphLabels";
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
  * @typedef {Object} DefaultProps
- * @property {UserBalanceEntity} balance Balance
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {UserBalanceEntity} [balance]
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TotalEquity = ({ balance, dailyBalance }) => {
+const TotalEquity = ({ dailyBalance }) => {
   const [list, setList] = useState(dailyBalance.balances);
+  const [balance, setBalance] = useState({ totalBTC: 0, totalUSDT: 0 });
+
+  const filterBalance = () => {
+    let currentDate = new Date().getDate();
+    let obj = { ...balance };
+    let data = dailyBalance.balances.length
+      ? dailyBalance.balances.find((item) => new Date(item.date).getDate() === currentDate)
+      : { totalBTC: 0, totalUSDT: 0 };
+    obj.totalBTC = data.totalBTC;
+    obj.totalUSDT = data.totalUSDT;
+    setBalance(obj);
+  };
 
   useEffect(() => {
     setList(dailyBalance.balances);
+    filterBalance();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dailyBalance.balances]);
 

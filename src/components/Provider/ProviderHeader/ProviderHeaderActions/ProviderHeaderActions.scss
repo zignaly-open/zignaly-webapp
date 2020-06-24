@@ -8,6 +8,7 @@
     .providerLogo {
       height: 40px;
       margin-right: 16px;
+      min-width: 40px;
       width: 40px;
     }
 
@@ -18,15 +19,11 @@
 
   h4 {
     font-family: "PlexSans-Regular";
-    margin-right: 40px;
+    margin-right: 20px;
 
     b {
       font-family: "PlexSans-Bold";
-      margin-left: 8px;
-
-      b {
-        margin-left: 5px;
-      }
+      margin-left: 5px;
     }
   }
 
