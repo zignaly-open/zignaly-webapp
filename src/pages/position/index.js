@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import withDashboardLayout from "../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
+import tradeApi from "../../services/tradeApiClient";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
+import { showErrorAlert } from "../../store/actions/ui";
+import { useDispatch } from "react-redux";
+import { TradingView } from "../../components/TradingTerminal";
+
+/**
+ * @typedef {import("../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ */
 
 /**
  * @typedef {Object} PositionPageProps
@@ -17,6 +26,26 @@ import { Helmet } from "react-helmet";
  */
 const PositionPage = (props) => {
   const { positionId } = props;
+  const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
+  const fetchPosition = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      positionId,
+    };
+
+    tradeApi
+      .positionGet(payload)
+      .then((data) => {
+        setPositionEntity(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(fetchPosition, []);
 
   return (
     <>
@@ -32,6 +61,7 @@ const PositionPage = (props) => {
           justifyContent="center"
         >
           <h2>Viewing position: {positionId}</h2>
+          <TradingView positionEntity={positionEntity} />
         </Box>
       </Box>
     </>
