@@ -1,25 +1,46 @@
 .optionsFormWrapper {
   width: 100%;
-}
-.providerOptionsForm {
-  width: 100%;
 
-  .inputBox {
+  .providerOptionsForm {
     width: 100%;
-    margin-bottom: 20px;
+    min-height: 300px;
 
-    .checkboxInput {
-      margin: 0;
-      margin-right: 10px;
+    .inputBox {
+      width: 100%;
+      margin-bottom: 15px;
+
+      .checkboxInput {
+        margin: 0;
+        margin-right: 10px;
+      }
+
+      .customLabel {
+        margin-bottom: 0;
+      }
     }
 
-    .customLabel {
-      margin-bottom: 0;
+    .subInputBox {
+      width: 80%;
+      margin-left: 5%;
+
+      .fieldInputBox {
+        width: 250px;
+      }
+    }
+
+    .fieldInputBox {
+      width: 50%;
+      margin-bottom: 20px;
+
+      .customLabel {
+        margin-bottom: 5px;
+      }
     }
   }
 
   .formAction {
     width: 100%;
+    margin-top: 30px;
 
     .submitButton {
       min-width: 160px;

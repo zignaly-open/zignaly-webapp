@@ -60,9 +60,11 @@ const SignalProvidersProfile = () => {
       <Box bgcolor="grid.main" className="performanceBox">
         <Performance provider={storeViews.provider} />
       </Box>
-      <Box bgcolor="grid.main" className="optionsBox">
-        <Options provider={storeViews.provider} />
-      </Box>
+      {!storeViews.provider.disable && (
+        <Box bgcolor="grid.main" className="optionsBox">
+          <Options provider={storeViews.provider} />
+        </Box>
+      )}
       <Disclaimer />
     </Box>
   );

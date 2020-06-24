@@ -45,10 +45,40 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
- * @property {String} allocatedBalance
- * @property {String} exchangeInternalId
- * @property {Boolean} balanceFilter
- * @property {Boolean} connected
+ * @property {String} [allocatedBalance]
+ * @property {String} [exchangeInternalId]
+ * @property {Boolean} [balanceFilter]
+ * @property {Boolean} [connected]
+ * @property {Boolean} [acceptUpdateSignal]
+ * @property {Boolean} [allowSendingBuyOrdersAsMarket]
+ * @property {Boolean} [enablePanicSellSignals]
+ * @property {Boolean} [enableSellSignals]
+ * @property {Boolean} [limitPriceFromSignal]
+ * @property {Boolean} [reBuyFromProvider]
+ * @property {Boolean} [reBuysFromSignal]
+ * @property {Boolean} [reUseSignalIdIfClosed]
+ * @property {Boolean} [riskFilter]
+ * @property {Boolean} [stopLossFromSignal]
+ * @property {Boolean} [successRateFilter]
+ * @property {Boolean} [takeProfitsFromSignal]
+ * @property {Boolean} [terms]
+ * @property {Boolean} [trailingStopFromSignal]
+ * @property {Boolean} [useLeverageFromSignal]
+ * @property {String} [customerKey]
+ * @property {Boolean} [reBuyFirst]
+ * @property {Boolean} [reBuyAll]
+ * @property {Boolean} [reBuyLast]
+ * @property {Boolean} [takeProfitFirst]
+ * @property {Boolean} [takeProfitAll]
+ * @property {Boolean} [takeProfitLast]
+ * @property {Number} [quantityPercentage]
+ * @property {Number} [limitReBuys]
+ * @property {Boolean} [short]
+ * @property {Boolean} [shortmid]
+ * @property {Boolean} [mid]
+ * @property {Boolean} [long]
+ * @property {Number} [risk]
+ * @property {Number} [successRate]
  */
 
 /**
@@ -1532,6 +1562,8 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} takeProfitsFromSignal
  * @property {Boolean} terms
  * @property {Boolean} trailingStopFromSignal
+ * @property {Boolean} useLeverageFromSignal
+ * @property {Boolean} customerKey
  */
 
 /**
@@ -1729,6 +1761,7 @@ function createEmptyProviderGetEntity() {
       takeProfitsFromSignal: false,
       terms: false,
       trailingStopFromSignal: false,
+      useLeverageFromSignal: false,
     },
     public: false,
     shortDesc: "",

@@ -294,6 +294,7 @@ const initialState = {
         takeProfitsFromSignal: false,
         terms: false,
         trailingStopFromSignal: false,
+        useLeverageFromSignal: false,
       },
       public: false,
       shortDesc: "",
