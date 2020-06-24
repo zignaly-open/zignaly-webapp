@@ -6,6 +6,8 @@ import { useSelector, shallowEqual } from "react-redux";
  * @typedef {UserObject["exchangeConnections"]} UserExchangeConnections
  * @typedef {UserObject["balance"]} UserExchangeBalance
  * @typedef {UserObject["dailyBalance"]} UserExchangeDailyBalance
+ * @typedef {UserObject["userData"]} UserEntity
+ *
  */
 
 /**
@@ -76,9 +78,27 @@ const useStoreUserDailyBalance = () => {
   return useSelector(selector, shallowEqual);
 };
 
+/**
+ * Select Redux store user exchange daily balance.
+ *
+ * @returns {UserEntity} User exchange daily balance.
+ */
+const useStoreUserData = () => {
+  /**
+   * Select store user data.
+   *
+   * @param {DefaultStateType} state Application store data.
+   * @returns {UserEntity} User profile data.
+   */
+  const selector = (state) => state.user.userData;
+
+  return useSelector(selector, shallowEqual);
+};
+
 export {
   useStoreUserBalance,
   useStoreUserDailyBalance,
   useStoreUserExchangeConnections,
   useStoreUserSelector,
+  useStoreUserData,
 };

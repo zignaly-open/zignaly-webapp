@@ -1,6 +1,7 @@
 import React from "react";
 import "./PaymentButton.scss";
 import { Box } from "@material-ui/core";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -14,6 +15,7 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PaymentButton = ({ provider }) => {
+  const storeUserData = useStoreUserData();
   const ipnURL = "https://zignaly.com/api/cryptoPaymentListener.php";
 
   const createReturnSuccessUrl = () => {
@@ -58,7 +60,7 @@ const PaymentButton = ({ provider }) => {
             <input name="cancel_url" type="hidden" value={returnErrorURL} />
             <input name="allow_extra" type="hidden" value="0" />
             <input name="invoice" type="hidden" value={provider.id} />
-            <input name="custom" type="hidden" value={provider.id} />
+            <input name="custom" type="hidden" value={storeUserData.userId} />
             <input name="ipn_url" type="hidden" value={ipnURL} />
             <input
               alt="Buy Now with CoinPayments.net"

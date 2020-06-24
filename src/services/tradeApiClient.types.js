@@ -151,6 +151,13 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object} ProviderExchangeSettingsPayload
+ * @property {string} token User access token.
+ * @property {string} internalExchangeId User exchange connection ID.
+ * @property {String} providerId
+ */
+
+/**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId
