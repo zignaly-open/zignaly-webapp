@@ -41,6 +41,25 @@ const TrailingStopPanel = (props) => {
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
 
+  const getFieldsDisabledStatus = () => {
+    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+    const isTriggered = positionEntity ? positionEntity.trailingStopTriggered : false;
+
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+
+    fieldsDisabled.trailingStopPercentage = isCopy || isClosed || isTriggered;
+    fieldsDisabled.trailingStopPrice = isCopy || isClosed || isTriggered;
+    fieldsDisabled.trailingStopDistance = isCopy || isClosed;
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
       const trailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
@@ -184,6 +203,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                disabled={fieldsDisabled.trailingStopPercentage}
                 inputRef={register}
                 name="trailingStopPercentage"
                 onChange={trailingStopPercentageChange}
@@ -193,6 +213,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                disabled={fieldsDisabled.trailingStopPriceChange}
                 inputRef={register}
                 name="trailingStopPrice"
                 onChange={trailingStopPriceChange}
@@ -205,6 +226,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                disabled={fieldsDisabled.trailingStopDistanceChange}
                 inputRef={register}
                 name="trailingStopDistance"
                 onChange={trailingStopDistanceChange}
