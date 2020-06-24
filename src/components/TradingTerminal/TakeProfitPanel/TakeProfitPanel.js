@@ -58,22 +58,22 @@ const TakeProfitPanel = (props) => {
   const strategyUnits = watch("units");
   const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+  const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
+  const isTargetLocked = cardinality === targetsDone;
+  const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
 
   const getFieldsDisabledStatus = () => {
-    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
-
     /**
      * @type {Object<string, boolean>}
      */
     const fieldsDisabled = {};
     targetIndexes.forEach((index) => {
-      const target = positionEntity
-        ? positionEntity.takeProfitTargets[index]
-        : { done: false, skipped: false };
+      const target = positionEntity ? positionEntity.takeProfitTargets[index] : { done: false };
 
       let disabled = false;
-      if (target.done || target.skipped) {
+      if (target.done) {
         disabled = true;
       } else if (isCopy || isClosed) {
         disabled = true;
@@ -469,16 +469,18 @@ const TakeProfitPanel = (props) => {
               </Box>
             </Box>
           ))}
-          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-            <Button className="removeTarget" onClick={handleTargetRemove}>
-              <RemoveCircle />
-              <FormattedMessage id="terminal.target.remove" />
-            </Button>
-            <Button className="addTarget" onClick={handleTargetAdd}>
-              <AddCircle />
-              <FormattedMessage id="terminal.target.add" />
-            </Button>
-          </Box>
+          {!disableCardinalityActions && (
+            <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+              <Button className="removeTarget" onClick={handleTargetRemove}>
+                <RemoveCircle />
+                <FormattedMessage id="terminal.target.remove" />
+              </Button>
+              <Button className="addTarget" onClick={handleTargetAdd}>
+                <AddCircle />
+                <FormattedMessage id="terminal.target.add" />
+              </Button>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
