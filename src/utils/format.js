@@ -159,7 +159,7 @@ export const formatDuration = (time) => {
  * Revert percentage to standard 0-100 range.
  *
  * @param {Number} percentage Percentage value.
- * @returns {Nubmer} Reverted percentage.
+ * @returns {Number} Reverted percentage.
  */
 export const revertPercentageRange = (percentage) => {
   return percentage === 1 ? 100 : 100 * (1 - percentage);

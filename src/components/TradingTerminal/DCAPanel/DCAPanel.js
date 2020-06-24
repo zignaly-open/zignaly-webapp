@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { range, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { useFormContext } from "react-hook-form";
-import { formatFloat2Dec } from "../../../utils/format";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
@@ -29,8 +30,11 @@ import "./DCAPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const DCAPanel = (props) => {
-  const { symbolData } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { positionEntity, symbolData } = props;
+  const positionTargetsCardinality = positionEntity ? size(positionEntity.reBuyTargets) : 0;
+  const { expanded, expandClass, expandableControl } = useExpandable(
+    positionTargetsCardinality > 0,
+  );
   const { clearError, errors, getValues, register, setError, watch } = useFormContext();
   const {
     cardinalityRange,
@@ -51,6 +55,21 @@ const DCAPanel = (props) => {
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
+      profitTargetIndexes.forEach((index) => {
+        const profitTarget = positionEntity.reBuyTargets[index];
+        const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
+        const quantityPercentage = revertPercentageRange(profitTarget.quantity);
+        setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
+        setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
+      });
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity]);
 
   /**
    * Calculate the target price and trigger validation.
