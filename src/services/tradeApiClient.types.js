@@ -2133,7 +2133,7 @@ function createProviderPerformanceEmptyEntity() {
  * Transform User get response.
  *
  * @param {*} response .
- * @returns {UserEntity} Exchange connection entity.
+ * @returns {UserEntity} User profile entity.
  */
 export function userGetResponseTransform(response) {
   const emptyUserEntity = creatEmptyUserEntity();
@@ -2175,5 +2175,165 @@ function creatEmptyUserEntity() {
     subscribe: false,
     token: "",
     userId: "",
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderSettingsTargetObject
+ * @property {String} targetId
+ * @property {String} priceTargetPercentage
+ * @property {String} amountPercentage
+ */
+
+/**
+ *
+ * @typedef {Object} ProviderExchangeSettingsObject
+ * @property {Boolean} blacklist
+ * @property {Number} buyTTL
+ * @property {Boolean} disable
+ * @property {Boolean} internal
+ * @property {String} internalId
+ * @property {String} internalName
+ * @property {String} leverage
+ * @property {Boolean} managed
+ * @property {String} maxPositions
+ * @property {String} minVolume
+ * @property {String} name
+ * @property {Number} positionSize
+ * @property {String} positionSizeBKRWUnit
+ * @property {String} positionSizeBKRWValue
+ * @property {String} positionSizeBNBUnit
+ * @property {String} positionSizeBNBValue
+ * @property {String} positionSizeBTCUnit
+ * @property {String} positionSizeBTCValue
+ * @property {String} positionSizeBUSDUnit
+ * @property {String} positionSizeBUSDValue
+ * @property {String} positionSizeETHUnit
+ * @property {String} positionSizeETHValue
+ * @property {String} positionSizeEURUnit
+ * @property {String} positionSizeEURValue
+ * @property {String} positionSizeIDRTUnit
+ * @property {String} positionSizeIDRTValue
+ * @property {String} positionSizeNGNUnit
+ * @property {String} positionSizeNGNValue
+ * @property {String} positionSizePAXUnit
+ * @property {String} positionSizePAXValue
+ * @property {String} positionSizeRUBUnit
+ * @property {String} positionSizeRUBValue
+ * @property {String} positionSizeTRXUnit
+ * @property {String} positionSizeTRXValue
+ * @property {String} positionSizeTRYUnit
+ * @property {String} positionSizeTRYValue
+ * @property {String} positionSizeTUSDUnit
+ * @property {String} positionSizeTUSDValue
+ * @property {String} positionSizeUSDCUnit
+ * @property {String} positionSizeUSDCValue
+ * @property {String} positionSizeUSDSUnit
+ * @property {String} positionSizeUSDSValue
+ * @property {String} positionSizeUSDTUnit
+ * @property {String} positionSizeUSDTValue
+ * @property {String} positionSizeXRPUnit
+ * @property {String} positionSizeXRPValue
+ * @property {String} positionSizeZARUnit
+ * @property {String} positionSizeZARValue
+ * @property {String} maxPositions
+ * @property {String} positionsPerMarket
+ * @property {String} priceDeviation
+ * @property {Array<ProviderSettingsTargetObject>} reBuyTargets
+ * @property {Number} sellByTTL
+ * @property {String} sellPriceDeviation
+ * @property {String} stopLoss
+ * @property {Array<ProviderSettingsTargetObject>} takeProfitTargets
+ * @property {String} trailingStop
+ * @property {String} trailingStopTrigger
+ * @property {Boolean} whitelist
+ */
+
+/**
+ * Transform Provider Exchange Settings response.
+ *
+ * @param {*} response .
+ * @returns {ProviderExchangeSettingsObject} Provider Exchange Settings entity.
+ */
+export function providerExchangeSettingsResponseTransform(response) {
+  const emptySettingsEntity = creatEmptySettingsEntity();
+  // Override the empty entity with the values that came in from API.
+  let reBuyTargets = response.reBuyTargets ? Object.values(response.reBuyTargets) : [];
+  let takeProfitTargets = response.takeProfitTargets
+    ? Object.values(response.takeProfitTargets)
+    : [];
+  const transformedResponse = assign(emptySettingsEntity, response, {
+    reBuyTargets: reBuyTargets,
+    takeProfitTargets: takeProfitTargets,
+  });
+
+  return transformedResponse;
+}
+
+/**
+ * Create provider exchange settings entity.
+ * @returns {ProviderExchangeSettingsObject} Provider exchange settings entity.
+ */
+function creatEmptySettingsEntity() {
+  return {
+    blacklist: false,
+    buyTTL: 0,
+    disable: false,
+    internal: false,
+    internalId: "",
+    internalName: "",
+    leverage: "1",
+    managed: false,
+    maxPositions: "",
+    minVolume: "",
+    name: "",
+    positionSize: 0,
+    positionSizeBKRWUnit: "#",
+    positionSizeBKRWValue: "",
+    positionSizeBNBUnit: "#",
+    positionSizeBNBValue: "",
+    positionSizeBTCUnit: "#",
+    positionSizeBTCValue: "",
+    positionSizeBUSDUnit: "#",
+    positionSizeBUSDValue: "",
+    positionSizeETHUnit: "#",
+    positionSizeETHValue: "",
+    positionSizeEURUnit: "#",
+    positionSizeEURValue: "",
+    positionSizeIDRTUnit: "#",
+    positionSizeIDRTValue: "",
+    positionSizeNGNUnit: "#",
+    positionSizeNGNValue: "",
+    positionSizePAXUnit: "#",
+    positionSizePAXValue: "",
+    positionSizeRUBUnit: "#",
+    positionSizeRUBValue: "",
+    positionSizeTRXUnit: "#",
+    positionSizeTRXValue: "",
+    positionSizeTRYUnit: "#",
+    positionSizeTRYValue: "",
+    positionSizeTUSDUnit: "#",
+    positionSizeTUSDValue: "",
+    positionSizeUSDCUnit: "#",
+    positionSizeUSDCValue: "",
+    positionSizeUSDSUnit: "#",
+    positionSizeUSDSValue: "",
+    positionSizeUSDTUnit: "#",
+    positionSizeUSDTValue: "",
+    positionSizeXRPUnit: "#",
+    positionSizeXRPValue: "",
+    positionSizeZARUnit: "#",
+    positionSizeZARValue: "",
+    positionsPerMarket: "",
+    priceDeviation: "",
+    reBuyTargets: [{ targetId: "", priceTargetPercentage: "", amountPercentage: "" }],
+    sellByTTL: 0,
+    sellPriceDeviation: "",
+    stopLoss: "",
+    takeProfitTargets: [{ targetId: "1", priceTargetPercentage: "", amountPercentage: "" }],
+    trailingStop: "",
+    trailingStopTrigger: "",
+    whitelist: false,
   };
 }

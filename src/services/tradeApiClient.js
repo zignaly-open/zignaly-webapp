@@ -22,6 +22,7 @@ import {
   providerFollowersListResponseTransform,
   providerPerformanceResponseTransform,
   userGetResponseTransform,
+  providerExchangeSettingsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -622,7 +623,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProviderExchangeSettings";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userGetResponseTransform(responseData);
+    return providerExchangeSettingsResponseTransform(responseData);
   }
 }
 

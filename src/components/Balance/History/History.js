@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./History.scss";
 import { Box } from "@material-ui/core";
 import HistoryTable from "./HistoryTable";
@@ -17,6 +17,12 @@ import HistoryFilter from "./HistoryFilter";
  */
 const History = ({ dailyBalance }) => {
   const [list, setList] = useState(dailyBalance.balances);
+
+  const initData = () => {
+    setList(dailyBalance.balances);
+  };
+
+  useEffect(initData, [dailyBalance]);
   /**
    *
    * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity

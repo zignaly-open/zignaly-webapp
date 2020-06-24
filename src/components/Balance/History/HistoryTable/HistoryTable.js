@@ -27,7 +27,7 @@ import Table from "../../../Table";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
+const HistoryTable = ({ title, persistKey, list, quotes }) => {
   let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
@@ -178,4 +178,4 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
   );
 };
 
-export default ProvidersProfitsTable;
+export default HistoryTable;
