@@ -8,6 +8,7 @@ import {
   GET_DAILY_USER_BALANCE,
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
+  GET_USER_DATA,
 } from "../store/actions/user";
 
 /**
@@ -52,6 +53,10 @@ const userExchanges = (state, action) => {
 
     case GET_DAILY_USER_BALANCE:
       newState.dailyBalance = action.payload;
+      break;
+
+    case GET_USER_DATA:
+      newState.userData = action.payload;
       break;
 
     case REMOVE_USER_EXCHANGE:

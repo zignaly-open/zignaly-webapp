@@ -21,6 +21,7 @@ import {
   providerFollowersResponseTransform,
   providerFollowersListResponseTransform,
   providerPerformanceResponseTransform,
+  userGetResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -589,6 +590,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerPerformanceResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {AuthorizationPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async userDataGet(payload) {
+    const endpointPath = "/fe/api.php?action=getUserData";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userGetResponseTransform(responseData);
   }
 }
 

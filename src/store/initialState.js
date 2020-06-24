@@ -16,6 +16,8 @@
  * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import('../services/tradeApiClient.types').UserEntity} UserEntity
+ *
  */
 
 /**
@@ -23,6 +25,7 @@
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
+ * @property {UserEntity} userData
  */
 
 /**
@@ -232,6 +235,32 @@ const initialState = {
     dailyBalance: {
       balances: [],
       quotes: [],
+    },
+    userData: {
+      TwoFAEnable: false,
+      ask2FA: false,
+      binanceConnected: false,
+      buysCount: 0,
+      createdAt: "",
+      dashlyEchoAuth: "",
+      dashlyHash: "",
+      email: "",
+      firstName: "",
+      isAdmin: null,
+      minimumProviderSettings: true,
+      onboarding: { finished: false, paused: true, step: "2" },
+      planId: "",
+      planName: "",
+      planType: "",
+      projectId: "",
+      providerEnable: true,
+      ref: "",
+      refCode: "",
+      sellsCount: 0,
+      status: 0,
+      subscribe: false,
+      token: "",
+      userId: "",
     },
   },
   ui: {

@@ -2084,3 +2084,89 @@ function createProviderPerformanceEmptyEntity() {
     weeklyStats: [{}],
   };
 }
+
+/**
+ *
+ * @typedef {Object} UserOnboardingObject
+ * @property {Boolean} finished
+ * @property {Boolean} paused
+ * @property {String} step
+ */
+
+/**
+ *
+ * @typedef {Object} UserEntity
+ * @property {Boolean} TwoFAEnable
+ * @property {Boolean} ask2FA
+ * @property {Boolean} binanceConnected
+ * @property {Number} buysCount
+ * @property {String} createdAt
+ * @property {String} dashlyEchoAuth
+ * @property {String} dashlyHash
+ * @property {String} email
+ * @property {String} firstName
+ * @property {Boolean} isAdmin
+ * @property {Boolean} minimumProviderSettings
+ * @property {UserOnboardingObject} onboarding
+ * @property {String} planId
+ * @property {String} planName
+ * @property {String} planType
+ * @property {String} projectId
+ * @property {Boolean} providerEnable
+ * @property {String} ref
+ * @property {String} refCode
+ * @property {Number} sellsCount
+ * @property {Number} status
+ * @property {Boolean} subscribe
+ * @property {String} token
+ * @property {String} userId
+ */
+
+/**
+ * Transform User get response.
+ *
+ * @param {*} response .
+ * @returns {UserEntity} Exchange connection entity.
+ */
+export function userGetResponseTransform(response) {
+  const emptyUserEntity = creatEmptyUserEntity();
+  // Override the empty entity with the values that came in from API.
+  let val = "2FAEnable";
+  const TwoFAEnable = response[val];
+  const transformedResponse = assign(emptyUserEntity, response, { TwoFAEnable: TwoFAEnable });
+
+  return transformedResponse;
+}
+
+/**
+ * Create user entity.
+ * @returns {UserEntity} User entity.
+ */
+function creatEmptyUserEntity() {
+  return {
+    TwoFAEnable: false,
+    ask2FA: false,
+    binanceConnected: false,
+    buysCount: 0,
+    createdAt: "",
+    dashlyEchoAuth: "",
+    dashlyHash: "",
+    email: "",
+    firstName: "",
+    isAdmin: null,
+    minimumProviderSettings: true,
+    onboarding: { finished: false, paused: true, step: "2" },
+    planId: "",
+    planName: "",
+    planType: "",
+    projectId: "",
+    providerEnable: true,
+    ref: "",
+    refCode: "",
+    sellsCount: 0,
+    status: 0,
+    subscribe: false,
+    token: "",
+    userId: "",
+  };
+}

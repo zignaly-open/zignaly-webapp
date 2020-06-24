@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 import Edit from "./edit";
-import Management from "./management";
+import Settings from "./settings";
 import Analytics from "./providerAnalytics";
 import Users from "./users";
-import Positions from "./positions";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../store/actions/views";
@@ -57,8 +56,8 @@ const SignalProviders = ({ location }) => {
     <Router>
       <Profile path={withPrefix("/signalProviders/:providerId/profile")} providerId={providerId} />
       <Edit path={withPrefix("/signalProviders/:providerId/edit")} providerId={providerId} />
-      <Management
-        path={withPrefix("/signalProviders/:providerId/management")}
+      <Settings
+        path={withPrefix("/signalProviders/:providerId/settings")}
         providerId={providerId}
       />
       <Analytics
@@ -66,10 +65,6 @@ const SignalProviders = ({ location }) => {
         providerId={providerId}
       />
       <Users path={withPrefix("/signalProviders/:providerId/users")} providerId={providerId} />
-      <Positions
-        path={withPrefix("/signalProviders/:providerId/settings")}
-        providerId={providerId}
-      />
     </Router>
   );
 };
