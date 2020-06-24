@@ -558,6 +558,16 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} WithdrawPayload
+ * @property {string} internalId
+ * @property {string} asset
+ * @property {string} network
+ * @property {string} tag
+ * @property {string} address
+ * @property {number} amount
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

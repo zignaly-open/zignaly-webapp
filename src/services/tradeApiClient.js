@@ -62,6 +62,7 @@ import {
  * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
  * @typedef {import('./tradeApiClient.types').ExchangeDepositEntity} ExchangeDepositEntity
  * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
+ * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
  */
 
 /**
@@ -651,12 +652,27 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {GetExchangeLastDepositsPayload} payload Get providers stats payload.
-   * @returns {Promise<Array<ExchangeDepositEntity>} Returns promise.
+   * @returns {Promise<Array<ExchangeDepositEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
   async exchangeLastDepositsGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeLastDeposits";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeDepositsResponseTransform(responseData);
+  }
+
+  /**
+   * Withdraw currency to a different address.
+   *
+   * @param {WithdrawPayload} payload Withdraw payload.
+   * @returns {Promise<Array<ExchangeDepositEntity>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async withdraw(payload) {
+    const endpointPath = "/fe/api.php?action=exchangeWithdraw";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeDepositsResponseTransform(responseData);

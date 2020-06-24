@@ -563,6 +563,7 @@ withdraw.get: "You will get"
 withdraw.history: "Withdraw History"
 withdraw.memo: "MEMO/Tag"
 withdraw.minimum: "Minimum withdrawal"
+withdraw.success: "Withdraw initiated. Please check this page to see when it is completed."
 
 # SETTINGS
 settings.notifications: "Notifications"

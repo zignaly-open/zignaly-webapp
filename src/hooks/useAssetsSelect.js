@@ -4,14 +4,25 @@ import tradeApi from "../services/tradeApiClient";
 import useExchangeAssets from "./useExchangeAssets";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").BaseAssetsDict} BaseAssetsDict
+ * @typedef {import("../services/tradeApiClient.types").CoinNetwork} CoinNetwork
+ * @typedef {import("../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ */
+
+/**
+ * @typedef {Object} AssetsSelectType
+ * @property {string} selectedAssetName
+ * @property {Array<string>} assetsList
+ * @property {ExchangeAsset} selectedAsset
+ * @property {CoinNetwork} selectedNetwork
+ * @property {function} setSelectedNetwork
+ * @property {function} setSelectedAsset
  */
 
 /**
  * Provides bases assets.
  *
- * @param {string} quote Quote of the bases.
- * @returns {BaseAssetsDict} Quote Assets.
+ * @param {string} internalId Exchange internal id.
+ * @returns {AssetsSelectType} Assets select object data.
  */
 const useAssetsSelect = (internalId) => {
   const [selectedAssetName, setSelectedAsset] = useState("BTC");
