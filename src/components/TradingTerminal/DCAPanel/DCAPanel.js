@@ -66,12 +66,12 @@ const DCAPanel = (props) => {
      */
     const fieldsDisabled = {};
     targetIndexes.forEach((index) => {
-      const profitTarget = positionEntity
+      const target = positionEntity
         ? positionEntity.reBuyTargets[index]
         : { done: false, buying: false, skipped: false };
 
       let disabled = false;
-      if (profitTarget.done || profitTarget.buying || profitTarget.skipped) {
+      if (target.done || target.buying || target.skipped) {
         disabled = true;
       } else if (isCopy || isClosed) {
         disabled = true;

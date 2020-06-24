@@ -68,12 +68,12 @@ const TakeProfitPanel = (props) => {
      */
     const fieldsDisabled = {};
     targetIndexes.forEach((index) => {
-      const dcaTarget = positionEntity
+      const target = positionEntity
         ? positionEntity.takeProfitTargets[index]
         : { done: false, skipped: false };
 
       let disabled = false;
-      if (dcaTarget.done || dcaTarget.skipped) {
+      if (target.done || target.skipped) {
         disabled = true;
       } else if (isCopy || isClosed) {
         disabled = true;
