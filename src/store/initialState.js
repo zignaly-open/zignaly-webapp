@@ -60,7 +60,7 @@
  */
 
 /**
- * @typedef {Object} ErrorAlertObject
+ * @typedef {Object} AlertObject
  * @property {Boolean} open
  * @property {String} title
  * @property {String} body
@@ -68,8 +68,8 @@
 
 /**
  * @typedef {Object} DefaultUIAlertsObject
- * @property {Object} success
- * @property {ErrorAlertObject} error
+ * @property {AlertObject} success
+ * @property {AlertObject} error
  */
 
 /**
@@ -240,7 +240,11 @@ const initialState = {
       settingsView: false,
     },
     alerts: {
-      success: {},
+      success: {
+        title: "",
+        body: "",
+        open: false,
+      },
       error: {
         title: "",
         body: "",

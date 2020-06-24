@@ -16,7 +16,7 @@ import useExchangeDepositAddress from "../../../hooks/useExchangeDepositAddress"
 import { isEmpty } from "lodash";
 import { setSelectedExchange } from "../../../store/actions/settings";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 
 const ExchangeAccountDeposit = () => {
   const {
@@ -42,7 +42,7 @@ const ExchangeAccountDeposit = () => {
   // Select default network
   useEffect(() => {
     if (selectedAsset) {
-      setSelectedNetwork(selectedAsset.networks[0]);
+      setSelectedNetwork(selectedAsset.networks.find((n) => n.isDefault));
     }
   }, [selectedAsset]);
 
@@ -64,22 +64,30 @@ const ExchangeAccountDeposit = () => {
     },
   ];
 
-  const copyAddress = () => {
+  /**
+   * Copy content to clipboard and show alert.
+   * @param {string} content
+   * @param {string} successMessage
+   */
+  const copyToClipboard = (content, successMessage) => {
     navigator.clipboard
       .writeText(depositAddress.address)
-      .then(dispatch(showSuccessAlert("", "deposit.address.copied")))
+      .then(() => {
+        dispatch(showSuccessAlert("", "deposit.address.copied"));
+      })
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
   };
+
+  const copyAddress = () => {
+    copyToClipboard(depositAddress.address, "deposit.address.copied");
+  };
+
   const copyMemo = () => {
-    navigator.clipboard
-      .writeText(depositAddress.tag)
-      .then(dispatch(showSuccessAlert("", "deposit.memo.copied")))
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    copyToClipboard(depositAddress.tag, "deposit.memo.copied");
   };
+
   const showQRCode = () => {};
 
   const BuyCryptoBox = () => (

@@ -39,15 +39,17 @@ const ui = (state, action) => {
       newState.loader = action.payload;
       break;
     case SHOW_ERROR_ALERT:
-      newState.alerts.error = action.payload;
+      newState.alerts.error = { ...action.payload, open: true };
+      break;
+    case HIDE_ERROR_ALERT:
+      newState.alerts.error = {
+        title: "",
+        body: "",
+        open: false,
+      };
       break;
     case SHOW_SUCCESS_ALERT:
-      const { title, body } = payload;
-      newState.alerts.success = {
-        title,
-        body,
-        open: true,
-      };
+      newState.alerts.success = { ...action.payload, open: true };
       break;
     case HIDE_SUCCESS_ALERT:
       newState.alerts.success = {
