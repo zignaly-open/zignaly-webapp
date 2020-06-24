@@ -53,15 +53,14 @@ const PositionPage = (props) => {
         <title>Position Detail</title>
       </Helmet>
       <Box className="positionPage" display="flex" flexDirection="column" justifyContent="center">
-        <h1>I will be the position detail page.</h1>
         <Box
           className="positionDetail"
           display="flex"
           flexDirection="column"
           justifyContent="center"
         >
-          <h2>Viewing position: {positionId}</h2>
-          <TradingView positionEntity={positionEntity} />
+          <h2>Loading position: {positionId}</h2>
+          {positionEntity && <TradingView positionEntity={positionEntity} />}
         </Box>
       </Box>
     </>

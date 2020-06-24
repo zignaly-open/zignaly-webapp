@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
-import { isEmpty, range, forIn } from "lodash";
+import { isEmpty, isObject, range, forIn } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -31,6 +31,7 @@ import "../../CustomButton/CustomButton.scss";
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -44,6 +45,7 @@ import "../../CustomButton/CustomButton.scss";
  * @property {TVWidget} tradingViewWidget
  * @property {number} leverage
  * @property {string} selectedSymbol
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
 /**
@@ -53,7 +55,16 @@ import "../../CustomButton/CustomButton.scss";
  * @returns {JSX.Element} Strategy form element.
  */
 const StrategyForm = (props) => {
-  const { dataFeed, lastPriceCandle, leverage, selectedSymbol, tradingViewWidget } = props;
+  const {
+    dataFeed,
+    lastPriceCandle,
+    leverage,
+    selectedSymbol,
+    tradingViewWidget,
+    positionEntity = null,
+  } = props;
+
+  const isPositionView = isObject(positionEntity);
   const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
   const methods = useForm({
     mode: "onChange",
@@ -68,6 +79,7 @@ const StrategyForm = (props) => {
       dcaTargetPricePercentage1: "",
     },
   });
+
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = methods;
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
@@ -373,18 +385,20 @@ const StrategyForm = (props) => {
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <StrategyPanel
-            disableExpand={true}
-            lastPriceCandle={lastPriceCandle}
-            leverage={leverage}
-            symbolData={currentSymbolData}
-          />
+          {!isPositionView && (
+            <StrategyPanel
+              disableExpand={true}
+              lastPriceCandle={lastPriceCandle}
+              leverage={leverage}
+              symbolData={currentSymbolData}
+            />
+          )}
           <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
           <DCAPanel symbolData={currentSymbolData} />
           <StopLossPanel symbolData={currentSymbolData} />
           <TrailingStopPanel symbolData={currentSymbolData} />
-          <EntryExpirationPanel />
-          <AutoclosePanel />
+          {!isPositionView && <EntryExpirationPanel />}
+          {!isPositionView && <AutoclosePanel />}
           <CustomButton
             className={"full submitButton"}
             disabled={!isEmpty(errors)}

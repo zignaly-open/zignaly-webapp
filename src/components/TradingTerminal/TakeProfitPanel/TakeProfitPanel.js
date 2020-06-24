@@ -14,12 +14,14 @@ import "./TakeProfitPanel.scss";
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
  * @property {CoinRayCandle} lastPriceCandle
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
 /**

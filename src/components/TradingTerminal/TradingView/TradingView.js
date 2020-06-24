@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { isObject } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import Modal from "../../Modal";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../services/tradeApiClient";
-import "./TradingView.scss";
 import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, Button, CircularProgress } from "@material-ui/core";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import "./TradingView.scss";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -38,6 +39,9 @@ const TradingView = (props) => {
   const [lastPrice, setLastPrice] = useState(null);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const isPositionView = isObject(positionEntity);
+
+  console.log("PositionEntity: ", positionEntity);
 
   /**
    * Resolve exchange name from entity (when available) or from selected exchange otherwise.
@@ -175,7 +179,7 @@ const TradingView = (props) => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      {!isChartLoading && (
+      {!isChartLoading && !isPositionView && (
         <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
           <Box
             alignContent="left"
@@ -246,6 +250,7 @@ const TradingView = (props) => {
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
             leverage={leverage}
+            positionEntity={positionEntity}
             selectedSymbol={selectedSymbol}
             tradingViewWidget={tradingViewWidget}
           />
