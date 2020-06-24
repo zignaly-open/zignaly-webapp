@@ -308,7 +308,7 @@ const StrategyForm = (props) => {
 
   // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");
-  const entryPrice = positionEntity.buyPrice || parseFloat(strategyPrice);
+  const entryPrice = positionEntity ? positionEntity.buyPrice : parseFloat(strategyPrice);
   const drawEntryPriceLine = () => {
     drawLine({
       id: "price",
