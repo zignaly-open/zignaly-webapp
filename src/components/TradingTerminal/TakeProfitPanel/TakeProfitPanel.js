@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
+import { isNumber, range, size, sum } from "lodash";
 import { FormattedMessage } from "react-intl";
-import HelperLabel from "../HelperLabel/HelperLabel";
+import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { isNumber, range, size, sum, values } from "lodash";
+import HelperLabel from "../HelperLabel/HelperLabel";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
-import { useFormContext } from "react-hook-form";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TakeProfitPanel.scss";
 
 /**
@@ -56,26 +57,7 @@ const TakeProfitPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
   const { limits } = symbolData;
-
-  const getEntryPrice = () => {
-    if (positionEntity) {
-      return positionEntity.buyPrice;
-    }
-
-    const draftPosition = getValues();
-
-    return parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-  };
-
-  const getEntryPositionSize = () => {
-    if (positionEntity) {
-      return parseFloat(positionEntity.positionSize);
-    }
-
-    const draftPosition = getValues();
-
-    return parseFloat(draftPosition.units) || 0;
-  };
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity, lastPriceCandle);
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
@@ -83,7 +65,6 @@ const TakeProfitPanel = (props) => {
       profitTargetIndexes.forEach((index) => {
         const profitTarget = positionEntity.takeProfitTargets[index];
         const { amountPercentage, priceTargetPercentage } = profitTarget;
-        console.log("target: ", profitTarget);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
       });
@@ -195,7 +176,7 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const exitUnitsPercentageChange = (event) => {
-    const units = getEntryPositionSize();
+    const units = getEntrySize();
     const targetId = getGroupTargetId(event);
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
@@ -226,7 +207,7 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const exitUnitsChange = (event) => {
-    const units = getEntryPositionSize();
+    const units = getEntrySize();
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
