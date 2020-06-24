@@ -102,7 +102,7 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  useEffect(initValuesFromPositionEntity, [positionEntity]);
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate result of changed target units event.

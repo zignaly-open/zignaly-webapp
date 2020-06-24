@@ -69,7 +69,7 @@ const TrailingStopPanel = (props) => {
     }
   };
 
-  useEffect(initValuesFromPositionEntity, [positionEntity]);
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate trailing stop distance when change.

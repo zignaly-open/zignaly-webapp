@@ -101,7 +101,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(initValuesFromPositionEntity, [positionEntity]);
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Calculate the target price and trigger validation.

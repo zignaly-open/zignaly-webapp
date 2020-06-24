@@ -68,7 +68,7 @@ const StopLossPanel = (props) => {
     }
   };
 
-  useEffect(initValuesFromPositionEntity, [positionEntity]);
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Calculate price based on percentage when value is changed.
