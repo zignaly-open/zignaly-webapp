@@ -19,6 +19,7 @@ import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
 import { formatFloat } from "../../../../utils/format";
+import { useForm } from "react-hook-form";
 
 const ExchangeAccountWithdraw = () => {
   const {
@@ -26,6 +27,7 @@ const ExchangeAccountWithdraw = () => {
     setTitle,
   } = useContext(ModalPathContext);
   const intl = useIntl();
+  const { handleSubmit, register, errors } = useForm();
 
   const {
     selectedAssetName,
@@ -42,93 +44,123 @@ const ExchangeAccountWithdraw = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onSubmit = (data) => {
+    // handleSubmit((data) => {
+    console.log(data);
+    // })();
+  };
+
   const NetworkColumn = () => (
     <Box className="networkColumn">
-      <NetworksToggleGroup
-        networks={selectedAsset.networks}
-        setSelectedNetwork={setSelectedNetwork}
-        selectedNetwork={selectedNetwork}
-      />
-      {/* <FormControl required error={error} component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Pick two</FormLabel>
-        <OutlinedInput />
-      </FormControl> */}
-      {/* <FormControlLabel
-        fullWidth={true}
-        control={<OutlinedInput fullWidth={true} />}
-        label={<FormattedMessage id="withdraw.address" values={{ coin: selectedAssetName }} />}
-        labelPlacement="top"
-      /> */}
-      <FormControl fullWidth={true} className="controlInput">
-        <Box display="flex" flexDirection="row" className="labelBox">
-          <label>
-            <Typography variant="body1">
-              <FormattedMessage id="withdraw.address" values={{ coin: selectedAssetName }} />
-            </Typography>
-          </label>
-        </Box>
-        <OutlinedInput fullWidth={true} />
-        {/* <InputLabel htmlFor="my-input">Email address</InputLabel> */}
-        {/* <Input id="my-input" aria-describedby="my-helper-text" /> */}
-        {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
-      </FormControl>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <NetworksToggleGroup
+          networks={selectedAsset.networks}
+          setSelectedNetwork={setSelectedNetwork}
+          selectedNetwork={selectedNetwork}
+        />
+        <FormControl fullWidth={true} className="controlInput">
+          <Box display="flex" flexDirection="row" className="labelBox">
+            <label>
+              <Typography variant="body1">
+                <FormattedMessage id="withdraw.address" values={{ coin: selectedAssetName }} />
+              </Typography>
+            </label>
+          </Box>
+          <OutlinedInput
+            fullWidth={true}
+            inputRef={register({
+              required: "address empty",
+              pattern: {
+                value: selectedNetwork.addressRegex,
+                message: "invalid address",
+              },
+            })}
+            name="address"
+          />
+          {errors.address && <span className="errorText">{errors.address.message}</span>}
+        </FormControl>
 
-      <FormControl fullWidth={true} className="controlInput">
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
-          <label>
-            <Typography variant="body1">
-              <FormattedMessage id="withdraw.amount" />
+        {selectedNetwork.memoRegex && (
+          <FormControl fullWidth={true} className="controlInput">
+            <label>
+              <Typography variant="body1">
+                <FormattedMessage id="withdraw.memo" />
+              </Typography>
+            </label>
+            <OutlinedInput
+              name="memo"
+              fullWidth={true}
+              inputRef={register({
+                required: "memo empty",
+                pattern: {
+                  value: selectedNetwork.memoRegex,
+                  message: "invalid memo",
+                },
+              })}
+            />
+            {errors.memo && <span className="errorText">{errors.memo.message}</span>}
+          </FormControl>
+        )}
+
+        <FormControl fullWidth={true} className="controlInput">
+          <Box display="flex" flexDirection="row" justifyContent="space-between">
+            <label>
+              <Typography variant="body1">
+                <FormattedMessage id="withdraw.amount" />
+              </Typography>
+            </label>
+            <Typography
+              className={`callout2 ${
+                parseFloat(selectedAsset.balanceFree) >= parseFloat(selectedNetwork.withdrawMin)
+                  ? "green"
+                  : "red"
+              }`}
+            >
+              <span className="labelAvailable">
+                <FormattedMessage id="deposit.available" />
+              </span>
+              <b>
+                {selectedAssetName} {formatFloat(selectedAsset.balanceFree)}
+              </b>
             </Typography>
-          </label>
-          <Typography className="callout2">
-            <span className="labelAvailable">
-              <FormattedMessage id="deposit.available" />
-            </span>
-            <b>
-              {selectedAssetName} {formatFloat(selectedAsset.balanceFree)}
-            </b>
+          </Box>
+          <OutlinedInput
+            fullWidth={true}
+            inputRef={register({
+              required: "amount empty",
+            })}
+            name="amount"
+          />
+          {errors.amount && <span className="errorText">{errors.amount.message}</span>}
+        </FormControl>
+        <Typography className="callout1 minAmount">
+          <FormattedMessage id="withdraw.minimum" />
+          <b>
+            {selectedAssetName} {selectedNetwork.withdrawMin}
+          </b>
+        </Typography>
+        <Box display="flex" flexDirection="row" justifyContent="space-between" width={1} mb="24px">
+          <Typography variant="body2">
+            <FormattedMessage id="withdraw.fee" />
+          </Typography>
+          <Typography variant="body2">
+            {selectedAssetName} {selectedNetwork.withdrawFee}
           </Typography>
         </Box>
-        <OutlinedInput fullWidth={true} />
-      </FormControl>
-      <Typography className="callout1 minAmount">
-        <FormattedMessage id="withdraw.minimum" />
-        <b>
-          {selectedAssetName} {selectedNetwork.withdrawMin}
-        </b>
-      </Typography>
-      {/* <FormControlLabel
-        control={<OutlinedInput fullWidth={true} />}
-        label={
-          <Box display="flex" flexDirection="row">
-            <FormattedMessage id="withdraw.amount" />
-            <FormattedMessage id="deposit.available" />
-            {selectedAssetName} {selectedNetwork.balanceFree}
-          </Box>
-        }
-        labelPlacement="top"
-      /> */}
-      <Box display="flex" flexDirection="row" justifyContent="space-between" width={1} mb="24px">
-        <Typography variant="body2">
-          <FormattedMessage id="withdraw.fee" />
-        </Typography>
-        <Typography variant="body2">
-          {selectedAssetName} {selectedNetwork.withdrawFee}
-        </Typography>
-      </Box>
-      <Box display="flex" flexDirection="row" justifyContent="space-between" width={1}>
-        <Typography variant="body2">
-          <FormattedMessage id="withdraw.get" />
-        </Typography>
-        <Typography variant="body2">
-          {selectedAssetName} {selectedNetwork.withdrawFee}
-        </Typography>
-      </Box>
-      <CustomButton className="bgPurple" disabled={false} onClick={() => {}}>
-        <Typography variant="body2">
-          <FormattedMessage id="deposit.address.copy" />
-        </Typography>
-      </CustomButton>
+        <Box display="flex" flexDirection="row" justifyContent="space-between" width={1}>
+          <Typography variant="body2">
+            <FormattedMessage id="withdraw.get" />
+          </Typography>
+          <Typography variant="body2">
+            {selectedAssetName} {selectedNetwork.withdrawFee}
+          </Typography>
+        </Box>
+        <CustomButton className="bgPurple" disabled={false} type="submit">
+          <Typography variant="body2">
+            <FormattedMessage id="deposit.address.copy" />
+          </Typography>
+        </CustomButton>
+      </form>
     </Box>
   );
 

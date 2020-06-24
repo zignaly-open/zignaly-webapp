@@ -61,6 +61,11 @@
     position: relative;
     padding-bottom: 205px;
   }
+
+  .tipBox {
+    position: absolute;
+    bottom: 0;
+  }
 }
 
 @include media("<=sm") {
