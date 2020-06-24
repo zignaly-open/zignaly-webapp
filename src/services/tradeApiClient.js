@@ -279,7 +279,7 @@ class TradeApiClient {
   /**
    * Close a position.
    *
-   * @param {PositionActionPayload} payload User authorization payload.
+   * @param {PositionActionPayload} payload Position action payload.
 
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
@@ -295,7 +295,7 @@ class TradeApiClient {
   /**
    * Exit a position.
    *
-   * @param {PositionActionPayload} payload User authorization payload.
+   * @param {PositionActionPayload} payload Position action payload.
 
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
@@ -303,6 +303,22 @@ class TradeApiClient {
    */
   async positionExit(payload) {
     const endpointPath = "/fe/api.php?action=sellPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Get a position.
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionGet(payload) {
+    const endpointPath = "/fe/api.php?action=getPosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionItemTransform(responseData);
