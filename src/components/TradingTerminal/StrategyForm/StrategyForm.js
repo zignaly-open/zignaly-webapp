@@ -306,16 +306,18 @@ const StrategyForm = (props) => {
   };
   useEffect(updatePriceField, [currentPrice]);
 
+  // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");
-  const drawStrategyPriceLine = () => {
+  const entryPrice = positionEntity.buyPrice || parseFloat(strategyPrice);
+  const drawEntryPriceLine = () => {
     drawLine({
       id: "price",
-      price: parseFloat(strategyPrice) || 0,
+      price: entryPrice || 0,
       label: "Price",
       color: colors.purple,
     });
   };
-  useEffect(drawStrategyPriceLine, [strategyPrice]);
+  useEffect(drawEntryPriceLine, [strategyPrice]);
 
   const stopLossPrice = watch("stopLossPrice");
   const drawStopLossPriceLine = () => {
@@ -360,7 +362,7 @@ const StrategyForm = (props) => {
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
     if (dcaTargetPercentage1) {
-      const price = parseFloat(strategyPrice);
+      const price = entryPrice;
       const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
       drawLine({
         id: "dcaTargetPricePercentage1",
@@ -370,7 +372,7 @@ const StrategyForm = (props) => {
       });
     }
   };
-  useEffect(drawDCATargetPriceLines, [strategyPrice, dcaTargetPercentage1]);
+  useEffect(drawDCATargetPriceLines, [entryPrice, dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
@@ -393,10 +395,14 @@ const StrategyForm = (props) => {
               symbolData={currentSymbolData}
             />
           )}
-          <TakeProfitPanel lastPriceCandle={lastPriceCandle} symbolData={currentSymbolData} />
-          <DCAPanel symbolData={currentSymbolData} />
-          <StopLossPanel symbolData={currentSymbolData} />
-          <TrailingStopPanel symbolData={currentSymbolData} />
+          <TakeProfitPanel
+            lastPriceCandle={lastPriceCandle}
+            positionEntity={positionEntity}
+            symbolData={currentSymbolData}
+          />
+          <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+          <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+          <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           {!isPositionView && <EntryExpirationPanel />}
           {!isPositionView && <AutoclosePanel />}
           <CustomButton
