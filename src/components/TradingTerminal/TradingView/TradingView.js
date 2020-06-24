@@ -15,14 +15,46 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
-const TradingView = () => {
+/**
+ * @typedef {Object} TradingViewProps
+ *
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ */
+
+/**
+ * Trading terminal component.
+ *
+ * @param {TradingViewProps} props Component props.
+ *
+ * @returns {JSX.Element} Trading terminal element.
+ */
+const TradingView = (props) => {
+  const { positionEntity = null } = props;
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const [lastPrice, setLastPrice] = useState(null);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+
+  /**
+   * Resolve exchange name from entity (when available) or from selected exchange otherwise.
+   *
+   * @returns {string} Exchange name.
+   */
+  const resolveExchangeName = () => {
+    let exchangeName =
+      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+
+    if (positionEntity) {
+      exchangeName = positionEntity.exchange;
+    }
+
+    return exchangeName;
+  };
+
   /**
    * @type {Object<string, string>}
    */
@@ -32,8 +64,7 @@ const TradingView = () => {
     Zignaly: "BTCUSDT",
   };
 
-  const exchangeName =
-    storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+  const exchangeName = resolveExchangeName();
   const defaultSymbol = defaultExchangeSymbol[exchangeName] || "BTCUSDT";
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
