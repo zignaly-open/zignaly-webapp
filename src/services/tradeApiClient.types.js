@@ -434,7 +434,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {Object} QuoteAsset
  * @property {string} quote
- * @property {string} minNominal
+ * @property {string} minNotional
  */
 
 /**
@@ -1470,7 +1470,7 @@ export function quotesResponseTransform(response) {
       ...res,
       [key]: {
         quote: val.quote,
-        minNotional: val.minotional,
+        minNotional: val.minNotional,
       },
     }),
     {},
@@ -2275,7 +2275,7 @@ export function providerExchangeSettingsResponseTransform(response) {
  * Create provider exchange settings entity.
  * @returns {ProviderExchangeSettingsObject} Provider exchange settings entity.
  */
-function creatEmptySettingsEntity() {
+export function creatEmptySettingsEntity() {
   return {
     blacklist: false,
     buyTTL: 0,

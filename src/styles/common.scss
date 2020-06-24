@@ -98,13 +98,13 @@ body {
 
   &.dark {
     fieldset {
-      border-color: $white;
+      border-color: $lightGrey;
     }
   }
 
   &.light {
     fieldset {
-      border-color: $black2;
+      border-color: $lightGrey;
     }
   }
 }

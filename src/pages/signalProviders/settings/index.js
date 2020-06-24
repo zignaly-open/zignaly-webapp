@@ -9,6 +9,8 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
+import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
 
 const SignalProvidersSettings = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -16,7 +18,8 @@ const SignalProvidersSettings = () => {
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [settings, setSettings] = useState({});
+  const emptySettings = creatEmptySettingsEntity();
+  const [settings, setSettings] = useState(emptySettings);
 
   const loadSettings = () => {
     setLoading(true);
@@ -29,7 +32,7 @@ const SignalProvidersSettings = () => {
       .providerExchangeSettingsGet(payload)
       .then((response) => {
         setSettings(response);
-        // setLoading(false);
+        setLoading(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -39,7 +42,7 @@ const SignalProvidersSettings = () => {
   useEffect(loadSettings, []);
 
   return (
-    <Box bgcolor="grid.main" className="profileSettingsPage">
+    <Box className="profileSettingsPage">
       {loading && (
         <Box
           bgcolor="grid.main"
@@ -52,7 +55,7 @@ const SignalProvidersSettings = () => {
           <CircularProgress size={40} color="primary" />
         </Box>
       )}
-      {!loading && <Box>murad malik</Box>}
+      {!loading && <ProviderSettingsForm settings={settings} />}
     </Box>
   );
 };

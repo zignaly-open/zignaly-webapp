@@ -1,0 +1,56 @@
+.settingsFormWrapper {
+  width: 100%;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  padding: 30px 20px;
+
+  .formBox {
+    width: 100%;
+  }
+
+  h3 {
+    margin-bottom: 30px;
+    font-family: "PlexSans-Medium";
+  }
+
+  .dynamicInputBox {
+    width: 100%;
+    margin-bottom: 20px;
+
+    .customLabel {
+      width: 150px;
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+
+    .icon {
+      margin-right: 10px;
+      width: 16px;
+      height: 16px;
+    }
+
+    .selectInput {
+      width: 120px;
+      margin-left: 10px;
+    }
+  }
+
+  .amountsFormBox {
+    margin-right: 20px;
+    width: calc(50% - 20px);
+    min-height: 500px;
+  }
+
+  .strategyFormBox {
+    width: 50%;
+    min-height: 500px;
+  }
+
+  .formAction {
+    width: 100%;
+    margin-top: 30px;
+
+    .submitButton {
+      min-width: 220px;
+    }
+  }
+}

@@ -280,6 +280,8 @@ timeframe.year: "CH-Last year"
 timeframe.total: "CH-Total"
 
 # TRADERS AND PROVIDERS - SERVICE CARDS
+srv.settings.amounts: "CH-Allocated amounts"
+srv.settings.strategy: "CH-Strategy options"
 srv.text.days: "CH-Days"
 srv.text.expires: "CH-Expires in "
 srv.text.expired: "CH-Expired"

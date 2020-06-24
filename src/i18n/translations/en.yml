@@ -280,6 +280,8 @@ timeframe.year: "Last year"
 timeframe.total: "Total"
 
 # TRADERS AND PROVIDERS - SERVICE CARDS
+srv.settings.amounts: "Allocated amounts"
+srv.settings.strategy: "Strategy options"
 srv.text.days: "Days"
 srv.text.expires: "Expires in "
 srv.text.expired: "Expired"
