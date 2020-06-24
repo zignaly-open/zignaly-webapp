@@ -61,7 +61,7 @@ const TrailingStopPanel = (props) => {
   const fieldsDisabled = getFieldsDisabledStatus();
 
   const initValuesFromPositionEntity = () => {
-    if (positionEntity) {
+    if (positionEntity && existsTrailingStop) {
       const trailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
       const trailingStopDistance = 100 * (1 - positionEntity.trailingStopPercentage);
       setValue("trailingStopPercentage", formatFloat2Dec(trailingStopPercentage));

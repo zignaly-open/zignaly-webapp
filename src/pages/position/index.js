@@ -50,7 +50,6 @@ const PositionPage = (props) => {
   };
 
   useEffect(fetchPosition, []);
-  console.log("PositionEntity: ", positionEntity);
 
   return (
     <>
