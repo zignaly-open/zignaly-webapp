@@ -213,7 +213,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                disabled={fieldsDisabled.trailingStopPriceChange}
+                disabled={fieldsDisabled.trailingStopPrice}
                 inputRef={register}
                 name="trailingStopPrice"
                 onChange={trailingStopPriceChange}
@@ -226,7 +226,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                disabled={fieldsDisabled.trailingStopDistanceChange}
+                disabled={fieldsDisabled.trailingStopDistance}
                 inputRef={register}
                 name="trailingStopDistance"
                 onChange={trailingStopDistanceChange}
