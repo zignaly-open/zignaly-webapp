@@ -40,6 +40,27 @@ const StopLossPanel = (props) => {
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
 
+  const getFieldsDisabledStatus = () => {
+    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    let disabled = false;
+    if (isCopy || isClosed) {
+      disabled = true;
+    }
+
+    fieldsDisabled.stopLossPrice = disabled;
+    fieldsDisabled.stopLossPercentage = disabled;
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsStopLoss) {
       const stopLossPercentage = revertPercentageRange(positionEntity.stopLossPercentage);
@@ -164,6 +185,7 @@ const StopLossPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  disabled={fieldsDisabled.stopLossPercentage}
                   inputRef={register}
                   name="stopLossPercentage"
                   onChange={stopLossPercentageChange}
@@ -173,6 +195,7 @@ const StopLossPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  disabled={fieldsDisabled.stopLossPrice}
                   inputRef={register}
                   name="stopLossPrice"
                   onChange={stopLossPriceChange}
