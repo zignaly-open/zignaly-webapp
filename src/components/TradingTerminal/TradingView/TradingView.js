@@ -41,8 +41,6 @@ const TradingView = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const isPositionView = isObject(positionEntity);
 
-  console.log("PositionEntity: ", positionEntity);
-
   /**
    * Resolve exchange name from entity (when available) or from selected exchange otherwise.
    *

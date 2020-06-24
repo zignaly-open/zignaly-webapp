@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
-import withDashboardLayout from "../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
+import withDashboardLayout from "../../layouts/dashboardLayout";
 import tradeApi from "../../services/tradeApiClient";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../store/actions/ui";
 import { useDispatch } from "react-redux";
+import { useIntl } from "react-intl";
+import { CircularProgress } from "@material-ui/core";
 import { TradingView } from "../../components/TradingTerminal";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
+import "./position.scss";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -29,6 +32,7 @@ const PositionPage = (props) => {
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const intl = useIntl();
   const fetchPosition = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -46,11 +50,16 @@ const PositionPage = (props) => {
   };
 
   useEffect(fetchPosition, []);
+  console.log("PositionEntity: ", positionEntity);
 
   return (
     <>
       <Helmet>
-        <title>Position Detail</title>
+        <title>
+          {intl.formatMessage({
+            id: "menu.positionview",
+          })}
+        </title>
       </Helmet>
       <Box className="positionPage" display="flex" flexDirection="column" justifyContent="center">
         <Box
@@ -59,7 +68,7 @@ const PositionPage = (props) => {
           flexDirection="column"
           justifyContent="center"
         >
-          <h2>Loading position: {positionId}</h2>
+          {!positionEntity && <CircularProgress disableShrink />}
           {positionEntity && <TradingView positionEntity={positionEntity} />}
         </Box>
       </Box>

@@ -8,8 +8,8 @@ import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import "./TrailingStopPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import "./TrailingStopPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
