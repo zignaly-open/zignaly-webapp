@@ -9,6 +9,7 @@ import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./StopLossPanel.scss";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -29,12 +30,23 @@ import "./StopLossPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const StopLossPanel = (props) => {
-  const { symbolData } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { symbolData, positionEntity } = props;
+  const existsStopLoss = positionEntity ? Boolean(positionEntity.stopLossPercentage) : false;
+  const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+  const { getEntryPrice } = usePositionEntry(positionEntity);
+  // Strategy panels inputs to observe for changes.
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
-  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity && existsStopLoss) {
+      setValue("stopLossPercentage", positionEntity.stopLossPercentage);
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity]);
 
   /**
    * Calculate price based on percentage when value is changed.
@@ -43,7 +55,7 @@ const StopLossPanel = (props) => {
    */
   const stopLossPercentageChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
 
@@ -68,7 +80,7 @@ const StopLossPanel = (props) => {
    */
   const stopLossPriceChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
