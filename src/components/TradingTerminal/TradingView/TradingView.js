@@ -49,14 +49,11 @@ const TradingView = (props) => {
    * @returns {string} Exchange name.
    */
   const resolveExchangeName = () => {
-    let exchangeName =
-      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-
     if (positionEntity) {
-      exchangeName = positionEntity.exchange;
+      return positionEntity.exchange;
     }
 
-    return exchangeName;
+    return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
   };
 
   /**
@@ -68,12 +65,21 @@ const TradingView = (props) => {
     Zignaly: "BTCUSDT",
   };
 
+  const resolveDefaultSymbol = () => {
+    if (positionEntity) {
+      const separator = resolveExchangeName() === "KuCoin" ? "-" : "";
+      return positionEntity.symbol.replace("/", separator);
+    }
+
+    return defaultExchangeSymbol[exchangeName] || "BTCUSDT";
+  };
+
   const exchangeName = resolveExchangeName();
-  const defaultSymbol = defaultExchangeSymbol[exchangeName] || "BTCUSDT";
+  const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
-  /**
+  /*
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
@@ -100,14 +106,16 @@ const TradingView = (props) => {
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const onExchangeChange = () => {
-    const newExchangeName =
-      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-    const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
-    if (tradingViewWidget) {
-      tradingViewWidget.remove();
-      setTradingViewWidget(null);
-      setLastPrice(null);
-      setSelectedSymbol(newDefaultSymbol);
+    if (!isPositionView) {
+      const newExchangeName =
+        storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+      const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
+      if (tradingViewWidget) {
+        tradingViewWidget.remove();
+        setTradingViewWidget(null);
+        setLastPrice(null);
+        setSelectedSymbol(newDefaultSymbol);
+      }
     }
   };
 
