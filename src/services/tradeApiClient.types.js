@@ -785,6 +785,9 @@ export function userPositionItemTransform(positionItem) {
     sellPrice: parseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    takeProfitTargets: isObject(positionItem.takeProfitTargets)
+      ? positionItem.takeProfitTargets
+      : {},
   });
 
   const risk = calculateRisk(positionEntity);
