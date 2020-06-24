@@ -3,7 +3,6 @@ import { useFormContext } from "react-hook-form";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  */
 
 /**
@@ -17,13 +16,12 @@ import { useFormContext } from "react-hook-form";
  *
  * The entry price resolves as follows:
  * - From buyPrice on existing position.
- * - From strategy price input or latest symbol market price in new positions.
+ * - From strategy price input in new positions.
  *
  * @param {PositionEntity} positionEntity Position entity.
- * @param {CoinRayCandle} lastPriceCandle Coinray price candle.
  * @returns {PositionEntryHook} Position entry hook object.
  */
-function usePositionEntry(positionEntity, lastPriceCandle) {
+function usePositionEntry(positionEntity) {
   const { getValues } = useFormContext();
 
   /**
@@ -38,7 +36,7 @@ function usePositionEntry(positionEntity, lastPriceCandle) {
 
     const draftPosition = getValues();
 
-    return parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    return parseFloat(draftPosition.price);
   };
 
   /**

@@ -21,7 +21,6 @@ import "./TakeProfitPanel.scss";
 /**
  * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
- * @property {CoinRayCandle} lastPriceCandle
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
@@ -32,7 +31,7 @@ import "./TakeProfitPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const TakeProfitPanel = (props) => {
-  const { symbolData, lastPriceCandle, positionEntity = null } = props;
+  const { symbolData, positionEntity = null } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const { expanded, expandClass, expandableControl } = useExpandable(
     positionTargetsCardinality > 0,
@@ -57,7 +56,7 @@ const TakeProfitPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
   const { limits } = symbolData;
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity, lastPriceCandle);
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {

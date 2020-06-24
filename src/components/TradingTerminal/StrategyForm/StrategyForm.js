@@ -395,11 +395,7 @@ const StrategyForm = (props) => {
               symbolData={currentSymbolData}
             />
           )}
-          <TakeProfitPanel
-            lastPriceCandle={lastPriceCandle}
-            positionEntity={positionEntity}
-            symbolData={currentSymbolData}
-          />
+          <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
