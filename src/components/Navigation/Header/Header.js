@@ -83,7 +83,7 @@ const Header = () => {
                 src={showBalance ? RightIcon : LeftIcon}
               />
             </Box>
-            {showBalance && <BalanceBox />}
+            {/* {showBalance && <BalanceBox />} */}
             {!showBalance && (
               <Grow in={true}>
                 <Box

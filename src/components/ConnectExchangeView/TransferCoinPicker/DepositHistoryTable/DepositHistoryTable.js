@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { formatFloat, formatFloat2Dec, formatTime } from "../../../../utils/format";
-import Table from "../../../Table";
+import { formatFloat, formatFloat2Dec, formatTime } from "../../../../../utils/format";
+import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import tradeApi from "../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../../../services/tradeApiClient";
 import "./DepositHistoryTable.scss";
 import { FormattedMessage, FormattedDate } from "react-intl";
 

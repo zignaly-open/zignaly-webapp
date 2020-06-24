@@ -1,0 +1,14 @@
+.tipBox {
+  padding: 15px 24px 34px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  position: absolute;
+  bottom: 0;
+
+  img {
+    margin-bottom: 11px;
+  }
+
+  img + p {
+    margin-bottom: 9px;
+  }
+}

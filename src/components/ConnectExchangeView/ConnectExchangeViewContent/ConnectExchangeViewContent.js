@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
-import ExchangeAccountDeposit from "../ExchangeAccountDeposit";
-import ExchangeAccountWithdraw from "../ExchangeAccountWithdraw";
+import ExchangeAccountDeposit from "../ExchangeAccountBalanceManagement/Deposit";
+import ExchangeAccountWithdraw from "../ExchangeAccountBalanceManagement/Withdraw";
 import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 

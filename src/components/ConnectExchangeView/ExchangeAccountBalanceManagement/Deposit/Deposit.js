@@ -1,49 +1,44 @@
 import React, { useEffect, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import ModalPathContext from "../ModalPathContext";
+import ModalPathContext from "../../ModalPathContext";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
-import { SubNavModalHeader } from "../../SubNavHeader";
-import "./ExchangeAccountDeposit.scss";
-import CustomButton from "../../CustomButton";
-import MastercardIcon from "../../../images/exchangeAccount/mastercard.svg";
-import VisaIcon from "../../../images/exchangeAccount/visa.svg";
-import TimeIcon from "../../../images/exchangeAccount/time.svg";
-import CopyIcon from "../../../images/exchangeAccount/copy.svg";
-import CustomSelect from "../../CustomSelect";
-import useExchangeAssets from "../../../hooks/useExchangeAssets";
-import useExchangeDepositAddress from "../../../hooks/useExchangeDepositAddress";
-import { useDispatch } from "react-redux";
-import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import "./Deposit.scss";
+import CustomButton from "../../../CustomButton";
+import MastercardIcon from "../../../../images/exchangeAccount/mastercard.svg";
+import VisaIcon from "../../../../images/exchangeAccount/visa.svg";
+import TimeIcon from "../../../../images/exchangeAccount/time.svg";
+import CopyIcon from "../../../../images/exchangeAccount/copy.svg";
+import useExchangeDepositAddress from "../../../../hooks/useExchangeDepositAddress";
+import useAssetsSelect from "../../../../hooks/useAssetsSelect";
+import copyToClipboard from "../../../../hooks/useClipboard";
 import DepositHistoryTable from "./DepositHistoryTable";
+import TransferCoinPicker from "../TransferCoinPicker";
+import { buyCryptoURL } from "../../../../utils/affiliateURLs";
+import BalanceManagementSubHeader from "../BalanceManagement";
+import NetworksToggleGroup from "../NetworksToggleGroup";
+import TipBox from "../TipBox";
 
 const ExchangeAccountDeposit = () => {
   const {
-    pathParams: { selectedAccount, previousPath },
+    pathParams: { selectedAccount },
     setTitle,
-    formRef,
-    setTempMessage,
-    setPathParams,
   } = useContext(ModalPathContext);
   const intl = useIntl();
-  const [selectedAssetName, setSelectedAsset] = useState("BTC");
-  const assets = useExchangeAssets(selectedAccount.internalId);
-  const selectedAsset = assets[selectedAssetName];
-  const assetsOptions = Object.keys(assets).sort();
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+
+  const {
+    selectedAssetName,
+    setSelectedAsset,
+    assetsList,
+    selectedAsset,
+    selectedNetwork,
+    setSelectedNetwork,
+  } = useAssetsSelect(selectedAccount.internalId);
+
   const depositAddress = useExchangeDepositAddress(
     selectedAccount.internalId,
     selectedAssetName,
     selectedNetwork && selectedNetwork.network,
   );
-  const dispatch = useDispatch();
-
-  // Select default network
-  useEffect(() => {
-    if (selectedAsset) {
-      setSelectedNetwork(selectedAsset.networks.find((n) => n.isDefault));
-    }
-  }, [selectedAsset]);
 
   useEffect(() => {
     setTitle(selectedAccount.internalName);
@@ -51,33 +46,6 @@ const ExchangeAccountDeposit = () => {
   }, []);
 
   console.log(selectedAsset, selectedNetwork);
-
-  const tabs = [
-    {
-      id: "deposit",
-      title: "accounts.deposit",
-    },
-    {
-      id: "withdraw",
-      title: "accounts.withdraw",
-    },
-  ];
-
-  /**
-   * Copy content to clipboard and show alert.
-   * @param {string} content
-   * @param {string} successMessage
-   */
-  const copyToClipboard = (content, successMessage) => {
-    navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        dispatch(showSuccessAlert("", successMessage));
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  };
 
   const copyAddress = () => {
     copyToClipboard(depositAddress.address, "deposit.address.copied");
@@ -97,11 +65,7 @@ const ExchangeAccountDeposit = () => {
       <Typography variant="body1">
         <FormattedMessage id="deposit.buy.how" />
       </Typography>
-      <CustomButton
-        className="bgPurple"
-        href="https://changelly.com/?ref_id=q0s68wsie1uf9wza"
-        target="_blank"
-      >
+      <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank">
         <Typography variant="body2">
           <FormattedMessage id="deposit.buy.creditcard" />
         </Typography>
@@ -115,31 +79,13 @@ const ExchangeAccountDeposit = () => {
 
   const CoinColumn = () => (
     <Box className="coinColumn">
-      <CustomSelect
-        options={assetsOptions}
-        label={intl.formatMessage({ id: "deposit.choosecoin" })}
-        search={true}
+      <TransferCoinPicker
+        label="deposit.choosecoin"
+        asset={selectedAsset}
+        coins={assetsList}
         onChange={setSelectedAsset}
-        value={selectedAssetName}
-        labelPlacement="top"
+        selectedCoin={selectedAssetName}
       />
-      <Box className="balanceBox">
-        <BalanceLine
-          label="deposit.current"
-          amount={selectedAsset.balanceTotal}
-          unit={selectedAssetName}
-        />
-        <BalanceLine
-          label="deposit.inorder"
-          amount={selectedAsset.balanceLocked}
-          unit={selectedAssetName}
-        />
-        <BalanceLine
-          label="deposit.available"
-          amount={selectedAsset.balanceFree}
-          unit={selectedAssetName}
-        />
-      </Box>
       <Box className="tipBox">
         <img src={TimeIcon} />
         <Typography variant="body2">
@@ -154,27 +100,14 @@ const ExchangeAccountDeposit = () => {
 
   const NetworkColumn = () => (
     <Box className="networkColumn">
-      <Typography variant="body1">
-        <FormattedMessage id="deposit.network" />
-      </Typography>
-
-      {selectedAsset.networks.length && (
-        <ToggleButtonGroup
-          exclusive
-          value={selectedNetwork}
-          onChange={(e, val) => setSelectedNetwork(val)}
-          className="networkButtons"
-        >
-          {selectedAsset.networks.map((n) => (
-            <ToggleButton key={n.name} value={n}>
-              {n.name}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      )}
       <Typography variant="body1" className="addressLabel">
         {selectedAssetName} <FormattedMessage id="deposit.address" />
       </Typography>
+      <NetworksToggleGroup
+        networks={selectedAsset.networks}
+        setSelectedNetwork={setSelectedNetwork}
+        selectedNetwork={selectedNetwork}
+      />
       <Box display="flex" flexDirection="row">
         {depositAddress ? (
           <Typography variant="body2" className="address">
@@ -187,7 +120,7 @@ const ExchangeAccountDeposit = () => {
       </Box>
       {depositAddress && depositAddress.tag && (
         <Box>
-          <Typography variant="body1" className="address">
+          <Typography variant="body1" className="addressLabel">
             {selectedAssetName} <FormattedMessage id="withdraw.memo" />
           </Typography>
           <Box display="flex" flexDirection="row">
@@ -212,24 +145,20 @@ const ExchangeAccountDeposit = () => {
           </Typography>
         </CustomButton>
       </Box>
-      <Box className="tipBox">
-        <img src={TimeIcon} />
-        <Typography variant="body2">
-          <FormattedMessage id="deposit.note.onlysend" values={{ coin: selectedAssetName }} />
-        </Typography>
-        <Typography variant="body1">
-          <FormattedMessage id="deposit.loss" />
-        </Typography>
-      </Box>
+      <TipBox
+        icon={TimeIcon}
+        title={<FormattedMessage id="deposit.note.onlysend" values={{ coin: selectedAssetName }} />}
+        description="deposit.loss"
+      />
     </Box>
   );
 
   return (
     <Box className="exchangeAccountDeposit">
-      <SubNavModalHeader links={tabs} />
+      <BalanceManagementSubHeader />
       <BuyCryptoBox />
       <Box className="transferBox">
-        {!assetsOptions.length || !selectedNetwork ? (
+        {!assetsList.length || !selectedNetwork ? (
           <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
             <CircularProgress disableShrink />
           </Box>
@@ -254,16 +183,5 @@ const ExchangeAccountDeposit = () => {
     </Box>
   );
 };
-
-const BalanceLine = ({ label, amount, unit }) => (
-  <Box display="flex" flexDirection="row" justifyContent="space-between" className="balanceLine">
-    <Typography variant="body2">
-      <FormattedMessage id={label} />
-    </Typography>
-    <Box>
-      {amount} {unit}
-    </Box>
-  </Box>
-);
 
 export default ExchangeAccountDeposit;
