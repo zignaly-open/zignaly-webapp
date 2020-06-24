@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
-import { formatFloat2Dec } from "../../../utils/format";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
@@ -42,7 +42,7 @@ const StopLossPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsStopLoss) {
-      const stopLossPercentage = 100 * (1 - positionEntity.stopLossPercentage) * -1;
+      const stopLossPercentage = revertPercentageRange(positionEntity.stopLossPercentage);
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
     }
   };

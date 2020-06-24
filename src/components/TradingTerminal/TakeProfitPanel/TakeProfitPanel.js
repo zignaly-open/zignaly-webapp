@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { formatFloat2Dec } from "../../../utils/format";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
@@ -63,7 +63,8 @@ const TakeProfitPanel = (props) => {
       const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
       profitTargetIndexes.forEach((index) => {
         const profitTarget = positionEntity.takeProfitTargets[index];
-        const { amountPercentage, priceTargetPercentage } = profitTarget;
+        const priceTargetPercentage = revertPercentageRange(profitTarget.priceTargetPercentage);
+        const amountPercentage = revertPercentageRange(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
       });
