@@ -32,6 +32,7 @@ import "./DCAPanel.scss";
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.reBuyTargets) : 0;
+  const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, expandableControl } = useExpandable(
     positionTargetsCardinality > 0,
   );
@@ -56,9 +57,34 @@ const DCAPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
 
+  const getFieldsDisabledStatus = () => {
+    const isCopy = positionEntity.isCopyTrading;
+    const isClosed = positionEntity.status !== 9;
+
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    profitTargetIndexes.forEach((index) => {
+      const profitTarget = positionEntity.reBuyTargets[index];
+      let disabled = false;
+      if (profitTarget.done || profitTarget.buying || profitTarget.skipped) {
+        disabled = true;
+      } else if (isCopy || isClosed) {
+        disabled = true;
+      }
+
+      fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+    });
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
-      const profitTargetIndexes = range(1, positionTargetsCardinality + 1, 1);
       profitTargetIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[index];
         const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
@@ -230,6 +256,9 @@ const DCAPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
@@ -241,6 +270,9 @@ const DCAPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("rebuyPercentage", targetId)}
                     onChange={rebuyPercentageChange}
