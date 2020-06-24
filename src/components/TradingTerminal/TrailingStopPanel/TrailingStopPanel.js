@@ -9,6 +9,7 @@ import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./TrailingStopPanel.scss";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -29,12 +30,27 @@ import "./TrailingStopPanel.scss";
  * @returns {JSX.Element} Trailing stop panel element.
  */
 const TrailingStopPanel = (props) => {
-  const { symbolData } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { symbolData, positionEntity } = props;
+  const existsTrailingStop = positionEntity
+    ? Boolean(positionEntity.trailingStopPercentage)
+    : false;
+  const { expanded, expandClass, expandableControl } = useExpandable(existsTrailingStop);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+  const { getEntryPrice } = usePositionEntry(positionEntity);
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      const trailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
+      const trailingStopDistance = 100 * (1 - positionEntity.trailingStopPercentage);
+      setValue("trailingStopPercentage", formatFloat2Dec(trailingStopPercentage));
+      setValue("trailingStopDistance", formatFloat2Dec(trailingStopDistance));
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity]);
 
   /**
    * Validate trailing stop distance when change.
@@ -58,7 +74,7 @@ const TrailingStopPanel = (props) => {
    */
   const trailingStopPercentageChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
     const trailingStopPrice = (price * (100 + trailingStopPercentage)) / 100;
 
@@ -83,7 +99,7 @@ const TrailingStopPanel = (props) => {
    */
   const trailingStopPriceChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const trailingStopPrice = parseFloat(draftPosition.trailingStopPrice);
     const priceDiff = trailingStopPrice - price;
 
