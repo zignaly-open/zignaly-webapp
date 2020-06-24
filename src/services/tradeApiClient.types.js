@@ -225,6 +225,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} PositionEntity
  * @property {Array<ReBuyTarget>} reBuyTargets
+ * @property {Array<ProfitTarget>} takeProfitTargets
  * @property {RealInvestment} realInvestment
  * @property {boolean} accounting
  * @property {boolean} checkStop
@@ -317,6 +318,18 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ */
+
+/**
+ * @typedef {Object} ProfitTarget
+ * @property {number} targetId
+ * @property {number} amountPercentage
+ * @property {boolean} done
+ * @property {string} orderId
+ * @property {number} priceTargetPercentage
+ * @property {boolean} cancel
+ * @property {boolean} skipped
+ * @property {boolean} updating
  */
 
 /**
