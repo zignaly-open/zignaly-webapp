@@ -186,6 +186,7 @@ const initialState = {
         "col.invested",
         "col.actions",
       ],
+      depositHistory: ["status", "currency", "amount", "timestamp", "txid"],
     },
     selectedExchange: {
       id: "",

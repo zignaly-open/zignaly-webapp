@@ -13,10 +13,9 @@ import CopyIcon from "../../../images/exchangeAccount/copy.svg";
 import CustomSelect from "../../CustomSelect";
 import useExchangeAssets from "../../../hooks/useExchangeAssets";
 import useExchangeDepositAddress from "../../../hooks/useExchangeDepositAddress";
-import { isEmpty } from "lodash";
-import { setSelectedExchange } from "../../../store/actions/settings";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import DepositHistoryTable from "./DepositHistoryTable";
 
 const ExchangeAccountDeposit = () => {
   const {
@@ -71,9 +70,9 @@ const ExchangeAccountDeposit = () => {
    */
   const copyToClipboard = (content, successMessage) => {
     navigator.clipboard
-      .writeText(depositAddress.address)
+      .writeText(content)
       .then(() => {
-        dispatch(showSuccessAlert("", "deposit.address.copied"));
+        dispatch(showSuccessAlert("", successMessage));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -173,15 +172,17 @@ const ExchangeAccountDeposit = () => {
           ))}
         </ToggleButtonGroup>
       )}
-      <Typography variant="body1" className="address">
+      <Typography variant="body1" className="addressLabel">
         {selectedAssetName} <FormattedMessage id="deposit.address" />
       </Typography>
       <Box display="flex" flexDirection="row">
         {depositAddress ? (
-          <Typography variant="body2">{depositAddress.address}</Typography>
+          <Typography variant="body2" className="address">
+            {depositAddress.address}
+          </Typography>
         ) : (
           <CircularProgress disableShrink size={21} />
-        )}{" "}
+        )}
         <img src={CopyIcon} alt="copy" onClick={copyAddress} className="copy" />
       </Box>
       {depositAddress && depositAddress.tag && (
@@ -248,6 +249,7 @@ const ExchangeAccountDeposit = () => {
             </Box>
           </Box>
         )}
+        <DepositHistoryTable internalId={selectedAccount.internalId} />
       </Box>
     </Box>
   );

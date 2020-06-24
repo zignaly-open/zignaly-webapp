@@ -73,7 +73,7 @@ export const showErrorAlert = (error) => {
  */
 export const hideErrorAlert = () => {
   return {
-    type: HIDE_SUCCESS_ALERT,
+    type: HIDE_ERROR_ALERT,
   };
 };
 

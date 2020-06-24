@@ -23,6 +23,7 @@ import {
   exchangeAssetsResponseTransform,
   exchangeDepositAddressResponseTransform,
   providerPerformanceResponseTransform,
+  exchangeDepositsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -59,6 +60,8 @@ import {
  * @typedef {import('./tradeApiClient.types').DepositAddressGetPayload} DepositAddressGetPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeDepositEntity} ExchangeDepositEntity
+ * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
  */
 
 /**
@@ -642,6 +645,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerPerformanceResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetExchangeLastDepositsPayload} payload Get providers stats payload.
+   * @returns {Promise<Array<ExchangeDepositEntity>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeLastDepositsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeLastDeposits";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeDepositsResponseTransform(responseData);
   }
 }
 

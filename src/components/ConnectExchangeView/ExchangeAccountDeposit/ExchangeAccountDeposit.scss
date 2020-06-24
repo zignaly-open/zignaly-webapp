@@ -89,7 +89,7 @@
       }
     }
 
-    .address {
+    .addressLabel {
       margin: 32px 0 19px;
     }
 
@@ -130,6 +130,48 @@
 
     img + p {
       margin-bottom: 9px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .exchangeAccountDeposit {
+    .transferColumnsBox {
+      flex-direction: column;
+    }
+
+    .coinColumn {
+      padding-right: 0;
+      border: none;
+
+      .tipBox {
+        margin-right: 0;
+      }
+    }
+
+    .networkColumn {
+      margin-left: 0;
+    }
+
+    .coinColumn,
+    .networkColumn {
+      position: static;
+      padding-bottom: 18px;
+    }
+
+    .address {
+      word-break: break-all;
+    }
+
+    .tipBox {
+      position: static;
+      margin-top: 24px;
+    }
+
+    .customSelect {
+      .callout + span {
+        text-align: left;
+      }
     }
   }
 }

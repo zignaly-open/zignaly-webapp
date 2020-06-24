@@ -553,6 +553,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} GetExchangeLastDepositsPayload
+ * @property {string} internalId
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -2201,5 +2206,65 @@ function createProviderPerformanceEmptyEntity() {
     totalBalance: 0,
     totalTradingVolume: 0,
     weeklyStats: [{}],
+  };
+}
+
+/**
+ * Transform exchange deposit list response item to ExchangeDepositEntity list.
+ *
+ * @param {*} response Trade API get exchange deposits list response.
+ * @returns {Array<ExchangeDepositEntity>} Exchange Deposits list collection.
+ */
+export function exchangeDepositsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of deposit.");
+  }
+
+  return response.map((exchangeDepositsItem) => {
+    return exchangeDepositItemTransform(exchangeDepositsItem);
+  });
+}
+
+/**
+ * @typedef {Object} ExchangeDepositEntity
+ * @property {String} id
+ * @property {String} txid
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} address
+ * @property {String} tag
+ * @property {String} type
+ * @property {Number} amount
+ * @property {String} currency
+ * @property {String} status
+ * @property {String} fee
+ */
+
+/**
+ * Transform exchange deposits list response item to typed object.
+ *
+ * @param {*} exchangeDepositItem Exchange Deposit response item.
+ * @returns {ExchangeDepositEntity} Exchange Deposit Item entity.
+ */
+function exchangeDepositItemTransform(exchangeDepositItem) {
+  const emptyExchangeDepositEntity = createExchangeDepositEmptyEntity();
+  const transformedResponse = assign(emptyExchangeDepositEntity, exchangeDepositItem);
+
+  return transformedResponse;
+}
+
+function createExchangeDepositEmptyEntity() {
+  return {
+    id: "",
+    txid: "",
+    timestamp: 0,
+    datetime: "",
+    address: "",
+    tag: "",
+    type: "",
+    amount: 0,
+    currency: "USDT",
+    status: "ok",
+    fee: "",
   };
 }
