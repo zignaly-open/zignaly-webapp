@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import ToggleInput from "./ToggleInput";
 import ToggleDoubleInput from "./ToggleDoubleInput";
 import ToggleSelectInput from "./ToggleSelectInput";
@@ -70,9 +69,10 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   };
 
   /**
+   * Function to generate the amount field names.
    *
-   * @param {String} key quotes object key.
-   * @param {Number} [num]
+   * @param {String} key Cuotes object key.
+   * @param {Number} [num] Conditional value.
    * @returns {String} Label for input.
    */
   const getFieldName = (key, num) => {
@@ -94,7 +94,6 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   const onSubmit = (data) => {
     try {
       setLoading(true);
-      console.log(data);
       const payload = assign(emptySettings, data, {
         takeProfitTargets: prepareProfitTargetsPayload(),
         reBuyTargets: prepareBuyTargetsPayload(),
@@ -143,7 +142,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   return (
     <Box bgcolor="grid.main" className="settingsFormWrapper" flexWrap="wrap">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box display="flex" flexDirection="row" className="formBox">
+        <Box className="formBox" display="flex" flexDirection="row">
           <Box
             alignItems="flex-start"
             className="amountsFormBox"
@@ -158,23 +157,25 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             {quotes &&
               Object.keys(quotes).map((item, index) => (
                 <ToggleSelectInput
+                  control={control}
                   key={index}
                   label={
                     <FormattedMessage id="signalp.settings.amounts" values={{ quote: item }} />
                   }
+                  /* @ts-ignore */
+                  name1={getFieldName(item, 1)}
+                  /* @ts-ignore */
+                  name2={getFieldName(item, 2)}
                   tooltip={
                     <FormattedMessage
                       id="signalp.settings.amounts.help"
                       values={{ quote: item, notional: quotes[item].minNotional }}
                     />
                   }
-                  /*@ts-ignore */
+                  /* @ts-ignore */
                   value1={settings[getFieldName(item, 1)]}
-                  /*@ts-ignore */
+                  /* @ts-ignore */
                   value2={settings[getFieldName(item, 2)]}
-                  name1={getFieldName(item, 1)}
-                  name2={getFieldName(item, 2)}
-                  control={control}
                 />
               ))}
           </Box>
@@ -191,126 +192,126 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             </Typography>
 
             <ToggleInput
+              control={control}
               label="signalp.settings.pricedeviation.entry"
-              value={settings.priceDeviation}
               name="priceDeviation"
-              control={control}
-              unit="%"
               tooltip="signalp.settings.pricedeviation.entry.help"
+              unit="%"
+              value={settings.priceDeviation}
             />
 
             <ToggleInput
+              control={control}
               label="signalp.settings.pricedeviation.exit"
-              value={settings.sellPriceDeviation}
               name="sellPriceDeviation"
-              control={control}
-              unit="%"
               tooltip="signalp.settings.pricedeviation.exit.help"
-            />
-
-            <ToggleInput
-              label="signalp.settings.entryexpiration"
-              value={settings.buyTTL}
-              name="buyTTL"
-              control={control}
-              unit="Min"
-              tooltip="signalp.settings.entryexpiration.help"
-            />
-
-            <ToggleInput
-              label="signalp.settings.timeautoclose"
-              value={settings.sellByTTL}
-              name="sellByTTL"
-              control={control}
-              unit="Hours"
-              tooltip="signalp.settings.timeautoclose.help"
-            />
-
-            <ToggleInput
-              label="signalp.settings.stoploss"
-              value={settings.stopLoss}
-              name="stopLoss"
-              control={control}
               unit="%"
+              value={settings.sellPriceDeviation}
+            />
+
+            <ToggleInput
+              control={control}
+              label="signalp.settings.entryexpiration"
+              name="buyTTL"
+              tooltip="signalp.settings.entryexpiration.help"
+              unit="Min"
+              value={settings.buyTTL}
+            />
+
+            <ToggleInput
+              control={control}
+              label="signalp.settings.timeautoclose"
+              name="sellByTTL"
+              tooltip="signalp.settings.timeautoclose.help"
+              unit="Hours"
+              value={settings.sellByTTL}
+            />
+
+            <ToggleInput
+              control={control}
+              label="signalp.settings.stoploss"
+              name="stopLoss"
               tooltip="signalp.settings.stoploss.help"
+              unit="%"
+              value={settings.stopLoss}
             />
 
             <ToggleDoubleInput
+              control={control}
               label="signalp.settings.trailingstop"
-              value1={settings.trailingStopTrigger}
-              value2={settings.trailingStop}
               name1="trailingStopTrigger"
               name2="trailingStop"
+              tooltip="signalp.settings.trailingstop.help"
               unitLeft1="Trigger"
               unitLeft2="Distance"
               unitRight1="%"
               unitRight2="%"
-              control={control}
-              tooltip="signalp.settings.trailingstop.help"
+              value1={settings.trailingStopTrigger}
+              value2={settings.trailingStop}
             />
 
             <ToggleTargetFields
               label="signalp.settings.takeprofit"
-              value={settings.takeProfitTargets}
               onChange={handleProfitTargetsChange}
+              value={settings.takeProfitTargets}
             />
 
             <ToggleTargetFields
               label="signalp.settings.dca"
-              value={settings.reBuyTargets}
               onChange={handleBuyTargetsChange}
+              value={settings.reBuyTargets}
             />
 
             <ToggleInput
+              control={control}
               label="signalp.settings.maxconcurrent"
-              value={settings.maxPositions}
               name="maxPositions"
-              control={control}
-              unit="#"
               tooltip="signalp.settings.maxconcurrent.help"
+              unit="#"
+              value={settings.maxPositions}
             />
 
             <ToggleInput
+              control={control}
               label="signalp.settings.minvolume"
-              value={settings.minVolume}
               name="minVolume"
-              control={control}
-              unit="BTC"
               tooltip="signalp.settings.minvolume.help"
+              unit="BTC"
+              value={settings.minVolume}
             />
 
             <ToggleInput
+              control={control}
               label="signalp.settings.limitpositions"
-              value={settings.positionsPerMarket}
               name="positionsPerMarket"
-              control={control}
-              unit="#"
               tooltip="signalp.settings.limitpositions.help"
+              unit="#"
+              value={settings.positionsPerMarket}
             />
 
             <ToggleInput
+              control={control}
               label="signalp.settings.leverage"
-              value={settings.leverage}
               name="leverage"
-              control={control}
-              unit="#"
               tooltip="signalp.settings.leverage.help"
+              unit="#"
+              value={settings.leverage}
             />
 
             <ToggleTextarea
+              control={control}
               label="signalp.settings.blacklist"
-              value={settings.blacklist}
               name="blacklist"
-              control={control}
               tooltip="signalp.settings.blacklist.help"
+              value={settings.blacklist}
             />
 
             <ToggleTextarea
-              label="signalp.settings.whitelist"
-              value={settings.whitelist}
-              name="whitelist"
               control={control}
+              label="signalp.settings.whitelist"
+              name="whitelist"
               tooltip="signalp.settings.whitelist.help"
+              value={settings.whitelist}
             />
           </Box>
         </Box>

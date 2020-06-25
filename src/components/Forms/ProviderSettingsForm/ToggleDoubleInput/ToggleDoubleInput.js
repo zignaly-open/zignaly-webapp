@@ -25,7 +25,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * Input toggle component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
 const ToggleInput = ({
@@ -42,21 +42,21 @@ const ToggleInput = ({
   unitRight2,
 }) => {
   const storeSettings = useStoreSettingsSelector();
-  const [toggle, setToggle] = useState(value1 || value2 ? true : false);
+  const [toggle, setToggle] = useState(!!(value1 || value2));
 
   const initData = () => {
-    setToggle(value1 || value2 ? true : false);
+    setToggle(!!(value1 || value2));
   };
 
   useEffect(initData, [value1, value2]);
 
   return (
-    <Box className="toggleDoubleInput" display="flex" flexDirection="row" alignItems="center">
+    <Box alignItems="center" className="toggleDoubleInput" display="flex" flexDirection="row">
       <Box
+        alignItems="center"
         className="labelBox"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-between"
       >
         <label className="customLabel">
@@ -76,14 +76,14 @@ const ToggleInput = ({
           <Controller
             as={
               <TextField
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                variant="outlined"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">{unitLeft1}</InputAdornment>,
                   endAdornment: <InputAdornment position="end">{unitRight1}</InputAdornment>,
                 }}
+                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                fullWidth
                 type="number"
+                variant="outlined"
               />
             }
             control={control}
@@ -94,14 +94,14 @@ const ToggleInput = ({
           <Controller
             as={
               <TextField
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                variant="outlined"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">{unitLeft2}</InputAdornment>,
                   endAdornment: <InputAdornment position="end">{unitRight2}</InputAdornment>,
                 }}
+                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                fullWidth
                 type="number"
+                variant="outlined"
               />
             }
             control={control}

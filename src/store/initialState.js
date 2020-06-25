@@ -324,6 +324,7 @@ const initialState = {
         terms: false,
         trailingStopFromSignal: false,
         useLeverageFromSignal: false,
+        customerKey: false,
       },
       public: false,
       shortDesc: "",

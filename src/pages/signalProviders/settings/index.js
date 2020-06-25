@@ -52,14 +52,14 @@ const SignalProvidersSettings = () => {
     <Box className="profileSettingsPage">
       {loading && (
         <Box
+          alignItems="center"
           bgcolor="grid.main"
+          className="loadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
-          className="loadingBox"
         >
-          <CircularProgress size={40} color="primary" />
+          <CircularProgress color="primary" size={40} />
         </Box>
       )}
       {!loading && <ProviderSettingsForm quotes={quotes} settings={settings} />}

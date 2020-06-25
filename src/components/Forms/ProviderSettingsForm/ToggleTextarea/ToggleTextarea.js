@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ToggleTextarea.scss";
-import { Box, Typography, TextField, Tooltip, Switch, InputAdornment } from "@material-ui/core";
+import { Box, Typography, TextField, Tooltip, Switch } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { Controller } from "react-hook-form";
 import HelpIcon from "@material-ui/icons/Help";
@@ -19,26 +19,26 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * Input toggle component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const ToggleTextarea = ({ value, control, label, name, tooltip, unit }) => {
+const ToggleTextarea = ({ value, control, label, name, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
-  const [toggle, setToggle] = useState(value ? true : false);
+  const [toggle, setToggle] = useState(!!value);
 
   const initData = () => {
-    setToggle(value ? true : false);
+    setToggle(!!value);
   };
 
   useEffect(initData, [value]);
 
   return (
-    <Box className="toggleTextarea" display="flex" flexDirection="row" alignItems="flex-start">
+    <Box alignItems="flex-start" className="toggleTextarea" display="flex" flexDirection="row">
       <Box
+        alignItems="center"
         className="labelBox"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-between"
       >
         <label className="customLabel">

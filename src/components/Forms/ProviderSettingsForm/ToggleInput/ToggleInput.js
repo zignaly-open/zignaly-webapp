@@ -20,26 +20,26 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * Input toggle component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
 const ToggleInput = ({ value, control, label, name, tooltip, unit }) => {
   const storeSettings = useStoreSettingsSelector();
-  const [toggle, setToggle] = useState(value ? true : false);
+  const [toggle, setToggle] = useState(!!value);
 
   const initData = () => {
-    setToggle(value ? true : false);
+    setToggle(!!value);
   };
 
   useEffect(initData, [value]);
 
   return (
-    <Box className="toggleInput" display="flex" flexDirection="row" alignItems="center">
+    <Box alignItems="center" className="toggleInput" display="flex" flexDirection="row">
       <Box
+        alignItems="center"
         className="labelBox"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-between"
       >
         <label className="customLabel">
@@ -63,13 +63,13 @@ const ToggleInput = ({ value, control, label, name, tooltip, unit }) => {
           <Controller
             as={
               <TextField
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                variant="outlined"
                 InputProps={{
                   endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
                 }}
+                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                fullWidth
                 type="number"
+                variant="outlined"
               />
             }
             control={control}

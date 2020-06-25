@@ -20,19 +20,19 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * Input toggle component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
 const ToggleSelectInput = ({ value1, value2, control, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
 
   return (
-    <Box className="toggleSelectInput" display="flex" flexDirection="row" alignItems="center">
+    <Box alignItems="center" className="toggleSelectInput" display="flex" flexDirection="row">
       <Box
+        alignItems="center"
         className="labelBox"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-between"
       >
         <label className="customLabel">{label}</label>
@@ -47,12 +47,12 @@ const ToggleSelectInput = ({ value1, value2, control, label, name1, name2, toolt
             <TextField
               className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
               fullWidth
-              variant="outlined"
               type="number"
+              variant="outlined"
             />
           }
           control={control}
-          /*@ts-ignore */
+          /* @ts-ignore */
           defaultValue={value1}
           name={name1}
         />
@@ -65,7 +65,7 @@ const ToggleSelectInput = ({ value1, value2, control, label, name1, name2, toolt
             </Select>
           }
           control={control}
-          /*@ts-ignore */
+          /* @ts-ignore */
           defaultValue={value2}
           name={name2}
         />

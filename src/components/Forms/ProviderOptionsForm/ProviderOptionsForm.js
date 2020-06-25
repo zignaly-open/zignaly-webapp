@@ -31,7 +31,7 @@ const ProviderOptionsForm = ({ provider }) => {
   const entryDCA = watch("reBuysFromSignal", provider.reBuysFromSignal);
   const takeProfit = watch("takeProfitsFromSignal", provider.takeProfitsFromSignal);
   const DCA = watch("reBuyFromProvider", provider.reBuyFromProvider);
-  const terms = watch("terms", provider.terms ? true : false);
+  const terms = watch("terms", !!provider.terms);
   const riskFilter = watch("riskFilter", provider.riskFilter);
   const successRateFilter = watch("successRateFilter", provider.successRateFilter);
 
@@ -151,7 +151,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.stopLossFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -165,7 +165,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.acceptUpdateSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -179,7 +179,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.trailingStopFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -193,7 +193,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.enableSellSignals && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -207,7 +207,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.useLeverageFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -221,7 +221,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.enablePanicSellSignals && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -235,7 +235,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.allowSendingBuyOrdersAsMarket && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -249,7 +249,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.reUseSignalIdIfClosed && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -263,7 +263,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.limitPriceFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -277,7 +277,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.reBuysFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -292,7 +292,7 @@ const ProviderOptionsForm = ({ provider }) => {
 
           {entryDCA && (
             <Box className="subInputBox">
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -303,7 +303,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.entryDCA.first" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -314,7 +314,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.entryDCA.all" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -329,7 +329,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.takeProfitsFromSignal && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -344,7 +344,7 @@ const ProviderOptionsForm = ({ provider }) => {
 
           {takeProfit && (
             <Box className="subInputBox">
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -355,7 +355,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.takeprofit.first" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -366,7 +366,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.takeprofit.all" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -381,7 +381,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.reBuyFromProvider && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -403,14 +403,14 @@ const ProviderOptionsForm = ({ provider }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                      error={!!errors.quantityPercentage}
-                      fullWidth
-                      variant="outlined"
                       InputProps={{
                         endAdornment: <InputAdornment position="end">%</InputAdornment>,
                       }}
+                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                      error={!!errors.quantityPercentage}
+                      fullWidth
                       type="number"
+                      variant="outlined"
                     />
                   }
                   control={control}
@@ -426,14 +426,14 @@ const ProviderOptionsForm = ({ provider }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                      error={!!errors.limitReBuys}
-                      fullWidth
-                      variant="outlined"
                       InputProps={{
                         endAdornment: <InputAdornment position="end">#</InputAdornment>,
                       }}
+                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                      error={!!errors.limitReBuys}
+                      fullWidth
                       type="number"
+                      variant="outlined"
                     />
                   }
                   control={control}
@@ -446,11 +446,11 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.terms && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
-                defaultValue={provider.terms ? true : false}
+                defaultValue={!!provider.terms}
                 name="terms"
               />
               <label className={"customLabel"}>
@@ -461,7 +461,7 @@ const ProviderOptionsForm = ({ provider }) => {
 
           {terms && (
             <Box className="subInputBox">
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -472,7 +472,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.checkterms.short" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -483,7 +483,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.checkterms.shortmid" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -494,7 +494,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   <FormattedMessage id="signalp.option.checkterms.mid" />
                 </label>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+              <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
                   as={<Checkbox className="checkboxInput" />}
                   control={control}
@@ -509,7 +509,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.riskFilter && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -531,14 +531,14 @@ const ProviderOptionsForm = ({ provider }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                      error={!!errors.risk}
-                      fullWidth
-                      variant="outlined"
                       InputProps={{
                         endAdornment: <InputAdornment position="end">#</InputAdornment>,
                       }}
+                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                      error={!!errors.risk}
+                      fullWidth
                       type="number"
+                      variant="outlined"
                     />
                   }
                   control={control}
@@ -551,7 +551,7 @@ const ProviderOptionsForm = ({ provider }) => {
           )}
 
           {provider.options.successRateFilter && (
-            <Box className="inputBox" display="flex" flexDirection="row" alignItems="center">
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
                 control={control}
@@ -573,14 +573,14 @@ const ProviderOptionsForm = ({ provider }) => {
                 <Controller
                   as={
                     <TextField
-                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                      error={!!errors.successRate}
-                      fullWidth
-                      variant="outlined"
                       InputProps={{
                         endAdornment: <InputAdornment position="end">#</InputAdornment>,
                       }}
+                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                      error={!!errors.successRate}
+                      fullWidth
                       type="number"
+                      variant="outlined"
                     />
                   }
                   control={control}

@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /**
- * Social select component to add social networks.
+ * Target Fields component to add dynamic fields.
  *
  * @typedef {Object} DefaultProps Default props.
  * @property {Function} onChange Change event.
@@ -45,7 +45,7 @@ const TargetFields = ({ onChange, defaultValue }) => {
   };
 
   /**
-   * Function to handle input changes for select and text input.
+   * Function to handle input changes for fields.
    *
    * @param {React.ChangeEvent<*>} e Change event.
    * @param {Number|String} id ID of the dynamic field object.
@@ -94,12 +94,12 @@ const TargetFields = ({ onChange, defaultValue }) => {
     <Box className="targetFields">
       {values.map((obj, index) => (
         <Box
-          key={index}
-          width="100%"
+          alignItems="flex-start"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="flex-start"
+          key={index}
+          width="100%"
         >
           <Box
             alignItems="center"
@@ -110,30 +110,30 @@ const TargetFields = ({ onChange, defaultValue }) => {
             key={index}
           >
             <TextField
-              className="customInput"
-              name="price"
-              onBlur={updateParent}
-              onChange={(e) => handleChange(e, obj.targetId)}
-              value={obj.priceTargetPercentage}
-              variant="outlined"
-              type="number"
               InputProps={{
                 startAdornment: <InputAdornment position="start">Price Target</InputAdornment>,
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}
+              className="customInput"
+              name="price"
+              onBlur={updateParent}
+              onChange={(e) => handleChange(e, obj.targetId)}
+              type="number"
+              value={obj.priceTargetPercentage}
+              variant="outlined"
             />
 
             <TextField
-              className="customInput"
-              name="amount"
-              onChange={(e) => handleChange(e, obj.targetId)}
-              value={obj.amountPercentage}
-              variant="outlined"
-              type="number"
               InputProps={{
                 startAdornment: <InputAdornment position="start">Qty</InputAdornment>,
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}
+              className="customInput"
+              name="amount"
+              onChange={(e) => handleChange(e, obj.targetId)}
+              type="number"
+              value={obj.amountPercentage}
+              variant="outlined"
             />
           </Box>
           {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}

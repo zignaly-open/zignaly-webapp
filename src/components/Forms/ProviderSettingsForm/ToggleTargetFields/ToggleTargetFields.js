@@ -15,25 +15,25 @@ import TargetFields from "../TargetFields";
 /**
  * Input toggle component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
 const ToggleInput = ({ value, label, onChange }) => {
-  const [toggle, setToggle] = useState(value && value.length ? true : false);
+  const [toggle, setToggle] = useState(!!(value && value.length));
 
   const initData = () => {
-    setToggle(value && value.length ? true : false);
+    setToggle(!!(value && value.length));
   };
 
   useEffect(initData, [value]);
 
   return (
-    <Box className="toggleTargetFields" display="flex" flexDirection="row" alignItems="flex-start">
+    <Box alignItems="flex-start" className="toggleTargetFields" display="flex" flexDirection="row">
       <Box
+        alignItems="center"
         className="labelBox"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-between"
       >
         <label className="customLabel">
@@ -42,7 +42,7 @@ const ToggleInput = ({ value, label, onChange }) => {
         <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} />
       </Box>
 
-      {toggle && <TargetFields onChange={onChange} defaultValue={value} />}
+      {toggle && <TargetFields defaultValue={value} onChange={onChange} />}
     </Box>
   );
 };
