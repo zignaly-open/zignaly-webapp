@@ -164,4 +164,4 @@ const Table = ({ columns, data, persistKey, title }) => {
   );
 };
 
-export default Table;
+export default React.memo(Table);
