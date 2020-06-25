@@ -24,6 +24,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import WithdrawHistoryTable from "./WithdrawHistoryTable";
 
 const ExchangeAccountWithdraw = () => {
   const {
@@ -249,7 +250,7 @@ const ExchangeAccountWithdraw = () => {
               </Box>
             </Box>
           )}
-          {/* <DepositHistoryTable internalId={selectedAccount.internalId} /> */}
+          <WithdrawHistoryTable internalId={selectedAccount.internalId} />
         </Box>
       </Box>
     </BalanceManagement>

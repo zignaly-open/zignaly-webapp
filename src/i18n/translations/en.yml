@@ -510,6 +510,7 @@ accounts.settings: "Settings"
 accounts.settings.saved: "Changes saved."
 accounts.equity.total: "Total Equity"
 accounts.withdraw: "Withdraw"
+accounts.withdraw.history: "Withdraw History"
 accounts.selected: "Selected"
 
 accounts.options.blacklist: "Global Blacklist"

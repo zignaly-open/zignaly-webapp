@@ -2235,8 +2235,8 @@ export function exchangeDepositsResponseTransform(response) {
     throw new Error("Response must be an array of deposit.");
   }
 
-  return response.map((exchangeDepositsItem) => {
-    return exchangeDepositItemTransform(exchangeDepositsItem);
+  return response.map((exchangeDepositItem) => {
+    return exchangeDepositItemTransform(exchangeDepositItem);
   });
 }
 
@@ -2253,6 +2253,28 @@ export function exchangeDepositsResponseTransform(response) {
  * @property {String} currency
  * @property {String} status
  * @property {String} fee
+ */
+
+/**
+ * @typedef {Object} FeeType
+ * @property {string} currency
+ * @property {number} cost
+ */
+
+/**
+ * @typedef {Object} ExchangeWithdrawEntity
+ * @property {String} id
+ * @property {String} txid
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} address
+ * @property {String} tag
+ * @property {String} type
+ * @property {Number} amount
+ * @property {String} currency
+ * @property {String} status
+ * @property {String} statusTx
+ * @property {FeeType} fee
  */
 
 /**
@@ -2278,9 +2300,54 @@ function createExchangeDepositEmptyEntity() {
     tag: "",
     type: "",
     amount: 0,
-    currency: "USDT",
-    status: "ok",
-    fee: "",
+    currency: "",
+    status: "",
+  };
+}
+
+/**
+ * Transform exchange withdraw list response item to ExchangeWithdrawEntity list.
+ *
+ * @param {*} response Trade API get exchange withdraws list response.
+ * @returns {Array<ExchangeWithdrawEntity>} Exchange withdraws list collection.
+ */
+export function exchangeWithdrawsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of withdraw.");
+  }
+
+  return response.map((exchangeWithdrawItem) => {
+    return exchangeWithdrawItemTransform(exchangeWithdrawItem);
+  });
+}
+
+/**
+ * Transform exchange withdraws list response item to typed object.
+ *
+ * @param {*} exchangeWithdrawItem Exchange withdraw response item.
+ * @returns {ExchangeWithdrawEntity} Exchange withdraw Item entity.
+ */
+function exchangeWithdrawItemTransform(exchangeWithdrawItem) {
+  const emptyExchangeWithdrawEntity = createExchangeWithdrawEmptyEntity();
+  const transformedResponse = assign(emptyExchangeWithdrawEntity, exchangeWithdrawItem);
+
+  return transformedResponse;
+}
+
+function createExchangeWithdrawEmptyEntity() {
+  return {
+    id: "",
+    txid: "",
+    timestamp: 0,
+    datetime: "",
+    address: "",
+    tag: "",
+    type: "",
+    amount: 0,
+    currency: "",
+    status: "",
+    statusTx: "",
+    fee: { currency: "", cost: "" },
   };
 }
 

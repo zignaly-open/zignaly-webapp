@@ -187,6 +187,7 @@ const initialState = {
         "col.actions",
       ],
       depositHistory: ["status", "currency", "amount", "timestamp", "txid"],
+      withdrawHistory: ["status", "currency", "amount", "timestamp", "txid"],
     },
     selectedExchange: {
       id: "",
