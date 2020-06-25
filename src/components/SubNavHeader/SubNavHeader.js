@@ -56,7 +56,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
 export const SubNavModalHeader = ({ links }) => {
   const {
     pathParams: { currentPath },
-    resetToPath,
+    setPathParams,
   } = useContext(ModalPathContext);
 
   return (
@@ -73,7 +73,7 @@ export const SubNavModalHeader = ({ links }) => {
           className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
           key={index}
           // href={item.to}
-          onClick={() => resetToPath(item.id)}
+          onClick={() => setPathParams({ currentPath: item.id, previousPath: "" })}
         >
           <FormattedMessage id={item.title} />
         </Link>

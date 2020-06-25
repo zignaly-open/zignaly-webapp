@@ -32,15 +32,23 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
       network,
       asset,
     };
+    let canceled = false;
 
     tradeApi
       .exchangeDepositAddressGet(payload)
       .then((data) => {
-        setDepositAddress(data);
+        if (!canceled) {
+          console.log(data);
+          setDepositAddress(data);
+        }
       })
       .catch((e) => {
         alert(`ERROR: ${e.message}`);
       });
+
+    return () => {
+      canceled = true;
+    };
   };
 
   useEffect(loadData, [internalId, network, asset, storeSession.tradeApi.accessToken]);

@@ -85,6 +85,7 @@ export const hideErrorAlert = () => {
  * @returns {Object} Action object.
  */
 export const showSuccessAlert = (title, body) => {
+  console.log(body);
   return {
     type: SHOW_SUCCESS_ALERT,
     payload: {

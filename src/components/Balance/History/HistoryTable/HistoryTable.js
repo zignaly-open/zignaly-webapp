@@ -149,31 +149,9 @@ const ProvidersProfitsTable = ({ title, persistKey, list, quotes }) => {
 
   dynamicColumns();
 
-  /**
-   * @param {ThemeOptions} theme Material UI theme options.
-   * @returns {Theme} Theme overridden.
-   */
-  const getMuiTheme = (theme) =>
-    createMuiTheme({
-      ...theme,
-      /**
-       * @type {*}
-       */
-      overrides: {
-        MUIDataTableHeadCell: {
-          root: {
-            // Don't wrap small headers and avoid wrapping long headers too much
-            minWidth: "128px",
-          },
-        },
-      },
-    });
-
   return (
     <Box className="historyTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
-        <Table columns={columns} data={data} persistKey={persistKey} title={title} />
-      </MuiThemeProvider>
+      <Table columns={columns} data={data} persistKey={persistKey} title={title} />
     </Box>
   );
 };
