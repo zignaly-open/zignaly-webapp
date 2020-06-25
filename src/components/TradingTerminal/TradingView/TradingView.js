@@ -45,20 +45,27 @@ const TradingView = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
+  /**
+   * Fetch a position on position edit mode.
+   *
+   * @returns {Void} None.
+   */
   const fetchPosition = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       positionId,
     };
 
-    tradeApi
-      .positionGet(payload)
-      .then((data) => {
-        setPositionEntity(data);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (positionEntity) {
+      tradeApi
+        .positionGet(payload)
+        .then((data) => {
+          setPositionEntity(data);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
 
   useEffect(fetchPosition, []);
