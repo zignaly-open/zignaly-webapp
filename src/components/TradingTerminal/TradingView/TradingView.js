@@ -9,6 +9,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, Button, CircularProgress } from "@material-ui/core";
+import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -185,6 +186,7 @@ const TradingView = (props) => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+      {isPositionView && <PositionsTable positionEntity={positionEntity} type="open" />}
       {!isChartLoading && !isPositionView && (
         <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
           <Box

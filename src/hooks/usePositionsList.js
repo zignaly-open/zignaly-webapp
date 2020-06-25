@@ -9,7 +9,11 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log"} PositionsCollectionType
+ */
+
+/**
  * @typedef {Object} HookPositionsListData
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
@@ -22,9 +26,10 @@ import { showErrorAlert } from "../store/actions/ui";
  * Encapsulates the data fetch from Trade API and local state handling.
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
+ * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
  * @returns {HookPositionsListData} Positions collection.
  */
-const usePositionsList = (type) => {
+const usePositionsList = (type, positionEntity = null) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const defaultFilters = {
@@ -49,15 +54,15 @@ const usePositionsList = (type) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    if (type === "closed") {
+    if (positionEntity) {
+      return new Promise((resolve) => {
+        resolve([positionEntity]);
+      });
+    } else if (type === "closed") {
       return tradeApi.closedPositionsGet(payload);
-    }
-
-    if (type === "log") {
+    } else if (type === "log") {
       return tradeApi.logPositionsGet(payload);
-    }
-
-    if (type === "open") {
+    } else if (type === "open") {
       return tradeApi.openPositionsGet(payload);
     }
 
@@ -92,6 +97,7 @@ const usePositionsList = (type) => {
 
   const loadData = () => {
     const fetchMethod = routeFetchMethod();
+
     if (fetchMethod) {
       fetchMethod
         .then((fetchData) => {

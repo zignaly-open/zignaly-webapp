@@ -21,8 +21,13 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ */
+
+/**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
+ * @property {PositionEntity} positionEntity
  */
 
 /**
@@ -32,10 +37,10 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type } = props;
+  const { type, positionEntity = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
+  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type, positionEntity);
   const showTypesFilter = type === "log";
   const tablePersistsKey = `${type}Positions`;
 
