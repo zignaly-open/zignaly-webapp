@@ -231,16 +231,9 @@ const IncreaseStrategyPanel = (props) => {
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           <Box alignItems="center" className="title" display="flex" flexDirection="row">
             <Controller
-              as={
-                <CustomSelect
-                  label=""
-                  onChange={() => {}}
-                  options={entryStrategyOptions}
-                  value={entryStrategy}
-                />
-              }
+              as={<CustomSelect label="" onChange={() => {}} options={entryStrategyOptions} />}
               control={control}
-              defaultValue=""
+              defaultValue="limit"
               name="entryStrategy"
             />
           </Box>
