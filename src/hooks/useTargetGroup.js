@@ -62,7 +62,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
     const draftPosition = getValues();
     const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
 
-    return parseFloat(draftPosition[targetPropertyName]) || 0;
+    return parseFloat(draftPosition[targetPropertyName]);
   }
 
   /**

@@ -1,25 +1,27 @@
 import React, { useEffect } from "react";
+import { isNumber, range, size, sum } from "lodash";
 import { FormattedMessage } from "react-intl";
-import HelperLabel from "../HelperLabel/HelperLabel";
+import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { isNumber, sum } from "lodash";
-import { formatFloat2Dec } from "../../../utils/format";
+import HelperLabel from "../HelperLabel/HelperLabel";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
-import { useFormContext } from "react-hook-form";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TakeProfitPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
- * @property {CoinRayCandle} lastPriceCandle
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
 /**
@@ -29,9 +31,15 @@ import "./TakeProfitPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const TakeProfitPanel = (props) => {
-  const { symbolData, lastPriceCandle } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { symbolData, positionEntity = null } = props;
+  const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
+  const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
+  const { expanded, expandClass, expandableControl } = useExpandable(
+    positionTargetsCardinality > 0,
+  );
+
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const defaultCardinality = positionTargetsCardinality || 1;
   const {
     cardinality,
     cardinalityRange,
@@ -42,11 +50,59 @@ const TakeProfitPanel = (props) => {
     handleTargetRemove,
     setTargetPropertyValue,
     simulateInputChangeEvent,
-  } = useTargetGroup("takeProfit");
+  } = useTargetGroup("takeProfit", defaultCardinality);
+
+  // Other panels watched variables to react on changes.
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
   const { limits } = symbolData;
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+  const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
+  const isTargetLocked = cardinality === targetsDone;
+  const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
+
+  const getFieldsDisabledStatus = () => {
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    targetIndexes.forEach((index) => {
+      const target = positionEntity ? positionEntity.takeProfitTargets[index] : { done: false };
+
+      let disabled = false;
+      if (target.done) {
+        disabled = true;
+      } else if (isCopy || isClosed) {
+        disabled = true;
+      }
+
+      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("exitUnits", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPrice", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+    });
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      targetIndexes.forEach((index) => {
+        const profitTarget = positionEntity.takeProfitTargets[index];
+        const priceTargetPercentage = revertPercentageRange(profitTarget.priceTargetPercentage);
+        const amountPercentage = revertPercentageRange(profitTarget.amountPercentage);
+        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+      });
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate result of changed target units event.
@@ -88,12 +144,20 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const targetPricePercentageChange = (event) => {
-    const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const price = getEntryPrice();
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * ((targetPercentage + 100) / 100);
+
+    if (isNaN(targetPercentage)) {
+      setError(
+        composeTargetPropertyName("targetPricePercentage", targetId),
+        "error",
+        "Target percentage must be a number.",
+      );
+      return;
+    }
 
     if (isNumber(targetPercentage) && targetPercentage !== 0) {
       setValue(priceProperty, formatPrice(targetPrice));
@@ -111,11 +175,19 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const targetPriceChange = (event) => {
-    const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
+    const price = getEntryPrice();
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+
+    if (isNaN(targetPrice)) {
+      setError(
+        composeTargetPropertyName("targetPrice", targetId),
+        "error",
+        "Target price must be a number.",
+      );
+      return;
+    }
 
     if (isNumber(targetPrice) && targetPrice !== 0) {
       const priceDiff = targetPrice - price;
@@ -135,11 +207,19 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const exitUnitsPercentageChange = (event) => {
-    const draftPosition = getValues();
-    const units = parseFloat(draftPosition.units) || 0;
+    const units = getEntrySize();
     const targetId = getGroupTargetId(event);
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
+
+    if (isNaN(unitsPercentage)) {
+      setError(
+        composeTargetPropertyName("exitUnitsPercentage", targetId),
+        "error",
+        "Exit units percentage must be a number.",
+      );
+      return;
+    }
 
     if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
@@ -158,11 +238,19 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const exitUnitsChange = (event) => {
-    const draftPosition = getValues();
-    const units = parseFloat(draftPosition.units) || 0;
+    const units = getEntrySize();
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+
+    if (isNaN(exitUnits)) {
+      setError(
+        composeTargetPropertyName("exitUnits", targetId),
+        "error",
+        "Exit units must be a number.",
+      );
+      return;
+    }
 
     if (units > 0 && exitUnits > 0) {
       const unitsDiff = units - exitUnits;
@@ -253,7 +341,7 @@ const TakeProfitPanel = (props) => {
       const newValue = formatFloat2Dec(Math.abs(currentValue));
       const sign = entryType === "SHORT" ? "-" : "";
 
-      if (currentValue === 0) {
+      if (isNaN(currentValue)) {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
@@ -272,6 +360,19 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyUnits]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      cardinalityRange.forEach((targetId) => {
+        clearError(composeTargetPropertyName("exitUnitsPercentage", targetId));
+        clearError(composeTargetPropertyName("exitUnits", targetId));
+        clearError(composeTargetPropertyName("targetPrice", targetId));
+        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+      });
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   /**
    * Compose dynamic target property errors.
@@ -314,6 +415,9 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
@@ -323,6 +427,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
                     inputRef={register}
                     name={composeTargetPropertyName("targetPrice", targetId)}
                     onChange={targetPriceChange}
@@ -330,6 +435,7 @@ const TakeProfitPanel = (props) => {
                   <div className="currencyBox">{symbolData.quote}</div>
                 </Box>
               </Box>
+              {displayTargetFieldErrors("targetPricePercentage", targetId)}
               {displayTargetFieldErrors("targetPrice", targetId)}
               <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
@@ -339,6 +445,9 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
                     onChange={exitUnitsPercentageChange}
@@ -348,6 +457,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
                     inputRef={register}
                     name={composeTargetPropertyName("exitUnits", targetId)}
                     onChange={exitUnitsChange}
@@ -359,20 +469,22 @@ const TakeProfitPanel = (props) => {
               </Box>
             </Box>
           ))}
-          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-            <Button className="removeTarget" onClick={handleTargetRemove}>
-              <RemoveCircle />
-              <FormattedMessage id="terminal.target.remove" />
-            </Button>
-            <Button className="addTarget" onClick={handleTargetAdd}>
-              <AddCircle />
-              <FormattedMessage id="terminal.target.add" />
-            </Button>
-          </Box>
+          {!disableCardinalityActions && (
+            <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+              <Button className="removeTarget" onClick={handleTargetRemove}>
+                <RemoveCircle />
+                <FormattedMessage id="terminal.target.remove" />
+              </Button>
+              <Button className="addTarget" onClick={handleTargetAdd}>
+                <AddCircle />
+                <FormattedMessage id="terminal.target.add" />
+              </Button>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
   );
 };
 
-export default TakeProfitPanel;
+export default React.memo(TakeProfitPanel);

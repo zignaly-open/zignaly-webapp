@@ -57,7 +57,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsPayload} ProviderExchangeSettingsPayload
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsUpdatePayload} ProviderExchangeSettingsUpdatePayload
- *
+ * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
  */
 
 /**
@@ -283,7 +283,7 @@ class TradeApiClient {
   /**
    * Close a position.
    *
-   * @param {PositionActionPayload} payload User authorization payload.
+   * @param {PositionActionPayload} payload Position action payload.
 
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
@@ -299,7 +299,7 @@ class TradeApiClient {
   /**
    * Exit a position.
    *
-   * @param {PositionActionPayload} payload User authorization payload.
+   * @param {PositionActionPayload} payload Position action payload.
 
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
@@ -307,6 +307,22 @@ class TradeApiClient {
    */
   async positionExit(payload) {
     const endpointPath = "/fe/api.php?action=sellPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Get a position.
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionGet(payload) {
+    const endpointPath = "/fe/api.php?action=getPosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionItemTransform(responseData);
@@ -581,10 +597,25 @@ class TradeApiClient {
   }
 
   /**
+   * Create manual position.
+   *
+   * @param {CreatePositionPayload} payload Create manual position.
+
+   * @returns {Promise<string>} Promise that resolve created position ID.
+   *
+   * @memberof TradeApiClient
+   */
+  async manualPositionCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createManualPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient

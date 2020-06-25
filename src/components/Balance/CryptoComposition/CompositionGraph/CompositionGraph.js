@@ -1,6 +1,7 @@
 import React from "react";
 import Doughnut from "../../../Graphs/Doughnut";
 import { useIntl } from "react-intl";
+import { formatFloat } from "../../../../utils/format";
 
 /**
  *
@@ -69,11 +70,8 @@ const CompositionGraph = ({ list, quotes }) => {
           labels.push(quotes[a] + "%");
         }
       }
-      values.push(
-        typeof equity.otherPercentage === "string"
-          ? parseFloat(equity.otherPercentage).toFixed(2)
-          : equity.otherPercentage.toFixed(2),
-      );
+      /* @ts-ignore */
+      values.push(formatFloat(equity.otherPercentage));
       labels.push(intl.formatMessage({ id: "graph.others" }));
     }
   };

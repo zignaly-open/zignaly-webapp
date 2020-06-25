@@ -4,6 +4,86 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
+ * @type {('entry')}
+ */
+export const POSITION_TYPE_ENTRY = "entry";
+
+/**
+ * @type {('exit')}
+ */
+export const POSITION_TYPE_EXIT = "exit";
+
+/**
+ * @type {('LONG')}
+ */
+export const POSITION_SIDE_LONG = "LONG";
+
+/**
+ * @type {('SHORT')}
+ */
+export const POSITION_SIDE_SHORT = "SHORT";
+
+/**
+ * @type {('market')}
+ */
+export const POSITION_ENTRY_TYPE_MARKET = "market";
+
+/**
+ * @type {('limit')}
+ */
+export const POSITION_ENTRY_TYPE_LIMIT = "limit";
+
+/**
+ * @type {('stop_loss_limit')}
+ */
+export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
+
+/**
+ * @type {('import')}
+ */
+export const POSITION_ENTRY_TYPE_IMPORT = "import";
+
+/**
+ * @typedef {Object} CreatePositionPayload
+ * @property {string} token
+ * @property {string} pair
+ * @property {number} limitPrice
+ * @property {string} positionSizeQuote
+ * @property {number} positionSize
+ * @property {('entry' | 'exit')} type
+ * @property {('SHORT' | 'LONG')} side
+ * @property {number|boolean} stopLossPercentage
+ * @property {number|boolean} buyTTL
+ * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
+ * @property {number} buyStopPrice
+ * @property {number|boolean} sellByTTL
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets
+ * @property {number|boolean} trailingStopTriggerPercentage
+ * @property {number|boolean} trailingStopPercentage
+ * @property {number|string} providerId
+ * @property {string} providerName
+ * @property {string} exchangeName
+ * @property {string} exchangeInternalId
+ */
+
+/**
+ * @typedef {Object} PositionProfitTarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} quoteTarget
+ * @property {number} amountPercentage
+ * @property {number} value
+ */
+
+/**
+ * @typedef {Object} PositionDCATarget
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
@@ -186,7 +266,8 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
  * @typedef {Object} PositionEntity
- * @property {Array<ReBuyTarget>} reBuyTargets
+ * @property {Object<number, ReBuyTarget>} reBuyTargets
+ * @property {Object<number, ProfitTarget>} takeProfitTargets
  * @property {RealInvestment} realInvestment
  * @property {boolean} accounting
  * @property {boolean} checkStop
@@ -279,6 +360,18 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ */
+
+/**
+ * @typedef {Object} ProfitTarget
+ * @property {number} targetId
+ * @property {number} amountPercentage
+ * @property {boolean} done
+ * @property {string} orderId
+ * @property {number} priceTargetPercentage
+ * @property {boolean} cancel
+ * @property {boolean} skipped
+ * @property {boolean} updating
  */
 
 /**
@@ -730,10 +823,14 @@ export function userPositionItemTransform(positionItem) {
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
+    reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
     remainAmount: parseFloat(positionItem.remainAmount),
     sellPrice: parseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    takeProfitTargets: isObject(positionItem.takeProfitTargets)
+      ? positionItem.takeProfitTargets
+      : {},
   });
 
   const risk = calculateRisk(positionEntity);
@@ -808,7 +905,7 @@ function createEmptyPositionEntity() {
     providerName: "",
     quote: "",
     quoteAsset: "",
-    reBuyTargets: [],
+    reBuyTargets: {},
     reBuyTargetsCountFail: 0,
     reBuyTargetsCountPending: 0,
     reBuyTargetsCountSuccess: 0,
@@ -830,6 +927,7 @@ function createEmptyPositionEntity() {
     stopLossStyle: "",
     symbol: "",
     takeProfit: false,
+    takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
     takeProfitTargetsCountPending: 0,
     takeProfitTargetsCountSuccess: 0,
@@ -837,9 +935,9 @@ function createEmptyPositionEntity() {
     trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
+    type: "",
     updating: false,
     userId: "",
-    type: "",
   };
 }
 

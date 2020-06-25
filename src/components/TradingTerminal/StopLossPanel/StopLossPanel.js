@@ -2,22 +2,25 @@ import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
-import { formatFloat2Dec } from "../../../utils/format";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./StopLossPanel.scss";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} StopLossPanel
  * @property {MarketSymbol} symbolData
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
 /**
@@ -27,12 +30,45 @@ import "./StopLossPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const StopLossPanel = (props) => {
-  const { symbolData } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
-  const { errors, getValues, register, setValue, watch } = useFormContext();
+  const { symbolData, positionEntity } = props;
+  const existsStopLoss = positionEntity ? Boolean(positionEntity.stopLossPercentage) : false;
+  const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+  const { getEntryPrice } = usePositionEntry(positionEntity);
+  // Strategy panels inputs to observe for changes.
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
-  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+
+  const getFieldsDisabledStatus = () => {
+    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    let disabled = false;
+    if (isCopy || isClosed) {
+      disabled = true;
+    }
+
+    fieldsDisabled.stopLossPrice = disabled;
+    fieldsDisabled.stopLossPercentage = disabled;
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity && existsStopLoss) {
+      const stopLossPercentage = revertPercentageRange(positionEntity.stopLossPercentage);
+      setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Calculate price based on percentage when value is changed.
@@ -41,9 +77,14 @@ const StopLossPanel = (props) => {
    */
   const stopLossPercentageChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
+
+    if (draftPosition.stopLossPercentage !== "-" && isNaN(stopLossPercentage)) {
+      setError("stopLossPercentage", "error", "Stop loss percentage must be a number.");
+      return;
+    }
 
     if (!isNaN(price) && price > 0) {
       setValue("stopLossPrice", formatPrice(stopLossPrice, ""));
@@ -61,9 +102,14 @@ const StopLossPanel = (props) => {
    */
   const stopLossPriceChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
+
+    if (isNaN(stopLossPrice)) {
+      setError("stopLossPrice", "error", "Stop loss price must be a number.");
+      return;
+    }
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
@@ -106,6 +152,15 @@ const StopLossPanel = (props) => {
     return null;
   };
 
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expanded) {
+      clearError("stopLossPrice");
+      clearError("stopLossPercentage");
+    }
+  };
+
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -130,16 +185,17 @@ const StopLossPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  disabled={fieldsDisabled.stopLossPercentage}
                   inputRef={register}
                   name="stopLossPercentage"
                   onChange={stopLossPercentageChange}
                 />
                 <div className="currencyBox">%</div>
               </Box>
-              {displayFieldErrors("stopLossPercentage")}
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  disabled={fieldsDisabled.stopLossPrice}
                   inputRef={register}
                   name="stopLossPrice"
                   onChange={stopLossPriceChange}
@@ -147,6 +203,7 @@ const StopLossPanel = (props) => {
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </Box>
+            {displayFieldErrors("stopLossPercentage")}
             {displayFieldErrors("stopLossPrice")}
           </Box>
         </Box>
@@ -155,4 +212,4 @@ const StopLossPanel = (props) => {
   );
 };
 
-export default StopLossPanel;
+export default React.memo(StopLossPanel);
