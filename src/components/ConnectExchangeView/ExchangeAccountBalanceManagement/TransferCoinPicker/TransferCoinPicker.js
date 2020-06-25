@@ -5,6 +5,25 @@ import "./TransferCoinPicker.scss";
 import CustomSelect from "../../../CustomSelect";
 import { formatFloat } from "../../../../utils/format";
 
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ */
+
+/**
+ * @typedef {Object} TransferCoinPickerTablePropTypes
+ * @property {string} label Dropdown label.
+ * @property {function} onChange Callback to select coin,
+ * @property {Array<string>} coins Coins list.
+ * @property {ExchangeAsset} asset Selected asset.
+ * @property {string} selectedCoin Selected coin name.
+ */
+
+/**
+ * Provides a dropdown to select a coin with balance info.
+ *
+ * @param {TransferCoinPickerTablePropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => {
   const intl = useIntl();
 
@@ -27,6 +46,17 @@ const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => 
   );
 };
 
+/**
+ * @typedef {Object} BalanceLinePropTypes
+ * @property {string} label Line Label id
+ * @property {string} amount Line Amount
+ * @property {string} unit Line Unit
+ */
+
+/**
+ * @param {BalanceLinePropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const BalanceLine = ({ label, amount, unit }) => (
   <Box className="balanceLine" display="flex" flexDirection="row" justifyContent="space-between">
     <Typography variant="body2">

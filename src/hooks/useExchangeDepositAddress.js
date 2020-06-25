@@ -10,8 +10,8 @@ import tradeApi from "../services/tradeApiClient";
  * Provides deposit address.
  *
  * @param {string} internalId Exchange account internal id.
- * @param {string} network Coin network.
  * @param {string} asset Asset name.
+ * @param {string} network Coin network.
  * @returns {ExchangeDepositAddress} Deposit address object.
  */
 const useExchangeDepositAddress = (internalId, asset, network) => {
@@ -20,7 +20,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
   const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    if (!internalId || !network || !asset) return;
+    if (!internalId || !network || !asset) return null;
     if (depositAddress) {
       // Dependency updated, reset the value while it's loading
       setDepositAddress(null);
@@ -38,7 +38,6 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
       .exchangeDepositAddressGet(payload)
       .then((data) => {
         if (!canceled) {
-          console.log(data);
           setDepositAddress(data);
         }
       })

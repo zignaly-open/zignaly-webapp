@@ -1,8 +1,21 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import "./TipBox.scss";
 
+/**
+ * @typedef {Object} TipBoxPropTypes
+ * @property {string} icon Top icon
+ * @property {JSX.Element|string} title Title
+ * @property {string} description Description
+ */
+
+/**
+ * Provides a tip box.
+ *
+ * @param {TipBoxPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const TipBox = ({ icon, title, description }) => (
   <Box className="tipBox">
     <img src={icon} />

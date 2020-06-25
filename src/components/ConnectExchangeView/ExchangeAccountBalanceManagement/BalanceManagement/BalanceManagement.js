@@ -1,9 +1,19 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage, useIntl } from "react-intl";
+import { Box } from "@material-ui/core";
 import { SubNavModalHeader } from "../../../SubNavHeader";
 import "./BalanceManagement.scss";
 
+/**
+ * @typedef {Object} BalanceManagementPropTypes
+ * @property {React.ReactElement} children Children elements
+ */
+
+/**
+ * Provides a tip box.
+ *
+ * @param {BalanceManagementPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const BalanceManagement = ({ children }) => {
   const tabs = [
     {

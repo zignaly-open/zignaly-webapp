@@ -1,38 +1,29 @@
 import React, { useEffect, useContext, useState } from "react";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  FormControlLabel,
-  OutlinedInput,
-  FormControl,
-} from "@material-ui/core";
+import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@material-ui/core";
 import "./Withdraw.scss";
 import TransferCoinPicker from "../TransferCoinPicker";
 import TipBox from "../TipBox";
-import copyToClipboard from "../../../../hooks/useClipboard";
-import ModalPathContext from "../../ModalPathContext";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import useAssetsSelect from "../../../../hooks/useAssetsSelect";
 import AlertIcon from "../../../../images/exchangeAccount/alert.svg";
 import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
 import { formatFloat } from "../../../../utils/format";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import WithdrawHistoryTable from "./WithdrawHistoryTable";
+import ModalPathContext from "../../ModalPathContext";
 
-const ExchangeAccountWithdraw = () => {
+const Withdraw = () => {
   const {
     pathParams: { selectedAccount },
     setTitle,
   } = useContext(ModalPathContext);
-  const intl = useIntl();
-  const { handleSubmit, register, errors, watch, reset, control } = useForm();
+  const { handleSubmit, register, errors, watch, reset } = useForm();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +44,19 @@ const ExchangeAccountWithdraw = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**
+   * @typedef {Object} FormData
+   * @property {String} address
+   * @property {String} [memo]
+   * @property {String} amount
+   */
+
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {void}
+   */
   const onSubmit = (data) => {
     setIsLoading(true);
 
@@ -200,7 +204,9 @@ const ExchangeAccountWithdraw = () => {
                       </Box>
                       <OutlinedInput
                         fullWidth={true}
-                        inputProps={{ min: parseFloat(selectedNetwork.withdrawMin) }}
+                        inputProps={{
+                          min: parseFloat(selectedNetwork.withdrawMin),
+                        }}
                         inputRef={register({
                           min: {
                             value: parseFloat(selectedNetwork.withdrawMin),
@@ -273,4 +279,4 @@ const ExchangeAccountWithdraw = () => {
   );
 };
 
-export default ExchangeAccountWithdraw;
+export default Withdraw;

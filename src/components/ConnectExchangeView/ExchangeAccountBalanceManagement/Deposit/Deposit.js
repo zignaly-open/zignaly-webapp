@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import React, { useEffect, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import "./Deposit.scss";
@@ -19,12 +19,11 @@ import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import TipBox from "../TipBox";
 
-const ExchangeAccountDeposit = () => {
+const Deposit = () => {
   const {
     pathParams: { selectedAccount },
     setTitle,
   } = useContext(ModalPathContext);
-  const intl = useIntl();
   const copyToClipboard = useClipboard();
 
   const {
@@ -48,11 +47,11 @@ const ExchangeAccountDeposit = () => {
   }, []);
 
   const copyAddress = () => {
-    depositAddress && copyToClipboard(depositAddress.address, "deposit.address.copied");
+    if (depositAddress) copyToClipboard(depositAddress.address, "deposit.address.copied");
   };
 
   const copyMemo = () => {
-    depositAddress && copyToClipboard(depositAddress.tag, "deposit.memo.copied");
+    if (depositAddress) copyToClipboard(depositAddress.tag, "deposit.memo.copied");
   };
 
   const showQRCode = () => {};
@@ -187,4 +186,4 @@ const ExchangeAccountDeposit = () => {
   );
 };
 
-export default ExchangeAccountDeposit;
+export default Deposit;

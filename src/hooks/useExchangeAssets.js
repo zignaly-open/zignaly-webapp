@@ -10,6 +10,7 @@ import tradeApi from "../services/tradeApiClient";
  * Provides bases assets.
  *
  * @param {string} internalId Exchange account internal id.
+ * @param {Date} updatedAt Last updated date to force data refresh.
  * @returns {ExchangeAssetsDict} Quote Assets.
  */
 const useExchangeAssets = (internalId, updatedAt) => {

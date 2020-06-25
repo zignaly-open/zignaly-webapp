@@ -18,8 +18,12 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  */
 
 /**
+ * @typedef {"start"|"top"|"end"|"bottom"} LabelPlacement
+ */
+
+/**
  * @typedef {Object} LabelExtraProps
- * @property {("start"|"top"|"end"|"bottom")} [labelPlacement]
+ * @property {LabelPlacement} [labelPlacement]
  */
 
 /**
@@ -28,7 +32,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @property {OptionType|string|number} [value] Assign the selected value.
  * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} [label] Label for the dropdown.
- * @property {string} [labelPlacement] Label placement.
+ * @property {LabelPlacement} [labelPlacement] Label placement.
  * @property {boolean} [search] Display autocomplete.
  */
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { formatFloat, formatFloat2Dec, formatTime } from "../../../../../utils/format";
 import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
@@ -8,6 +7,18 @@ import "./WithdrawHistoryTable.scss";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
 
+/**
+ * @typedef {Object} WithdrawHistoryTablePropTypes
+ * @property {string} internalId Exchange account internal id.
+ * @property {Date} updatedAt Last updated date to force data refresh.
+ */
+
+/**
+ * Provides a table for withdraw history.
+ *
+ * @param {WithdrawHistoryTablePropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
   const storeSession = useStoreSessionSelector();
   const [withdraws, setWithdraws] = useState([]);

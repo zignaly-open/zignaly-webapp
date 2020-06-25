@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { formatFloat, formatFloat2Dec, formatTime } from "../../../../../utils/format";
 import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import "./DepositHistoryTable.scss";
-import { FormattedMessage, FormattedDate, FormattedTime } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
 
+/**
+ * @typedef {Object} DepositHistoryTablePropTypes
+ * @property {string} internalId Exchange account internal id.
+ */
+
+/**
+ * Provides a table for deposits history.
+ *
+ * @param {DepositHistoryTablePropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const DepositHistoryTable = ({ internalId }) => {
   const storeSession = useStoreSessionSelector();
   const [deposits, setDeposits] = useState([]);
-  const intl = useEffect(() => {
+  useEffect(() => {
     const loadData = () => {
       const payload = {
         token: storeSession.tradeApi.accessToken,

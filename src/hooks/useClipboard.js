@@ -6,10 +6,11 @@ const useClipboard = () => {
 
   /**
    * Copy content to clipboard and show alert.
-   * @param {string} content
-   * @param {string} successMessage
+   * @param {string} content Content to copy to the clipboard.
+   * @param {string} successMessage Alert message.
+   * @returns {void}
    */
-  const copyToClipboard = (content, successMessage) =>
+  const copyToClipboard = (content, successMessage) => {
     navigator.clipboard
       .writeText(content)
       .then(() => {
@@ -18,6 +19,7 @@ const useClipboard = () => {
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
+  };
 
   return copyToClipboard;
 };

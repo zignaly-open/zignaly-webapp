@@ -1,14 +1,7 @@
 import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
-import TotalEquity from "../../../Balance/TotalEquity";
-import CryptoComposition from "../../../Balance/CryptoComposition";
-import AvailableBalance from "../../../Balance/AvailableBalance";
-import ConnectedProvidersSummary from "../../../Providers/ConnectedProvidersSummary";
 import "./ExchangeAccountTopBar.scss";
-import useEquity from "../../../../hooks/useEquity";
-import useBalance from "../../../../hooks/useBalance";
-import useConnectedProviders from "../../../../hooks/useConnectedProviders";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
@@ -30,10 +23,7 @@ import CustomButton from "../../../CustomButton";
  */
 const ExchangeAccountTopBar = ({ account }) => {
   const storeSettings = useStoreSettingsSelector();
-  const {
-    pathParams: { currentPath },
-    navigateToPath,
-  } = useContext(ModalPathContext);
+  const { navigateToPath } = useContext(ModalPathContext);
 
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
 

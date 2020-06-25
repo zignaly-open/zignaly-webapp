@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
-import tradeApi from "../services/tradeApiClient";
 import useExchangeAssets from "./useExchangeAssets";
 
 /**
@@ -23,6 +21,7 @@ import useExchangeAssets from "./useExchangeAssets";
  *
  * @param {string} internalId Exchange account internal id.
  * @param {string} type Exchange type
+ * @param {Date} [updatedAt] Last updated date to force data refresh.
  * @returns {AssetsSelectType} Assets select object data.
  */
 const useAssetsSelect = (internalId, type, updatedAt) => {

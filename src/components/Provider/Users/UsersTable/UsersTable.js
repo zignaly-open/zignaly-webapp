@@ -1,7 +1,6 @@
 import React from "react";
 import "./UsersTable.scss";
 import { Box } from "@material-ui/core";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Table from "../../../Table";
 
 /** ]

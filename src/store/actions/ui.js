@@ -7,8 +7,8 @@ export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
 
 /**
- *
  * @typedef {import('../../store/store').AppThunk} AppThunk
+ * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
@@ -54,7 +54,7 @@ export const showLoader = (flag) => {
  * Action to show error alert.
  *
  * @param {*} error Error object from the backend
- * @returns {Object} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const showErrorAlert = (error) => {
   return {
@@ -69,7 +69,7 @@ export const showErrorAlert = (error) => {
 /**
  * Action to hide error alert.
  *
- * @returns {Object} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const hideErrorAlert = () => {
   return {
@@ -82,7 +82,7 @@ export const hideErrorAlert = () => {
  *
  * @param {string} title Alert title.
  * @param {string} body Alert body.
- * @returns {Object} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const showSuccessAlert = (title, body) => {
   return {
@@ -97,7 +97,7 @@ export const showSuccessAlert = (title, body) => {
 /**
  * Action to hide success alert.
  *
- * @returns {Object} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const hideSuccessAlert = () => {
   return {

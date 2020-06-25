@@ -27,7 +27,6 @@ import ModalPathContext from "../../ModalPathContext";
  */
 const ExchangeAccountData = ({ account }) => {
   const { navigateToPath } = useContext(ModalPathContext);
-  return null;
   const dailyBalance = useEquity(account.internalId);
   const balance = useBalance(account.internalId);
   const providers = useConnectedProviders(30, account.internalId);
