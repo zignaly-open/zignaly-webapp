@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { Helmet } from "react-helmet";
 import withDashboardLayout from "../../layouts/dashboardLayout";
 import { useIntl } from "react-intl";
-import { TradingView } from "../../components/TradingTerminal";
+import { TradingViewEdit } from "../../components/TradingTerminal";
 import "./position.scss";
 
 /**
@@ -42,7 +42,7 @@ const PositionPage = (props) => {
           flexDirection="column"
           justifyContent="center"
         >
-          <TradingView positionId={positionId} />
+          <TradingViewEdit positionId={positionId} />
         </Box>
       </Box>
     </>

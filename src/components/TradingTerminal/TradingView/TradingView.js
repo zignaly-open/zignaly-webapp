@@ -8,96 +8,53 @@ import tradeApi from "../../../services/tradeApiClient";
 import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, Button, CircularProgress } from "@material-ui/core";
-import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./TradingView.scss";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
- * @typedef {Object} TradingViewProps
- *
- * @property {string} [positionId] Position id (optional) for trading view edit mode.
+ * @type {Object<string, string>}
  */
+const defaultExchangeSymbol = {
+  KuCoin: "BTC-USDT",
+  Binance: "BTCUSDT",
+  Zignaly: "BTCUSDT",
+};
 
 /**
  * Trading terminal component.
  *
- * @param {TradingViewProps} props Component props.
- *
  * @returns {JSX.Element} Trading terminal element.
  */
-const TradingView = (props) => {
-  const { positionId = null } = props;
+const TradingView = () => {
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const [lastPrice, setLastPrice] = useState(null);
-  const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
-  const isPositionView = positionId !== null;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const dispatch = useDispatch();
 
   /**
-   * Fetch a position on position edit mode.
-   *
-   * @returns {Void} None.
-   */
-  const fetchPosition = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      positionId,
-    };
-
-    if (positionEntity) {
-      tradeApi
-        .positionGet(payload)
-        .then((data) => {
-          setPositionEntity(data);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
-  };
-
-  useEffect(fetchPosition, []);
-
-  /**
-   * Resolve exchange name from entity (when available) or from selected exchange otherwise.
+   * Resolve exchange name from selected exchange.
    *
    * @returns {string} Exchange name.
    */
   const resolveExchangeName = () => {
-    if (positionEntity) {
-      return positionEntity.exchange;
-    }
-
     return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
   };
 
   /**
-   * @type {Object<string, string>}
+   * Resolve default symbol for selected exchange.
+   *
+   * In case of not default symbol for the exchange resolves BTCUSDT.
+   *
+   * @returns {string} Symbol ID.
    */
-  const defaultExchangeSymbol = {
-    KuCoin: "BTC-USDT",
-    Binance: "BTCUSDT",
-    Zignaly: "BTCUSDT",
-  };
-
   const resolveDefaultSymbol = () => {
-    if (positionEntity) {
-      const separator = resolveExchangeName() === "KuCoin" ? "-" : "";
-      return positionEntity.symbol.replace("/", separator);
-    }
-
     return defaultExchangeSymbol[exchangeName] || "BTCUSDT";
   };
 
@@ -110,7 +67,7 @@ const TradingView = (props) => {
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
-  const isLoading = tradingViewWidget === null || (positionId && !positionEntity);
+  const isLoading = tradingViewWidget === null;
   const isLastPriceLoading = lastPrice === null;
   const loadOwnCopyTradersProviders = () => {
     const payload = {
@@ -133,16 +90,14 @@ const TradingView = (props) => {
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const onExchangeChange = () => {
-    if (!isPositionView) {
-      const newExchangeName =
-        storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-      const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        setLastPrice(null);
-        setSelectedSymbol(newDefaultSymbol);
-      }
+    const newExchangeName =
+      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+    const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
+    if (tradingViewWidget) {
+      tradingViewWidget.remove();
+      setTradingViewWidget(null);
+      setLastPrice(null);
+      setSelectedSymbol(newDefaultSymbol);
     }
   };
 
@@ -214,10 +169,7 @@ const TradingView = (props) => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      {!isLoading && isPositionView && (
-        <PositionsTable positionEntity={positionEntity} type="open" />
-      )}
-      {!isLoading && !isPositionView && (
+      {!isLoading && (
         <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
           <Box
             alignContent="left"
@@ -288,7 +240,6 @@ const TradingView = (props) => {
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
             leverage={leverage}
-            positionEntity={positionEntity}
             selectedSymbol={selectedSymbol}
             tradingViewWidget={tradingViewWidget}
           />
