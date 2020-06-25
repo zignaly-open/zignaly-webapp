@@ -1,0 +1,18 @@
+.toggleTargetFields {
+  width: 100%;
+  margin-bottom: 20px;
+
+  .labelBox {
+    width: 50%;
+
+    .customLabel {
+      margin-bottom: 0;
+    }
+  }
+
+  .targetFields {
+    width: 50%;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+}

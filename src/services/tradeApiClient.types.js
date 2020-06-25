@@ -158,6 +158,11 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  */
 
 /**
+ * @typedef {Object & ProviderExchangeSettingsPayload & ProviderExchangeSettingsObject} ProviderExchangeSettingsUpdatePayload
+ * @property {boolean} exchangeId
+ */
+
+/**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId
@@ -2195,7 +2200,7 @@ function creatEmptyUserEntity() {
  * @property {Boolean} internal
  * @property {String} internalId
  * @property {String} internalName
- * @property {String} leverage
+ * @property {Number} leverage
  * @property {Boolean} managed
  * @property {String} maxPositions
  * @property {String} minVolume
@@ -2283,7 +2288,7 @@ export function creatEmptySettingsEntity() {
     internal: false,
     internalId: "",
     internalName: "",
-    leverage: "1",
+    leverage: 1,
     managed: false,
     maxPositions: "",
     minVolume: "",

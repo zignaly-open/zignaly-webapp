@@ -12,28 +12,6 @@
     font-family: "PlexSans-Medium";
   }
 
-  .dynamicInputBox {
-    width: 100%;
-    margin-bottom: 20px;
-
-    .customLabel {
-      width: 150px;
-      margin-right: 10px;
-      margin-bottom: 0;
-    }
-
-    .icon {
-      margin-right: 10px;
-      width: 16px;
-      height: 16px;
-    }
-
-    .selectInput {
-      width: 120px;
-      margin-left: 10px;
-    }
-  }
-
   .amountsFormBox {
     margin-right: 20px;
     width: calc(50% - 20px);

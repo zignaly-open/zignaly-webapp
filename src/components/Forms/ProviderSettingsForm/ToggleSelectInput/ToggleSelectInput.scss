@@ -1,0 +1,36 @@
+.toggleSelectInput {
+  width: 100%;
+  margin-bottom: 20px;
+
+  .labelBox {
+    width: 35%;
+
+    .customLabel {
+      margin-bottom: 0;
+    }
+  }
+
+  .customLabel {
+    min-width: 150px;
+    margin-bottom: 0;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .customInput {
+    width: 120px;
+  }
+
+  .selectInput {
+    width: 120px;
+    margin-left: 10px;
+  }
+
+  .fieldInputBox {
+    margin-left: 20px;
+    width: 60%;
+  }
+}

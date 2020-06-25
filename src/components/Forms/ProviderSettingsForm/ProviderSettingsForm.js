@@ -1,26 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProviderSettingsForm.scss";
-import {
-  Box,
-  Typography,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  Tooltip,
-} from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
-import HelpIcon from "@material-ui/icons/Help";
+import ToggleInput from "./ToggleInput";
+import ToggleDoubleInput from "./ToggleDoubleInput";
+import ToggleSelectInput from "./ToggleSelectInput";
+import ToggleTargetFields from "./ToggleTargetFields";
+import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
+import { assign } from "lodash";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import ToggleTextarea from "./ToggleTextarea";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').ProviderExchangeSettingsObject} settings
+ * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
  */
 /**
  * Provides the navigation bar for the dashboard.
@@ -29,20 +31,42 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 
-const ProviderSettingsForm = ({ settings }) => {
+const ProviderSettingsForm = ({ settings, quotes }) => {
+  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const storeSettings = useStoreSettingsSelector();
-  const quotes = useQuoteAssets();
   const [loading, setLoading] = useState(false);
+  const [takeProfitTargets, setProfitTargets] = useState([]);
+  const [reBuyTargets, setBuyTargets] = useState([]);
   const { handleSubmit, control } = useForm();
   const dispatch = useDispatch();
+  const emptySettings = creatEmptySettingsEntity();
+
+  const initTargets = () => {
+    setProfitTargets(settings.takeProfitTargets);
+    setBuyTargets(settings.reBuyTargets);
+  };
+
+  useEffect(initTargets, [settings]);
 
   /**
+   * Function to handle profit target changes.
    *
-   * @param {String} key quotes object key.
-   * @returns {String} Label for input.
+   * @param {*} data Data from fields.
+   * @returns {void} None.
    */
-  const getLabel = (key) => {
-    return `${key} Position size`;
+  const handleProfitTargetsChange = (data) => {
+    setProfitTargets(data);
+  };
+
+  /**
+   * Function to handle re buy target changes.
+   *
+   * @param {*} data Data from fields.
+   * @returns {void} None.
+   */
+  const handleBuyTargetsChange = (data) => {
+    setBuyTargets(data);
   };
 
   /**
@@ -64,27 +88,6 @@ const ProviderSettingsForm = ({ settings }) => {
 
   /**
    *
-   * @param {String} key quotes object key.
-   * @returns {String} Label for input.
-   */
-  const tooltip = (key) => {
-    return (
-      "Minimum value for " +
-      key +
-      " is " +
-      quotes[key].minNotional +
-      ", but if you want to use Stop Loss," +
-      " or split your take profits into several targets, each target has to be above this minimum amount, " +
-      "including the stop loss." +
-      " You can choose a fixed value, or a percentage value of your total value for this coin (including the" +
-      " conversion from opened positions). If you don't want to trade in " +
-      key +
-      ", just leave the value at 0."
-    );
-  };
-
-  /**
-   *
    * @param {Object} data Form data.
    * @returns {void} None.
    */
@@ -92,9 +95,39 @@ const ProviderSettingsForm = ({ settings }) => {
     try {
       setLoading(true);
       console.log(data);
+      const payload = assign(emptySettings, data, {
+        takeProfitTargets: prepareProfitTargetsPayload(),
+        reBuyTargets: prepareBuyTargetsPayload(),
+        token: storeSession.tradeApi.accessToken,
+        providerId: storeViews.provider.id,
+        internalExchangeId: storeSettings.selectedExchange.internalId,
+        exchangeId: storeSettings.selectedExchange.id,
+      });
+      tradeApi
+        .providerExchangeSettingsUpdate(payload)
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+
+  const prepareProfitTargetsPayload = () => {
+    if (takeProfitTargets.length) {
+      return takeProfitTargets;
+    }
+    return false;
+  };
+
+  const prepareBuyTargetsPayload = () => {
+    if (reBuyTargets.length) {
+      return reBuyTargets;
+    }
+    return false;
   };
 
   /**
@@ -124,51 +157,25 @@ const ProviderSettingsForm = ({ settings }) => {
 
             {quotes &&
               Object.keys(quotes).map((item, index) => (
-                <Box
+                <ToggleSelectInput
                   key={index}
-                  className="dynamicInputBox"
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                >
-                  <label className="customLabel">{getLabel(item)}</label>
-                  <Tooltip
-                    placement="top"
-                    title={<Typography variant="h5">{tooltip(item)}</Typography>}
-                  >
-                    <HelpIcon className="icon" />
-                  </Tooltip>
-                  <Box className="fieldInputBox" display="flex" flexDirection="row">
-                    <Controller
-                      as={
-                        <TextField
-                          className={
-                            "customInput " + (storeSettings.darkStyle ? " dark " : " light ")
-                          }
-                          fullWidth
-                          variant="outlined"
-                        />
-                      }
-                      control={control}
-                      /*@ts-ignore */
-                      defaultValue={settings[getFieldName(item, 1)]}
-                      name={getFieldName(item, 1)}
+                  label={
+                    <FormattedMessage id="signalp.settings.amounts" values={{ quote: item }} />
+                  }
+                  tooltip={
+                    <FormattedMessage
+                      id="signalp.settings.amounts.help"
+                      values={{ quote: item, notional: quotes[item].minNotional }}
                     />
-
-                    <Controller
-                      as={
-                        <Select className="selectInput" variant="outlined">
-                          <MenuItem value="#">#</MenuItem>
-                          <MenuItem value="%">%</MenuItem>
-                        </Select>
-                      }
-                      control={control}
-                      /*@ts-ignore */
-                      defaultValue={settings[getFieldName(item, 2)]}
-                      name={getFieldName(item, 2)}
-                    />
-                  </Box>
-                </Box>
+                  }
+                  /*@ts-ignore */
+                  value1={settings[getFieldName(item, 1)]}
+                  /*@ts-ignore */
+                  value2={settings[getFieldName(item, 2)]}
+                  name1={getFieldName(item, 1)}
+                  name2={getFieldName(item, 2)}
+                  control={control}
+                />
               ))}
           </Box>
 
@@ -182,6 +189,129 @@ const ProviderSettingsForm = ({ settings }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.settings.strategy" />
             </Typography>
+
+            <ToggleInput
+              label="signalp.settings.pricedeviation.entry"
+              value={settings.priceDeviation}
+              name="priceDeviation"
+              control={control}
+              unit="%"
+              tooltip="signalp.settings.pricedeviation.entry.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.pricedeviation.exit"
+              value={settings.sellPriceDeviation}
+              name="sellPriceDeviation"
+              control={control}
+              unit="%"
+              tooltip="signalp.settings.pricedeviation.exit.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.entryexpiration"
+              value={settings.buyTTL}
+              name="buyTTL"
+              control={control}
+              unit="Min"
+              tooltip="signalp.settings.entryexpiration.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.timeautoclose"
+              value={settings.sellByTTL}
+              name="sellByTTL"
+              control={control}
+              unit="Hours"
+              tooltip="signalp.settings.timeautoclose.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.stoploss"
+              value={settings.stopLoss}
+              name="stopLoss"
+              control={control}
+              unit="%"
+              tooltip="signalp.settings.stoploss.help"
+            />
+
+            <ToggleDoubleInput
+              label="signalp.settings.trailingstop"
+              value1={settings.trailingStopTrigger}
+              value2={settings.trailingStop}
+              name1="trailingStopTrigger"
+              name2="trailingStop"
+              unitLeft1="Trigger"
+              unitLeft2="Distance"
+              unitRight1="%"
+              unitRight2="%"
+              control={control}
+              tooltip="signalp.settings.trailingstop.help"
+            />
+
+            <ToggleTargetFields
+              label="signalp.settings.takeprofit"
+              value={settings.takeProfitTargets}
+              onChange={handleProfitTargetsChange}
+            />
+
+            <ToggleTargetFields
+              label="signalp.settings.dca"
+              value={settings.reBuyTargets}
+              onChange={handleBuyTargetsChange}
+            />
+
+            <ToggleInput
+              label="signalp.settings.maxconcurrent"
+              value={settings.maxPositions}
+              name="maxPositions"
+              control={control}
+              unit="#"
+              tooltip="signalp.settings.maxconcurrent.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.minvolume"
+              value={settings.minVolume}
+              name="minVolume"
+              control={control}
+              unit="BTC"
+              tooltip="signalp.settings.minvolume.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.limitpositions"
+              value={settings.positionsPerMarket}
+              name="positionsPerMarket"
+              control={control}
+              unit="#"
+              tooltip="signalp.settings.limitpositions.help"
+            />
+
+            <ToggleInput
+              label="signalp.settings.leverage"
+              value={settings.leverage}
+              name="leverage"
+              control={control}
+              unit="#"
+              tooltip="signalp.settings.leverage.help"
+            />
+
+            <ToggleTextarea
+              label="signalp.settings.blacklist"
+              value={settings.blacklist}
+              name="blacklist"
+              control={control}
+              tooltip="signalp.settings.blacklist.help"
+            />
+
+            <ToggleTextarea
+              label="signalp.settings.whitelist"
+              value={settings.whitelist}
+              name="whitelist"
+              control={control}
+              tooltip="signalp.settings.whitelist.help"
+            />
           </Box>
         </Box>
 

@@ -11,18 +11,20 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
+import useQuoteAssets from "../../../hooks/useQuoteAssets";
+import { isEmpty } from "lodash";
 
 const SignalProvidersSettings = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
+  const quotes = useQuoteAssets();
 
   const loadSettings = () => {
-    setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
@@ -32,7 +34,6 @@ const SignalProvidersSettings = () => {
       .providerExchangeSettingsGet(payload)
       .then((response) => {
         setSettings(response);
-        setLoading(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -40,6 +41,12 @@ const SignalProvidersSettings = () => {
   };
 
   useEffect(loadSettings, []);
+
+  useEffect(() => {
+    if (settings.name && !isEmpty(quotes)) {
+      setLoading(false);
+    }
+  }, [settings, quotes]);
 
   return (
     <Box className="profileSettingsPage">
@@ -55,7 +62,7 @@ const SignalProvidersSettings = () => {
           <CircularProgress size={40} color="primary" />
         </Box>
       )}
-      {!loading && <ProviderSettingsForm settings={settings} />}
+      {!loading && <ProviderSettingsForm quotes={quotes} settings={settings} />}
     </Box>
   );
 };

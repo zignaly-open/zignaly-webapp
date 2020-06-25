@@ -56,6 +56,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeDeletePayload} ExchangeDeletePayload
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsPayload} ProviderExchangeSettingsPayload
+ * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsUpdatePayload} ProviderExchangeSettingsUpdatePayload
+ *
  */
 
 /**
@@ -624,6 +626,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerExchangeSettingsResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {ProviderExchangeSettingsUpdatePayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerExchangeSettingsUpdate(payload) {
+    const endpointPath = "/fe/api.php?action=updateProviderExchangeSettingsNew";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

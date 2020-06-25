@@ -109,6 +109,27 @@ body {
   }
 }
 
+.customTextarea {
+  margin: 0;
+  width: 100%;
+
+  & > div {
+    padding-right: 10px;
+  }
+
+  &.dark {
+    fieldset {
+      border-color: $lightGrey;
+    }
+  }
+
+  &.light {
+    fieldset {
+      border-color: $lightGrey;
+    }
+  }
+}
+
 .checkboxInput {
   color: $purple;
   margin: 0 0.5rem 0 0;

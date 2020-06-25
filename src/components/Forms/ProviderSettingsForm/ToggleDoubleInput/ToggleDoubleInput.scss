@@ -1,0 +1,33 @@
+.toggleDoubleInput {
+  width: 100%;
+  margin-bottom: 20px;
+
+  .labelBox {
+    width: 50%;
+
+    .customLabel {
+      margin-bottom: 0;
+    }
+  }
+
+  .customLabel {
+    min-width: 200px;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+
+  .icon {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.multiInputBox {
+  margin-left: 20px;
+  width: 50%;
+
+  .customInput {
+    margin-bottom: 5px;
+  }
+}

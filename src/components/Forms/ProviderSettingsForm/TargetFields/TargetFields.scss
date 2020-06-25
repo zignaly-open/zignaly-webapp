@@ -1,0 +1,56 @@
+.targetFields {
+  width: 100%;
+
+  .fieldBox {
+    margin-bottom: 10px;
+    width: 90%;
+
+    .customInput {
+      width: 100%;
+
+      &:first-child {
+        margin-bottom: 5px;
+      }
+
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+  .icon {
+    color: $lightGrey;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+
+    &.add {
+      color: $green;
+    }
+
+    &.delete {
+      color: $red2;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .socialSelect {
+    width: 100%;
+
+    .fieldBox {
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      position: relative;
+      width: 100%;
+
+      .customInput {
+        width: 90%;
+      }
+
+      .icon {
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+}
