@@ -39,7 +39,7 @@ import "./IncreaseStrategyPanel.scss";
  */
 const IncreaseStrategyPanel = (props) => {
   const { symbolData, lastPriceCandle, positionEntity } = props;
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(true);
   const expandClass = expand ? "expanded" : "collapsed";
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const intl = useIntl();
@@ -212,13 +212,13 @@ const IncreaseStrategyPanel = (props) => {
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         <Switch onChange={handleToggle} size="small" />
+        <Typography variant="h5">
+          <FormattedMessage id="terminal.increasestrategy" />
+        </Typography>
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           <Box alignItems="center" className="title" display="flex" flexDirection="row">
-            <Typography variant="h5">
-              <FormattedMessage id="terminal.strategy" />
-            </Typography>
             <CustomSelect
               label=""
               onChange={setEntryStrategy}
