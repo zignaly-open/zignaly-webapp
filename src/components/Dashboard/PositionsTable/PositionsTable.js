@@ -27,7 +27,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 /**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
- * @property {PositionEntity} positionEntity
+ * @property {PositionEntity} [positionEntity]
  */
 
 /**
@@ -159,13 +159,22 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
-  const embedFilters = (
-    <PositionFilters
-      onChange={setFilters}
-      positions={positionsAll}
-      showTypesFilter={showTypesFilter}
-    />
-  );
+  const embedFilters = () => {
+    // Don't display filters on single position display.
+    if (positionEntity) {
+      return null;
+    }
+
+    return (
+      <PositionFilters
+        onChange={setFilters}
+        positions={positionsAll}
+        showTypesFilter={showTypesFilter}
+      />
+    );
+  };
+
+  const tableClass = positionEntity ? "positionTable" : "positionsTable";
 
   return (
     <>
@@ -178,7 +187,7 @@ const PositionsTable = (props) => {
       {isEmpty(positionsAll) ? (
         <NoPositions />
       ) : (
-        <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
+        <Box className={tableClass} display="flex" flexDirection="column" width={1}>
           <Table columns={columns} data={data} persistKey={tablePersistsKey} title={embedFilters} />
         </Box>
       )}
