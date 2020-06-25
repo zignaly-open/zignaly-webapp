@@ -54,10 +54,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
  * @returns {JSX.Element} Component JSX.
  */
 export const SubNavModalHeader = ({ links }) => {
-  const {
-    pathParams: { currentPath },
-    setPathParams,
-  } = useContext(ModalPathContext);
+  const { pathParams, setPathParams } = useContext(ModalPathContext);
 
   return (
     <Box
@@ -70,10 +67,10 @@ export const SubNavModalHeader = ({ links }) => {
       {links.map((item, index) => (
         <Link
           // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
-          className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
+          className={`dashboardLink ${pathParams.currentPath === item.id ? "active" : null}`}
           key={index}
           // href={item.to}
-          onClick={() => setPathParams({ currentPath: item.id, previousPath: "" })}
+          onClick={() => setPathParams({ ...pathParams, currentPath: item.id, previousPath: "" })}
         >
           <FormattedMessage id={item.title} />
         </Link>

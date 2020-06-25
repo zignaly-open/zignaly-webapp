@@ -66,6 +66,12 @@
     position: absolute;
     bottom: 0;
   }
+
+  .coinColumn {
+    .tipBox {
+      margin-right: 69px;
+    }
+  }
 }
 
 @include media("<=sm") {
@@ -79,6 +85,12 @@
     .tipBox {
       position: static;
       margin-top: 24px;
+    }
+
+    .coinColumn {
+      .tipBox {
+        margin-right: 0;
+      }
     }
   }
 }

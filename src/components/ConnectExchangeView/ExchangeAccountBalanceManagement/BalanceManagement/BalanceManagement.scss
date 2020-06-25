@@ -42,10 +42,6 @@
     max-width: 553px;
     border-right: 1px solid $borderColor;
     padding-right: 69px;
-
-    .tipBox {
-      margin-right: 69px;
-    }
   }
 
   .networkColumn {
@@ -73,10 +69,6 @@
     .coinColumn {
       padding-right: 0;
       border: none;
-
-      .tipBox {
-        margin-right: 0;
-      }
     }
 
     .networkColumn {

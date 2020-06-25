@@ -5,7 +5,8 @@ import { Box } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import "./WithdrawHistoryTable.scss";
-import { FormattedMessage, Formatted } from "react-intl";
+import { FormattedMessage } from "react-intl";
+import { FormatedDateTime } from "../../../../../utils/format";
 
 const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
   const storeSession = useStoreSessionSelector();
@@ -47,7 +48,7 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       name: "timestamp",
       label: "col.date",
       options: {
-        customBodyRender: FormattedTime,
+        customBodyRender: FormatedDateTime,
       },
     },
     {
