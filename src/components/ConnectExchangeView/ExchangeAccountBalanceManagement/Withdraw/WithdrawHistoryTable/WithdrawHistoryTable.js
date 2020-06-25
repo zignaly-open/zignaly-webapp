@@ -7,7 +7,7 @@ import tradeApi from "../../../../../services/tradeApiClient";
 import "./WithdrawHistoryTable.scss";
 import { FormattedMessage, FormattedDate } from "react-intl";
 
-const WithdrawHistoryTable = ({ internalId }) => {
+const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
   const storeSession = useStoreSessionSelector();
   const [withdraws, setWithdraws] = useState([]);
 
@@ -28,7 +28,7 @@ const WithdrawHistoryTable = ({ internalId }) => {
         });
     };
     loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+  }, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
   let columns = [
     {

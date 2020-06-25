@@ -35,6 +35,8 @@ const ExchangeAccountWithdraw = () => {
   const { handleSubmit, register, errors, watch, setValue, control } = useForm();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState(null);
   const amount = watch("amount");
 
   const {
@@ -53,8 +55,7 @@ const ExchangeAccountWithdraw = () => {
   }, []);
 
   const onSubmit = (data) => {
-    // handleSubmit((data) => {
-    console.log(data);
+    setIsLoading(true);
 
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -63,18 +64,21 @@ const ExchangeAccountWithdraw = () => {
       network: selectedNetwork.network,
       tag: data.memo,
       address: data.address,
-      amount: data.amount,
+      amount: parseFloat(data.amount),
     };
 
     tradeApi
       .withdraw(payload)
       .then(() => {
         dispatch(showSuccessAlert("", "withdraw.success"));
+        setUpdatedAt(new Date());
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    // })();
   };
 
   return (
@@ -240,7 +244,12 @@ const ExchangeAccountWithdraw = () => {
                         {Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee))}
                       </Typography>
                     </Box>
-                    <CustomButton className="bgPurple" disabled={false} type="submit">
+                    <CustomButton
+                      className="bgPurple"
+                      disabled={false}
+                      type="submit"
+                      loading={isLoading}
+                    >
                       <Typography variant="body2">
                         <FormattedMessage id="accounts.withdraw" />
                       </Typography>
@@ -250,7 +259,7 @@ const ExchangeAccountWithdraw = () => {
               </Box>
             </Box>
           )}
-          <WithdrawHistoryTable internalId={selectedAccount.internalId} />
+          <WithdrawHistoryTable internalId={selectedAccount.internalId} updatedAt={updatedAt} />
         </Box>
       </Box>
     </BalanceManagement>
