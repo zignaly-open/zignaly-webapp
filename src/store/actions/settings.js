@@ -59,7 +59,7 @@ export const unsetSelectedExchange = () => {
 /**
  * User's display columns selection.
  *
- * @param {Object} payload
+ * @param {Object} payload payload.
  * @returns {AnyAction} return action object.
  */
 export const setDisplayColumn = (payload) => {

@@ -1,7 +1,6 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box, Typography } from "@material-ui/core";
-import "./TransferCoinPicker.scss";
 import CustomSelect from "../../../CustomSelect";
 import { formatFloat } from "../../../../utils/format";
 
