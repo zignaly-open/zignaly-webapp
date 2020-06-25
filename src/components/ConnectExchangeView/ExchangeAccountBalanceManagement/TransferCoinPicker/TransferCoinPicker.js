@@ -11,24 +11,24 @@ const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => 
   return (
     <Box className="transferCoinPicker">
       <CustomSelect
-        options={coins}
         label={intl.formatMessage({ id: label })}
-        search={true}
-        onChange={onChange}
-        value={selectedCoin}
         labelPlacement="top"
+        onChange={onChange}
+        options={coins}
+        search={true}
+        value={selectedCoin}
       />
       <Box className="balanceBox">
-        <BalanceLine label="deposit.current" amount={asset.balanceTotal} unit={selectedCoin} />
-        <BalanceLine label="deposit.inorder" amount={asset.balanceLocked} unit={selectedCoin} />
-        <BalanceLine label="deposit.available" amount={asset.balanceFree} unit={selectedCoin} />
+        <BalanceLine amount={asset.balanceTotal} label="deposit.current" unit={selectedCoin} />
+        <BalanceLine amount={asset.balanceLocked} label="deposit.inorder" unit={selectedCoin} />
+        <BalanceLine amount={asset.balanceFree} label="deposit.available" unit={selectedCoin} />
       </Box>
     </Box>
   );
 };
 
 const BalanceLine = ({ label, amount, unit }) => (
-  <Box display="flex" flexDirection="row" justifyContent="space-between" className="balanceLine">
+  <Box className="balanceLine" display="flex" flexDirection="row" justifyContent="space-between">
     <Typography variant="body2">
       <FormattedMessage id={label} />
     </Typography>

@@ -100,9 +100,9 @@ const ExchangeAccountDeposit = () => {
               <Box className="transferColumnsBox" display="flex" flexDirection="row">
                 <Box className="coinColumn">
                   <TransferCoinPicker
-                    label="deposit.choosecoin"
                     asset={selectedAsset}
                     coins={assetsList}
+                    label="deposit.choosecoin"
                     onChange={setSelectedAsset}
                     selectedCoin={selectedAssetName}
                   />
@@ -119,34 +119,34 @@ const ExchangeAccountDeposit = () => {
                 <Box className="networkColumn">
                   <NetworksToggleGroup
                     networks={selectedAsset.networks}
-                    setSelectedNetwork={setSelectedNetwork}
                     selectedNetwork={selectedNetwork}
+                    setSelectedNetwork={setSelectedNetwork}
                   />
-                  <Typography variant="body1" className="addressLabel">
+                  <Typography className="addressLabel" variant="body1">
                     {selectedAssetName} <FormattedMessage id="deposit.address" />
                   </Typography>
                   <Box display="flex" flexDirection="row">
                     {depositAddress ? (
-                      <Typography variant="body2" className="address">
+                      <Typography className="address" variant="body2">
                         {depositAddress.address}
                       </Typography>
                     ) : (
                       <CircularProgress disableShrink size={21} />
                     )}
-                    <img src={CopyIcon} alt="copy" onClick={copyAddress} className="copy" />
+                    <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
                   </Box>
                   {depositAddress && depositAddress.tag && (
                     <Box>
-                      <Typography variant="body1" className="addressLabel">
+                      <Typography className="addressLabel" variant="body1">
                         {selectedAssetName} <FormattedMessage id="withdraw.memo" />
                       </Typography>
                       <Box display="flex" flexDirection="row">
                         <Typography variant="body2">{depositAddress.tag}</Typography>
-                        <img src={CopyIcon} alt="copy" onClick={copyMemo} className="copy" />
+                        <img alt="copy" className="copy" onClick={copyMemo} src={CopyIcon} />
                       </Box>
                     </Box>
                   )}
-                  <Box display="flex" flexDirection="row" className="addressButtons">
+                  <Box className="addressButtons" display="flex" flexDirection="row">
                     <CustomButton
                       className="bgPurple"
                       disabled={!depositAddress}
@@ -167,6 +167,7 @@ const ExchangeAccountDeposit = () => {
                     </CustomButton>
                   </Box>
                   <TipBox
+                    description="deposit.loss"
                     icon={BtcIcon}
                     title={
                       <FormattedMessage
@@ -174,7 +175,6 @@ const ExchangeAccountDeposit = () => {
                         values={{ coin: selectedAssetName }}
                       />
                     }
-                    description="deposit.loss"
                   />
                 </Box>
               </Box>

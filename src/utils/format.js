@@ -175,11 +175,11 @@ export const revertPercentageRange = (percentage) => {
  */
 export const FormatedDateTime = (date) => (
   <FormattedDate
-    value={date}
     day="numeric"
-    month="numeric"
-    year="numeric"
     hour="numeric"
     minute="numeric"
+    month="numeric"
+    value={date}
+    year="numeric"
   />
 );

@@ -12,10 +12,10 @@ const NetworksToggleGroup = ({ networks, selectedNetwork, setSelectedNetwork }) 
         <FormattedMessage id="deposit.network" />
       </Typography>
       <ToggleButtonGroup
-        exclusive
-        value={selectedNetwork}
-        onChange={(e, val) => setSelectedNetwork(val)}
         className="networkButtons"
+        exclusive
+        onChange={(e, val) => setSelectedNetwork(val)}
+        value={selectedNetwork}
       >
         {networks.map((n) => (
           <ToggleButton key={n.name} value={n}>

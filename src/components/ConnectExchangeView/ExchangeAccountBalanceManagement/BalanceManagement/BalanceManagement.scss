@@ -13,8 +13,8 @@
     }
 
     .customSelect {
-      margin: 0 0 41px;
       align-items: flex-start;
+      margin: 0 0 41px;
     }
 
     .customSelectControl {
@@ -22,8 +22,8 @@
     }
 
     .searchRoot {
-      width: 216px;
       margin-right: 0;
+      width: 216px;
     }
   }
 
@@ -38,16 +38,16 @@
   }
 
   .coinColumn {
-    width: 100%;
-    max-width: 553px;
     border-right: 1px solid $borderColor;
+    max-width: 553px;
     padding-right: 69px;
+    width: 100%;
   }
 
   .networkColumn {
-    width: 100%;
-    max-width: 460px;
     margin-left: 70px;
+    max-width: 460px;
+    width: 100%;
 
     .networkButtons {
       margin-top: 19px;
@@ -67,8 +67,8 @@
     }
 
     .coinColumn {
+      border: 0;
       padding-right: 0;
-      border: none;
     }
 
     .networkColumn {

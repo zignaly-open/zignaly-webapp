@@ -577,7 +577,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {EditProvderPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -593,7 +593,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -609,7 +609,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -624,7 +624,7 @@ class TradeApiClient {
   /**
    * Get deposit address for coin.
    *
-   * @param {DepositAddressGetPayload} payload
+   * @param {DepositAddressGetPayload} payload Get deposit address payload
 
    * @returns {Promise<*>} Returns promise.
    *

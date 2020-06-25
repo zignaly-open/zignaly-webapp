@@ -106,27 +106,27 @@ const ExchangeAccountWithdraw = () => {
               <Box className="transferColumnsBox" display="flex" flexDirection="row">
                 <Box className="coinColumn">
                   <TransferCoinPicker
-                    label="withdraw.choosecoin"
                     asset={selectedAsset}
                     coins={assetsList}
+                    label="withdraw.choosecoin"
                     onChange={setSelectedAsset}
                     selectedCoin={selectedAssetName}
                   />
                   <TipBox
+                    description="withdraw.crowdfund.note"
                     icon={AlertIcon}
                     title="withdraw.crowdfund"
-                    description="withdraw.crowdfund.note"
                   />
                 </Box>
                 <Box className="networkColumn">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <NetworksToggleGroup
                       networks={selectedAsset.networks}
-                      setSelectedNetwork={setSelectedNetwork}
                       selectedNetwork={selectedNetwork}
+                      setSelectedNetwork={setSelectedNetwork}
                     />
-                    <FormControl fullWidth={true} className="controlInput">
-                      <Box display="flex" flexDirection="row" className="labelBox">
+                    <FormControl className="controlInput" fullWidth={true}>
+                      <Box className="labelBox" display="flex" flexDirection="row">
                         <label>
                           <Typography variant="body1">
                             <FormattedMessage
@@ -153,14 +153,13 @@ const ExchangeAccountWithdraw = () => {
                     </FormControl>
 
                     {selectedNetwork.memoRegex && (
-                      <FormControl fullWidth={true} className="controlInput">
+                      <FormControl className="controlInput" fullWidth={true}>
                         <label>
                           <Typography variant="body1">
                             <FormattedMessage id="withdraw.memo" />
                           </Typography>
                         </label>
                         <OutlinedInput
-                          name="memo"
                           fullWidth={true}
                           inputRef={register({
                             required: "Please specify a MEMO/Tag",
@@ -170,12 +169,13 @@ const ExchangeAccountWithdraw = () => {
                                 "MEMO/Tag is invalid, please review your target wallet network details.",
                             },
                           })}
+                          name="memo"
                         />
                         {errors.memo && <span className="errorText">{errors.memo.message}</span>}
                       </FormControl>
                     )}
 
-                    <FormControl fullWidth={true} className="controlInput">
+                    <FormControl className="controlInput" fullWidth={true}>
                       <Box display="flex" flexDirection="row" justifyContent="space-between">
                         <label>
                           <Typography variant="body1">
@@ -200,6 +200,7 @@ const ExchangeAccountWithdraw = () => {
                       </Box>
                       <OutlinedInput
                         fullWidth={true}
+                        inputProps={{ min: parseFloat(selectedNetwork.withdrawMin) }}
                         inputRef={register({
                           min: {
                             value: parseFloat(selectedNetwork.withdrawMin),
@@ -213,7 +214,6 @@ const ExchangeAccountWithdraw = () => {
                         })}
                         name="amount"
                         type="number"
-                        inputProps={{ min: parseFloat(selectedNetwork.withdrawMin) }}
                       />
                       {errors.amount && <span className="errorText">{errors.amount.message}</span>}
                     </FormControl>
@@ -227,8 +227,8 @@ const ExchangeAccountWithdraw = () => {
                       display="flex"
                       flexDirection="row"
                       justifyContent="space-between"
-                      width={1}
                       mb="24px"
+                      width={1}
                     >
                       <Typography variant="body2">
                         <FormattedMessage id="withdraw.fee" />
@@ -254,8 +254,8 @@ const ExchangeAccountWithdraw = () => {
                     <CustomButton
                       className="bgPurple"
                       disabled={false}
-                      type="submit"
                       loading={isLoading}
+                      type="submit"
                     >
                       <Typography variant="body2">
                         <FormattedMessage id="accounts.withdraw" />
