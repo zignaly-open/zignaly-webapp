@@ -90,6 +90,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {CreatePositionPayload & PositionActionPayload} UpdatePositionPayload
+ */
+
+/**
  * @typedef {Object} UserCreatePayload
  * @property {string} firstName User first name.
  * @property {string} email User email address.
