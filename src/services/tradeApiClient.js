@@ -62,6 +62,7 @@ import {
  * @typedef {import('./tradeApiClient.types').DepositAddressGetPayload} DepositAddressGetPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
+ * @typedef {import('./tradeApiClient.types').UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import('./tradeApiClient.types').ExchangeDepositEntity} ExchangeDepositEntity
  * @typedef {import('./tradeApiClient.types').ExchangeWithdrawEntity} ExchangeWithdrawEntity
  * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
@@ -640,7 +641,7 @@ class TradeApiClient {
   /**
    * Create manual position.
    *
-   * @param {CreatePositionPayload} payload Create manual position.
+   * @param {CreatePositionPayload} payload Create manual position payload.
 
    * @returns {Promise<string>} Promise that resolve created position ID.
    *
@@ -651,6 +652,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Update manual position.
+   *
+   * @param {UpdatePositionPayload} payload Update manual position payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve updated position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async manualPositionUpdate(payload) {
+    const endpointPath = "/fe/api.php?action=newUpdatePosition3";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
   }
 
   /**

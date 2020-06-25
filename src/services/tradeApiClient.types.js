@@ -1,5 +1,5 @@
 import moment from "moment";
-import { assign, isArray, isObject } from "lodash";
+import { assign, isArray, isObject, mapValues } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
@@ -87,6 +87,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
+ */
+
+/**
+ * @typedef {CreatePositionPayload & PositionActionPayload} UpdatePositionPayload
  */
 
 /**
@@ -825,7 +829,7 @@ export function userPositionItemTransform(positionItem) {
     side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
-      ? positionItem.takeProfitTargets
+      ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : {},
   });
 
@@ -849,6 +853,27 @@ export function userPositionItemTransform(positionItem) {
   });
 
   return augmentedEntity;
+}
+
+/**
+ * Transform position take profit targets to typed object.
+ *
+ * @param {*} profitTargets Trade API take profit targets response.
+ * @returns {Object<string, ProfitTarget>} Typed profit target.
+ */
+function positionTakeProfitTargetsTransforrm(profitTargets) {
+  return mapValues(profitTargets, (profitTarget) => {
+    return {
+      amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
+      priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
+      targetId: parseInt(profitTarget.targetId) || 0,
+      orderId: profitTarget.orderId || "",
+      done: profitTarget.done || false,
+      updating: profitTarget.updating || false,
+      cancel: profitTarget.cancel || false,
+      skipped: profitTarget.skipped || false,
+    };
+  });
 }
 
 /**

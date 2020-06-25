@@ -21,8 +21,13 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ */
+
+/**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
+ * @property {PositionEntity} [positionEntity]
  */
 
 /**
@@ -32,10 +37,10 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type } = props;
+  const { type, positionEntity = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type);
+  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type, positionEntity);
   const showTypesFilter = type === "log";
   const tablePersistsKey = `${type}Positions`;
 
@@ -154,13 +159,22 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
-  const embedFilters = (
-    <PositionFilters
-      onChange={setFilters}
-      positions={positionsAll}
-      showTypesFilter={showTypesFilter}
-    />
-  );
+  const embedFilters = () => {
+    // Don't display filters on single position display.
+    if (positionEntity) {
+      return null;
+    }
+
+    return (
+      <PositionFilters
+        onChange={setFilters}
+        positions={positionsAll}
+        showTypesFilter={showTypesFilter}
+      />
+    );
+  };
+
+  const tableClass = positionEntity ? "positionTable" : "positionsTable";
 
   return (
     <>
@@ -173,8 +187,13 @@ const PositionsTable = (props) => {
       {isEmpty(positionsAll) ? (
         <NoPositions />
       ) : (
-        <Box className="positionsTable" display="flex" flexDirection="column" width={1}>
-          <Table columns={columns} data={data} persistKey={tablePersistsKey} title={embedFilters} />
+        <Box className={tableClass} display="flex" flexDirection="column" width={1}>
+          <Table
+            columns={columns}
+            data={data}
+            persistKey={tablePersistsKey}
+            title={embedFilters()}
+          />
         </Box>
       )}
     </>

@@ -1,4 +1,5 @@
 import React from "react";
+import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
@@ -35,6 +36,7 @@ const Table = ({ columns, data, persistKey, title }) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
+  const countRows = size(data);
 
   /**
    * @type {Array<MUIDataTableColumn>}
@@ -65,6 +67,7 @@ const Table = ({ columns, data, persistKey, title }) => {
     search: false,
     print: false,
     sort: true,
+    pagination: countRows > 10,
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
       dispatch(
@@ -161,4 +164,4 @@ const Table = ({ columns, data, persistKey, title }) => {
   );
 };
 
-export default Table;
+export default React.memo(Table);
