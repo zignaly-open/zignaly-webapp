@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
 import { isEmpty, isObject, range, forIn, noop } from "lodash";
@@ -290,10 +291,10 @@ const StrategyForm = (props) => {
     tradeApi
       .manualPositionCreate(payload)
       .then((positionId) => {
-        // TODO: Navigate to position detail page.
         setProcessing(false);
-        alert(`Position was created succesfully with ID ${positionId}`);
         reset();
+        alert(`Position was created succesfully with ID ${positionId}`);
+        navigate(`/position/${positionId}`);
       })
       .catch((e) => {
         setProcessing(false);
