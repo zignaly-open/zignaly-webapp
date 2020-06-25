@@ -1809,6 +1809,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} takeProfitsFromSignal
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
+ * @property {Number} price
  */
 
 /**
@@ -1939,6 +1940,7 @@ function createEmptyProviderGetEntity() {
     takeProfitsFromSignal: false,
     trailingStopFromSignal: false,
     useLeverageFromSignal: false,
+    price: 0,
   };
 }
 

@@ -58,14 +58,8 @@ const ProviderHeaderActions = () => {
       </Typography>
 
       <Typography variant="h4">
-        <FormattedMessage id="copyt.fee" />
-        <b>
-          {storeViews.provider.fee.toLowerCase() === "free" ? (
-            <FormattedMessage id="col.free" />
-          ) : (
-            storeViews.provider.fee
-          )}
-        </b>
+        <FormattedMessage id="srv.edit.price" />
+        <b>{`$${storeViews.provider.price}/Month`}</b>
       </Typography>
 
       {storeViews.provider.internalPaymentInfo &&

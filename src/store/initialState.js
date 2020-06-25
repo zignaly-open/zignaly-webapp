@@ -392,6 +392,7 @@ const initialState = {
       takeProfitsFromSignal: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      price: 0,
     },
   },
 };
