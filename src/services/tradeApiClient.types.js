@@ -229,7 +229,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} PositionEntity
- * @property {Array<ReBuyTarget>} reBuyTargets
+ * @property {Object<number, ReBuyTarget>} reBuyTargets
+ * @property {Object<number, ProfitTarget>} takeProfitTargets
  * @property {RealInvestment} realInvestment
  * @property {boolean} accounting
  * @property {boolean} checkStop
@@ -322,6 +323,18 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ */
+
+/**
+ * @typedef {Object} ProfitTarget
+ * @property {number} targetId
+ * @property {number} amountPercentage
+ * @property {boolean} done
+ * @property {string} orderId
+ * @property {number} priceTargetPercentage
+ * @property {boolean} cancel
+ * @property {boolean} skipped
+ * @property {boolean} updating
  */
 
 /**
@@ -806,10 +819,14 @@ export function userPositionItemTransform(positionItem) {
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
+    reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
     remainAmount: parseFloat(positionItem.remainAmount),
     sellPrice: parseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    takeProfitTargets: isObject(positionItem.takeProfitTargets)
+      ? positionItem.takeProfitTargets
+      : {},
   });
 
   const risk = calculateRisk(positionEntity);
@@ -884,7 +901,7 @@ function createEmptyPositionEntity() {
     providerName: "",
     quote: "",
     quoteAsset: "",
-    reBuyTargets: [],
+    reBuyTargets: {},
     reBuyTargetsCountFail: 0,
     reBuyTargetsCountPending: 0,
     reBuyTargetsCountSuccess: 0,
@@ -906,6 +923,7 @@ function createEmptyPositionEntity() {
     stopLossStyle: "",
     symbol: "",
     takeProfit: false,
+    takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
     takeProfitTargetsCountPending: 0,
     takeProfitTargetsCountSuccess: 0,
@@ -913,9 +931,9 @@ function createEmptyPositionEntity() {
     trailingStopPrice: false,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
+    type: "",
     updating: false,
     userId: "",
-    type: "",
   };
 }
 

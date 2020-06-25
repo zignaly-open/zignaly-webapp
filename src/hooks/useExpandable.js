@@ -34,7 +34,7 @@ const useExpandable = (defaultExpand = false) => {
   return {
     expanded,
     expandClass,
-    expandableControl: <Switch onChange={handleToggle} size="small" />,
+    expandableControl: <Switch checked={expanded} onChange={handleToggle} size="small" />,
   };
 };
 

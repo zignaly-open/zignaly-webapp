@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { range, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { useFormContext } from "react-hook-form";
-import { formatFloat2Dec } from "../../../utils/format";
+import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
@@ -13,11 +14,13 @@ import "./DCAPanel.scss";
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} DCAPanelProps
  * @property {MarketSymbol} symbolData
+ * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  */
 
 /**
@@ -27,10 +30,16 @@ import "./DCAPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const DCAPanel = (props) => {
-  const { symbolData } = props;
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { positionEntity, symbolData } = props;
+  const positionTargetsCardinality = positionEntity ? size(positionEntity.reBuyTargets) : 0;
+  const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
+  const { expanded, expandClass, expandableControl } = useExpandable(
+    positionTargetsCardinality > 0,
+  );
   const { clearError, errors, getValues, register, setError, watch } = useFormContext();
+
   const {
+    cardinality,
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
@@ -40,15 +49,59 @@ const DCAPanel = (props) => {
     setTargetPropertyValue,
     simulateInputChangeEvent,
   } = useTargetGroup("dca");
+
   const {
     validateCostLimits,
     validateTargetPriceLimits,
     validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+  const targetsDone = positionEntity ? positionEntity.reBuyTargetsCountSuccess : 0;
+  const isTargetLocked = cardinality === targetsDone;
+  const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+
+  const getFieldsDisabledStatus = () => {
+    /**
+     * @type {Object<string, boolean>}
+     */
+    const fieldsDisabled = {};
+    targetIndexes.forEach((index) => {
+      const target = positionEntity ? positionEntity.reBuyTargets[index] : { done: false };
+
+      let disabled = false;
+      if (target.done) {
+        disabled = true;
+      } else if (isCopy || isClosed) {
+        disabled = true;
+      }
+
+      fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+    });
+
+    return fieldsDisabled;
+  };
+
+  const fieldsDisabled = getFieldsDisabledStatus();
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      targetIndexes.forEach((index) => {
+        const profitTarget = positionEntity.reBuyTargets[index];
+        const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
+        const quantityPercentage = revertPercentageRange(profitTarget.quantity);
+        setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
+        setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
+      });
+    }
+  };
+
+  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Calculate the target price and trigger validation.
@@ -209,6 +262,9 @@ const DCAPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
@@ -220,6 +276,9 @@ const DCAPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
+                    disabled={
+                      fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
+                    }
                     inputRef={register}
                     name={composeTargetPropertyName("rebuyPercentage", targetId)}
                     onChange={rebuyPercentageChange}
@@ -230,16 +289,18 @@ const DCAPanel = (props) => {
               {displayTargetFieldErrors("rebuyPercentage", targetId)}
             </Box>
           ))}
-          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-            <Button className="removeTarget" onClick={handleTargetRemove}>
-              <RemoveCircle />
-              <FormattedMessage id="terminal.target.remove" />
-            </Button>
-            <Button className="addTarget" onClick={handleTargetAdd}>
-              <AddCircle />
-              <FormattedMessage id="terminal.target.add" />
-            </Button>
-          </Box>
+          {!disableCardinalityActions && (
+            <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+              <Button className="removeTarget" onClick={handleTargetRemove}>
+                <RemoveCircle />
+                <FormattedMessage id="terminal.target.remove" />
+              </Button>
+              <Button className="addTarget" onClick={handleTargetAdd}>
+                <AddCircle />
+                <FormattedMessage id="terminal.target.add" />
+              </Button>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
