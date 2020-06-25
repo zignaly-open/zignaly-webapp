@@ -55,6 +55,7 @@ const usePositionsList = (type, positionEntity = null) => {
     };
 
     if (positionEntity) {
+      // On fist load rely on position entity passed by parent to avoid extra rquest.
       return new Promise((resolve) => {
         resolve([positionEntity]);
       });
@@ -95,7 +96,7 @@ const usePositionsList = (type, positionEntity = null) => {
     return /** @type {UserPositionsCollection} */ (matches);
   };
 
-  const loadData = () => {
+  const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
 
     if (fetchMethod) {
@@ -110,14 +111,37 @@ const usePositionsList = (type, positionEntity = null) => {
     }
   };
 
+  const loadPosition = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      positionId: positionEntity.positionId,
+    };
+
+    tradeApi
+      .positionGet(payload)
+      .then((data) => {
+        const newPositions = { ...positions, [type]: [data] };
+        setPositions(newPositions);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
   const updateData = () => {
     // Only open positions needs continuos updates.
     if (type === "open") {
-      loadData();
+      // Single position update.
+      if (positionEntity) {
+        loadPosition();
+      } else {
+        // Multiples position update.
+        loadPositions();
+      }
     }
   };
 
-  useEffect(loadData, [type, storeSession.tradeApi.accessToken]);
+  useEffect(loadPositions, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
 
   /**
