@@ -21,14 +21,18 @@ import useExchangeAssets from "./useExchangeAssets";
 /**
  * Provides bases assets.
  *
- * @param {string} internalId Exchange internal id.
+ * @param {string} internalId Exchange account internal id.
+ * @param {string} type Exchange type
  * @returns {AssetsSelectType} Assets select object data.
  */
-const useAssetsSelect = (internalId) => {
+const useAssetsSelect = (internalId, type, updatedAt) => {
   const [selectedAssetName, setSelectedAsset] = useState("BTC");
-  const assets = useExchangeAssets(internalId);
+  const assets = useExchangeAssets(internalId, updatedAt);
+
   const selectedAsset = assets[selectedAssetName];
-  const assetsList = Object.keys(assets).sort();
+  const assetsList = Object.keys(assets)
+    .filter((a) => type !== "futures" || ["USDT", "BNB"].includes(a))
+    .sort();
   const [selectedNetwork, setSelectedNetwork] = useState(null);
 
   // Select default network

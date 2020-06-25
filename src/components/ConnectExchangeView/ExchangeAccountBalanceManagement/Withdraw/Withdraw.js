@@ -32,7 +32,7 @@ const ExchangeAccountWithdraw = () => {
     setTitle,
   } = useContext(ModalPathContext);
   const intl = useIntl();
-  const { handleSubmit, register, errors, watch, setValue, control } = useForm();
+  const { handleSubmit, register, errors, watch, reset, control } = useForm();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,8 +46,7 @@ const ExchangeAccountWithdraw = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(selectedAccount.internalId);
-  console.log(selectedAsset);
+  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, updatedAt);
 
   useEffect(() => {
     setTitle(selectedAccount.internalName);
@@ -71,7 +70,10 @@ const ExchangeAccountWithdraw = () => {
       .withdraw(payload)
       .then(() => {
         dispatch(showSuccessAlert("", "withdraw.success"));
+        // Update withdraw history table and assets balance
         setUpdatedAt(new Date());
+        // Reset form
+        reset();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -137,7 +139,7 @@ const ExchangeAccountWithdraw = () => {
                       <OutlinedInput
                         fullWidth={true}
                         inputRef={register({
-                          required: "address empty",
+                          required: "Please specify an address",
                           pattern: {
                             value: RegExp(selectedNetwork.addressRegex),
                             message: "invalid address",
@@ -161,10 +163,11 @@ const ExchangeAccountWithdraw = () => {
                           name="memo"
                           fullWidth={true}
                           inputRef={register({
-                            required: "memo empty",
+                            required: "Please specify a MEMO/Tag",
                             pattern: {
                               value: RegExp(selectedNetwork.memoRegex),
-                              message: "invalid memo",
+                              message:
+                                "MEMO/Tag is invalid, please review your target wallet network details.",
                             },
                           })}
                         />
@@ -202,6 +205,10 @@ const ExchangeAccountWithdraw = () => {
                             value: parseFloat(selectedNetwork.withdrawMin),
                             message:
                               "Please enter an amount no higher than your available balance.",
+                          },
+                          max: {
+                            value: parseFloat(selectedAsset.balanceFree),
+                            message: "You do not have this amount available in your account.",
                           },
                         })}
                         name="amount"

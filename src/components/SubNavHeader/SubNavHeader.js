@@ -70,7 +70,7 @@ export const SubNavModalHeader = ({ links }) => {
           className={`dashboardLink ${pathParams.currentPath === item.id ? "active" : null}`}
           key={index}
           // href={item.to}
-          onClick={() => setPathParams({ ...pathParams, currentPath: item.id, previousPath: "" })}
+          onClick={() => setPathParams({ ...pathParams, currentPath: item.id })}
         >
           <FormattedMessage id={item.title} />
         </Link>

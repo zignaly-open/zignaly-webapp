@@ -34,7 +34,7 @@ const ExchangeAccountDeposit = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(selectedAccount.internalId);
+  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType);
 
   const depositAddress = useExchangeDepositAddress(
     selectedAccount.internalId,
@@ -46,8 +46,6 @@ const ExchangeAccountDeposit = () => {
     setTitle(selectedAccount.internalName);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(selectedAsset, selectedNetwork);
 
   const copyAddress = () => {
     depositAddress && copyToClipboard(depositAddress.address, "deposit.address.copied");

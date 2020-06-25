@@ -12,7 +12,7 @@ import tradeApi from "../services/tradeApiClient";
  * @param {string} internalId Exchange account internal id.
  * @returns {ExchangeAssetsDict} Quote Assets.
  */
-const useExchangeAssets = (internalId) => {
+const useExchangeAssets = (internalId, updatedAt) => {
   const [assets, setAssets] = useState({});
 
   const storeSession = useStoreSessionSelector();
@@ -33,7 +33,7 @@ const useExchangeAssets = (internalId) => {
       });
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
   return assets;
 };
