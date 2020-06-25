@@ -257,14 +257,11 @@ const StrategyForm = (props) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       pair: `${base}  ${quote}`,
-      limitPrice: draftPosition.price || currentPrice,
       positionSizeQuote: quote,
-      positionSize: parseFloat(draftPosition.positionSize) || 0,
       side: mapSideToEnum(draftPosition.entryType),
       type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: parseFloat(draftPosition.entryExpiration) || false,
-      buyType: POSITION_ENTRY_TYPE_MARKET,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
       sellByTTL: parseFloat(draftPosition.autoclose) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
@@ -275,6 +272,11 @@ const StrategyForm = (props) => {
       providerName: "Manual Trading",
       exchangeName: exchangeName,
       exchangeInternalId: selectedExchange.internalId,
+      // TODO: Separate into strategy composition function.
+      buyType: POSITION_ENTRY_TYPE_MARKET,
+      positionSize: parseFloat(draftPosition.positionSize) || 0,
+      realInvestment: parseFloat(draftPosition.realInvestment) || 0,
+      limitPrice: draftPosition.price || currentPrice,
     };
 
     return payload;
