@@ -1,5 +1,5 @@
 import moment from "moment";
-import { assign, isArray, isObject } from "lodash";
+import { assign, isArray, isObject, mapValues } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
@@ -87,6 +87,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
+ */
+
+/**
+ * @typedef {CreatePositionPayload & PositionActionPayload} UpdatePositionPayload
  */
 
 /**
@@ -262,6 +266,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
  * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} ExchangeAssetsPayload
+ * @property {string} internalId
  */
 
 /**
@@ -586,7 +595,40 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string|boolean} globalBlacklist
  * @property {string|boolean} globalWhitelist
  * @property {boolean} globalDelisting
+ */
 
+/**
+ * @typedef {Object} DepositAddressGetPayload
+ * @property {string} network
+ * @property {string} internalId
+ * @property {string} asset
+ */
+
+/**
+ * @typedef {Object} ExchangeDepositAddress
+ * @property {string} currency
+ * @property {string} address
+ * @property {string} tag
+ */
+
+/**
+ * @typedef {Object} GetExchangeLastDepositsPayload
+ * @property {string} internalId
+ */
+
+/**
+ * @typedef {Object} WithdrawPayload
+ * @property {string} internalId
+ * @property {string} asset
+ * @property {string} network
+ * @property {string} tag
+ * @property {string} address
+ * @property {number} amount
+ */
+
+/**
+ * @typedef {Object} WithdrawReply
+ * @property {string} id
  */
 
 /**
@@ -829,7 +871,7 @@ export function userPositionItemTransform(positionItem) {
     side: positionItem.side.toUpperCase(),
     stopLossPrice: parseFloat(positionItem.stopLossPrice),
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
-      ? positionItem.takeProfitTargets
+      ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : {},
   });
 
@@ -853,6 +895,27 @@ export function userPositionItemTransform(positionItem) {
   });
 
   return augmentedEntity;
+}
+
+/**
+ * Transform position take profit targets to typed object.
+ *
+ * @param {*} profitTargets Trade API take profit targets response.
+ * @returns {Object<string, ProfitTarget>} Typed profit target.
+ */
+function positionTakeProfitTargetsTransforrm(profitTargets) {
+  return mapValues(profitTargets, (profitTarget) => {
+    return {
+      amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
+      priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
+      targetId: parseInt(profitTarget.targetId) || 0,
+      orderId: profitTarget.orderId || "",
+      done: profitTarget.done || false,
+      updating: profitTarget.updating || false,
+      cancel: profitTarget.cancel || false,
+      skipped: profitTarget.skipped || false,
+    };
+  });
 }
 
 /**
@@ -2161,6 +2224,112 @@ function createProviderFollowersListEmptyEntity() {
 }
 
 /**
+ * @typedef {Object} CoinNetwork
+ * @property {string} name
+ * @property {string} network
+ * @property {string} coin
+ * @property {string} addressRegex
+ * @property {string} depositDesc
+ * @property {string} depositEnable
+ * @property {boolean} isDefault
+ * @property {string} memoRegex
+ * @property {boolean} resetAddressStatus
+ * @property {string} specialTips
+ * @property {string} withdrawDesc
+ * @property {boolean} withdrawEnable
+ * @property {string} withdrawFee
+ * @property {string} withdrawMin
+ */
+
+/**
+ * @typedef {Object} ExchangeAsset
+ * @property {string} name
+ * @property {string} balanceFree
+ * @property {string} balanceLocked
+ * @property {string} balanceTotal
+ * @property {string} balanceFreeBTC
+ * @property {string} balanceLockedBTC
+ * @property {string} balanceTotalBTC
+ * @property {string} balanceFreeUSDT
+ * @property {string} balanceLockedUSDT
+ * @property {string} balanceTotalUSDT
+ * @property {string} balanceTotalExchCoin
+ * @property {string} exchCoin
+ * @property {Array<CoinNetwork>} networks
+ */
+
+/**
+ * @typedef {Object.<string, ExchangeAsset>} ExchangeAssetsDict
+ */
+
+/**
+ * Transform provider followers list response item to ProviderFollowersListEntity.
+ *
+ * @param {*} response Trade API get exchange assets list response.
+ * @returns {ExchangeAssetsDict} Exchange asssets.
+ */
+
+export function exchangeAssetsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+  return Object.entries(response).reduce(
+    (res, [key, val]) => ({
+      ...res,
+      [key]: exchangeAssetsItemTransform(val),
+    }),
+    {},
+  );
+}
+
+/**
+ *
+ * @param {*} exchangeAssetItem Exchange assets list response item.
+ * @returns {ExchangeAssetsDict} Exchange assets.
+ */
+function exchangeAssetsItemTransform(exchangeAssetItem) {
+  const emptyExchangeAssetsEntity = createExchangeAssetsEmptyEntity();
+  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem);
+
+  return transformedResponse;
+}
+
+/**
+ * @returns {ExchangeAsset} Exchange asset
+ */
+function createExchangeAssetsEmptyEntity() {
+  return {
+    name: "",
+    balanceFree: "0.000000000000",
+    balanceLocked: "0.000000000000",
+    balanceTotal: "0.000000000000",
+    balanceFreeBTC: "0.000000000000",
+    balanceLockedBTC: "0.000000000000",
+    balanceTotalBTC: "0.000000000000",
+    balanceFreeUSDT: "0.000000000000",
+    balanceLockedUSDT: "0.000000000000",
+    balanceTotalUSDT: "0.000000000000",
+    balanceTotalExchCoin: "0.000000000000",
+    exchCoin: "",
+    networks: [],
+  };
+}
+
+/**
+ * Create Exchange Deposit Address entity.
+ *
+ * @param {*} response Trade API user balance raw response.
+ * @returns {ExchangeDepositAddress} Exchange Deposit Address entity.
+ */
+export function exchangeDepositAddressResponseTransform({ currency, address, tag }) {
+  return {
+    currency,
+    address,
+    tag,
+  };
+}
+
+/**
  *
  * @typedef {Object} ProviderPerformanceEntity
  * @property {Number} closePositions
@@ -2192,6 +2361,145 @@ function createProviderPerformanceEmptyEntity() {
     totalBalance: 0,
     totalTradingVolume: 0,
     weeklyStats: [{}],
+  };
+}
+
+/**
+ * Transform exchange deposit list response item to ExchangeDepositEntity list.
+ *
+ * @param {*} response Trade API get exchange deposits list response.
+ * @returns {Array<ExchangeDepositEntity>} Exchange Deposits list collection.
+ */
+export function exchangeDepositsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of deposit.");
+  }
+
+  return response.map((exchangeDepositItem) => {
+    return exchangeDepositItemTransform(exchangeDepositItem);
+  });
+}
+
+/**
+ * @typedef {Object} ExchangeDepositEntity
+ * @property {String} id
+ * @property {String} txid
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} address
+ * @property {String} tag
+ * @property {String} type
+ * @property {Number} amount
+ * @property {String} currency
+ * @property {String} status
+ * @property {String} fee
+ */
+
+/**
+ * @typedef {Object} FeeType
+ * @property {string} currency
+ * @property {number} cost
+ */
+
+/**
+ * @typedef {Object} ExchangeWithdrawEntity
+ * @property {String} id
+ * @property {String} txid
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} address
+ * @property {String} tag
+ * @property {String} type
+ * @property {Number} amount
+ * @property {String} currency
+ * @property {String} status
+ * @property {String} statusTx
+ * @property {FeeType} fee
+ */
+
+/**
+ * Transform exchange deposits list response item to typed object.
+ *
+ * @param {*} exchangeDepositItem Exchange Deposit response item.
+ * @returns {ExchangeDepositEntity} Exchange Deposit Item entity.
+ */
+function exchangeDepositItemTransform(exchangeDepositItem) {
+  const emptyExchangeDepositEntity = createExchangeDepositEmptyEntity();
+  const transformedResponse = assign(emptyExchangeDepositEntity, exchangeDepositItem);
+
+  return transformedResponse;
+}
+
+function createExchangeDepositEmptyEntity() {
+  return {
+    id: "",
+    txid: "",
+    timestamp: 0,
+    datetime: "",
+    address: "",
+    tag: "",
+    type: "",
+    amount: 0,
+    currency: "",
+    status: "",
+  };
+}
+
+/**
+ * Transform exchange withdraw list response item to ExchangeWithdrawEntity list.
+ *
+ * @param {*} response Trade API get exchange withdraws list response.
+ * @returns {Array<ExchangeWithdrawEntity>} Exchange withdraws list collection.
+ */
+export function exchangeWithdrawsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of withdraw.");
+  }
+
+  return response.map((exchangeWithdrawItem) => {
+    return exchangeWithdrawItemTransform(exchangeWithdrawItem);
+  });
+}
+
+/**
+ * Transform exchange withdraws list response item to typed object.
+ *
+ * @param {*} exchangeWithdrawItem Exchange withdraw response item.
+ * @returns {ExchangeWithdrawEntity} Exchange withdraw Item entity.
+ */
+function exchangeWithdrawItemTransform(exchangeWithdrawItem) {
+  const emptyExchangeWithdrawEntity = createExchangeWithdrawEmptyEntity();
+  const transformedResponse = assign(emptyExchangeWithdrawEntity, exchangeWithdrawItem);
+
+  return transformedResponse;
+}
+
+function createExchangeWithdrawEmptyEntity() {
+  return {
+    id: "",
+    txid: "",
+    timestamp: 0,
+    datetime: "",
+    address: "",
+    tag: "",
+    type: "",
+    amount: 0,
+    currency: "",
+    status: "",
+    statusTx: "",
+    fee: { currency: "", cost: "" },
+  };
+}
+
+/**
+ * Transform withdraw reply to typed WithdrawReply
+ *
+ * @param {*} response Trade API withdraw response.
+ * @returns {WithdrawReply} Withdraw reply object.
+ */
+export function withdrawResponseTransform(response) {
+  return {
+    id: response.id,
   };
 }
 

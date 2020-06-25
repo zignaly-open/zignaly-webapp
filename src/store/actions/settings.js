@@ -3,6 +3,9 @@ export const SELECT_THEME = "SELECT_THEME_ACTION";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
+/**
+ * @typedef {import('redux').AnyAction} AnyAction
+ */
 
 /**
  * Dark style flag selected by user.
@@ -38,7 +41,7 @@ export const changeLanguage = (langCode) => {
 /**
  *
  * @param {ExchangeConnectionEntity} payload Exchange connections object.
- * @returns {Object} return action object.
+ * @returns {AnyAction} return action object.
  */
 export const setSelectedExchange = (payload) => {
   return {
@@ -56,9 +59,9 @@ export const unsetSelectedExchange = () => {
 /**
  * User's display columns selection.
  *
- * @param {Object} payload
+ * @param {Object} payload payload.
+ * @returns {AnyAction} return action object.
  */
-
 export const setDisplayColumn = (payload) => {
   return {
     type: SET_DISPLAY_COLUMN,

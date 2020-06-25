@@ -8,3 +8,4 @@ export const contactMailURL = "support@zignaly.freshdesk.com";
 export const discordURL = "https://discord.gg/vx8wx8u";
 export const affiliateName = "Affiliate Program";
 export const affiliateURL = "https://zignaly.firstpromoter.com/";
+export const buyCryptoURL = "https://changelly.com/?ref_id=q0s68wsie1uf9wza";

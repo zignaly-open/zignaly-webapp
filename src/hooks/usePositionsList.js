@@ -9,7 +9,11 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log"} PositionsCollectionType
+ */
+
+/**
  * @typedef {Object} HookPositionsListData
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
@@ -22,9 +26,10 @@ import { showErrorAlert } from "../store/actions/ui";
  * Encapsulates the data fetch from Trade API and local state handling.
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
+ * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
  * @returns {HookPositionsListData} Positions collection.
  */
-const usePositionsList = (type) => {
+const usePositionsList = (type, positionEntity = null) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const defaultFilters = {
@@ -49,15 +54,16 @@ const usePositionsList = (type) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    if (type === "closed") {
+    if (positionEntity) {
+      // On fist load rely on position entity passed by parent to avoid extra rquest.
+      return new Promise((resolve) => {
+        resolve([positionEntity]);
+      });
+    } else if (type === "closed") {
       return tradeApi.closedPositionsGet(payload);
-    }
-
-    if (type === "log") {
+    } else if (type === "log") {
       return tradeApi.logPositionsGet(payload);
-    }
-
-    if (type === "open") {
+    } else if (type === "open") {
       return tradeApi.openPositionsGet(payload);
     }
 
@@ -90,8 +96,9 @@ const usePositionsList = (type) => {
     return /** @type {UserPositionsCollection} */ (matches);
   };
 
-  const loadData = () => {
+  const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
+
     if (fetchMethod) {
       fetchMethod
         .then((fetchData) => {
@@ -104,14 +111,37 @@ const usePositionsList = (type) => {
     }
   };
 
+  const loadPosition = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      positionId: positionEntity.positionId,
+    };
+
+    tradeApi
+      .positionGet(payload)
+      .then((data) => {
+        const newPositions = { ...positions, [type]: [data] };
+        setPositions(newPositions);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
   const updateData = () => {
     // Only open positions needs continuos updates.
     if (type === "open") {
-      loadData();
+      // Single position update.
+      if (positionEntity) {
+        loadPosition();
+      } else {
+        // Multiples position update.
+        loadPositions();
+      }
     }
   };
 
-  useEffect(loadData, [type, storeSession.tradeApi.accessToken]);
+  useEffect(loadPositions, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
 
   /**

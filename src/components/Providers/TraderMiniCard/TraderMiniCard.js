@@ -25,6 +25,7 @@ const TraderMiniCard = ({ provider }) => {
 
   return (
     <Box
+      bgcolor="grid.main"
       className="traderMiniCard"
       display="flex"
       flexDirection="column"

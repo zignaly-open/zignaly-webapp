@@ -1,5 +1,7 @@
 import moment from "moment";
 import { capitalize, isNil } from "lodash";
+import { FormattedDate } from "react-intl";
+import React from "react";
 
 /**
  * Format string to float with 2 decimals.
@@ -164,3 +166,20 @@ export const formatDuration = (time) => {
 export const revertPercentageRange = (percentage) => {
   return percentage === 1 ? 100 : 100 * (1 - percentage);
 };
+
+/**
+ * Format date with time
+ *
+ * @param {Date|string} date Date.
+ * @returns {JSX.Element} Formatted date component.
+ */
+export const FormatedDateTime = (date) => (
+  <FormattedDate
+    day="numeric"
+    hour="numeric"
+    minute="numeric"
+    month="numeric"
+    value={date}
+    year="numeric"
+  />
+);

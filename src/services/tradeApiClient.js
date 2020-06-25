@@ -20,7 +20,12 @@ import {
   ownCopyTraderProvidersOptionsResponseTransform,
   providerFollowersResponseTransform,
   providerFollowersListResponseTransform,
+  exchangeAssetsResponseTransform,
+  exchangeDepositAddressResponseTransform,
   providerPerformanceResponseTransform,
+  exchangeDepositsResponseTransform,
+  withdrawResponseTransform,
+  exchangeWithdrawsResponseTransform,
   userGetResponseTransform,
   providerExchangeSettingsResponseTransform,
 } from "./tradeApiClient.types";
@@ -46,6 +51,7 @@ import {
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeAssetsPayload} ExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
@@ -57,7 +63,15 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeUpdatePayload} ExchangeUpdatePayload
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsPayload} ProviderExchangeSettingsPayload
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsUpdatePayload} ProviderExchangeSettingsUpdatePayload
+ * @typedef {import('./tradeApiClient.types').DepositAddressGetPayload} DepositAddressGetPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
+ * @typedef {import('./tradeApiClient.types').UpdatePositionPayload} UpdatePositionPayload
+ * @typedef {import('./tradeApiClient.types').ExchangeDepositEntity} ExchangeDepositEntity
+ * @typedef {import('./tradeApiClient.types').ExchangeWithdrawEntity} ExchangeWithdrawEntity
+ * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
+ * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
+ * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
  */
 
 /**
@@ -432,6 +446,22 @@ class TradeApiClient {
 
   /**
    *
+   * Get exchange assets.
+   *
+   * @param {ExchangeAssetsPayload} payload
+   * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+
+  async exchangeAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeAssetsResponseTransform(responseData);
+  }
+
+  /**
+   *
    * Get connected provider user info.
    *
    * @param {ConnectedProviderUserInfoPayload} payload
@@ -552,7 +582,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {EditProvderPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -568,7 +598,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -584,7 +614,7 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-
+   *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -597,9 +627,25 @@ class TradeApiClient {
   }
 
   /**
+   * Get deposit address for coin.
+   *
+   * @param {DepositAddressGetPayload} payload Get deposit address payload
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeDepositAddressGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeDepositAddress";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeDepositAddressResponseTransform(responseData);
+  }
+
+  /**
    * Create manual position.
    *
-   * @param {CreatePositionPayload} payload Create manual position.
+   * @param {CreatePositionPayload} payload Create manual position payload.
 
    * @returns {Promise<string>} Promise that resolve created position ID.
    *
@@ -610,6 +656,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Update manual position.
+   *
+   * @param {UpdatePositionPayload} payload Update manual position payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve updated position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async manualPositionUpdate(payload) {
+    const endpointPath = "/fe/api.php?action=newUpdatePosition3";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
   }
 
   /**
@@ -673,6 +735,51 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetExchangeLastDepositsPayload} payload Get exchange last deposits payload.
+   * @returns {Promise<Array<ExchangeDepositEntity>>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeLastDepositsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeLastDeposits";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeDepositsResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {GetExchangeLastDepositsPayload} payload Get exchange last withdrawals payload.
+   * @returns {Promise<Array<ExchangeWithdrawEntity>>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeLastWithdrawalsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeLastWithdrawals";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeWithdrawsResponseTransform(responseData);
+  }
+
+  /**
+   * Withdraw currency to a different address.
+   *
+   * @param {WithdrawPayload} payload Withdraw payload.
+   * @returns {Promise<WithdrawReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async withdraw(payload) {
+    const endpointPath = "/fe/api.php?action=exchangeWithdraw";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return withdrawResponseTransform(responseData);
   }
 }
 

@@ -3,7 +3,7 @@ import "./SuccessAlert.scss";
 import { Snackbar, Box, Typography, Slide } from "@material-ui/core";
 import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
-import { hideErrorAlert } from "../../../store/actions/ui";
+import { hideSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -18,23 +18,22 @@ const SuccessAlert = () => {
         vertical: "top",
         horizontal: "right",
       }}
-      autoHideDuration={50000000}
+      autoHideDuration={5000}
       className="successAlert"
       id="successAlert"
-      onClose={() => dispatch(hideErrorAlert())}
-      open={false}
+      onClose={() => dispatch(hideSuccessAlert())}
+      open={storeAlerts.success.open}
     >
       <Box bgcolor="grid.main" className="alertMessage">
-        <CloseIcon className="closeIcon" onClick={() => dispatch(hideErrorAlert())} />
-        {storeAlerts.error.title && (
+        <CloseIcon className="closeIcon" onClick={() => dispatch(hideSuccessAlert())} />
+        {storeAlerts.success.title && (
           <Typography className="title green" variant="h3">
-            <FormattedMessage id={storeAlerts.error.title} />
+            <FormattedMessage id={storeAlerts.success.title} />
           </Typography>
         )}
-        {storeAlerts.error.body && (
+        {storeAlerts.success.body && (
           <Typography className="body green" variant="body1">
-            <b>Error:</b>
-            <FormattedMessage id={storeAlerts.error.body} />
+            <FormattedMessage id={storeAlerts.success.body} />
           </Typography>
         )}
       </Box>

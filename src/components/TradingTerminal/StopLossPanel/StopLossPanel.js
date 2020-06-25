@@ -31,7 +31,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
  */
 const StopLossPanel = (props) => {
   const { symbolData, positionEntity } = props;
-  const existsStopLoss = positionEntity ? Boolean(positionEntity.stopLossPercentage) : false;
+  const existsStopLoss = positionEntity ? Boolean(positionEntity.stopLossPrice) : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
@@ -63,8 +63,8 @@ const StopLossPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsStopLoss) {
-      const stopLossPercentage = revertPercentageRange(positionEntity.stopLossPercentage);
-      setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      const stopLossPrice = revertPercentageRange(positionEntity.stopLossPrice);
+      setValue("stopLossPrice", formatFloat2Dec(stopLossPrice));
     }
   };
 

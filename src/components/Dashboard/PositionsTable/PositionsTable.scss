@@ -1,4 +1,4 @@
-.positionsTable {
+%position-table-base {
   .actions {
     button {
       background-color: transparent;
@@ -53,6 +53,14 @@
     display: inline-block;
     margin-right: 5px;
   }
+}
+
+.positionTable {
+  @extend %position-table-base;
+}
+
+.positionsTable {
+  @extend %position-table-base;
 
   [role="toolbar"] {
     padding: 0;

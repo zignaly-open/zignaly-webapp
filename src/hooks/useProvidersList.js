@@ -57,18 +57,16 @@ const useProvidersList = (options) => {
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
 
-  const createOption = (/** @type {string} **/ label) => ({ val: label.toLowerCase(), label });
-
   // Coins
   const quoteAssets = useQuoteAssets();
   const coins = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allcoins" }) }].concat(
-    Object.keys(quoteAssets).map(createOption),
+    Object.keys(quoteAssets).map((label) => ({ val: label, label })),
   );
   const [coin, setCoin] = useState(coins[0]);
 
   // Exchanges
   const exchanges = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allexchanges" }) }].concat(
-    ["Binance", "Zignaly", "KuCoin"].map(createOption),
+    ["Binance", "Zignaly", "KuCoin"].map((label) => ({ val: label.toLowerCase(), label })),
   );
   const [exchange, setExchange] = useState("ALL");
 
