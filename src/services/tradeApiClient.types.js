@@ -2442,3 +2442,63 @@ export function creatEmptySettingsEntity() {
     whitelist: false,
   };
 }
+
+/**
+ *
+ * @typedef {Object} ProviderDataPointsEntity
+ * @property {String} float
+ * @property {String} floatPercentage
+ * @property {String} floatUSDT
+ * @property {Number} followersTrialing
+ * @property {String} freeBalance
+ * @property {String} freeBalancePercentage
+ * @property {String} freeBalanceUSDT
+ * @property {String} quote
+ * @property {String} totalAllocated
+ * @property {String} totalAllocatedFromFollowers
+ * @property {String} totalAllocatedUSDT
+ * @property {String} totalAllocatedUSDTFromFollowers
+ * @property {Number} totalFollowers
+ * @property {String} totalProfit
+ * @property {String} totalProfitPercentage
+ * @property {String} totalProfitUSDT
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderDataPointsEntity} Provider Data points entity.
+ */
+export function providerDataPointsResponseTransform(response) {
+  const emptyDataPointsEntity = creatEmptyProviderDataPointsEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyDataPointsEntity, response);
+
+  return transformedResponse;
+}
+
+/**
+ * Create user entity.
+ * @returns {ProviderDataPointsEntity} User entity.
+ */
+export function creatEmptyProviderDataPointsEntity() {
+  return {
+    float: "",
+    floatPercentage: "",
+    floatUSDT: "",
+    followersTrialing: 0,
+    freeBalance: "",
+    freeBalancePercentage: "",
+    freeBalanceUSDT: "",
+    quote: "",
+    totalAllocated: "",
+    totalAllocatedFromFollowers: "",
+    totalAllocatedUSDT: "",
+    totalAllocatedUSDTFromFollowers: "",
+    totalFollowers: 0,
+    totalProfit: "",
+    totalProfitPercentage: "",
+    totalProfitUSDT: "",
+  };
+}

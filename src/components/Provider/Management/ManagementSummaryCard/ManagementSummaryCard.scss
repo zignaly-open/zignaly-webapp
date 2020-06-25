@@ -1,0 +1,46 @@
+.managementSummaryCard {
+  width: 20%;
+  margin-right: 20px;
+  box-sizing: border-box;
+  min-height: 150px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  padding: 10px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  .head {
+    .icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      opacity: 0.6;
+    }
+
+    .headTitle {
+      opacity: 0.6;
+      margin-right: 5px;
+      word-spacing: initial;
+    }
+  }
+
+  .body {
+    h1 {
+      width: fit-content;
+      font-size: 36px;
+      font-family: "PlexSans-SemiBold";
+    }
+
+    span {
+      margin-left: 5px;
+    }
+  }
+
+  .foot {
+    span {
+      opacity: 0.6;
+      margin-right: 5px;
+    }
+  }
+}

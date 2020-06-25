@@ -1,0 +1,9 @@
+.profileManagementPage {
+  width: 100%;
+
+  .loadingBox {
+    width: 100%;
+    min-height: 500px;
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+  }
+}
