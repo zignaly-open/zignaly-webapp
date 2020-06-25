@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { isObject } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import Modal from "../../Modal";
@@ -14,6 +13,8 @@ import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory"
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./TradingView.scss";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -23,7 +24,7 @@ import "./TradingView.scss";
 /**
  * @typedef {Object} TradingViewProps
  *
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {string} [positionId] Position id (optional) for trading view edit mode.
  */
 
 /**
@@ -34,13 +35,33 @@ import "./TradingView.scss";
  * @returns {JSX.Element} Trading terminal element.
  */
 const TradingView = (props) => {
-  const { positionEntity = null } = props;
+  const { positionId = null } = props;
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const [lastPrice, setLastPrice] = useState(null);
+  const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  const isPositionView = positionId !== null;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const isPositionView = isObject(positionEntity);
+  const dispatch = useDispatch();
+
+  const fetchPosition = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      positionId,
+    };
+
+    tradeApi
+      .positionGet(payload)
+      .then((data) => {
+        setPositionEntity(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(fetchPosition, []);
 
   /**
    * Resolve exchange name from entity (when available) or from selected exchange otherwise.
@@ -82,7 +103,7 @@ const TradingView = (props) => {
    * @type {TVWidget} tradingViewWidgetPointer
    */
   const tradingViewWidgetTyped = tradingViewWidget;
-  const isChartLoading = tradingViewWidget === null;
+  const isLoading = tradingViewWidget === null || (positionId && !positionEntity);
   const isLastPriceLoading = lastPrice === null;
   const loadOwnCopyTradersProviders = () => {
     const payload = {
@@ -186,8 +207,10 @@ const TradingView = (props) => {
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      {isPositionView && <PositionsTable positionEntity={positionEntity} type="open" />}
-      {!isChartLoading && !isPositionView && (
+      {!isLoading && isPositionView && (
+        <PositionsTable positionEntity={positionEntity} type="open" />
+      )}
+      {!isLoading && !isPositionView && (
         <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
           <Box
             alignContent="left"
@@ -247,13 +270,13 @@ const TradingView = (props) => {
         flexWrap="wrap"
         width={1}
       >
-        {isChartLoading && (
+        {isLoading && (
           <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
             <CircularProgress disableShrink />
           </Box>
         )}
         <Box className="tradingViewChart" id="trading_view_chart" />
-        {!isChartLoading && !isLastPriceLoading && (
+        {!isLoading && !isLastPriceLoading && (
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}

@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
 import { Helmet } from "react-helmet";
 import withDashboardLayout from "../../layouts/dashboardLayout";
-import tradeApi from "../../services/tradeApiClient";
-import { showErrorAlert } from "../../store/actions/ui";
-import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
-import { CircularProgress } from "@material-ui/core";
 import { TradingView } from "../../components/TradingTerminal";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import "./position.scss";
 
 /**
@@ -28,28 +23,8 @@ import "./position.scss";
  * @returns {JSX.Element} Position page element.
  */
 const PositionPage = (props) => {
-  const { positionId } = props;
-  const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
-  const storeSession = useStoreSessionSelector();
-  const dispatch = useDispatch();
+  const { positionId = null } = props;
   const intl = useIntl();
-  const fetchPosition = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      positionId,
-    };
-
-    tradeApi
-      .positionGet(payload)
-      .then((data) => {
-        setPositionEntity(data);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  };
-
-  useEffect(fetchPosition, []);
 
   return (
     <>
@@ -67,8 +42,7 @@ const PositionPage = (props) => {
           flexDirection="column"
           justifyContent="center"
         >
-          {!positionEntity && <CircularProgress disableShrink />}
-          {positionEntity && <TradingView positionEntity={positionEntity} />}
+          <TradingView positionId={positionId} />
         </Box>
       </Box>
     </>
