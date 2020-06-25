@@ -50,11 +50,11 @@ const ExchangeAccountDeposit = () => {
   console.log(selectedAsset, selectedNetwork);
 
   const copyAddress = () => {
-    copyToClipboard(depositAddress.address, "deposit.address.copied");
+    depositAddress && copyToClipboard(depositAddress.address, "deposit.address.copied");
   };
 
   const copyMemo = () => {
-    copyToClipboard(depositAddress.tag, "deposit.memo.copied");
+    depositAddress && copyToClipboard(depositAddress.tag, "deposit.memo.copied");
   };
 
   const showQRCode = () => {};

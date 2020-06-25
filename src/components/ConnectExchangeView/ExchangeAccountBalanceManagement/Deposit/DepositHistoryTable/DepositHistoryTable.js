@@ -5,7 +5,8 @@ import { Box } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import "./DepositHistoryTable.scss";
-import { FormattedMessage, FormattedTime } from "react-intl";
+import { FormattedMessage, FormattedDate, FormattedTime } from "react-intl";
+import { FormatedDateTime } from "../../../../../utils/format";
 
 const DepositHistoryTable = ({ internalId }) => {
   const storeSession = useStoreSessionSelector();
@@ -46,7 +47,7 @@ const DepositHistoryTable = ({ internalId }) => {
       name: "timestamp",
       label: "col.date",
       options: {
-        customBodyRender: FormattedTime,
+        customBodyRender: FormatedDateTime,
       },
     },
     {

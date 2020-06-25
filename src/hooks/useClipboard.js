@@ -1,19 +1,19 @@
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../store/actions/ui";
 
-/**
- * Copy content to clipboard and show alert.
- * @param {string} content
- * @param {string} successMessage
- */
-const useClipboard = (content, successMessage) => {
+const useClipboard = () => {
   const dispatch = useDispatch();
 
-  const copyToClipboard = () =>
+  /**
+   * Copy content to clipboard and show alert.
+   * @param {string} content
+   * @param {string} successMessage
+   */
+  const copyToClipboard = (content, successMessage) =>
     navigator.clipboard
       .writeText(content)
       .then(() => {
-        dispatch(showSuccessAlert("", successMessage));
+        dispatch(showSuccessAlert("Success", successMessage));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

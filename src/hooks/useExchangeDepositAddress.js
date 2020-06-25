@@ -47,6 +47,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
       });
 
     return () => {
+      // Cancel request do avoid overwriting the address if multiple different requests are sent at the same time.
       canceled = true;
     };
   };
