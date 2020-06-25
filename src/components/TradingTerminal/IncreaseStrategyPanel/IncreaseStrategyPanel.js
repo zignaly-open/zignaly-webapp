@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
@@ -41,7 +41,16 @@ const IncreaseStrategyPanel = (props) => {
   const { symbolData, lastPriceCandle, positionEntity } = props;
   const [expand, setExpand] = useState(true);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const {
+    clearError,
+    control,
+    errors,
+    getValues,
+    register,
+    setError,
+    setValue,
+    watch,
+  } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
@@ -86,8 +95,10 @@ const IncreaseStrategyPanel = (props) => {
     { label: intl.formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
   ];
 
-  const [entryStrategy, setEntryStrategy] = useState(entryStrategyOptions[0].val);
+  const entryStrategy = watch("entryStrategy");
   const { limits } = symbolData;
+
+  console.log("entryStrategy: ", entryStrategy);
 
   /**
    * Validate that position size is within limits.
@@ -219,11 +230,18 @@ const IncreaseStrategyPanel = (props) => {
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           <Box alignItems="center" className="title" display="flex" flexDirection="row">
-            <CustomSelect
-              label=""
-              onChange={setEntryStrategy}
-              options={entryStrategyOptions}
-              value={entryStrategy}
+            <Controller
+              as={
+                <CustomSelect
+                  label=""
+                  onChange={() => {}}
+                  options={entryStrategyOptions}
+                  value={entryStrategy}
+                />
+              }
+              control={control}
+              defaultValue=""
+              name="entryStrategy"
             />
           </Box>
           {selectedExchange.exchangeType === "futures" && (
