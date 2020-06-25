@@ -211,7 +211,7 @@ const IncreaseStrategyPanel = (props) => {
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch onChange={handleToggle} size="small" />
+        <Switch defaultChecked={expand} onChange={handleToggle} size="small" />
         <Typography variant="h5">
           <FormattedMessage id="terminal.increasestrategy" />
         </Typography>
