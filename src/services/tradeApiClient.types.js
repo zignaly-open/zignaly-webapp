@@ -568,6 +568,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} WithdrawReply
+ * @property {string} id
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -2276,5 +2281,17 @@ function createExchangeDepositEmptyEntity() {
     currency: "USDT",
     status: "ok",
     fee: "",
+  };
+}
+
+/**
+ * Transform withdraw reply to typed WithdrawReply
+ *
+ * @param {*} response Trade API withdraw response.
+ * @returns {WithdrawReply} Withdraw reply object.
+ */
+export function withdrawResponseTransform(response) {
+  return {
+    id: response.id,
   };
 }

@@ -18,7 +18,7 @@ const SuccessAlert = () => {
         vertical: "top",
         horizontal: "right",
       }}
-      autoHideDuration={50000}
+      autoHideDuration={5000}
       className="successAlert"
       id="successAlert"
       onClose={() => dispatch(hideSuccessAlert())}

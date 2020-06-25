@@ -19,7 +19,7 @@ import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
 import { formatFloat } from "../../../../utils/format";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
@@ -31,9 +31,10 @@ const ExchangeAccountWithdraw = () => {
     setTitle,
   } = useContext(ModalPathContext);
   const intl = useIntl();
-  const { handleSubmit, register, errors } = useForm();
+  const { handleSubmit, register, errors, watch, setValue, control } = useForm();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const amount = watch("amount");
 
   const {
     selectedAssetName,
@@ -192,9 +193,15 @@ const ExchangeAccountWithdraw = () => {
                       <OutlinedInput
                         fullWidth={true}
                         inputRef={register({
-                          required: "amount empty",
+                          min: {
+                            value: parseFloat(selectedNetwork.withdrawMin),
+                            message:
+                              "Please enter an amount no higher than your available balance.",
+                          },
                         })}
                         name="amount"
+                        type="number"
+                        inputProps={{ min: parseFloat(selectedNetwork.withdrawMin) }}
                       />
                       {errors.amount && <span className="errorText">{errors.amount.message}</span>}
                     </FormControl>
@@ -228,7 +235,8 @@ const ExchangeAccountWithdraw = () => {
                         <FormattedMessage id="withdraw.get" />
                       </Typography>
                       <Typography variant="body2">
-                        {selectedAssetName} {selectedNetwork.withdrawFee}
+                        {selectedAssetName}{" "}
+                        {Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee))}
                       </Typography>
                     </Box>
                     <CustomButton className="bgPurple" disabled={false} type="submit">
