@@ -54,7 +54,6 @@ const TradingViewEdit = (props) => {
   };
 
   const [selectedSymbol, setSelectedSymbol] = useState(null);
-  console.log("selectedSymbol: ", selectedSymbol);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
   /**
@@ -79,6 +78,15 @@ const TradingViewEdit = (props) => {
   };
 
   useEffect(fetchPosition, []);
+
+  /**
+   * Callback that to be notified when position updates are peformed.
+   *
+   * @returns {Void} None.
+   */
+  const notifyPositionUpdate = () => {
+    fetchPosition();
+  };
 
   const isLoading = tradingViewWidget === null || !positionEntity;
   const isLastPriceLoading = lastPrice === null;
@@ -129,6 +137,7 @@ const TradingViewEdit = (props) => {
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
             leverage={positionEntity.leverage}
+            notifyPositionUpdate={notifyPositionUpdate}
             positionEntity={positionEntity}
             selectedSymbol={selectedSymbol}
             tradingViewWidget={tradingViewWidget}
