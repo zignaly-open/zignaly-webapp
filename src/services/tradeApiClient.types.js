@@ -1151,7 +1151,7 @@ function createUserEquityEntity() {
     ZARpercentage: 0,
     KCSpercentage: 0,
     NEOpercentage: 0,
-    date: "0",
+    date: "",
     freeBKRW: 0,
     freeBNB: 0,
     freeBTC: 0,

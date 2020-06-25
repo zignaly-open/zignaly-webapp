@@ -48,12 +48,16 @@ const CompositionGraph = ({ list, quotes }) => {
   };
 
   const prepareChartData = () => {
-    let currentDate = new Date().getDate();
+    let currentDate = new Date();
     /**
      * @type {*}
      */
     let equity = list.length
-      ? list.find((item) => new Date(item.date).getDate() === currentDate)
+      ? list.find(
+          (item) =>
+            new Date(item.date).getDate() === currentDate.getDate() &&
+            new Date(item.date).getMonth() === currentDate.getMonth(),
+        )
       : {};
     if (equity) {
       for (let a = 0; a < quotes.length; a++) {

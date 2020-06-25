@@ -52,7 +52,7 @@ const PaymentButton = ({ provider }) => {
             <input name="merchant" type="hidden" value={provider.internalPaymentInfo.merchantId} />
             <input name="item_name" type="hidden" value="Zignaly Provider" />
             <input name="currency" type="hidden" value="USD" />
-            <input name="amount" type="hidden" value={provider.internalPaymentInfo.price} />
+            <input name="amountf" type="hidden" value={provider.internalPaymentInfo.price} />
             <input name="quantity" type="hidden" value="1" />
             <input name="allow_quantity" type="hidden" value="1" />
             <input name="want_shipping" type="hidden" value="0" />

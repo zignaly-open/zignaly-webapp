@@ -68,7 +68,10 @@ const ProviderHeaderActions = () => {
         </b>
       </Typography>
 
-      <PaymentButton provider={storeViews.provider} />
+      {storeViews.provider.internalPaymentInfo &&
+        storeViews.provider.internalPaymentInfo.merchantId && (
+          <PaymentButton provider={storeViews.provider} />
+        )}
     </Box>
   );
 };

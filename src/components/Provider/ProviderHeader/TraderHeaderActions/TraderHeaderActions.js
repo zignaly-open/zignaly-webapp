@@ -50,7 +50,10 @@ const ProviderHeaderActions = () => {
       </Box>
       <CopyTraderButton provider={storeViews.provider} />
       <TrialPeriod provider={storeViews.provider} />
-      <PaymentButton provider={storeViews.provider} />
+      {storeViews.provider.internalPaymentInfo &&
+        storeViews.provider.internalPaymentInfo.merchantId && (
+          <PaymentButton provider={storeViews.provider} />
+        )}
     </Box>
   );
 };
