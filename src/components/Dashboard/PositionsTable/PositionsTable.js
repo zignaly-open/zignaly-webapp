@@ -188,7 +188,12 @@ const PositionsTable = (props) => {
         <NoPositions />
       ) : (
         <Box className={tableClass} display="flex" flexDirection="column" width={1}>
-          <Table columns={columns} data={data} persistKey={tablePersistsKey} title={embedFilters} />
+          <Table
+            columns={columns}
+            data={data}
+            persistKey={tablePersistsKey}
+            title={embedFilters()}
+          />
         </Box>
       )}
     </>
