@@ -27,6 +27,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import "./StrategyForm.scss";
 import { FormattedMessage } from "react-intl";
 import "../../CustomButton/CustomButton.scss";
+import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPanel";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -445,6 +446,13 @@ const StrategyForm = (props) => {
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+          {isPositionView && (
+            <IncreaseStrategyPanel
+              lastPriceCandle={lastPriceCandle}
+              positionEntity={positionEntity}
+              symbolData={currentSymbolData}
+            />
+          )}
           {!isPositionView && <EntryExpirationPanel />}
           {!isPositionView && <AutoclosePanel />}
           <CustomButton
