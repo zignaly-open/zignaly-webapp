@@ -82,7 +82,7 @@ const SignupForm = () => {
   //           array: true,
   //           gRecaptchaResponse: "abracadabra"
   //       };
-  //       setCaptchaResponse('')
+  //       //setCaptchaResponse('')
   //       this.props.dispatch(signup(params, this.hideLoader));
   //     } else {
   //       setPasswordDoNotMatch(true);

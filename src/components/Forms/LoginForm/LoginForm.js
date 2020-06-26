@@ -53,8 +53,8 @@ const LoginForm = () => {
    * @returns {Void} None.
    */
   const onSubmit = (payload) => {
-    setCaptchaResponse("");
-    recaptchaRef.current.reset();
+    // setCaptchaResponse("");
+    // recaptchaRef.current.reset();
 
     showLoading(true);
     dispatch(startTradeApiSession({ ...payload, gRecaptchaResponse }));
