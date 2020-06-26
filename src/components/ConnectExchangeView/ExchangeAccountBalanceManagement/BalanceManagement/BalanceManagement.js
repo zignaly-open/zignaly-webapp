@@ -35,13 +35,11 @@ const BalanceManagement = ({ children }) => {
       id: "withdraw",
       title: "accounts.withdraw",
     },
-  ];
-  if (selectedAccount.isBrokerAccount) {
-    tabs.push({
+    {
       id: "convert",
       title: "accounts.convert",
-    });
-  }
+    },
+  ];
 
   return (
     <Box className="balanceManagement">

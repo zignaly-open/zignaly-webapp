@@ -3,7 +3,7 @@ import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@
 import "./Convert.scss";
 import TransferCoinPicker from "../TransferCoinPicker";
 import TipBox from "../TipBox";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useAssetsSelect from "../../../../hooks/useAssetsSelect";
 import AlertIcon from "../../../../images/exchangeAccount/alert.svg";
 import BalanceManagement from "../BalanceManagement";
@@ -19,6 +19,11 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConvertTable from "./ConvertTable";
 import ModalPathContext from "../../ModalPathContext";
 
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ * @typedef {import("./ConvertTable/ConvertTable").ExchangeAssetsWithName} ExchangeAssetsWithName
+ */
+
 const Convert = () => {
   const {
     pathParams: { selectedAccount },
@@ -26,8 +31,15 @@ const Convert = () => {
   } = useContext(ModalPathContext);
   const [isLoading, setIsLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState(null);
+  const [rowsSelected, setRowsSelected] = useState([]);
   const assets = useExchangeAssets(selectedAccount.internalId, updatedAt);
+  const intl = useIntl();
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
+  /**
+   * @type {ExchangeAssetsWithName}
+   */
   let assetsList = [];
   for (const [key, value] of Object.entries(assets)) {
     const balanceBTC = parseFloat(value.balanceFreeBTC);
@@ -36,29 +48,30 @@ const Convert = () => {
     }
   }
 
-  const storeSession = useStoreSessionSelector();
+  const selectedAssets = rowsSelected.map((index) => assetsList[index]);
+  const totalSelectedBNB = selectedAssets.reduce(
+    (total, a) => total + parseFloat(a.balanceTotalExchCoin),
+    0,
+  );
 
   const handleSubmit = () => {
     setIsLoading(true);
 
+    const selectedCoins = selectedAssets.map((a) => a.coin);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalId: selectedAccount.internalId,
-      asset: selectedAssetName,
-      network: selectedNetwork.network,
-      tag: data.memo,
-      address: data.address,
-      amount: parseFloat(data.amount),
+      assets: selectedCoins,
     };
 
     tradeApi
-      .withdraw(payload)
+      .convert(payload)
       .then(() => {
-        dispatch(showSuccessAlert("", "withdraw.success"));
-        // Update withdraw history table and assets balance
+        dispatch(showSuccessAlert("Success", "Converted"));
+        // Update coins table
         setUpdatedAt(new Date());
-        // Reset form
-        reset();
+        // Reset selection
+        setRowsSelected([]);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -68,28 +81,40 @@ const Convert = () => {
       });
   };
 
+  /**
+   * @param {*} currentRowsSelected
+   * @param {*} allRowsSelected
+   * @param {Array<Number>} rowsSelected
+   */
   const onSelect = (currentRowsSelected, allRowsSelected, rowsSelected) => {
-    console.log(currentRowsSelected, allRowsSelected, rowsSelected);
+    setRowsSelected(rowsSelected);
   };
 
   return (
     <BalanceManagement>
       <Box className="exchangeAccountConvert">
-        <Typography variant="h3">
+        <Typography variant="h3" className="desc">
           <FormattedMessage id="convert.description" />
         </Typography>
         <Typography variant="body1">
           <FormattedMessage id="convert.note" />
         </Typography>
-        <Box display="flex" flexDirection="row">
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          className="convertAction"
+        >
           <Typography variant="body1">
-            <FormattedMessage id="convert.selected" />
+            <FormattedMessage id="convert.selected" /> <b>{rowsSelected.length}</b>{" "}
             <FormattedMessage id="convert.converto" />
+            <b> {totalSelectedBNB} BNB </b>
             <FormattedMessage id="convert.net" />
           </Typography>
           <CustomButton
             className="bgPurple"
-            disabled={false}
+            disabled={!rowsSelected.length || isLoading}
             loading={isLoading}
             onClick={handleSubmit}
           >
@@ -98,7 +123,7 @@ const Convert = () => {
             </Typography>
           </CustomButton>
         </Box>
-        <ConvertTable assets={assetsList} onSelect={onSelect} />
+        <ConvertTable assets={assetsList} onSelect={onSelect} rowsSelected={rowsSelected} />
       </Box>
     </BalanceManagement>
   );

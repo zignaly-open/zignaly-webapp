@@ -28,12 +28,13 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
  * @property {Array<Object>} data Table Data.
  * @property {string} [persistKey] Key to save display columns settings.
  * @property {MUIDataTableOptions} [options] Table options.
+ * @property {*} [components] Custom table components.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  *
  */
-const Table = ({ columns, data, persistKey, title, options: customOptions }) => {
+const Table = ({ columns, data, persistKey, title, options: customOptions, components }) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -160,7 +161,14 @@ const Table = ({ columns, data, persistKey, title, options: customOptions }) => 
   return (
     <Box className="customTable">
       <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
-        <MUIDataTable columns={columnsCustom} data={data} options={options} title={title} />
+        <MUIDataTable
+          columns={columnsCustom}
+          data={data}
+          options={options}
+          title={title}
+          // @ts-ignore (wait for datatables types v3)
+          components={components}
+        />
       </MuiThemeProvider>
     </Box>
   );

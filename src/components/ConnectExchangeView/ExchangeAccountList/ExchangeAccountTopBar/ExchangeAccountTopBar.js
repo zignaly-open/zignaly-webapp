@@ -63,6 +63,9 @@ const ExchangeAccountTopBar = ({ account }) => {
             >
               <FormattedMessage id="accounts.withdraw" />
             </CustomButton>
+            <CustomButton className="textPurple" onClick={() => navigateToPath("convert", account)}>
+              <FormattedMessage id="accounts.convert" />
+            </CustomButton>
           </>
         )}
       </Box>

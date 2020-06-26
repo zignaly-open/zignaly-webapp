@@ -8,8 +8,18 @@ import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
 
 /**
+ * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ */
+
+/**
+ * @typedef {Array<ExchangeAsset & {coin: string}>} ExchangeAssetsWithName
+ */
+
+/**
  * @typedef {Object} DepositHistoryTablePropTypes
- * @property {string} internalId Exchange account internal id.
+ * @property {ExchangeAssetsWithName} assets Exchange assets that can be converted.
+ * @property {function} onSelect Coin selected callback.
+ * @property {Array<Number>} rowsSelected Selected rows index.
  */
 
 /**
@@ -18,26 +28,26 @@ import { FormatedDateTime } from "../../../../../utils/format";
  * @param {DepositHistoryTablePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ConvertTable = ({ assets, onSelect }) => {
+const ConvertTable = ({ assets, onSelect, rowsSelected }) => {
   let columns = [
     {
       name: "coin",
       label: "col.coin",
     },
     {
-      name: "availableBalance",
+      name: "balanceFree",
       label: "col.balance.available",
     },
     {
-      name: "btcValue",
+      name: "balanceFreeBTC",
       label: "col.valueBTC",
     },
     {
-      name: "usdtValue",
+      name: "balanceFreeUSDT",
       label: "col.valueUSDT",
     },
     {
-      name: "approxBNBValue",
+      name: "balanceTotalExchCoin",
       label: "col.valueBNBapprox",
     },
   ];
@@ -51,7 +61,9 @@ const ConvertTable = ({ assets, onSelect }) => {
    */
   const options = {
     selectableRows: "multiple",
+    // @ts-ignore (wait for datatables types v3)
     onRowSelectionChange: onSelect,
+    rowsSelected,
   };
 
   return (
@@ -60,8 +72,12 @@ const ConvertTable = ({ assets, onSelect }) => {
         columns={columns}
         data={assets}
         persistKey="convertAssets"
-        title={<FormattedMessage id="accounts.deposit.history" />}
+        title=""
         options={options}
+        components={{
+          TableToolbarSelect: () => <></>,
+          TableToolbar: () => <></>,
+        }}
       />
     </Box>
   );
