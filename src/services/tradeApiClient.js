@@ -88,6 +88,7 @@ class TradeApiClient {
    */
   constructor() {
     this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
+    this.apiKey = process.env.GATSBY_API_KEY || "";
   }
 
   /**
@@ -107,6 +108,7 @@ class TradeApiClient {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": this.apiKey,
       },
     };
 
