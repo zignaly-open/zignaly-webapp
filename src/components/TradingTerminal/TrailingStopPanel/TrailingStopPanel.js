@@ -43,7 +43,7 @@ const TrailingStopPanel = (props) => {
 
   const getFieldsDisabledStatus = () => {
     const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+    const isClosed = positionEntity ? positionEntity.closed : false;
     const isTriggered = positionEntity ? positionEntity.trailingStopTriggered : false;
 
     /**
