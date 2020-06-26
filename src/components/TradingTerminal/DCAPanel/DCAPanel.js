@@ -57,7 +57,7 @@ const DCAPanel = (props) => {
   } = useSymbolLimitsValidate(symbolData);
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isClosed = positionEntity ? positionEntity.closed !== 9 : false;
+  const isClosed = positionEntity ? positionEntity.closed : false;
   const targetsDone = positionEntity ? positionEntity.reBuyTargetsCountSuccess : 0;
   const isTargetLocked = cardinality === targetsDone;
   const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
