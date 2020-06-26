@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { keys, range, size } from "lodash";
+import { keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -52,7 +52,7 @@ const DCAPanel = (props) => {
    */
   const resolveDcaIndexes = () => {
     const reBuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
-    const dcaAllIndexes = keys(reBuyTargets).map(parseInt);
+    const dcaAllIndexes = keys(reBuyTargets).map(Number);
     const dcaRebuyIndexes = dcaAllIndexes.filter((index) => index < 1000);
     const dcaIncreaseIndexes = dcaAllIndexes.filter((index) => index >= 1000);
     const dcaRebuyTargets = positionEntity
@@ -75,11 +75,7 @@ const DCAPanel = (props) => {
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
   const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
-  const { expanded, expandClass, expandableControl } = useExpandable(
-    positionTargetsCardinality > 0,
-  );
-
-  console.log("dcaIncreaseIndexes: ", dcaIncreaseIndexes);
+  const { expanded, expandClass, expandableControl } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
     cardinality,
