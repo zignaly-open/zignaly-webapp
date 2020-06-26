@@ -36,6 +36,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
   const [selectedSocials, setSelectedSocials] = useState(provider.social);
+  const [socialError, setSocialError] = useState(false);
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
@@ -132,37 +133,47 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {Boolean} Flag to indicate if fields are validated or not.
    */
   const validatePaymentFields = (data) => {
+    if (socialError) {
+      return false;
+    }
+
     if (data.merchantId) {
+      let flag = true;
       if (!data.price) {
         setError("price", "");
-        return false;
+        flag = false;
       }
       if (!data.ipnSecret) {
         setError("ipnSecret", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
 
     if (data.price) {
+      let flag = true;
       if (!data.merchantId) {
         setError("merchantId", "");
-        return false;
+        flag = false;
       }
       if (!data.ipnSecret) {
         setError("ipnSecret", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
 
     if (data.ipnSecret) {
+      let flag = true;
       if (!data.merchantId) {
         setError("merchantId", "");
-        return false;
+        flag = false;
       }
       if (!data.price) {
         setError("price", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
     return true;
   };
@@ -213,6 +224,15 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setStrategy(value);
   };
 
+  /**
+   *
+   * @param {*} value Error flag for social fields.
+   * @returns {void} None.
+   */
+  const handleSocialError = (value) => {
+    setSocialError(value);
+  };
+
   return (
     <Box bgcolor="grid.main" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -254,7 +274,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.find" />
             </Typography>
-            <SocialSelect defaultValue={provider.social} onChange={handleSocialLinkChange} />
+            <SocialSelect
+              defaultValue={provider.social}
+              onError={handleSocialError}
+              onChange={handleSocialLinkChange}
+            />
           </Box>
 
           <Box bgcolor="grid.main" className="strategyBox">
@@ -372,8 +396,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.website ? provider.website : ""}
                 name="website"
-                rules={{ required: false }}
+                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
               />
+              {errors.website && (
+                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+              )}
             </Box>
 
             {provider.isCopyTrading && (

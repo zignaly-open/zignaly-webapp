@@ -9,6 +9,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  *
  * @typedef {Object} DefaultProps Default props.
  * @property {Function} onChange Change event.
+ * @property {Function} onError Error event.
  * @property {Array<*>} defaultValue
  */
 
@@ -17,9 +18,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} Component JSX.
  */
-const SocialSelect = ({ onChange, defaultValue }) => {
-  const socialObject = { id: Math.random(), network: "facebook", link: "", delete: false };
-
+const SocialSelect = ({ onChange, defaultValue, onError }) => {
   const [values, setValues] = useState([socialObject]);
   const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram", "Email"];
 
@@ -83,6 +82,31 @@ const SocialSelect = ({ onChange, defaultValue }) => {
     onChange(list);
   };
 
+  /**
+   * Function to validate field.
+   *
+   * @param {Number|String} id id of the field object.
+   * @returns {void} None.
+   */
+  const validateFields = (id) => {
+    let list = [...values];
+    let index = list.findIndex((item) => item.id === id);
+    let field = list.find((item) => item.id === id);
+    let regex = /^(ftp|http|https):\/\/[^ "]+$/;
+    if (field.network.toLowerCase() !== "email") {
+      if (!regex.test(field.link)) {
+        field.errorId = field.id;
+        onError(true);
+      } else {
+        field.errorId = 0;
+        onError(false);
+      }
+    }
+    list[index] = field;
+    setValues(list);
+    onChange(list);
+  };
+
   return (
     <Box className="socialSelect">
       {values.map((obj, index) => (
@@ -108,14 +132,21 @@ const SocialSelect = ({ onChange, defaultValue }) => {
               ))}
             </Select>
           </FormControl>
-          <TextField
-            className="customInput"
-            name="input"
-            onChange={(e) => handleChange(e, obj.id)}
-            placeholder="url"
-            value={obj.link}
-            variant="outlined"
-          />
+          <Box className="customInputBox">
+            <TextField
+              className={"customInput " + (obj.errorId === obj.id ? "error" : "")}
+              name="input"
+              fullWidth
+              onChange={(e) => handleChange(e, obj.id)}
+              placeholder="url"
+              value={obj.link}
+              variant="outlined"
+              onBlur={() => validateFields(obj.id)}
+            />
+            {obj.errorId === obj.id && (
+              <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+            )}
+          </Box>
           {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
           {obj.delete && (
             <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
@@ -127,3 +158,10 @@ const SocialSelect = ({ onChange, defaultValue }) => {
 };
 
 export default SocialSelect;
+export const socialObject = {
+  id: Math.random(),
+  network: "facebook",
+  link: "",
+  delete: false,
+  errorId: 0,
+};

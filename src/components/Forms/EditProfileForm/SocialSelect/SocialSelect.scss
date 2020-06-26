@@ -2,19 +2,36 @@
   width: 100%;
 
   .fieldBox {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     width: 100%;
 
     .selectInput {
       width: 30%;
     }
 
-    .customInput {
+    .customInputBox {
       width: calc(70% - 64px);
+      position: relative;
+    }
+
+    .customInput {
+      width: 100%;
 
       fieldset {
         border-color: $lightGrey;
       }
+
+      &.error {
+        fieldset {
+          border-color: $red;
+        }
+      }
+    }
+
+    .errorText {
+      position: absolute;
+      top: 25px;
+      left: 0;
     }
 
     .icon {

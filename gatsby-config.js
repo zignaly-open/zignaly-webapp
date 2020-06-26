@@ -3,6 +3,8 @@ require("dotenv").config({
   path: `.env.${appStage}`,
 });
 
+console.log("ENV: ", process.env);
+
 // Set base path into environment variable that components can access.
 process.env.GATSBY_BASE_PATH = process.env.NODE_ENV === "production" ? "/app2" : "";
 
