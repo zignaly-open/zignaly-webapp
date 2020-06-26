@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
@@ -22,7 +22,6 @@ import TipBox from "../TipBox";
 const Deposit = () => {
   const {
     pathParams: { selectedAccount },
-    setTitle,
   } = useContext(ModalPathContext);
   const copyToClipboard = useClipboard();
 

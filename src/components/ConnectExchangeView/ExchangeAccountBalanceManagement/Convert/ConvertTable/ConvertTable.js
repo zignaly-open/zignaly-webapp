@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
-import tradeApi from "../../../../../services/tradeApiClient";
 import "./ConvertTable.scss";
-import { FormattedMessage } from "react-intl";
-import { FormatedDateTime } from "../../../../../utils/format";
 
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
@@ -19,7 +15,7 @@ import { FormatedDateTime } from "../../../../../utils/format";
  * @typedef {Object} DepositHistoryTablePropTypes
  * @property {ExchangeAssetsWithName} assets Exchange assets that can be converted.
  * @property {function} onSelect Coin selected callback.
- * @property {Array<Number>} rowsSelected Selected rows index.
+ * @property {Array<Number>} rowsSelected Selected rows indexes.
  */
 
 /**
@@ -70,14 +66,14 @@ const ConvertTable = ({ assets, onSelect, rowsSelected }) => {
     <Box className="convertTable" display="flex" flexDirection="column" width={1}>
       <Table
         columns={columns}
-        data={assets}
-        persistKey="convertAssets"
-        title=""
-        options={options}
         components={{
           TableToolbarSelect: () => <></>,
           TableToolbar: () => <></>,
         }}
+        data={assets}
+        options={options}
+        persistKey="convertAssets"
+        title=""
       />
     </Box>
   );

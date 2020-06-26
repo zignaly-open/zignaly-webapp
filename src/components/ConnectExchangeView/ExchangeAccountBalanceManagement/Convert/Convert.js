@@ -1,16 +1,9 @@
-import React, { useEffect, useContext, useState } from "react";
-import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@material-ui/core";
+import React, { useContext, useState } from "react";
+import { Box, Typography } from "@material-ui/core";
 import "./Convert.scss";
-import TransferCoinPicker from "../TransferCoinPicker";
-import TipBox from "../TipBox";
 import { FormattedMessage, useIntl } from "react-intl";
-import useAssetsSelect from "../../../../hooks/useAssetsSelect";
-import AlertIcon from "../../../../images/exchangeAccount/alert.svg";
 import BalanceManagement from "../BalanceManagement";
-import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
-import { formatFloat } from "../../../../utils/format";
-import { useForm } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import useExchangeAssets from "../../../../hooks/useExchangeAssets";
@@ -27,13 +20,11 @@ import ModalPathContext from "../../ModalPathContext";
 const Convert = () => {
   const {
     pathParams: { selectedAccount },
-    setTitle,
   } = useContext(ModalPathContext);
   const [isLoading, setIsLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [rowsSelected, setRowsSelected] = useState([]);
   const assets = useExchangeAssets(selectedAccount.internalId, updatedAt);
-  const intl = useIntl();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
@@ -82,29 +73,29 @@ const Convert = () => {
   };
 
   /**
-   * @param {*} currentRowsSelected
-   * @param {*} allRowsSelected
-   * @param {Array<Number>} rowsSelected
+   * @param {*} currentRowsSelected currentRowsSelected
+   * @param {*} allRowsSelected allRowsSelected
+   * @param {Array<Number>} _rowsSelected Selected rows indexes
    */
-  const onSelect = (currentRowsSelected, allRowsSelected, rowsSelected) => {
-    setRowsSelected(rowsSelected);
+  const onSelect = (currentRowsSelected, allRowsSelected, _rowsSelected) => {
+    setRowsSelected(_rowsSelected);
   };
 
   return (
     <BalanceManagement>
       <Box className="exchangeAccountConvert">
-        <Typography variant="h3" className="desc">
+        <Typography className="desc" variant="h3">
           <FormattedMessage id="convert.description" />
         </Typography>
         <Typography variant="body1">
           <FormattedMessage id="convert.note" />
         </Typography>
         <Box
+          alignItems="center"
+          className="convertAction"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
-          className="convertAction"
         >
           <Typography variant="body1">
             <FormattedMessage id="convert.selected" /> <b>{rowsSelected.length}</b>{" "}
