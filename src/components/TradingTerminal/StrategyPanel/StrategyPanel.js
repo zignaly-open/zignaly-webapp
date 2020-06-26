@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
@@ -37,7 +37,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  */
 const StrategyPanel = (props) => {
   const { symbolData, leverage } = props;
-  const { errors, register, watch } = useFormContext();
+  const { control, errors, register, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
@@ -77,8 +77,8 @@ const StrategyPanel = (props) => {
     { label: intl.formatMessage({ id: "terminal.strategy.import" }), val: "import" },
   ];
 
-  const [entryStrategy, setEntryStrategy] = useState(entryStrategyOptions[0].val);
   const entryType = watch("entryType");
+  const entryStrategy = watch("entryStrategy");
 
   return (
     <Box className={"panel strategyPanel expanded"}>
@@ -87,11 +87,11 @@ const StrategyPanel = (props) => {
           <Typography variant="h5">
             <FormattedMessage id="terminal.strategy" />
           </Typography>
-          <CustomSelect
-            label=""
-            onChange={setEntryStrategy}
-            options={entryStrategyOptions}
-            value={entryStrategy}
+          <Controller
+            as={<CustomSelect label="" onChange={() => {}} options={entryStrategyOptions} />}
+            control={control}
+            defaultValue="limit"
+            name="entryStrategy"
           />
         </Box>
       </Box>
