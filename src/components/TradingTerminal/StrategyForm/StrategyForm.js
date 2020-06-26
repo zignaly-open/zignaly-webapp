@@ -239,10 +239,12 @@ const StrategyForm = (props) => {
    * @returns {PositionStrategyParams} Create position payload.
    */
   const composePositionStrategy = (draftPosition) => {
+    const positionSize = parseFloat(draftPosition.positionSize) || 0;
+
     return {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
-      positionSize: parseFloat(draftPosition.positionSize) || 0,
-      realInvestment: parseFloat(draftPosition.realInvestment) || 0,
+      positionSize,
+      realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || currentPrice,
     };
   };
