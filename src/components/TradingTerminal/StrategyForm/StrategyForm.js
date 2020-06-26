@@ -68,6 +68,7 @@ const StrategyForm = (props) => {
   } = props;
 
   const isPositionView = isObject(positionEntity);
+  const isClosed = positionEntity ? positionEntity.closed : false;
   const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
   const methods = useForm({
     mode: "onChange",
@@ -459,26 +460,28 @@ const StrategyForm = (props) => {
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          {isPositionView && (
+          {isPositionView && !isClosed && (
             <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           )}
           {!isPositionView && <EntryExpirationPanel />}
           {!isPositionView && <AutoclosePanel />}
-          <CustomButton
-            className={"full submitButton"}
-            disabled={!isEmpty(errors)}
-            loading={processing}
-            onClick={() => {
-              triggerValidation();
-            }}
-            type="submit"
-          >
-            {isPositionView ? (
-              <FormattedMessage id="terminal.update" />
-            ) : (
-              <FormattedMessage id="terminal.open" />
-            )}
-          </CustomButton>
+          {!isClosed && (
+            <CustomButton
+              className={"full submitButton"}
+              disabled={!isEmpty(errors)}
+              loading={processing}
+              onClick={() => {
+                triggerValidation();
+              }}
+              type="submit"
+            >
+              {isPositionView ? (
+                <FormattedMessage id="terminal.update" />
+              ) : (
+                <FormattedMessage id="terminal.open" />
+              )}
+            </CustomButton>
+          )}
         </form>
       </Box>
     </FormContext>
