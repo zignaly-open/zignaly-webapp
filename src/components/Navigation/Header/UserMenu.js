@@ -9,7 +9,7 @@ import { Box, MenuItem } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import { openSettingsView } from "../../../store/actions/ui";
 
