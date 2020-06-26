@@ -21,5 +21,13 @@
         flex: 0 0 calc(50% - 15px);
       }
     }
+
+    .customSelect {
+      margin-left: 0;
+
+      [role="button"] {
+        padding: 0 10px;
+      }
+    }
   }
 }

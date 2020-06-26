@@ -229,14 +229,18 @@ const IncreaseStrategyPanel = (props) => {
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
-          <Box alignItems="center" className="title" display="flex" flexDirection="row">
+          <FormControl className="entryType">
+            <HelperLabel
+              descriptionId="terminal.increasestrategy.help"
+              labelId="terminal.entrytype"
+            />
             <Controller
               as={<CustomSelect label="" onChange={() => {}} options={entryStrategyOptions} />}
               control={control}
               defaultValue="limit"
               name="entryStrategy"
             />
-          </Box>
+          </FormControl>
           {selectedExchange.exchangeType === "futures" && (
             <FormControl className="entryType">
               <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
