@@ -110,6 +110,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} UserLoginPayload
  * @property {string} email
  * @property {string} password
+ * @property {string} gRecaptchaResponse
  */
 
 /**
