@@ -21,9 +21,25 @@
     margin-right: 10px;
     width: 16px;
   }
+
+  .fieldInputBox {
+    margin-left: 20px;
+    width: 50%;
+  }
 }
 
-.fieldInputBox {
-  margin-left: 20px;
-  width: 50%;
+@include media("<=sm") {
+  .toggleInput {
+    flex-direction: column;
+
+    .labelBox {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    .fieldInputBox {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
 }

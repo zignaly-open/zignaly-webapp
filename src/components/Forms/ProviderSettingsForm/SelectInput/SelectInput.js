@@ -1,5 +1,5 @@
 import React from "react";
-import "./ToggleSelectInput.scss";
+import "./SelectInput.scss";
 import { Box, Typography, TextField, Select, MenuItem, Tooltip } from "@material-ui/core";
 import { Controller } from "react-hook-form";
 import HelpIcon from "@material-ui/icons/Help";
@@ -23,11 +23,11 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const ToggleSelectInput = ({ value1, value2, control, label, name1, name2, tooltip }) => {
+const SelectInput = ({ value1, value2, control, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
 
   return (
-    <Box alignItems="center" className="toggleSelectInput" display="flex" flexDirection="row">
+    <Box alignItems="center" className="selectInputBox" display="flex" flexDirection="row">
       <Box
         alignItems="center"
         className="labelBox"
@@ -74,4 +74,4 @@ const ToggleSelectInput = ({ value1, value2, control, label, name1, name2, toolt
   );
 };
 
-export default ToggleSelectInput;
+export default SelectInput;

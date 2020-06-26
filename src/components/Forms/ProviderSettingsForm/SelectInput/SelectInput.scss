@@ -1,40 +1,42 @@
-.toggleTextarea {
+.selectInputBox {
   margin-bottom: 20px;
   width: 100%;
 
   .labelBox {
-    width: 50%;
+    width: 35%;
 
     .customLabel {
       margin-bottom: 0;
     }
   }
 
-  .customInput {
-    height: auto;
-  }
-
   .customLabel {
     margin-bottom: 0;
-    margin-right: 10px;
-    min-width: 200px;
+    min-width: 150px;
   }
 
   .icon {
     height: 16px;
-    margin-right: 10px;
     width: 16px;
+  }
+
+  .customInput {
+    width: 120px;
+  }
+
+  .selectInput {
+    margin-left: 10px;
+    width: 120px;
   }
 
   .fieldInputBox {
     margin-left: 20px;
-    min-height: 100px;
-    width: 50%;
+    width: 60%;
   }
 }
 
 @include media("<=sm") {
-  .toggleTextarea {
+  .selectInputBox {
     flex-direction: column;
 
     .labelBox {
@@ -42,9 +44,27 @@
       margin-bottom: 5px;
     }
 
+    .customLabel {
+      margin-bottom: 0;
+      min-width: 150px;
+    }
+
+    .icon {
+      height: 16px;
+      width: 16px;
+    }
+
+    .customInput {
+      width: 50%;
+    }
+
+    .selectInput {
+      margin-left: 10px;
+      width: 50%;
+    }
+
     .fieldInputBox {
       margin-left: 0;
-      min-height: 100px;
       width: 100%;
     }
   }
