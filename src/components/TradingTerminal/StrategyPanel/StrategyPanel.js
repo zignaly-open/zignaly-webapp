@@ -123,7 +123,7 @@ const StrategyPanel = (props) => {
             </Box>
           </FormControl>
         )}
-        {entryStrategy !== "market" && (
+        {entryStrategy !== "market" ? (
           <FormControl>
             <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.price" />
             <Box alignItems="center" display="flex">
@@ -137,6 +137,8 @@ const StrategyPanel = (props) => {
             </Box>
             {errors.price && <span className="errorText">{errors.price.message}</span>}
           </FormControl>
+        ) : (
+          <input name="price" ref={register} type="hidden" />
         )}
         {selectedExchange.exchangeType === "futures" && (
           <FormControl>
