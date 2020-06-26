@@ -20,7 +20,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
   const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    if (!internalId || !network || !asset) return null;
+    if (!internalId || !network || !asset) return undefined;
     if (depositAddress) {
       // Dependency updated, reset the value while it's loading
       setDepositAddress(null);
