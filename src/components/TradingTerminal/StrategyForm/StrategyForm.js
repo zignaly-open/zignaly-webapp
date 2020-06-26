@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
-import { isEmpty, isObject, range, forIn, noop } from "lodash";
+import { assign, isEmpty, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -196,7 +196,7 @@ const StrategyForm = (props) => {
   };
 
   /**
-   * Compose position DCA targets.
+   * Compose position DCA targets payload chunk.
    *
    * @param {Object<string, any>} draftPosition React hook form submission values.
    * @returns {PositionDCATargets|boolean} Create position payload.
@@ -225,17 +225,40 @@ const StrategyForm = (props) => {
   };
 
   /**
+   * @typedef {Object} PositionStrategyParams
+   * @property {CreatePositionPayload['buyType']} buyType
+   * @property {CreatePositionPayload['positionSize']} positionSize
+   * @property {CreatePositionPayload['realInvestment']} realInvestment
+   * @property {CreatePositionPayload['limitPrice']} limitPrice
+   */
+
+  /**
+   * Compose position strategy payload chunk.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {PositionStrategyParams} Create position payload.
+   */
+  const composePositionStrategy = (draftPosition) => {
+    return {
+      buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      positionSize: parseFloat(draftPosition.positionSize) || 0,
+      realInvestment: parseFloat(draftPosition.realInvestment) || 0,
+      limitPrice: draftPosition.price || currentPrice,
+    };
+  };
+
+  /**
    * Compose create position payload.
    *
    * @param {Object<string, any>} draftPosition React hook form submission values.
-   * @returns {CreatePositionPayload} Create position payload.
+   * @returns {any} Create position payload.
    */
   const composePositionPayload = (draftPosition) => {
     const { quote, base } = currentSymbolData;
     const { selectedExchange } = storeSettings;
-    console.log("draftPosition: ", draftPosition);
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
-    const payload = {
+
+    return {
       token: storeSession.tradeApi.accessToken,
       pair: `${base}  ${quote}`,
       positionSizeQuote: quote,
@@ -253,14 +276,33 @@ const StrategyForm = (props) => {
       providerName: "Manual Trading",
       exchangeName: exchangeName,
       exchangeInternalId: selectedExchange.internalId,
-      // TODO: Separate into strategy composition function.
-      buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
-      positionSize: parseFloat(draftPosition.positionSize) || 0,
-      realInvestment: parseFloat(draftPosition.realInvestment) || 0,
-      limitPrice: draftPosition.price || currentPrice,
     };
+  };
 
-    return payload;
+  /**
+   * Compose create position payload.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {CreatePositionPayload} Create position payload.
+   */
+  const composeCreatePositionPayload = (draftPosition) => {
+    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition));
+  };
+
+  /**
+   * Compose update position payload.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {UpdatePositionPayload} Update position payload.
+   */
+  const composeUpdatePositionPayload = (draftPosition) => {
+    const positionStrategy = draftPosition.positionSize
+      ? composePositionStrategy(draftPosition)
+      : {};
+
+    return assign(composePositionPayload(draftPosition), positionStrategy, {
+      positionId: positionEntity.positionId,
+    });
   };
 
   /**
@@ -313,15 +355,11 @@ const StrategyForm = (props) => {
    * @returns {Void} None.
    */
   const onSubmit = (draftPosition) => {
-    const payload = composePositionPayload(draftPosition);
     if (positionEntity) {
-      const updatePayload = {
-        ...payload,
-        positionId: positionEntity.positionId,
-      };
-
-      updatePosition(updatePayload);
+      const payload = composeUpdatePositionPayload(draftPosition);
+      updatePosition(payload);
     } else {
+      const payload = composeCreatePositionPayload(draftPosition);
       createPosition(payload);
     }
   };

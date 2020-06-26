@@ -62,6 +62,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} limitPrice
  * @property {string} positionSizeQuote
  * @property {number} positionSize
+ * @property {number} realInvestment
  * @property {PositionOrderType} type
  * @property {PositionEntrySide} side
  * @property {number|boolean} stopLossPercentage
