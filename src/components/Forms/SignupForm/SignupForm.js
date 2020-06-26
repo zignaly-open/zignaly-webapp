@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
 import {
   Box,
@@ -11,12 +11,11 @@ import {
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { validatePassword } from "../../../utils/validators";
-// import ReCAPTCHA from "react-google-recaptcha";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../PasswordStrength";
-// import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import Captcha from "../../Captcha";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,16 +24,10 @@ const SignupForm = () => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [passwordDoNotMatch] = useState(false);
   const [strength, setStrength] = useState(0);
-  // const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const [loading] = useState(false);
-  // const recaptchaRef = createRef();
-  // const dispatch = useDispatch();
+  const [, setCaptchaResponse] = useState("");
+  const recaptchaRef = useRef(null);
   const { errors, handleSubmit, register, setError, clearError } = useForm();
-
-  // componentDidMount() {
-  //     const ref = saveRefCookie(this.props.location);
-  //     this.setState({ref: ref})
-  // }
 
   /**
    * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -89,30 +82,13 @@ const SignupForm = () => {
   //           array: true,
   //           gRecaptchaResponse: "abracadabra"
   //       };
-  //       setCaptchaResponse('')
+  //       //setCaptchaResponse('')
   //       this.props.dispatch(signup(params, this.hideLoader));
   //     } else {
   //       setPasswordDoNotMatch(true);
   //     }
   //   };
 
-  //   const onChangeReCAPTCHA = (value) => {
-  //     setCaptchaResponse(value);
-  //   };
-
-  //   const onExpiredReCAPTCHA = () => {
-  //     dispatch(alertError("Your solution to the ReCAPTCHA has expired, please resolve it again."));
-  //     setCaptchaResponse("");
-  //   };
-
-  //   const onErroredReCAPTCHA = () => {
-  //     dispatch(
-  //       alertError(
-  //         "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
-  //       ),
-  //     );
-  //     setCaptchaResponse("");
-  //   };
   const onSubmit = () => {};
 
   return (
@@ -267,16 +243,9 @@ const SignupForm = () => {
           </Box>
         </Box>
 
-        {/* {envconfig.configureCaptcha &&
-                    <Box className="inputBox">
-                        <ReCAPTCHA
-                            ref={this.recaptchaRef}
-                            sitekey="6LdORtMUAAAAAGLmbf3TM8plIRorVCEc9pVChix8"
-                            onChange={this.onChangeReCAPTCHA}
-                            onExpired={this.onExpiredReCAPTCHA}
-                            onErrored={this.onErroredReCAPTCHA}/>
-                    </Box>
-                } */}
+        <Box className="captchaBox">
+          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
+        </Box>
 
         <Box className="inputBox button-box">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
