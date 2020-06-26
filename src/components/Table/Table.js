@@ -163,10 +163,10 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
         <MUIDataTable
           columns={columnsCustom}
+          // @ts-ignore (wait for datatables types v3)
           components={components}
           data={data}
           options={options}
-          // @ts-ignore (wait for datatables types v3)
           title={title}
         />
       </MuiThemeProvider>

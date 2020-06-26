@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./Convert.scss";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import BalanceManagement from "../BalanceManagement";
 import CustomButton from "../../../CustomButton";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -76,6 +76,7 @@ const Convert = () => {
    * @param {*} currentRowsSelected currentRowsSelected
    * @param {*} allRowsSelected allRowsSelected
    * @param {Array<Number>} _rowsSelected Selected rows indexes
+   * @returns {void}
    */
   const onSelect = (currentRowsSelected, allRowsSelected, _rowsSelected) => {
     setRowsSelected(_rowsSelected);
