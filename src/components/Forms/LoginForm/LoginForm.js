@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./LoginForm.scss";
 import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -12,6 +12,7 @@ import { startTradeApiSession } from "../../../store/actions/session";
 import { isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import { setUserExchanges, setUserData } from "../../../store/actions/user";
+import Captcha from "../../Captcha";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -31,6 +32,9 @@ const LoginForm = () => {
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const recaptchaRef = useRef(null);
+
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
@@ -49,8 +53,11 @@ const LoginForm = () => {
    * @returns {Void} None.
    */
   const onSubmit = (payload) => {
+    // setCaptchaResponse("");
+    // recaptchaRef.current.reset();
+
     showLoading(true);
-    dispatch(startTradeApiSession(payload));
+    dispatch(startTradeApiSession({ ...payload, gRecaptchaResponse }));
   };
 
   /**
@@ -139,6 +146,10 @@ const LoginForm = () => {
             />
           </FormControl>
           {errors.password && <span className="errorText">Password cannot be empty</span>}
+        </Box>
+
+        <Box className="captchaBox">
+          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
         </Box>
 
         <Box className="inputBox">

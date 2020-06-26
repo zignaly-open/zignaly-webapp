@@ -107,6 +107,7 @@ class TradeApiClient {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": process.env.GATSBY_API_KEY || "",
       },
     };
 
