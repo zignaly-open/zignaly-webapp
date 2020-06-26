@@ -21,19 +21,16 @@
 
     .subInputBox {
       margin-left: 5%;
-      width: 80%;
+      width: 95%;
 
       .fieldInputBox {
-        width: 250px;
-      }
-    }
+        width: 100%;
+        max-width: 250px;
+        margin-bottom: 15px;
 
-    .fieldInputBox {
-      margin-bottom: 20px;
-      width: 50%;
-
-      .customLabel {
-        margin-bottom: 5px;
+        .customLabel {
+          margin-bottom: 5px;
+        }
       }
     }
   }
@@ -44,6 +41,27 @@
 
     .submitButton {
       min-width: 160px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .optionsFormWrapper {
+    .providerOptionsForm {
+      .inputBox {
+        align-items: flex-start;
+      }
+
+      .subInputBox {
+        margin-left: 10%;
+        width: 90%;
+      }
+    }
+
+    .formAction {
+      .submitButton {
+        min-width: 100%;
+      }
     }
   }
 }
