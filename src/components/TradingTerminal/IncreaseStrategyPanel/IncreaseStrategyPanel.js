@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
+import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -41,22 +42,19 @@ const IncreaseStrategyPanel = (props) => {
   const { symbolData, lastPriceCandle, positionEntity } = props;
   const [expand, setExpand] = useState(true);
   const expandClass = expand ? "expanded" : "collapsed";
-  const {
-    clearError,
-    control,
-    errors,
-    getValues,
-    register,
-    setError,
-    setValue,
-    watch,
-  } = useFormContext();
+  const { control, errors, register, watch } = useFormContext();
   const intl = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
-  const entryType = watch("entryType");
   const { leverage } = positionEntity;
+  const {
+    positionSizeChange,
+    priceChange,
+    realInvestmentChange,
+    unitsChange,
+    validatePositionSize,
+  } = usePositionSizeHandlers(symbolData, leverage);
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
@@ -95,129 +93,9 @@ const IncreaseStrategyPanel = (props) => {
     { label: intl.formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
   ];
 
+  // Watched inputs that affect components.
+  const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
-  const { limits } = symbolData;
-
-  console.log("entryStrategy: ", entryStrategy);
-
-  /**
-   * Validate that position size is within limits.
-   *
-   * @param {any} positionSize Position size value.
-   * @returns {boolean} Validation result.
-   */
-  function validatePositionSize(positionSize) {
-    const value = parseFloat(positionSize);
-
-    clearError("positionSize");
-    if (isNaN(value)) {
-      setError("positionSize", "error", "Position size must be a numeric value.");
-      return false;
-    }
-
-    if (limits.cost.min && value < limits.cost.min) {
-      setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
-      return false;
-    }
-
-    if (limits.cost.max && value > limits.cost.max) {
-      setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Validate that units is within limits.
-   *
-   * @param {any} units Units value.
-   * @returns {boolean} Validation result.
-   */
-  function validateUnits(units) {
-    const value = parseFloat(units);
-
-    clearError("units");
-    if (isNaN(value)) {
-      setError("units", "error", "Position size must be a numeric value.");
-      return false;
-    }
-
-    if (limits.amount.min && value < limits.amount.min) {
-      setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
-      return false;
-    }
-
-    if (limits.amount.max && value > limits.amount.max) {
-      setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Validate that price is within limits.
-   *
-   * @param {number} price Price value.
-   * @returns {Void} None.
-   */
-  function validatePrice(price) {
-    clearError("price");
-    if (limits.price.min && price < limits.price.min) {
-      setError("price", "error", `Price cannot be lower than ${limits.price.min}`);
-    }
-
-    if (limits.price.max && price > limits.price.max) {
-      setError("price", "error", `Price cannot be greater than ${limits.price.max}`);
-    }
-  }
-
-  const realInvestmentChange = () => {
-    const draftPosition = getValues();
-    const positionSize = parseFloat(draftPosition.realInvestment) * leverage;
-    setValue("positionSize", positionSize);
-    validatePositionSize(positionSize);
-
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-    const units = positionSize / price;
-    setValue("units", units.toFixed(8));
-    validateUnits(units);
-  };
-
-  const positionSizeChange = () => {
-    const draftPosition = getValues();
-    const positionSize = parseFloat(draftPosition.positionSize);
-    validatePositionSize(positionSize);
-
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-    const units = positionSize / price;
-    setValue("units", units.toFixed(8));
-    validateUnits(units);
-
-    const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
-    setValue("realInvestment", realInvestment.toFixed(8));
-  };
-
-  const unitsChange = () => {
-    const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-    const units = parseFloat(draftPosition.units);
-    validateUnits(units);
-
-    const positionSize = units * price;
-    setValue("positionSize", positionSize.toFixed(8));
-    validatePositionSize(positionSize);
-
-    const realInvestment = positionSize / leverage;
-    setValue("realInvestment", realInvestment.toFixed(8));
-  };
-
-  const priceChange = () => {
-    const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price) || parseFloat(lastPriceCandle[1]);
-    validatePrice(price);
-  };
 
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
