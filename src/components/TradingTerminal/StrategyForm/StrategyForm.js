@@ -203,13 +203,18 @@ const StrategyForm = (props) => {
    * @returns {PositionDCATargets|boolean} Create position payload.
    */
   const composePositionDcaTargets = (draftPosition) => {
-    const targetRange = range(1, 10, 1);
     /**
      * @type {PositionDCATargets}
      */
     const dcaTargets = [];
 
-    targetRange.forEach((targetId) => {
+    /**
+     * Compose a DCA target item for a given index.
+     *
+     * @param {Number} targetId Target index.
+     * @return {Void} None.
+     */
+    const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
 
@@ -220,7 +225,10 @@ const StrategyForm = (props) => {
           amountPercentage: parseFloat(targetRebuyPercentage),
         });
       }
-    });
+    };
+
+    range(1, 20, 1).forEach(composeTargetItem);
+    range(1000, 1020, 1).forEach(composeTargetItem);
 
     return isEmpty(dcaTargets) ? false : dcaTargets;
   };
