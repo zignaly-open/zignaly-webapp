@@ -12,15 +12,9 @@ import { endTradeApiSession } from "../../../store/actions/session";
 import { navigate } from "@reach/router";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import { openSettingsView } from "../../../store/actions/ui";
-import { setUserExchanges, setUserData } from "../../../store/actions/user";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  const authorizationPayload = {
-    token: "606b1e14f099a43686ed986d5973a309",
-  };
-  dispatch(setUserExchanges(authorizationPayload));
-  dispatch(setUserData(authorizationPayload));
 
   const logout = () => {
     dispatch(endTradeApiSession());
