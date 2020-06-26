@@ -646,6 +646,27 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ConvertPayload
+ * @property {Array<string>} assets
+ * @property {string} internalId
+ */
+
+/**
+ * @typedef {Object} TransObject
+ * @property {string} amount
+ * @property {string} asset
+ * @property {string} serviceCharge
+ * @property {string} transferredAmount
+ */
+
+/**
+ * @typedef {Object} ConvertReply
+ * @property {string} totalServiceCharge
+ * @property {string} totalTransferred
+ * @property {Array<TransObject>} trans
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -2554,6 +2575,20 @@ function createExchangeWithdrawEmptyEntity() {
 export function withdrawResponseTransform(response) {
   return {
     id: response.id,
+  };
+}
+
+/**
+ * Transform convert asset reply to typed ConvertReply
+ *
+ * @param {*} response Trade API convert asset response.
+ * @returns {ConvertReply} Convert asset reply object.
+ */
+export function convertAssetResponseTransform(response) {
+  return {
+    totalServiceCharge: response.totalServiceCharge,
+    totalTransferred: response.totalTransferred,
+    trans: response.trans,
   };
 }
 

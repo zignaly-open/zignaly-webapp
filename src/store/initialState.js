@@ -191,6 +191,13 @@ const initialState = {
       ],
       depositHistory: ["status", "currency", "amount", "timestamp", "txid"],
       withdrawHistory: ["status", "currency", "amount", "timestamp", "txid"],
+      convertAssets: [
+        "coin",
+        "balanceFree",
+        "balanceFreeBTC",
+        "balanceFreeUSDT",
+        "balanceTotalExchCoin",
+      ],
     },
     selectedExchange: {
       id: "",
