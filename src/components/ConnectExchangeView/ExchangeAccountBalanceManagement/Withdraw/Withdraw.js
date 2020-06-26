@@ -39,11 +39,6 @@ const Withdraw = () => {
     setSelectedNetwork,
   } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, updatedAt);
 
-  useEffect(() => {
-    setTitle(selectedAccount.internalName);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   /**
    * @typedef {Object} FormData
    * @property {String} address

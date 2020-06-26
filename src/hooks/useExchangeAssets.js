@@ -11,7 +11,7 @@ import tradeApi from "../services/tradeApiClient";
  *
  * @param {string} internalId Exchange account internal id.
  * @param {Date} updatedAt Last updated date to force data refresh.
- * @returns {ExchangeAssetsDict} Quote Assets.
+ * @returns {ExchangeAssetsDict} Exchange Assets.
  */
 const useExchangeAssets = (internalId, updatedAt) => {
   const [assets, setAssets] = useState({});

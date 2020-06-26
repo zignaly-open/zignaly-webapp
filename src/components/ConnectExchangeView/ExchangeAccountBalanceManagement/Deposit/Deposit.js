@@ -41,11 +41,6 @@ const Deposit = () => {
     selectedNetwork && selectedNetwork.network,
   );
 
-  useEffect(() => {
-    setTitle(selectedAccount.internalName);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const copyAddress = () => {
     if (depositAddress) copyToClipboard(depositAddress.address, "deposit.address.copied");
   };
