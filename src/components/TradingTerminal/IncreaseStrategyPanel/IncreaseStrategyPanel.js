@@ -21,14 +21,12 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {CoinRayCandle} lastPriceCandle
  * @property {PositionEntity} positionEntity Position entity.
  */
 
@@ -39,7 +37,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  * @returns {JSX.Element} Strategy panel element.
  */
 const IncreaseStrategyPanel = (props) => {
-  const { symbolData, lastPriceCandle, positionEntity } = props;
+  const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(true);
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch } = useFormContext();
