@@ -27,14 +27,12 @@ const PerformanceGraph = ({ provider }) => {
 
   const prepareValues = () => {
     let stats = provider.performance.weeklyStats;
-    console.log(stats);
     let values = [];
     if (stats) {
       if (stats.length > 12) {
         let list = [...stats].sort((a, b) => b.week - a.week);
         values = [...list].splice(0, 12);
-        values = values.map((item) => item.return);
-        return values;
+        return values.map((item) => item.return);
       } else {
         let list = [...stats].sort((a, b) => a.week - b.week);
         values = list.map((item) => item.return);

@@ -1,12 +1,14 @@
 export const OPEN_EXCHANGE_CONNECTION_VIEW = "OPEN_EXCHANGE_CONNECTION_VIEW_ACTION";
 export const OPEN_SSETTINGS_VIEW = "OPEN_SETTINGS_VIEW_ACTION";
 export const SHOW_LOADER = "SHOW_LOADER_ACTION";
-export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT_ACTION";
-export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT_ACTION";
+export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT";
+export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT";
+export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
+export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
 
 /**
- *
  * @typedef {import('../../store/store').AppThunk} AppThunk
+ * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
@@ -52,41 +54,53 @@ export const showLoader = (flag) => {
  * Action to show error alert.
  *
  * @param {*} error Error object from the backend
- * @returns {AppThunk} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const showErrorAlert = (error) => {
-  return async (dispatch) => {
-    let payload = {
+  return {
+    type: SHOW_ERROR_ALERT,
+    payload: {
       title: "error.occured",
       body: error && error.code ? `error.${error.code}` : "error.noidea",
-      open: true,
-    };
-    const action = {
-      type: HIDE_ERROR_ALERT,
-      payload: payload,
-    };
-
-    dispatch(action);
+    },
   };
 };
 
 /**
  * Action to hide error alert.
  *
- * @returns {AppThunk} Action object.
+ * @returns {AnyAction} Action object.
  */
 export const hideErrorAlert = () => {
-  return async (dispatch) => {
-    let payload = {
-      title: "",
-      body: "",
-      open: false,
-    };
-    const action = {
-      type: HIDE_ERROR_ALERT,
-      payload: payload,
-    };
+  return {
+    type: HIDE_ERROR_ALERT,
+  };
+};
 
-    dispatch(action);
+/**
+ * Action to show success alert.
+ *
+ * @param {string} title Alert title.
+ * @param {string} body Alert body.
+ * @returns {AnyAction} Action object.
+ */
+export const showSuccessAlert = (title, body) => {
+  return {
+    type: SHOW_SUCCESS_ALERT,
+    payload: {
+      title,
+      body,
+    },
+  };
+};
+
+/**
+ * Action to hide success alert.
+ *
+ * @returns {AnyAction} Action object.
+ */
+export const hideSuccessAlert = () => {
+  return {
+    type: HIDE_SUCCESS_ALERT,
   };
 };

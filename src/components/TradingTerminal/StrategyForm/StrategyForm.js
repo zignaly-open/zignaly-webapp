@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
-import { isEmpty, isObject, range, forIn } from "lodash";
+import { isEmpty, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -31,6 +32,7 @@ import "../../CustomButton/CustomButton.scss";
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
+ * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
@@ -46,6 +48,7 @@ import "../../CustomButton/CustomButton.scss";
  * @property {number} leverage
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {function} [notifyPositionUpdate] Callback to notify position update.
  */
 
 /**
@@ -59,6 +62,7 @@ const StrategyForm = (props) => {
     dataFeed,
     lastPriceCandle,
     leverage,
+    notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
     positionEntity = null,
@@ -277,6 +281,49 @@ const StrategyForm = (props) => {
   };
 
   /**
+   * Submit manual position create request to Trade API.
+   *
+   * @param {CreatePositionPayload} payload Create position payload.
+   * @return {Void} None.
+   */
+  const createPosition = (payload) => {
+    setProcessing(true);
+    tradeApi
+      .manualPositionCreate(payload)
+      .then((positionId) => {
+        setProcessing(false);
+        reset();
+        alert(`Position was created succesfully with ID ${positionId}`);
+        navigate(`/position/${positionId}`);
+      })
+      .catch((e) => {
+        setProcessing(false);
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  /**
+   * Submit manual position update request to Trade API.
+   *
+   * @param {UpdatePositionPayload} payload Update position payload.
+   * @return {Void} None.
+   */
+  const updatePosition = (payload) => {
+    setProcessing(true);
+    tradeApi
+      .manualPositionUpdate(payload)
+      .then(() => {
+        setProcessing(false);
+        alert(`Position ${positionEntity.positionId} was updated succesfully.`);
+        notifyPositionUpdate();
+      })
+      .catch((e) => {
+        setProcessing(false);
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  /**
    * Handle create position form submission.
    *
    * @param {Object<string, any>} draftPosition React hook form submission values.
@@ -284,19 +331,16 @@ const StrategyForm = (props) => {
    */
   const onSubmit = (draftPosition) => {
     const payload = composePositionPayload(draftPosition);
-    setProcessing(true);
-    tradeApi
-      .manualPositionCreate(payload)
-      .then((positionId) => {
-        // TODO: Navigate to position detail page.
-        setProcessing(false);
-        alert(`Position was created succesfully with ID ${positionId}`);
-        reset();
-      })
-      .catch((e) => {
-        setProcessing(false);
-        dispatch(showErrorAlert(e));
-      });
+    if (positionEntity) {
+      const updatePayload = {
+        ...payload,
+        positionId: positionEntity.positionId,
+      };
+
+      updatePosition(updatePayload);
+    } else {
+      createPosition(payload);
+    }
   };
 
   // @ts-ignore
@@ -410,7 +454,11 @@ const StrategyForm = (props) => {
             }}
             type="submit"
           >
-            <FormattedMessage id="terminal.open" />
+            {isPositionView ? (
+              <FormattedMessage id="terminal.update" />
+            ) : (
+              <FormattedMessage id="terminal.open" />
+            )}
           </CustomButton>
         </form>
       </Box>

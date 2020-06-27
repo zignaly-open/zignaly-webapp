@@ -21,13 +21,13 @@ const EquityGraphLabels = ({ list }) => {
   const [labels, setLabels] = useState([]);
 
   const monthNames = [
-    "January",
+    "Jan",
     "Feb",
     "Mar",
-    "April",
+    "Apr",
     "May",
-    "June",
-    "July",
+    "Jun",
+    "Jul",
     "Aug",
     "Sep",
     "Oct",

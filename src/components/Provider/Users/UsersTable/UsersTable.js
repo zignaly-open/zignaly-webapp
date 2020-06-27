@@ -1,7 +1,6 @@
 import React from "react";
 import "./UsersTable.scss";
 import { Box } from "@material-ui/core";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Table from "../../../Table";
 
 /** ]
@@ -91,26 +90,9 @@ const UsersTable = ({ title, persistKey, list }) => {
     },
   ];
 
-  const getMuiTheme = () =>
-    createMuiTheme({
-      /**
-       * @type {*}
-       */
-      overrides: {
-        MUIDataTableHeadCell: {
-          root: {
-            // Don't wrap small headers and avoid wrapping long headers too much
-            minWidth: "128px",
-          },
-        },
-      },
-    });
-
   return (
     <Box className="historyTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => ({ ...getMuiTheme(), outerTheme })}>
-        <Table columns={columns} data={list} persistKey={persistKey} title={title} />
-      </MuiThemeProvider>
+      <Table columns={columns} data={list} persistKey={persistKey} title={title} />
     </Box>
   );
 };

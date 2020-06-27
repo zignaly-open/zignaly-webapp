@@ -42,6 +42,10 @@
     }
   }
 
+  &[disabled] {
+    opacity: 0.6;
+  }
+
   &.loadMoreButton {
     background: transparent;
     border: 2px solid $purple;
@@ -62,6 +66,10 @@
   &.bgPurple {
     background: $purple;
     color: $white;
+
+    &:hover {
+      background: $purpleLight;
+    }
   }
 
   &.borderPurple {

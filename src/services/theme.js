@@ -209,6 +209,14 @@ const theme = (darkStyle) => {
       body1: {
         fontSize: "16px",
         fontFamily: "PlexSans-Regular",
+        letterSpacing: "0.61px",
+        lineHeight: 1.31,
+      },
+      body2: {
+        fontSize: "16px",
+        fontFamily: "PlexSans-SemiBold",
+        letterSpacing: "0.61px",
+        lineHeight: 1.31,
       },
     },
     overrides: {
@@ -228,6 +236,20 @@ const theme = (darkStyle) => {
           fontSize: "14px",
           color: colors.white,
           backgroundColor: colors.black,
+        },
+      },
+      MuiToggleButton: {
+        root: {
+          color: colors.purple,
+          backgroundColor: darkStyle ? colors.lightBlack : colors.white,
+          borderColor: colors.purple,
+          "&$selected": {
+            color: colors.white,
+            backgroundColor: colors.purple,
+            "&:hover": {
+              backgroundColor: colors.purpleLight,
+            },
+          },
         },
       },
     },

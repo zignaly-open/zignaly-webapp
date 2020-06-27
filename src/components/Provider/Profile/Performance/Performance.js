@@ -50,6 +50,19 @@ const PerformanceOverview = ({ provider }) => {
           justifyContent="space-between"
         >
           <Typography variant="body1">
+            <FormattedMessage id="srv.positionsclosed" />
+          </Typography>
+          <Typography variant="h4">{provider.performance.closePositions}</Typography>
+        </Box>
+
+        <Box
+          alignItems="center"
+          className="infoRow"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          <Typography variant="body1">
             {provider.copyTradingQuote}&nbsp;
             <FormattedMessage id="accounts.balance" />
           </Typography>
