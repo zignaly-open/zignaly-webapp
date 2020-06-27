@@ -4,58 +4,150 @@
   width: 100%;
 
   .weekLabels {
-    padding: 5px 20px;
+    padding: 5px 25px;
     width: 100%;
 
     .quaterLabel {
-      min-width: 50px;
+      min-width: 65px;
     }
 
-    h4 {
+    h5 {
       font-family: "PlexSans-Regular";
       text-align: center;
       text-transform: capitalize;
-      width: 50px;
+      width: 80px;
     }
 
     .total {
       font-family: "PlexSans-SemiBold";
       text-align: right;
-      width: 100px;
+      width: 80px;
     }
   }
 
   .weekData {
-    border: 1px solid $borderColor;
+    margin-bottom: 5px;
     margin-top: 30px;
     width: 100%;
 
     .quarterBox {
       cursor: pointer;
-      padding: 15px 12px 15px 20px;
+      padding: 15px 20px;
       width: 100%;
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 10px;
 
       &.selected {
-        border-bottom: 2px solid $purple;
-        border-left: 5px solid $purple;
-        border-radius: 4px;
-        border-right: 5px solid $purple;
-        border-top: 2px solid $purple;
+        position: relative;
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          border-bottom: 2px solid $purple;
+          border-left: 5px solid $purple;
+          border-radius: 4px;
+          border-right: 5px solid $purple;
+          border-top: 2px solid $purple;
+        }
       }
     }
 
     .quaterLabel {
-      min-width: 50px;
+      min-width: 65px;
+      color: $purple;
     }
 
-    h4 {
+    h5 {
       text-align: center;
       width: 50px;
     }
 
     .total {
       text-align: right;
-      width: 100px;
+      width: 80px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .weeklyData {
+    margin-top: 30px;
+    min-height: 200px;
+    width: 100%;
+    flex-direction: row;
+
+    .weekLabels {
+      padding: 15px 0;
+      flex-direction: column;
+      min-height: 500px;
+      width: fit-content;
+      margin-top: 30px;
+      width: 45px;
+      margin-right: 10px;
+
+      .quaterLabel {
+        min-width: 65px;
+        min-height: 16px;
+      }
+
+      h5 {
+        font-family: "PlexSans-Regular";
+        text-align: center;
+        text-transform: capitalize;
+        width: fit-content;
+        font-size: 12px;
+      }
+
+      .total {
+        font-family: "PlexSans-SemiBold";
+        text-align: right;
+        width: fit-content;
+      }
+    }
+
+    .weekData {
+      margin-top: 30px;
+      width: fit-content;
+      max-width: 80px;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      .quaterLabel {
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .quarterBox {
+        flex-direction: column;
+        min-height: 500px;
+        padding: 15px 0px;
+        max-width: 60px;
+        margin-right: 5px;
+
+        &.selected {
+          position: relative;
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            border-bottom: 1px solid $purple;
+            border-left: 1px solid $purple;
+            border-radius: 4px;
+            border-right: 1px solid $purple;
+            border-top: 1px solid $purple;
+          }
+        }
+
+        .total {
+          width: fit-content;
+        }
+      }
     }
   }
 }

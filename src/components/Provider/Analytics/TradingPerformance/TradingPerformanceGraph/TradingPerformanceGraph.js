@@ -48,13 +48,13 @@ const PerformanceGraph = ({ quarter }) => {
         {
           stacked: false,
           ticks: {
-            display: false,
+            display: true,
           },
           gridLines: {
             color: "transparent",
             display: true,
             drawBorder: false,
-            zeroLineColor: "rgba(0, 0, 0, 0.2)",
+            zeroLineColor: "#d4d4d4",
           },
         },
       ],

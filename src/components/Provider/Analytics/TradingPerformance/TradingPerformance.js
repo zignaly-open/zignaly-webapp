@@ -24,36 +24,66 @@ import WeeklyData from "./WeeklyData";
 
 const TradingPerformance = ({ performance }) => {
   const [list, setList] = useState([]);
-  const [selectedQuater, setSelectedQuarter] = useState({ weeklyStats: [], total: 0, id: 0 });
+  const [selectedQuater, setSelectedQuarter] = useState({
+    weeklyStats: [],
+    total: 0,
+    id: 0,
+    label: "",
+  });
 
   const prepareData = () => {
-    let quarters = Math.ceil(performance.weeklyStats.length / 13);
-    if (quarters > 4) {
-      quarters = 4;
-    }
-    let week = 0;
-    let listing = [];
-    for (let a = 0; a < quarters; a++) {
-      /**
-       * @type {*}
-       */
-      let quarter = { weeklyStats: [], total: 0 };
-      let total = 0;
-      for (let b = 0; b < 13; b++) {
-        if (performance.weeklyStats[week]) {
-          quarter.weeklyStats.push(performance.weeklyStats[week]);
-          total += performance.weeklyStats[week].return;
-          quarter.total = total;
-        } else {
-          quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
+    let weeklyStats = performance.weeklyStats;
+    if (weeklyStats) {
+      weeklyStats = prepareYear(weeklyStats);
+
+      let listing = [];
+      let week = 0;
+      for (let a = 0; a < 4; a++) {
+        /**
+         * @type {*}
+         */
+        let quarter = { weeklyStats: [], total: 0, id: 0, label: "" };
+        let total = 0;
+        for (let b = 0; b < 13; b++) {
+          let stats = weeklyStats[week];
+          if (stats) {
+            if (stats.week === week + 1) {
+              quarter.weeklyStats.push(weeklyStats[week]);
+              total += weeklyStats[week].return;
+              quarter.total = total;
+            } else {
+              quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
+            }
+          } else {
+            quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
+          }
+          week++;
         }
-        week++;
+        quarter.id = Math.random();
+        quarter.label = `'20 Q${Math.ceil(week / 13)}`;
+        listing.push(quarter);
       }
-      quarter.id = Math.random();
-      listing.push(quarter);
+      setList([...listing]);
+      setSelectedQuarter(listing[0]);
     }
-    setList([...listing]);
-    setSelectedQuarter(listing[0]);
+  };
+
+  /**
+   *
+   * @param {*} data
+   */
+  const prepareYear = (data) => {
+    data = [...data].sort((a, b) => a.week - b.week);
+    let newData = [];
+    for (let a = 1; a <= 52; a++) {
+      let item = [...data].find((item) => item.week === a);
+      if (item) {
+        newData.push(item);
+      } else {
+        newData.push({ week: a, return: 0, day: "", positions: 0 });
+      }
+    }
+    return newData;
   };
 
   useEffect(prepareData, [performance]);

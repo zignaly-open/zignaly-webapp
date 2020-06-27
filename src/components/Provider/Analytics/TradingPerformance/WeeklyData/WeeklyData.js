@@ -1,6 +1,7 @@
 import React from "react";
 import "./WeeklyData.scss";
 import { Box, Typography } from "@material-ui/core";
+import moment from "moment";
 
 /**
  *
@@ -14,6 +15,7 @@ import { Box, Typography } from "@material-ui/core";
  * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
  * @property {Number} total
  * @property {Number} id
+ * @property {String} label
  */
 
 /**
@@ -32,22 +34,6 @@ import { Box, Typography } from "@material-ui/core";
  */
 
 const WeeklyData = ({ list, selected, onChange }) => {
-  const weekLabels = [
-    "w1",
-    "w2",
-    "w3",
-    "w4",
-    "w5",
-    "w6",
-    "w7",
-    "w8",
-    "w9",
-    "w10",
-    "w11",
-    "w12",
-    "w13",
-  ];
-
   /**
    * Funciton to select a quarter.
    *
@@ -76,17 +62,18 @@ const WeeklyData = ({ list, selected, onChange }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        {weekLabels.map((item, index) => (
-          <Typography key={index} variant="h4">
-            {item}
+        <Typography variant="h3" className="quaterLabel"></Typography>
+        {selected.weeklyStats.map((item, index) => (
+          <Typography key={index} variant="h5">
+            {item.day ? moment(new Date(item.day)).format("DD MMM") : "--"}
           </Typography>
         ))}
-        <Typography className="total" variant="h4">
+        <Typography className="total" variant="h5">
           Total
         </Typography>
       </Box>
 
-      <Box className="weekData">
+      <Box className="weekData" display="flex" flexDirection="column">
         {list.map((item, index) => (
           <Box
             alignItems="center"
@@ -97,13 +84,16 @@ const WeeklyData = ({ list, selected, onChange }) => {
             key={index}
             onClick={() => handleChange(item.id)}
           >
+            <Typography variant="h3" className="quaterLabel">
+              {item.label}
+            </Typography>
             {item.weeklyStats.map((item2, index2) => (
-              <Typography className={item2.return > 0 ? "green" : "red"} key={index2} variant="h4">
-                {item2.return ? item2.return.toFixed(2) : 0}
+              <Typography className={item2.return >= 0 ? "green" : "red"} key={index2} variant="h5">
+                {item2.return ? item2.return.toFixed(2) : "--"}
               </Typography>
             ))}
-            <Typography className={"total " + (item.total > 0 ? "green" : "red")} variant="h4">
-              {item.total ? item.total.toFixed(2) : 0}
+            <Typography className={"total " + (item.total >= 0 ? "green" : "red")} variant="h5">
+              {item.total ? item.total.toFixed(2) : "--"}
             </Typography>
           </Box>
         ))}

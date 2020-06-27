@@ -68,7 +68,7 @@ const CopyTradersAnalytics = () => {
   return (
     <Box className="profileAnalyticsPage">
       <Box bgcolor="grid.main" className="tradingPerformanceBox">
-        <Typography variant="h3">
+        <Typography variant="h3" className="boxTitle">
           <FormattedMessage id="copyt.tradingperformance" />
         </Typography>
 
