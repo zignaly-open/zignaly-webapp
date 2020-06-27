@@ -47,7 +47,7 @@ const TradingPerformance = ({ performance }) => {
         for (let b = 0; b < 13; b++) {
           let stats = weeklyStats[week];
           if (stats) {
-            if (stats.week === week + 1) {
+            if (stats.week === week + 1 && new Date(stats.day).getFullYear() === 2020) {
               quarter.weeklyStats.push(weeklyStats[week]);
               total += weeklyStats[week].return;
               quarter.total = total;
