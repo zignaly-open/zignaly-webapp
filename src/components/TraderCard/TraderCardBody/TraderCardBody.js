@@ -123,6 +123,8 @@ const TraderCard = (props) => {
     }
   };
 
+  console.log(parseFloat(floating), parseFloat(floating) >= 0, provider.name);
+
   return (
     <Box className="traderCardBody">
       <Box
@@ -165,7 +167,7 @@ const TraderCard = (props) => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography className={colorClass} variant="h4">
+            <Typography className={parseFloat(floating) >= 0 ? "green" : "red"} variant="h4">
               {formatFloat2Dec(floating)}%
             </Typography>
             <Typography variant="subtitle1">

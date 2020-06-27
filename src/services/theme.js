@@ -212,12 +212,6 @@ const theme = (darkStyle) => {
         letterSpacing: "0.61px",
         lineHeight: 1.31,
       },
-      body2: {
-        fontSize: "16px",
-        fontFamily: "PlexSans-SemiBold",
-        letterSpacing: "0.61px",
-        lineHeight: 1.31,
-      },
     },
     overrides: {
       MuiCssBaseline: {

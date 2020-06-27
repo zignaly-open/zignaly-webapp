@@ -163,6 +163,15 @@ const LineChart = (props) => {
         },
       ],
     },
+    plugins: {
+      /**
+       * @type {ResponsiveGradientOptions}
+       */
+      responsiveGradient: {
+        gradientColor1: colorsOptions.gradientColor1,
+        gradientColor2: colorsOptions.gradientColor2,
+      },
+    },
     // events: ["click", "touchstart", "touchmove"],
   };
 
@@ -177,17 +186,25 @@ const LineChart = (props) => {
        */
 
       /**
+       * @typedef {Object} ResponsiveGradientOptions
+       * @property {string} gradientColor1
+       * @property {string} gradientColor2
+       */
+
+      /**
        * Fill chart with gradient on layout change.
        *
        * @param {ExtendedChart} chart Chart instance.
+       * @param {ResponsiveGradientOptions} options Plugin options.
        * @returns {void}
        */
-      afterLayout: (chart /* options */) => {
+      afterLayout: (chart, options) => {
         let scales = chart.scales;
         let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-        color.addColorStop(0, colorsOptions.gradientColor2);
-        color.addColorStop(1, colorsOptions.gradientColor1);
+        color.addColorStop(0, options.gradientColor2);
+        color.addColorStop(1, options.gradientColor1);
         chart.data.datasets[0].backgroundColor = color;
+        console.log(chart, options);
       },
     },
   ];

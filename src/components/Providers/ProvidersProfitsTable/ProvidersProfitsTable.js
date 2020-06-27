@@ -6,7 +6,7 @@ import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 import Table from "../../Table";
-import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -44,9 +44,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       label: "col.provider.logo",
       options: {
         customBodyRender: (val, tableMeta) => {
-          // Handle no prpvider logo, returned as "images/providersLogo/default.png"
-          const logo = val.startsWith("http") ? val : DefaultProviderLogo;
-          return <img src={logo} title={tableMeta.rowData[2]} width="30px" />;
+          return <ProviderLogo url={val} size="30px" title={tableMeta.rowData[2]} />;
         },
         // setCellProps: (value) => ({
         //   className: "test",

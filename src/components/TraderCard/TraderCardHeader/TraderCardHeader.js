@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
-
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  *
@@ -22,7 +22,7 @@ const TraderCardHeader = (props) => {
   const { price, name, logoUrl, quote, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
-      <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
+      <ProviderLogo url={logoUrl} title={name} size="40px" />
       <Box
         alignItems="flex-start"
         className="traderCardHeaderTitleBox"

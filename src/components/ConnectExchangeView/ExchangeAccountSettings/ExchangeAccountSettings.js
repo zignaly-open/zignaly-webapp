@@ -15,6 +15,7 @@ import { removeUserExchange, setUserExchanges } from "../../../store/actions/use
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
+import { Typography } from "@material-ui/core";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -226,8 +227,10 @@ const ExchangeAccountSettings = () => {
           tooltip="accounts.options.delisted.help"
         />
 
-        <CustomButton className="body2 textDefault deleteButton" onClick={deleteExchangeShow}>
-          <FormattedMessage id="accounts.delete.exchange" />
+        <CustomButton className="textDefault deleteButton" onClick={deleteExchangeShow}>
+          <Typography variant="body1" className="bold">
+            <FormattedMessage id="accounts.delete.exchange" />
+          </Typography>
         </CustomButton>
       </ExchangeAccountForm>
     </form>

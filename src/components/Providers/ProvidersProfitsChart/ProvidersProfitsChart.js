@@ -49,7 +49,7 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const options = {};
 
   /**
-   * @param {ChartTooltipItem} tooltipItems Tooltip itwm.
+   * @param {ChartTooltipItem} tooltipItems Tooltip item.
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
@@ -87,7 +87,7 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
       <BarChart
         adjustHeightToContent={isMobile}
         horizontal={isMobile}
-        images={images}
+        imageUrls={images}
         options={options}
         tooltipFormat={tooltipFormat}
         values={values}

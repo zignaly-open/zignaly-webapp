@@ -3,6 +3,7 @@ import "./BarChart.scss";
 import { Box } from "@material-ui/core";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 import "../Chart.roundedBarCharts";
+import LogoIcon from "../../../images/logo/logoIcon.svg";
 
 /**
  * @typedef {import('chart.js').ChartData} ChartData
@@ -22,7 +23,7 @@ import "../Chart.roundedBarCharts";
  * @typedef {Object} BarChartPropTypes
  * @property {Array<Number>} values Chart values.
  * @property {Array<String>} [labels] Chart labels.
- * @property {Array<String>} [images] Chart images (used instead of labels).
+ * @property {Array<String>} [imageUrls] Chart images (used instead of labels).
  * @property {boolean} [horizontal] Flag to display the bars horizontally.
  * @property {boolean} [adjustHeightToContent] Adjust thw height of the canvas dynamicaly to fit its content. (Horizontal only)
  * @property {ChartTooltipCallback} tooltipFormat Function to format data based on selected value.
@@ -41,7 +42,7 @@ const BarChart = (props) => {
     labels,
     horizontal,
     tooltipFormat,
-    images,
+    imageUrls,
     adjustHeightToContent,
     options: customOptions,
   } = props;
@@ -51,7 +52,7 @@ const BarChart = (props) => {
    * @type ChartData
    */
   const data = {
-    labels: images && images.length ? values.map(() => "") : labels,
+    labels: imageUrls && imageUrls.length ? values.map(() => "") : labels,
     datasets: [
       {
         data: values,
@@ -94,6 +95,42 @@ const BarChart = (props) => {
     // barPercentage: 0.7,
   };
 
+  // Load all images
+  //   const imagesElements = imageUrls.map((imageUrl) => {
+  //     let image = new Image();
+  //     image.src = imageUrl;
+  //     return image;
+  //   });
+  const [imagesElements, setImages] = React.useState([]);
+  React.useEffect(() => {
+    // let image = new Image();
+    // image.src = imageUrls[0];
+    // image.onload = () => {
+    //   console.log("loadd", image.src);
+    //   // drawImage(image, index);
+    // };
+
+    if (!imageUrls.length) return;
+    const images = imageUrls.map((imageUrl, i) => {
+      let image = new Image();
+      //   image.src = LogoIcon;
+      image.src = imageUrl;
+      //   image.onerror = (e) => {
+      //     // console.log(e);
+      //     const defaultImage = new Image();
+      //     defaultImage.src = LogoIcon;
+      //     //   image = defaultImage;
+      //     imagesElements[i] = defaultImage;
+
+      //     console.log(imagesElements);
+      //     setImages(imagesElements);
+      //     // image.src = LogoIcon;
+      //   };
+      return image;
+    });
+    setImages(images);
+  }, [imageUrls]);
+
   /**
    * @typedef {Object} RoundedChartOptions
    * @property {number} cornerRadius:
@@ -119,7 +156,7 @@ const BarChart = (props) => {
         left: horizontal ? 15 : 0,
         right: 0,
         top: 20,
-        bottom: horizontal ? 10 : images ? 25 : 0,
+        bottom: horizontal ? 10 : imageUrls ? 25 : 0,
       },
     },
     cornerRadius: 4,
@@ -134,9 +171,9 @@ const BarChart = (props) => {
       },
     },
     plugins: {
-      legendImages: images
+      legendImages: imagesElements
         ? {
-            images,
+            images: imagesElements,
             horizontal,
           }
         : false,
@@ -159,10 +196,7 @@ const BarChart = (props) => {
        */
       afterDraw: (chart) => {
         if (!chart.data.datasets) return;
-        const {
-          images: legendImages,
-          horizontal: isHorizontal,
-        } = chart.options.plugins.legendImages;
+        const { images, horizontal: isHorizontal } = chart.options.plugins.legendImages;
         let ctx = chart.ctx;
         let xAxis = chart.scales["x-axis-0"];
         let yAxis = chart.scales["y-axis-0"];
@@ -173,6 +207,11 @@ const BarChart = (props) => {
          * @returns {void}
          */
         const drawImage = (image, index) => {
+          if (!image.naturalWidth) {
+            // Image didn't load properly, fallback to default icon
+            image.src = LogoIcon;
+          }
+
           if (isHorizontal) {
             // Draw image on the left
             const y = yAxis.getPixelForTick(index);
@@ -186,14 +225,14 @@ const BarChart = (props) => {
           }
         };
 
-        for (const [index] of chart.data.datasets[0].data.entries()) {
-          const imageSrc = legendImages[index];
-          let image = new Image();
-          image.src = imageSrc;
+        for (let i = 0; i < images.length; i++) {
+          const image = images[i];
           if (!image.complete) {
-            image.onload = () => drawImage(image, index);
+            image.onload = () => {
+              drawImage(image, i);
+            };
           } else {
-            drawImage(image, index);
+            drawImage(image, i);
           }
         }
       },

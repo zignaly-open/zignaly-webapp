@@ -67,7 +67,7 @@ const Deposit = () => {
             <FormattedMessage id="deposit.buy.how" />
           </Typography>
           <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank">
-            <Typography variant="body2">
+            <Typography variant="body1" className="bold">
               <FormattedMessage id="deposit.buy.creditcard" />
             </Typography>
           </CustomButton>
@@ -107,7 +107,7 @@ const Deposit = () => {
                   />
                   <Box className="tipBox">
                     <img src={TimeIcon} />
-                    <Typography variant="body2">
+                    <Typography variant="body1" className="bold">
                       <FormattedMessage id="deposit.waitingtime" />
                     </Typography>
                     <Typography variant="body1">
@@ -126,7 +126,7 @@ const Deposit = () => {
                   </Typography>
                   <Box display="flex" flexDirection="row">
                     {depositAddress ? (
-                      <Typography className="address" variant="body2">
+                      <Typography className="address bold" variant="body1">
                         {depositAddress.address}
                       </Typography>
                     ) : (
@@ -140,7 +140,9 @@ const Deposit = () => {
                         {selectedAssetName} <FormattedMessage id="withdraw.memo" />
                       </Typography>
                       <Box display="flex" flexDirection="row">
-                        <Typography variant="body2">{depositAddress.tag}</Typography>
+                        <Typography variant="body1" className="bold">
+                          {depositAddress.tag}
+                        </Typography>
                         <img alt="copy" className="copy" onClick={copyMemo} src={CopyIcon} />
                       </Box>
                     </Box>
@@ -151,7 +153,7 @@ const Deposit = () => {
                       disabled={!depositAddress}
                       onClick={copyAddress}
                     >
-                      <Typography variant="body2">
+                      <Typography variant="body1" className="bold">
                         <FormattedMessage id="deposit.address.copy" />
                       </Typography>
                     </CustomButton>
@@ -160,7 +162,7 @@ const Deposit = () => {
                       disabled={!depositAddress}
                       onClick={showQRCode}
                     >
-                      <Typography variant="body2">
+                      <Typography variant="body1" className="bold">
                         <FormattedMessage id="deposit.address.qr" />
                       </Typography>
                     </CustomButton>
