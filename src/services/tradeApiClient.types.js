@@ -2134,6 +2134,12 @@ export function providerFollowersResponseTransform(response) {
 /**
  * @typedef {Object} ProviderFollowerEntity
  * @property {String} date
+ * @property {Boolean} enabled
+ * @property {String} id
+ * @property {String} name
+ * @property {Array<*>} requiredAuthFields
+ * @property {Array<*>} testNet
+ * @property {Array<*>} type
  * @property {Number} followers
  * @property {Number} totalFollowers
  */
@@ -2151,14 +2157,20 @@ function providerFollowersResponseItemTransform(providerFollowersItem) {
   return transformedResponse;
 }
 
-function createProviderFollowersEmptyEntity() {
+/**
+ * @return {ProviderFollowerEntity}
+ */
+export function createProviderFollowersEmptyEntity() {
   return {
+    date: "",
     enabled: false,
     id: "",
     name: "",
     requiredAuthFields: [""],
     testNet: [""],
     type: [""],
+    followers: 0,
+    totalFollowers: 0,
   };
 }
 
@@ -2356,7 +2368,7 @@ export function providerPerformanceResponseTransform(response) {
   return { ...emptyProviderEntity, ...response };
 }
 
-function createProviderPerformanceEmptyEntity() {
+export function createProviderPerformanceEmptyEntity() {
   return {
     closePositions: 0,
     openPositions: 0,

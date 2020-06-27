@@ -13,22 +13,27 @@ import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { createProviderFollowersEmptyEntity } from "../../../services/tradeApiClient.types";
+import { formatFloat2Dec } from "../../../utils/format";
 
-const SignalProviderAnalytics = () => {
+const CopyTradersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
-  const [followers, setFollowers] = useState([]);
-  const emptyObject = {
+  const emptyPerformance = {
     closePositions: 0,
     openPositions: 0,
     totalBalance: 0,
     totalTradingVolume: 0,
     weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
   };
-  const [performance, setPerformance] = useState(emptyObject);
+  const emptyFollowers = createProviderFollowersEmptyEntity();
+  const [followers, setFollowers] = useState([emptyFollowers]);
+  const [performance, setPerformance] = useState(emptyPerformance);
   const dispatch = useDispatch();
   const [copiersLoading, setCopiersLoading] = useState(false);
   const [performanceLoading, setPerformanceLoading] = useState(false);
+  const [increase, setIncrease] = useState(0);
+  const [increasePercentage, setIncreasePercentage] = useState(0);
 
   const payload = {
     token: storeSession.tradeApi.accessToken,
@@ -65,10 +70,30 @@ const SignalProviderAnalytics = () => {
 
   useEffect(getProviderFollowers, []);
 
+  const calculateIncrease = () => {
+    if (followers.length > 0) {
+      let total = 0;
+      let targetDate = new Date().setDate(new Date().getDate() - 7);
+      let list = [...followers].sort((a, b) => a.totalFollowers - b.totalFollowers);
+      let latest = list[list.length - 1];
+      for (let a = 0; a < list.length; a++) {
+        let itemTime = new Date(list[a].date).getTime();
+        if (itemTime >= targetDate) {
+          total += list[a].followers;
+        }
+      }
+      setIncrease(total);
+      let percent = (total / latest.totalFollowers) * 100;
+      setIncreasePercentage(percent);
+    }
+  };
+
+  useEffect(calculateIncrease, [followers]);
+
   return (
     <Box className="profileAnalyticsPage">
       <Box bgcolor="grid.main" className="tradingPerformanceBox">
-        <Typography variant="h3">
+        <Typography variant="h3" className="boxTitle">
           <FormattedMessage id="copyt.tradingperformance" />
         </Typography>
 
@@ -85,9 +110,15 @@ const SignalProviderAnalytics = () => {
       </Box>
 
       <Box bgcolor="grid.main" className="copiersBox">
-        <Typography variant="h3">
-          <FormattedMessage id="trader.people" />
-        </Typography>
+        <Box className="titleBox" display="flex" flexDirection="row" alignItems="center">
+          <Typography variant="h3">
+            <FormattedMessage id="trader.people" />
+          </Typography>
+
+          <Typography variant="h4" className={increase >= 0 ? "green" : "red"}>
+            {`+${increase} (${formatFloat2Dec(increasePercentage)}%) Copiers Last 7 Days`}
+          </Typography>
+        </Box>
         <Box
           alignItems="center"
           className="graphBox"
@@ -112,4 +143,4 @@ const SignalProviderAnalytics = () => {
   );
 };
 
-export default compose(withProviderLayout)(SignalProviderAnalytics);
+export default compose(withProviderLayout)(CopyTradersAnalytics);
