@@ -7,42 +7,25 @@ import "./CustomTooltip.scss";
  */
 
 /**
- * @typedef {Object} PosType
- * @property {number} top Tooltip top fixed position.
- * @property {number} left Tooltip left fixed position.
- */
-
-/**
+ * Add a vertical line instead of an arrow to the popper.
  * @param {*} props Props.
  * @return {JSX.Element} A wrapper for popper component.
  */
-const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
-  /**
-   * @type React.CSSProperties
-   */
-  const posStyle = pos
-    ? {
-        marginLeft: pos.left + "px",
-        marginTop: pos.top + "px",
-        position: "absolute",
-      }
-    : {};
-  /**
-   * @param {*} childrenProps Props.
-   * @return {JSX.Element} The wrapped children components.
-   */
-  const childrenWrapper = (childrenProps) => (
-    <Box className="customTooltipPopper" style={posStyle}>
-      <Box className="innerPopper">{childrenPopper(childrenProps)}</Box>
-      <Box className="lineTooltip" />
-    </Box>
-  );
-  return <Popper {...othersProps}>{childrenWrapper}</Popper>;
-};
+const CustomPopper = ({ children, ...others }) => (
+  <Popper {...others}>
+    {(ref) => (
+      <Box className="customTooltipPopper">
+        <Box className="innerPopper">{children(ref)}</Box>
+        <Box id="lineTooltip" />
+      </Box>
+    )}
+  </Popper>
+);
 
 /**
  * @typedef {Object} DefaultProps
- * @property {PosType} [pos] Custom tooltip position.
+ * @property {boolean} [customPopper] Flag to indicate whether to render the custom popper for chart tooltip.
+ * @property {React.MutableRefObject<any>} [elementRef] Ref to the element to point to.
  *
  * @typedef {TooltipProps & DefaultProps} FullProps
  */
@@ -55,31 +38,30 @@ const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
  *
  */
 const CustomTooltip = (props) => {
-  const { title, children, pos, ...others } = props;
-
-  console.log(pos);
+  const { title, children, customPopper, elementRef, ...others } = props;
   return (
     <Tooltip
-      // PopperComponent={pos ? CustomPopper : Popper}
-      // @ts-ignore
-      // PopperProps={{ pos }}
+      PopperComponent={customPopper ? CustomPopper : Popper}
       PopperProps={
-        pos
+        customPopper
           ? {
               popperOptions: {
                 modifiers: {
                   flip: { enabled: false },
                   offset: {
                     enabled: true,
-                    offset: `${pos.left - 75}px, ${-pos.top + 21}px`,
+                    offset: `0px, 26px`,
                   },
+                  arrow: { enabled: true, element: "#lineTooltip" },
                 },
               },
+              anchorEl: elementRef.current,
             }
           : null
       }
-      //   placement="bottom"
-      classes={{ tooltip: "customTooltip", popper: pos ? "customTooltipPopper" : null }}
+      classes={{
+        tooltip: "customTooltip",
+      }}
       title={title}
       {...others}
     >

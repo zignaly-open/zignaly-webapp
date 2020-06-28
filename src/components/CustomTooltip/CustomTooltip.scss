@@ -1,11 +1,4 @@
 .customTooltipPopper {
-  //   transform: translate(0, -100%);
-  width: 150px;
-
-  .innerPopper {
-    transform: translate(-50%, 0);
-  }
-
   .customTooltip {
     padding: 5px 10px;
     text-align: left;
@@ -20,11 +13,11 @@
     }
   }
 
-  .lineTooltip {
-    border: solid 2px $borderColor;
-    height: 21px;
-    transform: translate(-2px, -8px);
-    width: 1px;
+  #lineTooltip {
+    background-color: $borderColor;
+    height: 26px;
+    width: 2px;
+    position: absolute;
   }
 }
 

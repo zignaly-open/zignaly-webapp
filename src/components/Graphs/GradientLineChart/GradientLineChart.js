@@ -9,7 +9,12 @@ import { isEqual } from "lodash";
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
  * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
- * @typedef {import('../../CustomTooltip/CustomTooltip').PosType} PosType
+ */
+
+/**
+ * @typedef {Object} PosType
+ * @property {number} top Tooltip top fixed position.
+ * @property {number} left Tooltip left fixed position.
  */
 
 /**
@@ -50,6 +55,8 @@ const MemoizedLine = React.memo(
 const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
+  const pointHoverRef = useRef(null);
+  const arrowRef = useRef(null);
   const [tooltipContent, setTooltipContent] = useState(<></>);
   const [pos, setPos] = useState(/** @type {PosType} */ (null));
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
@@ -76,7 +83,6 @@ const LineChart = (props) => {
     const left = tooltip.caretX;
     const top = tooltip.caretY;
     setPos({ top, left });
-    console.log(top, left);
 
     // Set values for display of data in the tooltip
     const content = tooltipFormat(tooltip.dataPoints[0]);
@@ -100,10 +106,10 @@ const LineChart = (props) => {
         borderColor: colorsOptions.borderColor,
         fill: "start",
         // pointHitRadius: 20,
-        pointHoverRadius: 8,
-        pointHoverBorderWidth: 4,
-        pointHoverBorderColor: "#5200c5",
-        pointHoverBackgroundColor: "#fff",
+        // pointHoverRadius: 8,
+        // pointHoverBorderWidth: 4,
+        // pointHoverBorderColor: "#5200c5",
+        // pointHoverBackgroundColor: "#fff",
       },
     ],
   };
@@ -173,7 +179,7 @@ const LineChart = (props) => {
         gradientColor2: colorsOptions.gradientColor2,
       },
     },
-    events: ["click", "touchstart", "touchmove"],
+    // events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [
@@ -209,31 +215,16 @@ const LineChart = (props) => {
     },
   ];
 
-  //   return (
-  //     <Tooltip
-  //       open={true}
-  //       title="Add"
-  //       aria-label="add"
-  //       placement="top-start"
-  //       PopperProps={{
-  //         popperOptions: {
-  //           modifiers: {
-  //             flip: { enabled: false },
-  //             offset: {
-  //               enabled: true,
-  //               offset: "100px, -1px",
-  //             },
-  //           },
-  //         },
-  //       }}
-  //     >
-  //       <div className="test" style={{ width: "400px", height: "400px", backgroundColor: "red" }} />
-  //     </Tooltip>
-  //   );
-
   return (
     <Box className="gradientChart">
-      <CustomToolip open={isTooltipVisible} placement="top-start" pos={pos} title={tooltipContent}>
+      {pos && <div className="pointHover" style={pos} ref={pointHoverRef} />}
+      <CustomToolip
+        open={isTooltipVisible}
+        placement="top"
+        customPopper={Boolean(pos)}
+        title={tooltipContent}
+        elementRef={pointHoverRef}
+      >
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
       </CustomToolip>
     </Box>
