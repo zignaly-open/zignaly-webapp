@@ -22,7 +22,7 @@ const TraderCardHeader = (props) => {
   const { price, name, logoUrl, quote, exchanges } = props.provider;
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
-      <ProviderLogo url={logoUrl} title={name} size="40px" />
+      {/* <ProviderLogo url={logoUrl} title={name} size="40px" /> */}
       <Box
         alignItems="flex-start"
         className="traderCardHeaderTitleBox"

@@ -57,12 +57,29 @@ const CustomPopper = ({ pos, children: childrenPopper, ...othersProps }) => {
 const CustomTooltip = (props) => {
   const { title, children, pos, ...others } = props;
 
+  console.log(pos);
   return (
     <Tooltip
-      PopperComponent={pos ? CustomPopper : Popper}
+      // PopperComponent={pos ? CustomPopper : Popper}
       // @ts-ignore
-      PopperProps={{ pos }}
-      classes={{ tooltip: "customTooltip" }}
+      // PopperProps={{ pos }}
+      PopperProps={
+        pos
+          ? {
+              popperOptions: {
+                modifiers: {
+                  flip: { enabled: false },
+                  offset: {
+                    enabled: true,
+                    offset: `${pos.left - 75}px, ${-pos.top + 21}px`,
+                  },
+                },
+              },
+            }
+          : null
+      }
+      //   placement="bottom"
+      classes={{ tooltip: "customTooltip", popper: pos ? "customTooltipPopper" : null }}
       title={title}
       {...others}
     >

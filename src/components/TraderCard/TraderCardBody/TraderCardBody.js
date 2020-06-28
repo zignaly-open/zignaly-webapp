@@ -123,8 +123,6 @@ const TraderCard = (props) => {
     }
   };
 
-  console.log(parseFloat(floating), parseFloat(floating) >= 0, provider.name);
-
   return (
     <Box className="traderCardBody">
       <Box

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import "./GradientLineChart.scss";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
@@ -76,6 +76,7 @@ const LineChart = (props) => {
     const left = tooltip.caretX;
     const top = tooltip.caretY;
     setPos({ top, left });
+    console.log(top, left);
 
     // Set values for display of data in the tooltip
     const content = tooltipFormat(tooltip.dataPoints[0]);
@@ -172,7 +173,7 @@ const LineChart = (props) => {
         gradientColor2: colorsOptions.gradientColor2,
       },
     },
-    // events: ["click", "touchstart", "touchmove"],
+    events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [
@@ -204,20 +205,35 @@ const LineChart = (props) => {
         color.addColorStop(0, options.gradientColor2);
         color.addColorStop(1, options.gradientColor1);
         chart.data.datasets[0].backgroundColor = color;
-        console.log(chart, options);
       },
     },
   ];
 
+  //   return (
+  //     <Tooltip
+  //       open={true}
+  //       title="Add"
+  //       aria-label="add"
+  //       placement="top-start"
+  //       PopperProps={{
+  //         popperOptions: {
+  //           modifiers: {
+  //             flip: { enabled: false },
+  //             offset: {
+  //               enabled: true,
+  //               offset: "100px, -1px",
+  //             },
+  //           },
+  //         },
+  //       }}
+  //     >
+  //       <div className="test" style={{ width: "400px", height: "400px", backgroundColor: "red" }} />
+  //     </Tooltip>
+  //   );
+
   return (
     <Box className="gradientChart">
-      <CustomToolip
-        classes={{ tooltip: "customTooltip" }}
-        open={isTooltipVisible}
-        placement="top-start"
-        pos={pos}
-        title={tooltipContent}
-      >
+      <CustomToolip open={isTooltipVisible} placement="top-start" pos={pos} title={tooltipContent}>
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
       </CustomToolip>
     </Box>
