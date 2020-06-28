@@ -8,7 +8,8 @@
     width: 16px;
     height: 16px;
     border: solid 2px $purple;
-    transform: translate(-50%, -50%);
     background-color: $white;
+    pointer-events: none;
+    will-change: translate;
   }
 }

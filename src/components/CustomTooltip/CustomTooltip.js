@@ -7,22 +7,6 @@ import "./CustomTooltip.scss";
  */
 
 /**
- * Add a vertical line instead of an arrow to the popper.
- * @param {*} props Props.
- * @return {JSX.Element} A wrapper for popper component.
- */
-const CustomPopper = ({ children, ...others }) => (
-  <Popper {...others}>
-    {(ref) => (
-      <Box className="customTooltipPopper">
-        <Box className="innerPopper">{children(ref)}</Box>
-        <Box id="lineTooltip" />
-      </Box>
-    )}
-  </Popper>
-);
-
-/**
  * @typedef {Object} DefaultProps
  * @property {boolean} [customPopper] Flag to indicate whether to render the custom popper for chart tooltip.
  * @property {React.MutableRefObject<any>} [elementRef] Ref to the element to point to.
@@ -41,7 +25,6 @@ const CustomTooltip = (props) => {
   const { title, children, customPopper, elementRef, ...others } = props;
   return (
     <Tooltip
-      PopperComponent={customPopper ? CustomPopper : Popper}
       PopperProps={
         customPopper
           ? {
@@ -52,7 +35,6 @@ const CustomTooltip = (props) => {
                     enabled: true,
                     offset: `0px, 26px`,
                   },
-                  arrow: { enabled: true, element: "#lineTooltip" },
                 },
               },
               anchorEl: elementRef.current,
@@ -61,6 +43,8 @@ const CustomTooltip = (props) => {
       }
       classes={{
         tooltip: "customTooltip",
+        popper: "customTooltipPopper",
+        arrow: "customArrowTooltip",
       }}
       title={title}
       {...others}

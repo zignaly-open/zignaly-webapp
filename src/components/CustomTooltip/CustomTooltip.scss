@@ -13,11 +13,20 @@
     }
   }
 
-  #lineTooltip {
+  &[x-placement*="top"] .customArrowTooltip {
     background-color: $borderColor;
     height: 26px;
     width: 2px;
     position: absolute;
+    will-change: left;
+    margin: 0;
+    margin-top: 6px;
+    margin-left: -2px;
+    bottom: auto;
+
+    &:before {
+      display: none;
+    }
   }
 }
 

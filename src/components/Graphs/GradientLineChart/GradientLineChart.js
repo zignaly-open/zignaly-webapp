@@ -56,10 +56,11 @@ const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
   const pointHoverRef = useRef(null);
-  const arrowRef = useRef(null);
-  const [tooltipContent, setTooltipContent] = useState(<></>);
-  const [pos, setPos] = useState(/** @type {PosType} */ (null));
-  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  const [tooltipData, setTooltipData] = useState({
+    isVisible: false,
+    content: "",
+    pos: { left: 0, top: 0 },
+  });
 
   /**
    * Callback to handle tooltip display.
@@ -75,21 +76,20 @@ const LineChart = (props) => {
 
     // hide the tooltip when chartjs determines you've hovered out
     if (tooltip.opacity === 0) {
-      setTooltipVisibility(false);
+      //   setTooltipVisibility(false);
+      setTooltipData((data) => ({ ...data, isVisible: false }));
       return;
     }
 
     // Set tooltip position.
     const left = tooltip.caretX;
     const top = tooltip.caretY;
-    setPos({ top, left });
+    //   setPos({ left, top });
 
     // Set values for display of data in the tooltip
     const content = tooltipFormat(tooltip.dataPoints[0]);
-    setTooltipContent(content);
 
-    // Show tooltip
-    setTooltipVisibility(true);
+    setTooltipData((data) => ({ ...data, pos: { left, top }, isVisible: true, content }));
   };
   const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
@@ -126,7 +126,7 @@ const LineChart = (props) => {
     hover: {
       intersect: false,
       mode: "index",
-      animationDuration: 0,
+      //   animationDuration: 0,
     },
     tooltips: {
       mode: "index",
@@ -217,13 +217,22 @@ const LineChart = (props) => {
 
   return (
     <Box className="gradientChart">
-      {pos && <div className="pointHover" style={pos} ref={pointHoverRef} />}
+      <div
+        className="pointHover"
+        style={{
+          visibility: tooltipData.isVisible ? "visible" : "hidden",
+          transform: `translate(${tooltipData.pos.left - 8}px, ${tooltipData.pos.top - 8}px)`,
+        }}
+        ref={pointHoverRef}
+      />
+
       <CustomToolip
-        open={isTooltipVisible}
+        open={tooltipData.isVisible}
         placement="top"
-        customPopper={Boolean(pos)}
-        title={tooltipContent}
+        customPopper={true}
+        title={tooltipData.content}
         elementRef={pointHoverRef}
+        arrow={true}
       >
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
       </CustomToolip>
