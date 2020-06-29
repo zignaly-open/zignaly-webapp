@@ -462,7 +462,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} [risk]
  * @property {number} followers
  * @property {number} returns
- * @property {string} floating
+ * @property {number} floating
  * @property {number} openPositions
  * @property {number} closedPositions
  */
@@ -734,13 +734,15 @@ export function providersResponseTransform(response) {
 /**
  * Transform API provider item to typed object.
  *
- * @param {Object} providerItem Trade API provider item.
+ * @param {Object.<string, any>} providerItem Trade API provider item.
  * @returns {ProviderEntity} Provider entity.
  */
 function providerItemTransform(providerItem) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyProviderEntity, providerItem);
+  const transformedResponse = assign(emptyProviderEntity, providerItem, {
+    floating: parseFloat(providerItem.floating) || 0,
+  });
 
   transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort((a, b) =>
     moment(a.name).diff(moment(b.name)),
@@ -795,7 +797,7 @@ function createEmptyProviderEntity() {
     returns: 0,
     risk: 0,
     followers: 0,
-    floating: "",
+    floating: 0,
     openPositions: 0,
     closedPositions: 0,
   };
@@ -820,7 +822,7 @@ export function userPositionsResponseTransform(response) {
 /**
  * Transform API position item to typed object.
  *
- * @param {Object.<string, any>} positionItem Trade API position item.
+ * @param {*} positionItem Trade API position item.
  * @returns {PositionEntity} Position entity.
  */
 export function userPositionItemTransform(positionItem) {
