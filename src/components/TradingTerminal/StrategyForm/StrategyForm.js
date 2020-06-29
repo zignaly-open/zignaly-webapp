@@ -420,7 +420,7 @@ const StrategyForm = (props) => {
   const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
-    forIn(takeProfitTargetPrices, (targetPrice, targetFieldName) => {
+    forIn(takeProfitTargetPrices, (/** @type {string} */ targetPrice, targetFieldName) => {
       if (targetPrice) {
         const index = targetFieldName.substr(targetFieldName.length - 1);
         drawLine({
