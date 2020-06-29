@@ -87,7 +87,7 @@ const StrategyPanel = (props) => {
   const entryStrategy = watch("entryStrategy");
 
   return (
-    <Box className={"panel strategyPanel expanded"}>
+    <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">

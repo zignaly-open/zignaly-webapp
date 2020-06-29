@@ -137,6 +137,7 @@ const StrategyForm = (props) => {
     }
 
     const chart = tradingViewWidget.chart();
+
     const chartLine = chart
       .createPositionLine({})
       .setPrice(price)
@@ -433,6 +434,15 @@ const StrategyForm = (props) => {
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
+
+  const changeTheme = () => {
+    if (storeSettings.darkStyle) {
+      tradingViewWidget.changeTheme("Dark");
+    } else {
+      tradingViewWidget.changeTheme("Light");
+    }
+  };
+  useEffect(changeTheme, [storeSettings.darkStyle]);
 
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
