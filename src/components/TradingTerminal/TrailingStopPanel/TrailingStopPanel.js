@@ -140,13 +140,18 @@ const TrailingStopPanel = (props) => {
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
     const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage) || 0;
-    const newValue = formatFloat2Dec(Math.abs(trailingStopPercentage));
-    const sign = entryType === "SHORT" ? "" : "-";
+    const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
+    const trailingStopDistance = parseFloat(draftPosition.trailingStopDistance) || 0;
+    const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
+    const percentageSign = entryType === "SHORT" ? "-" : "";
+    const distanceSign = entryType === "SHORT" ? "" : "-";
 
     if (trailingStopPercentage === 0) {
-      setValue("trailingStopPercentage", sign);
+      setValue("trailingStopPercentage", percentageSign);
+      setValue("trailingStopDistance", distanceSign);
     } else {
-      setValue("trailingStopPercentage", `${sign}${newValue}`);
+      setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
+      setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
     }
 
     if (expanded) {
