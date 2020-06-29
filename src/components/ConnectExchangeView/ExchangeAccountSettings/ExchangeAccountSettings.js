@@ -16,6 +16,7 @@ import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { Typography } from "@material-ui/core";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -44,7 +45,11 @@ const ExchangeAccountSettings = () => {
     [],
   );
 
-  const { register } = useFormContext();
+  const {
+    register,
+    setError,
+    formState: { dirtyFields },
+  } = useFormContext();
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
 
@@ -86,7 +91,7 @@ const ExchangeAccountSettings = () => {
         });
       })
       .catch((e) => {
-        alert(`ERROR: ${e.message}`);
+        dispatch(showErrorAlert(e));
       });
   };
 
@@ -129,15 +134,32 @@ const ExchangeAccountSettings = () => {
       ...(password && { password }),
     };
 
-    return tradeApi.exchangeUpdate(payload).then(() => {
-      const authorizationPayload = {
-        token: storeSession.tradeApi.accessToken,
-      };
-      dispatch(setUserExchanges(authorizationPayload));
-      setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
-      return true;
-    });
+    return tradeApi
+      .exchangeUpdate(payload)
+      .then(() => {
+        const authorizationPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(setUserExchanges(authorizationPayload));
+        setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
+        return true;
+      })
+      .catch((e) => {
+        if (e.code === 72) {
+          setError(
+            accountExchange.requiredAuthFields[accountExchange.requiredAuthFields.length - 1],
+            "notMatch",
+            "The provided api key/secret pair is not valid.",
+          );
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+        return false;
+      });
   };
+
+  const authFieldsModified =
+    accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields.has(f)));
 
   return (
     <form className="exchangeAccountSettings">
@@ -155,11 +177,14 @@ const ExchangeAccountSettings = () => {
           label="accounts.exchange.name"
           name="internalName"
         />
-        {accountExchange &&
+        {!selectedAccount.paperTrading &&
+          accountExchange &&
           accountExchange.requiredAuthFields.map((field) => (
             <CustomInput
               autoComplete="new-password"
-              inputRef={register}
+              inputRef={register({
+                required: authFieldsModified ? `${field} empty` : false,
+              })}
               key={field}
               label={`accounts.exchange.${field}`}
               name={field}
