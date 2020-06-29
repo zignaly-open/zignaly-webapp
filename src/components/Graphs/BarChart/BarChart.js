@@ -5,6 +5,9 @@ import { Bar, HorizontalBar } from "react-chartjs-2";
 import "../Chart.roundedBarCharts";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 
+Chart.Tooltip.positioners.cursor = function (chartElements, coordinates) {
+  return { x: coordinates.x, y: 210 };
+};
 /**
  * @typedef {import('chart.js').ChartData} ChartData
  * @typedef {import('chart.js').ChartOptions} ChartOptions
@@ -141,7 +144,7 @@ const BarChart = (props) => {
       displayColors: false,
       intersect: false,
       mode: "index",
-      position: "nearest",
+      position: "cursor",
       callbacks: {
         title: (/** tooltipItems, data**/) => "",
         label: tooltipFormat,
