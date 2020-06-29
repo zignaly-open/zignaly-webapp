@@ -7,10 +7,8 @@ import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
-import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -24,27 +22,9 @@ import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
  */
 const CopyTraderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
-  const storeUser = useStoreUserSelector();
   const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
-
-  const copyThisTrader = () => {
-    if (storeUser.exchangeConnections.length > 0) {
-      if (provider.exchanges.length && provider.exchanges[0] !== "") {
-        if (provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase())) {
-          showCopyModal(true);
-        } else {
-          alert("this trader doesn't trade with your selected exchange.");
-        }
-      } else {
-        showCopyModal(true);
-      }
-    } else {
-      alert("You need to add an exchange in order to copy this trader.");
-    }
-  };
 
   const stopCopying = async () => {
     try {
@@ -83,7 +63,7 @@ const CopyTraderButton = ({ provider }) => {
       justifyContent="flex-start"
     >
       {provider.disable ? (
-        <CustomButton className="submitButton" onClick={copyThisTrader}>
+        <CustomButton className="submitButton" onClick={() => showCopyModal(true)}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       ) : (

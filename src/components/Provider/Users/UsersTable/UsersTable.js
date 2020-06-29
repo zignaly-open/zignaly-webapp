@@ -214,7 +214,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Table columns={columns} data={list} persistKey={persistKey} title={title} />
-      <Modal persist={false} size="sm" onClose={handleModalClose} state={modifyModal}>
+      <Modal persist={false} size="small" onClose={handleModalClose} state={modifyModal}>
         <ModifyUserSubscription
           followerId={followerId}
           loadData={loadData}

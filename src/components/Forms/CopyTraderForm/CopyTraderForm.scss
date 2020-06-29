@@ -1,19 +1,24 @@
 .copyTraderForm {
   padding: 40px 20px;
 
+  .alert {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
   h3 {
     font-family: "PlexSans-Medium";
     font-size: 21px;
     margin-bottom: 20px;
     text-align: center;
     text-transform: initial;
-    width: 80%;
+    width: 100%;
   }
 
   p {
     margin-bottom: 20px;
     text-align: center;
-    width: 80%;
+    width: 100%;
   }
 
   .fieldBox {
@@ -21,7 +26,7 @@
     width: 100%;
 
     .inputBox {
-      width: 264px;
+      width: 300px;
 
       .customLabel {
         text-align: center;
@@ -46,7 +51,7 @@
 
 @include media("<=sm") {
   .copyTraderForm {
-    padding: 40px 10px;
+    padding: 40px 15px;
 
     .fieldBox {
       .inputBox {

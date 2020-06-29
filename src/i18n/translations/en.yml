@@ -343,6 +343,8 @@ copyt.management.freebalance: "Free Balance"
 copyt.management.totalprofit: "Total Profit"
 copyt.management.float: "Float"
 copyt.management.trialing: "Trialing:"
+copyt.copy.error1: "Your current account, {selected}, is a {exchange} account and it does not match the provider configuration which is for {required} accounts."
+copyt.copy.error2: "You need to add an exchange in order to copy this trader."
 
 srv.followprovider: "Follow this provider"
 srv.stopfollowing: "Stop Following"
