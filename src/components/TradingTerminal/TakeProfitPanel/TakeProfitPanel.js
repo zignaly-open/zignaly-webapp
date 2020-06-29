@@ -61,7 +61,7 @@ const TakeProfitPanel = (props) => {
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
-  const isTargetLocked = cardinality === targetsDone;
+  const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
 
   const getFieldsDisabledStatus = () => {
@@ -355,7 +355,9 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
       }
 
-      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+      if (expanded) {
+        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+      }
     });
   };
 
@@ -363,7 +365,9 @@ const TakeProfitPanel = (props) => {
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {
-      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+      if (expanded) {
+        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+      }
     });
   };
 
@@ -376,6 +380,7 @@ const TakeProfitPanel = (props) => {
         clearError(composeTargetPropertyName("exitUnits", targetId));
         clearError(composeTargetPropertyName("targetPrice", targetId));
         clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        setValue(composeTargetPropertyName("targetPrice", targetId), "");
       });
     }
   };

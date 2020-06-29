@@ -149,7 +149,11 @@ const TrailingStopPanel = (props) => {
       setValue("trailingStopPercentage", `${sign}${newValue}`);
     }
 
-    simulateInputChangeEvent("trailingStopPercentage");
+    if (expanded) {
+      simulateInputChangeEvent("trailingStopPercentage");
+    } else {
+      setValue("trailingStopPrice", "");
+    }
   };
 
   useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);

@@ -32,7 +32,7 @@ import { calculateDcaPrice } from "../../../utils/calculations";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
-  const { clearError, errors, getValues, register, setError, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -284,6 +284,7 @@ const DCAPanel = (props) => {
       cardinalityRange.forEach((targetId) => {
         clearError(composeTargetPropertyName("targetPricePercentage", targetId));
         clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }
   };

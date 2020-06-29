@@ -133,7 +133,11 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", `${sign}${newValue}`);
     }
 
-    simulateInputChangeEvent("stopLossPercentage");
+    if (expanded) {
+      simulateInputChangeEvent("stopLossPercentage");
+    } else {
+      setValue("stopLossPrice", "");
+    }
   };
 
   useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);

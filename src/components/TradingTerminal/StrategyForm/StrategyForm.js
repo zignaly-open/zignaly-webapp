@@ -122,10 +122,11 @@ const StrategyForm = (props) => {
 
     if (existingChartLine) {
       existingChartLine.remove();
+      linesTracking[id] = null;
+
       // Remove tracked line.
       setLinesTracking({
         ...linesTracking,
-        [id]: null,
       });
     }
   }
@@ -455,8 +456,6 @@ const StrategyForm = (props) => {
     forIn(takeProfitTargetPrices, (/** @type {string} */ targetPrice, targetFieldName) => {
       const index = targetFieldName.substr(targetFieldName.length - 1);
       const price = parseFloat(targetPrice);
-      console.log(targetFieldName, ":", price);
-
       if (price) {
         drawLine({
           id: targetFieldName,
