@@ -44,3 +44,50 @@
     }
   }
 }
+
+@include media("<=sm") {
+  .managementSummaryCard {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+    min-height: 140px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .head {
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        opacity: 0.6;
+      }
+
+      .headTitle {
+        opacity: 0.6;
+        margin-right: 5px;
+        word-spacing: initial;
+      }
+    }
+
+    .body {
+      h1 {
+        width: fit-content;
+        font-size: 36px;
+        font-family: "PlexSans-SemiBold";
+      }
+
+      span {
+        margin-left: 5px;
+      }
+    }
+
+    .foot {
+      span {
+        opacity: 0.6;
+        margin-right: 5px;
+      }
+    }
+  }
+}

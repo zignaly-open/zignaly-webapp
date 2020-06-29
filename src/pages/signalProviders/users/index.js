@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import UsersTable from "../../../components/Provider/Users/UsersTable";
 
-const SignalProvidersUsers = () => {
+const CopyTradersUsers = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const [userList, setUserList] = useState([]);
@@ -46,9 +46,16 @@ const SignalProvidersUsers = () => {
       justifyContent="center"
     >
       {loading && <CircularProgress color="primary" />}
-      {!loading && <UsersTable list={userList} persistKey="copytProfileUsers" title="srv.users" />}
+      {!loading && (
+        <UsersTable
+          loadData={loadFollowersList}
+          list={userList}
+          persistKey="copytProfileUsers"
+          title="srv.users"
+        />
+      )}
     </Box>
   );
 };
 
-export default compose(withProviderLayout)(SignalProvidersUsers);
+export default compose(withProviderLayout)(CopyTradersUsers);
