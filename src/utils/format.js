@@ -168,6 +168,18 @@ export const revertPercentageRange = (percentage) => {
 };
 
 /**
+ * Revert percentage to standard 0-100 range.
+ *
+ * @param {Number} date Percentage value.
+ * @param {String} format Percentage value.
+ *
+ * @returns {*} Reverted percentage.
+ */
+export const formatDate = (date, format) => {
+  return moment(new Date(date)).format(format);
+};
+
+/**
  * Format date with time
  *
  * @param {Date|string} date Date.

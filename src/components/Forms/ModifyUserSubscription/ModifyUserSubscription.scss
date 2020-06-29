@@ -1,0 +1,32 @@
+.modifyUserSubscription {
+  border-radius: 4px;
+  padding: 30px;
+  min-width: 450px;
+
+  .formBox {
+    min-height: 200px;
+
+    .addSubBox {
+      min-width: 180px;
+
+      h3 {
+        font-family: "PlexSans-Medium";
+        font-size: 32px;
+      }
+
+      .addIcon {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .formAction {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .submitButton,
+  .textButton {
+    min-width: 50%;
+  }
+}

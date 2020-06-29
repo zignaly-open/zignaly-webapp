@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "./UsersTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
+import EditIcon from "../../../../images/ct/edit.svg";
+import CancelIcon from "@material-ui/icons/Cancel";
+import Modal from "../../../Modal";
+import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
+import { formatDate } from "../../../../utils/format";
 
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -17,12 +22,15 @@ import { FormattedMessage } from "react-intl";
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
+ * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const UsersTable = ({ title, persistKey, list }) => {
+const UsersTable = ({ title, persistKey, list, loadData }) => {
   console.log(list);
+  const [modifyModal, showModifyModal] = useState(false);
+  const [followerId, setFollower] = useState("");
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -82,30 +90,85 @@ const UsersTable = ({ title, persistKey, list }) => {
     { name: "profitsFromClosedBalance", label: "col.users.profits" },
     { name: "code", label: "col.users.code" },
     { name: "lastTransactionId", label: "col.users.lasttransaction" },
-    { name: "cancelDate", label: "col.users.canceldate" },
     {
-      name: "modify",
-      label: "col.users.modify",
+      name: "cancelDate",
+      label: "col.users.canceldate",
       options: {
         customBodyRender: (val) => {
-          return <span> modify</span>;
+          return val === "-" ? val : <span>{formatDate(val, "YYYY/MM/DD")}</span>;
         },
       },
     },
     {
-      name: "cancel",
+      name: "userId",
+      label: "col.users.modify",
+      options: {
+        customBodyRender: (val) => {
+          return (
+            <img
+              src={EditIcon}
+              onClick={() => editSubscription(val)}
+              alt="zignaly"
+              className="editIcon"
+            />
+          );
+        },
+      },
+    },
+    {
+      name: "userId",
       label: "col.users.cancel",
       options: {
         customBodyRender: (val) => {
-          return <span> Cancel</span>;
+          return (
+            <CancelIcon
+              color="primary"
+              onClick={() => cancelSubscription(val)}
+              className="cancelIcon"
+            />
+          );
         },
       },
     },
   ];
 
+  /**
+   *
+   * @param {String} data ID of the user.
+   * @returns {void} None.
+   */
+  const editSubscription = (data) => {
+    setFollower(data);
+    showModifyModal(true);
+  };
+
+  /**
+   *
+   * @param {String} data ID of the user.
+   * @returns {void} None.
+   */
+  const cancelSubscription = (data) => {
+    console.log(data);
+  };
+
+  /**
+   * @type {*}
+   * @returns {void} None.
+   */
+  const handleModalClose = () => {
+    showModifyModal(false);
+  };
+
   return (
-    <Box className="historyTable" display="flex" flexDirection="column" width={1}>
+    <Box className="usersTable" display="flex" flexDirection="column" width={1}>
       <Table columns={columns} data={list} persistKey={persistKey} title={title} />
+      <Modal persist={false} size="sm" onClose={handleModalClose} state={modifyModal}>
+        <ModifyUserSubscription
+          followerId={followerId}
+          loadData={loadData}
+          onClose={handleModalClose}
+        />
+      </Modal>
     </Box>
   );
 };

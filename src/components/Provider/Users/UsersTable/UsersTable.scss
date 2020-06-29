@@ -1,6 +1,8 @@
-.providersProfitsTable {
-  a {
-    color: $purple;
-    text-decoration: none;
+.usersTable {
+  .editIcon,
+  .cancelIcon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
   }
 }

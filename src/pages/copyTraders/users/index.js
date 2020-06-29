@@ -46,7 +46,14 @@ const CopyTradersUsers = () => {
       justifyContent="center"
     >
       {loading && <CircularProgress color="primary" />}
-      {!loading && <UsersTable list={userList} persistKey="copytProfileUsers" title="srv.users" />}
+      {!loading && (
+        <UsersTable
+          loadData={loadFollowersList}
+          list={userList}
+          persistKey="copytProfileUsers"
+          title="srv.users"
+        />
+      )}
     </Box>
   );
 };

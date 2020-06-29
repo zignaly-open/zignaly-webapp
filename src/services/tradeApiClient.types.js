@@ -632,6 +632,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ModifySubscriptionPayload
+ * @property {string} token
+ * @property {String} providerId
+ * @property {String} followerId
+ * @property {Number} days
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

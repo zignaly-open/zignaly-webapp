@@ -73,6 +73,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
  * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
+ * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
  */
 
 /**
@@ -796,6 +797,36 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return withdrawResponseTransform(responseData);
+  }
+
+  /**
+   * Modify user's subscription fron users table in traders profile.
+   *
+   * @param {ModifySubscriptionPayload} payload payload.
+   * @returns {Promise<WithdrawReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async modifySubscription(payload) {
+    const endpointPath = "/fe/api.php?action=modifyFollowerSubscriptionDuration";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Cancel user's subscription fron users table in traders profile.
+   *
+   * @param {WithdrawPayload} payload payload.
+   * @returns {Promise<WithdrawReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async cancelSubscription(payload) {
+    const endpointPath = "/fe/api.php?action=modifyFollowerSubscriptionDuration";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 
