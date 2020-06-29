@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
+import { simulateInputChangeEvent } from "../utils/events";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -20,13 +22,14 @@ import { useFormContext } from "react-hook-form";
  * Trading terminal position size handlers.
  *
  * @param {MarketSymbol} selectedSymbol Exchange market symbol data.
- * @param {number} leverage Position leverage.
  *
  * @returns {PositionSizeHandlersHook} Position handlers hook object.
  */
-const usePositionSizeHandlers = (selectedSymbol, leverage) => {
+const usePositionSizeHandlers = (selectedSymbol) => {
   const { limits } = selectedSymbol;
-  const { clearError, getValues, setError, setValue } = useFormContext();
+  const { clearError, getValues, setError, setValue, watch } = useFormContext();
+  const leverage = watch("leverage");
+  const entryType = watch("entryType");
 
   /**
    * Validate that position size is within limits.
@@ -150,6 +153,12 @@ const usePositionSizeHandlers = (selectedSymbol, leverage) => {
     const price = parseFloat(draftPosition.price);
     validatePrice(price);
   };
+
+  const chainedPriceUpdates = () => {
+    simulateInputChangeEvent("realInvestment");
+  };
+
+  useEffect(chainedPriceUpdates, [entryType, leverage]);
 
   return {
     positionSizeChange,

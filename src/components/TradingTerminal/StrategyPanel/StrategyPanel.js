@@ -54,7 +54,7 @@ const StrategyPanel = (props) => {
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-  } = usePositionSizeHandlers(symbolData, leverage);
+  } = usePositionSizeHandlers(symbolData);
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
