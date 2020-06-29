@@ -10,6 +10,7 @@ import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./DCAPanel.scss";
+import { calculateDcaPrice } from "../../../utils/calculations";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -166,7 +167,7 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price - (price * targetPricePercentage) / 100;
+    const targetPrice = calculateDcaPrice(price, targetPricePercentage);
 
     if (isNaN(targetPricePercentage)) {
       setError(

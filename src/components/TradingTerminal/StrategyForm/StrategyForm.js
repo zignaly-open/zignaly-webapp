@@ -26,6 +26,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import "./StrategyForm.scss";
+import { calculateDcaPrice } from "../../../utils/calculations";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -447,8 +448,7 @@ const StrategyForm = (props) => {
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
     if (dcaTargetPercentage1) {
-      const price = entryPrice;
-      const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
+      const dcaTargetPrice1 = calculateDcaPrice(entryPrice, parseFloat(dcaTargetPercentage1));
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
@@ -457,7 +457,7 @@ const StrategyForm = (props) => {
       });
     }
   };
-  useEffect(drawDCATargetPriceLines, [entryPrice, dcaTargetPercentage1]);
+  useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
