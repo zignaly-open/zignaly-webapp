@@ -27,6 +27,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import "./StrategyForm.scss";
 import { calculateDcaPrice } from "../../../utils/calculations";
+import "../TrailingStopPanel/TrailingStopPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -109,6 +110,25 @@ const StrategyForm = (props) => {
    * @property {string} label Line label.
    * @property {string} color Line color.
    */
+
+  /**
+   * Remove chart line with a given ID.
+   *
+   * @param {string} id Line ID.
+   * @return {Void} None.
+   */
+  function removeLine(id) {
+    const existingChartLine = linesTracking[id] || null;
+
+    if (existingChartLine) {
+      existingChartLine.remove();
+      // Remove tracked line.
+      setLinesTracking({
+        ...linesTracking,
+        [id]: null,
+      });
+    }
+  }
 
   /**
    * Draw price line at Trading View Chart.
@@ -398,23 +418,33 @@ const StrategyForm = (props) => {
 
   const stopLossPrice = watch("stopLossPrice");
   const drawStopLossPriceLine = () => {
-    drawLine({
-      id: "stopLossPrice",
-      price: parseFloat(stopLossPrice) || 0,
-      label: "Stop loss",
-      color: colors.yellow,
-    });
+    const price = parseFloat(stopLossPrice);
+    if (price) {
+      drawLine({
+        id: "stopLossPrice",
+        price: price || 0,
+        label: "Stop loss",
+        color: colors.yellow,
+      });
+    } else {
+      removeLine("stopLossPrice");
+    }
   };
   useEffect(drawStopLossPriceLine, [stopLossPrice]);
 
   const trailingStopPrice = watch("trailingStopPrice");
   const drawTrailingStopPriceLine = () => {
-    drawLine({
-      id: "trailingStopPrice",
-      price: parseFloat(trailingStopPrice) || 0,
-      label: "Trailing stop price",
-      color: colors.blue,
-    });
+    const price = parseFloat(trailingStopPrice);
+    if (price) {
+      drawLine({
+        id: "trailingStopPrice",
+        price: price || 0,
+        label: "Trailing stop price",
+        color: colors.blue,
+      });
+    } else {
+      removeLine("trailingStopPrice");
+    }
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
@@ -423,14 +453,19 @@ const StrategyForm = (props) => {
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
     forIn(takeProfitTargetPrices, (/** @type {string} */ targetPrice, targetFieldName) => {
-      if (targetPrice) {
-        const index = targetFieldName.substr(targetFieldName.length - 1);
+      const index = targetFieldName.substr(targetFieldName.length - 1);
+      const price = parseFloat(targetPrice);
+      console.log(targetFieldName, ":", price);
+
+      if (price) {
         drawLine({
           id: targetFieldName,
-          price: parseFloat(targetPrice) || 0,
+          price: price || 0,
           label: `Take profit target ${index}`,
           color: colors.green,
         });
+      } else {
+        removeLine(targetFieldName);
       }
     });
   };
@@ -447,14 +482,17 @@ const StrategyForm = (props) => {
 
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
+    const percentage = parseFloat(dcaTargetPercentage1);
     if (dcaTargetPercentage1) {
-      const dcaTargetPrice1 = calculateDcaPrice(entryPrice, parseFloat(dcaTargetPercentage1));
+      const dcaTargetPrice1 = calculateDcaPrice(entryPrice, percentage);
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
         label: "DCA target 1",
         color: colors.black,
       });
+    } else {
+      removeLine("dcaTargetPricePercentage1");
     }
   };
   useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);

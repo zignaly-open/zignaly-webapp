@@ -156,6 +156,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Target percentage must be a number.",
       );
+
+      setValue(priceProperty, "");
       return;
     }
 
@@ -186,6 +188,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Target price must be a number.",
       );
+
+      setValue(pricePercentageProperty, "");
       return;
     }
 
@@ -218,6 +222,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Exit units percentage must be a number.",
       );
+
+      setValue(unitsProperty, "");
       return;
     }
 
@@ -249,6 +255,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Exit units must be a number.",
       );
+
+      setValue(unitsPercentageProperty, "");
       return;
     }
 
