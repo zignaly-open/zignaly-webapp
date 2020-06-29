@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
+import { useFormContext } from "react-hook-form";
 import "./LeverageForm.scss";
 
 /**
  * @typedef {Object} LeverageFormProps
  * @property {number} min Minimum leverage limit.
  * @property {number} max Maximum leverage limit.
- * @property {number} currentValue Default leverage value.
- * @property {function} setCurrentValue Set state callback to store new value.
  */
 
 /**
@@ -17,7 +16,10 @@ import "./LeverageForm.scss";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max, currentValue, setCurrentValue } = props;
+  const { min, max } = props;
+  const { setValue, watch } = useFormContext();
+  const leverage = watch("leverage");
+  console.log("leverage:", leverage);
 
   /**
    * Leverage slided change handler.
@@ -27,7 +29,7 @@ const LeverageForm = (props) => {
    * @returns {Void} None.
    */
   const handleSliderChange = (event, newValue) => {
-    setCurrentValue(newValue);
+    setValue("leverage", newValue);
   };
 
   /**
@@ -38,28 +40,28 @@ const LeverageForm = (props) => {
    */
   const handleInputChange = (event) => {
     const targetElement = event.currentTarget;
-    setCurrentValue(Number(targetElement.value));
+    setValue("leverage", Number(targetElement.value));
   };
 
   const protectLimits = () => {
-    if (currentValue < min) {
-      setCurrentValue(min);
-    } else if (currentValue > max) {
-      setCurrentValue(max);
+    if (parseFloat(leverage) < min) {
+      setValue("leverage", min);
+    } else if (leverage > max) {
+      setValue("leverage", max);
     }
   };
 
   const increaseValue = () => {
-    const newValue = currentValue + 1;
+    const newValue = parseFloat(leverage) + 1;
     if (newValue <= max) {
-      setCurrentValue(newValue);
+      setValue("leverage", newValue);
     }
   };
 
   const decreaseValue = () => {
-    const newValue = currentValue - 1;
+    const newValue = parseFloat(leverage) - 1;
     if (newValue >= min) {
-      setCurrentValue(newValue);
+      setValue("leverage", newValue);
     }
   };
 
@@ -72,7 +74,7 @@ const LeverageForm = (props) => {
         <button onClick={() => decreaseValue()} type="button">
           −
         </button>
-        <input onBlur={protectLimits} onChange={handleInputChange} value={currentValue} />
+        <input onBlur={protectLimits} onChange={handleInputChange} value={leverage} />
         <button onClick={() => increaseValue()} type="button">
           +
         </button>
@@ -84,7 +86,7 @@ const LeverageForm = (props) => {
         min={min}
         onChange={handleSliderChange}
         step={1}
-        value={typeof currentValue === "number" ? currentValue : 0}
+        value={leverage}
       />
     </Box>
   );

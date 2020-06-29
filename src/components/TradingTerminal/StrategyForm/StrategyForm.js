@@ -72,6 +72,7 @@ const StrategyForm = (props) => {
     mode: "onChange",
     defaultValues: {
       entryType: "LONG",
+      leverage: 1,
       positionSize: "",
       price: currentPrice,
       realInvestment: "",

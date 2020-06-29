@@ -46,7 +46,8 @@ const StrategyPanel = (props) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const [modalVisible, setModalVisible] = useState(false);
-  const [leverage, setLeverage] = useState(1);
+
+  const leverage = watch("leverage");
   const {
     positionSizeChange,
     priceChange,
@@ -200,14 +201,6 @@ const StrategyPanel = (props) => {
           </FormHelperText>
           {errors.units && <span className="errorText">{errors.units.message}</span>}
         </FormControl>
-        <Modal
-          onClose={() => setModalVisible(false)}
-          persist={false}
-          size="small"
-          state={modalVisible}
-        >
-          <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
-        </Modal>
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"
@@ -215,8 +208,17 @@ const StrategyPanel = (props) => {
             flexDirection="column"
             justifyContent="flex-end"
           >
+            <Modal
+              onClose={() => setModalVisible(false)}
+              persist={false}
+              size="small"
+              state={modalVisible}
+            >
+              <LeverageForm max={125} min={1} />
+            </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+            <input name="leverage" ref={register} type="hidden" />
           </Box>
         )}
       </Box>
