@@ -25,9 +25,9 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import "./StrategyForm.scss";
 import { calculateDcaPrice } from "../../../utils/calculations";
-import "../TrailingStopPanel/TrailingStopPanel.scss";
+import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
+import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -290,6 +290,8 @@ const StrategyForm = (props) => {
     const { quote, base } = currentSymbolData;
     const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
+    const buyTTL = parseFloat(draftPosition.entryExpiration);
+    const sellTTL = parseFloat(draftPosition.autoclose);
 
     return {
       token: storeSession.tradeApi.accessToken,
@@ -298,9 +300,9 @@ const StrategyForm = (props) => {
       side: mapSideToEnum(draftPosition.entryType),
       type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
-      buyTTL: parseFloat(draftPosition.entryExpiration) || false,
+      buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
-      sellByTTL: parseFloat(draftPosition.autoclose) || 0,
+      sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
       trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
