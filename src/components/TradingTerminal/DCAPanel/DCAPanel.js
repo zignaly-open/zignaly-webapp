@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
@@ -74,6 +74,7 @@ const DCAPanel = (props) => {
     dcaRebuyIndexes,
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
+  const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
   const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
   const { expanded, expandClass, expandableControl } = useExpandable(size(dcaAllIndexes) > 0);
 
@@ -102,6 +103,19 @@ const DCAPanel = (props) => {
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+
+  /**
+   * Handle DCA increase remove.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Button click event.
+   * @returns {Void} None.
+   */
+  const handleDcaIncreaseRemove = (event) => {
+    const targetElement = event.currentTarget;
+    const targetId = targetElement.getAttribute("data-target-id");
+    const newDcaIncreaseIndexes = activeDcaIncreaseIndexes.filter((value) => value !== targetId);
+    setActiveDCAIncreaseIndexes(newDcaIncreaseIndexes);
+  };
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -282,6 +296,11 @@ const DCAPanel = (props) => {
    * @returns {JSX.Element} Target element.
    */
   const displayDcaTarget = (targetId) => {
+    // Not disabled and DCA within increment index range.
+    const index = parseInt(targetId);
+    const showRemove =
+      !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
+      index >= 1000;
     return (
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
@@ -312,6 +331,18 @@ const DCAPanel = (props) => {
           </Box>
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
+        {showRemove && (
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            <Button
+              className="removeTarget"
+              data-target-id={index}
+              onClick={handleDcaIncreaseRemove}
+            >
+              <RemoveCircle />
+              <FormattedMessage id="terminal.target.remove" />
+            </Button>
+          </Box>
+        )}
       </Box>
     );
   };
@@ -347,7 +378,7 @@ const DCAPanel = (props) => {
               </Button>
             </Box>
           )}
-          {dcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
+          {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
     </Box>
