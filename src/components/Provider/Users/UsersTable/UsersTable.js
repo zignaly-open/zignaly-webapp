@@ -67,7 +67,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         display: "true",
         viewColumns: true,
         customBodyRender: (val) => {
-          return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+          return <span> {val ? "Yes" : "No"}</span>;
         },
       },
     },
@@ -76,7 +76,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       label: "col.users.active",
       options: {
         customBodyRender: (val) => {
-          return <span className={val ? "green" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+          return <span> {val ? "Yes" : "No"}</span>;
         },
       },
     },
@@ -85,7 +85,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       label: "col.users.suspended",
       options: {
         customBodyRender: (val) => {
-          return <span className={val ? "greed" : "red"}> {val ? "TRUE" : "FALSE"}</span>;
+          return <span> {val ? "Yes" : "No"}</span>;
         },
       },
     },
