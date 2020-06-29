@@ -254,30 +254,33 @@ const DCAPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-      const newValue = formatFloat2Dec(Math.abs(currentValue));
-      const sign = entryType === "SHORT" ? "-" : "";
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(currentValue));
+        const sign = entryType === "LONG" ? "-" : "";
 
-      if (currentValue === 0) {
-        setTargetPropertyValue("targetPricePercentage", targetId, sign);
-      } else {
-        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-      }
-
-      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
-    });
+        if (isNaN(currentValue)) {
+          setTargetPropertyValue("targetPricePercentage", targetId, sign);
+        } else {
+          setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        }
+      });
+    }
   };
 
-  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
-    });
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
+      });
+    }
   };
 
-  useEffect(chainedUnitsUpdates, [strategyPositionSize]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyPositionSize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {

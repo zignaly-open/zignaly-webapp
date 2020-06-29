@@ -104,20 +104,27 @@ const StrategyPanel = (props) => {
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
         {selectedExchange.exchangeType === "futures" && (
           <FormControl className="entryType">
-            <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.long" />}
-                value="LONG"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.short" />}
-                value="SHORT"
-              />
-            </RadioGroup>
+            <Controller
+              as={
+                <RadioGroup aria-label="Entry Type">
+                  <FormControlLabel
+                    control={<Radio />}
+                    inputRef={register}
+                    label={<FormattedMessage id="col.side.long" />}
+                    value="LONG"
+                  />
+                  <FormControlLabel
+                    control={<Radio />}
+                    inputRef={register}
+                    label={<FormattedMessage id="col.side.short" />}
+                    value="SHORT"
+                  />
+                </RadioGroup>
+              }
+              control={control}
+              defaultValue={entryType}
+              name="entryType"
+            />
           </FormControl>
         )}
         {entryStrategy === "stop-limit" && (
