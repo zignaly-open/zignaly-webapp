@@ -164,8 +164,6 @@ const TradingView = () => {
   };
 
   const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
-  const [modalVisible, setModalVisible] = useState(false);
-  const [leverage, setLeverage] = useState(1);
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
@@ -201,24 +199,6 @@ const TradingView = () => {
               value={selectedProviderValue}
             />
           </Box>
-          <Modal
-            onClose={() => setModalVisible(false)}
-            persist={false}
-            size="small"
-            state={modalVisible}
-          >
-            <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
-          </Modal>
-          {storeSettings.selectedExchange.exchangeType === "futures" && (
-            <Box
-              className="leverageButton"
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-end"
-            >
-              <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
-            </Box>
-          )}
         </Box>
       )}
       <Box
@@ -239,7 +219,6 @@ const TradingView = () => {
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
-            leverage={leverage}
             selectedSymbol={selectedSymbol}
             tradingViewWidget={tradingViewWidget}
           />

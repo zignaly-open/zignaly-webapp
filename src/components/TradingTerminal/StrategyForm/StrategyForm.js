@@ -44,7 +44,6 @@ import "./StrategyForm.scss";
  * @property {Object} dataFeed
  * @property {CoinRayCandle} lastPriceCandle
  * @property {TVWidget} tradingViewWidget
- * @property {number} leverage
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
@@ -60,7 +59,6 @@ const StrategyForm = (props) => {
   const {
     dataFeed,
     lastPriceCandle,
-    leverage,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
@@ -463,7 +461,7 @@ const StrategyForm = (props) => {
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          {!isPositionView && <StrategyPanel leverage={leverage} symbolData={currentSymbolData} />}
+          {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
           <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />

@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import {
-  OutlinedInput,
+  Button,
+  FormControl,
   FormControlLabel,
   FormHelperText,
-  FormControl,
-  RadioGroup,
+  OutlinedInput,
   Radio,
+  RadioGroup,
   Typography,
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
+import Modal from "../../Modal";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
+import { LeverageForm } from "..";
+import "./StrategyPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -26,7 +29,6 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {number} leverage
  */
 
 /**
@@ -36,11 +38,15 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  * @returns {JSX.Element} Strategy panel element.
  */
 const StrategyPanel = (props) => {
-  const { symbolData, leverage } = props;
+  const { symbolData } = props;
   const { control, errors, register, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
+  const intl = useIntl();
+  const storeSettings = useStoreSettingsSelector();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [leverage, setLeverage] = useState(1);
   const {
     positionSizeChange,
     priceChange,
@@ -48,7 +54,6 @@ const StrategyPanel = (props) => {
     unitsChange,
     validatePositionSize,
   } = usePositionSizeHandlers(symbolData, leverage);
-  const intl = useIntl();
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
@@ -195,6 +200,25 @@ const StrategyPanel = (props) => {
           </FormHelperText>
           {errors.units && <span className="errorText">{errors.units.message}</span>}
         </FormControl>
+        <Modal
+          onClose={() => setModalVisible(false)}
+          persist={false}
+          size="small"
+          state={modalVisible}
+        >
+          <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
+        </Modal>
+        {storeSettings.selectedExchange.exchangeType === "futures" && (
+          <Box
+            className="leverageButton"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-end"
+          >
+            <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
+            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );
