@@ -68,7 +68,6 @@ const LineChart = (props) => {
    * @returns {void}
    */
   const showTooltip = (tooltip) => {
-    // if chart is not defined, return early
     const chart = chartRef.current;
     if (!chart) {
       return;
@@ -76,7 +75,6 @@ const LineChart = (props) => {
 
     // hide the tooltip when chartjs determines you've hovered out
     if (tooltip.opacity === 0) {
-      //   setTooltipVisibility(false);
       setTooltipData((data) => ({ ...data, isVisible: false }));
       return;
     }
@@ -84,7 +82,6 @@ const LineChart = (props) => {
     // Set tooltip position.
     const left = tooltip.caretX;
     const top = tooltip.caretY;
-    //   setPos({ left, top });
 
     // Set values for display of data in the tooltip
     const content = tooltipFormat(tooltip.dataPoints[0]);
@@ -106,10 +103,8 @@ const LineChart = (props) => {
         borderColor: colorsOptions.borderColor,
         fill: "start",
         // pointHitRadius: 20,
-        // pointHoverRadius: 8,
-        // pointHoverBorderWidth: 4,
-        // pointHoverBorderColor: "#5200c5",
-        // pointHoverBackgroundColor: "#fff",
+        pointHoverRadius: 0,
+        pointHoverBorderWidth: 0,
       },
     ],
   };

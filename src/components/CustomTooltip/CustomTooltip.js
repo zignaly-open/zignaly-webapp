@@ -43,10 +43,11 @@ const CustomTooltip = (props) => {
       }
       classes={{
         tooltip: "customTooltip",
-        popper: "customTooltipPopper",
+        popper: customPopper ? "customTooltipPopper" : null,
         arrow: "customArrowTooltip",
       }}
       title={title}
+      enterTouchDelay={100}
       {...others}
     >
       {children}
