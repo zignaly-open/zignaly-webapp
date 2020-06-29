@@ -22,7 +22,7 @@ const Withdraw = () => {
   const {
     pathParams: { selectedAccount },
   } = useContext(ModalPathContext);
-  const { handleSubmit, register, errors, watch, reset } = useForm();
+  const { handleSubmit, register, errors, watch, reset } = useForm({ mode: "onBlur" });
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -140,7 +140,7 @@ const Withdraw = () => {
                           required: "Please specify an address",
                           pattern: {
                             value: RegExp(selectedNetwork.addressRegex),
-                            message: "invalid address",
+                            message: "Invalid address",
                           },
                         })}
                         name="address"
@@ -204,8 +204,7 @@ const Withdraw = () => {
                         inputRef={register({
                           min: {
                             value: parseFloat(selectedNetwork.withdrawMin),
-                            message:
-                              "Please enter an amount no higher than your available balance.",
+                            message: "Please enter an amount above the minimum withdrawal amount.",
                           },
                           max: {
                             value: parseFloat(selectedAsset.balanceFree),
