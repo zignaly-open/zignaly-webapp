@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
-import Modal from "../../Modal";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../services/tradeApiClient";
-import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, Button, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

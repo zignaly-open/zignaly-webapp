@@ -19,7 +19,6 @@ const LeverageForm = (props) => {
   const { min, max } = props;
   const { setValue, watch } = useFormContext();
   const leverage = watch("leverage");
-  console.log("leverage:", leverage);
 
   /**
    * Leverage slided change handler.

@@ -136,7 +136,6 @@ const TradingViewEdit = (props) => {
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
-            leverage={positionEntity.leverage}
             notifyPositionUpdate={notifyPositionUpdate}
             positionEntity={positionEntity}
             selectedSymbol={selectedSymbol}

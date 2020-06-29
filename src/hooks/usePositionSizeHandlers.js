@@ -22,13 +22,14 @@ import { simulateInputChangeEvent } from "../utils/events";
  * Trading terminal position size handlers.
  *
  * @param {MarketSymbol} selectedSymbol Exchange market symbol data.
+ * @param {number} defaultLeverage Current leverage.
  *
  * @returns {PositionSizeHandlersHook} Position handlers hook object.
  */
-const usePositionSizeHandlers = (selectedSymbol) => {
+const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
   const { clearError, getValues, setError, setValue, watch } = useFormContext();
-  const leverage = watch("leverage");
+  const leverage = defaultLeverage || watch("leverage");
   const entryType = watch("entryType");
 
   /**
