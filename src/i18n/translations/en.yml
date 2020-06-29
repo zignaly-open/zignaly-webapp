@@ -51,6 +51,7 @@ dashboard.balance.invested: "Invested"
 dashboard.balance.profit: "Profit"
 dashboard.balance.historical: "Historical"
 dashboard.traders.copying: "Traders I am copying:"
+dashboard.providers.following: "Signal Providers I am following:"
 
 # CONFIRMATION DIALOGS
 confirm.cancel: "Cancel"
