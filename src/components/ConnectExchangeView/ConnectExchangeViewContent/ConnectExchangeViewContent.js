@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
-import ExchangeAccountDeposit from "../ExchangeAccountBalanceManagement/Deposit";
-import ExchangeAccountWithdraw from "../ExchangeAccountBalanceManagement/Withdraw";
+import Deposit from "../ExchangeAccountBalanceManagement/Deposit";
+import Withdraw from "../ExchangeAccountBalanceManagement/Withdraw";
+import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 
@@ -28,9 +29,11 @@ const ConnectExchangeViewContent = () => {
     case "settings":
       return <ExchangeAccountSettings />;
     case "deposit":
-      return <ExchangeAccountDeposit />;
+      return <Deposit />;
     case "withdraw":
-      return <ExchangeAccountWithdraw />;
+      return <Withdraw />;
+    case "convert":
+      return <Convert />;
   }
 };
 

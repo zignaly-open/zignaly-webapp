@@ -44,17 +44,30 @@ export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
 export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
+ * @typedef {('SHORT' | 'LONG')} PositionEntrySide
+ */
+
+/**
+ * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionEntryType
+ */
+
+/**
+ * @typedef {('entry' | 'exit')} PositionOrderType
+ */
+
+/**
  * @typedef {Object} CreatePositionPayload
  * @property {string} token
  * @property {string} pair
  * @property {number} limitPrice
  * @property {string} positionSizeQuote
  * @property {number} positionSize
- * @property {('entry' | 'exit')} type
- * @property {('SHORT' | 'LONG')} side
+ * @property {number} realInvestment
+ * @property {PositionOrderType} type
+ * @property {PositionEntrySide} side
  * @property {number|boolean} stopLossPercentage
  * @property {number|boolean} buyTTL
- * @property {("market" | "limit" | "stop_loss_limit" | "import")} buyType
+ * @property {PositionEntryType} buyType
  * @property {number} buyStopPrice
  * @property {number|boolean} sellByTTL
  * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
@@ -110,6 +123,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} UserLoginPayload
  * @property {string} email
  * @property {string} password
+ * @property {string} gRecaptchaResponse
  */
 
 /**
@@ -632,6 +646,27 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ConvertPayload
+ * @property {Array<string>} assets
+ * @property {string} internalId
+ */
+
+/**
+ * @typedef {Object} TransObject
+ * @property {string} amount
+ * @property {string} asset
+ * @property {string} serviceCharge
+ * @property {string} transferredAmount
+ */
+
+/**
+ * @typedef {Object} ConvertReply
+ * @property {string} totalServiceCharge
+ * @property {string} totalTransferred
+ * @property {Array<TransObject>} trans
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -919,6 +954,46 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       skipped: profitTarget.skipped || false,
     };
   });
+}
+
+/**
+ * Map position side to typed value.
+ *
+ * @param {string} entrySide Entry side.
+ * @returns {PositionEntrySide} Typed value.
+ */
+export function mapSideToEnum(entrySide) {
+  switch (entrySide) {
+    case "SHORT":
+      return POSITION_SIDE_SHORT;
+
+    case "LONG":
+      return POSITION_SIDE_LONG;
+
+    default:
+      return POSITION_SIDE_LONG;
+  }
+}
+
+/**
+ * Map position entry type to typed value.
+ *
+ * @param {string} entryType Entry type.
+ * @returns {PositionEntryType} Typed value.
+ */
+export function mapEntryTypeToEnum(entryType) {
+  switch (entryType) {
+    case "market":
+      return POSITION_ENTRY_TYPE_MARKET;
+    case "limit":
+      return POSITION_ENTRY_TYPE_LIMIT;
+    case "stop_loss_limit":
+      return POSITION_ENTRY_TYPE_SLLIMIT;
+    case "import":
+      return POSITION_ENTRY_TYPE_IMPORT;
+    default:
+      throw new Error(`${entryType} entry type is invalid.`);
+  }
 }
 
 /**
@@ -2503,6 +2578,20 @@ function createExchangeWithdrawEmptyEntity() {
 export function withdrawResponseTransform(response) {
   return {
     id: response.id,
+  };
+}
+
+/**
+ * Transform convert asset reply to typed ConvertReply
+ *
+ * @param {*} response Trade API convert asset response.
+ * @returns {ConvertReply} Convert asset reply object.
+ */
+export function convertAssetResponseTransform(response) {
+  return {
+    totalServiceCharge: response.totalServiceCharge,
+    totalTransferred: response.totalTransferred,
+    trans: response.trans,
   };
 }
 

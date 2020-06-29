@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@material-ui/core";
 import "./Withdraw.scss";
 import TransferCoinPicker from "../TransferCoinPicker";
@@ -21,7 +21,6 @@ import ModalPathContext from "../../ModalPathContext";
 const Withdraw = () => {
   const {
     pathParams: { selectedAccount },
-    setTitle,
   } = useContext(ModalPathContext);
   const { handleSubmit, register, errors, watch, reset } = useForm();
   const storeSession = useStoreSessionSelector();
@@ -38,11 +37,6 @@ const Withdraw = () => {
     selectedNetwork,
     setSelectedNetwork,
   } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, updatedAt);
-
-  useEffect(() => {
-    setTitle(selectedAccount.internalName);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /**
    * @typedef {Object} FormData
