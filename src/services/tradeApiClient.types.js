@@ -707,6 +707,9 @@ function providerItemTransform(providerItem) {
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem);
 
+  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort((a, b) =>
+    moment(a.name).diff(moment(b.name)),
+  );
   transformedResponse.dailyReturns.forEach((item) => {
     // if (isCopyTrading) {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);

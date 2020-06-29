@@ -6,6 +6,7 @@ import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
 import { FormattedMessage } from "react-intl";
 import FollowProviderButton from "../FollowProviderButton";
+import ProviderLogo from "../ProviderLogo/";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -30,11 +31,7 @@ const ProviderHeaderActions = () => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <img
-          className="providerLogo"
-          onError={onLogoError}
-          src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
-        />
+        <ProviderLogo url={storeViews.provider.logoUrl} title={name} size="40px" />
         <Typography variant="h1">{storeViews.provider.name}</Typography>
       </Box>
       <FollowProviderButton provider={storeViews.provider} />

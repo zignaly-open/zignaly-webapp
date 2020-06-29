@@ -52,7 +52,7 @@ const BarChart = (props) => {
    * @type ChartData
    */
   const data = {
-    labels: imageUrls && imageUrls.length ? values.map(() => "") : labels,
+    labels: imageUrls ? values.map(() => "") : labels,
     datasets: [
       {
         data: values,
@@ -96,39 +96,16 @@ const BarChart = (props) => {
   };
 
   // Load all images
-  //   const imagesElements = imageUrls.map((imageUrl) => {
-  //     let image = new Image();
-  //     image.src = imageUrl;
-  //     return image;
-  //   });
   const [imagesElements, setImages] = React.useState([]);
   React.useEffect(() => {
-    // let image = new Image();
-    // image.src = imageUrls[0];
-    // image.onload = () => {
-    //   console.log("loadd", image.src);
-    //   // drawImage(image, index);
-    // };
-
-    if (!imageUrls.length) return;
-    const images = imageUrls.map((imageUrl, i) => {
-      let image = new Image();
-      //   image.src = LogoIcon;
-      image.src = imageUrl;
-      //   image.onerror = (e) => {
-      //     // console.log(e);
-      //     const defaultImage = new Image();
-      //     defaultImage.src = LogoIcon;
-      //     //   image = defaultImage;
-      //     imagesElements[i] = defaultImage;
-
-      //     console.log(imagesElements);
-      //     setImages(imagesElements);
-      //     // image.src = LogoIcon;
-      //   };
-      return image;
-    });
-    setImages(images);
+    if (imageUrls) {
+      const images = imageUrls.map((imageUrl, i) => {
+        let image = new Image();
+        image.src = imageUrl;
+        return image;
+      });
+      setImages(images);
+    }
   }, [imageUrls]);
 
   /**

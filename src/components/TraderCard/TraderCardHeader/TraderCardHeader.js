@@ -5,6 +5,8 @@ import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
+import { Link } from "gatsby";
+
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
  *
@@ -19,7 +21,10 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { price, name, logoUrl, quote, exchanges } = props.provider;
+  const { price, name, logoUrl, quote, exchanges, isCopyTrading, id } = props.provider;
+
+  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}/profile`;
+
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
       <ProviderLogo url={logoUrl} title={name} size="40px" />
@@ -43,9 +48,9 @@ const TraderCardHeader = (props) => {
             flexDirection="row"
             justifyContent="flex-start"
           >
-            <Typography className="name" variant="h4">
-              {name}
-            </Typography>
+            <Link to={profileLink} className="name">
+              <Typography variant="h4">{name}</Typography>
+            </Link>
             {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
           </Box>
           <Box alignItems="center" display="flex" flexDirection="row">
