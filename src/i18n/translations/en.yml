@@ -251,6 +251,8 @@ col.users.cancel: "Cancel Subscription"
 account.demo: "Demo"
 account.real: "Real"
 users.modify.title: "Add or substract day to the subscription"
+users.cancel.title: "Cancel Subscription"
+users.cancel.subtitle: "Are you sure you want to cancel this users subscription?"
 
 # FILTERS AND SORT BY
 fil.allcoins: "All Coins"

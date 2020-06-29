@@ -74,6 +74,8 @@ import {
  * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
  * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
+ * @typedef {import('./tradeApiClient.types').CancelSubscriptionPayload} CancelSubscriptionPayload
+ *
  */
 
 /**
@@ -817,13 +819,13 @@ class TradeApiClient {
   /**
    * Cancel user's subscription fron users table in traders profile.
    *
-   * @param {WithdrawPayload} payload payload.
+   * @param {CancelSubscriptionPayload} payload payload.
    * @returns {Promise<WithdrawReply>} Returns promise.
    *
    * @memberof TradeApiClient
    */
   async cancelSubscription(payload) {
-    const endpointPath = "/fe/api.php?action=modifyFollowerSubscriptionDuration";
+    const endpointPath = "/fe/api.php?action=cancelFollowerSubscription";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

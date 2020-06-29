@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./UsersTable.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
 import EditIcon from "../../../../images/ct/edit.svg";
@@ -8,6 +8,12 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Modal from "../../../Modal";
 import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
 import { formatDate } from "../../../../utils/format";
+import { ConfirmDialog } from "../../../Dialogs";
+import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../../store/actions/ui";
 
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -28,9 +34,24 @@ import { formatDate } from "../../../../utils/format";
  * @returns {JSX.Element} Component JSX.
  */
 const UsersTable = ({ title, persistKey, list, loadData }) => {
-  console.log(list);
+  const storeViews = useStoreViewsSelector();
+  const storeSession = useStoreSessionSelector();
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "users.cancel.title",
+    messageTranslationId: "users.cancel.subtitle",
+    visible: false,
+  };
+
   const [modifyModal, showModifyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [followerId, setFollower] = useState("");
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const dispatch = useDispatch();
+
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -95,7 +116,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       label: "col.users.canceldate",
       options: {
         customBodyRender: (val) => {
-          return val === "-" ? val : <span>{formatDate(val, "YYYY/MM/DD")}</span>;
+          return val === "-" ? val : <span>{formatDate(val, "YY/MM/DD HH:MM")}</span>;
         },
       },
     },
@@ -120,12 +141,10 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       label: "col.users.cancel",
       options: {
         customBodyRender: (val) => {
-          return (
-            <CancelIcon
-              color="primary"
-              onClick={() => cancelSubscription(val)}
-              className="cancelIcon"
-            />
+          return loading && followerId === val ? (
+            <CircularProgress size={24} color="primary" />
+          ) : (
+            <CancelIcon color="primary" onClick={() => confirm(val)} className="cancelIcon" />
           );
         },
       },
@@ -144,11 +163,39 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
 
   /**
    *
+   * @returns {void} None.
+   */
+  const cancelSubscription = () => {
+    setLoading(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
+      followerId: followerId,
+      cancel: true,
+    };
+
+    tradeApi
+      .cancelSubscription(payload)
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          loadData();
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+        setLoading(false);
+      });
+  };
+
+  /**
+   *
    * @param {String} data ID of the user.
    * @returns {void} None.
    */
-  const cancelSubscription = (data) => {
-    console.log(data);
+  const confirm = (data) => {
+    setFollower(data);
+    setConfirmConfig({ ...initConfirmConfig, visible: true });
   };
 
   /**
@@ -161,6 +208,11 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
 
   return (
     <Box className="usersTable" display="flex" flexDirection="column" width={1}>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={cancelSubscription}
+        setConfirmConfig={setConfirmConfig}
+      />
       <Table columns={columns} data={list} persistKey={persistKey} title={title} />
       <Modal persist={false} size="sm" onClose={handleModalClose} state={modifyModal}>
         <ModifyUserSubscription

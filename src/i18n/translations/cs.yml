@@ -250,7 +250,9 @@ col.users.modify: "CH-Modify Subscription"
 col.users.cancel: "CH-Cancel Subscription"
 account.demo: "CH-Demo"
 account.real: "CH-Real"
-users.modify.title: "Add or substract day to the subscription"
+users.modify.title: "CH-Add or substract day to the subscription"
+users.cancel.title: "Ch-Cancel Subscription"
+users.cancel.subtitle: "CH-Are you sure you want to cancel this users subscription?"
 
 # FILTERS AND SORT BY
 fil.allcoins: "CH-All Coins"
