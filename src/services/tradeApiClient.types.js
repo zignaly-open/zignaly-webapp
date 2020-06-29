@@ -834,10 +834,10 @@ export function userPositionItemTransform(positionItem) {
     }
 
     if (positionItem.isCopyTrading) {
-      return `/copytraders/${positionItem.providerId}`;
+      return `/copyTraders/${positionItem.providerId}/profile`;
     }
 
-    return `/signalsproviders/${positionItem.providerId}`;
+    return `/signalsProviders/${positionItem.providerId}/profile`;
   };
 
   /**
