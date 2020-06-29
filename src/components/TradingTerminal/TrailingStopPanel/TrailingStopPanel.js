@@ -84,6 +84,8 @@ const TrailingStopPanel = (props) => {
       setError("trailingStopDistance", "error", "Trailing stop distance must be a number.");
       return;
     }
+
+    clearError("trailingStopDistance");
   };
 
   /**
