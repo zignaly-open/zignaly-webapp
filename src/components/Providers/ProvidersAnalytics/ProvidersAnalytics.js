@@ -56,6 +56,7 @@ const ProvidersAnalytics = ({ type }) => {
         persistKey={`${type}Analytics`}
         stats={stats}
         title={<FormattedMessage id={`${type}.performance`} />}
+        type={type}
       />
     </Box>
   );

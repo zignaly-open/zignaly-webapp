@@ -23,11 +23,12 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @property {string | React.ReactNode} title Table title.
  * @property {ProvidersStatsCollection} stats Table stats data.
  * @property {string} persistKey Key to save display columns settings.
+ * @property {string} type Type of providers.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
+const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -63,7 +64,13 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       label: "col.name",
       options: {
         customBodyRender: (val, tableMeta) => (
-          <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>
+          <Link
+            to={`${type === "signalp" ? "/signalProviders" : "/copyTraders"}/${
+              tableMeta.rowData[0]
+            }/profile`}
+          >
+            {val}
+          </Link>
         ),
         viewColumns: false,
       },
