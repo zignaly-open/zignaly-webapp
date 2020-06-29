@@ -70,9 +70,11 @@ const CompositionGraph = ({ list, quotes }) => {
           labels.push(quotes[a] + "%");
         }
       }
-      /* @ts-ignore */
-      values.push(formatFloat(equity.otherPercentage));
-      labels.push(intl.formatMessage({ id: "graph.others" }));
+      if (equity.otherPercentage > 0) {
+        /* @ts-ignore */
+        values.push(formatFloat(equity.otherPercentage));
+        labels.push(intl.formatMessage({ id: "graph.others" }));
+      }
     }
   };
 

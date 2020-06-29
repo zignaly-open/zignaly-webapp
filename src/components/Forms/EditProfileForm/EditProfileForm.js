@@ -15,6 +15,7 @@ import { setProvider } from "../../../store/actions/views";
 import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -31,7 +32,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { errors, handleSubmit, control, setError } = useForm();
+  const storeUserData = useStoreUserData();
+  const { errors, handleSubmit, control, setError, watch } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
@@ -45,6 +47,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
 
   const signalUrl = `https://test.zignaly.com/api/signals.php?key=${provider.key}`;
   const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
+  const listSwitch = watch("list", provider.list);
 
   /**
    *
@@ -231,6 +234,18 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    */
   const handleSocialError = (value) => {
     setSocialError(value);
+  };
+
+  const disableList = () => {
+    if (listSwitch) {
+      return false;
+    } else {
+      if (storeUserData.isAdmin) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   };
 
   return (
@@ -574,7 +589,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!provider.isAdmin} />}
+                as={<Switch />}
                 control={control}
                 defaultValue={provider.public}
                 name="public"
@@ -603,7 +618,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!provider.isAdmin} />}
+                as={<Switch disabled={disableList()} />}
                 control={control}
                 defaultValue={provider.list}
                 name="list"

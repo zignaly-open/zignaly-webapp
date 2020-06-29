@@ -2,6 +2,7 @@ import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges } from "./user";
 import { unsetProvider } from "./views";
+import { showErrorAlert } from "./ui";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -28,7 +29,7 @@ export const startTradeApiSession = (payload) => {
 
       dispatch(action);
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };
@@ -49,7 +50,7 @@ export const endTradeApiSession = () => {
       dispatch(unsetUserExchanges());
       dispatch(unsetProvider());
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };
