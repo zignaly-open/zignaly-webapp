@@ -80,17 +80,6 @@ const ExchangeList = (props) => {
             )}
           </MenuItem>
         ))}
-      <MenuItem
-        className="exchangeListItem action"
-        onClick={() => {
-          navigate("#exchangeAccounts");
-        }}
-      >
-        <img alt="zignaly" src={MyExchange} />
-        <span className="name">
-          <FormattedMessage id="menu.manageaccounts" />
-        </span>
-      </MenuItem>
     </Box>
   );
 };
