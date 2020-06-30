@@ -198,6 +198,28 @@ const TakeProfitPanel = (props) => {
     validateTargetPriceLimits(targetId);
   };
 
+  const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
+    composeTargetPropertyName("exitUnitsPercentage", targetId),
+  );
+  const exitUnitsPercentages = watch(exitUnitsPercentageFields);
+  const validateCumulativePercentage = () => {
+    const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
+    const propertyNames = keys(exitUnitsPercentages);
+    if (cumulativePercentage > 100) {
+      propertyNames.map((unitsPercentageProperty) => {
+        setError(
+          unitsPercentageProperty,
+          "error",
+          formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
+        );
+      });
+    } else {
+      propertyNames.map((unitsPercentageProperty) => {
+        clearError(unitsPercentageProperty);
+      });
+    }
+  };
+
   /**
    * Calculate units based on units percentage change for a given target.
    *
@@ -229,6 +251,7 @@ const TakeProfitPanel = (props) => {
     }
 
     validateExitUnits(event);
+    validateCumulativePercentage();
   };
 
   /**
@@ -383,32 +406,6 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyUnits]);
-
-  const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
-    composeTargetPropertyName("exitUnitsPercentage", targetId),
-  );
-  const exitUnitsPercentages = watch(exitUnitsPercentageFields);
-  const revalidateCumulativePercentage = () => {
-    const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
-    const propertyNames = keys(exitUnitsPercentages);
-    console.log("revalidateExecuted...");
-    console.log("values: ", exitUnitsPercentages);
-    if (cumulativePercentage > 100) {
-      propertyNames.map((unitsPercentageProperty) => {
-        setError(
-          unitsPercentageProperty,
-          "error",
-          formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
-        );
-      });
-    } else {
-      propertyNames.map((unitsPercentageProperty) => {
-        clearError(unitsPercentageProperty);
-      });
-    }
-  };
-
-  useEffect(revalidateCumulativePercentage, [exitUnitsPercentages]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
