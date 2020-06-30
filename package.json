@@ -91,6 +91,7 @@
   "scripts": {
     "build": "npm install && npm run reset && gatsby build --prefix-paths",
     "build:test": "STAGE=test npm run build",
+    "build:beta": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
     "checkall": "npm run sasslint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
