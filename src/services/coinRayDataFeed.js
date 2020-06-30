@@ -137,10 +137,7 @@ class CoinRayDataFeed {
   searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
     userInput = userInput.toUpperCase();
     const symbolFound = this.symbolsData
-      .filter((symbolData) => {
-        const symbolBaseQuote = symbolData.base + symbolData.quote;
-        return symbolBaseQuote.indexOf(userInput) >= 0;
-      })
+      .filter((symbolData) => symbolData.symbol === userInput.toUpperCase())
       .map((symbol) => {
         const symbolBaseQuote = symbol.base + symbol.quote;
 
@@ -161,36 +158,36 @@ class CoinRayDataFeed {
   /**
    * Resolve symbol data with structure required by Trading View chart.
    *
-   * @param {string} symbolId Symbol ID.
+   * @param {string} symbol Symbol code.
    * @param {ResolveCallback} onSymbolResolvedCallback Notify symbol resolved.
    * @param {ErrorCallback} onResolveErrorCallback Notify symbol resolve error.
    * @returns {Void} None.
    * @memberof CoinRayDataFeed
    */
-  resolveSymbol(symbolId, onSymbolResolvedCallback, onResolveErrorCallback) {
-    for (let symbol of this.symbolsData) {
-      const symbolBaseQuote = symbol.base + symbol.quote;
-      const pricescale = Math.round(1 / symbol.limits.price.min);
+  resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
+    for (let symbolData of this.symbolsData) {
+      const symbolBaseQuote = symbolData.base + symbolData.quote;
+      const pricescale = Math.round(1 / symbolData.limits.price.min);
 
-      if (symbol.id === symbolId) {
+      if (symbolData.symbol === symbol) {
         /**
          * @type LibrarySymbolInfo
          */
         const symbolFound = {
-          base_name: [symbol.base],
+          base_name: [symbolData.base],
           // @ts-ignore
-          coinrayBase: symbol.coinrayBase,
+          coinrayBase: symbolData.coinrayBase,
           // @ts-ignore
-          coinrayQuote: symbol.coinrayQuote,
-          description: symbol.base + " / " + symbol.quote,
+          coinrayQuote: symbolData.coinrayQuote,
+          description: symbolData.symbol,
           exchange: this.exchange,
-          full_name: symbolBaseQuote,
+          full_name: symbolData.symbol,
           has_daily: true,
           has_intraday: true,
           has_weekly_and_monthly: true,
           listed_exchange: this.exchange,
           minmov: 1,
-          name: symbolBaseQuote,
+          name: symbolData.symbol,
           pricescale: pricescale,
           session: "24x7",
           data_status: "streaming",

@@ -20,9 +20,10 @@ import "./TradingView.scss";
  * @type {Object<string, string>}
  */
 const defaultExchangeSymbol = {
-  KuCoin: "BTC-USDT",
-  Binance: "BTCUSDT",
-  Zignaly: "BTCUSDT",
+  KuCoin: "BTC/USDT",
+  Binance: "BTC/USDT",
+  Zignaly: "BTC/USDT",
+  fallback: "BTC/USDT",
 };
 
 /**
@@ -54,7 +55,7 @@ const TradingView = () => {
    * @returns {string} Symbol ID.
    */
   const resolveDefaultSymbol = () => {
-    return defaultExchangeSymbol[exchangeName] || "BTCUSDT";
+    return defaultExchangeSymbol[exchangeName] || defaultExchangeSymbol.fallback;
   };
 
   const exchangeName = resolveExchangeName();
@@ -91,8 +92,10 @@ const TradingView = () => {
   const onExchangeChange = () => {
     const newExchangeName =
       storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-    const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
+    const newDefaultSymbol =
+      defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
     if (tradingViewWidget) {
+      console.log("exchange changed.");
       tradingViewWidget.remove();
       setTradingViewWidget(null);
       setLastPrice(null);
@@ -149,12 +152,12 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(/** @type {string} */ (selectedOption.value));
+    setSelectedSymbol(/** @type {string} */ (selectedOption.label));
 
     // Change chart data to the new selected symbol.
     if (tradingViewWidget) {
       const chart = tradingViewWidgetTyped.chart();
-      chart.setSymbol(selectedOption.value, () => {
+      chart.setSymbol(selectedOption.label, () => {
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
         setLastPrice(priceCandle);

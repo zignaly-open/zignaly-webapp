@@ -504,7 +504,8 @@ const StrategyForm = (props) => {
    * @param {MarketSymbol} item Market symbol item.
    * @returns {boolean} TRUE when ID matches, FALSE otherwise.
    */
-  const matchCurrentSymbol = (item) => item.id === selectedSymbol;
+  console.log("selectedSymbol: ", selectedSymbol);
+  const matchCurrentSymbol = (item) => item.symbol === selectedSymbol;
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
   return (
