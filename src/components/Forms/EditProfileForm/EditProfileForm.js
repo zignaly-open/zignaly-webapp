@@ -240,10 +240,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (listSwitch) {
       return false;
     }
-      if (storeUserData.isAdmin) {
-        return false;
-      }
-        return true;
+    if (storeUserData.isAdmin) {
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -386,7 +386,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.logoUrl}
                 name="logoUrl"
+                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
               />
+              {errors.logoUrl && (
+                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+              )}
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
