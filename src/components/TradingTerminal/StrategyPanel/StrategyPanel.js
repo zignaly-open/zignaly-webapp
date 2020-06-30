@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import "./StrategyPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import {
-  OutlinedInput,
+  Button,
+  FormControl,
   FormControlLabel,
   FormHelperText,
-  FormControl,
-  RadioGroup,
+  OutlinedInput,
   Radio,
+  RadioGroup,
   Typography,
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
+import Modal from "../../Modal";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
+import { LeverageForm } from "..";
+import "./StrategyPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -26,7 +29,6 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {number} leverage
  */
 
 /**
@@ -36,19 +38,23 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  * @returns {JSX.Element} Strategy panel element.
  */
 const StrategyPanel = (props) => {
-  const { symbolData, leverage } = props;
+  const { symbolData } = props;
   const { control, errors, register, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
+  const intl = useIntl();
+  const storeSettings = useStoreSettingsSelector();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const leverage = watch("leverage");
   const {
     positionSizeChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-  } = usePositionSizeHandlers(symbolData, leverage);
-  const intl = useIntl();
+  } = usePositionSizeHandlers(symbolData);
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {
@@ -81,7 +87,7 @@ const StrategyPanel = (props) => {
   const entryStrategy = watch("entryStrategy");
 
   return (
-    <Box className={"panel strategyPanel expanded"}>
+    <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
@@ -98,20 +104,27 @@ const StrategyPanel = (props) => {
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
         {selectedExchange.exchangeType === "futures" && (
           <FormControl className="entryType">
-            <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.long" />}
-                value="LONG"
-              />
-              <FormControlLabel
-                control={<Radio />}
-                inputRef={register}
-                label={<FormattedMessage id="col.side.short" />}
-                value="SHORT"
-              />
-            </RadioGroup>
+            <Controller
+              as={
+                <RadioGroup aria-label="Entry Type">
+                  <FormControlLabel
+                    control={<Radio />}
+                    inputRef={register}
+                    label={<FormattedMessage id="col.side.long" />}
+                    value="LONG"
+                  />
+                  <FormControlLabel
+                    control={<Radio />}
+                    inputRef={register}
+                    label={<FormattedMessage id="col.side.short" />}
+                    value="SHORT"
+                  />
+                </RadioGroup>
+              }
+              control={control}
+              defaultValue={entryType}
+              name="entryType"
+            />
           </FormControl>
         )}
         {entryStrategy === "stop-limit" && (
@@ -195,6 +208,26 @@ const StrategyPanel = (props) => {
           </FormHelperText>
           {errors.units && <span className="errorText">{errors.units.message}</span>}
         </FormControl>
+        {storeSettings.selectedExchange.exchangeType === "futures" && (
+          <Box
+            className="leverageButton"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-end"
+          >
+            <Modal
+              onClose={() => setModalVisible(false)}
+              persist={false}
+              size="small"
+              state={modalVisible}
+            >
+              <LeverageForm max={125} min={1} />
+            </Modal>
+            <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
+            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+            <input name="leverage" ref={register} type="hidden" />
+          </Box>
+        )}
       </Box>
     </Box>
   );

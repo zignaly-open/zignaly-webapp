@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
@@ -10,6 +10,7 @@ import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./DCAPanel.scss";
+import { calculateDcaPrice } from "../../../utils/calculations";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -31,7 +32,7 @@ import "./DCAPanel.scss";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
-  const { clearError, errors, getValues, register, setError, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -74,6 +75,7 @@ const DCAPanel = (props) => {
     dcaRebuyIndexes,
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
+  const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
   const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
   const { expanded, expandClass, expandableControl } = useExpandable(size(dcaAllIndexes) > 0);
 
@@ -102,6 +104,19 @@ const DCAPanel = (props) => {
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+
+  /**
+   * Handle DCA increase remove.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Button click event.
+   * @returns {Void} None.
+   */
+  const handleDcaIncreaseRemove = (event) => {
+    const targetElement = event.currentTarget;
+    const targetId = targetElement.getAttribute("data-target-id");
+    const newDcaIncreaseIndexes = activeDcaIncreaseIndexes.filter((value) => value !== targetId);
+    setActiveDCAIncreaseIndexes(newDcaIncreaseIndexes);
+  };
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -152,7 +167,7 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price - (price * targetPricePercentage) / 100;
+    const targetPrice = calculateDcaPrice(price, targetPricePercentage);
 
     if (isNaN(targetPricePercentage)) {
       setError(
@@ -218,8 +233,8 @@ const DCAPanel = (props) => {
       return;
     }
 
-    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
     rebuyUnitsChange(targetId);
+    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
   };
 
   /**
@@ -239,36 +254,40 @@ const DCAPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-      const newValue = formatFloat2Dec(Math.abs(currentValue));
-      const sign = entryType === "SHORT" ? "-" : "";
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(currentValue));
+        const sign = entryType === "LONG" ? "-" : "";
 
-      if (currentValue === 0) {
-        setTargetPropertyValue("targetPricePercentage", targetId, sign);
-      } else {
-        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-      }
-
-      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
-    });
+        if (isNaN(currentValue)) {
+          setTargetPropertyValue("targetPricePercentage", targetId, sign);
+        } else {
+          setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        }
+      });
+    }
   };
 
-  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
-    });
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
+      });
+    }
   };
 
-  useEffect(chainedUnitsUpdates, [strategyPositionSize]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyPositionSize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
         clearError(composeTargetPropertyName("targetPricePercentage", targetId));
         clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }
   };
@@ -282,6 +301,11 @@ const DCAPanel = (props) => {
    * @returns {JSX.Element} Target element.
    */
   const displayDcaTarget = (targetId) => {
+    // Not disabled and DCA within increment index range.
+    const index = parseInt(targetId);
+    const showRemove =
+      !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
+      index >= 1000;
     return (
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
@@ -312,6 +336,18 @@ const DCAPanel = (props) => {
           </Box>
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
+        {showRemove && (
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            <Button
+              className="removeTarget"
+              data-target-id={index}
+              onClick={handleDcaIncreaseRemove}
+            >
+              <RemoveCircle />
+              <FormattedMessage id="terminal.target.remove" />
+            </Button>
+          </Box>
+        )}
       </Box>
     );
   };
@@ -347,7 +383,7 @@ const DCAPanel = (props) => {
               </Button>
             </Box>
           )}
-          {dcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
+          {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
     </Box>

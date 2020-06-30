@@ -45,14 +45,13 @@ const IncreaseStrategyPanel = (props) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
-  const { leverage } = positionEntity;
   const {
     positionSizeChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-  } = usePositionSizeHandlers(symbolData, leverage);
+  } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
 
   const getQuoteBalance = () => {
     if (!lastDayBalance) {

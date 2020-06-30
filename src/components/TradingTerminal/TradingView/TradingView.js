@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
-import Modal from "../../Modal";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../services/tradeApiClient";
-import LeverageForm from "../LeverageForm/LeverageForm";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, Button, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -164,8 +162,6 @@ const TradingView = () => {
   };
 
   const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
-  const [modalVisible, setModalVisible] = useState(false);
-  const [leverage, setLeverage] = useState(1);
 
   return (
     <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
@@ -201,24 +197,6 @@ const TradingView = () => {
               value={selectedProviderValue}
             />
           </Box>
-          <Modal
-            onClose={() => setModalVisible(false)}
-            persist={false}
-            size="small"
-            state={modalVisible}
-          >
-            <LeverageForm currentValue={leverage} max={125} min={1} setCurrentValue={setLeverage} />
-          </Modal>
-          {storeSettings.selectedExchange.exchangeType === "futures" && (
-            <Box
-              className="leverageButton"
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-end"
-            >
-              <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
-            </Box>
-          )}
         </Box>
       )}
       <Box
@@ -239,7 +217,6 @@ const TradingView = () => {
           <StrategyForm
             dataFeed={dataFeed}
             lastPriceCandle={lastPrice}
-            leverage={leverage}
             selectedSymbol={selectedSymbol}
             tradingViewWidget={tradingViewWidget}
           />

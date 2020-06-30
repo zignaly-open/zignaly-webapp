@@ -25,6 +25,8 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
+import { calculateDcaPrice } from "../../../utils/calculations";
+import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import "./StrategyForm.scss";
 
 /**
@@ -44,7 +46,6 @@ import "./StrategyForm.scss";
  * @property {Object} dataFeed
  * @property {CoinRayCandle} lastPriceCandle
  * @property {TVWidget} tradingViewWidget
- * @property {number} leverage
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
@@ -60,7 +61,6 @@ const StrategyForm = (props) => {
   const {
     dataFeed,
     lastPriceCandle,
-    leverage,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
@@ -74,6 +74,7 @@ const StrategyForm = (props) => {
     mode: "onChange",
     defaultValues: {
       entryType: "LONG",
+      leverage: 1,
       positionSize: "",
       price: currentPrice,
       realInvestment: "",
@@ -111,6 +112,26 @@ const StrategyForm = (props) => {
    */
 
   /**
+   * Remove chart line with a given ID.
+   *
+   * @param {string} id Line ID.
+   * @return {Void} None.
+   */
+  function removeLine(id) {
+    const existingChartLine = linesTracking[id] || null;
+
+    if (existingChartLine) {
+      existingChartLine.remove();
+      linesTracking[id] = null;
+
+      // Remove tracked line.
+      setLinesTracking({
+        ...linesTracking,
+      });
+    }
+  }
+
+  /**
    * Draw price line at Trading View Chart.
    *
    * @param {ChartLineParams} chartLineParams Chart line parameters object.
@@ -138,6 +159,7 @@ const StrategyForm = (props) => {
     }
 
     const chart = tradingViewWidget.chart();
+
     const chartLine = chart
       .createPositionLine({})
       .setPrice(price)
@@ -268,6 +290,8 @@ const StrategyForm = (props) => {
     const { quote, base } = currentSymbolData;
     const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
+    const buyTTL = parseFloat(draftPosition.entryExpiration);
+    const sellTTL = parseFloat(draftPosition.autoclose);
 
     return {
       token: storeSession.tradeApi.accessToken,
@@ -276,9 +300,9 @@ const StrategyForm = (props) => {
       side: mapSideToEnum(draftPosition.entryType),
       type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
-      buyTTL: parseFloat(draftPosition.entryExpiration) || false,
+      buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
-      sellByTTL: parseFloat(draftPosition.autoclose) || 0,
+      sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
       trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
@@ -397,23 +421,33 @@ const StrategyForm = (props) => {
 
   const stopLossPrice = watch("stopLossPrice");
   const drawStopLossPriceLine = () => {
-    drawLine({
-      id: "stopLossPrice",
-      price: parseFloat(stopLossPrice) || 0,
-      label: "Stop loss",
-      color: colors.yellow,
-    });
+    const price = parseFloat(stopLossPrice);
+    if (price) {
+      drawLine({
+        id: "stopLossPrice",
+        price: price || 0,
+        label: "Stop loss",
+        color: colors.yellow,
+      });
+    } else {
+      removeLine("stopLossPrice");
+    }
   };
   useEffect(drawStopLossPriceLine, [stopLossPrice]);
 
   const trailingStopPrice = watch("trailingStopPrice");
   const drawTrailingStopPriceLine = () => {
-    drawLine({
-      id: "trailingStopPrice",
-      price: parseFloat(trailingStopPrice) || 0,
-      label: "Trailing stop price",
-      color: colors.blue,
-    });
+    const price = parseFloat(trailingStopPrice);
+    if (price) {
+      drawLine({
+        id: "trailingStopPrice",
+        price: price || 0,
+        label: "Trailing stop price",
+        color: colors.blue,
+      });
+    } else {
+      removeLine("trailingStopPrice");
+    }
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
@@ -421,34 +455,48 @@ const StrategyForm = (props) => {
   const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
-    forIn(takeProfitTargetPrices, (targetPrice, targetFieldName) => {
-      if (targetPrice) {
-        const index = targetFieldName.substr(targetFieldName.length - 1);
+    forIn(takeProfitTargetPrices, (/** @type {string} */ targetPrice, targetFieldName) => {
+      const index = targetFieldName.substr(targetFieldName.length - 1);
+      const price = parseFloat(targetPrice);
+      if (price) {
         drawLine({
           id: targetFieldName,
-          price: parseFloat(targetPrice) || 0,
+          price: price || 0,
           label: `Take profit target ${index}`,
           color: colors.green,
         });
+      } else {
+        removeLine(targetFieldName);
       }
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
 
+  const changeTheme = () => {
+    if (storeSettings.darkStyle) {
+      tradingViewWidget.changeTheme("Dark");
+    } else {
+      tradingViewWidget.changeTheme("Light");
+    }
+  };
+  useEffect(changeTheme, [storeSettings.darkStyle]);
+
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
+    const percentage = parseFloat(dcaTargetPercentage1);
     if (dcaTargetPercentage1) {
-      const price = entryPrice;
-      const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
+      const dcaTargetPrice1 = calculateDcaPrice(entryPrice, percentage);
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
         label: "DCA target 1",
         color: colors.black,
       });
+    } else {
+      removeLine("dcaTargetPricePercentage1");
     }
   };
-  useEffect(drawDCATargetPriceLines, [entryPrice, dcaTargetPercentage1]);
+  useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
@@ -463,7 +511,7 @@ const StrategyForm = (props) => {
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          {!isPositionView && <StrategyPanel leverage={leverage} symbolData={currentSymbolData} />}
+          {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
           <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
