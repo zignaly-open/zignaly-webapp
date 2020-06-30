@@ -23,7 +23,7 @@
       width: 2px;
       will-change: left;
 
-      &:before {
+      &::before {
         display: none;
       }
     }
