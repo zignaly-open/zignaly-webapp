@@ -95,7 +95,6 @@ const TradingView = () => {
     const newDefaultSymbol =
       defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
     if (tradingViewWidget) {
-      console.log("exchange changed.");
       tradingViewWidget.remove();
       setTradingViewWidget(null);
       setLastPrice(null);
@@ -106,7 +105,6 @@ const TradingView = () => {
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
-    console.log("dataFeed changed.");
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
       const widgetInstance = new TradingViewWidget(widgetOptions);
@@ -133,12 +131,7 @@ const TradingView = () => {
   // @ts-ignore
   const symbolsList = dataFeed ? dataFeed.getSymbolsData() : [];
   // @ts-ignore
-  const symbolsOptions = symbolsList.map((symbolItem) => {
-    return {
-      label: symbolItem.symbol,
-      value: symbolItem.id,
-    };
-  });
+  const symbolsOptions = symbolsList.map((symbolItem) => symbolItem.symbol);
 
   /**
    * @typedef {Object} OptionValue
@@ -149,16 +142,16 @@ const TradingView = () => {
   /**
    * Change selected symbol.
    *
-   * @param {OptionValue} selectedOption Selected symbol option object.
+   * @param {string} selectedOption Selected symbol option object.
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(/** @type {string} */ (selectedOption.label));
+    setSelectedSymbol(selectedOption);
 
     // Change chart data to the new selected symbol.
     if (tradingViewWidget) {
       const chart = tradingViewWidgetTyped.chart();
-      chart.setSymbol(selectedOption.label, () => {
+      chart.setSymbol(selectedOption, () => {
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
         setLastPrice(priceCandle);
