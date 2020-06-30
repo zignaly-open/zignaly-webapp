@@ -21,7 +21,16 @@ import { Link } from "gatsby";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { price, name, logoUrl, quote, exchanges, isCopyTrading, id } = props.provider;
+  const {
+    price,
+    name,
+    logoUrl,
+    quote,
+    exchanges,
+    isCopyTrading,
+    id,
+    exchangeType,
+  } = props.provider;
 
   const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}/profile`;
 
@@ -59,6 +68,7 @@ const TraderCardHeader = (props) => {
                 id="srv.trades"
                 values={{
                   coin: quote || "",
+                  type: exchangeType,
                 }}
               />
             </Typography>
