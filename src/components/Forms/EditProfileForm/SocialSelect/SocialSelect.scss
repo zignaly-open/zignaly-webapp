@@ -10,8 +10,8 @@
     }
 
     .customInputBox {
-      width: calc(70% - 64px);
       position: relative;
+      width: calc(70% - 64px);
     }
 
     .customInput {
@@ -29,9 +29,9 @@
     }
 
     .errorText {
+      left: 0;
       position: absolute;
       top: 25px;
-      left: 0;
     }
 
     .icon {

@@ -33,17 +33,15 @@ const PerformanceGraph = ({ provider }) => {
         let list = [...stats].sort((a, b) => b.week - a.week);
         values = [...list].splice(0, 12);
         return values.map((item) => item.return);
-      } else {
-        let list = [...stats].sort((a, b) => a.week - b.week);
-        values = list.map((item) => item.return);
-        for (let a = 0; a < 12 - stats.length; a++) {
-          values.unshift(0);
-        }
-        return values;
       }
-    } else {
-      return [];
+      let list = [...stats].sort((a, b) => a.week - b.week);
+      values = list.map((item) => item.return);
+      for (let a = 0; a < 12 - stats.length; a++) {
+        values.unshift(0);
+      }
+      return values;
     }
+    return [];
   };
 
   const values = prepareValues();

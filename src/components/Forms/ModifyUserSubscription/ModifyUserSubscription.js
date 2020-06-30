@@ -81,9 +81,11 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
   };
 
   /**
+   * Function to handle days change
    *
-   * @param {React.ChangeEvent} e
-   * @param {Number} val
+   * @param {React.ChangeEvent} e Change event.
+   * @param {Number} val New Value.
+   * @returns {void} None.
    */
   const handleDaysChange = (e, val) => {
     setDays(val);
@@ -92,10 +94,10 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
   return (
     <Box className="modifyUserSubscription" display="flex" flexDirection="column">
       <Box
+        alignItems="center"
         className="formBox"
         display="flex"
         flexDirection="column"
-        alignItems="center"
         justifyContent="space-between"
       >
         <Typography variant="h4">
@@ -103,33 +105,33 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
         </Typography>
 
         <Box
+          alignItems="center"
           className="addSubBox"
           display="flex"
           flexDirection="row"
-          alignItems="center"
           justifyContent="space-between"
         >
-          <RemoveCircleIcon onClick={decrement} className="addIcon" color="primary" />
+          <RemoveCircleIcon className="addIcon" color="primary" onClick={decrement} />
           <Typography variant="h3">
             {days} {days > 1 ? "Days" : "Day"}{" "}
           </Typography>
-          <AddCircleIcon onClick={increment} className="addIcon" color="primary" />
+          <AddCircleIcon className="addIcon" color="primary" onClick={increment} />
         </Box>
 
         <Slider
           className="sliderInput"
-          value={days}
+          max={100}
+          min={1}
           onChange={handleDaysChange}
           step={1}
-          min={1}
-          max={100}
+          value={days}
         />
       </Box>
       <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-        <CustomButton onClick={onSubmit} loading={loading} className="submitButton">
+        <CustomButton className="submitButton" loading={loading} onClick={onSubmit}>
           update
         </CustomButton>
-        <CustomButton onClick={onClose} className="textButton">
+        <CustomButton className="textButton" onClick={onClose}>
           cancel
         </CustomButton>
       </Box>

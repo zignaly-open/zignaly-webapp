@@ -135,13 +135,13 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
           <Box className="customInputBox">
             <TextField
               className={"customInput " + (obj.errorId === obj.id ? "error" : "")}
-              name="input"
               fullWidth
+              name="input"
+              onBlur={() => validateFields(obj.id)}
               onChange={(e) => handleChange(e, obj.id)}
               placeholder="url"
               value={obj.link}
               variant="outlined"
-              onBlur={() => validateFields(obj.id)}
             />
             {obj.errorId === obj.id && (
               <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>

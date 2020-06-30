@@ -127,10 +127,10 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         customBodyRender: (val) => {
           return (
             <img
-              src={EditIcon}
-              onClick={() => editSubscription(val)}
               alt="zignaly"
               className="editIcon"
+              onClick={() => editSubscription(val)}
+              src={EditIcon}
             />
           );
         },
@@ -142,9 +142,9 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       options: {
         customBodyRender: (val) => {
           return loading && followerId === val ? (
-            <CircularProgress size={24} color="primary" />
+            <CircularProgress color="primary" size={24} />
           ) : (
-            <CancelIcon color="primary" onClick={() => confirm(val)} className="cancelIcon" />
+            <CancelIcon className="cancelIcon" color="primary" onClick={() => confirm(val)} />
           );
         },
       },
@@ -214,7 +214,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Table columns={columns} data={list} persistKey={persistKey} title={title} />
-      <Modal persist={false} size="small" onClose={handleModalClose} state={modifyModal}>
+      <Modal onClose={handleModalClose} persist={false} size="small" state={modifyModal}>
         <ModifyUserSubscription
           followerId={followerId}
           loadData={loadData}

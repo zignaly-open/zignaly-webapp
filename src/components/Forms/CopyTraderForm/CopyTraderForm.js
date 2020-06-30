@@ -103,23 +103,25 @@ const CopyTraderForm = ({ provider, onClose }) => {
             provider.exchangeType.toLowerCase()
         ) {
           return true;
-        } else {
-          let data = provider.exchanges.length > 1 ? provider.exchanges[1] : provider.exchanges[0];
-          let msg = intl.formatMessage(
-            { id: "copyt.copy.error1" },
-            {
-              selected: `${storeSettings.selectedExchange.internalName.toUpperCase()}`,
-              exchange: `${storeSettings.selectedExchange.exchangeName.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
-              required: `${data.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
-            },
-          );
-          setAlert(msg);
         }
+        let data = provider.exchanges.length > 1 ? provider.exchanges[1] : provider.exchanges[0];
+        let msg = intl.formatMessage(
+          { id: "copyt.copy.error1" },
+          {
+            selected: `${storeSettings.selectedExchange.internalName.toUpperCase()}`,
+            exchange: `${storeSettings.selectedExchange.exchangeName.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
+            required: `${data.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
+          },
+        );
+        setAlert(msg);
+        return false;
       }
     } else {
       let msg = intl.formatMessage({ id: "copyt.copy.error2" });
       setAlert(msg);
+      return false;
     }
+    return true;
   };
 
   /**

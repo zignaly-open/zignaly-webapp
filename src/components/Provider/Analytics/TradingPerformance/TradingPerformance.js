@@ -35,7 +35,6 @@ const TradingPerformance = ({ performance }) => {
     let weeklyStats = performance.weeklyStats;
     if (weeklyStats) {
       weeklyStats = prepareYear(weeklyStats);
-
       let listing = [];
       let week = 0;
       for (let a = 0; a < 4; a++) {
@@ -46,14 +45,10 @@ const TradingPerformance = ({ performance }) => {
         let total = 0;
         for (let b = 0; b < 13; b++) {
           let stats = weeklyStats[week];
-          if (stats) {
-            if (stats.week === week + 1 && new Date(stats.day).getFullYear() === 2020) {
-              quarter.weeklyStats.push(weeklyStats[week]);
-              total += weeklyStats[week].return;
-              quarter.total = total;
-            } else {
-              quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
-            }
+          if (stats.week === week + 1 && new Date(stats.day).getFullYear() === 2020) {
+            quarter.weeklyStats.push(weeklyStats[week]);
+            total += weeklyStats[week].return;
+            quarter.total = total;
           } else {
             quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
           }
@@ -70,13 +65,14 @@ const TradingPerformance = ({ performance }) => {
 
   /**
    *
-   * @param {*} data
+   * @param {*} data initial weekly stats from backend.
+   * @returns {Array<*>} Weekly data for 52 weeks.
    */
   const prepareYear = (data) => {
     data = [...data].sort((a, b) => a.week - b.week);
     let newData = [];
     for (let a = 1; a <= 52; a++) {
-      let item = [...data].find((item) => item.week === a);
+      let item = [...data].find((i) => i.week === a);
       if (item) {
         newData.push(item);
       } else {

@@ -26,46 +26,46 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
 const ManagementSummary = ({ icon, title, quote, percentage, foot, value }) => {
   return (
     <Box
+      alignItems="center"
       bgcolor="grid.main"
+      className="managementSummaryCard"
       display="flex"
       flexDirection="column"
-      alignItems="center"
-      className="managementSummaryCard"
       justifyContent="space-between"
     >
       <Box
+        alignItems="center"
         className="head"
         display="flex"
         flexDirection="row"
         justifyContent="center"
-        alignItems="center"
       >
         {icon === "followers" && <PeopleIcon className="icon" />}
         {icon === "allocated" && <AssignmentTurnedInIcon className="icon" />}
         {icon === "balance" && <AccountBalanceWalletIcon className="icon" />}
         {icon === "profit" && <MonetizationOnIcon className="icon" />}
         {icon === "float" && <LocalMallIcon className="icon" />}
-        <Typography variant="caption" className="headTitle">
+        <Typography className="headTitle" variant="caption">
           {title}
         </Typography>
         {percentage && <Typography variant="h4">{percentage}</Typography>}
       </Box>
       <Box
+        alignItems="flex-end"
         className="body"
         display="flex"
         flexDirection="row"
         justifyContent="center"
-        alignItems="flex-end"
       >
         <Typography variant="h1">{value}</Typography>
         {quote && <Typography variant="caption">{quote}</Typography>}
       </Box>
       <Box
+        alignItems="center"
         className="foot"
         display="flex"
         flexDirection="row"
         justifyContent="center"
-        alignItems="center"
       >
         {icon === "followers" && (
           <Typography variant="caption">

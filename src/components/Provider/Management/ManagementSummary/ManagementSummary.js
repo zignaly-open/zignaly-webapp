@@ -29,45 +29,45 @@ const ManagementSummary = ({ summary }) => {
       justifyContent="space-evenly"
     >
       <ManagementSummaryCard
+        foot={summary.followersTrialing}
+        icon="followers"
         title={<FormattedMessage id="copyt.management.totalfollowers" />}
         value={summary.totalFollowers}
-        icon="followers"
-        foot={summary.followersTrialing}
       />
 
       <ManagementSummaryCard
+        foot={`USDT: ${formatFloat2Dec(summary.totalAllocatedUSDTFromFollowers)}`}
+        icon="allocated"
+        quote={summary.quote}
         title={<FormattedMessage id="copyt.management.totalallocated" />}
         value={formatFloat2Dec(summary.totalAllocatedFromFollowers)}
-        icon="allocated"
-        foot={`USDT: ${formatFloat2Dec(summary.totalAllocatedUSDTFromFollowers)}`}
-        quote={summary.quote}
       />
 
       <ManagementSummaryCard
+        foot={`USDT ${formatFloat2Dec(summary.freeBalanceUSDT)}`}
+        icon="balance"
+        percentage={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
+        quote={summary.quote}
         title={<FormattedMessage id="copyt.management.freebalance" />}
         value={formatFloat2Dec(summary.freeBalance)}
-        quote={summary.quote}
-        icon="balance"
-        foot={`USDT ${formatFloat2Dec(summary.freeBalanceUSDT)}`}
-        percentage={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
       />
 
       <ManagementSummaryCard
+        foot={`USDT ${formatFloat2Dec(summary.totalProfitUSDT)}`}
+        icon="profit"
+        percentage={`${formatFloat2Dec(summary.totalProfitPercentage)}%`}
+        quote={summary.quote}
         title={<FormattedMessage id="copyt.management.totalprofit" />}
         value={formatFloat2Dec(summary.totalProfit)}
-        quote={summary.quote}
-        icon="profit"
-        foot={`USDT ${formatFloat2Dec(summary.totalProfitUSDT)}`}
-        percentage={`${formatFloat2Dec(summary.totalProfitPercentage)}%`}
       />
 
       <ManagementSummaryCard
+        foot={`USDT ${formatFloat2Dec(summary.floatUSDT)}`}
+        icon="float"
+        percentage={`${formatFloat2Dec(summary.floatPercentage)}%`}
+        quote={summary.quote}
         title={<FormattedMessage id="copyt.management.float" />}
         value={formatFloat2Dec(summary.float)}
-        quote={summary.quote}
-        icon="float"
-        foot={`USDT ${formatFloat2Dec(summary.floatUSDT)}`}
-        percentage={`${formatFloat2Dec(summary.floatPercentage)}%`}
       />
     </Box>
   );

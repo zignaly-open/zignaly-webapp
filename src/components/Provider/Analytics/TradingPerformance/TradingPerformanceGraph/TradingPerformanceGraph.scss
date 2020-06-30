@@ -1,21 +1,21 @@
 .tradingPerformanceGraph {
+  padding: 0 100px 0 50px;
   position: relative;
   width: calc(100%);
-  padding: 0 100px 0 50px;
 }
 
 @include media(">lg", "<=xl") {
   .tradingPerformanceGraph {
+    padding: 0 140px 0 80px;
     position: relative;
     width: calc(100%);
-    padding: 0 140px 0 80px;
   }
 }
 
 @include media(">xl") {
   .tradingPerformanceGraph {
+    padding: 0 140px 0 100px;
     position: relative;
     width: calc(100%);
-    padding: 0 140px 0 100px;
   }
 }

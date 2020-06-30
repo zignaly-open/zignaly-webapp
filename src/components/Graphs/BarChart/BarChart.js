@@ -66,7 +66,7 @@ const BarChart = (props) => {
 
   const yAxes = {
     ticks: {
-      fontColor: "#191927",
+      fontColor: "#d4d4d4",
       fontSize: 14,
       // padding: 75,
       padding: 0,
@@ -78,7 +78,7 @@ const BarChart = (props) => {
       color: "transparent",
       display: true,
       drawBorder: false,
-      zeroLineColor: "rgba(0, 0, 0, 0.1)",
+      zeroLineColor: "#d4d4d4",
     },
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./management.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import withProviderLayout from "../../../layouts/providerLayout";
@@ -41,20 +41,20 @@ const CopyTradersProfile = () => {
     <Box className="profileManagementPage">
       {loading && (
         <Box
+          alignItems="center"
+          bgcolor="grid.main"
           className="loadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
-          bgcolor="grid.main"
         >
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
       {!loading && (
-        <Fragment>
+        <>
           <ManagementSummary summary={summary} />
-        </Fragment>
+        </>
       )}
     </Box>
   );

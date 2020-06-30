@@ -62,7 +62,7 @@ const WeeklyData = ({ list, selected, onChange }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <Typography variant="h3" className="quaterLabel"></Typography>
+        <Typography className="quaterLabel" variant="h3" />
         {selected.weeklyStats.map((item, index) => (
           <Typography key={index} variant="h5">
             {item.day ? moment(new Date(item.day)).format("DD MMM") : "--"}
@@ -84,7 +84,7 @@ const WeeklyData = ({ list, selected, onChange }) => {
             key={index}
             onClick={() => handleChange(item.id)}
           >
-            <Typography variant="h3" className="quaterLabel">
+            <Typography className="quaterLabel" variant="h3">
               {item.label}
             </Typography>
             {item.weeklyStats.map((item2, index2) => (

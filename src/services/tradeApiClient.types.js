@@ -2174,7 +2174,9 @@ function providerFollowersResponseItemTransform(providerFollowersItem) {
 }
 
 /**
- * @return {ProviderFollowerEntity}
+ * Function to create an empty provider entity.
+ *
+ * @return {ProviderFollowerEntity} Provoer Follower empty entity
  */
 export function createProviderFollowersEmptyEntity() {
   return {

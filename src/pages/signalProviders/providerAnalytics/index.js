@@ -93,7 +93,7 @@ const CopyTradersAnalytics = () => {
   return (
     <Box className="profileAnalyticsPage">
       <Box bgcolor="grid.main" className="tradingPerformanceBox">
-        <Typography variant="h3" className="boxTitle">
+        <Typography className="boxTitle" variant="h3">
           <FormattedMessage id="copyt.tradingperformance" />
         </Typography>
 
@@ -110,12 +110,12 @@ const CopyTradersAnalytics = () => {
       </Box>
 
       <Box bgcolor="grid.main" className="copiersBox">
-        <Box className="titleBox" display="flex" flexDirection="row" alignItems="center">
+        <Box alignItems="center" className="titleBox" display="flex" flexDirection="row">
           <Typography variant="h3">
             <FormattedMessage id="trader.people" />
           </Typography>
 
-          <Typography variant="h4" className={increase >= 0 ? "green" : "red"}>
+          <Typography className={increase >= 0 ? "green" : "red"} variant="h4">
             {`+${increase} (${formatFloat2Dec(increasePercentage)}%) Copiers Last 7 Days`}
           </Typography>
         </Box>

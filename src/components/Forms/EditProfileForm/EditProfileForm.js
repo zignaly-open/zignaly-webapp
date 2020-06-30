@@ -239,13 +239,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const disableList = () => {
     if (listSwitch) {
       return false;
-    } else {
+    }
       if (storeUserData.isAdmin) {
         return false;
-      } else {
-        return true;
       }
-    }
+        return true;
   };
 
   return (
@@ -291,8 +289,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <SocialSelect
               defaultValue={provider.social}
-              onError={handleSocialError}
               onChange={handleSocialLinkChange}
+              onError={handleSocialError}
             />
           </Box>
 
