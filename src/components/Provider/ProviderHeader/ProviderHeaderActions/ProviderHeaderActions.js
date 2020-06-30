@@ -31,7 +31,11 @@ const ProviderHeaderActions = () => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <ProviderLogo size="40px" title={name} url={storeViews.provider.logoUrl} />
+        <ProviderLogo
+          size="40px"
+          title={storeViews.provider.name}
+          url={storeViews.provider.logoUrl}
+        />
         <Typography variant="h1">{storeViews.provider.name}</Typography>
       </Box>
       <FollowProviderButton provider={storeViews.provider} />
