@@ -492,7 +492,7 @@ terminal.strategy.market: "CH-Market Order"
 terminal.strategy.stoplimit: "CH-Stop-Limit Order"
 terminal.strategy: "CH-Entry Strategy"
 terminal.takeprofit.help: "CH-A take profit order will be placed on the exchange, with this price."
-terminal.takeprofit.limit.hundred: "CH-Total units (cumulative) cannot be greater than 100%"
+terminal.takeprofit.limit.cumulative: "CH-Total units (cumulative) cannot be greater than 100%"
 terminal.takeprofit.limit.maxcost: "CH-Exit Position Size (Target price * Units to exit) cannot be greater than {value}"
 terminal.takeprofit.limit.maxprice: "CH-Exit Position Price cannot be greater than {value}"
 terminal.takeprofit.limit.maxunits: "CH-Exit Position Units cannot be greater than {value}"
@@ -520,7 +520,6 @@ terminal.units: "CH-Units"
 terminal.unitstoexit.help: "CH-The amount to exit on this target."
 terminal.unitstoexit: "CH-Units to exit"
 terminal.update: "CH-Update Position"
-
 
 # EXCHANGE ACCOUNTS
 accounts.title: "CH-My Exchange Accounts"

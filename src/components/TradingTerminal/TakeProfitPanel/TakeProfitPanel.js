@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { isNumber, range, size, sum } from "lodash";
+import { isNumber, keys, range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
@@ -113,16 +113,10 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const validateExitUnits = (event) => {
-    const draftPosition = getValues();
-    const allUnitsPercentage = cardinalityRange.map((targetId) => {
-      const targetProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-      return parseFloat(draftPosition[targetProperty]) || 0;
-    });
-
+    // const draftPosition = getValues();
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-    const allUnitsPercentageTotal = sum(allUnitsPercentage);
 
     clearError(unitsPercentageProperty);
     if (exitUnits <= 0) {
@@ -130,12 +124,6 @@ const TakeProfitPanel = (props) => {
         unitsPercentageProperty,
         "error",
         formatMessage({ id: "terminal.takeprofit.limit.zero" }),
-      );
-    } else if (allUnitsPercentageTotal > 100) {
-      setError(
-        unitsPercentageProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.hundred" }),
       );
     }
 
@@ -386,6 +374,7 @@ const TakeProfitPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
+    console.log("unitsUpdated");
     cardinalityRange.forEach((targetId) => {
       if (expanded) {
         simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
@@ -394,6 +383,32 @@ const TakeProfitPanel = (props) => {
   };
 
   useEffect(chainedUnitsUpdates, [strategyUnits]);
+
+  const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
+    composeTargetPropertyName("exitUnitsPercentage", targetId),
+  );
+  const exitUnitsPercentages = watch(exitUnitsPercentageFields);
+  const revalidateCumulativePercentage = () => {
+    const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
+    const propertyNames = keys(exitUnitsPercentages);
+    console.log("revalidateExecuted...");
+    console.log("values: ", exitUnitsPercentages);
+    if (cumulativePercentage > 100) {
+      propertyNames.map((unitsPercentageProperty) => {
+        setError(
+          unitsPercentageProperty,
+          "error",
+          formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
+        );
+      });
+    } else {
+      propertyNames.map((unitsPercentageProperty) => {
+        clearError(unitsPercentageProperty);
+      });
+    }
+  };
+
+  useEffect(revalidateCumulativePercentage, [exitUnitsPercentages]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
