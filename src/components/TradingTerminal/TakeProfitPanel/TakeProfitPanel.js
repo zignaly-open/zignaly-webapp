@@ -59,9 +59,9 @@ const TakeProfitPanel = (props) => {
   const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+  const isClosed = positionEntity ? positionEntity.closed : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
-  const isTargetLocked = cardinality === targetsDone;
+  const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
 
   const getFieldsDisabledStatus = () => {
@@ -156,6 +156,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Target percentage must be a number.",
       );
+
+      setValue(priceProperty, "");
       return;
     }
 
@@ -186,6 +188,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Target price must be a number.",
       );
+
+      setValue(pricePercentageProperty, "");
       return;
     }
 
@@ -218,6 +222,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Exit units percentage must be a number.",
       );
+
+      setValue(unitsProperty, "");
       return;
     }
 
@@ -249,6 +255,8 @@ const TakeProfitPanel = (props) => {
         "error",
         "Exit units must be a number.",
       );
+
+      setValue(unitsPercentageProperty, "");
       return;
     }
 
@@ -347,7 +355,9 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
       }
 
-      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+      if (expanded) {
+        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+      }
     });
   };
 
@@ -355,7 +365,9 @@ const TakeProfitPanel = (props) => {
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {
-      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+      if (expanded) {
+        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
+      }
     });
   };
 
@@ -368,6 +380,7 @@ const TakeProfitPanel = (props) => {
         clearError(composeTargetPropertyName("exitUnits", targetId));
         clearError(composeTargetPropertyName("targetPrice", targetId));
         clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        setValue(composeTargetPropertyName("targetPrice", targetId), "");
       });
     }
   };

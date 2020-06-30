@@ -47,12 +47,14 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {Void} None.
    */
   const validateCostLimits = (cost, propertyName) => {
-    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(propertyName, "error", `Target cost cannot be lower than ${limits.cost.min}`);
-    }
+    if (!isNaN(cost)) {
+      if (limits.cost.min && cost < limits.cost.min) {
+        setError(propertyName, "error", `Target cost cannot be lower than ${limits.cost.min}`);
+      }
 
-    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(propertyName, "error", `Target cost cannot be greater than ${limits.cost.max}`);
+      if (limits.cost.max && cost > limits.cost.max) {
+        setError(propertyName, "error", `Target cost cannot be greater than ${limits.cost.max}`);
+      }
     }
   };
 

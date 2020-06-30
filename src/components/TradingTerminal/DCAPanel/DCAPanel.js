@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { range, size } from "lodash";
+import { keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -10,6 +10,7 @@ import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import "./DCAPanel.scss";
+import { calculateDcaPrice } from "../../../utils/calculations";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -31,12 +32,52 @@ import "./DCAPanel.scss";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
-  const positionTargetsCardinality = positionEntity ? size(positionEntity.reBuyTargets) : 0;
-  const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
-  const { expanded, expandClass, expandableControl } = useExpandable(
-    positionTargetsCardinality > 0,
-  );
-  const { clearError, errors, getValues, register, setError, watch } = useFormContext();
+  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+
+  /**
+   * @typedef {Object} PositionDcaIndexes
+   * @property {number} dcaRebuyDoneCount
+   * @property {Array<string>} dcaAllIndexes
+   * @property {Array<string>} dcaRebuyIndexes
+   * @property {Array<string>} dcaIncreaseIndexes
+   */
+
+  /**
+   * Extract indexes for Rebuys and Increase position DCAs target.
+   *
+   * Increase positions are tracked as DCAs starting in index 1000:
+   *   - Targets from 1 until 999 are reBuys.
+   *   - Targets equal or greater than 1000 are increased position.
+   *
+   * @returns {PositionDcaIndexes} DCA indexes data.
+   */
+  const resolveDcaIndexes = () => {
+    const reBuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
+    const dcaAllIndexes = keys(reBuyTargets).map(Number);
+    const dcaRebuyIndexes = dcaAllIndexes.filter((index) => index < 1000);
+    const dcaIncreaseIndexes = dcaAllIndexes.filter((index) => index >= 1000);
+    const dcaRebuyTargets = positionEntity
+      ? dcaRebuyIndexes.map((index) => reBuyTargets[index])
+      : [];
+    const dcaRebuyDoneCount = dcaRebuyTargets.filter((target) => target.done === true).length;
+
+    return {
+      dcaRebuyDoneCount,
+      dcaAllIndexes: dcaAllIndexes.map(String),
+      dcaRebuyIndexes: dcaRebuyIndexes.map(String),
+      dcaIncreaseIndexes: dcaIncreaseIndexes.map(String),
+    };
+  };
+
+  const {
+    dcaRebuyDoneCount,
+    dcaAllIndexes,
+    dcaRebuyIndexes,
+    dcaIncreaseIndexes,
+  } = resolveDcaIndexes();
+  const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
+  const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
+  const { expanded, expandClass, expandableControl } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
     cardinality,
@@ -48,7 +89,7 @@ const DCAPanel = (props) => {
     handleTargetRemove,
     setTargetPropertyValue,
     simulateInputChangeEvent,
-  } = useTargetGroup("dca");
+  } = useTargetGroup("dca", positionTargetsCardinality);
 
   const {
     validateCostLimits,
@@ -57,21 +98,33 @@ const DCAPanel = (props) => {
   } = useSymbolLimitsValidate(symbolData);
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isClosed = positionEntity ? positionEntity.status !== 9 : false;
-  const targetsDone = positionEntity ? positionEntity.reBuyTargetsCountSuccess : 0;
-  const isTargetLocked = cardinality === targetsDone;
-  const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
+  const isClosed = positionEntity ? positionEntity.closed : false;
+  const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
+  const disableCardinalityActions = isCopy || isClosed || isDoneTargetReached;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+
+  /**
+   * Handle DCA increase remove.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Button click event.
+   * @returns {Void} None.
+   */
+  const handleDcaIncreaseRemove = (event) => {
+    const targetElement = event.currentTarget;
+    const targetId = targetElement.getAttribute("data-target-id");
+    const newDcaIncreaseIndexes = activeDcaIncreaseIndexes.filter((value) => value !== targetId);
+    setActiveDCAIncreaseIndexes(newDcaIncreaseIndexes);
+  };
 
   const getFieldsDisabledStatus = () => {
     /**
      * @type {Object<string, boolean>}
      */
     const fieldsDisabled = {};
-    targetIndexes.forEach((index) => {
-      const target = positionEntity ? positionEntity.reBuyTargets[index] : { done: false };
+    dcaAllIndexes.forEach((index) => {
+      const target = positionEntity ? positionEntity.reBuyTargets[Number(index)] : { done: false };
 
       let disabled = false;
       if (target.done) {
@@ -91,8 +144,8 @@ const DCAPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
-      targetIndexes.forEach((index) => {
-        const profitTarget = positionEntity.reBuyTargets[index];
+      dcaAllIndexes.forEach((index) => {
+        const profitTarget = positionEntity.reBuyTargets[Number(index)];
         const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
         const quantityPercentage = revertPercentageRange(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
@@ -114,7 +167,7 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const price = parseFloat(draftPosition.price);
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price - (price * targetPricePercentage) / 100;
+    const targetPrice = calculateDcaPrice(price, targetPricePercentage);
 
     if (isNaN(targetPricePercentage)) {
       setError(
@@ -180,8 +233,8 @@ const DCAPanel = (props) => {
       return;
     }
 
-    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
     rebuyUnitsChange(targetId);
+    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
   };
 
   /**
@@ -201,41 +254,103 @@ const DCAPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-      const newValue = formatFloat2Dec(Math.abs(currentValue));
-      const sign = entryType === "SHORT" ? "-" : "";
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(currentValue));
+        const sign = entryType === "LONG" ? "-" : "";
 
-      if (currentValue === 0) {
-        setTargetPropertyValue("targetPricePercentage", targetId, sign);
-      } else {
-        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-      }
-
-      simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
-    });
+        if (isNaN(currentValue)) {
+          setTargetPropertyValue("targetPricePercentage", targetId, sign);
+        } else {
+          setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        }
+      });
+    }
   };
 
-  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
-    });
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
+      });
+    }
   };
 
-  useEffect(chainedUnitsUpdates, [strategyPositionSize]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyPositionSize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
         clearError(composeTargetPropertyName("targetPricePercentage", targetId));
         clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }
   };
 
   useEffect(emptyFieldsWhenCollapsed, [expanded]);
+
+  /**
+   * Display DCA target group.
+   *
+   * @param {string} targetId Target index.
+   * @returns {JSX.Element} Target element.
+   */
+  const displayDcaTarget = (targetId) => {
+    // Not disabled and DCA within increment index range.
+    const index = parseInt(targetId);
+    const showRemove =
+      !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
+      index >= 1000;
+    return (
+      <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
+        <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+          <HelperLabel descriptionId="terminal.dca.help" labelId="terminal.target" />
+          <Box alignItems="center" display="flex">
+            <OutlinedInput
+              className="outlineInput"
+              disabled={
+                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+              }
+              inputRef={register}
+              name={composeTargetPropertyName("targetPricePercentage", targetId)}
+              onChange={targetPricePercentageChange}
+            />
+            <div className="currencyBox">%</div>
+          </Box>
+          {displayTargetFieldErrors("targetPricePercentage", targetId)}
+          <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
+          <Box alignItems="center" display="flex">
+            <OutlinedInput
+              className="outlineInput"
+              disabled={fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]}
+              inputRef={register}
+              name={composeTargetPropertyName("rebuyPercentage", targetId)}
+              onChange={rebuyPercentageChange}
+            />
+            <div className="currencyBox">%</div>
+          </Box>
+        </Box>
+        {displayTargetFieldErrors("rebuyPercentage", targetId)}
+        {showRemove && (
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            <Button
+              className="removeTarget"
+              data-target-id={index}
+              onClick={handleDcaIncreaseRemove}
+            >
+              <RemoveCircle />
+              <FormattedMessage id="terminal.target.remove" />
+            </Button>
+          </Box>
+        )}
+      </Box>
+    );
+  };
 
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
@@ -255,40 +370,7 @@ const DCAPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          {cardinalityRange.map((targetId) => (
-            <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
-              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-                <HelperLabel descriptionId="terminal.dca.help" labelId="terminal.target" />
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                    }
-                    inputRef={register}
-                    name={composeTargetPropertyName("targetPricePercentage", targetId)}
-                    onChange={targetPricePercentageChange}
-                  />
-                  <div className="currencyBox">%</div>
-                </Box>
-                {displayTargetFieldErrors("targetPricePercentage", targetId)}
-                <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
-                    }
-                    inputRef={register}
-                    name={composeTargetPropertyName("rebuyPercentage", targetId)}
-                    onChange={rebuyPercentageChange}
-                  />
-                  <div className="currencyBox">%</div>
-                </Box>
-              </Box>
-              {displayTargetFieldErrors("rebuyPercentage", targetId)}
-            </Box>
-          ))}
+          {cardinalityRange.map((targetId) => displayDcaTarget(targetId))}
           {!disableCardinalityActions && (
             <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
               <Button className="removeTarget" onClick={handleTargetRemove}>
@@ -301,6 +383,7 @@ const DCAPanel = (props) => {
               </Button>
             </Box>
           )}
+          {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
     </Box>

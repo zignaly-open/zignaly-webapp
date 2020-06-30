@@ -29,6 +29,7 @@ import {
   userGetResponseTransform,
   providerExchangeSettingsResponseTransform,
   providerDataPointsResponseTransform,
+  convertAssetResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -72,10 +73,12 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeWithdrawEntity} ExchangeWithdrawEntity
  * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
  * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
+ * @typedef {import('./tradeApiClient.types').ConvertPayload} ConvertPayload
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
  * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
  * @typedef {import('./tradeApiClient.types').CancelSubscriptionPayload} CancelSubscriptionPayload
  *
+ * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  */
 
 /**
@@ -829,6 +832,20 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+  /**
+   * Convert small balances to BNB
+   *
+   * @param {ConvertPayload} payload Convert payload.
+   * @returns {Promise<ConvertReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async convert(payload) {
+    const endpointPath = "/fe/api.php?action=exchangeDustTransfer";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return convertAssetResponseTransform(responseData);
   }
 }
 

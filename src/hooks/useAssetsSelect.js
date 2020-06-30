@@ -17,7 +17,7 @@ import useExchangeAssets from "./useExchangeAssets";
  */
 
 /**
- * Provides bases assets.
+ * Provides assets list and options to select an asset.
  *
  * @param {string} internalId Exchange account internal id.
  * @param {string} type Exchange type

@@ -42,7 +42,7 @@ const StopLossPanel = (props) => {
 
   const getFieldsDisabledStatus = () => {
     const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-    const isClosed = positionEntity ? positionEntity.status !== 9 : false;
+    const isClosed = positionEntity ? positionEntity.closed : false;
 
     /**
      * @type {Object<string, boolean>}
@@ -133,7 +133,11 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", `${sign}${newValue}`);
     }
 
-    simulateInputChangeEvent("stopLossPercentage");
+    if (expanded) {
+      simulateInputChangeEvent("stopLossPercentage");
+    } else {
+      setValue("stopLossPrice", "");
+    }
   };
 
   useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);

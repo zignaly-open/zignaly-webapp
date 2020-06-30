@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useForm, FormContext } from "react-hook-form";
-import { isEmpty, isObject, range, forIn, noop } from "lodash";
+import { assign, isEmpty, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -11,33 +11,34 @@ import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
 import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
+import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPanel";
 import CustomButton from "../../CustomButton/CustomButton";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
 import {
-  POSITION_SIDE_LONG,
   POSITION_TYPE_ENTRY,
-  POSITION_SIDE_SHORT,
-  POSITION_ENTRY_TYPE_MARKET,
+  mapEntryTypeToEnum,
+  mapSideToEnum,
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
-import "./StrategyForm.scss";
 import { FormattedMessage } from "react-intl";
-import "../../CustomButton/CustomButton.scss";
+import { calculateDcaPrice } from "../../../utils/calculations";
+import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
+import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
- * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
  */
 
 /**
@@ -45,7 +46,6 @@ import "../../CustomButton/CustomButton.scss";
  * @property {Object} dataFeed
  * @property {CoinRayCandle} lastPriceCandle
  * @property {TVWidget} tradingViewWidget
- * @property {number} leverage
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
@@ -61,7 +61,6 @@ const StrategyForm = (props) => {
   const {
     dataFeed,
     lastPriceCandle,
-    leverage,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
@@ -69,11 +68,13 @@ const StrategyForm = (props) => {
   } = props;
 
   const isPositionView = isObject(positionEntity);
+  const isClosed = positionEntity ? positionEntity.closed : false;
   const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
       entryType: "LONG",
+      leverage: 1,
       positionSize: "",
       price: currentPrice,
       realInvestment: "",
@@ -111,6 +112,26 @@ const StrategyForm = (props) => {
    */
 
   /**
+   * Remove chart line with a given ID.
+   *
+   * @param {string} id Line ID.
+   * @return {Void} None.
+   */
+  function removeLine(id) {
+    const existingChartLine = linesTracking[id] || null;
+
+    if (existingChartLine) {
+      existingChartLine.remove();
+      linesTracking[id] = null;
+
+      // Remove tracked line.
+      setLinesTracking({
+        ...linesTracking,
+      });
+    }
+  }
+
+  /**
    * Draw price line at Trading View Chart.
    *
    * @param {ChartLineParams} chartLineParams Chart line parameters object.
@@ -138,6 +159,7 @@ const StrategyForm = (props) => {
     }
 
     const chart = tradingViewWidget.chart();
+
     const chartLine = chart
       .createPositionLine({})
       .setPrice(price)
@@ -162,25 +184,6 @@ const StrategyForm = (props) => {
 
     return chartLine;
   }
-
-  /**
-   * Map position side to typed side value.
-   *
-   * @param {string} side Side value.
-   * @returns {('SHORT' | 'LONG')} Typed side.
-   */
-  const mapSideToEnum = (side) => {
-    switch (side) {
-      case "SHORT":
-        return POSITION_SIDE_SHORT;
-
-      case "LONG":
-        return POSITION_SIDE_LONG;
-
-      default:
-        return POSITION_SIDE_LONG;
-    }
-  };
 
   /**
    * Compose position profit targets.
@@ -216,19 +219,24 @@ const StrategyForm = (props) => {
   };
 
   /**
-   * Compose position DCA targets.
+   * Compose position DCA targets payload chunk.
    *
    * @param {Object<string, any>} draftPosition React hook form submission values.
    * @returns {PositionDCATargets|boolean} Create position payload.
    */
   const composePositionDcaTargets = (draftPosition) => {
-    const targetRange = range(1, 10, 1);
     /**
      * @type {PositionDCATargets}
      */
     const dcaTargets = [];
 
-    targetRange.forEach((targetId) => {
+    /**
+     * Compose a DCA target item for a given index.
+     *
+     * @param {Number} targetId Target index.
+     * @return {Void} None.
+     */
+    const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
 
@@ -239,34 +247,62 @@ const StrategyForm = (props) => {
           amountPercentage: parseFloat(targetRebuyPercentage),
         });
       }
-    });
+    };
+
+    range(1, 20, 1).forEach(composeTargetItem);
+    range(1000, 1020, 1).forEach(composeTargetItem);
 
     return isEmpty(dcaTargets) ? false : dcaTargets;
+  };
+
+  /**
+   * @typedef {Object} PositionStrategyParams
+   * @property {CreatePositionPayload['buyType']} buyType
+   * @property {CreatePositionPayload['positionSize']} positionSize
+   * @property {CreatePositionPayload['realInvestment']} realInvestment
+   * @property {CreatePositionPayload['limitPrice']} limitPrice
+   */
+
+  /**
+   * Compose position strategy payload chunk.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {PositionStrategyParams} Create position payload.
+   */
+  const composePositionStrategy = (draftPosition) => {
+    const positionSize = parseFloat(draftPosition.positionSize) || 0;
+
+    return {
+      buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      positionSize,
+      realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
+      limitPrice: draftPosition.price || currentPrice,
+    };
   };
 
   /**
    * Compose create position payload.
    *
    * @param {Object<string, any>} draftPosition React hook form submission values.
-   * @returns {CreatePositionPayload} Create position payload.
+   * @returns {any} Create position payload.
    */
   const composePositionPayload = (draftPosition) => {
     const { quote, base } = currentSymbolData;
     const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
-    const payload = {
+    const buyTTL = parseFloat(draftPosition.entryExpiration);
+    const sellTTL = parseFloat(draftPosition.autoclose);
+
+    return {
       token: storeSession.tradeApi.accessToken,
       pair: `${base}  ${quote}`,
-      limitPrice: draftPosition.price || currentPrice,
       positionSizeQuote: quote,
-      positionSize: parseFloat(draftPosition.positionSize) || 0,
       side: mapSideToEnum(draftPosition.entryType),
       type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
-      buyTTL: parseFloat(draftPosition.entryExpiration) || false,
-      buyType: POSITION_ENTRY_TYPE_MARKET,
+      buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
-      sellByTTL: parseFloat(draftPosition.autoclose) || 0,
+      sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
       trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
@@ -276,8 +312,32 @@ const StrategyForm = (props) => {
       exchangeName: exchangeName,
       exchangeInternalId: selectedExchange.internalId,
     };
+  };
 
-    return payload;
+  /**
+   * Compose create position payload.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {CreatePositionPayload} Create position payload.
+   */
+  const composeCreatePositionPayload = (draftPosition) => {
+    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition));
+  };
+
+  /**
+   * Compose update position payload.
+   *
+   * @param {Object<string, any>} draftPosition React hook form submission values.
+   * @returns {UpdatePositionPayload} Update position payload.
+   */
+  const composeUpdatePositionPayload = (draftPosition) => {
+    const positionStrategy = draftPosition.positionSize
+      ? composePositionStrategy(draftPosition)
+      : {};
+
+    return assign(composePositionPayload(draftPosition), positionStrategy, {
+      positionId: positionEntity.positionId,
+    });
   };
 
   /**
@@ -330,15 +390,11 @@ const StrategyForm = (props) => {
    * @returns {Void} None.
    */
   const onSubmit = (draftPosition) => {
-    const payload = composePositionPayload(draftPosition);
     if (positionEntity) {
-      const updatePayload = {
-        ...payload,
-        positionId: positionEntity.positionId,
-      };
-
-      updatePosition(updatePayload);
+      const payload = composeUpdatePositionPayload(draftPosition);
+      updatePosition(payload);
     } else {
+      const payload = composeCreatePositionPayload(draftPosition);
       createPosition(payload);
     }
   };
@@ -365,23 +421,33 @@ const StrategyForm = (props) => {
 
   const stopLossPrice = watch("stopLossPrice");
   const drawStopLossPriceLine = () => {
-    drawLine({
-      id: "stopLossPrice",
-      price: parseFloat(stopLossPrice) || 0,
-      label: "Stop loss",
-      color: colors.yellow,
-    });
+    const price = parseFloat(stopLossPrice);
+    if (price) {
+      drawLine({
+        id: "stopLossPrice",
+        price: price || 0,
+        label: "Stop loss",
+        color: colors.yellow,
+      });
+    } else {
+      removeLine("stopLossPrice");
+    }
   };
   useEffect(drawStopLossPriceLine, [stopLossPrice]);
 
   const trailingStopPrice = watch("trailingStopPrice");
   const drawTrailingStopPriceLine = () => {
-    drawLine({
-      id: "trailingStopPrice",
-      price: parseFloat(trailingStopPrice) || 0,
-      label: "Trailing stop price",
-      color: colors.blue,
-    });
+    const price = parseFloat(trailingStopPrice);
+    if (price) {
+      drawLine({
+        id: "trailingStopPrice",
+        price: price || 0,
+        label: "Trailing stop price",
+        color: colors.blue,
+      });
+    } else {
+      removeLine("trailingStopPrice");
+    }
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
@@ -389,34 +455,48 @@ const StrategyForm = (props) => {
   const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
-    forIn(takeProfitTargetPrices, (targetPrice, targetFieldName) => {
-      if (targetPrice) {
-        const index = targetFieldName.substr(targetFieldName.length - 1);
+    forIn(takeProfitTargetPrices, (/** @type {string} */ targetPrice, targetFieldName) => {
+      const index = targetFieldName.substr(targetFieldName.length - 1);
+      const price = parseFloat(targetPrice);
+      if (price) {
         drawLine({
           id: targetFieldName,
-          price: parseFloat(targetPrice) || 0,
+          price: price || 0,
           label: `Take profit target ${index}`,
           color: colors.green,
         });
+      } else {
+        removeLine(targetFieldName);
       }
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
 
+  const changeTheme = () => {
+    if (storeSettings.darkStyle) {
+      tradingViewWidget.changeTheme("Dark");
+    } else {
+      tradingViewWidget.changeTheme("Light");
+    }
+  };
+  useEffect(changeTheme, [storeSettings.darkStyle]);
+
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {
+    const percentage = parseFloat(dcaTargetPercentage1);
     if (dcaTargetPercentage1) {
-      const price = entryPrice;
-      const dcaTargetPrice1 = price - (price * parseFloat(dcaTargetPercentage1)) / 100;
+      const dcaTargetPrice1 = calculateDcaPrice(entryPrice, percentage);
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
         label: "DCA target 1",
         color: colors.black,
       });
+    } else {
+      removeLine("dcaTargetPricePercentage1");
     }
   };
-  useEffect(drawDCATargetPriceLines, [entryPrice, dcaTargetPercentage1]);
+  useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
   /**
    * Match current symbol against market symbols collection item.
@@ -431,35 +511,33 @@ const StrategyForm = (props) => {
     <FormContext {...methods}>
       <Box className="strategyForm" textAlign="center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          {!isPositionView && (
-            <StrategyPanel
-              disableExpand={true}
-              lastPriceCandle={lastPriceCandle}
-              leverage={leverage}
-              symbolData={currentSymbolData}
-            />
-          )}
+          {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
           <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
           <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+          {isPositionView && !isClosed && (
+            <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+          )}
           {!isPositionView && <EntryExpirationPanel />}
           {!isPositionView && <AutoclosePanel />}
-          <CustomButton
-            className={"full submitButton"}
-            disabled={!isEmpty(errors)}
-            loading={processing}
-            onClick={() => {
-              triggerValidation();
-            }}
-            type="submit"
-          >
-            {isPositionView ? (
-              <FormattedMessage id="terminal.update" />
-            ) : (
-              <FormattedMessage id="terminal.open" />
-            )}
-          </CustomButton>
+          {!isClosed && (
+            <CustomButton
+              className={"full submitButton"}
+              disabled={!isEmpty(errors)}
+              loading={processing}
+              onClick={() => {
+                triggerValidation();
+              }}
+              type="submit"
+            >
+              {isPositionView ? (
+                <FormattedMessage id="terminal.update" />
+              ) : (
+                <FormattedMessage id="terminal.open" />
+              )}
+            </CustomButton>
+          )}
         </form>
       </Box>
     </FormContext>

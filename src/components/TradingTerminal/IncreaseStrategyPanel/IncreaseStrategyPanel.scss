@@ -22,14 +22,11 @@
       }
     }
 
-    .leverageButton {
-      flex: 0 0 50px;
+    .customSelect {
+      margin-left: 0;
 
-      button {
-        border: $purple solid 1px;
-        font-size: 15px;
-        padding: 3px;
-        text-transform: lowercase;
+      [role="button"] {
+        padding: 0 10px;
       }
     }
   }

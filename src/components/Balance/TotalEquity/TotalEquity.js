@@ -5,6 +5,7 @@ import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
 import EquityGraphLabels from "./GraphLabels";
+import { isObject } from "lodash";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -28,8 +29,8 @@ const TotalEquity = ({ dailyBalance }) => {
     let data = dailyBalance.balances.length
       ? dailyBalance.balances.find((item) => new Date(item.date).getDate() === currentDate)
       : { totalBTC: 0, totalUSDT: 0 };
-    obj.totalBTC = data.totalBTC;
-    obj.totalUSDT = data.totalUSDT;
+    obj.totalBTC = isObject(data) ? data.totalBTC : 0;
+    obj.totalUSDT = isObject(data) ? data.totalUSDT : 0;
     setBalance(obj);
   };
 
