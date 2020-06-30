@@ -13,16 +13,7 @@ import tradeApi from "../services/tradeApiClient";
  * @returns {UserBalanceEntity} Balance.
  */
 const useBalance = (internalId) => {
-  const [balance, setBalance] = useState({
-    pnlBTC: 0,
-    pnlUSDT: 0,
-    totalBTC: 0,
-    totalFreeBTC: 0,
-    totalFreeUSDT: 0,
-    totalLockedBTC: 0,
-    totalLockedUSDT: 0,
-    totalUSDT: 0,
-  });
+  const [balance, setBalance] = useState(null);
 
   const storeSession = useStoreSessionSelector();
 

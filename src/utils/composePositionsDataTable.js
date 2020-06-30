@@ -36,7 +36,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeProviderIcon(position) {
-  // Wrap with link to provider provile when available.
+  // Wrap with link to provider profile when available.
   if (position.providerLink) {
     return (
       <Link to={position.providerLink}>
@@ -50,6 +50,25 @@ function composeProviderIcon(position) {
       <img src={defaultProviderLogo} title={position.providerName} width="30px" />
     </>
   );
+}
+
+/**
+ * Compose provider name element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose name for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeProviderName(position) {
+  // Wrap with link to provider profile when available.
+  if (position.providerLink) {
+    return (
+      <Link className="name" to={position.providerLink}>
+        {position.providerName}
+      </Link>
+    );
+  }
+
+  return <>{position.providerName}</>;
 }
 
 /**
@@ -455,7 +474,7 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeProviderIcon(position),
-    composeRawValue(position.providerName),
+    composeProviderName(position),
     composeRawValue(position.signalId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
@@ -491,7 +510,7 @@ function composeClosePositionRow(position) {
     composeRawValue(position.openDateReadable),
     composeRawValue(position.closeDateReadable),
     composeProviderIcon(position),
-    composeRawValue(position.providerName),
+    composeProviderName(position),
     composeStatusMessage(position.status),
     composeRawValue(position.signalId),
     composeRawValue(position.pair),
@@ -527,7 +546,7 @@ function composeLogPositionRow(position) {
     composeRawValue(position.openDateReadable),
     composeRawValue(position.type),
     composeProviderIcon(position),
-    composeRawValue(position.providerName),
+    composeProviderName(position),
     composeStatusMessage(position.status),
     composeRawValue(position.signalId),
     composeRawValue(position.pair),

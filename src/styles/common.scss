@@ -190,6 +190,23 @@ body {
   @extend %body1;
 }
 
+.body2 {
+  @extend %body1;
+  font-family: "PlexSans-SemiBold";
+}
+
+.subHeader {
+  font-family: "PlexSans-Regular";
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 0.68px;
+  line-height: 1.44;
+}
+
+.bold {
+  font-family: "PlexSans-SemiBold";
+}
+
 .userMenu {
   padding: 15px;
 

@@ -20,7 +20,7 @@ import { useFormContext } from "react-hook-form";
  */
 const ConnectExchangeViewHead = ({ onClose }) => {
   const {
-    pathParams: { previousPath, title, tempMessage, isLoading },
+    pathParams: { selectedAccount, previousPath, title, tempMessage, isLoading },
     resetToPath,
     setPathParams,
     formRef,
@@ -87,7 +87,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
         <Typography className="tempMessage" variant="body1">
           {tempMessage}
         </Typography>
-        {storeUser.exchangeConnections.length > 0 && <UserExchangeList />}
+        {storeUser.exchangeConnections.length > 0 && !selectedAccount && <UserExchangeList />}
       </Box>
       <Box className="titleBar">
         <Typography variant="h1">

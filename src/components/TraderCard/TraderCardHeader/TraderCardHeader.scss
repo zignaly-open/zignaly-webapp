@@ -5,11 +5,6 @@
   padding: 18px 20px 0;
   width: 100%;
 
-  .logoIcon {
-    height: 40px;
-    width: 40px;
-  }
-
   .traderCardHeaderTitleBox {
     // height: 40px;
     margin-left: 17px;
@@ -22,6 +17,7 @@
 
       .name {
         color: $purple;
+        text-decoration: none;
       }
 
       .connectedIcon {
@@ -44,7 +40,7 @@
     padding: 8px 10px 0;
     width: 100%;
 
-    .logoIcon {
+    .providerLogo {
       height: 30px;
       width: 30px;
     }

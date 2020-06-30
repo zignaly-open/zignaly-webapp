@@ -19,7 +19,7 @@ import "./TipBox.scss";
 const TipBox = ({ icon, title, description }) => (
   <Box className="tipBox">
     <img src={icon} />
-    <Typography variant="body2">
+    <Typography className="bold" variant="body1">
       {typeof title === "object" ? title : <FormattedMessage id={title} />}
     </Typography>
     <Typography variant="body1">

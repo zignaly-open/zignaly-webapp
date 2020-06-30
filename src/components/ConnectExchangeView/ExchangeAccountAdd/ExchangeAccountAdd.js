@@ -11,6 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import { setUserExchanges } from "../../../store/actions/user";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -27,7 +28,7 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ create, demo }) => {
-  const { register, control, setValue, watch } = useFormContext();
+  const { register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -124,15 +125,30 @@ const ExchangeAccountAdd = ({ create, demo }) => {
       testNet,
     };
 
-    return tradeApi.exchangeAdd(payload).then(() => {
-      // Reload user exchanges
-      const authorizationPayload = {
-        token: storeSession.tradeApi.accessToken,
-      };
-      dispatch(setUserExchanges(authorizationPayload));
-      setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
-      return true;
-    });
+    return tradeApi
+      .exchangeAdd(payload)
+      .then(() => {
+        // Reload user exchanges
+        const authorizationPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(setUserExchanges(authorizationPayload));
+        setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
+        return true;
+      })
+      .catch((e) => {
+        if (e.code === 72) {
+          setError(
+            selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
+            "notMatch",
+            "The provided api key/secret pair is not valid.",
+          );
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+
+        return false;
+      });
   };
 
   return (
@@ -143,25 +159,24 @@ const ExchangeAccountAdd = ({ create, demo }) => {
         </Box>
       ) : (
         <ExchangeAccountForm>
-          {!create ||
-            (demo && (
-              <Controller
-                as={CustomSelect}
-                control={control}
-                defaultValue={selectedExchange.name.toLowerCase()}
-                label={intl.formatMessage({
-                  id: "accounts.exchange",
-                })}
-                name="exchangeName"
-                onChange={([e]) => {
-                  setValue("exchangeType", typeOptions[0].val);
-                  setValue("testnet", false);
-                  return e;
-                }}
-                options={exchangesOptions}
-                rules={{ required: true }}
-              />
-            ))}
+          {!create && (
+            <Controller
+              as={CustomSelect}
+              control={control}
+              defaultValue={selectedExchange.name.toLowerCase()}
+              label={intl.formatMessage({
+                id: "accounts.exchange",
+              })}
+              name="exchangeName"
+              onChange={([e]) => {
+                setValue("exchangeType", typeOptions[0].val);
+                setValue("testnet", false);
+                return e;
+              }}
+              options={exchangesOptions}
+              rules={{ required: true }}
+            />
+          )}
           {typeOptions.length > 1 && (
             <Controller
               as={CustomSelect}
@@ -194,7 +209,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               <CustomInput
                 autoComplete="new-password"
                 inputRef={register({
-                  required: "required",
+                  required: `${field} empty`,
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}

@@ -9,7 +9,12 @@ import { isEqual } from "lodash";
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
  * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
- * @typedef {import('../../CustomTooltip/CustomTooltip').PosType} PosType
+ */
+
+/**
+ * @typedef {Object} PosType
+ * @property {number} top Tooltip top fixed position.
+ * @property {number} left Tooltip left fixed position.
  */
 
 /**
@@ -50,9 +55,12 @@ const MemoizedLine = React.memo(
 const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
   const chartRef = useRef(null);
-  const [tooltipContent, setTooltipContent] = useState(<></>);
-  const [pos, setPos] = useState(/** @type {PosType} */ (null));
-  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  const pointHoverRef = useRef(null);
+  const [tooltipData, setTooltipData] = useState({
+    isVisible: false,
+    content: "",
+    pos: { left: 0, top: 0 },
+  });
 
   /**
    * Callback to handle tooltip display.
@@ -60,7 +68,6 @@ const LineChart = (props) => {
    * @returns {void}
    */
   const showTooltip = (tooltip) => {
-    // if chart is not defined, return early
     const chart = chartRef.current;
     if (!chart) {
       return;
@@ -68,21 +75,18 @@ const LineChart = (props) => {
 
     // hide the tooltip when chartjs determines you've hovered out
     if (tooltip.opacity === 0) {
-      setTooltipVisibility(false);
+      setTooltipData((data) => ({ ...data, isVisible: false }));
       return;
     }
 
     // Set tooltip position.
     const left = tooltip.caretX;
     const top = tooltip.caretY;
-    setPos({ top, left });
 
     // Set values for display of data in the tooltip
     const content = tooltipFormat(tooltip.dataPoints[0]);
-    setTooltipContent(content);
 
-    // Show tooltip
-    setTooltipVisibility(true);
+    setTooltipData((data) => ({ ...data, pos: { left, top }, isVisible: true, content }));
   };
   const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
@@ -99,10 +103,8 @@ const LineChart = (props) => {
         borderColor: colorsOptions.borderColor,
         fill: "start",
         // pointHitRadius: 20,
-        pointHoverRadius: 8,
-        pointHoverBorderWidth: 4,
-        pointHoverBorderColor: "#5200c5",
-        pointHoverBackgroundColor: "#fff",
+        pointHoverRadius: 0,
+        pointHoverBorderWidth: 0,
       },
     ],
   };
@@ -119,7 +121,7 @@ const LineChart = (props) => {
     hover: {
       intersect: false,
       mode: "index",
-      animationDuration: 0,
+      //   animationDuration: 0,
     },
     tooltips: {
       mode: "index",
@@ -163,6 +165,15 @@ const LineChart = (props) => {
         },
       ],
     },
+    plugins: {
+      /**
+       * @type {ResponsiveGradientOptions}
+       */
+      responsiveGradient: {
+        gradientColor1: colorsOptions.gradientColor1,
+        gradientColor2: colorsOptions.gradientColor2,
+      },
+    },
     // events: ["click", "touchstart", "touchmove"],
   };
 
@@ -177,16 +188,23 @@ const LineChart = (props) => {
        */
 
       /**
+       * @typedef {Object} ResponsiveGradientOptions
+       * @property {string} gradientColor1
+       * @property {string} gradientColor2
+       */
+
+      /**
        * Fill chart with gradient on layout change.
        *
        * @param {ExtendedChart} chart Chart instance.
+       * @param {ResponsiveGradientOptions} opts Plugin options.
        * @returns {void}
        */
-      afterLayout: (chart /* options */) => {
+      afterLayout: (chart, opts) => {
         let scales = chart.scales;
         let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-        color.addColorStop(0, colorsOptions.gradientColor2);
-        color.addColorStop(1, colorsOptions.gradientColor1);
+        color.addColorStop(0, opts.gradientColor2);
+        color.addColorStop(1, opts.gradientColor1);
         chart.data.datasets[0].backgroundColor = color;
       },
     },
@@ -194,12 +212,22 @@ const LineChart = (props) => {
 
   return (
     <Box className="gradientChart">
+      <div
+        className="pointHover"
+        ref={pointHoverRef}
+        style={{
+          visibility: tooltipData.isVisible ? "visible" : "hidden",
+          transform: `translate(${tooltipData.pos.left - 8}px, ${tooltipData.pos.top - 8}px)`,
+        }}
+      />
+
       <CustomToolip
-        classes={{ tooltip: "customTooltip" }}
-        open={isTooltipVisible}
-        placement="top-start"
-        pos={pos}
-        title={tooltipContent}
+        arrow={true}
+        customPopper={true}
+        elementRef={pointHoverRef}
+        open={tooltipData.isVisible}
+        placement="top"
+        title={tooltipData.content}
       >
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
       </CustomToolip>

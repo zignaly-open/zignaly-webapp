@@ -48,7 +48,7 @@ const ExchangeAccountTopBar = ({ account }) => {
           )}
         </Box>
       </Box>
-      <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
+      <Box alignItems="center" className="actionsBox hideScroll" display="flex" flexDirection="row">
         <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
           <FormattedMessage id="accounts.settings" />
         </CustomButton>

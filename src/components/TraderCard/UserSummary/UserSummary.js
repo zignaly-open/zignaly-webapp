@@ -9,13 +9,14 @@ import CustomTooltip from "../../CustomTooltip";
  * @typedef {Object} DefaultProps
  * @property {string} providerId Provider Id.
  * @property {string} quote Quote traded by provider.
+ * @property {boolean} isCopyTrading Flag to indicate if it's a copy trader.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ providerId, quote }) => {
+const UserSummary = ({ providerId, quote, isCopyTrading }) => {
   const providerUserInfo = useProviderUserInfo(providerId);
   const profitPerc = providerUserInfo.currentAllocated
     ? (providerUserInfo.profitsSinceCopying / providerUserInfo.currentAllocated) * 100
@@ -24,19 +25,27 @@ const UserSummary = ({ providerId, quote }) => {
 
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
-      <Typography variant="subtitle1">
-        <FormattedMessage id="srv.allocated" />
-      </Typography>
-      <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h5">
-          {quote} {formatFloat(providerUserInfo.currentAllocated)}
-        </Typography>
-        {/* <Typography variant="h5">$1280,46</Typography> */}
-      </Box>
+      {isCopyTrading && (
+        <>
+          <Typography variant="subtitle1">
+            <FormattedMessage id="srv.allocated" />
+          </Typography>
+          <Box
+            className="returns"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Typography variant="h5">
+              {quote} {formatFloat(providerUserInfo.currentAllocated)}
+            </Typography>
+            {/* <Typography variant="h5">$1280,46</Typography> */}
+          </Box>
+        </>
+      )}
       <Typography variant="subtitle1">
         <FormattedMessage id="sort.return" />
       </Typography>
-
       <Box className="returns" display="flex" flexDirection="row" justifyContent="space-between">
         <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
           <Typography className={color} variant="h5">
