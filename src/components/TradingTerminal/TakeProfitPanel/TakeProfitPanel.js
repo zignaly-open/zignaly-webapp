@@ -38,7 +38,7 @@ const TakeProfitPanel = (props) => {
     positionTargetsCardinality > 0,
   );
 
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = positionTargetsCardinality || 1;
   const {
     cardinality,
@@ -113,7 +113,6 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const validateExitUnits = (event) => {
-    // const draftPosition = getValues();
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
@@ -142,7 +141,7 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price * ((targetPercentage + 100) / 100);
+    let targetPrice = price;
 
     if (isNaN(targetPercentage)) {
       setError(
@@ -155,7 +154,11 @@ const TakeProfitPanel = (props) => {
       return;
     }
 
-    if (isNumber(targetPercentage) && targetPercentage !== 0) {
+    if (targetPercentage !== 0) {
+      targetPrice = price * ((targetPercentage + 100) / 100);
+    }
+
+    if (isNumber(targetPercentage)) {
       setValue(priceProperty, formatPrice(targetPrice));
     } else {
       setValue(priceProperty, "");
@@ -397,7 +400,6 @@ const TakeProfitPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    console.log("unitsUpdated");
     cardinalityRange.forEach((targetId) => {
       if (expanded) {
         simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
