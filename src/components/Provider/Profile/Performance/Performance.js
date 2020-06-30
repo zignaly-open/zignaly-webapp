@@ -16,7 +16,6 @@ import PerformanceGraph from "./PerformanceGraph";
  * @returns {JSX.Element} Component JSX.
  */
 const PerformanceOverview = ({ provider }) => {
-  console.log(provider);
   return (
     <Box
       alignItems="flex-start"
