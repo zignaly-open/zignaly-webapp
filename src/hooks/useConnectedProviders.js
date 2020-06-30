@@ -10,8 +10,8 @@ import tradeApi from "../services/tradeApiClient";
  * Get list of connected providers.
  *
  * @param {number} timeFrame TimeFrame for returns.
- * @param {boolean} copyTradersOnly Flag to indicate if it should returns only the copy traders.
  * @param {string} internalExchangeId Filter by internal exchange id.
+ * @param {boolean} copyTradersOnly Flag to indicate if it should returns only the copy traders.
  * @returns {ProvidersCollection} Connected Providers.
  */
 const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) => {
@@ -39,7 +39,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
         });
     };
     loadData();
-  }, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame]);
+  }, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame, copyTradersOnly]);
 
   return providers;
 };

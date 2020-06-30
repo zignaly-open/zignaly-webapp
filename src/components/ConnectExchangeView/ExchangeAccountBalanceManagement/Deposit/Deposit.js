@@ -61,7 +61,7 @@ const Deposit = () => {
             <FormattedMessage id="deposit.buy.how" />
           </Typography>
           <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank">
-            <Typography variant="body1" className="bold">
+            <Typography className="bold" variant="body1">
               <FormattedMessage id="deposit.buy.creditcard" />
             </Typography>
           </CustomButton>
@@ -101,7 +101,7 @@ const Deposit = () => {
                   />
                   <Box className="tipBox">
                     <img src={TimeIcon} />
-                    <Typography variant="body1" className="bold">
+                    <Typography className="bold" variant="body1">
                       <FormattedMessage id="deposit.waitingtime" />
                     </Typography>
                     <Typography variant="body1">
@@ -134,7 +134,7 @@ const Deposit = () => {
                         {selectedAssetName} <FormattedMessage id="withdraw.memo" />
                       </Typography>
                       <Box display="flex" flexDirection="row">
-                        <Typography variant="body1" className="bold">
+                        <Typography className="bold" variant="body1">
                           {depositAddress.tag}
                         </Typography>
                         <img alt="copy" className="copy" onClick={copyMemo} src={CopyIcon} />
@@ -147,7 +147,7 @@ const Deposit = () => {
                       disabled={!depositAddress}
                       onClick={copyAddress}
                     >
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         <FormattedMessage id="deposit.address.copy" />
                       </Typography>
                     </CustomButton>
@@ -156,7 +156,7 @@ const Deposit = () => {
                       disabled={!depositAddress}
                       onClick={showQRCode}
                     >
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         <FormattedMessage id="deposit.address.qr" />
                       </Typography>
                     </CustomButton>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip, Box, Popper } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import "./CustomTooltip.scss";
 
 /**
@@ -33,7 +33,7 @@ const CustomTooltip = (props) => {
                   flip: { enabled: false },
                   offset: {
                     enabled: true,
-                    offset: `0px, 26px`,
+                    offset: "0px, 26px",
                   },
                 },
               },
@@ -46,8 +46,8 @@ const CustomTooltip = (props) => {
         popper: customPopper ? "customTooltipPopper" : null,
         arrow: "customArrowTooltip",
       }}
-      title={title}
       enterTouchDelay={100}
+      title={title}
       {...others}
     >
       {children}

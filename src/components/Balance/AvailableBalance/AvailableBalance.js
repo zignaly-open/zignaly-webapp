@@ -102,7 +102,7 @@ const AvailableBalance = ({ balance }) => {
               </Typography>
             </Box>
             <Box display="flex" flexDirection="row">
-              <Typography variant="h5" className={color}>
+              <Typography className={color} variant="h5">
                 BTC {balance.pnlBTC}
               </Typography>
               <Typography className={`pnlPercent ${color}`} variant="subtitle2">

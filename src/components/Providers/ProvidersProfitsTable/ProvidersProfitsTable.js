@@ -45,7 +45,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
       label: "col.provider.logo",
       options: {
         customBodyRender: (val, tableMeta) => {
-          return <ProviderLogo url={val} size="30px" title={tableMeta.rowData[2]} />;
+          return <ProviderLogo size="30px" title={tableMeta.rowData[2]} url={val} />;
         },
         // setCellProps: (value) => ({
         //   className: "test",

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import "./GradientLineChart.scss";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
@@ -197,14 +197,14 @@ const LineChart = (props) => {
        * Fill chart with gradient on layout change.
        *
        * @param {ExtendedChart} chart Chart instance.
-       * @param {ResponsiveGradientOptions} options Plugin options.
+       * @param {ResponsiveGradientOptions} opts Plugin options.
        * @returns {void}
        */
-      afterLayout: (chart, options) => {
+      afterLayout: (chart, opts) => {
         let scales = chart.scales;
         let color = chart.ctx.createLinearGradient(0, scales["y-axis-0"].bottom, 0, 0);
-        color.addColorStop(0, options.gradientColor2);
-        color.addColorStop(1, options.gradientColor1);
+        color.addColorStop(0, opts.gradientColor2);
+        color.addColorStop(1, opts.gradientColor1);
         chart.data.datasets[0].backgroundColor = color;
       },
     },
@@ -214,20 +214,20 @@ const LineChart = (props) => {
     <Box className="gradientChart">
       <div
         className="pointHover"
+        ref={pointHoverRef}
         style={{
           visibility: tooltipData.isVisible ? "visible" : "hidden",
           transform: `translate(${tooltipData.pos.left - 8}px, ${tooltipData.pos.top - 8}px)`,
         }}
-        ref={pointHoverRef}
       />
 
       <CustomToolip
+        arrow={true}
+        customPopper={true}
+        elementRef={pointHoverRef}
         open={tooltipData.isVisible}
         placement="top"
-        customPopper={true}
         title={tooltipData.content}
-        elementRef={pointHoverRef}
-        arrow={true}
       >
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
       </CustomToolip>

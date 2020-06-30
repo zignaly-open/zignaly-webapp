@@ -253,7 +253,7 @@ const ExchangeAccountSettings = () => {
         />
 
         <CustomButton className="textDefault deleteButton" onClick={deleteExchangeShow}>
-          <Typography variant="body1" className="bold">
+          <Typography className="bold" variant="body1">
             <FormattedMessage id="accounts.delete.exchange" />
           </Typography>
         </CustomButton>

@@ -8,7 +8,6 @@ import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -21,14 +20,13 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const ConnectExchangeViewHead = ({ onClose }) => {
   const {
-    pathParams: { selectedAccount, currentPath, previousPath, title, tempMessage, isLoading },
+    pathParams: { selectedAccount, previousPath, title, tempMessage, isLoading },
     resetToPath,
     setPathParams,
     formRef,
   } = useContext(ModalPathContext);
   const methods = useFormContext();
   const storeUser = useStoreUserSelector();
-  const storeSettings = useStoreSettingsSelector();
 
   /**
    * Handle submit buttton click.
@@ -70,14 +68,6 @@ const ConnectExchangeViewHead = ({ onClose }) => {
       clearTimeout(timeoutId);
     };
   }, [tempMessage, setPathParams]);
-
-  // Update account
-  useEffect(() => {
-    if (selectedAccount) {
-      console.log(storeSettings.selectedExchange);
-      setPathParams((state) => ({ ...state, selectedAccount: storeSettings.selectedExchange }));
-    }
-  }, [storeSettings.selectedExchange]);
 
   return (
     <Box className="connectExchangeViewHead">

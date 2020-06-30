@@ -1,7 +1,6 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useRef } from "react";
 import "./LineChart.scss";
 import { Box } from "@material-ui/core";
-import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
 
@@ -9,7 +8,6 @@ import { isEqual } from "lodash";
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
  * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
- * @typedef {import('../../CustomTooltip/CustomTooltip').PosType} PosType
  */
 
 /**
@@ -46,43 +44,8 @@ const MemoizedLine = React.memo(
  * @returns {JSX.Element} Component JSX.
  */
 const LineChart = (props) => {
-  const { chartData, colorsOptions, tooltipFormat } = props;
+  const { chartData, colorsOptions } = props;
   const chartRef = useRef(null);
-  const [tooltipContent, setTooltipContent] = useState(<></>);
-  const [pos, setPos] = useState(/** @type {PosType} */ (null));
-  const [isTooltipVisible, setTooltipVisibility] = useState(false);
-
-  /**
-   * Callback to handle tooltip display.
-   * @param {Chart.ChartTooltipModel} tooltip Tooltip model.
-   * @returns {void}
-   */
-  const showTooltip = (tooltip) => {
-    // if chart is not defined, return early
-    const chart = chartRef.current;
-    if (!chart) {
-      return;
-    }
-
-    // hide the tooltip when chartjs determines you've hovered out
-    if (tooltip.opacity === 0) {
-      setTooltipVisibility(false);
-      return;
-    }
-
-    // Set tooltip position.
-    const left = tooltip.caretX;
-    const top = tooltip.caretY;
-    setPos({ top, left });
-
-    // Set values for display of data in the tooltip
-    const content = tooltipFormat(tooltip.dataPoints[0]);
-    setTooltipContent(content);
-
-    // Show tooltip
-    setTooltipVisibility(true);
-  };
-  const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
   /**
    * @type Chart.ChartData
@@ -130,8 +93,6 @@ const LineChart = (props) => {
       intersect: false,
       position: "nearest",
       displayColors: false,
-      enabled: false,
-      custom: showTooltipCallback,
     },
     elements: {
       point: {
@@ -161,29 +122,16 @@ const LineChart = (props) => {
     // events: ["click", "touchstart", "touchmove"],
   };
 
-  const plugins = [
-    {
-      id: "responsiveGradient",
-      /**
-       * @typedef {Object} ChartWithScales
-       * @property {*} scales
-       *
-       * @typedef {Chart & ChartWithScales} ExtendedChart
-       */
-    },
-  ];
-
   return (
     <Box className="lineChart">
-      <CustomToolip
+      {/* <CustomToolip
         classes={{ tooltip: "customTooltip" }}
         open={isTooltipVisible}
         placement="top-start"
-        pos={pos}
         title={tooltipContent}
-      >
-        <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
-      </CustomToolip>
+      > */}
+      <MemoizedLine data={data} options={options} ref={chartRef} />
+      {/* </CustomToolip> */}
     </Box>
   );
 };

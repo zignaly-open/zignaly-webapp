@@ -465,6 +465,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} floating
  * @property {number} openPositions
  * @property {number} closedPositions
+ * @property {string} exchangeType
  */
 
 /**
@@ -800,6 +801,7 @@ function createEmptyProviderEntity() {
     floating: 0,
     openPositions: 0,
     closedPositions: 0,
+    exchangeType: "",
   };
 }
 

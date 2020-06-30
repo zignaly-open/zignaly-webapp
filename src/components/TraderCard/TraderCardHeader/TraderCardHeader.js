@@ -1,7 +1,6 @@
 import React from "react";
 import "./TraderCardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
-import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
@@ -36,7 +35,7 @@ const TraderCardHeader = (props) => {
 
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
-      <ProviderLogo url={logoUrl} title={name} size="40px" />
+      <ProviderLogo size="40px" title={name} url={logoUrl} />
       <Box
         alignItems="flex-start"
         className="traderCardHeaderTitleBox"
@@ -57,7 +56,7 @@ const TraderCardHeader = (props) => {
             flexDirection="row"
             justifyContent="flex-start"
           >
-            <Link to={profileLink} className="name">
+            <Link className="name" to={profileLink}>
               <Typography variant="h4">{name}</Typography>
             </Link>
             {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}

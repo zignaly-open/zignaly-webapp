@@ -3,13 +3,13 @@
   width: 100%;
 
   .pointHover {
-    position: absolute;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    border: solid 2px $purple;
     background-color: $white;
+    border: solid 2px $purple;
+    border-radius: 50%;
+    height: 16px;
     pointer-events: none;
+    position: absolute;
+    width: 16px;
     will-change: translate;
   }
 }

@@ -229,10 +229,10 @@ const Withdraw = () => {
                       mb="24px"
                       width={1}
                     >
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         <FormattedMessage id="withdraw.fee" />
                       </Typography>
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         {selectedAssetName} {selectedNetwork.withdrawFee}
                       </Typography>
                     </Box>
@@ -242,10 +242,10 @@ const Withdraw = () => {
                       justifyContent="space-between"
                       width={1}
                     >
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         <FormattedMessage id="withdraw.get" />
                       </Typography>
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         {selectedAssetName}{" "}
                         {Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee))}
                       </Typography>
@@ -256,7 +256,7 @@ const Withdraw = () => {
                       loading={isLoading}
                       type="submit"
                     >
-                      <Typography variant="body1" className="bold">
+                      <Typography className="bold" variant="body1">
                         <FormattedMessage id="accounts.withdraw" />
                       </Typography>
                     </CustomButton>

@@ -32,13 +32,13 @@ const ProviderLogo = ({ url, size, title }) => {
 
   return (
     <img
+      alt={title}
       className="providerLogo"
+      height={size}
       onError={onLogoError}
       src={url || LogoIcon}
-      alt={title}
       title={title}
       width={size}
-      height={size}
     />
   );
 };

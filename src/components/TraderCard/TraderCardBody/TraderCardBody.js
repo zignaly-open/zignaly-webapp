@@ -229,7 +229,7 @@ const TraderCard = (props) => {
           </Box>
         </Box>
       </Box>
-      {showSummary && <UserSummary providerId={id} quote={quote} isCopyTrading={isCopyTrading} />}
+      {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
     </Box>
   );
 };

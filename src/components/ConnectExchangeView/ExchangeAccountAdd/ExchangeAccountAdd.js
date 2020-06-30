@@ -11,7 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import { setUserExchanges } from "../../../store/actions/user";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
-import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -28,7 +28,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ create, demo }) => {
-  const { register, control, setValue, watch, setError, errors } = useFormContext();
+  const { register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();

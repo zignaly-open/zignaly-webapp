@@ -13,17 +13,19 @@
     }
   }
 
-  &[x-placement*="top"] .customArrowTooltip {
-    background-color: $borderColor;
-    height: 26px;
-    width: 2px;
-    position: absolute;
-    will-change: left;
-    margin: 6px 0 0 -2px;
-    bottom: auto;
+  &[x-placement*="top"] {
+    .customArrowTooltip {
+      background-color: $borderColor;
+      bottom: auto;
+      height: 26px;
+      margin: 6px 0 0 -2px;
+      position: absolute;
+      width: 2px;
+      will-change: left;
 
-    &:before {
-      display: none;
+      &:before {
+        display: none;
+      }
     }
   }
 }
