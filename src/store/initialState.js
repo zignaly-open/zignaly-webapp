@@ -146,6 +146,7 @@ const initialState = {
         "freeBNB",
       ],
       copytProfileUsers: [
+        "userId",
         "email",
         "name",
         "active",
@@ -153,6 +154,12 @@ const initialState = {
         "allocatedBalance",
         "suspended",
         "profitsFromClosedBalance",
+        "lastTransactionId",
+        "modify",
+        "cancel",
+        "cancelDate",
+        "code",
+        "realExchangeConnected",
       ],
       openPositions: [
         "col.date.open",
@@ -405,6 +412,7 @@ const initialState = {
       takeProfitsFromSignal: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      price: 0,
     },
   },
 };

@@ -168,6 +168,18 @@ export const revertPercentageRange = (percentage) => {
 };
 
 /**
+ * Format unixtime date with given Moment format rule.
+ *
+ * @param {Number} date Unix time.
+ * @param {String} format Moment format rule.
+ *
+ * @returns {String} Formatted date.
+ */
+export const formatDate = (date, format) => {
+  return moment(new Date(date)).format(format);
+};
+
+/**
  * Format date with time
  *
  * @param {Date|string} date Date.

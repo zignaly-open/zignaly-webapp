@@ -28,6 +28,7 @@ import {
   exchangeWithdrawsResponseTransform,
   userGetResponseTransform,
   providerExchangeSettingsResponseTransform,
+  providerDataPointsResponseTransform,
   convertAssetResponseTransform,
 } from "./tradeApiClient.types";
 
@@ -74,6 +75,9 @@ import {
  * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
  * @typedef {import('./tradeApiClient.types').ConvertPayload} ConvertPayload
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
+ * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
+ * @typedef {import('./tradeApiClient.types').CancelSubscriptionPayload} CancelSubscriptionPayload
+ *
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  */
 
@@ -744,6 +748,20 @@ class TradeApiClient {
   /**
    * Get providers profits stats.
    *
+   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerCopyTradingDataPointsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getCopyTradingDataPoints";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerDataPointsResponseTransform(responseData);
+  }
+
+  /**
    * @param {GetExchangeLastDepositsPayload} payload Get exchange last deposits payload.
    * @returns {Promise<Array<ExchangeDepositEntity>>} Returns promise.
    *
@@ -786,6 +804,35 @@ class TradeApiClient {
     return withdrawResponseTransform(responseData);
   }
 
+  /**
+   * Modify user's subscription fron users table in traders profile.
+   *
+   * @param {ModifySubscriptionPayload} payload payload.
+   * @returns {Promise<WithdrawReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async modifySubscription(payload) {
+    const endpointPath = "/fe/api.php?action=modifyFollowerSubscriptionDuration";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Cancel user's subscription fron users table in traders profile.
+   *
+   * @param {CancelSubscriptionPayload} payload payload.
+   * @returns {Promise<WithdrawReply>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async cancelSubscription(payload) {
+    const endpointPath = "/fe/api.php?action=cancelFollowerSubscription";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
   /**
    * Convert small balances to BNB
    *

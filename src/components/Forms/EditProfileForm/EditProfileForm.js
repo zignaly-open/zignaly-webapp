@@ -15,6 +15,7 @@ import { setProvider } from "../../../store/actions/views";
 import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -31,11 +32,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { errors, handleSubmit, control, setError } = useForm();
+  const storeUserData = useStoreUserData();
+  const { errors, handleSubmit, control, setError, watch } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
   const [selectedSocials, setSelectedSocials] = useState(provider.social);
+  const [socialError, setSocialError] = useState(false);
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
@@ -44,6 +47,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
 
   const signalUrl = `https://test.zignaly.com/api/signals.php?key=${provider.key}`;
   const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
+  const listSwitch = watch("list", provider.list);
 
   /**
    *
@@ -132,37 +136,47 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {Boolean} Flag to indicate if fields are validated or not.
    */
   const validatePaymentFields = (data) => {
+    if (socialError) {
+      return false;
+    }
+
     if (data.merchantId) {
+      let flag = true;
       if (!data.price) {
         setError("price", "");
-        return false;
+        flag = false;
       }
       if (!data.ipnSecret) {
         setError("ipnSecret", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
 
     if (data.price) {
+      let flag = true;
       if (!data.merchantId) {
         setError("merchantId", "");
-        return false;
+        flag = false;
       }
       if (!data.ipnSecret) {
         setError("ipnSecret", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
 
     if (data.ipnSecret) {
+      let flag = true;
       if (!data.merchantId) {
         setError("merchantId", "");
-        return false;
+        flag = false;
       }
       if (!data.price) {
         setError("price", "");
-        return false;
+        flag = false;
       }
+      return flag;
     }
     return true;
   };
@@ -213,6 +227,25 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setStrategy(value);
   };
 
+  /**
+   *
+   * @param {*} value Error flag for social fields.
+   * @returns {void} None.
+   */
+  const handleSocialError = (value) => {
+    setSocialError(value);
+  };
+
+  const disableList = () => {
+    if (listSwitch) {
+      return false;
+    }
+    if (storeUserData.isAdmin) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <Box bgcolor="grid.main" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -254,7 +287,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             <Typography variant="h3">
               <FormattedMessage id="srv.find" />
             </Typography>
-            <SocialSelect defaultValue={provider.social} onChange={handleSocialLinkChange} />
+            <SocialSelect
+              defaultValue={provider.social}
+              onChange={handleSocialLinkChange}
+              onError={handleSocialError}
+            />
           </Box>
 
           <Box bgcolor="grid.main" className="strategyBox">
@@ -349,7 +386,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.logoUrl}
                 name="logoUrl"
+                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
               />
+              {errors.logoUrl && (
+                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+              )}
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
@@ -372,8 +413,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.website ? provider.website : ""}
                 name="website"
-                rules={{ required: false }}
+                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
               />
+              {errors.website && (
+                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+              )}
             </Box>
 
             {provider.isCopyTrading && (
@@ -547,7 +591,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!provider.isAdmin} />}
+                as={<Switch />}
                 control={control}
                 defaultValue={provider.public}
                 name="public"
@@ -576,7 +620,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={!provider.isAdmin} />}
+                as={<Switch disabled={disableList()} />}
                 control={control}
                 defaultValue={provider.list}
                 name="list"

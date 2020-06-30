@@ -21,13 +21,33 @@
     margin-right: 10px;
     width: 16px;
   }
+
+  .multiInputBox {
+    margin-left: 20px;
+    width: 50%;
+
+    .customInput {
+      margin-bottom: 5px;
+    }
+  }
 }
 
-.multiInputBox {
-  margin-left: 20px;
-  width: 50%;
+@include media("<=sm") {
+  .toggleDoubleInput {
+    flex-direction: column;
 
-  .customInput {
-    margin-bottom: 5px;
+    .labelBox {
+      margin-bottom: 5px;
+      width: 100%;
+    }
+
+    .multiInputBox {
+      margin-left: 0;
+      width: 100%;
+
+      .customInput {
+        margin-bottom: 5px;
+      }
+    }
   }
 }

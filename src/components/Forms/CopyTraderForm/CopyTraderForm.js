@@ -10,11 +10,15 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { setProvider } from "../../../store/actions/views";
 import { showErrorAlert } from "../../../store/actions/ui";
+import Alert from "@material-ui/lab/Alert";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  * @property {Function} onClose
+ *
  */
 /**
  * Provides the navigation bar for the dashboard.
@@ -23,11 +27,14 @@ import { showErrorAlert } from "../../../store/actions/ui";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderForm = ({ provider, onClose }) => {
-  const [loading, setLoading] = useState(false);
-  const { errors, handleSubmit, register, setError, setValue } = useForm();
-  const dispatch = useDispatch();
+  const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(undefined);
+  const { errors, handleSubmit, register, setError, setValue } = useForm();
+  const dispatch = useDispatch();
+  const intl = useIntl();
 
   const initFormData = () => {
     if (provider.exchangeInternalId && !provider.disable) {
@@ -45,10 +52,10 @@ const CopyTraderForm = ({ provider, onClose }) => {
   /**
    *
    * @param {SubmitObject} data Form data.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {void} None.
    */
-  const onSubmit = async (data) => {
-    try {
+  const onSubmit = (data) => {
+    if (validate()) {
       let added = parseFloat(data.allocatedBalance);
       let needed =
         typeof provider.minAllocatedBalance === "string"
@@ -64,23 +71,57 @@ const CopyTraderForm = ({ provider, onClose }) => {
           providerId: provider.id,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        const response = await tradeApi.providerConnect(payload);
-        if (response) {
-          const payload2 = {
-            token: storeSession.tradeApi.accessToken,
-            providerId: provider.id,
-            version: 2,
-          };
-          dispatch(setProvider(payload2));
-          setLoading(false);
-          onClose();
-        }
+        tradeApi
+          .providerConnect(payload)
+          .then((response) => {
+            if (response) {
+              const payload2 = {
+                token: storeSession.tradeApi.accessToken,
+                providerId: provider.id,
+                version: 2,
+              };
+              dispatch(setProvider(payload2));
+              setLoading(false);
+              onClose();
+            }
+          })
+          .catch((e) => {
+            dispatch(showErrorAlert(e));
+          });
       } else {
         setError("allocatedBalance", "invalid amount");
       }
-    } catch (e) {
-      dispatch(showErrorAlert(e));
     }
+  };
+
+  const validate = () => {
+    if (storeUserExchangeConnections.length > 0) {
+      if (provider.exchanges.length && provider.exchanges[0] !== "") {
+        if (
+          provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase()) &&
+          storeSettings.selectedExchange.exchangeType.toLowerCase() ===
+            provider.exchangeType.toLowerCase()
+        ) {
+          return true;
+        }
+        let data = provider.exchanges.length > 1 ? provider.exchanges[1] : provider.exchanges[0];
+        let msg = intl.formatMessage(
+          { id: "copyt.copy.error1" },
+          {
+            selected: `${storeSettings.selectedExchange.internalName.toUpperCase()}`,
+            exchange: `${storeSettings.selectedExchange.exchangeName.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
+            required: `${data.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
+          },
+        );
+        setAlert(msg);
+        return false;
+      }
+    } else {
+      let msg = intl.formatMessage({ id: "copyt.copy.error2" });
+      setAlert(msg);
+      return false;
+    }
+    return true;
   };
 
   /**
@@ -102,6 +143,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
         flexDirection="column"
         justifyContent="center"
       >
+        {Boolean(alert) && (
+          <Alert className="alert" severity="error">
+            {alert}
+          </Alert>
+        )}
         <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
         <Typography variant="body1">
           Copy every move proportionately with thie followong amount.

@@ -6,8 +6,7 @@ import CalendarIcon from "../../../../images/ct/calendar.svg";
 import ExchangeIcon from "../../../../images/ct/exchange.svg";
 import TimeIcon from "../../../../images/ct/time.svg";
 import ProfitIcon from "../../../../images/ct/profit.svg";
-import moment from "moment";
-import { formatDuration } from "../../../../utils/format";
+import { formatDuration, formatDate } from "../../../../utils/format";
 
 /**
  * @typedef {Object} DefaultProps
@@ -80,7 +79,7 @@ const MoreInfo = ({ provider }) => {
             <FormattedMessage id="srv.active" />
           </Typography>
           <Typography variant="h3">
-            {moment(new Date(provider.activeSince * 1000)).format("DD MMM, YYYY")}
+            {formatDate(provider.activeSince * 1000, "DD MMM, YYYY")}
           </Typography>
         </Box>
 

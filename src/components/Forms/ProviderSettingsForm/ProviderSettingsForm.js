@@ -8,7 +8,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ToggleInput from "./ToggleInput";
 import ToggleDoubleInput from "./ToggleDoubleInput";
-import ToggleSelectInput from "./ToggleSelectInput";
+import ToggleSelectInput from "./SelectInput";
 import ToggleTargetFields from "./ToggleTargetFields";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
 import { assign } from "lodash";
@@ -323,7 +323,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Save Changes
+            Save Settings
           </CustomButton>
         </Box>
       </form>

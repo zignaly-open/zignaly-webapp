@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./GraphLabels.scss";
 import { Box } from "@material-ui/core";
-/**
- *
- * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
- */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserEquityEntity>} list
+ * @property {Array<*>} list Array of object with a date property.
  */
 
 /**
@@ -21,13 +17,13 @@ const EquityGraphLabels = ({ list }) => {
   const [labels, setLabels] = useState([]);
 
   const monthNames = [
-    "January",
+    "Jan",
     "Feb",
     "Mar",
-    "April",
+    "Apr",
     "May",
-    "June",
-    "July",
+    "Jun",
+    "Jul",
     "Aug",
     "Sep",
     "Oct",

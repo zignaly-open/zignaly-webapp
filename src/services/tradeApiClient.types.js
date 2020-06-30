@@ -646,6 +646,22 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ModifySubscriptionPayload
+ * @property {string} token
+ * @property {String} providerId
+ * @property {String} followerId
+ * @property {Number} days
+ */
+
+/**
+ * @typedef {Object} CancelSubscriptionPayload
+ * @property {string} token
+ * @property {String} providerId
+ * @property {String} followerId
+ * @property {Boolean} cancel
+ */
+
+/**
  * @typedef {Object} ConvertPayload
  * @property {Array<string>} assets
  * @property {string} internalId
@@ -1947,6 +1963,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} takeProfitsFromSignal
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
+ * @property {Number} price
  */
 
 /**
@@ -2077,6 +2094,7 @@ function createEmptyProviderGetEntity() {
     takeProfitsFromSignal: false,
     trailingStopFromSignal: false,
     useLeverageFromSignal: false,
+    price: 0,
   };
 }
 
@@ -2207,6 +2225,12 @@ export function providerFollowersResponseTransform(response) {
 /**
  * @typedef {Object} ProviderFollowerEntity
  * @property {String} date
+ * @property {Boolean} enabled
+ * @property {String} id
+ * @property {String} name
+ * @property {Array<*>} requiredAuthFields
+ * @property {Array<*>} testNet
+ * @property {Array<*>} type
  * @property {Number} followers
  * @property {Number} totalFollowers
  */
@@ -2224,14 +2248,22 @@ function providerFollowersResponseItemTransform(providerFollowersItem) {
   return transformedResponse;
 }
 
-function createProviderFollowersEmptyEntity() {
+/**
+ * Function to create an empty provider entity.
+ *
+ * @return {ProviderFollowerEntity} Provoer Follower empty entity
+ */
+export function createProviderFollowersEmptyEntity() {
   return {
+    date: "",
     enabled: false,
     id: "",
     name: "",
     requiredAuthFields: [""],
     testNet: [""],
     type: [""],
+    followers: 0,
+    totalFollowers: 0,
   };
 }
 
@@ -2429,7 +2461,7 @@ export function providerPerformanceResponseTransform(response) {
   return { ...emptyProviderEntity, ...response };
 }
 
-function createProviderPerformanceEmptyEntity() {
+export function createProviderPerformanceEmptyEntity() {
   return {
     closePositions: 0,
     openPositions: 0,
@@ -2835,5 +2867,65 @@ export function creatEmptySettingsEntity() {
     trailingStop: "",
     trailingStopTrigger: "",
     whitelist: false,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderDataPointsEntity
+ * @property {String} float
+ * @property {String} floatPercentage
+ * @property {String} floatUSDT
+ * @property {Number} followersTrialing
+ * @property {String} freeBalance
+ * @property {String} freeBalancePercentage
+ * @property {String} freeBalanceUSDT
+ * @property {String} quote
+ * @property {String} totalAllocated
+ * @property {String} totalAllocatedFromFollowers
+ * @property {String} totalAllocatedUSDT
+ * @property {String} totalAllocatedUSDTFromFollowers
+ * @property {Number} totalFollowers
+ * @property {String} totalProfit
+ * @property {String} totalProfitPercentage
+ * @property {String} totalProfitUSDT
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderDataPointsEntity} Provider Data points entity.
+ */
+export function providerDataPointsResponseTransform(response) {
+  const emptyDataPointsEntity = creatEmptyProviderDataPointsEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyDataPointsEntity, response);
+
+  return transformedResponse;
+}
+
+/**
+ * Create user entity.
+ * @returns {ProviderDataPointsEntity} User entity.
+ */
+export function creatEmptyProviderDataPointsEntity() {
+  return {
+    float: "",
+    floatPercentage: "",
+    floatUSDT: "",
+    followersTrialing: 0,
+    freeBalance: "",
+    freeBalancePercentage: "",
+    freeBalanceUSDT: "",
+    quote: "",
+    totalAllocated: "",
+    totalAllocatedFromFollowers: "",
+    totalAllocatedUSDT: "",
+    totalAllocatedUSDTFromFollowers: "",
+    totalFollowers: 0,
+    totalProfit: "",
+    totalProfitPercentage: "",
+    totalProfitUSDT: "",
   };
 }

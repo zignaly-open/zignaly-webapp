@@ -24,12 +24,28 @@ import { useTheme } from "@material-ui/core/styles";
 const PerformanceGraph = ({ provider }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = provider.performance.weeklyStats
-    ? provider.performance.weeklyStats.map((item) => item.return)
-    : [];
-  const labels = provider.performance.weeklyStats
-    ? provider.performance.weeklyStats.map(() => "")
-    : [];
+
+  const prepareValues = () => {
+    let stats = provider.performance.weeklyStats;
+    let values = [];
+    if (stats) {
+      if (stats.length > 12) {
+        let list = [...stats].sort((a, b) => b.week - a.week);
+        values = [...list].splice(0, 12);
+        return values.map((item) => item.return);
+      }
+      let list = [...stats].sort((a, b) => a.week - b.week);
+      values = list.map((item) => item.return);
+      for (let a = 0; a < 12 - stats.length; a++) {
+        values.unshift(0);
+      }
+      return values;
+    }
+    return [];
+  };
+
+  const values = prepareValues();
+  const labels = [...values].map(() => "");
   const options = {
     scales: {
       xAxes: [
@@ -49,7 +65,7 @@ const PerformanceGraph = ({ provider }) => {
             color: "transparent",
             display: true,
             drawBorder: false,
-            zeroLineColor: "rgba(0, 0, 0, 0.2)",
+            zeroLineColor: "#d4d4d4",
           },
         },
       ],
