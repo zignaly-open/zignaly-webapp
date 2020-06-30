@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { size } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
@@ -182,21 +183,23 @@ const TradingView = () => {
               value={selectedSymbol}
             />
           </Box>
-          <Box
-            alignContent="left"
-            className="providersSelector"
-            display="flex"
-            flexDirection="column"
-          >
-            <FormattedMessage id="terminal.providers" />
-            <CustomSelect
-              label=""
-              onChange={() => {}}
-              options={ownCopyTradersProviders}
-              search={true}
-              value={selectedProviderValue}
-            />
-          </Box>
+          {size(ownCopyTradersProviders) > 1 && (
+            <Box
+              alignContent="left"
+              className="providersSelector"
+              display="flex"
+              flexDirection="column"
+            >
+              <FormattedMessage id="terminal.providers" />
+              <CustomSelect
+                label=""
+                onChange={() => {}}
+                options={ownCopyTradersProviders}
+                search={true}
+                value={selectedProviderValue}
+              />
+            </Box>
+          )}
         </Box>
       )}
       <Box
