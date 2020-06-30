@@ -687,3 +687,81 @@ export function excludeDataTableColumn(dataTable, columnId) {
 
   return dataTable;
 }
+
+/**
+ * Compose MUI Data Table row for open position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeManagementPositionRow(position, confirmActionHandler) {
+  return [
+    composePaperTradingIcon(position),
+    composeRawValue(position.openDateReadable),
+    composeProviderIcon(position),
+    composeRawValue(position.providerName),
+    composeRawValue(position.signalId),
+    composeRawValue(position.pair),
+    composeEntryPrice(position),
+    composeRawValue(position.leverage),
+    composeExitPrice(position),
+    composeProfit(position),
+    composeProfitPercentage(position),
+    composeRawValue(position.side),
+    composeStopLossPrice(position),
+    composeAmount(position),
+    composeSymbolWithPrice(position.base, position.remainAmount),
+    composeQuoteSize(position),
+    composeTrailingStopIcon(position),
+    composeTakeProfitTargets(position),
+    composeRebuyTargets(position),
+    composeRawValue(position.age),
+    composeRawValue(position.openTrigger),
+    composeAllActionButtons(position, confirmActionHandler),
+    composeCancelActionButton(position, confirmActionHandler),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {UserPositionsCollection} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ *
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
+  const columnsIds = [
+    "col.paper",
+    "col.date.open",
+    "col.provider.logo",
+    "col.provider.name",
+    "col.signalid",
+    "col.pair",
+    "col.price.entry",
+    "col.leverage",
+    "col.price.current",
+    "col.plnumber",
+    "col.plpercentage",
+    "col.side",
+    "col.stoplossprice",
+    "col.initialamount",
+    "col.remainingamount",
+    "col.invested",
+    "col.tsl",
+    "col.tp",
+    "col.dca",
+    "col.risk",
+    "col.age",
+    "col.opentrigger",
+    "col.actions",
+    "col.cancel",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
+  };
+}

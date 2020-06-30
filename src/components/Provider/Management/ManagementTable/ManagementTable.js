@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { isEmpty } from "lodash";
-import "./PositionsTable.scss";
+import "./ManagementTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../../Table";
 import { ConfirmDialog } from "../../../Dialogs";
-import {
-  composeOpenPositionsDataTable,
-  composeClosePositionsDataTable,
-  composeLogPositionsDataTable,
-  excludeDataTableColumn,
-} from "../../../../utils/composePositionsDataTable";
+import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
@@ -17,14 +11,12 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} PositionsTableProps
- * @property {PositionsCollectionType} type
- * @property {PositionEntity} [positionEntity]
+ * @property {Array<PositionEntity>} list
  */
 
 /**
@@ -33,9 +25,9 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {PositionsTableProps} props Component properties.
  * @returns {JSX.Element} Positions table element.
  */
-const PositionsTable = ({}) => {
+const ManagementTable = ({ list }) => {
   const storeSession = useStoreSessionSelector();
-  const tablePersistsKey = `ManagementPositions`;
+  const tablePersistsKey = `managementPositions`;
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -128,6 +120,7 @@ const PositionsTable = ({}) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
+    dataTable = composeManagementPositionsDataTable(list, confirmAction);
     return dataTable;
   };
 
@@ -141,15 +134,10 @@ const PositionsTable = ({}) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Box className="managementTable" display="flex" flexDirection="column" width={1}>
-        <Table
-          columns={columns}
-          data={data}
-          persistKey={tablePersistsKey}
-          title="Management Table"
-        />
+        <Table columns={columns} data={data} persistKey={tablePersistsKey} title="" />
       </Box>
     </>
   );
 };
 
-export default PositionsTable;
+export default ManagementTable;

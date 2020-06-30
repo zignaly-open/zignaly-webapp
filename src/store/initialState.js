@@ -205,6 +205,16 @@ const initialState = {
         "balanceFreeUSDT",
         "balanceTotalExchCoin",
       ],
+      managementPositions: [
+        "col.date.open",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.current",
+        "col.plnumber",
+        "col.plpercentage",
+        "col.invested",
+        "col.actions",
+      ],
     },
     selectedExchange: {
       id: "",

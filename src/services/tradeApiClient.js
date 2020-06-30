@@ -30,6 +30,7 @@ import {
   providerExchangeSettingsResponseTransform,
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,
+  managementPositionsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -861,7 +862,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getCopyTradingPositions";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return managementPositionsResponseTransform(responseData);
   }
 }
 

@@ -2929,3 +2929,23 @@ export function creatEmptyProviderDataPointsEntity() {
     totalProfitUSDT: "",
   };
 }
+
+/**
+ * Transform user positions response to typed object collection.
+ *
+ * @param {*} response Trade API positions list response.
+ * @returns {Object} Positions entities collection.
+ */
+export function managementPositionsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object of multiple user positions.");
+  }
+
+  Object.keys(response).forEach((item) => {
+    /*@ts-ignore */
+    response[item] = response[item].map((positionItem) => {
+      return userPositionItemTransform(positionItem);
+    });
+  });
+  return response;
+}
