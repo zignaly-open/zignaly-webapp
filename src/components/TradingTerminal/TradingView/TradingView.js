@@ -106,6 +106,7 @@ const TradingView = () => {
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
+    console.log("dataFeed changed.");
     if (dataFeed) {
       const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
       const widgetInstance = new TradingViewWidget(widgetOptions);
