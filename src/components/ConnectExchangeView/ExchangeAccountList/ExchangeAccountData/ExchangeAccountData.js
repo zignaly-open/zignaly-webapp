@@ -35,7 +35,7 @@ const ExchangeAccountData = ({ account }) => {
   return (
     <Box className="exchangeAccountData">
       <Box className="topBoxData" display="flex" flexDirection="row">
-        {!account.paperTrading && (
+        {balance && !account.paperTrading && (
           <>
             <Box className="equityBox">
               {(!balance.totalBTC && account.isBrokerAccount && (
