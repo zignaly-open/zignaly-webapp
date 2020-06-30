@@ -21,7 +21,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const ConnectExchangeViewHead = ({ onClose }) => {
   const {
-    pathParams: { selectedAccount, previousPath, title, tempMessage, isLoading },
+    pathParams: { selectedAccount, currentPath, previousPath, title, tempMessage, isLoading },
     resetToPath,
     setPathParams,
     formRef,
@@ -74,6 +74,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   // Update account
   useEffect(() => {
     if (selectedAccount) {
+      console.log(storeSettings.selectedExchange);
       setPathParams((state) => ({ ...state, selectedAccount: storeSettings.selectedExchange }));
     }
   }, [storeSettings.selectedExchange]);
@@ -96,7 +97,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
         <Typography className="tempMessage" variant="body1">
           {tempMessage}
         </Typography>
-        {storeUser.exchangeConnections.length > 0 && <UserExchangeList />}
+        {storeUser.exchangeConnections.length > 0 && !selectedAccount && <UserExchangeList />}
       </Box>
       <Box className="titleBar">
         <Typography variant="h1">
