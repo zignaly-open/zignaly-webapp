@@ -16,7 +16,6 @@ import PerformanceGraph from "./PerformanceGraph";
  * @returns {JSX.Element} Component JSX.
  */
 const PerformanceOverview = ({ provider }) => {
-  console.log(provider);
   return (
     <Box
       alignItems="flex-start"
@@ -64,7 +63,7 @@ const PerformanceOverview = ({ provider }) => {
           justifyContent="space-between"
         >
           <Typography variant="body1">
-            {provider.copyTradingQuote ? `${provider.copyTradingQuote}&nbsp;` : ""}
+            {provider.copyTradingQuote}&nbsp;
             <FormattedMessage id="accounts.balance" />
           </Typography>
           <Typography className="green" variant="h4">

@@ -16,10 +16,12 @@ const CopyTradersProfile = () => {
   const storeSession = useStoreSessionSelector();
   const emptyObject = creatEmptyProviderDataPointsEntity();
   const [summary, setSummary] = useState(emptyObject);
-  const [loading, setLoading] = useState(true);
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [positionsLoading, setPositionsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const loadSummary = () => {
+    setSummaryLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
@@ -27,7 +29,7 @@ const CopyTradersProfile = () => {
     tradeApi
       .providerCopyTradingDataPointsGet(payload)
       .then((response) => {
-        setLoading(false);
+        setSummaryLoading(false);
         setSummary(response);
       })
       .catch((e) => {
@@ -37,25 +39,56 @@ const CopyTradersProfile = () => {
 
   useEffect(loadSummary, []);
 
+  const loadPositions = () => {
+    setPositionsLoading(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
+    };
+    tradeApi
+      .providerManagementPositions(payload)
+      .then((response) => {
+        setPositionsLoading(false);
+        setSummary(response);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(loadPositions, []);
+
   return (
     <Box className="profileManagementPage">
-      {loading && (
-        <Box
-          alignItems="center"
-          bgcolor="grid.main"
-          className="loadingBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="center"
-        >
-          <CircularProgress color="primary" size={40} />
-        </Box>
-      )}
-      {!loading && (
-        <>
-          <ManagementSummary summary={summary} />
-        </>
-      )}
+      <Box className="summaryBox">
+        {summaryLoading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={40} />
+          </Box>
+        )}
+        {!summaryLoading && <ManagementSummary summary={summary} />}
+      </Box>
+
+      <Box className="tableBoxBox">
+        {positionsLoading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={40} />
+          </Box>
+        )}
+        {!positionsLoading && <ManagementSummary summary={summary} />}
+      </Box>
     </Box>
   );
 };
