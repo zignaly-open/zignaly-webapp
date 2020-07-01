@@ -1,18 +1,16 @@
 import React from "react";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
-import { openExchangeConnectionView } from "../../../store/actions/ui";
+import { navigate } from "gatsby";
 
 const ConnectExchangeButton = () => {
-  const dispatch = useDispatch();
+  const exchangeAcccountsView = () => {
+    navigate("#exchangeAccounts");
+  };
 
   return (
     <>
-      <CustomButton
-        className="headerButton"
-        onClick={() => dispatch(openExchangeConnectionView(true))}
-      >
+      <CustomButton className="headerButton" onClick={exchangeAcccountsView}>
         <FormattedMessage id="menu.connectexchange" />
       </CustomButton>
     </>

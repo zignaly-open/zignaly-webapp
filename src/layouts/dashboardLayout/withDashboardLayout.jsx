@@ -5,10 +5,9 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
-import { openExchangeConnectionView } from "../../store/actions/ui";
-import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../hooks/useStoreUserSelector";
+import { navigate } from "gatsby";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -25,11 +24,10 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const storeUser = useStoreUserSelector();
-    const dispatch = useDispatch();
+    const exchangeConnections = useStoreUserExchangeConnections();
 
     const handleClickEvent = () => {
-      dispatch(openExchangeConnectionView(true));
+      navigate("#exchangeAccounts");
     };
 
     return (
@@ -40,7 +38,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {storeUser.exchangeConnections.length > 0 && (
+        {exchangeConnections.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -51,7 +49,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {storeUser.exchangeConnections.length === 0 && (
+        {exchangeConnections.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"
