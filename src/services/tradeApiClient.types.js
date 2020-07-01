@@ -383,6 +383,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ * @property {string} errorMSG
  */
 
 /**
