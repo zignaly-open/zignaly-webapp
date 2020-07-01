@@ -4,7 +4,7 @@ import { Box, Popover, Grow, Typography } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
@@ -15,6 +15,8 @@ import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { toggleBalanceBox } from "../../../store/actions/settings";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -23,18 +25,13 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const Header = () => {
   const storeSettings = useStoreSettingsSelector();
-
-  /**
-   *
-   * @param {DefaultState} state
-   * @returns {Array<ExchangeConnectionEntity>}
-   */
-
-  const userExchangeSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(userExchangeSelector);
-
-  const [showBalance, setShowBalance] = useState(true);
+  const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
+  const dispatch = useDispatch();
+
+  const showHideBalance = () => {
+    dispatch(toggleBalanceBox(!storeSettings.balanceBox));
+  };
 
   return (
     <Box
@@ -64,7 +61,7 @@ const Header = () => {
         {exchangeConnections.length > 0 && (
           <Box
             alignItems="center"
-            className={"balanceWrapper " + (showBalance ? "full" : "")}
+            className={"balanceWrapper " + (storeSettings.balanceBox ? "full" : "")}
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
@@ -79,12 +76,12 @@ const Header = () => {
               <img
                 alt="zignaly"
                 className={"expandIcon"}
-                onClick={() => setShowBalance(!showBalance)}
-                src={showBalance ? RightIcon : LeftIcon}
+                onClick={showHideBalance}
+                src={storeSettings.balanceBox ? RightIcon : LeftIcon}
               />
             </Box>
-            {showBalance && <BalanceBox />}
-            {!showBalance && (
+            {storeSettings.balanceBox && <BalanceBox />}
+            {!storeSettings.balanceBox && (
               <Grow in={true}>
                 <Box
                   className="iconBox"

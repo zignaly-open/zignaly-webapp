@@ -437,6 +437,8 @@ signalp.option.checkterms.mid: "Mid term"
 signalp.option.checkterms.long: "Long term"
 signalp.option.filterrisk.sub: "From 1 to 5, being 5 the riskier"
 signalp.option.minimumsuccess.sub: "Signals with success rate below this value will be ignored."
+signalp.option.DCA.error: "IF you are accepting DCA/ReBuys signal, this value has to be greater than 1."
+signalp.option.minimumsuccess.error: "Minimum allowed success rate is 1."
 
 # TRADING TERMINAL
 terminal.available: "Available"

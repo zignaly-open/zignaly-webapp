@@ -1,5 +1,6 @@
 export const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
 export const SELECT_THEME = "SELECT_THEME_ACTION";
+export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX_ACTION";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
@@ -17,6 +18,19 @@ export const selectDarkTheme = (darkStyle) => {
   return {
     type: SELECT_THEME,
     payload: darkStyle,
+  };
+};
+
+/**
+ * Dark style flag selected by user.
+ *
+ * @param {Boolean} flag
+ */
+
+export const toggleBalanceBox = (flag) => {
+  return {
+    type: TOGGLE_BALANCE_BOX,
+    payload: flag,
   };
 };
 

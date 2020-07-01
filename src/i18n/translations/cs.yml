@@ -437,6 +437,8 @@ signalp.option.checkterms.mid: "CH-Mid term"
 signalp.option.checkterms.long: "CH-Long term"
 signalp.option.filterrisk.sub: "CH-From 1 to 5, being 5 the riskier"
 signalp.option.minimumsuccess.sub: "CH-Signals with success rate below this value will be ignored."
+signalp.option.DCA.error: "CH-IF you are accepting DCA/ReBuys signal, this value has to be greater than 1."
+signalp.option.minimumsuccess.error: "CH-Minimum allowed success rate is 1."
 
 # TRADING TERMINAL
 terminal.available: "CH-Available"

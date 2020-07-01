@@ -52,6 +52,7 @@
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
  * @property {ExchangeConnectionEntity} selectedExchange
  */
@@ -111,6 +112,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    balanceBox: false,
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",
