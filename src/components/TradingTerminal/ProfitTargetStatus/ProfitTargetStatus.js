@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { colors } from "../../../services/theme";
 import { Box, FormHelperText, Tooltip } from "@material-ui/core";
 import { Help } from "@material-ui/icons";
+import "./ProfitTargetStatus.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfitTarget} ProfitTarget
@@ -35,7 +36,7 @@ const TargetStatus = (props) => {
   }
 
   return (
-    <Box alignItems="center" className="help" display="flex">
+    <Box alignItems="center" className="targetStatus" display="flex" justifyContent="flex-end">
       <FormHelperText>
         <FormattedMessage id={labelId} />
       </FormHelperText>
