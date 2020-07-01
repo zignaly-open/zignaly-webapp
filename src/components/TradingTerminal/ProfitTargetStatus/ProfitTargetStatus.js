@@ -10,7 +10,7 @@ import "./ProfitTargetStatus.scss";
  */
 
 /**
- * @typedef {Object} HelperLabelProps
+ * @typedef {Object} ProfitLabelProps
  * @property {string} labelId Status label translation text ID.
  * @property {ProfitTarget} profitTarget Position take profit target.
  */
@@ -18,14 +18,21 @@ import "./ProfitTargetStatus.scss";
 /**
  * Status label with detailed description tooltip.
  *
- * @param {HelperLabelProps} props Component props.
+ * @param {ProfitLabelProps} props Component props.
  * @returns {JSX.Element} Helper label with description in tooltip element.
  */
-const TargetStatus = (props) => {
+const ProfitTargetStatus = (props) => {
   const { profitTarget, labelId } = props;
   const { formatMessage } = useIntl();
   let iconColor = colors.purpleLight;
-  let description = formatMessage({ id: "terminal.status.pending" });
+
+  if (!profitTarget) {
+    return null;
+  }
+
+  let description = profitTarget.orderId
+    ? formatMessage({ id: "terminal.status.placed" }, { orderId: profitTarget.orderId })
+    : formatMessage({ id: "terminal.status.pending" });
 
   if (profitTarget.done) {
     description = formatMessage({ id: "terminal.status.done" });
@@ -47,4 +54,4 @@ const TargetStatus = (props) => {
   );
 };
 
-export default React.memo(TargetStatus);
+export default React.memo(ProfitTargetStatus);
