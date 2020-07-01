@@ -1,4 +1,8 @@
 .languageSwitcher {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   button {
     background-color: transparent;
     border: 0;
@@ -8,7 +12,7 @@
 
   img {
     cursor: pointer;
-    margin: 0 0.25em;
+    margin: 0 0.4rem;
     width: 1.4em;
   }
 }

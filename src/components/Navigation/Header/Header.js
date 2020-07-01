@@ -49,7 +49,6 @@ const Header = () => {
             src={storeSettings.darkStyle ? LogoWhite : LogoBlack}
           />
         </Link>
-        <LanguageSwitcher />
       </Box>
       <Box
         alignItems="center"
