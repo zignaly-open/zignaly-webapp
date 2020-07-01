@@ -6,17 +6,18 @@ import { ConfirmDialog } from "../../../Dialogs";
 import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import ExpandedRow from "../ExpandedRow";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionEntity} ManagementPositionEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} PositionsTableProps
- * @property {Array<ManagementPositionEntity>} list
+ * @property {Array<PositionEntity>} list
+ * @property {Object} allPositions
  */
 
 /**
@@ -25,7 +26,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {PositionsTableProps} props Component properties.
  * @returns {JSX.Element} Positions table element.
  */
-const ManagementTable = ({ list }) => {
+const ManagementTable = ({ list, allPositions }) => {
   const storeSession = useStoreSessionSelector();
   const tablePersistsKey = `managementPositions`;
 
@@ -126,6 +127,20 @@ const ManagementTable = ({ list }) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
+  /**
+   *
+   * @param {*} data
+   * @param {*} rowMeta
+   */
+  const renderRow = (data, rowMeta) => {
+    return <ExpandedRow values={allPositions} data={data} />;
+  };
+
+  const customOptions = {
+    expandableRows: true,
+    renderExpandableRow: renderRow,
+  };
+
   return (
     <>
       <ConfirmDialog
@@ -134,7 +149,13 @@ const ManagementTable = ({ list }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Box className="managementTable" display="flex" flexDirection="column" width={1}>
-        <Table columns={columns} data={data} persistKey={tablePersistsKey} title="" />
+        <Table
+          columns={columns}
+          options={customOptions}
+          data={data}
+          persistKey={tablePersistsKey}
+          title=""
+        />
       </Box>
     </>
   );

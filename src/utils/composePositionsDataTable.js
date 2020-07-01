@@ -10,7 +10,6 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../services/tradeApiClient.types").ManagementPositionEntity} ManagementPositionEntity
  *
  */
 
@@ -693,7 +692,7 @@ export function excludeDataTableColumn(dataTable, columnId) {
 /**
  * Compose MUI Data Table row for open position entity.
  *
- * @param {ManagementPositionEntity} position Position entity to compose data table row for.
+ * @param {PositionEntity} position Position entity to compose data table row for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableDataRow} Row data array.
  */
@@ -701,9 +700,10 @@ function composeManagementPositionRow(position, confirmActionHandler) {
   return [
     composeRawValue(position.subPositions),
     composeRawValue(position.providerName),
-    composeRawValue(position.totalPositions),
-    composeRawValue(position.soldPositions),
+    composeRawValue(position.copyTradingTotals.totalPositions),
+    composeRawValue(position.copyTradingTotals.soldPositions),
     composeRawValue(position.signalId),
+    composeRawValue(position.userId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
     composeRawValue(position.leverage),
@@ -730,7 +730,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
- * @param {Array<ManagementPositionEntity>} positions Positions collection.
+ * @param {Array<PositionEntity>} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  *
  * @returns {DataTableContent} Open positions data table structure.
@@ -742,6 +742,7 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
     "col.provider.totalpositions",
     "col.provider.soldpositions",
     "col.signalid",
+    "col.users.userid",
     "col.pair",
     "col.price.entry",
     "col.leverage",

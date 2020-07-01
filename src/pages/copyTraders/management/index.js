@@ -59,6 +59,7 @@ const CopyTradersProfile = () => {
           setTablePositions(prepareTableList(response));
         })
         .catch((e) => {
+          console.log(e);
           dispatch(showErrorAlert(e));
         });
     }
@@ -114,7 +115,7 @@ const CopyTradersProfile = () => {
             <CircularProgress color="primary" size={40} />
           </Box>
         )}
-        {!positionsLoading && <ManagementTable list={tablePositions} />}
+        {!positionsLoading && <ManagementTable list={tablePositions} allPositions={allPositions} />}
       </Box>
     </Box>
   );

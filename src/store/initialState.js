@@ -206,8 +206,10 @@ const initialState = {
         "balanceTotalExchCoin",
       ],
       managementPositions: [
-        "col.date.open",
-        "col.provider.logo",
+        "col.provider.subpositions",
+        "col.provider.name",
+        "col.provider.totalpositions",
+        "col.provider.soldpositions",
         "col.pair",
         "col.price.current",
         "col.plnumber",
