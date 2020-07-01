@@ -26,8 +26,9 @@ const ProfitTargetStatus = (props) => {
   const { formatMessage } = useIntl();
   let iconColor = colors.purpleLight;
 
+  // Empty box to fill flex item space.
   if (!profitTarget) {
-    return null;
+    return <Box />;
   }
 
   let description = profitTarget.orderId

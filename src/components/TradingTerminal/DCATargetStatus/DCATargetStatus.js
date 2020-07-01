@@ -26,11 +26,11 @@ const DCATargetStatus = (props) => {
   const { formatMessage } = useIntl();
   let iconColor = colors.purpleLight;
 
+  // Empty box to fill flex item space.
   if (!dcaTarget) {
-    return null;
+    return <Box />;
   }
 
-  console.log("dcaTarget: ", dcaTarget);
   let description = dcaTarget.orderId
     ? formatMessage({ id: "terminal.status.placed" }, { orderId: dcaTarget.orderId })
     : formatMessage({ id: "terminal.status.pending" });
