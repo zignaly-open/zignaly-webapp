@@ -1,20 +1,15 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 import "./GradientLineChart.scss";
 import { Box } from "@material-ui/core";
-import CustomToolip from "../../CustomTooltip";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
+import TooltipChart from "../TooltipChart";
+import useChartTooltip from "../../../hooks/useChartTooltip";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
  * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
- */
-
-/**
- * @typedef {Object} PosType
- * @property {number} top Tooltip top fixed position.
- * @property {number} left Tooltip left fixed position.
  */
 
 /**
@@ -54,40 +49,7 @@ const MemoizedLine = React.memo(
  */
 const LineChart = (props) => {
   const { chartData, colorsOptions, tooltipFormat } = props;
-  const chartRef = useRef(null);
-  const pointHoverRef = useRef(null);
-  const [tooltipData, setTooltipData] = useState({
-    isVisible: false,
-    content: "",
-    pos: { left: 0, top: 0 },
-  });
-
-  /**
-   * Callback to handle tooltip display.
-   * @param {Chart.ChartTooltipModel} tooltip Tooltip model.
-   * @returns {void}
-   */
-  const showTooltip = (tooltip) => {
-    const chart = chartRef.current;
-    if (!chart) {
-      return;
-    }
-
-    // hide the tooltip when chartjs determines you've hovered out
-    if (tooltip.opacity === 0) {
-      setTooltipData((data) => ({ ...data, isVisible: false }));
-      return;
-    }
-
-    // Set tooltip position.
-    const left = tooltip.caretX;
-    const top = tooltip.caretY;
-
-    // Set values for display of data in the tooltip
-    const content = tooltipFormat(tooltip.dataPoints[0]);
-
-    setTooltipData((data) => ({ ...data, pos: { left, top }, isVisible: true, content }));
-  };
+  const { chartRef, pointHoverRef, tooltipData, showTooltip } = useChartTooltip(tooltipFormat);
   const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
   /**
@@ -212,25 +174,9 @@ const LineChart = (props) => {
 
   return (
     <Box className="gradientChart">
-      <div
-        className="pointHover"
-        ref={pointHoverRef}
-        style={{
-          visibility: tooltipData.isVisible ? "visible" : "hidden",
-          transform: `translate(${tooltipData.pos.left - 8}px, ${tooltipData.pos.top - 8}px)`,
-        }}
-      />
-
-      <CustomToolip
-        arrow={true}
-        customPopper={true}
-        elementRef={pointHoverRef}
-        open={tooltipData.isVisible}
-        placement="top"
-        title={tooltipData.content}
-      >
+      <TooltipChart pointHoverRef={pointHoverRef} tooltipData={tooltipData}>
         <MemoizedLine data={data} options={options} plugins={plugins} ref={chartRef} />
-      </CustomToolip>
+      </TooltipChart>
     </Box>
   );
 };

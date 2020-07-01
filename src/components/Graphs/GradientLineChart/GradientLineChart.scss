@@ -1,15 +1,4 @@
 .gradientChart {
   position: relative;
   width: 100%;
-
-  .pointHover {
-    background-color: $white;
-    border: solid 2px $purple;
-    border-radius: 50%;
-    height: 16px;
-    pointer-events: none;
-    position: absolute;
-    width: 16px;
-    will-change: translate;
-  }
 }
