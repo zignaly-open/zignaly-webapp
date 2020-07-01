@@ -45,6 +45,8 @@ const SubNavHeader = ({ links, rightComponent }) => (
 /** *
  * @typedef {Object} SubNavModalHeaderTypes
  * @property {Array<ModalNavigationLink>} links Array of path id/title.
+ * @property {string} currentPath Current path
+ * @property {function} onClick onClick callback
  */
 
 /**
@@ -53,9 +55,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
  * @param {SubNavModalHeaderTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-export const SubNavModalHeader = ({ links }) => {
-  const { pathParams, setPathParams } = useContext(ModalPathContext);
-
+export const SubNavModalHeader = ({ links, currentPath, onClick }) => {
   return (
     <Box
       alignItems="center"
@@ -66,11 +66,9 @@ export const SubNavModalHeader = ({ links }) => {
     >
       {links.map((item, index) => (
         <Link
-          // className={"dashboardLink " + window.location.hash === item.to ? "active" : null}
-          className={`dashboardLink ${pathParams.currentPath === item.id ? "active" : null}`}
+          className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
           key={index}
-          // href={item.to}
-          onClick={() => setPathParams({ ...pathParams, currentPath: item.id })}
+          onClick={() => onClick(item)}
         >
           <FormattedMessage id={item.title} />
         </Link>

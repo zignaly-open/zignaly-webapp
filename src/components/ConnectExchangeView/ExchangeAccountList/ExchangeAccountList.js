@@ -25,7 +25,10 @@ const ExchangeAccountList = ({ demo }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
+    setPathParams,
+    resetToPath,
   } = useContext(ModalPathContext);
+
   const storeUser = useStoreUserSelector();
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
@@ -42,9 +45,18 @@ const ExchangeAccountList = ({ demo }) => {
     },
   ];
 
+  /**
+   * Navigation callback
+   * @param {string} id tab id
+   * @returns void
+   */
+  const handleTabChange = (id) => {
+    resetToPath(id);
+  };
+
   return (
     <Box className="exchangeAccountList">
-      <SubNavModalHeader links={tabs} />
+      <SubNavModalHeader links={tabs} currentPath={currentPath} onClick={handleTabChange} />
       {!exchanges.length ? (
         !demo ? (
           <NoRealAccount />

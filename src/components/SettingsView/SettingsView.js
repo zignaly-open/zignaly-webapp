@@ -4,6 +4,9 @@ import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Preferences from "./Preferences";
+import { SubNavModalHeader } from "../SubNavHeader";
+import { navigate } from "@reach/router";
+
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
@@ -30,6 +33,25 @@ const SettingsView = (props) => {
     props.onClose();
   };
 
+  const tabs = [
+    {
+      id: "",
+      title: "settings.preferences",
+    },
+    {
+      id: "security",
+      title: "security",
+    },
+    {
+      id: "notifications",
+      title: "settings.notifications",
+    },
+    {
+      id: "profile",
+      title: "settings.profile",
+    },
+  ];
+
   const renderContent = () => {
     switch (path) {
       default:
@@ -38,13 +60,9 @@ const SettingsView = (props) => {
   };
 
   return (
-    <Box
-      alignItems="center"
-      className="settingsView"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
+    <Box className="settingsView">
+      <SubNavModalHeader links={tabs} currentPath={path} onClick={(path) => navigate("#" + path)} />
+
       <Box className="actionBar">
         <CustomButton className="submitButton" onClick={handleClick}>
           Done
@@ -55,7 +73,7 @@ const SettingsView = (props) => {
           <FormattedMessage id="accounts.settings" />
         </Typography>
       </Box>
-      {renderContent()}
+      <Box className="settingsContent">{renderContent()}</Box>
     </Box>
   );
 };
