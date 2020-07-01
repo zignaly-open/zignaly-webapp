@@ -10,6 +10,8 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../services/tradeApiClient.types").ManagementPositionEntity} ManagementPositionEntity
+ *
  */
 
 /**
@@ -691,16 +693,16 @@ export function excludeDataTableColumn(dataTable, columnId) {
 /**
  * Compose MUI Data Table row for open position entity.
  *
- * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {ManagementPositionEntity} position Position entity to compose data table row for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableDataRow} Row data array.
  */
 function composeManagementPositionRow(position, confirmActionHandler) {
   return [
-    composePaperTradingIcon(position),
-    composeRawValue(position.openDateReadable),
-    composeProviderIcon(position),
+    composeRawValue(position.subPositions),
     composeRawValue(position.providerName),
+    composeRawValue(position.totalPositions),
+    composeRawValue(position.soldPositions),
     composeRawValue(position.signalId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
@@ -716,6 +718,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
+    composeRisk(position),
     composeRawValue(position.age),
     composeRawValue(position.openTrigger),
     composeAllActionButtons(position, confirmActionHandler),
@@ -727,17 +730,17 @@ function composeManagementPositionRow(position, confirmActionHandler) {
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
- * @param {UserPositionsCollection} positions Positions collection.
+ * @param {Array<ManagementPositionEntity>} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  *
  * @returns {DataTableContent} Open positions data table structure.
  */
 export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
-    "col.paper",
-    "col.date.open",
-    "col.provider.logo",
+    "col.provider.subpositions",
     "col.provider.name",
+    "col.provider.totalpositions",
+    "col.provider.soldpositions",
     "col.signalid",
     "col.pair",
     "col.price.entry",

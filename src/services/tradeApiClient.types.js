@@ -2944,8 +2944,311 @@ export function managementPositionsResponseTransform(response) {
   Object.keys(response).forEach((item) => {
     /*@ts-ignore */
     response[item] = response[item].map((positionItem) => {
-      return userPositionItemTransform(positionItem);
+      return userManagementPositionItemTransform(positionItem);
     });
+    /*@ts-ignore */
+    response[item][0].subPositions = response[item].length - 1;
   });
   return response;
+}
+
+/**
+ * @typedef {Object} ManagementPositionEntity
+ * @property {Number} subPositions
+ * @property {Number} totalPositions
+ * @property {Number} soldPositions
+ * @property {Number} totalPositionSize
+ * @property {Object<number, ReBuyTarget>} reBuyTargets
+ * @property {Object<number, ProfitTarget>} takeProfitTargets
+ * @property {RealInvestment} realInvestment
+ * @property {boolean} accounting
+ * @property {boolean} checkStop
+ * @property {boolean} closed
+ * @property {boolean} copyTraderId
+ * @property {boolean} isCopyTrader
+ * @property {boolean} isCopyTrading
+ * @property {boolean} paperTrading
+ * @property {boolean} sellByTTL
+ * @property {boolean} signalMetadata
+ * @property {boolean} takeProfit
+ * @property {boolean} trailingStopPrice
+ * @property {boolean} trailingStopTriggered
+ * @property {boolean} updating
+ * @property {number} buyTTL
+ * @property {number} closeDate
+ * @property {number} fees
+ * @property {number} leverage
+ * @property {number} netProfit
+ * @property {number} netProfitPercentage
+ * @property {string} netProfitStyle
+ * @property {number} openDate
+ * @property {number} positionSizeQuote
+ * @property {number} profit
+ * @property {number} reBuyTargetsCountFail
+ * @property {number} reBuyTargetsCountPending
+ * @property {number} reBuyTargetsCountSuccess
+ * @property {number} risk
+ * @property {number} status
+ * @property {number} stopLossPercentage
+ * @property {number} stopLossPrice
+ * @property {number} takeProfitTargetsCountFail
+ * @property {number} takeProfitTargetsCountPending
+ * @property {number} takeProfitTargetsCountSuccess
+ * @property {number} trailingStopPercentage
+ * @property {number} trailingStopTriggerPercentage
+ * @property {string} age
+ * @property {number} amount
+ * @property {string} base
+ * @property {number} buyPrice
+ * @property {string} closeDateReadable
+ * @property {string} closeTrigger
+ * @property {string} exchange
+ * @property {string} exchangeInternalName
+ * @property {string} internalExchangeId
+ * @property {string} invested
+ * @property {string} investedQuote
+ * @property {string} logoUrl
+ * @property {string} openDateReadable
+ * @property {string} openTrigger
+ * @property {string} pair
+ * @property {string} positionId
+ * @property {string} positionSize
+ * @property {number} profitPercentage
+ * @property {string} profitStyle
+ * @property {string} provider
+ * @property {string} providerId
+ * @property {string} providerLink
+ * @property {string} providerLogo
+ * @property {string} providerName
+ * @property {string} quote
+ * @property {string} quoteAsset
+ * @property {number} remainAmount
+ * @property {string} riskStyle
+ * @property {string} sellPlaceOrderAt
+ * @property {number} sellPrice
+ * @property {string} side
+ * @property {string} signalId
+ * @property {string} signalTerm
+ * @property {string} statusDesc
+ * @property {string} stopLossStyle
+ * @property {string} symbol
+ * @property {string} userId
+ * @property {('unsold' | 'sold' | 'unopened' | '')} type
+ */
+
+/**
+ * Transform API position item to typed object.
+ *
+ * @param {Object.<string, any>} positionItem Trade API position item.
+ * @returns {PositionEntity} Position entity.
+ */
+export function userManagementPositionItemTransform(positionItem) {
+  const emptyPositionEntity = createEmptyManagementPositionEntity();
+  const openDateMoment = moment(Number(positionItem.openDate));
+  const closeDateMoment = moment(Number(positionItem.closeDate));
+  const composeProviderLink = () => {
+    // Manual positions don't use a signal provider.
+    if (positionItem.providerId === "1") {
+      return "";
+    }
+
+    if (positionItem.isCopyTrading) {
+      return `/copytraders/${positionItem.providerId}`;
+    }
+
+    return `/signalsproviders/${positionItem.providerId}`;
+  };
+
+  /**
+   * Calculate position risk based on buy price, stop loss and entry side.
+   *
+   * @param {PositionEntity} positionEntity Transformed position entity.
+   * @returns {number} Risk percentage.
+   */
+  const calculateRisk = (positionEntity) => {
+    const buyPrice = positionEntity.buyPrice;
+    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
+
+    if (isNaN(risk)) {
+      return 0.0;
+    }
+
+    // Invert on short position.
+    if (positionEntity.side === "SHORT") {
+      risk *= -1;
+    }
+
+    return risk;
+  };
+
+  /**
+   * Checks if entry price is currently at profit or loss.
+   *
+   * @param {number} entry Entry price.
+   * @param {number} current Current price.
+   * @param {string} side Position side.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getProfitType = (entry, current, side) => {
+    if (side === "LONG") {
+      if (entry > current) {
+        return "gain";
+      } else if (entry < current) {
+        return "loss";
+      }
+    }
+
+    if (side === "SHORT") {
+      if (entry < current) {
+        return "gain";
+      } else if (entry > current) {
+        return "loss";
+      }
+    }
+
+    return "breakeven";
+  };
+
+  // Override the empty entity with the values that came in from API and augment
+  // with pre-calculated fields.
+  const positionEntity = assign(emptyPositionEntity, positionItem, {
+    totalPositions: positionItem.copyTradingTotals
+      ? positionItem.copyTradingTotals.totalPositions
+      : 0,
+    soldPositions: positionItem.copyTradingTotals
+      ? positionItem.copyTradingTotals.soldPositions
+      : 0,
+    totalPositionSize: positionItem.copyTradingTotals
+      ? positionItem.copyTradingTotals.totalPositionSize
+      : 0,
+    amount: parseFloat(positionItem.amount),
+    buyPrice: parseFloat(positionItem.buyPrice),
+    closeDate: Number(positionItem.closeDate),
+    fees: parseFloat(positionItem.fees),
+    netProfit: parseFloat(positionItem.netProfit),
+    netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
+    openDate: Number(positionItem.openDate),
+    positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
+    profit: parseFloat(positionItem.profit),
+    profitPercentage: parseFloat(positionItem.profitPercentage),
+    reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
+    remainAmount: parseFloat(positionItem.remainAmount),
+    sellPrice: parseFloat(positionItem.sellPrice),
+    side: positionItem.side.toUpperCase(),
+    stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    takeProfitTargets: isObject(positionItem.takeProfitTargets)
+      ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
+      : {},
+  });
+
+  const risk = calculateRisk(positionEntity);
+  const augmentedEntity = assign(positionEntity, {
+    age: openDateMoment.toNow(true),
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateMoment: openDateMoment,
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
+    providerLink: composeProviderLink(),
+    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    risk: risk,
+    riskStyle: risk < 0 ? "loss" : "gain",
+    stopLossStyle: getProfitType(
+      positionEntity.stopLossPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
+  });
+
+  return augmentedEntity;
+}
+
+/**
+ * Create empty management position entity.
+ *
+ * @returns {ManagementPositionEntity} Empty management position entity.
+ */
+function createEmptyManagementPositionEntity() {
+  return {
+    subPositions: 0,
+    totalPositions: 0,
+    soldPositions: 0,
+    totalPositionSize: 0,
+    accounting: false,
+    age: "",
+    amount: 0,
+    base: "",
+    buyPrice: 0,
+    buyTTL: 0,
+    checkStop: false,
+    closeDate: 0,
+    closeDateReadable: "",
+    closeTrigger: "",
+    closed: false,
+    copyTraderId: false,
+    exchange: "",
+    exchangeInternalName: "",
+    fees: 0,
+    internalExchangeId: "",
+    invested: "",
+    investedQuote: "",
+    isCopyTrader: false,
+    isCopyTrading: false,
+    leverage: 0,
+    logoUrl: "",
+    netProfit: 0,
+    netProfitPercentage: 0,
+    netProfitStyle: "",
+    openDate: 0,
+    openDateReadable: "",
+    openTrigger: "",
+    pair: "",
+    paperTrading: false,
+    positionId: "",
+    positionSize: "",
+    positionSizeQuote: 0,
+    profit: 0,
+    profitPercentage: 0,
+    profitStyle: "",
+    provider: "",
+    providerId: "",
+    providerLink: "",
+    providerLogo: "",
+    providerName: "",
+    quote: "",
+    quoteAsset: "",
+    reBuyTargets: {},
+    reBuyTargetsCountFail: 0,
+    reBuyTargetsCountPending: 0,
+    reBuyTargetsCountSuccess: 0,
+    realInvestment: { $numberDecimal: "" },
+    remainAmount: 0,
+    risk: 0,
+    riskStyle: "",
+    sellByTTL: false,
+    sellPlaceOrderAt: "",
+    sellPrice: 0,
+    side: "",
+    signalId: "",
+    signalMetadata: false,
+    signalTerm: "",
+    status: 0,
+    statusDesc: "",
+    stopLossPercentage: 0,
+    stopLossPrice: 0,
+    stopLossStyle: "",
+    symbol: "",
+    takeProfit: false,
+    takeProfitTargets: {},
+    takeProfitTargetsCountFail: 0,
+    takeProfitTargetsCountPending: 0,
+    takeProfitTargetsCountSuccess: 0,
+    trailingStopPercentage: 0,
+    trailingStopPrice: false,
+    trailingStopTriggerPercentage: 0,
+    trailingStopTriggered: false,
+    type: "",
+    updating: false,
+    userId: "",
+  };
 }

@@ -11,12 +11,12 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionEntity} ManagementPositionEntity
  */
 
 /**
  * @typedef {Object} PositionsTableProps
- * @property {Array<PositionEntity>} list
+ * @property {Array<ManagementPositionEntity>} list
  */
 
 /**
