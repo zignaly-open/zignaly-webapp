@@ -57,10 +57,6 @@
 
 .managementTable {
   @extend %position-table-base;
-}
-
-.managementTable {
-  @extend %position-table-base;
 
   [role="toolbar"] {
     padding: 0;

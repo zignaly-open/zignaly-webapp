@@ -68,21 +68,25 @@ const CopyTradersProfile = () => {
 
   /**
    *
-   * @param {Object} data
-   * @returns {Array<*>}
+   * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+   */
+
+  /**
+   * Function to prepare list of the table.
+   *
+   * @param {Object} data default data from backend.
+   * @returns {Array<PositionEntity>} Array of position entities.
    */
   const prepareTableList = (data) => {
-    console.log(data);
     /**
      * @type {*}
      */
     let list = [];
     Object.keys(data).forEach((item) => {
-      /*@ts-ignore */
+      /* @ts-ignore */
       let innerList = data[item];
       list.push(innerList[0]);
     });
-    console.log(list);
     return list;
   };
 
@@ -115,7 +119,7 @@ const CopyTradersProfile = () => {
             <CircularProgress color="primary" size={40} />
           </Box>
         )}
-        {!positionsLoading && <ManagementTable list={tablePositions} allPositions={allPositions} />}
+        {!positionsLoading && <ManagementTable allPositions={allPositions} list={tablePositions} />}
       </Box>
     </Box>
   );

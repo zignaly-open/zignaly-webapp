@@ -57,6 +57,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     } else {
       return "";
     }
+    return "";
   };
 
   /**

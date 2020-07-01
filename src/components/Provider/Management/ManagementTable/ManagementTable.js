@@ -28,7 +28,7 @@ import ExpandedRow from "../ExpandedRow";
  */
 const ManagementTable = ({ list, allPositions }) => {
   const storeSession = useStoreSessionSelector();
-  const tablePersistsKey = `managementPositions`;
+  const tablePersistsKey = "managementPositions";
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -128,17 +128,19 @@ const ManagementTable = ({ list, allPositions }) => {
   const { columns, data } = composeDataTableForPositionsType();
 
   /**
+   * Expandable row ender component
    *
-   * @param {*} data
-   * @param {*} rowMeta
+   * @param {*} values data object from table
+   * @param {*} rowMeta meta data of the expanded row.
+   * @returns {JSX.Element} JSX component.
    */
-  const renderRow = (data, rowMeta) => {
+  const renderRow = (values, rowMeta) => {
     return (
       <ExpandedRow
-        values={allPositions}
-        persistKey={tablePersistsKey}
         confirmAction={confirmAction}
         index={rowMeta.dataIndex}
+        persistKey={tablePersistsKey}
+        values={allPositions}
       />
     );
   };
@@ -158,8 +160,8 @@ const ManagementTable = ({ list, allPositions }) => {
       <Box className="managementTable" display="flex" flexDirection="column" width={1}>
         <Table
           columns={columns}
-          options={customOptions}
           data={data}
+          options={customOptions}
           persistKey={tablePersistsKey}
           title=""
         />

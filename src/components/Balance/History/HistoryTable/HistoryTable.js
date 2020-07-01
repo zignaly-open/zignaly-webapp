@@ -97,7 +97,7 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
     {
       name: "freeBNB",
-      /*@ts-ignore */
+      /* @ts-ignore */
       label: { id: "col.freequote", quote: "BNB" },
       options: {
         display: "true",
@@ -107,7 +107,7 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
     {
       name: "freeETH",
-      /*@ts-ignore */
+      /* @ts-ignore */
       label: { id: "col.freequote", quote: "ETH" },
       options: {
         display: "true",
@@ -129,9 +129,9 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "free" + quotes[a];
         obj.label.id = "col.freequote";
-        /*@ts-ignore */
+        /* @ts-ignore */
         obj.label.quote = quotes[a];
-        /*@ts-ignore */
+        /* @ts-ignore */
         columns.push(obj);
       }
     }
@@ -146,9 +146,9 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "locked" + quotes[a];
         obj.label.id = "col.lockedquote";
-        /*@ts-ignore */
+        /* @ts-ignore */
         obj.label.quote = quotes[a];
-        /*@ts-ignore */
+        /* @ts-ignore */
         columns.push(obj);
       }
     }

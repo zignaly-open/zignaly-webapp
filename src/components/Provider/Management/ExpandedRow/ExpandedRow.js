@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import "./ExpandedRow.scss";
 import { TableRow, TableCell } from "@material-ui/core";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
@@ -21,7 +21,7 @@ import { composeManagementPositionsDataTable } from "../../../../utils/composePo
 /**
  * Expanded rows component for management table.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
 const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
@@ -43,7 +43,7 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
          */
         let obj = { id: "", data: "" };
         obj.id = columns[b].name;
-        /*@ts-ignore */
+        /* @ts-ignore */
         obj.data = data[a][b];
         transformedList.push(obj);
       }
@@ -55,13 +55,13 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
   useEffect(prepareList, []);
 
   return (
-    <Fragment>
+    <>
       {list.map((row, i) => (
-        <TableRow key={i} className="expandedRows">
+        <TableRow className="expandedRows" key={i}>
           <TableCell>&nbsp;</TableCell>
           <TableCell>&nbsp;</TableCell>
-
           {row.map(
+            /*@ts-ignore */
             (cell, i2) =>
               cell.id !== "col.provider.subpositions" &&
               storeSettings.displayColumns[persistKey].includes(cell.id) && (
@@ -70,7 +70,7 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
           )}
         </TableRow>
       ))}
-    </Fragment>
+    </>
   );
 };
 

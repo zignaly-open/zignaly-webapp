@@ -23,7 +23,7 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementSummary = ({ icon, title, quote, percentage, foot, value }) => {
+const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) => {
   return (
     <Box
       alignItems="center"
@@ -78,4 +78,4 @@ const ManagementSummary = ({ icon, title, quote, percentage, foot, value }) => {
   );
 };
 
-export default ManagementSummary;
+export default ManagementSummaryCard;

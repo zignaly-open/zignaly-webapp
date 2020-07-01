@@ -2961,9 +2961,9 @@ export function managementPositionsResponseTransform(response) {
   }
 
   Object.keys(response).forEach((item) => {
-    /*@ts-ignore */
+    /* @ts-ignore */
     response[item] = response[item].map((positionItem) => {
-      /*@ts-ignore */
+      /* @ts-ignore */
       positionItem.subPositions = response[item].length - 1;
       return userPositionItemTransform(positionItem);
     });
