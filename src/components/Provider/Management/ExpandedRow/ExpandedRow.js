@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./ExpandedRow.scss";
 import { TableRow, TableCell } from "@material-ui/core";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 
 /**
  *
  * @typedef {import('../../../../services/tradeApiClient.types').PositionEntity} PositionEntity
+ * @typedef {Object} TranformedObject
+ * @property {String} id
+ * @property {String|Number|Element} data
+ *
  * @typedef {Object} DefaultProps
  * @property {Object} values
- * @property {Object} data
+ * @property {String} persistKey
+ * @property {React.MouseEventHandler} confirmAction
+ * @property {Number} index
  */
 
 /**
@@ -16,24 +24,51 @@ import { TableRow, TableCell } from "@material-ui/core";
  * @param {DefaultProps} props
  * @returns {JSX.Element} JSX component.
  */
-const ExpandedRow = ({ values, data }) => {
+const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
   const [list, setList] = useState([]);
+  const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
-    let userMapping = { ...values };
-    let id = Object.values(data)[5];
+    let userMapping = Object.values(values);
+    let expanded = [...userMapping[index]];
+    expanded.splice(0, 1);
+    let newList = [];
+    let transformed = composeManagementPositionsDataTable(expanded, confirmAction);
+    let { data, columns } = transformed;
+    for (let a = 0; a < expanded.length; a++) {
+      let transformedList = [];
+      for (let b = 0; b < columns.length; b++) {
+        /**
+         * @type {TranformedObject}
+         */
+        let obj = { id: "", data: "" };
+        obj.id = columns[b].name;
+        /*@ts-ignore */
+        obj.data = data[a][b];
+        transformedList.push(obj);
+      }
+      newList[a] = transformedList;
+    }
+    setList([...newList]);
   };
 
   useEffect(prepareList, []);
 
   return (
-    <TableRow className="expandedRows">
-      <TableCell>&nbsp;</TableCell>
-      <TableCell>mmm</TableCell>
-      <TableCell>mmm</TableCell>
-      <TableCell>mmm</TableCell>
-      <TableCell>mmm</TableCell>
-    </TableRow>
+    <Fragment>
+      {list.map((row, i) => (
+        <TableRow key={i} className="expandedRows">
+          <TableCell>&nbsp;</TableCell>
+
+          {row.map(
+            (cell, i2) =>
+              storeSettings.displayColumns[persistKey].includes(cell.id) && (
+                <TableCell key={i2}> {cell.data} </TableCell>
+              ),
+          )}
+        </TableRow>
+      ))}
+    </Fragment>
   );
 };
 

@@ -2960,8 +2960,6 @@ export function managementPositionsResponseTransform(response) {
     throw new Error("Response must be an object of user positions positions mapping");
   }
 
-  console.log({ ...response });
-
   Object.keys(response).forEach((item) => {
     /*@ts-ignore */
     response[item] = response[item].map((positionItem) => {
@@ -2970,7 +2968,5 @@ export function managementPositionsResponseTransform(response) {
       return userPositionItemTransform(positionItem);
     });
   });
-
-  console.log(response);
   return response;
 }

@@ -59,7 +59,6 @@ const CopyTradersProfile = () => {
           setTablePositions(prepareTableList(response));
         })
         .catch((e) => {
-          console.log(e);
           dispatch(showErrorAlert(e));
         });
     }
@@ -73,6 +72,7 @@ const CopyTradersProfile = () => {
    * @returns {Array<*>}
    */
   const prepareTableList = (data) => {
+    console.log(data);
     /**
      * @type {*}
      */
@@ -81,8 +81,8 @@ const CopyTradersProfile = () => {
       /*@ts-ignore */
       let innerList = data[item];
       list.push(innerList[0]);
-      innerList.splice(0, 1);
     });
+    console.log(list);
     return list;
   };
 

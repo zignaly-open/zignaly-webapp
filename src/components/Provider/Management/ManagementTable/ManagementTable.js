@@ -133,7 +133,14 @@ const ManagementTable = ({ list, allPositions }) => {
    * @param {*} rowMeta
    */
   const renderRow = (data, rowMeta) => {
-    return <ExpandedRow values={allPositions} data={data} />;
+    return (
+      <ExpandedRow
+        values={allPositions}
+        persistKey={tablePersistsKey}
+        confirmAction={confirmAction}
+        index={rowMeta.dataIndex}
+      />
+    );
   };
 
   const customOptions = {

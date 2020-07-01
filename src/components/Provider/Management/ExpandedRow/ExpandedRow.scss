@@ -1,5 +1,10 @@
 .expandedRows {
+  width: 100%;
   td {
-    font-family: "PlexSans-Regular";
+    padding: 12px;
+    font-size: 14px;
+    min-width: 80px;
+    font-family: "PlexSans-Medium";
+    white-space: nowrap;
   }
 }
