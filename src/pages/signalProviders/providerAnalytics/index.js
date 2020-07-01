@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./providerAnalytics.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 import { FormattedMessage } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
 import TradingPerformance from "../../../components/Provider/Analytics/TradingPerformance";
@@ -16,7 +14,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { createProviderFollowersEmptyEntity } from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
 
-const CopyTradersAnalytics = () => {
+const SignalProvidersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const emptyPerformance = {
@@ -143,4 +141,4 @@ const CopyTradersAnalytics = () => {
   );
 };
 
-export default compose(withProviderLayout)(CopyTradersAnalytics);
+export default SignalProvidersAnalytics;

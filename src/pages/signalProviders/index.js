@@ -7,9 +7,10 @@ import Analytics from "./providerAnalytics";
 import Users from "./users";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../store/actions/views";
+import { setProvider, unsetProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
+import ProviderLayout from "../../layouts/providerLayout";
 
 /**
  *
@@ -39,6 +40,7 @@ const SignalProviders = ({ location }) => {
 
   useEffect(() => {
     const loadProvider = async () => {
+      dispatch(unsetProvider());
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,
@@ -53,19 +55,24 @@ const SignalProviders = ({ location }) => {
   }, [providerId]);
 
   return (
-    <Router>
-      <Profile path={withPrefix("/signalProviders/:providerId/profile")} providerId={providerId} />
-      <Edit path={withPrefix("/signalProviders/:providerId/edit")} providerId={providerId} />
-      <Settings
-        path={withPrefix("/signalProviders/:providerId/settings")}
-        providerId={providerId}
-      />
-      <Analytics
-        path={withPrefix("/signalProviders/:providerId/analytics")}
-        providerId={providerId}
-      />
-      <Users path={withPrefix("/signalProviders/:providerId/users")} providerId={providerId} />
-    </Router>
+    <ProviderLayout>
+      <Router>
+        <Profile
+          path={withPrefix("/signalProviders/:providerId/profile")}
+          providerId={providerId}
+        />
+        <Edit path={withPrefix("/signalProviders/:providerId/edit")} providerId={providerId} />
+        <Settings
+          path={withPrefix("/signalProviders/:providerId/settings")}
+          providerId={providerId}
+        />
+        <Analytics
+          path={withPrefix("/signalProviders/:providerId/analytics")}
+          providerId={providerId}
+        />
+        <Users path={withPrefix("/signalProviders/:providerId/users")} providerId={providerId} />
+      </Router>
+    </ProviderLayout>
   );
 };
 

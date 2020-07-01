@@ -1983,6 +1983,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
+ * @property {Boolean} loading
  */
 
 /**
@@ -2114,6 +2115,7 @@ function createEmptyProviderGetEntity() {
     trailingStopFromSignal: false,
     useLeverageFromSignal: false,
     price: 0,
+    loading: false,
   };
 }
 

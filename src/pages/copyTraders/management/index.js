@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./management.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 import { creatEmptyProviderDataPointsEntity } from "../../../services/tradeApiClient.types";
 import ManagementSummary from "../../../components/Provider/Management/ManagementSummary";
 import ManagementTable from "../../../components/Provider/Management/ManagementTable";
@@ -12,7 +10,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 
-const CopyTradersProfile = () => {
+const CopyTradersManagement = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const emptyObject = creatEmptyProviderDataPointsEntity();
@@ -125,4 +123,4 @@ const CopyTradersProfile = () => {
   );
 };
 
-export default compose(withProviderLayout)(CopyTradersProfile);
+export default CopyTradersManagement;

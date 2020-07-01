@@ -364,6 +364,8 @@ srv.edit.list.tooltip: "Checking this option will list your service in the marke
 srv.edit.countries: "CH-Select Countries"
 srv.payment.docs: "CH-How to get Merchant ID and IPN Secret"
 srv.signalurl: "CH-Signal URL: "
+srv.edit.nameplaceholder: "CH-Enter name"
+srv.edit.urlplaceholder: "CH-Enter url"
 
 signalp.title: "CH-SIGNAL-PROVIDERS"
 signalp.subtitle: "CH-Set up automatic trading based on trading signals provided by expert traders."

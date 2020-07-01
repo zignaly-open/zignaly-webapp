@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./settings.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -67,4 +65,4 @@ const SignalProvidersSettings = () => {
   );
 };
 
-export default compose(withProviderLayout)(SignalProvidersSettings);
+export default SignalProvidersSettings;

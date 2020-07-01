@@ -1,47 +1,53 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./providerLayout.scss";
-import { getDisplayName } from "../../utils";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import ProviderHeader from "../../components/Provider/ProviderHeader";
 import FAQ from "../../components/FAQ";
+import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 
 /**
- * HOC wrap component with provider layout.
- *
- * App layout is defined here, the placement of header, sidebar, mobile appbar.
- *
- * @param {React.ComponentType<any>} Component The component to wrap.
- *
- * @returns {Function} Wrap component function.
+ * @typedef {Object} ProviderLayoutProps
+ * @property {Object} children
  */
-const withProviderLayout = (Component) => {
-  /**
-   * @param {Object} props Default params.
-   * @returns {JSX.Element} Component JSX.
-   */
-  const WrapperComponent = (props) => {
-    return (
-      <Box
-        alignItems="flex-start"
-        className="dashboardLayout"
-        display="flex"
-        flexDirection="column"
-        justifyContent="flex-start"
-      >
-        <ProviderHeader />
-        <Box className="pageContent">
-          <Component {...props} />
+
+/**
+ * Default component props.
+ *
+ * @param {ProviderLayoutProps} props Default component props.
+ * @returns {JSX.Element} Component.
+ */
+const withProviderLayout = ({ children }) => {
+  const storeViews = useStoreViewsSelector();
+  return (
+    <Box
+      alignItems="flex-start"
+      className="providerLayout"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
+      {storeViews.provider.loading && (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={50} />
         </Box>
-        <Box className="faq">
-          <FAQ />
-        </Box>
+      )}
+      {!storeViews.provider.loading && (
+        <Fragment>
+          <ProviderHeader />
+          <Box className="pageContent">{children}</Box>
+        </Fragment>
+      )}
+      <Box className="faq">
+        <FAQ />
       </Box>
-    );
-  };
-
-  WrapperComponent.displayName = `Layout(${getDisplayName(Component)})`;
-
-  return WrapperComponent;
+    </Box>
+  );
 };
 
 export default withProviderLayout;

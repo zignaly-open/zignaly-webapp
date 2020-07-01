@@ -4,6 +4,7 @@ import { Box, TextField, FormControl, Select, MenuItem } from "@material-ui/core
 import { countries } from "countries-list";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { useIntl } from "react-intl";
 
 /**
  *
@@ -21,6 +22,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 const CountrySelect = ({ onChange, defaultValue }) => {
   const teamObject = { id: Math.random(), name: "", countryCode: "", delete: false };
   const [values, setValues] = useState([teamObject]);
+  const intl = useIntl();
 
   const initializeTeam = () => {
     if (defaultValue && defaultValue.length) {
@@ -28,7 +30,7 @@ const CountrySelect = ({ onChange, defaultValue }) => {
         defaultValue[a].id = Math.random();
         defaultValue[a].delete = true;
       }
-      defaultValue[0].delete = false;
+      defaultValue[defaultValue.length - 1].delete = false;
       setValues(defaultValue);
     }
   };
@@ -61,7 +63,7 @@ const CountrySelect = ({ onChange, defaultValue }) => {
     let list = [...values];
     field.delete = true;
     field.id = Math.random();
-    list.push(field);
+    list.unshift(field);
     setValues(list);
   };
 
@@ -74,7 +76,7 @@ const CountrySelect = ({ onChange, defaultValue }) => {
   const removeField = (id) => {
     let list = [...values];
     let index = list.findIndex((item) => item.id === id);
-    if (index) {
+    if (index !== -1) {
       list.splice(index, 1);
     }
     setValues(list);
@@ -138,7 +140,7 @@ const CountrySelect = ({ onChange, defaultValue }) => {
             className="customInput"
             name="input"
             onChange={(e) => handleChange(e, obj.id)}
-            placeholder="url"
+            placeholder={intl.formatMessage({ id: "srv.edit.nameplaceholder" })}
             value={obj.name}
             variant="outlined"
           />

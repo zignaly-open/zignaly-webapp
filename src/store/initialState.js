@@ -427,6 +427,7 @@ const initialState = {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       price: 0,
+      loading: false,
     },
   },
 };

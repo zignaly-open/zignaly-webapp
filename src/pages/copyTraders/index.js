@@ -8,9 +8,10 @@ import Users from "./users";
 import Positions from "./positions";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../store/actions/views";
+import { setProvider, unsetProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
+import ProviderLayout from "../../layouts/providerLayout";
 
 /**
  *
@@ -40,6 +41,7 @@ const CopyTraders = ({ location }) => {
 
   useEffect(() => {
     const loadProvider = async () => {
+      dispatch(unsetProvider());
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,
@@ -54,17 +56,25 @@ const CopyTraders = ({ location }) => {
   }, [providerId]);
 
   return (
-    <Router>
-      <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
-      <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
-      <Management
-        path={withPrefix("/copyTraders/:providerId/management")}
-        providerId={providerId}
-      />
-      <Analytics path={withPrefix("/copyTraders/:providerId/analytics")} providerId={providerId} />
-      <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
-      <Positions path={withPrefix("/copyTraders/:providerId/positions")} providerId={providerId} />
-    </Router>
+    <ProviderLayout>
+      <Router>
+        <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
+        <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
+        <Management
+          path={withPrefix("/copyTraders/:providerId/management")}
+          providerId={providerId}
+        />
+        <Analytics
+          path={withPrefix("/copyTraders/:providerId/analytics")}
+          providerId={providerId}
+        />
+        <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
+        <Positions
+          path={withPrefix("/copyTraders/:providerId/positions")}
+          providerId={providerId}
+        />
+      </Router>
+    </ProviderLayout>
   );
 };
 

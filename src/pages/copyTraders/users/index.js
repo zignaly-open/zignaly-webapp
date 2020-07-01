@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./users.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -58,4 +56,4 @@ const CopyTradersUsers = () => {
   );
 };
 
-export default compose(withProviderLayout)(CopyTradersUsers);
+export default CopyTradersUsers;
