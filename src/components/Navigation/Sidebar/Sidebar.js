@@ -17,6 +17,7 @@ import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import ThemeSwitcher from "../../ThemeSwitcher";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -107,52 +108,7 @@ const Sidebar = () => {
           <FormattedMessage id="menu.tradingterminal" />
         </Typography>
       </Link>
-      <Box className={"themeBox"} display="flex" flexDirection="row" flexWrap="nowrap">
-        {hover && (
-          <>
-            <Box
-              className={storeSettings.darkStyle ? "checkedDarkBox" : "darkBox"}
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <img
-                alt="zignaly"
-                className={"icon"}
-                onClick={() => dispatch(selectDarkTheme(true))}
-                src={storeSettings.darkStyle ? OutlineWhite : OutlineBlack}
-              />
-            </Box>
-            <Box
-              className={!storeSettings.darkStyle ? "checkedLightBox" : "lightBox"}
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <img
-                alt="zignaly"
-                className={"icon"}
-                onClick={() => dispatch(selectDarkTheme(false))}
-                src={FillWhite}
-              />
-            </Box>
-          </>
-        )}
-        {!hover && (
-          <Box
-            className={storeSettings.darkStyle ? "checkedDarkBox" : "checkedLightBox"}
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-          >
-            <img
-              alt="zignaly"
-              className={"icon"}
-              src={storeSettings.darkStyle ? OutlineWhite : FillWhite}
-            />
-          </Box>
-        )}
-      </Box>
+      <ThemeSwitcher full={hover} />
     </Box>
   );
 };

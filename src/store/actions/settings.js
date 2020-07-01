@@ -3,6 +3,7 @@ export const SELECT_THEME = "SELECT_THEME_ACTION";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
+export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
 /**
  * @typedef {import('redux').AnyAction} AnyAction
  */
@@ -65,6 +66,19 @@ export const unsetSelectedExchange = () => {
 export const setDisplayColumn = (payload) => {
   return {
     type: SET_DISPLAY_COLUMN,
+    payload,
+  };
+};
+
+/**
+ * User's display balance selection
+ *
+ * @param {Object} payload payload.
+ * @returns {AnyAction} return action object.
+ */
+export const setShowBalance = (payload) => {
+  return {
+    type: SET_SHOW_BALANCE,
     payload,
   };
 };

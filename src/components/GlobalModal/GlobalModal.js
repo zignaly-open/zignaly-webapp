@@ -17,7 +17,7 @@ const GlobalModal = (props) => {
   const { hash, content } = props;
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
-  const isOpen = currentHash === hash;
+  const isOpen = currentHash.startsWith(hash);
   const onClose = () => {
     navigate("#");
   };

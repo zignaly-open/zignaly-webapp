@@ -3,7 +3,7 @@ import "./SettingsView.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
-
+import Preferences from "./Preferences";
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
@@ -16,6 +16,10 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Connect exchange element.
  */
 const SettingsView = (props) => {
+  const currentHash =
+    typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
+  const path = currentHash.split("-")[1];
+
   /**
    * Handle submit buttton click.
    *
@@ -24,6 +28,13 @@ const SettingsView = (props) => {
    */
   const handleClick = () => {
     props.onClose();
+  };
+
+  const renderContent = () => {
+    switch (path) {
+      default:
+        return <Preferences />;
+    }
   };
 
   return (
@@ -44,6 +55,7 @@ const SettingsView = (props) => {
           <FormattedMessage id="accounts.settings" />
         </Typography>
       </Box>
+      {renderContent()}
     </Box>
   );
 };

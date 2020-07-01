@@ -133,7 +133,9 @@ const ExchangeAccountAdd = ({ create, demo }) => {
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(setUserExchanges(authorizationPayload));
-        setTempMessage(<FormattedMessage id={create ? "accounts.created" : "accounts.deleted"} />);
+        setTempMessage(
+          <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
+        );
         return true;
       })
       .catch((e) => {

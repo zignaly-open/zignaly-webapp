@@ -51,14 +51,7 @@ const PrivateAreaLayout = (props) => {
         <SuccessAlert />
         {storeLoader && <Loader />}
         <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
-        <Modal
-          onClose={() => dispatch(openSettingsView(false))}
-          persist={false}
-          size="large"
-          state={storeModal.settingsView}
-        >
-          <SettingsView onClose={() => dispatch(openSettingsView(false))} />
-        </Modal>
+        <GlobalModal content={SettingsView} hash="settings" />
         <Box bgcolor="background.default" className={"app"}>
           <Hidden xsDown>
             <Header />

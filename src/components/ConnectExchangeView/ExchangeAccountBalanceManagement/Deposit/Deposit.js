@@ -161,7 +161,7 @@ const Deposit = () => {
                       size="small"
                       state={isQRModalOpen}
                     >
-                      {depositAddress && <DepositQRCodes address={depositAddress} />}
+                      <DepositQRCodes address={depositAddress} />
                     </Modal>
                     <CustomButton
                       className="borderPurple textPurple"

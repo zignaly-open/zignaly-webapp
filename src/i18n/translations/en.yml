@@ -647,7 +647,7 @@ settings.profile: "Profile"
 
 preferences.2lines: "Use two lines for long numbers (Helps readability)"
 preferences.balance: "Show balance by default"
-preferences.darklight: "Dark / Light Mode"
+preferences.darklight: "Dark Side"
 
 security: "Security"
 security.2fa: "2 Factor Authentication (2FA)"

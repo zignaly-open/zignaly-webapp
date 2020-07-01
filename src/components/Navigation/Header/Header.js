@@ -15,6 +15,8 @@ import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { setShowBalance } from "../../../store/actions/settings";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -23,6 +25,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const Header = () => {
   const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
 
   /**
    *
@@ -33,7 +36,6 @@ const Header = () => {
   const userExchangeSelector = (state) => state.user.exchangeConnections;
   const exchangeConnections = useSelector(userExchangeSelector);
 
-  const [showBalance, setShowBalance] = useState(true);
   const [anchorEl, setAnchorEl] = useState(undefined);
 
   return (
@@ -64,7 +66,7 @@ const Header = () => {
         {exchangeConnections.length > 0 && (
           <Box
             alignItems="center"
-            className={"balanceWrapper " + (showBalance ? "full" : "")}
+            className={"balanceWrapper " + (storeSettings.showBalance ? "full" : "")}
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
@@ -79,12 +81,12 @@ const Header = () => {
               <img
                 alt="zignaly"
                 className={"expandIcon"}
-                onClick={() => setShowBalance(!showBalance)}
-                src={showBalance ? RightIcon : LeftIcon}
+                onClick={() => dispatch(setShowBalance(!storeSettings.showBalance))}
+                src={storeSettings.showBalance ? RightIcon : LeftIcon}
               />
             </Box>
-            {showBalance && <BalanceBox />}
-            {!showBalance && (
+            {storeSettings.showBalance && <BalanceBox />}
+            {!storeSettings.showBalance && (
               <Grow in={true}>
                 <Box
                   className="iconBox"
