@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -86,8 +86,7 @@ const StrategyPanel = (props) => {
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
-  console.log("entryType: ", entryType);
-  console.log("providerService: ", providerService);
+  const isCopyProvider = providerService && providerService !== 1;
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -156,7 +155,7 @@ const StrategyPanel = (props) => {
         ) : (
           <input name="price" ref={register} type="hidden" />
         )}
-        {selectedExchange.exchangeType === "futures" && (
+        {selectedExchange.exchangeType === "futures" && !isCopyProvider && (
           <FormControl>
             <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.realinvest" />
             <Box alignItems="center" display="flex">
@@ -174,30 +173,34 @@ const StrategyPanel = (props) => {
             </FormHelperText>
           </FormControl>
         )}
-        <FormControl>
-          <HelperLabel
-            descriptionId="terminal.position.size.help"
-            labelId="terminal.position.size"
-          />
-          <Box alignItems="center" display="flex">
-            <OutlinedInput
-              className="outlineInput"
-              inputRef={register({
-                required: "Position size is required.",
-                validate: validatePositionSize,
-              })}
-              name="positionSize"
-              onChange={positionSizeChange}
-              placeholder={"0"}
+        {!isCopyProvider && (
+          <FormControl>
+            <HelperLabel
+              descriptionId="terminal.position.size.help"
+              labelId="terminal.position.size"
             />
-            <div className="currencyBox">{symbolData.quote}</div>
-          </Box>
-          <FormHelperText>
-            <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
-          </FormHelperText>
-          {errors.positionSize && <span className="errorText">{errors.positionSize.message}</span>}
-        </FormControl>
-        {providerService !== 1 && (
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register({
+                  required: "Position size is required.",
+                  validate: validatePositionSize,
+                })}
+                name="positionSize"
+                onChange={positionSizeChange}
+                placeholder={"0"}
+              />
+              <div className="currencyBox">{symbolData.quote}</div>
+            </Box>
+            <FormHelperText>
+              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+            </FormHelperText>
+            {errors.positionSize && (
+              <span className="errorText">{errors.positionSize.message}</span>
+            )}
+          </FormControl>
+        )}
+        {isCopyProvider && (
           <FormControl>
             <HelperLabel
               descriptionId="terminal.position.sizepercentage.help"
@@ -224,23 +227,25 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
         )}
-        <FormControl>
-          <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
-          <Box alignItems="center" display="flex">
-            <OutlinedInput
-              className="outlineInput"
-              inputRef={register}
-              name="units"
-              onChange={unitsChange}
-              placeholder={"0"}
-            />
-            <div className="currencyBox">{symbolData.base}</div>
-          </Box>
-          <FormHelperText>
-            <FormattedMessage id="terminal.available" /> {getBaseBalance()}
-          </FormHelperText>
-          {errors.units && <span className="errorText">{errors.units.message}</span>}
-        </FormControl>
+        {!isCopyProvider && (
+          <FormControl>
+            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register}
+                name="units"
+                onChange={unitsChange}
+                placeholder={"0"}
+              />
+              <div className="currencyBox">{symbolData.base}</div>
+            </Box>
+            <FormHelperText>
+              <FormattedMessage id="terminal.available" /> {getBaseBalance()}
+            </FormHelperText>
+            {errors.units && <span className="errorText">{errors.units.message}</span>}
+          </FormControl>
+        )}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"
