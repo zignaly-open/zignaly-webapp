@@ -1,3 +1,5 @@
+// @ts-nocheck (wip)
+/* eslint-disable */
 import React, { useState } from "react";
 import { Box, Typography, Checkbox, FormControlLabel, OutlinedInput } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -26,30 +28,30 @@ const SecuritySettings = () => {
   };
 
   return (
-    <Box className="securitySettings" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box alignItems="flex-start" className="securitySettings" display="flex" flexDirection="column">
       <form onSubmit={handleSubmit(submitPassword)}>
         <Box display="flex">
           <PasswordInput
-            label={<FormattedMessage id={"security.password.current"} />}
-            name="currentPassword"
+            disabled={!editing}
+            error={!!errors.password}
             //   onChange={handleRepeatPasswordChange}
             inputRef={register({ required: true })}
-            error={!!errors.password}
-            disabled={!editing}
+            label={<FormattedMessage id={"security.password.current"} />}
+            name="currentPassword"
             placeholder={!editing ? "•••••••••" : ""}
           />
           {!editing && (
             <img
+              aria-describedby="Edit password"
               onClick={() => setEditing(true)}
               src={EditIcon}
               title="Edit"
-              aria-describedby="Edit password"
             />
           )}
         </Box>
         {editing && (
           <>
-            <Passwords formMethods={formMethods} edit={true} />
+            <Passwords edit={true} formMethods={formMethods} />
             <CustomButton className="submitButton bold" type="submit">
               <FormattedMessage id="security.submit" />
             </CustomButton>

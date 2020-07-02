@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./LoginForm.scss";
-import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
@@ -33,7 +31,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
 
@@ -132,11 +129,10 @@ const LoginForm = () => {
           justifyContent="start"
         >
           <PasswordInput
+            error={!!errors.password}
+            inputRef={register({ required: true })}
             label={<FormattedMessage id={"security.password"} />}
             name="password"
-            //   onChange={handleRepeatPasswordChange}
-            inputRef={register({ required: true })}
-            error={!!errors.password}
           />
           {errors.password && <span className="errorText">Password cannot be empty</span>}
         </Box>

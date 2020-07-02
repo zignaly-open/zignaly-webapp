@@ -5,13 +5,13 @@
   }
 
   .settingsContent {
-    padding: 0px 24px 32px;
+    padding: 0 24px 32px;
   }
 
   label {
     &:not(.customLabel) {
-      margin: 0 0 24px;
       align-items: start;
+      margin: 0 0 24px;
     }
 
     > * {

@@ -11,7 +11,7 @@ const SignupForm = () => {
   const [, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, setError, clearError } = formMethods;
+  const { errors, handleSubmit, register, clearError } = formMethods;
 
   //   const onSubmit = () => {
   //     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {

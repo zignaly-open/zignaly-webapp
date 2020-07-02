@@ -25,7 +25,6 @@ const ExchangeAccountList = ({ demo }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
-    setPathParams,
     resetToPath,
   } = useContext(ModalPathContext);
 
@@ -48,7 +47,7 @@ const ExchangeAccountList = ({ demo }) => {
   /**
    * Navigation callback
    * @param {string} id tab id
-   * @returns void
+   * @returns {void}
    */
   const handleTabChange = (id) => {
     resetToPath(id);
@@ -56,7 +55,7 @@ const ExchangeAccountList = ({ demo }) => {
 
   return (
     <Box className="exchangeAccountList">
-      <SubNavModalHeader links={tabs} currentPath={currentPath} onClick={handleTabChange} />
+      <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
       {!exchanges.length ? (
         !demo ? (
           <NoRealAccount />

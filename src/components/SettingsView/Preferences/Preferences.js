@@ -1,9 +1,8 @@
 import React from "react";
-import { Box, Typography, Checkbox, FormControlLabel } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import FillWhite from "../../../images/sidebar/fillWhite.svg";
 import { useDispatch } from "react-redux";
-import { selectDarkTheme, setShowBalance } from "../../../store/actions/settings";
+import { setShowBalance } from "../../../store/actions/settings";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ThemeSwitcher from "../../ThemeSwitcher";
 import "./Preferences.scss";
@@ -13,7 +12,7 @@ const Preferences = () => {
   const storeSettings = useStoreSettingsSelector();
 
   return (
-    <Box className="preferences" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box alignItems="flex-start" className="preferences" display="flex" flexDirection="column">
       <FormControlLabel
         control={<ThemeSwitcher full={true} />}
         label={<FormattedMessage id="preferences.darklight" />}
@@ -23,9 +22,9 @@ const Preferences = () => {
         control={
           <Checkbox
             checked={storeSettings.showBalance}
-            onChange={() => dispatch(setShowBalance(!storeSettings.showBalance))}
-            name="showBalance"
             color="primary"
+            name="showBalance"
+            onChange={() => dispatch(setShowBalance(!storeSettings.showBalance))}
           />
         }
         label={<FormattedMessage id="preferences.balance" />}

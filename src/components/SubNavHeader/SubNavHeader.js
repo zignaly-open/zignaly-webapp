@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Box, Link } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";
-import ModalPathContext from "../ConnectExchangeView/ModalPathContext";
 import "./SubNavHeader.scss";
 
 /**

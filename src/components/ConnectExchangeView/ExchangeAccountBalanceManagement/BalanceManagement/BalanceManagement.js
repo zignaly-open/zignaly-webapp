@@ -41,7 +41,7 @@ const BalanceManagement = ({ children }) => {
   /**
    * Navigation callback
    * @param {string} id tab id
-   * @returns void
+   * @returns {void}
    */
   const handleTabChange = (id) => {
     // Only update current path while keeping previous path
@@ -54,8 +54,8 @@ const BalanceManagement = ({ children }) => {
   return (
     <Box className="balanceManagement">
       <SubNavModalHeader
-        links={tabs}
         currentPath={pathParams.currentPath}
+        links={tabs}
         onClick={handleTabChange}
       />
       {children}

@@ -83,9 +83,9 @@ const SettingsView = ({ onClose }) => {
         }
       />
       <SubNavModalHeader
-        links={tabs}
         currentPath={currentHash}
-        onClick={(path) => navigate("#" + path)}
+        links={tabs}
+        onClick={(selectedPath) => navigate("#" + selectedPath)}
       />
       <Box className="settingsContent">{renderContent()}</Box>
     </Box>

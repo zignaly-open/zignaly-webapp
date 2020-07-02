@@ -1,3 +1,5 @@
+// @ts-nocheck (wip)
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import "./Passwords.scss";
 import { Box, Popper, InputAdornment, OutlinedInput, FormControl } from "@material-ui/core";
@@ -83,10 +85,10 @@ const Passwords = ({ formMethods: { clearError, setError, register, errors }, ed
         justifyContent="start"
       >
         <PasswordInput
+          error={!!errors.password}
+          inputRef={register({ required: true })}
           label={<FormattedMessage id={"security.password" + (edit ? ".new" : "")} />}
           name="password"
-          inputRef={register({ required: true })}
-          error={!!errors.password}
           onBlur={() => setAnchorEl(undefined)}
           onChange={handlePasswordChange}
           onFocus={(e) => setAnchorEl(e.currentTarget)}
@@ -100,11 +102,11 @@ const Passwords = ({ formMethods: { clearError, setError, register, errors }, ed
         justifyContent="start"
       >
         <PasswordInput
+          error={!!errors.repeatPassword}
+          inputRef={register({ required: true })}
           label={<FormattedMessage id={"security.repeat" + (edit ? ".new" : "")} />}
           name="repeatPassword"
           onChange={handleRepeatPasswordChange}
-          inputRef={register({ required: true })}
-          error={!!errors.repeatPassword}
         />
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="center" minWidth="100%">
