@@ -14,7 +14,6 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
     "@material-ui/styles": "4.10.0",
-    "@types/qrcode.react": "^1.0.1",
     "@types/react-google-recaptcha": "^1.1.2",
     "@welldone-software/why-did-you-render": "^4.2.5",
     "acorn": "^6.4.1",
@@ -103,7 +102,7 @@
     "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs;exit 0",
     "reset": "rm -rf .cache/ public/ types/",
     "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-    "sasslint": "env FORCE_COLOR=1 sass-lint -c .sass-lint.yml -v",
+    "sasslint": "env FORCE_COLOR=1 sass-lint -v",
     "serve": "gatsby serve",
     "test": "STAGE=test jest"
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import UpdatePassword from "./UpdatePassword";
 import { Box } from "@material-ui/core";
 import "./SecuritySettings.scss";

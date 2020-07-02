@@ -4,10 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import "./SecuritySettings.scss";
 import { useForm } from "react-hook-form";
-import Passwords from "../../../Passwords";
 import CustomButton from "../../../CustomButton";
-import EditIcon from "../../../../images/ct/edit.svg";
-import PasswordInput from "../../../Passwords/PasswordInput";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -15,15 +12,14 @@ import FAQ from "../../../FAQ";
 import QRCode from "qrcode.react";
 
 /**
- * Provides a component to enale 2FA.
+ * Provides a component to enable 2FA.
  *
  * @returns {JSX.Element} Component JSX.
  */
 const Enable2FA = () => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const formMethods = useForm({ mode: "onBlur" });
-  const { errors, handleSubmit, register, setError } = formMethods;
+  const { handleSubmit, setError } = useForm({ mode: "onBlur" });
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 

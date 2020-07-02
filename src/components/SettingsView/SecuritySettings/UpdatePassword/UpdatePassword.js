@@ -68,7 +68,7 @@ const UpdatePassword = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitPassword)} className="updatePassword">
+    <form className="updatePassword" onSubmit={handleSubmit(submitPassword)}>
       <Box className="inputBox" display="flex" flexDirection="column" width={1}>
         <Box className="passwordBox" display="flex" width={1}>
           <PasswordInput
