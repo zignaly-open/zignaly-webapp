@@ -80,7 +80,7 @@ const ProvidersBrowse = ({
           id: connectedOnly
             ? copyTradersOnly
               ? "dashboard.traders.copying"
-              : "dashboard.signalproviders.copying"
+              : "dashboard.providers.following"
             : copyTradersOnly
             ? "copyt.traders"
             : "menu.signalproviders",

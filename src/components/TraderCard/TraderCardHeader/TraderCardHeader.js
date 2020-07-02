@@ -1,9 +1,10 @@
 import React from "react";
 import "./TraderCardHeader.scss";
 import { Box, Typography } from "@material-ui/core";
-import LogoIcon from "../../../images/logo/logoIcon.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
+import { Link } from "gatsby";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
@@ -19,10 +20,22 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCardHeader = (props) => {
-  const { price, name, logoUrl, quote, exchanges } = props.provider;
+  const {
+    price,
+    name,
+    logoUrl,
+    quote,
+    exchanges,
+    isCopyTrading,
+    id,
+    exchangeType,
+  } = props.provider;
+
+  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}/profile`;
+
   return (
     <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
-      <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
+      <ProviderLogo size="40px" title={name} url={logoUrl} />
       <Box
         alignItems="flex-start"
         className="traderCardHeaderTitleBox"
@@ -43,9 +56,9 @@ const TraderCardHeader = (props) => {
             flexDirection="row"
             justifyContent="flex-start"
           >
-            <Typography className="name" variant="h4">
-              {name}
-            </Typography>
+            <Link className="name" to={profileLink}>
+              <Typography variant="h4">{name}</Typography>
+            </Link>
             {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
           </Box>
           <Box alignItems="center" display="flex" flexDirection="row">
@@ -54,6 +67,7 @@ const TraderCardHeader = (props) => {
                 id="srv.trades"
                 values={{
                   coin: quote || "",
+                  type: exchangeType,
                 }}
               />
             </Typography>
@@ -68,8 +82,14 @@ const TraderCardHeader = (props) => {
         > */}
         <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
           <Typography variant="h4">
-            {price || 0}
-            <FormattedMessage id="srv.pricemonth" />
+            {price ? (
+              <span>
+                {price}
+                <FormattedMessage id="srv.pricemonth" />
+              </span>
+            ) : (
+              <FormattedMessage id="col.free" />
+            )}
           </Typography>
           <Typography variant="subtitle1">
             <FormattedMessage id="srv.edit.price" />

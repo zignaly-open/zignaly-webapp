@@ -165,7 +165,7 @@ const TraderCard = (props) => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Typography className={colorClass} variant="h4">
+            <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
               {formatFloat2Dec(floating)}%
             </Typography>
             <Typography variant="subtitle1">
@@ -229,7 +229,7 @@ const TraderCard = (props) => {
           </Box>
         </Box>
       </Box>
-      {showSummary && <UserSummary providerId={id} quote={quote} />}
+      {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
     </Box>
   );
 };

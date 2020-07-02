@@ -27,13 +27,14 @@ const GenericModal = (props) => {
     <Dialog
       classes={{ paper: "modal " + (size ? size : " ") }}
       disableBackdropClick={persist}
+      disableEscapeKeyDown={persist}
       fullScreen={fullScreen}
       maxWidth={fullScreen ? false : "lg"}
       onClose={onClose}
       open={state}
     >
       {/* @ts-ignore */}
-      <CloseIcon className="closeIcon" onClick={onClose} />
+      {!fullScreen && <CloseIcon className="closeIcon" onClick={onClose} />}
       {children}
     </Dialog>
   );

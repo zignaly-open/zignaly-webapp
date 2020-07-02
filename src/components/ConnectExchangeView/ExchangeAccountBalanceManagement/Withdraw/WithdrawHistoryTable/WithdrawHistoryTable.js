@@ -63,6 +63,10 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       },
     },
     {
+      name: "tag",
+      label: "col.information",
+    },
+    {
       name: "txid",
       label: "col.txnid",
     },

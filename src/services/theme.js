@@ -85,6 +85,7 @@ export const colors = {
   darkGrey: "#808080",
   blue: "#017aff",
   green: "#08a441",
+  red: "#b52a00",
   yellow: "#f6ad3f",
   lightBlack: "#27273f",
   offWhite: "#fbfafc",
@@ -209,12 +210,6 @@ const theme = (darkStyle) => {
       body1: {
         fontSize: "16px",
         fontFamily: "PlexSans-Regular",
-        letterSpacing: "0.61px",
-        lineHeight: 1.31,
-      },
-      body2: {
-        fontSize: "16px",
-        fontFamily: "PlexSans-SemiBold",
         letterSpacing: "0.61px",
         lineHeight: 1.31,
       },

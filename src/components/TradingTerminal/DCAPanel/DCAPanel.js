@@ -9,8 +9,9 @@ import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import "./DCAPanel.scss";
 import { calculateDcaPrice } from "../../../utils/calculations";
+import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
+import "./DCAPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -33,6 +34,7 @@ import { calculateDcaPrice } from "../../../utils/calculations";
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -52,12 +54,11 @@ const DCAPanel = (props) => {
    * @returns {PositionDcaIndexes} DCA indexes data.
    */
   const resolveDcaIndexes = () => {
-    const reBuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
-    const dcaAllIndexes = keys(reBuyTargets).map(Number);
+    const dcaAllIndexes = keys(rebuyTargets).map(Number);
     const dcaRebuyIndexes = dcaAllIndexes.filter((index) => index < 1000);
     const dcaIncreaseIndexes = dcaAllIndexes.filter((index) => index >= 1000);
     const dcaRebuyTargets = positionEntity
-      ? dcaRebuyIndexes.map((index) => reBuyTargets[index])
+      ? dcaRebuyIndexes.map((index) => rebuyTargets[index])
       : [];
     const dcaRebuyDoneCount = dcaRebuyTargets.filter((target) => target.done === true).length;
 
@@ -310,6 +311,10 @@ const DCAPanel = (props) => {
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
           <HelperLabel descriptionId="terminal.dca.help" labelId="terminal.target" />
+          <DCATargetStatus
+            dcaTarget={rebuyTargets[Number(targetId)] || null}
+            labelId="terminal.status"
+          />
           <Box alignItems="center" display="flex">
             <OutlinedInput
               className="outlineInput"

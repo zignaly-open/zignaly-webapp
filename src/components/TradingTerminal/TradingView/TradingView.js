@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { size } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
@@ -19,9 +20,10 @@ import "./TradingView.scss";
  * @type {Object<string, string>}
  */
 const defaultExchangeSymbol = {
-  KuCoin: "BTC-USDT",
-  Binance: "BTCUSDT",
-  Zignaly: "BTCUSDT",
+  KuCoin: "BTC/USDT",
+  Binance: "BTC/USDT",
+  Zignaly: "BTC/USDT",
+  fallback: "BTC/USDT",
 };
 
 /**
@@ -53,7 +55,7 @@ const TradingView = () => {
    * @returns {string} Symbol ID.
    */
   const resolveDefaultSymbol = () => {
-    return defaultExchangeSymbol[exchangeName] || "BTCUSDT";
+    return defaultExchangeSymbol[exchangeName] || defaultExchangeSymbol.fallback;
   };
 
   const exchangeName = resolveExchangeName();
@@ -90,7 +92,8 @@ const TradingView = () => {
   const onExchangeChange = () => {
     const newExchangeName =
       storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-    const newDefaultSymbol = defaultExchangeSymbol[newExchangeName] || "BTCUSDT";
+    const newDefaultSymbol =
+      defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
     if (tradingViewWidget) {
       tradingViewWidget.remove();
       setTradingViewWidget(null);
@@ -128,12 +131,7 @@ const TradingView = () => {
   // @ts-ignore
   const symbolsList = dataFeed ? dataFeed.getSymbolsData() : [];
   // @ts-ignore
-  const symbolsOptions = symbolsList.map((symbolItem) => {
-    return {
-      label: symbolItem.symbol,
-      value: symbolItem.id,
-    };
-  });
+  const symbolsOptions = symbolsList.map((symbolItem) => symbolItem.symbol);
 
   /**
    * @typedef {Object} OptionValue
@@ -144,16 +142,16 @@ const TradingView = () => {
   /**
    * Change selected symbol.
    *
-   * @param {OptionValue} selectedOption Selected symbol option object.
+   * @param {string} selectedOption Selected symbol option object.
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(/** @type {string} */ (selectedOption.value));
+    setSelectedSymbol(selectedOption);
 
     // Change chart data to the new selected symbol.
     if (tradingViewWidget) {
       const chart = tradingViewWidgetTyped.chart();
-      chart.setSymbol(selectedOption.value, () => {
+      chart.setSymbol(selectedOption, () => {
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
         setLastPrice(priceCandle);
@@ -182,21 +180,23 @@ const TradingView = () => {
               value={selectedSymbol}
             />
           </Box>
-          <Box
-            alignContent="left"
-            className="providersSelector"
-            display="flex"
-            flexDirection="column"
-          >
-            <FormattedMessage id="terminal.providers" />
-            <CustomSelect
-              label=""
-              onChange={() => {}}
-              options={ownCopyTradersProviders}
-              search={true}
-              value={selectedProviderValue}
-            />
-          </Box>
+          {size(ownCopyTradersProviders) > 1 && (
+            <Box
+              alignContent="left"
+              className="providersSelector"
+              display="flex"
+              flexDirection="column"
+            >
+              <FormattedMessage id="terminal.providers" />
+              <CustomSelect
+                label=""
+                onChange={() => {}}
+                options={ownCopyTradersProviders}
+                search={true}
+                value={selectedProviderValue}
+              />
+            </Box>
+          )}
         </Box>
       )}
       <Box

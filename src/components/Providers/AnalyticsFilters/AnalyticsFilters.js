@@ -50,7 +50,7 @@ const AnalyticsFilters = ({
       />
       <CustomSelect
         label={intl.formatMessage({
-          id: "fil.base",
+          id: "fil.quote",
         })}
         onChange={onQuoteChange}
         options={quotes}

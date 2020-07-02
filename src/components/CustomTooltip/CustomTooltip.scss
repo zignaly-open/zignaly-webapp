@@ -1,10 +1,4 @@
 .customTooltipPopper {
-  transform: translate(0, -100%);
-
-  .innerPopper {
-    transform: translate(-50%, 0);
-  }
-
   .customTooltip {
     padding: 5px 10px;
     text-align: left;
@@ -19,11 +13,20 @@
     }
   }
 
-  .lineTooltip {
-    border: solid 2px $borderColor;
-    height: 21px;
-    transform: translate(-2px, -8px);
-    width: 1px;
+  &[x-placement*="top"] {
+    .customArrowTooltip {
+      background-color: $borderColor;
+      bottom: auto;
+      height: 26px;
+      margin: 6px 0 0 -2px;
+      position: absolute;
+      width: 2px;
+      will-change: left;
+
+      &::before {
+        display: none;
+      }
+    }
   }
 }
 

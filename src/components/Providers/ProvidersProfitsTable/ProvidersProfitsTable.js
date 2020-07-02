@@ -6,7 +6,7 @@ import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 import Table from "../../Table";
-import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -23,11 +23,12 @@ import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
  * @property {string | React.ReactNode} title Table title.
  * @property {ProvidersStatsCollection} stats Table stats data.
  * @property {string} persistKey Key to save display columns settings.
+ * @property {string} type Type of providers.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
+const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -44,9 +45,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       label: "col.provider.logo",
       options: {
         customBodyRender: (val, tableMeta) => {
-          // Handle no prpvider logo, returned as "images/providersLogo/default.png"
-          const logo = val.startsWith("http") ? val : DefaultProviderLogo;
-          return <img src={logo} title={tableMeta.rowData[2]} width="30px" />;
+          return <ProviderLogo size="30px" title={tableMeta.rowData[2]} url={val} />;
         },
         // setCellProps: (value) => ({
         //   className: "test",
@@ -65,7 +64,13 @@ const ProvidersProfitsTable = ({ stats, title, persistKey }) => {
       label: "col.name",
       options: {
         customBodyRender: (val, tableMeta) => (
-          <Link to={"/signalProviders/" + tableMeta.rowData[0]}>{val}</Link>
+          <Link
+            to={`${type === "signalp" ? "/signalProviders" : "/copyTraders"}/${
+              tableMeta.rowData[0]
+            }/profile`}
+          >
+            {val}
+          </Link>
         ),
         viewColumns: false,
       },

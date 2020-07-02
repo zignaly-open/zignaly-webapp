@@ -10,10 +10,11 @@ import tradeApi from "../services/tradeApiClient";
  * Get list of connected providers.
  *
  * @param {number} timeFrame TimeFrame for returns.
- * @param {string} [internalExchangeId] Filter by internal exchange id.
- * @returns {ProvidersCollection} Quote Assets.
+ * @param {string} internalExchangeId Filter by internal exchange id.
+ * @param {boolean} copyTradersOnly Flag to indicate if it should returns only the copy traders.
+ * @returns {ProvidersCollection} Connected Providers.
  */
-const useConnectedProviders = (timeFrame, internalExchangeId) => {
+const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) => {
   const [providers, setProviders] = useState([]);
   const storeSession = useStoreSessionSelector();
 
@@ -23,7 +24,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId) => {
         token: storeSession.tradeApi.accessToken,
         ro: true,
         timeFrame,
-        copyTradersOnly: false,
+        copyTradersOnly,
         type: "connected",
         ...(internalExchangeId && { internalExchangeId }),
       };
@@ -38,7 +39,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId) => {
         });
     };
     loadData();
-  }, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame]);
+  }, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame, copyTradersOnly]);
 
   return providers;
 };

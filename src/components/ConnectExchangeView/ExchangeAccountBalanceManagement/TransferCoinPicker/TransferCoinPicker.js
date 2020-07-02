@@ -58,7 +58,7 @@ const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => 
  */
 const BalanceLine = ({ label, amount, unit }) => (
   <Box className="balanceLine" display="flex" flexDirection="row" justifyContent="space-between">
-    <Typography variant="body2">
+    <Typography className="bold" variant="body1">
       <FormattedMessage id={label} />
     </Typography>
     <Box>

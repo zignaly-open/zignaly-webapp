@@ -39,7 +39,7 @@ const ConnectedProvidersSummary = ({ providers }) => {
           <TraderMiniCard key={p.id} provider={p} />
         ))}
         <CustomButton className="textPurple">
-          <Link to="dashboard/connectedTraders">
+          <Link to="copyTraders/browse">
             <FormattedMessage id="accounts.browse" />
           </Link>
         </CustomButton>

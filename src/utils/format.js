@@ -168,12 +168,12 @@ export const revertPercentageRange = (percentage) => {
 };
 
 /**
- * Revert percentage to standard 0-100 range.
+ * Format unixtime date with given Moment format rule.
  *
- * @param {Number} date Percentage value.
- * @param {String} format Percentage value.
+ * @param {Number} date Unix time.
+ * @param {String} format Moment format rule.
  *
- * @returns {*} Reverted percentage.
+ * @returns {String} Formatted date.
  */
 export const formatDate = (date, format) => {
   if (typeof date === "string") {

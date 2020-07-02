@@ -46,11 +46,8 @@ const TradingViewEdit = (props) => {
    * @returns {Void} None.
    */
   const initializePosition = (responseData) => {
-    const separator = responseData.exchange === "KuCoin" ? "-" : "";
-    const positionSymbol = responseData.symbol.replace("/", separator);
-
     setPositionEntity(responseData);
-    setSelectedSymbol(positionSymbol);
+    setSelectedSymbol(responseData.symbol);
   };
 
   const [selectedSymbol, setSelectedSymbol] = useState(null);

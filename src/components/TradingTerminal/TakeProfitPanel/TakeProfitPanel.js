@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { isNumber, range, size, sum } from "lodash";
-import { FormattedMessage } from "react-intl";
+import { isNumber, keys, range, size, sum, values } from "lodash";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
+import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
@@ -38,7 +39,7 @@ const TakeProfitPanel = (props) => {
     positionTargetsCardinality > 0,
   );
 
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = positionTargetsCardinality || 1;
   const {
     cardinality,
@@ -56,6 +57,7 @@ const TakeProfitPanel = (props) => {
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
+
   const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -63,6 +65,7 @@ const TakeProfitPanel = (props) => {
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
+  const { formatMessage } = useIntl();
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -89,7 +92,7 @@ const TakeProfitPanel = (props) => {
   };
 
   const fieldsDisabled = getFieldsDisabledStatus();
-
+  const profitTargets = positionEntity ? positionEntity.takeProfitTargets : {};
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
       targetIndexes.forEach((index) => {
@@ -111,25 +114,16 @@ const TakeProfitPanel = (props) => {
    * @return {Void} None.
    */
   const validateExitUnits = (event) => {
-    const draftPosition = getValues();
-    const allUnitsPercentage = cardinalityRange.map((targetId) => {
-      const targetProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-      return parseFloat(draftPosition[targetProperty]) || 0;
-    });
-
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-    const allUnitsPercentageTotal = sum(allUnitsPercentage);
 
     clearError(unitsPercentageProperty);
     if (exitUnits <= 0) {
-      setError(unitsPercentageProperty, "error", "Units must be greater than zero.");
-    } else if (allUnitsPercentageTotal > 100) {
       setError(
         unitsPercentageProperty,
         "error",
-        "Total units (cumulative) cannot be greater than 100%.",
+        formatMessage({ id: "terminal.takeprofit.limit.zero" }),
       );
     }
 
@@ -148,20 +142,24 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPrice = price * ((targetPercentage + 100) / 100);
+    let targetPrice = price;
 
     if (isNaN(targetPercentage)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
         "error",
-        "Target percentage must be a number.",
+        formatMessage({ id: "terminal.takeprofit.valid.pricepercentage" }),
       );
 
       setValue(priceProperty, "");
       return;
     }
 
-    if (isNumber(targetPercentage) && targetPercentage !== 0) {
+    if (targetPercentage !== 0) {
+      targetPrice = price * ((targetPercentage + 100) / 100);
+    }
+
+    if (isNumber(targetPercentage)) {
       setValue(priceProperty, formatPrice(targetPrice));
     } else {
       setValue(priceProperty, "");
@@ -186,7 +184,7 @@ const TakeProfitPanel = (props) => {
       setError(
         composeTargetPropertyName("targetPrice", targetId),
         "error",
-        "Target price must be a number.",
+        formatMessage({ id: "terminal.takeprofit.valid.price" }),
       );
 
       setValue(pricePercentageProperty, "");
@@ -202,6 +200,28 @@ const TakeProfitPanel = (props) => {
     }
 
     validateTargetPriceLimits(targetId);
+  };
+
+  const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
+    composeTargetPropertyName("exitUnitsPercentage", targetId),
+  );
+  const exitUnitsPercentages = watch(exitUnitsPercentageFields);
+  const validateCumulativePercentage = () => {
+    const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
+    const propertyNames = keys(exitUnitsPercentages);
+    if (cumulativePercentage > 100) {
+      propertyNames.map((unitsPercentageProperty) => {
+        setError(
+          unitsPercentageProperty,
+          "error",
+          formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
+        );
+      });
+    } else {
+      propertyNames.map((unitsPercentageProperty) => {
+        clearError(unitsPercentageProperty);
+      });
+    }
   };
 
   /**
@@ -220,7 +240,7 @@ const TakeProfitPanel = (props) => {
       setError(
         composeTargetPropertyName("exitUnitsPercentage", targetId),
         "error",
-        "Exit units percentage must be a number.",
+        formatMessage({ id: "terminal.takeprofit.valid.unitspercentage" }),
       );
 
       setValue(unitsProperty, "");
@@ -235,6 +255,7 @@ const TakeProfitPanel = (props) => {
     }
 
     validateExitUnits(event);
+    validateCumulativePercentage();
   };
 
   /**
@@ -253,7 +274,7 @@ const TakeProfitPanel = (props) => {
       setError(
         composeTargetPropertyName("exitUnits", targetId),
         "error",
-        "Exit units must be a number.",
+        formatMessage({ id: "terminal.takeprofit.valid.units" }),
       );
 
       setValue(unitsPercentageProperty, "");
@@ -283,11 +304,19 @@ const TakeProfitPanel = (props) => {
 
     clearError(priceProperty);
     if (limits.price.min && targetPrice < limits.price.min) {
-      setError(priceProperty, "error", `Target price cannot be lower than ${limits.price.min}`);
+      setError(
+        priceProperty,
+        "error",
+        formatMessage({ id: "terminal.takeprofit.limit.minprice" }, { value: limits.price.min }),
+      );
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
-      setError(priceProperty, "error", `Target price cannot be greater than ${limits.price.max}`);
+      setError(
+        priceProperty,
+        "error",
+        formatMessage({ id: "termaxal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
+      );
     }
 
     validateCostLimits(targetId);
@@ -307,11 +336,19 @@ const TakeProfitPanel = (props) => {
 
     clearError(unitsProperty);
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(unitsProperty, "error", `Exit cost cannot be lower than ${limits.cost.min}`);
+      setError(
+        unitsProperty,
+        "error",
+        formatMessage({ id: "terminal.takeprofit.limit.mincost" }, { value: limits.cost.min }),
+      );
     }
 
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(unitsProperty, "error", `Exit cost cannot be greater than ${limits.cost.max}`);
+      setError(
+        unitsProperty,
+        "error",
+        formatMessage({ id: "termaxal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
+      );
     }
   };
 
@@ -330,7 +367,7 @@ const TakeProfitPanel = (props) => {
       setError(
         unitsProperty,
         "error",
-        `Target units to exit cannot be lower than ${limits.amount.min}`,
+        formatMessage({ id: "terminal.takeprofit.limit.minunits" }, { value: limits.amount.min }),
       );
     }
 
@@ -338,7 +375,7 @@ const TakeProfitPanel = (props) => {
       setError(
         unitsProperty,
         "error",
-        `Target units to exit cannot be greater than ${limits.amount.max}`,
+        formatMessage({ id: "termaxal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
       );
     }
   };
@@ -425,6 +462,10 @@ const TakeProfitPanel = (props) => {
             <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
               <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
+                <ProfitTargetStatus
+                  labelId="terminal.status"
+                  profitTarget={profitTargets[Number(targetId)] || null}
+                />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
