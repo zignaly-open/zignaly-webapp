@@ -14,7 +14,6 @@ const Preferences = () => {
 
   return (
     <Box className="preferences" display="flex" flexDirection="column" alignItems="flex-start">
-      {/* <FormGroup> */}
       <FormControlLabel
         control={<ThemeSwitcher full={true} />}
         label={<FormattedMessage id="preferences.darklight" />}
@@ -31,7 +30,6 @@ const Preferences = () => {
         }
         label={<FormattedMessage id="preferences.balance" />}
       />
-      {/* </FormGroup> */}
     </Box>
   );
 };

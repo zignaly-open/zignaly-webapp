@@ -3,7 +3,7 @@ import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, { TableBodyRow } from "mui-datatables";
 import { setDisplayColumn } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";

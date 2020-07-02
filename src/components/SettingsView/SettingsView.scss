@@ -9,6 +9,13 @@
   }
 
   label {
-    margin: 0 0 24px;
+    &:not(.customLabel) {
+      margin: 0 0 24px;
+      align-items: start;
+    }
+
+    > * {
+      margin-bottom: 11px;
+    }
   }
 }

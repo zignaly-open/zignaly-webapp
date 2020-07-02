@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Preferences from "./Preferences";
+import SecuritySettings from "./SecuritySettings";
 import { SubNavModalHeader } from "../SubNavHeader";
 import { navigate } from "@reach/router";
 import GlobalModalHead from "../ConnectExchangeView/GlobalModalHead";
@@ -22,7 +23,7 @@ import GlobalModalHead from "../ConnectExchangeView/GlobalModalHead";
 const SettingsView = ({ onClose }) => {
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
-  const path = currentHash.split("-")[1] || "";
+  const path = currentHash.split("-")[1] || "settings";
 
   /**
    * Handle submit buttton click.
@@ -36,19 +37,19 @@ const SettingsView = ({ onClose }) => {
 
   const tabs = [
     {
-      id: "",
+      id: "settings",
       title: "settings.preferences",
     },
     {
-      id: "security",
+      id: "settings-security",
       title: "security",
     },
     {
-      id: "notifications",
+      id: "settings-notifications",
       title: "settings.notifications",
     },
     {
-      id: "profile",
+      id: "settings-profile",
       title: "settings.profile",
     },
   ];
@@ -57,6 +58,8 @@ const SettingsView = ({ onClose }) => {
     switch (path) {
       default:
         return <Preferences />;
+      case "security":
+        return <SecuritySettings />;
     }
   };
 
@@ -79,7 +82,11 @@ const SettingsView = ({ onClose }) => {
           </Typography>
         }
       />
-      <SubNavModalHeader links={tabs} currentPath={path} onClick={(path) => navigate("#" + path)} />
+      <SubNavModalHeader
+        links={tabs}
+        currentPath={currentHash}
+        onClick={(path) => navigate("#" + path)}
+      />
       <Box className="settingsContent">{renderContent()}</Box>
     </Box>
   );

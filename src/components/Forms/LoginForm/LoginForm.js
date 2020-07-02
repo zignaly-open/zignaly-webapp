@@ -13,6 +13,8 @@ import { isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import { setUserExchanges, setUserData } from "../../../store/actions/user";
 import Captcha from "../../Captcha";
+import PasswordInput from "../../Passwords/PasswordInput";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -129,22 +131,13 @@ const LoginForm = () => {
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="customLabel">Password</label>
-          <FormControl className="customInput" variant="outlined">
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </span>
-                </InputAdornment>
-              }
-              error={!!errors.password}
-              inputRef={register({ required: true })}
-              name="password"
-              type={showPassword ? "text" : "password"}
-            />
-          </FormControl>
+          <PasswordInput
+            label={<FormattedMessage id={"security.password"} />}
+            name="password"
+            //   onChange={handleRepeatPasswordChange}
+            inputRef={register({ required: true })}
+            error={!!errors.password}
+          />
           {errors.password && <span className="errorText">Password cannot be empty</span>}
         </Box>
 

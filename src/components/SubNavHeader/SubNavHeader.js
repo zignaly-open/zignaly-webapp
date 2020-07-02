@@ -68,7 +68,7 @@ export const SubNavModalHeader = ({ links, currentPath, onClick }) => {
         <Link
           className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
           key={index}
-          onClick={() => onClick(item)}
+          onClick={() => onClick(item.id)}
         >
           <FormattedMessage id={item.title} />
         </Link>
