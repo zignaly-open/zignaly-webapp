@@ -247,6 +247,8 @@ const StrategyForm = (props) => {
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
+   * @property {string} [providerId]
+   * @property {string} [providerName]
    */
 
   /**
@@ -257,13 +259,22 @@ const StrategyForm = (props) => {
    */
   const composePositionStrategy = (draftPosition) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
-
-    return {
+    const strategy = {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || currentPrice,
     };
+
+    if (draftPosition.positionSizePercentage) {
+      return assign(strategy, {
+        positionSizePercentage: parseFloat(draftPosition.positionSizePercentage) || 0,
+        providerId: draftPosition.providerId || "",
+        providerName: draftPosition.providerName || "",
+      });
+    }
+
+    return strategy;
   };
 
   /**

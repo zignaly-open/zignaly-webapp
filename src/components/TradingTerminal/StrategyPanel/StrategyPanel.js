@@ -217,7 +217,6 @@ const StrategyPanel = (props) => {
                   validate: validatePositionSizePercentage,
                 })}
                 name="positionSizePercentage"
-                onChange={positionSizeChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">%</div>
