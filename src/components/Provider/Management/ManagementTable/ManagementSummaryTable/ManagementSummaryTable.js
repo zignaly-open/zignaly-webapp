@@ -2,12 +2,12 @@ import React from "react";
 import "./ManagementSummary.scss";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { formatFloat2Dec } from "../../../../utils/format";
-import ManagementSummaryCard from "../ManagementSummaryCard";
+import { formatFloat2Dec } from "../../../../../utils/format";
+import ManagementSummaryCard from "../../ManagementSummaryCard";
 
 /**
  *
- * @typedef {import('../../../../services/tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
+ * @typedef {import('../../../../../services/tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
  */
 
 /**
@@ -19,7 +19,7 @@ import ManagementSummaryCard from "../ManagementSummaryCard";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementSummary = ({ summary }) => {
+const ManagementSummaryTable = ({ summary }) => {
   return (
     <Box
       alignItems="center"
@@ -73,4 +73,4 @@ const ManagementSummary = ({ summary }) => {
   );
 };
 
-export default ManagementSummary;
+export default ManagementSummaryTable;
