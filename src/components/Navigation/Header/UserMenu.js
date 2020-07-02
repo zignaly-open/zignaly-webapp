@@ -77,14 +77,14 @@ const UserMenu = () => {
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={() => showLanguageSelector(!languageSelector)}>
-        <LanguageIcon color="primary" className="icon" />
+        <LanguageIcon className="icon" color="primary" />
         <span className="item">
           <FormattedMessage id="menu.language" />
         </span>
         {languageSelector ? (
-          <ExpandLessIcon color="primary" className="expandIcon" />
+          <ExpandLessIcon className="expandIcon" color="primary" />
         ) : (
-          <ExpandMoreIcon color="primary" className="expandIcon" />
+          <ExpandMoreIcon className="expandIcon" color="primary" />
         )}
       </MenuItem>
       {languageSelector && (

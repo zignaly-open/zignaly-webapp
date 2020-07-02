@@ -5,7 +5,6 @@ import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useDispatch } from "react-redux";
-import LanguageSwitcher from "../../LanguageSwitcher";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";

@@ -61,7 +61,7 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
           <TableCell>&nbsp;</TableCell>
           <TableCell>&nbsp;</TableCell>
           {row.map(
-            /*@ts-ignore */
+            /* @ts-ignore */
             (cell, i2) =>
               cell.id !== "col.provider.subpositions" &&
               storeSettings.displayColumns[persistKey].includes(cell.id) && (

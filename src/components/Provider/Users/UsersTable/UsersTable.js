@@ -146,7 +146,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
           return loading && followerId === val ? (
             <CircularProgress color="primary" size={24} />
           ) : checkIfSuspended(val) ? (
-            <Tooltip title="Enable" placement="top">
+            <Tooltip placement="top" title="Enable">
               <CheckIcon
                 className="cancelIcon"
                 color="primary"
@@ -154,7 +154,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
               />
             </Tooltip>
           ) : (
-            <Tooltip title="Cancel" placement="top">
+            <Tooltip placement="top" title="Cancel">
               <ClearIcon
                 className="cancelIcon"
                 color="primary"
@@ -176,7 +176,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
   const checkIfSuspended = (id) => {
     let found = list.find((item) => item.userId === id);
     if (found) {
-      return found.suspended ? true : false;
+      return !!found.suspended;
     }
     return true;
   };
@@ -201,7 +201,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       followerId: followerId,
-      cancel: actionType === "cancel" ? true : false,
+      cancel: actionType === "cancel",
     };
 
     tradeApi

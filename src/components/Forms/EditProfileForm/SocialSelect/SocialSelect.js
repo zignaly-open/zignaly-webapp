@@ -3,7 +3,7 @@ import "./SocialSelect.scss";
 import { Box, FormControl, Select, MenuItem, TextField } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 /**
  * Social select component to add social networks.
