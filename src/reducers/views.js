@@ -1,6 +1,6 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
-import { GET_PROVIDER, REMOVE_PROVIDER } from "../store/actions/views";
+import { GET_PROVIDER, REMOVE_PROVIDER, SHOW_PROFILE_LOADER } from "../store/actions/views";
 
 /**
  * @typedef {Object} ActionObject
@@ -22,6 +22,9 @@ const views = (state, action) => {
       break;
     case REMOVE_PROVIDER:
       newState.provider = initialState.views.provider;
+      break;
+    case SHOW_PROFILE_LOADER:
+      newState.provider.loading = action.payload;
       break;
 
     default:

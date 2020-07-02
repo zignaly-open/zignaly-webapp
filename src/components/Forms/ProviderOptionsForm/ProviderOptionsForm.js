@@ -125,7 +125,7 @@ const ProviderOptionsForm = ({ provider }) => {
           justifyContent="flex-start"
         >
           {provider.options.customerKey && (
-            <Box className="fieldInputBox" display="flex" flexDirection="column">
+            <Box className="keyInputBox" display="flex" flexDirection="column">
               <label className="customLabel">
                 <FormattedMessage id="signalp.option.apikey" />
               </label>
@@ -374,7 +374,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   name="takeProfitLast"
                 />
                 <label className={"customLabel"}>
-                  <FormattedMessage id="signalp.option.takeprofit.all" />
+                  <FormattedMessage id="signalp.option.takeprofit.last" />
                 </label>
               </Box>
             </Box>
@@ -416,8 +416,13 @@ const ProviderOptionsForm = ({ provider }) => {
                   control={control}
                   defaultValue={provider.quantityPercentage}
                   name="quantityPercentage"
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                 />
+                {errors.quantityPercentage && (
+                  <span className="errorText">
+                    <FormattedMessage id="signalp.option.DCA.error" />
+                  </span>
+                )}
               </Box>
               <Box className="fieldInputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
@@ -437,10 +442,15 @@ const ProviderOptionsForm = ({ provider }) => {
                     />
                   }
                   control={control}
-                  defaultValue={provider.limitReBuys}
+                  defaultValue={provider.limitReBuys ? provider.limitReBuys : 0}
                   name="limitReBuys"
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                 />
+                {errors.limitReBuys && (
+                  <span className="errorText">
+                    <FormattedMessage id="signalp.option.DCA.error" />
+                  </span>
+                )}
               </Box>
             </Box>
           )}
@@ -574,7 +584,7 @@ const ProviderOptionsForm = ({ provider }) => {
                   as={
                     <TextField
                       InputProps={{
-                        endAdornment: <InputAdornment position="end">#</InputAdornment>,
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
                       }}
                       className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
                       error={!!errors.successRate}
@@ -586,8 +596,13 @@ const ProviderOptionsForm = ({ provider }) => {
                   control={control}
                   defaultValue={provider.successRate}
                   name="successRate"
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                 />
+                {errors.successRate && (
+                  <span className="errorText">
+                    <FormattedMessage id="signalp.option.minimumsuccess.error" />
+                  </span>
+                )}
               </Box>
             </Box>
           )}

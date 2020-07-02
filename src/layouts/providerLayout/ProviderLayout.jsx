@@ -1,0 +1,53 @@
+import React from "react";
+import "./ProviderLayout.scss";
+import { Box, CircularProgress } from "@material-ui/core";
+import ProviderHeader from "../../components/Provider/ProviderHeader";
+import FAQ from "../../components/FAQ";
+import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
+
+/**
+ * @typedef {Object} ProviderLayoutProps
+ * @property {Object} children
+ */
+
+/**
+ * Default component props.
+ *
+ * @param {ProviderLayoutProps} props Default component props.
+ * @returns {JSX.Element} Component.
+ */
+const ProviderLayout = ({ children }) => {
+  const storeViews = useStoreViewsSelector();
+  return (
+    <Box
+      alignItems="flex-start"
+      className="providerLayout"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
+      {storeViews.provider.loading && (
+        <Box
+          alignItems="center"
+          className="profileLoadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={50} />
+        </Box>
+      )}
+      {!storeViews.provider.loading && (
+        <>
+          <ProviderHeader />
+          <Box className="pageContent">{children}</Box>
+        </>
+      )}
+      <Box className="faq">
+        <FAQ />
+      </Box>
+    </Box>
+  );
+};
+
+export default ProviderLayout;

@@ -6,7 +6,7 @@ import {
   SET_DISPLAY_COLUMN,
   SELECT_THEME,
   UNSET_SELECTED_EXCHANGE,
-  SET_SHOW_BALANCE,
+  TOGGLE_BALANCE_BOX,
 } from "../store/actions/settings";
 
 /**
@@ -36,8 +36,8 @@ const settings = (state, action) => {
     case SELECT_THEME:
       newState.darkStyle = action.payload;
       break;
-    case SET_SHOW_BALANCE:
-      newState.showBalance = action.payload;
+    case TOGGLE_BALANCE_BOX:
+      newState.balanceBox = action.payload;
       break;
     case SET_SELECTED_EXCHANGE:
       newState.selectedExchange = action.payload;

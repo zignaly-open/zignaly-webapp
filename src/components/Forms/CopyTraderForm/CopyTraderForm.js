@@ -104,13 +104,13 @@ const CopyTraderForm = ({ provider, onClose }) => {
         ) {
           return true;
         }
-        let data = provider.exchanges.length > 1 ? provider.exchanges[1] : provider.exchanges[0];
+        let exchangeName = prepareExchangeName();
         let msg = intl.formatMessage(
           { id: "copyt.copy.error1" },
           {
             selected: `${storeSettings.selectedExchange.internalName.toUpperCase()}`,
-            exchange: `${storeSettings.selectedExchange.exchangeName.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
-            required: `${data.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
+            exchange: `${storeSettings.selectedExchange.name.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
+            required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
           },
         );
         setAlert(msg);
@@ -122,6 +122,21 @@ const CopyTraderForm = ({ provider, onClose }) => {
       return false;
     }
     return true;
+  };
+
+  /**
+   * @returns {String} Exchange name to display in the error.
+   */
+  const prepareExchangeName = () => {
+    let name = "";
+    for (let a = 0; a < provider.exchanges.length; a++) {
+      if (provider.exchanges[a + 1]) {
+        name += `${provider.exchanges[a]}/`;
+      } else {
+        name += `${provider.exchanges[a]}`;
+      }
+    }
+    return name;
   };
 
   /**

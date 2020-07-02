@@ -97,7 +97,8 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
     {
       name: "freeBNB",
-      label: "col.freeBNB",
+      /* @ts-ignore */
+      label: { id: "col.freequote", quote: "BNB" },
       options: {
         display: "true",
         viewColumns: true,
@@ -106,7 +107,8 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
     {
       name: "freeETH",
-      label: "col.freeETH",
+      /* @ts-ignore */
+      label: { id: "col.freequote", quote: "ETH" },
       options: {
         display: "true",
         viewColumns: true,
@@ -119,28 +121,34 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     for (let a = 0; a < quotes.length; a++) {
       let obj = {
         name: "",
-        label: "",
+        label: { id: "", quote: "" },
         options: {
           customBodyRender: formatFloat,
         },
       };
       if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "free" + quotes[a];
-        obj.label = "col.free" + quotes[a];
+        obj.label.id = "col.freequote";
+        /* @ts-ignore */
+        obj.label.quote = quotes[a];
+        /* @ts-ignore */
         columns.push(obj);
       }
     }
     for (let a = 0; a < quotes.length; a++) {
       let obj = {
         name: "",
-        label: "",
+        label: { id: "", quote: "" },
         options: {
           customBodyRender: formatFloat,
         },
       };
       if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
         obj.name = "locked" + quotes[a];
-        obj.label = "col.locked" + quotes[a];
+        obj.label.id = "col.lockedquote";
+        /* @ts-ignore */
+        obj.label.quote = quotes[a];
+        /* @ts-ignore */
         columns.push(obj);
       }
     }

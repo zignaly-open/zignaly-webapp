@@ -39,7 +39,8 @@ const ProviderHeaderActions = () => {
         <Typography variant="h1">{storeViews.provider.name}</Typography>
       </Box>
       <FollowProviderButton provider={storeViews.provider} />
-      <TrialPeriod provider={storeViews.provider} />
+
+      {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
 
       <Typography variant="h4">
         <FormattedMessage id="copyt.copiers" />
@@ -51,10 +52,7 @@ const ProviderHeaderActions = () => {
         <b>{`$${storeViews.provider.price}/Month`}</b>
       </Typography>
 
-      {storeViews.provider.internalPaymentInfo &&
-        storeViews.provider.internalPaymentInfo.merchantId && (
-          <PaymentButton provider={storeViews.provider} />
-        )}
+      {storeViews.provider.internalPaymentInfo && <PaymentButton provider={storeViews.provider} />}
     </Box>
   );
 };

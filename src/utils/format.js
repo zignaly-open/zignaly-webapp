@@ -164,7 +164,10 @@ export const formatDuration = (time) => {
  * @returns {Number} Reverted percentage.
  */
 export const revertPercentageRange = (percentage) => {
-  return percentage === 1 ? 100 : 100 * (1 - percentage);
+  // TODO: Remove this function after backend return raw percentages.
+  // This is commented so Tole can work on the backend and validate in the UI.
+  // return percentage === 1 ? 100 : 100 * (1 - percentage);
+  return percentage;
 };
 
 /**
@@ -176,6 +179,9 @@ export const revertPercentageRange = (percentage) => {
  * @returns {String} Formatted date.
  */
 export const formatDate = (date, format) => {
+  if (typeof date === "string") {
+    date = parseFloat(date);
+  }
   return moment(new Date(date)).format(format);
 };
 
