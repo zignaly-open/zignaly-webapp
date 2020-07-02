@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormContext, useForm } from "react-hook-form";
 import { size } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
@@ -160,69 +161,91 @@ const TradingView = () => {
   };
 
   const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
+  const currentPrice = lastPrice ? parseFloat(lastPrice[1]).toFixed(8) : "";
+  const methods = useForm({
+    mode: "onChange",
+    defaultValues: {
+      entryType: "LONG",
+      leverage: 1,
+      positionSize: "",
+      price: currentPrice,
+      realInvestment: "",
+      stopLossPrice: "",
+      trailingStopPrice: "",
+      units: "",
+      dcaTargetPricePercentage1: "",
+    },
+  });
 
   return (
-    <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-      {!isLoading && (
-        <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
-          <Box
-            alignContent="left"
-            className="symbolsSelector"
-            display="flex"
-            flexDirection="column"
-          >
-            <FormattedMessage id="terminal.browsecoins" />
-            <CustomSelect
-              label=""
-              onChange={handleSymbolChange}
-              options={symbolsOptions}
-              search={true}
-              value={selectedSymbol}
-            />
-          </Box>
-          {size(ownCopyTradersProviders) > 1 && (
+    <FormContext {...methods}>
+      <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+        {!isLoading && (
+          <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
             <Box
               alignContent="left"
-              className="providersSelector"
+              className="symbolsSelector"
               display="flex"
               flexDirection="column"
             >
-              <FormattedMessage id="terminal.providers" />
+              <FormattedMessage id="terminal.browsecoins" />
               <CustomSelect
                 label=""
-                onChange={() => {}}
-                options={ownCopyTradersProviders}
+                onChange={handleSymbolChange}
+                options={symbolsOptions}
                 search={true}
-                value={selectedProviderValue}
+                value={selectedSymbol}
               />
             </Box>
-          )}
-        </Box>
-      )}
-      <Box
-        bgcolor="grid.content"
-        className="tradingViewContainer"
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        width={1}
-      >
-        {isLoading && (
-          <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
-            <CircularProgress disableShrink />
+            {size(ownCopyTradersProviders) > 1 && (
+              <Box
+                alignContent="left"
+                className="providersSelector"
+                display="flex"
+                flexDirection="column"
+              >
+                <FormattedMessage id="terminal.providers" />
+                <CustomSelect
+                  label=""
+                  onChange={() => {}}
+                  options={ownCopyTradersProviders}
+                  search={true}
+                  value={selectedProviderValue}
+                />
+              </Box>
+            )}
           </Box>
         )}
-        <Box className="tradingViewChart" id="trading_view_chart" />
-        {!isLoading && !isLastPriceLoading && (
-          <StrategyForm
-            dataFeed={dataFeed}
-            lastPriceCandle={lastPrice}
-            selectedSymbol={selectedSymbol}
-            tradingViewWidget={tradingViewWidget}
-          />
-        )}
+        <Box
+          bgcolor="grid.content"
+          className="tradingViewContainer"
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+          width={1}
+        >
+          {isLoading && (
+            <Box
+              className="loadProgress"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+            >
+              <CircularProgress disableShrink />
+            </Box>
+          )}
+          <Box className="tradingViewChart" id="trading_view_chart" />
+          {!isLoading && !isLastPriceLoading && (
+            <StrategyForm
+              dataFeed={dataFeed}
+              lastPriceCandle={lastPrice}
+              selectedSymbol={selectedSymbol}
+              tradingViewWidget={tradingViewWidget}
+            />
+          )}
+        </Box>
       </Box>
-    </Box>
+    </FormContext>
   );
 };
 
