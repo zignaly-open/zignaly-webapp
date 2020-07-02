@@ -217,7 +217,7 @@ const StrategyPanel = (props) => {
                 onChange={positionSizeChange}
                 placeholder={"0"}
               />
-              <div className="currencyBox">{symbolData.quote}</div>
+              <div className="currencyBox">%</div>
             </Box>
             <FormHelperText>
               <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
