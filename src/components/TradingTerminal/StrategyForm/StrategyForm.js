@@ -269,7 +269,7 @@ const StrategyForm = (props) => {
     if (draftPosition.positionSizePercentage) {
       return assign(strategy, {
         positionSizePercentage: parseFloat(draftPosition.positionSizePercentage) || 0,
-        providerId: draftPosition.providerId || "",
+        providerId: draftPosition.providerService || "",
         providerName: draftPosition.providerName || "",
       });
     }
