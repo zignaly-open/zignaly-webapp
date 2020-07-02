@@ -14,6 +14,30 @@ import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/providerLayout";
 
 /**
+ * @typedef {import("@reach/router").RouteComponentProps} RouteComponentProps
+ * @typedef {import("react").FunctionComponent} FunctionComponent
+ */
+
+/**
+ * @typedef {Object} RouteCustomProps
+ * @property {FunctionComponent} component
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {RouteCustomProps & RouteComponentProps} ExtendedRouteComponentProps
+ */
+
+/**
+ * @param {ExtendedRouteComponentProps} props Route props.
+ * @returns {JSX.Element} Component element.
+ */
+function CopyTraderRoute(props) {
+  const { /** @type {FunctionComponent} */ component, ...others } = props;
+  return <>{component(others)}</>;
+}
+
+/**
  *
  * @typedef {Object} LocationObject
  * @property {String} pathname
@@ -58,18 +82,33 @@ const CopyTraders = ({ location }) => {
   return (
     <ProviderLayout>
       <Router>
-        <Profile path={withPrefix("/copyTraders/:providerId/profile")} providerId={providerId} />
-        <Edit path={withPrefix("/copyTraders/:providerId/edit")} providerId={providerId} />
-        <Management
+        <CopyTraderRoute
+          component={Profile}
+          path={withPrefix("/copyTraders/:providerId/profile")}
+          providerId={providerId}
+        />
+        <CopyTraderRoute
+          component={Edit}
+          path={withPrefix("/copyTraders/:providerId/edit")}
+          providerId={providerId}
+        />
+        <CopyTraderRoute
+          component={Management}
           path={withPrefix("/copyTraders/:providerId/management")}
           providerId={providerId}
         />
-        <Analytics
+        <CopyTraderRoute
+          component={Analytics}
           path={withPrefix("/copyTraders/:providerId/analytics")}
           providerId={providerId}
         />
-        <Users path={withPrefix("/copyTraders/:providerId/users")} providerId={providerId} />
-        <Positions
+        <CopyTraderRoute
+          component={Users}
+          path={withPrefix("/copyTraders/:providerId/users")}
+          providerId={providerId}
+        />
+        <CopyTraderRoute
+          component={Positions}
           path={withPrefix("/copyTraders/:providerId/positions")}
           providerId={providerId}
         />
