@@ -56,7 +56,12 @@ const TradingViewHeader = (props) => {
   const providerId = watch("providerService");
   const providerService = ownCopyTradersProviders.find(
     (provider) => provider.providerId === providerId,
-  ) || { providerPayableBalance: 0, providerName: "Manual Trading", providerId: "1" };
+  ) || {
+    providerPayableBalance: 0,
+    providerConsumedBalance: 0,
+    providerName: "Manual Trading",
+    providerId: "1",
+  };
 
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
@@ -89,6 +94,12 @@ const TradingViewHeader = (props) => {
             ref={register}
             type="hidden"
             value={providerService.providerPayableBalance}
+          />
+          <input
+            name="providerConsumedBalance"
+            ref={register}
+            type="hidden"
+            value={providerService.providerConsumedBalance || 0}
           />
           <input
             name="providerName"

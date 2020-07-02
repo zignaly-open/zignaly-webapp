@@ -86,7 +86,8 @@ const StrategyPanel = (props) => {
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
-  const providerBalance = watch("providerPayableBalance");
+  const providerAllocatedBalance = watch("providerPayableBalance");
+  const providerConsumedBalance = watch("providerConsumedBalance");
   const isCopyProvider = providerService && providerService !== "1";
 
   return (
@@ -221,7 +222,7 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">%</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {providerBalance}
+              Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
             </FormHelperText>
             {errors.positionSize && (
               <span className="errorText">{errors.positionSize.message}</span>
