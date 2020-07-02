@@ -1,1 +1,1 @@
-export { default } from "./withProviderLayout";
+export { default } from "./ProviderLayout";

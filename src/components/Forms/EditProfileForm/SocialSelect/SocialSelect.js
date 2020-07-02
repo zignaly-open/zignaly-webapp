@@ -3,6 +3,7 @@ import "./SocialSelect.scss";
 import { Box, FormControl, Select, MenuItem, TextField } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { useIntl } from "react-intl";
 
 /**
  * Social select component to add social networks.
@@ -21,6 +22,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 const SocialSelect = ({ onChange, defaultValue, onError }) => {
   const [values, setValues] = useState([socialObject]);
   const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram", "Email"];
+  const intl = useIntl();
 
   const initializeSocials = () => {
     if (defaultValue && defaultValue.length) {
@@ -28,7 +30,7 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
         defaultValue[a].id = Math.random();
         defaultValue[a].delete = true;
       }
-      defaultValue[0].delete = false;
+      defaultValue[defaultValue.length - 1].delete = false;
       setValues(defaultValue);
     }
   };
@@ -62,7 +64,7 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
     let list = [...values];
     field.delete = true;
     field.id = Math.random();
-    list.push(field);
+    list.unshift(field);
     setValues(list);
   };
 
@@ -75,7 +77,7 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
   const removeField = (id) => {
     let list = [...values];
     let index = list.findIndex((item) => item.id === id);
-    if (index) {
+    if (index !== -1) {
       list.splice(index, 1);
     }
     setValues(list);
@@ -139,7 +141,7 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
               name="input"
               onBlur={() => validateFields(obj.id)}
               onChange={(e) => handleChange(e, obj.id)}
-              placeholder="url"
+              placeholder={intl.formatMessage({ id: "srv.edit.urlplaceholder" })}
               value={obj.link}
               variant="outlined"
             />

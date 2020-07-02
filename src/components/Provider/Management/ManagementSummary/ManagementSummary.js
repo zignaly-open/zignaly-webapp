@@ -6,11 +6,7 @@ import { formatFloat2Dec } from "../../../../utils/format";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 
 /**
- *
  * @typedef {import('../../../../services/tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
- */
-
-/**
  * @typedef {Object} DefaultProps
  * @property {ProviderDataPointsEntity} summary Balance
  */

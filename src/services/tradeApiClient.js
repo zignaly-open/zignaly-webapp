@@ -30,6 +30,7 @@ import {
   providerExchangeSettingsResponseTransform,
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,
+  managementPositionsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -833,6 +834,7 @@ class TradeApiClient {
 
     return responseData;
   }
+
   /**
    * Convert small balances to BNB
    *
@@ -846,6 +848,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return convertAssetResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {GetProviderFollowersPayload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerManagementPositions(payload) {
+    const endpointPath = "/fe/api.php?action=getCopyTradingPositions";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return managementPositionsResponseTransform(responseData);
   }
 }
 

@@ -4,21 +4,16 @@ import "./PrivateAreaLayout.scss";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline, Box, Hidden } from "@material-ui/core";
 import themeData from "../../services/theme";
-import { useDispatch } from "react-redux";
 import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
-import Modal from "../../components/Modal";
 import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import userStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
-import { openSettingsView } from "../../store/actions/ui";
 import withPageContext from "../../pageContext/withPageContext";
-import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 
@@ -36,9 +31,7 @@ import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
-  const storeModal = userStoreUIModalSelector();
   const storeLoader = useStoreUILoaderSelector();
-  const dispatch = useDispatch();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
@@ -51,14 +44,6 @@ const PrivateAreaLayout = (props) => {
         <SuccessAlert />
         {storeLoader && <Loader />}
         <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
-        <Modal
-          onClose={() => dispatch(openSettingsView(false))}
-          persist={false}
-          size="large"
-          state={storeModal.settingsView}
-        >
-          <SettingsView onClose={() => dispatch(openSettingsView(false))} />
-        </Modal>
         <Box bgcolor="background.default" className={"app"}>
           <Hidden xsDown>
             <Header />
