@@ -54,6 +54,7 @@ const StrategyPanel = (props) => {
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
+    validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData);
 
   const getQuoteBalance = () => {
@@ -213,7 +214,7 @@ const StrategyPanel = (props) => {
                 className="outlineInput"
                 inputRef={register({
                   required: "Position size percentage is required.",
-                  validate: validatePositionSize,
+                  validate: validatePositionSizePercentage,
                 })}
                 name="positionSizePercentage"
                 onChange={positionSizeChange}
