@@ -85,6 +85,7 @@ export const colors = {
   darkGrey: "#808080",
   blue: "#017aff",
   green: "#08a441",
+  red: "#b52a00",
   yellow: "#f6ad3f",
   lightBlack: "#27273f",
   offWhite: "#fbfafc",

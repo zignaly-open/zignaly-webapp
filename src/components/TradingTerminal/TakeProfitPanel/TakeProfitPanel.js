@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
+import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
@@ -91,7 +92,7 @@ const TakeProfitPanel = (props) => {
   };
 
   const fieldsDisabled = getFieldsDisabledStatus();
-
+  const profitTargets = positionEntity ? positionEntity.takeProfitTargets : {};
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
       targetIndexes.forEach((index) => {
@@ -461,6 +462,10 @@ const TakeProfitPanel = (props) => {
             <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
               <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
+                <ProfitTargetStatus
+                  labelId="terminal.status"
+                  profitTarget={profitTargets[Number(targetId)] || null}
+                />
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
