@@ -41,7 +41,9 @@ rules:
   no-trailing-zero: 1
   no-transition-all: 1
   no-url-protocols: 1
-  no-vendor-prefixes: 1
+  no-vendor-prefixes:
+    - 1
+    - ignore-non-standard: true
   no-warn: 1
 
   # Nesting

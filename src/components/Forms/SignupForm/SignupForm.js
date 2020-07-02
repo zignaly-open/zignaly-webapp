@@ -84,7 +84,7 @@ const SignupForm = () => {
           />
         </Box>
 
-        <Passwords formMethods={formMethods} />
+        <Passwords edit={false} formMethods={formMethods} />
 
         <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">

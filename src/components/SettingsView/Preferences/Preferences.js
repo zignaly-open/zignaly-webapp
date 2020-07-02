@@ -13,11 +13,12 @@ const Preferences = () => {
 
   return (
     <Box alignItems="flex-start" className="preferences" display="flex" flexDirection="column">
-      <FormControlLabel
-        control={<ThemeSwitcher full={true} />}
-        label={<FormattedMessage id="preferences.darklight" />}
-        labelPlacement="top"
-      />
+      <Box>
+        <label className="customLabel">
+          <FormattedMessage id="preferences.darklight" />
+        </label>
+        <ThemeSwitcher full={true} />
+      </Box>
       <FormControlLabel
         control={
           <Checkbox
