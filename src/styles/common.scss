@@ -140,16 +140,6 @@ body {
   }
 }
 
-.passwordStrengthBox {
-  left: -20px;
-  z-index: 1000;
-
-  @media only screen and (max-width: 600px) {
-    left: -50px;
-    top: -100px;
-  }
-}
-
 .pointer {
   cursor: pointer;
 }

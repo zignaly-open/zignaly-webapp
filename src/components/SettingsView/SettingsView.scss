@@ -8,14 +8,7 @@
     padding: 0 24px 32px;
   }
 
-  label {
-    &:not(.customLabel) {
-      align-items: start;
-      margin: 0 0 24px;
-    }
-
-    > * {
-      margin-bottom: 11px;
-    }
+  .inputBox {
+    margin-bottom: 24px;
   }
 }

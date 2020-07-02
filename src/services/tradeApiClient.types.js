@@ -684,6 +684,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UpdatePasswordPayload
+ * @property {string} password
+ * @property {string} newPassword
+ * @property {string} repeatPassword
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

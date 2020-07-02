@@ -77,6 +77,7 @@ import {
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
  * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
  * @typedef {import('./tradeApiClient.types').CancelSubscriptionPayload} CancelSubscriptionPayload
+ * @typedef {import('./tradeApiClient.types').UpdatePasswordPayload} UpdatePasswordPayload
  *
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  */
@@ -833,6 +834,7 @@ class TradeApiClient {
 
     return responseData;
   }
+
   /**
    * Convert small balances to BNB
    *
@@ -846,6 +848,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return convertAssetResponseTransform(responseData);
+  }
+
+  /**
+   * Change password.
+   *
+   * @param {UpdatePasswordPayload} payload Change password payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async updatePassword(payload) {
+    const endpointPath = "/fe/api.php?action=changePassword";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

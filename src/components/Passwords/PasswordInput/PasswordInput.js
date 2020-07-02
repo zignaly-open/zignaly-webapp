@@ -5,7 +5,7 @@ import {
   Box,
   Typography,
   Checkbox,
-  FormControlLabel,
+  FormControl,
   OutlinedInput,
   InputAdornment,
 } from "@material-ui/core";
@@ -30,29 +30,26 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
  * @param {PasswordInputPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const PasswordInput = ({ label, others }) => {
+const PasswordInput = ({ label, ...others }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <FormControlLabel
-      control={
-        <OutlinedInput
-          className="customInput"
-          endAdornment={
-            <InputAdornment position="end">
-              <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </span>
-            </InputAdornment>
-          }
-          //   inputRef={register({ required: true })}
-          type={showPassword ? "text" : "password"}
-          {...others}
-        />
-      }
-      label={label}
-      labelPlacement="top"
-    />
+    <FormControl fullWidth={true}>
+      <label className="customLabel">{label}</label>
+      <OutlinedInput
+        className="customInput"
+        endAdornment={
+          <InputAdornment position="end">
+            <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </span>
+          </InputAdornment>
+        }
+        //   inputRef={register({ required: true })}
+        type={showPassword ? "text" : "password"}
+        {...others}
+      />
+    </FormControl>
   );
 };
 

@@ -1,9 +1,10 @@
 .securitySettings {
   margin-top: 15px;
   width: 216px;
+  position: relative;
 
-  .inputBox {
-    margin-bottom: 24px;
+  form {
+    width: 100%;
   }
 
   img {
@@ -11,5 +12,17 @@
     height: 24px;
     margin: 34px -24px 0 8px;
     width: 24px;
+  }
+
+  .inputBox,
+  .passwordBox {
+    > div {
+      width: 100%;
+    }
+  }
+
+  .customButton {
+    min-width: 100%;
+    margin: 8px 0 56px;
   }
 }
