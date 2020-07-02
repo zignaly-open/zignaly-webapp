@@ -13,8 +13,8 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import CheckIcon from "@material-ui/icons/Check";
-import ClearIcon from "@material-ui/icons/Clear";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -147,19 +147,14 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
             <CircularProgress color="primary" size={24} />
           ) : checkIfSuspended(val) ? (
             <Tooltip placement="top" title="Enable">
-              <CheckIcon
-                className="cancelIcon"
-                color="primary"
+              <AddCircleOutlineIcon
+                className="cancelIcon green"
                 onClick={() => confirmEnable(val)}
               />
             </Tooltip>
           ) : (
             <Tooltip placement="top" title="Cancel">
-              <ClearIcon
-                className="cancelIcon"
-                color="primary"
-                onClick={() => confirmCancel(val)}
-              />
+              <HighlightOffIcon className="cancelIcon red" onClick={() => confirmCancel(val)} />
             </Tooltip>
           );
         },

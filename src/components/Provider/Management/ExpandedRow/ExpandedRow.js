@@ -36,7 +36,7 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
     let transformed = composeManagementPositionsDataTable(expanded, confirmAction);
     let { data, columns } = transformed;
     for (let a = 0; a < expanded.length; a++) {
-      let transformedList = [];
+      let transformedRow = [];
       for (let b = 0; b < columns.length; b++) {
         /**
          * @type {TranformedObject}
@@ -45,9 +45,9 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
         obj.id = columns[b].name;
         /* @ts-ignore */
         obj.data = data[a][b];
-        transformedList.push(obj);
+        transformedRow.push(obj);
       }
-      newList[a] = transformedList;
+      newList[a] = transformedRow;
     }
     setList([...newList]);
   };
