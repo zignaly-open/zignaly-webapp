@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormContext, useForm } from "react-hook-form";
+import { Controller, FormContext, useForm } from "react-hook-form";
 import { size } from "lodash";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import CustomSelect from "../../CustomSelect/CustomSelect";
@@ -160,7 +160,7 @@ const TradingView = () => {
     }
   };
 
-  const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].label : "";
+  const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].val : "";
   const currentPrice = lastPrice ? parseFloat(lastPrice[1]).toFixed(8) : "";
   const methods = useForm({
     mode: "onChange",
@@ -176,6 +176,8 @@ const TradingView = () => {
       dcaTargetPricePercentage1: "",
     },
   });
+
+  const { control } = methods;
 
   return (
     <FormContext {...methods}>
@@ -205,12 +207,13 @@ const TradingView = () => {
                 flexDirection="column"
               >
                 <FormattedMessage id="terminal.providers" />
-                <CustomSelect
-                  label=""
-                  onChange={() => {}}
-                  options={ownCopyTradersProviders}
-                  search={true}
-                  value={selectedProviderValue}
+                <Controller
+                  as={
+                    <CustomSelect label="" onChange={() => {}} options={ownCopyTradersProviders} />
+                  }
+                  control={control}
+                  defaultValue={selectedProviderValue}
+                  name="providerService"
                 />
               </Box>
             )}

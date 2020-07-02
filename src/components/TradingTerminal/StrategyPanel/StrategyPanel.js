@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -85,6 +85,9 @@ const StrategyPanel = (props) => {
 
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
+  const providerService = watch("providerService");
+  console.log("entryType: ", entryType);
+  console.log("providerService: ", providerService);
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -172,7 +175,10 @@ const StrategyPanel = (props) => {
           </FormControl>
         )}
         <FormControl>
-          <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.position.size" />
+          <HelperLabel
+            descriptionId="terminal.position.size.help"
+            labelId="terminal.position.size"
+          />
           <Box alignItems="center" display="flex">
             <OutlinedInput
               className="outlineInput"
@@ -191,6 +197,33 @@ const StrategyPanel = (props) => {
           </FormHelperText>
           {errors.positionSize && <span className="errorText">{errors.positionSize.message}</span>}
         </FormControl>
+        {providerService !== 1 && (
+          <FormControl>
+            <HelperLabel
+              descriptionId="terminal.position.sizepercentage.help"
+              labelId="terminal.position.sizepercentage"
+            />
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register({
+                  required: "Position size percentage is required.",
+                  validate: validatePositionSize,
+                })}
+                name="positionSizePercentage"
+                onChange={positionSizeChange}
+                placeholder={"0"}
+              />
+              <div className="currencyBox">{symbolData.quote}</div>
+            </Box>
+            <FormHelperText>
+              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+            </FormHelperText>
+            {errors.positionSize && (
+              <span className="errorText">{errors.positionSize.message}</span>
+            )}
+          </FormControl>
+        )}
         <FormControl>
           <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
           <Box alignItems="center" display="flex">
@@ -233,4 +266,4 @@ const StrategyPanel = (props) => {
   );
 };
 
-export default React.memo(StrategyPanel);
+export default StrategyPanel;
