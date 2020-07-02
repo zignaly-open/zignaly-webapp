@@ -78,6 +78,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerName
  * @property {string} exchangeName
  * @property {string} exchangeInternalId
+ * @property {number} [positionSizePercentage]
+ * @property {string} [providerId]
+ * @property {string} [providerName]
  */
 
 /**
