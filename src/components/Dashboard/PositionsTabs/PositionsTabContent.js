@@ -6,6 +6,7 @@ import PositionsTable from "../PositionsTable";
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {Object} PositionsTabContentProps
  * @property {PositionsCollectionType} type
+ * @property {Boolean} [isProfile]
  */
 
 /**
@@ -16,11 +17,11 @@ import PositionsTable from "../PositionsTable";
  */
 
 const PositionsTabContent = (props) => {
-  const { type } = props;
+  const { type, isProfile } = props;
 
   return (
     <Box className="tabPanel">
-      <PositionsTable type={type} />
+      <PositionsTable type={type} isProfile={isProfile} />
     </Box>
   );
 };

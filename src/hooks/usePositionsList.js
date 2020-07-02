@@ -10,7 +10,7 @@ import { showErrorAlert } from "../store/actions/ui";
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {"open" | "closed" | "log"} PositionsCollectionType
+ * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  */
 
 /**

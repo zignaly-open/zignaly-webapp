@@ -5,7 +5,18 @@ import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
 import { navigate } from "gatsby";
 
-const NoPositions = () => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {Boolean} [isProfile]
+ */
+
+/**
+ * Component displayed when there are no positions.
+ *
+ * @param {DefaultProps} props Default component props.
+ * @returns {JSX.Element} JSX component.
+ */
+const NoPositions = ({ isProfile }) => {
   const redirect = () => {
     navigate("/copyTraders/browse");
   };
@@ -21,9 +32,11 @@ const NoPositions = () => {
       <Typography variant="h3">
         <FormattedMessage id="dashboard.positions.nopositions" />
       </Typography>
-      <CustomButton className="submitButton" onClick={redirect}>
-        <FormattedMessage id="dashboard.browsetraders" />
-      </CustomButton>
+      {!isProfile && (
+        <CustomButton className="submitButton" onClick={redirect}>
+          <FormattedMessage id="dashboard.browsetraders" />
+        </CustomButton>
+      )}
     </Box>
   );
 };

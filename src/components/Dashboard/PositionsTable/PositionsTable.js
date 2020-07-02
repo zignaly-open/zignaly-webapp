@@ -28,6 +28,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
+ * @property {Boolean} [isProfile]
  */
 
 /**
@@ -37,7 +38,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type, positionEntity = null } = props;
+  const { type, isProfile, positionEntity = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type, positionEntity);
@@ -145,6 +146,13 @@ const PositionsTable = (props) => {
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
+    } else if (type === "profileOpen") {
+      dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+      if (storeSettings.selectedExchange.exchangeType === "futures") {
+        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+      }
+    } else if (type === "profileClosed") {
+      dataTable = composeClosePositionsDataTable(positionsFiltered);
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
     }
@@ -162,6 +170,10 @@ const PositionsTable = (props) => {
   const embedFilters = () => {
     // Don't display filters on single position display.
     if (positionEntity) {
+      return null;
+    }
+
+    if (isProfile) {
       return null;
     }
 
@@ -185,7 +197,7 @@ const PositionsTable = (props) => {
       />
 
       {isEmpty(positionsAll) ? (
-        <NoPositions />
+        <NoPositions isProfile={isProfile} />
       ) : (
         <Box className={tableClass} display="flex" flexDirection="column" width={1}>
           <Table

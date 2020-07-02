@@ -6,9 +6,15 @@ import TabsMenu from "./TabsMenu";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {Object} DefaultProps
+ * @property {Boolean} [isProfile]
  */
 
-const PositionsTabs = () => {
+/**
+ *
+ * @param {DefaultProps} props
+ */
+const PositionsTabs = ({ isProfile }) => {
   const [tabValue, setTabValue] = useState(0);
 
   /**
@@ -30,6 +36,21 @@ const PositionsTabs = () => {
   };
 
   /**
+   * Map tab index to positions collection type.
+   *
+   * @returns {PositionsCollectionType} Collection type.
+   */
+  const mapProfileIndexToCollectionType = () => {
+    switch (tabValue) {
+      case 1:
+        return "profileClosed";
+
+      default:
+        return "profileOpen";
+    }
+  };
+
+  /**
    * Event handler to change tab value.
    *
    * @param {React.ChangeEvent<{checked: boolean}>} event Tab index to set active.
@@ -40,7 +61,7 @@ const PositionsTabs = () => {
     setTabValue(val);
   };
 
-  const selectedType = mapIndexToCollectionType();
+  const selectedType = isProfile ? mapProfileIndexToCollectionType() : mapIndexToCollectionType();
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">
@@ -51,9 +72,9 @@ const PositionsTabs = () => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <TabsMenu changeTab={changeTab} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} isProfile={isProfile} tabValue={tabValue} />
       </Box>
-      <PositionsTabContent type={selectedType} />
+      <PositionsTabContent type={selectedType} isProfile={isProfile} />
     </Box>
   );
 };

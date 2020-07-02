@@ -9,6 +9,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {Object} DefaultProps
  * @property {Number} tabValue
  * @property {TabTypeMap["props"]["onChange"]} changeTab
+ * @property {Boolean} [isProfile]
  */
 
 /**
@@ -17,7 +18,7 @@ import { FormattedMessage } from "react-intl";
  */
 
 const TabsMenu = (props) => {
-  const { changeTab, tabValue } = props;
+  const { changeTab, tabValue, isProfile } = props;
 
   return (
     <Tabs
@@ -38,10 +39,12 @@ const TabsMenu = (props) => {
         classes={{ selected: "selected" }}
         label={<FormattedMessage id="dashboard.positions.closed" />}
       />
-      <Tab
-        classes={{ selected: "selected" }}
-        label={<FormattedMessage id="dashboard.positions.log" />}
-      />
+      {!isProfile && (
+        <Tab
+          classes={{ selected: "selected" }}
+          label={<FormattedMessage id="dashboard.positions.log" />}
+        />
+      )}
     </Tabs>
   );
 };
