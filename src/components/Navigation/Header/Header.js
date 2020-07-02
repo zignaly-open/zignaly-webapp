@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Header.scss";
 import { Box, Grow, Typography, Menu } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
@@ -14,6 +13,9 @@ import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { toggleBalanceBox } from "../../../store/actions/settings";
+import "./Header.scss";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
