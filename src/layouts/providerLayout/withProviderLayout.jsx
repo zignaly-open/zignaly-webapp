@@ -29,7 +29,7 @@ const withProviderLayout = ({ children }) => {
       {storeViews.provider.loading && (
         <Box
           alignItems="center"
-          className="loadingBox"
+          className="profileLoadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"

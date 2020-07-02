@@ -64,7 +64,7 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
    * @returns {void} None.
    */
   const increment = () => {
-    if (days) {
+    if (days !== 100) {
       setDays(days + 1);
     }
   };
@@ -75,7 +75,7 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
    * @returns {void} None.
    */
   const decrement = () => {
-    if (days) {
+    if (days !== -100) {
       setDays(days - 1);
     }
   };
@@ -121,7 +121,7 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
         <Slider
           className="sliderInput"
           max={100}
-          min={1}
+          min={-100}
           onChange={handleDaysChange}
           step={1}
           value={days}

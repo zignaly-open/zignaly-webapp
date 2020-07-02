@@ -176,6 +176,9 @@ export const revertPercentageRange = (percentage) => {
  * @returns {*} Reverted percentage.
  */
 export const formatDate = (date, format) => {
+  if (typeof date === "string") {
+    date = parseFloat(date);
+  }
   return moment(new Date(date)).format(format);
 };
 

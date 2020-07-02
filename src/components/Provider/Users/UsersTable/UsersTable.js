@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./UsersTable.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
 import EditIcon from "../../../../images/ct/edit.svg";
-import CancelIcon from "@material-ui/icons/Cancel";
 import Modal from "../../../Modal";
 import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
 import { formatDate } from "../../../../utils/format";
@@ -14,11 +13,13 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
 
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
- * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersListEntity} ProviderFollowersListEntity
  */
 
 /**
@@ -27,7 +28,7 @@ import { showErrorAlert } from "../../../../store/actions/ui";
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
- * @property {Array<UserEquityEntity>} list
+ * @property {Array<ProviderFollowersListEntity>} list
  * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
@@ -49,6 +50,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
   const [modifyModal, showModifyModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [followerId, setFollower] = useState("");
+  const [actionType, setActionType] = useState("cancel");
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
   const dispatch = useDispatch();
 
@@ -143,13 +145,41 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         customBodyRender: (val) => {
           return loading && followerId === val ? (
             <CircularProgress color="primary" size={24} />
+          ) : checkIfSuspended(val) ? (
+            <Tooltip title="Enable" placement="top">
+              <CheckIcon
+                className="cancelIcon"
+                color="primary"
+                onClick={() => confirmEnable(val)}
+              />
+            </Tooltip>
           ) : (
-            <CancelIcon className="cancelIcon" color="primary" onClick={() => confirm(val)} />
+            <Tooltip title="Cancel" placement="top">
+              <ClearIcon
+                className="cancelIcon"
+                color="primary"
+                onClick={() => confirmCancel(val)}
+              />
+            </Tooltip>
           );
         },
       },
     },
   ];
+
+  /**
+   * Function to check if user is suspended.
+   *
+   * @param {String} id ID of the user entity in row.
+   * @returns {Boolean} Whether user is suspended or not.
+   */
+  const checkIfSuspended = (id) => {
+    let found = list.find((item) => item.userId === id);
+    if (found) {
+      return found.suspended ? true : false;
+    }
+    return true;
+  };
 
   /**
    *
@@ -165,22 +195,20 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
    *
    * @returns {void} None.
    */
-  const cancelSubscription = () => {
+  const toggleSubscription = () => {
     setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       followerId: followerId,
-      cancel: true,
+      cancel: actionType === "cancel" ? true : false,
     };
 
     tradeApi
       .cancelSubscription(payload)
-      .then((response) => {
-        if (response) {
-          setLoading(false);
-          loadData();
-        }
+      .then(() => {
+        setLoading(false);
+        loadData();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -193,9 +221,29 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
    * @param {String} data ID of the user.
    * @returns {void} None.
    */
-  const confirm = (data) => {
+  const confirmCancel = (data) => {
     setFollower(data);
-    setConfirmConfig({ ...initConfirmConfig, visible: true });
+    setActionType("cancel");
+    setConfirmConfig({
+      titleTranslationId: "users.cancel.title",
+      messageTranslationId: "users.cancel.subtitle",
+      visible: true,
+    });
+  };
+
+  /**
+   *
+   * @param {String} data ID of the user.
+   * @returns {void} None.
+   */
+  const confirmEnable = (data) => {
+    setFollower(data);
+    setActionType("enable");
+    setConfirmConfig({
+      titleTranslationId: "users.enable.title",
+      messageTranslationId: "users.enable.subtitle",
+      visible: true,
+    });
   };
 
   /**
@@ -210,7 +258,7 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
     <Box className="usersTable" display="flex" flexDirection="column" width={1}>
       <ConfirmDialog
         confirmConfig={confirmConfig}
-        executeActionCallback={cancelSubscription}
+        executeActionCallback={toggleSubscription}
         setConfirmConfig={setConfirmConfig}
       />
       <Table columns={columns} data={list} persistKey={persistKey} title={title} />

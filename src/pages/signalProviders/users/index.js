@@ -7,6 +7,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import UsersTable from "../../../components/Provider/Users/UsersTable";
+import { FormattedMessage } from "react-intl";
 
 const SignalProvidersUsers = () => {
   const storeViews = useStoreViewsSelector();
@@ -49,7 +50,7 @@ const SignalProvidersUsers = () => {
           list={userList}
           loadData={loadFollowersList}
           persistKey="copytProfileUsers"
-          title="srv.users"
+          title={<FormattedMessage id="srv.users" />}
         />
       )}
     </Box>
