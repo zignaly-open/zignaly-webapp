@@ -26,7 +26,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const TradingViewHeader = (props) => {
   const { symbolsList, handleSymbolChange, selectedSymbol } = props;
-  const { control } = useFormContext();
+  const { control, register, watch } = useFormContext();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   // @ts-ignore
@@ -38,21 +38,25 @@ const TradingViewHeader = (props) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((copyTradersProvidersOptions) => {
-      const digestedOptions = copyTradersProvidersOptions.map((copyTradersProvidersOption) => {
-        return {
-          label: copyTradersProvidersOption.providerName,
-          val: copyTradersProvidersOption.providerId,
-        };
-      });
-
-      setOwnCopyTradersProviders(digestedOptions);
+    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((data) => {
+      setOwnCopyTradersProviders(data);
     });
   };
 
   useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
-  const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].val : "";
+  const providerOptions = ownCopyTradersProviders.map((provider) => {
+    return {
+      label: provider.providerName,
+      val: String(provider.providerId),
+    };
+  });
+
+  const selectedProviderValue = providerOptions[0] ? providerOptions[0].val : "";
+  const providerId = watch("providerService");
+  const providerService = ownCopyTradersProviders.find(
+    (provider) => provider.providerId === providerId,
+  ) || { providerPayableBalance: 0, providerName: "Manual Trading", providerId: "1" };
 
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
@@ -75,10 +79,22 @@ const TradingViewHeader = (props) => {
         >
           <FormattedMessage id="terminal.providers" />
           <Controller
-            as={<CustomSelect label="" onChange={() => {}} options={ownCopyTradersProviders} />}
+            as={<CustomSelect label="" onChange={() => {}} options={providerOptions} />}
             control={control}
             defaultValue={selectedProviderValue}
             name="providerService"
+          />
+          <input
+            name="providerPayableBalance"
+            ref={register}
+            type="hidden"
+            value={providerService.providerPayableBalance}
+          />
+          <input
+            name="providerName"
+            ref={register}
+            type="hidden"
+            value={providerService.providerName}
           />
         </Box>
       )}

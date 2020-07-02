@@ -86,7 +86,8 @@ const StrategyPanel = (props) => {
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
-  const isCopyProvider = providerService && providerService !== 1;
+  const providerBalance = watch("providerPayableBalance");
+  const isCopyProvider = providerService && providerService !== "1";
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -220,7 +221,7 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">%</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+              <FormattedMessage id="terminal.available" /> {providerBalance}
             </FormHelperText>
             {errors.positionSize && (
               <span className="errorText">{errors.positionSize.message}</span>
