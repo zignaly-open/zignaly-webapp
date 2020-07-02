@@ -7,7 +7,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./TradingView.scss";
-import TradingViewHeader from "../TradingViewHeader/TradingViewHeader";
+import TradingViewHeader from "./TradingViewHeader";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
