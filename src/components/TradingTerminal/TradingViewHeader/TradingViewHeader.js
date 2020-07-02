@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { size } from "lodash";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -26,7 +26,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const TradingViewHeader = (props) => {
   const { symbolsList, handleSymbolChange, selectedSymbol } = props;
-  const { control } = useForm();
+  const { control } = useFormContext();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   // @ts-ignore
