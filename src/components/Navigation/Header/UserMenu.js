@@ -17,7 +17,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
 
-const UserMenu = () => {
+const UserMenu = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const [languageSelector, showLanguageSelector] = useState(false);
 
@@ -102,6 +102,6 @@ const UserMenu = () => {
       </MenuItem>
     </Box>
   );
-};
+});
 
 export default UserMenu;

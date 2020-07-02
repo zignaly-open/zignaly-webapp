@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Popover } from "@material-ui/core";
+import { Box, Menu } from "@material-ui/core";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeList from "./ExchangeList";
 import ExchangeIcon from "../../../ExchangeIcon";
@@ -37,21 +37,9 @@ const UserExchangeList = () => {
           </span>
         )}
       </Box>
-      <Popover
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        onClose={() => setAnchorEl(undefined)}
-        open={Boolean(anchorEl)}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
+      <Menu anchorEl={anchorEl} onClose={() => setAnchorEl(undefined)} open={Boolean(anchorEl)}>
         <ExchangeList onClose={() => setAnchorEl(undefined)} />
-      </Popover>
+      </Menu>
     </Box>
   );
 };
