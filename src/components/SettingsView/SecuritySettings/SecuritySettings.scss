@@ -6,23 +6,4 @@
   form {
     width: 100%;
   }
-
-  img {
-    cursor: pointer;
-    height: 24px;
-    margin: 34px -24px 0 8px;
-    width: 24px;
-  }
-
-  .inputBox,
-  .passwordBox {
-    > div {
-      width: 100%;
-    }
-  }
-
-  .customButton {
-    margin: 8px 0 56px;
-    min-width: 100%;
-  }
 }

@@ -1,15 +1,5 @@
-// @ts-nocheck (wip)
-/* eslint-disable */
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Checkbox,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-} from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { FormControl, OutlinedInput, InputAdornment } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
@@ -45,7 +35,6 @@ const PasswordInput = ({ label, ...others }) => {
             </span>
           </InputAdornment>
         }
-        //   inputRef={register({ required: true })}
         type={showPassword ? "text" : "password"}
         {...others}
       />
