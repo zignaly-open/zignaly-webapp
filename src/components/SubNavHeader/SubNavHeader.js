@@ -46,7 +46,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
  * @typedef {Object} SubNavModalHeaderTypes
  * @property {Array<ModalNavigationLink>} links Array of path id/title.
  * @property {string} currentPath Current path
- * @property {function} onClick onClick callback
+ * @property {function(string): *} onClick onClick callback
  */
 
 /**

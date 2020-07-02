@@ -6,17 +6,20 @@ import { useDispatch } from "react-redux";
 import { selectDarkTheme, setShowBalance } from "../../../store/actions/settings";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ThemeSwitcher from "../../ThemeSwitcher";
+import "./Preferences.scss";
 
 const Preferences = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
 
   return (
-    <Box className="preferences">
-      <Typography>
-        <FormattedMessage id="preferences.darklight" />
-      </Typography>
-      <ThemeSwitcher full={true} />
+    <Box className="preferences" display="flex" flexDirection="column" alignItems="flex-start">
+      {/* <FormGroup> */}
+      <FormControlLabel
+        control={<ThemeSwitcher full={true} />}
+        label={<FormattedMessage id="preferences.darklight" />}
+        labelPlacement="top"
+      />
       <FormControlLabel
         control={
           <Checkbox
@@ -28,6 +31,7 @@ const Preferences = () => {
         }
         label={<FormattedMessage id="preferences.balance" />}
       />
+      {/* </FormGroup> */}
     </Box>
   );
 };

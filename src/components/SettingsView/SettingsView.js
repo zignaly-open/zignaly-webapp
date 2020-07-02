@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl";
 import Preferences from "./Preferences";
 import { SubNavModalHeader } from "../SubNavHeader";
 import { navigate } from "@reach/router";
+import GlobalModalHead from "../ConnectExchangeView/GlobalModalHead";
 
 /**
  * @typedef {Object} DefaultProps
@@ -18,10 +19,10 @@ import { navigate } from "@reach/router";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Connect exchange element.
  */
-const SettingsView = (props) => {
+const SettingsView = ({ onClose }) => {
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
-  const path = currentHash.split("-")[1];
+  const path = currentHash.split("-")[1] || "";
 
   /**
    * Handle submit buttton click.
@@ -29,8 +30,8 @@ const SettingsView = (props) => {
    * @type {React.MouseEventHandler} handleClickSubmit
    * @returns {void}
    */
-  const handleClick = () => {
-    props.onClose();
+  const handleClose = () => {
+    onClose();
   };
 
   const tabs = [
@@ -61,18 +62,24 @@ const SettingsView = (props) => {
 
   return (
     <Box className="settingsView">
+      <GlobalModalHead
+        actionBar={
+          <>
+            <CustomButton className="submitButton" onClick={handleClose}>
+              <FormattedMessage id="accounts.done" />
+            </CustomButton>
+            {/* <Typography className="tempMessage" variant="body1">
+          {tempMessage}
+        </Typography> */}
+          </>
+        }
+        titleBar={
+          <Typography variant="h1">
+            <FormattedMessage id="accounts.settings" />
+          </Typography>
+        }
+      />
       <SubNavModalHeader links={tabs} currentPath={path} onClick={(path) => navigate("#" + path)} />
-
-      <Box className="actionBar">
-        <CustomButton className="submitButton" onClick={handleClick}>
-          Done
-        </CustomButton>
-      </Box>
-      <Box className="titleBar">
-        <Typography variant="h1">
-          <FormattedMessage id="accounts.settings" />
-        </Typography>
-      </Box>
       <Box className="settingsContent">{renderContent()}</Box>
     </Box>
   );

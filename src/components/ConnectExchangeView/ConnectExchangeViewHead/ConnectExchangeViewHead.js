@@ -8,6 +8,7 @@ import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
+import GlobalModalHead from "../GlobalModalHead";
 
 /**
  * @typedef {Object} DefaultProps
@@ -71,30 +72,34 @@ const ConnectExchangeViewHead = ({ onClose }) => {
 
   return (
     <Box className="connectExchangeViewHead">
-      <Box alignItems="center" className="actionBar" display="flex" flexDirection="row">
-        {previousPath && (
-          <CustomButton
-            className="textPurple borderPurple"
-            onClick={() => resetToPath(previousPath)}
-            startIcon={<img className="icon" src={LeftIcon} />}
-          >
-            <FormattedMessage id="accounts.back" />
-          </CustomButton>
-        )}
-        <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
-          <FormattedMessage id="accounts.done" />
-        </CustomButton>
-        <Typography className="tempMessage" variant="body1">
-          {tempMessage}
-        </Typography>
-        {storeUser.exchangeConnections.length > 0 &&
-          ["demoAccounts", "realAccounts"].includes(currentPath) && <UserExchangeList />}
-      </Box>
-      <Box className="titleBar">
-        <Typography variant="h1">
-          {title || <FormattedMessage id="dashboard.connectexchange.bold.title" />}
-        </Typography>
-      </Box>
+      <GlobalModalHead
+        actionBar={
+          <>
+            {previousPath && (
+              <CustomButton
+                className="textPurple borderPurple"
+                onClick={() => resetToPath(previousPath)}
+                startIcon={<img className="icon" src={LeftIcon} />}
+              >
+                <FormattedMessage id="accounts.back" />
+              </CustomButton>
+            )}
+            <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
+              <FormattedMessage id="accounts.done" />
+            </CustomButton>
+            <Typography className="tempMessage" variant="body1">
+              {tempMessage}
+            </Typography>
+            {storeUser.exchangeConnections.length > 0 &&
+              ["demoAccounts", "realAccounts"].includes(currentPath) && <UserExchangeList />}
+          </>
+        }
+        titleBar={
+          <Typography variant="h1">
+            {title || <FormattedMessage id="dashboard.connectexchange.bold.title" />}
+          </Typography>
+        }
+      />
     </Box>
   );
 };
