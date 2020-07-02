@@ -1,9 +1,0 @@
-.managementSummary {
-  width: 100%;
-}
-
-@include media("<=sm") {
-  .managementSummary {
-    flex-wrap: wrap;
-  }
-}

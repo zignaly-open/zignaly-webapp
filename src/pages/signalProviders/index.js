@@ -11,6 +11,7 @@ import { setProvider, unsetProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/providerLayout";
+import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
 
 /**
  *
@@ -57,20 +58,31 @@ const SignalProviders = ({ location }) => {
   return (
     <ProviderLayout>
       <Router>
-        <Profile
+        <SignalProviderRoute
+          component={Profile}
           path={withPrefix("/signalProviders/:providerId/profile")}
           providerId={providerId}
         />
-        <Edit path={withPrefix("/signalProviders/:providerId/edit")} providerId={providerId} />
-        <Settings
+        <SignalProviderRoute
+          component={Edit}
+          path={withPrefix("/signalProviders/:providerId/edit")}
+          providerId={providerId}
+        />
+        <SignalProviderRoute
+          component={Settings}
           path={withPrefix("/signalProviders/:providerId/settings")}
           providerId={providerId}
         />
-        <Analytics
+        <SignalProviderRoute
+          component={Analytics}
           path={withPrefix("/signalProviders/:providerId/analytics")}
           providerId={providerId}
         />
-        <Users path={withPrefix("/signalProviders/:providerId/users")} providerId={providerId} />
+        <SignalProviderRoute
+          component={Users}
+          path={withPrefix("/signalProviders/:providerId/users")}
+          providerId={providerId}
+        />
       </Router>
     </ProviderLayout>
   );

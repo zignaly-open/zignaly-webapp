@@ -12,30 +12,7 @@ import { setProvider, unsetProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/providerLayout";
-
-/**
- * @typedef {import("@reach/router").RouteComponentProps} RouteComponentProps
- * @typedef {import("react").FunctionComponent} FunctionComponent
- */
-
-/**
- * @typedef {Object} RouteCustomProps
- * @property {FunctionComponent} component
- * @property {string} providerId
- */
-
-/**
- * @typedef {RouteCustomProps & RouteComponentProps} ExtendedRouteComponentProps
- */
-
-/**
- * @param {ExtendedRouteComponentProps} props Route props.
- * @returns {JSX.Element} Component element.
- */
-function CopyTraderRoute(props) {
-  const { /** @type {FunctionComponent} */ component, ...others } = props;
-  return <>{component(others)}</>;
-}
+import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
 
 /**
  *
