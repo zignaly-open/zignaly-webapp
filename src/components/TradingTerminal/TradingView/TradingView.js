@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Controller, FormContext, useForm } from "react-hook-form";
-import { size } from "lodash";
+import { FormContext, useForm } from "react-hook-form";
 import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
-import CustomSelect from "../../CustomSelect/CustomSelect";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
-import { FormattedMessage } from "react-intl";
-import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import "./TradingView.scss";
+import TradingViewHeader from "../TradingViewHeader/TradingViewHeader";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -34,9 +30,7 @@ const defaultExchangeSymbol = {
  */
 const TradingView = () => {
   const [tradingViewWidget, setTradingViewWidget] = useState(null);
-  const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const [lastPrice, setLastPrice] = useState(null);
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
 
   /**
@@ -70,25 +64,6 @@ const TradingView = () => {
   const tradingViewWidgetTyped = tradingViewWidget;
   const isLoading = tradingViewWidget === null;
   const isLastPriceLoading = lastPrice === null;
-  const loadOwnCopyTradersProviders = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-    };
-
-    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((copyTradersProvidersOptions) => {
-      const digestedOptions = copyTradersProvidersOptions.map((copyTradersProvidersOption) => {
-        return {
-          label: copyTradersProvidersOption.providerName,
-          val: copyTradersProvidersOption.providerId,
-        };
-      });
-
-      setOwnCopyTradersProviders(digestedOptions);
-    });
-  };
-
-  useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
 
   const onExchangeChange = () => {
     const newExchangeName =
@@ -131,8 +106,6 @@ const TradingView = () => {
 
   // @ts-ignore
   const symbolsList = dataFeed ? dataFeed.getSymbolsData() : [];
-  // @ts-ignore
-  const symbolsOptions = symbolsList.map((symbolItem) => symbolItem.symbol);
 
   /**
    * @typedef {Object} OptionValue
@@ -160,7 +133,6 @@ const TradingView = () => {
     }
   };
 
-  const selectedProviderValue = ownCopyTradersProviders[0] ? ownCopyTradersProviders[0].val : "";
   const currentPrice = lastPrice ? parseFloat(lastPrice[1]).toFixed(8) : "";
   const methods = useForm({
     mode: "onChange",
@@ -177,47 +149,15 @@ const TradingView = () => {
     },
   });
 
-  const { control } = methods;
-
   return (
     <FormContext {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
         {!isLoading && (
-          <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
-            <Box
-              alignContent="left"
-              className="symbolsSelector"
-              display="flex"
-              flexDirection="column"
-            >
-              <FormattedMessage id="terminal.browsecoins" />
-              <CustomSelect
-                label=""
-                onChange={handleSymbolChange}
-                options={symbolsOptions}
-                search={true}
-                value={selectedSymbol}
-              />
-            </Box>
-            {size(ownCopyTradersProviders) > 1 && (
-              <Box
-                alignContent="left"
-                className="providersSelector"
-                display="flex"
-                flexDirection="column"
-              >
-                <FormattedMessage id="terminal.providers" />
-                <Controller
-                  as={
-                    <CustomSelect label="" onChange={() => {}} options={ownCopyTradersProviders} />
-                  }
-                  control={control}
-                  defaultValue={selectedProviderValue}
-                  name="providerService"
-                />
-              </Box>
-            )}
-          </Box>
+          <TradingViewHeader
+            handleSymbolChange={handleSymbolChange}
+            selectedSymbol={selectedSymbol}
+            symbolsList={symbolsList}
+          />
         )}
         <Box
           bgcolor="grid.content"
