@@ -29,7 +29,7 @@ const defaultExchangeSymbol = {
  * @returns {JSX.Element} Trading terminal element.
  */
 const TradingView = () => {
-  const [tradingViewWidget, setTradingViewWidget] = useState(null);
+  const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
   const [lastPrice, setLastPrice] = useState(null);
   const storeSettings = useStoreSettingsSelector();
 
@@ -57,11 +57,6 @@ const TradingView = () => {
   const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
   const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
-
-  /*
-   * @type {TVWidget} tradingViewWidgetPointer
-   */
-  const tradingViewWidgetTyped = tradingViewWidget;
   const isLoading = tradingViewWidget === null;
   const isLastPriceLoading = lastPrice === null;
 
@@ -124,7 +119,7 @@ const TradingView = () => {
 
     // Change chart data to the new selected symbol.
     if (tradingViewWidget) {
-      const chart = tradingViewWidgetTyped.chart();
+      const chart = tradingViewWidget.chart();
       chart.setSymbol(selectedOption, () => {
         // @ts-ignore
         const priceCandle = dataFeed.getLastCandle();
