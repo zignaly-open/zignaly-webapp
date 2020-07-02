@@ -48,7 +48,7 @@ const TradingViewEdit = (props) => {
    */
   const initializePosition = (responseData) => {
     setPositionEntity(responseData);
-    setSelectedSymbol(responseData.symbol);
+    setSelectedSymbol(responseData.pair);
   };
 
   const [selectedSymbol, setSelectedSymbol] = useState(null);
