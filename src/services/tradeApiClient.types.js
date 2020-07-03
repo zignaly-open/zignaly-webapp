@@ -692,6 +692,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} TwoFAPayload
+ * @property {string} code
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
