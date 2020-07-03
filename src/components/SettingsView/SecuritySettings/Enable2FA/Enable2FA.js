@@ -8,6 +8,7 @@ import CustomButton from "../../../CustomButton";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import QRCode from "qrcode.react";
 
 /**
@@ -18,8 +19,10 @@ import QRCode from "qrcode.react";
 const Enable2FA = () => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const storeUserData = useStoreUserData();
   const { handleSubmit, setError, register, errors } = useForm();
   const [editing, setEditing] = useState(false);
+  const twoFAEnabled = storeUserData.TwoFAEnable;
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
@@ -62,11 +65,16 @@ const Enable2FA = () => {
 
     setLoading(true);
 
-    tradeApi
-      .enable2FA2Step(payload)
+    const apiMethod = twoFAEnabled ? tradeApi.disable2FA : tradeApi.enable2FA2Step;
+
+    apiMethod(payload)
       .then(() => {
         setEditing(false);
-        showSuccessAlert("Success", intl.formatMessage({ id: "security.2fa.enable.success" }));
+        if (twoFAEnabled) {
+          showSuccessAlert("Success", intl.formatMessage({ id: "security.2fa.disable.success" }));
+        } else {
+          showSuccessAlert("Success", intl.formatMessage({ id: "security.2fa.enable.success" }));
+        }
       })
       .catch((e) => {
         if (e.code === 7) {
@@ -85,26 +93,30 @@ const Enable2FA = () => {
       <Typography>
         <FormattedMessage id="security.2fa" />
       </Typography>
-      {!editing ? (
+      {!editing && !twoFAEnabled ? (
         <CustomButton className="textPurple borderPurple bold" onClick={() => setEditing(true)}>
           <FormattedMessage id="security.2fa.enable" />
         </CustomButton>
-      ) : !code ? (
+      ) : !twoFAEnabled && !code ? (
         <Box pt="24px" display="flex" flexDirection="row" justifyContent="center">
           <CircularProgress disableShrink />
         </Box>
       ) : (
         <form onSubmit={handleSubmit(submitCode)}>
-          <Typography variant="body1" className="bold">
-            <FormattedMessage id="security.2fa.scan" />
-          </Typography>
-          <QRCode size={216} value={code} />
-          <Typography>
-            <FormattedMessage id="security.2fa.manually" />
-          </Typography>
-          <Typography variant="body1" className="code">
-            {code}
-          </Typography>
+          {!twoFAEnabled && (
+            <>
+              <Typography variant="body1" className="bold">
+                <FormattedMessage id="security.2fa.scan" />
+              </Typography>
+              <QRCode size={216} value={code} />
+              <Typography>
+                <FormattedMessage id="security.2fa.manually" />
+              </Typography>
+              <Typography variant="body1" className="code">
+                {code}
+              </Typography>
+            </>
+          )}
           <Box display="flex" flexDirection="column">
             <label htmlFor="code">
               <Typography variant="body1" className="code">

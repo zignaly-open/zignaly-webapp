@@ -9,6 +9,7 @@ import {
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
   GET_USER_DATA,
+  ASK_2FA,
 } from "../store/actions/user";
 
 /**

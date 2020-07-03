@@ -31,6 +31,7 @@
 /**
  * @typedef {Object} DefaultStateSessionTradeApi
  * @property {string} accessToken
+ * @property {boolean} ask2FA
  */
 
 /**
@@ -104,6 +105,7 @@ const initialState = {
   session: {
     tradeApi: {
       accessToken: "",
+      ask2FA: false,
     },
     coinRay: {
       accessToken: "",
@@ -256,7 +258,6 @@ const initialState = {
     },
     userData: {
       TwoFAEnable: false,
-      ask2FA: false,
       binanceConnected: false,
       buysCount: 0,
       createdAt: "",

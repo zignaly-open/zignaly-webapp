@@ -13,6 +13,8 @@ import { setUserExchanges, setUserData } from "../../../store/actions/user";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import TwoFAForm from "../TwoFAForm";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -20,19 +22,13 @@ import { FormattedMessage } from "react-intl";
  */
 
 const LoginForm = () => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
+  const [is2FAModalOpen, open2FAModal] = useState(false);
   const [loading, showLoading] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
+  const storeSession = useStoreSessionSelector();
 
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
@@ -70,7 +66,7 @@ const LoginForm = () => {
   };
 
   const loadAppUserData = () => {
-    if (!isEmpty(storeSession.tradeApi.accessToken)) {
+    if (!isEmpty(storeSession.tradeApi.accessToken) && !storeSession.tradeApi.ask2FA) {
       const authorizationPayload = {
         token: storeSession.tradeApi.accessToken,
       };
@@ -82,7 +78,13 @@ const LoginForm = () => {
   };
 
   useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
+  useEffect(() => {
+    if (storeSession.tradeApi.ask2FA) {
+      open2FAModal(true);
+    }
+  }, [storeSession.tradeApi.ask2FA]);
 
+  console.log(storeSession);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -94,6 +96,16 @@ const LoginForm = () => {
       >
         <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
           <ForgotPasswordForm />
+        </Modal>
+        <Modal
+          onClose={() => {
+            open2FAModal(false);
+          }}
+          persist={true}
+          size="small"
+          state={is2FAModalOpen}
+        >
+          <TwoFAForm />
         </Modal>
         <Box
           alignItems="start"

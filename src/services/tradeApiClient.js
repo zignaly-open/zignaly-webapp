@@ -896,6 +896,21 @@ class TradeApiClient {
 
     return responseData;
   }
+
+  /**
+   * Disable 2FA.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FA(payload) {
+    const endpointPath = `/fe/api.php?action=disable2FA`;
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

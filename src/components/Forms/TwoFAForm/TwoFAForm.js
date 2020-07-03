@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./TwoFAForm.scss";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 // import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
+import { useForm, Controller } from "react-hook-form";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -14,74 +15,72 @@ const TwoFAForm = () => {
   const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
+  const {
+    register,
+    errors,
+    handleSubmit,
+    control,
+    watch,
+    setError,
+    clearError,
+    formState,
+  } = useForm({
+    mode: "onChange",
+  });
 
-  /**
-   * Code change event callback.
-   *
-   * @param {string} value Code change event.
-   * @return {void}
-   */
-  const handleCodeChange = (value) => {
-    setCode(value.length === 6);
-    if (value.length === 6) {
-      setCodeError(false);
-    } else {
-      setCodeError(true);
-    }
-  };
+  const { isValid } = formState;
 
-  const handleSubmit = () => {
+  const submitCode = (data) => {
     setLoading(true);
+    console.log(data);
     // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
   };
 
-  /**
-   * Code submission enter keypress kandling.
-   *
-   * @param {KeyboardEvent} event Key press event.
-   * @returns {void}
-   */
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSubmit();
-    }
-  };
-
   return (
-    <Box
-      alignItems="center"
-      className="twoFAForm"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <span className="boxTitle">2 Factor Authentication</span>
+    <form onSubmit={handleSubmit(submitCode)}>
       <Box
         alignItems="center"
-        className="inputBox"
+        className="twoFAForm"
         display="flex"
         flexDirection="column"
-        justifyContent="start"
+        justifyContent="center"
       >
-        <label className="customLabel">Input Your Authentication Code</label>
-        {
-          // @ts-ignore
-          <ReactCodeInput
+        <Typography variant="h3">2 Factor Authentication</Typography>
+        <Box
+          alignItems="center"
+          className="inputBox"
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+        >
+          <label className="customLabel">
+            <Typography>Input Your Authentication Code</Typography>
+          </label>
+          <Controller
+            control={control}
+            as={ReactCodeInput}
             className="codeInput"
             fields={6}
-            onChange={handleCodeChange}
-            onComplete={handleKeyPress}
+            name="code"
+            onChange={(val) => val[0]}
+            rules={{
+              required: true,
+              minLength: 6,
+            }}
+            error={!!errors.code}
           />
-        }
-        {codeError && <span className="errorText">Code must be of 6 digits!</span>}
+          <CustomButton
+            className="bgPurple"
+            loading={loading}
+            fullWidth={true}
+            disabled={!isValid}
+            type="submit"
+          >
+            Sign in
+          </CustomButton>
+        </Box>
       </Box>
-
-      <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
-        <CustomButton className={"fullSubmitButton"} loading={loading} onClick={handleSubmit}>
-          Sign in
-        </CustomButton>
-      </Box>
-    </Box>
+    </form>
   );
 };
 
