@@ -9,7 +9,6 @@ import {
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
   GET_USER_DATA,
-  ASK_2FA,
 } from "../store/actions/user";
 
 /**
@@ -64,10 +63,6 @@ const userExchanges = (state, action) => {
       newState.exchangeConnections = newState.exchangeConnections.filter(
         (item) => item.internalId !== action.payload,
       );
-      break;
-
-    case ASK_2FA:
-      newState.userData.ask2FA = action.payload;
       break;
 
     default:

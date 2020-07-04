@@ -31,7 +31,6 @@
 /**
  * @typedef {Object} DefaultStateSessionTradeApi
  * @property {string} accessToken
- * @property {boolean} ask2FA
  */
 
 /**
@@ -82,6 +81,7 @@
  * @property {DefaultUIModalObject} modal
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
+ * @property {Boolean} ask2FA
  */
 
 /**
@@ -300,6 +300,7 @@ const initialState = {
       },
     },
     loader: false,
+    ask2FA: false,
   },
   views: {
     provider: {

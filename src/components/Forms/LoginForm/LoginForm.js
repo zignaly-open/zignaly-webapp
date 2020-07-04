@@ -14,12 +14,11 @@ import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
+import useStoreUIAsk2FASelector from "../../../hooks/useStoreUIAsk2FASelector";
 import TwoFAForm from "../TwoFAForm";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { ask2FA } from "../../../store/actions/user";
-import UsersTable from "../../Provider/Users/UsersTable";
+import { ask2FA } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -34,7 +33,7 @@ const LoginForm = () => {
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
   const storeSession = useStoreSessionSelector();
-  const storeUserData = useStoreUserData();
+  const storeAsk2FA = useStoreUIAsk2FASelector();
 
   const { handleSubmit, errors, register, setError } = useForm({
     mode: "onBlur",
@@ -62,12 +61,11 @@ const LoginForm = () => {
     tradeApi
       .userLogin({ ...data, gRecaptchaResponse })
       .then((responseData) => {
-        dispatch(startTradeApiSession(responseData));
-
         // Prompt 2FA
         if (responseData.ask2FA) {
           dispatch(ask2FA(true));
         }
+        dispatch(startTradeApiSession(responseData));
       })
       .catch((e) => {
         if (e.code === 8) {
@@ -80,7 +78,7 @@ const LoginForm = () => {
   };
 
   const loadAppUserData = () => {
-    if (!isEmpty(storeSession.tradeApi.accessToken) && !storeUserData.ask2FA) {
+    if (!isEmpty(storeSession.tradeApi.accessToken) && !storeAsk2FA) {
       const authorizationPayload = {
         token: storeSession.tradeApi.accessToken,
       };
@@ -93,13 +91,12 @@ const LoginForm = () => {
   useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
 
   const show2FA = () => {
-    if (storeUserData.ask2FA) {
+    if (storeAsk2FA) {
       open2FAModal(true);
     }
   };
-  useEffect(show2FA, [storeUserData.ask2FA]);
+  useEffect(show2FA, [storeAsk2FA]);
 
-  console.log(storeSession);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box

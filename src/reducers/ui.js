@@ -8,6 +8,7 @@ import {
   HIDE_ERROR_ALERT,
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
+  ASK_2FA,
 } from "../store/actions/ui";
 
 /**
@@ -57,6 +58,9 @@ const ui = (state, action) => {
         body: "",
         open: false,
       };
+      break;
+    case ASK_2FA:
+      newState.ask2FA = action.payload;
       break;
 
     default:

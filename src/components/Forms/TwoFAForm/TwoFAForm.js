@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./TwoFAForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-// import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -50,8 +49,6 @@ const TwoFAForm = () => {
    */
   const submitCode = (data) => {
     setLoading(true);
-    console.log(data);
-    // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
     const payload = {
       code: data.code,
       token: storeSession.tradeApi.accessToken,
@@ -59,13 +56,18 @@ const TwoFAForm = () => {
 
     tradeApi
       .verify2FA(payload)
-      .then((payload) => {})
+      .then((payload) => {
+        console.log(payload);
+      })
       .catch((e) => {
-        if (e.code === 72) {
-          setError("code", "notMatch", "Wrong code.");
+        console.log(e);
+        if (e.code === 37) {
+          //   setError("code", "notMatch", "Wrong code.");
+          setCodeError(true);
         } else {
           dispatch(showErrorAlert(e));
         }
+        setLoading(false);
       });
   };
 
@@ -95,13 +97,18 @@ const TwoFAForm = () => {
             className="codeInput"
             fields={6}
             name="code"
-            onChange={(val) => val[0]}
+            onChange={(val) => {
+              setCodeError(false);
+              return val[0];
+            }}
             rules={{
               required: true,
               minLength: 6,
             }}
             error={!!errors.code}
           />
+          {/* {errors.code && <span className="errorText">{errors.code.message}</span>} */}
+          {codeError && <span className="errorText">Wrong code.</span>}
           <CustomButton
             className="bgPurple"
             loading={loading}

@@ -5,6 +5,7 @@ export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT";
 export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT";
 export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
+export const ASK_2FA = "ASK_2FA";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -102,5 +103,16 @@ export const showSuccessAlert = (title, body) => {
 export const hideSuccessAlert = () => {
   return {
     type: HIDE_SUCCESS_ALERT,
+  };
+};
+
+/**
+ * @param {boolean} payload Flag to indicate if we should ask for 2FA code.
+ * @returns {AnyAction} return action object.
+ */
+export const ask2FA = (payload) => {
+  return {
+    type: ASK_2FA,
+    payload,
   };
 };

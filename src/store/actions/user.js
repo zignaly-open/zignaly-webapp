@@ -11,7 +11,6 @@ export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const GET_USER_DATA = "GET_USER_DATA_ACTION";
-export const ASK_2FA = "ASK_2FA";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -149,16 +148,5 @@ export const setUserData = (payload) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
-  };
-};
-
-/**
- * @param {boolean} payload Flag to indicate if we should ask for 2FA code.
- * @returns {AnyAction} return action object.
- */
-export const ask2FA = (payload) => {
-  return {
-    type: ASK_2FA,
-    payload,
   };
 };
