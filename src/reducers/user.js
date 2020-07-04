@@ -66,6 +66,10 @@ const userExchanges = (state, action) => {
       );
       break;
 
+    case ASK_2FA:
+      newState.userData.ask2FA = action.payload;
+      break;
+
     default:
       break;
   }

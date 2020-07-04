@@ -29,9 +29,6 @@ const settings = (state, action) => {
     case END_TRADE_API_SESSION:
       newState.tradeApi.accessToken = "";
       break;
-    case ASK_2FA:
-      newState.tradeApi.ask2FA = action.payload;
-      break;
 
     default:
       break;

@@ -140,8 +140,7 @@ class TradeApiClient {
       const customError = responseData.error.error;
 
       if (customError.code === 13) {
-        store.dispatch(endTradeApiSession());
-        navigate("/login");
+        this.userLogout();
       }
       throw customError;
     }
@@ -165,7 +164,10 @@ class TradeApiClient {
     return userEntityResponseTransform(responseData);
   }
 
-  userLogout() {}
+  userLogout() {
+    store.dispatch(endTradeApiSession());
+    navigate("/login");
+  }
 
   /**
    * Create user at Zignaly Trade API.

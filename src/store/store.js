@@ -15,6 +15,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: hardSet,
+  blacklist: ["ui"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

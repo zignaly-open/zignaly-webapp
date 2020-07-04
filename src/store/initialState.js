@@ -105,7 +105,6 @@ const initialState = {
   session: {
     tradeApi: {
       accessToken: "",
-      ask2FA: false,
     },
     coinRay: {
       accessToken: "",
@@ -257,6 +256,7 @@ const initialState = {
       quotes: [],
     },
     userData: {
+      ask2FA: false,
       TwoFAEnable: false,
       binanceConnected: false,
       buysCount: 0,

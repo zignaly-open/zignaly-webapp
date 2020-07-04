@@ -14,7 +14,12 @@ import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import TwoFAForm from "../TwoFAForm";
+import tradeApi from "../../../services/tradeApiClient";
+import { showErrorAlert } from "../../../store/actions/ui";
+import { ask2FA } from "../../../store/actions/user";
+import UsersTable from "../../Provider/Users/UsersTable";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -29,8 +34,9 @@ const LoginForm = () => {
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
   const storeSession = useStoreSessionSelector();
+  const storeUserData = useStoreUserData();
 
-  const { handleSubmit, errors, register } = useForm({
+  const { handleSubmit, errors, register, setError } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
@@ -44,29 +50,37 @@ const LoginForm = () => {
   /**
    * Process data submitted in the login form.
    *
-   * @param {LoginFormSubmission} payload Submission data.
+   * @param {LoginFormSubmission} data Submission data.
    * @returns {Void} None.
    */
-  const onSubmit = (payload) => {
+  const onSubmit = (data) => {
     // setCaptchaResponse("");
     // recaptchaRef.current.reset();
 
     showLoading(true);
-    dispatch(startTradeApiSession({ ...payload, gRecaptchaResponse }));
-  };
 
-  /**
-   * Handle submit buttton click.
-   *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
-   */
-  const handleSubmitClick = () => {
-    handleSubmit(onSubmit);
+    tradeApi
+      .userLogin({ ...data, gRecaptchaResponse })
+      .then((responseData) => {
+        dispatch(startTradeApiSession(responseData));
+
+        // Prompt 2FA
+        if (responseData.ask2FA) {
+          dispatch(ask2FA(true));
+        }
+      })
+      .catch((e) => {
+        if (e.code === 8) {
+          setError("password", "Wrong credentials.");
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+        showLoading(false);
+      });
   };
 
   const loadAppUserData = () => {
-    if (!isEmpty(storeSession.tradeApi.accessToken) && !storeSession.tradeApi.ask2FA) {
+    if (!isEmpty(storeSession.tradeApi.accessToken) && !storeUserData.ask2FA) {
       const authorizationPayload = {
         token: storeSession.tradeApi.accessToken,
       };
@@ -76,13 +90,14 @@ const LoginForm = () => {
       navigate("/dashboard/positions");
     }
   };
-
   useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
-  useEffect(() => {
-    if (storeSession.tradeApi.ask2FA) {
+
+  const show2FA = () => {
+    if (storeUserData.ask2FA) {
       open2FAModal(true);
     }
-  }, [storeSession.tradeApi.ask2FA]);
+  };
+  useEffect(show2FA, [storeUserData.ask2FA]);
 
   console.log(storeSession);
   return (
@@ -154,12 +169,7 @@ const LoginForm = () => {
         </Box>
 
         <Box className="inputBox">
-          <CustomButton
-            className={"full submitButton"}
-            loading={loading}
-            onClick={handleSubmitClick}
-            type="submit"
-          >
+          <CustomButton className={"full submitButton"} loading={loading} type="submit">
             Sign in
           </CustomButton>
         </Box>
