@@ -69,10 +69,12 @@ const LoginForm = () => {
       })
       .catch((e) => {
         if (e.code === 8) {
-          setError("password", "Wrong credentials.");
+          setError("password", "notMatch", "Wrong credentials.");
         } else {
           dispatch(showErrorAlert(e));
         }
+      })
+      .finally(() => {
         showLoading(false);
       });
   };
@@ -91,34 +93,35 @@ const LoginForm = () => {
   useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
 
   const show2FA = () => {
-    if (storeAsk2FA) {
-      open2FAModal(true);
+    open2FAModal(storeAsk2FA);
+    if (!storeAsk2FA) {
+      loadAppUserData();
     }
   };
   useEffect(show2FA, [storeAsk2FA]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        alignItems="center"
-        className="loginForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
+    <Box
+      alignItems="center"
+      className="loginForm"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
+        <ForgotPasswordForm />
+      </Modal>
+      <Modal
+        onClose={() => {
+          open2FAModal(false);
+        }}
+        persist={true}
+        size="small"
+        state={is2FAModalOpen}
       >
-        <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
-          <ForgotPasswordForm />
-        </Modal>
-        <Modal
-          onClose={() => {
-            open2FAModal(false);
-          }}
-          persist={true}
-          size="small"
-          state={is2FAModalOpen}
-        >
-          <TwoFAForm />
-        </Modal>
+        <TwoFAForm />
+      </Modal>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="start"
           className="inputBox"
@@ -154,11 +157,11 @@ const LoginForm = () => {
         >
           <PasswordInput
             error={!!errors.password}
-            inputRef={register({ required: true })}
+            inputRef={register({ required: "Password cannot be empty" })}
             label={<FormattedMessage id={"security.password"} />}
             name="password"
           />
-          {errors.password && <span className="errorText">Password cannot be empty</span>}
+          {errors.password && <span className="errorText">{errors.password.message}</span>}
         </Box>
 
         <Box className="captchaBox">
@@ -175,8 +178,8 @@ const LoginForm = () => {
             Forgot password
           </span>
         </Box>
-      </Box>
-    </form>
+      </form>
+    </Box>
   );
 };
 

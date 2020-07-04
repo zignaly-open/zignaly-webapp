@@ -8,6 +8,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { ask2FA } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -57,10 +58,9 @@ const TwoFAForm = () => {
     tradeApi
       .verify2FA(payload)
       .then((payload) => {
-        console.log(payload);
+        dispatch(ask2FA(false));
       })
       .catch((e) => {
-        console.log(e);
         if (e.code === 37) {
           //   setError("code", "notMatch", "Wrong code.");
           setCodeError(true);
