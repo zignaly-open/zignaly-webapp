@@ -23,16 +23,17 @@ export const startTradeApiSession = (payload) => {
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userLogin(payload);
-      const action = {
-        type: START_TRADE_API_SESSION,
-        payload: responseData,
-      };
 
-      dispatch(action);
-
-      // Prompt 2FA
       if (responseData.ask2FA) {
+        // Prompt 2FA
         dispatch({ type: ASK_2FA, payload: true });
+      } else {
+        const action = {
+          type: START_TRADE_API_SESSION,
+          payload: responseData,
+        };
+
+        dispatch(action);
       }
     } catch (e) {
       dispatch(showErrorAlert(e));

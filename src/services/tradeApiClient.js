@@ -1,4 +1,7 @@
 import fetch from "cross-fetch";
+import { navigate } from "gatsby";
+import { store } from "../store/store.js";
+import { endTradeApiSession } from "../store/actions/session";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
@@ -110,16 +113,17 @@ class TradeApiClient {
   async doRequest(endpointPath, payload) {
     let responseData = {};
     const requestUrl = this.baseUrl + endpointPath;
-    const options = {
-      method: payload ? "POST" : "GET",
-      ...(payload && {
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": process.env.GATSBY_API_KEY || "",
-        },
-      }),
-    };
+
+    const options = payload
+      ? {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": process.env.GATSBY_API_KEY || "",
+          },
+        }
+      : { method: "GET" };
 
     try {
       const response = await fetch(requestUrl, options);
@@ -134,6 +138,11 @@ class TradeApiClient {
 
     if (responseData.error) {
       const customError = responseData.error.error;
+
+      if (customError.code === 13) {
+        store.dispatch(endTradeApiSession());
+        navigate("/login");
+      }
       throw customError;
     }
 
@@ -907,6 +916,21 @@ class TradeApiClient {
    */
   async disable2FA(payload) {
     const endpointPath = `/fe/api.php?action=disable2FA`;
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Disable 2FA.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async verify2FA(payload) {
+    const endpointPath = `/fe/api.php?action=verify2FA`;
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

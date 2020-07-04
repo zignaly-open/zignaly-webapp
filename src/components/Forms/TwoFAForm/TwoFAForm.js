@@ -5,6 +5,10 @@ import CustomButton from "../../CustomButton/CustomButton";
 // import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
 import { useForm, Controller } from "react-hook-form";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -15,6 +19,9 @@ const TwoFAForm = () => {
   const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
+
   const {
     register,
     errors,
@@ -30,10 +37,36 @@ const TwoFAForm = () => {
 
   const { isValid } = formState;
 
+  /**
+   * @typedef {Object} FormData
+   * @property {string} code
+   */
+
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {void}
+   */
   const submitCode = (data) => {
     setLoading(true);
     console.log(data);
     // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
+    const payload = {
+      code: data.code,
+      token: storeSession.tradeApi.accessToken,
+    };
+
+    tradeApi
+      .verify2FA(payload)
+      .then((payload) => {})
+      .catch((e) => {
+        if (e.code === 72) {
+          setError("code", "notMatch", "Wrong code.");
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+      });
   };
 
   return (
