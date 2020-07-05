@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
 import SignOut from "../../../images/header/signOut.svg";
 import Support from "../../../images/header/support.svg";
 import Settings from "../../../images/dashboard/settings.svg";
-import { Box, MenuItem } from "@material-ui/core";
+import { Box, MenuItem, Grow } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
 import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import LanguageIcon from "@material-ui/icons/Language";
+import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
 
-const UserMenu = () => {
+const UserMenu = React.forwardRef(() => {
   const dispatch = useDispatch();
+  const [languageSelector, showLanguageSelector] = useState(false);
 
   const logout = () => {
     dispatch(endTradeApiSession());
@@ -72,6 +77,24 @@ const UserMenu = () => {
           <FormattedMessage id="menu.support" />
         </span>
       </MenuItem>
+      <MenuItem className="userMenuItem" onClick={() => showLanguageSelector(!languageSelector)}>
+        <LanguageIcon className="icon" color="primary" />
+        <span className="item">
+          <FormattedMessage id="menu.language" />
+        </span>
+        {languageSelector ? (
+          <ExpandLessIcon className="expandIcon" color="primary" />
+        ) : (
+          <ExpandMoreIcon className="expandIcon" color="primary" />
+        )}
+      </MenuItem>
+      {languageSelector && (
+        <Grow in={languageSelector}>
+          <Box className="languageBox">
+            <LanguageSwitcher />
+          </Box>
+        </Grow>
+      )}
       <MenuItem className="userMenuItem" onClick={logout}>
         <img alt="zignaly" src={SignOut} />
         <span className="item">
@@ -80,6 +103,6 @@ const UserMenu = () => {
       </MenuItem>
     </Box>
   );
-};
+});
 
 export default UserMenu;

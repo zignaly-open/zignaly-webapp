@@ -41,12 +41,32 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   const countRows = size(data);
 
   /**
+   * Functionn to create column labels.
+   *
+   * @param {*} label initial data for label.
+   * @returns {String} formatted label.
+   */
+  const createLabel = (label) => {
+    if (label) {
+      if (typeof label === "string") {
+        return intl.formatMessage({ id: label });
+      }
+      if (typeof label === "object") {
+        return intl.formatMessage({ id: label.id }, { quote: label.quote });
+      }
+    } else {
+      return "";
+    }
+    return "";
+  };
+
+  /**
    * @type {Array<MUIDataTableColumn>}
    */
   let columnsCustom = columns.map((c) => ({
     ...c,
     // Translate labels
-    label: c.label ? intl.formatMessage({ id: c.label }) : "",
+    label: createLabel(c.label),
     options: {
       ...c.options,
       // Display columns picked by the user

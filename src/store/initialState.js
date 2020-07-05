@@ -52,6 +52,7 @@
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {Boolean} balanceBox
  * @property {Boolean} showBalance
  * @property {DisplayColumns} displayColumns
  * @property {ExchangeConnectionEntity} selectedExchange
@@ -113,7 +114,8 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
-    showBalance: true,
+    balanceBox: false,
+    showBalance: false,
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",
@@ -207,6 +209,18 @@ const initialState = {
         "balanceFreeBTC",
         "balanceFreeUSDT",
         "balanceTotalExchCoin",
+      ],
+      managementPositions: [
+        "col.provider.subpositions",
+        "col.provider.name",
+        "col.provider.totalpositions",
+        "col.provider.soldpositions",
+        "col.pair",
+        "col.price.current",
+        "col.plnumber",
+        "col.plpercentage",
+        "col.invested",
+        "col.actions",
       ],
     },
     selectedExchange: {
@@ -417,6 +431,7 @@ const initialState = {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       price: 0,
+      loading: false,
     },
   },
 };

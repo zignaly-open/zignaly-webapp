@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./users.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import UsersTable from "../../../components/Provider/Users/UsersTable";
+import { FormattedMessage } from "react-intl";
 
-const CopyTradersUsers = () => {
+const SignalProvidersUsers = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const [userList, setUserList] = useState([]);
@@ -51,11 +50,11 @@ const CopyTradersUsers = () => {
           list={userList}
           loadData={loadFollowersList}
           persistKey="copytProfileUsers"
-          title="srv.users"
+          title={<FormattedMessage id="srv.users" />}
         />
       )}
     </Box>
   );
 };
 
-export default compose(withProviderLayout)(CopyTradersUsers);
+export default SignalProvidersUsers;

@@ -78,6 +78,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerName
  * @property {string} exchangeName
  * @property {string} exchangeInternalId
+ * @property {number} [positionSizePercentage]
+ * @property {string} [providerId]
+ * @property {string} [providerName]
  */
 
 /**
@@ -288,6 +291,16 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ *
+ * @typedef {Object} PositionEntityTotals
+ * @property {Number} openPositions
+ * @property {Number} totalPositions
+ * @property {Number} totalPositionSize
+ * @property {Number} soldPositions
+ *
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets
  * @property {Object<number, ProfitTarget>} takeProfitTargets
@@ -365,6 +378,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} symbol
  * @property {string} userId
  * @property {('unsold' | 'sold' | 'unopened' | '')} type
+ * @property {PositionEntityTotals} copyTradingTotals
+ * @property {Number} subPositions
  */
 
 /**
@@ -1112,6 +1127,13 @@ function createEmptyPositionEntity() {
     type: "",
     updating: false,
     userId: "",
+    copyTradingTotals: {
+      totalPositions: 0,
+      soldPositions: 0,
+      totalPositionSize: 0,
+      openPositions: 0,
+    },
+    subPositions: 0,
   };
 }
 
@@ -1984,6 +2006,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
+ * @property {Boolean} loading
  */
 
 /**
@@ -2115,6 +2138,7 @@ function createEmptyProviderGetEntity() {
     trailingStopFromSignal: false,
     useLeverageFromSignal: false,
     price: 0,
+    loading: false,
   };
 }
 
@@ -2948,4 +2972,26 @@ export function creatEmptyProviderDataPointsEntity() {
     totalProfitPercentage: "",
     totalProfitUSDT: "",
   };
+}
+
+/**
+ * Transform management positions response to typed object mapping.
+ *
+ * @param {*} response Trade API positions list response.
+ * @returns {Object} Positions entities mapping with management ids.
+ */
+export function managementPositionsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object of user positions positions mapping");
+  }
+
+  Object.keys(response).forEach((item) => {
+    /* @ts-ignore */
+    response[item] = response[item].map((positionItem) => {
+      /* @ts-ignore */
+      positionItem.subPositions = response[item].length - 1;
+      return userPositionItemTransform(positionItem);
+    });
+  });
+  return response;
 }

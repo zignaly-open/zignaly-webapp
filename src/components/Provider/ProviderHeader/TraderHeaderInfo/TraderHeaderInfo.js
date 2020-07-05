@@ -7,6 +7,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
+import { formatFloat } from "../../../../utils/format";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -70,7 +71,7 @@ const ProviderHeaderInfo = () => {
           <>
             <FormattedMessage id="srv.allocated" />
             <b>
-              {storeViews.provider.allocatedBalance}{" "}
+              {formatFloat(storeViews.provider.allocatedBalance)}{" "}
               {storeViews.provider.copyTradingQuote
                 ? storeViews.provider.copyTradingQuote.toUpperCase()
                 : ""}
@@ -80,7 +81,7 @@ const ProviderHeaderInfo = () => {
           <>
             <FormattedMessage id="srv.minimum" />
             <b>
-              {storeViews.provider.minAllocatedBalance}{" "}
+              {formatFloat(storeViews.provider.minAllocatedBalance)}{" "}
               {storeViews.provider.copyTradingQuote
                 ? storeViews.provider.copyTradingQuote.toUpperCase()
                 : ""}

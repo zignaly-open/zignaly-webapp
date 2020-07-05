@@ -32,6 +32,7 @@ import { isEmpty, last } from "lodash";
  * @property {function(): Promise<string>} regenerateAccessToken Callback to regenerate access token when expires.
  * @property {String} exchange Exchange name.
  * @property {String} exchangeKey CoinRay exchange ID.
+ * @property {String} internalExchangeId Internal exchange connection ID.
  */
 
 /**
@@ -53,6 +54,7 @@ class CoinRayDataFeed {
     this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange || "";
+    this.internalExchangeId = options.internalExchangeId || "";
     this.coinray = new Coinray(options.coinRayToken);
     this.coinray.onTokenExpired(options.regenerateAccessToken);
     this.exchangeKey = options.exchangeKey || "";

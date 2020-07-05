@@ -213,6 +213,26 @@ body {
     img {
       margin-right: 15px;
     }
+
+    .icon {
+      height: 20px;
+      margin-left: 2px;
+      margin-right: 18px;
+      width: 20px;
+    }
+
+    .expandIcon {
+      height: 24px;
+      margin-left: 15px;
+      width: 24px;
+    }
+  }
+
+  .languageBox {
+    margin-bottom: 15px;
+    padding-left: 40px;
+    padding-right: 5px;
+    width: 100%;
   }
 }
 

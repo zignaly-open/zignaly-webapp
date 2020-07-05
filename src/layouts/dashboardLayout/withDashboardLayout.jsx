@@ -6,7 +6,7 @@ import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../components/ExchangeIcon";
-import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../hooks/useStoreUserSelector";
 import { navigate as navigateReach } from "@reach/router";
 
 /**
@@ -24,7 +24,11 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const storeUser = useStoreUserSelector();
+    const exchangeConnections = useStoreUserExchangeConnections();
+
+    const handleClickEvent = () => {
+      navigateReach("#exchangeAccounts");
+    };
 
     return (
       <Box
@@ -34,7 +38,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {storeUser.exchangeConnections.length > 0 && (
+        {exchangeConnections.length > 0 && (
           <>
             <DashboardHeader />
             <Box className="pageContent">
@@ -45,7 +49,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         )}
-        {storeUser.exchangeConnections.length === 0 && (
+        {exchangeConnections.length === 0 && (
           <Box
             className="noExchangeBox"
             display="flex"
@@ -57,7 +61,7 @@ const withDashboardLayout = (Component) => {
             </Typography>
             <span className="title">
               <FormattedMessage id="dashboard.connectexchange.preText" />
-              <b onClick={() => navigateReach("#exchangeAccounts")}>
+              <b onClick={handleClickEvent}>
                 <FormattedMessage id="dashboard.connectexchange.bold.title" />
               </b>
               <FormattedMessage id="dashboard.connectexchange.postText" />

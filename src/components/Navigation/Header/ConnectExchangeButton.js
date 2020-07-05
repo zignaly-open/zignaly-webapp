@@ -4,14 +4,13 @@ import { FormattedMessage } from "react-intl";
 import { navigate as navigateReach } from "@reach/router";
 
 const ConnectExchangeButton = () => {
+  const exchangeAcccountsView = () => {
+    navigateReach("#exchangeAccounts");
+  };
+
   return (
     <>
-      <CustomButton
-        className="headerButton"
-        onClick={() => {
-          navigateReach("#exchangeAccounts");
-        }}
-      >
+      <CustomButton className="headerButton" onClick={exchangeAcccountsView}>
         <FormattedMessage id="menu.connectexchange" />
       </CustomButton>
     </>

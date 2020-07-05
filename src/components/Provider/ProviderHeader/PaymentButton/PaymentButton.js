@@ -64,7 +64,7 @@ const PaymentButton = ({ provider }) => {
             <input name="ipn_url" type="hidden" value={ipnURL} />
             <input
               alt="Buy Now with CoinPayments.net"
-              src="https://www.coinpayments.net/images/pub/CP-third-med.png"
+              src="https://www.coinpayments.net/images/pub/buynow-grey.png"
               type="image"
             />
           </form>

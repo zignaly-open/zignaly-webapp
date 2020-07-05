@@ -10,6 +10,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
+ *
  */
 
 /**
@@ -705,4 +706,85 @@ export function excludeDataTableColumn(dataTable, columnId) {
   }
 
   return dataTable;
+}
+
+/**
+ * Compose MUI Data Table row for open position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeManagementPositionRow(position, confirmActionHandler) {
+  return [
+    composeRawValue(position.subPositions),
+    composeRawValue(position.providerName),
+    composeRawValue(position.copyTradingTotals.totalPositions),
+    composeRawValue(position.copyTradingTotals.soldPositions),
+    composeRawValue(position.signalId),
+    composeRawValue(position.userId),
+    composeRawValue(position.pair),
+    composeEntryPrice(position),
+    composeRawValue(position.leverage),
+    composeExitPrice(position),
+    composeProfit(position),
+    composeProfitPercentage(position),
+    composeRawValue(position.side),
+    composeStopLossPrice(position),
+    composeAmount(position),
+    composeSymbolWithPrice(position.base, position.remainAmount),
+    composeQuoteSize(position),
+    composeTrailingStopIcon(position),
+    composeTakeProfitTargets(position),
+    composeRebuyTargets(position),
+    composeRisk(position),
+    composeRawValue(position.age),
+    composeRawValue(position.openTrigger),
+    composeAllActionButtons(position, confirmActionHandler),
+    composeCancelActionButton(position, confirmActionHandler),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {Array<PositionEntity>} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ *
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
+  const columnsIds = [
+    "col.provider.subpositions",
+    "col.provider.name",
+    "col.provider.totalpositions",
+    "col.provider.soldpositions",
+    "col.signalid",
+    "col.users.userid",
+    "col.pair",
+    "col.price.entry",
+    "col.leverage",
+    "col.price.current",
+    "col.plnumber",
+    "col.plpercentage",
+    "col.side",
+    "col.stoplossprice",
+    "col.initialamount",
+    "col.remainingamount",
+    "col.invested",
+    "col.tsl",
+    "col.tp",
+    "col.dca",
+    "col.risk",
+    "col.age",
+    "col.opentrigger",
+    "col.actions",
+    "col.cancel",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
+  };
 }

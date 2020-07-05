@@ -1,10 +1,8 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import withProviderLayout from "../../../layouts/providerLayout";
-import { compose } from "recompose";
 
 const CopyTradersPositions = () => {
-  return <Box>dynamic route for management </Box>;
+  return <Box>dynamic route for positions </Box>;
 };
 
-export default compose(withProviderLayout)(CopyTradersPositions);
+export default CopyTradersPositions;

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import "./Header.scss";
-import { Box, Popover, Grow, Typography } from "@material-ui/core";
+import { Box, Grow, Typography, Menu } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import { useSelector } from "react-redux";
-import LanguageSwitcher from "../../LanguageSwitcher";
+import { useDispatch } from "react-redux";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
@@ -15,8 +13,9 @@ import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { setShowBalance } from "../../../store/actions/settings";
-import { useDispatch } from "react-redux";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { toggleBalanceBox } from "../../../store/actions/settings";
+import "./Header.scss";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -25,18 +24,13 @@ import { useDispatch } from "react-redux";
 
 const Header = () => {
   const storeSettings = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
+  const [anchorEl, setAnchorEl] = useState(undefined);
   const dispatch = useDispatch();
 
-  /**
-   *
-   * @param {DefaultState} state
-   * @returns {Array<ExchangeConnectionEntity>}
-   */
-
-  const userExchangeSelector = (state) => state.user.exchangeConnections;
-  const exchangeConnections = useSelector(userExchangeSelector);
-
-  const [anchorEl, setAnchorEl] = useState(undefined);
+  const showHideBalance = () => {
+    dispatch(toggleBalanceBox(!storeSettings.balanceBox));
+  };
 
   console.log("render");
 
@@ -56,7 +50,6 @@ const Header = () => {
             src={storeSettings.darkStyle ? LogoWhite : LogoBlack}
           />
         </Link>
-        <LanguageSwitcher />
       </Box>
       <Box
         alignItems="center"
@@ -68,7 +61,7 @@ const Header = () => {
         {exchangeConnections.length > 0 && (
           <Box
             alignItems="center"
-            className={"balanceWrapper " + (storeSettings.showBalance ? "full" : "")}
+            className={"balanceWrapper " + (storeSettings.balanceBox ? "full" : "")}
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
@@ -83,12 +76,12 @@ const Header = () => {
               <img
                 alt="zignaly"
                 className={"expandIcon"}
-                onClick={() => dispatch(setShowBalance(!storeSettings.showBalance))}
-                src={storeSettings.showBalance ? RightIcon : LeftIcon}
+                onClick={showHideBalance}
+                src={storeSettings.balanceBox ? RightIcon : LeftIcon}
               />
             </Box>
-            {storeSettings.showBalance && <BalanceBox />}
-            {!storeSettings.showBalance && (
+            {storeSettings.balanceBox && <BalanceBox />}
+            {!storeSettings.balanceBox && (
               <Grow in={true}>
                 <Box
                   className="iconBox"
@@ -113,21 +106,9 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Popover
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            onClose={() => setAnchorEl(undefined)}
-            open={Boolean(anchorEl)}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
+          <Menu anchorEl={anchorEl} onClose={() => setAnchorEl(undefined)} open={Boolean(anchorEl)}>
             <UserMenu />
-          </Popover>
+          </Menu>
         </Box>
       </Box>
     </Box>

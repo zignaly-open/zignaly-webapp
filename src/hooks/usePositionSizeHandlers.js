@@ -14,6 +14,7 @@ import { simulateInputChangeEvent } from "../utils/events";
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
+ * @property {Validate} validatePositionSizePercentage
  * @property {Validate} validatePrice
  * @property {Validate} validateUnits
  */
@@ -54,6 +55,28 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     if (limits.cost.max && value > limits.cost.max) {
       setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Validate that position size percentage.
+   *
+   * @param {any} positionSizePercentage Position size value.
+   * @returns {boolean} Validation result.
+   */
+  function validatePositionSizePercentage(positionSizePercentage) {
+    const value = parseFloat(positionSizePercentage);
+
+    clearError("positionSizePercentage");
+    if (isNaN(value)) {
+      setError(
+        "positionSizePercentage",
+        "error",
+        "Position size percentage must be a numeric value.",
+      );
       return false;
     }
 
@@ -167,6 +190,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
+    validatePositionSizePercentage,
     validatePrice,
     validateUnits,
   };

@@ -1,8 +1,9 @@
 import tradeApi from "../../services/tradeApiClient";
-import { showLoader, showErrorAlert } from "./ui";
+import { showErrorAlert } from "./ui";
 
 export const GET_PROVIDER = "GET_PROVIDER_ACTION";
 export const REMOVE_PROVIDER = "REMOVE_PROVIDER_ACTION";
+export const SHOW_PROFILE_LOADER = "SHOW_PROFILE_LOADER_ACTION";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").GetProviderPayload} GetProviderPayload
@@ -19,7 +20,7 @@ export const REMOVE_PROVIDER = "REMOVE_PROVIDER_ACTION";
 export const setProvider = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch(showLoader(true));
+      dispatch(showProviderProfileLoader(true));
       const responseData = await tradeApi.providerGet(payload);
       const action = {
         type: GET_PROVIDER,
@@ -27,7 +28,6 @@ export const setProvider = (payload) => {
       };
 
       dispatch(action);
-      dispatch(showLoader(false));
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -37,5 +37,17 @@ export const setProvider = (payload) => {
 export const unsetProvider = () => {
   return {
     type: REMOVE_PROVIDER,
+  };
+};
+
+/**
+ *
+ * @param {Boolean} flag flag to show profile loader
+ */
+
+export const showProviderProfileLoader = (flag) => {
+  return {
+    type: SHOW_PROFILE_LOADER,
+    payload: flag,
   };
 };
