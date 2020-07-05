@@ -108,7 +108,7 @@ const useProvidersList = (options) => {
    */
   const sortProviders = (list = providersFiltered) => {
     const [key, direction] = sort.split("_");
-    const listSorted = list.sort((a, b) => {
+    const listSorted = [...list].sort((a, b) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
@@ -118,7 +118,7 @@ const useProvidersList = (options) => {
           res = a.createdAt - b.createdAt;
           break;
         case "NAME":
-          res = b.name.localeCompare(a.name);
+          res = a.name.localeCompare(b.name);
           break;
         case "FEE":
           res = a.price - b.price;
