@@ -1,11 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
-
+import { showErrorAlert } from "../store/actions/ui";
+import { useDispatch } from "react-redux";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -48,6 +49,7 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
   /**
@@ -106,7 +108,7 @@ const useProvidersList = (options) => {
    */
   const sortProviders = (list = providersFiltered) => {
     const [key, direction] = sort.split("_");
-    const res = list.sort((a, b) => {
+    const listSorted = list.sort((a, b) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
@@ -127,7 +129,7 @@ const useProvidersList = (options) => {
       return direction === "ASC" ? res : -res;
     });
 
-    setProvidersFiltered(res);
+    setProvidersFiltered(listSorted);
   };
   // Sort providers on sort option change
   useEffect(sortProviders, [sort]);
@@ -149,30 +151,29 @@ const useProvidersList = (options) => {
   // Filter providers on filter change
   useEffect(filterProviders, [coin, exchange]);
 
-  // Load providers at init and on timeframe change.
-  useEffect(() => {
-    const loadProviders = async () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        type: connectedOnly ? "connected" : "all",
-        ro: true,
-        copyTradersOnly,
-        timeFrame,
-        internalExchangeId,
-      };
+  const loadProviders = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      type: connectedOnly ? "connected" : "all",
+      ro: true,
+      copyTradersOnly,
+      timeFrame,
+      internalExchangeId,
+    };
 
-      try {
-        const responseData = await tradeApi.providersGet(payload);
+    tradeApi
+      .providersGet(payload)
+      .then((responseData) => {
         const uniqueProviders = uniqBy(responseData, "id");
         filterProviders(uniqueProviders);
         setProviders(uniqueProviders);
-      } catch (e) {
-        setProviders([]);
-        setProvidersFiltered([]);
-      }
-    };
-    loadProviders();
-  }, [
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+  // Load providers at init and on timeframe change.
+  useEffect(loadProviders, [
     timeFrame,
     connectedOnly,
     copyTradersOnly,

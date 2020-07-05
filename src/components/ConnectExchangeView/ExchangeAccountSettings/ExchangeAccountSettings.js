@@ -37,14 +37,6 @@ const ExchangeAccountSettings = () => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
 
-  // Expose submitForm handler to ref so it can be triggered from the parent.
-  useImperativeHandle(
-    formRef,
-    () => ({ submitForm }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [accountExchange],
-  );
-
   const {
     register,
     setError,
@@ -68,6 +60,14 @@ const ExchangeAccountSettings = () => {
     setTitle(<FormattedMessage id="accounts.settings" />);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Expose submitForm handler to ref so it can be triggered from the parent.
+  useImperativeHandle(
+    formRef,
+    () => ({ submitForm }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [accountExchange],
+  );
 
   const deleteExchangeShow = () => {
     setConfirmConfig({ ...initConfirmConfig, visible: true });

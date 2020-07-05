@@ -1,6 +1,7 @@
 .enable2FA {
   .customButton {
     margin-top: 24px;
+    min-width: 216px;
   }
 
   form {
@@ -13,10 +14,6 @@
 
   .code {
     margin: 20px 0 11px;
-  }
-
-  .customButton {
-    min-width: 216px;
   }
 
   .customInput {

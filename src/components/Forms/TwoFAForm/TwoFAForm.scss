@@ -36,15 +36,13 @@
 
 @include media("<=sm") {
   .twoFAForm {
-    margin: 0 -10px;
+    padding: 60px 12px;
 
     .codeInput {
-      width: auto ;
-
       input {
-        height: 46px;
-        max-width: 16.66%;
-        width: 48px;
+        max-height: 46px;
+        max-width: 43px;
+        // max-width: 16.66%;
       }
     }
   }
