@@ -19,8 +19,8 @@ import { START_TRADE_API_SESSION, END_TRADE_API_SESSION, ASK_2FA } from "../stor
  * @param {ActionObject} action Action to reduce.
  * @returns {StateSessionType} New session state.
  */
-const settings = (state, action) => {
-  const newState = assign({}, initialState.session, state);
+const settings = (state = initialState.session, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case START_TRADE_API_SESSION:
@@ -31,7 +31,7 @@ const settings = (state, action) => {
       break;
 
     default:
-      break;
+      return state;
   }
 
   return newState;

@@ -9,7 +9,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
-import QRCode from "qrcode.react";
+import { enable2FA } from "../../../../store/actions/user";
 
 /**
  * Provides a component to enable 2FA.
@@ -24,27 +24,31 @@ const Enable2FA = () => {
   const [editing, setEditing] = useState(false);
   const twoFAEnabled = storeUserData.TwoFAEnable;
   const [code, setCode] = useState(null);
+  const [qrCodeImg, setQRCodeImg] = useState(null);
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
 
   useEffect(() => {
-    // Get 2FA code.
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-    };
+    if (editing) {
+      // Get 2FA code.
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+      };
 
-    tradeApi
-      .enable2FA1Step(payload)
-      .then((response) => {
-        setCode(response[0]);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+      tradeApi
+        .enable2FA1Step(payload)
+        .then((response) => {
+          setCode(response[0]);
+          setQRCodeImg(response[1]);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [editing]);
 
   /**
    * @typedef {Object} FormData
@@ -67,17 +71,16 @@ const Enable2FA = () => {
 
     const apiMethod = twoFAEnabled ? tradeApi.disable2FA : tradeApi.enable2FA2Step;
 
-    apiMethod(payload)
+    apiMethod
+      .call(tradeApi, payload)
       .then(() => {
+        dispatch(enable2FA(!twoFAEnabled));
         setEditing(false);
-        if (twoFAEnabled) {
-          showSuccessAlert("Success", intl.formatMessage({ id: "security.2fa.disable.success" }));
-        } else {
-          showSuccessAlert("Success", intl.formatMessage({ id: "security.2fa.enable.success" }));
-        }
+        const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
+        showSuccessAlert("Success", intl.formatMessage({ id: msg }));
       })
       .catch((e) => {
-        if (e.code === 7) {
+        if (e.code === 37) {
           setError("code", "notMatch", "Wrong code.");
         } else {
           dispatch(showErrorAlert(e));
@@ -95,7 +98,7 @@ const Enable2FA = () => {
       </Typography>
       {!editing && !twoFAEnabled ? (
         <CustomButton className="textPurple borderPurple bold" onClick={() => setEditing(true)}>
-          <FormattedMessage id="security.2fa.enable" />
+          <FormattedMessage id="security.setup" />
         </CustomButton>
       ) : !twoFAEnabled && !code ? (
         <Box pt="24px" display="flex" flexDirection="row" justifyContent="center">
@@ -108,7 +111,7 @@ const Enable2FA = () => {
               <Typography variant="body1" className="bold">
                 <FormattedMessage id="security.2fa.scan" />
               </Typography>
-              <QRCode size={216} value={code} />
+              <img src={qrCodeImg} aria-labelledby="QR Code" className="qrCode" />
               <Typography>
                 <FormattedMessage id="security.2fa.manually" />
               </Typography>
@@ -135,9 +138,10 @@ const Enable2FA = () => {
               placeholder="6 digits"
               className="customInput"
             />
+            {errors.code && <span className="errorText">{errors.code.message}</span>}
           </Box>
           <CustomButton className="bgPurple bold" loading={loading} type="submit">
-            <FormattedMessage id="security.2fa.enable" />
+            <FormattedMessage id={`security.2fa.${twoFAEnabled ? "disable" : "enable"}`} />
           </CustomButton>
         </form>
       )}

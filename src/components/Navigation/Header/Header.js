@@ -38,6 +38,8 @@ const Header = () => {
 
   const [anchorEl, setAnchorEl] = useState(undefined);
 
+  console.log("render");
+
   return (
     <Box
       alignItems="center"

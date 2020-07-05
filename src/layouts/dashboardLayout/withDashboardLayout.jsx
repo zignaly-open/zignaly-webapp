@@ -5,10 +5,9 @@ import { Box, Typography } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
 import ExchangeIcon from "../../components/ExchangeIcon";
-import { openExchangeConnectionView } from "../../store/actions/ui";
 import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
+import { navigate as navigateReach } from "@reach/router";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -26,11 +25,6 @@ const withDashboardLayout = (Component) => {
    */
   const WrapperComponent = (props) => {
     const storeUser = useStoreUserSelector();
-    const dispatch = useDispatch();
-
-    const handleClickEvent = () => {
-      dispatch(openExchangeConnectionView(true));
-    };
 
     return (
       <Box
@@ -63,7 +57,7 @@ const withDashboardLayout = (Component) => {
             </Typography>
             <span className="title">
               <FormattedMessage id="dashboard.connectexchange.preText" />
-              <b onClick={handleClickEvent}>
+              <b onClick={() => navigateReach("#exchangeAccounts")}>
                 <FormattedMessage id="dashboard.connectexchange.bold.title" />
               </b>
               <FormattedMessage id="dashboard.connectexchange.postText" />

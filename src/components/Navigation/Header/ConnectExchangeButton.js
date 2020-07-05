@@ -1,17 +1,16 @@
 import React from "react";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
-import { openExchangeConnectionView } from "../../../store/actions/ui";
+import { navigate as navigateReach } from "@reach/router";
 
 const ConnectExchangeButton = () => {
-  const dispatch = useDispatch();
-
   return (
     <>
       <CustomButton
         className="headerButton"
-        onClick={() => dispatch(openExchangeConnectionView(true))}
+        onClick={() => {
+          navigateReach("#exchangeAccounts");
+        }}
       >
         <FormattedMessage id="menu.connectexchange" />
       </CustomButton>

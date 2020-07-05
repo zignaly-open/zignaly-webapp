@@ -16,10 +16,7 @@ const useStoreUIAsk2FASelector = () => {
    * @param {DefaultStateType} state Application store data.
    * @returns {Boolean} Store ui modal data.
    */
-  const selectStoreUIAsk2FA = (state) => {
-    console.log(state);
-    return state.ui.ask2FA;
-  };
+  const selectStoreUIAsk2FA = (state) => state.ui.ask2FA;
 
   return useSelector(selectStoreUIAsk2FA);
 };

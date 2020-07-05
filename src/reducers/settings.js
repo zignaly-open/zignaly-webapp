@@ -25,8 +25,8 @@ import {
  * @param {ActionObject} action Action to reduce.
  * @returns {StateSettingsType} New settings state.
  */
-const settings = (state, action) => {
-  const newState = assign({}, initialState.settings, state);
+const settings = (state = initialState.settings, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case SELECT_LANGUAGE:
@@ -67,7 +67,7 @@ const settings = (state, action) => {
     }
 
     default:
-      break;
+      return state;
   }
 
   return newState;

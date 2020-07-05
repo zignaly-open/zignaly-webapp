@@ -11,6 +11,7 @@ const ErrorAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();
   const dispatch = useDispatch();
 
+  console.log(storeAlerts.error.open);
   return (
     <Snackbar
       TransitionComponent={Slide}

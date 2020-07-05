@@ -1,8 +1,6 @@
 import initialState from "../store/initialState";
 import { assign } from "lodash";
 import {
-  OPEN_EXCHANGE_CONNECTION_VIEW,
-  OPEN_SSETTINGS_VIEW,
   SHOW_LOADER,
   SHOW_ERROR_ALERT,
   HIDE_ERROR_ALERT,
@@ -26,16 +24,10 @@ import {
  * @param {ActionObject} action Action to reduce.
  * @returns {DefaultUIObject} New settings state.
  */
-const ui = (state, action) => {
-  const newState = assign({}, initialState.ui, state);
+const ui = (state = initialState.ui, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
-    case OPEN_EXCHANGE_CONNECTION_VIEW:
-      newState.modal.exchangeConnectionView = action.payload;
-      break;
-    case OPEN_SSETTINGS_VIEW:
-      newState.modal.settingsView = action.payload;
-      break;
     case SHOW_LOADER:
       newState.loader = action.payload;
       break;
@@ -64,7 +56,7 @@ const ui = (state, action) => {
       break;
 
     default:
-      break;
+      return state;
   }
 
   return newState;
