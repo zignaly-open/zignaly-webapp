@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@material-ui/core";
+import { Box, Typography, CircularProgress, OutlinedInput } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import "./Enable2FA.scss";
@@ -28,7 +28,7 @@ const Enable2FA = () => {
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
 
-  useEffect(() => {
+  const getCode = () => {
     if (editing) {
       // Get 2FA code.
       const payload = {
@@ -48,7 +48,8 @@ const Enable2FA = () => {
           setLoading(false);
         });
     }
-  }, [editing]);
+  };
+  useEffect(getCode, [editing]);
 
   /**
    * @typedef {Object} FormData
@@ -79,7 +80,7 @@ const Enable2FA = () => {
         const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
         showSuccessAlert("Success", intl.formatMessage({ id: msg }));
       })
-      .catch((e) => {
+      .catch((/** @type {*} **/ e) => {
         if (e.code === 37) {
           setError("code", "notMatch", "Wrong code.");
         } else {
@@ -101,42 +102,42 @@ const Enable2FA = () => {
           <FormattedMessage id="security.setup" />
         </CustomButton>
       ) : !twoFAEnabled && !code ? (
-        <Box pt="24px" display="flex" flexDirection="row" justifyContent="center">
+        <Box display="flex" flexDirection="row" justifyContent="center" pt="24px">
           <CircularProgress disableShrink />
         </Box>
       ) : (
         <form onSubmit={handleSubmit(submitCode)}>
           {!twoFAEnabled && (
             <>
-              <Typography variant="body1" className="bold">
+              <Typography className="bold" variant="body1">
                 <FormattedMessage id="security.2fa.scan" />
               </Typography>
-              <img src={qrCodeImg} aria-labelledby="QR Code" className="qrCode" />
+              <img aria-labelledby="QR Code" className="qrCode" src={qrCodeImg} />
               <Typography>
                 <FormattedMessage id="security.2fa.manually" />
               </Typography>
-              <Typography variant="body1" className="code">
+              <Typography className="code" variant="body1">
                 {code}
               </Typography>
             </>
           )}
           <Box display="flex" flexDirection="column">
             <label htmlFor="code">
-              <Typography variant="body1" className="code">
+              <Typography className="code" variant="body1">
                 <FormattedMessage id="security.2fa.mobile" />
               </Typography>
             </label>
             <OutlinedInput
-              name="code"
+              className="customInput"
+              error={!!errors.code}
               id="code"
               inputProps={{
                 min: 0,
               }}
               inputRef={register({ required: true, min: 0, minLength: 6, maxLength: 6 })}
-              type="number"
-              error={!!errors.code}
+              name="code"
               placeholder="6 digits"
-              className="customInput"
+              type="number"
             />
             {errors.code && <span className="errorText">{errors.code.message}</span>}
           </Box>

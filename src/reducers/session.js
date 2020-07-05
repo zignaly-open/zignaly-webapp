@@ -1,6 +1,6 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
-import { START_TRADE_API_SESSION, END_TRADE_API_SESSION, ASK_2FA } from "../store/actions/session";
+import { START_TRADE_API_SESSION, END_TRADE_API_SESSION } from "../store/actions/session";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType

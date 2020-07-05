@@ -918,7 +918,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async enable2FA2Step(payload) {
-    const endpointPath = `/fe/api.php?action=enable2FA2Step`;
+    const endpointPath = "/fe/api.php?action=enable2FA2Step";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
@@ -933,7 +933,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FA(payload) {
-    const endpointPath = `/fe/api.php?action=disable2FA`;
+    const endpointPath = "/fe/api.php?action=disable2FA";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
@@ -948,7 +948,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verify2FA(payload) {
-    const endpointPath = `/fe/api.php?action=verify2FA`;
+    const endpointPath = "/fe/api.php?action=verify2FA";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

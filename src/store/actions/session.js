@@ -1,4 +1,3 @@
-import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges } from "./user";
 import { unsetProvider } from "./views";

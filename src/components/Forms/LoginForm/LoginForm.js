@@ -5,7 +5,7 @@ import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
 import { isEmpty } from "lodash";
 import { navigate } from "gatsby";

@@ -16,22 +16,12 @@ import { ask2FA } from "../../../store/actions/ui";
  */
 
 const TwoFAForm = () => {
-  const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
-  const {
-    register,
-    errors,
-    handleSubmit,
-    control,
-    watch,
-    setError,
-    clearError,
-    formState,
-  } = useForm({
+  const { errors, handleSubmit, control, formState } = useForm({
     mode: "onChange",
   });
 
@@ -57,7 +47,7 @@ const TwoFAForm = () => {
 
     tradeApi
       .verify2FA(payload)
-      .then((payload) => {
+      .then(() => {
         dispatch(ask2FA(false));
       })
       .catch((e) => {
@@ -92,9 +82,11 @@ const TwoFAForm = () => {
             <Typography>Input Your Authentication Code</Typography>
           </label>
           <Controller
-            control={control}
+            // @ts-ignore
             as={ReactCodeInput}
             className="codeInput"
+            control={control}
+            error={!!errors.code}
             fields={6}
             name="code"
             onChange={(val) => {
@@ -105,15 +97,14 @@ const TwoFAForm = () => {
               required: true,
               minLength: 6,
             }}
-            error={!!errors.code}
           />
           {/* {errors.code && <span className="errorText">{errors.code.message}</span>} */}
           {codeError && <span className="errorText">Wrong code.</span>}
           <CustomButton
             className="bgPurple"
-            loading={loading}
-            fullWidth={true}
             disabled={!isValid}
+            fullWidth={true}
+            loading={loading}
             type="submit"
           >
             Sign in
