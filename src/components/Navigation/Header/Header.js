@@ -32,8 +32,6 @@ const Header = () => {
     dispatch(toggleBalanceBox(!storeSettings.balanceBox));
   };
 
-  console.log("render");
-
   return (
     <Box
       alignItems="center"

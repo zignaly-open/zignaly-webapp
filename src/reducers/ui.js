@@ -32,23 +32,41 @@ const ui = (state = initialState.ui, action) => {
       newState.loader = action.payload;
       break;
     case SHOW_ERROR_ALERT:
-      newState.alerts.error = { ...action.payload, open: true };
+      newState.alerts = {
+        ...newState.alerts,
+        error: {
+          ...action.payload,
+          open: true,
+        },
+      };
       break;
     case HIDE_ERROR_ALERT:
-      newState.alerts.error = {
-        title: "",
-        body: "",
-        open: false,
+      newState.alerts = {
+        ...newState.alerts,
+        error: {
+          title: "",
+          body: "",
+          open: false,
+        },
       };
       break;
     case SHOW_SUCCESS_ALERT:
-      newState.alerts.success = { ...action.payload, open: true };
+      newState.alerts = {
+        ...newState.alerts,
+        error: {
+          ...action.payload,
+          open: true,
+        },
+      };
       break;
     case HIDE_SUCCESS_ALERT:
-      newState.alerts.success = {
-        title: "",
-        body: "",
-        open: false,
+      newState.alerts = {
+        ...newState.alerts,
+        success: {
+          title: "",
+          body: "",
+          open: false,
+        },
       };
       break;
     case ASK_2FA:

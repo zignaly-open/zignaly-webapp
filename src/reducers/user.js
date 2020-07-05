@@ -45,7 +45,7 @@ const userExchanges = (state = initialState.user, action) => {
       break;
 
     case SET_USER_BALANCE_LOADER:
-      newState.balance.loading = true;
+      newState.balance = { ...newState.balance, loading: true };
       break;
 
     case REMOVE_USER_BALANCE:
@@ -67,7 +67,7 @@ const userExchanges = (state = initialState.user, action) => {
       break;
 
     case ENABLE_TWO_FA:
-      newState.userData.TwoFAEnable = action.payload;
+      newState.userData = { ...newState.userData, TwoFAEnable: action.payload };
       break;
 
     default:
