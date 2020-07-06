@@ -17,6 +17,7 @@ import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { Typography } from "@material-ui/core";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -169,6 +170,18 @@ const ExchangeAccountSettings = () => {
         setConfirmConfig={setConfirmConfig}
       />
       <ExchangeAccountForm>
+        <Box display="flex" flexDirection="row" className="typeBox">
+          <label>
+            <Typography className="accountLabel">
+              <FormattedMessage id="accounts.exchange.type" />
+            </Typography>
+          </label>
+          <Box width={1}>
+            <Typography variant="body1" className="type">
+              {selectedAccount.exchangeType}
+            </Typography>
+          </Box>
+        </Box>
         <CustomInput
           defaultValue={selectedAccount.internalName}
           inputRef={register({
