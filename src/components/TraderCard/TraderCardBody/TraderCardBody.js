@@ -155,24 +155,26 @@ const TraderCard = (props) => {
           </Box>
         </CustomToolip>
 
-        <CustomToolip
-          title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
-        >
-          <Box
-            alignItems="flex-end"
-            className="openPositions"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
+        {isCopyTrading && (
+          <CustomToolip
+            title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
           >
-            <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
-              {formatFloat2Dec(floating)}%
-            </Typography>
-            <Typography variant="subtitle1">
-              <FormattedMessage id="srv.openpos" />
-            </Typography>
-          </Box>
-        </CustomToolip>
+            <Box
+              alignItems="flex-end"
+              className="openPositions"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
+                {formatFloat2Dec(floating)}%
+              </Typography>
+              <Typography variant="subtitle1">
+                <FormattedMessage id="srv.openpos" />
+              </Typography>
+            </Box>
+          </CustomToolip>
+        )}
       </Box>
       <Box>
         <Box className="traderCardGraph">
