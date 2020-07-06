@@ -1,16 +1,14 @@
 .settingsView {
-  .actionBar {
-    border-bottom: 1px solid $borderColor;
-    padding: 10px;
+  .subNavHeader {
+    padding: 0 24px;
     width: 100%;
-
-    .submitButton {
-      height: 40px;
-    }
   }
 
-  .titleBar {
-    padding: 10px;
-    width: 100%;
+  .settingsContent {
+    padding: 0 24px 32px;
+  }
+
+  .inputBox {
+    margin-bottom: 24px;
   }
 }

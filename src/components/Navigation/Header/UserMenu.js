@@ -11,13 +11,13 @@ import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
 import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
-import { openSettingsView } from "../../../store/actions/ui";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
+import { navigate as navigateReach } from "@reach/router";
 
-const UserMenu = React.forwardRef((props, ref) => {
+const UserMenu = React.forwardRef(() => {
   const dispatch = useDispatch();
   const [languageSelector, showLanguageSelector] = useState(false);
 
@@ -34,16 +34,12 @@ const UserMenu = React.forwardRef((props, ref) => {
     window.open(docsURL, "_blank");
   };
 
-  const showSettingsView = () => {
-    dispatch(openSettingsView(true));
-  };
-
   return (
     <Box alignItems="flex-start" className="userMenu" display="flex" flexDirection="column">
       <MenuItem
         className="userMenuItem"
         onClick={() => {
-          navigate("#exchangeAccounts");
+          navigateReach("#exchangeAccounts");
         }}
       >
         <img alt="zignaly" src={MyExchange} />
@@ -52,7 +48,12 @@ const UserMenu = React.forwardRef((props, ref) => {
         </span>
       </MenuItem>
       {/* </Link> */}
-      <MenuItem className="userMenuItem" onClick={showSettingsView}>
+      <MenuItem
+        className="userMenuItem"
+        onClick={() => {
+          navigateReach("#settings");
+        }}
+      >
         <img alt="zignaly" src={Settings} />
         <span className="item">
           <FormattedMessage id="menu.settings" />

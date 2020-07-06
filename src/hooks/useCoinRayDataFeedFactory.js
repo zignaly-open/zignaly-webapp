@@ -65,8 +65,9 @@ const useCoinRayDataFeedFactory = (symbol) => {
     const exchangeKey = mapExchangeConnectionToCoinRayId(storeSettings.selectedExchange);
     const exchangeName =
       storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+    const exchangeInternalId = storeSettings.selectedExchange.internalId;
 
-    if (symbol && (!dataFeed || exchangeName !== dataFeed.exchange)) {
+    if (symbol && (!dataFeed || exchangeInternalId !== dataFeed.internalExchangeId)) {
       Promise.all([tokenPromise, marketDataPromise])
         .then((data) => {
           const coinRayToken = data[0];
@@ -75,6 +76,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
           const options = {
             exchange: exchangeName,
             exchangeKey,
+            internalExchangeId: storeSettings.selectedExchange.internalId,
             symbol,
             symbolsData: marketSymbolsData,
             tradeApiToken: storeSession.tradeApi.accessToken,

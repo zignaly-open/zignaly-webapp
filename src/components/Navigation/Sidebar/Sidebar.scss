@@ -43,34 +43,4 @@
       width: 24px;
     }
   }
-
-  .themeBox {
-    border-radius: 20px;
-    overflow: hidden;
-    width: fit-content;
-
-    img {
-      cursor: pointer;
-      height: 24px;
-      width: 24px;
-    }
-
-    .darkBox {
-      padding: 8px;
-    }
-
-    .checkedDarkBox {
-      background-image: $purpleDarkGradient;
-      padding: 8px;
-    }
-
-    .lightBox {
-      padding: 8px;
-    }
-
-    .checkedLightBox {
-      background-image: $purpleDarkGradient;
-      padding: 8px;
-    }
-  }
 }

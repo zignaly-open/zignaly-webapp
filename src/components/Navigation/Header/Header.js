@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Header.scss";
 import { Box, Grow, Typography, Menu } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
@@ -16,6 +15,7 @@ import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { toggleBalanceBox } from "../../../store/actions/settings";
+import "./Header.scss";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -104,7 +104,7 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(undefined)}>
+          <Menu anchorEl={anchorEl} onClose={() => setAnchorEl(undefined)} open={Boolean(anchorEl)}>
             <UserMenu />
           </Menu>
         </Box>

@@ -2,21 +2,17 @@ import React, { useState } from "react";
 import "./Sidebar.scss";
 import { Box, Typography } from "@material-ui/core";
 import Link from "../../LocalizedLink";
-import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";
 import TerminalWhite from "../../../images/sidebar/terminalWhite.svg";
 import TerminlBlack from "../../../images/sidebar/terminalBlack.svg";
 import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
-import FillWhite from "../../../images/sidebar/fillWhite.svg";
-import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
-import OutlineBlack from "../../../images/sidebar/outlineBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
-import { selectDarkTheme } from "../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import ThemeSwitcher from "../../ThemeSwitcher";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -25,7 +21,6 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 const Sidebar = () => {
   const storeSettings = useStoreSettingsSelector();
   const [hover, setHover] = useState(false);
-  const dispatch = useDispatch();
 
   const showFullMenu = () => {
     setHover(true);
@@ -107,52 +102,7 @@ const Sidebar = () => {
           <FormattedMessage id="menu.tradingterminal" />
         </Typography>
       </Link>
-      <Box className={"themeBox"} display="flex" flexDirection="row" flexWrap="nowrap">
-        {hover && (
-          <>
-            <Box
-              className={storeSettings.darkStyle ? "checkedDarkBox" : "darkBox"}
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <img
-                alt="zignaly"
-                className={"icon"}
-                onClick={() => dispatch(selectDarkTheme(true))}
-                src={storeSettings.darkStyle ? OutlineWhite : OutlineBlack}
-              />
-            </Box>
-            <Box
-              className={!storeSettings.darkStyle ? "checkedLightBox" : "lightBox"}
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <img
-                alt="zignaly"
-                className={"icon"}
-                onClick={() => dispatch(selectDarkTheme(false))}
-                src={FillWhite}
-              />
-            </Box>
-          </>
-        )}
-        {!hover && (
-          <Box
-            className={storeSettings.darkStyle ? "checkedDarkBox" : "checkedLightBox"}
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-          >
-            <img
-              alt="zignaly"
-              className={"icon"}
-              src={storeSettings.darkStyle ? OutlineWhite : FillWhite}
-            />
-          </Box>
-        )}
-      </Box>
+      <ThemeSwitcher full={hover} />
     </Box>
   );
 };

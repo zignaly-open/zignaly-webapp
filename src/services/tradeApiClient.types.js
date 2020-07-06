@@ -78,6 +78,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerName
  * @property {string} exchangeName
  * @property {string} exchangeInternalId
+ * @property {number} [positionSizePercentage]
+ * @property {string} [providerId]
+ * @property {string} [providerName]
  */
 
 /**
@@ -694,6 +697,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} totalServiceCharge
  * @property {string} totalTransferred
  * @property {Array<TransObject>} trans
+ */
+
+/**
+ * @typedef {Object} UpdatePasswordPayload
+ * @property {string} password
+ * @property {string} newPassword
+ * @property {string} repeatPassword
  */
 
 /**

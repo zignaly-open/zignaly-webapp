@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
@@ -18,6 +18,8 @@ import { buyCryptoURL } from "../../../../utils/affiliateURLs";
 import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import TipBox from "../TipBox";
+import Modal from "../../../Modal";
+import DepositQRCodes from "./DepositQRCodes";
 
 const Deposit = () => {
   const {
@@ -48,7 +50,7 @@ const Deposit = () => {
     if (depositAddress) copyToClipboard(depositAddress.tag, "deposit.memo.copied");
   };
 
-  const showQRCode = () => {};
+  const [isQRModalOpen, openQRModal] = useState(false);
 
   return (
     <BalanceManagement>
@@ -110,11 +112,13 @@ const Deposit = () => {
                   </Box>
                 </Box>
                 <Box className="networkColumn">
-                  <NetworksToggleGroup
-                    networks={selectedAsset.networks}
-                    selectedNetwork={selectedNetwork}
-                    setSelectedNetwork={setSelectedNetwork}
-                  />
+                  {selectedAsset.networks.length > 1 && (
+                    <NetworksToggleGroup
+                      networks={selectedAsset.networks}
+                      selectedNetwork={selectedNetwork}
+                      setSelectedNetwork={setSelectedNetwork}
+                    />
+                  )}
                   <Typography className="addressLabel" variant="body1">
                     {selectedAssetName} <FormattedMessage id="deposit.address" />
                   </Typography>
@@ -151,10 +155,18 @@ const Deposit = () => {
                         <FormattedMessage id="deposit.address.copy" />
                       </Typography>
                     </CustomButton>
+                    <Modal
+                      onClose={() => openQRModal(false)}
+                      persist={false}
+                      size="small"
+                      state={isQRModalOpen}
+                    >
+                      <DepositQRCodes address={depositAddress} />
+                    </Modal>
                     <CustomButton
                       className="borderPurple textPurple"
                       disabled={!depositAddress}
-                      onClick={showQRCode}
+                      onClick={() => openQRModal(true)}
                     >
                       <Typography className="bold" variant="body1">
                         <FormattedMessage id="deposit.address.qr" />

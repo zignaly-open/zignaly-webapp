@@ -16,13 +16,10 @@ import ModalPathContext from "../../ModalPathContext";
  * @returns {JSX.Element} Component JSX.
  */
 const BalanceManagement = ({ children }) => {
-  const {
-    pathParams: { selectedAccount },
-    setTitle,
-  } = useContext(ModalPathContext);
+  const { pathParams, setTitle, setPathParams } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(selectedAccount.internalName);
+    setTitle(pathParams.selectedAccount.internalName);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,9 +38,26 @@ const BalanceManagement = ({ children }) => {
     },
   ];
 
+  /**
+   * Navigation callback
+   * @param {string} id tab id
+   * @returns {void}
+   */
+  const handleTabChange = (id) => {
+    // Only update current path while keeping previous path
+    setPathParams({
+      ...pathParams,
+      currentPath: id,
+    });
+  };
+
   return (
     <Box className="balanceManagement">
-      <SubNavModalHeader links={tabs} />
+      <SubNavModalHeader
+        currentPath={pathParams.currentPath}
+        links={tabs}
+        onClick={handleTabChange}
+      />
       {children}
     </Box>
   );

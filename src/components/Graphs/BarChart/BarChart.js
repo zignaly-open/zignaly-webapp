@@ -76,7 +76,7 @@ const BarChart = (props) => {
       // padding: 75,
       padding: 0,
       // stepSize: 1,
-      min: -2,
+      //   min: -2,
     },
     gridLines: {
       // draw zero line only

@@ -1,44 +1,9 @@
 .connectExchangeViewHead {
-  padding-bottom: 24px;
   width: 100%;
 
   .actionBar {
-    border-bottom: 1px solid $borderColor;
-    padding: 10px;
-    width: 100%;
-
-    .customButton {
-      margin-right: 24px;
-    }
-
-    .submitButton {
-      height: 40px;
-      min-width: 102px;
-    }
-
     .userExchangeList {
       margin-left: auto;
-    }
-
-    .tempMessage {
-      opacity: 0.6;
-    }
-  }
-
-  > .titleBar {
-    padding: 32px 24px 0;
-    width: 100%;
-  }
-}
-
-@include media("<=sm") {
-  .connectExchangeViewHead {
-    .titleBar {
-      padding: 24px 10px 0;
-
-      h1 {
-        font-size: 28px;
-      }
     }
   }
 }

@@ -7,12 +7,14 @@ import Logo from "../../images/logo/logoWhite.svg";
 import Testimonials from "../../components/Testimonials";
 import LoginTabs from "../../components/LoginTabs";
 import { Helmet } from "react-helmet";
+import translations from "../../i18n/translations";
+import { IntlProvider } from "react-intl";
 
 const LoginPage = () => {
   const show2FA = false;
 
   return (
-    <>
+    <IntlProvider locale="en" messages={translations.en}>
       <Helmet>
         <title>Login</title>
       </Helmet>
@@ -44,7 +46,7 @@ const LoginPage = () => {
         </Box>
         <Testimonials />
       </Box>
-    </>
+    </IntlProvider>
   );
 };
 

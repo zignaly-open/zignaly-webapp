@@ -12,7 +12,7 @@ import CustomButton from "../../CustomButton/CustomButton";
 import { validatePassword } from "../../../utils/validators";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import PasswordStrength from "../../PasswordStrength";
+import PasswordStrength from "../../Passwords/PasswordStrength";
 import { useForm } from "react-hook-form";
 
 const ResetPasswordForm = () => {

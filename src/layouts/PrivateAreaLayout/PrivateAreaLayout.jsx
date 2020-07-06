@@ -14,6 +14,7 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import withPageContext from "../../pageContext/withPageContext";
+import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 
@@ -44,6 +45,7 @@ const PrivateAreaLayout = (props) => {
         <SuccessAlert />
         {storeLoader && <Loader />}
         <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
+        <GlobalModal content={SettingsView} hash="settings" />
         <Box bgcolor="background.default" className={"app"}>
           <Hidden xsDown>
             <Header />

@@ -1,0 +1,20 @@
+.depositQRCodes {
+  justify-content: space-around;
+
+  .qrCode {
+    text-align: center;
+
+    p {
+      padding-bottom: 16px;
+    }
+  }
+
+  @include media("<=sm") {
+    flex-direction: column;
+    padding: 32px;
+
+    p {
+      padding-top: 42px;
+    }
+  }
+}

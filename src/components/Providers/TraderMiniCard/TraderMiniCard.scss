@@ -11,6 +11,12 @@
   }
 
   .name {
+    // sass-lint:disable-block no-vendor-prefixes
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    overflow: hidden;
     padding-right: 5px;
+    white-space: initial;
   }
 }

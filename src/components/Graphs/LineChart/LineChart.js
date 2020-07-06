@@ -1,13 +1,14 @@
-import React, { useRef } from "react";
+import React, { useCallback } from "react";
 import "./LineChart.scss";
 import { Box } from "@material-ui/core";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
+import TooltipChart from "../TooltipChart";
+import useChartTooltip from "../../../hooks/useChartTooltip";
 
 /**
  * @typedef {import('chart.js').ChartData} Chart.ChartData
  * @typedef {import('chart.js').ChartOptions} Chart.ChartOptions
- * @typedef {import('chart.js').ChartTooltipModel} Chart.ChartTooltipModel
  */
 
 /**
@@ -44,8 +45,9 @@ const MemoizedLine = React.memo(
  * @returns {JSX.Element} Component JSX.
  */
 const LineChart = (props) => {
-  const { chartData, colorsOptions } = props;
-  const chartRef = useRef(null);
+  const { chartData, colorsOptions, tooltipFormat } = props;
+  const { chartRef, pointHoverRef, tooltipData, showTooltip } = useChartTooltip(tooltipFormat);
+  const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
   /**
    * @type Chart.ChartData
@@ -93,6 +95,8 @@ const LineChart = (props) => {
       intersect: false,
       position: "nearest",
       displayColors: false,
+      enabled: false,
+      custom: showTooltipCallback,
     },
     elements: {
       point: {
@@ -124,14 +128,9 @@ const LineChart = (props) => {
 
   return (
     <Box className="lineChart">
-      {/* <CustomToolip
-        classes={{ tooltip: "customTooltip" }}
-        open={isTooltipVisible}
-        placement="top-start"
-        title={tooltipContent}
-      > */}
-      <MemoizedLine data={data} options={options} ref={chartRef} />
-      {/* </CustomToolip> */}
+      <TooltipChart pointHoverRef={pointHoverRef} tooltipData={tooltipData}>
+        <MemoizedLine data={data} options={options} ref={chartRef} />
+      </TooltipChart>
     </Box>
   );
 };

@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./LoginForm.scss";
-import { Box, TextField, FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
@@ -13,6 +11,8 @@ import { isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import { setUserExchanges, setUserData } from "../../../store/actions/user";
 import Captcha from "../../Captcha";
+import PasswordInput from "../../Passwords/PasswordInput";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -31,7 +31,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
 
@@ -129,22 +128,12 @@ const LoginForm = () => {
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="customLabel">Password</label>
-          <FormControl className="customInput" variant="outlined">
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </span>
-                </InputAdornment>
-              }
-              error={!!errors.password}
-              inputRef={register({ required: true })}
-              name="password"
-              type={showPassword ? "text" : "password"}
-            />
-          </FormControl>
+          <PasswordInput
+            error={!!errors.password}
+            inputRef={register({ required: true })}
+            label={<FormattedMessage id={"security.password"} />}
+            name="password"
+          />
           {errors.password && <span className="errorText">Password cannot be empty</span>}
         </Box>
 

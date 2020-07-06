@@ -1,73 +1,17 @@
 import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
-import {
-  Box,
-  TextField,
-  Checkbox,
-  InputAdornment,
-  FormControl,
-  OutlinedInput,
-  Popper,
-} from "@material-ui/core";
+import { Box, TextField, Checkbox } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { validatePassword } from "../../../utils/validators";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import PasswordStrength from "../../PasswordStrength";
 import { useForm } from "react-hook-form";
 import Captcha from "../../Captcha";
+import Passwords from "../../Passwords";
 
 const SignupForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [, setPasswordDoNotMatch] = useState(true);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(undefined);
-  const [passwordDoNotMatch] = useState(false);
-  const [strength, setStrength] = useState(0);
   const [loading] = useState(false);
   const [, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
-  const { errors, handleSubmit, register, setError, clearError } = useForm();
-
-  /**
-   * @typedef {import('react').ChangeEvent} ChangeEvent
-   */
-
-  /**
-   * Main password change state handling.
-   *
-   * @param {ChangeEvent} e Observed event.
-   * @return {void}
-   */
-  const handlePasswordChange = (e) => {
-    setPasswordDoNotMatch(false);
-    const targetElement = /** @type {HTMLInputElement} */ (e.target);
-    let howStrong = validatePassword(targetElement.value);
-    setStrength(howStrong);
-    if (strength >= 4) {
-      clearError("password");
-    } else {
-      setError("password", "The password is fragile.");
-    }
-  };
-
-  /**
-   * Repeat password change state handling.
-   *
-   * @param {ChangeEvent} e Change event.
-   * @return {void}
-   */
-  const handleRepeatPasswordChange = (e) => {
-    setPasswordDoNotMatch(false);
-    const targetElement = /** @type {HTMLInputElement} */ (e.target);
-    let howStrong = validatePassword(targetElement.value);
-    setStrength(howStrong);
-    if (howStrong >= 4) {
-      clearError("repeatPassword");
-    } else {
-      setError("repeatPassword", "Repeat password don't match with main password.");
-    }
-  };
+  const formMethods = useForm();
+  const { errors, handleSubmit, register, clearError } = formMethods;
 
   //   const onSubmit = () => {
   //     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
@@ -100,15 +44,6 @@ const SignupForm = () => {
         flexDirection="column"
         justifyContent="center"
       >
-        <Popper
-          anchorEl={anchorEl}
-          className="passwordStrengthBox"
-          open={!!anchorEl}
-          placement="left"
-          transition
-        >
-          <PasswordStrength onClose={() => setAnchorEl(undefined)} strength={strength} />
-        </Popper>
         <Box
           alignItems="start"
           className="inputBox"
@@ -149,65 +84,8 @@ const SignupForm = () => {
           />
         </Box>
 
-        <Box
-          alignItems="start"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">Password</label>
-          <FormControl className="customInput" variant="outlined">
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </span>
-                </InputAdornment>
-              }
-              error={!!errors.password}
-              inputRef={register({ required: true })}
-              name="password"
-              onBlur={() => setAnchorEl(undefined)}
-              onChange={handlePasswordChange}
-              onFocus={(e) => setAnchorEl(e.currentTarget)}
-              type={showPassword ? "text" : "password"}
-            />
-          </FormControl>
-        </Box>
+        <Passwords edit={false} formMethods={formMethods} />
 
-        <Box
-          alignItems="start"
-          className={"inputBox " + (passwordDoNotMatch ? "no-margin" : "")}
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">Repeat Password</label>
-          <FormControl className="customInput" variant="outlined">
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <span
-                    className="pointer"
-                    onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                  >
-                    {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
-                  </span>
-                </InputAdornment>
-              }
-              error={!!errors.repeatPassword}
-              inputRef={register({ required: true })}
-              name="repeatPassword"
-              onChange={handleRepeatPasswordChange}
-              type={showRepeatPassword ? "text" : "password"}
-            />
-          </FormControl>
-        </Box>
-        <Box display="flex" flexDirection="row" justifyContent="center" minWidth="100%">
-          {passwordDoNotMatch && <span className="error-text bold">Passwords do not match!</span>}
-        </Box>
         <Box className="inputBox checkbox">
           <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox

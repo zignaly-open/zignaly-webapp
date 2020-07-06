@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
-import { useForm, FormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { assign, isEmpty, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
@@ -70,22 +70,8 @@ const StrategyForm = (props) => {
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
   const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
-  const methods = useForm({
-    mode: "onChange",
-    defaultValues: {
-      entryType: "LONG",
-      leverage: 1,
-      positionSize: "",
-      price: currentPrice,
-      realInvestment: "",
-      stopLossPrice: "",
-      trailingStopPrice: "",
-      units: "",
-      dcaTargetPricePercentage1: "",
-    },
-  });
 
-  const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = methods;
+  const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
@@ -261,6 +247,8 @@ const StrategyForm = (props) => {
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
+   * @property {string} [providerId]
+   * @property {string} [providerName]
    */
 
   /**
@@ -271,13 +259,22 @@ const StrategyForm = (props) => {
    */
   const composePositionStrategy = (draftPosition) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
-
-    return {
+    const strategy = {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || currentPrice,
     };
+
+    if (draftPosition.positionSizePercentage) {
+      return assign(strategy, {
+        positionSizePercentage: parseFloat(draftPosition.positionSizePercentage) || 0,
+        providerId: draftPosition.providerService || "",
+        providerName: draftPosition.providerName || "",
+      });
+    }
+
+    return strategy;
   };
 
   /**
@@ -508,39 +505,37 @@ const StrategyForm = (props) => {
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
   return (
-    <FormContext {...methods}>
-      <Box className="strategyForm" textAlign="center">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
-          <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          {isPositionView && !isClosed && (
-            <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-          )}
-          {!isPositionView && <EntryExpirationPanel />}
-          {!isPositionView && <AutoclosePanel />}
-          {!isClosed && (
-            <CustomButton
-              className={"full submitButton"}
-              disabled={!isEmpty(errors)}
-              loading={processing}
-              onClick={() => {
-                triggerValidation();
-              }}
-              type="submit"
-            >
-              {isPositionView ? (
-                <FormattedMessage id="terminal.update" />
-              ) : (
-                <FormattedMessage id="terminal.open" />
-              )}
-            </CustomButton>
-          )}
-        </form>
-      </Box>
-    </FormContext>
+    <Box className="strategyForm" textAlign="center">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
+        <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        {isPositionView && !isClosed && (
+          <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        )}
+        {!isPositionView && <EntryExpirationPanel />}
+        {!isPositionView && <AutoclosePanel />}
+        {!isClosed && (
+          <CustomButton
+            className={"full submitButton"}
+            disabled={!isEmpty(errors)}
+            loading={processing}
+            onClick={() => {
+              triggerValidation();
+            }}
+            type="submit"
+          >
+            {isPositionView ? (
+              <FormattedMessage id="terminal.update" />
+            ) : (
+              <FormattedMessage id="terminal.open" />
+            )}
+          </CustomButton>
+        )}
+      </form>
+    </Box>
   );
 };
 
