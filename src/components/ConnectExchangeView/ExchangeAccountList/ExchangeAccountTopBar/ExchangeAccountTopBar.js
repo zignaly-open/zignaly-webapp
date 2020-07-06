@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, useMediaQuery, Typography } from "@material-ui/core";
 import "./ExchangeAccountTopBar.scss";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import CustomButton from "../../../CustomButton";
+import { useTheme } from "@material-ui/core/styles";
+import { Settings, Sunset, Sunrise, Repeat } from "react-feather";
+import CustomToolip from "../../../CustomTooltip";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -24,6 +27,8 @@ import CustomButton from "../../../CustomButton";
 const ExchangeAccountTopBar = ({ account }) => {
   const storeSettings = useStoreSettingsSelector();
   const { navigateToPath } = useContext(ModalPathContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
 
@@ -48,23 +53,53 @@ const ExchangeAccountTopBar = ({ account }) => {
           )}
         </Box>
       </Box>
-      <Box alignItems="center" className="actionsBox hideScroll" display="flex" flexDirection="row">
+      <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
         <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
-          <FormattedMessage id="accounts.settings" />
+          {isMobile ? (
+            <CustomToolip title={<FormattedMessage id="accounts.settings" />}>
+              <Settings />
+            </CustomToolip>
+          ) : (
+            <FormattedMessage id="accounts.settings" />
+          )}
         </CustomButton>
         {account.isBrokerAccount && (
           <>
-            <CustomButton className="textPurple" onClick={() => navigateToPath("deposit", account)}>
-              <FormattedMessage id="accounts.deposit" />
+            <CustomButton
+              className={isMobile ? "textDefault" : "textPurple"}
+              onClick={() => navigateToPath("deposit", account)}
+            >
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.deposit" />}>
+                  <Sunset />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.deposit" />
+              )}
             </CustomButton>
             <CustomButton
-              className="textPurple"
+              className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("withdraw", account)}
             >
-              <FormattedMessage id="accounts.withdraw" />
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.withdraw" />}>
+                  <Sunrise />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.withdraw" />
+              )}
             </CustomButton>
-            <CustomButton className="textPurple" onClick={() => navigateToPath("convert", account)}>
-              <FormattedMessage id="accounts.convert" />
+            <CustomButton
+              className={isMobile ? "textDefault" : "textPurple"}
+              onClick={() => navigateToPath("convert", account)}
+            >
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.convert" />}>
+                  <Repeat />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.convert" />
+              )}
             </CustomButton>
           </>
         )}

@@ -651,13 +651,17 @@ notifications.email: "Email Notification"
 notifications.positionopened: "Opened a position successfuly"
 notifications.positionupdate: "Position updates"
 notifications.telegram: "Telegram"
+notifications.telegramcode: "Telegram Code"
 notifications.telegramconnect: "Connect Telegram"
+notifications.telegramdisconnect: "Disconnect Telegram"
 notifications.warnings: "Warnings about subscriptions close to expiration"
 notifications.zignaly: "Zignaly news and updates"
+notifications.codeinfo: "You can get your code accessing our bot {url} and writing {command}"
 
-progile.email: "Email"
+profile.email: "Email"
 profile.photo: "Profile Picture"
 profile.username: "Username"
+profile.userid: "User ID"
 
 # MONTHS
 m.jan: "JAN"
@@ -675,6 +679,9 @@ m.dec: "DEC"
 
 # FAQ
 faq: "Frequently Asked Questions"
+
+# BUTTON
+button.update: "Update"
 
 # STATUS
 status.0: "Position Created In DB"

@@ -1,6 +1,15 @@
 .exchangeAccountSettings {
   width: 100%;
 
+  .typeBox {
+    margin-bottom: 20px;
+    width: 100%;
+
+    .type {
+      text-transform: capitalize;
+    }
+  }
+
   .deleteButton {
     color: $red;
     margin-top: 30px;

@@ -712,6 +712,26 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProfileNotifications
+ * @property {boolean} emailEnable
+ * @property {boolean} emailNews
+ * @property {boolean} emailOpenPosition
+ * @property {boolean} emailUpdatePosition
+ * @property {boolean} emailSubscriptionWarning
+ * @property {boolean} telegramEnable
+ * @property {boolean} telegramNews
+ * @property {boolean} telegramUpdatePosition
+ * @property {boolean} telegramSubscriptionWarning
+ * @property {string} telegramCode
+ */
+
+/**
+ *
+ * @typedef {Object} ProfileNotificationsPayload
+ * @property {ProfileNotifications} notifications
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export
@@ -2994,4 +3014,37 @@ export function managementPositionsResponseTransform(response) {
     });
   });
   return response;
+}
+
+/**
+ * Transform Profile notifications response.
+ *
+ * @param {*} response .
+ * @returns {ProfileNotifications} Provider Data points entity.
+ */
+export function profileNotificationsResponseTransform(response) {
+  const emptyProfileNotificationsEntity = creatEmptyProfileNotificationsEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyProfileNotificationsEntity, response);
+
+  return transformedResponse;
+}
+
+/**
+ * Create profile notifications entity.
+ * @returns {ProfileNotifications} User entity.
+ */
+function creatEmptyProfileNotificationsEntity() {
+  return {
+    emailEnable: false,
+    emailNews: false,
+    emailOpenPosition: false,
+    emailUpdatePosition: false,
+    emailSubscriptionWarning: false,
+    telegramEnable: false,
+    telegramNews: false,
+    telegramUpdatePosition: false,
+    telegramSubscriptionWarning: false,
+    telegramCode: "",
+  };
 }
