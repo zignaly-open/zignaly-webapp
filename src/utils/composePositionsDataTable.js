@@ -326,20 +326,6 @@ function composeRisk(position) {
 }
 
 /**
- * Compose risk percentage element for a given position.
- *
- * @param {PositionEntity} position Position entity to compose risk for.
- * @returns {JSX.Element} Composed JSX element.
- */
-function composeProfilePositionRisk(position) {
-  return (
-    <>
-      <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
-    </>
-  );
-}
-
-/**
  * Compose formatted price with currency symbol element.
  *
  * @param {string} symbol Currency symbol.

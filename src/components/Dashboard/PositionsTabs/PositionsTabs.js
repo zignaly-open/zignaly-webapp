@@ -11,8 +11,10 @@ import TabsMenu from "./TabsMenu";
  */
 
 /**
+ * Tabs component.
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default compoennt props.
+ * @returns {JSX.Element} JSX component.
  */
 const PositionsTabs = ({ isProfile }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -74,7 +76,7 @@ const PositionsTabs = ({ isProfile }) => {
       >
         <TabsMenu changeTab={changeTab} isProfile={isProfile} tabValue={tabValue} />
       </Box>
-      <PositionsTabContent type={selectedType} isProfile={isProfile} />
+      <PositionsTabContent isProfile={isProfile} type={selectedType} />
     </Box>
   );
 };

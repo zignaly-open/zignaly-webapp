@@ -21,7 +21,7 @@ const PositionsTabContent = (props) => {
 
   return (
     <Box className="tabPanel">
-      <PositionsTable type={type} isProfile={isProfile} />
+      <PositionsTable isProfile={isProfile} type={type} />
     </Box>
   );
 };
