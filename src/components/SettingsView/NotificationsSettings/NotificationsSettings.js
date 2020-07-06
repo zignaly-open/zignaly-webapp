@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   FormGroup,
   Typography,
+  OutlinedInput,
   CircularProgress,
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -16,6 +17,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { useForm, Controller } from "react-hook-form";
 import CustomButton from "../../CustomButton";
+import { ErrorSharp } from "@material-ui/icons";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ProfileNotifications} ProfileNotifications
@@ -26,9 +28,10 @@ const NotificationsSettings = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { handleSubmit, register, reset, control } = useForm();
+  const { handleSubmit, register, reset, control, errors } = useForm();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [telegramEnabled, enableTelegram] = useState(false);
 
   const loadData = () => {
     const payload = {
@@ -40,6 +43,7 @@ const NotificationsSettings = () => {
       .then((data) => {
         setLoading(false);
         console.log(data);
+        enableTelegram(data.telegramEnable);
         reset(data);
       })
       .catch((e) => {
@@ -65,6 +69,8 @@ const NotificationsSettings = () => {
           data.emailOpenPosition ||
           data.emailUpdatePosition ||
           data.emailSubscriptionWarning,
+        telegramEnable: telegramEnabled,
+        telegramCode: telegramEnabled ? data.telegramCode : "",
       },
     };
 
@@ -100,24 +106,20 @@ const NotificationsSettings = () => {
               <NotificationCheckbox
                 name="emailNews"
                 label="notifications.zignaly"
-                // inputRef={register}
                 control={control}
               />
               <NotificationCheckbox
                 name="emailOpenPosition"
                 label="notifications.positionopened"
-                // inputRef={register}
                 control={control}
               />
               <NotificationCheckbox
                 name="emailUpdatePosition"
-                // inputRef={register}
                 control={control}
                 label="notifications.positionupdate"
               />
               <NotificationCheckbox
                 name="emailSubscriptionWarning"
-                // inputRef={register}
                 control={control}
                 label="notifications.warnings"
               />
@@ -126,34 +128,60 @@ const NotificationsSettings = () => {
             <Typography variant="body1" className="bold">
               Telegram
             </Typography>
+            {telegramEnabled && (
+              <Box className="inputBox">
+                <label>
+                  <Typography variant="body1" className="customLabel">
+                    <FormattedMessage id="notifications.telegramcode" />
+                  </Typography>
+                  <OutlinedInput
+                    name="telegramCode"
+                    className="customInput"
+                    inputRef={register({ required: "Please enter your telegram code." })}
+                  />
+                </label>
+                {errors.telegramCode && (
+                  <span className="errorText">{errors.telegramCode.message}</span>
+                )}
+              </Box>
+            )}
+            <CustomButton
+              className="borderPurple textPurple bold telegramButton"
+              onClick={() => enableTelegram(!telegramEnabled)}
+            >
+              <FormattedMessage
+                id={`notifications.telegram${telegramEnabled ? "disconnect" : "connect"}`}
+              />
+            </CustomButton>
             <FormGroup>
               <NotificationCheckbox
                 name="telegramNews"
                 label="notifications.zignaly"
-                // inputRef={register}
                 control={control}
               />
               <NotificationCheckbox
                 name="telegramOpenPosition"
-                // inputRef={register}
                 control={control}
                 label="notifications.positionopened"
               />
               <NotificationCheckbox
-                // inputRef={register}
                 control={control}
                 name="telegramUpdatePosition"
                 label="notifications.positionupdate"
               />
               <NotificationCheckbox
-                // inputRef={register}
                 control={control}
                 name="telegramSubscriptionWarning"
                 label="notifications.warnings"
               />
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
-            <CustomButton className="bgPurple" loading={updating} disabled={updating} type="submit">
+            <CustomButton
+              className="bgPurple updateButton"
+              loading={updating}
+              disabled={updating}
+              type="submit"
+            >
               <Typography className="bold" variant="body1">
                 <FormattedMessage id="button.update" />
               </Typography>
