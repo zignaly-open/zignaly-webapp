@@ -168,8 +168,6 @@ const PositionsTable = (props) => {
   };
 
   const { columns, data } = composeDataTableForPositionsType();
-  console.log(columns);
-  console.log(data);
 
   const embedFilters = () => {
     // Don't display filters on single position display.
