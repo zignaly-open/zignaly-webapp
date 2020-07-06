@@ -30,6 +30,9 @@ const defaultExchangeSymbol = {
  */
 const TradingView = () => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
+  const [externalTradingViewWidget, setExternalTradingViewWidget] = useState(
+    /** @type {TVWidget} */ null,
+  );
   const [lastPrice, setLastPrice] = useState(null);
   const storeSettings = useStoreSettingsSelector();
 
@@ -99,6 +102,46 @@ const TradingView = () => {
   // Create Trading View widget when data feed token is ready.
   useEffect(bootstrapWidget, [dataFeed]);
 
+  useEffect(() => {
+    const checkExist = setInterval(function () {
+      console.log("widgetLoad: ", window.TradingView);
+      if (window.TradingView && window.TradingView.widget) {
+        const externalWidget = new window.TradingView.widget({
+          container_id: "technical_analysis",
+          width: 998,
+          height: 610,
+          symbol: "BINANCE:BNBUSDTPERP",
+          interval: "D",
+          timezone: "exchange",
+          theme: "light",
+          style: "1",
+          toolbar_bg: "#f1f3f6",
+          withdateranges: true,
+          hide_side_toolbar: false,
+          allow_symbol_change: true,
+          save_image: false,
+          studies: [
+            "ROC@tv-basicstudies",
+            "StochasticRSI@tv-basicstudies",
+            "MASimple@tv-basicstudies",
+          ],
+          show_popup_button: true,
+          popup_width: "1000",
+          popup_height: "650",
+          locale: "en",
+        });
+
+        window.addEventListener("message", function (event) {
+          var data = event.data;
+          console.log("widgetData: ", data);
+        });
+
+        window.externalWidget = externalWidget;
+        clearInterval(checkExist);
+      }
+    }, 100);
+  }, []);
+
   // @ts-ignore
   const symbolsList = dataFeed ? dataFeed.getSymbolsData() : [];
 
@@ -116,6 +159,13 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
+
+    if (window.externalWidget && window.externalWidget.iframe) {
+      window.externalWidget.iframe.contentWindow.postMessage(
+        { name: "set-symbol", data: { symbol: "ETH-BTC" } },
+        "*",
+      );
+    }
 
     // Change chart data to the new selected symbol.
     if (tradingViewWidget) {
@@ -172,6 +222,7 @@ const TradingView = () => {
               <CircularProgress disableShrink />
             </Box>
           )}
+          <Box className="tradingViewChart" id="technical_analysis" />
           <Box className="tradingViewChart" id="trading_view_chart" />
           {!isLoading && !isLastPriceLoading && (
             <StrategyForm
