@@ -99,8 +99,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
           provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase()) &&
-          storeSettings.selectedExchange.exchangeType.toLowerCase() ===
-            provider.exchangeType.toLowerCase()
+          provider.exchangeType.toLowerCase() ===
+            storeSettings.selectedExchange.exchangeType.toLowerCase()
         ) {
           return true;
         }
