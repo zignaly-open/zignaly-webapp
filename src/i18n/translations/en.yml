@@ -655,7 +655,7 @@ notifications.telegramconnect: "Connect Telegram"
 notifications.warnings: "Warnings about subscriptions close to expiration"
 notifications.zignaly: "Zignaly news and updates"
 
-progile.email: "Email"
+profile.email: "Email"
 profile.photo: "Profile Picture"
 profile.username: "Username"
 

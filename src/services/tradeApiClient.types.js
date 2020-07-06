@@ -712,6 +712,26 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProfileNotifications
+ * @property {boolean} emailEnable
+ * @property {boolean} emailNews
+ * @property {boolean} emailOpenPosition
+ * @property {boolean} emailUpdatePosition
+ * @property {boolean} emailSubscriptionWarning
+ * @property {boolean} telegramEnable
+ * @property {boolean} telegramNews
+ * @property {boolean} telegramUpdatePosition
+ * @property {boolean} telegramSubscriptionWarning
+ * @property {boolean} telegramCode
+ */
+
+/**
+ *
+ * @typedef {Object} ProfileNotificationsPayload
+ * @property {ProfileNotifications} notifications
+ */
+
+/**
  * Transform user create response to typed object.
  *
  * @export

@@ -1,0 +1,15 @@
+.notificationsSettings {
+  .loader {
+    margin: 50px;
+  }
+
+  p {
+    margin-bottom: 24px;
+  }
+
+  label {
+    &:last-child {
+      margin-bottom: 24px;
+    }
+  }
+}

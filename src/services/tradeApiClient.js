@@ -82,6 +82,8 @@ import {
  * @typedef {import('./tradeApiClient.types').UpdatePasswordPayload} UpdatePasswordPayload
  * @typedef {import('./tradeApiClient.types').TwoFAPayload} TwoFAPayload
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
+ * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
+ * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
  */
 
 /**
@@ -945,6 +947,36 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     const endpointPath = "/fe/api.php?action=verify2FA";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Get user notifications settings.
+   *
+   * @param {AuthorizationPayload} payload Payload
+   * @returns {Promise<ProfileNotifications>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async getProfileNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=getProfileNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Update user notifications settings.
+   *
+   * @param {ProfileNotificationsPayload} payload Payload
+   * @returns {Promise<ProfileNotifications>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async updateProfileNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=updateProfileNotifications";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

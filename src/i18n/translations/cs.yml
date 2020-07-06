@@ -654,7 +654,7 @@ notifications.telegramconnect: "CH-Connect Telegram"
 notifications.warnings: "CH-Warnings about subscriptions close to expiration"
 notifications.zignaly: "CH-Zignaly news and updates"
 
-progile.email: "CH-Email"
+profile.email: "CH-Email"
 profile.photo: "CH-Profile Picture"
 profile.username: "CH-Username"
 
