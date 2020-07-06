@@ -96,7 +96,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             version: 2,
           };
           dispatch(setProvider(payload2));
-          dispatch(showSuccessAlert("Profile Edited", "Profile Successfully edited"));
+          dispatch(showSuccessAlert("alert.profileeit.title", "alert.profileeit.body"));
         })
         .catch((error) => {
           alert(error.message);

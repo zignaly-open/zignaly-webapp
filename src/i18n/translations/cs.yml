@@ -426,6 +426,9 @@ signalp.settings.whitelist.help: "CH-It will open positions only for symbols inc
 signalp.settings.amounts.help: "CH-Minimum value for {quote} is {notional} , but if you want to use Stop Loss, or split your take profits into several targets, each target has to be above this minimum amount, including the stop loss. You can choose a fixed value, or a percentage value of your total value for this coin (including the conversion from opened positions). If you don't want to trade in {quote}, just leave the value at 0."
 signalp.settings.amounts: "{quote} Position Size"
 
+alert.profileeit.title: "CH-Profile Edited"
+alert.profileeit.body: "CH-Your profile has been successfully updated!"
+
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "CH-Your API-Key from the provider"
 signalp.option.stoploss: "CH-Accept Stop Loss Value From Signal?"
