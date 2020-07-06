@@ -32,6 +32,7 @@ import {
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
+  profileNotificationsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -964,7 +965,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProfileNotifications";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return profileNotificationsResponseTransform(responseData);
   }
 
   /**
@@ -979,7 +980,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=updateProfileNotifications";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return profileNotificationsResponseTransform(responseData);
   }
 }
 

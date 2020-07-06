@@ -3015,3 +3015,36 @@ export function managementPositionsResponseTransform(response) {
   });
   return response;
 }
+
+/**
+ * Transform Profile notifications response.
+ *
+ * @param {*} response .
+ * @returns {ProfileNotifications} Provider Data points entity.
+ */
+export function profileNotificationsResponseTransform(response) {
+  const emptyProfileNotificationsEntity = creatEmptyProfileNotificationsEntity();
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyProfileNotificationsEntity, response);
+
+  return transformedResponse;
+}
+
+/**
+ * Create profile notifications entity.
+ * @returns {ProfileNotifications} User entity.
+ */
+function creatEmptyProfileNotificationsEntity() {
+  return {
+    emailEnable: false,
+    emailNews: false,
+    emailOpenPosition: false,
+    emailUpdatePosition: false,
+    emailSubscriptionWarning: false,
+    telegramEnable: false,
+    telegramNews: false,
+    telegramUpdatePosition: false,
+    telegramSubscriptionWarning: false,
+    telegramCode: false,
+  };
+}

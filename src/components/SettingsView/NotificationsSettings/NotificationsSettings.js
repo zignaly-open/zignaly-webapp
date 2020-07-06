@@ -19,17 +19,14 @@ import CustomButton from "../../CustomButton";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ProfileNotifications} ProfileNotifications
+ * @typedef {import('react-hook-form').Control} Control
  */
 
 const NotificationsSettings = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { handleSubmit, register, reset, control } = useForm({
-    // defaultValues: {
-    //   emailNews: false,
-    // },
-  });
+  const { handleSubmit, register, reset, control } = useForm();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
@@ -72,12 +69,11 @@ const NotificationsSettings = () => {
     };
 
     setUpdating(true);
-    return;
 
     tradeApi
       .updateProfileNotifications(payload)
       .then((data) => {
-        showSuccessAlert("Success", "Notification settings updated.");
+        dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -175,7 +171,7 @@ const NotificationsSettings = () => {
  * @typedef {Object} NotificationCheckboxPropTypes
  * @property {string} name Checkbox name
  * @property {string} label Label translation id
- * @property {React.Ref<any>} inputRef Ref
+ * @property {Control} control control
  */
 
 /**
@@ -184,18 +180,9 @@ const NotificationsSettings = () => {
  * @param {NotificationCheckboxPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const NotificationCheckbox = ({ name, label, inputRef, control }) => (
+const NotificationCheckbox = ({ name, label, control }) => (
   <FormControlLabel
-    control={
-      // <Checkbox inputRef={inputRef} name={name} color="primary" />
-      <Controller
-        as={Checkbox}
-        control={control}
-        name={name}
-        type="checkbox"
-        defaultValue={false}
-      />
-    }
+    control={<Controller as={Checkbox} control={control} name={name} defaultValue={false} />}
     label={<FormattedMessage id={label} />}
   />
 );

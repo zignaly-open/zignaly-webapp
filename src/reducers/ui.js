@@ -53,7 +53,7 @@ const ui = (state = initialState.ui, action) => {
     case SHOW_SUCCESS_ALERT:
       newState.alerts = {
         ...newState.alerts,
-        error: {
+        success: {
           ...action.payload,
           open: true,
         },

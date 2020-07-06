@@ -28,7 +28,8 @@ const SuccessAlert = () => {
         <CloseIcon className="closeIcon" onClick={() => dispatch(hideSuccessAlert())} />
         {storeAlerts.success.title && (
           <Typography className="title green" variant="h3">
-            <FormattedMessage id={storeAlerts.success.title} />
+            {/* <FormattedMessage id={storeAlerts.success.title} /> */}
+            Success
           </Typography>
         )}
         {storeAlerts.success.body && (
