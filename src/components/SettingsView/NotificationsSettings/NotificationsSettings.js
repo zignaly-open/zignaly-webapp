@@ -11,7 +11,6 @@ import {
 import { Alert } from "@material-ui/lab";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import "./NotificationsSettings.scss";
 import tradeApi from "../../../services/tradeApiClient";
@@ -26,7 +25,6 @@ import CustomButton from "../../CustomButton";
 
 const NotificationsSettings = () => {
   const dispatch = useDispatch();
-  const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const { handleSubmit, register, reset, control, errors } = useForm();
   const [loading, setLoading] = useState(true);
@@ -42,7 +40,6 @@ const NotificationsSettings = () => {
       .getProfileNotifications(payload)
       .then((data) => {
         setLoading(false);
-        console.log(data);
         enableTelegram(data.telegramEnable);
         reset(data);
       })
@@ -59,7 +56,6 @@ const NotificationsSettings = () => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    console.log(data);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       notifications: {

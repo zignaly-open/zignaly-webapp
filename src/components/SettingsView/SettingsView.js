@@ -50,10 +50,10 @@ const SettingsView = ({ onClose }) => {
       id: "settings-notifications",
       title: "settings.notifications",
     },
-    {
-      id: "settings-profile",
-      title: "settings.profile",
-    },
+    // {
+    //   id: "settings-profile",
+    //   title: "settings.profile",
+    // },
   ];
 
   const renderContent = () => {
