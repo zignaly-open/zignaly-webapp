@@ -722,7 +722,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} telegramNews
  * @property {boolean} telegramUpdatePosition
  * @property {boolean} telegramSubscriptionWarning
- * @property {boolean} telegramCode
+ * @property {string} telegramCode
  */
 
 /**
@@ -3045,6 +3045,6 @@ function creatEmptyProfileNotificationsEntity() {
     telegramNews: false,
     telegramUpdatePosition: false,
     telegramSubscriptionWarning: false,
-    telegramCode: false,
+    telegramCode: "",
   };
 }

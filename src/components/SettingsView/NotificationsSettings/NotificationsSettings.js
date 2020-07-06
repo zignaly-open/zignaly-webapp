@@ -74,7 +74,7 @@ const NotificationsSettings = () => {
 
     tradeApi
       .updateProfileNotifications(payload)
-      .then((data) => {
+      .then(() => {
         dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
       })
       .catch((e) => {
@@ -95,38 +95,38 @@ const NotificationsSettings = () => {
       >
         {!loading ? (
           <>
-            <Typography variant="body1" className="bold">
+            <Typography className="bold" variant="body1">
               <FormattedMessage id="notifications.email" />
             </Typography>
             <FormGroup>
               <NotificationCheckbox
-                name="emailNews"
+                control={control}
                 label="notifications.zignaly"
-                control={control}
+                name="emailNews"
               />
               <NotificationCheckbox
-                name="emailOpenPosition"
+                control={control}
                 label="notifications.positionopened"
-                control={control}
+                name="emailOpenPosition"
               />
               <NotificationCheckbox
-                name="emailUpdatePosition"
                 control={control}
                 label="notifications.positionupdate"
+                name="emailUpdatePosition"
               />
               <NotificationCheckbox
-                name="emailSubscriptionWarning"
                 control={control}
                 label="notifications.warnings"
+                name="emailSubscriptionWarning"
               />
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
-            <Typography variant="body1" className="bold">
+            <Typography className="bold" variant="body1">
               Telegram
             </Typography>
             {telegramEnabled && (
               <Box className="inputBox" display="flex" flexDirection="column">
-                <Alert severity="info" className="codeInfo">
+                <Alert className="codeInfo" severity="info">
                   <FormattedMessage
                     id="notifications.codeinfo"
                     values={{
@@ -136,13 +136,13 @@ const NotificationsSettings = () => {
                   />
                 </Alert>
                 <label>
-                  <Typography variant="body1" className="customLabel">
+                  <Typography className="customLabel" variant="body1">
                     <FormattedMessage id="notifications.telegramcode" />
                   </Typography>
                   <OutlinedInput
-                    name="telegramCode"
                     className="customInput"
                     inputRef={register({ required: "Please enter your telegram code." })}
+                    name="telegramCode"
                   />
                 </label>
                 {errors.telegramCode && (
@@ -160,31 +160,31 @@ const NotificationsSettings = () => {
             </CustomButton>
             <FormGroup>
               <NotificationCheckbox
-                name="telegramNews"
-                label="notifications.zignaly"
                 control={control}
+                label="notifications.zignaly"
+                name="telegramNews"
               />
               <NotificationCheckbox
-                name="telegramOpenPosition"
                 control={control}
                 label="notifications.positionopened"
+                name="telegramOpenPosition"
               />
               <NotificationCheckbox
                 control={control}
-                name="telegramUpdatePosition"
                 label="notifications.positionupdate"
+                name="telegramUpdatePosition"
               />
               <NotificationCheckbox
                 control={control}
-                name="telegramSubscriptionWarning"
                 label="notifications.warnings"
+                name="telegramSubscriptionWarning"
               />
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
             <CustomButton
               className="bgPurple updateButton"
-              loading={updating}
               disabled={updating}
+              loading={updating}
               type="submit"
             >
               <Typography className="bold" variant="body1">
@@ -193,7 +193,7 @@ const NotificationsSettings = () => {
             </CustomButton>
           </>
         ) : (
-          <CircularProgress disableShrink size={21} className="loader" />
+          <CircularProgress className="loader" disableShrink size={21} />
         )}
       </Box>
     </form>
@@ -215,7 +215,7 @@ const NotificationsSettings = () => {
  */
 const NotificationCheckbox = ({ name, label, control }) => (
   <FormControlLabel
-    control={<Controller as={Checkbox} control={control} name={name} defaultValue={false} />}
+    control={<Controller as={Checkbox} control={control} defaultValue={false} name={name} />}
     label={<FormattedMessage id={label} />}
   />
 );

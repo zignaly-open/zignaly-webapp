@@ -48,7 +48,7 @@ const ProfileSettings = () => {
         <Typography variant="body1">
           <FormattedMessage id="profile.userid" />
         </Typography>
-        <Typography variant="body1" className="userId">
+        <Typography className="userId" variant="body1">
           {storeUserData.userId}
         </Typography>
       </label>

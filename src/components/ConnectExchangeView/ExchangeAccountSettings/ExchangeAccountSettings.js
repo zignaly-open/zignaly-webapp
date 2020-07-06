@@ -170,14 +170,14 @@ const ExchangeAccountSettings = () => {
         setConfirmConfig={setConfirmConfig}
       />
       <ExchangeAccountForm>
-        <Box display="flex" flexDirection="row" className="typeBox">
+        <Box className="typeBox" display="flex" flexDirection="row">
           <label>
             <Typography className="accountLabel">
               <FormattedMessage id="accounts.exchange.type" />
             </Typography>
           </label>
           <Box width={1}>
-            <Typography variant="body1" className="type">
+            <Typography className="type" variant="body1">
               {selectedAccount.exchangeType}
             </Typography>
           </Box>

@@ -23,9 +23,9 @@ const SuccessAlert = () => {
         horizontal: "right",
       }}
       autoHideDuration={5000}
+      className="successAlert"
       onClose={handleClose}
       open={storeAlerts.success.open}
-      className="successAlert"
     >
       <Alert onClose={handleClose} severity="success">
         {storeAlerts.success.title && (

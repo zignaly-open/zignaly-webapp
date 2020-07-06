@@ -23,9 +23,9 @@ const ErrorAlert = () => {
         horizontal: "right",
       }}
       autoHideDuration={5000}
+      className="errorAlert"
       onClose={handleClose}
       open={storeAlerts.error.open}
-      className="errorAlert"
     >
       <Alert onClose={handleClose} severity="error">
         {storeAlerts.error.title && (
