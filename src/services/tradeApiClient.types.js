@@ -304,7 +304,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets
  * @property {Object<number, ProfitTarget>} takeProfitTargets
- * @property {RealInvestment} realInvestment
+ * @property {Number} realInvestment
  * @property {boolean} accounting
  * @property {boolean} checkStop
  * @property {boolean} closed
@@ -325,6 +325,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} netProfit
  * @property {number} netProfitPercentage
  * @property {string} netProfitStyle
+ * @property {string} unrealizedProfitStyle
  * @property {number} openDate
  * @property {number} positionSizeQuote
  * @property {number} profit
@@ -382,6 +383,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} subPositions
  * @property {Number} returnFromAllocated
  * @property {Number} returnFromInvestment
+ * @property {Number} priceDifference
+ * @property {Number} unrealizedProfitLosses
+ * @property {Number} unrealizedProfitLossesPercentage
  */
 
 /**
@@ -946,8 +950,11 @@ export function userPositionItemTransform(positionItem) {
     netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
+    realInvestment: parseFloat(positionItem.realInvestment),
     profit: parseFloat(positionItem.profit),
     profitPercentage: parseFloat(positionItem.profitPercentage),
+    unrealizedProfitLosses: parseFloat(positionItem.unrealizedProfitLosses),
+    unrealizedProfitLossesPercentage: parseFloat(positionItem.unrealizedProfitLossesPercentage),
     reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
     remainAmount: parseFloat(positionItem.remainAmount),
     sellPrice: parseFloat(positionItem.sellPrice),
@@ -965,6 +972,11 @@ export function userPositionItemTransform(positionItem) {
     openDateMoment: openDateMoment,
     openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
     profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
+    unrealizedProfitStyle: getProfitType(
+      positionEntity.unrealizedProfitLosses,
+      0,
+      positionEntity.side,
+    ),
     providerLink: composeProviderLink(),
     providerLogo: positionEntity.logoUrl || defaultProviderLogo,
     risk: risk,
@@ -1084,6 +1096,7 @@ function createEmptyPositionEntity() {
     profit: 0,
     profitPercentage: 0,
     profitStyle: "",
+    unrealizedProfitStyle: "",
     provider: "",
     providerId: "",
     providerLink: "",
@@ -1095,7 +1108,7 @@ function createEmptyPositionEntity() {
     reBuyTargetsCountFail: 0,
     reBuyTargetsCountPending: 0,
     reBuyTargetsCountSuccess: 0,
-    realInvestment: { $numberDecimal: "" },
+    realInvestment: 0,
     remainAmount: 0,
     risk: 0,
     riskStyle: "",
@@ -1133,6 +1146,9 @@ function createEmptyPositionEntity() {
     subPositions: 0,
     returnFromAllocated: 0,
     returnFromInvestment: 0,
+    priceDifference: 0,
+    unrealizedProfitLosses: 0,
+    unrealizedProfitLossesPercentage: 0,
   };
 }
 

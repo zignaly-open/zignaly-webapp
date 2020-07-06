@@ -6,6 +6,7 @@ import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
+import { formatFloat } from "./format";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -123,6 +124,16 @@ function composeAmount(position) {
 }
 
 /**
+ * Compose amount element for a given position.
+ *
+ * @param {string|number} value Position entity to compose amount for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeValue(value) {
+  return <>{formatFloat(value)}</>;
+}
+
+/**
  * Compose position quote size for a given position.
  *
  * @param {PositionEntity} position Position entity to compose quote size for.
@@ -132,6 +143,20 @@ function composeQuoteSize(position) {
   return (
     <>
       <span className="symbol">{position.quote}</span> {formatPrice(position.positionSizeQuote)}
+    </>
+  );
+}
+
+/**
+ * Compose position quote size for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose quote size for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeRealInvestment(position) {
+  return (
+    <>
+      <span className="symbol">{position.quote}</span> {formatPrice(position.realInvestment)}
     </>
   );
 }
@@ -226,6 +251,52 @@ function composeProfitPercentage(position) {
 }
 
 /**
+ * Compose profit amount element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose profit for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeUnrealizedNetProfit(position) {
+  return (
+    <>
+      {position.status === 1 ? (
+        <span>Still entering...</span>
+      ) : (
+        <>
+          <span className="symbol">{position.quote}</span>
+          <span className={position.unrealizedProfitStyle}>
+            {formatPrice(position.unrealizedProfitLosses)}
+          </span>
+        </>
+      )}
+    </>
+  );
+}
+
+/**
+ * Compose profit amount element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose profit for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeUnrealizedProfitPercentage(position) {
+  return (
+    <>
+      {position.status === 1 ? (
+        <span>Still entering...</span>
+      ) : (
+        <>
+          <span className="symbol">{position.quote}</span>
+          <span className={position.unrealizedProfitStyle}>
+            {formatPrice(position.unrealizedProfitLossesPercentage)}
+          </span>
+        </>
+      )}
+    </>
+  );
+}
+
+/**
  * Compose stop loss price element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose stop loss price for.
@@ -247,6 +318,20 @@ function composeStopLossPrice(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeRisk(position) {
+  return (
+    <>
+      <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
+    </>
+  );
+}
+
+/**
+ * Compose risk percentage element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose risk for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeProfilePositionRisk(position) {
   return (
     <>
       <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
@@ -332,7 +417,7 @@ function composeRebuyTargets(position) {
  * @returns {string|number} Composed JSX element.
  */
 function composeRawValue(value) {
-  return value;
+  return value ? value : "-";
 }
 
 /**
@@ -566,20 +651,20 @@ function composeLogPositionRow(position) {
  * @param {PositionEntity} position Position entity to compose data table row for.
  * @returns {DataTableDataRow} Row data array.
  */
-function composeClosePositionRowForProvider(position) {
+function composeClosedPositionRowForProvider(position) {
   return [
-    composeAmount(position),
+    composeValue(position.amount),
     composeRawValue(position.base),
-    composeRawValue(position.buyPrice),
+    composeValue(position.buyPrice),
     composeRawValue(position.closeDateReadable),
     composeRawValue(position.exchange),
     composeRawValue(position.leverage),
     composeRawValue(position.openDateReadable),
-    composeRawValue(position.positionSize),
+    composeValue(position.positionSize),
     composeRawValue(position.quote),
-    composeRawValue(position.returnFromAllocated),
-    composeRawValue(position.returnFromInvestment),
-    composeRawValue(position.sellPrice),
+    composeValue(position.returnFromAllocated),
+    composeValue(position.returnFromInvestment),
+    composeValue(position.sellPrice),
     composeRawValue(position.side),
     composeStatusMessage(position.status),
   ];
@@ -642,7 +727,6 @@ export function composeClosePositionsDataTable(positions) {
     "col.date.open",
     "col.date.close",
     "col.provider.logo",
-    "col.provider.name",
     "col.stat",
     "col.signalid",
     "col.pair",
@@ -842,6 +926,85 @@ export function composeClosedPositionsForProvider(positions) {
 
   return {
     columns: columnsIds.map(composeColumnOptions),
-    data: positions.map(composeClosePositionRowForProvider),
+    data: positions.map(composeClosedPositionRowForProvider),
+  };
+}
+
+/**
+ * Compose MUI Data Table row for profile open position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeOpenPositionRowForProvider(position, confirmActionHandler) {
+  return [
+    composeRawValue(position.openDateReadable),
+    composeRawValue(position.positionId),
+    composeRawValue(position.signalId),
+    composeStatusMessage(position.status),
+    composeRawValue(position.pair),
+    composeEntryPrice(position),
+    composeRawValue(position.leverage),
+    composeExitPrice(position),
+    composeUnrealizedNetProfit(position),
+    composeUnrealizedProfitPercentage(position),
+    composeRawValue(position.priceDifference),
+    composeRawValue(position.side),
+    composeStopLossPrice(position),
+    composeAmount(position),
+    composeSymbolWithPrice(position.base, position.remainAmount),
+    composeQuoteSize(position),
+    composeRealInvestment(position),
+    composeTrailingStopIcon(position),
+    composeTakeProfitTargets(position),
+    composeRebuyTargets(position),
+    composeRisk(position),
+    composeAllActionButtons(position, confirmActionHandler),
+    composeCancelActionButton(position, confirmActionHandler),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {UserPositionsCollection} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ *
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeOpenPositionsForProvider(positions, confirmActionHandler) {
+  const columnsIds = [
+    "col.date.open",
+    "col.positionid",
+    "col.signalid",
+    "col.status",
+    "col.pair",
+    "col.price.entry",
+    "col.leverage",
+    "col.price.current",
+    "col.unrealizedplnumber",
+    "col.unrealizedplpercentage",
+    "col.pricedifference",
+    "col.side",
+    "col.stoplossprice",
+    "col.initialamount",
+    "col.remainingamount",
+    "col.invested",
+    "col.realinvestment",
+    "col.tsl",
+    "col.tp",
+    "col.dca",
+    "col.risk",
+    "col.actions",
+    "col.cancel",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((position) =>
+      composeOpenPositionRowForProvider(position, confirmActionHandler),
+    ),
   };
 }

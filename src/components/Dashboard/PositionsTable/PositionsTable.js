@@ -10,6 +10,7 @@ import {
   composeLogPositionsDataTable,
   excludeDataTableColumn,
   composeClosedPositionsForProvider,
+  composeOpenPositionsForProvider,
 } from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -148,7 +149,7 @@ const PositionsTable = (props) => {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileOpen") {
-      dataTable = composeOpenPositionsDataTable(positionsAll, confirmAction);
+      dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
@@ -167,6 +168,8 @@ const PositionsTable = (props) => {
   };
 
   const { columns, data } = composeDataTableForPositionsType();
+  console.log(columns);
+  console.log(data);
 
   const embedFilters = () => {
     // Don't display filters on single position display.
