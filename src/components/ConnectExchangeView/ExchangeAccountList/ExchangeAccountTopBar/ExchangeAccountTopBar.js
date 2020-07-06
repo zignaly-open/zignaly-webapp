@@ -8,6 +8,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import CustomButton from "../../../CustomButton";
 import { useTheme } from "@material-ui/core/styles";
 import { Settings, Sunset, Sunrise, Repeat } from "react-feather";
+import CustomToolip from "../../../CustomTooltip";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -54,7 +55,13 @@ const ExchangeAccountTopBar = ({ account }) => {
       </Box>
       <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
         <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
-          {isMobile ? <Settings /> : <FormattedMessage id="accounts.settings" />}
+          {isMobile ? (
+            <CustomToolip title={<FormattedMessage id="accounts.settings" />}>
+              <Settings />
+            </CustomToolip>
+          ) : (
+            <FormattedMessage id="accounts.settings" />
+          )}
         </CustomButton>
         {account.isBrokerAccount && (
           <>
@@ -62,19 +69,37 @@ const ExchangeAccountTopBar = ({ account }) => {
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("deposit", account)}
             >
-              {isMobile ? <Sunset /> : <FormattedMessage id="accounts.deposit" />}
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.deposit" />}>
+                  <Sunset />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.deposit" />
+              )}
             </CustomButton>
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("withdraw", account)}
             >
-              {isMobile ? <Sunrise /> : <FormattedMessage id="accounts.withdraw" />}
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.withdraw" />}>
+                  <Sunrise />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.withdraw" />
+              )}
             </CustomButton>
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("convert", account)}
             >
-              {isMobile ? <Repeat /> : <FormattedMessage id="accounts.convert" />}
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.convert" />}>
+                  <Repeat />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.convert" />
+              )}
             </CustomButton>
           </>
         )}
