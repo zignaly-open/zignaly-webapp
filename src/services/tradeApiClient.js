@@ -1,7 +1,5 @@
 import fetch from "cross-fetch";
 import { navigate } from "gatsby";
-import { store } from "../store/store.js";
-import { endTradeApiSession } from "../store/actions/session";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
@@ -141,7 +139,8 @@ class TradeApiClient {
       const customError = responseData.error.error;
 
       if (customError.code === 13) {
-        this.userLogout();
+        // Session expired
+        navigate("/login");
       }
       throw customError;
     }
@@ -165,10 +164,7 @@ class TradeApiClient {
     return userEntityResponseTransform(responseData);
   }
 
-  userLogout() {
-    store.dispatch(endTradeApiSession());
-    navigate("/login");
-  }
+  userLogout() {}
 
   /**
    * Create user at Zignaly Trade API.

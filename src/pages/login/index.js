@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import "./login.scss";
 import Logo from "../../images/logo/logoWhite.svg";
@@ -9,11 +9,19 @@ import translations from "../../i18n/translations";
 import { IntlProvider } from "react-intl";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import themeData from "../../services/theme";
+import { useDispatch } from "react-redux";
+import { endTradeApiSession } from "../../store/actions/session";
 
 const LoginPage = () => {
   const options = themeData(false);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, []);
+  const dispatch = useDispatch();
+
+  const dispatchLogout = () => {
+    dispatch(endTradeApiSession());
+  };
+  useEffect(dispatchLogout, []);
 
   return (
     <IntlProvider locale="en" messages={translations.en}>
