@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FormContext, useForm } from "react-hook-form";
-import { widget as TradingViewWidget } from "../../../tradingView/charting_library.min";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
-import useCoinRayDataFeedFactory from "../../../hooks/useCoinRayDataFeedFactory";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -32,12 +31,16 @@ import "./TradingView.scss";
  */
 const TradingViewEdit = (props) => {
   const { positionId } = props;
+  const [libraryReady, setLibraryReady] = useState(false);
   const [tradingViewWidget, setTradingViewWidget] = useState(
     /** @type {TVWidget} tradingViewWidgetPointer */ null,
   );
   const [lastPrice, setLastPrice] = useState(null);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  const [marketData, setMarketData] = useState(null);
+  const [selectedSymbol, setSelectedSymbol] = useState("");
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
   /**
@@ -47,12 +50,23 @@ const TradingViewEdit = (props) => {
    * @returns {Void} None.
    */
   const initializePosition = (responseData) => {
+    setSelectedSymbol(responseData.symbol);
     setPositionEntity(responseData);
-    setSelectedSymbol(responseData.pair);
   };
 
-  const [selectedSymbol, setSelectedSymbol] = useState(null);
-  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+  const getMarketData = async () => {
+    const marketDataPayload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: storeSettings.selectedExchange.internalId,
+    };
+
+    try {
+      const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
+      setMarketData(data);
+    } catch (error) {
+      alert(`ERROR: ${error.message}`);
+    }
+  };
 
   /**
    * Fetch a position on position edit mode.
@@ -75,7 +89,17 @@ const TradingViewEdit = (props) => {
       });
   };
 
-  useEffect(fetchPosition, []);
+  const loadDependencies = () => {
+    getMarketData();
+    fetchPosition();
+    const checkExist = setInterval(() => {
+      if (window.TradingView && window.TradingView.widget) {
+        setLibraryReady(true);
+        clearInterval(checkExist);
+      }
+    }, 100);
+  };
+  useEffect(loadDependencies, []);
 
   /**
    * Callback that to be notified when position updates are peformed.
@@ -86,41 +110,91 @@ const TradingViewEdit = (props) => {
     fetchPosition();
   };
 
-  const isLoading = tradingViewWidget === null || !positionEntity;
+  const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
   const isLastPriceLoading = lastPrice === null;
 
+  /**
+   * Resolve exchange name from selected exchange.
+   *
+   * @returns {string} Exchange name.
+   */
+  const resolveExchangeName = () => {
+    return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+  };
+
   const bootstrapWidget = () => {
-    if (dataFeed) {
-      const widgetOptions = createWidgetOptions(dataFeed, selectedSymbol);
-      const widgetInstance = new TradingViewWidget(widgetOptions);
-      // Store to state only when chart is ready so prices are resolved.
-      widgetInstance.onChartReady(() => {
-        setTradingViewWidget(widgetInstance);
-        // @ts-ignore
-        const priceCandle = dataFeed.getLastCandle();
-        setLastPrice(priceCandle);
-      });
+    // Skip if TV widget already exists or TV library is not ready.
+    if (!libraryReady || !positionEntity || tradingViewWidget) {
+      return () => {};
     }
+
+    const widgetOptions = createWidgetOptions(
+      resolveExchangeName(),
+      selectedSymbol,
+      storeSettings.darkStyle,
+    );
+
+    // @ts-ignore
+    // eslint-disable-next-line new-cap
+    const externalWidget = new window.TradingView.widget(widgetOptions);
+    let eventSymbol = "";
+    // @ts-ignore
+    const handleWidgetReady = (event) => {
+      const dataRaw = /** @type {Object<string, any>} */ event.data;
+      if (typeof dataRaw === "string") {
+        const dataParsed = JSON.parse(dataRaw);
+        // @ts-ignore
+        if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
+          setTradingViewWidget(externalWidget);
+        }
+        if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
+          if (eventSymbol !== dataParsed.data.original_name) {
+            setLastPrice(dataParsed.data.last_price);
+            eventSymbol = dataParsed.data.original_name;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("message", handleWidgetReady);
 
     return () => {
       if (tradingViewWidget) {
         tradingViewWidget.remove();
         setTradingViewWidget(null);
+        window.removeEventListener("message", handleWidgetReady);
       }
     };
   };
 
-  // Create Trading View widget when data feed token is ready.
-  useEffect(bootstrapWidget, [dataFeed]);
+  // Create Trading View widget when TV external library is ready.
+  useEffect(bootstrapWidget, [libraryReady, positionEntity, tradingViewWidget]);
 
-  const currentPrice = lastPrice ? parseFloat(lastPrice[1]).toFixed(8) : "";
+  // Force initial price notification.
+  const initDataFeedSymbol = () => {
+    const symbolSuffix =
+      storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+    const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
+
+    const checkExist = setInterval(() => {
+      if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
+        tradingViewWidget.iframe.contentWindow.postMessage(
+          { name: "set-symbol", data: { symbol: symbolCode } },
+          "*",
+        );
+        clearInterval(checkExist);
+      }
+    }, 100);
+  };
+  useEffect(initDataFeedSymbol, [tradingViewWidget]);
+
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
       entryType: "LONG",
       leverage: 1,
       positionSize: "",
-      price: currentPrice,
+      price: lastPrice,
       realInvestment: "",
       stopLossPrice: "",
       trailingStopPrice: "",
@@ -154,11 +228,11 @@ const TradingViewEdit = (props) => {
           <Box className="tradingViewChart" id="trading_view_chart" />
           {!isLoading && !isLastPriceLoading && (
             <StrategyForm
-              dataFeed={dataFeed}
-              lastPriceCandle={lastPrice}
+              lastPrice={lastPrice}
               notifyPositionUpdate={notifyPositionUpdate}
               positionEntity={positionEntity}
               selectedSymbol={selectedSymbol}
+              symbolsData={marketData}
               tradingViewWidget={tradingViewWidget}
             />
           )}
