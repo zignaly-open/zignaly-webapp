@@ -73,21 +73,28 @@ const TradingView = () => {
   const exchangeName = resolveExchangeName();
   const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
+  const [selectedExchangeId, setSelectedExchangeId] = useState(
+    storeSettings.selectedExchange.internalId,
+  );
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const isLoading = tradingViewWidget === null || marketData === null;
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
-    const newExchangeName =
-      storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-    const newDefaultSymbol =
-      defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
-    if (tradingViewWidget) {
-      tradingViewWidget.remove();
-      setTradingViewWidget(null);
-      setLastPrice(null);
-      setSelectedSymbol(newDefaultSymbol);
-      bootstrapWidget();
+    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
+      const newExchangeName =
+        storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+      const newDefaultSymbol =
+        defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
+      if (tradingViewWidget) {
+        tradingViewWidget.remove();
+        setTradingViewWidget(null);
+        setLastPrice(null);
+        setSelectedSymbol(newDefaultSymbol);
+        bootstrapWidget();
+      }
+
+      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
     }
   };
 
@@ -107,7 +114,7 @@ const TradingView = () => {
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    if (!libraryReady) {
+    if (!libraryReady || tradingViewWidget) {
       return () => {};
     }
 
@@ -120,6 +127,7 @@ const TradingView = () => {
     // @ts-ignore
     // eslint-disable-next-line new-cap
     const externalWidget = new window.TradingView.widget(widgetOptions);
+    let eventSymbol = "";
     // @ts-ignore
     const handleWidgetReady = (event) => {
       const dataRaw = /** @type {Object<string, any>} */ event.data;
@@ -130,8 +138,11 @@ const TradingView = () => {
           setTradingViewWidget(externalWidget);
         }
 
-        if (dataParsed.name === "quoteUpdate" && !lastPrice && dataParsed.data) {
-          setLastPrice(dataParsed.data.last_price);
+        if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
+          if (eventSymbol !== dataParsed.data.original_name) {
+            setLastPrice(dataParsed.data.last_price);
+            eventSymbol = dataParsed.data.original_name;
+          }
         }
       }
     };
@@ -142,28 +153,29 @@ const TradingView = () => {
       if (tradingViewWidget) {
         tradingViewWidget.remove();
         setTradingViewWidget(null);
+        window.removeEventListener("message", handleWidgetReady);
       }
-
-      window.removeEventListener("message", handleWidgetReady);
     };
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady]);
+  useEffect(bootstrapWidget, [libraryReady, tradingViewWidget]);
 
   const changeTheme = () => {
+    const reloadWidget = () => {
+      tradingViewWidget.remove();
+      setTradingViewWidget(null);
+      bootstrapWidget();
+    };
+
     if (tradingViewWidget) {
       const options = tradingViewWidget.options;
       if (storeSettings.darkStyle && options.theme !== "dark") {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        bootstrapWidget();
+        reloadWidget();
       }
 
       if (!storeSettings.darkStyle && options.theme !== "light") {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        bootstrapWidget();
+        reloadWidget();
       }
     }
   };
@@ -206,7 +218,7 @@ const TradingView = () => {
     }
   };
 
-  const currentPrice = lastPrice ? parseFloat(lastPrice[1]).toFixed(8) : "";
+  const currentPrice = lastPrice || "";
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
