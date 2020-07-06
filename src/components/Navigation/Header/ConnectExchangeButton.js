@@ -1,11 +1,11 @@
 import React from "react";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
-import { navigate } from "gatsby";
+import { navigate as navigateReach } from "@reach/router";
 
 const ConnectExchangeButton = () => {
   const exchangeAcccountsView = () => {
-    navigate("#exchangeAccounts");
+    navigateReach("#exchangeAccounts");
   };
 
   return (

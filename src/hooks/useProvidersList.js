@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import { useIntl } from "react-intl";
-
+import { uniqBy } from "lodash";
+import { showErrorAlert } from "../store/actions/ui";
+import { useDispatch } from "react-redux";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -47,6 +49,7 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
   /**
@@ -57,16 +60,32 @@ const useProvidersList = (options) => {
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
 
-  // Coins
-  const quoteAssets = useQuoteAssets();
-  const coins = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allcoins" }) }].concat(
-    Object.keys(quoteAssets).map((label) => ({ val: label, label })),
+  // Get Coins list unless connected providers only which don't need filters
+  const quoteAssets = useQuoteAssets(!connectedOnly);
+  const coins = [
+    {
+      val: "ALL",
+      label: intl.formatMessage({ id: "fil.allcoins" }),
+    },
+  ].concat(
+    Object.keys(quoteAssets).map((label) => ({
+      val: label,
+      label,
+    })),
   );
   const [coin, setCoin] = useState(coins[0]);
 
   // Exchanges
-  const exchanges = [{ val: "ALL", label: intl.formatMessage({ id: "fil.allexchanges" }) }].concat(
-    ["Binance", "Zignaly", "KuCoin"].map((label) => ({ val: label.toLowerCase(), label })),
+  const exchanges = [
+    {
+      val: "ALL",
+      label: intl.formatMessage({ id: "fil.allexchanges" }),
+    },
+  ].concat(
+    ["Binance", "Zignaly", "KuCoin"].map((label) => ({
+      val: label.toLowerCase(),
+      label,
+    })),
   );
   const [exchange, setExchange] = useState("ALL");
 
@@ -82,82 +101,79 @@ const useProvidersList = (options) => {
   };
 
   /**
-   * Sort providers by select option
+   * Sort providers by selected option
    *
-   * @param {ProvidersCollection} _providersFiltered Current providers collection.
+   * @param {ProvidersCollection} [list] Providers collection.
    * @returns {void}
    */
-  const sortProviders = (_providersFiltered) => {
-    let providersSorted = _providersFiltered;
-    if (sort) {
-      const [key, direction] = sort.split("_");
-      providersSorted = _providersFiltered.concat().sort((a, b) => {
-        let res = 0;
-        switch (key) {
-          case "RETURNS":
-            res = a.returns + a.floating - (b.returns + b.floating);
-            break;
-          case "DATE":
-            res = a.createdAt - b.createdAt;
-            break;
-          case "NAME":
-            res = a.name.localeCompare(b.name);
-            break;
-          case "FEE":
-            res = a.price - b.price;
-            break;
-          default:
-            break;
-        }
-        return direction === "ASC" ? res : -res;
-      });
-    }
-    setProvidersFiltered(providersSorted);
+  const sortProviders = (list = providersFiltered) => {
+    const [key, direction] = sort.split("_");
+    const listSorted = [...list].sort((a, b) => {
+      let res = 0;
+      switch (key) {
+        case "RETURNS":
+          res = a.returns + a.floating - (b.returns + b.floating);
+          break;
+        case "DATE":
+          res = a.createdAt - b.createdAt;
+          break;
+        case "NAME":
+          res = a.name.localeCompare(b.name);
+          break;
+        case "FEE":
+          res = a.price - b.price;
+          break;
+        default:
+          break;
+      }
+      return direction === "ASC" ? res : -res;
+    });
+
+    setProvidersFiltered(listSorted);
   };
+  // Sort providers on sort option change
+  useEffect(sortProviders, [sort]);
 
-  // Update providers sorting on sort change
-  useEffect(() => {
-    sortProviders(providersFiltered);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sort]);
-
-  const filterProviders = useCallback(() => {
-    const _providersFiltered = providers.filter(
+  /**
+   * Filter providers by selected options
+   *
+   * @param {ProvidersCollection} [list] Providers collection.
+   * @returns {void}
+   */
+  const filterProviders = (list = providers) => {
+    const res = list.filter(
       (p) =>
         (coin.val === "ALL" || p.quote === coin.val) &&
         (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())),
     );
-    sortProviders(_providersFiltered);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin, exchange, providers]);
+    sortProviders(res);
+  };
+  // Filter providers on filter change
+  useEffect(filterProviders, [coin, exchange]);
 
-  // Filter providers when providers loaded or filters changed
-  useEffect(() => {
-    filterProviders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterProviders]);
-
-  // Load providers at init and on timeframe change.
-  useEffect(() => {
-    const loadProviders = async () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        type: connectedOnly ? "connected" : "all",
-        ro: true,
-        copyTradersOnly,
-        timeFrame,
-        internalExchangeId,
-      };
-
-      try {
-        const responseData = await tradeApi.providersGet(payload);
-        setProviders(responseData);
-      } catch (e) {
-        setProviders([]);
-      }
+  const loadProviders = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      type: connectedOnly ? "connected" : "all",
+      ro: true,
+      copyTradersOnly,
+      timeFrame,
+      internalExchangeId,
     };
-    loadProviders();
-  }, [
+
+    tradeApi
+      .providersGet(payload)
+      .then((responseData) => {
+        const uniqueProviders = uniqBy(responseData, "id");
+        filterProviders(uniqueProviders);
+        setProviders(uniqueProviders);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+  // Load providers at init and on timeframe change.
+  useEffect(loadProviders, [
     timeFrame,
     connectedOnly,
     copyTradersOnly,

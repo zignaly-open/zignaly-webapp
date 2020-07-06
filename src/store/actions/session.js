@@ -1,4 +1,3 @@
-import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges } from "./user";
 import { unsetProvider } from "./views";
@@ -8,29 +7,19 @@ export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
 
 /**
- * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
+ * @typedef {import("../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
  * @typedef {import('../../store/store').AppThunk} AppThunk
+ * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
- * Set user session.
- *
- * @param {UserLoginPayload} payload User login payload.
- * @returns {AppThunk} Thunk action function.
+ * @param {UserLoginResponse} payload User login payload.
+ * @returns {AnyAction} return action object.
  */
 export const startTradeApiSession = (payload) => {
-  return async (dispatch) => {
-    try {
-      const responseData = await tradeApi.userLogin(payload);
-      const action = {
-        type: START_TRADE_API_SESSION,
-        payload: responseData,
-      };
-
-      dispatch(action);
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-    }
+  return {
+    type: START_TRADE_API_SESSION,
+    payload,
   };
 };
 

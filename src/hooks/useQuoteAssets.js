@@ -8,10 +8,10 @@ import tradeApi from "../services/tradeApiClient";
 
 /**
  * Provides quotes assets.
- *
+ * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useQuoteAssets = () => {
+const useQuoteAssets = (shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
@@ -32,8 +32,10 @@ const useQuoteAssets = () => {
           alert(`ERROR: ${e.message}`);
         });
     };
-    loadData();
-  }, [storeSession.tradeApi.accessToken]);
+    if (shouldExecute) {
+      loadData();
+    }
+  }, [storeSession.tradeApi.accessToken, shouldExecute]);
 
   return quotes;
 };

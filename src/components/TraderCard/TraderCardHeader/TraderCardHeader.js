@@ -66,8 +66,8 @@ const TraderCardHeader = (props) => {
               <FormattedMessage
                 id="srv.trades"
                 values={{
-                  coin: quote || "",
-                  type: exchangeType,
+                  coin: <b>{quote}</b> || "",
+                  type: <b>{exchangeType}</b>,
                 }}
               />
             </Typography>

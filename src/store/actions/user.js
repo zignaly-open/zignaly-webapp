@@ -11,6 +11,7 @@ export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const GET_USER_DATA = "GET_USER_DATA_ACTION";
+export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -18,6 +19,7 @@ export const GET_USER_DATA = "GET_USER_DATA_ACTION";
  * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import("../../services/tradeApiClient.types").UserEquityPayload} UserEquityPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
+ * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
@@ -147,5 +149,18 @@ export const setUserData = (payload) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+};
+
+/**
+ * Remove exchange from user exchanges list.
+ *
+ * @param {boolean} twoFAEnable Flag to enable 2 FA.
+ * @returns {Object} return action object.
+ */
+export const enable2FA = (twoFAEnable) => {
+  return {
+    type: ENABLE_TWO_FA,
+    payload: twoFAEnable,
   };
 };

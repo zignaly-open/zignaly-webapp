@@ -9,6 +9,7 @@ import {
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
   GET_USER_DATA,
+  ENABLE_TWO_FA,
 } from "../store/actions/user";
 
 /**
@@ -27,8 +28,8 @@ import {
  * @param {ActionObject} action
  */
 
-const userExchanges = (state, action) => {
-  const newState = assign({}, initialState.user, state);
+const userExchanges = (state = initialState.user, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case GET_USER_EXCHNAGES:
@@ -44,7 +45,7 @@ const userExchanges = (state, action) => {
       break;
 
     case SET_USER_BALANCE_LOADER:
-      newState.balance.loading = true;
+      newState.balance = { ...newState.balance, loading: true };
       break;
 
     case REMOVE_USER_BALANCE:
@@ -65,8 +66,12 @@ const userExchanges = (state, action) => {
       );
       break;
 
-    default:
+    case ENABLE_TWO_FA:
+      newState.userData = { ...newState.userData, TwoFAEnable: action.payload };
       break;
+
+    default:
+      return state;
   }
 
   return newState;

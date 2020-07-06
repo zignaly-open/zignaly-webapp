@@ -19,19 +19,19 @@ import { START_TRADE_API_SESSION, END_TRADE_API_SESSION } from "../store/actions
  * @param {ActionObject} action Action to reduce.
  * @returns {StateSessionType} New session state.
  */
-const settings = (state, action) => {
-  const newState = assign({}, initialState.session, state);
+const settings = (state = initialState.session, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case START_TRADE_API_SESSION:
-      newState.tradeApi.accessToken = action.payload.token;
+      newState.tradeApi = { accessToken: action.payload.token };
       break;
     case END_TRADE_API_SESSION:
-      newState.tradeApi.accessToken = "";
+      newState.tradeApi = { accessToken: "" };
       break;
 
     default:
-      break;
+      return state;
   }
 
   return newState;

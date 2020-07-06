@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
-import hardSet from "redux-persist/lib/stateReconciler/hardSet";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 /**
@@ -14,7 +14,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
-  stateReconciler: hardSet,
+  stateReconciler: autoMergeLevel2,
+  blacklist: ["ui"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

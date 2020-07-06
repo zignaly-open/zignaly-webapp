@@ -83,16 +83,3 @@ export const setDisplayColumn = (payload) => {
     payload,
   };
 };
-
-/**
- * User's display balance selection
- *
- * @param {Object} payload payload.
- * @returns {AnyAction} return action object.
- */
-export const setShowBalance = (payload) => {
-  return {
-    type: SET_SHOW_BALANCE,
-    payload,
-  };
-};
