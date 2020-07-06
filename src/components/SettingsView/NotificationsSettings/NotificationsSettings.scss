@@ -17,8 +17,16 @@
     min-width: 120px;
   }
 
-  .inputBox {
+  .codeInfo {
     margin-bottom: 18px;
+  }
+
+  .inputBox {
+    margin-bottom: 0;
+
+    .customInput {
+      width: auto;
+    }
   }
 
   .telegramButton {

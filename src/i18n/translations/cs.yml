@@ -655,6 +655,7 @@ notifications.telegramconnect: "CH-Connect Telegram"
 notifications.telegramdisconnect: "CH-Disconnect Telegram"
 notifications.warnings: "CH-Warnings about subscriptions close to expiration"
 notifications.zignaly: "CH-Zignaly news and updates"
+notifications.codeinfo: "CH-You can get your code accessing our bot {url} and writing {command}"
 
 profile.email: "CH-Email"
 profile.photo: "CH-Profile Picture"

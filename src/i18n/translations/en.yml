@@ -656,6 +656,7 @@ notifications.telegramconnect: "Connect Telegram"
 notifications.telegramdisconnect: "Disconnect Telegram"
 notifications.warnings: "Warnings about subscriptions close to expiration"
 notifications.zignaly: "Zignaly news and updates"
+notifications.codeinfo: "You can get your code accessing our bot {url} and writing {command}"
 
 profile.email: "Email"
 profile.photo: "Profile Picture"

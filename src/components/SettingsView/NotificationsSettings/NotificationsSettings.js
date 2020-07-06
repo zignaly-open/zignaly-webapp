@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   CircularProgress,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -17,7 +18,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { useForm, Controller } from "react-hook-form";
 import CustomButton from "../../CustomButton";
-import { ErrorSharp } from "@material-ui/icons";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ProfileNotifications} ProfileNotifications
@@ -129,7 +129,16 @@ const NotificationsSettings = () => {
               Telegram
             </Typography>
             {telegramEnabled && (
-              <Box className="inputBox">
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <Alert severity="info" className="codeInfo">
+                  <FormattedMessage
+                    id="notifications.codeinfo"
+                    values={{
+                      url: <a href="https://t.me/ZignalyBot">https://t.me/ZignalyBot</a>,
+                      command: <b>/getCode</b>,
+                    }}
+                  />
+                </Alert>
                 <label>
                   <Typography variant="body1" className="customLabel">
                     <FormattedMessage id="notifications.telegramcode" />
