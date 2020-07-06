@@ -215,7 +215,7 @@ const PositionsTable = (props) => {
       {!loading && (
         <Fragment>
           {isEmpty(positionsAll) ? (
-            <NoPositions isProfile={isProfile} />
+            <NoPositions isProfile={isProfile} type={type} />
           ) : (
             <Box className={tableClass} display="flex" flexDirection="column" width={1}>
               <Table
