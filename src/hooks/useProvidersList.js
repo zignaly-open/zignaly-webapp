@@ -60,8 +60,8 @@ const useProvidersList = (options) => {
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
 
-  // Coins
-  const quoteAssets = useQuoteAssets();
+  // Get Coins list unless connected providers only which don't need filters
+  const quoteAssets = useQuoteAssets(!connectedOnly);
   const coins = [
     {
       val: "ALL",
