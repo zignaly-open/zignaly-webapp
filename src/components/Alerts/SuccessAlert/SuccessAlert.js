@@ -1,15 +1,19 @@
 import React from "react";
 import "./SuccessAlert.scss";
-import { Snackbar, Box, Typography, Slide } from "@material-ui/core";
+import { Snackbar, Slide } from "@material-ui/core";
 import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import CloseIcon from "@material-ui/icons/Close";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const SuccessAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();
   const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(hideSuccessAlert());
+  };
 
   return (
     <Snackbar
@@ -19,25 +23,19 @@ const SuccessAlert = () => {
         horizontal: "right",
       }}
       autoHideDuration={5000}
-      className="successAlert"
-      id="successAlert"
-      onClose={() => dispatch(hideSuccessAlert())}
+      onClose={handleClose}
       open={storeAlerts.success.open}
+      className="successAlert"
     >
-      <Box bgcolor="grid.main" className="alertMessage">
-        <CloseIcon className="closeIcon" onClick={() => dispatch(hideSuccessAlert())} />
+      <Alert onClose={handleClose} severity="success">
         {storeAlerts.success.title && (
-          <Typography className="title green" variant="h3">
+          <AlertTitle>
             {/* <FormattedMessage id={storeAlerts.success.title} /> */}
             Success
-          </Typography>
+          </AlertTitle>
         )}
-        {storeAlerts.success.body && (
-          <Typography className="body green" variant="body1">
-            <FormattedMessage id={storeAlerts.success.body} />
-          </Typography>
-        )}
-      </Box>
+        {storeAlerts.success.body && <FormattedMessage id={storeAlerts.success.body} />}
+      </Alert>
     </Snackbar>
   );
 };

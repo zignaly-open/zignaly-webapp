@@ -1,15 +1,19 @@
 import React from "react";
 import "./ErrorAlert.scss";
-import { Snackbar, Box, Typography, Slide } from "@material-ui/core";
+import { Snackbar, Slide } from "@material-ui/core";
 import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import CloseIcon from "@material-ui/icons/Close";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const ErrorAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();
   const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(hideErrorAlert());
+  };
 
   return (
     <Snackbar
@@ -19,25 +23,18 @@ const ErrorAlert = () => {
         horizontal: "right",
       }}
       autoHideDuration={5000}
-      className="errorAlert"
-      id="errorAlert"
-      onClose={() => dispatch(hideErrorAlert())}
+      onClose={handleClose}
       open={storeAlerts.error.open}
+      className="errorAlert"
     >
-      <Box bgcolor="grid.main" className="alertMessage">
-        <CloseIcon className="closeIcon" onClick={() => dispatch(hideErrorAlert())} />
+      <Alert onClose={handleClose} severity="error">
         {storeAlerts.error.title && (
-          <Typography className="title red" variant="h3">
+          <AlertTitle>
             <FormattedMessage id={storeAlerts.error.title} />
-          </Typography>
+          </AlertTitle>
         )}
-        {storeAlerts.error.body && (
-          <Typography className="body red" variant="body1">
-            <b>Error:</b>
-            <FormattedMessage id={storeAlerts.error.body} />
-          </Typography>
-        )}
-      </Box>
+        {storeAlerts.error.body && <FormattedMessage id={storeAlerts.error.body} />}
+      </Alert>
     </Snackbar>
   );
 };
