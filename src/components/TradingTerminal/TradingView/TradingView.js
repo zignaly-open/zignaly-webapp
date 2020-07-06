@@ -29,6 +29,7 @@ const defaultExchangeSymbol = {
  * @returns {JSX.Element} Trading terminal element.
  */
 const TradingView = () => {
+  const [libraryReady, setLibraryReady] = useState(false);
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
   const [lastPrice, setLastPrice] = useState(null);
   const storeSession = useStoreSessionSelector();
@@ -47,8 +48,6 @@ const TradingView = () => {
     } catch (error) {
       alert(`ERROR: ${error.message}`);
     }
-
-    return [];
   };
 
   /**
@@ -93,68 +92,92 @@ const TradingView = () => {
 
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
-  const bootstrapWidget = () => {
+  const loadDependencies = () => {
     getMarketData();
-
     const checkExist = setInterval(() => {
       if (window.TradingView && window.TradingView.widget) {
-        const widgetOptions = createWidgetOptions(exchangeName, selectedSymbol);
-        // @ts-ignore
-        // eslint-disable-next-line new-cap
-        const externalWidget = new window.TradingView.widget(widgetOptions);
-
-        window.addEventListener("message", (event) => {
-          const dataRaw = /** @type {Object<string, any>} */ event.data;
-          if (typeof dataRaw === "string") {
-            const data = JSON.parse(dataRaw);
-            // @ts-ignore
-            if (data.name === "widgetReady" && externalWidget.iframe) {
-              // @ts-ignore
-              externalWidget.iframe.contentWindow.postMessage(
-                // Force initial price notification.
-                { name: "set-symbol", data: { symbol: selectedSymbol.replace("/", "") } },
-                "*",
-              );
-
-              setTradingViewWidget(externalWidget);
-            }
-
-            if (data.name === "quoteUpdate" && !lastPrice) {
-              setLastPrice(data.last_price);
-            }
-          }
-        });
-
+        setLibraryReady(true);
         clearInterval(checkExist);
       }
     }, 100);
+  };
+
+  useEffect(loadDependencies, []);
+
+  const bootstrapWidget = () => {
+    // Skip if TV widget already exists or TV library is not ready.
+    if (!libraryReady) {
+      return () => {};
+    }
+
+    const widgetOptions = createWidgetOptions(
+      exchangeName,
+      selectedSymbol,
+      storeSettings.darkStyle,
+    );
+
+    // @ts-ignore
+    // eslint-disable-next-line new-cap
+    const externalWidget = new window.TradingView.widget(widgetOptions);
+    // @ts-ignore
+    const handleWidgetReady = (event) => {
+      const dataRaw = /** @type {Object<string, any>} */ event.data;
+      if (typeof dataRaw === "string") {
+        const data = JSON.parse(dataRaw);
+        // @ts-ignore
+        if (data.name === "widgetReady" && externalWidget.postMessage) {
+          setTradingViewWidget(externalWidget);
+        }
+
+        if (data.name === "quoteUpdate" && !lastPrice) {
+          setLastPrice(data.last_price);
+        }
+      }
+    };
+
+    window.addEventListener("message", handleWidgetReady);
 
     return () => {
       if (tradingViewWidget) {
         tradingViewWidget.remove();
         setTradingViewWidget(null);
       }
+
+      window.removeEventListener("message", handleWidgetReady);
     };
   };
 
-  // Create Trading View widget when data feed token is ready.
-  useEffect(bootstrapWidget, []);
+  // Create Trading View widget when TV external library is ready.
+  useEffect(bootstrapWidget, [libraryReady]);
 
   const changeTheme = () => {
     if (tradingViewWidget) {
       const options = tradingViewWidget.options;
       if (storeSettings.darkStyle && options.theme !== "dark") {
-        options.theme = "dark";
-        // tradingViewWidget.reload();
+        tradingViewWidget.remove();
+        setTradingViewWidget(null);
+        bootstrapWidget();
       }
 
       if (!storeSettings.darkStyle && options.theme !== "light") {
-        options.theme = "light";
-        // tradingViewWidget.reload();
+        tradingViewWidget.remove();
+        setTradingViewWidget(null);
+        bootstrapWidget();
       }
     }
   };
   useEffect(changeTheme, [storeSettings.darkStyle]);
+
+  // Force initial price notification.
+  const initDataFeedSymbol = () => {
+    const checkExist = setInterval(() => {
+      if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
+        handleSymbolChange(defaultSymbol);
+        clearInterval(checkExist);
+      }
+    }, 100);
+  };
+  useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   /**
    * @typedef {Object} OptionValue
