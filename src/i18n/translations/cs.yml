@@ -639,6 +639,9 @@ preferences.darklight: "CH-Dark / Light Mode"
 security: "CH-Security"
 security.2fa: "CH-2 Factor Authentication (2FA)"
 security.2fa.enable: "CH-Enable 2FA"
+security.2fa.enable.success: "CH-2 Factor Authentication Enabled"
+security.2fa.disable: "CH-Disable 2FA"
+security.2fa.disable.success: "CH-2 Factor Authentication Disabled"
 security.2fa.manually: "CH-Or introduce the code below manually"
 security.2fa.mobile: "CH-Code recieved on mobile"
 security.2fa.scan: "CH-Scan the QR Code below"
@@ -661,13 +664,17 @@ notifications.email: "CH-Email Notification"
 notifications.positionopened: "CH-Opened a position successfuly"
 notifications.positionupdate: "CH-Position updates"
 notifications.telegram: "CH-Telegram"
+notifications.telegramcode: "CH-Telegram Code"
 notifications.telegramconnect: "CH-Connect Telegram"
+notifications.telegramdisconnect: "CH-Disconnect Telegram"
 notifications.warnings: "CH-Warnings about subscriptions close to expiration"
 notifications.zignaly: "CH-Zignaly news and updates"
+notifications.codeinfo: "CH-You can get your code accessing our bot {url} and writing {command}"
 
-progile.email: "CH-Email"
+profile.email: "CH-Email"
 profile.photo: "CH-Profile Picture"
 profile.username: "CH-Username"
+profile.userid: "CH-User ID"
 
 # MONTHS
 m.jan: "CH-JAN"
@@ -685,6 +692,9 @@ m.dec: "CH-DEC"
 
 # FAQ
 faq: "CH-Frequently Asked Questions"
+
+# BUTTONS
+buttons.update: "CH-Update"
 
 # STATUS
 status.0: "CH-Position Created In DB"

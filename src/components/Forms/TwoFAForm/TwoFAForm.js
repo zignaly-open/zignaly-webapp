@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import "./TwoFAForm.scss";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-// import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
+import { useForm, Controller } from "react-hook-form";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../store/actions/ui";
+import { ask2FA } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -11,77 +16,102 @@ import ReactCodeInput from "react-verification-code-input";
  */
 
 const TwoFAForm = () => {
-  const [, setCode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
+
+  const { errors, handleSubmit, control, formState } = useForm({
+    mode: "onChange",
+  });
+
+  const { isValid } = formState;
 
   /**
-   * Code change event callback.
-   *
-   * @param {string} value Code change event.
-   * @return {void}
+   * @typedef {Object} FormData
+   * @property {string} code
    */
-  const handleCodeChange = (value) => {
-    setCode(value.length === 6);
-    if (value.length === 6) {
-      setCodeError(false);
-    } else {
-      setCodeError(true);
-    }
-  };
-
-  const handleSubmit = () => {
-    setLoading(true);
-    // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
-  };
 
   /**
-   * Code submission enter keypress kandling.
+   * Function to submit form.
    *
-   * @param {KeyboardEvent} event Key press event.
+   * @param {FormData} data Form data.
    * @returns {void}
    */
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSubmit();
-    }
+  const submitCode = (data) => {
+    setLoading(true);
+    const payload = {
+      code: data.code,
+      token: storeSession.tradeApi.accessToken,
+    };
+
+    tradeApi
+      .verify2FA(payload)
+      .then(() => {
+        dispatch(ask2FA(false));
+      })
+      .catch((e) => {
+        if (e.code === 37) {
+          //   setError("code", "notMatch", "Wrong code.");
+          setCodeError(true);
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+        setLoading(false);
+      });
   };
 
   return (
-    <Box
-      alignItems="center"
-      className="twoFAForm"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <span className="boxTitle">2 Factor Authentication</span>
+    <form onSubmit={handleSubmit(submitCode)}>
       <Box
         alignItems="center"
-        className="inputBox"
+        className="twoFAForm"
         display="flex"
         flexDirection="column"
-        justifyContent="start"
+        justifyContent="center"
       >
-        <label className="customLabel">Input Your Authentication Code</label>
-        {
-          // @ts-ignore
-          <ReactCodeInput
+        <Typography variant="h3">2 Factor Authentication</Typography>
+        <Box
+          alignItems="center"
+          className="inputBox"
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+        >
+          <label className="customLabel">
+            <Typography>Input Your Authentication Code</Typography>
+          </label>
+          <Controller
+            // @ts-ignore
+            as={ReactCodeInput}
             className="codeInput"
+            control={control}
+            error={!!errors.code}
             fields={6}
-            onChange={handleCodeChange}
-            onComplete={handleKeyPress}
+            name="code"
+            onChange={(val) => {
+              setCodeError(false);
+              return val[0];
+            }}
+            rules={{
+              required: true,
+              minLength: 6,
+            }}
           />
-        }
-        {codeError && <span className="errorText">Code must be of 6 digits!</span>}
+          {/* {errors.code && <span className="errorText">{errors.code.message}</span>} */}
+          {codeError && <span className="errorText">Wrong code.</span>}
+          <CustomButton
+            className="bgPurple"
+            disabled={!isValid}
+            fullWidth={true}
+            loading={loading}
+            type="submit"
+          >
+            Sign in
+          </CustomButton>
+        </Box>
       </Box>
-
-      <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
-        <CustomButton className={"fullSubmitButton"} loading={loading} onClick={handleSubmit}>
-          Sign in
-        </CustomButton>
-      </Box>
-    </Box>
+    </form>
   );
 };
 

@@ -13,6 +13,7 @@ const TradingTerminal = () => {
     <Box className="tradingTerminalPage">
       <Helmet>
         <title>{intl.formatMessage({ id: "menu.tradingterminal" })}</title>
+        <script id="tvwidget" src="https://s3.tradingview.com/tv.js" type="text/javascript" />
       </Helmet>
       <Box className="titleBox">
         <Typography variant="h1">

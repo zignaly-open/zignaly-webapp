@@ -25,8 +25,8 @@ import {
  * @param {ActionObject} action Action to reduce.
  * @returns {StateSettingsType} New settings state.
  */
-const settings = (state, action) => {
-  const newState = assign({}, initialState.settings, state);
+const settings = (state = initialState.settings, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case SELECT_LANGUAGE:
@@ -53,21 +53,24 @@ const settings = (state, action) => {
       const table = action.payload.table;
       const { changedColumn, action: userAction } = action.payload;
 
-      //   const { table, changedColumn, action: userAction } = action.payload;
       if (userAction === "add") {
         //   Add column to displayed list
-        newState.displayColumns[table] = [...newState.displayColumns[table], changedColumn];
+        newState.displayColumns = {
+          ...newState.displayColumns,
+          [table]: [...newState.displayColumns[table], changedColumn],
+        };
       } else {
         //   Remove column to displayed list
-        newState.displayColumns[table] = newState.displayColumns[table].filter(
-          (c) => c !== changedColumn,
-        );
+        newState.displayColumns = {
+          ...newState.displayColumns,
+          [table]: newState.displayColumns[table].filter((c) => c !== changedColumn),
+        };
       }
       break;
     }
 
     default:
-      break;
+      return state;
   }
 
   return newState;

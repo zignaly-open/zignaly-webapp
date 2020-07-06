@@ -31,6 +31,7 @@ import {
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
+  profileNotificationsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -79,8 +80,10 @@ import {
  * @typedef {import('./tradeApiClient.types').ModifySubscriptionPayload} ModifySubscriptionPayload
  * @typedef {import('./tradeApiClient.types').CancelSubscriptionPayload} CancelSubscriptionPayload
  * @typedef {import('./tradeApiClient.types').UpdatePasswordPayload} UpdatePasswordPayload
- *
+ * @typedef {import('./tradeApiClient.types').TwoFAPayload} TwoFAPayload
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
+ * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
+ * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
  */
 
 /**
@@ -111,14 +114,17 @@ class TradeApiClient {
   async doRequest(endpointPath, payload) {
     let responseData = {};
     const requestUrl = this.baseUrl + endpointPath;
-    const options = {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": process.env.GATSBY_API_KEY || "",
-      },
-    };
+
+    const options = payload
+      ? {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": process.env.GATSBY_API_KEY || "",
+          },
+        }
+      : { method: "GET" };
 
     try {
       const response = await fetch(requestUrl, options);
@@ -133,6 +139,11 @@ class TradeApiClient {
 
     if (responseData.error) {
       const customError = responseData.error.error;
+
+      if (customError.code === 13) {
+        // Session expired
+        navigate("/login");
+      }
       throw customError;
     }
 
@@ -879,6 +890,96 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Get code to enable 2FA.
+   *
+   * @param {AuthorizationPayload} payload Payload
+   * @returns {Promise<Array<string>>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async enable2FA1Step(payload) {
+    const endpointPath = `/fe/api.php?action=enable2FA1Step&token=${payload.token}`;
+    const responseData = await this.doRequest(endpointPath, null);
+
+    return responseData;
+  }
+
+  /**
+   * Enable 2FA.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async enable2FA2Step(payload) {
+    const endpointPath = "/fe/api.php?action=enable2FA2Step";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Disable 2FA.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FA(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FA";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Disable 2FA.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async verify2FA(payload) {
+    const endpointPath = "/fe/api.php?action=verify2FA";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Get user notifications settings.
+   *
+   * @param {AuthorizationPayload} payload Payload
+   * @returns {Promise<ProfileNotifications>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async getProfileNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=getProfileNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return profileNotificationsResponseTransform(responseData);
+  }
+
+  /**
+   * Update user notifications settings.
+   *
+   * @param {ProfileNotificationsPayload} payload Payload
+   * @returns {Promise<ProfileNotifications>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async updateProfileNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=updateProfileNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return profileNotificationsResponseTransform(responseData);
   }
 
   /**

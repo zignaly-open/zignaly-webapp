@@ -34,6 +34,7 @@ const PositionPage = (props) => {
             id: "menu.positionview",
           })}
         </title>
+        <script id="tvwidget" src="https://s3.tradingview.com/tv.js" type="text/javascript" />
       </Helmet>
       <Box className="positionPage" display="flex" flexDirection="column" justifyContent="center">
         <Box

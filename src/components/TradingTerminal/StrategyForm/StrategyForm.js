@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
-import { assign, isEmpty, isObject, range, forIn, noop } from "lodash";
+import { assign, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -37,14 +37,15 @@ import "./StrategyForm.scss";
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  */
 
 /**
  * @typedef {Object} StrategyFormProps
- * @property {Object} dataFeed
- * @property {CoinRayCandle} lastPriceCandle
+ * @property {MarketSymbolsCollection} symbolsData
+ * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
@@ -59,17 +60,17 @@ import "./StrategyForm.scss";
  */
 const StrategyForm = (props) => {
   const {
-    dataFeed,
-    lastPriceCandle,
+    lastPrice,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
     positionEntity = null,
+    symbolsData = [],
   } = props;
 
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
+  const currentPrice = lastPrice;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
@@ -126,6 +127,12 @@ const StrategyForm = (props) => {
   function drawLine(chartLineParams) {
     const { id, price, label, color } = chartLineParams;
     const existingChartLine = linesTracking[id] || null;
+
+    // Avoid draw lines when widget don't expose chart API, this is the case
+    // when TV library is loaded as widget from vendor servers.
+    if (!isFunction(tradingViewWidget.chart)) {
+      return null;
+    }
 
     // Skip draw when price is empty.
     if (price === 0) {
@@ -397,7 +404,6 @@ const StrategyForm = (props) => {
   };
 
   // @ts-ignore
-  const symbolsData = dataFeed.getSymbolsData();
   const updatePriceField = () => {
     setValue("price", currentPrice);
   };
@@ -468,15 +474,6 @@ const StrategyForm = (props) => {
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
-
-  const changeTheme = () => {
-    if (storeSettings.darkStyle) {
-      tradingViewWidget.changeTheme("Dark");
-    } else {
-      tradingViewWidget.changeTheme("Light");
-    }
-  };
-  useEffect(changeTheme, [storeSettings.darkStyle]);
 
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {

@@ -250,12 +250,7 @@ const Withdraw = () => {
                         {Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee))}
                       </Typography>
                     </Box>
-                    <CustomButton
-                      className="bgPurple"
-                      disabled={false}
-                      loading={isLoading}
-                      type="submit"
-                    >
+                    <CustomButton className="bgPurple" loading={isLoading} type="submit">
                       <Typography className="bold" variant="body1">
                         <FormattedMessage id="accounts.withdraw" />
                       </Typography>

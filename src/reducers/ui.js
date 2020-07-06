@@ -1,13 +1,12 @@
 import initialState from "../store/initialState";
 import { assign } from "lodash";
 import {
-  OPEN_EXCHANGE_CONNECTION_VIEW,
-  OPEN_SSETTINGS_VIEW,
   SHOW_LOADER,
   SHOW_ERROR_ALERT,
   HIDE_ERROR_ALERT,
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
+  ASK_2FA,
 } from "../store/actions/ui";
 
 /**
@@ -25,42 +24,57 @@ import {
  * @param {ActionObject} action Action to reduce.
  * @returns {DefaultUIObject} New settings state.
  */
-const ui = (state, action) => {
-  const newState = assign({}, initialState.ui, state);
+const ui = (state = initialState.ui, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
-    case OPEN_EXCHANGE_CONNECTION_VIEW:
-      newState.modal.exchangeConnectionView = action.payload;
-      break;
-    case OPEN_SSETTINGS_VIEW:
-      newState.modal.settingsView = action.payload;
-      break;
     case SHOW_LOADER:
       newState.loader = action.payload;
       break;
     case SHOW_ERROR_ALERT:
-      newState.alerts.error = { ...action.payload, open: true };
+      newState.alerts = {
+        ...newState.alerts,
+        error: {
+          ...action.payload,
+          open: true,
+        },
+      };
       break;
     case HIDE_ERROR_ALERT:
-      newState.alerts.error = {
-        title: "",
-        body: "",
-        open: false,
+      newState.alerts = {
+        ...newState.alerts,
+        error: {
+          title: "",
+          body: "",
+          open: false,
+        },
       };
       break;
     case SHOW_SUCCESS_ALERT:
-      newState.alerts.success = { ...action.payload, open: true };
+      newState.alerts = {
+        ...newState.alerts,
+        success: {
+          ...action.payload,
+          open: true,
+        },
+      };
       break;
     case HIDE_SUCCESS_ALERT:
-      newState.alerts.success = {
-        title: "",
-        body: "",
-        open: false,
+      newState.alerts = {
+        ...newState.alerts,
+        success: {
+          title: "",
+          body: "",
+          open: false,
+        },
       };
+      break;
+    case ASK_2FA:
+      newState.ask2FA = action.payload;
       break;
 
     default:
-      break;
+      return state;
   }
 
   return newState;
