@@ -37,13 +37,14 @@ import "./StrategyForm.scss";
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  */
 
 /**
  * @typedef {Object} StrategyFormProps
- * @property {Object} dataFeed
+ * @property {MarketSymbolsCollection} symbolsData
  * @property {CoinRayCandle} lastPriceCandle
  * @property {TVWidget} tradingViewWidget
  * @property {string} selectedSymbol
@@ -59,12 +60,12 @@ import "./StrategyForm.scss";
  */
 const StrategyForm = (props) => {
   const {
-    dataFeed,
     lastPriceCandle,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
     positionEntity = null,
+    symbolsData = [],
   } = props;
 
   const isPositionView = isObject(positionEntity);
@@ -397,7 +398,6 @@ const StrategyForm = (props) => {
   };
 
   // @ts-ignore
-  const symbolsData = dataFeed.getSymbolsData();
   const updatePriceField = () => {
     setValue("price", currentPrice);
   };
