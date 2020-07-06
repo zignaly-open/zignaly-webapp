@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { isEmpty } from "lodash";
 import "./PositionsTable.scss";
 import { Box, CircularProgress } from "@material-ui/core";
