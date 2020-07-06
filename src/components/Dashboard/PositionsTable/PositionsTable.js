@@ -203,17 +203,17 @@ const PositionsTable = (props) => {
 
       {loading && (
         <Box
+          alignItems="center"
           className="loadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
         >
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
       {!loading && (
-        <Fragment>
+        <>
           {isEmpty(positionsAll) ? (
             <NoPositions isProfile={isProfile} />
           ) : (
@@ -226,7 +226,7 @@ const PositionsTable = (props) => {
               />
             </Box>
           )}
-        </Fragment>
+        </>
       )}
     </>
   );
