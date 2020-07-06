@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
-import { assign, isEmpty, isObject, range, forIn, noop } from "lodash";
+import { assign, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import StrategyPanel from "../StrategyPanel/StrategyPanel";
 import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
@@ -127,6 +127,12 @@ const StrategyForm = (props) => {
   function drawLine(chartLineParams) {
     const { id, price, label, color } = chartLineParams;
     const existingChartLine = linesTracking[id] || null;
+
+    // Avoid draw lines when widget don't expose chart API, this is the case
+    // when TV library is loaded as widget from vendor servers.
+    if (!isFunction(tradingViewWidget.chart)) {
+      return null;
+    }
 
     // Skip draw when price is empty.
     if (price === 0) {
