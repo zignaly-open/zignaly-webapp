@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { isEmpty } from "lodash";
 import "./PositionsTable.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";
 import {
@@ -43,7 +43,10 @@ const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const { positionsAll, positionsFiltered, setFilters } = usePositionsList(type, positionEntity);
+  const { positionsAll, positionsFiltered, setFilters, loading } = usePositionsList(
+    type,
+    positionEntity,
+  );
   const showTypesFilter = type === "log";
   const tablePersistsKey = `${type}Positions`;
 
@@ -198,17 +201,32 @@ const PositionsTable = (props) => {
         setConfirmConfig={setConfirmConfig}
       />
 
-      {isEmpty(positionsAll) ? (
-        <NoPositions isProfile={isProfile} />
-      ) : (
-        <Box className={tableClass} display="flex" flexDirection="column" width={1}>
-          <Table
-            columns={columns}
-            data={data}
-            persistKey={tablePersistsKey}
-            title={embedFilters()}
-          />
+      {loading && (
+        <Box
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CircularProgress color="primary" size={40} />
         </Box>
+      )}
+      {!loading && (
+        <Fragment>
+          {isEmpty(positionsAll) ? (
+            <NoPositions isProfile={isProfile} />
+          ) : (
+            <Box className={tableClass} display="flex" flexDirection="column" width={1}>
+              <Table
+                columns={columns}
+                data={data}
+                persistKey={tablePersistsKey}
+                title={embedFilters()}
+              />
+            </Box>
+          )}
+        </Fragment>
       )}
     </>
   );

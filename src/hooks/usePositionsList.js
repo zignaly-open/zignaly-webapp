@@ -19,6 +19,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
+ * @property {Boolean} loading
  */
 
 /**
@@ -34,6 +35,7 @@ const usePositionsList = (type, positionEntity = null) => {
   const storeSettings = useStoreSettingsSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const defaultFilters = {
     provider: "all",
     pair: "all",
@@ -111,20 +113,23 @@ const usePositionsList = (type, positionEntity = null) => {
 
   const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
-
     if (fetchMethod) {
+      setLoading(true);
       fetchMethod
         .then((fetchData) => {
           const newPositions = { ...positions, [type]: fetchData };
           setPositions(newPositions);
+          setLoading(false);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+          setLoading(false);
         });
     }
   };
 
   const loadPosition = () => {
+    setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
@@ -135,9 +140,11 @@ const usePositionsList = (type, positionEntity = null) => {
       .then((data) => {
         const newPositions = { ...positions, [type]: [data] };
         setPositions(newPositions);
+        setLoading(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+        setLoading(false);
       });
   };
 
@@ -189,6 +196,7 @@ const usePositionsList = (type, positionEntity = null) => {
     positionsAll: positions[type],
     positionsFiltered: filterData(positions[type]),
     setFilters: combineFilters,
+    loading: loading,
   };
 };
 
