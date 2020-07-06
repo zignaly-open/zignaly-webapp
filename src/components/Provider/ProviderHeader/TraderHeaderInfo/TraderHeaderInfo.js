@@ -51,9 +51,7 @@ const ProviderHeaderInfo = () => {
       <Typography variant="h4">
         <FormattedMessage id="accounts.exchange.type" />
         <b>
-          {storeViews.provider.copyTradingQuote
-            ? storeViews.provider.copyTradingQuote.toUpperCase()
-            : ""}
+          {storeViews.provider.exchangeType ? storeViews.provider.exchangeType.toUpperCase() : ""}
         </b>
       </Typography>
 
