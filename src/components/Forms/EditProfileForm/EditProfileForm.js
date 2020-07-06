@@ -16,6 +16,7 @@ import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
+import { showSuccessAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -95,6 +96,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             version: 2,
           };
           dispatch(setProvider(payload2));
+          dispatch(showSuccessAlert("Profile Edited", "Profile Successfully edited"));
         })
         .catch((error) => {
           alert(error.message);
