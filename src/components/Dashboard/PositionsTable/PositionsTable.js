@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { isEmpty } from "lodash";
 import "./PositionsTable.scss";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -203,17 +203,17 @@ const PositionsTable = (props) => {
 
       {loading && (
         <Box
+          alignItems="center"
           className="loadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
         >
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
       {!loading && (
-        <Fragment>
+        <>
           {isEmpty(positionsAll) ? (
             <NoPositions isProfile={isProfile} type={type} />
           ) : (
@@ -226,7 +226,7 @@ const PositionsTable = (props) => {
               />
             </Box>
           )}
-        </Fragment>
+        </>
       )}
     </>
   );
