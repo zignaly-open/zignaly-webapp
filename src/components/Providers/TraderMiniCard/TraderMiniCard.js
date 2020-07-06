@@ -43,7 +43,7 @@ const TraderMiniCard = ({ provider }) => {
           {formatFloat(providerUserInfo.currentAllocated)}
         </Typography>
         <Box display="flex" flexDirection="row">
-          <Typography variant="h5">
+          <Typography variant="h5" noWrap={true}>
             <FormattedMessage id="col.plpercentage" />
           </Typography>
           <Box pl="7px">

@@ -28,6 +28,7 @@
 
   .traderMiniCard {
     margin: 7px 36px;
+    min-height: 80px;
   }
 
   .customButton {
@@ -35,18 +36,17 @@
     margin: 0 36px;
     margin-top: 7px;
   }
-}
 
-@include media("<=sm") {
-  .connectedProvidersSummary {
+  @include media("<=sm") {
     position: static;
-  }
 
-  .traderMiniCard {
-    margin: 7px 0;
-  }
+    .traderMiniCard {
+      margin: 7px 0;
+      min-width: initial;
+    }
 
-  .customButton {
-    width: auto;
+    .customButton {
+      width: auto;
+    }
   }
 }
