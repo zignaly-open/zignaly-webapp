@@ -13,8 +13,9 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import "./NotificationsSettings.scss";
 import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert } from "../../../store/actions/ui";
-import { useForm } from "react-hook-form";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import { useForm, Controller } from "react-hook-form";
+import CustomButton from "../../CustomButton";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').ProfileNotifications} ProfileNotifications
@@ -24,8 +25,13 @@ const NotificationsSettings = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { handleSubmit, register, reset } = useForm();
+  const { handleSubmit, register, reset, control } = useForm({
+    // defaultValues: {
+    //   emailNews: false,
+    // },
+  });
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
   const loadData = () => {
     const payload = {
@@ -55,16 +61,29 @@ const NotificationsSettings = () => {
     console.log(data);
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      notifications: data,
+      notifications: {
+        ...data,
+        emailEnable:
+          data.emailNews ||
+          data.emailOpenPosition ||
+          data.emailUpdatePosition ||
+          data.emailSubscriptionWarning,
+      },
     };
+
+    setUpdating(true);
+    return;
 
     tradeApi
       .updateProfileNotifications(payload)
       .then((data) => {
-        // setBases(data);
+        showSuccessAlert("Success", "Notification settings updated.");
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setUpdating(false);
       });
   };
 
@@ -85,21 +104,25 @@ const NotificationsSettings = () => {
               <NotificationCheckbox
                 name="emailNews"
                 label="notifications.zignaly"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
               />
               <NotificationCheckbox
                 name="emailOpenPosition"
                 label="notifications.positionopened"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
               />
               <NotificationCheckbox
                 name="emailUpdatePosition"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
                 label="notifications.positionupdate"
               />
               <NotificationCheckbox
                 name="emailSubscriptionWarning"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
                 label="notifications.warnings"
               />
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
@@ -111,25 +134,34 @@ const NotificationsSettings = () => {
               <NotificationCheckbox
                 name="telegramNews"
                 label="notifications.zignaly"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
               />
               <NotificationCheckbox
                 name="telegramOpenPosition"
-                inputRef={register}
+                // inputRef={register}
+                control={control}
                 label="notifications.positionopened"
               />
               <NotificationCheckbox
-                inputRef={register}
+                // inputRef={register}
+                control={control}
                 name="telegramUpdatePosition"
                 label="notifications.positionupdate"
               />
               <NotificationCheckbox
-                inputRef={register}
+                // inputRef={register}
+                control={control}
                 name="telegramSubscriptionWarning"
                 label="notifications.warnings"
               />
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
+            <CustomButton className="bgPurple" loading={updating} disabled={updating} type="submit">
+              <Typography className="bold" variant="body1">
+                <FormattedMessage id="button.update" />
+              </Typography>
+            </CustomButton>
           </>
         ) : (
           <CircularProgress disableShrink size={21} className="loader" />
@@ -152,9 +184,18 @@ const NotificationsSettings = () => {
  * @param {NotificationCheckboxPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const NotificationCheckbox = ({ name, label, inputRef }) => (
+const NotificationCheckbox = ({ name, label, inputRef, control }) => (
   <FormControlLabel
-    control={<Checkbox inputRef={inputRef} name={name} color="primary" />}
+    control={
+      // <Checkbox inputRef={inputRef} name={name} color="primary" />
+      <Controller
+        as={Checkbox}
+        control={control}
+        name={name}
+        type="checkbox"
+        defaultValue={false}
+      />
+    }
     label={<FormattedMessage id={label} />}
   />
 );

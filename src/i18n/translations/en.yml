@@ -676,6 +676,9 @@ m.dec: "DEC"
 # FAQ
 faq: "Frequently Asked Questions"
 
+# BUTTON
+button.update: "Update"
+
 # STATUS
 status.0: "Position Created In DB"
 status.1: "Entry Order Created On Exchange"

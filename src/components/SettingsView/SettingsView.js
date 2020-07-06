@@ -57,7 +57,6 @@ const SettingsView = ({ onClose }) => {
   ];
 
   const renderContent = () => {
-    console.log(path);
     switch (path) {
       default:
         return <Preferences />;

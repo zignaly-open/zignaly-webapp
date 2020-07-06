@@ -675,6 +675,9 @@ m.dec: "CH-DEC"
 # FAQ
 faq: "CH-Frequently Asked Questions"
 
+# BUTTONS
+buttons.update: "CH-Update"
+
 # STATUS
 status.0: "CH-Position Created In DB"
 status.1: "CH-Entry Order Created On Exchange"

@@ -1,9 +1,9 @@
 .notificationsSettings {
-  .loader {
+  > .loader {
     margin: 50px;
   }
 
-  p {
+  > p {
     margin-bottom: 24px;
   }
 
@@ -11,5 +11,9 @@
     &:last-child {
       margin-bottom: 24px;
     }
+  }
+
+  .customButton {
+    min-width: 120px;
   }
 }
