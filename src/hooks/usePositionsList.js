@@ -114,7 +114,9 @@ const usePositionsList = (type, positionEntity = null) => {
   const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
     if (fetchMethod) {
-      setLoading(true);
+      if (type !== "open") {
+        setLoading(true);
+      }
       fetchMethod
         .then((fetchData) => {
           const newPositions = { ...positions, [type]: fetchData };
