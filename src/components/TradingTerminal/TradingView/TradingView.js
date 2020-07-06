@@ -194,10 +194,13 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
+    const symbolSuffix =
+      storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+    const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: selectedOption.replace("/", "") } },
+        { name: "set-symbol", data: { symbol: symbolCode } },
         "*",
       );
     }
