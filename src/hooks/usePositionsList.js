@@ -6,6 +6,7 @@ import { assign, filter, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import useStoreViewsSelector from "./useStoreViewsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -31,6 +32,7 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 const usePositionsList = (type, positionEntity = null) => {
   const storeSettings = useStoreSettingsSelector();
+  const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
   const defaultFilters = {
     provider: "all",
@@ -45,6 +47,8 @@ const usePositionsList = (type, positionEntity = null) => {
     open: [],
     closed: [],
     log: [],
+    profileOpen: [],
+    profileClosed: [],
   });
 
   const storeSession = useStoreSessionSelector();
@@ -52,6 +56,11 @@ const usePositionsList = (type, positionEntity = null) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalExchangeId: storeSettings.selectedExchange.internalId,
+    };
+
+    const providerPayload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
     };
 
     if (positionEntity) {
@@ -65,6 +74,10 @@ const usePositionsList = (type, positionEntity = null) => {
       return tradeApi.logPositionsGet(payload);
     } else if (type === "open") {
       return tradeApi.openPositionsGet(payload);
+    } else if (type === "profileOpen") {
+      return tradeApi.providerOpenPositions(providerPayload);
+    } else if (type === "profileClosed") {
+      return tradeApi.providerSoldPositions(providerPayload);
     }
 
     return false;

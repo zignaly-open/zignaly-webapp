@@ -561,6 +561,31 @@ function composeLogPositionRow(position) {
 }
 
 /**
+ * Compose MUI Data Table row for closed position entity.
+ *
+ * @param {PositionEntity} position Position entity to compose data table row for.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeClosePositionRowForProvider(position) {
+  return [
+    composeAmount(position),
+    composeRawValue(position.base),
+    composeRawValue(position.buyPrice),
+    composeRawValue(position.closeDateReadable),
+    composeRawValue(position.exchange),
+    composeRawValue(position.leverage),
+    composeRawValue(position.openDateReadable),
+    composeRawValue(position.positionSize),
+    composeRawValue(position.quote),
+    composeRawValue(position.returnFromAllocated),
+    composeRawValue(position.returnFromInvestment),
+    composeRawValue(position.sellPrice),
+    composeRawValue(position.side),
+    composeStatusMessage(position.status),
+  ];
+}
+
+/**
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
@@ -786,5 +811,37 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
   return {
     columns: columnsIds.map(composeColumnOptions),
     data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
+  };
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {UserPositionsCollection} positions Positions collection.
+ *
+ * @returns {DataTableContent} Closed positions data table structure.
+ */
+export function composeClosedPositionsForProvider(positions) {
+  const columnsIds = [
+    "col.amount",
+    "col.base",
+    "col.buyprice",
+    "col.date.close",
+    "col.exchange",
+    "col.leverage",
+    "col.date.open",
+    "col.positionsize",
+    "col.quote",
+    "col.returnfromallocated",
+    "col.returnfrominvestment",
+    "col.sellprice",
+    "col.side",
+    "col.status",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map(composeClosePositionRowForProvider),
   };
 }

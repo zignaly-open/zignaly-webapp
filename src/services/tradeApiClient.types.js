@@ -380,6 +380,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {('unsold' | 'sold' | 'unopened' | '')} type
  * @property {PositionEntityTotals} copyTradingTotals
  * @property {Number} subPositions
+ * @property {Number} returnFromAllocated
+ * @property {Number} returnFromInvestment
  */
 
 /**
@@ -1129,6 +1131,8 @@ function createEmptyPositionEntity() {
       openPositions: 0,
     },
     subPositions: 0,
+    returnFromAllocated: 0,
+    returnFromInvestment: 0,
   };
 }
 

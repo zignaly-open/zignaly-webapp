@@ -880,6 +880,36 @@ class TradeApiClient {
 
     return responseData;
   }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {GetProviderFollowersPayload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerOpenPositions(payload) {
+    const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {GetProviderFollowersPayload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerSoldPositions(payload) {
+    const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionsResponseTransform(responseData);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

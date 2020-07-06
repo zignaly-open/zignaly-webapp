@@ -9,6 +9,7 @@ import {
   composeClosePositionsDataTable,
   composeLogPositionsDataTable,
   excludeDataTableColumn,
+  composeClosedPositionsForProvider,
 } from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -147,12 +148,12 @@ const PositionsTable = (props) => {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileOpen") {
-      dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+      dataTable = composeOpenPositionsDataTable(positionsAll, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileClosed") {
-      dataTable = composeClosePositionsDataTable(positionsFiltered);
+      dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
     }
