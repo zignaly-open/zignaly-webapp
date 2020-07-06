@@ -661,6 +661,7 @@ notifications.codeinfo: "You can get your code accessing our bot {url} and writi
 profile.email: "Email"
 profile.photo: "Profile Picture"
 profile.username: "Username"
+profile.userid: "User ID"
 
 # MONTHS
 m.jan: "JAN"

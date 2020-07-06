@@ -660,6 +660,7 @@ notifications.codeinfo: "CH-You can get your code accessing our bot {url} and wr
 profile.email: "CH-Email"
 profile.photo: "CH-Profile Picture"
 profile.username: "CH-Username"
+profile.userid: "CH-User ID"
 
 # MONTHS
 m.jan: "CH-JAN"
