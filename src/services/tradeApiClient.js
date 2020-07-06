@@ -1,4 +1,5 @@
 import fetch from "cross-fetch";
+import { navigate } from "gatsby";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
