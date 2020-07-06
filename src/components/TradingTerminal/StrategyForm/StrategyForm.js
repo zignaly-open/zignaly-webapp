@@ -45,7 +45,7 @@ import "./StrategyForm.scss";
 /**
  * @typedef {Object} StrategyFormProps
  * @property {MarketSymbolsCollection} symbolsData
- * @property {CoinRayCandle} lastPriceCandle
+ * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {string} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
@@ -60,7 +60,7 @@ import "./StrategyForm.scss";
  */
 const StrategyForm = (props) => {
   const {
-    lastPriceCandle,
+    lastPrice,
     notifyPositionUpdate = noop,
     selectedSymbol,
     tradingViewWidget,
@@ -70,7 +70,7 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const currentPrice = parseFloat(lastPriceCandle[1]).toFixed(8);
+  const currentPrice = lastPrice;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
@@ -468,15 +468,6 @@ const StrategyForm = (props) => {
     });
   };
   useEffect(drawTakeProfitTargetPriceLines, [takeProfitTargetPrices]);
-
-  const changeTheme = () => {
-    if (storeSettings.darkStyle) {
-      tradingViewWidget.changeTheme("Dark");
-    } else {
-      tradingViewWidget.changeTheme("Light");
-    }
-  };
-  useEffect(changeTheme, [storeSettings.darkStyle]);
 
   const dcaTargetPercentage1 = watch("dcaTargetPricePercentage1");
   const drawDCATargetPriceLines = () => {

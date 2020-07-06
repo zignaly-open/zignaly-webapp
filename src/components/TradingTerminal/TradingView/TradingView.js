@@ -99,22 +99,39 @@ const TradingView = () => {
     const checkExist = setInterval(() => {
       if (window.TradingView && window.TradingView.widget) {
         const widgetOptions = createWidgetOptions(exchangeName, selectedSymbol);
+        // @ts-ignore
+        // eslint-disable-next-line new-cap
         const externalWidget = new window.TradingView.widget(widgetOptions);
 
         window.addEventListener("message", (event) => {
-          var data = event.data;
-          console.log("widgetData: ", data);
+          const dataRaw = /** @type {Object<string, any>} */ event.data;
+          if (typeof dataRaw === "string") {
+            const data = JSON.parse(dataRaw);
+            // @ts-ignore
+            if (data.name === "widgetReady" && externalWidget.iframe) {
+              // @ts-ignore
+              externalWidget.iframe.contentWindow.postMessage(
+                // Force initial price notification.
+                { name: "set-symbol", data: { symbol: selectedSymbol.replace("/", "") } },
+                "*",
+              );
+
+              setTradingViewWidget(externalWidget);
+            }
+
+            if (data.name === "quoteUpdate" && !lastPrice) {
+              setLastPrice(data.last_price);
+            }
+          }
         });
 
-        window.externalWidget = externalWidget;
-        setTradingViewWidget(externalWidget);
         clearInterval(checkExist);
       }
     }, 100);
 
     return () => {
-      if (window.externalWidget) {
-        window.externalWidget.remove();
+      if (tradingViewWidget) {
+        tradingViewWidget.remove();
         setTradingViewWidget(null);
       }
     };
@@ -122,6 +139,22 @@ const TradingView = () => {
 
   // Create Trading View widget when data feed token is ready.
   useEffect(bootstrapWidget, []);
+
+  const changeTheme = () => {
+    if (tradingViewWidget) {
+      const options = tradingViewWidget.options;
+      if (storeSettings.darkStyle && options.theme !== "dark") {
+        options.theme = "dark";
+        // tradingViewWidget.reload();
+      }
+
+      if (!storeSettings.darkStyle && options.theme !== "light") {
+        options.theme = "light";
+        // tradingViewWidget.reload();
+      }
+    }
+  };
+  useEffect(changeTheme, [storeSettings.darkStyle]);
 
   /**
    * @typedef {Object} OptionValue
@@ -138,14 +171,9 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
 
-    if (window.externalWidget && window.externalWidget.iframe) {
-      window.externalWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: selectedOption.replace("/", "-") } },
-        "*",
-      );
-
-      window.externalWidget.iframe.contentWindow.postMessage(
-        { name: "set-theme", data: { symbol: "dark" } },
+    if (tradingViewWidget && tradingViewWidget.iframe) {
+      tradingViewWidget.iframe.contentWindow.postMessage(
+        { name: "set-symbol", data: { symbol: selectedOption.replace("/", "") } },
         "*",
       );
     }
@@ -198,7 +226,7 @@ const TradingView = () => {
           <Box className="tradingViewChart" id="trading_view_chart" />
           {!isLoading && !isLastPriceLoading && (
             <StrategyForm
-              lastPriceCandle={lastPrice}
+              lastPrice={lastPrice}
               selectedSymbol={selectedSymbol}
               symbolsData={marketData}
               tradingViewWidget={tradingViewWidget}
