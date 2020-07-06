@@ -124,14 +124,14 @@ const TradingView = () => {
     const handleWidgetReady = (event) => {
       const dataRaw = /** @type {Object<string, any>} */ event.data;
       if (typeof dataRaw === "string") {
-        const data = JSON.parse(dataRaw);
+        const dataParsed = JSON.parse(dataRaw);
         // @ts-ignore
-        if (data.name === "widgetReady" && externalWidget.postMessage) {
+        if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
           setTradingViewWidget(externalWidget);
         }
 
-        if (data.name === "quoteUpdate" && !lastPrice) {
-          setLastPrice(data.last_price);
+        if (dataParsed.name === "quoteUpdate" && !lastPrice && dataParsed.data) {
+          setLastPrice(dataParsed.data.last_price);
         }
       }
     };
