@@ -654,14 +654,13 @@ function composeLogPositionRow(position) {
 function composeClosedPositionRowForProvider(position) {
   return [
     composeValue(position.amount),
-    composeRawValue(position.base),
+    composeRawValue(position.pair),
     composeValue(position.buyPrice),
     composeRawValue(position.closeDateReadable),
     composeRawValue(position.exchange),
     composeRawValue(position.leverage),
     composeRawValue(position.openDateReadable),
     composeValue(position.positionSize),
-    composeRawValue(position.quote),
     composeValue(position.returnFromAllocated),
     composeValue(position.returnFromInvestment),
     composeValue(position.sellPrice),
@@ -909,14 +908,13 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
 export function composeClosedPositionsForProvider(positions) {
   const columnsIds = [
     "col.amount",
-    "col.base",
+    "col.pair",
     "col.buyprice",
     "col.date.close",
     "col.exchange",
     "col.leverage",
     "col.date.open",
     "col.positionsize",
-    "col.quote",
     "col.returnfromallocated",
     "col.returnfrominvestment",
     "col.sellprice",
