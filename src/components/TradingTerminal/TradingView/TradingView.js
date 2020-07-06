@@ -87,6 +87,7 @@ const TradingView = () => {
       setTradingViewWidget(null);
       setLastPrice(null);
       setSelectedSymbol(newDefaultSymbol);
+      bootstrapWidget();
     }
   };
 
