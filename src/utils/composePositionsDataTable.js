@@ -518,6 +518,7 @@ function composeViewActionButton(position) {
       <button
         data-action={"view"}
         data-position-id={position.positionId}
+        onClick={gotoPositionDetail}
         title="View Position"
         type="button"
       >
