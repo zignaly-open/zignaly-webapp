@@ -120,7 +120,12 @@ function composePaperTradingIcon(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAmount(position) {
-  return <>{formatPrice(position.amount)}</>;
+  return (
+    <>
+      <span className="symbol">{position.base}</span>
+      {formatPrice(position.amount)}
+    </>
+  );
 }
 
 /**
@@ -230,7 +235,12 @@ function composeNetProfitPercentage(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeNetProfit(position) {
-  return <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>;
+  return (
+    <>
+      <span className="symbol">{position.quote}</span>
+      <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>
+    </>
+  );
 }
 
 /**
