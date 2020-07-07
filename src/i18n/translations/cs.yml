@@ -17,6 +17,9 @@ menu.testnet: "CH-TestNet"
 menu.exchangeSelectionTitle: "CH-Select Trading Account"
 menu.positionview: "CH-View Position"
 
+login.title: "CH-Login"
+signup.title: "CH-Signup"
+
 # BALANCE
 balance.available: "CH-Available"
 balance.invested: "CH-Invested"

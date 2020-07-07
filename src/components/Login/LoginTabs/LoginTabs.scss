@@ -1,0 +1,22 @@
+.loginTabs {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  margin-top: 100px;
+  min-height: 450px;
+  overflow-y: visible;
+  width: 450px;
+  z-index: 100;
+
+  .section {
+    min-height: 450px;
+  }
+}
+
+@include media("<=sm") {
+  .loginTabs {
+    border-radius: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+}

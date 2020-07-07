@@ -1,0 +1,30 @@
+.loginLinks {
+  width: 100%;
+  border-bottom: 2px solid $borderColor;
+
+  .loginLinkItem {
+    width: fit-content;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: $black;
+    text-decoration: none;
+    font-size: 21px;
+    font-family: "PlexSans-Bold";
+    padding: 10px 20px;
+  }
+
+  .activeLink {
+    border-bottom: 2px solid $purple;
+  }
+}
+
+@include media("<=sm") {
+  .loginlinks {
+    border-radius: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+}

@@ -1,31 +1,24 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import "./login.scss";
-import TwoFAForm from "../../components/Forms/TwoFAForm";
-import Modal from "../../components/Modal";
+import "./signup.scss";
 import Testimonials from "../../components/Testimonials";
 import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
 import translations from "../../i18n/translations";
 import { IntlProvider } from "react-intl";
+import SignupForm from "../../components/Forms/SignupForm";
 import LoginHeader from "../../components/Login/LoginHeader";
-import LoginForm from "../../components/Forms/LoginForm";
 
-const LoginPage = () => {
-  const show2FA = false;
-
+const SignupPage = () => {
   return (
     <IntlProvider locale="en" messages={translations.en}>
       <Helmet>
-        <title>Login</title>
+        <title>Signup</title>
       </Helmet>
-      <Box className="loginPage">
-        <Modal onClose={() => {}} persist={true} size="small" state={show2FA}>
-          <TwoFAForm />
-        </Modal>
+      <Box className="signupPage">
         <LoginHeader>
           <LoginTabs>
-            <LoginForm />
+            <SignupForm />
           </LoginTabs>
         </LoginHeader>
         <Testimonials />
@@ -34,4 +27,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

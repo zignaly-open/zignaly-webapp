@@ -1,10 +1,10 @@
-.loginPage {
+.signupPage {
   background: $white;
   padding-bottom: 100px;
 }
 
 @include media("<=sm") {
-  .loginPage {
+  .signupPage {
     padding-bottom: 100px;
   }
 }
