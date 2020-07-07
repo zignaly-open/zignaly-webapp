@@ -10,6 +10,8 @@ import { startTradeApiSession } from "../../../store/actions/session";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
+import TwoFAForm from "../../../components/Forms/TwoFAForm";
+import useStoreUIAsk2FASelector from "../../../hooks/useStoreUIAsk2FASelector";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -19,10 +21,10 @@ import { FormattedMessage } from "react-intl";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
-  const [loading, showLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
-
+  const ask2FA = useStoreUIAsk2FASelector();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
@@ -41,8 +43,8 @@ const LoginForm = () => {
    * @returns {Void} None.
    */
   const onSubmit = (data) => {
-    showLoading(true);
-    dispatch(startTradeApiSession({ ...data, gRecaptchaResponse }));
+    setLoading(true);
+    dispatch(startTradeApiSession({ ...data, gRecaptchaResponse }, setLoading));
   };
 
   return (
@@ -56,6 +58,9 @@ const LoginForm = () => {
       >
         <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
           <ForgotPasswordForm />
+        </Modal>
+        <Modal state={ask2FA} persist={true} size="small" onClose={() => {}}>
+          <TwoFAForm />
         </Modal>
         <Box
           alignItems="start"

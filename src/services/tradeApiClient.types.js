@@ -727,6 +727,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} TwoFAPayload
  * @property {string} code
+ * @property {string} token
  */
 
 /**

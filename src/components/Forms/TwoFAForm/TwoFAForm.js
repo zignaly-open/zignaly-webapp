@@ -4,11 +4,9 @@ import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import ReactCodeInput from "react-verification-code-input";
 import { useForm, Controller } from "react-hook-form";
-import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
-import { ask2FA } from "../../../store/actions/ui";
+import { authenticate2FA } from "../../../store/actions/session";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -44,21 +42,7 @@ const TwoFAForm = () => {
       code: data.code,
       token: storeSession.tradeApi.accessToken,
     };
-
-    tradeApi
-      .verify2FA(payload)
-      .then(() => {
-        dispatch(ask2FA(false));
-      })
-      .catch((e) => {
-        if (e.code === 37) {
-          //   setError("code", "notMatch", "Wrong code.");
-          setCodeError(true);
-        } else {
-          dispatch(showErrorAlert(e));
-        }
-        setLoading(false);
-      });
+    dispatch(authenticate2FA(payload, setLoading));
   };
 
   return (
