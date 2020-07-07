@@ -1005,6 +1005,7 @@ export function userPositionItemTransform(positionItem) {
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
     realInvestment: safeParseFloat(positionItem.realInvestment.$numberDecimal),
     pair: `${positionItem.base}/${positionItem.quote}`,
+    priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
     profit:
       safeParseFloat(positionItem.profit) || safeParseFloat(positionItem.unrealizedProfitLosses),
     profitPercentage:
