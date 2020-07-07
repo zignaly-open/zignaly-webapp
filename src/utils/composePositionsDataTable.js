@@ -206,6 +206,20 @@ function composeExitPrice(position) {
 }
 
 /**
+ * Compose price difference element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose price difference for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePriceDifference(position) {
+  return (
+    <>
+      <span className={position.priceDifferenceStyle}>{formatPrice(position.priceDifference)}</span>
+    </>
+  );
+}
+
+/**
  * Compose profit amount element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose profit for.
@@ -576,6 +590,7 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
+    composePriceDifference(position),
     composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
@@ -699,6 +714,7 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
     "col.price.current",
     "col.plnumber",
     "col.plpercentage",
+    "col.pricedifference",
     "col.side",
     "col.stoplossprice",
     "col.initialamount",
