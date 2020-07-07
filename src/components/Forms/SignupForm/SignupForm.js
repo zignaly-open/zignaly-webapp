@@ -5,35 +5,53 @@ import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import Captcha from "../../Captcha";
 import Passwords from "../../Passwords";
+import { projectId } from "../../../utils/defaultConfigs";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../../store/actions/session";
 
 const SignupForm = () => {
-  const [loading] = useState(false);
-  const [, setCaptchaResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const [ref] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearError } = formMethods;
+  const { errors, handleSubmit, register, clearError, setError } = formMethods;
+  const dispatch = useDispatch();
 
-  //   const onSubmit = () => {
-  //     if (data.password && data.repeatPassword && data.password === data.repeatPassword) {
-  //       showLoading(true)
-  //       const params = {
-  //           projectId: projectId,
-  //           firstName: data.firstName,
-  //           email: data.email,
-  //           password: data.password,
-  //           subscribe: data.subscribe,
-  //           ref: this.state.ref || null,
-  //           array: true,
-  //           gRecaptchaResponse: "abracadabra"
-  //       };
-  //       //setCaptchaResponse('')
-  //       this.props.dispatch(signup(params, this.hideLoader));
-  //     } else {
-  //       setPasswordDoNotMatch(true);
-  //     }
-  //   };
+  /**
+   *
+   * @typedef {Object} DataObject
+   * @property {String} password
+   * @property {String} repeatPassword
+   * @property {String} firstName
+   * @property {String} email
+   * @property {Boolean} subscribe
+   * @property {Boolean} terms
+   */
 
-  const onSubmit = () => {};
+  /**
+   *
+   * @param {DataObject} data Data object received byt submitting the form.
+   */
+  const onSubmit = (data) => {
+    if (data.password === data.repeatPassword) {
+      setLoading(true);
+      const payload = {
+        projectId: projectId,
+        firstName: data.firstName,
+        email: data.email,
+        password: data.password,
+        subscribe: data.subscribe,
+        ref: ref,
+        array: true,
+        gRecaptchaResponse: gRecaptchaResponse,
+        terms: data.terms,
+      };
+      dispatch(registerUser(payload, setLoading));
+    } else {
+      setError("repeatPassword", "Passwords do not match!");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,13 +72,19 @@ const SignupForm = () => {
           <label className="customLabel">Name</label>
           <TextField
             className="customInput"
-            error={!!errors.name}
+            error={!!errors.firstName}
             fullWidth
             inputRef={register({ required: true, minLength: 3 })}
-            name="name"
+            name="firstName"
             type="text"
             variant="outlined"
           />
+          {errors.firstName && errors.firstName.type === "required" && (
+            <span className="errorText">Name is required!</span>
+          )}
+          {errors.firstName && errors.firstName.type === "minLength" && (
+            <span className="errorText">Name should be greater than 3 letters!</span>
+          )}
         </Box>
         <Box
           alignItems="start"
@@ -82,12 +106,18 @@ const SignupForm = () => {
             type="email"
             variant="outlined"
           />
+          {errors.email && errors.email.type === "required" && (
+            <span className="errorText">Email is required!</span>
+          )}
+          {errors.email && errors.email.type === "pattern" && (
+            <span className="errorText">Email should be valid!</span>
+          )}
         </Box>
 
         <Passwords edit={false} formMethods={formMethods} />
 
         <Box className="inputBox checkbox">
-          <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
               className="checkboxInput"
               // error={errors.terms ? "true" : "false"}
@@ -115,7 +145,7 @@ const SignupForm = () => {
         </Box>
 
         <Box className="inputBox checkbox">
-          <Box alignItems="start" display="flex" flexDirection="row" justifyContent="start">
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
             <span className={"terms-text"}>Subscribe to notifications</span>
           </Box>

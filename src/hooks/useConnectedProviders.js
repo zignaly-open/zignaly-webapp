@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -17,6 +19,7 @@ import tradeApi from "../services/tradeApiClient";
 const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) => {
   const [providers, setProviders] = useState([]);
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadData = async () => {
@@ -35,7 +38,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
           setProviders(data);
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     };
     loadData();

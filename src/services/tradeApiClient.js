@@ -46,6 +46,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
  * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+ * @typedef {import('./tradeApiClient.types').UserRegisterPayload} UserRegisterPayload
  * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
@@ -150,6 +151,22 @@ class TradeApiClient {
    */
   async userLogin(payload) {
     const endpointPath = "/fe/api.php?action=login";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userEntityResponseTransform(responseData);
+  }
+
+  /**
+   * Login a user in Trade API.
+   *
+   * @param {UserRegisterPayload} payload User login payload
+   *
+   * @returns {Promise<UserLoginResponse>} Promise that resolves user login response
+   *
+   * @memberof TradeApiClient
+   */
+  async userRegister(payload) {
+    const endpointPath = "/fe/api.php?action=signup";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userEntityResponseTransform(responseData);

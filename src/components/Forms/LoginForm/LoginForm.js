@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
-import { isEmpty } from "lodash";
-import { navigate } from "gatsby";
-import { setUserExchanges, setUserData } from "../../../store/actions/user";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
@@ -20,14 +17,6 @@ import { FormattedMessage } from "react-intl";
  */
 
 const LoginForm = () => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
   const dispatch = useDispatch();
   const [modal, showModal] = useState(false);
   const [loading, showLoading] = useState(false);
@@ -68,20 +57,6 @@ const LoginForm = () => {
   const handleSubmitClick = () => {
     handleSubmit(onSubmit);
   };
-
-  const loadAppUserData = () => {
-    if (!isEmpty(storeSession.tradeApi.accessToken)) {
-      const authorizationPayload = {
-        token: storeSession.tradeApi.accessToken,
-      };
-
-      dispatch(setUserExchanges(authorizationPayload));
-      dispatch(setUserData(authorizationPayload));
-      navigate("/dashboard/positions");
-    }
-  };
-
-  useEffect(loadAppUserData, [storeSession.tradeApi.accessToken]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

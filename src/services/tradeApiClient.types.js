@@ -130,6 +130,18 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UserRegisterPayload
+ * @property {string} firstName
+ * @property {string} email
+ * @property {string} password
+ * @property {string} gRecaptchaResponse
+ * @property {Boolean} terms
+ * @property {Boolean} subscribe
+ * @property {Boolean} array
+ * @property {string} ref
+ */
+
+/**
  * @typedef {Object} GetProviderPayload
  * @property {string} token
  * @property {string} providerId
