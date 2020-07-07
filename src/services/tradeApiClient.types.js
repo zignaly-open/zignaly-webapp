@@ -349,6 +349,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} closeTrigger
  * @property {string} exchange
  * @property {string} exchangeInternalName
+ * @property {string} exitPriceStyle
  * @property {string} internalExchangeId
  * @property {string} invested
  * @property {string} investedQuote
@@ -965,14 +966,14 @@ export function userPositionItemTransform(positionItem) {
   };
 
   /**
-   * Checks if stop loss price is currently at profit or loss color style.
+   * Checks if price is currently at profit or loss color style.
    *
-   * @param {number} entry Entry price.
+   * @param {number} entry Price.
    * @param {number} current Current price.
    * @param {string} side Position side.
    * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
    */
-  const getStopColorType = (entry, current, side) => {
+  const getPriceColorType = (entry, current, side) => {
     if (side === "LONG") {
       if (entry > current) {
         return "gain";
@@ -1031,7 +1032,12 @@ export function userPositionItemTransform(positionItem) {
     providerLogo: positionEntity.logoUrl || defaultProviderLogo,
     risk: risk,
     riskStyle: getValueType(risk),
-    stopLossStyle: getStopColorType(
+    exitPriceStyle: getPriceColorType(
+      positionEntity.sellPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    stopLossStyle: getPriceColorType(
       positionEntity.stopLossPrice,
       positionEntity.buyPrice,
       positionEntity.side,
@@ -1124,6 +1130,7 @@ function createEmptyPositionEntity() {
     copyTraderId: false,
     exchange: "",
     exchangeInternalName: "",
+    exitPriceStyle: "",
     fees: 0,
     internalExchangeId: "",
     invested: "",

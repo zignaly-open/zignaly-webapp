@@ -184,7 +184,8 @@ function composeEntryPrice(position) {
 function composeExitPrice(position) {
   return (
     <>
-      <span className="symbol">{position.quote}</span> {formatPrice(position.sellPrice)}
+      <span className="symbol">{position.quote}</span>
+      <span className={position.exitPriceStyle}>{formatPrice(position.sellPrice)}</span>
     </>
   );
 }
