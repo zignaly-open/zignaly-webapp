@@ -31,11 +31,9 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const intl = useIntl();
 
   const { errors, handleSubmit, control, formState, register, watch, setValue } = useForm();
-  const exchangeName = watch("exchangeName", "binance");
+  const exchange = watch("exchange", "binance");
   const exchanges = useExchangeList(isCopyTrading);
-  const selectedExchange = exchanges.find(
-    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
-  );
+  const selectedExchange = exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase());
   const exchangeOptions = exchanges
     .filter((e) => e.enabled)
     .map((e) => ({
@@ -50,7 +48,10 @@ const CreateProviderForm = ({ isCopyTrading }) => {
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
 
-  const quoteAssets = useQuoteAssets(isCopyTrading);
+  const quoteAssets = useQuoteAssets(
+    isCopyTrading && !!selectedExchange,
+    selectedExchange ? selectedExchange.id : "",
+  );
   const quotes = Object.keys(quoteAssets);
 
   /**
@@ -123,6 +124,34 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                 />
                 <span className="errorText">{errors.name && errors.name.message}</span>
               </Box>
+              <Box display="flex" flexDirection="row" width={1} className="inputBox">
+                <Controller
+                  as={CustomSelect}
+                  control={control}
+                  defaultValue={selectedExchange.name.toLowerCase()}
+                  label={intl.formatMessage({
+                    id: "accounts.exchange",
+                  })}
+                  name="exchange"
+                  options={exchangeOptions}
+                  labelPlacement="top"
+                  onChange={([e]) => {
+                    setValue("exchangeType", typeOptions[0].val);
+                    return e;
+                  }}
+                />
+                <Controller
+                  as={CustomSelect}
+                  control={control}
+                  defaultValue={typeOptions[0].val}
+                  label={intl.formatMessage({
+                    id: "accounts.exchange.type",
+                  })}
+                  labelPlacement="top"
+                  name="exchangeType"
+                  options={typeOptions}
+                />
+              </Box>
               {isCopyTrading && (
                 <>
                   <Box display="flex" flexDirection="row">
@@ -146,7 +175,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         type="number"
                       />
                       <span className="errorText">
-                        {errors.minBalance && errors.minBalance.message}
+                        {errors.minAllocatedBalance && errors.minAllocatedBalance.message}
                       </span>
                     </Box>
                     <Controller
@@ -165,34 +194,6 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                       labelPlacement="top"
                     />
                     <span className="errorText">{errors.quote && errors.quote.message}</span>
-                  </Box>
-                  <Box display="flex" flexDirection="row" width={1}>
-                    <Controller
-                      as={CustomSelect}
-                      control={control}
-                      defaultValue={selectedExchange.name.toLowerCase()}
-                      label={intl.formatMessage({
-                        id: "accounts.exchange",
-                      })}
-                      name="exchangeName"
-                      options={exchangeOptions}
-                      labelPlacement="top"
-                      onChange={([e]) => {
-                        setValue("exchangeType", typeOptions[0].val);
-                        return e;
-                      }}
-                    />
-                    <Controller
-                      as={CustomSelect}
-                      control={control}
-                      defaultValue={typeOptions[0].val}
-                      label={intl.formatMessage({
-                        id: "accounts.exchange.type",
-                      })}
-                      labelPlacement="top"
-                      name="exchangeType"
-                      options={typeOptions}
-                    />
                   </Box>
                 </>
               )}

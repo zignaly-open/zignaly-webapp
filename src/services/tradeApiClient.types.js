@@ -732,9 +732,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- *
  * @typedef {Object} ProfileNotificationsPayload
  * @property {ProfileNotifications} notifications
+ */
+
+ /**
+ * @typedef {Object} QuotesAssetsGetPayload
+ * @property {boolean} ro
+ * @property {string} [exchangeInternalId]
  */
 
 /**

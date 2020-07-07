@@ -367,7 +367,7 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
+   * @typedef {import('./tradeApiClient.types').QuotesAssetsGetPayload} QuotesAssetsGetPayload
    * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
    * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
    */
@@ -376,11 +376,10 @@ class TradeApiClient {
    *
    * Get quote assets.
    *
-   * @param {ReadOnlyPayload} payload
+   * @param {QuotesAssetsGetPayload} payload
    * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */
-
   async quotesAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuoteAssets";
     const responseData = await this.doRequest(endpointPath, payload);
