@@ -507,15 +507,17 @@ function composeAllActionButtons(position, confirmActionHandler) {
 function composeCancelActionButton(position, confirmActionHandler) {
   return (
     <div className="actions">
-      <button
-        data-action={"cancel"}
-        data-position-id={position.positionId}
-        onClick={confirmActionHandler}
-        title="cancel"
-        type="button"
-      >
-        <XCircle color={colors.purpleLight} />
-      </button>
+      {position.updating && (
+        <button
+          data-action={"cancel"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel"
+          type="button"
+        >
+          <XCircle color={colors.purpleLight} />
+        </button>
+      )}
     </div>
   );
 }

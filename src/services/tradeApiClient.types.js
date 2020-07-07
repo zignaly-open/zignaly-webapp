@@ -1212,7 +1212,7 @@ function createEmptyPositionEntity() {
     returnFromAllocated: 0,
     returnFromInvestment: 0,
     priceDifference: 0,
-    priceDifferenceStyle: 0,
+    priceDifferenceStyle: "",
     unrealizedProfitLosses: 0,
     unrealizedProfitLossesPercentage: 0,
   };
