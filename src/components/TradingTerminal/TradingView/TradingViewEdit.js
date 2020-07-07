@@ -14,6 +14,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  */
 
 /**
@@ -203,10 +204,27 @@ const TradingViewEdit = (props) => {
     },
   });
 
+  /**
+   * Determine the current position status.
+   *
+   * @returns {PositionsCollectionType} Position type.
+   */
+  const getPositionStatusType = () => {
+    if (positionEntity.closed && positionEntity.accounting) {
+      return "closed";
+    } else if (positionEntity.closed && !positionEntity.accounting) {
+      return "log";
+    }
+
+    return "open";
+  };
+
   return (
     <FormContext {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-        {!isLoading && <PositionsTable positionEntity={positionEntity} type="open" />}
+        {!isLoading && (
+          <PositionsTable positionEntity={positionEntity} type={getPositionStatusType()} />
+        )}
         <Box
           bgcolor="grid.content"
           className="tradingViewContainer"
