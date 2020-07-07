@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
@@ -32,6 +32,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @returns {HookPositionsListData} Positions collection.
  */
 const usePositionsList = (type, positionEntity = null) => {
+  const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
@@ -117,12 +118,16 @@ const usePositionsList = (type, positionEntity = null) => {
       setLoading(true);
       fetchMethod
         .then((fetchData) => {
-          const newPositions = { ...positions, [type]: fetchData };
-          setPositions(newPositions);
-          setLoading(false);
+          // Prevent other tabs request leftover to from race condition that override current tab data.
+          if (!typeRef.current || typeRef.current === type) {
+            const newPositions = { ...positions, [type]: fetchData };
+            setPositions(newPositions);
+          }
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
           setLoading(false);
         });
     }
@@ -160,7 +165,6 @@ const usePositionsList = (type, positionEntity = null) => {
       }
     }
   };
-
   useEffect(loadPositions, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
 
@@ -177,8 +181,12 @@ const usePositionsList = (type, positionEntity = null) => {
 
     setFilters(newFilters);
   };
-
   useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
+
+  const handlePositionTypeChange = () => {
+    typeRef.current = type;
+  };
+  useEffect(handlePositionTypeChange, [type]);
 
   /**
    * Combine external state filters with local state.
