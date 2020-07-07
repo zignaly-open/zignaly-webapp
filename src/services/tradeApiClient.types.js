@@ -3072,7 +3072,6 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {Object} ProviderCreatePayload
  * @property {string} name
- * @property {string} email
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} minAllocatedBalance

@@ -1,7 +1,7 @@
 .createProviderForm {
   padding: 50px;
 
-  .loader {
+  > .loader {
     margin-top: 60px;
   }
 
@@ -22,6 +22,10 @@
     margin: 0 0 auto;
     align-items: flex-start;
 
+    &:not(:first-of-type) {
+      margin-left: 20px;
+    }
+
     .customSelectControl {
       width: 100%;
     }
@@ -29,6 +33,10 @@
     .searchRoot {
       width: 100%;
       min-width: 130px;
+      margin-right: 0;
+    }
+
+    .select {
       margin-right: 0;
     }
   }

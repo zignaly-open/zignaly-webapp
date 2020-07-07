@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
@@ -15,11 +16,13 @@ const useQuoteAssets = (shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
 
   useEffect(() => {
     const loadData = async () => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
+        exchangeInternalId: storeSettings.selectedExchange.internalId,
         ro: true,
       };
 

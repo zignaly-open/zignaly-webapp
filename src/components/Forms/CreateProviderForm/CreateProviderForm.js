@@ -7,11 +7,11 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { ask2FA } from "../../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
+import { navigate } from "gatsby";
 
 /**
  * @typedef {Object} CreateProviderFormPropTypes
@@ -32,23 +32,17 @@ const CreateProviderForm = ({ isCopyTrading }) => {
 
   const { errors, handleSubmit, control, formState, register, watch, setValue } = useForm();
   const exchangeName = watch("exchangeName", "binance");
-  console.log(exchangeName);
-  //   const selectedExchange = exchanges.find(
-  //     (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
-  //   );
-
-  const quoteAssets = useQuoteAssets(isCopyTrading);
-  const quotes = Object.keys(quoteAssets);
   const exchanges = useExchangeList(isCopyTrading);
+  const selectedExchange = exchanges.find(
+    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
+  );
   const exchangeOptions = exchanges
     .filter((e) => e.enabled)
     .map((e) => ({
       val: e.name.toLowerCase(),
       label: e.name,
     }));
-  const selectedExchange = exchanges.find(
-    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
-  );
+
   const typeOptions =
     selectedExchange &&
     selectedExchange.type.map((t) => ({
@@ -56,9 +50,16 @@ const CreateProviderForm = ({ isCopyTrading }) => {
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
 
+  const quoteAssets = useQuoteAssets(isCopyTrading);
+  const quotes = Object.keys(quoteAssets);
+
   /**
    * @typedef {Object} FormData
-   * @property {string} code
+   * @property {string} name
+   * @property {string} exchange
+   * @property {string} exchangeType
+   * @property {string} minAllocatedBalance
+   * @property {string} quote
    */
 
   /**
@@ -70,22 +71,21 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const submitForm = (data) => {
     setLoading(true);
     const payload = {
-      code: data.code,
+      ...data,
       token: storeSession.tradeApi.accessToken,
     };
 
     tradeApi
-      .verify2FA(payload)
-      .then(() => {
-        dispatch(ask2FA(false));
+      .providerCreate(payload)
+      .then((response) => {
+        const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
+          response.id
+        }/profile`;
+
+        navigate(profileLink);
       })
       .catch((e) => {
-        if (e.code === 37) {
-          //   setError("code", "notMatch", "Wrong code.");
-          setCodeError(true);
-        } else {
-          dispatch(showErrorAlert(e));
-        }
+        dispatch(showErrorAlert(e));
         setLoading(false);
       });
   };
@@ -137,8 +137,13 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         error={!!errors.minBalance}
                         inputRef={register({
                           required: "Min allocated balance is required",
+                          min: 0,
                         })}
-                        name="minBalance"
+                        name="minAllocatedBalance"
+                        inputProps={{
+                          min: 0,
+                        }}
+                        type="number"
                       />
                       <span className="errorText">
                         {errors.minBalance && errors.minBalance.message}
@@ -153,13 +158,15 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                       })}
                       name="quote"
                       options={quotes}
-                      rules={{ required: "Quote is required" }}
+                      rules={{
+                        required: "Quote is required",
+                      }}
                       search={true}
                       labelPlacement="top"
                     />
                     <span className="errorText">{errors.quote && errors.quote.message}</span>
                   </Box>
-                  <Box display="flex" flexDirection="row">
+                  <Box display="flex" flexDirection="row" width={1}>
                     <Controller
                       as={CustomSelect}
                       control={control}
