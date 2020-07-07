@@ -165,7 +165,11 @@ const usePositionsList = (type, positionEntity = null) => {
       }
     }
   };
-  useEffect(loadPositions, [type, storeSession.tradeApi.accessToken]);
+  useEffect(loadPositions, [
+    type,
+    storeSession.tradeApi.accessToken,
+    storeSettings.selectedExchange.internalId,
+  ]);
   useInterval(updateData, 5000);
 
   /**
