@@ -3,6 +3,7 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
+import useExchangesOptions from "./useExchangesOptions";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import { showErrorAlert } from "../store/actions/ui";
@@ -76,17 +77,7 @@ const useProvidersList = (options) => {
   const [coin, setCoin] = useState(coins[0]);
 
   // Exchanges
-  const exchanges = [
-    {
-      val: "ALL",
-      label: intl.formatMessage({ id: "fil.allexchanges" }),
-    },
-  ].concat(
-    ["Binance", "Zignaly", "KuCoin"].map((label) => ({
-      val: label.toLowerCase(),
-      label,
-    })),
-  );
+  const exchanges = useExchangesOptions(true);
   const [exchange, setExchange] = useState("ALL");
 
   const [sort, setSort] = useState("RETURNS_DESC");

@@ -460,6 +460,15 @@ signalp.option.minimumsuccess.sub: "CH-Signals with success rate below this valu
 signalp.option.DCA.error: "CH-IF you are accepting DCA/ReBuys signal, this value has to be greater than 1."
 signalp.option.minimumsuccess.error: "CH-Minimum allowed success rate is 1."
 
+# CREATE PROVIDER ACCOUNT
+provider.createaccount: "CH-Create account"
+provider.name: "CH-name"
+copyt.become: "CH-Become a Copy Trader"
+copyt.create: "CH-Create a Copy Trading Account"
+copyt.create.desc: "CH-Offer your services as an expert trader to be copied by our users"
+signalp.create: "CH-Create a Signal Provider Account"
+signalp.become: "CH-Become a Signal Provider"
+
 # TRADING TERMINAL
 terminal.available: "CH-Available"
 terminal.browsecoins: "CH-Browse all coin pairs"

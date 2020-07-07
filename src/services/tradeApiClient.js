@@ -939,7 +939,7 @@ class TradeApiClient {
   }
 
   /**
-   * Disable 2FA.
+   * Verify 2FA.
    *
    * @param {TwoFAPayload} payload Payload
    * @returns {Promise<Boolean>} Returns promise.
