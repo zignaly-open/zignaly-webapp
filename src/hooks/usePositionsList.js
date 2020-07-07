@@ -47,11 +47,11 @@ const usePositionsList = (type, positionEntity = null) => {
 
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState({
-    open: [],
-    closed: [],
-    log: [],
-    profileOpen: [],
-    profileClosed: [],
+    open: null,
+    closed: null,
+    log: null,
+    profileOpen: null,
+    profileClosed: null,
   });
 
   const storeSession = useStoreSessionSelector();
@@ -115,7 +115,11 @@ const usePositionsList = (type, positionEntity = null) => {
   const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
     if (fetchMethod) {
-      setLoading(true);
+      // Only show loader at initial load to avoid loader experience disruption on updates.
+      if (positions[type] === null) {
+        setLoading(true);
+      }
+
       fetchMethod
         .then((fetchData) => {
           // Prevent other tabs request leftover to from race condition that override current tab data.
