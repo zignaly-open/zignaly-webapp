@@ -5,6 +5,7 @@ export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT";
 export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT";
 export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
+export const OPEN_TWO_FA = "OPEN_TWO_FA_ACTION";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -33,6 +34,19 @@ export const openExchangeConnectionView = (flag) => {
 export const openSettingsView = (flag) => {
   return {
     type: OPEN_SSETTINGS_VIEW,
+    payload: flag,
+  };
+};
+
+/**
+ * Flag to open user settings view.
+ *
+ * @param {Boolean} flag
+ */
+
+export const openTwoFA = (flag) => {
+  return {
+    type: OPEN_TWO_FA,
     payload: flag,
   };
 };

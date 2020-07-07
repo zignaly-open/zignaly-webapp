@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./TwoFAForm.scss";
 import { Box } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-// import {verify2FA} from 'actions';
 import ReactCodeInput from "react-verification-code-input";
+import { useDispatch } from "react-redux";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../services/tradeApiClient";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -11,9 +13,11 @@ import ReactCodeInput from "react-verification-code-input";
  */
 
 const TwoFAForm = () => {
-  const [, setCode] = useState(false);
+  const storeSession = useStoreSessionSelector();
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [codeError, setCodeError] = useState(false);
+  const dispatch = useDispatch();
 
   /**
    * Code change event callback.
@@ -22,17 +26,16 @@ const TwoFAForm = () => {
    * @return {void}
    */
   const handleCodeChange = (value) => {
-    setCode(value.length === 6);
-    if (value.length === 6) {
-      setCodeError(false);
-    } else {
-      setCodeError(true);
-    }
+    setCode(value);
+    setCodeError(value.length === 6);
   };
 
   const handleSubmit = () => {
     setLoading(true);
-    // this.props.dispatch(verify2FA(this.props.user.token, this.state.code));
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      code: code,
+    };
   };
 
   /**
@@ -77,8 +80,13 @@ const TwoFAForm = () => {
       </Box>
 
       <Box className="inputBox" display="flex" flexDirection="row" justifyContent="center">
-        <CustomButton className={"fullSubmitButton"} loading={loading} onClick={handleSubmit}>
-          Sign in
+        <CustomButton
+          className={"submitButton"}
+          loading={loading}
+          disabled={codeError}
+          onClick={handleSubmit}
+        >
+          Authenticate
         </CustomButton>
       </Box>
     </Box>

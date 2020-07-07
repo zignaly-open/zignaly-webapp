@@ -34,7 +34,7 @@ const GenericModal = (props) => {
       open={state}
     >
       {/* @ts-ignore */}
-      {!fullScreen && <CloseIcon className="closeIcon" onClick={onClose} />}
+      {!fullScreen && !persist && <CloseIcon className="closeIcon" onClick={onClose} />}
       {children}
     </Dialog>
   );

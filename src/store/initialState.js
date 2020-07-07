@@ -62,6 +62,7 @@
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} exchangeConnectionView
  * @property {Boolean} settingsView
+ * @property {Boolean} twoFA
  */
 
 /**
@@ -329,6 +330,7 @@ const initialState = {
     modal: {
       exchangeConnectionView: false,
       settingsView: false,
+      twoFA: false,
     },
     alerts: {
       success: {

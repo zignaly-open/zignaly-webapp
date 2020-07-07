@@ -2,7 +2,7 @@ import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
-import { showErrorAlert } from "./ui";
+import { showErrorAlert, openTwoFA } from "./ui";
 import { isEmpty } from "lodash";
 import { navigate } from "@reach/router";
 
@@ -12,6 +12,7 @@ export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
  * @typedef {import("../../services/tradeApiClient.types").UserRegisterPayload} UserRegisterPayload
+ * @typedef {import("../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
  * @typedef {import('../../store/store').AppThunk} AppThunk
  */
 
@@ -31,7 +32,8 @@ export const startTradeApiSession = (payload) => {
       };
 
       dispatch(action);
-      loadAppUserData(responseData.token, dispatch);
+      ask2FA(responseData, dispatch);
+      loadAppUserData(responseData, dispatch);
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -77,7 +79,35 @@ export const registerUser = (payload, setLoading) => {
 
       dispatch(action);
       setLoading(false);
-      loadAppUserData(responseData.token, dispatch);
+      ask2FA(responseData, dispatch);
+      loadAppUserData(responseData, dispatch);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
+      setLoading(false);
+    }
+  };
+};
+
+/**
+ * Set user session.
+ *
+ * @param {UserRegisterPayload} payload User login payload.
+ * @param {React.SetStateAction<*>} setLoading
+ * @returns {AppThunk} Thunk action function.
+ */
+export const verify2FA = (payload, setLoading) => {
+  return async (dispatch) => {
+    try {
+      const responseData = await tradeApi.userRegister(payload);
+      const action = {
+        type: START_TRADE_API_SESSION,
+        payload: responseData,
+      };
+
+      dispatch(action);
+      setLoading(false);
+      ask2FA(responseData, dispatch);
+      loadAppUserData(responseData, dispatch);
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
@@ -87,17 +117,28 @@ export const registerUser = (payload, setLoading) => {
 
 /**
  *
- * @param {String} token
+ * @param {UserLoginResponse} response
  * @param {*} dispatch
  */
-const loadAppUserData = (token, dispatch) => {
-  if (!isEmpty(token)) {
+const loadAppUserData = (response, dispatch) => {
+  if (!isEmpty(response.token)) {
     const authorizationPayload = {
-      token: token,
+      token: response.token,
     };
 
     dispatch(setUserExchanges(authorizationPayload));
     dispatch(setUserData(authorizationPayload));
     navigate("/dashboard/positions");
+  }
+};
+
+/**
+ *
+ * @param {UserLoginResponse} response
+ * @param {*} dispatch
+ */
+const ask2FA = (response, dispatch) => {
+  if (response.ask2FA) {
+    dispatch(openTwoFA(true));
   }
 };

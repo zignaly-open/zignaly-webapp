@@ -17,6 +17,9 @@ import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import Modal from "../../components/Modal";
+import useStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
+import TwoFAForm from "../../components/Forms/TwoFAForm";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -32,6 +35,7 @@ import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
+  const storeModal = useStoreUIModalSelector();
   const storeLoader = useStoreUILoaderSelector();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
@@ -44,6 +48,9 @@ const PrivateAreaLayout = (props) => {
         <ErrorAlert />
         <SuccessAlert />
         {storeLoader && <Loader />}
+        <Modal state={storeModal.twoFA} persist={true} size="small" onClose={() => {}}>
+          <TwoFAForm />
+        </Modal>
         <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
         <GlobalModal content={SettingsView} hash="settings" />
         <Box bgcolor="background.default" className={"app"}>

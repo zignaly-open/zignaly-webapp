@@ -1,4 +1,8 @@
 .twoFAForm {
+  min-height: inherit;
+  padding: 40px 20px;
+  width: 100%;
+
   .boxTitle {
     margin-bottom: 40px;
   }
@@ -25,17 +29,26 @@
 
 @include media("<=sm") {
   .twoFAForm {
-    margin: 0 -10px;
+    width: 100%;
+    padding: 30px 10px;
+
+    .inputBox {
+      width: 90%;
+    }
 
     h3 {
       font-size: 21px;
       margin-bottom: 20px;
     }
 
-    input {
-      height: 44px;
-      max-width: 16.66%;
-      width: 46px;
+    .codeInput {
+      width: 100% !important; // scss-lint:disable ImportantRule
+
+      input {
+        height: 44px;
+        max-width: 16.66%;
+        width: 46px;
+      }
     }
   }
 }

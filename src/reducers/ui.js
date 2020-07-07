@@ -8,6 +8,7 @@ import {
   HIDE_ERROR_ALERT,
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
+  OPEN_TWO_FA,
 } from "../store/actions/ui";
 
 /**
@@ -34,6 +35,9 @@ const ui = (state, action) => {
       break;
     case OPEN_SSETTINGS_VIEW:
       newState.modal.settingsView = action.payload;
+      break;
+    case OPEN_TWO_FA:
+      newState.modal.twoFA = action.payload;
       break;
     case SHOW_LOADER:
       newState.loader = action.payload;
