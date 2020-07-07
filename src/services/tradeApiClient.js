@@ -232,7 +232,7 @@ class TradeApiClient {
   async logPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, {
-      type: "allClosedExtended",
+      type: "log",
       ...payload,
     });
 
