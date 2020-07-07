@@ -16,6 +16,14 @@
     }
   }
 
+  .externalLink {
+    margin-left: 10px;
+
+    svg {
+      width: 20px;
+    }
+  }
+
   .loss {
     color: $red;
   }

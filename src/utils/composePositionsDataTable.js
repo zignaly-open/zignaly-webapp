@@ -1,12 +1,13 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Edit2, ExternalLink, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { formatFloat } from "./format";
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -81,7 +82,16 @@ function composeProviderName(position) {
  */
 function composeStatusMessage(statusCode) {
   const statusTranslationId = `status.${statusCode}`;
-  return <FormattedMessage id={statusTranslationId} />;
+  const statusLink = `https://docs.zignaly.com/configuration/positions-statuses#${statusCode}`;
+
+  return (
+    <Box alignItems="center" display="flex">
+      <FormattedMessage id={statusTranslationId} />
+      <a className="externalLink" href={statusLink} rel="noreferrer" target="_blank">
+        <ExternalLink color={colors.purpleLight} />
+      </a>
+    </Box>
+  );
 }
 
 /**
