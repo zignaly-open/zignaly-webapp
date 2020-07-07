@@ -1,15 +1,14 @@
 .twoFAForm {
-  min-height: inherit;
-  padding: 40px 20px;
-  width: 100%;
+  padding: 60px 75px;
 
-  .boxTitle {
+  h3 {
+    font-size: 27px;
     margin-bottom: 40px;
   }
 
   .inputBox {
     margin-bottom: 40px;
-    width: 100%;
+    width: fit-content;
   }
 
   .link {
@@ -25,29 +24,24 @@
     text-align: center;
     width: auto;
   }
+
+  .customButton {
+    margin-top: 40px;
+
+    &[disabled] {
+      color: $white;
+    }
+  }
 }
 
 @include media("<=sm") {
   .twoFAForm {
-    width: 100%;
-    padding: 30px 10px;
-
-    .inputBox {
-      width: 90%;
-    }
-
-    h3 {
-      font-size: 21px;
-      margin-bottom: 20px;
-    }
+    padding: 60px 12px;
 
     .codeInput {
-      width: 100% !important; // scss-lint:disable ImportantRule
-
       input {
-        height: 44px;
-        max-width: 16.66%;
-        width: 46px;
+        max-height: 46px;
+        max-width: 43px;
       }
     }
   }

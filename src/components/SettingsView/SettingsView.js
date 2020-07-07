@@ -5,6 +5,8 @@ import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Preferences from "./Preferences";
 import SecuritySettings from "./SecuritySettings";
+import NotificationsSettings from "./NotificationsSettings";
+import ProfileSettings from "./ProfileSettings";
 import { SubNavModalHeader } from "../SubNavHeader";
 import { navigate } from "@reach/router";
 import GlobalModalHead from "../ConnectExchangeView/GlobalModalHead";
@@ -60,6 +62,10 @@ const SettingsView = ({ onClose }) => {
         return <Preferences />;
       case "security":
         return <SecuritySettings />;
+      case "notifications":
+        return <NotificationsSettings />;
+      case "profile":
+        return <ProfileSettings />;
     }
   };
 

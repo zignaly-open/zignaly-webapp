@@ -37,25 +37,12 @@ const LoginForm = () => {
   /**
    * Process data submitted in the login form.
    *
-   * @param {LoginFormSubmission} payload Submission data.
+   * @param {LoginFormSubmission} data Submission data.
    * @returns {Void} None.
    */
-  const onSubmit = (payload) => {
-    // setCaptchaResponse("");
-    // recaptchaRef.current.reset();
-
+  const onSubmit = (data) => {
     showLoading(true);
-    dispatch(startTradeApiSession({ ...payload, gRecaptchaResponse }));
-  };
-
-  /**
-   * Handle submit buttton click.
-   *
-   * @type {React.MouseEventHandler} handleClickSubmit
-   * @returns {void}
-   */
-  const handleSubmitClick = () => {
-    handleSubmit(onSubmit);
+    dispatch(startTradeApiSession({ ...data, gRecaptchaResponse }));
   };
 
   return (
@@ -105,11 +92,11 @@ const LoginForm = () => {
         >
           <PasswordInput
             error={!!errors.password}
-            inputRef={register({ required: true })}
+            inputRef={register({ required: "Password cannot be empty" })}
             label={<FormattedMessage id={"security.password"} />}
             name="password"
           />
-          {errors.password && <span className="errorText">Password cannot be empty</span>}
+          {errors.password && <span className="errorText">{errors.password.message}</span>}
         </Box>
 
         <Box className="captchaBox">
@@ -117,12 +104,7 @@ const LoginForm = () => {
         </Box>
 
         <Box className="inputBox">
-          <CustomButton
-            className={"full submitButton"}
-            loading={loading}
-            onClick={handleSubmitClick}
-            type="submit"
-          >
+          <CustomButton className={"full submitButton"} loading={loading} type="submit">
             Sign in
           </CustomButton>
         </Box>

@@ -42,11 +42,11 @@ const DepositHistoryTable = ({ internalId }) => {
 
   let columns = [
     {
-      name: "status.test",
+      name: "status",
       label: "col.stat",
     },
     {
-      name: "status.currency",
+      name: "currency",
       label: "col.coin",
     },
     {

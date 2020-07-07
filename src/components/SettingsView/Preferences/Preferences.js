@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
-import { setShowBalance } from "../../../store/actions/settings";
+import { toggleBalanceBox } from "../../../store/actions/settings";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ThemeSwitcher from "../../ThemeSwitcher";
 import "./Preferences.scss";
@@ -22,10 +22,9 @@ const Preferences = () => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={storeSettings.showBalance}
+            checked={storeSettings.balanceBox}
             color="primary"
-            name="showBalance"
-            onChange={() => dispatch(setShowBalance(!storeSettings.showBalance))}
+            onChange={() => dispatch(toggleBalanceBox(!storeSettings.balanceBox))}
           />
         }
         label={<FormattedMessage id="preferences.balance" />}

@@ -13,8 +13,8 @@ import { GET_PROVIDER, REMOVE_PROVIDER, SHOW_PROFILE_LOADER } from "../store/act
  * @param {ActionObject} action
  */
 
-const views = (state, action) => {
-  const newState = assign({}, initialState.views, state);
+const views = (state = initialState.views, action) => {
+  const newState = assign({}, state);
 
   switch (action.type) {
     case GET_PROVIDER:
@@ -28,7 +28,7 @@ const views = (state, action) => {
       break;
 
     default:
-      break;
+      return state;
   }
 
   return newState;

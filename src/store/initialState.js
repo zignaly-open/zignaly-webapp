@@ -53,7 +53,6 @@
  * @property {String} languageCode
  * @property {Boolean} darkStyle
  * @property {Boolean} balanceBox
- * @property {Boolean} showBalance
  * @property {DisplayColumns} displayColumns
  * @property {ExchangeConnectionEntity} selectedExchange
  */
@@ -83,6 +82,7 @@
  * @property {DefaultUIModalObject} modal
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
+ * @property {Boolean} ask2FA
  */
 
 /**
@@ -115,7 +115,6 @@ const initialState = {
     languageCode: "en",
     darkStyle: false,
     balanceBox: false,
-    showBalance: false,
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",
@@ -300,8 +299,8 @@ const initialState = {
       quotes: [],
     },
     userData: {
-      TwoFAEnable: false,
       ask2FA: false,
+      TwoFAEnable: false,
       binanceConnected: false,
       buysCount: 0,
       createdAt: "",
@@ -345,6 +344,7 @@ const initialState = {
       },
     },
     loader: false,
+    ask2FA: false,
   },
   views: {
     provider: {

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, CircularProgress, OutlinedInput } from "@material-ui/core";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import "./SecuritySettings.scss";
+import "./Enable2FA.scss";
 import { useForm } from "react-hook-form";
 import CustomButton from "../../../CustomButton";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import FAQ from "../../../FAQ";
-import QRCode from "qrcode.react";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import { enable2FA } from "../../../../store/actions/user";
 
 /**
  * Provides a component to enable 2FA.
@@ -19,15 +19,41 @@ import QRCode from "qrcode.react";
 const Enable2FA = () => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const { handleSubmit, setError } = useForm({ mode: "onBlur" });
+  const storeUserData = useStoreUserData();
+  const { handleSubmit, setError, register, errors } = useForm();
   const [editing, setEditing] = useState(false);
+  const twoFAEnabled = storeUserData.TwoFAEnable;
+  const [code, setCode] = useState(null);
+  const [qrCodeImg, setQRCodeImg] = useState(null);
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
+
+  const getCode = () => {
+    if (editing) {
+      // Get 2FA code.
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+      };
+
+      tradeApi
+        .enable2FA1Step(payload)
+        .then((response) => {
+          setCode(response[0]);
+          setQRCodeImg(response[1]);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
+  useEffect(getCode, [editing]);
 
   /**
    * @typedef {Object} FormData
-   * @property {string} currentPassword
-   * @property {string} password
-   * @property {string} repeatPassword
+   * @property {string} code
    */
 
   /**
@@ -36,26 +62,27 @@ const Enable2FA = () => {
    * @param {FormData} data Form data.
    * @returns {void}
    */
-  const submitPassword = (data) => {
-    const { currentPassword: password, password: newPassword, repeatPassword } = data;
+  const submitCode = (data) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      password,
-      newPassword,
-      repeatPassword,
+      code: data.code,
     };
 
     setLoading(true);
 
-    tradeApi
-      .updatePassword(payload)
+    const apiMethod = twoFAEnabled ? tradeApi.disable2FA : tradeApi.enable2FA2Step;
+
+    apiMethod
+      .call(tradeApi, payload)
       .then(() => {
-        dispatch(showSuccessAlert("Success", "Changed Password Successfully"));
+        dispatch(enable2FA(!twoFAEnabled));
         setEditing(false);
+        const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
+        showSuccessAlert("Success", intl.formatMessage({ id: msg }));
       })
-      .catch((e) => {
-        if (e.code === 7) {
-          setError("currentPassword", "notMatch", "Wrong credentials.");
+      .catch((/** @type {*} **/ e) => {
+        if (e.code === 37) {
+          setError("code", "notMatch", "Wrong code.");
         } else {
           dispatch(showErrorAlert(e));
         }
@@ -66,29 +93,59 @@ const Enable2FA = () => {
   };
 
   return (
-    <Box>
-      {!editing ? (
-        <CustomButton className="textPurple borderPurple bold">
-          <FormattedMessage id="security.2fa.enable" />
+    <Box className="enable2FA" display="flex" flexDirection="column">
+      <Typography>
+        <FormattedMessage id="security.2fa" />
+      </Typography>
+      {!editing && !twoFAEnabled ? (
+        <CustomButton className="textPurple borderPurple bold" onClick={() => setEditing(true)}>
+          <FormattedMessage id="security.setup" />
         </CustomButton>
+      ) : !twoFAEnabled && !code ? (
+        <Box display="flex" flexDirection="row" justifyContent="center" pt="24px">
+          <CircularProgress disableShrink />
+        </Box>
       ) : (
-        <form onSubmit={handleSubmit(submitPassword)}>
-          <FormattedMessage id="security.2fa" />
-          <Typography variant="body2">
-            <FormattedMessage id="security.2fa.scan" />
-          </Typography>
-          <FormattedMessage id="security.2fa.manually" />
-
-          <QRCode value="" />
-          <label>
-            <FormattedMessage id="security.2fa.mobile" />
-          </label>
+        <form onSubmit={handleSubmit(submitCode)}>
+          {!twoFAEnabled && (
+            <>
+              <Typography className="bold" variant="body1">
+                <FormattedMessage id="security.2fa.scan" />
+              </Typography>
+              <img aria-labelledby="QR Code" className="qrCode" src={qrCodeImg} />
+              <Typography>
+                <FormattedMessage id="security.2fa.manually" />
+              </Typography>
+              <Typography className="code" variant="body1">
+                {code}
+              </Typography>
+            </>
+          )}
+          <Box display="flex" flexDirection="column">
+            <label htmlFor="code">
+              <Typography className="code" variant="body1">
+                <FormattedMessage id="security.2fa.mobile" />
+              </Typography>
+            </label>
+            <OutlinedInput
+              className="customInput"
+              error={!!errors.code}
+              id="code"
+              inputProps={{
+                min: 0,
+              }}
+              inputRef={register({ required: true, min: 0, minLength: 6, maxLength: 6 })}
+              name="code"
+              placeholder="6 digits"
+              type="number"
+            />
+            {errors.code && <span className="errorText">{errors.code.message}</span>}
+          </Box>
           <CustomButton className="bgPurple bold" loading={loading} type="submit">
-            <FormattedMessage id="security.2fa.enable" />
+            <FormattedMessage id={`security.2fa.${twoFAEnabled ? "disable" : "enable"}`} />
           </CustomButton>
         </form>
       )}
-      <FAQ />
     </Box>
   );
 };

@@ -7,7 +7,7 @@ import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../components/ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../hooks/useStoreUserSelector";
-import { navigate } from "gatsby";
+import { navigate as navigateReach } from "@reach/router";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -27,7 +27,7 @@ const withDashboardLayout = (Component) => {
     const exchangeConnections = useStoreUserExchangeConnections();
 
     const handleClickEvent = () => {
-      navigate("#exchangeAccounts");
+      navigateReach("#exchangeAccounts");
     };
 
     return (

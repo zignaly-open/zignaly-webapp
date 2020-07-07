@@ -1,10 +1,10 @@
-import tradeApi from "../../services/tradeApiClient";
 import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
-import { showErrorAlert, openTwoFA } from "./ui";
+import { showErrorAlert, ask2FA } from "./ui";
 import { isEmpty } from "lodash";
 import { navigate } from "@reach/router";
+import tradeApi from "../../services/tradeApiClient";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -14,13 +14,12 @@ export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
  * @typedef {import("../../services/tradeApiClient.types").UserRegisterPayload} UserRegisterPayload
  * @typedef {import("../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
  * @typedef {import('../../store/store').AppThunk} AppThunk
+ * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
- * Set user session.
- *
  * @param {UserLoginPayload} payload User login payload.
- * @returns {AppThunk} Thunk action function.
+ * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (payload) => {
   return async (dispatch) => {
@@ -32,8 +31,7 @@ export const startTradeApiSession = (payload) => {
       };
 
       dispatch(action);
-      ask2FA(responseData, dispatch);
-      loadAppUserData(responseData, dispatch);
+      check2FA(responseData, dispatch);
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -43,7 +41,6 @@ export const startTradeApiSession = (payload) => {
 /**
  * @returns {AppThunk}
  */
-
 export const endTradeApiSession = () => {
   return async (dispatch) => {
     try {
@@ -79,8 +76,7 @@ export const registerUser = (payload, setLoading) => {
 
       dispatch(action);
       setLoading(false);
-      ask2FA(responseData, dispatch);
-      loadAppUserData(responseData, dispatch);
+      check2FA(responseData, dispatch);
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
@@ -106,7 +102,7 @@ export const verify2FA = (payload, setLoading) => {
 
       dispatch(action);
       setLoading(false);
-      ask2FA(responseData, dispatch);
+      check2FA(responseData, dispatch);
       loadAppUserData(responseData, dispatch);
     } catch (e) {
       dispatch(showErrorAlert(e));
@@ -137,8 +133,11 @@ const loadAppUserData = (response, dispatch) => {
  * @param {UserLoginResponse} response
  * @param {*} dispatch
  */
-const ask2FA = (response, dispatch) => {
+const check2FA = (response, dispatch) => {
   if (response.ask2FA) {
-    dispatch(openTwoFA(true));
+    navigate("/dashboard/positions");
+    dispatch(ask2FA(true));
+  } else {
+    loadAppUserData(response, dispatch);
   }
 };
