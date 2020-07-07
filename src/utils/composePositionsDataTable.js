@@ -110,20 +110,6 @@ function composeTrailingStopIcon(position) {
 }
 
 /**
- * Compose paper trading icon element for a given position.
- *
- * @param {PositionEntity} position Position entity to compose icon for.
- * @returns {JSX.Element|null} Composed JSX element or null.
- */
-function composePaperTradingIcon(position) {
-  if (position.paperTrading) {
-    return <Layers color={colors.darkGrey} />;
-  }
-
-  return null;
-}
-
-/**
  * Compose amount element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose amount for.
@@ -581,7 +567,6 @@ function composeColumnOptions(columnId) {
  */
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeProviderIcon(position),
     composeProviderName(position),
@@ -618,7 +603,6 @@ function composeOpenPositionRow(position, confirmActionHandler) {
  */
 function composeClosePositionRow(position) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeRawValue(position.closeDateReadable),
     composeProviderIcon(position),
@@ -654,7 +638,6 @@ function composeClosePositionRow(position) {
  */
 function composeLogPositionRow(position) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeRawValue(position.type),
     composeProviderIcon(position),
@@ -706,7 +689,6 @@ function composeClosedPositionRowForProvider(position) {
  */
 export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.provider.logo",
     "col.provider.name",
@@ -750,7 +732,6 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
  */
 export function composeClosePositionsDataTable(positions) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.date.close",
     "col.provider.logo",
@@ -793,7 +774,6 @@ export function composeClosePositionsDataTable(positions) {
  */
 export function composeLogPositionsDataTable(positions) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.type",
     "col.provider.logo",
