@@ -42,7 +42,6 @@ const usePositionsList = (type, positionEntity = null) => {
     pair: "all",
     side: "all",
     type: "all",
-    internalExchangeId: storeSettings.selectedExchange.internalId,
   };
 
   const [filters, setFilters] = useState(defaultFilters);
@@ -184,12 +183,11 @@ const usePositionsList = (type, positionEntity = null) => {
   const updateFilters = () => {
     const newFilters = {
       ...filters,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     setFilters(newFilters);
   };
-  useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
+  useEffect(updateFilters, []);
 
   const handlePositionTypeChange = () => {
     typeRef.current = type;

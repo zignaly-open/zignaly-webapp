@@ -911,7 +911,6 @@ export function userPositionsResponseTransform(response) {
  * @returns {PositionEntity} Position entity.
  */
 export function userPositionItemTransform(positionItem) {
-  const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const composeProviderLink = () => {
@@ -995,7 +994,7 @@ export function userPositionItemTransform(positionItem) {
 
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const positionEntity = assign(emptyPositionEntity, positionItem, {
+  const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
     amount: safeParseFloat(positionItem.amount),
     buyPrice: safeParseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
@@ -1005,8 +1004,12 @@ export function userPositionItemTransform(positionItem) {
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
     realInvestment: safeParseFloat(positionItem.realInvestment.$numberDecimal),
-    profit: safeParseFloat(positionItem.profit),
-    profitPercentage: safeParseFloat(positionItem.profitPercentage),
+    pair: `${positionItem.base}/${positionItem.quote}`,
+    profit:
+      safeParseFloat(positionItem.profit) || safeParseFloat(positionItem.unrealizedProfitLosses),
+    profitPercentage:
+      safeParseFloat(positionItem.profitPercentage) ||
+      safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
     leverage: safeParseFloat(positionItem.leverage),
     unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
     unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
@@ -1029,7 +1032,9 @@ export function userPositionItemTransform(positionItem) {
     profitStyle: getValueType(positionEntity.profit),
     unrealizedProfitStyle: getValueType(positionEntity.unrealizedProfitLosses),
     providerLink: composeProviderLink(),
-    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
+    providerLogo: positionEntity.logoUrl.includes("http")
+      ? positionEntity.logoUrl
+      : defaultProviderLogo,
     risk: risk,
     riskStyle: getValueType(risk),
     exitPriceStyle: getPriceColorType(

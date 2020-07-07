@@ -196,7 +196,7 @@ class TradeApiClient {
    */
   async openPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionsResponseTransform(responseData);
   }
