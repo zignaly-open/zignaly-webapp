@@ -938,7 +938,7 @@ export function userPositionItemTransform(positionItem) {
     let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
-      return 0.0;
+      return -100;
     }
 
     // Invert on short position.
@@ -1043,7 +1043,7 @@ export function userPositionItemTransform(positionItem) {
     providerLogo: positionEntity.logoUrl.includes("http")
       ? positionEntity.logoUrl
       : defaultProviderLogo,
-    risk: risk,
+    risk,
     riskStyle: getValueType(risk),
     stopLossStyle: getPriceColorType(
       positionEntity.stopLossPrice,
