@@ -46,7 +46,7 @@ const TwoFAForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitCode)}>
+    <form id="twoFAForm" onSubmit={handleSubmit(submitCode)}>
       <Box
         alignItems="center"
         className="twoFAForm"
@@ -90,6 +90,7 @@ const TwoFAForm = () => {
             fullWidth={true}
             loading={loading}
             type="submit"
+            form="twoFAForm"
           >
             Authenticate
           </CustomButton>

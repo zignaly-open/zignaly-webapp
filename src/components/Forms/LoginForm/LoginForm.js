@@ -48,78 +48,85 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        alignItems="center"
-        className="loginForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
-          <ForgotPasswordForm />
-        </Modal>
-        <Modal state={ask2FA} persist={true} size="small" onClose={() => {}}>
-          <TwoFAForm />
-        </Modal>
+    <>
+      <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
+        <ForgotPasswordForm />
+      </Modal>
+      <Modal state={ask2FA} persist={true} size="small" onClose={() => {}}>
+        <TwoFAForm />
+      </Modal>
+      <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
         <Box
-          alignItems="start"
-          className="inputBox"
+          alignItems="center"
+          className="loginForm"
           display="flex"
           flexDirection="column"
-          justifyContent="start"
+          justifyContent="center"
         >
-          <label className="customLabel">Email address</label>
-          <TextField
-            className="customInput"
-            error={!!errors.email}
-            fullWidth
-            inputRef={register({
-              required: true,
-              pattern: {
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
-                message: "Email should be valid",
-              },
-            })}
-            name="email"
-            type="email"
-            variant="outlined"
-          />
-          {errors.email && <span className="errorText">{errors.email.message}</span>}
-        </Box>
+          <Box
+            alignItems="start"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <label className="customLabel">Email address</label>
+            <TextField
+              className="customInput"
+              error={!!errors.email}
+              fullWidth
+              inputRef={register({
+                required: true,
+                pattern: {
+                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                  message: "Email should be valid",
+                },
+              })}
+              name="email"
+              type="email"
+              variant="outlined"
+            />
+            {errors.email && <span className="errorText">{errors.email.message}</span>}
+          </Box>
 
-        <Box
-          alignItems="start"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <PasswordInput
-            error={!!errors.password}
-            inputRef={register({ required: "Password cannot be empty" })}
-            label={<FormattedMessage id={"security.password"} />}
-            name="password"
-          />
-          {errors.password && <span className="errorText">{errors.password.message}</span>}
-        </Box>
+          <Box
+            alignItems="start"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <PasswordInput
+              error={!!errors.password}
+              inputRef={register({ required: "Password cannot be empty" })}
+              label={<FormattedMessage id={"security.password"} />}
+              name="password"
+            />
+            {errors.password && <span className="errorText">{errors.password.message}</span>}
+          </Box>
 
-        <Box className="captchaBox">
-          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
-        </Box>
+          <Box className="captchaBox">
+            <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
+          </Box>
 
-        <Box className="inputBox">
-          <CustomButton className={"full submitButton"} loading={loading} type="submit">
-            Sign in
-          </CustomButton>
+          <Box className="inputBox">
+            <CustomButton
+              className={"full submitButton"}
+              form="loginForm"
+              loading={loading}
+              type="submit"
+            >
+              Sign in
+            </CustomButton>
+          </Box>
+          <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
+            <span className="link" onClick={() => showModal(true)}>
+              Forgot password
+            </span>
+          </Box>
         </Box>
-        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
-          <span className="link" onClick={() => showModal(true)}>
-            Forgot password
-          </span>
-        </Box>
-      </Box>
-    </form>
+      </form>
+    </>
   );
 };
 

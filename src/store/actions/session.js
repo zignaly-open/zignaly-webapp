@@ -33,7 +33,7 @@ export const startTradeApiSession = (payload, setLoading) => {
       };
 
       dispatch(action);
-      check2FA(responseData, dispatch);
+      dispatch(check2FA(responseData));
       setLoading(false);
     } catch (e) {
       dispatch(showErrorAlert(e));
@@ -80,7 +80,7 @@ export const registerUser = (payload, setLoading) => {
 
       dispatch(action);
       setLoading(false);
-      check2FA(responseData, dispatch);
+      dispatch(check2FA(responseData));
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
@@ -99,15 +99,11 @@ export const authenticate2FA = (payload, setLoading) => {
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.verify2FA(payload);
-      const action = {
-        type: START_TRADE_API_SESSION,
-        payload: responseData,
-      };
-
-      dispatch(action);
-      loadAppUserData(payload.token, dispatch);
-      setLoading(false);
-      dispatch(ask2FA(false));
+      if (responseData) {
+        dispatch(ask2FA(false));
+        dispatch(loadAppUserData(payload.token));
+        setLoading(false);
+      }
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
@@ -118,29 +114,33 @@ export const authenticate2FA = (payload, setLoading) => {
 /**
  *
  * @param {String} token
- * @param {*} dispatch
+ * @returns {AppThunk}
  */
-const loadAppUserData = (token, dispatch) => {
-  if (!isEmpty(token)) {
-    const authorizationPayload = {
-      token: token,
-    };
+const loadAppUserData = (token) => {
+  return async (dispatch) => {
+    if (!isEmpty(token)) {
+      const authorizationPayload = {
+        token: token,
+      };
 
-    dispatch(setUserExchanges(authorizationPayload));
-    dispatch(setUserData(authorizationPayload));
-    navigate("/dashboard/positions");
-  }
+      dispatch(setUserExchanges(authorizationPayload));
+      dispatch(setUserData(authorizationPayload));
+      navigate("/dashboard/positions");
+    }
+  };
 };
 
 /**
  *
  * @param {UserLoginResponse} response
- * @param {*} dispatch
+ * @returns {AppThunk}
  */
-const check2FA = (response, dispatch) => {
-  if (response.ask2FA) {
-    dispatch(ask2FA(true));
-  } else {
-    loadAppUserData(response.token, dispatch);
-  }
+const check2FA = (response) => {
+  return async (dispatch) => {
+    if (response.ask2FA) {
+      dispatch(ask2FA(true));
+    } else {
+      dispatch(loadAppUserData(response.token));
+    }
+  };
 };

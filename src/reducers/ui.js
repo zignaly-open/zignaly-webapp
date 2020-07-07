@@ -70,6 +70,7 @@ const ui = (state = initialState.ui, action) => {
       };
       break;
     case ASK_2FA:
+      console.log(action);
       newState.ask2FA = action.payload;
       break;
 
