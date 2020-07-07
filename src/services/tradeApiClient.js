@@ -33,6 +33,7 @@ import {
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
+  providerCreateResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -85,6 +86,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
+ * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
  */
 
 /**
@@ -1011,6 +1013,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Create a new provider
+   *
+   * @param {ProviderCreatePayload} payload Provider Create payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createCopyTrader";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
   }
 }
 
