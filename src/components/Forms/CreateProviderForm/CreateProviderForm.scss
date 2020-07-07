@@ -5,11 +5,40 @@
     margin-top: 60px;
   }
 
+  .customLabel {
+    margin: 0;
+  }
+
   .desc {
-    margin: 12px 0 18px;
+    margin: 12px 0 32px;
   }
 
   .customButton {
     margin-top: 32px;
+  }
+
+  .customSelect {
+    width: 100%;
+    margin: 0 0 auto;
+    align-items: flex-start;
+
+    .customSelectControl {
+      width: 100%;
+    }
+
+    .searchRoot {
+      width: 100%;
+      min-width: 130px;
+      margin-right: 0;
+    }
+  }
+
+  .inputBox {
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .minBalanceBox {
+    margin-right: 20px;
   }
 }
