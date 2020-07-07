@@ -1004,7 +1004,9 @@ export function userPositionItemTransform(positionItem) {
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
-    realInvestment: safeParseFloat(positionItem.realInvestment.$numberDecimal),
+    realInvestment:
+      safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
+      safeParseFloat(positionItem.realInvestment),
     pair: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
     profit:
