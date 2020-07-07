@@ -876,6 +876,18 @@ function createEmptyProviderEntity() {
 }
 
 /**
+ * Safe parse float value that may contain number separators.
+ *
+ * @param {*} value Float value to parse.
+ * @returns {number} The parsed amount value.
+ */
+function safeParseFloat(value) {
+  const safeValue = String(value).replace(/[^0-9.]/g, "");
+
+  return parseFloat(safeValue);
+}
+
+/**
  * Transform user positions response to typed object collection.
  *
  * @param {*} response Trade API positions list response.
@@ -967,7 +979,7 @@ export function userPositionItemTransform(positionItem) {
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const positionEntity = assign(emptyPositionEntity, positionItem, {
-    amount: parseFloat(positionItem.amount),
+    amount: safeParseFloat(positionItem.amount),
     buyPrice: parseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
     fees: parseFloat(positionItem.fees),
