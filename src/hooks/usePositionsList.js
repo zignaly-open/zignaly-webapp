@@ -128,7 +128,11 @@ const usePositionsList = (type, positionEntity = null) => {
           }
         })
         .catch((e) => {
-          dispatch(showErrorAlert(e));
+          if (e.code === 18) {
+            setPositions({ ...positions, [type]: [] });
+          } else {
+            dispatch(showErrorAlert(e));
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -207,8 +211,8 @@ const usePositionsList = (type, positionEntity = null) => {
   };
 
   return {
-    positionsAll: positions[type],
-    positionsFiltered: filterData(positions[type]),
+    positionsAll: positions[type] || [],
+    positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
     loading: loading,
   };
