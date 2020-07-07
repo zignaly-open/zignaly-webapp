@@ -385,6 +385,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} returnFromAllocated
  * @property {Number} returnFromInvestment
  * @property {Number} priceDifference
+ * @property {string} priceDifferenceStyle
  * @property {Number} unrealizedProfitLosses
  * @property {Number} unrealizedProfitLossesPercentage
  */
@@ -1028,27 +1029,28 @@ export function userPositionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    exitPriceStyle: getPriceColorType(
+      positionEntity.sellPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    netProfitStyle: getValueType(positionEntity.netProfit),
     openDateMoment: openDateMoment,
     openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
     profitStyle: getValueType(positionEntity.profit),
-    unrealizedProfitStyle: getValueType(positionEntity.unrealizedProfitLosses),
     providerLink: composeProviderLink(),
     providerLogo: positionEntity.logoUrl.includes("http")
       ? positionEntity.logoUrl
       : defaultProviderLogo,
     risk: risk,
     riskStyle: getValueType(risk),
-    exitPriceStyle: getPriceColorType(
-      positionEntity.sellPrice,
-      positionEntity.buyPrice,
-      positionEntity.side,
-    ),
     stopLossStyle: getPriceColorType(
       positionEntity.stopLossPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
-    netProfitStyle: getValueType(positionEntity.netProfit),
+    unrealizedProfitStyle: getValueType(positionEntity.unrealizedProfitLosses),
   });
 
   return augmentedEntity;
@@ -1210,6 +1212,7 @@ function createEmptyPositionEntity() {
     returnFromAllocated: 0,
     returnFromInvestment: 0,
     priceDifference: 0,
+    priceDifferenceStyle: 0,
     unrealizedProfitLosses: 0,
     unrealizedProfitLossesPercentage: 0,
   };
