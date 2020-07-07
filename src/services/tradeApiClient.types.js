@@ -968,24 +968,24 @@ export function userPositionItemTransform(positionItem) {
   /**
    * Checks if price is currently at profit or loss color style.
    *
-   * @param {number} entry Price.
-   * @param {number} current Current price.
+   * @param {number} price Price.
+   * @param {number} basePrice Current price.
    * @param {string} side Position side.
    * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
    */
-  const getPriceColorType = (entry, current, side) => {
-    if (side === "LONG") {
-      if (entry > current) {
+  const getPriceColorType = (price, basePrice, side) => {
+    if (side.toUpperCase() === "LONG") {
+      if (price > basePrice) {
         return "gain";
-      } else if (entry < current) {
+      } else if (price < basePrice) {
         return "loss";
       }
     }
 
-    if (side === "SHORT") {
-      if (entry < current) {
+    if (side.toUpperCase() === "SHORT") {
+      if (price < basePrice) {
         return "gain";
-      } else if (entry > current) {
+      } else if (price > basePrice) {
         return "loss";
       }
     }
