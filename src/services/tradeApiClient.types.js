@@ -882,7 +882,7 @@ function createEmptyProviderEntity() {
  * @returns {number} The parsed amount value.
  */
 function safeParseFloat(value) {
-  const safeValue = String(value).replace(/[^0-9.]/g, "");
+  const safeValue = String(value).replace(/[^0-9\\.\\-]/g, "");
 
   return parseFloat(safeValue);
 }
@@ -949,14 +949,30 @@ export function userPositionItemTransform(positionItem) {
   };
 
   /**
-   * Checks if entry price is currently at profit or loss.
+   * Checks if value is currently at profit or loss color style.
+   *
+   * @param {number} entry Entry price.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getValueType = (entry) => {
+    if (entry > 0) {
+      return "gain";
+    } else if (entry < 0) {
+      return "loss";
+    }
+
+    return "breakeven";
+  };
+
+  /**
+   * Checks if stop loss price is currently at profit or loss color style.
    *
    * @param {number} entry Entry price.
    * @param {number} current Current price.
    * @param {string} side Position side.
    * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
    */
-  const getProfitType = (entry, current, side) => {
+  const getStopColorType = (entry, current, side) => {
     if (side === "LONG") {
       if (entry > current) {
         return "gain";
@@ -1009,22 +1025,18 @@ export function userPositionItemTransform(positionItem) {
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
     openDateMoment: openDateMoment,
     openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
-    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
-    unrealizedProfitStyle: getProfitType(
-      positionEntity.unrealizedProfitLosses,
-      0,
-      positionEntity.side,
-    ),
+    profitStyle: getValueType(positionEntity.profit),
+    unrealizedProfitStyle: getValueType(positionEntity.unrealizedProfitLosses),
     providerLink: composeProviderLink(),
     providerLogo: positionEntity.logoUrl || defaultProviderLogo,
     risk: risk,
-    riskStyle: risk < 0 ? "loss" : "gain",
-    stopLossStyle: getProfitType(
+    riskStyle: getValueType(risk),
+    stopLossStyle: getStopColorType(
       positionEntity.stopLossPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
-    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
+    netProfitStyle: getValueType(positionEntity.netProfit),
   });
 
   return augmentedEntity;
