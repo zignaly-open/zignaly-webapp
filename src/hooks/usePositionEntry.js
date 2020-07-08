@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormContext } from "react-hook-form";
 
 /**
@@ -22,7 +21,7 @@ import { useFormContext } from "react-hook-form";
  * @returns {PositionEntryHook} Position entry hook object.
  */
 function usePositionEntry(positionEntity) {
-  const { getValues, watch } = useFormContext();
+  const { watch } = useFormContext();
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
   const units = watch("units");
