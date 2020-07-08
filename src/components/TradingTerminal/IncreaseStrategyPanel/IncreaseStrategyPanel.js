@@ -95,8 +95,6 @@ const IncreaseStrategyPanel = (props) => {
   const entryStrategy = watch("entryStrategy");
   const lastPrice = watch("lastPrice");
 
-  console.log("lastPrice: ", lastPrice);
-
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
