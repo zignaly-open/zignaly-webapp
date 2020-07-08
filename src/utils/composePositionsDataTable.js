@@ -1,12 +1,13 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, Eye, Layers, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { formatFloat } from "./format";
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -81,7 +82,16 @@ function composeProviderName(position) {
  */
 function composeStatusMessage(statusCode) {
   const statusTranslationId = `status.${statusCode}`;
-  return <FormattedMessage id={statusTranslationId} />;
+  const statusLink = `https://docs.zignaly.com/configuration/positions-statuses#${statusCode}`;
+
+  return (
+    <Box alignItems="center" display="flex">
+      <FormattedMessage id={statusTranslationId} />
+      <a className="externalLink" href={statusLink} rel="noreferrer" target="_blank">
+        <ExternalLink color={colors.purpleLight} />
+      </a>
+    </Box>
+  );
 }
 
 /**
@@ -100,27 +110,18 @@ function composeTrailingStopIcon(position) {
 }
 
 /**
- * Compose paper trading icon element for a given position.
- *
- * @param {PositionEntity} position Position entity to compose icon for.
- * @returns {JSX.Element|null} Composed JSX element or null.
- */
-function composePaperTradingIcon(position) {
-  if (position.paperTrading) {
-    return <Layers color={colors.darkGrey} />;
-  }
-
-  return null;
-}
-
-/**
  * Compose amount element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose amount for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAmount(position) {
-  return <>{formatPrice(position.amount)}</>;
+  return (
+    <>
+      <span className="symbol">{position.base}</span>
+      {formatPrice(position.amount)}
+    </>
+  );
 }
 
 /**
@@ -184,7 +185,22 @@ function composeEntryPrice(position) {
 function composeExitPrice(position) {
   return (
     <>
-      <span className="symbol">{position.quote}</span> {formatPrice(position.sellPrice)}
+      <span className="symbol">{position.quote}</span>
+      <span className={position.exitPriceStyle}>{formatPrice(position.sellPrice)}</span>
+    </>
+  );
+}
+
+/**
+ * Compose price difference element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose price difference for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePriceDifference(position) {
+  return (
+    <>
+      <span className={position.priceDifferenceStyle}>{formatPrice(position.priceDifference)}</span>
     </>
   );
 }
@@ -229,7 +245,12 @@ function composeNetProfitPercentage(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeNetProfit(position) {
-  return <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>;
+  return (
+    <>
+      <span className="symbol">{position.quote}</span>
+      <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>
+    </>
+  );
 }
 
 /**
@@ -472,15 +493,17 @@ function composeAllActionButtons(position, confirmActionHandler) {
 function composeCancelActionButton(position, confirmActionHandler) {
   return (
     <div className="actions">
-      <button
-        data-action={"cancel"}
-        data-position-id={position.positionId}
-        onClick={confirmActionHandler}
-        title="cancel"
-        type="button"
-      >
-        <XCircle color={colors.purpleLight} />
-      </button>
+      {position.updating && (
+        <button
+          data-action={"cancel"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel"
+          type="button"
+        >
+          <XCircle color={colors.purpleLight} />
+        </button>
+      )}
     </div>
   );
 }
@@ -497,6 +520,7 @@ function composeViewActionButton(position) {
       <button
         data-action={"view"}
         data-position-id={position.positionId}
+        onClick={gotoPositionDetail}
         title="View Position"
         type="button"
       >
@@ -543,22 +567,23 @@ function composeColumnOptions(columnId) {
  */
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeProviderIcon(position),
     composeProviderName(position),
     composeRawValue(position.signalId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.leverage),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
+    composePriceDifference(position),
     composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
     composeSymbolWithPrice(position.base, position.remainAmount),
     composeQuoteSize(position),
+    composeRealInvestment(position),
+    composeRawValue(position.leverage),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
@@ -578,7 +603,6 @@ function composeOpenPositionRow(position, confirmActionHandler) {
  */
 function composeClosePositionRow(position) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeRawValue(position.closeDateReadable),
     composeProviderIcon(position),
@@ -594,11 +618,11 @@ function composeClosePositionRow(position) {
     composeStopLossPrice(position),
     composeAmount(position),
     composeQuoteSize(position),
+    composeRealInvestment(position),
+    composeRawValue(position.leverage),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
-    composeRisk(position),
-    composeRawValue(position.openTrigger),
     composeSymbolWithPrice(position.quote, position.fees),
     composeNetProfitPercentage(position),
     composeNetProfit(position),
@@ -614,7 +638,6 @@ function composeClosePositionRow(position) {
  */
 function composeLogPositionRow(position) {
   return [
-    composePaperTradingIcon(position),
     composeRawValue(position.openDateReadable),
     composeRawValue(position.type),
     composeProviderIcon(position),
@@ -666,22 +689,23 @@ function composeClosedPositionRowForProvider(position) {
  */
 export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.provider.logo",
     "col.provider.name",
     "col.signalid",
     "col.pair",
     "col.price.entry",
-    "col.leverage",
     "col.price.current",
     "col.plnumber",
     "col.plpercentage",
+    "col.pricedifference",
     "col.side",
     "col.stoplossprice",
     "col.initialamount",
     "col.remainingamount",
     "col.invested",
+    "col.realinvestment",
+    "col.leverage",
     "col.tsl",
     "col.tp",
     "col.dca",
@@ -708,10 +732,10 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
  */
 export function composeClosePositionsDataTable(positions) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.date.close",
     "col.provider.logo",
+    "col.provider.name",
     "col.stat",
     "col.signalid",
     "col.pair",
@@ -723,11 +747,11 @@ export function composeClosePositionsDataTable(positions) {
     "col.stoplossprice",
     "col.amount",
     "col.invested",
+    "col.realinvestment",
+    "col.leverage",
     "col.tsl",
     "col.tp",
     "col.dca",
-    "col.risk",
-    "col.opentrigger",
     "col.fees",
     "col.netprofit.percentage",
     "col.netprofit.amount",
@@ -750,7 +774,6 @@ export function composeClosePositionsDataTable(positions) {
  */
 export function composeLogPositionsDataTable(positions) {
   const columnsIds = [
-    "col.paper",
     "col.date.open",
     "col.type",
     "col.provider.logo",

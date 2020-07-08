@@ -16,6 +16,14 @@
     }
   }
 
+  .externalLink {
+    margin-left: 10px;
+
+    svg {
+      width: 20px;
+    }
+  }
+
   .loss {
     color: $red;
   }
@@ -36,7 +44,7 @@
 
   .targetRed {
     @extend %target-base;
-    background-color: $grey;
+    background-color: $red;
   }
 
   .targetGreen {

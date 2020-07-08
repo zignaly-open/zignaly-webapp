@@ -29,7 +29,7 @@ export const formatPrice = (price, nanDisplay = "-") => {
     return nanDisplay;
   }
 
-  if (price > 1) {
+  if (price > 1 || price < -1) {
     return price.toFixed(2);
   }
 

@@ -361,6 +361,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} closeTrigger
  * @property {string} exchange
  * @property {string} exchangeInternalName
+ * @property {string} exitPriceStyle
  * @property {string} internalExchangeId
  * @property {string} invested
  * @property {string} investedQuote
@@ -396,6 +397,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} returnFromAllocated
  * @property {Number} returnFromInvestment
  * @property {Number} priceDifference
+ * @property {string} priceDifferenceStyle
  * @property {Number} unrealizedProfitLosses
  * @property {Number} unrealizedProfitLossesPercentage
  */
@@ -889,6 +891,18 @@ function createEmptyProviderEntity() {
 }
 
 /**
+ * Safe parse float value that may contain number separators.
+ *
+ * @param {*} value Float value to parse.
+ * @returns {number} The parsed amount value.
+ */
+function safeParseFloat(value) {
+  const safeValue = String(value).replace(/[^0-9\\.\\-]/g, "");
+
+  return parseFloat(safeValue);
+}
+
+/**
  * Transform user positions response to typed object collection.
  *
  * @param {*} response Trade API positions list response.
@@ -911,7 +925,6 @@ export function userPositionsResponseTransform(response) {
  * @returns {PositionEntity} Position entity.
  */
 export function userPositionItemTransform(positionItem) {
-  const emptyPositionEntity = createEmptyPositionEntity();
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const composeProviderLink = () => {
@@ -938,7 +951,7 @@ export function userPositionItemTransform(positionItem) {
     let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     if (isNaN(risk)) {
-      return 0.0;
+      return -100;
     }
 
     // Invert on short position.
@@ -950,26 +963,42 @@ export function userPositionItemTransform(positionItem) {
   };
 
   /**
-   * Checks if entry price is currently at profit or loss.
+   * Checks if value is currently at profit or loss color style.
    *
    * @param {number} entry Entry price.
-   * @param {number} current Current price.
+   * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
+   */
+  const getValueType = (entry) => {
+    if (entry > 0) {
+      return "gain";
+    } else if (entry < 0) {
+      return "loss";
+    }
+
+    return "breakeven";
+  };
+
+  /**
+   * Checks if price is currently at profit or loss color style.
+   *
+   * @param {number} price Price.
+   * @param {number} basePrice Current price.
    * @param {string} side Position side.
    * @returns {('gain' | 'loss' | 'breakeven')} Profit result.
    */
-  const getProfitType = (entry, current, side) => {
-    if (side === "LONG") {
-      if (entry > current) {
+  const getPriceColorType = (price, basePrice, side) => {
+    if (side.toUpperCase() === "LONG") {
+      if (price > basePrice) {
         return "gain";
-      } else if (entry < current) {
+      } else if (price < basePrice) {
         return "loss";
       }
     }
 
-    if (side === "SHORT") {
-      if (entry < current) {
+    if (side.toUpperCase() === "SHORT") {
+      if (price < basePrice) {
         return "gain";
-      } else if (entry > current) {
+      } else if (price > basePrice) {
         return "loss";
       }
     }
@@ -979,25 +1008,33 @@ export function userPositionItemTransform(positionItem) {
 
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const positionEntity = assign(emptyPositionEntity, positionItem, {
-    amount: parseFloat(positionItem.amount),
-    buyPrice: parseFloat(positionItem.buyPrice),
+  const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
+    amount: safeParseFloat(positionItem.amount),
+    buyPrice: safeParseFloat(positionItem.buyPrice),
     closeDate: Number(positionItem.closeDate),
-    fees: parseFloat(positionItem.fees),
-    netProfit: parseFloat(positionItem.netProfit),
-    netProfitPercentage: parseFloat(positionItem.netProfitPercentage),
+    fees: safeParseFloat(positionItem.fees),
+    netProfit: safeParseFloat(positionItem.netProfit),
+    netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
-    positionSizeQuote: parseFloat(positionItem.positionSizeQuote),
-    realInvestment: parseFloat(positionItem.realInvestment),
-    profit: parseFloat(positionItem.profit),
-    profitPercentage: parseFloat(positionItem.profitPercentage),
-    unrealizedProfitLosses: parseFloat(positionItem.unrealizedProfitLosses),
-    unrealizedProfitLossesPercentage: parseFloat(positionItem.unrealizedProfitLossesPercentage),
+    positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
+    realInvestment:
+      safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
+      safeParseFloat(positionItem.realInvestment),
+    pair: `${positionItem.base}/${positionItem.quote}`,
+    priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
+    profit:
+      safeParseFloat(positionItem.profit) || safeParseFloat(positionItem.unrealizedProfitLosses),
+    profitPercentage:
+      safeParseFloat(positionItem.profitPercentage) ||
+      safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
+    leverage: safeParseFloat(positionItem.leverage),
+    unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
+    unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
     reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
-    remainAmount: parseFloat(positionItem.remainAmount),
-    sellPrice: parseFloat(positionItem.sellPrice),
+    remainAmount: safeParseFloat(positionItem.remainAmount),
+    sellPrice: safeParseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
-    stopLossPrice: parseFloat(positionItem.stopLossPrice),
+    stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
       ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : {},
@@ -1007,24 +1044,28 @@ export function userPositionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
-    openDateMoment: openDateMoment,
-    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
-    profitStyle: getProfitType(positionEntity.profit, 0, positionEntity.side),
-    unrealizedProfitStyle: getProfitType(
-      positionEntity.unrealizedProfitLosses,
-      0,
+    exitPriceStyle: getPriceColorType(
+      positionEntity.sellPrice,
+      positionEntity.buyPrice,
       positionEntity.side,
     ),
+    netProfitStyle: getValueType(positionEntity.netProfit),
+    openDateMoment: openDateMoment,
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
+    profitStyle: getValueType(positionEntity.profit),
     providerLink: composeProviderLink(),
-    providerLogo: positionEntity.logoUrl || defaultProviderLogo,
-    risk: risk,
-    riskStyle: risk < 0 ? "loss" : "gain",
-    stopLossStyle: getProfitType(
+    providerLogo: positionEntity.logoUrl.includes("http")
+      ? positionEntity.logoUrl
+      : defaultProviderLogo,
+    risk,
+    riskStyle: getValueType(risk),
+    stopLossStyle: getPriceColorType(
       positionEntity.stopLossPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
-    netProfitStyle: getProfitType(positionEntity.netProfit, 0, positionEntity.side),
+    unrealizedProfitStyle: getValueType(positionEntity.unrealizedProfitLosses),
   });
 
   return augmentedEntity;
@@ -1112,6 +1153,7 @@ function createEmptyPositionEntity() {
     copyTraderId: false,
     exchange: "",
     exchangeInternalName: "",
+    exitPriceStyle: "",
     fees: 0,
     internalExchangeId: "",
     invested: "",
@@ -1185,6 +1227,7 @@ function createEmptyPositionEntity() {
     returnFromAllocated: 0,
     returnFromInvestment: 0,
     priceDifference: 0,
+    priceDifferenceStyle: "",
     unrealizedProfitLosses: 0,
     unrealizedProfitLossesPercentage: 0,
   };

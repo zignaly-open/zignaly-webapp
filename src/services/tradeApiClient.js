@@ -213,7 +213,7 @@ class TradeApiClient {
    */
   async openPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionsResponseTransform(responseData);
   }
@@ -249,7 +249,7 @@ class TradeApiClient {
   async logPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
     const responseData = await this.doRequest(endpointPath, {
-      type: "allClosedExtended",
+      type: "log",
       ...payload,
     });
 
