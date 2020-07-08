@@ -56,25 +56,25 @@ const RecoverPassword = ({ token }) => {
         </title>
       </Helmet>
       <Box
+        alignItems="center"
         className="recoverPasswordPage"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
       >
         {loading ? (
           <CircularProgress color="primary" size={50} />
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ResetPasswordForm token={token} setVerified={setVerified} />
+            <ResetPasswordForm setVerified={setVerified} token={token} />
           </>
         ) : (
-          <Box className="errorBox" display="flex" flexDirection="column" alignItems="center">
+          <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
             <Typography variant="h3">
               <FormattedMessage id="recover.error" />
             </Typography>
-            <Link to="/login" className="loginLink">
+            <Link className="loginLink" to="/login">
               Back to Login
             </Link>
           </Box>

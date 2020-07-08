@@ -20,7 +20,7 @@ export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
 
 /**
  * @param {UserLoginPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading
+ * @param {React.SetStateAction<*>} setLoading State action to hide loader.
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (payload, setLoading) => {
@@ -43,7 +43,7 @@ export const startTradeApiSession = (payload, setLoading) => {
 };
 
 /**
- * @returns {AppThunk}
+ * @returns {AppThunk} Thunk Action.
  */
 export const endTradeApiSession = () => {
   return async (dispatch) => {
@@ -66,7 +66,7 @@ export const endTradeApiSession = () => {
  * Set user session.
  *
  * @param {UserRegisterPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading
+ * @param {React.SetStateAction<*>} setLoading State Action to hide loader.
  * @returns {AppThunk} Thunk action function.
  */
 export const registerUser = (payload, setLoading) => {
@@ -92,7 +92,7 @@ export const registerUser = (payload, setLoading) => {
  * Set user session.
  *
  * @param {TwoFAPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading
+ * @param {React.SetStateAction<*>} setLoading State action to hide loader.
  * @returns {AppThunk} Thunk action function.
  */
 export const authenticate2FA = (payload, setLoading) => {
@@ -112,9 +112,10 @@ export const authenticate2FA = (payload, setLoading) => {
 };
 
 /**
+ * Function to preload user data.
  *
- * @param {String} token
- * @returns {AppThunk}
+ * @param {String} token api token.
+ * @returns {AppThunk} Thunk action.
  */
 const loadAppUserData = (token) => {
   return async (dispatch) => {
@@ -132,8 +133,8 @@ const loadAppUserData = (token) => {
 
 /**
  *
- * @param {UserLoginResponse} response
- * @returns {AppThunk}
+ * @param {UserLoginResponse} response user login response data.
+ * @returns {AppThunk} Thunk action
  */
 const check2FA = (response) => {
   return async (dispatch) => {

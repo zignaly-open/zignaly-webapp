@@ -10,8 +10,10 @@ import LoginLinks from "../LoginLinks";
  */
 
 /**
- * @param {DefaultProps} props
- * @returns {JSX.Element}
+ * Component to handle form rendering in the form of tabs.
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX component.
  */
 const LoginTabs = ({ children }) => {
   return (

@@ -106,16 +106,16 @@ const FollowProviderButton = ({ provider }) => {
           </CustomButton>
         ) : (
           <Box
+            alignItems="center"
             className="actionHelpBox"
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
-            alignItems="center"
           >
             <Typography variant="h4">
               <FormattedMessage id="copyt.followingfrom" />
             </Typography>
-            <Tooltip title={followingFrom.internalName} placement="top">
+            <Tooltip placement="top" title={followingFrom.internalName}>
               <Box>
                 <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
               </Box>

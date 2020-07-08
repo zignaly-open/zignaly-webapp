@@ -7,10 +7,10 @@ import { FormattedMessage } from "react-intl";
 const LoginLinks = () => {
   return (
     <Box
+      alignItems="center"
       className="loginLinks"
       display="flex"
       flexDirection="row"
-      alignItems="center"
       justifyContent="space-evenly"
     >
       <Link activeClassName="activeLink" className="loginLinkItem" to="/login">

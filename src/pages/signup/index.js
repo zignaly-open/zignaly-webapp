@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Box } from "@material-ui/core";
 import "./signup.scss";
 import Testimonials from "../../components/Testimonials";

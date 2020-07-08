@@ -32,6 +32,7 @@ const SignupForm = () => {
   /**
    *
    * @param {DataObject} data Data object received byt submitting the form.
+   * @returns {void} None.
    */
   const onSubmit = (data) => {
     if (data.password === data.repeatPassword) {

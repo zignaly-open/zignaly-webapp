@@ -90,11 +90,11 @@ const CopyTraderButton = ({ provider }) => {
           </CustomButton>
         ) : (
           <Box
+            alignItems="center"
             className="actionHelpBox"
             display="flex"
             flexDirection="row"
             justifyContent="flex-start"
-            alignItems="center"
           >
             <Typography variant="h4">
               <FormattedMessage id="copyt.followingfrom" />

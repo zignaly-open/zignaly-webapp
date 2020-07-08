@@ -87,10 +87,10 @@ const TwoFAForm = () => {
           <CustomButton
             className="bgPurple"
             disabled={!isValid}
+            form="twoFAForm"
             fullWidth={true}
             loading={loading}
             type="submit"
-            form="twoFAForm"
           >
             Authenticate
           </CustomButton>

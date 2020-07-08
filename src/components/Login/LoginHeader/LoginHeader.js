@@ -10,8 +10,10 @@ import Logo from "../../../images/logo/logoWhite.svg";
  */
 
 /**
- * @param {DefaultProps} props
- * @returns {JSX.Element}
+ * Header component for login/signup pages.
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX component.
  */
 const LoginHeader = ({ children }) => {
   return (
@@ -19,8 +21,8 @@ const LoginHeader = ({ children }) => {
       className="loginHeader"
       display="flex"
       flexDirection="row"
-      justifyContent="space-around"
       flexWrap="wrap"
+      justifyContent="space-around"
     >
       <Box className="headerImage" />
       <Box

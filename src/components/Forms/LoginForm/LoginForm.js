@@ -52,7 +52,7 @@ const LoginForm = () => {
       <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
         <ForgotPasswordForm />
       </Modal>
-      <Modal state={ask2FA} persist={true} size="small" onClose={() => {}}>
+      <Modal onClose={() => {}} persist={true} size="small" state={ask2FA}>
         <TwoFAForm />
       </Modal>
       <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
