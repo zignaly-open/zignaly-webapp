@@ -733,6 +733,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ForgotPasswordStep1Payload
+ * @property {string} email
+ * @property {Boolean} array
+ */
+
+/**
  * @typedef {Object} ProfileNotifications
  * @property {boolean} emailEnable
  * @property {boolean} emailNews

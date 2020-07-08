@@ -3,24 +3,44 @@ import "./ForgotPasswordForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
+import tradeApi from "../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
   const { errors, handleSubmit, register } = useForm();
+  const dispatch = useDispatch();
 
   /**
-   * Persists submitted data into Redux store.
+   * @typedef {Object} FormData
+   * @property {string} email
+   */
+
+  /**
+   * Function to submit form.
    *
-   * @type {React.MouseEventHandler} onSubmit
+   * @param {FormData} data Form data.
    * @returns {void}
    */
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     setLoading(true);
-    // const params = {
-    //   email: data.email,
-    //   array: true,
-    // };
-    // dispatch(recover1(params, this.hideLoader));
+    const payload = {
+      email: data.email,
+      array: true,
+    };
+    tradeApi
+      .forgotPasswordStep1(payload)
+      .then(() => {
+        setLoading(false);
+        dispatch(
+          showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step1.body"),
+        );
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+        setLoading(false);
+      });
   };
 
   /**
@@ -32,12 +52,6 @@ const ForgotPasswordForm = () => {
   const handleSubmitClick = () => {
     handleSubmit(onSubmit);
   };
-
-  //   const handleKeyPress = (event) => {
-  //     if (event.key === "Enter") {
-  //       handleSubmit();
-  //     }
-  //   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

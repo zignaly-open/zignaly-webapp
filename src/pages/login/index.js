@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../store/actions/session";
 import LoginForm from "../../components/Forms/LoginForm";
 import LoginHeader from "../../components/Login/LoginHeader";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import SuccessAlert from "../../components/Alerts/SuccessAlert";
 
 const LoginPage = () => {
   const options = themeData(false);
@@ -31,6 +33,8 @@ const LoginPage = () => {
           <Helmet>
             <title>Login</title>
           </Helmet>
+          <ErrorAlert />
+          <SuccessAlert />
           <Box className="loginPage">
             <LoginHeader>
               <LoginTabs>

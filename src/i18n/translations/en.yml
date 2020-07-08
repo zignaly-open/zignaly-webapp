@@ -435,8 +435,10 @@ signalp.settings.whitelist.help: "It will open positions only for symbols includ
 signalp.settings.amounts.help: "Minimum value for {quote} is {notional} , but if you want to use Stop Loss, or split your take profits into several targets, each target has to be above this minimum amount, including the stop loss. You can choose a fixed value, or a percentage value of your total value for this coin (including the conversion from opened positions). If you don't want to trade in {quote}, just leave the value at 0."
 signalp.settings.amounts: "{quote} Position Size"
 
-alert.profileeit.title: "Profile Edited"
-alert.profileeit.body: "Your profile has been successfully updated!"
+alert.profileedit.title: "Profile Edited"
+alert.profileedit.body: "Your profile has been successfully updated!"
+alert.forgotpassword.step1.title: "Request Processed"
+alert.forgotpassword.step1.body: "An email has been sent to your provided email for further instructions."
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Your API-Key from the provider"

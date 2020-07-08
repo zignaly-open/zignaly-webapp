@@ -86,6 +86,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
+ * @typedef {import('./tradeApiClient.types').ForgotPasswordStep1Payload} ForgotPasswordStep1Payload
  */
 
 /**
@@ -1028,6 +1029,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {ForgotPasswordStep1Payload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async forgotPasswordStep1(payload) {
+    const endpointPath = "/fe/api.php?action=forgottenPassword1Step";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 
