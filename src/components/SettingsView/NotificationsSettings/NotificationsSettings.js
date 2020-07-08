@@ -130,7 +130,11 @@ const NotificationsSettings = () => {
                   <FormattedMessage
                     id="notifications.codeinfo"
                     values={{
-                      url: <a href="https://t.me/ZignalyBot">https://t.me/ZignalyBot</a>,
+                      url: (
+                        <a href="https://t.me/ZignalyBot" target="_blank">
+                          https://t.me/ZignalyBot
+                        </a>
+                      ),
                       command: <b>/getCode</b>,
                     }}
                   />
