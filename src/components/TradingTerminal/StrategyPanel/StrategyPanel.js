@@ -47,7 +47,6 @@ const StrategyPanel = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const leverage = watch("leverage");
   const {
     positionSizeChange,
     priceChange,
@@ -84,6 +83,7 @@ const StrategyPanel = (props) => {
     { label: intl.formatMessage({ id: "terminal.strategy.import" }), val: "import" },
   ];
 
+  const leverage = watch("leverage");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
@@ -105,6 +105,7 @@ const StrategyPanel = (props) => {
             name="entryStrategy"
           />
         </Box>
+        <input name="lastPrice" ref={register} type="hidden" />
       </Box>
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
         {selectedExchange.exchangeType === "futures" && (

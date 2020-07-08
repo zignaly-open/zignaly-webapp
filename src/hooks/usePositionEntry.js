@@ -22,7 +22,11 @@ import { useFormContext } from "react-hook-form";
  * @returns {PositionEntryHook} Position entry hook object.
  */
 function usePositionEntry(positionEntity) {
-  const { getValues } = useFormContext();
+  const { getValues, watch } = useFormContext();
+  const lastPrice = watch("lastPrice");
+  const strategyPrice = watch("price");
+  const units = watch("units");
+  const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
   /**
    * Resolve position entry price for new or existing position.
@@ -34,9 +38,7 @@ function usePositionEntry(positionEntity) {
       return positionEntity.buyPrice;
     }
 
-    const draftPosition = getValues();
-
-    return parseFloat(draftPosition.price);
+    return currentPrice;
   };
 
   /**
@@ -49,9 +51,7 @@ function usePositionEntry(positionEntity) {
       return parseFloat(positionEntity.positionSize);
     }
 
-    const draftPosition = getValues();
-
-    return parseFloat(draftPosition.units) || 0;
+    return parseFloat(units) || 0;
   };
 
   return { getEntryPrice, getEntrySize };
