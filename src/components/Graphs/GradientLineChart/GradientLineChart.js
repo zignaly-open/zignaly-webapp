@@ -81,7 +81,7 @@ const LineChart = (props) => {
       display: false,
     },
     animation: {
-      duration: 10000,
+      duration: 0,
     },
     hover: {
       intersect: false,

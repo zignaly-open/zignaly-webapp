@@ -5,6 +5,10 @@
     grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
     width: 100%;
   }
+
+  .loader {
+    margin: 50px auto;
+  }
 }
 
 @include media("<=sm") {

@@ -56,7 +56,7 @@ const useProvidersList = (options) => {
   /**
    * @type {ProvidersCollection} initialState
    */
-  const initialState = [];
+  const initialState = null;
   const [providers, setProviders] = useState(initialState);
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
@@ -94,10 +94,10 @@ const useProvidersList = (options) => {
   /**
    * Sort providers by selected option
    *
-   * @param {ProvidersCollection} [list] Providers collection.
+   * @param {ProvidersCollection} list Providers collection.
    * @returns {void}
    */
-  const sortProviders = (list = providersFiltered) => {
+  const sortProviders = (list) => {
     const [key, direction] = sort.split("_");
     const listSorted = [...list].sort((a, b) => {
       let res = 0;
@@ -123,15 +123,19 @@ const useProvidersList = (options) => {
     setProvidersFiltered(listSorted);
   };
   // Sort providers on sort option change
-  useEffect(sortProviders, [sort]);
+  useEffect(() => {
+    if (providersFiltered) {
+      sortProviders(providersFiltered);
+    }
+  }, [sort]);
 
   /**
    * Filter providers by selected options
    *
-   * @param {ProvidersCollection} [list] Providers collection.
+   * @param {ProvidersCollection} list Providers collection.
    * @returns {void}
    */
-  const filterProviders = (list = providers) => {
+  const filterProviders = (list) => {
     const res = list.filter(
       (p) =>
         (coin.val === "ALL" || p.quote === coin.val) &&
@@ -140,7 +144,11 @@ const useProvidersList = (options) => {
     sortProviders(res);
   };
   // Filter providers on filter change
-  useEffect(filterProviders, [coin, exchange]);
+  useEffect(() => {
+    if (providers) {
+      filterProviders(providers);
+    }
+  }, [coin, exchange]);
 
   const loadProviders = () => {
     const payload = {

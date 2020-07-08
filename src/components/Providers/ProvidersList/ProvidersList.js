@@ -27,10 +27,10 @@ const ProvidersList = (props) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Box className="tradersBox">
-        {providers.length ? (
-          providers.map((provider) => (
-            <LazyLoad height={450} offset={800}>
+      {providers ? (
+        <Box className="tradersBox">
+          {providers.map((provider) => (
+            <LazyLoad height={450} offset={950}>
               <TraderCard
                 key={provider.id}
                 provider={provider}
@@ -38,11 +38,11 @@ const ProvidersList = (props) => {
                 timeFrame={timeFrame}
               />
             </LazyLoad>
-          ))
-        ) : (
-          <CircularProgress size={21} />
-        )}
-      </Box>
+          ))}
+        </Box>
+      ) : (
+        <CircularProgress className="loader" size={21} />
+      )}
     </Box>
   );
 };
