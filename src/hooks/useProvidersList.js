@@ -127,6 +127,7 @@ const useProvidersList = (options) => {
     if (providersFiltered) {
       sortProviders(providersFiltered);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
   /**
@@ -148,6 +149,7 @@ const useProvidersList = (options) => {
     if (providers) {
       filterProviders(providers);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coin, exchange]);
 
   const loadProviders = () => {

@@ -18,9 +18,9 @@
   }
 
   .customSelect {
-    width: 100%;
-    margin: 0 0 auto;
     align-items: flex-start;
+    margin: 0 0 auto;
+    width: 100%;
 
     &:not(:first-of-type) {
       margin-left: 20px;
@@ -31,9 +31,9 @@
     }
 
     .searchRoot {
-      width: 100%;
-      min-width: 130px;
       margin-right: 0;
+      min-width: 130px;
+      width: 100%;
     }
 
     .select {

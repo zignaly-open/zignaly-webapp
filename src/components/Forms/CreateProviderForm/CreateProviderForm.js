@@ -33,7 +33,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const { errors, handleSubmit, control, formState, register, watch, setValue } = useForm();
+  const { errors, handleSubmit, control, register, watch, setValue } = useForm();
   const exchange = watch("exchange", "binance");
   const exchanges = useExchangeList(isCopyTrading);
   const selectedExchange = exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase());
@@ -111,10 +111,10 @@ const CreateProviderForm = ({ isCopyTrading }) => {
               <Typography variant="h3">
                 <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
               </Typography>
-              <Typography variant="body1" className="desc">
+              <Typography className="desc" variant="body1">
                 <FormattedMessage id="copyt.create.desc" />
               </Typography>
-              <Box display="flex" flexDirection="column" alignItems="flex-start">
+              <Box alignItems="flex-start" display="flex" flexDirection="column">
                 <Box className="inputBox" display="flex" flexDirection="column" width={1}>
                   <label className="customLabel callout2">
                     <FormattedMessage id="provider.name" />
@@ -122,17 +122,17 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                   <OutlinedInput
                     className="customInput"
                     error={!!errors.name}
+                    fullWidth
                     inputRef={register({
                       required: "Name is required",
                     })}
                     name="name"
-                    fullWidth
                   />
                   {errors.name && <span className="errorText">{errors.name.message}</span>}
                 </Box>
                 {isCopyTrading && (
                   <>
-                    <Box display="flex" flexDirection="row" width={1} className="inputBox">
+                    <Box className="inputBox" display="flex" flexDirection="row" width={1}>
                       <Controller
                         as={CustomSelect}
                         control={control}
@@ -140,13 +140,13 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         label={intl.formatMessage({
                           id: "accounts.exchange",
                         })}
-                        name="exchange"
-                        options={exchangeOptions}
                         labelPlacement="top"
+                        name="exchange"
                         onChange={([e]) => {
                           setValue("exchangeType", typeOptions[0].val);
                           return e;
                         }}
+                        options={exchangeOptions}
                       />
                       <Controller
                         as={CustomSelect}
@@ -160,24 +160,24 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         options={typeOptions}
                       />
                     </Box>
-                    <Box display="flex" flexDirection="row" className="inputBox">
+                    <Box className="inputBox" display="flex" flexDirection="row">
                       <Box className="inputBox minBalanceBox" display="flex" flexDirection="column">
                         <label className="customLabel">
-                          <Typography noWrap className="callout2">
+                          <Typography className="callout2" noWrap>
                             <FormattedMessage id="srv.edit.minbalance" />
                           </Typography>
                         </label>
                         <OutlinedInput
                           className="customInput"
                           error={!!errors.minBalance}
+                          inputProps={{
+                            min: 0,
+                          }}
                           inputRef={register({
                             required: "Min allocated balance is required",
                             min: 0,
                           })}
                           name="minAllocatedBalance"
-                          inputProps={{
-                            min: 0,
-                          }}
                           type="number"
                         />
                         {errors.minAllocatedBalance && (
@@ -191,13 +191,13 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         label={intl.formatMessage({
                           id: "fil.quote",
                         })}
+                        labelPlacement="top"
                         name="quote"
                         options={quotes}
                         rules={{
                           required: "Quote is required",
                         }}
                         search={true}
-                        labelPlacement="top"
                       />
                       {errors.quote && <span className="errorText">{errors.quote.message}</span>}
                     </Box>

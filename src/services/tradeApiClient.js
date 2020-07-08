@@ -377,7 +377,7 @@ class TradeApiClient {
    *
    * Get quote assets.
    *
-   * @param {QuotesAssetsGetPayload} payload
+   * @param {QuotesAssetsGetPayload} payload Payload.
    * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */

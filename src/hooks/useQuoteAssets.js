@@ -37,7 +37,7 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
     if (shouldExecute) {
       loadData();
     }
-  }, [storeSession.tradeApi.accessToken, shouldExecute]);
+  }, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
 
   return quotes;
 };

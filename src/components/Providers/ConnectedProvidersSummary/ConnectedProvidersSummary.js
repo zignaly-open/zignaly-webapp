@@ -34,7 +34,7 @@ const ConnectedProvidersSummary = ({ providers }) => {
           </Link>
         </Box>
       </Box>
-      <Box className="scrollCards" display="flex" flexDirection="column" alignItems="center">
+      <Box alignItems="center" className="scrollCards" display="flex" flexDirection="column">
         {providers.map((p) => (
           <TraderMiniCard key={p.id} provider={p} />
         ))}

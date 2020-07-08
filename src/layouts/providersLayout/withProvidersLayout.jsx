@@ -76,19 +76,19 @@ const withProvidersLayout = (Component) => {
           {isCopyTrading && (
             <Icon>
               <img
-                title="Filter"
                 className="icon"
                 onClick={() => toggleFilters()}
                 src={showFilters ? FilterFillIcon : FilterIcon}
+                title="Filter"
               />
             </Icon>
           )}
           <Icon>
             <img
-              title="Sort"
               className="icon"
               onClick={() => toggleSort()}
               src={showSort ? SortFillIcon : SortIcon}
+              title="Sort"
             />
           </Icon>
         </Box>

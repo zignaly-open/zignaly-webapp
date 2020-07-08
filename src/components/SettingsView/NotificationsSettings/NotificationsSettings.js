@@ -131,7 +131,7 @@ const NotificationsSettings = () => {
                     id="notifications.codeinfo"
                     values={{
                       url: (
-                        <a href="https://t.me/ZignalyBot" target="_blank">
+                        <a href="https://t.me/ZignalyBot" rel="noopener noreferrer" target="_blank">
                           https://t.me/ZignalyBot
                         </a>
                       ),
