@@ -248,7 +248,7 @@ function composeNetProfit(position) {
   return (
     <>
       <span className="symbol">{position.quote}</span>
-      <span className={position.netProfitStyle}>{formatNumber(position.netProfit)}</span>
+      <span className={position.netProfitStyle}>{formatPrice(position.netProfit)}</span>
     </>
   );
 }
