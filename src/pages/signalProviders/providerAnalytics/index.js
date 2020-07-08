@@ -94,7 +94,9 @@ const SignalProvidersAnalytics = () => {
     <Box className="profileAnalyticsPage">
       <Helmet>
         <title>
-          {`${storeViews.provider.name} | ${intl.formatMessage({
+          {`${intl.formatMessage({ id: "product" })} | ${
+            storeViews.provider.name
+          } | ${intl.formatMessage({
             id: "srv.analytics",
           })}`}
         </title>

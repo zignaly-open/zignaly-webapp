@@ -50,7 +50,9 @@ const CopyTradersProfile = () => {
     >
       <Helmet>
         <title>
-          {`${storeViews.provider.name} | ${intl.formatMessage({
+          {`${intl.formatMessage({ id: "product" })} | ${
+            storeViews.provider.name
+          } | ${intl.formatMessage({
             id: "srv.profile",
           })}`}
         </title>

@@ -23,7 +23,9 @@ const Balance = () => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "dashboard" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+            id: "dashboard",
+          })} | ${intl.formatMessage({
             id: "dashboard.balance",
           })}`}
         </title>

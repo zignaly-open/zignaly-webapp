@@ -14,7 +14,9 @@ const ConnectedTraders = () => {
     <Box className="connectedTradersPage">
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "dashboard" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+            id: "dashboard",
+          })} | ${intl.formatMessage({
             id: "dashboard.traders",
           })}`}
         </title>

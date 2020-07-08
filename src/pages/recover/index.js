@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./recover.scss";
 import { Box } from "@material-ui/core";
 import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
+import Logo from "../../images/logo/logoWhite.svg";
+import tradeApi from "../../services/tradeApiClient";
+import { Helmet } from "react-helmet";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -15,14 +18,25 @@ import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
  * @returns {JSX.Element} Position page element.
  */
 const RecoverPassword = ({ code }) => {
+  const [loading, setLoading] = useState(false);
+  const [verified, setVerified] = useState(false);
+
+  const verifyCode = () => {};
+
+  useEffect(verifyCode, [code]);
+
   return (
     <Box
       className="recoverPasswordPage"
       display="flex"
-      flexDirection="row"
+      flexDirection="column"
       justifyContent="center"
       alignItems="center"
     >
+      <Helmet>
+        <title>Zignaly | Recover Password</title>
+      </Helmet>
+      <img alt="Zignaly" className="logo" src={Logo} />
       <ResetPasswordForm />
     </Box>
   );
