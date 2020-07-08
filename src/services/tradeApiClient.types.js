@@ -736,7 +736,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {ProfileNotifications} notifications
  */
 
- /**
+/**
  * @typedef {Object} QuotesAssetsGetPayload
  * @property {boolean} ro
  * @property {string} [exchangeInternalId]
@@ -3073,6 +3073,11 @@ function createEmptyProfileNotificationsEntity() {
     telegramCode: "",
   };
 }
+
+/**
+ * @typedef {Object} CopyTraderCreatePayload
+ * @property {string} name
+ */
 
 /**
  * @typedef {Object} ProviderCreatePayload

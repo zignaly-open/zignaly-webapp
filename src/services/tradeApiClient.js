@@ -87,6 +87,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
  * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
+ * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  */
 
 /**
@@ -1017,13 +1018,28 @@ class TradeApiClient {
   /**
    * Create a new provider
    *
+   * @param {CopyTraderCreatePayload} payload Copy Trader Create payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async copyTraderCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createCopyTrader";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
+  }
+
+  /**
+   * Create a new provider
+   *
    * @param {ProviderCreatePayload} payload Provider Create payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
    */
   async providerCreate(payload) {
-    const endpointPath = "/fe/api.php?action=createCopyTrader";
+    const endpointPath = "/fe/api.php?action=createProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerCreateResponseTransform(responseData);

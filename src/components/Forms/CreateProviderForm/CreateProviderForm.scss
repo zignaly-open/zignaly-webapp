@@ -1,6 +1,10 @@
 .createProviderForm {
   padding: 50px;
 
+  .formContent {
+    max-width: 556px;
+  }
+
   > .loader {
     margin-top: 60px;
   }
@@ -11,10 +15,6 @@
 
   .desc {
     margin: 12px 0 32px;
-  }
-
-  .customButton {
-    margin-top: 32px;
   }
 
   .customSelect {
@@ -42,7 +42,7 @@
   }
 
   .inputBox {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     width: 100%;
   }
 
