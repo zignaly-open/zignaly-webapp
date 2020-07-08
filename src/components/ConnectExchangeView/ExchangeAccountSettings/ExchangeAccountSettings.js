@@ -111,15 +111,6 @@ const ExchangeAccountSettings = () => {
    * @property {boolean} globalDelisting
    */
 
-  const onFinish = () => {
-    const authorizationPayload = {
-      token: storeSession.tradeApi.accessToken,
-    };
-    dispatch(setUserExchanges(authorizationPayload));
-    setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
-    return true;
-  };
-
   /**
    * Function to submit form.
    *
@@ -146,7 +137,14 @@ const ExchangeAccountSettings = () => {
 
     return tradeApi
       .exchangeUpdate(payload)
-      .then(onFinish)
+      .then(() => {
+        const authorizationPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(setUserExchanges(authorizationPayload));
+        setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
+        return true;
+      })
       .catch((e) => {
         if (e.code === 72) {
           setError(
@@ -154,9 +152,6 @@ const ExchangeAccountSettings = () => {
             "notMatch",
             "The provided api key/secret pair is not valid.",
           );
-        } else if (e.code === 24) {
-          // Nothing to update error.
-          return onFinish();
         } else {
           dispatch(showErrorAlert(e));
         }
