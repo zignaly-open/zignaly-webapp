@@ -53,11 +53,9 @@ const SignalProvidersSettings = () => {
     <Box className="profileSettingsPage">
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${
-            storeViews.provider.name
-          } | ${intl.formatMessage({
+          {`${storeViews.provider.name} - ${intl.formatMessage({
             id: "srv.settings",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       {loading && (

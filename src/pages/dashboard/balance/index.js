@@ -23,11 +23,11 @@ const Balance = () => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({
             id: "dashboard",
-          })} | ${intl.formatMessage({
+          })} - ${intl.formatMessage({
             id: "dashboard.balance",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <Box

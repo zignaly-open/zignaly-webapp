@@ -20,7 +20,8 @@ menu.positionview: "View Position"
 
 login.title: "Login"
 signup.title: "Signup"
-recover: "Recover Password"
+recover.title: "Recover Password"
+recover.error: "Link expired! Please start the process again from login page!"
 
 # BALANCE
 balance.available: "Available"

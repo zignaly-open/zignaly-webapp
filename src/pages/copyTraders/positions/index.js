@@ -13,11 +13,9 @@ const CopyTradersPositions = () => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${
-            storeViews.provider.name
-          } | ${intl.formatMessage({
+          {`${storeViews.provider.name} - ${intl.formatMessage({
             id: "srv.positions",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">

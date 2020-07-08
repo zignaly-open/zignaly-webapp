@@ -21,7 +21,8 @@ menu.positionview: "CH-View Position"
 
 login.title: "CH-Login"
 signup.title: "CH-Signup"
-recover: "CH-Recover Password"
+recover.title: "CH-Recover Password"
+recover.error: "CH-Link expired! Please start the process again from login page!"
 
 # BALANCE
 balance.available: "CH-Available"

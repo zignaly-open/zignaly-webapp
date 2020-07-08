@@ -48,11 +48,9 @@ const CopyTradersUsers = () => {
     >
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${
-            storeViews.provider.name
-          } | ${intl.formatMessage({
+          {`${storeViews.provider.name} - ${intl.formatMessage({
             id: "srv.users",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       {loading && <CircularProgress color="primary" />}

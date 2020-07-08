@@ -19,11 +19,11 @@ const CopyTradersAnalytics = () => {
     <Box className="ctAnalyticsPage">
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({
             id: "menu.copytraders",
-          })} | ${intl.formatMessage({
+          })} - ${intl.formatMessage({
             id: "srv.analytics",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <ProvidersAnalytics type="copyt" />

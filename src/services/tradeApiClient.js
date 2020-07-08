@@ -1045,6 +1045,36 @@ class TradeApiClient {
 
     return responseData;
   }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {AuthorizationPayload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async forgotPasswordStep2(payload) {
+    const endpointPath = "/fe/api.php?action=forgottenPassword2Step";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Function to get Management positions.
+   *
+   * @param {ForgotPasswordStep1Payload} payload Management poistions payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async forgotPasswordStep3(payload) {
+    const endpointPath = "/fe/api.php?action=forgottenPassword3Step";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

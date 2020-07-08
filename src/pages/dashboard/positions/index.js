@@ -13,11 +13,11 @@ const Positions = () => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({
             id: "dashboard",
-          })} | ${intl.formatMessage({
+          })} - ${intl.formatMessage({
             id: "dashboard.positions",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">

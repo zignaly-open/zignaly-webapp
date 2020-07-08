@@ -51,11 +51,9 @@ const SignalProvidersProfile = () => {
     >
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${
-            storeViews.provider.name
-          } | ${intl.formatMessage({
+          {`${storeViews.provider.name} - ${intl.formatMessage({
             id: "srv.profile",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <Box bgcolor="grid.main" className="aboutBox">

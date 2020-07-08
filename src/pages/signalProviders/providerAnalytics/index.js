@@ -94,11 +94,9 @@ const SignalProvidersAnalytics = () => {
     <Box className="profileAnalyticsPage">
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${
-            storeViews.provider.name
-          } | ${intl.formatMessage({
+          {`${storeViews.provider.name} - ${intl.formatMessage({
             id: "srv.analytics",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
       <Box bgcolor="grid.main" className="tradingPerformanceBox">

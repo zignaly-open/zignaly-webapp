@@ -21,7 +21,7 @@ exports.onCreatePage = ({ page, actions }) => {
   }
   // Override position page route to support positionId argument.
   if (page.path.match(/^\/recover\/$/)) {
-    page.matchPath = "/recover/:code";
+    page.matchPath = "/recover/:token";
     createPage(page);
     return;
   }

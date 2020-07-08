@@ -1,5 +1,6 @@
 import React from "react";
 import PrivateAreaLayout from "./PrivateAreaLayout";
+import AppLayout from "./AppLayout";
 
 /**
  * @typedef {Object} PageContext
@@ -26,8 +27,12 @@ import PrivateAreaLayout from "./PrivateAreaLayout";
 const wrapRootWithLayout = (props) => {
   const { children, location } = props;
   const currentPath = location.pathname || "";
-  const PublicPage = () => <>{children}</>;
-  const PrivatePage = () => <PrivateAreaLayout>{children}</PrivateAreaLayout>;
+  const PublicPage = () => <AppLayout>{children}</AppLayout>;
+  const PrivatePage = () => (
+    <AppLayout>
+      <PrivateAreaLayout>{children}</PrivateAreaLayout>
+    </AppLayout>
+  );
 
   // Login don't use any layout.
   if (currentPath.match("/login")) {

@@ -30,9 +30,9 @@ const PositionPage = (props) => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "product" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({
             id: "menu.positionview",
-          })}`}
+          })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
         <script id="tvwidget" src="https://s3.tradingview.com/tv.js" type="text/javascript" />
       </Helmet>
