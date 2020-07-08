@@ -176,8 +176,10 @@ const usePositionsList = (type, positionEntity = null) => {
 
   const loadPosition = () => {
     const payload = {
+      version: 2,
       token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     const newPositions = prepareNewPositionsState();

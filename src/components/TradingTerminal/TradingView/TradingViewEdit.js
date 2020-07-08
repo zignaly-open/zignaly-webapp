@@ -76,8 +76,10 @@ const TradingViewEdit = (props) => {
    */
   const fetchPosition = () => {
     const payload = {
+      version: 2,
       token: storeSession.tradeApi.accessToken,
       positionId,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     tradeApi
