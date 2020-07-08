@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderButton.scss";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
@@ -9,6 +9,8 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import ExchangeIcon from "../../../ExchangeIcon";
 
 /**
  * @typedef {Object} DefaultProps
@@ -22,6 +24,7 @@ import { setProvider } from "../../../../store/actions/views";
  */
 const CopyTraderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
@@ -66,6 +69,28 @@ const CopyTraderButton = ({ provider }) => {
         <CustomButton className="submitButton" onClick={() => showCopyModal(true)}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
+      ) : provider.exchangeInternalId ? (
+        provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
+          <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={stopCopying}>
+            <FormattedMessage id="copyt.stopcopyingtrader" />
+          </CustomButton>
+        ) : (
+          <Box
+            className="actionHelpBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <Typography variant="h4">
+              <FormattedMessage id="copyt.followingfrom" />
+            </Typography>
+            <ExchangeIcon
+              exchange={storeSettings.selectedExchange.name.toLowerCase()}
+              size="mediumLarge"
+            />
+          </Box>
+        )
       ) : (
         <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={stopCopying}>
           <FormattedMessage id="copyt.stopcopyingtrader" />

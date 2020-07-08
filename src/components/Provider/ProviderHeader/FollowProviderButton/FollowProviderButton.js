@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "./FollowProviderButton.scss";
-import { Box } from "@material-ui/core";
+import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
+import ExchangeIcon from "../../../ExchangeIcon";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -20,6 +22,7 @@ import { setProvider } from "../../../../store/actions/views";
  */
 const FollowProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
 
@@ -82,9 +85,35 @@ const FollowProviderButton = ({ provider }) => {
         <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
           <FormattedMessage id="srv.followprovider" />
         </CustomButton>
+      ) : provider.exchangeInternalId ? (
+        provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
+          <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
+            <FormattedMessage id="copyt.stopcopyingtrader" />
+          </CustomButton>
+        ) : (
+          <Box
+            className="actionHelpBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <Typography variant="h4">
+              <FormattedMessage id="copyt.followingfrom" />
+            </Typography>
+            <Tooltip title={storeSettings.selectedExchange.internalName} placement="top">
+              <Box>
+                <ExchangeIcon
+                  exchange={storeSettings.selectedExchange.name.toLowerCase()}
+                  size="mediumLarge"
+                />
+              </Box>
+            </Tooltip>
+          </Box>
+        )
       ) : (
         <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-          <FormattedMessage id="srv.stopfollowing" />
+          <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       )}
     </Box>
