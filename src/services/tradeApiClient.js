@@ -33,6 +33,7 @@ import {
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
+  providerCreateResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -85,6 +86,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
+ * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
+ * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  */
 
 /**
@@ -365,7 +368,7 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
+   * @typedef {import('./tradeApiClient.types').QuotesAssetsGetPayload} QuotesAssetsGetPayload
    * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
    * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
    */
@@ -374,11 +377,10 @@ class TradeApiClient {
    *
    * Get quote assets.
    *
-   * @param {ReadOnlyPayload} payload
+   * @param {QuotesAssetsGetPayload} payload Payload.
    * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */
-
   async quotesAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuoteAssets";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -939,7 +941,7 @@ class TradeApiClient {
   }
 
   /**
-   * Disable 2FA.
+   * Verify 2FA.
    *
    * @param {TwoFAPayload} payload Payload
    * @returns {Promise<Boolean>} Returns promise.
@@ -1011,6 +1013,36 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Create a new provider
+   *
+   * @param {CopyTraderCreatePayload} payload Copy Trader Create payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async copyTraderCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createCopyTrader";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
+  }
+
+  /**
+   * Create a new provider
+   *
+   * @param {ProviderCreatePayload} payload Provider Create payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
   }
 }
 

@@ -21,7 +21,7 @@ import "./SubNavHeader.scss";
 const SubNavHeader = ({ links, rightComponent }) => (
   <Box
     alignItems="center"
-    className="subNavHeader hideScroll"
+    className="subNavHeader"
     display="flex"
     flexDirection="row"
     justifyContent="flex-start"
@@ -31,7 +31,9 @@ const SubNavHeader = ({ links, rightComponent }) => (
         <FormattedMessage id={item.id} />
       </GatsbyLink>
     ))}
+    {/* <Box className="rightComponent" display="flex" flexDirection="row" flexWrap="wrap"> */}
     {rightComponent && rightComponent}
+    {/* </Box> */}
   </Box>
 );
 
@@ -58,7 +60,7 @@ export const SubNavModalHeader = ({ links, currentPath, onClick }) => {
   return (
     <Box
       alignItems="center"
-      className="subNavHeader hideScroll"
+      className="subNavHeader"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"

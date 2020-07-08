@@ -8,10 +8,10 @@ import tradeApi from "../services/tradeApiClient";
 
 /**
  * Provides exchange list.
- *
+ * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {Array<ExchangeListEntity>} Exchange list.
  */
-const useExchangeList = () => {
+const useExchangeList = (shouldExecute) => {
   const [exchanges, setExchanges] = useState([]);
 
   const storeSession = useStoreSessionSelector();
@@ -31,8 +31,10 @@ const useExchangeList = () => {
           alert(`ERROR: ${e.message}`);
         });
     };
-    loadData();
-  }, [storeSession.tradeApi.accessToken]);
+    if (shouldExecute) {
+      loadData();
+    }
+  }, [storeSession.tradeApi.accessToken, shouldExecute]);
 
   return exchanges;
 };

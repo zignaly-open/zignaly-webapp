@@ -734,9 +734,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- *
  * @typedef {Object} ProfileNotificationsPayload
  * @property {ProfileNotifications} notifications
+ */
+
+/**
+ * @typedef {Object} QuotesAssetsGetPayload
+ * @property {boolean} ro
+ * @property {string} [exchangeInternalId]
  */
 
 /**
@@ -1988,7 +1993,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} terms
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
- * @property {Boolean} customerKey
+ * @property {Boolean} [customerKey]
  */
 
 /**
@@ -3122,7 +3127,7 @@ export function managementPositionsResponseTransform(response) {
  * @returns {ProfileNotifications} Provider Data points entity.
  */
 export function profileNotificationsResponseTransform(response) {
-  const emptyProfileNotificationsEntity = creatEmptyProfileNotificationsEntity();
+  const emptyProfileNotificationsEntity = createEmptyProfileNotificationsEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProfileNotificationsEntity, response);
 
@@ -3133,7 +3138,7 @@ export function profileNotificationsResponseTransform(response) {
  * Create profile notifications entity.
  * @returns {ProfileNotifications} User entity.
  */
-function creatEmptyProfileNotificationsEntity() {
+function createEmptyProfileNotificationsEntity() {
   return {
     emailEnable: false,
     emailNews: false,
@@ -3147,3 +3152,110 @@ function creatEmptyProfileNotificationsEntity() {
     telegramCode: "",
   };
 }
+
+/**
+ * @typedef {Object} CopyTraderCreatePayload
+ * @property {string} name
+ */
+
+/**
+ * @typedef {Object} ProviderCreatePayload
+ * @property {string} name
+ * @property {string} exchange
+ * @property {string} exchangeType
+ * @property {string} minAllocatedBalance
+ * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} NewProviderEntity
+ * @property {string} id
+ * @property {string} name
+ * @property {string} key
+ * @property {string} userId
+ * @property {string} projectId
+ * @property {string} description
+ * @property {Array<string>} exchanges
+ * @property {string} exchangeType
+ * @property {DefaultProviderOptions} options
+ * @property {string} minAllocatedBalance
+ * @property {boolean} isCopyTrading
+ * @property {string} quote
+ * @property {boolean} public
+ * @property {boolean} list
+ * @property {Object} signalsLastUpdate
+ * @property {boolean} updatingSignal
+ * @property {Array<string>} disabledMarkets
+ * @property {boolean} locked
+ * @property {Object} lockedAt
+ * @property {string} lockedBy
+ * @property {string} lockedFrom
+ * @property {Object} copyTradingStatsLastUpdate
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {NewProviderEntity} Provider
+ */
+export function providerCreateResponseTransform(response) {
+  const emptyNewProviderEntity = createEmptyNewProviderEntity();
+  const normalizedId = isObject(response._id) ? response._id.$oid : "";
+  const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyNewProviderEntity, response, {
+    id: normalizedId,
+    userId: normalizeduserId,
+  });
+
+  return transformedResponse;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {NewProviderEntity} New Provider entity.
+ */
+const createEmptyNewProviderEntity = () => {
+  return {
+    id: "",
+    name: "",
+    key: "",
+    userId: "",
+    projectId: "",
+    description: "",
+    exchanges: [],
+    exchangeType: "",
+    options: {
+      acceptUpdateSignal: false,
+      allowSendingBuyOrdersAsMarket: false,
+      balanceFilter: false,
+      enablePanicSellSignals: false,
+      enableSellSignals: false,
+      limitPriceFromSignal: false,
+      reBuyFromProvider: false,
+      reBuysFromSignal: false,
+      reUseSignalIdIfClosed: false,
+      riskFilter: false,
+      stopLossFromSignal: false,
+      successRateFilter: false,
+      takeProfitsFromSignal: false,
+      terms: false,
+      trailingStopFromSignal: false,
+      useLeverageFromSignal: false,
+    },
+    minAllocatedBalance: "",
+    isCopyTrading: false,
+    quote: "",
+    public: false,
+    list: false,
+    signalsLastUpdate: null,
+    updatingSignal: false,
+    disabledMarkets: [],
+    locked: false,
+    lockedAt: null,
+    lockedBy: "",
+    lockedFrom: "",
+    copyTradingStatsLastUpdate: null,
+  };
+};

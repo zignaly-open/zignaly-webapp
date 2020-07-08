@@ -247,6 +247,13 @@ const theme = (darkStyle) => {
           },
         },
       },
+      MuiSelect: {
+        select: {
+          "&:focus": {
+            backgroundColor: "transparent",
+          },
+        },
+      },
     },
     props: {
       MuiButtonBase: {

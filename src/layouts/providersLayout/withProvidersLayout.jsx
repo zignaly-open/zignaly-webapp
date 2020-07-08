@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Icon } from "@material-ui/core";
+import { Box, Icon, Typography } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
 import FilterIcon from "../../images/filters/filter.svg";
 import FilterFillIcon from "../../images/filters/filter-fill.svg";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
+import CustomButton from "../../components/CustomButton";
+import Modal from "../../components/Modal";
+import CreateProviderForm from "../../components/Forms/CreateProviderForm";
 
 /**
  * HOC wrap component with copy traders layout.
@@ -32,6 +36,8 @@ const withProvidersLayout = (Component) => {
   const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
+    const [isProviderModalOpen, openProviderModal] = useState(false);
+    const isCopyTrading = props.path.startsWith("/copyTraders");
 
     const toggleFilters = () => {
       setShowFilters(!showFilters);
@@ -42,34 +48,51 @@ const withProvidersLayout = (Component) => {
     };
 
     const filters = (
-      <Box
-        alignItems="center"
-        bgcolor="grid.main"
-        className="settings"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-around"
-      >
-        {!props.path.startsWith("/signalProviders") && (
+      <>
+        <Modal
+          onClose={() => openProviderModal(false)}
+          persist={false}
+          size="medium"
+          state={isProviderModalOpen}
+        >
+          <CreateProviderForm isCopyTrading={isCopyTrading} />
+        </Modal>
+        <CustomButton
+          className="textPurple borderPurple becomeProviderButton"
+          onClick={() => openProviderModal(true)}
+        >
+          <Typography variant="body1">
+            <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+          </Typography>
+        </CustomButton>
+        <Box
+          alignItems="center"
+          bgcolor="grid.main"
+          className="settings"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-around"
+        >
+          {isCopyTrading && (
+            <Icon>
+              <img
+                className="icon"
+                onClick={() => toggleFilters()}
+                src={showFilters ? FilterFillIcon : FilterIcon}
+                title="Filter"
+              />
+            </Icon>
+          )}
           <Icon>
             <img
-              alt="zignaly"
               className="icon"
-              onClick={() => toggleFilters()}
-              src={showFilters ? FilterFillIcon : FilterIcon}
+              onClick={() => toggleSort()}
+              src={showSort ? SortFillIcon : SortIcon}
+              title="Sort"
             />
           </Icon>
-        )}
-
-        <Icon>
-          <img
-            alt="zignaly"
-            className="icon"
-            onClick={() => toggleSort()}
-            src={showSort ? SortFillIcon : SortIcon}
-          />
-        </Icon>
-      </Box>
+        </Box>
+      </>
     );
 
     return (
