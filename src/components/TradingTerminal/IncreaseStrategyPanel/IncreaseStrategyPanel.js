@@ -38,7 +38,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  */
 const IncreaseStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch } = useFormContext();
   const intl = useIntl();
