@@ -173,7 +173,7 @@ const ResetPasswordForm = () => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Sign in
+            Change Password
           </CustomButton>
         </Box>
       </Box>

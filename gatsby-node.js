@@ -20,6 +20,12 @@ exports.onCreatePage = ({ page, actions }) => {
     return;
   }
   // Override position page route to support positionId argument.
+  if (page.path.match(/^\/recover\/$/)) {
+    page.matchPath = "/recover/:code";
+    createPage(page);
+    return;
+  }
+  // Override position page route to support positionId argument.
   if (page.path.match(/^\/copyTraders\/$/)) {
     page.matchPath = "/copyTraders/*";
     createPage(page);

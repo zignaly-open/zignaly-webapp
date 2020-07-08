@@ -33,8 +33,12 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/login")) {
     return PublicPage();
   }
-  // Login don't use any layout.
+  // Signup don't use any layout.
   if (currentPath.match("/signup")) {
+    return PublicPage();
+  }
+  // Recover don't use any layout.
+  if (currentPath.match("/recover")) {
     return PublicPage();
   }
 
