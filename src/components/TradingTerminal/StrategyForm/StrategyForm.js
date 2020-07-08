@@ -71,7 +71,6 @@ const StrategyForm = (props) => {
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
-  const currentPrice = lastPrice;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
@@ -271,7 +270,7 @@ const StrategyForm = (props) => {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
-      limitPrice: draftPosition.price || currentPrice,
+      limitPrice: draftPosition.price || lastPrice,
     };
 
     if (draftPosition.positionSizePercentage) {
@@ -406,9 +405,12 @@ const StrategyForm = (props) => {
 
   // @ts-ignore
   const updatePriceField = () => {
-    setValue("price", currentPrice);
+    setValue("price", lastPrice);
+    // Hidden price input used when strategy panels is collapsed due to the fact
+    // that unmounted input value is removed from form state.
+    setValue("lastPrice", lastPrice);
   };
-  useEffect(updatePriceField, [currentPrice]);
+  useEffect(updatePriceField, [lastPrice]);
 
   // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");

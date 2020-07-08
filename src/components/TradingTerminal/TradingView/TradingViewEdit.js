@@ -112,7 +112,6 @@ const TradingViewEdit = (props) => {
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
-  const isLastPriceLoading = lastPrice === null;
 
   /**
    * Resolve exchange name from selected exchange.
@@ -150,6 +149,7 @@ const TradingViewEdit = (props) => {
         }
         if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
           if (eventSymbol !== dataParsed.data.original_name) {
+            console.log("lastMessage: ", dataParsed);
             setLastPrice(dataParsed.data.last_price);
             eventSymbol = dataParsed.data.original_name;
           }
@@ -195,7 +195,6 @@ const TradingViewEdit = (props) => {
       entryType: "LONG",
       leverage: 1,
       positionSize: "",
-      lastPrice: lastPrice || "",
       realInvestment: "",
       stopLossPrice: "",
       trailingStopPrice: "",
@@ -203,11 +202,6 @@ const TradingViewEdit = (props) => {
       dcaTargetPricePercentage1: "",
     },
   });
-
-  const propagatePriceToForm = () => {
-    methods.setValue("lastPrice", lastPrice);
-  };
-  useEffect(propagatePriceToForm, [lastPrice]);
 
   /**
    * Determine the current position status.
@@ -249,7 +243,7 @@ const TradingViewEdit = (props) => {
             </Box>
           )}
           <Box className="tradingViewChart" id="trading_view_chart" />
-          {!isLoading && !isLastPriceLoading && (
+          {!isLoading && lastPrice && (
             <StrategyForm
               lastPrice={lastPrice}
               notifyPositionUpdate={notifyPositionUpdate}
