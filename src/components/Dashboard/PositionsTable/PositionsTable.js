@@ -48,7 +48,16 @@ const PositionsTable = (props) => {
     positionEntity,
   );
   const showTypesFilter = type === "log";
-  const tablePersistsKey = `${type}Positions`;
+
+  const getTablePersistKey = () => {
+    // Use different persist key to edit position table to support different default columns.
+    if (type === "open" && positionEntity) {
+      return `${type}EditPositions`;
+    }
+
+    return `${type}Positions`;
+  };
+  const tablePersistsKey = getTablePersistKey();
 
   /**
    * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -151,6 +160,11 @@ const PositionsTable = (props) => {
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
+
+      // Exclude status for non edit position page.
+      if (!positionEntity) {
+        dataTable = excludeDataTableColumn(dataTable, "col.stat");
+      }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
@@ -160,11 +174,6 @@ const PositionsTable = (props) => {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
-    }
-
-    // Avoid display paper trading column on real exchanges.
-    if (!storeSettings.selectedExchange.paperTrading) {
-      dataTable = excludeDataTableColumn(dataTable, "col.paper");
     }
 
     return dataTable;

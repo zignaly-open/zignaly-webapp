@@ -568,6 +568,7 @@ function composeColumnOptions(columnId) {
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
     composeRawValue(position.openDateReadable),
+    composeStatusMessage(position.status),
     composeProviderIcon(position),
     composeProviderName(position),
     composeRawValue(position.signalId),
@@ -690,6 +691,7 @@ function composeClosedPositionRowForProvider(position) {
 export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     "col.date.open",
+    "col.stat",
     "col.provider.logo",
     "col.provider.name",
     "col.signalid",
