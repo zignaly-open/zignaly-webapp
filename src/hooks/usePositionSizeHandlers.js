@@ -32,6 +32,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { clearError, getValues, setError, setValue, watch } = useFormContext();
   const leverage = defaultLeverage || watch("leverage");
   const entryType = watch("entryType");
+  const lastPrice = watch("lastPrice");
+  const strategyPrice = watch("price");
+  const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
   /**
    * Validate that position size is within limits.
@@ -138,8 +141,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("positionSize", positionSize);
     validatePositionSize(positionSize);
 
-    const price = parseFloat(draftPosition.price);
-    const units = positionSize / price;
+    const units = positionSize / currentPrice;
     setValue("units", units.toFixed(8));
     validateUnits(units);
   };
@@ -149,8 +151,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const positionSize = parseFloat(draftPosition.positionSize);
     validatePositionSize(positionSize);
 
-    const price = parseFloat(draftPosition.price);
-    const units = positionSize / price;
+    const units = positionSize / currentPrice;
     setValue("units", units.toFixed(8));
     validateUnits(units);
 
@@ -160,11 +161,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
   const unitsChange = () => {
     const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
     const units = parseFloat(draftPosition.units);
     validateUnits(units);
 
-    const positionSize = units * price;
+    const positionSize = units * currentPrice;
     setValue("positionSize", positionSize.toFixed(8));
     validatePositionSize(positionSize);
 
@@ -173,9 +173,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   };
 
   const priceChange = () => {
-    const draftPosition = getValues();
-    const price = parseFloat(draftPosition.price);
-    validatePrice(price);
+    validatePrice(parseFloat(strategyPrice));
   };
 
   const chainedPriceUpdates = () => {

@@ -9,18 +9,20 @@ import tradeApi from "../services/tradeApiClient";
 /**
  * Provides quotes assets.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
+ * @param {string} [exchangeInternalId] Exchange internal id.
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useQuoteAssets = (shouldExecute = true) => {
+const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
 
   useEffect(() => {
     const loadData = async () => {
-      const payload = {
+      let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
+        ...(exchangeInternalId && { exchangeInternalId }),
       };
 
       tradeApi
@@ -35,7 +37,7 @@ const useQuoteAssets = (shouldExecute = true) => {
     if (shouldExecute) {
       loadData();
     }
-  }, [storeSession.tradeApi.accessToken, shouldExecute]);
+  }, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
 
   return quotes;
 };

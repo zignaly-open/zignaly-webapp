@@ -76,7 +76,7 @@ const ProvidersBrowse = ({
       )}
       <TimeFrameSelectRow
         onChange={setTimeFrame}
-        title={`${providers.length} ${intl.formatMessage({
+        title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
             ? copyTradersOnly
               ? "dashboard.traders.copying"

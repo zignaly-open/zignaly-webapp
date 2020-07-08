@@ -26,7 +26,6 @@ const TabsMenu = (props) => {
       classes={{
         indicator: "indicator",
         flexContainer: "container",
-        scroller: "hideScroll",
       }}
       onChange={changeTab}
       value={tabValue}

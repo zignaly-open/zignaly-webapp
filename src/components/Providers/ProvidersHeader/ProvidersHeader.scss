@@ -8,8 +8,11 @@
     height: 56px;
     margin-bottom: 15px;
     padding: 16px 24px;
-    position: absolute;
-    right: 0;
+  }
+
+  .becomeProviderButton {
+    margin: 0 22px 10px auto;
+    min-height: 40px;
   }
 
   .icon {
@@ -21,6 +24,19 @@
   span {
     &:not(:first-child) {
       margin-left: 24px;
+    }
+  }
+
+  @include media("<=sm") {
+    margin-bottom: 57px;
+
+    .becomeProviderButton {
+      left: 0;
+      margin: 150px auto 0;
+      min-width: 260px;
+      position: absolute;
+      right: 0;
+      width: auto;
     }
   }
 }

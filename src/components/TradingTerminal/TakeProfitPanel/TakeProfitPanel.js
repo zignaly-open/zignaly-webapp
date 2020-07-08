@@ -111,7 +111,7 @@ const TakeProfitPanel = (props) => {
    * Validate result of changed target units event.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
+   * @returns {boolean} true if validation passed, false otherwise.
    */
   const validateExitUnits = (event) => {
     const targetId = getGroupTargetId(event);
@@ -125,10 +125,19 @@ const TakeProfitPanel = (props) => {
         "error",
         formatMessage({ id: "terminal.takeprofit.limit.zero" }),
       );
+
+      return false;
     }
 
-    validateTargetExitUnitsLimits(targetId);
-    validateCostLimits(targetId);
+    if (!validateTargetExitUnitsLimits(targetId)) {
+      return false;
+    }
+
+    if (!validateCostLimits(targetId)) {
+      return false;
+    }
+
+    return true;
   };
 
   /**
@@ -206,6 +215,12 @@ const TakeProfitPanel = (props) => {
     composeTargetPropertyName("exitUnitsPercentage", targetId),
   );
   const exitUnitsPercentages = watch(exitUnitsPercentageFields);
+
+  /**
+   * Validate cumulative targets percentage.
+   *
+   * @returns {boolean} true if validation passed, false otherwise.
+   */
   const validateCumulativePercentage = () => {
     const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
     const propertyNames = keys(exitUnitsPercentages);
@@ -217,11 +232,15 @@ const TakeProfitPanel = (props) => {
           formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
         );
       });
-    } else {
-      propertyNames.map((unitsPercentageProperty) => {
-        clearError(unitsPercentageProperty);
-      });
+
+      return false;
     }
+
+    propertyNames.map((unitsPercentageProperty) => {
+      clearError(unitsPercentageProperty);
+    });
+
+    return true;
   };
 
   /**
@@ -254,8 +273,15 @@ const TakeProfitPanel = (props) => {
       setValue(unitsProperty, "");
     }
 
-    validateExitUnits(event);
-    validateCumulativePercentage();
+    if (!validateExitUnits(event)) {
+      return;
+    }
+
+    if (!validateCumulativePercentage()) {
+      return;
+    }
+
+    clearError(unitsProperty);
   };
 
   /**
@@ -296,7 +322,7 @@ const TakeProfitPanel = (props) => {
    * Validate that target price is within limits.
    *
    * @param {string} targetId Target index ID.
-   * @returns {Void} None.
+   * @returns {boolean} true if validation passed, false otherwise.
    */
   const validateTargetPriceLimits = (targetId) => {
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
@@ -309,24 +335,30 @@ const TakeProfitPanel = (props) => {
         "error",
         formatMessage({ id: "terminal.takeprofit.limit.minprice" }, { value: limits.price.min }),
       );
+
+      return false;
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
       setError(
         priceProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
       );
+
+      return false;
     }
 
     validateCostLimits(targetId);
+
+    return true;
   };
 
   /**
    * Validate that cost is within limits.
    *
    * @param {string} targetId Target index ID.
-   * @returns {Void} None.
+   * @returns {boolean} true if validation passed, false otherwise.
    */
   const validateCostLimits = (targetId) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
@@ -341,22 +373,28 @@ const TakeProfitPanel = (props) => {
         "error",
         formatMessage({ id: "terminal.takeprofit.limit.mincost" }, { value: limits.cost.min }),
       );
+
+      return false;
     }
 
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
       setError(
         unitsProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
       );
+
+      return false;
     }
+
+    return true;
   };
 
   /**
    * Validate that target units is within limits.
    *
    * @param {string} targetId Target index ID.
-   * @returns {Void} None.
+   * @returns {boolean} true if validation passed, false otherwise.
    */
   const validateTargetExitUnitsLimits = (targetId) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
@@ -369,15 +407,21 @@ const TakeProfitPanel = (props) => {
         "error",
         formatMessage({ id: "terminal.takeprofit.limit.minunits" }, { value: limits.amount.min }),
       );
+
+      return false;
     }
 
     if (limits.amount.max && exitUnits > limits.amount.max) {
       setError(
         unitsProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
       );
+
+      return false;
     }
+
+    return true;
   };
 
   const chainedPriceUpdates = () => {

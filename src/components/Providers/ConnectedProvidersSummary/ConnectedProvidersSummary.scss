@@ -1,6 +1,9 @@
 .connectedProvidersSummary {
   height: 100%;
+  left: 0;
+  max-width: 440px;
   position: absolute;
+  right: 0;
 
   a {
     text-decoration: none;
@@ -29,6 +32,7 @@
   .traderMiniCard {
     margin: 7px 36px;
     min-height: 80px;
+    width: calc(100% - 36 * 2px);
   }
 
   .customButton {
@@ -42,7 +46,7 @@
 
     .traderMiniCard {
       margin: 7px 0;
-      min-width: initial;
+      width: calc(100% - 8px);
     }
 
     .customButton {

@@ -33,6 +33,7 @@ import {
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
+  providerCreateResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -88,6 +89,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep1Payload} ForgotPasswordStep1Payload
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep3Payload} ForgotPasswordStep3Payload
+ * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
+ * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  */
 
 /**
@@ -384,7 +387,7 @@ class TradeApiClient {
   }
 
   /**
-   * @typedef {import('./tradeApiClient.types').ReadOnlyPayload} ReadOnlyPayload
+   * @typedef {import('./tradeApiClient.types').QuotesAssetsGetPayload} QuotesAssetsGetPayload
    * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
    * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
    */
@@ -393,11 +396,10 @@ class TradeApiClient {
    *
    * Get quote assets.
    *
-   * @param {ReadOnlyPayload} payload
+   * @param {QuotesAssetsGetPayload} payload Payload.
    * @returns {Promise<QuoteAssetsDict>} Promise that resolves quote assets.
    * @memberof TradeApiClient
    */
-
   async quotesAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuoteAssets";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -958,7 +960,7 @@ class TradeApiClient {
   }
 
   /**
-   * Disable 2FA.
+   * Verify 2FA.
    *
    * @param {TwoFAPayload} payload Payload
    * @returns {Promise<Boolean>} Returns promise.
@@ -1033,9 +1035,9 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get Management positions.
+   * Function to get request password change in step 1.
    *
-   * @param {ForgotPasswordStep1Payload} payload Management poistions payload.
+   * @param {ForgotPasswordStep1Payload} payload Request Password change payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1048,13 +1050,25 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get Management positions.
+   * Create a new provider
    *
-   * @param {AuthorizationPayload} payload Management poistions payload.
+   * @param {ProviderCreatePayload} payload Provider Create payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
    */
+  async copyTraderCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createCopyTrader";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get request password change in step 2.
+   *
+   * @param {AuthorizationPayload} payload Request Password change payload.
+   * */
   async forgotPasswordStep2(payload) {
     const endpointPath = "/fe/api.php?action=forgottenPassword2Step";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -1063,9 +1077,9 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get Management positions.
+   * Function to get request password change in step 2.
    *
-   * @param {ForgotPasswordStep3Payload} payload Management poistions payload.
+   * @param {ForgotPasswordStep3Payload} payload Request Password change payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1075,6 +1089,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Create a new provider
+   *
+   * @param {ProviderCreatePayload} payload Provider Create payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerCreate(payload) {
+    const endpointPath = "/fe/api.php?action=createProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providerCreateResponseTransform(responseData);
   }
 }
 

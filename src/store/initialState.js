@@ -175,6 +175,17 @@ const initialState = {
         "col.invested",
         "col.actions",
       ],
+      openEditPositions: [
+        "col.date.open",
+        "col.stat",
+        "col.provider.logo",
+        "col.pair",
+        "col.price.current",
+        "col.plnumber",
+        "col.plpercentage",
+        "col.invested",
+        "col.actions",
+      ],
       closedPositions: [
         "col.paper",
         "col.date.open",

@@ -1,8 +1,9 @@
-import { PositionsTabContent } from "./";
-import React, { useState } from "react";
-import "./PositionsTabs.scss";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import TabsMenu from "./TabsMenu";
+import { PositionsTabContent } from "./";
+import "./PositionsTabs.scss";
+import { navigate as navigateReach } from "@reach/router";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -22,10 +23,12 @@ const PositionsTabs = ({ isProfile }) => {
   /**
    * Map tab index to positions collection type.
    *
+   * @param {number} tabIndex Tab index value.
+   *
    * @returns {PositionsCollectionType} Collection type.
    */
-  const mapIndexToCollectionType = () => {
-    switch (tabValue) {
+  const mapIndexToCollectionType = (tabIndex) => {
+    switch (tabIndex) {
       case 1:
         return "closed";
 
@@ -36,6 +39,34 @@ const PositionsTabs = ({ isProfile }) => {
         return "open";
     }
   };
+
+  /**
+   * Map tab collection type to index.
+   *
+   * @param {string} collectionType Positions collection type.
+   *
+   * @returns {number} Tab index.
+   */
+  const mapCollectionTypeToIndex = (collectionType) => {
+    switch (collectionType) {
+      case "closed":
+        return 1;
+
+      case "log":
+        return 2;
+
+      default:
+        return 0;
+    }
+  };
+
+  const currentHash =
+    typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
+
+  const updateActiveTab = () => {
+    setTabValue(mapCollectionTypeToIndex(currentHash));
+  };
+  useEffect(updateActiveTab, [currentHash]);
 
   /**
    * Map tab index to positions collection type.
@@ -61,9 +92,13 @@ const PositionsTabs = ({ isProfile }) => {
    */
   const changeTab = (event, val) => {
     setTabValue(val);
+    const newTabKey = mapIndexToCollectionType(val);
+    navigateReach(`#${newTabKey}`);
   };
 
-  const selectedType = isProfile ? mapProfileIndexToCollectionType() : mapIndexToCollectionType();
+  const selectedType = isProfile
+    ? mapProfileIndexToCollectionType()
+    : mapIndexToCollectionType(tabValue);
 
   return (
     <Box bgcolor="grid.content" className="positionsTabs">

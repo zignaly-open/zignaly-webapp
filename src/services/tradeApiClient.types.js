@@ -759,9 +759,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- *
  * @typedef {Object} ProfileNotificationsPayload
  * @property {ProfileNotifications} notifications
+ */
+
+/**
+ * @typedef {Object} QuotesAssetsGetPayload
+ * @property {boolean} ro
+ * @property {string} [exchangeInternalId]
  */
 
 /**
@@ -1033,6 +1038,7 @@ export function userPositionItemTransform(positionItem) {
       safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
       safeParseFloat(positionItem.realInvestment),
     pair: `${positionItem.base}/${positionItem.quote}`,
+    symbol: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
     profit:
       safeParseFloat(positionItem.profit) || safeParseFloat(positionItem.unrealizedProfitLosses),
@@ -1042,14 +1048,16 @@ export function userPositionItemTransform(positionItem) {
     leverage: safeParseFloat(positionItem.leverage),
     unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
     unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
-    reBuyTargets: isObject(positionItem.reBuyTargets) ? positionItem.reBuyTargets : {},
+    reBuyTargets: isObject(positionItem.reBuyTargets)
+      ? positionRebuyTargetsTransforrm(positionItem.reBuyTargets)
+      : false,
     remainAmount: safeParseFloat(positionItem.remainAmount),
     sellPrice: safeParseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
       ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
-      : {},
+      : false,
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1086,22 +1094,55 @@ export function userPositionItemTransform(positionItem) {
 /**
  * Transform position take profit targets to typed object.
  *
+ * @param {*} rebuyTargets Trade API take rebuy targets response.
+ * @returns {Object<string, ReBuyTarget>|boolean} Typed rebuy target.
+ */
+function positionRebuyTargetsTransforrm(rebuyTargets) {
+  // Ensure that targets is an indexed targets object.
+  if (rebuyTargets["1"] || rebuyTargets["1001"]) {
+    return mapValues(rebuyTargets, (/** @type {any} */ rebuyTarget) => {
+      return {
+        targetId: parseInt(rebuyTarget.targetId) || 0,
+        triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
+        quantity: parseInt(rebuyTarget.quantity) || 0,
+        buying: rebuyTarget.buying || false,
+        done: rebuyTarget.done || false,
+        orderId: rebuyTarget.orderId || "",
+        cancel: rebuyTarget.cancel || false,
+        skipped: rebuyTarget.skipped || false,
+        buyType: rebuyTarget.buyType || "",
+        errorMSG: rebuyTarget.errorMSG || "",
+      };
+    });
+  }
+
+  return false;
+}
+
+/**
+ * Transform position take profit targets to typed object.
+ *
  * @param {*} profitTargets Trade API take profit targets response.
- * @returns {Object<string, ProfitTarget>} Typed profit target.
+ * @returns {Object<string, ProfitTarget>|boolean} Typed profit target.
  */
 function positionTakeProfitTargetsTransforrm(profitTargets) {
-  return mapValues(profitTargets, (profitTarget) => {
-    return {
-      amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
-      priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
-      targetId: parseInt(profitTarget.targetId) || 0,
-      orderId: profitTarget.orderId || "",
-      done: profitTarget.done || false,
-      updating: profitTarget.updating || false,
-      cancel: profitTarget.cancel || false,
-      skipped: profitTarget.skipped || false,
-    };
-  });
+  // Ensure that targets is an indexed targets object.
+  if (profitTargets["1"]) {
+    return mapValues(profitTargets, (profitTarget) => {
+      return {
+        amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
+        priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
+        targetId: parseInt(profitTarget.targetId) || 0,
+        orderId: profitTarget.orderId || "",
+        done: profitTarget.done || false,
+        updating: profitTarget.updating || false,
+        cancel: profitTarget.cancel || false,
+        skipped: profitTarget.skipped || false,
+      };
+    });
+  }
+
+  return false;
 }
 
 /**
@@ -1977,7 +2018,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} terms
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
- * @property {Boolean} customerKey
+ * @property {Boolean} [customerKey]
  */
 
 /**
@@ -3111,7 +3152,7 @@ export function managementPositionsResponseTransform(response) {
  * @returns {ProfileNotifications} Provider Data points entity.
  */
 export function profileNotificationsResponseTransform(response) {
-  const emptyProfileNotificationsEntity = creatEmptyProfileNotificationsEntity();
+  const emptyProfileNotificationsEntity = createEmptyProfileNotificationsEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProfileNotificationsEntity, response);
 
@@ -3122,7 +3163,7 @@ export function profileNotificationsResponseTransform(response) {
  * Create profile notifications entity.
  * @returns {ProfileNotifications} User entity.
  */
-function creatEmptyProfileNotificationsEntity() {
+function createEmptyProfileNotificationsEntity() {
   return {
     emailEnable: false,
     emailNews: false,
@@ -3136,3 +3177,110 @@ function creatEmptyProfileNotificationsEntity() {
     telegramCode: "",
   };
 }
+
+/**
+ * @typedef {Object} CopyTraderCreatePayload
+ * @property {string} name
+ */
+
+/**
+ * @typedef {Object} ProviderCreatePayload
+ * @property {string} name
+ * @property {string} exchange
+ * @property {string} exchangeType
+ * @property {string} minAllocatedBalance
+ * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} NewProviderEntity
+ * @property {string} id
+ * @property {string} name
+ * @property {string} key
+ * @property {string} userId
+ * @property {string} projectId
+ * @property {string} description
+ * @property {Array<string>} exchanges
+ * @property {string} exchangeType
+ * @property {DefaultProviderOptions} options
+ * @property {string} minAllocatedBalance
+ * @property {boolean} isCopyTrading
+ * @property {string} quote
+ * @property {boolean} public
+ * @property {boolean} list
+ * @property {Object} signalsLastUpdate
+ * @property {boolean} updatingSignal
+ * @property {Array<string>} disabledMarkets
+ * @property {boolean} locked
+ * @property {Object} lockedAt
+ * @property {string} lockedBy
+ * @property {string} lockedFrom
+ * @property {Object} copyTradingStatsLastUpdate
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {NewProviderEntity} Provider
+ */
+export function providerCreateResponseTransform(response) {
+  const emptyNewProviderEntity = createEmptyNewProviderEntity();
+  const normalizedId = isObject(response._id) ? response._id.$oid : "";
+  const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
+  // Override the empty entity with the values that came in from API.
+  const transformedResponse = assign(emptyNewProviderEntity, response, {
+    id: normalizedId,
+    userId: normalizeduserId,
+  });
+
+  return transformedResponse;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {NewProviderEntity} New Provider entity.
+ */
+const createEmptyNewProviderEntity = () => {
+  return {
+    id: "",
+    name: "",
+    key: "",
+    userId: "",
+    projectId: "",
+    description: "",
+    exchanges: [],
+    exchangeType: "",
+    options: {
+      acceptUpdateSignal: false,
+      allowSendingBuyOrdersAsMarket: false,
+      balanceFilter: false,
+      enablePanicSellSignals: false,
+      enableSellSignals: false,
+      limitPriceFromSignal: false,
+      reBuyFromProvider: false,
+      reBuysFromSignal: false,
+      reUseSignalIdIfClosed: false,
+      riskFilter: false,
+      stopLossFromSignal: false,
+      successRateFilter: false,
+      takeProfitsFromSignal: false,
+      terms: false,
+      trailingStopFromSignal: false,
+      useLeverageFromSignal: false,
+    },
+    minAllocatedBalance: "",
+    isCopyTrading: false,
+    quote: "",
+    public: false,
+    list: false,
+    signalsLastUpdate: null,
+    updatingSignal: false,
+    disabledMarkets: [],
+    locked: false,
+    lockedAt: null,
+    lockedBy: "",
+    lockedFrom: "",
+    copyTradingStatsLastUpdate: null,
+  };
+};

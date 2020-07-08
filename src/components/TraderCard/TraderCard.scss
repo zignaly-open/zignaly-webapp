@@ -2,14 +2,10 @@
   border: 1px solid $borderColor;
   border-radius: 4px;
   box-sizing: border-box;
-  margin: 30px 21px 30px 0;
-  min-height: 300px;
-  width: 400px;
 }
 
 @include media("<=sm") {
   .traderCard {
     margin: 30px 0 0;
-    width: 100%;
   }
 }

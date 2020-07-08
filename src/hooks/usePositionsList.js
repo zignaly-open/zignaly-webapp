@@ -126,22 +126,27 @@ const usePositionsList = (type, positionEntity = null) => {
     return /** @type {UserPositionsCollection} */ (matches);
   };
 
+  const prepareNewPositionsState = () => {
+    let newPositions = { ...positions };
+    // Reset new positions state on exchange change.
+    if (exchangeRef.current !== storeSettings.selectedExchange.internalId) {
+      newPositions = cloneDeep(defaultPositionsState);
+      exchangeRef.current = storeSettings.selectedExchange.internalId;
+    }
+
+    // Only show loader at initial load to avoid loader experience disruption on updates.
+    if (newPositions[type] === null) {
+      setLoading(true);
+    }
+
+    return newPositions;
+  };
+
   const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
-    let newPositions = { ...positions };
 
     if (fetchMethod) {
-      // Reset new positions state on exchange change.
-      if (exchangeRef.current !== storeSettings.selectedExchange.internalId) {
-        newPositions = cloneDeep(defaultPositionsState);
-        exchangeRef.current = storeSettings.selectedExchange.internalId;
-      }
-
-      // Only show loader at initial load to avoid loader experience disruption on updates.
-      if (newPositions[type] === null) {
-        setLoading(true);
-      }
-
+      const newPositions = prepareNewPositionsState();
       fetchMethod
         .then((fetchData) => {
           // Prevent other tabs request leftover to from race condition that override current tab data.
@@ -170,16 +175,18 @@ const usePositionsList = (type, positionEntity = null) => {
   ]);
 
   const loadPosition = () => {
-    setLoading(true);
     const payload = {
+      version: 2,
       token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
+    const newPositions = prepareNewPositionsState();
     tradeApi
       .positionGet(payload)
       .then((data) => {
-        const newPositions = { ...positions, [type]: [data] };
+        newPositions[type] = [data];
         setPositions(newPositions);
         setLoading(false);
       })

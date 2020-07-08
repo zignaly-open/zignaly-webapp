@@ -3,6 +3,7 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
+import useExchangesOptions from "./useExchangesOptions";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import { showErrorAlert } from "../store/actions/ui";
@@ -55,7 +56,7 @@ const useProvidersList = (options) => {
   /**
    * @type {ProvidersCollection} initialState
    */
-  const initialState = [];
+  const initialState = null;
   const [providers, setProviders] = useState(initialState);
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
   const [timeFrame, setTimeFrame] = useState(90);
@@ -76,17 +77,7 @@ const useProvidersList = (options) => {
   const [coin, setCoin] = useState(coins[0]);
 
   // Exchanges
-  const exchanges = [
-    {
-      val: "ALL",
-      label: intl.formatMessage({ id: "fil.allexchanges" }),
-    },
-  ].concat(
-    ["Binance", "Zignaly", "KuCoin"].map((label) => ({
-      val: label.toLowerCase(),
-      label,
-    })),
-  );
+  const exchanges = useExchangesOptions(true);
   const [exchange, setExchange] = useState("ALL");
 
   const [sort, setSort] = useState("RETURNS_DESC");
@@ -103,10 +94,10 @@ const useProvidersList = (options) => {
   /**
    * Sort providers by selected option
    *
-   * @param {ProvidersCollection} [list] Providers collection.
+   * @param {ProvidersCollection} list Providers collection.
    * @returns {void}
    */
-  const sortProviders = (list = providersFiltered) => {
+  const sortProviders = (list) => {
     const [key, direction] = sort.split("_");
     const listSorted = [...list].sort((a, b) => {
       let res = 0;
@@ -132,15 +123,20 @@ const useProvidersList = (options) => {
     setProvidersFiltered(listSorted);
   };
   // Sort providers on sort option change
-  useEffect(sortProviders, [sort]);
+  useEffect(() => {
+    if (providersFiltered) {
+      sortProviders(providersFiltered);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort]);
 
   /**
    * Filter providers by selected options
    *
-   * @param {ProvidersCollection} [list] Providers collection.
+   * @param {ProvidersCollection} list Providers collection.
    * @returns {void}
    */
-  const filterProviders = (list = providers) => {
+  const filterProviders = (list) => {
     const res = list.filter(
       (p) =>
         (coin.val === "ALL" || p.quote === coin.val) &&
@@ -149,7 +145,12 @@ const useProvidersList = (options) => {
     sortProviders(res);
   };
   // Filter providers on filter change
-  useEffect(filterProviders, [coin, exchange]);
+  useEffect(() => {
+    if (providers) {
+      filterProviders(providers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coin, exchange]);
 
   const loadProviders = () => {
     const payload = {
