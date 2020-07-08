@@ -42,10 +42,8 @@ const ManagementSummary = ({ summary }) => {
       <ManagementSummaryCard
         foot={`USDT ${formatFloat2Dec(summary.freeBalanceUSDT)}`}
         icon="balance"
-        percentage={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
-        quote={summary.quote}
         title={<FormattedMessage id="copyt.management.freebalance" />}
-        value={formatFloat2Dec(summary.freeBalance)}
+        value={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
       />
 
       <ManagementSummaryCard
