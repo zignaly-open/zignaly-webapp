@@ -315,7 +315,7 @@ const TakeProfitPanel = (props) => {
       setError(
         priceProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
       );
     }
 
@@ -347,7 +347,7 @@ const TakeProfitPanel = (props) => {
       setError(
         unitsProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
       );
     }
   };
@@ -375,7 +375,7 @@ const TakeProfitPanel = (props) => {
       setError(
         unitsProperty,
         "error",
-        formatMessage({ id: "termaxal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
+        formatMessage({ id: "terminal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
       );
     }
   };
