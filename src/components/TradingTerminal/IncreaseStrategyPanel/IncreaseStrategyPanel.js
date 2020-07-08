@@ -186,8 +186,12 @@ const IncreaseStrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  required: "Position size is required.",
+                  validate: validatePositionSize,
+                })}
                 name="positionSize"
+                onChange={positionSizeChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">{symbolData.quote}</div>

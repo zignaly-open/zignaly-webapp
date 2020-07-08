@@ -64,7 +64,6 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();

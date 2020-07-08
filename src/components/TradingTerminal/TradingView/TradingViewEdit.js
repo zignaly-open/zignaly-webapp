@@ -149,7 +149,6 @@ const TradingViewEdit = (props) => {
         }
         if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
           if (eventSymbol !== dataParsed.data.original_name) {
-            console.log("lastMessage: ", dataParsed);
             setLastPrice(dataParsed.data.last_price);
             eventSymbol = dataParsed.data.original_name;
           }
