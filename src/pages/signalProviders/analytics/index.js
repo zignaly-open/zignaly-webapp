@@ -19,9 +19,9 @@ const SignalProvidersAnalytics = () => {
     <Box className="spAnalyticsPage">
       <Helmet>
         <title>
-          {intl.formatMessage({
+          {`${intl.formatMessage({ id: "menu.signalproviders" })} | ${intl.formatMessage({
             id: "srv.analytics",
-          })}
+          })}`}
         </title>
       </Helmet>
       <ProvidersAnalytics type="signalp" />

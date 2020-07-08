@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./balance.scss";
 import { Box } from "@material-ui/core";
 import { compose } from "recompose";
@@ -11,16 +11,22 @@ import History from "../../../components/Balance/History";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useIntl } from "react-intl";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
   const storeSettings = useStoreSettingsSelector();
   const balance = useBalance(storeSettings.selectedExchange.internalId);
+  const intl = useIntl();
 
   return (
     <>
       <Helmet>
-        <title>Balance</title>
+        <title>
+          {`${intl.formatMessage({ id: "dashboard" })} | ${intl.formatMessage({
+            id: "dashboard.balance",
+          })}`}
+        </title>
       </Helmet>
       <Box
         className="balancePage"

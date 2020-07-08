@@ -13,7 +13,11 @@ const ConnectedProviders = () => {
   return (
     <Box className="connectedProviders">
       <Helmet>
-        <title>{intl.formatMessage({ id: "dashboard.providers" })}</title>
+        <title>
+          {`${intl.formatMessage({ id: "dashboard" })} | ${intl.formatMessage({
+            id: "dashboard.providers",
+          })}`}
+        </title>
       </Helmet>
       <ProvidersBrowse connectedOnly={true} type="signalp" />
     </Box>

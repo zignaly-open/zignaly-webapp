@@ -11,6 +11,8 @@ import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import { isEmpty } from "lodash";
+import { Helmet } from "react-helmet";
+import { useIntl } from "react-intl";
 
 const SignalProvidersSettings = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -21,6 +23,7 @@ const SignalProvidersSettings = () => {
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
   const quotes = useQuoteAssets();
+  const intl = useIntl();
 
   const loadSettings = () => {
     const payload = {
@@ -48,6 +51,13 @@ const SignalProvidersSettings = () => {
 
   return (
     <Box className="profileSettingsPage">
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.settings",
+          })}`}
+        </title>
+      </Helmet>
       {loading && (
         <Box
           alignItems="center"

@@ -28,7 +28,11 @@ const CopyTradersBrowse = (props) => {
   return (
     <Box className="ctBrowsePage">
       <Helmet>
-        <title>{intl.formatMessage({ id: "menu.copytraders" })}</title>
+        <title>
+          {`${intl.formatMessage({ id: "menu.copytraders" })} | ${intl.formatMessage({
+            id: "srv.browse",
+          })}`}
+        </title>
       </Helmet>
 
       <ProvidersBrowse

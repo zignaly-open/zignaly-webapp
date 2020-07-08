@@ -7,7 +7,8 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import UsersTable from "../../../components/Provider/Users/UsersTable";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { Helmet } from "react-helmet";
 
 const CopyTradersUsers = () => {
   const storeViews = useStoreViewsSelector();
@@ -15,6 +16,7 @@ const CopyTradersUsers = () => {
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const loadFollowersList = () => {
     setLoading(true);
@@ -44,6 +46,13 @@ const CopyTradersUsers = () => {
       flexDirection="row"
       justifyContent="center"
     >
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.users",
+          })}`}
+        </title>
+      </Helmet>
       {loading && <CircularProgress color="primary" />}
       {!loading && (
         <UsersTable

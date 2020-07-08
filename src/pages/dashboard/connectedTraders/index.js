@@ -13,7 +13,11 @@ const ConnectedTraders = () => {
   return (
     <Box className="connectedTradersPage">
       <Helmet>
-        <title>{intl.formatMessage({ id: "dashboard.traders" })}</title>
+        <title>
+          {`${intl.formatMessage({ id: "dashboard" })} | ${intl.formatMessage({
+            id: "dashboard.traders",
+          })}`}
+        </title>
       </Helmet>
       <ProvidersBrowse connectedOnly={true} type="copyt" />
     </Box>

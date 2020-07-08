@@ -9,10 +9,13 @@ import Performance from "../../../components/Provider/Profile/Performance";
 import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { Helmet } from "react-helmet";
+import { useIntl } from "react-intl";
 
 const CopyTradersProfile = () => {
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const checkPaymentStatus = () => {
     if (typeof window !== undefined) {
@@ -45,6 +48,13 @@ const CopyTradersProfile = () => {
       flexWrap="wrap"
       justifyContent="center"
     >
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.profile",
+          })}`}
+        </title>
+      </Helmet>
       <Box bgcolor="grid.main" className="aboutBox">
         <AboutUs provider={storeViews.provider} />
       </Box>

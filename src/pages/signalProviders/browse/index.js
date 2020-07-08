@@ -29,9 +29,9 @@ const SignalProvidersBrowse = (props) => {
     <Box className="spBrowsePage">
       <Helmet>
         <title>
-          {intl.formatMessage({
-            id: "menu.signalproviders",
-          })}
+          {`${intl.formatMessage({ id: "menu.signalproviders" })} | ${intl.formatMessage({
+            id: "srv.browse",
+          })}`}
         </title>
       </Helmet>
 

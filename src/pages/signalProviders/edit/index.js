@@ -3,9 +3,12 @@ import "./edit.scss";
 import { Box } from "@material-ui/core";
 import EditProfileForm from "../../../components/Forms/EditProfileForm";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import { Helmet } from "react-helmet";
+import { useIntl } from "react-intl";
 
 const SignalProvidersEdit = () => {
   const storeViews = useStoreViewsSelector();
+  const intl = useIntl();
 
   return (
     <Box
@@ -15,6 +18,13 @@ const SignalProvidersEdit = () => {
       flexDirection="row"
       justifyContent="center"
     >
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.edit",
+          })}`}
+        </title>
+      </Helmet>
       {<EditProfileForm provider={storeViews.provider} />}
     </Box>
   );

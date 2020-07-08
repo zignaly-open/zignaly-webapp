@@ -9,6 +9,8 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { Helmet } from "react-helmet";
+import { useIntl } from "react-intl";
 
 const CopyTradersManagement = () => {
   const storeViews = useStoreViewsSelector();
@@ -20,6 +22,7 @@ const CopyTradersManagement = () => {
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [positionsLoading, setPositionsLoading] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const loadSummary = () => {
     if (storeViews.provider.id) {
@@ -90,6 +93,13 @@ const CopyTradersManagement = () => {
 
   return (
     <Box className="profileManagementPage">
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.management",
+          })}`}
+        </title>
+      </Helmet>
       <Box className="summaryBox">
         {summaryLoading && (
           <Box

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./providerAnalytics.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
 import TradingPerformance from "../../../components/Provider/Analytics/TradingPerformance";
 import tradeApi from "../../../services/tradeApiClient";
@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { createProviderFollowersEmptyEntity } from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
+import { Helmet } from "react-helmet";
 
 const SignalProvidersAnalytics = () => {
   const storeSession = useStoreSessionSelector();
@@ -32,6 +33,7 @@ const SignalProvidersAnalytics = () => {
   const [performanceLoading, setPerformanceLoading] = useState(false);
   const [increase, setIncrease] = useState(0);
   const [increasePercentage, setIncreasePercentage] = useState(0);
+  const intl = useIntl();
 
   const payload = {
     token: storeSession.tradeApi.accessToken,
@@ -90,6 +92,13 @@ const SignalProvidersAnalytics = () => {
 
   return (
     <Box className="profileAnalyticsPage">
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.analytics",
+          })}`}
+        </title>
+      </Helmet>
       <Box bgcolor="grid.main" className="tradingPerformanceBox">
         <Typography className="boxTitle" variant="h3">
           <FormattedMessage id="copyt.tradingperformance" />

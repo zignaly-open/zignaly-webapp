@@ -10,10 +10,13 @@ import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
 import Options from "../../../components/Provider/Profile/Options";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { useIntl } from "react-intl";
+import { Helmet } from "react-helmet";
 
 const SignalProvidersProfile = () => {
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const checkPaymentStatus = () => {
     if (typeof window !== undefined) {
@@ -46,6 +49,13 @@ const SignalProvidersProfile = () => {
       flexWrap="wrap"
       justifyContent="flex-start"
     >
+      <Helmet>
+        <title>
+          {`${storeViews.provider.name} | ${intl.formatMessage({
+            id: "srv.profile",
+          })}`}
+        </title>
+      </Helmet>
       <Box bgcolor="grid.main" className="aboutBox">
         <AboutUs provider={storeViews.provider} />
       </Box>
