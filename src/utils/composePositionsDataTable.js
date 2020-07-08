@@ -468,7 +468,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {!position.isCopyTrading && (
+      {(!position.isCopyTrading || position.type === "open") && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -835,9 +835,11 @@ export function excludeDataTableColumn(dataTable, columnId) {
 function composeManagementPositionRow(position, confirmActionHandler) {
   return [
     composeRawValue(position.subPositions),
+    composeRawValue(position.openDateReadable),
     composeRawValue(position.providerName),
     composeRawValue(position.copyTradingTotals.totalPositions),
     composeRawValue(position.copyTradingTotals.soldPositions),
+    composeStatusMessage(position.status),
     composeRawValue(position.signalId),
     composeRawValue(position.userId),
     composeRawValue(position.pair),
@@ -874,9 +876,11 @@ function composeManagementPositionRow(position, confirmActionHandler) {
 export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     "col.provider.subpositions",
+    "col.date.open",
     "col.provider.name",
     "col.provider.totalpositions",
     "col.provider.soldpositions",
+    "col.status",
     "col.signalid",
     "col.users.userid",
     "col.pair",

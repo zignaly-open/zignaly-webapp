@@ -391,7 +391,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} stopLossStyle
  * @property {string} symbol
  * @property {string} userId
- * @property {('unsold' | 'sold' | 'unopened' | '')} type
+ * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type
  * @property {PositionEntityTotals} copyTradingTotals
  * @property {Number} subPositions
  * @property {Number} returnFromAllocated
