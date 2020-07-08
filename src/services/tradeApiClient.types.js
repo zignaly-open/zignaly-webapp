@@ -739,6 +739,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ForgotPasswordStep3Payload
+ * @property {string} token
+ * @property {String} password
+ */
+
+/**
  * @typedef {Object} ProfileNotifications
  * @property {boolean} emailEnable
  * @property {boolean} emailNews

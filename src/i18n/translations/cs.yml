@@ -442,6 +442,7 @@ alert.profileedit.title: "CH-Profile Edited"
 alert.profileedit.body: "CH-Your profile has been successfully updated!"
 alert.forgotpassword.step1.title: "CH-Request Processed"
 alert.forgotpassword.step1.body: "CH-An email has been sent to your provided email for further instructions."
+alert.forgotpassword.step3.body: "CH-Your password has been reset. You can now login with new password!"
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "CH-Your API-Key from the provider"

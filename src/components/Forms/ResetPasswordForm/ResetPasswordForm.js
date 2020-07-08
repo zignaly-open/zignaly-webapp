@@ -7,6 +7,7 @@ import {
   FormControl,
   OutlinedInput,
   Popper,
+  Typography,
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { validatePassword } from "../../../utils/validators";
@@ -14,15 +15,32 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import PasswordStrength from "../../Passwords/PasswordStrength";
 import { useForm } from "react-hook-form";
+import tradeApi from "../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+import { navigate } from "@reach/router";
 
-const ResetPasswordForm = () => {
+/**
+ * @typedef {Object} PositionPageProps
+ * @property {string} token Token aquired by the recover request.
+ * @property {React.SetStateAction<*>} setVerified
+ */
+
+/**
+ * Reset Password form component.
+ *
+ * @param {PositionPageProps} props Component properties.
+ * @returns {JSX.Element} Reset Password element.
+ */
+const ResetPasswordForm = ({ token, setVerified }) => {
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
   const { errors, handleSubmit, register, clearError, setError } = useForm();
+  const dispatch = useDispatch();
 
   /**
    * Main password change state handling.
@@ -77,6 +95,25 @@ const ResetPasswordForm = () => {
   const onSubmit = (data) => {
     if (data.password === data.repeatPassword) {
       setPasswordDoNotMatch(false);
+      setLoading(true);
+      const payload = {
+        token: token,
+        password: data.password,
+      };
+      tradeApi
+        .forgotPasswordStep3(payload)
+        .then(() => {
+          dispatch(
+            showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step3.body"),
+          );
+          setLoading(false);
+          navigate("/login");
+        })
+        .catch((e) => {
+          setLoading(false);
+          dispatch(showErrorAlert(e));
+          setVerified(false);
+        });
     } else {
       setPasswordDoNotMatch(true);
     }
@@ -101,7 +138,7 @@ const ResetPasswordForm = () => {
         flexDirection="column"
         justifyContent="center"
       >
-        <h3>Reset Password From</h3>
+        <Typography variant="h3">Reset Password From</Typography>
         <Popper
           anchorEl={anchorEl}
           className="passwordStrengthBox"

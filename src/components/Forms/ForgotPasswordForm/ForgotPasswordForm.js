@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ForgotPasswordForm.scss";
-import { Box, TextField } from "@material-ui/core";
+import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -62,7 +62,7 @@ const ForgotPasswordForm = () => {
         flexDirection="column"
         justifyContent="center"
       >
-        <h3>Password Recovery Form</h3>
+        <Typography variant="h3">Password Recovery Form</Typography>
         <Box
           alignItems="start"
           className="inputBox"

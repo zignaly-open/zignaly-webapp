@@ -87,6 +87,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep1Payload} ForgotPasswordStep1Payload
+ * @typedef {import('./tradeApiClient.types').ForgotPasswordStep3Payload} ForgotPasswordStep3Payload
  */
 
 /**
@@ -1064,7 +1065,7 @@ class TradeApiClient {
   /**
    * Function to get Management positions.
    *
-   * @param {ForgotPasswordStep1Payload} payload Management poistions payload.
+   * @param {ForgotPasswordStep3Payload} payload Management poistions payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient

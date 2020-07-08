@@ -12,14 +12,14 @@ import Link from "../../components/LocalizedLink";
 
 /**
  * @typedef {Object} PositionPageProps
- * @property {string} token The position ID dynamic route path parameter.
+ * @property {string} token Token aquired by the recover request.
  */
 
 /**
- * Position detail page component.
+ * Recover Password page component.
  *
  * @param {PositionPageProps} props Component properties.
- * @returns {JSX.Element} Position page element.
+ * @returns {JSX.Element} Recover Password element.
  */
 const RecoverPassword = ({ token }) => {
   const [loading, setLoading] = useState(false);
@@ -67,7 +67,7 @@ const RecoverPassword = ({ token }) => {
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ResetPasswordForm />
+            <ResetPasswordForm token={token} setVerified={setVerified} />
           </>
         ) : (
           <Box className="errorBox" display="flex" flexDirection="column" alignItems="center">
