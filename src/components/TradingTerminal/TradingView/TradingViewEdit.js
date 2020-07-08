@@ -112,7 +112,6 @@ const TradingViewEdit = (props) => {
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
-  const isLastPriceLoading = lastPrice === null;
 
   /**
    * Resolve exchange name from selected exchange.
@@ -195,7 +194,6 @@ const TradingViewEdit = (props) => {
       entryType: "LONG",
       leverage: 1,
       positionSize: "",
-      price: lastPrice,
       realInvestment: "",
       stopLossPrice: "",
       trailingStopPrice: "",
@@ -244,7 +242,7 @@ const TradingViewEdit = (props) => {
             </Box>
           )}
           <Box className="tradingViewChart" id="trading_view_chart" />
-          {!isLoading && !isLastPriceLoading && (
+          {!isLoading && lastPrice && (
             <StrategyForm
               lastPrice={lastPrice}
               notifyPositionUpdate={notifyPositionUpdate}

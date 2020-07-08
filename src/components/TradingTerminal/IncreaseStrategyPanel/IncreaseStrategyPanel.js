@@ -38,7 +38,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
  */
 const IncreaseStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch } = useFormContext();
   const intl = useIntl();
@@ -93,6 +93,7 @@ const IncreaseStrategyPanel = (props) => {
   // Watched inputs that affect components.
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
+  const lastPrice = watch("lastPrice");
 
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
@@ -101,6 +102,7 @@ const IncreaseStrategyPanel = (props) => {
         <Typography variant="h5">
           <FormattedMessage id="terminal.increasestrategy" />
         </Typography>
+        <input name="lastPrice" ref={register} type="hidden" />
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
@@ -149,6 +151,7 @@ const IncreaseStrategyPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  defaultValue={lastPrice}
                   inputRef={register}
                   name="price"
                   onChange={priceChange}
@@ -158,7 +161,7 @@ const IncreaseStrategyPanel = (props) => {
               {errors.price && <span className="errorText">{errors.price.message}</span>}
             </FormControl>
           ) : (
-            <input name="price" ref={register} type="hidden" />
+            <input defaultValue={lastPrice} name="price" ref={register} type="hidden" />
           )}
           {selectedExchange.exchangeType === "futures" && (
             <FormControl>
