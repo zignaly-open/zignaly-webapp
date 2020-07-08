@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { assign, filter, omitBy } from "lodash";
+import { assign, cloneDeep, filter, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -23,6 +23,15 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  */
 
 /**
+ * @typedef {Object} PositionsState
+ * @property {UserPositionsCollection} open
+ * @property {UserPositionsCollection} closed
+ * @property {UserPositionsCollection} log
+ * @property {UserPositionsCollection} profileOpen
+ * @property {UserPositionsCollection} profileClosed
+ */
+
+/**
  * Provides positions data load by collection type.
  *
  * Encapsulates the data fetch from Trade API and local state handling.
@@ -32,8 +41,10 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @returns {HookPositionsListData} Positions collection.
  */
 const usePositionsList = (type, positionEntity = null) => {
+  const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
   const storeViews = useStoreViewsSelector();
+  const exchangeRef = useRef(storeSettings.selectedExchange.exchangeId);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const defaultFilters = {
@@ -41,17 +52,21 @@ const usePositionsList = (type, positionEntity = null) => {
     pair: "all",
     side: "all",
     type: "all",
-    internalExchangeId: storeSettings.selectedExchange.internalId,
+  };
+
+  /**
+   * @type {PositionsState}
+   */
+  const defaultPositionsState = {
+    open: null,
+    closed: null,
+    log: null,
+    profileOpen: null,
+    profileClosed: null,
   };
 
   const [filters, setFilters] = useState(defaultFilters);
-  const [positions, setPositions] = useState({
-    open: [],
-    closed: [],
-    log: [],
-    profileOpen: [],
-    profileClosed: [],
-  });
+  const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
 
   const storeSession = useStoreSessionSelector();
   const routeFetchMethod = () => {
@@ -113,20 +128,46 @@ const usePositionsList = (type, positionEntity = null) => {
 
   const loadPositions = () => {
     const fetchMethod = routeFetchMethod();
+    let newPositions = { ...positions };
+
     if (fetchMethod) {
-      setLoading(true);
+      // Reset new positions state on exchange change.
+      if (exchangeRef.current !== storeSettings.selectedExchange.internalId) {
+        newPositions = cloneDeep(defaultPositionsState);
+        exchangeRef.current = storeSettings.selectedExchange.internalId;
+      }
+
+      // Only show loader at initial load to avoid loader experience disruption on updates.
+      if (newPositions[type] === null) {
+        setLoading(true);
+      }
+
       fetchMethod
         .then((fetchData) => {
-          const newPositions = { ...positions, [type]: fetchData };
-          setPositions(newPositions);
-          setLoading(false);
+          // Prevent other tabs request leftover to from race condition that override current tab data.
+          if (!typeRef.current || typeRef.current === type) {
+            newPositions[type] = fetchData;
+            setPositions(newPositions);
+          }
         })
         .catch((e) => {
-          dispatch(showErrorAlert(e));
+          if (e.code === 18) {
+            newPositions[type] = [];
+            setPositions(newPositions);
+          } else {
+            dispatch(showErrorAlert(e));
+          }
+        })
+        .finally(() => {
           setLoading(false);
         });
     }
   };
+  useEffect(loadPositions, [
+    type,
+    storeSession.tradeApi.accessToken,
+    storeSettings.selectedExchange.internalId,
+  ]);
 
   const loadPosition = () => {
     setLoading(true);
@@ -160,8 +201,6 @@ const usePositionsList = (type, positionEntity = null) => {
       }
     }
   };
-
-  useEffect(loadPositions, [type, storeSession.tradeApi.accessToken]);
   useInterval(updateData, 5000);
 
   /**
@@ -172,13 +211,16 @@ const usePositionsList = (type, positionEntity = null) => {
   const updateFilters = () => {
     const newFilters = {
       ...filters,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
     setFilters(newFilters);
   };
+  useEffect(updateFilters, []);
 
-  useEffect(updateFilters, [storeSettings.selectedExchange.internalId]);
+  const handlePositionTypeChange = () => {
+    typeRef.current = type;
+  };
+  useEffect(handlePositionTypeChange, [type]);
 
   /**
    * Combine external state filters with local state.
@@ -193,8 +235,8 @@ const usePositionsList = (type, positionEntity = null) => {
   };
 
   return {
-    positionsAll: positions[type],
-    positionsFiltered: filterData(positions[type]),
+    positionsAll: positions[type] || [],
+    positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
     loading: loading,
   };
