@@ -4,15 +4,6 @@ import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import { assign, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
-import StrategyPanel from "../StrategyPanel/StrategyPanel";
-import TakeProfitPanel from "../TakeProfitPanel/TakeProfitPanel";
-import DCAPanel from "../DCAPanel/DCAPanel";
-import StopLossPanel from "../StopLossPanel/StopLossPanel";
-import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
-import EntryExpirationPanel from "../EntryExpirationPanel/EntryExpirationPanel";
-import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
-import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPanel";
-import CustomButton from "../../CustomButton/CustomButton";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
@@ -24,9 +15,12 @@ import {
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { FormattedMessage } from "react-intl";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
+import CustomButton from "../../CustomButton";
+import { FormattedMessage } from "react-intl";
+import SidebarEditPanels from "./SidebarEditPanels";
+import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
 
 /**
@@ -509,16 +503,14 @@ const StrategyForm = (props) => {
   return (
     <Box className="strategyForm" textAlign="center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        {!isPositionView && <StrategyPanel symbolData={currentSymbolData} />}
-        <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-        <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-        <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-        <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-        {isPositionView && !isClosed && !isCopyTrading && (
-          <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        {isPositionView ? (
+          <SidebarEditPanels
+            currentSymbolData={currentSymbolData}
+            positionEntity={positionEntity}
+          />
+        ) : (
+          <SidebarCreatePanels currentSymbolData={currentSymbolData} />
         )}
-        {!isPositionView && <EntryExpirationPanel />}
-        {!isPositionView && <AutoclosePanel />}
         {!isClosed && (
           <CustomButton
             className={"full submitButton"}
