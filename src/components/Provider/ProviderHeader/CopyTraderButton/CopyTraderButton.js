@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CopyTraderButton.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -25,9 +26,11 @@ import ExchangeIcon from "../../../ExchangeIcon";
 const CopyTraderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
+  const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
 
   const stopCopying = async () => {
     try {
@@ -57,6 +60,17 @@ const CopyTraderButton = ({ provider }) => {
     showCopyModal(false);
   };
 
+  const initFollowingFrom = () => {
+    let found = [...exchangeConnections].find(
+      (item) => item.internalId === provider.exchangeInternalId,
+    );
+    if (found) {
+      setFollowingFrom(found);
+    }
+  };
+
+  useEffect(initFollowingFrom, [exchangeConnections]);
+
   return (
     <Box
       alignItems="center"
@@ -85,10 +99,11 @@ const CopyTraderButton = ({ provider }) => {
             <Typography variant="h4">
               <FormattedMessage id="copyt.followingfrom" />
             </Typography>
-            <ExchangeIcon
-              exchange={storeSettings.selectedExchange.name.toLowerCase()}
-              size="mediumLarge"
-            />
+            <Tooltip title={followingFrom.internalName}>
+              <Box>
+                <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
+              </Box>
+            </Tooltip>
           </Box>
         )
       ) : (

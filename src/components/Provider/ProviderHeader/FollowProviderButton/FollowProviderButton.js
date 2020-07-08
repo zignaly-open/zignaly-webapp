@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./FollowProviderButton.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,8 +24,10 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 const FollowProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
+  const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
 
   const followProvider = async () => {
     try {
@@ -73,6 +76,17 @@ const FollowProviderButton = ({ provider }) => {
     }
   };
 
+  const initFollowingFrom = () => {
+    let found = [...exchangeConnections].find(
+      (item) => item.internalId === provider.exchangeInternalId,
+    );
+    if (found) {
+      setFollowingFrom(found);
+    }
+  };
+
+  useEffect(initFollowingFrom, [exchangeConnections]);
+
   return (
     <Box
       alignItems="center"
@@ -101,12 +115,9 @@ const FollowProviderButton = ({ provider }) => {
             <Typography variant="h4">
               <FormattedMessage id="copyt.followingfrom" />
             </Typography>
-            <Tooltip title={storeSettings.selectedExchange.internalName} placement="top">
+            <Tooltip title={followingFrom.internalName} placement="top">
               <Box>
-                <ExchangeIcon
-                  exchange={storeSettings.selectedExchange.name.toLowerCase()}
-                  size="mediumLarge"
-                />
+                <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
               </Box>
             </Tooltip>
           </Box>
