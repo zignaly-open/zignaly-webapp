@@ -80,6 +80,9 @@ const LineChart = (props) => {
     legend: {
       display: false,
     },
+    animation: {
+      duration: 10000,
+    },
     hover: {
       intersect: false,
       mode: "index",

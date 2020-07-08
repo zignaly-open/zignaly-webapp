@@ -1,7 +1,8 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
 import "./ProvidersList.scss";
+import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -27,15 +28,20 @@ const ProvidersList = (props) => {
       justifyContent="flex-start"
     >
       <Box className="tradersBox">
-        {providers &&
+        {providers.length ? (
           providers.map((provider) => (
-            <TraderCard
-              key={provider.id}
-              provider={provider}
-              showSummary={showSummary}
-              timeFrame={timeFrame}
-            />
-          ))}
+            <LazyLoad height={450} offset={800}>
+              <TraderCard
+                key={provider.id}
+                provider={provider}
+                showSummary={showSummary}
+                timeFrame={timeFrame}
+              />
+            </LazyLoad>
+          ))
+        ) : (
+          <CircularProgress size={21} />
+        )}
       </Box>
     </Box>
   );
