@@ -195,7 +195,7 @@ const TradingViewEdit = (props) => {
       entryType: "LONG",
       leverage: 1,
       positionSize: "",
-      price: lastPrice,
+      lastPrice: lastPrice || "",
       realInvestment: "",
       stopLossPrice: "",
       trailingStopPrice: "",
@@ -203,6 +203,11 @@ const TradingViewEdit = (props) => {
       dcaTargetPricePercentage1: "",
     },
   });
+
+  const propagatePriceToForm = () => {
+    methods.setValue("lastPrice", lastPrice);
+  };
+  useEffect(propagatePriceToForm, [lastPrice]);
 
   /**
    * Determine the current position status.

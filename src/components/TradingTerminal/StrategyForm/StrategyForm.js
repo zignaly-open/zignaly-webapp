@@ -70,6 +70,7 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
   const currentPrice = lastPrice;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
@@ -511,7 +512,7 @@ const StrategyForm = (props) => {
         <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
         <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
         <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-        {isPositionView && !isClosed && (
+        {isPositionView && !isClosed && !isCopyTrading && (
           <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
         )}
         {!isPositionView && <EntryExpirationPanel />}
