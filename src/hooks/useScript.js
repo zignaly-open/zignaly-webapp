@@ -23,40 +23,42 @@ const useScript = (sourceUrl) => {
         loaded: true,
         error: false,
       });
-    } else {
-      cachedScripts.push(sourceUrl);
-      const script = document.createElement("script");
-      script.src = sourceUrl;
-      script.async = true;
 
-      // Script event listener callbacks for load and error.
-      const onScriptLoad = () => {
-        setState({
-          loaded: true,
-          error: false,
-        });
-      };
-
-      const onScriptError = () => {
-        const index = cachedScripts.indexOf(sourceUrl);
-        if (index >= 0) cachedScripts.splice(index, 1);
-        script.remove();
-
-        setState({
-          loaded: true,
-          error: true,
-        });
-      };
-
-      script.addEventListener("load", onScriptLoad);
-      script.addEventListener("error", onScriptError);
-      document.body.appendChild(script);
-
-      return () => {
-        script.removeEventListener("load", onScriptLoad);
-        script.removeEventListener("error", onScriptError);
-      };
+      return () => {};
     }
+
+    cachedScripts.push(sourceUrl);
+    const script = document.createElement("script");
+    script.src = sourceUrl;
+    script.async = true;
+
+    // Script event listener callbacks for load and error.
+    const onScriptLoad = () => {
+      setState({
+        loaded: true,
+        error: false,
+      });
+    };
+
+    const onScriptError = () => {
+      const index = cachedScripts.indexOf(sourceUrl);
+      if (index >= 0) cachedScripts.splice(index, 1);
+      script.remove();
+
+      setState({
+        loaded: true,
+        error: true,
+      });
+    };
+
+    script.addEventListener("load", onScriptLoad);
+    script.addEventListener("error", onScriptError);
+    document.body.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", onScriptLoad);
+      script.removeEventListener("error", onScriptError);
+    };
   };
 
   useEffect(loadScript, [sourceUrl]);
