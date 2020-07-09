@@ -124,7 +124,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     error={!!errors.name}
                     fullWidth
                     inputRef={register({
-                      required: "Name is required",
+                      required: intl.formatMessage({ id: "form.error.name" }),
                     })}
                     name="name"
                   />
@@ -174,7 +174,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                             min: 0,
                           }}
                           inputRef={register({
-                            required: "Min allocated balance is required",
+                            required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
                             min: 0,
                           })}
                           name="minAllocatedBalance"
@@ -195,7 +195,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         name="quote"
                         options={quotes}
                         rules={{
-                          required: "Quote is required",
+                          required: intl.formatMessage({ id: "form.error.quote" }),
                         }}
                         search={true}
                       />
