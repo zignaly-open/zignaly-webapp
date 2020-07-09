@@ -289,6 +289,7 @@ const initialState = {
       globalMinVolume: false,
       globalPositionsPerMarket: false,
       globalWhitelist: false,
+      balanceSynced: false,
     },
   },
   user: {
