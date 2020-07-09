@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -40,6 +41,7 @@ const TrailingStopPanel = (props) => {
   const strategyPrice = watch("price");
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { formatMessage } = useIntl();
 
   const getFieldsDisabledStatus = () => {
     const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -79,9 +81,15 @@ const TrailingStopPanel = (props) => {
   const trailingStopDistanceChange = () => {
     const draftPosition = getValues();
     const trailingStopDistance = parseFloat(draftPosition.trailingStopDistance);
+    const valueType = entryType === "LONG" ? "lower" : "greater";
+    const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (isNaN(trailingStopDistance)) {
-      setError("trailingStopDistance", "error", "Trailing stop distance must be a number.");
+    if (isNaN(trailingStopDistance) || compareFn(trailingStopDistance, 0)) {
+      setError(
+        "trailingStopDistance",
+        "error",
+        formatMessage({ id: "terminal.trailingstop.limit.zero" }, { type: valueType }),
+      );
       return;
     }
 
@@ -148,17 +156,21 @@ const TrailingStopPanel = (props) => {
     const percentageSign = entryType === "SHORT" ? "-" : "";
     const distanceSign = entryType === "SHORT" ? "" : "-";
 
-    if (trailingStopPercentage === 0) {
-      setValue("trailingStopPercentage", percentageSign);
+    if (trailingStopDistance === 0) {
       setValue("trailingStopDistance", distanceSign);
     } else {
-      setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
       setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
+      simulateInputChangeEvent("trailingStopDistance");
     }
 
-    if (expanded) {
-      simulateInputChangeEvent("trailingStopPercentage");
+    if (trailingStopPercentage === 0) {
+      setValue("trailingStopPercentage", percentageSign);
     } else {
+      setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
+      simulateInputChangeEvent("trailingStopPercentage");
+    }
+
+    if (!expanded) {
       setValue("trailingStopPrice", "");
     }
   };
