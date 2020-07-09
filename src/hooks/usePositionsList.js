@@ -188,10 +188,11 @@ const usePositionsList = (type, positionEntity = null) => {
       .then((data) => {
         newPositions[type] = [data];
         setPositions(newPositions);
-        setLoading(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -242,8 +243,8 @@ const usePositionsList = (type, positionEntity = null) => {
   };
 
   return {
-    positionsAll: positions[type] || [],
-    positionsFiltered: filterData(positions[type] || []),
+    positionsAll: positions[type],
+    positionsFiltered: filterData(positions[type]),
     setFilters: combineFilters,
     loading: loading,
   };
