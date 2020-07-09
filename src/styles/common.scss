@@ -88,6 +88,17 @@ body {
   margin: 0;
   width: 100%;
 
+  input {
+    height: 32px;
+    padding: 0 10px;
+
+    &:-webkit-autofill {
+      box-shadow: none;
+      -webkit-box-shadow: none;
+      -webkit-text-fill-color: $black2;
+    }
+  }
+
   div {
     height: 32px;
   }
