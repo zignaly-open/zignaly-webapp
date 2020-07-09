@@ -104,7 +104,7 @@ const usePositionsList = (type, positionEntity = null) => {
    * Filter positions list by filters criteria.
    *
    * @param {UserPositionsCollection} filterPositions Positions collection.
-   * @returns {UserPositionsCollection | null} Filtered positiosn collection.
+   * @returns {UserPositionsCollection} Filtered positions collection.
    */
   const filterData = (filterPositions) => {
     /**
@@ -243,8 +243,8 @@ const usePositionsList = (type, positionEntity = null) => {
   };
 
   return {
-    positionsAll: positions[type],
-    positionsFiltered: filterData(positions[type]),
+    positionsAll: positions[type] || [],
+    positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
     loading: loading,
   };
