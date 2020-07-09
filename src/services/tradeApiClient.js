@@ -1068,6 +1068,7 @@ class TradeApiClient {
    * Function to get request password change in step 2.
    *
    * @param {AuthorizationPayload} payload Request Password change payload.
+   * @return {Promise<boolean>} Promise that resolve boolean result.
    * */
   async forgotPasswordStep2(payload) {
     const endpointPath = "/fe/api.php?action=forgottenPassword2Step";

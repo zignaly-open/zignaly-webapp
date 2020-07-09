@@ -495,7 +495,7 @@ const StrategyForm = (props) => {
    * @returns {boolean} TRUE when ID matches, FALSE otherwise.
    */
   const matchCurrentSymbol = (item) => {
-    return item.id === selectedSymbol.replace("/", "");
+    return item.symbol.replace("/", "") === selectedSymbol.replace("/", "");
   };
   const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 

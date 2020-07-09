@@ -10,6 +10,8 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
+import useScript from "../../hooks/useScript";
+import { withPrefix } from "gatsby";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -24,6 +26,7 @@ import SettingsView from "../../components/SettingsView";
  */
 const PrivateAreaLayout = (props) => {
   const { children } = props;
+  useScript(withPrefix("widgets/freshDeskWidget.js"));
 
   return (
     <>
