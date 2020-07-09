@@ -47,7 +47,7 @@ function usePositionEntry(positionEntity) {
    */
   const getEntrySize = () => {
     if (positionEntity) {
-      return parseFloat(positionEntity.positionSize);
+      return positionEntity.amount;
     }
 
     return parseFloat(units) || 0;

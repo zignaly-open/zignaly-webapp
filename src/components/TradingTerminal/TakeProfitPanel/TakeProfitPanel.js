@@ -452,7 +452,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedUnitsUpdates, [strategyUnits]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
