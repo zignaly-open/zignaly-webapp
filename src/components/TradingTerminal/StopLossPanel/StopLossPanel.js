@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { inRange } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
-import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
+import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";

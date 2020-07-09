@@ -34,7 +34,7 @@ import "./DCAPanel.scss";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
 
