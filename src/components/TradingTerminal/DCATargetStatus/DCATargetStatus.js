@@ -24,21 +24,21 @@ import "./DCATargetStatus.scss";
 const DCATargetStatus = (props) => {
   const { dcaTarget, labelId } = props;
   const { formatMessage } = useIntl();
-  let iconColor = colors.purpleLight;
+  let iconColor = colors.darkGrey;
+  let description = formatMessage({ id: "terminal.status.pending" });
 
   // Empty box to fill flex item space.
   if (!dcaTarget) {
     return <Box />;
   }
 
-  let description = dcaTarget.orderId
-    ? formatMessage({ id: "terminal.status.placed" }, { orderId: dcaTarget.orderId })
-    : formatMessage({ id: "terminal.status.pending" });
-
-  if (dcaTarget.done) {
+  if (!dcaTarget.done && !dcaTarget.skipped && !dcaTarget.cancel && dcaTarget.orderId) {
+    description = formatMessage({ id: "terminal.status.placed" }, { orderId: dcaTarget.orderId });
+    iconColor = colors.blue;
+  } else if (dcaTarget.done && !dcaTarget.skipped && !dcaTarget.cancel && dcaTarget.orderId) {
     description = formatMessage({ id: "terminal.status.done" });
     iconColor = colors.green;
-  } else if (dcaTarget.skipped) {
+  } else if ((dcaTarget.skipped || dcaTarget.cancel) && dcaTarget.errorMSG) {
     description = dcaTarget.errorMSG || formatMessage({ id: "terminal.status.failed" });
     iconColor = colors.red;
   }
