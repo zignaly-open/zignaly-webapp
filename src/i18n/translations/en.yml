@@ -958,3 +958,11 @@ form.error.value: "Enter a value"
 # GENERAL
 general.yes: "Yes"
 general.no: "No"
+
+table.body.noMatch: "Sorry, no matching records found"
+table.pagination.next: "Next Page"
+table.pagination.previous: "Previous Page"
+table.pagination.rowsPerPage: "Rows per page:"
+table.pagination.displayRows: "of"
+table.viewColumns.title: "Show Columns"
+table.viewColumns.titleAria: "Show/Hide Table Columns"

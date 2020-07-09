@@ -956,3 +956,11 @@ form.error.value: "CH-Enter a value"
 # GENERAL
 general.yes: "CH-Yes"
 general.no: "CH-No"
+
+table.body.noMatch: "CH-Sorry, no matching records found"
+table.pagination.next: "CH-Next Page"
+table.pagination.previous: "CH-Previous Page"
+table.pagination.rowsPerPage: "CH-Rows per page:"
+table.pagination.displayRows: "CH-of"
+table.viewColumns.title: "CH-Show Columns"
+table.viewColumns.titleAria: "CH-Show/Hide Table Columns"

@@ -2,9 +2,6 @@ import moment from "moment";
 import { assign, isArray, isObject, mapValues } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
-import { store } from "../store/store";
-
-const state = store.getState();
 
 /**
  * @type {('entry')}
@@ -945,10 +942,7 @@ export function userPositionsResponseTransform(response) {
  * @returns {PositionEntity} Position entity.
  */
 export function userPositionItemTransform(positionItem) {
-  const openDateMoment = moment(Number(positionItem.openDate)).locale(
-    /*@ts-ignore */
-    state.storeSettings.languageCode,
-  );
+  const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
@@ -1029,20 +1023,6 @@ export function userPositionItemTransform(positionItem) {
     return "breakeven";
   };
 
-  /**
-   * Parse realInvestment considering multiple data structure format.
-   *
-   * @param {*} currentPositionItem Position response item.
-   * @returns {number} Real investment value.
-   */
-  const parseRealInvestment = (currentPositionItem) => {
-    if (isObject(currentPositionItem.realInvestment)) {
-      return safeParseFloat(currentPositionItem.realInvestment.$numberDecimal);
-    }
-
-    return safeParseFloat(currentPositionItem.realInvestment) || 0;
-  };
-
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
@@ -1054,7 +1034,9 @@ export function userPositionItemTransform(positionItem) {
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
-    realInvestment: parseRealInvestment(positionItem),
+    realInvestment:
+      safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
+      safeParseFloat(positionItem.realInvestment),
     pair: `${positionItem.base}/${positionItem.quote}`,
     symbol: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
