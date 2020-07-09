@@ -11,7 +11,7 @@ import tradeApi from "../services/tradeApiClient";
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {Array<ExchangeListEntity>} Exchange list.
  */
-const useExchangeList = (shouldExecute) => {
+const useExchangeList = (shouldExecute = true) => {
   const [exchanges, setExchanges] = useState([]);
 
   const storeSession = useStoreSessionSelector();

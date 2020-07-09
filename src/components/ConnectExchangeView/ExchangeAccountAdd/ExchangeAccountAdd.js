@@ -143,7 +143,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
           setError(
             selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
             "notMatch",
-            "The provided api key/secret pair is not valid.",
+            intl.formatMessage({ id: "form.error.key.invalid" }),
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -201,7 +201,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
           )}
           <CustomInput
             inputRef={register({
-              required: "name empty",
+              required: intl.formatMessage({ id: "form.error.name" }),
             })}
             label="accounts.exchange.name"
             name="internalName"
@@ -211,7 +211,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               <CustomInput
                 autoComplete="new-password"
                 inputRef={register({
-                  required: `${field} empty`,
+                  required: intl.formatMessage({ id: "form.error.password" }),
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}

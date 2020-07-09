@@ -891,3 +891,21 @@ error.1038: "CH-The buying notional value is below minimal order value"
 error.1039: "CH-The selling target amount would be minimum than the allowed minimum order value."
 error.1040: "CH-Exchange connection error"
 error.1041: "CH-Exchange operation failed"
+
+# FORM
+form.error.quote: "CH-Select a quote"
+form.error.minAllocatedBalance: "CH-Enter the min allocated balance"
+form.error.name: "CH-Enter a name"
+form.error.key: "CH-Enter a key"
+form.error.key.invalid: "CH-The provided api key/secret pair is not valid"
+form.error.secret: "CH-Enter a secret"
+form.error.password: "CH-Enter a password"
+form.error.password.weak: "CH-The password is weak"
+form.error.password.match: "CH-The passwords do not match"
+form.error.passphrase: "CH-Enter a passphrase"
+form.error.telegram: "CH-Please enter your telegram code"
+form.error.value: "CH-Enter a value"
+
+# GENERAL
+general.yes: "CH-Yes"
+general.no: "CH-No"

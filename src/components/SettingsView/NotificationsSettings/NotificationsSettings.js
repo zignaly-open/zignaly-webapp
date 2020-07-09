@@ -9,7 +9,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import "./NotificationsSettings.scss";
@@ -30,6 +30,7 @@ const NotificationsSettings = () => {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [telegramEnabled, enableTelegram] = useState(false);
+  const intl = useIntl();
 
   const loadData = () => {
     const payload = {
@@ -145,7 +146,9 @@ const NotificationsSettings = () => {
                   </Typography>
                   <OutlinedInput
                     className="customInput"
-                    inputRef={register({ required: "Please enter your telegram code." })}
+                    inputRef={register({
+                      required: intl.formatMessage({ id: "form.error.telegram" }),
+                    })}
                     name="telegramCode"
                   />
                 </label>

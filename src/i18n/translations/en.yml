@@ -893,3 +893,21 @@ error.1038: "The buying notional value is below minimal order value"
 error.1039: "The selling target amount would be minimum than the allowed minimum order value."
 error.1040: "Exchange connection error"
 error.1041: "Exchange operation failed"
+
+# FORM
+form.error.quote: "Select a quote"
+form.error.minAllocatedBalance: "Enter the min allocated balance"
+form.error.name: "Enter a name"
+form.error.key: "Enter a key"
+form.error.key.invalid: "The provided api key/secret pair is not valid"
+form.error.secret: "Enter a secret"
+form.error.password: "Enter a password"
+form.error.password.weak: "The password is weak"
+form.error.password.match: "The passwords do not match"
+form.error.passphrase: "Enter a passphrase"
+form.error.telegram: "Please enter your telegram code"
+form.error.value: "Enter a value"
+
+# GENERAL
+general.yes: "Yes"
+general.no: "No"

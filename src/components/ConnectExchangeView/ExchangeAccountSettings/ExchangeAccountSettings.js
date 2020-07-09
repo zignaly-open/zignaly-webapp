@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useImperativeHandle } from "react";
 import ModalPathContext from "../ModalPathContext";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import CustomButton from "../../CustomButton";
 import ExchangeAccountForm, {
   CustomSwitchInput,
@@ -37,6 +37,7 @@ const ExchangeAccountSettings = () => {
   } = useContext(ModalPathContext);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const intl = useIntl();
 
   const {
     register,
@@ -150,7 +151,7 @@ const ExchangeAccountSettings = () => {
           setError(
             accountExchange.requiredAuthFields[accountExchange.requiredAuthFields.length - 1],
             "notMatch",
-            "The provided api key/secret pair is not valid.",
+            intl.formatMessage({ id: "form.error.key.invalid" }),
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -185,7 +186,7 @@ const ExchangeAccountSettings = () => {
         <CustomInput
           defaultValue={selectedAccount.internalName}
           inputRef={register({
-            required: "name empty",
+            required: intl.formatMessage({ id: "form.error.name" }),
           })}
           label="accounts.exchange.name"
           name="internalName"
@@ -196,7 +197,9 @@ const ExchangeAccountSettings = () => {
             <CustomInput
               autoComplete="new-password"
               inputRef={register({
-                required: authFieldsModified ? `${field} empty` : false,
+                required: authFieldsModified
+                  ? intl.formatMessage({ id: `form.error.${field}` })
+                  : false,
               })}
               key={field}
               label={`accounts.exchange.${field}`}
@@ -210,7 +213,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMaxPositions}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.maxconcurrent"
           name="globalMaxPositions"
@@ -220,7 +223,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMinVolume}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.minvolume"
           name="globalMinVolume"
@@ -231,7 +234,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalPositionsPerMarket}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.limitpositions"
           name="globalPositionsPerMarket"
@@ -241,7 +244,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalBlacklist}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.blacklist"
           name="globalBlacklist"
@@ -251,7 +254,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalWhitelist}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.whitelist"
           name="globalWhitelist"

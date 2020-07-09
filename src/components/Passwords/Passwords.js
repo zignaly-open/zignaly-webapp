@@ -5,7 +5,7 @@ import { useTheme } from "@material-ui/core/styles";
 import PasswordStrength from "./PasswordStrength";
 import PasswordInput from "./PasswordInput";
 import { validatePassword } from "../../utils/validators";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -31,6 +31,7 @@ const Passwords = ({ formMethods, edit }) => {
   const { register, errors, getValues } = formMethods;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const intl = useIntl();
 
   /**
    * Main password change state handling.
@@ -78,7 +79,8 @@ const Passwords = ({ formMethods, edit }) => {
           inputRef={(e) => {
             register(e, {
               required: true,
-              validate: () => (strength >= 4 ? true : "The password is weak."),
+              validate: () =>
+                strength >= 4 ? true : intl.formatMessage({ id: "form.error.password.weak" }),
             });
             anchorEl.current = e;
           }}
@@ -105,7 +107,7 @@ const Passwords = ({ formMethods, edit }) => {
               if (value === getValues().password) {
                 return true;
               }
-              return "The passwords do not match.";
+              return intl.formatMessage({ id: "form.error.password.match" });
             },
           })}
           label={<FormattedMessage id={"security.repeat" + (edit ? ".new" : "")} />}
