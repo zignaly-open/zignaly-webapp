@@ -128,7 +128,7 @@ const SignupForm = () => {
               onChange={() => clearError("terms")}
             />
             <Box
-              className={"terms-box " + (errors.terms ? " error" : "")}
+              className={"termsBox " + (errors.terms ? " error" : "")}
               display="flex"
               flexDirection="row"
               flexWrap="wrap"
@@ -149,7 +149,7 @@ const SignupForm = () => {
         <Box className="inputBox checkbox">
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
-            <span className={"terms-text"}>Subscribe to notifications</span>
+            <span className="termsText">Subscribe to notifications</span>
           </Box>
         </Box>
 

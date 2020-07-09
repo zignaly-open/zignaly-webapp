@@ -3,6 +3,7 @@ import "./PerformanceGraph.scss";
 import BarChart from "../../../../Graphs/BarChart";
 import { Box, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import { formatFloat2Dec } from "../../../../../utils/format";
 
 /**
  *
@@ -73,11 +74,11 @@ const PerformanceGraph = ({ provider }) => {
   };
 
   /**
-   * @param {ChartTooltipItem} tooltipItems Tooltip itwm.
+   * @param {ChartTooltipItem} tooltipItems Tooltip item.
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}`;
+    `${formatFloat2Dec(tooltipItems[isMobile ? "xLabel" : "yLabel"])}%`;
 
   return (
     <Box className="performanceGraph">

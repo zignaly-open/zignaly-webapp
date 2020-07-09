@@ -1,14 +1,36 @@
 .twoFAForm {
   padding: 60px 75px;
+  background: $white;
 
   h3 {
     font-size: 27px;
     margin-bottom: 40px;
+    color: $black2;
   }
 
   .inputBox {
     margin-bottom: 40px;
     width: fit-content;
+  }
+
+  .customInput {
+    input {
+      color: $black2;
+    }
+
+    svg {
+      color: $lightGrey;
+    }
+
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .customLabel {
+    color: $black2;
   }
 
   .link {

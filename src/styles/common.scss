@@ -96,13 +96,15 @@ body {
     padding-right: 10px;
   }
 
-  &.dark {
-    fieldset {
-      border-color: $lightGrey;
-    }
+  svg {
+    color: $lightGrey;
   }
 
-  &.light {
+  fieldset {
+    border-color: $lightGrey;
+  }
+
+  &:hover {
     fieldset {
       border-color: $lightGrey;
     }
@@ -117,16 +119,8 @@ body {
     padding-right: 10px;
   }
 
-  &.dark {
-    fieldset {
-      border-color: $lightGrey;
-    }
-  }
-
-  &.light {
-    fieldset {
-      border-color: $lightGrey;
-    }
+  fieldset {
+    border-color: $lightGrey;
   }
 }
 

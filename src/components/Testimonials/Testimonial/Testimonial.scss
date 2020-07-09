@@ -24,14 +24,15 @@
     .time {
       font-family: "PlexSans-Light";
       font-size: 14px;
-      letter-spacing: .53px;
+      letter-spacing: 0.53px;
       margin-right: 1rem;
+      color: $black2;
     }
 
     .icon {
       background: $blue;
       border-radius: 50%;
-      height: 36px;
+      height: 42px;
       padding-top: 5px;
       width: 42px;
     }
@@ -43,15 +44,17 @@
     .title {
       font-family: "PlexSans-Medium";
       font-size: 21px;
-      letter-spacing: .8px;
+      letter-spacing: 0.8px;
       margin: 0;
+      color: $black2;
 
       & + p {
         font-family: "PlexSans-Light";
         font-size: 16px;
-        letter-spacing: .61px;
+        letter-spacing: 0.61px;
         line-height: 21px;
         margin: 10px 0 0;
+        color: $black2;
       }
     }
   }
