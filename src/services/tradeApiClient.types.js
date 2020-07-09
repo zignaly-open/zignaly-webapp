@@ -2,6 +2,9 @@ import moment from "moment";
 import { assign, isArray, isObject, mapValues } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
+import { store } from "../store/store";
+
+const state = store.getState();
 
 /**
  * @type {('entry')}
@@ -942,7 +945,10 @@ export function userPositionsResponseTransform(response) {
  * @returns {PositionEntity} Position entity.
  */
 export function userPositionItemTransform(positionItem) {
-  const openDateMoment = moment(Number(positionItem.openDate));
+  const openDateMoment = moment(Number(positionItem.openDate)).locale(
+    /*@ts-ignore */
+    state.storeSettings.languageCode,
+  );
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
