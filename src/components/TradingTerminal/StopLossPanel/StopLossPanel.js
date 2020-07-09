@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { inRange } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
@@ -63,8 +64,10 @@ const StopLossPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsStopLoss) {
-      const stopLossPrice = revertPercentageRange(positionEntity.stopLossPrice);
-      setValue("stopLossPrice", formatFloat2Dec(stopLossPrice));
+      const stopLossPercentage = positionEntity.stopLossPercentage;
+      if (inRange(Math.abs(stopLossPercentage), 0, 100)) {
+        setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      }
     }
   };
 
