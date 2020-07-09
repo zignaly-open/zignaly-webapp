@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { FormattedMessage } from "react-intl";
-import { inRange } from "lodash";
+import { FormattedMessage, useIntl } from "react-intl";
+import { inRange, lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -37,6 +37,7 @@ const StopLossPanel = (props) => {
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
@@ -83,10 +84,18 @@ const StopLossPanel = (props) => {
     const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
+    const valueType = entryType === "LONG" ? "lower" : "greater";
+    const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (draftPosition.stopLossPercentage !== "-" && isNaN(stopLossPercentage)) {
-      setError("stopLossPercentage", "error", "Stop loss percentage must be a number.");
-      return;
+    if (draftPosition.stopLossPercentage !== "-") {
+      if (isNaN(stopLossPercentage) || compareFn(stopLossPercentage, 0)) {
+        setError(
+          "stopLossPercentage",
+          "error",
+          formatMessage({ id: "terminal.stoploss.valid.percentage" }, { type: valueType }),
+        );
+        return;
+      }
     }
 
     if (!isNaN(price) && price > 0) {
@@ -109,8 +118,8 @@ const StopLossPanel = (props) => {
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
-    if (isNaN(stopLossPrice)) {
-      setError("stopLossPrice", "error", "Stop loss price must be a number.");
+    if (isNaN(stopLossPrice) || stopLossPrice < 0) {
+      setError("stopLossPrice", "error", formatMessage({ id: "terminal.stoploss.limit.zero" }));
       return;
     }
 
