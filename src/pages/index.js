@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import astronaut from "../images/gatsby-astronaut.png";
+import { navigate } from "@reach/router";
 
-const IndexPage = () => (
-  <>
+const IndexPage = () => {
+  const redirect = () => {
+    navigate("/dashboard/positions");
+  };
+
+  useEffect(redirect, []);
+
+  return (
     <Helmet>
       <title>Zignaly</title>
     </Helmet>
-    <main>
-      <img alt="" src={astronaut} />
-    </main>
-  </>
-);
+  );
+};
 
 export default IndexPage;
