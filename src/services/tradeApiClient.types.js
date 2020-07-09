@@ -1107,54 +1107,45 @@ export function userPositionItemTransform(positionItem) {
  * Transform position take profit targets to typed object.
  *
  * @param {*} rebuyTargets Trade API take rebuy targets response.
- * @returns {Object<string, ReBuyTarget>|boolean} Typed rebuy target.
+ * @returns {Object<string, ReBuyTarget>} Typed rebuy target.
  */
 function positionRebuyTargetsTransforrm(rebuyTargets) {
-  // Ensure that targets is an indexed targets object.
-  if (rebuyTargets["1"] || rebuyTargets["1001"]) {
-    return mapValues(rebuyTargets, (/** @type {any} */ rebuyTarget) => {
-      return {
-        targetId: parseInt(rebuyTarget.targetId) || 0,
-        triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
-        quantity: parseInt(rebuyTarget.quantity) || 0,
-        buying: rebuyTarget.buying || false,
-        done: rebuyTarget.done || false,
-        orderId: rebuyTarget.orderId || "",
-        cancel: rebuyTarget.cancel || false,
-        skipped: rebuyTarget.skipped || false,
-        buyType: rebuyTarget.buyType || "",
-        errorMSG: rebuyTarget.errorMSG || "",
-      };
-    });
-  }
-
-  return false;
+  return mapValues(rebuyTargets, (/** @type {any} */ rebuyTarget) => {
+    return {
+      targetId: parseInt(rebuyTarget.targetId) || 0,
+      triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
+      quantity: parseInt(rebuyTarget.quantity) || 0,
+      buying: rebuyTarget.buying || false,
+      done: rebuyTarget.done || false,
+      orderId: rebuyTarget.orderId || "",
+      cancel: rebuyTarget.cancel || false,
+      skipped: rebuyTarget.skipped || false,
+      buyType: rebuyTarget.buyType || "",
+      errorMSG: rebuyTarget.errorMSG || "",
+    };
+  });
 }
 
 /**
  * Transform position take profit targets to typed object.
  *
  * @param {*} profitTargets Trade API take profit targets response.
- * @returns {Object<string, ProfitTarget>|boolean} Typed profit target.
+ * @returns {Object<string, ProfitTarget>} Typed profit target.
  */
 function positionTakeProfitTargetsTransforrm(profitTargets) {
   // Ensure that targets is an indexed targets object.
-  if (profitTargets["1"]) {
-    return mapValues(profitTargets, (profitTarget) => {
-      return {
-        amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
-        priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
-        targetId: parseInt(profitTarget.targetId) || 0,
-        orderId: profitTarget.orderId || "",
-        done: profitTarget.done || false,
-        updating: profitTarget.updating || false,
-        cancel: profitTarget.cancel || false,
-        skipped: profitTarget.skipped || false,
-      };
-    });
-  }
-
-  return false;
+  return mapValues(profitTargets, (profitTarget) => {
+    return {
+      amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
+      priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
+      targetId: parseInt(profitTarget.targetId) || 0,
+      orderId: profitTarget.orderId || "",
+      done: profitTarget.done || false,
+      updating: profitTarget.updating || false,
+      cancel: profitTarget.cancel || false,
+      skipped: profitTarget.skipped || false,
+    };
+  });
 }
 
 /**
