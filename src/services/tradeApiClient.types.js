@@ -1305,6 +1305,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {string|boolean} globalBlacklist
  * @property {string|boolean} globalWhitelist
  * @property {boolean} globalDelisting
+ * @property {boolean} balanceSynced
  */
 
 /**
@@ -1352,6 +1353,7 @@ function createExchangeConnectionEmptyEntity() {
     globalMinVolume: false,
     globalPositionsPerMarket: false,
     globalWhitelist: false,
+    balanceSynced: false,
   };
 }
 

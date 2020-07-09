@@ -548,6 +548,7 @@ accounts.demo: "Demo accounts"
 
 accounts.back: "Back"
 accounts.balance: "Balance"
+accounts.balance.synchronizing: "We are synchronizing your balance, but you can start using Zignaly."
 accounts.browse: "Browse Traders to Copy"
 accounts.connect: "Connect Exchange Account"
 accounts.connected.success: "Account successfully connected."

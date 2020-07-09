@@ -11,7 +11,6 @@ import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -102,10 +101,6 @@ const ExchangeAccountSettings = () => {
     return tradeApi
       .exchangeUpdate(payload)
       .then(() => {
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
         setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
         return true;
       })

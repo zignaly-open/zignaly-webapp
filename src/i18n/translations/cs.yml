@@ -547,6 +547,7 @@ accounts.demo: "CH-Demo accounts"
 
 accounts.back: "CH-Back"
 accounts.balance: "CH-Balance"
+accounts.balance.synchronizing: "CH-We are synchronizing your balance, but you can start using Zignaly."
 accounts.browse: "CH-Browse Traders to Copy"
 accounts.connect: "CH-Connect Exchange Account"
 accounts.connected.success: "CH-Account successfully connected."

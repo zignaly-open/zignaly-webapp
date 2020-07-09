@@ -9,7 +9,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
-import { setUserExchanges } from "../../../store/actions/user";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 
@@ -128,11 +127,6 @@ const ExchangeAccountAdd = ({ create, demo }) => {
     return tradeApi
       .exchangeAdd(payload)
       .then(() => {
-        // Reload user exchanges
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
         setTempMessage(
           <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
         );
