@@ -6,6 +6,34 @@
     width: 264px;
   }
 
+  .customLabel {
+    color: $black2;
+  }
+
+  .customInput {
+    input {
+      color: $black2;
+    }
+
+    svg {
+      color: $lightGrey;
+    }
+
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .passwordInput {
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
   .captchaBox {
     margin-bottom: 35px;
   }

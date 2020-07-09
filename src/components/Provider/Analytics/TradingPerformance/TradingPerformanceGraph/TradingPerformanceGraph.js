@@ -66,7 +66,7 @@ const PerformanceGraph = ({ quarter }) => {
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}`;
+    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}%`;
 
   return (
     <Box className="tradingPerformanceGraph">

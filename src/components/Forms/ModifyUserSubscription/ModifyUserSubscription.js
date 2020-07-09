@@ -113,7 +113,12 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
         >
           <RemoveCircleIcon className="addIcon" color="primary" onClick={decrement} />
           <Typography variant="h3">
-            {days} {days > 1 ? "Days" : "Day"}{" "}
+            {days}{" "}
+            {days === 1 ? (
+              <FormattedMessage id="users.modify.day" />
+            ) : (
+              <FormattedMessage id="users.modify.days" />
+            )}
           </Typography>
           <AddCircleIcon className="addIcon" color="primary" onClick={increment} />
         </Box>
@@ -129,10 +134,10 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
       </Box>
       <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
         <CustomButton className="submitButton" loading={loading} onClick={onSubmit}>
-          update
+          <FormattedMessage id="action.update" />
         </CustomButton>
         <CustomButton className="textButton" onClick={onClose}>
-          cancel
+          <FormattedMessage id="action.cancel" />
         </CustomButton>
       </Box>
     </Box>

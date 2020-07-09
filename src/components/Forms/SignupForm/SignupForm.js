@@ -8,6 +8,7 @@ import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
+import { FormattedMessage } from "react-intl";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -127,7 +128,7 @@ const SignupForm = () => {
               onChange={() => clearError("terms")}
             />
             <Box
-              className={"terms-box " + (errors.terms ? " error" : "")}
+              className={"termsBox " + (errors.terms ? " error" : "")}
               display="flex"
               flexDirection="row"
               flexWrap="wrap"
@@ -148,7 +149,7 @@ const SignupForm = () => {
         <Box className="inputBox checkbox">
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
-            <span className={"terms-text"}>Subscribe to notifications</span>
+            <span className="termsText">Subscribe to notifications</span>
           </Box>
         </Box>
 
@@ -158,7 +159,7 @@ const SignupForm = () => {
 
         <Box className="inputBox button-box">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
-            Register
+            <FormattedMessage id="action.signup" />
           </CustomButton>
         </Box>
       </Box>

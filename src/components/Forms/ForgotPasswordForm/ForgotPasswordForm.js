@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import { FormattedMessage } from "react-intl";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
@@ -93,7 +94,7 @@ const ForgotPasswordForm = () => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Recover Account
+            <FormattedMessage id="action.recover" />
           </CustomButton>
         </Box>
       </Box>

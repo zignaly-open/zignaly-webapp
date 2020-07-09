@@ -29,5 +29,11 @@ module.exports = {
       resolve: "gatsby-plugin-layout",
       options: {},
     },
+    {
+      resolve: "gatsby-plugin-manifest",
+      options: {
+        icon: "src/images/logo/logoIcon.svg",
+      },
+    },
   ],
 };

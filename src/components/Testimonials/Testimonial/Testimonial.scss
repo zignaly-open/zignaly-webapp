@@ -22,16 +22,17 @@
     height: 42px;
 
     .time {
+      color: $black2;
       font-family: "PlexSans-Light";
       font-size: 14px;
-      letter-spacing: .53px;
+      letter-spacing: 0.53px;
       margin-right: 1rem;
     }
 
     .icon {
       background: $blue;
       border-radius: 50%;
-      height: 36px;
+      height: 42px;
       padding-top: 5px;
       width: 42px;
     }
@@ -41,15 +42,17 @@
     margin-top: 16px;
 
     .title {
+      color: $black2;
       font-family: "PlexSans-Medium";
       font-size: 21px;
-      letter-spacing: .8px;
+      letter-spacing: 0.8px;
       margin: 0;
 
       & + p {
+        color: $black2;
         font-family: "PlexSans-Light";
         font-size: 16px;
-        letter-spacing: .61px;
+        letter-spacing: 0.61px;
         line-height: 21px;
         margin: 10px 0 0;
       }

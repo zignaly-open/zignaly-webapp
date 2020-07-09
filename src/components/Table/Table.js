@@ -101,6 +101,21 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       );
     },
     fixedHeader: true,
+    textLabels: {
+      body: {
+        noMatch: intl.formatMessage({ id: "table.body.noMatch" }),
+      },
+      pagination: {
+        next: intl.formatMessage({ id: "table.pagination.next" }),
+        previous: intl.formatMessage({ id: "table.pagination.previous" }),
+        rowsPerPage: intl.formatMessage({ id: "table.pagination.rowsPerPage" }),
+        displayRows: intl.formatMessage({ id: "table.pagination.displayRows" }),
+      },
+      viewColumns: {
+        title: intl.formatMessage({ id: "table.viewColumns.title" }),
+        titleAria: intl.formatMessage({ id: "table.viewColumns.titleAria" }),
+      },
+    },
     ...customOptions,
   };
 

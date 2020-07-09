@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { navigate } from "gatsby";
 
-const IndexPage = () => {
+const DashboardPage = () => {
   const redirect = () => {
     navigate("/dashboard/positions", { replace: true });
   };
@@ -16,4 +16,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default DashboardPage;

@@ -24,7 +24,7 @@ const PasswordInput = ({ label, ...others }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <FormControl fullWidth={true}>
+    <FormControl className="passwordInput" fullWidth={true}>
       <label className="customLabel">{label}</label>
       <OutlinedInput
         className="customInput"

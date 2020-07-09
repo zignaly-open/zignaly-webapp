@@ -323,7 +323,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Save Settings
+            <FormattedMessage id="action.saveSettings" />
           </CustomButton>
         </Box>
       </form>

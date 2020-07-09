@@ -7,6 +7,10 @@
 
     &.checkbox {
       width: 300px;
+
+      .termsText {
+        color: $black2;
+      }
     }
 
     &.buttonBox {
@@ -15,6 +19,34 @@
 
     &.noMargin {
       margin-bottom: 10px;
+    }
+  }
+
+  .customLabel {
+    color: $black2;
+  }
+
+  .customInput {
+    input {
+      color: $black2;
+    }
+
+    svg {
+      color: $lightGrey;
+    }
+
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .passwordInput {
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
     }
   }
 
@@ -37,6 +69,10 @@
   .termsBox {
     * {
       font-size: 14px;
+    }
+
+    .text {
+      color: $black2;
     }
 
     .link {

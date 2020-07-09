@@ -99,7 +99,7 @@ const CopyTraderButton = ({ provider }) => {
             <Typography variant="h4">
               <FormattedMessage id="copyt.followingfrom" />
             </Typography>
-            <Tooltip title={followingFrom.internalName}>
+            <Tooltip placement="top" title={followingFrom.internalName}>
               <Box>
                 <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
               </Box>

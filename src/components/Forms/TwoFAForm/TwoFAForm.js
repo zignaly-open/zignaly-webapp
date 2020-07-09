@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { authenticate2FA } from "../../../store/actions/session";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -92,7 +93,7 @@ const TwoFAForm = () => {
             loading={loading}
             type="submit"
           >
-            Authenticate
+            <FormattedMessage id="action.authenticate" />
           </CustomButton>
         </Box>
       </Box>

@@ -116,12 +116,12 @@ const LoginForm = () => {
               loading={loading}
               type="submit"
             >
-              Sign in
+              <FormattedMessage id="action.login" />
             </CustomButton>
           </Box>
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
             <span className="link" onClick={() => showModal(true)}>
-              Forgot password
+              <FormattedMessage id="action.forgot" />
             </span>
           </Box>
         </Box>
