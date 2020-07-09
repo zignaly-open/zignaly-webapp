@@ -7,11 +7,11 @@ import ExchangeAccountForm, {
   CustomInput,
   CustomSwitch,
 } from "../ExchangeAccountForm";
-import { ConfirmDialog } from "../../Dialogs";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { removeUserExchange, setUserExchanges } from "../../../store/actions/user";
+import { setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -29,11 +29,10 @@ import { Box } from "@material-ui/core";
  */
 const ExchangeAccountSettings = () => {
   const {
-    pathParams: { selectedAccount, previousPath },
+    pathParams: { selectedAccount },
     setTitle,
     formRef,
     setTempMessage,
-    setPathParams,
   } = useContext(ModalPathContext);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -46,17 +45,7 @@ const ExchangeAccountSettings = () => {
   } = useFormContext();
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
-
-  /**
-   * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
-   * @type {ConfirmDialogConfig} initConfirmConfig
-   */
-  const initConfirmConfig = {
-    titleTranslationId: "confirm.deleteexchange.title",
-    messageTranslationId: "confirm.deleteexchange.message",
-    visible: false,
-  };
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.settings" />);
@@ -70,32 +59,6 @@ const ExchangeAccountSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [accountExchange],
   );
-
-  const deleteExchangeShow = () => {
-    setConfirmConfig({ ...initConfirmConfig, visible: true });
-  };
-
-  const deleteExchange = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalId: selectedAccount.internalId,
-    };
-
-    setPathParams((state) => ({ ...state, isLoading: true }));
-
-    tradeApi
-      .exchangeDelete(payload)
-      .then(() => {
-        dispatch(removeUserExchange(selectedAccount.internalId));
-        setPathParams({
-          tempMessage: <FormattedMessage id={"accounts.deleted"} />,
-          currentPath: previousPath,
-        });
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  };
 
   /**
    *
@@ -165,10 +128,9 @@ const ExchangeAccountSettings = () => {
 
   return (
     <form className="exchangeAccountSettings">
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={deleteExchange}
-        setConfirmConfig={setConfirmConfig}
+      <ConfirmDeleteDialog
+        onClose={() => setConfirmDeleteDialog(false)}
+        open={confirmDeleteDialog}
       />
       <ExchangeAccountForm>
         <Box className="typeBox" display="flex" flexDirection="row">
@@ -268,7 +230,10 @@ const ExchangeAccountSettings = () => {
           tooltip="accounts.options.delisted.help"
         />
 
-        <CustomButton className="textDefault deleteButton" onClick={deleteExchangeShow}>
+        <CustomButton
+          className="textDefault deleteButton"
+          onClick={() => setConfirmDeleteDialog(true)}
+        >
           <Typography className="bold" variant="body1">
             <FormattedMessage id="accounts.delete.exchange" />
           </Typography>
