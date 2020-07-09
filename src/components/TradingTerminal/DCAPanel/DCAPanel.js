@@ -11,6 +11,7 @@ import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
+import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
 
 /**
@@ -35,6 +36,7 @@ const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -164,9 +166,8 @@ const DCAPanel = (props) => {
    * @return {Void} None.
    */
   const targetPricePercentageChange = (event) => {
-    const draftPosition = getValues();
     const targetId = getGroupTargetId(event);
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
 
@@ -197,11 +198,10 @@ const DCAPanel = (props) => {
    * @returns {Void} None.
    */
   const rebuyUnitsChange = (targetId) => {
-    const draftPosition = getValues();
-    const positionSize = parseFloat(draftPosition.positionSize) || 0;
+    const positionSize = getEntrySize();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
-    const price = parseFloat(draftPosition.price);
+    const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
 
@@ -218,9 +218,8 @@ const DCAPanel = (props) => {
    * @return {Void} None.
    */
   const rebuyPercentageChange = (event) => {
-    const draftPosition = getValues();
     const targetId = getGroupTargetId(event);
-    const positionSize = parseFloat(draftPosition.positionSize) || 0;
+    const positionSize = getEntrySize();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
