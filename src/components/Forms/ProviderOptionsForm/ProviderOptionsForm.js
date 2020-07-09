@@ -614,7 +614,7 @@ const ProviderOptionsForm = ({ provider }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Update
+            <FormattedMessage id="action.update" />
           </CustomButton>
         </Box>
       </form>

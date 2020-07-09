@@ -19,6 +19,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "@reach/router";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -210,7 +211,7 @@ const ResetPasswordForm = ({ token, setVerified }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            Change Password
+            <FormattedMessage id="action.reset" />
           </CustomButton>
         </Box>
       </Box>

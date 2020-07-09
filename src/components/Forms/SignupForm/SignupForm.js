@@ -8,6 +8,7 @@ import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
+import { FormattedMessage } from "react-intl";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -158,7 +159,7 @@ const SignupForm = () => {
 
         <Box className="inputBox button-box">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
-            Register
+            <FormattedMessage id="action.signup" />
           </CustomButton>
         </Box>
       </Box>

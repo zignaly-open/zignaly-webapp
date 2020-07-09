@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./GraphLabels.scss";
 import { Box } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
 /**
  *
@@ -17,18 +18,18 @@ const EquityGraphLabels = ({ list }) => {
   const [labels, setLabels] = useState([]);
 
   const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "month.jan",
+    "month.feb",
+    "month.mar",
+    "month.apr",
+    "month.may",
+    "month.jun",
+    "month.jul",
+    "month.aug",
+    "month.sep",
+    "month.oct",
+    "month.nov",
+    "month.dec",
   ];
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const EquityGraphLabels = ({ list }) => {
     >
       {labels.map((item, index) => (
         <span className="month" key={index}>
-          {item}
+          <FormattedMessage id={item} />
         </span>
       ))}
     </Box>

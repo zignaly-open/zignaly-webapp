@@ -637,7 +637,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               onClick={handleSubmitClick}
               type="submit"
             >
-              Save Data
+              <FormattedMessage id="action.saveData" />
             </CustomButton>
           </Box>
         </Box>
