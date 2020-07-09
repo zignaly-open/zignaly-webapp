@@ -24,18 +24,22 @@ import "./ProfitTargetStatus.scss";
 const ProfitTargetStatus = (props) => {
   const { profitTarget, labelId } = props;
   const { formatMessage } = useIntl();
-  let iconColor = colors.purpleLight;
+  let iconColor = colors.darkGrey;
 
   // Empty box to fill flex item space.
   if (!profitTarget) {
     return <Box />;
   }
 
-  let description = profitTarget.orderId
-    ? formatMessage({ id: "terminal.status.placed" }, { orderId: profitTarget.orderId })
-    : formatMessage({ id: "terminal.status.pending" });
+  let description = formatMessage({ id: "terminal.status.pending" });
 
-  if (profitTarget.done) {
+  if (!profitTarget.done && profitTarget.orderId) {
+    iconColor = colors.blue;
+    description = formatMessage(
+      { id: "terminal.status.placed" },
+      { orderId: profitTarget.orderId },
+    );
+  } else if (profitTarget.done) {
     description = formatMessage({ id: "terminal.status.done" });
     iconColor = colors.green;
   } else if (profitTarget.skipped) {
