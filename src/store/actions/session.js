@@ -3,7 +3,7 @@ import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert, ask2FA } from "./ui";
 import { isEmpty } from "lodash";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
