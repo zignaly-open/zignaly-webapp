@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./UsersTable.scss";
 import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../Table";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
 import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
@@ -37,6 +37,8 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 const UsersTable = ({ title, persistKey, list, loadData }) => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
+  const intl = useIntl();
+
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
    * @type {ConfirmDialogConfig} initConfirmConfig
@@ -55,9 +57,17 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
   const dispatch = useDispatch();
 
   /**
+   * Format Yes/No value.
+   * @param {boolean} val Val.
+   * @returns {React.ReactNode} Formatted node.
+   */
+  const renderYesNo = (val) => (
+    <span>{intl.formatMessage({ id: val ? "general.yes" : "general.no" })}</span>
+  );
+
+  /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
-
   let columns = [
     { name: "userId", label: "col.users.userid" },
     { name: "email", label: "col.users.email" },
@@ -68,27 +78,21 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
       options: {
         display: "true",
         viewColumns: true,
-        customBodyRender: (val) => {
-          return <span> {val ? "Yes" : "No"}</span>;
-        },
+        customBodyRender: renderYesNo,
       },
     },
     {
       name: "active",
       label: "col.users.active",
       options: {
-        customBodyRender: (val) => {
-          return <span> {val ? "Yes" : "No"}</span>;
-        },
+        customBodyRender: renderYesNo,
       },
     },
     {
       name: "suspended",
       label: "col.users.suspended",
       options: {
-        customBodyRender: (val) => {
-          return <span> {val ? "Yes" : "No"}</span>;
-        },
+        customBodyRender: renderYesNo,
       },
     },
     {

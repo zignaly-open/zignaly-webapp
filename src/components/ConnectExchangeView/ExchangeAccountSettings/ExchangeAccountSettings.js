@@ -1,17 +1,16 @@
 import React, { useEffect, useContext, useState, useImperativeHandle } from "react";
 import ModalPathContext from "../ModalPathContext";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import CustomButton from "../../CustomButton";
 import ExchangeAccountForm, {
   CustomSwitchInput,
   CustomInput,
   CustomSwitch,
 } from "../ExchangeAccountForm";
-import { ConfirmDialog } from "../../Dialogs";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { removeUserExchange, setUserExchanges } from "../../../store/actions/user";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -29,14 +28,14 @@ import { Box } from "@material-ui/core";
  */
 const ExchangeAccountSettings = () => {
   const {
-    pathParams: { selectedAccount, previousPath },
+    pathParams: { selectedAccount },
     setTitle,
     formRef,
     setTempMessage,
-    setPathParams,
   } = useContext(ModalPathContext);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const intl = useIntl();
 
   const {
     register,
@@ -45,17 +44,7 @@ const ExchangeAccountSettings = () => {
   } = useFormContext();
   const exchanges = useExchangeList();
   const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
-
-  /**
-   * @typedef {import("../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
-   * @type {ConfirmDialogConfig} initConfirmConfig
-   */
-  const initConfirmConfig = {
-    titleTranslationId: "confirm.deleteexchange.title",
-    messageTranslationId: "confirm.deleteexchange.message",
-    visible: false,
-  };
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.settings" />);
@@ -69,32 +58,6 @@ const ExchangeAccountSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [accountExchange],
   );
-
-  const deleteExchangeShow = () => {
-    setConfirmConfig({ ...initConfirmConfig, visible: true });
-  };
-
-  const deleteExchange = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalId: selectedAccount.internalId,
-    };
-
-    setPathParams((state) => ({ ...state, isLoading: true }));
-
-    tradeApi
-      .exchangeDelete(payload)
-      .then(() => {
-        dispatch(removeUserExchange(selectedAccount.internalId));
-        setPathParams({
-          tempMessage: <FormattedMessage id={"accounts.deleted"} />,
-          currentPath: previousPath,
-        });
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  };
 
   /**
    *
@@ -138,10 +101,6 @@ const ExchangeAccountSettings = () => {
     return tradeApi
       .exchangeUpdate(payload)
       .then(() => {
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
         setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
         return true;
       })
@@ -150,7 +109,7 @@ const ExchangeAccountSettings = () => {
           setError(
             accountExchange.requiredAuthFields[accountExchange.requiredAuthFields.length - 1],
             "notMatch",
-            "The provided api key/secret pair is not valid.",
+            intl.formatMessage({ id: "form.error.key.invalid" }),
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -164,10 +123,9 @@ const ExchangeAccountSettings = () => {
 
   return (
     <form className="exchangeAccountSettings">
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={deleteExchange}
-        setConfirmConfig={setConfirmConfig}
+      <ConfirmDeleteDialog
+        onClose={() => setConfirmDeleteDialog(false)}
+        open={confirmDeleteDialog}
       />
       <ExchangeAccountForm>
         <Box className="typeBox" display="flex" flexDirection="row">
@@ -185,7 +143,7 @@ const ExchangeAccountSettings = () => {
         <CustomInput
           defaultValue={selectedAccount.internalName}
           inputRef={register({
-            required: "name empty",
+            required: intl.formatMessage({ id: "form.error.name" }),
           })}
           label="accounts.exchange.name"
           name="internalName"
@@ -196,7 +154,9 @@ const ExchangeAccountSettings = () => {
             <CustomInput
               autoComplete="new-password"
               inputRef={register({
-                required: authFieldsModified ? `${field} empty` : false,
+                required: authFieldsModified
+                  ? intl.formatMessage({ id: `form.error.${field}` })
+                  : false,
               })}
               key={field}
               label={`accounts.exchange.${field}`}
@@ -210,7 +170,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMaxPositions}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.maxconcurrent"
           name="globalMaxPositions"
@@ -220,7 +180,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalMinVolume}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.minvolume"
           name="globalMinVolume"
@@ -231,7 +191,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalPositionsPerMarket}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.limitpositions"
           name="globalPositionsPerMarket"
@@ -241,7 +201,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalBlacklist}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.blacklist"
           name="globalBlacklist"
@@ -251,7 +211,7 @@ const ExchangeAccountSettings = () => {
         <CustomSwitchInput
           defaultValue={selectedAccount.globalWhitelist}
           inputRef={register({
-            required: "required",
+            required: intl.formatMessage({ id: "form.error.value" }),
           })}
           label="accounts.options.whitelist"
           name="globalWhitelist"
@@ -265,7 +225,10 @@ const ExchangeAccountSettings = () => {
           tooltip="accounts.options.delisted.help"
         />
 
-        <CustomButton className="textDefault deleteButton" onClick={deleteExchangeShow}>
+        <CustomButton
+          className="textDefault deleteButton"
+          onClick={() => setConfirmDeleteDialog(true)}
+        >
           <Typography className="bold" variant="body1">
             <FormattedMessage id="accounts.delete.exchange" />
           </Typography>

@@ -36,7 +36,7 @@ const ProvidersList = (props) => {
           ))}
         </Box>
       ) : (
-        <CircularProgress className="loader" size={21} />
+        <CircularProgress className="loader" />
       )}
     </Box>
   );

@@ -9,7 +9,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
-import { setUserExchanges } from "../../../store/actions/user";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 
@@ -128,11 +127,6 @@ const ExchangeAccountAdd = ({ create, demo }) => {
     return tradeApi
       .exchangeAdd(payload)
       .then(() => {
-        // Reload user exchanges
-        const authorizationPayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(setUserExchanges(authorizationPayload));
         setTempMessage(
           <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
         );
@@ -143,7 +137,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
           setError(
             selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
             "notMatch",
-            "The provided api key/secret pair is not valid.",
+            intl.formatMessage({ id: "form.error.key.invalid" }),
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -201,7 +195,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
           )}
           <CustomInput
             inputRef={register({
-              required: "name empty",
+              required: intl.formatMessage({ id: "form.error.name" }),
             })}
             label="accounts.exchange.name"
             name="internalName"
@@ -211,7 +205,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               <CustomInput
                 autoComplete="new-password"
                 inputRef={register({
-                  required: `${field} empty`,
+                  required: intl.formatMessage({ id: "form.error.password" }),
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}

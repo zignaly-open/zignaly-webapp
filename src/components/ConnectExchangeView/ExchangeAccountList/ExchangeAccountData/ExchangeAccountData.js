@@ -38,7 +38,7 @@ const ExchangeAccountData = ({ account }) => {
         {balance && !account.paperTrading && (
           <>
             <Box className="equityBox">
-              {(!balance.totalBTC && account.isBrokerAccount && (
+              {!account.balanceSynced || (!balance.totalBTC && account.isBrokerAccount) ? (
                 <Box
                   alignItems="center"
                   className="noBalance"
@@ -48,19 +48,25 @@ const ExchangeAccountData = ({ account }) => {
                   width={1}
                 >
                   <Typography variant="h3">
-                    <FormattedMessage
-                      id="accounts.deposit.make"
-                      values={{
-                        depositLink: (
-                          <a onClick={() => navigateToPath("deposit", account)}>
-                            {intl.formatMessage({ id: "accounts.deposit" }).toLowerCase()}
-                          </a>
-                        ),
-                      }}
-                    />
+                    {!account.balanceSynced ? (
+                      <FormattedMessage id="accounts.balance.synchronizing" />
+                    ) : (
+                      <FormattedMessage
+                        id="accounts.deposit.make"
+                        values={{
+                          depositLink: (
+                            <a onClick={() => navigateToPath("deposit", account)}>
+                              {intl.formatMessage({ id: "accounts.deposit" }).toLowerCase()}
+                            </a>
+                          ),
+                        }}
+                      />
+                    )}
                   </Typography>
                 </Box>
-              )) || <TotalEquity balance={balance} dailyBalance={dailyBalance} />}
+              ) : (
+                <TotalEquity balance={balance} dailyBalance={dailyBalance} />
+              )}
             </Box>
             <Box className="cryptoBox">
               <CryptoComposition dailyBalance={dailyBalance} />
