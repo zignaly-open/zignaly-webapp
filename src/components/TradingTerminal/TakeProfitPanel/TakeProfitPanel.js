@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { isNumber, keys, range, size, sum, values } from "lodash";
+import { inRange, lt, gt, isNumber, keys, range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
@@ -151,13 +151,15 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const valueType = entryType === "LONG" ? "greater" : "lower";
+    const compareFn = entryType === "LONG" ? lt : gt;
     let targetPrice = price;
 
-    if (isNaN(targetPercentage)) {
+    if (isNaN(targetPercentage) || compareFn(targetPercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
         "error",
-        formatMessage({ id: "terminal.takeprofit.valid.pricepercentage" }),
+        formatMessage({ id: "terminal.takeprofit.valid.pricepercentage" }, { type: valueType }),
       );
 
       setValue(priceProperty, "");
@@ -255,7 +257,7 @@ const TakeProfitPanel = (props) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
-    if (isNaN(unitsPercentage)) {
+    if (isNaN(unitsPercentage) || !inRange(unitsPercentage, 0, 100)) {
       setError(
         composeTargetPropertyName("exitUnitsPercentage", targetId),
         "error",
@@ -296,7 +298,7 @@ const TakeProfitPanel = (props) => {
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
-    if (isNaN(exitUnits)) {
+    if (isNaN(exitUnits) || exitUnits <= 0) {
       setError(
         composeTargetPropertyName("exitUnits", targetId),
         "error",
