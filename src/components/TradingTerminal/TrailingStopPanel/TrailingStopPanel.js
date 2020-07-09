@@ -106,10 +106,18 @@ const TrailingStopPanel = (props) => {
     const price = getEntryPrice();
     const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
     const trailingStopPrice = (price * (100 + trailingStopPercentage)) / 100;
+    const valueType = entryType === "LONG" ? "greater" : "lower";
+    const compareFn = entryType === "LONG" ? lt : gt;
 
-    if (draftPosition.trailingStopPercentage !== "-" && isNaN(trailingStopPercentage)) {
-      setError("trailingStopPercentage", "error", "Trailing stop percentage must be a number.");
-      return;
+    if (draftPosition.trailingStopPercentage !== "-") {
+      if (isNaN(trailingStopPercentage) || compareFn(trailingStopPercentage, 0)) {
+        setError(
+          "trailingStopPercentage",
+          "error",
+          formatMessage({ id: "terminal.trailingstop.valid.percentage" }, { type: valueType }),
+        );
+        return;
+      }
     }
 
     if (price > 0) {
