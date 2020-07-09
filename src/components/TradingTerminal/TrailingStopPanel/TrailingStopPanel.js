@@ -132,8 +132,12 @@ const TrailingStopPanel = (props) => {
     const trailingStopPrice = parseFloat(draftPosition.trailingStopPrice);
     const priceDiff = trailingStopPrice - price;
 
-    if (isNaN(trailingStopPrice)) {
-      setError("trailingStopPrice", "error", "Trailing stop price must be a number.");
+    if (isNaN(trailingStopPrice) || trailingStopPrice < 0) {
+      setError(
+        "trailingStopPrice",
+        "error",
+        formatMessage({ id: "terminal.trailingstop.valid.price" }),
+      );
       return;
     }
 
