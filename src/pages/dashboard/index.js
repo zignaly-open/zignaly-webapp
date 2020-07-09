@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 
 const DashboardPage = () => {
   const redirect = () => {
