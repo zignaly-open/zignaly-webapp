@@ -1,5 +1,6 @@
 .providersHeader {
   width: 100%;
+  position: relative;
 
   .settings {
     border-radius: 4px;
@@ -28,11 +29,12 @@
   }
 
   @include media("<=sm") {
-    margin-bottom: 57px;
+    padding-bottom: 56px;
 
     .becomeProviderButton {
       left: 0;
-      margin: 150px auto 0;
+      bottom: 28px;
+      margin: 0 auto;
       min-width: 260px;
       position: absolute;
       right: 0;
