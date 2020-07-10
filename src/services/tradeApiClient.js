@@ -149,7 +149,10 @@ class TradeApiClient {
 
       if (customError.code === 13) {
         // Session expired
-        navigate("/login");
+        const path = typeof window !== "undefined" ? window.location.pathname : "";
+        if (!path.startsWith("/login")) {
+          navigate("/login?ret=" + path);
+        }
       }
       throw customError;
     }
