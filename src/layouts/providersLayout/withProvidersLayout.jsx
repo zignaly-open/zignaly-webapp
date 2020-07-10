@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Hidden } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
@@ -57,14 +57,16 @@ const withProvidersLayout = (Component) => {
         >
           <CreateProviderForm isCopyTrading={isCopyTrading} />
         </Modal>
-        <CustomButton
-          className="textPurple borderPurple becomeProviderButton"
-          onClick={() => openProviderModal(true)}
-        >
-          <Typography variant="body1">
-            <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
-          </Typography>
-        </CustomButton>
+        <Hidden xsDown>
+          <CustomButton
+            className="textPurple borderPurple becomeProviderButton"
+            onClick={() => openProviderModal(true)}
+          >
+            <Typography variant="body1">
+              <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+            </Typography>
+          </CustomButton>
+        </Hidden>
         <Box
           alignItems="center"
           bgcolor="grid.main"

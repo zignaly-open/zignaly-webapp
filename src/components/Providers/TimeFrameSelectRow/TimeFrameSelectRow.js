@@ -1,13 +1,16 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import TimeFrameSelect from "../../TimeFrameSelect";
 import "./TimeFrameSelectRow.scss";
+import CustomButton from "../../CustomButton";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} TimeFrameSelectRowPropTypes
  * @property {function} onChange Callback that delegate timeframe changes to caller.
  * @property {number} value Selected value.
  * @property {string} title Title to display next to the dropdown.
+ * @property {boolean} isCopyTrading
  */
 
 /**
@@ -16,7 +19,7 @@ import "./TimeFrameSelectRow.scss";
  * @param {TimeFrameSelectRowPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TimeFrameSelectRow = ({ title, onChange, value }) => (
+const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => (
   <Box
     className="timeFrameSelectRow"
     display="flex"
@@ -24,10 +27,34 @@ const TimeFrameSelectRow = ({ title, onChange, value }) => (
     flexWrap="wrap"
     justifyContent="space-between"
   >
-    <Typography className="providersCount" variant="h3">
-      {title}
-    </Typography>
-    <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-end">
+    <Box
+      display="flex"
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="space-between"
+      width={1}
+    >
+      <Typography className="providersCount" variant="h3">
+        {title}
+      </Typography>
+      <Hidden smUp>
+        <CustomButton
+          className="textPurple"
+          //   onClick={() => openProviderModal(true)}
+        >
+          <Typography variant="body1">
+            <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+          </Typography>
+        </CustomButton>
+      </Hidden>
+    </Box>
+    <Box
+      alignItems="center"
+      display="flex"
+      flexDirection="row"
+      justifyContent="flex-end"
+      className="timeFrameSelectWrapper"
+    >
       <TimeFrameSelect onChange={onChange} value={value} />
     </Box>
   </Box>

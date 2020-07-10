@@ -86,6 +86,7 @@ const ProvidersBrowse = ({
             : "menu.signalproviders",
         })}`}
         value={timeFrame}
+        isCopyTrading={copyTradersOnly}
       />
       <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
     </Box>

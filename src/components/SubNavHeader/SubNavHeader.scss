@@ -20,4 +20,8 @@
       border-bottom: 2px solid $purple;
     }
   }
+
+  @include media("<=sm") {
+    margin-bottom: 12px;
+  }
 }

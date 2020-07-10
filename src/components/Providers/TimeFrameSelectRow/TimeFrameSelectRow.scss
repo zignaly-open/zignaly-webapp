@@ -5,10 +5,28 @@
   @include media("<=sm") {
     .customSelect {
       margin-left: 0;
+      flex-direction: row-reverse;
+      align-items: center;
+
+      > span {
+        text-align: left;
+        margin-bottom: 0;
+      }
     }
 
-    .providersCount {
-      @include text-no-wrap;
+    .customButton {
+      min-width: auto;
+      width: auto;
+      padding-right: 0;
+    }
+
+    .timeFrameSelectWrapper {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .selectTimeFrame {
+      width: 100%;
     }
   }
 }
