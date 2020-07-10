@@ -24,6 +24,14 @@
   > .titleBar {
     padding: 32px 24px 0;
     width: 100%;
+
+    .exchangeIcon {
+      margin-right: 8px;
+    }
+
+    .separator {
+      margin: 0 12px;
+    }
   }
 }
 

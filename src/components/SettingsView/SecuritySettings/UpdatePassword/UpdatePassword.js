@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Passwords from "../../../Passwords";
@@ -24,6 +24,7 @@ const UpdatePassword = () => {
   const { errors, handleSubmit, register, setError } = formMethods;
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
 
   /**
    * @typedef {Object} FormData
@@ -52,12 +53,18 @@ const UpdatePassword = () => {
     tradeApi
       .updatePassword(payload)
       .then(() => {
-        dispatch(showSuccessAlert("Success", "Changed Password Successfully"));
+        dispatch(
+          showSuccessAlert("Success", intl.formatMessage({ id: "security.password.success" })),
+        );
         setEditing(false);
       })
       .catch((e) => {
         if (e.code === 7) {
-          setError("currentPassword", "notMatch", "Wrong credentials.");
+          setError(
+            "currentPassword",
+            "notMatch",
+            intl.formatMessage({ id: "form.error.password.invalid" }),
+          );
         } else {
           dispatch(showErrorAlert(e));
         }
