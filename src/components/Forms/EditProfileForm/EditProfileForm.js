@@ -17,6 +17,7 @@ import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showSuccessAlert } from "../../../store/actions/ui";
+import { IKImage, IKContext, IKUpload } from "imagekitio-react";
 
 /**
  * @typedef {Object} DefaultProps
@@ -248,6 +249,16 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     return true;
   };
 
+  const onImageError = (err) => {
+    console.log("Error");
+    console.log(err);
+  };
+
+  const onImageSuccess = (res) => {
+    console.log("Success");
+    console.log(res);
+  };
+
   return (
     <Box bgcolor="grid.main" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -373,7 +384,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.logo" />
               </label>
-              <Controller
+              {/* <Controller
                 as={
                   <TextField
                     className={
@@ -389,7 +400,17 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 defaultValue={provider.logoUrl}
                 name="logoUrl"
                 rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
+              /> */}
+              {/* <IKImage path="/providers/5f0748c3fc86961e362d1234_iVsqJa9x_" /> */}
+              <IKImage path={"/providers/" + provider.id} />
+              <IKUpload
+                fileName={provider.id}
+                useUniqueFileName={false}
+                onError={onImageError}
+                onSuccess={onImageSuccess}
+                folder="providers"
               />
+
               {errors.logoUrl && (
                 <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
               )}

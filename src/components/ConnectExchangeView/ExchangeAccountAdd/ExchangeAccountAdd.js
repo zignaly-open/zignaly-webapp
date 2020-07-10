@@ -205,7 +205,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               <CustomInput
                 autoComplete="new-password"
                 inputRef={register({
-                  required: intl.formatMessage({ id: "form.error.password" }),
+                  required: intl.formatMessage({ id: `form.error.${field}` }),
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}

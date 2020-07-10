@@ -9,6 +9,8 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
+import { IKContext } from "imagekitio-react";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -24,6 +26,7 @@ import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 const AppLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const storeLoader = useStoreUILoaderSelector();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
@@ -32,11 +35,20 @@ const AppLayout = (props) => {
   return (
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ErrorAlert />
-        <SuccessAlert />
-        {storeLoader && <Loader />}
-        {children}
+        <IKContext
+          publicKey="public_UOdTFiEfHK4U5QcZKql0fvJ4vdg="
+          urlEndpoint="https://ik.imagekit.io/zignaly"
+          authenticationEndpoint={
+            "https://test.zignaly.com/api/fe/api.php?action=getIKToken&token=" +
+            storeSession.tradeApi.accessToken
+          }
+        >
+          <CssBaseline />
+          <ErrorAlert />
+          <SuccessAlert />
+          {storeLoader && <Loader />}
+          {children}
+        </IKContext>
       </ThemeProvider>
     </StylesProvider>
   );
