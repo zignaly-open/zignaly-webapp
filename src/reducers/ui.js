@@ -7,6 +7,7 @@ import {
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
+  SHOW_CREATE_PROVIDER,
 } from "../store/actions/ui";
 
 /**
@@ -30,6 +31,9 @@ const ui = (state = initialState.ui, action) => {
   switch (action.type) {
     case SHOW_LOADER:
       newState.loader = action.payload;
+      break;
+    case SHOW_CREATE_PROVIDER:
+      newState.modal = { ...newState.modal, createProvider: action.payload };
       break;
     case SHOW_ERROR_ALERT:
       newState.alerts = {

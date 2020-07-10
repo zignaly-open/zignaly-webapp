@@ -59,9 +59,8 @@
 
 /**
  * @typedef {Object} DefaultUIModalObject
- * @property {Boolean} exchangeConnectionView
- * @property {Boolean} settingsView
  * @property {Boolean} twoFA
+ * @property {Boolean} createProvider
  */
 
 /**
@@ -342,6 +341,7 @@ const initialState = {
       exchangeConnectionView: false,
       settingsView: false,
       twoFA: false,
+      createProvider: false,
     },
     alerts: {
       success: {

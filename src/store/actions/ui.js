@@ -4,6 +4,7 @@ export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT";
 export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
 export const ASK_2FA = "ASK_2FA";
+export const SHOW_CREATE_PROVIDER = "SHOW_CREATE_PROVIDER";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -85,6 +86,17 @@ export const hideSuccessAlert = () => {
 export const ask2FA = (payload) => {
   return {
     type: ASK_2FA,
+    payload,
+  };
+};
+
+/**
+ * @param {boolean} payload Flag to indicate if we should open create provider modal.
+ * @returns {AnyAction} return action object.
+ */
+export const showCreateProvider = (payload) => {
+  return {
+    type: SHOW_CREATE_PROVIDER,
     payload,
   };
 };

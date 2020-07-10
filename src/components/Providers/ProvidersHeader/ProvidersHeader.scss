@@ -29,5 +29,9 @@
 
   @include media("<=sm") {
     padding-bottom: 8px;
+
+    .settings {
+      margin-left: auto;
+    }
   }
 }

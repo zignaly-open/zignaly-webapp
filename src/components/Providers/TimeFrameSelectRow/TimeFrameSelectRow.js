@@ -4,6 +4,8 @@ import TimeFrameSelect from "../../TimeFrameSelect";
 import "./TimeFrameSelectRow.scss";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
+import { showCreateProvider } from "../../../store/actions/ui";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {Object} TimeFrameSelectRowPropTypes
@@ -19,45 +21,45 @@ import { FormattedMessage } from "react-intl";
  * @param {TimeFrameSelectRowPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => (
-  <Box
-    className="timeFrameSelectRow"
-    display="flex"
-    flexDirection="row"
-    flexWrap="wrap"
-    justifyContent="space-between"
-  >
+const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
+  const dispatch = useDispatch();
+  return (
     <Box
+      className="timeFrameSelectRow"
       display="flex"
       flexDirection="row"
-      alignItems="center"
+      flexWrap="wrap"
       justifyContent="space-between"
-      className="providersCountBox"
     >
-      <Typography className="providersCount" variant="h3">
-        {title}
-      </Typography>
-      <Hidden smUp>
-        <CustomButton
-          className="textPurple"
-          //   onClick={() => openProviderModal(true)}
-        >
-          <Typography variant="body1">
-            <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
-          </Typography>
-        </CustomButton>
-      </Hidden>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        className="providersCountBox"
+      >
+        <Typography className="providersCount" variant="h3">
+          {title}
+        </Typography>
+        <Hidden smUp>
+          <CustomButton className="textPurple" onClick={() => dispatch(showCreateProvider(true))}>
+            <Typography variant="body1">
+              <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+            </Typography>
+          </CustomButton>
+        </Hidden>
+      </Box>
+      <Box
+        alignItems="center"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-end"
+        className="timeFrameSelectBox"
+      >
+        <TimeFrameSelect onChange={onChange} value={value} />
+      </Box>
     </Box>
-    <Box
-      alignItems="center"
-      display="flex"
-      flexDirection="row"
-      justifyContent="flex-end"
-      className="timeFrameSelectBox"
-    >
-      <TimeFrameSelect onChange={onChange} value={value} />
-    </Box>
-  </Box>
-);
+  );
+};
 
 export default TimeFrameSelectRow;
