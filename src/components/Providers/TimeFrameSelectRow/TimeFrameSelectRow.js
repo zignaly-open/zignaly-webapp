@@ -32,7 +32,7 @@ const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => (
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      width={1}
+      className="providersCountBox"
     >
       <Typography className="providersCount" variant="h3">
         {title}
@@ -53,7 +53,7 @@ const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => (
       display="flex"
       flexDirection="row"
       justifyContent="flex-end"
-      className="timeFrameSelectWrapper"
+      className="timeFrameSelectBox"
     >
       <TimeFrameSelect onChange={onChange} value={value} />
     </Box>
