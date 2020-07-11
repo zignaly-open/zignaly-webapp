@@ -343,6 +343,8 @@ copyt.copy.error2: "CH-You need to add an exchange in order to copy this trader.
 
 srv.followprovider: "CH-Follow this provider"
 srv.stopfollowing: "CH-Stop Following"
+srv.clonetrader: "CH-Clone This Trader"
+srv.cloneprovider: "CH-Clone This Provider"
 srv.disclaimer.title: "CH-Disclaimer"
 srv.disclaimer.text: "CH-Your are paying the fee directly to the signal provider or copy trader. Zignaly doesn't provide any trading advise or recommendation."
 srv.about: "CH-About us"

@@ -12,6 +12,7 @@ import { setProvider } from "../../../../store/actions/views";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
+import { showErrorAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -52,7 +53,7 @@ const CopyTraderButton = ({ provider }) => {
         setStopCopyLoader(false);
       }
     } catch (e) {
-      alert(e.message);
+      dispatch(showErrorAlert(e));
     }
   };
 

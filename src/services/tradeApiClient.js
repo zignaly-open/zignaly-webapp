@@ -1106,6 +1106,21 @@ class TradeApiClient {
 
     return providerCreateResponseTransform(responseData);
   }
+
+  /**
+   * Function to clone a provider.
+   *
+   * @param {GetProviderFollowersPayload} payload Clone provider payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async cloneProvider(payload) {
+    const endpointPath = "/fe/api.php?action=cloneProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
