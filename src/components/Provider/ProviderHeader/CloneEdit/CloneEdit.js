@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./CloneEdit.scss";
 import EditIcon from "../../../../images/ct/edit.svg";
+import Modal from "../../../Modal";
+import CloneEditForm from "../../../Forms/CloneEditForm";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,7 +17,14 @@ import EditIcon from "../../../../images/ct/edit.svg";
 const CloneEdit = ({ provider }) => {
   const [modal, showModal] = useState(false);
 
-  return <img alt="zignaly" className="editIcon" onClick={() => showModal(true)} src={EditIcon} />;
+  return (
+    <>
+      <img alt="zignaly" className="editIcon" onClick={() => showModal(true)} src={EditIcon} />
+      <Modal persist={false} state={modal} size="small" onClose={() => showModal(false)}>
+        <CloneEditForm provider={provider} />
+      </Modal>
+    </>
+  );
 };
 
 export default CloneEdit;
