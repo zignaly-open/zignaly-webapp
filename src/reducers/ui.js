@@ -7,6 +7,10 @@ import {
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
+  CONNECTED_COPYT_TIMEFRAME,
+  CONNECTED_SIGNALP_TIMEFRAME,
+  COPYT_TIMEFRAME,
+  SIGNALP_TIMEFRAME,
 } from "../store/actions/ui";
 
 /**
@@ -31,6 +35,7 @@ const ui = (state = initialState.ui, action) => {
     case SHOW_LOADER:
       newState.loader = action.payload;
       break;
+
     case SHOW_ERROR_ALERT:
       newState.alerts = {
         ...newState.alerts,
@@ -40,6 +45,7 @@ const ui = (state = initialState.ui, action) => {
         },
       };
       break;
+
     case HIDE_ERROR_ALERT:
       newState.alerts = {
         ...newState.alerts,
@@ -50,6 +56,7 @@ const ui = (state = initialState.ui, action) => {
         },
       };
       break;
+
     case SHOW_SUCCESS_ALERT:
       newState.alerts = {
         ...newState.alerts,
@@ -59,6 +66,7 @@ const ui = (state = initialState.ui, action) => {
         },
       };
       break;
+
     case HIDE_SUCCESS_ALERT:
       newState.alerts = {
         ...newState.alerts,
@@ -69,8 +77,25 @@ const ui = (state = initialState.ui, action) => {
         },
       };
       break;
+
     case ASK_2FA:
       newState.ask2FA = action.payload;
+      break;
+
+    case CONNECTED_SIGNALP_TIMEFRAME:
+      newState.timeFrame.connectedSignalp = action.payload;
+      break;
+
+    case CONNECTED_COPYT_TIMEFRAME:
+      newState.timeFrame.connectedCopyt = action.payload;
+      break;
+
+    case COPYT_TIMEFRAME:
+      newState.timeFrame.copyt = action.payload;
+      break;
+
+    case SIGNALP_TIMEFRAME:
+      newState.timeFrame.signalp = action.payload;
       break;
 
     default:

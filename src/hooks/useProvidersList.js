@@ -6,8 +6,15 @@ import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
-import { showErrorAlert } from "../store/actions/ui";
+import {
+  showErrorAlert,
+  setConnectedCopytTimeframe,
+  setConnectedSignalTimeframe,
+  setCopytTimeframe,
+  setSignalpTimeframe,
+} from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import useStoreUITimeframeSelector from "./useStoreUITimeframeSelector";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -50,6 +57,7 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
+  const storeTimeframe = useStoreUITimeframeSelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
@@ -59,7 +67,23 @@ const useProvidersList = (options) => {
   const initialState = null;
   const [providers, setProviders] = useState(initialState);
   const [providersFiltered, setProvidersFiltered] = useState(initialState);
-  const [timeFrame, setTimeFrame] = useState(90);
+
+  const initTimeFrame = () => {
+    if (copyTradersOnly && connectedOnly) {
+      return storeTimeframe.connectedCopyt;
+    }
+    if (!copyTradersOnly && connectedOnly) {
+      return storeTimeframe.connectedSignalp;
+    }
+    if (copyTradersOnly && !connectedOnly) {
+      return storeTimeframe.copyt;
+    }
+    if (!copyTradersOnly && !connectedOnly) {
+      return storeTimeframe.signalp;
+    }
+  };
+
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame());
 
   // Get Coins list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
@@ -90,6 +114,23 @@ const useProvidersList = (options) => {
   const clearSort = () => {
     setSort("RETURNS_DESC");
   };
+
+  const saveTimeFrame = () => {
+    if (copyTradersOnly && connectedOnly) {
+      dispatch(setConnectedCopytTimeframe(timeFrame));
+    }
+    if (!copyTradersOnly && connectedOnly) {
+      dispatch(setConnectedSignalTimeframe(timeFrame));
+    }
+    if (copyTradersOnly && !connectedOnly) {
+      dispatch(setCopytTimeframe(timeFrame));
+    }
+    if (!copyTradersOnly && !connectedOnly) {
+      dispatch(setSignalpTimeframe(timeFrame));
+    }
+  };
+
+  useEffect(saveTimeFrame, [timeFrame]);
 
   /**
    * Sort providers by selected option
