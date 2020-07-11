@@ -88,7 +88,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         flexWrap="wrap"
         justifyContent="center"
       >
-        <Typography variant="h3">Clone Edit Form</Typography>
+        <Typography variant="h3">
+          <FormattedMessage id="srv.cloneform.title" />{" "}
+        </Typography>
 
         <Box className="inputBox" display="flex" flexDirection="column">
           <label className={"customLabel"}>

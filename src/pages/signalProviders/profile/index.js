@@ -74,11 +74,13 @@ const SignalProvidersProfile = () => {
           <Options provider={storeViews.provider} />
         </Box>
       )}
-      {!storeViews.provider.disable && !storeViews.provider.isClone && (
-        <Box className="cloneBox">
-          <CloneProviderButton provider={storeViews.provider} />
-        </Box>
-      )}
+      {!storeViews.provider.disable &&
+        !storeViews.provider.isClone &&
+        storeViews.provider.allowClones && (
+          <Box className="cloneBox">
+            <CloneProviderButton provider={storeViews.provider} />
+          </Box>
+        )}
       <Disclaimer />
     </Box>
   );

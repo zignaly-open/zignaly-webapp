@@ -91,6 +91,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep3Payload} ForgotPasswordStep3Payload
  * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
  * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
+ * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
  */
 
 /**
@@ -622,15 +623,31 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Edit Provider method.
    *
-   * @param {EditProvderPayload} payload Get providers stats payload.
+   * @param {EditProvderPayload} payload Edit provider payload.
    *
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
    */
   async providerEdit(payload) {
+    const endpointPath = "/fe/api.php?action=editProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Edti cloned provider method.
+   *
+   * @param {EditClonedProvderPayload} payload Edit cloned provider.
+   *
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async clonedProviderEdit(payload) {
     const endpointPath = "/fe/api.php?action=editProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 

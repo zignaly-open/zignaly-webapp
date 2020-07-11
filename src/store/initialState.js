@@ -489,6 +489,7 @@ const initialState = {
       useLeverageFromSignal: false,
       price: 0,
       loading: false,
+      allowClones: true,
     },
   },
 };
