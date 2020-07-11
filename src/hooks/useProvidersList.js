@@ -81,6 +81,7 @@ const useProvidersList = (options) => {
     if (!copyTradersOnly && !connectedOnly) {
       return storeTimeframe.signalp;
     }
+    return 90;
   };
 
   const [timeFrame, setTimeFrame] = useState(initTimeFrame());

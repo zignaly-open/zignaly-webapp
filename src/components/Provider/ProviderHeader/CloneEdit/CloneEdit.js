@@ -20,7 +20,7 @@ const CloneEdit = ({ provider }) => {
   return (
     <>
       <img alt="zignaly" className="editIcon" onClick={() => showModal(true)} src={EditIcon} />
-      <Modal persist={false} state={modal} size="small" onClose={() => showModal(false)}>
+      <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
         <CloneEditForm provider={provider} />
       </Modal>
     </>

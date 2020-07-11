@@ -21,11 +21,11 @@ const BalanceBox = () => {
     <>
       {storeBalanceLoader && (
         <Box
+          alignItems="center"
           className="balanceContainer"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
         >
           <CircularProgress color="primary" size={30} />
         </Box>
