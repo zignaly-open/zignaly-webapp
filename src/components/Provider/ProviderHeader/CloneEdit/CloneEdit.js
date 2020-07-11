@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CloneEdit.scss";
 import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
-import CloneEditForm from "../../../Forms/CloneEditForm";
+import CloneEditForm from "../../../Forms/ClonedProviderEditForm";
 
 /**
  * @typedef {Object} DefaultProps

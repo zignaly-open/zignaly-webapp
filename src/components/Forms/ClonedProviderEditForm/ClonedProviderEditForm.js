@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CloneEditForm.scss";
+import "./ClonedProviderEditForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
@@ -51,7 +51,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       providerId: provider.id,
     };
     tradeApi
-      .providerEdit(payload)
+      .clonedProviderEdit(payload)
       .then(() => {
         setLoading(false);
         const payload2 = {
