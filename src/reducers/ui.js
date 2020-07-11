@@ -11,6 +11,7 @@ import {
   CONNECTED_SIGNALP_TIMEFRAME,
   COPYT_TIMEFRAME,
   SIGNALP_TIMEFRAME,
+  SHOW_BALANCE_LOADER,
 } from "../store/actions/ui";
 
 /**
@@ -96,6 +97,10 @@ const ui = (state = initialState.ui, action) => {
 
     case SIGNALP_TIMEFRAME:
       newState.timeFrame.signalp = action.payload;
+      break;
+
+    case SHOW_BALANCE_LOADER:
+      newState.balanceLoader = action.payload;
       break;
 
     default:

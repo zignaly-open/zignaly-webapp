@@ -92,6 +92,7 @@
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
  * @property {TimeframeObject} timeFrame
+ * @property {Boolean} balanceLoader
  */
 
 /**
@@ -366,6 +367,7 @@ const initialState = {
     },
     loader: false,
     ask2FA: false,
+    balanceLoader: false,
     timeFrame: {
       connectedCopyt: 90,
       connectedSignalp: 90,

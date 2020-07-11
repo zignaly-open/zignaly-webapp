@@ -8,6 +8,7 @@ export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME_ACTION";
 export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME_ACTION";
 export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME_ACTION";
 export const SIGNALP_TIMEFRAME = "SIGNALP_TIMEFRAME_ACTION";
+export const SHOW_BALANCE_LOADER = "SHOW_BALANCE_LOADER_ACTION";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -133,6 +134,17 @@ export const setCopytTimeframe = (payload) => {
 export const setSignalpTimeframe = (payload) => {
   return {
     type: SIGNALP_TIMEFRAME,
+    payload,
+  };
+};
+
+/**
+ * @param {boolean} payload Flag to indicate if topbar balance is being loaded.
+ * @returns {AnyAction} return action object.
+ */
+export const showBalanceLoader = (payload) => {
+  return {
+    type: SHOW_BALANCE_LOADER,
     payload,
   };
 };
