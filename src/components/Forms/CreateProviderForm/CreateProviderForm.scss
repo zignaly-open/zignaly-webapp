@@ -49,4 +49,10 @@
   .minBalanceBox {
     margin-right: 20px;
   }
+
+  @include media("<=sm") {
+    .customButton {
+      width: 100%;
+    }
+  }
 }
