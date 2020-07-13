@@ -10,7 +10,6 @@ import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
-import { IKContext } from "imagekitio-react";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -35,20 +34,11 @@ const AppLayout = (props) => {
   return (
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <IKContext
-          publicKey="public_UOdTFiEfHK4U5QcZKql0fvJ4vdg="
-          urlEndpoint="https://ik.imagekit.io/zignaly"
-          authenticationEndpoint={
-            "https://test.zignaly.com/api/fe/api.php?action=getIKToken&token=" +
-            storeSession.tradeApi.accessToken
-          }
-        >
-          <CssBaseline />
-          <ErrorAlert />
-          <SuccessAlert />
-          {storeLoader && <Loader />}
-          {children}
-        </IKContext>
+        <CssBaseline />
+        <ErrorAlert />
+        <SuccessAlert />
+        {storeLoader && <Loader />}
+        {children}
       </ThemeProvider>
     </StylesProvider>
   );

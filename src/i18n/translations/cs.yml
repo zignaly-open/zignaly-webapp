@@ -397,6 +397,8 @@ srv.edit.public.tooltip: "If you check this option, everybody with the provider 
 srv.edit.list: "CH-Get Listed in the Marketplace"
 srv.edit.list.tooltip: "Checking this option will list your service in the marketplace. In order to be listed, please contact support."
 srv.edit.countries: "CH-Select Countries"
+srv.edit.upload: "CH-Upload"
+srv.edit.delete: "CH-Delete"
 srv.payment.docs: "CH-How to get Merchant ID and IPN Secret"
 srv.signalurl: "CH-Signal URL: "
 srv.edit.nameplaceholder: "CH-Enter name"

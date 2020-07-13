@@ -3,7 +3,6 @@ import { Box, Typography, OutlinedInput } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";
-import { IKImage, IKContext, IKUpload } from "imagekitio-react";
 
 const ProfileSettings = () => {
   //   const dispatch = useDispatch();
