@@ -161,9 +161,9 @@ const PositionsTable = (props) => {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
 
-      // Exclude status for non edit position page.
-      if (!positionEntity) {
-        dataTable = excludeDataTableColumn(dataTable, "col.stat");
+      if (positionEntity) {
+        // Exclude actions for edit position page.
+        dataTable = excludeDataTableColumn(dataTable, "col.actions");
       }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
