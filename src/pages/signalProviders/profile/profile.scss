@@ -34,6 +34,15 @@
     min-height: 400px;
     width: calc(100%);
   }
+
+  .cloneBox {
+    margin-top: 20px;
+    width: 100%;
+
+    .submitButton {
+      margin-right: 0;
+    }
+  }
 }
 
 @include media("<=sm") {
@@ -63,6 +72,14 @@
     .optionsBox {
       margin: 0 0 20px;
       width: 100%;
+    }
+
+    .cloneBox {
+      width: 100%;
+
+      .submitButton {
+        width: 100%;
+      }
     }
   }
 }

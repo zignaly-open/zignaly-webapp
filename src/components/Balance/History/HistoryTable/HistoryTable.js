@@ -45,8 +45,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalUSDT",
       label: "col.totalUSDT",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -54,8 +52,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalBTC",
       label: "col.totalBTC",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -63,8 +59,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalFreeUSDT",
       label: "col.totalUSDTfree",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -72,8 +66,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalFreeBTC",
       label: "col.totalBTCfree",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -81,8 +73,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalLockedUSDT",
       label: "col.totalUSDTalloc",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -90,8 +80,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       name: "totalLockedBTC",
       label: "col.totalBTCalloc",
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -100,8 +88,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       /* @ts-ignore */
       label: { id: "col.freequote", quote: "BNB" },
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },
@@ -110,8 +96,6 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       /* @ts-ignore */
       label: { id: "col.freequote", quote: "ETH" },
       options: {
-        display: "true",
-        viewColumns: true,
         customBodyRender: formatFloat,
       },
     },

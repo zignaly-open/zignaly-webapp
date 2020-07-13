@@ -78,11 +78,21 @@
  */
 
 /**
+ * @typedef {Object} TimeframeObject
+ * @property {Number} connectedCopyt
+ * @property {Number} connectedSignalp
+ * @property {Number} copyt
+ * @property {Number} signalp
+ */
+
+/**
  * @typedef {Object} DefaultUIObject
  * @property {DefaultUIModalObject} modal
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
+ * @property {TimeframeObject} timeFrame
+ * @property {Boolean} balanceLoader
  */
 
 /**
@@ -357,6 +367,13 @@ const initialState = {
     },
     loader: false,
     ask2FA: false,
+    balanceLoader: false,
+    timeFrame: {
+      connectedCopyt: 90,
+      connectedSignalp: 90,
+      copyt: 90,
+      signalp: 90,
+    },
   },
   views: {
     provider: {
@@ -474,6 +491,7 @@ const initialState = {
       useLeverageFromSignal: false,
       price: 0,
       loading: false,
+      allowClones: true,
     },
   },
 };

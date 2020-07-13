@@ -10,6 +10,7 @@ import { setProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
+import { showErrorAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -48,7 +49,7 @@ const FollowProviderButton = ({ provider }) => {
         setLoader(false);
       }
     } catch (e) {
-      alert(e.message);
+      dispatch(showErrorAlert(e));
     }
   };
 
@@ -72,7 +73,7 @@ const FollowProviderButton = ({ provider }) => {
         setLoader(false);
       }
     } catch (e) {
-      alert(e.message);
+      dispatch(showErrorAlert(e));
     }
   };
 

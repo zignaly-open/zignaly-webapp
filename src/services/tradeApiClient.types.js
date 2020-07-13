@@ -226,6 +226,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} EditClonedProvderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} name
+ * @property {String} logoUrl
+ */
+
+/**
  * @typedef {Object} UserLoginResponse
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -2149,6 +2157,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
  * @property {Boolean} loading
+ * @property {Boolean} allowClones
  */
 
 /**
@@ -2281,6 +2290,7 @@ function createEmptyProviderGetEntity() {
     useLeverageFromSignal: false,
     price: 0,
     loading: false,
+    allowClones: true,
   };
 }
 

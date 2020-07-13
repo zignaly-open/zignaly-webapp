@@ -7,6 +7,7 @@ import TrialPeriod from "./TrialPeriod";
 import { FormattedMessage } from "react-intl";
 import FollowProviderButton from "../FollowProviderButton";
 import ProviderLogo from "../ProviderLogo/";
+import CloneEdit from "../CloneEdit";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -37,6 +38,9 @@ const ProviderHeaderActions = () => {
           url={storeViews.provider.logoUrl}
         />
         <Typography variant="h1">{storeViews.provider.name}</Typography>
+        {storeViews.provider.isAdmin && storeViews.provider.isClone && (
+          <CloneEdit provider={storeViews.provider} />
+        )}
       </Box>
       <FollowProviderButton provider={storeViews.provider} />
 

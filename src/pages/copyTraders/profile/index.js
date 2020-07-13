@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
+import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
 
 const CopyTradersProfile = () => {
   const storeViews = useStoreViewsSelector();
@@ -67,6 +68,13 @@ const CopyTradersProfile = () => {
       <Box bgcolor="grid.main" className="performanceBox">
         <Performance provider={storeViews.provider} />
       </Box>
+      {!storeViews.provider.disable &&
+        !storeViews.provider.isClone &&
+        storeViews.provider.allowClones && (
+          <Box className="cloneBox">
+            <CloneProviderButton provider={storeViews.provider} />
+          </Box>
+        )}
       <Disclaimer />
     </Box>
   );
