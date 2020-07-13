@@ -32,6 +32,22 @@ const MobileAppbar = () => {
 
   /**
    *
+   * @param {string} link String to test in the url.
+   * @returns {Boolean} Flag if the link is active or not.
+   */
+  const active = (link) => {
+    let url = "";
+    if (typeof window !== undefined) {
+      url = window.location.href;
+    }
+    if (url.includes(link)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   *
    * @param {string} link
    * @returns {*}
    */
@@ -96,32 +112,28 @@ const MobileAppbar = () => {
       justifyContent="space-between"
     >
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("dashboard") ? "active" : "")}
         partiallyActive={true}
         to="/dashboard/positions"
       >
         <img alt="zignaly" className={"icon"} src={getIcon("dashboard")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
         partiallyActive={true}
         to="/copyTraders/browse"
       >
         <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
         partiallyActive={true}
         to="/signalProviders/browse"
       >
         <img alt="zignaly" className="icon" src={getIcon("signalProviders")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}
         partiallyActive={true}
         to="/tradingTerminal"
       >

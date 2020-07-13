@@ -32,6 +32,22 @@ const Sidebar = () => {
 
   /**
    *
+   * @param {string} link String to test in the url.
+   * @returns {Boolean} Flag if the link is active or not.
+   */
+  const active = (link) => {
+    let url = "";
+    if (typeof window !== undefined) {
+      url = window.location.href;
+    }
+    if (url.includes(link)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   *
    * @param {string} link
    * @returns {*}
    */
@@ -99,8 +115,7 @@ const Sidebar = () => {
       onMouseOver={showFullMenu}
     >
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        className={"sideBarLink " + (active("dashboard") ? "active" : "")}
         partiallyActive={true}
         to={"/dashboard/positions"}
       >
@@ -110,8 +125,7 @@ const Sidebar = () => {
         </Typography>
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
         partiallyActive={true}
         to={"/copyTraders/browse"}
       >
@@ -121,8 +135,7 @@ const Sidebar = () => {
         </Typography>
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
         partiallyActive={true}
         to={"/signalProviders/browse"}
       >
@@ -132,8 +145,7 @@ const Sidebar = () => {
         </Typography>
       </Link>
       <Link
-        activeClassName={"active"}
-        className={"sideBarLink"}
+        className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}
         partiallyActive={true}
         to={"/tradingTerminal"}
       >

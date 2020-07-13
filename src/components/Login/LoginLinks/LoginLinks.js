@@ -7,8 +7,8 @@ import { FormattedMessage } from "react-intl";
 const LoginLinks = () => {
   /**
    *
-   * @param {string} link
-   * @returns {*}
+   * @param {string} link String to test in the url.
+   * @returns {Boolean} Flag if the link is active or not.
    */
   const active = (link) => {
     let url = "";
