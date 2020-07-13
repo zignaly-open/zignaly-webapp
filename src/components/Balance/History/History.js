@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./History.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import HistoryTable from "./HistoryTable";
 import HistoryFilter from "./HistoryFilter";
 
@@ -39,20 +39,35 @@ const History = ({ dailyBalance }) => {
   const embedFilter = <HistoryFilter list={dailyBalance.balances} onChange={handleChange} />;
 
   return (
-    <Box
-      alignItems="flex-start"
-      className="history"
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-    >
-      <HistoryTable
-        list={list}
-        persistKey="dailyBalance"
-        quotes={dailyBalance.quotes}
-        title={embedFilter}
-      />
-    </Box>
+    <>
+      {dailyBalance.loading && (
+        <Box
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      )}
+      {!dailyBalance.loading && (
+        <Box
+          alignItems="flex-start"
+          className="history"
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-start"
+        >
+          <HistoryTable
+            list={list}
+            persistKey="dailyBalance"
+            quotes={dailyBalance.quotes}
+            title={embedFilter}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

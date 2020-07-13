@@ -1439,6 +1439,7 @@ function createUserBalanceEntity(response) {
  * @typedef {Object} DefaultDailyBalanceEntity
  * @property {Array<UserEquityEntity>} balances
  * @property {Array<String>} quotes
+ * @property {Boolean} loading
  */
 
 /**
@@ -1564,6 +1565,7 @@ function createUserEquityResponseEntity(response) {
   return {
     balances: response.balances,
     quotes: response.quotes,
+    loading: false,
   };
 }
 

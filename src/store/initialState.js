@@ -319,6 +319,7 @@ const initialState = {
     dailyBalance: {
       balances: [],
       quotes: [],
+      loading: false,
     },
     userData: {
       ask2FA: false,

@@ -12,6 +12,7 @@ export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const GET_USER_DATA = "GET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
+export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -117,6 +118,9 @@ export const removeUserExchange = (internalId) => {
 export const setDailyUserBalance = (payload) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_DAILY_BALANCE_LOADER,
+      });
       const response = await tradeApi.userEquityGet(payload);
       const action = {
         type: GET_DAILY_USER_BALANCE,

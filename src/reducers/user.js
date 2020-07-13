@@ -10,6 +10,7 @@ import {
   REMOVE_USER_EXCHANGE,
   GET_USER_DATA,
   ENABLE_TWO_FA,
+  SET_DAILY_BALANCE_LOADER,
 } from "../store/actions/user";
 
 /**
@@ -68,6 +69,10 @@ const userExchanges = (state = initialState.user, action) => {
 
     case ENABLE_TWO_FA:
       newState.userData = { ...newState.userData, TwoFAEnable: action.payload };
+      break;
+
+    case SET_DAILY_BALANCE_LOADER:
+      newState.dailyBalance = { ...newState.dailyBalance, loading: true };
       break;
 
     default:

@@ -13,6 +13,11 @@
   }
 }
 
+.loadingBox {
+  height: 250px;
+  width: 100%;
+}
+
 @include media("<=sm") {
   .totalEquity {
     border: 0;
