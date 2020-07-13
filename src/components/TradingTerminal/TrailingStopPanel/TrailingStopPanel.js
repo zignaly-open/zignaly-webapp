@@ -126,7 +126,11 @@ const TrailingStopPanel = (props) => {
       setValue("trailingStopPrice", "");
     }
 
-    validateTargetPriceLimits(trailingStopPrice, "trailingStopPrice");
+    validateTargetPriceLimits(
+      trailingStopPrice,
+      "trailingStopPrice",
+      "terminal.trailingstop.limit",
+    );
   };
 
   /**
@@ -156,7 +160,11 @@ const TrailingStopPanel = (props) => {
       setValue("trailingStopPercentage", "");
     }
 
-    validateTargetPriceLimits(trailingStopPrice, "trailingStopPrice");
+    validateTargetPriceLimits(
+      trailingStopPrice,
+      "trailingStopPrice",
+      "terminal.trailingstop.limit",
+    );
   };
 
   const chainedPriceUpdates = () => {

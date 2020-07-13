@@ -174,6 +174,8 @@ const DCAPanel = (props) => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
+    // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
@@ -184,11 +186,15 @@ const DCAPanel = (props) => {
       return;
     }
 
-    validateTargetPriceLimits(
-      targetPrice,
-      composeTargetPropertyName("targetPricePercentage", targetId),
-    );
-    rebuyUnitsChange(targetId);
+    if (
+      validateTargetPriceLimits(
+        targetPrice,
+        composeTargetPropertyName("targetPricePercentage", targetId),
+        "terminal.dca.limit",
+      )
+    ) {
+      rebuyUnitsChange(targetId);
+    }
   };
 
   /**
@@ -198,7 +204,7 @@ const DCAPanel = (props) => {
    * position size and price.
    *
    * @param {string} targetId Target group ID.
-   * @returns {Void} None.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
   const rebuyUnitsChange = (targetId) => {
     const positionSize = getEntrySize();
@@ -208,10 +214,12 @@ const DCAPanel = (props) => {
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
 
-    if (rebuyPositionSize > 0) {
-      const units = Math.abs(rebuyPositionSize / targetPrice);
-      validateUnitsLimits(units, composeTargetPropertyName("rebuyPercentage", targetId));
-    }
+    const units = Math.abs(rebuyPositionSize / targetPrice);
+    return validateUnitsLimits(
+      units,
+      composeTargetPropertyName("rebuyPercentage", targetId),
+      "terminal.dca.limit",
+    );
   };
 
   /**
@@ -226,7 +234,8 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
@@ -238,7 +247,6 @@ const DCAPanel = (props) => {
     }
 
     rebuyUnitsChange(targetId);
-    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
   };
 
   /**
@@ -277,8 +285,11 @@ const DCAPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
+    console.log("rebuyChainedUnits");
     if (expanded) {
+      console.log("rebuyChainedUnits2");
       cardinalityRange.forEach((targetId) => {
+        console.log("rebuyChainedUnits3");
         simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
       });
     }
@@ -289,8 +300,8 @@ const DCAPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
-        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
-        clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
         setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }

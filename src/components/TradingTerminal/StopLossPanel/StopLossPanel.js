@@ -104,7 +104,7 @@ const StopLossPanel = (props) => {
       setValue("stopLossPrice", "");
     }
 
-    validateTargetPriceLimits(stopLossPrice, "stopLossPrice");
+    validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit");
   };
 
   /**
@@ -130,7 +130,7 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", "");
     }
 
-    validateTargetPriceLimits(stopLossPrice, "stopLossPrice");
+    validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit");
   };
 
   const chainedPriceUpdates = () => {
