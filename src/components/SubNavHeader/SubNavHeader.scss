@@ -11,11 +11,11 @@
     font-family: "PlexSans-Regular";
     font-size: 21px;
     margin: 0 30px 0 0;
+    opacity: 0.6;
     padding: 12px 12px 21px 0;
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
-    opacity: 0.6;
 
     &.active {
       border-bottom: 2px solid $purple;

@@ -106,17 +106,17 @@ const Header = () => {
           />
           <Menu
             anchorEl={anchorEl}
-            getContentAnchorEl={null}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
             }}
+            getContentAnchorEl={null}
+            onClose={() => setAnchorEl(undefined)}
+            open={Boolean(anchorEl)}
             transformOrigin={{
               vertical: "top",
               horizontal: "center",
             }}
-            onClose={() => setAnchorEl(undefined)}
-            open={Boolean(anchorEl)}
           >
             <UserMenu />
           </Menu>

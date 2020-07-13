@@ -25,12 +25,12 @@
     height: 40px;
     justify-content: flex-start;
     margin-bottom: 50px;
+    opacity: 0.6;
     overflow: hidden;
     padding: 8px;
     text-decoration: none;
     white-space: nowrap;
     width: 100%;
-    opacity: 0.6;
 
     &.active {
       background-image: $purpleLightGradient;

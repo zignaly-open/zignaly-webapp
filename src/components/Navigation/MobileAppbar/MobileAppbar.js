@@ -48,8 +48,8 @@ const MobileAppbar = () => {
 
   /**
    *
-   * @param {string} link
-   * @returns {*}
+   * @param {string} link Name of the link to get icon.
+   * @returns {*} JS component or nothing.
    */
   const getIcon = (link) => {
     let url = "";
@@ -60,43 +60,39 @@ const MobileAppbar = () => {
       case "dashboard":
         if (storeSettings.darkStyle) {
           return DashboardWhite;
-        } else {
-          if (url.includes(link)) {
-            return DashboardWhite;
-          } else {
-            return DashboardBlack;
-          }
         }
+        if (url.includes(link)) {
+          return DashboardWhite;
+        }
+        return DashboardBlack;
+
       case "copyTraders":
         if (storeSettings.darkStyle) {
           return CopyWhite;
-        } else {
-          if (url.includes(link)) {
-            return CopyWhite;
-          } else {
-            return CopyBlack;
-          }
         }
+        if (url.includes(link)) {
+          return CopyWhite;
+        }
+        return CopyBlack;
+
       case "signalProviders":
         if (storeSettings.darkStyle) {
           return SignalWhite;
-        } else {
-          if (url.includes(link)) {
-            return SignalWhite;
-          } else {
-            return SignalBlack;
-          }
         }
+        if (url.includes(link)) {
+          return SignalWhite;
+        }
+        return SignalBlack;
+
       case "tradingTerminal":
         if (storeSettings.darkStyle) {
           return TerminalWhite;
-        } else {
-          if (url.includes(link)) {
-            return TerminalWhite;
-          } else {
-            return TerminlBlack;
-          }
         }
+        if (url.includes(link)) {
+          return TerminalWhite;
+        }
+        return TerminlBlack;
+
       default:
         return "";
     }

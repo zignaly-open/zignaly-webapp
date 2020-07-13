@@ -1,8 +1,8 @@
 .tabsMenu {
-  min-height: 70px;
-  width: 100%;
   border-bottom: 1px solid $borderColor;
+  min-height: 70px;
   padding: 0 10px;
+  width: 100%;
 
   .container {
     display: flex;
@@ -17,9 +17,9 @@
     max-width: 130px;
     min-height: 70px;
     min-width: 100px;
+    opacity: 0.6;
     padding: 0;
     text-transform: capitalize;
-    opacity: 0.6;
 
     &:focus {
       outline: none;

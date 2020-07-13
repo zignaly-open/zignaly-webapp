@@ -26,14 +26,14 @@ const PaymentButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Modal state={modal} persist={false} size="small" onClose={() => showModal(false)}>
-        <Disclaimer provider={provider} onClose={() => showModal(false)} />
+      <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
+        <Disclaimer onClose={() => showModal(false)} provider={provider} />
       </Modal>
       <input
         alt="Buy Now with CoinPayments.net"
+        onClick={() => showModal(true)}
         src="https://www.coinpayments.net/images/pub/buynow-grey.png"
         type="image"
-        onClick={() => showModal(true)}
       />
     </Box>
   );

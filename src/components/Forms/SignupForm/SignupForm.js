@@ -150,9 +150,9 @@ const SignupForm = () => {
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Controller
               as={<Checkbox className="checkboxInput" />}
-              name="subscribe"
-              defaultValue={true}
               control={control}
+              defaultValue={true}
+              name="subscribe"
             />
             <span className="termsText">Subscribe to notifications</span>
           </Box>

@@ -6,7 +6,6 @@ import AboutUs from "../../../components/Provider/Profile/AboutUs";
 import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
-import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";

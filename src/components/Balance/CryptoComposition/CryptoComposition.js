@@ -19,10 +19,10 @@ const CryptoComposition = ({ dailyBalance }) => {
     <>
       {dailyBalance.loading && (
         <Box
+          alignItems="center"
           className="loadingBox"
           display="flex"
           flexDirection="row"
-          alignItems="center"
           justifyContent="center"
         >
           <CircularProgress color="primary" size={40} />

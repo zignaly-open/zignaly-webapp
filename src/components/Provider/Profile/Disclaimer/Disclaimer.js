@@ -39,10 +39,10 @@ const Disclaimer = ({ provider, onClose }) => {
       </Typography>
 
       <Box
+        alignItems="center"
         className="actions"
         display="flex"
         flexDirection="row"
-        alignItems="center"
         justifyContent="space-evenly"
       >
         <PaymentForm provider={provider} />

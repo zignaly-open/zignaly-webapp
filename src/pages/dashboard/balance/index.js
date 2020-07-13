@@ -7,7 +7,6 @@ import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
 import AvailableBalance from "../../../components/Balance/AvailableBalance";
-import History from "../../../components/Balance/History";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

@@ -1,7 +1,6 @@
 import React from "react";
 import "./HistoryFilter.scss";
-import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { Box } from "@material-ui/core";
 import EquityFilter from "../../TotalEquity/EquityFilter";
 
 /**

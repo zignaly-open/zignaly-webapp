@@ -36,13 +36,13 @@ const FAQ = () => {
           <FormattedMessage id="faq.question4" />
         </Typography>
         <Box
+          alignItems="center"
           className="docsBox"
           display="flex"
           flexDirection="row"
-          alignItems="center"
           justifyContent="flex-start"
         >
-          <img alt="Zignaly-Docs" src={DocsIcon} className="docsIcon" />
+          <img alt="Zignaly-Docs" className="docsIcon" src={DocsIcon} />
           <Typography className="docs" variant="h6">
             <FormattedMessage id="faq.documentation" />
           </Typography>
