@@ -12,6 +12,7 @@ import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import useStoreUIAsk2FASelector from "../../../hooks/useStoreUIAsk2FASelector";
+import { ask2FA } from "../../../store/actions/ui";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -24,7 +25,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
-  const ask2FA = useStoreUIAsk2FASelector();
+  const twoFA = useStoreUIAsk2FASelector();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
@@ -52,7 +53,7 @@ const LoginForm = () => {
       <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
         <ForgotPasswordForm />
       </Modal>
-      <Modal onClose={() => {}} persist={true} size="small" state={ask2FA}>
+      <Modal onClose={() => dispatch(ask2FA(false))} persist={false} size="small" state={twoFA}>
         <TwoFAForm />
       </Modal>
       <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>

@@ -10,13 +10,14 @@
   }
 
   button {
-    font-family: "PlexSans-Bold";
+    font-family: "PlexSans-SemiBold";
     font-size: 16px;
     max-width: 130px;
     min-height: 70px;
     min-width: 100px;
     padding: 0;
     text-transform: capitalize;
+    opacity: 0.6;
 
     &:focus {
       outline: none;
@@ -24,6 +25,7 @@
 
     &.selected {
       color: $purple;
+      opacity: 1;
     }
   }
 

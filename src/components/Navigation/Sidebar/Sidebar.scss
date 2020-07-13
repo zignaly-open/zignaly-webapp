@@ -30,11 +30,13 @@
     text-decoration: none;
     white-space: nowrap;
     width: 100%;
+    opacity: 0.6;
 
     &.active {
       background-image: $purpleDarkGradient;
       border-radius: 19px;
       color: $white;
+      opacity: 1;
     }
 
     .icon {
