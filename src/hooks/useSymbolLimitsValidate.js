@@ -94,10 +94,7 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   const validateUnitsLimits = (units, propertyName, errorMessageGroup) => {
-    console.log("rebuyUnits: ", units.toFixed(8));
-    console.log("rebuyLimits: ", limits);
-    if (units < limits.amount.min) {
-      console.log("rebuy ERROR");
+    if (limits.amount.min && units < limits.amount.min) {
       setError(
         propertyName,
         "error",

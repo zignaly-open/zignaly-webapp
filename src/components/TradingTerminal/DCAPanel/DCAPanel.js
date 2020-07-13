@@ -36,7 +36,7 @@ const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
 
   /**
@@ -174,8 +174,8 @@ const DCAPanel = (props) => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
-    // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
-    // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
@@ -187,7 +187,7 @@ const DCAPanel = (props) => {
     }
 
     if (
-      validateTargetPriceLimits(
+      !validateTargetPriceLimits(
         targetPrice,
         composeTargetPropertyName("targetPricePercentage", targetId),
         "terminal.dca.limit",
@@ -207,7 +207,7 @@ const DCAPanel = (props) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   const rebuyUnitsChange = (targetId) => {
-    const positionSize = getEntrySize();
+    const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
     const price = getEntryPrice();
@@ -230,12 +230,12 @@ const DCAPanel = (props) => {
    */
   const rebuyPercentageChange = (event) => {
     const targetId = getGroupTargetId(event);
-    const positionSize = getEntrySize();
+    const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
-    // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
@@ -246,7 +246,9 @@ const DCAPanel = (props) => {
       return;
     }
 
-    rebuyUnitsChange(targetId);
+    if (!rebuyUnitsChange(targetId)) {
+      validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
+    }
   };
 
   /**
@@ -285,13 +287,8 @@ const DCAPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    console.log("rebuyChainedUnits");
     if (expanded) {
-      console.log("rebuyChainedUnits2");
-      cardinalityRange.forEach((targetId) => {
-        console.log("rebuyChainedUnits3");
-        simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
-      });
+      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", "1"));
     }
   };
 
@@ -300,8 +297,8 @@ const DCAPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
-        // clearError(composeTargetPropertyName("targetPricePercentage", targetId));
-        // clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearError(composeTargetPropertyName("rebuyPercentage", targetId));
         setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }

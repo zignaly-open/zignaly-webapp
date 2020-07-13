@@ -8,6 +8,7 @@ import { useFormContext } from "react-hook-form";
  * @typedef {Object} PositionEntryHook
  * @property {function} getEntryPrice
  * @property {function} getEntrySize
+ * @property {function} getEntrySizeQuote
  */
 
 /**
@@ -24,6 +25,7 @@ function usePositionEntry(positionEntity) {
   const { watch } = useFormContext();
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
+  const positionSize = watch("positionSize");
   const units = watch("units");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
@@ -41,9 +43,9 @@ function usePositionEntry(positionEntity) {
   };
 
   /**
-   * Resolve position entry size for new or existing position.
+   * Resolve position entry size (base) for new or existing position.
    *
-   * @returns {number} Entry price.
+   * @returns {number} Base entry size.
    */
   const getEntrySize = () => {
     if (positionEntity) {
@@ -53,7 +55,20 @@ function usePositionEntry(positionEntity) {
     return parseFloat(units) || 0;
   };
 
-  return { getEntryPrice, getEntrySize };
+  /**
+   * Resolve position entry size (quote) for new or existing position.
+   *
+   * @returns {number} Quote entry size.
+   */
+  const getEntrySizeQuote = () => {
+    if (positionEntity) {
+      return positionEntity.positionSizeQuote;
+    }
+
+    return parseFloat(positionSize) || 0;
+  };
+
+  return { getEntryPrice, getEntrySize, getEntrySizeQuote };
 }
 
 export default usePositionEntry;
