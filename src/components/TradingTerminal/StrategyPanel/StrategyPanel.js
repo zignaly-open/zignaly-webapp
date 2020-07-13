@@ -84,6 +84,7 @@ const StrategyPanel = (props) => {
   ];
 
   const leverage = watch("leverage");
+  const lastPrice = watch("lastPrice");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
@@ -148,6 +149,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                defaultValue={lastPrice}
                 inputRef={register}
                 name="price"
                 onChange={priceChange}
