@@ -510,6 +510,7 @@ terminal.increasestrategy: "CH-Increase Position Size"
 terminal.leverage.help: "CH-Leverage Help"
 terminal.leverage: "CH-Leverage"
 terminal.open: "CH-Open Position"
+terminal.open.success: "CH-The order has been created."
 terminal.position.size: "CH-Position Size"
 terminal.position.size.help: "CH-Position Size Help"
 terminal.position.sizepercentage: "CH-Position size from allocated balance"
@@ -734,9 +735,6 @@ m.dec: "CH-DEC"
 
 # FAQ
 faq: "CH-Frequently Asked Questions"
-
-# BUTTONS
-buttons.update: "CH-Update"
 
 # STATUS
 status.0: "CH-Position Created In DB"

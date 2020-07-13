@@ -14,7 +14,7 @@ import {
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
@@ -350,7 +350,7 @@ const StrategyForm = (props) => {
       .then((positionId) => {
         setProcessing(false);
         reset();
-        alert(`Position was created succesfully with ID ${positionId}`);
+        dispatch(showSuccessAlert(""));
         navigate(`/position/${positionId}`);
       })
       .catch((e) => {

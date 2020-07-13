@@ -33,3 +33,13 @@
     margin-bottom: 18px;
   }
 }
+
+[data-theme="dark"] {
+  .notificationsSettings {
+    .codeInfo {
+      a {
+        color: $purpleLight;
+      }
+    }
+  }
+}

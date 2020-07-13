@@ -58,7 +58,7 @@ const Convert = () => {
     tradeApi
       .convert(payload)
       .then(() => {
-        dispatch(showSuccessAlert("Success", "Converted"));
+        dispatch(showSuccessAlert("Success", "terminal.open.success"));
         // Update coins table
         setUpdatedAt(new Date());
         // Reset selection

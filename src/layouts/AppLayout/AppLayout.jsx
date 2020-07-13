@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { compose } from "recompose";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
@@ -9,7 +9,6 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -25,11 +24,14 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 const AppLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
   const storeLoader = useStoreUILoaderSelector();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
+  }, [storeSettings.darkStyle]);
 
   return (
     <StylesProvider injectFirst>
