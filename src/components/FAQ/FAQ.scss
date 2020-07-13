@@ -9,7 +9,21 @@
   .questionContainer {
     .question {
       color: $purple;
-      margin: 16px 16px 0 0;
+      margin: 16px 40px 0 0;
+      word-spacing: initial;
+    }
+
+    .docsBox {
+      margin: 16px 40px 0 0;
+
+      .docsIcon {
+        margin-right: 5px;
+      }
+
+      .docs {
+        color: $purple;
+        word-spacing: initial;
+      }
     }
   }
 }
@@ -22,6 +36,10 @@
       justify-content: flex-start;
 
       .question {
+        margin: 10px 0 0;
+      }
+
+      .docsBox {
         margin: 10px 0 0;
       }
     }

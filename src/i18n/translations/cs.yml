@@ -20,7 +20,7 @@ menu.exchangeSelectionTitle: "CH-Select Trading Account"
 menu.positionview: "CH-View Position"
 
 login.title: "CH-Login"
-signup.title: "CH-Signup"
+signup.title: "CH-Sign Up"
 recover.title: "CH-Recover Password"
 recover.error: "CH-Link expired! Please start the process again from login page!"
 
@@ -733,6 +733,11 @@ m.dec: "CH-DEC"
 
 # FAQ
 faq: "CH-Frequently Asked Questions"
+faq.question1: "CH-How do i start trading?"
+faq.question2: "CH-How can i withdraw my balance?"
+faq.question3: "CH-Who are signal providers?"
+faq.question4: "CH-Who are copy traders?"
+faq.documentation: "CH-Visit our help documentation"
 
 # BUTTONS
 buttons.update: "CH-Update"
@@ -938,7 +943,7 @@ month.nov: "CH-Nov"
 month.dec: "CH-Dec"
 
 action.login: "CH-Login"
-action.signup: "CH-Signup"
+action.signup: "CH-Sign Up"
 action.authenticate: "CH-Authenticate"
 action.cancel: "Ch-Cancel"
 action.update: "CH-Update"

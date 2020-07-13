@@ -19,7 +19,7 @@ menu.exchangeSelectionTitle: "Select Trading Account"
 menu.positionview: "View Position"
 
 login.title: "Login"
-signup.title: "Signup"
+signup.title: "Sign Up"
 recover.title: "Recover Password"
 recover.error: "Link expired! Please start the process again from login page!"
 
@@ -734,6 +734,11 @@ m.dec: "DEC"
 
 # FAQ
 faq: "Frequently Asked Questions"
+faq.question1: "How do i start trading?"
+faq.question2: "How can i withdraw my balance?"
+faq.question3: "Who are signal providers?"
+faq.question4: "Who are copy traders?"
+faq.documentation: "Visit our help documentation"
 
 # BUTTON
 button.update: "Update"
@@ -940,7 +945,7 @@ month.nov: "Nov"
 month.dec: "Dec"
 
 action.login: "Login"
-action.signup: "Signup"
+action.signup: "Sign Up"
 action.authenticate: "Authenticate"
 action.cancel: "Cancel"
 action.update: "Update"

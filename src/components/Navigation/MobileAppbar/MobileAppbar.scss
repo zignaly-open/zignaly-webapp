@@ -19,7 +19,7 @@
     width: 42px;
 
     &.active {
-      background-image: $purpleDarkGradient;
+      background-image: $purpleLightGradient;
       border-radius: 100%;
       color: $white;
     }
@@ -31,13 +31,13 @@
   }
 
   .checkedDarkBox {
-    background-image: $purpleDarkGradient;
+    background-image: $purpleLightGradient;
     border-radius: 100%;
     padding: 10px;
   }
 
   .checkedLightBox {
-    background-image: $purpleDarkGradient;
+    background-image: $purpleLightGradient;
     border-radius: 100%;
     padding: 10px;
   }

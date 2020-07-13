@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Captcha from "../../Captcha";
 import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
@@ -16,7 +16,7 @@ const SignupForm = () => {
   const [ref] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearError, setError } = formMethods;
+  const { errors, handleSubmit, register, clearError, setError, control } = formMethods;
   const dispatch = useDispatch();
 
   /**
@@ -148,7 +148,12 @@ const SignupForm = () => {
 
         <Box className="inputBox checkbox">
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
+            <Controller
+              as={<Checkbox className="checkboxInput" />}
+              name="subscribe"
+              defaultValue={true}
+              control={control}
+            />
             <span className="termsText">Subscribe to notifications</span>
           </Box>
         </Box>
