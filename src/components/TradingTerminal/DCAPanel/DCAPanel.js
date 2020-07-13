@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { keys, size } from "lodash";
+import { FormattedMessage, useIntl } from "react-intl";
+import { lt, gt, inRange, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -37,6 +37,7 @@ const DCAPanel = (props) => {
   const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { formatMessage } = useIntl();
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -170,12 +171,14 @@ const DCAPanel = (props) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
+    const valueType = entryType === "LONG" ? "lower" : "greater";
+    const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (isNaN(targetPricePercentage)) {
+    if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
         "error",
-        "Rebuy price percentage must be a number.",
+        formatMessage({ id: "terminal.dca.valid.pricepercentage" }, { type: valueType }),
       );
 
       return;
@@ -223,11 +226,12 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    if (isNaN(rebuyPercentage)) {
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",
-        "Rebuy percentage must be a number.",
+        formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
       );
 
       return;
