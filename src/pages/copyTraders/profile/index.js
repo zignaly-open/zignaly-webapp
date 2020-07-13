@@ -75,7 +75,6 @@ const CopyTradersProfile = () => {
             <CloneProviderButton provider={storeViews.provider} />
           </Box>
         )}
-      <Disclaimer />
     </Box>
   );
 };

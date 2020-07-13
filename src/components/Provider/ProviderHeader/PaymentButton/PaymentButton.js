@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./PaymentButton.scss";
 import { Box } from "@material-ui/core";
-import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import Modal from "../../../Modal";
+import Disclaimer from "../../Profile/Disclaimer";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,26 +16,7 @@ import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const PaymentButton = ({ provider }) => {
-  const storeUserData = useStoreUserData();
-  const ipnURL = "https://zignaly.com/api/cryptoPaymentListener.php";
-
-  const createReturnSuccessUrl = () => {
-    if (provider.isCopyTrading) {
-      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#success`;
-    }
-    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
-  };
-
-  const createReturnErrorUrl = () => {
-    if (provider.isCopyTrading) {
-      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#error`;
-    }
-    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
-  };
-
-  const returnSuccessURL = createReturnSuccessUrl();
-
-  const returnErrorURL = createReturnErrorUrl();
+  const [modal, showModal] = useState(false);
 
   return (
     <Box
@@ -44,32 +26,15 @@ const PaymentButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {provider.id && (
-        <Box>
-          <form action="https://www.coinpayments.net/index.php" method="post">
-            <input name="cmd" type="hidden" value="_pay" />
-            <input name="reset" type="hidden" value="1" />
-            <input name="merchant" type="hidden" value={provider.internalPaymentInfo.merchantId} />
-            <input name="item_name" type="hidden" value="Zignaly Provider" />
-            <input name="currency" type="hidden" value="USD" />
-            <input name="amountf" type="hidden" value={provider.internalPaymentInfo.price} />
-            <input name="quantity" type="hidden" value="1" />
-            <input name="allow_quantity" type="hidden" value="1" />
-            <input name="want_shipping" type="hidden" value="0" />
-            <input name="success_url" type="hidden" value={returnSuccessURL} />
-            <input name="cancel_url" type="hidden" value={returnErrorURL} />
-            <input name="allow_extra" type="hidden" value="0" />
-            <input name="invoice" type="hidden" value={provider.id} />
-            <input name="custom" type="hidden" value={storeUserData.userId} />
-            <input name="ipn_url" type="hidden" value={ipnURL} />
-            <input
-              alt="Buy Now with CoinPayments.net"
-              src="https://www.coinpayments.net/images/pub/buynow-grey.png"
-              type="image"
-            />
-          </form>
-        </Box>
-      )}
+      <Modal state={modal} persist={false} size="small" onClose={() => showModal(false)}>
+        <Disclaimer provider={provider} onClose={() => showModal(false)} />
+      </Modal>
+      <input
+        alt="Buy Now with CoinPayments.net"
+        src="https://www.coinpayments.net/images/pub/buynow-grey.png"
+        type="image"
+        onClick={() => showModal(true)}
+      />
     </Box>
   );
 };

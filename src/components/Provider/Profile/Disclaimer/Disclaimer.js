@@ -2,15 +2,33 @@ import React from "react";
 import "./Disclaimer.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import PaymentForm from "../../../Forms/PaymentForm";
+import CustomButton from "../../../CustomButton";
 
-const Disclaimer = () => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {Function} onClose
+ */
+
+/**
+ * Provides the navigation bar for the dashboard.
+ *
+ * @param {DefaultProps} props Default props
+ * @returns {JSX.Element} Component JSX.
+ */
+const Disclaimer = ({ provider, onClose }) => {
+  const handleClick = () => {
+    onClose();
+  };
+
   return (
     <Box
       alignItems="center"
       className="disclaimer"
       display="flex"
       flexDirection="column"
-      justifyContent="flex-start"
+      justifyContent="space-between"
     >
       <Typography variant="h3">
         <FormattedMessage id="srv.disclaimer.title" />
@@ -19,6 +37,19 @@ const Disclaimer = () => {
       <Typography variant="body1">
         <FormattedMessage id="srv.disclaimer.text" />
       </Typography>
+
+      <Box
+        className="actions"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-evenly"
+      >
+        <PaymentForm provider={provider} />
+        <CustomButton className="textButton" onClick={handleClick}>
+          <FormattedMessage id="action.cancel" />
+        </CustomButton>
+      </Box>
     </Box>
   );
 };

@@ -81,7 +81,6 @@ const SignalProvidersProfile = () => {
             <CloneProviderButton provider={storeViews.provider} />
           </Box>
         )}
-      <Disclaimer />
     </Box>
   );
 };
