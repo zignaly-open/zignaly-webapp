@@ -948,10 +948,12 @@ action.reset: "Reset Password"
 action.saveData: "Save Data"
 action.saveSettings: "Save Settings"
 action.forgot: "Forgot Password"
+
 # FORM
 form.error.quote: "Select a quote"
 form.error.minAllocatedBalance: "Enter the min allocated balance"
 form.error.name: "Enter a name"
+form.error.name.length: "The name should be between 5 and 90 characters"
 form.error.key: "Enter a key"
 form.error.key.invalid: "The provided api key/secret pair is not valid"
 form.error.secret: "Enter a secret"
