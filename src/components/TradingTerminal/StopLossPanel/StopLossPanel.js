@@ -104,7 +104,13 @@ const StopLossPanel = (props) => {
       setValue("stopLossPrice", "");
     }
 
-    validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit");
+    if (!validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit")) {
+      return;
+    }
+
+    if (errors.stopLossPercentage) {
+      clearError("stopLossPrice");
+    }
   };
 
   /**
@@ -130,7 +136,13 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", "");
     }
 
-    validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit");
+    if (!validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit")) {
+      return;
+    }
+
+    if (errors.stopLossPercentage) {
+      clearError("stopLossPrice");
+    }
   };
 
   const chainedPriceUpdates = () => {
@@ -170,8 +182,13 @@ const StopLossPanel = (props) => {
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
-      clearError("stopLossPrice");
-      clearError("stopLossPercentage");
+      if (errors.stopLossPercentage) {
+        clearError("stopLossPercentage");
+      }
+
+      if (errors.stopLossPrice) {
+        clearError("stopLossPrice");
+      }
     }
   };
 
