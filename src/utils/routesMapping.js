@@ -171,10 +171,6 @@ export const createTraderRoutes = (providerId, provider) => {
       ],
     };
     if (provider.isAdmin) {
-      data.links.push({
-        id: "srv.management",
-        to: `/copyTraders/${provider.id}/management`,
-      });
       if (!provider.isClone) {
         data.links.push({
           id: "srv.edit",
@@ -184,6 +180,10 @@ export const createTraderRoutes = (providerId, provider) => {
       data.links.push({
         id: "srv.users",
         to: `/copyTraders/${provider.id}/users`,
+      });
+      data.links.push({
+        id: "srv.management",
+        to: `/copyTraders/${provider.id}/management`,
       });
     }
     return data;
