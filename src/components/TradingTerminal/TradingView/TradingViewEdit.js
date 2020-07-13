@@ -8,8 +8,8 @@ import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
-import "./TradingView.scss";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import "./TradingView.scss";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
@@ -18,7 +19,6 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
-import { FormattedMessage } from "react-intl";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
@@ -70,6 +70,7 @@ const StrategyForm = (props) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
+  const { formatMessage } = useIntl();
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -412,7 +413,7 @@ const StrategyForm = (props) => {
     drawLine({
       id: "price",
       price: entryPrice || 0,
-      label: "Price",
+      label: formatMessage({ id: "terminal.line.price.label" }),
       color: colors.purple,
     });
   };
@@ -425,7 +426,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "stopLossPrice",
         price: price || 0,
-        label: "Stop loss",
+        label: formatMessage({ id: "terminal.line.stoploss.label" }),
         color: colors.yellow,
       });
     } else {
@@ -441,7 +442,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "trailingStopPrice",
         price: price || 0,
-        label: "Trailing stop price",
+        label: formatMessage({ id: "terminal.line.trailingstop.label" }),
         color: colors.blue,
       });
     } else {
@@ -461,7 +462,7 @@ const StrategyForm = (props) => {
         drawLine({
           id: targetFieldName,
           price: price || 0,
-          label: `Take profit target ${index}`,
+          label: formatMessage({ id: "terminal.line.takeprofit.label" }, { index: index }),
           color: colors.green,
         });
       } else {
@@ -479,7 +480,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
-        label: "DCA target 1",
+        label: formatMessage({ id: "terminal.line.dca.label" }, { index: 1 }),
         color: colors.black,
       });
     } else {
