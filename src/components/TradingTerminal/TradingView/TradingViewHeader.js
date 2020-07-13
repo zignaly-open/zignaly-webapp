@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { size } from "lodash";
+import { size, isBoolean } from "lodash";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
@@ -68,7 +68,12 @@ const TradingViewHeader = (props) => {
   // Filter signal provider symbols options when is selected.
   const symbolsOptions = symbolsOptionsAll.filter((symbol) => {
     if (providerId && providerId !== "1" && providerService) {
-      return symbol.includes("/" + providerService.providerQuote);
+      const { providerQuote } = providerService;
+      if (isBoolean(providerQuote)) {
+        return providerQuote === true;
+      }
+
+      return symbol.includes("/" + providerQuote);
     }
 
     return true;
