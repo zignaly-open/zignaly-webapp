@@ -30,6 +30,62 @@ const MobileAppbar = () => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
+  /**
+   *
+   * @param {string} link
+   * @returns {*}
+   */
+  const getIcon = (link) => {
+    let url = "";
+    if (typeof window !== undefined) {
+      url = window.location.href;
+    }
+    switch (link) {
+      case "dashboard":
+        if (storeSettings.darkStyle) {
+          return DashboardWhite;
+        } else {
+          if (url.includes(link)) {
+            return DashboardWhite;
+          } else {
+            return DashboardBlack;
+          }
+        }
+      case "copyTraders":
+        if (storeSettings.darkStyle) {
+          return CopyWhite;
+        } else {
+          if (url.includes(link)) {
+            return CopyWhite;
+          } else {
+            return CopyBlack;
+          }
+        }
+      case "signalProviders":
+        if (storeSettings.darkStyle) {
+          return SignalWhite;
+        } else {
+          if (url.includes(link)) {
+            return SignalWhite;
+          } else {
+            return SignalBlack;
+          }
+        }
+      case "tradingTerminal":
+        if (storeSettings.darkStyle) {
+          return TerminalWhite;
+        } else {
+          if (url.includes(link)) {
+            return TerminalWhite;
+          } else {
+            return TerminlBlack;
+          }
+        }
+      default:
+        return "";
+    }
+  };
+
   return (
     <Box
       alignItems="center"
@@ -45,11 +101,7 @@ const MobileAppbar = () => {
         partiallyActive={true}
         to="/dashboard/positions"
       >
-        <img
-          alt="zignaly"
-          className="icon"
-          src={storeSettings.darkStyle ? DashboardWhite : DashboardBlack}
-        />
+        <img alt="zignaly" className={"icon"} src={getIcon("dashboard")} />
       </Link>
       <Link
         activeClassName="active"
@@ -57,7 +109,7 @@ const MobileAppbar = () => {
         partiallyActive={true}
         to="/copyTraders/browse"
       >
-        <img alt="zignaly" className="icon" src={storeSettings.darkStyle ? CopyWhite : CopyBlack} />
+        <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
       </Link>
       <Link
         activeClassName="active"
@@ -65,11 +117,7 @@ const MobileAppbar = () => {
         partiallyActive={true}
         to="/signalProviders/browse"
       >
-        <img
-          alt="zignaly"
-          className="icon"
-          src={storeSettings.darkStyle ? SignalWhite : SignalBlack}
-        />
+        <img alt="zignaly" className="icon" src={getIcon("signalProviders")} />
       </Link>
       <Link
         activeClassName="active"
@@ -77,11 +125,7 @@ const MobileAppbar = () => {
         partiallyActive={true}
         to="/tradingTerminal"
       >
-        <img
-          alt="zignaly"
-          className={"icon"}
-          src={storeSettings.darkStyle ? TerminalWhite : TerminlBlack}
-        />
+        <img alt="zignaly" className={"icon"} src={getIcon("tradingTerminal")} />
       </Link>
       <Box
         className="sideBarLink"
