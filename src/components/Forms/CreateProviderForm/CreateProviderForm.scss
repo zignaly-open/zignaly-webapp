@@ -54,5 +54,32 @@
     .customButton {
       width: 100%;
     }
+
+    .inputBox {
+      flex-direction: column;
+    }
+
+    .customSelect.customSelect {
+      margin-left: 0;
+    }
+
+    .customSelect {
+      &:first-child {
+        margin-bottom: 18px;
+      }
+
+      > span {
+        margin: 0;
+        padding: 0;
+
+        > p {
+          margin-right: 0;
+        }
+      }
+    }
+
+    label {
+      text-align: center;
+    }
   }
 }
