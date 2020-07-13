@@ -1,0 +1,24 @@
+.balanceTabs {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  width: 100%;
+
+  .tabsBox {
+    border-bottom: solid 1px $borderColor;
+
+    .tabPanel {
+      width: 100%;
+      padding: 0 10px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .balanceTabs {
+    .tabsBox {
+      .tabPanel {
+        min-height: 350px;
+      }
+    }
+  }
+}

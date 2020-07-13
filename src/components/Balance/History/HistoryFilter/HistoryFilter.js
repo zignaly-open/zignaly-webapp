@@ -30,9 +30,6 @@ const HistoryFilter = ({ list, onChange }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Typography variant="h5">
-        <FormattedMessage id="dashboard.balance.historical" />
-      </Typography>
       <EquityFilter list={list} onChange={onChange} />
     </Box>
   );

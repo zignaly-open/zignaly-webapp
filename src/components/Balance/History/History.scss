@@ -1,9 +1,9 @@
 .history {
   width: 100%;
 
-  .historyHeader {
-    background: transparent;
-    margin-bottom: 20px;
-    width: 100%;
+  .customTable {
+    & > div {
+      box-shadow: none;
+    }
   }
 }

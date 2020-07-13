@@ -46,14 +46,6 @@ const History = ({ dailyBalance }) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Box
-        alignItems="center"
-        bgcolor="grid.content"
-        className="historyHeader"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-end"
-      />
       <HistoryTable
         list={list}
         persistKey="dailyBalance"

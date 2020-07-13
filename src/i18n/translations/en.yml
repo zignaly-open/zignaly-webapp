@@ -62,6 +62,7 @@ dashboard.balance.available: "Available"
 dashboard.balance.invested: "Invested"
 dashboard.balance.profit: "Profit"
 dashboard.balance.historical: "Historical"
+dashboard.balance.coins: "Coins"
 dashboard.traders.copying: "Traders I am copying:"
 dashboard.providers.following: "Signal Providers I am following:"
 
