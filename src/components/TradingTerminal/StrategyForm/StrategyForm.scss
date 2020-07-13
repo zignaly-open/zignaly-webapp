@@ -53,7 +53,8 @@
     }
 
     .errorText {
-      max-width: 250px;
+      display: block;
+      flex: 0 0 100%;
       text-align: left;
     }
 

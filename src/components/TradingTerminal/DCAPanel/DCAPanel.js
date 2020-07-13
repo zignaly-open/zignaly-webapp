@@ -236,7 +236,7 @@ const DCAPanel = (props) => {
 
     clearError(composeTargetPropertyName("rebuyPercentage", targetId));
     clearError(composeTargetPropertyName("targetPricePercentage", targetId));
-    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100)) {
+    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",

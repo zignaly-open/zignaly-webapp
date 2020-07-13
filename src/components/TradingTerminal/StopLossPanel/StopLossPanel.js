@@ -66,7 +66,7 @@ const StopLossPanel = (props) => {
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsStopLoss) {
       const stopLossPercentage = positionEntity.stopLossPercentage;
-      if (inRange(Math.abs(stopLossPercentage), 0, 100)) {
+      if (inRange(Math.abs(stopLossPercentage), 0, 100.0001)) {
         setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
       }
     }

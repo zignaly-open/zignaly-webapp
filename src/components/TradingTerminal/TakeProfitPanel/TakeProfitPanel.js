@@ -151,13 +151,14 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const valueType = entryType === "LONG" ? "greater" : "lower";
     const compareFn = entryType === "LONG" ? lt : gt;
     let targetPrice = price;
 
     if (isNaN(targetPercentage) || compareFn(targetPercentage, 0)) {
       setError(
-        composeTargetPropertyName("targetPricePercentage", targetId),
+        pricePercentageProperty,
         "error",
         formatMessage({ id: "terminal.takeprofit.valid.pricepercentage" }, { type: valueType }),
       );
@@ -176,7 +177,11 @@ const TakeProfitPanel = (props) => {
       setValue(priceProperty, "");
     }
 
-    validateTargetPriceLimits(targetId);
+    if (validateTargetPriceLimits(targetId)) {
+      clearError(priceProperty);
+    }
+
+    clearError(pricePercentageProperty);
   };
 
   /**
@@ -190,14 +195,10 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
 
     if (isNaN(targetPrice)) {
-      setError(
-        composeTargetPropertyName("targetPrice", targetId),
-        "error",
-        formatMessage({ id: "terminal.takeprofit.valid.price" }),
-      );
-
+      setError(priceProperty, "error", formatMessage({ id: "terminal.takeprofit.valid.price" }));
       setValue(pricePercentageProperty, "");
       return;
     }
@@ -210,7 +211,9 @@ const TakeProfitPanel = (props) => {
       setValue(pricePercentageProperty, "");
     }
 
-    validateTargetPriceLimits(targetId);
+    if (validateTargetPriceLimits(targetId)) {
+      clearError(priceProperty);
+    }
   };
 
   const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
@@ -257,7 +260,7 @@ const TakeProfitPanel = (props) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
-    if (isNaN(unitsPercentage) || !inRange(unitsPercentage, 0, 100)) {
+    if (isNaN(unitsPercentage) || !inRange(unitsPercentage, 0, 100.0001)) {
       setError(
         composeTargetPropertyName("exitUnitsPercentage", targetId),
         "error",
@@ -330,7 +333,6 @@ const TakeProfitPanel = (props) => {
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
 
-    clearError(priceProperty);
     if (limits.price.min && targetPrice < limits.price.min) {
       setError(
         priceProperty,
@@ -368,7 +370,6 @@ const TakeProfitPanel = (props) => {
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
     const cost = Math.abs(targetPrice * exitUnits);
 
-    clearError(unitsProperty);
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
       setError(
         unitsProperty,

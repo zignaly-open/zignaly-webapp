@@ -27,7 +27,7 @@ const EntryExpirationPanel = () => {
 
     clearError("entryExpiration");
     if (isNaN(entryExpiration) || entryExpiration <= 0) {
-      setError("entryExpiration", "error", formatMessage({ id: "terminal.expi.limit.zero" }));
+      setError("entryExpiration", "error", formatMessage({ id: "terminal.expiration.limit.zero" }));
     }
   };
 
