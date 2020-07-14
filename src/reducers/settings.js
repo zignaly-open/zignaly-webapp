@@ -7,6 +7,7 @@ import {
   SELECT_THEME,
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
+  SET_ROWS_PER_PAGE,
 } from "../store/actions/settings";
 
 /**
@@ -68,6 +69,11 @@ const settings = (state = initialState.settings, action) => {
       }
       break;
     }
+
+    case SET_ROWS_PER_PAGE:
+      const { table, numberOfRows } = action.payload;
+      newState.rowsPerPage = { ...newState.rowsPerPage, [table]: numberOfRows };
+      break;
 
     default:
       return state;

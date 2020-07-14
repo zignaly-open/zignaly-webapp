@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
-import { setDisplayColumn } from "../../store/actions/settings";
+import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -91,8 +91,10 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     sort: true,
     pagination: countRows > 10,
     rowsPerPageOptions: [10, 25, 50, 100],
-    rowsPerPage: 10,
-    onChangeRowsPerPage: (numberOfRows) => {},
+    rowsPerPage: storeSettings.rowsPerPage[persistKey] || 10,
+    onChangeRowsPerPage: (numberOfRows) => {
+      dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
+    },
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
       dispatch(
