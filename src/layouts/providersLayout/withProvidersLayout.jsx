@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box, Icon, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -12,6 +11,7 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 import CustomButton from "../../components/CustomButton";
 import Modal from "../../components/Modal";
 import CreateProviderForm from "../../components/Forms/CreateProviderForm";
+import "./ProvidersLayout.scss";
 
 /**
  * HOC wrap component with copy traders layout.
