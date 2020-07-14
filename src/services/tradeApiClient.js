@@ -146,7 +146,7 @@ class TradeApiClient {
     }
 
     if (responseData.error) {
-      const customError = responseData.error.error;
+      const customError = responseData.error.error || responseData.error;
 
       if (customError.code === 13) {
         // Session expired
