@@ -135,11 +135,21 @@ const SignupForm = () => {
               justifyContent="start"
             >
               <span className="text">I agree to</span>
-              <a className="link" href={"/legal/terms"}>
+              <a
+                className="link"
+                href="https://zignaly.com/legal/terms"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 Terms and condition
               </a>
               <span className="text">and</span>
-              <a className="link" href={"/legal/privacy"}>
+              <a
+                className="link"
+                href="https://zignaly.com/legal/privacy"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 privacy policy
               </a>
             </Box>

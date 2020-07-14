@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import "./TwoFAForm.scss";
-import { Box, Typography } from "@material-ui/core";
-import CustomButton from "../../CustomButton/CustomButton";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
-import { useForm, Controller } from "react-hook-form";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { authenticate2FA } from "../../../store/actions/session";
-import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -20,84 +17,51 @@ const TwoFAForm = () => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
-  const { errors, handleSubmit, control, formState } = useForm({
-    mode: "onChange",
-  });
-
-  const { isValid } = formState;
-
-  /**
-   * @typedef {Object} FormData
-   * @property {string} code
-   */
-
   /**
    * Function to submit form.
    *
-   * @param {FormData} data Form data.
+   * @param {String} code
    * @returns {void}
    */
-  const submitCode = (data) => {
+  const submitCode = (code) => {
     setLoading(true);
     const payload = {
-      code: data.code,
+      code: code,
       token: storeSession.tradeApi.accessToken,
     };
     dispatch(authenticate2FA(payload, setLoading));
   };
 
   return (
-    <form id="twoFAForm" onSubmit={handleSubmit(submitCode)}>
-      <Box
-        alignItems="center"
-        className="twoFAForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <Typography variant="h3">2 Factor Authentication</Typography>
-        <Box
-          alignItems="center"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">
-            <Typography>Input Your Authentication Code</Typography>
-          </label>
-          <Controller
-            // @ts-ignore
-            as={ReactCodeInput}
-            className="codeInput"
-            control={control}
-            error={!!errors.code}
-            fields={6}
-            name="code"
-            onChange={(val) => {
-              setCodeError(false);
-              return val[0];
-            }}
-            rules={{
-              required: true,
-              minLength: 6,
-            }}
-          />
-          {/* {errors.code && <span className="errorText">{errors.code.message}</span>} */}
-          {codeError && <span className="errorText">Wrong code.</span>}
-          <CustomButton
-            className="bgPurple"
-            disabled={!isValid}
-            form="twoFAForm"
-            fullWidth={true}
-            loading={loading}
-            type="submit"
+    <Box
+      alignItems="center"
+      className="twoFAForm"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      {loading && <CircularProgress color="primary" size={40} />}
+      {!loading && (
+        <>
+          <Typography variant="h3">2 Factor Authentication</Typography>
+          <Box
+            alignItems="center"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
           >
-            <FormattedMessage id="action.authenticate" />
-          </CustomButton>
-        </Box>
-      </Box>
-    </form>
+            <label className="customLabel">
+              <Typography>Input Your Authentication Code</Typography>
+            </label>
+            {/*@ts-ignore */}
+            <ReactCodeInput fields={6} className="code-input" onComplete={submitCode} />
+            {codeError && <span className="error-text">Code must be of 6 digits!</span>}
+            {codeError && <span className="errorText">Wrong code.</span>}
+          </Box>
+        </>
+      )}
+    </Box>
   );
 };
 
