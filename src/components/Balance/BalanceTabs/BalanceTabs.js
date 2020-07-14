@@ -3,6 +3,7 @@ import { Box } from "@material-ui/core";
 import TabsMenu from "./TabsMenu";
 import "./BalanceTabs.scss";
 import History from "../History";
+import Coins from "../Coins";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -42,6 +43,11 @@ const BalanceTabs = ({ dailyBalance }) => {
         {tabValue === 0 && (
           <Box className="tabPanel">
             <History dailyBalance={dailyBalance} />
+          </Box>
+        )}
+        {tabValue === 1 && (
+          <Box className="tabPanel">
+            <Coins />
           </Box>
         )}
       </Box>

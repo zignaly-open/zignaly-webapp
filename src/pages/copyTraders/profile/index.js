@@ -42,7 +42,7 @@ const CopyTradersProfile = () => {
   return (
     <Box
       alignItems="flex-start"
-      className="profilePage"
+      className="traderProfilePage"
       display="flex"
       flexDirection="row"
       flexWrap="wrap"

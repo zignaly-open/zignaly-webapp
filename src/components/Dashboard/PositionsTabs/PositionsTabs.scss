@@ -17,6 +17,12 @@
       }
     }
   }
+
+  .customTable {
+    & > div {
+      box-shadow: none;
+    }
+  }
 }
 
 @include media("<=sm") {

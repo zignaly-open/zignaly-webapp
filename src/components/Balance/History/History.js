@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./History.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import HistoryTable from "./HistoryTable";
-import HistoryFilter from "./HistoryFilter";
+import EquityFilter from "../TotalEquity/EquityFilter";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -36,7 +36,7 @@ const History = ({ dailyBalance }) => {
     setList(data);
   };
 
-  const embedFilter = <HistoryFilter list={dailyBalance.balances} onChange={handleChange} />;
+  const embedFilter = <EquityFilter list={dailyBalance.balances} onChange={handleChange} />;
 
   return (
     <>

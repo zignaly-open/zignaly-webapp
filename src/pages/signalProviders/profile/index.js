@@ -43,7 +43,7 @@ const SignalProvidersProfile = () => {
   return (
     <Box
       alignItems="flex-start"
-      className="profilePage"
+      className="providerProfilePage"
       display="flex"
       flexDirection="row"
       flexWrap="wrap"

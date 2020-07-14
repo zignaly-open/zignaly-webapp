@@ -142,6 +142,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UserExchangeAssetsPayload
+ * @property {string} token
+ * @property {string} internalId
+ */
+
+/**
  * @typedef {Object} GetProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -3287,5 +3293,67 @@ const createEmptyNewProviderEntity = () => {
     lockedBy: "",
     lockedFrom: "",
     copyTradingStatsLastUpdate: null,
+  };
+};
+
+/**
+ * @typedef {Object} UserExchangeAssetObject
+ * @property {String} balanceFree
+ * @property {String} balanceFreeBTC
+ * @property {String} balanceFreeUSDT
+ * @property {String} balanceLocked
+ * @property {String} balanceLockedBTC
+ * @property {String} balanceLockedUSDT
+ * @property {String} balanceTotal
+ * @property {String} balanceTotalBTC
+ * @property {String} balanceTotalExchCoin
+ * @property {String} balanceTotalUSDT
+ * @property {String} exchCoin
+ * @property {String} name
+ * @property {Array<*>} networks
+ * @property {String} coin
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {Array<UserExchangeAssetObject>} Provider
+ */
+export function userExchangeAssetsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object of user exchange assets mapping");
+  }
+
+  let transformedResponse = Object.values(response).map((item, index) => {
+    let emptyEntity = createEmptyUserExchangeAssetsEntity();
+    emptyEntity.coin = Object.keys(response)[index];
+    let transformedEntity = assign(emptyEntity, item);
+    return transformedEntity;
+  });
+
+  return transformedResponse;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {UserExchangeAssetObject} New Provider entity.
+ */
+const createEmptyUserExchangeAssetsEntity = () => {
+  return {
+    balanceFree: "0",
+    balanceFreeBTC: "0",
+    balanceFreeUSDT: "0",
+    balanceLocked: "0",
+    balanceLockedBTC: "0",
+    balanceLockedUSDT: "0",
+    balanceTotal: "0",
+    balanceTotalBTC: "0",
+    balanceTotalExchCoin: "0",
+    balanceTotalUSDT: "0",
+    exchCoin: "BNB",
+    name: "Cardano",
+    networks: [],
+    coin: "",
   };
 };

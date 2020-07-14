@@ -159,6 +159,15 @@ const initialState = {
         "freeETH",
         "freeBNB",
       ],
+      exchangeAssets: [
+        "coin",
+        "name",
+        "balanceTotal",
+        "balanceFree",
+        "balanceLocked",
+        "balanceTotalBTC",
+        "balanceTotalUSDT",
+      ],
       copytProfileUsers: [
         "userId",
         "email",

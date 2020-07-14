@@ -34,6 +34,7 @@ import {
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
+  userExchangeAssetsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -92,6 +93,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
  * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
+ * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  */
 
 /**
@@ -1137,6 +1139,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Function to clone a provider.
+   *
+   * @param {UserExchangeAssetsPayload} payload Clone provider payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async userExchangeAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userExchangeAssetsResponseTransform(responseData);
   }
 }
 
