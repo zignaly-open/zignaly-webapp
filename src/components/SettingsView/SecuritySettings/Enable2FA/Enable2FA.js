@@ -23,7 +23,7 @@ const Enable2FA = () => {
   const storeUserData = useStoreUserData();
   const { handleSubmit, setError, register, errors } = useForm();
   const [editing, setEditing] = useState(false);
-  const twoFAEnabled = storeUserData.TwoFAEnable;
+  const twoFAEnabled = storeUserData.twoFAEnable;
   const [code, setCode] = useState(null);
   const [qrCodeImg, setQRCodeImg] = useState(null);
   const [loading, setLoading] = useState(false);

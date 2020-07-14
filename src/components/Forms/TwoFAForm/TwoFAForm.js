@@ -20,7 +20,8 @@ import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  *
- * @param {DefaultProps} props
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSx component.
  */
 const TwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
@@ -29,8 +30,8 @@ const TwoFAForm = ({ onSuccess, data }) => {
   /**
    * Function to submit form.
    *
-   * @param {String} code
-   * @returns {void}
+   * @param {String} code verification code.
+   * @returns {void} None.
    */
   const submitCode = (code) => {
     setLoading(true);
@@ -73,8 +74,8 @@ const TwoFAForm = ({ onSuccess, data }) => {
             <label className="customLabel">
               <Typography>Input Your Authentication Code</Typography>
             </label>
-            {/*@ts-ignore */}
-            <ReactCodeInput fields={6} className="code-input" onComplete={submitCode} />
+            {/* @ts-ignore */}
+            <ReactCodeInput className="code-input" fields={6} onComplete={submitCode} />
           </Box>
         </>
       )}

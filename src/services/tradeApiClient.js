@@ -27,7 +27,6 @@ import {
   exchangeDepositsResponseTransform,
   withdrawResponseTransform,
   exchangeWithdrawsResponseTransform,
-  userGetResponseTransform,
   providerExchangeSettingsResponseTransform,
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,

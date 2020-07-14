@@ -16,7 +16,7 @@
  * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import('../services/tradeApiClient.types').UserEntity} UserEntity
+ * @typedef {import('../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  *
  */
 
@@ -25,7 +25,7 @@
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
- * @property {UserEntity} userData
+ * @property {UserLoginResponse} userData
  */
 
 /**
@@ -332,7 +332,7 @@ const initialState = {
     },
     userData: {
       ask2FA: false,
-      TwoFAEnable: false,
+      twoFAEnable: false,
       binanceConnected: false,
       buysCount: 0,
       createdAt: "",

@@ -26,7 +26,7 @@ const AboutUs = ({ provider }) => {
       <Typography variant="h3">
         <FormattedMessage id="srv.about" />
       </Typography>
-      <ReactMarkdown source={provider.about} linkTarget="_blank" />
+      <ReactMarkdown linkTarget="_blank" source={provider.about} />
     </Box>
   );
 };

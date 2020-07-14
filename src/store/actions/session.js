@@ -1,6 +1,6 @@
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
-import { showErrorAlert, ask2FA } from "./ui";
+import { showErrorAlert } from "./ui";
 import { isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";

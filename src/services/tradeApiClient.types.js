@@ -263,6 +263,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} status Indicate if user is active or not.
  * @property {Onboarding} onboarding Indicate user onboarding stage.
  * @property {string} refCode
+ * @property {string} dashlyEchoAuth
+ * @property {string} dashlyHash
  */
 
 /**
@@ -813,7 +815,7 @@ export function userEntityResponseTransform(response) {
     userId: response.userId,
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
-    twoFAEnable: response.twoFAEnable,
+    twoFAEnable: response["2FAEnable"] ? response["2FAEnable"] : false,
     ref: response.ref ? response.ref : "",
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,
@@ -828,6 +830,8 @@ export function userEntityResponseTransform(response) {
     status: response.status,
     onboarding: response.onboarding,
     refCode: response.refCode,
+    dashlyHash: response.dashlyHash ? response.dashlyHash : "",
+    dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
   };
 }
 
