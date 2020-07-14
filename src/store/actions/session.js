@@ -53,7 +53,6 @@ export const endTradeApiSession = () => {
       };
 
       dispatch(action);
-      dispatch(unsetSelectedExchange());
       dispatch(unsetUserExchanges());
       dispatch(unsetProvider());
     } catch (e) {

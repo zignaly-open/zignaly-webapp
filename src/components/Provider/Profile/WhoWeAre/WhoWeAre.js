@@ -104,7 +104,7 @@ const WhoWeAre = ({ provider }) => {
         <Typography variant="h3">
           <FormattedMessage id="srv.who" />
         </Typography>
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
+        <Box display="flex" flexDirection="row" flexWrap="wrap" className="teamBox">
           {team.map((item, index) => (
             <Box
               alignItems="center"

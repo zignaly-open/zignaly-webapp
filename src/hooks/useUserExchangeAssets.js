@@ -44,6 +44,7 @@ const useUserExchangeAssets = () => {
       .catch((e) => {
         dispatch(showErrorAlert(e));
         setLoading(false);
+        setData([]);
       });
   };
 

@@ -31,7 +31,7 @@ export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
  * @returns {AppThunk} Thunk action function.
  */
 export const setUserExchanges = (payload) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const responseData = await tradeApi.userExchangesGet(payload);
       const action = {
@@ -39,9 +39,20 @@ export const setUserExchanges = (payload) => {
         payload: responseData,
       };
 
+      const state = getState();
+      /*@ts-ignore */
+      let id = state.settings.selectedExchange.internalId;
+      let selected = undefined;
+      if (responseData.length > 0) {
+        selected = responseData.find((item) => item.internalId === id);
+      }
+      if (!selected) {
+        selected =
+          responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange;
+      }
       const action2 = {
         type: SET_SELECTED_EXCHANGE,
-        payload: responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange,
+        payload: selected,
       };
 
       dispatch(action);

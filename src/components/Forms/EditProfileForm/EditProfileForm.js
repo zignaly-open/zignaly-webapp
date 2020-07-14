@@ -239,13 +239,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const disableList = () => {
-    if (listSwitch) {
+    if (!storeUserData.isAdmin) {
+      if (listSwitch) {
+        return false;
+      }
+      return true;
+    } else {
       return false;
     }
-    if (storeUserData.isAdmin) {
-      return false;
-    }
-    return true;
   };
 
   return (
