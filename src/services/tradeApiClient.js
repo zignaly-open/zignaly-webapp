@@ -713,7 +713,7 @@ class TradeApiClient {
    */
   async manualPositionCreate(payload) {
     const endpointPath = "/fe/api.php?action=createManualPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return responseData;
   }

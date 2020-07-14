@@ -22,9 +22,9 @@ import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
+import { matchCurrentSymbol } from "../../../../types/utils/lookup";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
@@ -62,6 +62,7 @@ const StrategyForm = (props) => {
     symbolsData = [],
   } = props;
 
+  const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
 
@@ -202,7 +203,7 @@ const StrategyForm = (props) => {
       }
     });
 
-    return takeProfitTargets;
+    return isEmpty(takeProfitTargets) ? false : takeProfitTargets;
   };
 
   /**
@@ -245,6 +246,7 @@ const StrategyForm = (props) => {
   /**
    * @typedef {Object} PositionStrategyParams
    * @property {CreatePositionPayload['buyType']} buyType
+   * @property {CreatePositionPayload['buyType']} type
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
@@ -262,7 +264,9 @@ const StrategyForm = (props) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const strategy = {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      type: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
+      positionSizeQuote: currentSymbolData.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || lastPrice,
     };
@@ -488,17 +492,6 @@ const StrategyForm = (props) => {
     }
   };
   useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
-
-  /**
-   * Match current symbol against market symbols collection item.
-   *
-   * @param {MarketSymbol} item Market symbol item.
-   * @returns {boolean} TRUE when ID matches, FALSE otherwise.
-   */
-  const matchCurrentSymbol = (item) => {
-    return item.symbol.replace("/", "") === selectedSymbol.replace("/", "");
-  };
-  const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
   return (
     <Box className="strategyForm" textAlign="center">
