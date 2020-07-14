@@ -312,7 +312,7 @@ const StrategyForm = (props) => {
       providerId: 1,
       providerName: "Manual Trading",
       exchangeName: exchangeName,
-      exchangeInternalId: selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
   };
 
