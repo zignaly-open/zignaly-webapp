@@ -202,7 +202,7 @@ const BarChart = (props) => {
             // Draw image at the bottom
             const x = xAxis.getPixelForTick(index);
             const size = 40;
-            ctx.drawImage(image, x - size / 2, yAxis.bottom + 20, size, size);
+            ctx.drawImage(image, x - size / 2, yAxis.bottom + 15, size, size);
           }
         };
 

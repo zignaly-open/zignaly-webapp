@@ -29,9 +29,7 @@ const useBalance = (internalId) => {
         .then((data) => {
           setBalance(data);
         })
-        .catch((e) => {
-          alert(`ERROR: ${e.message}`);
-        });
+        .catch(() => {});
     };
     loadData();
   }, [internalId, storeSession.tradeApi.accessToken]);
