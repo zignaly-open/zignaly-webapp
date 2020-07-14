@@ -91,9 +91,11 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     sort: true,
     pagination: countRows > 10,
     rowsPerPageOptions: [10, 25, 50, 100],
-    rowsPerPage: storeSettings.rowsPerPage[persistKey] || 10,
+    rowsPerPage: (persistKey && storeSettings.rowsPerPage[persistKey]) || 10,
     onChangeRowsPerPage: (numberOfRows) => {
-      dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
+      if (persistKey) {
+        dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
+      }
     },
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {

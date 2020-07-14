@@ -24,6 +24,12 @@
       position: absolute;
       right: 0;
       top: 0;
+
+      > div {
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
     }
 
     .gradientChart {
