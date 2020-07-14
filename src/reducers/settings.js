@@ -70,10 +70,11 @@ const settings = (state = initialState.settings, action) => {
       break;
     }
 
-    case SET_ROWS_PER_PAGE:
+    case SET_ROWS_PER_PAGE: {
       const { table, numberOfRows } = action.payload;
       newState.rowsPerPage = { ...newState.rowsPerPage, [table]: numberOfRows };
       break;
+    }
 
     default:
       return state;

@@ -123,10 +123,10 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         titleAria: intl.formatMessage({ id: "table.viewColumns.titleAria" }),
       },
     },
-    customSort: (data, colIndex, order) => {
-      const res = data.sort((a, b) => {
-        const aVal = a.data[colIndex];
-        const bVal = b.data[colIndex];
+    customSort: (_data, colIndex, order) => {
+      return _data.sort((a, b) => {
+        const aVal = a._data[colIndex];
+        const bVal = b._data[colIndex];
         // Handle numeric string comparison.
         const res =
           typeof a === "string"
@@ -137,7 +137,6 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             : aVal - bVal;
         return order === "asc" ? res : -res;
       });
-      return res;
     },
     ...customOptions,
   };

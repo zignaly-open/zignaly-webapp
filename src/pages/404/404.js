@@ -14,12 +14,12 @@ const NotFound = () => {
   const intl = useIntl();
   return (
     <Box
+      alignItems="center"
       className="notFoundPage"
       display="flex"
       flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
       height={1}
+      justifyContent="center"
     >
       <Helmet>
         <title>
@@ -29,20 +29,20 @@ const NotFound = () => {
         </title>
       </Helmet>
       <Box className="astronaut">
-        <img src={PlanetImage} className="planetImg" />
+        <img className="planetImg" src={PlanetImage} />
         <img src={AstronautImage} />
       </Box>
       <Typography variant="h1">
         <FormattedMessage id="notfound.why" />
       </Typography>
-      <Typography variant="body1" className="desc">
+      <Typography className="desc" variant="body1">
         <FormattedMessage id="notfound.desc" />
       </Typography>
       <img src={AnimalImage} />
       <CustomButton className="bgPurple" href="/dashboard/positions">
         <FormattedMessage id="notfound.home" />
       </CustomButton>
-      <Typography variant="h3" className="code">
+      <Typography className="code" variant="h3">
         404
       </Typography>
     </Box>

@@ -9,10 +9,17 @@ import fetch from "cross-fetch";
 import { showErrorAlert } from "../../store/actions/ui";
 
 /**
- * @typedef {import('react').ChangeEvent} ChangeEvent
- * @typedef {import('react').KeyboardEvent} KeyboardEvent
+ * @typedef {Object} UploadImagePropTypes
+ * @property {string} imageUrl Current image.
+ * @property {function} onChange Image change callback.
  */
 
+/**
+ * Component to upload image.
+ *
+ * @param {UploadImagePropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const UploadImage = ({ imageUrl, onChange }) => {
   const [modified, setModified] = useState(false);
   const [original] = useState(imageUrl);
@@ -20,8 +27,8 @@ const UploadImage = ({ imageUrl, onChange }) => {
 
   /**
    *
-   * @param {*} e Error flag for social fields.
-   * @returns {void} None.
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {void}
    */
   const uploadLogo = (e) => {
     const file = e.target.files[0];
@@ -40,7 +47,7 @@ const UploadImage = ({ imageUrl, onChange }) => {
         setModified(true);
       })
       .catch((err) => {
-        dispatch(showErrorAlert(e));
+        dispatch(showErrorAlert(err));
       });
   };
 
@@ -51,15 +58,15 @@ const UploadImage = ({ imageUrl, onChange }) => {
 
   return (
     <Box
-      display="flex"
-      flexDirection="row"
       alignItems="center"
       className="uploadImage"
+      display="flex"
+      flexDirection="row"
       justifyContent="flex-start"
     >
-      <ProviderLogo size="30px" url={imageUrl || imageUrl} />
+      <ProviderLogo size="30px" title="Logo" url={imageUrl || imageUrl} />
       <Box display="flex" flexDirection="row">
-        <input type="file" acceptt="image/*" onChange={uploadLogo} id="logo" />
+        <input accept="image/*" className="logo" id="logo" onChange={uploadLogo} type="file" />
         <label htmlFor="logo">
           <CustomButton className="textPurple logoButton defaultText" component="span">
             <FormattedMessage id="srv.edit.upload" />

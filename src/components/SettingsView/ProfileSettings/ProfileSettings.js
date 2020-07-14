@@ -41,15 +41,6 @@ const ProfileSettings = () => {
   //       });
   //   };
 
-  const onError = (err) => {
-    console.log("Error");
-    console.log(err);
-  };
-
-  const onSuccess = (res) => {
-    console.log("Success");
-    console.log(res);
-  };
   return (
     // <form onSubmit={handleSubmit(submitForm)}></form>
     <Box alignItems="flex-start" className="profileSettings" display="flex" flexDirection="column">
@@ -67,12 +58,6 @@ const ProfileSettings = () => {
         </Typography>
         <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} />
       </label>
-      <IKUpload
-        fileName="my-upload"
-        useUniqueFileName={false}
-        onError={onError}
-        onSuccess={onSuccess}
-      />
     </Box>
     // </form>
   );

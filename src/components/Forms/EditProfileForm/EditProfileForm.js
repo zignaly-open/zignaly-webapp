@@ -250,6 +250,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     return true;
   };
 
+  /**
+   * @param {string} url Logo url.
+   * @returns {void}
+   */
   const handleLogoChange = (url) => {
     setLogoUrl(url);
   };

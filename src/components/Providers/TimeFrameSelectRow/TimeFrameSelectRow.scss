@@ -4,21 +4,21 @@
 
   @include media("<=sm") {
     .customSelect {
-      margin-left: 0;
-      flex-direction: row-reverse;
       align-items: center;
+      flex-direction: row-reverse;
+      margin-left: 0;
       width: 100%;
 
       > span {
-        text-align: left;
         margin-bottom: 0;
+        text-align: left;
       }
     }
 
     .customButton {
       min-width: auto;
-      width: auto;
       padding-right: 0;
+      width: auto;
     }
 
     .providersCountBox {

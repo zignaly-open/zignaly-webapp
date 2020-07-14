@@ -36,7 +36,7 @@ const ProviderLogo = ({ url, size, title }) => {
       offset={300}
       once
       placeholder={
-        <img className="providerLogo" src={LogoIcon} title={title} width={size} height={size} />
+        <img className="providerLogo" height={size} src={LogoIcon} title={title} width={size} />
       }
     >
       <img

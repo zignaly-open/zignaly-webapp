@@ -71,7 +71,7 @@ const TraderCardHeader = (props) => {
                 <FormattedMessage id="col.free" />
               )}
             </Typography>
-            <Typography variant="subtitle1" className="price">
+            <Typography className="price" variant="subtitle1">
               <FormattedMessage id="srv.edit.price" />
             </Typography>
           </Box>
@@ -82,7 +82,7 @@ const TraderCardHeader = (props) => {
           flexDirection="column"
 
         > */}
-        <Box alignItems="center" display="flex" flexDirection="row" className="tradesInfoBox">
+        <Box alignItems="center" className="tradesInfoBox" display="flex" flexDirection="row">
           <Typography className="tradeType" variant="caption">
             <FormattedMessage
               id="srv.trades"

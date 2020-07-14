@@ -657,6 +657,7 @@ accounts.options.minvolume.help: "Don't open positions for markets which daily v
 accounts.options.whitelist: "Global Whitelist"
 accounts.options.whitelist.help: "It will open positions only for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
 
+convert.success: "Coins converted successfully."
 convert.converto: "converted to: "
 convert.description: "Convert Small Balance to BNB"
 convert.net: "(net of Transaction Fee)"

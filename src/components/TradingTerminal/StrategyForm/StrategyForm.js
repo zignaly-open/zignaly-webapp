@@ -351,7 +351,7 @@ const StrategyForm = (props) => {
       .then((positionId) => {
         setProcessing(false);
         reset();
-        dispatch(showSuccessAlert(""));
+        dispatch(showSuccessAlert("", formatMessage({ id: "terminal.open.success" })));
         navigate(`/position/${positionId}`);
       })
       .catch((e) => {

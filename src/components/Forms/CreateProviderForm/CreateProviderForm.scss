@@ -59,8 +59,10 @@
       flex-direction: column;
     }
 
-    .customSelect.customSelect {
-      margin-left: 0;
+    .customSelect {
+      &#{&} {
+        margin-left: 0;
+      }
     }
 
     .customSelect {
