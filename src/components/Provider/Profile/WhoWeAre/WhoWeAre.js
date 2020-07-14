@@ -74,7 +74,7 @@ const WhoWeAre = ({ provider }) => {
    * @returns {void} None.
    */
   const redirectToSocial = (link) => {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       window.open(link, "_blank");
     }
   };

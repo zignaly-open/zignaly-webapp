@@ -37,7 +37,7 @@ const MobileAppbar = () => {
    */
   const active = (link) => {
     let url = "";
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       url = window.location.href;
     }
     if (url.includes(link)) {
@@ -53,7 +53,7 @@ const MobileAppbar = () => {
    */
   const getIcon = (link) => {
     let url = "";
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       url = window.location.href;
     }
     switch (link) {

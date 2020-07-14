@@ -18,7 +18,7 @@ const CopyTradersProfile = () => {
   const intl = useIntl();
 
   const checkPaymentStatus = () => {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       let url = window.location.href;
       if (url.includes("error")) {
         let error = {
