@@ -1002,3 +1002,9 @@ table.pagination.rowsPerPage: "CH-Rows per page:"
 table.pagination.displayRows: "CH-of"
 table.viewColumns.title: "CH-Show Columns"
 table.viewColumns.titleAria: "CH-Show/Hide Table Columns"
+
+# NOT FOUND
+notfound.title: "Page not found"
+notfound.why: "Why am I here?"
+notfound.desc: "It seems like the page you were looking for no longer exists."
+notfound.home: "Take me home"
