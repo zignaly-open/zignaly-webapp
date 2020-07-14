@@ -21,11 +21,11 @@ const Coins = () => {
   useEffect(initData, [data]);
 
   /**
-   * @param {Array<UserExchangeAssetObject>} data Filtered equity data.
+   * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
    * @returns {void}
    */
-  const handleChange = (data) => {
-    setList(data);
+  const handleChange = (filtered) => {
+    setList(filtered);
   };
 
   const embedFilter = <CoinsFilter list={data} onChange={handleChange} />;

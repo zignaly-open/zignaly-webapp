@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./CoinsFilter.scss";
 import { Box, Checkbox } from "@material-ui/core";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
@@ -22,7 +22,6 @@ import { useIntl, FormattedMessage } from "react-intl";
 const CoinsFilter = (props) => {
   const { list, onChange } = props;
   const [checked, setChecked] = useState(false);
-  const intl = useIntl();
 
   /**
    * Filter change handler.
@@ -31,9 +30,9 @@ const CoinsFilter = (props) => {
    * @returns {Void} None.
    */
   const handleChange = (e) => {
-    /*@ts-ignore */
+    /* @ts-ignore */
     setChecked(e.target.checked);
-    /*@ts-ignore */
+    /* @ts-ignore */
     const data = filterData(e.target.checked);
     onChange(data);
   };
@@ -41,12 +40,12 @@ const CoinsFilter = (props) => {
   /**
    * Filter Daily balance data
    *
-   * @param {Boolean} checked
+   * @param {Boolean} value
    * @returns {Array<UserExchangeAssetObject>}
    */
 
-  const filterData = (checked) => {
-    if (!checked) {
+  const filterData = (value) => {
+    if (!value) {
       return list;
     }
 
@@ -60,8 +59,8 @@ const CoinsFilter = (props) => {
     <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
       <Checkbox
         checked={checked}
-        onChange={handleChange}
         inputProps={{ "aria-label": "primary checkbox" }}
+        onChange={handleChange}
       />
       <FormattedMessage id="coins.filter.title" />
     </Box>

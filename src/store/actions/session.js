@@ -1,4 +1,3 @@
-import { unsetSelectedExchange } from "./settings";
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert, ask2FA } from "./ui";

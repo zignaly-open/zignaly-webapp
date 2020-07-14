@@ -37,8 +37,8 @@ const useUserExchangeAssets = () => {
 
     tradeApi
       .userExchangeAssetsGet(payload)
-      .then((data) => {
-        setData(data);
+      .then((response) => {
+        setData(response);
         setLoading(false);
       })
       .catch((e) => {

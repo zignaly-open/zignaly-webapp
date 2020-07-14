@@ -40,9 +40,9 @@ export const setUserExchanges = (payload) => {
       };
 
       const state = getState();
-      /*@ts-ignore */
+      /* @ts-ignore */
       let id = state.settings.selectedExchange.internalId;
-      let selected = undefined;
+      let selected;
       if (responseData.length > 0) {
         selected = responseData.find((item) => item.internalId === id);
       }

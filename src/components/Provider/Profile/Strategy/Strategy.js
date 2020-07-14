@@ -39,7 +39,7 @@ const Strategy = ({ provider }) => {
           <FormattedMessage id="srv.strategy.subtitle" />
         </Typography>
       </Box>
-      <ReactMarkdown source={provider.strategy} />
+      <ReactMarkdown source={provider.strategy} linkTarget="_blank" />
     </Box>
   );
 };
