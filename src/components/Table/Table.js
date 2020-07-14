@@ -90,6 +90,9 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     print: false,
     sort: true,
     pagination: countRows > 10,
+    rowsPerPageOptions: [10, 25, 50, 100],
+    rowsPerPage: 10,
+    onChangeRowsPerPage: (numberOfRows) => {},
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
       dispatch(

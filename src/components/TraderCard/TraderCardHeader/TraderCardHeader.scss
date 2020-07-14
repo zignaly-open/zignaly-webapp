@@ -27,14 +27,26 @@
         width: 20px;
       }
 
+      .commissionBox {
+        position: relative;
+        margin-left: 5px;
+
+        .price {
+          position: absolute;
+          bottom: -17px;
+        }
+      }
+    }
+
+    .tradesInfoBox {
       .tradeType {
         font-size: 14px;
-        padding-right: 5px;
+        padding-right: 3px;
       }
 
       .exchangeIcon {
         &:not(:first-of-type) {
-          margin-left: 5px;
+          margin-left: 3px;
         }
       }
     }

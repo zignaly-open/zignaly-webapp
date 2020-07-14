@@ -348,8 +348,6 @@ const initialState = {
   },
   ui: {
     modal: {
-      exchangeConnectionView: false,
-      settingsView: false,
       twoFA: false,
       createProvider: false,
     },

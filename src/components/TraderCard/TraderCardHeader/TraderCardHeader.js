@@ -40,61 +40,68 @@ const TraderCardHeader = (props) => {
         alignItems="flex-start"
         className="traderCardHeaderTitleBox"
         display="flex"
-        flexDirection="row"
+        flexDirection="column"
         justifyContent="space-between"
       >
         <Box
+          alignItems="flex-start"
+          className="nameBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          width={1}
+        >
+          <Link className="name" to={profileLink}>
+            <Typography variant="h4">{name}</Typography>
+          </Link>
+          {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
+          <Box
+            alignItems="flex-end"
+            className="commissionBox"
+            display="flex"
+            flexDirection="column"
+          >
+            <Typography variant="h4">
+              {price ? (
+                <span>
+                  {price}
+                  <FormattedMessage id="srv.pricemonth" />
+                </span>
+              ) : (
+                <FormattedMessage id="col.free" />
+              )}
+            </Typography>
+            <Typography variant="subtitle1" className="price">
+              <FormattedMessage id="srv.edit.price" />
+            </Typography>
+          </Box>
+        </Box>
+        {/* <Box
           className="nameBox"
           display="flex"
           flexDirection="column"
-          justifyContent="space-between"
-        >
-          <Box
-            alignItems="flex-start"
-            className="nameWrapper"
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-start"
-          >
-            <Link className="name" to={profileLink}>
-              <Typography variant="h4">{name}</Typography>
-            </Link>
-            {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
-          </Box>
-          <Box alignItems="center" display="flex" flexDirection="row">
-            <Typography className="tradeType" variant="caption">
-              <FormattedMessage
-                id="srv.trades"
-                values={{
-                  coin: <b>{quote}</b> || "",
-                  type: <b>{exchangeType}</b>,
-                }}
-              />
-            </Typography>
-            {exchanges.map((exchange, index) => (
-              <ExchangeIcon exchange={exchange} key={index} size="xsmall" />
-            ))}
-          </Box>
+
+        > */}
+        <Box alignItems="center" display="flex" flexDirection="row" className="tradesInfoBox">
+          <Typography className="tradeType" variant="caption">
+            <FormattedMessage
+              id="srv.trades"
+              values={{
+                coin: <b>{quote}</b> || "",
+                type: <b>{exchangeType}</b>,
+              }}
+            />
+          </Typography>
+          {exchanges.map((exchange, index) => (
+            <ExchangeIcon exchange={exchange} key={index} size="xsmall" />
+          ))}
+          {/* </Box> */}
         </Box>
 
         {/* <CustomToolip
           title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: price || 0 }} />}
         > */}
-        <Box alignItems="flex-end" className="commissionBox" display="flex" flexDirection="column">
-          <Typography variant="h4">
-            {price ? (
-              <span>
-                {price}
-                <FormattedMessage id="srv.pricemonth" />
-              </span>
-            ) : (
-              <FormattedMessage id="col.free" />
-            )}
-          </Typography>
-          <Typography variant="subtitle1">
-            <FormattedMessage id="srv.edit.price" />
-          </Typography>
-        </Box>
+
         {/* </CustomToolip> */}
       </Box>
     </Box>
