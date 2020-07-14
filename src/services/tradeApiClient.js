@@ -728,8 +728,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async manualPositionUpdate(payload) {
-    const endpointPath = "/fe/api.php?action=newUpdatePosition3";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const endpointPath = "/fe/api.php?action=updatePosition";
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionItemTransform(responseData);
   }

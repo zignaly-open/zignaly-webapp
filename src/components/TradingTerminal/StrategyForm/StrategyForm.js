@@ -15,7 +15,7 @@ import {
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
@@ -353,14 +353,15 @@ const StrategyForm = (props) => {
     tradeApi
       .manualPositionCreate(payload)
       .then((positionId) => {
-        setProcessing(false);
         reset();
         alert(`Position was created succesfully with ID ${positionId}`);
         navigate(`/position/${positionId}`);
       })
       .catch((e) => {
-        setProcessing(false);
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setProcessing(false);
       });
   };
 
@@ -372,16 +373,26 @@ const StrategyForm = (props) => {
    */
   const updatePosition = (payload) => {
     setProcessing(true);
+
     tradeApi
       .manualPositionUpdate(payload)
       .then(() => {
-        setProcessing(false);
-        alert(`Position ${positionEntity.positionId} was updated succesfully.`);
+        dispatch(
+          showSuccessAlert(
+            "terminal.updated.title",
+            formatMessage(
+              { id: "terminal.updated.body" },
+              { positionId: positionEntity.positionId },
+            ),
+          ),
+        );
         notifyPositionUpdate();
       })
       .catch((e) => {
-        setProcessing(false);
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setProcessing(false);
       });
   };
 
@@ -507,7 +518,7 @@ const StrategyForm = (props) => {
         {!isClosed && (
           <CustomButton
             className={"full submitButton"}
-            disabled={!isEmpty(errors)}
+            disabled={!isEmpty(errors) || processing}
             loading={processing}
             onClick={() => {
               triggerValidation();
