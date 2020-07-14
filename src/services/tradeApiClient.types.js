@@ -68,6 +68,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|boolean} stopLossPercentage
  * @property {number|boolean} buyTTL
  * @property {PositionEntryType} buyType
+ * @property {PositionEntryType} type
  * @property {number} buyStopPrice
  * @property {number|boolean} sellByTTL
  * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
