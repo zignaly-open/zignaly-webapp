@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useIntl } from "react-intl";
 import { Helmet } from "react-helmet";
+import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
 
 const SignalProvidersProfile = () => {
   const storeViews = useStoreViewsSelector();
@@ -73,6 +74,13 @@ const SignalProvidersProfile = () => {
           <Options provider={storeViews.provider} />
         </Box>
       )}
+      {!storeViews.provider.disable &&
+        !storeViews.provider.isClone &&
+        storeViews.provider.allowClones && (
+          <Box className="cloneBox">
+            <CloneProviderButton provider={storeViews.provider} />
+          </Box>
+        )}
       <Disclaimer />
     </Box>
   );

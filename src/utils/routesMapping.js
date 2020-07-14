@@ -175,10 +175,12 @@ export const createTraderRoutes = (providerId, provider) => {
         id: "srv.management",
         to: `/copyTraders/${provider.id}/management`,
       });
-      data.links.push({
-        id: "srv.edit",
-        to: `/copyTraders/${provider.id}/edit`,
-      });
+      if (!provider.isClone) {
+        data.links.push({
+          id: "srv.edit",
+          to: `/copyTraders/${provider.id}/edit`,
+        });
+      }
       data.links.push({
         id: "srv.users",
         to: `/copyTraders/${provider.id}/users`,
@@ -236,10 +238,12 @@ export const createProviderRoutes = (providerId, provider) => {
       ],
     };
     if (provider.isAdmin) {
-      data.links.push({
-        id: "srv.edit",
-        to: `/signalProviders/${provider.id}/edit`,
-      });
+      if (!provider.isClone) {
+        data.links.push({
+          id: "srv.edit",
+          to: `/signalProviders/${provider.id}/edit`,
+        });
+      }
       data.links.push({
         id: "srv.users",
         to: `/signalProviders/${provider.id}/users`,

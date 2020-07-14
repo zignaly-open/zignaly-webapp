@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { size } from "lodash";
+import { size, isBoolean } from "lodash";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
@@ -30,7 +30,9 @@ const TradingViewHeader = (props) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   // @ts-ignore
-  const symbolsOptions = symbolsList.map((symbolItem) => symbolItem.symbol);
+  const symbolsOptionsAll = symbolsList.map((symbolItem) => {
+    return symbolItem.symbol;
+  });
   const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
   const loadOwnCopyTradersProviders = () => {
     const payload = {
@@ -62,6 +64,20 @@ const TradingViewHeader = (props) => {
     providerName: "Manual Trading",
     providerId: "1",
   };
+
+  // Filter signal provider symbols options when is selected.
+  const symbolsOptions = symbolsOptionsAll.filter((symbol) => {
+    if (providerId && providerId !== "1" && providerService) {
+      const { providerQuote } = providerService;
+      if (isBoolean(providerQuote)) {
+        return providerQuote === true;
+      }
+
+      return symbol.includes("/" + providerQuote);
+    }
+
+    return true;
+  });
 
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">

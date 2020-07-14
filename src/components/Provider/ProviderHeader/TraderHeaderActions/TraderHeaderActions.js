@@ -2,10 +2,11 @@ import React from "react";
 import "./TraderHeaderActions.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
-import LogoIcon from "../../../../images/logo/logoIcon.svg";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
+import CloneEdit from "../CloneEdit";
+import ProviderLogo from "../ProviderLogo";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -14,17 +15,6 @@ import TrialPeriod from "./TrialPeriod";
  */
 const ProviderHeaderActions = () => {
   const storeViews = useStoreViewsSelector();
-
-  /**
-   * Funcrtion to handle image url loading error.
-   *
-   * @param {React.SyntheticEvent} e Error event received.
-   * @returns {void} None.
-   */
-  const onLogoError = (e) => {
-    const targetElement = /** @type {HTMLInputElement} */ (e.target);
-    targetElement.src = LogoIcon;
-  };
 
   return (
     <Box
@@ -41,12 +31,15 @@ const ProviderHeaderActions = () => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <img
-          className="providerLogo"
-          onError={onLogoError}
-          src={storeViews.provider.logoUrl ? storeViews.provider.logoUrl : LogoIcon}
+        <ProviderLogo
+          size="40px"
+          title={storeViews.provider.name}
+          url={storeViews.provider.logoUrl}
         />
         <Typography variant="h1">{storeViews.provider.name}</Typography>
+        {storeViews.provider.isAdmin && storeViews.provider.isClone && (
+          <CloneEdit provider={storeViews.provider} />
+        )}
       </Box>
       <CopyTraderButton provider={storeViews.provider} />
       {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}

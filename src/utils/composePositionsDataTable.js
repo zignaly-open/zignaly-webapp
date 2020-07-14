@@ -484,6 +484,50 @@ function composeAllActionButtons(position, confirmActionHandler) {
 }
 
 /**
+ * Compose all action buttons element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose buttons for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeManagementActionButtons(position, confirmActionHandler) {
+  return (
+    <div className="actions">
+      {position.type === "open" ? (
+        <button
+          data-position-id={position.positionId}
+          onClick={gotoPositionDetail}
+          title="Edit Position"
+          type="button"
+        >
+          <Edit2 color={colors.purpleLight} />
+        </button>
+      ) : (
+        <button
+          data-position-id={position.positionId}
+          onClick={gotoPositionDetail}
+          title="View Position"
+          type="button"
+        >
+          <Eye color={colors.purpleLight} />
+        </button>
+      )}
+      {(!position.isCopyTrading || position.type === "open") && (
+        <button
+          data-action={"exit"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="Exit Position"
+          type="button"
+        >
+          <LogOut color={colors.purpleLight} />
+        </button>
+      )}
+    </div>
+  );
+}
+
+/**
  * Compose delete action button element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
@@ -568,7 +612,6 @@ function composeColumnOptions(columnId) {
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
     composeRawValue(position.openDateReadable),
-    composeStatusMessage(position.status),
     composeProviderIcon(position),
     composeProviderName(position),
     composeRawValue(position.signalId),
@@ -590,7 +633,6 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeRebuyTargets(position),
     composeRisk(position),
     composeRawValue(position.age),
-    composeRawValue(position.openTrigger),
     composeAllActionButtons(position, confirmActionHandler),
     composeCancelActionButton(position, confirmActionHandler),
   ];
@@ -691,7 +733,6 @@ function composeClosedPositionRowForProvider(position) {
 export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     "col.date.open",
-    "col.stat",
     "col.provider.logo",
     "col.provider.name",
     "col.signalid",
@@ -713,7 +754,6 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
     "col.dca",
     "col.risk",
     "col.age",
-    "col.opentrigger",
     "col.actions",
     "col.cancel",
   ];
@@ -860,9 +900,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeRebuyTargets(position),
     composeRisk(position),
     composeRawValue(position.age),
-    composeRawValue(position.openTrigger),
-    composeAllActionButtons(position, confirmActionHandler),
-    composeCancelActionButton(position, confirmActionHandler),
+    composeManagementActionButtons(position, confirmActionHandler),
   ];
 }
 
@@ -901,9 +939,7 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
     "col.dca",
     "col.risk",
     "col.age",
-    "col.opentrigger",
     "col.actions",
-    "col.cancel",
   ];
 
   return {
