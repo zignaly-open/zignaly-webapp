@@ -21,8 +21,8 @@ import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
+import { matchCurrentSymbol } from "../../../utils/lookup";
 import "./StrategyForm.scss";
-import { matchCurrentSymbol } from "../../../../types/utils/lookup";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
