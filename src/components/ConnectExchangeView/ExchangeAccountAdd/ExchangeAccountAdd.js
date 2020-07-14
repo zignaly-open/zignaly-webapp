@@ -98,6 +98,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @property {String} key
    * @property {String} secret
    * @property {String} password
+   * @property {String} exchangeType
    * @property {Boolean} testNet
    */
 
@@ -108,12 +109,12 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @returns {Promise<boolean>} API promise.
    */
   const submitForm = async (data) => {
-    const { internalName, key, secret, password, testNet } = data;
+    const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
-      exchangeType,
+      exchangeType: _exchangeType,
       ...(!create && {
         key,
         secret,
