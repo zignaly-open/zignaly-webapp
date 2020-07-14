@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
-import { setDisplayColumn } from "../../store/actions/settings";
+import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -90,6 +90,13 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     print: false,
     sort: true,
     pagination: countRows > 10,
+    rowsPerPageOptions: [10, 25, 50, 100],
+    rowsPerPage: (persistKey && storeSettings.rowsPerPage[persistKey]) || 10,
+    onChangeRowsPerPage: (numberOfRows) => {
+      if (persistKey) {
+        dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
+      }
+    },
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
       dispatch(
@@ -115,6 +122,21 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         title: intl.formatMessage({ id: "table.viewColumns.title" }),
         titleAria: intl.formatMessage({ id: "table.viewColumns.titleAria" }),
       },
+    },
+    customSort: (_data, colIndex, order) => {
+      return _data.sort((a, b) => {
+        const aVal = a._data[colIndex];
+        const bVal = b._data[colIndex];
+        // Handle numeric string comparison.
+        const res =
+          typeof a === "string"
+            ? aVal.localeCompare(bVal, undefined, {
+                numeric: true,
+                sensitivity: "base",
+              })
+            : aVal - bVal;
+        return order === "asc" ? res : -res;
+      });
     },
     ...customOptions,
   };

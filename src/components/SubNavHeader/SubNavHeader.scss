@@ -22,4 +22,8 @@
       opacity: 1;
     }
   }
+
+  @include media("<=sm") {
+    margin-bottom: 12px;
+  }
 }

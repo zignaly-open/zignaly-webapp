@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -19,24 +20,37 @@ import { useFormContext } from "react-hook-form";
  */
 const useSymbolLimitsValidate = (symbolData) => {
   const { limits } = symbolData;
-  const { clearError, setError } = useFormContext();
+  const { setError } = useFormContext();
+  const { formatMessage } = useIntl();
 
   /**
    * Validate that target price is within limits.
    *
    * @param {number} targetPrice Rebuy target price.
    * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
+   * @param {string} errorMessageGroup Error message translation group ID.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const validateTargetPriceLimits = (targetPrice, propertyName) => {
-    clearError(propertyName);
+  const validateTargetPriceLimits = (targetPrice, propertyName, errorMessageGroup) => {
     if (limits.price.min && targetPrice < limits.price.min) {
-      setError(propertyName, "error", `Target price cannot be lower than ${limits.price.min}`);
+      setError(
+        propertyName,
+        "error",
+        formatMessage({ id: errorMessageGroup + ".minprice" }, { value: limits.price.min }),
+      );
+      return false;
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
-      setError(propertyName, "error", `Target price cannot be greater than ${limits.price.max}`);
+      setError(
+        propertyName,
+        "error",
+        formatMessage({ id: errorMessageGroup + ".maxprice" }, { value: limits.price.max }),
+      );
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -44,18 +58,31 @@ const useSymbolLimitsValidate = (symbolData) => {
    *
    * @param {number} cost Cost amount.
    * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
+   * @param {string} errorMessageGroup Error message translation group ID.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const validateCostLimits = (cost, propertyName) => {
+  const validateCostLimits = (cost, propertyName, errorMessageGroup) => {
     if (!isNaN(cost)) {
       if (limits.cost.min && cost < limits.cost.min) {
-        setError(propertyName, "error", `Target cost cannot be lower than ${limits.cost.min}`);
+        setError(
+          propertyName,
+          "error",
+          formatMessage({ id: errorMessageGroup + ".mincost" }, { value: limits.cost.min }),
+        );
+        return false;
       }
 
       if (limits.cost.max && cost > limits.cost.max) {
-        setError(propertyName, "error", `Target cost cannot be greater than ${limits.cost.max}`);
+        setError(
+          propertyName,
+          "error",
+          formatMessage({ id: errorMessageGroup + ".maxcost" }, { value: limits.cost.max }),
+        );
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
@@ -63,25 +90,29 @@ const useSymbolLimitsValidate = (symbolData) => {
    *
    * @param {number} units Rebuy units.
    * @param {string} propertyName Property name that validation error attachs to.
-   * @returns {Void} None.
+   * @param {string} errorMessageGroup Error message translation group ID.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const validateUnitsLimits = (units, propertyName) => {
-    clearError(propertyName);
+  const validateUnitsLimits = (units, propertyName, errorMessageGroup) => {
     if (limits.amount.min && units < limits.amount.min) {
       setError(
         propertyName,
         "error",
-        `Target units to exit cannot be lower than ${limits.amount.min}`,
+        formatMessage({ id: errorMessageGroup + ".minunits" }, { value: limits.amount.min }),
       );
+      return false;
     }
 
     if (limits.amount.max && units > limits.amount.max) {
       setError(
         propertyName,
         "error",
-        `Target units to exit cannot be greater than ${limits.amount.max}`,
+        formatMessage({ id: errorMessageGroup + "maxunits" }, { value: limits.amount.max }),
       );
+      return false;
     }
+
+    return true;
   };
 
   return {

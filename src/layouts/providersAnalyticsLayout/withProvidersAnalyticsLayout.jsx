@@ -1,5 +1,5 @@
 import React from "react";
-import "./providersAnalyticsLayout.scss";
+import "./ProvidersAnalyticsLayout.scss";
 import { getDisplayName } from "../../utils";
 import { Box } from "@material-ui/core";
 import FAQ from "../../components/FAQ";

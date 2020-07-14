@@ -218,14 +218,12 @@ const TradingView = () => {
     }
   };
 
-  const currentPrice = lastPrice || "";
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
       entryType: "LONG",
       leverage: 1,
       positionSize: "",
-      price: currentPrice,
       realInvestment: "",
       stopLossPrice: "",
       trailingStopPrice: "",

@@ -232,6 +232,7 @@ const Withdraw = () => {
                         fullWidth={true}
                         inputProps={{
                           min: parseFloat(selectedNetwork.withdrawMin),
+                          step: 0.00000001,
                         }}
                         inputRef={register({
                           min: {
@@ -279,7 +280,9 @@ const Withdraw = () => {
                       </Typography>
                       <Typography className="bold" variant="body1">
                         {selectedAssetName}{" "}
-                        {Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee))}
+                        {formatFloat(
+                          Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee)),
+                        )}
                       </Typography>
                     </Box>
                     <CustomButton className="bgPurple" loading={isLoading} type="submit">

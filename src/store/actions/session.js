@@ -93,7 +93,13 @@ export const loadAppUserData = (response) => {
 
       dispatch(setUserExchanges(authorizationPayload));
       dispatch(setUserData(authorizationPayload));
-      navigate("/dashboard/positions");
+
+      // Navigate to return url or dashboard
+      const params = new URLSearchParams(
+        typeof window !== "undefined" ? window.location.search : "",
+      );
+      const path = params.get("ret") || "/dashboard/positions";
+      navigate(path);
     }
   };
 };

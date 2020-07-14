@@ -17,6 +17,7 @@ import useExchangeList from "../../../hooks/useExchangeList";
 import { Typography } from "@material-ui/core";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Box } from "@material-ui/core";
+import ExchangeIcon from "../../ExchangeIcon";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -47,7 +48,14 @@ const ExchangeAccountSettings = () => {
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
   useEffect(() => {
-    setTitle(<FormattedMessage id="accounts.settings" />);
+    setTitle(
+      <Box alignItems="center" display="flex" flexDirection="row">
+        <FormattedMessage id="accounts.settings" />
+        <span className="separator">-</span>
+        <ExchangeIcon exchange={selectedAccount.name.toLowerCase()} size="xlarge" />
+        <Typography variant="h3">{selectedAccount.internalName}</Typography>
+      </Box>,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

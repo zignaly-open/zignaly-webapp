@@ -195,7 +195,7 @@ const NotificationsSettings = () => {
               type="submit"
             >
               <Typography className="bold" variant="body1">
-                <FormattedMessage id="button.update" />
+                <FormattedMessage id="action.update" />
               </Typography>
             </CustomButton>
           </>

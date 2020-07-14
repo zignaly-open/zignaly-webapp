@@ -125,6 +125,14 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     fullWidth
                     inputRef={register({
                       required: intl.formatMessage({ id: "form.error.name" }),
+                      minLength: {
+                        value: 5,
+                        message: intl.formatMessage({ id: "form.error.name.length" }),
+                      },
+                      maxLength: {
+                        value: 90,
+                        message: intl.formatMessage({ id: "form.error.name.length" }),
+                      },
                     })}
                     name="name"
                   />

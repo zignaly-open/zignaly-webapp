@@ -85,7 +85,7 @@ const Enable2FA = () => {
       })
       .catch((/** @type {*} **/ e) => {
         if (e.code === 37) {
-          setError("code", "notMatch", "Wrong code.");
+          setError("code", "notMatch", "Wrong code");
         } else {
           dispatch(showErrorAlert(e));
         }

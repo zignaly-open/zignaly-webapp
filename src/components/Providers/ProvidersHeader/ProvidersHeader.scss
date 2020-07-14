@@ -28,15 +28,10 @@
   }
 
   @include media("<=sm") {
-    margin-bottom: 57px;
+    padding-bottom: 8px;
 
-    .becomeProviderButton {
-      left: 0;
-      margin: 150px auto 0;
-      min-width: 260px;
-      position: absolute;
-      right: 0;
-      width: auto;
+    .settings {
+      margin-left: auto;
     }
   }
 }

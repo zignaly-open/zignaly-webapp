@@ -1,6 +1,7 @@
 import React from "react";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
 // import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
+import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {Object} ProviderLogoPropTypes
@@ -31,15 +32,23 @@ const ProviderLogo = ({ url, size, title }) => {
   // const logo = url.startsWith("http") ? url : DefaultProviderLogo;
 
   return (
-    <img
-      alt={title}
-      className="providerLogo"
-      height={size}
-      onError={onLogoError}
-      src={url || LogoIcon}
-      title={title}
-      width={size}
-    />
+    <LazyLoad
+      offset={300}
+      once
+      placeholder={
+        <img className="providerLogo" height={size} src={LogoIcon} title={title} width={size} />
+      }
+    >
+      <img
+        alt={title}
+        className="providerLogo"
+        height={size}
+        onError={onLogoError}
+        src={url || LogoIcon}
+        title={title}
+        width={size}
+      />
+    </LazyLoad>
   );
 };
 

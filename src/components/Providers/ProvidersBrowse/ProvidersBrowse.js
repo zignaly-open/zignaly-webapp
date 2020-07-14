@@ -75,6 +75,7 @@ const ProvidersBrowse = ({
         />
       )}
       <TimeFrameSelectRow
+        isCopyTrading={copyTradersOnly}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly

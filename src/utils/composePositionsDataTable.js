@@ -612,7 +612,6 @@ function composeColumnOptions(columnId) {
 function composeOpenPositionRow(position, confirmActionHandler) {
   return [
     composeRawValue(position.openDateReadable),
-    composeStatusMessage(position.status),
     composeProviderIcon(position),
     composeProviderName(position),
     composeRawValue(position.signalId),
@@ -634,7 +633,6 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeRebuyTargets(position),
     composeRisk(position),
     composeRawValue(position.age),
-    composeRawValue(position.openTrigger),
     composeAllActionButtons(position, confirmActionHandler),
     composeCancelActionButton(position, confirmActionHandler),
   ];
@@ -735,7 +733,6 @@ function composeClosedPositionRowForProvider(position) {
 export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     "col.date.open",
-    "col.stat",
     "col.provider.logo",
     "col.provider.name",
     "col.signalid",
@@ -757,7 +754,6 @@ export function composeOpenPositionsDataTable(positions, confirmActionHandler) {
     "col.dca",
     "col.risk",
     "col.age",
-    "col.opentrigger",
     "col.actions",
     "col.cancel",
   ];

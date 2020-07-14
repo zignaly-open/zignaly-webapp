@@ -5,6 +5,8 @@ export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
+export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
+
 /**
  * @typedef {import('redux').AnyAction} AnyAction
  */
@@ -80,6 +82,19 @@ export const unsetSelectedExchange = () => {
 export const setDisplayColumn = (payload) => {
   return {
     type: SET_DISPLAY_COLUMN,
+    payload,
+  };
+};
+
+/**
+ * User rows per page table selection.
+ *
+ * @param {Object} payload payload.
+ * @returns {AnyAction} return action object.
+ */
+export const setRowsPerPage = (payload) => {
+  return {
+    type: SET_ROWS_PER_PAGE,
     payload,
   };
 };

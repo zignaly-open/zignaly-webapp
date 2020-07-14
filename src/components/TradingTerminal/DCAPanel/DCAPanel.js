@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { keys, size } from "lodash";
+import { FormattedMessage, useIntl } from "react-intl";
+import { lt, gt, inRange, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -36,7 +36,8 @@ const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
   const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
+  const { formatMessage } = useIntl();
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -170,22 +171,30 @@ const DCAPanel = (props) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
+    const valueType = entryType === "LONG" ? "lower" : "greater";
+    const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (isNaN(targetPricePercentage)) {
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+    if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
         "error",
-        "Rebuy price percentage must be a number.",
+        formatMessage({ id: "terminal.dca.valid.pricepercentage" }, { type: valueType }),
       );
 
       return;
     }
 
-    validateTargetPriceLimits(
-      targetPrice,
-      composeTargetPropertyName("targetPricePercentage", targetId),
-    );
-    rebuyUnitsChange(targetId);
+    if (
+      !validateTargetPriceLimits(
+        targetPrice,
+        composeTargetPropertyName("targetPricePercentage", targetId),
+        "terminal.dca.limit",
+      )
+    ) {
+      rebuyUnitsChange(targetId);
+    }
   };
 
   /**
@@ -195,20 +204,22 @@ const DCAPanel = (props) => {
    * position size and price.
    *
    * @param {string} targetId Target group ID.
-   * @returns {Void} None.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
   const rebuyUnitsChange = (targetId) => {
-    const positionSize = getEntrySize();
+    const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
 
-    if (rebuyPositionSize > 0) {
-      const units = Math.abs(rebuyPositionSize / targetPrice);
-      validateUnitsLimits(units, composeTargetPropertyName("rebuyPercentage", targetId));
-    }
+    const units = Math.abs(rebuyPositionSize / targetPrice);
+    return validateUnitsLimits(
+      units,
+      composeTargetPropertyName("rebuyPercentage", targetId),
+      "terminal.dca.limit",
+    );
   };
 
   /**
@@ -219,22 +230,25 @@ const DCAPanel = (props) => {
    */
   const rebuyPercentageChange = (event) => {
     const targetId = getGroupTargetId(event);
-    const positionSize = getEntrySize();
+    const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    if (isNaN(rebuyPercentage)) {
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",
-        "Rebuy percentage must be a number.",
+        formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
       );
 
       return;
     }
 
-    rebuyUnitsChange(targetId);
-    validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
+    if (!rebuyUnitsChange(targetId)) {
+      validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
+    }
   };
 
   /**
@@ -274,9 +288,7 @@ const DCAPanel = (props) => {
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
-      cardinalityRange.forEach((targetId) => {
-        simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", targetId));
-      });
+      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", "1"));
     }
   };
 

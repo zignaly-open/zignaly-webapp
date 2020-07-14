@@ -1,5 +1,3 @@
-const express = require(`express`);
-
 /**
  * Implement Gatsby's Node APIs in this file.
  *
@@ -43,9 +41,11 @@ exports.onCreatePage = ({ page, actions }) => {
 // until a fix is implemented for:
 // https://github.com/gatsbyjs/gatsby/issues/13072
 // exports.onCreateDevServer = ({ app }) => {
+//   const express = require(`express`);
 //   app.use(express.static("public"));
 // };
 
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 // Fix WebpackError: ReferenceError: window is not defined
 // https://www.gatsbyjs.org/docs/debugging-html-builds/
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
@@ -69,6 +69,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
       },
     });
   }
+
+  actions.setWebpackConfig({
+    plugins: [new CaseSensitivePathsPlugin()],
+  });
 };
 
 exports.onCreateBabelConfig = ({ actions }) => {
