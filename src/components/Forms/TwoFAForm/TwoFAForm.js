@@ -2,19 +2,28 @@ import React, { useState } from "react";
 import "./TwoFAForm.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { authenticate2FA } from "../../../store/actions/session";
+import tradeApi from "../../../services/tradeApiClient";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
  * @typedef {import('react').KeyboardEvent} KeyboardEvent
+ * @typedef {import('../../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  */
 
-const TwoFAForm = () => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {Function} onSuccess
+ * @property {UserLoginResponse} data
+ */
+
+/**
+ *
+ * @param {DefaultProps} props
+ */
+const TwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
-  const [codeError, setCodeError] = useState(false);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   /**
@@ -27,9 +36,19 @@ const TwoFAForm = () => {
     setLoading(true);
     const payload = {
       code: code,
-      token: storeSession.tradeApi.accessToken,
+      token: data.token,
     };
-    dispatch(authenticate2FA(payload, setLoading));
+    tradeApi
+      .verify2FA(payload)
+      .then(() => {
+        onSuccess();
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -56,8 +75,6 @@ const TwoFAForm = () => {
             </label>
             {/*@ts-ignore */}
             <ReactCodeInput fields={6} className="code-input" onComplete={submitCode} />
-            {codeError && <span className="error-text">Code must be of 6 digits!</span>}
-            {codeError && <span className="errorText">Wrong code.</span>}
           </Box>
         </>
       )}

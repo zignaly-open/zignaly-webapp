@@ -49,12 +49,14 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
       .modifySubscription(payload)
       .then((response) => {
         if (response) {
-          setLoading(false);
           loadData();
         }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

@@ -53,7 +53,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     tradeApi
       .clonedProviderEdit(payload)
       .then(() => {
-        setLoading(false);
         const payload2 = {
           token: payload.token,
           providerId: payload.providerId,
@@ -64,6 +63,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       })
       .catch((error) => {
         alert(error.message);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };

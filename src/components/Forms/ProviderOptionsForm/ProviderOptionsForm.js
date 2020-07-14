@@ -93,11 +93,13 @@ const ProviderOptionsForm = ({ provider }) => {
               version: 2,
             };
             dispatch(setProvider(payload2));
-            setLoading(false);
           }
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } catch (e) {
       dispatch(showErrorAlert(e));

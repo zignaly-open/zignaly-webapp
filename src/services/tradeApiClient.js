@@ -764,7 +764,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getUserData";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userGetResponseTransform(responseData);
+    return userEntityResponseTransform(responseData);
   }
 
   /**

@@ -143,7 +143,6 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             fontFamily: "PlexSans-SemiBold",
             lineHeight: 1.31,
             letterSpacing: "0.61px",
-            padding: 0,
           },
         },
         MUIDataTableHeadCell: {

@@ -249,13 +249,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} createdAt Creation timestamp: e.g. (2020-05-14T14:34:48).
  * @property {boolean} providerEnable Indicates if user is subscribed to signal providers.
  * @property {boolean} twoFAEnable Indicate if 2FA is enabled.
- * @property {boolean} ref
+ * @property {string} ref
  * @property {boolean} subscribe
  * @property {boolean} isAdmin Indicate if user is administrator.
  * @property {boolean} binanceConnected Indicates if user has Binance exchange connected.
  * @property {number} buysCount Counts the number of buys positions.
  * @property {number} sellsCount Counts the number of sell positions.
- * @property {number} planId Reference of the Zignaly subscription plan.
+ * @property {string} planId Reference of the Zignaly subscription plan.
  * @property {string} planName Name of the Zignaly plan that user is subscribed to.
  * @property {string} planType
  * @property {string} projectId
@@ -269,7 +269,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} Onboarding
  * @property {boolean} finished
  * @property {boolean} paused
- * @property {number} step
+ * @property {string} step
  */
 
 /**
@@ -814,7 +814,7 @@ export function userEntityResponseTransform(response) {
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
     twoFAEnable: response.twoFAEnable,
-    ref: response.ref,
+    ref: response.ref ? response.ref : "",
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,
     binanceConnected: response.binanceConnected,
@@ -2825,92 +2825,6 @@ export function convertAssetResponseTransform(response) {
     totalServiceCharge: response.totalServiceCharge,
     totalTransferred: response.totalTransferred,
     trans: response.trans,
-  };
-}
-
-/**
- *
- * @typedef {Object} UserOnboardingObject
- * @property {Boolean} finished
- * @property {Boolean} paused
- * @property {String} step
- */
-
-/**
- *
- * @typedef {Object} UserEntity
- * @property {Boolean} TwoFAEnable
- * @property {Boolean} ask2FA
- * @property {Boolean} binanceConnected
- * @property {Number} buysCount
- * @property {String} createdAt
- * @property {String} dashlyEchoAuth
- * @property {String} dashlyHash
- * @property {String} email
- * @property {String} firstName
- * @property {Boolean} isAdmin
- * @property {Boolean} minimumProviderSettings
- * @property {UserOnboardingObject} onboarding
- * @property {String} planId
- * @property {String} planName
- * @property {String} planType
- * @property {String} projectId
- * @property {Boolean} providerEnable
- * @property {String} ref
- * @property {String} refCode
- * @property {Number} sellsCount
- * @property {Number} status
- * @property {Boolean} subscribe
- * @property {String} token
- * @property {String} userId
- */
-
-/**
- * Transform User get response.
- *
- * @param {*} response .
- * @returns {UserEntity} User profile entity.
- */
-export function userGetResponseTransform(response) {
-  const emptyUserEntity = creatEmptyUserEntity();
-  // Override the empty entity with the values that came in from API.
-  let val = "2FAEnable";
-  const TwoFAEnable = response[val];
-  const transformedResponse = assign(emptyUserEntity, response, { TwoFAEnable: TwoFAEnable });
-
-  return transformedResponse;
-}
-
-/**
- * Create user entity.
- * @returns {UserEntity} User entity.
- */
-function creatEmptyUserEntity() {
-  return {
-    TwoFAEnable: false,
-    ask2FA: false,
-    binanceConnected: false,
-    buysCount: 0,
-    createdAt: "",
-    dashlyEchoAuth: "",
-    dashlyHash: "",
-    email: "",
-    firstName: "",
-    isAdmin: null,
-    minimumProviderSettings: true,
-    onboarding: { finished: false, paused: true, step: "2" },
-    planId: "",
-    planName: "",
-    planType: "",
-    projectId: "",
-    providerEnable: true,
-    ref: "",
-    refCode: "",
-    sellsCount: 0,
-    status: 0,
-    subscribe: false,
-    token: "",
-    userId: "",
   };
 }
 

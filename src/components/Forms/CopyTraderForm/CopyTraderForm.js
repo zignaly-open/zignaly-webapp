@@ -81,12 +81,14 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 version: 2,
               };
               dispatch(setProvider(payload2));
-              setLoading(false);
               onClose();
             }
           })
           .catch((e) => {
             dispatch(showErrorAlert(e));
+          })
+          .finally(() => {
+            setLoading(false);
           });
       } else {
         setError("allocatedBalance", "invalid amount");

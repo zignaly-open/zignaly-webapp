@@ -18,26 +18,18 @@ export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
  */
 
 /**
- * @param {UserLoginPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading State action to hide loader.
+ * @param {UserLoginResponse} response User login payload.
  * @returns {AppThunk} return action object.
  */
-export const startTradeApiSession = (payload, setLoading) => {
+export const startTradeApiSession = (response) => {
   return async (dispatch) => {
-    try {
-      const responseData = await tradeApi.userLogin(payload);
-      const action = {
-        type: START_TRADE_API_SESSION,
-        payload: responseData,
-      };
+    const action = {
+      type: START_TRADE_API_SESSION,
+      payload: response,
+    };
 
-      dispatch(action);
-      dispatch(check2FA(responseData));
-      setLoading(false);
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-      setLoading(false);
-    }
+    dispatch(action);
+    dispatch(loadAppUserData(response));
   };
 };
 
@@ -77,31 +69,8 @@ export const registerUser = (payload, setLoading) => {
       };
 
       dispatch(action);
+      dispatch(loadAppUserData(responseData));
       setLoading(false);
-      dispatch(check2FA(responseData));
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-      setLoading(false);
-    }
-  };
-};
-
-/**
- * Set user session.
- *
- * @param {TwoFAPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading State action to hide loader.
- * @returns {AppThunk} Thunk action function.
- */
-export const authenticate2FA = (payload, setLoading) => {
-  return async (dispatch) => {
-    try {
-      const responseData = await tradeApi.verify2FA(payload);
-      if (responseData) {
-        dispatch(ask2FA(false));
-        dispatch(loadAppUserData(payload.token));
-        setLoading(false);
-      }
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
@@ -112,34 +81,19 @@ export const authenticate2FA = (payload, setLoading) => {
 /**
  * Function to preload user data.
  *
- * @param {String} token api token.
+ * @param {UserLoginResponse} response api token.
  * @returns {AppThunk} Thunk action.
  */
-const loadAppUserData = (token) => {
+export const loadAppUserData = (response) => {
   return async (dispatch) => {
-    if (!isEmpty(token)) {
+    if (!isEmpty(response.token)) {
       const authorizationPayload = {
-        token: token,
+        token: response.token,
       };
 
       dispatch(setUserExchanges(authorizationPayload));
       dispatch(setUserData(authorizationPayload));
       navigate("/dashboard/positions");
-    }
-  };
-};
-
-/**
- *
- * @param {UserLoginResponse} response user login response data.
- * @returns {AppThunk} Thunk action
- */
-const check2FA = (response) => {
-  return async (dispatch) => {
-    if (response.ask2FA) {
-      dispatch(ask2FA(true));
-    } else {
-      dispatch(loadAppUserData(response.token));
     }
   };
 };
