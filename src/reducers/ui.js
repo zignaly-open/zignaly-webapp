@@ -7,6 +7,7 @@ import {
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
+  SHOW_CREATE_PROVIDER,
   CONNECTED_COPYT_TIMEFRAME,
   CONNECTED_SIGNALP_TIMEFRAME,
   COPYT_TIMEFRAME,
@@ -35,6 +36,10 @@ const ui = (state = initialState.ui, action) => {
   switch (action.type) {
     case SHOW_LOADER:
       newState.loader = action.payload;
+      break;
+
+    case SHOW_CREATE_PROVIDER:
+      newState.modal = { ...newState.modal, createProvider: action.payload };
       break;
 
     case SHOW_ERROR_ALERT:

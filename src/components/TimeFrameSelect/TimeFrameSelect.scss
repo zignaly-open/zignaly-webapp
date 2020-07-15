@@ -7,10 +7,13 @@
     margin-right: 0;
   }
 
+  .customSelectControl {
+    min-width: 144px;
+  }
+
   .select {
     border-radius: 4px;
     height: 32px;
     margin-right: 0;
-    width: 144px;
   }
 }

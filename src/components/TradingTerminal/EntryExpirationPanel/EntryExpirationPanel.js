@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
@@ -14,6 +14,7 @@ import "./EntryExpirationPanel.scss";
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
   const { clearError, errors, getValues, register, setError } = useFormContext();
+  const { formatMessage } = useIntl();
 
   /**
    * Validate that expiration time is greater than zero.
@@ -26,7 +27,7 @@ const EntryExpirationPanel = () => {
 
     clearError("entryExpiration");
     if (isNaN(entryExpiration) || entryExpiration <= 0) {
-      setError("entryExpiration", "error", "Expiration minutes must be greater than zero.");
+      setError("entryExpiration", "error", formatMessage({ id: "terminal.expiration.limit.zero" }));
     }
   };
 
@@ -82,7 +83,9 @@ const EntryExpirationPanel = () => {
                 name="entryExpiration"
                 onChange={expirationChange}
               />
-              <div className="currencyBox">Min</div>
+              <div className="currencyBox">
+                <FormattedMessage id="terminal.minutes" />
+              </div>
             </Box>
             {displayFieldErrors("entryExpiration")}
           </Box>

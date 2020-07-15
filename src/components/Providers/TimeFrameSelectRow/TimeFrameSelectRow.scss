@@ -4,11 +4,34 @@
 
   @include media("<=sm") {
     .customSelect {
+      align-items: center;
+      flex-direction: row-reverse;
       margin-left: 0;
+      width: 100%;
+
+      > span {
+        margin-bottom: 0;
+        text-align: left;
+      }
     }
 
-    .providersCount {
-      @include text-no-wrap;
+    .customButton {
+      min-width: auto;
+      padding-right: 0;
+      width: auto;
+    }
+
+    .providersCountBox {
+      width: 100%;
+    }
+
+    .timeFrameSelectBox {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .selectTimeFrame {
+      width: 100%;
     }
   }
 }

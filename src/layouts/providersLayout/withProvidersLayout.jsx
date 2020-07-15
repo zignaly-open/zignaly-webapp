@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./providersLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Hidden } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
@@ -12,6 +11,10 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 import CustomButton from "../../components/CustomButton";
 import Modal from "../../components/Modal";
 import CreateProviderForm from "../../components/Forms/CreateProviderForm";
+import { showCreateProvider } from "../../store/actions/ui";
+import useStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
+import { useDispatch } from "react-redux";
+import "./ProvidersLayout.scss";
 
 /**
  * HOC wrap component with copy traders layout.
@@ -36,8 +39,9 @@ const withProvidersLayout = (Component) => {
   const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
-    const [isProviderModalOpen, openProviderModal] = useState(false);
+    const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
+    const dispatch = useDispatch();
 
     const toggleFilters = () => {
       setShowFilters(!showFilters);
@@ -50,21 +54,23 @@ const withProvidersLayout = (Component) => {
     const filters = (
       <>
         <Modal
-          onClose={() => openProviderModal(false)}
+          onClose={() => dispatch(showCreateProvider(false))}
           persist={false}
           size="medium"
-          state={isProviderModalOpen}
+          state={storeModal.createProvider}
         >
           <CreateProviderForm isCopyTrading={isCopyTrading} />
         </Modal>
-        <CustomButton
-          className="textPurple borderPurple becomeProviderButton"
-          onClick={() => openProviderModal(true)}
-        >
-          <Typography variant="body1">
-            <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
-          </Typography>
-        </CustomButton>
+        <Hidden xsDown>
+          <CustomButton
+            className="textPurple borderPurple becomeProviderButton"
+            onClick={() => dispatch(showCreateProvider(true))}
+          >
+            <Typography variant="body1">
+              <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+            </Typography>
+          </CustomButton>
+        </Hidden>
         <Box
           alignItems="center"
           bgcolor="grid.main"

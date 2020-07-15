@@ -3,10 +3,42 @@ import PlexSansLightttf from "../styles/fonts/Sans/IBMPlexSans-Light.ttf";
 import PlexSansRegularttf from "../styles/fonts/Sans/IBMPlexSans-Regular.ttf";
 import PlexSansMediumttf from "../styles/fonts/Sans/IBMPlexSans-Medium.ttf";
 import PlexSansSemiBoldttf from "../styles/fonts/Sans/IBMPlexSans-SemiBold.ttf";
+import PlexMonoBoldttf from "../styles/fonts/Mono/IBMPlexMono-Bold.ttf";
+import PlexMonoMediumttf from "../styles/fonts/Mono/IBMPlexMono-Medium.ttf";
 
 /**
  * @typedef {import("@material-ui/styles").CSSProperties} CSSProperties
  */
+
+/**
+ * @type {CSSProperties["@font-face"]} PlexMonoBold
+ */
+const PlexMonoBold = {
+  fontFamily: "PlexMono-Bold",
+  fontStyle: "normal",
+  fontDisplay: "swap",
+  fontWeight: 400,
+  src: `
+    local('PlexMono-Medium'),
+    url(${PlexMonoBoldttf}) format('woff2')
+  `,
+  unicodeRange: "U+0030-0039",
+};
+
+/**
+ * @type {CSSProperties["@font-face"]} PlexMonoMedium
+ */
+const PlexMonoMedium = {
+  fontFamily: "PlexMono-Medium",
+  fontStyle: "normal",
+  fontDisplay: "swap",
+  fontWeight: 400,
+  src: `
+    local('PlexMono-Medium'),
+    url(${PlexMonoMediumttf}) format('woff2')
+  `,
+  unicodeRange: "U+0030-0039",
+};
 
 /**
  * @type {CSSProperties["@font-face"]} PlexSansBold
@@ -153,59 +185,68 @@ const theme = (darkStyle) => {
     },
     typography: {
       h1: {
-        // this is for page title eg "Dashboard"
+        // this is for page title eg "Dashboard" (Large Title)
         fontSize: "33px",
         fontFamily: "PlexSans-Bold",
         textTransform: "capitalize",
+        lineHeight: 1.21,
+        letterSpacing: "1.25px",
       },
       h3: {
-        // this is for titles inside components eg: "Totla Equity"
+        // this is for titles inside components eg: "Total Equity" (Title 2/3)
         fontSize: "21px",
         fontFamily: "PlexSans-Bold",
         textTransform: "capitalize",
+        lineHeight: 1.24,
+        letterSpacing: "0.8px",
       },
       h4: {
-        // this is sub headings eg "Available", "Invested" inside crypto composition
+        // this is sub headings eg "Available", "Invested" inside crypto composition (Body 1/2)
         fontSize: "16px",
         fontFamily: "PlexSans-SemiBold",
-        wordSpacing: "5px",
+        lineHeight: 1.31,
+        letterSpacing: "0.61px",
       },
       h5: {
-        // for BTC counts inside Available Balance and Total Equity
+        // for BTC counts inside Available Balance and Total Equity (Number 1/2)
         fontSize: "14px",
-        fontFamily: "PlexSans-Medium",
-        wordSpacing: "2px",
+        fontFamily: "PlexMono-Medium",
         textTransform: "capitalize",
+        lineHeight: 1.5,
+        letterSpacing: "0.53px",
       },
       subtitle1: {
-        // this is a small text which is being used for balance in USD like in Available Balance component
+        // this is a small text which is being used for balance in USD like in Available Balance component (Footnote)
         fontSize: "11px",
         fontFamily: "PlexSans-Bold",
-        wordSpacing: "5px",
+        lineHeight: 1.45,
         letterSpacing: ".42px",
         textTransform: "uppercase",
         opacity: "0.6",
       },
       subtitle2: {
-        // this is a small text which is being used for balance in USD like in Available Balance component
+        // this is a small text which is being used for balance in USD like in Available Balance component (Caption 1)
         fontSize: "12px",
         fontFamily: "PlexSans-Light",
-        wordSpacing: "5px",
         textTransform: "capitalize",
+        lineHeight: 1.08,
+        letterSpacing: "0.46px",
       },
       h6: {
-        // this is for sidebar link but we can use it anywhere else as well
+        // this is for sidebar link but we can use it anywhere else as well (Callout 2)
         fontSize: "14px",
         fontFamily: "PlexSans-SemiBold",
-        wordSpacing: "5px",
         textTransform: "capitalize",
+        lineHeight: 1.43,
+        letterSpacing: "0.53px",
       },
       caption: {
-        // this is for sidebar link but we can use it anywhere else as well
+        // this is for sidebar link but we can use it anywhere else as well (Callout 1)
         fontSize: "14px",
         fontFamily: "PlexSans-Regular",
-        wordSpacing: "5px",
         textTransform: "capitalize",
+        lineHeight: 1.43,
+        letterSpacing: "0.53px",
       },
       body1: {
         fontSize: "16px",
@@ -223,6 +264,8 @@ const theme = (darkStyle) => {
             PlexSansSemiBold,
             PlexSansBold,
             PlexSansLight,
+            PlexMonoMedium,
+            PlexMonoBold,
           ],
         },
       },

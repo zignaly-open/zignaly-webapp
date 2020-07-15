@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
@@ -14,6 +14,7 @@ import "./AutoclosePanel.scss";
 const AutoclosePanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
   const { clearError, errors, getValues, register, setError } = useFormContext();
+  const { formatMessage } = useIntl();
 
   /**
    * Validate that autoclose time is greater than zero.
@@ -26,7 +27,7 @@ const AutoclosePanel = () => {
 
     clearError("autoclose");
     if (isNaN(autoclose) || autoclose <= 0) {
-      setError("autoclose", "error", "Autoclose hours must be greater than zero.");
+      setError("autoclose", "error", formatMessage({ id: "terminal.autoclose.limit.zero" }));
     }
   };
 
@@ -82,7 +83,9 @@ const AutoclosePanel = () => {
                 name="autoclose"
                 onChange={autocloseChange}
               />
-              <div className="currencyBox">Hours</div>
+              <div className="currencyBox">
+                <FormattedMessage id="terminal.hours" />
+              </div>
             </Box>
             {displayFieldErrors("autoclose")}
           </Box>

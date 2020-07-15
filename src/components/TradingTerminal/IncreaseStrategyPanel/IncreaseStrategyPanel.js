@@ -41,7 +41,7 @@ const IncreaseStrategyPanel = (props) => {
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch } = useFormContext();
-  const intl = useIntl();
+  const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const dailyBalance = useStoreUserDailyBalance();
   const lastDayBalance = dailyBalance.balances[0] || null;
@@ -85,9 +85,9 @@ const IncreaseStrategyPanel = (props) => {
   };
 
   const entryStrategyOptions = [
-    { label: intl.formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
-    { label: intl.formatMessage({ id: "terminal.strategy.market" }), val: "market" },
-    { label: intl.formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
+    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
+    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
   ];
 
   // Watched inputs that affect components.
@@ -187,7 +187,7 @@ const IncreaseStrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 inputRef={register({
-                  required: "Position size is required.",
+                  required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
                 })}
                 name="positionSize"

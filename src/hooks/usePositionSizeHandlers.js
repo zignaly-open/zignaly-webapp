@@ -29,7 +29,7 @@ import { simulateInputChangeEvent } from "../utils/events";
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
-  const { clearError, getValues, setError, setValue, watch } = useFormContext();
+  const { errors, clearError, getValues, setError, setValue, watch } = useFormContext();
   const leverage = defaultLeverage || watch("leverage");
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
@@ -45,7 +45,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validatePositionSize(positionSize) {
     const value = parseFloat(positionSize);
 
-    clearError("positionSize");
     if (isNaN(value)) {
       setError("positionSize", "error", "Position size must be a numeric value.");
       return false;
@@ -61,6 +60,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
       return false;
     }
 
+    if (errors.positionSize) {
+      clearError("positionSize");
+    }
+
     return true;
   }
 
@@ -73,7 +76,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validatePositionSizePercentage(positionSizePercentage) {
     const value = parseFloat(positionSizePercentage);
 
-    clearError("positionSizePercentage");
     if (isNaN(value)) {
       setError(
         "positionSizePercentage",
@@ -81,6 +83,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         "Position size percentage must be a numeric value.",
       );
       return false;
+    }
+
+    if (errors.positionsSizePercentage) {
+      clearError("positionSizePercentage");
     }
 
     return true;
@@ -95,7 +101,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validateUnits(units) {
     const value = parseFloat(units);
 
-    clearError("units");
     if (isNaN(value)) {
       setError("units", "error", "Position size must be a numeric value.");
       return false;
@@ -111,6 +116,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
       return false;
     }
 
+    if (errors.units) {
+      clearError("units");
+    }
+
     return true;
   }
 
@@ -121,7 +130,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * @returns {boolean} Validation result.
    */
   function validatePrice(price) {
-    clearError("price");
     if (limits.price.min && price < limits.price.min) {
       setError("price", "error", `Price cannot be lower than ${limits.price.min}`);
       return false;
@@ -130,6 +138,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     if (limits.price.max && price > limits.price.max) {
       setError("price", "error", `Price cannot be greater than ${limits.price.max}`);
       return false;
+    }
+
+    if (errors.price) {
+      clearError("price");
     }
 
     return true;

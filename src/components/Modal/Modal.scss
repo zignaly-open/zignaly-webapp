@@ -1,6 +1,8 @@
 .modal {
   border-radius: 4px;
   min-height: 300px;
+  overflow: visible;
+  overflow-y: auto;
   position: relative;
 
   .closeIcon {
@@ -31,6 +33,7 @@
     height: auto;
     margin: 0 100px;
     max-height: 100%;
+    max-width: 100%;
     min-height: 75%;
   }
 }

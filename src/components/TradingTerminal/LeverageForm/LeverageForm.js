@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import "./LeverageForm.scss";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} LeverageFormProps
@@ -67,7 +68,7 @@ const LeverageForm = (props) => {
   return (
     <Box className="leverageForm">
       <Typography className="title" id="range-slider" variant="h3">
-        Adjust Leverage
+        <FormattedMessage id="terminal.leverage.adjust" />
       </Typography>
       <Box className="inputValue" display="flex" flexDirection="row">
         <button onClick={() => decreaseValue()} type="button">

@@ -16,6 +16,7 @@ import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
+import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 
 /**
@@ -40,6 +41,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
   const [selectedSocials, setSelectedSocials] = useState(provider.social);
   const [socialError, setSocialError] = useState(false);
+  const [logoUrl, setLogoUrl] = useState(provider.logoUrl);
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
@@ -85,6 +87,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
+        logoUrl,
       };
       tradeApi
         .providerEdit(payload)
@@ -249,6 +252,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     return false;
   };
 
+  /**
+   * @param {string} url Logo url.
+   * @returns {void}
+   */
+  const handleLogoChange = (url) => {
+    setLogoUrl(url);
+  };
+
   return (
     <Box bgcolor="grid.main" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -360,7 +371,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.name}
                 name="name"
-                rules={{ required: true, maxLength: 50, pattern: /^([a-zA-Z0-9 ()$_-]+)$/ }}
+                rules={{
+                  required: true,
+                  maxLength: 50,
+                  pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
+                }}
               />
               {errors.name && (
                 <span className="errorText">
@@ -374,26 +389,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.logo" />
               </label>
-              <Controller
-                as={
-                  <TextField
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.logoUrl ? "error" : "")
-                    }
-                    fullWidth
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={provider.logoUrl}
-                name="logoUrl"
-                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
-              />
-              {errors.logoUrl && (
-                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
-              )}
+              <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
             </Box>
 
             <Box className="inputBox" display="flex" flexDirection="column">
@@ -416,7 +412,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 control={control}
                 defaultValue={provider.website ? provider.website : ""}
                 name="website"
-                rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
+                rules={{
+                  required: false,
+                  pattern: /^(ftp|http|https):\/\/[^ "]+$/,
+                }}
               />
               {errors.website && (
                 <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
@@ -486,7 +485,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
                   }
                   name="merchantId"
-                  rules={{ pattern: /^[0-9a-zA-Z]+$/, maxLength: 50 }}
+                  rules={{
+                    pattern: /^[0-9a-zA-Z]+$/,
+                    maxLength: 50,
+                  }}
                 />
                 {errors.merchantId && (
                   <span className="errorText">

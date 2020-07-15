@@ -48,7 +48,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const zignalyOnly = create && !demo;
 
   // Initialize selected exchange
-  let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName") || "binance";
+  let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName", "binance");
 
   const exchangeType = watch("exchangeType");
   const testnet = watch("testnet");
@@ -98,6 +98,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @property {String} key
    * @property {String} secret
    * @property {String} password
+   * @property {String} exchangeType
    * @property {Boolean} testNet
    */
 
@@ -108,12 +109,12 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @returns {Promise<boolean>} API promise.
    */
   const submitForm = async (data) => {
-    const { internalName, key, secret, password, testNet } = data;
+    const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
-      exchangeType,
+      exchangeType: _exchangeType,
       ...(!create && {
         key,
         secret,
@@ -155,24 +156,25 @@ const ExchangeAccountAdd = ({ create, demo }) => {
         </Box>
       ) : (
         <ExchangeAccountForm>
-          {!create && (
-            <Controller
-              as={CustomSelect}
-              control={control}
-              defaultValue={selectedExchange.name.toLowerCase()}
-              label={intl.formatMessage({
-                id: "accounts.exchange",
-              })}
-              name="exchangeName"
-              onChange={([e]) => {
-                setValue("exchangeType", typeOptions[0].val);
-                setValue("testnet", false);
-                return e;
-              }}
-              options={exchangesOptions}
-              rules={{ required: true }}
-            />
-          )}
+          {!create ||
+            (demo && (
+              <Controller
+                as={CustomSelect}
+                control={control}
+                defaultValue={selectedExchange.name.toLowerCase()}
+                label={intl.formatMessage({
+                  id: "accounts.exchange",
+                })}
+                name="exchangeName"
+                onChange={([e]) => {
+                  setValue("exchangeType", typeOptions[0].val);
+                  setValue("testnet", false);
+                  return e;
+                }}
+                options={exchangesOptions}
+                rules={{ required: true }}
+              />
+            ))}
           {typeOptions.length > 1 && (
             <Controller
               as={CustomSelect}
@@ -205,7 +207,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               <CustomInput
                 autoComplete="new-password"
                 inputRef={register({
-                  required: intl.formatMessage({ id: "form.error.password" }),
+                  required: intl.formatMessage({ id: `form.error.${field}` }),
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}

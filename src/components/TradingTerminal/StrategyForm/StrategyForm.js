@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
@@ -14,17 +15,16 @@ import {
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
-import { FormattedMessage } from "react-intl";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
+import { matchCurrentSymbol } from "../../../utils/lookup";
 import "./StrategyForm.scss";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
@@ -62,14 +62,17 @@ const StrategyForm = (props) => {
     symbolsData = [],
   } = props;
 
+  const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
+  const { formatMessage } = useIntl();
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -201,7 +204,7 @@ const StrategyForm = (props) => {
       }
     });
 
-    return takeProfitTargets;
+    return isEmpty(takeProfitTargets) ? false : takeProfitTargets;
   };
 
   /**
@@ -244,6 +247,7 @@ const StrategyForm = (props) => {
   /**
    * @typedef {Object} PositionStrategyParams
    * @property {CreatePositionPayload['buyType']} buyType
+   * @property {CreatePositionPayload['buyType']} type
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
@@ -261,7 +265,9 @@ const StrategyForm = (props) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const strategy = {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      type: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
+      positionSizeQuote: currentSymbolData.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || lastPrice,
     };
@@ -307,7 +313,7 @@ const StrategyForm = (props) => {
       providerId: 1,
       providerName: "Manual Trading",
       exchangeName: exchangeName,
-      exchangeInternalId: selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
   };
 
@@ -348,14 +354,15 @@ const StrategyForm = (props) => {
     tradeApi
       .manualPositionCreate(payload)
       .then((positionId) => {
-        setProcessing(false);
         reset();
-        alert(`Position was created succesfully with ID ${positionId}`);
+        dispatch(showSuccessAlert("", formatMessage({ id: "terminal.open.success" })));
         navigate(`/position/${positionId}`);
       })
       .catch((e) => {
-        setProcessing(false);
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setProcessing(false);
       });
   };
 
@@ -367,16 +374,26 @@ const StrategyForm = (props) => {
    */
   const updatePosition = (payload) => {
     setProcessing(true);
+
     tradeApi
       .manualPositionUpdate(payload)
       .then(() => {
-        setProcessing(false);
-        alert(`Position ${positionEntity.positionId} was updated succesfully.`);
+        dispatch(
+          showSuccessAlert(
+            "terminal.updated.title",
+            formatMessage(
+              { id: "terminal.updated.body" },
+              { positionId: positionEntity.positionId },
+            ),
+          ),
+        );
         notifyPositionUpdate();
       })
       .catch((e) => {
-        setProcessing(false);
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setProcessing(false);
       });
   };
 
@@ -412,7 +429,7 @@ const StrategyForm = (props) => {
     drawLine({
       id: "price",
       price: entryPrice || 0,
-      label: "Price",
+      label: formatMessage({ id: "terminal.line.price.label" }),
       color: colors.purple,
     });
   };
@@ -425,7 +442,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "stopLossPrice",
         price: price || 0,
-        label: "Stop loss",
+        label: formatMessage({ id: "terminal.line.stoploss.label" }),
         color: colors.yellow,
       });
     } else {
@@ -441,7 +458,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "trailingStopPrice",
         price: price || 0,
-        label: "Trailing stop price",
+        label: formatMessage({ id: "terminal.line.trailingstop.label" }),
         color: colors.blue,
       });
     } else {
@@ -461,7 +478,7 @@ const StrategyForm = (props) => {
         drawLine({
           id: targetFieldName,
           price: price || 0,
-          label: `Take profit target ${index}`,
+          label: formatMessage({ id: "terminal.line.takeprofit.label" }, { index: index }),
           color: colors.green,
         });
       } else {
@@ -479,7 +496,7 @@ const StrategyForm = (props) => {
       drawLine({
         id: "dcaTargetPricePercentage1",
         price: Number(formatPrice(dcaTargetPrice1)) || 0,
-        label: "DCA target 1",
+        label: formatMessage({ id: "terminal.line.dca.label" }, { index: 1 }),
         color: colors.black,
       });
     } else {
@@ -487,17 +504,6 @@ const StrategyForm = (props) => {
     }
   };
   useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
-
-  /**
-   * Match current symbol against market symbols collection item.
-   *
-   * @param {MarketSymbol} item Market symbol item.
-   * @returns {boolean} TRUE when ID matches, FALSE otherwise.
-   */
-  const matchCurrentSymbol = (item) => {
-    return item.symbol.replace("/", "") === selectedSymbol.replace("/", "");
-  };
-  const currentSymbolData = symbolsData.find(matchCurrentSymbol);
 
   return (
     <Box className="strategyForm" textAlign="center">
@@ -510,10 +516,10 @@ const StrategyForm = (props) => {
         ) : (
           <SidebarCreatePanels currentSymbolData={currentSymbolData} />
         )}
-        {!isClosed && (
+        {!isClosed && !isCopyTrading && (
           <CustomButton
             className={"full submitButton"}
-            disabled={!isEmpty(errors)}
+            disabled={!isEmpty(errors) || processing}
             loading={processing}
             onClick={() => {
               triggerValidation();

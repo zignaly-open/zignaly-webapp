@@ -39,6 +39,8 @@ const TrailingStopPanel = (props) => {
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
+  const trailingStopDistance = parseFloat(watch("trailingStopDistance")) || 0;
+  const trailingStopPercentage = parseFloat(watch("trailingStopPercentage")) || 0;
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -64,10 +66,10 @@ const TrailingStopPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity && existsTrailingStop) {
-      const trailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
-      const trailingStopDistance = 100 * (1 - positionEntity.trailingStopPercentage);
-      setValue("trailingStopPercentage", formatFloat2Dec(trailingStopPercentage));
-      setValue("trailingStopDistance", formatFloat2Dec(trailingStopDistance));
+      const initTrailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
+      const initTrailingStopDistance = 100 * (1 - positionEntity.trailingStopPercentage);
+      setValue("trailingStopPercentage", formatFloat2Dec(initTrailingStopPercentage));
+      setValue("trailingStopDistance", formatFloat2Dec(initTrailingStopDistance));
     }
   };
 
@@ -79,8 +81,6 @@ const TrailingStopPanel = (props) => {
    * @return {Void} None.
    */
   const trailingStopDistanceChange = () => {
-    const draftPosition = getValues();
-    const trailingStopDistance = parseFloat(draftPosition.trailingStopDistance);
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
@@ -93,7 +93,9 @@ const TrailingStopPanel = (props) => {
       return;
     }
 
-    clearError("trailingStopDistance");
+    if (errors.trailingStopDistance) {
+      clearError("trailingStopDistance");
+    }
   };
 
   /**
@@ -104,7 +106,6 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentageChange = () => {
     const draftPosition = getValues();
     const price = getEntryPrice();
-    const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
     const trailingStopPrice = (price * (100 + trailingStopPercentage)) / 100;
     const valueType = entryType === "LONG" ? "greater" : "lower";
     const compareFn = entryType === "LONG" ? lt : gt;
@@ -126,7 +127,19 @@ const TrailingStopPanel = (props) => {
       setValue("trailingStopPrice", "");
     }
 
-    validateTargetPriceLimits(trailingStopPrice, "trailingStopPrice");
+    if (
+      !validateTargetPriceLimits(
+        trailingStopPrice,
+        "trailingStopPrice",
+        "terminal.trailingstop.limit",
+      )
+    ) {
+      return;
+    }
+
+    if (errors.trailingStopPrice) {
+      clearError("trailingStopPrice");
+    }
   };
 
   /**
@@ -150,20 +163,33 @@ const TrailingStopPanel = (props) => {
     }
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
-      const trailingStopPercentage = (priceDiff / price) * 100;
-      setValue("trailingStopPercentage", formatFloat2Dec(trailingStopPercentage));
+      const newTrailingStopPercentage = (priceDiff / price) * 100;
+      setValue("trailingStopPercentage", formatFloat2Dec(newTrailingStopPercentage));
     } else {
       setValue("trailingStopPercentage", "");
     }
 
-    validateTargetPriceLimits(trailingStopPrice, "trailingStopPrice");
+    if (
+      !validateTargetPriceLimits(
+        trailingStopPrice,
+        "trailingStopPrice",
+        "terminal.trailingstop.limit",
+      )
+    ) {
+      return;
+    }
+
+    if (errors.trailingStopPrice) {
+      clearError("trailingStopPrice");
+    }
+
+    if (errors.trailingStopPercentage) {
+      clearError("trailingStopPercentage");
+    }
   };
 
   const chainedPriceUpdates = () => {
-    const draftPosition = getValues();
-    const trailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage) || 0;
     const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
-    const trailingStopDistance = parseFloat(draftPosition.trailingStopDistance) || 0;
     const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
     const percentageSign = entryType === "SHORT" ? "-" : "";
     const distanceSign = entryType === "SHORT" ? "" : "-";
@@ -205,8 +231,13 @@ const TrailingStopPanel = (props) => {
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
-      clearError("trailingStopPercentage");
-      clearError("trailingStopPrice");
+      if (errors.trailingStopPercentage) {
+        clearError("trailingStopPercentage");
+      }
+
+      if (errors.trailingStopPrice) {
+        clearError("trailingStopPrice");
+      }
     }
   };
 

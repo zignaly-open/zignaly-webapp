@@ -147,11 +147,14 @@ class TradeApiClient {
     }
 
     if (responseData.error) {
-      const customError = responseData.error.error;
+      const customError = responseData.error.error || responseData.error;
 
       if (customError.code === 13) {
         // Session expired
-        navigate("/login");
+        const path = typeof window !== "undefined" ? window.location.pathname : "";
+        if (!path.startsWith("/login")) {
+          navigate("/login?ret=" + path);
+        }
       }
       throw customError;
     }
@@ -714,7 +717,7 @@ class TradeApiClient {
    */
   async manualPositionCreate(payload) {
     const endpointPath = "/fe/api.php?action=createManualPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return responseData;
   }
@@ -729,8 +732,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async manualPositionUpdate(payload) {
-    const endpointPath = "/fe/api.php?action=newUpdatePosition3";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const endpointPath = "/fe/api.php?action=updatePosition";
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionItemTransform(responseData);
   }

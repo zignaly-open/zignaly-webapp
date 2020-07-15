@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { compose } from "recompose";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
@@ -28,6 +28,10 @@ const AppLayout = (props) => {
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
+  }, [storeSettings.darkStyle]);
 
   return (
     <StylesProvider injectFirst>
