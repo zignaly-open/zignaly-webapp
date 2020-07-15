@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormContext, useForm } from "react-hook-form";
+import { isObject } from "lodash";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
@@ -144,16 +145,23 @@ const TradingViewEdit = (props) => {
     const handleWidgetReady = (event) => {
       const dataRaw = /** @type {Object<string, any>} */ event.data;
       if (typeof dataRaw === "string") {
-        const dataParsed = JSON.parse(dataRaw);
-        // @ts-ignore
-        if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-          setTradingViewWidget(externalWidget);
-        }
-        if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
-          if (eventSymbol !== dataParsed.data.original_name) {
-            setLastPrice(dataParsed.data.last_price);
-            eventSymbol = dataParsed.data.original_name;
+        try {
+          const dataParsed = JSON.parse(dataRaw);
+
+          // @ts-ignore
+          if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
+            setTradingViewWidget(externalWidget);
           }
+
+          if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
+            if (eventSymbol !== dataParsed.data.original_name) {
+              setLastPrice(dataParsed.data.last_price);
+              eventSymbol = dataParsed.data.original_name;
+            }
+          }
+        } catch (e) {
+          // Not a valid JSON, skip event.
+          return;
         }
       }
     };
