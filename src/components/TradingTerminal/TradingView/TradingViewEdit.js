@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { FormContext, useForm } from "react-hook-form";
-import { isObject } from "lodash";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
