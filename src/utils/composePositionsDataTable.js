@@ -125,6 +125,21 @@ function composeAmount(position) {
 }
 
 /**
+ * Compose leverage element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose leverage for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeLeverage(position) {
+  return (
+    <>
+      {position.leverage}
+      <span className="symbol">X</span>
+    </>
+  );
+}
+
+/**
  * Compose amount element for a given position.
  *
  * @param {string|number} value Position entity to compose amount for.
@@ -638,7 +653,7 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeSymbolWithPrice(position.base, position.remainAmount),
     composeQuoteSize(position),
     composeRealInvestment(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
@@ -673,7 +688,7 @@ function composeClosePositionRow(position) {
     composeAmount(position),
     composeQuoteSize(position),
     composeRealInvestment(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
@@ -721,7 +736,7 @@ function composeClosedPositionRowForProvider(position) {
     composeValue(position.buyPrice),
     composeRawValue(position.closeDateReadable),
     composeRawValue(position.exchange),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeRawValue(position.openDateReadable),
     composeValue(position.positionSize),
     composeValue(position.returnFromAllocated),
@@ -897,7 +912,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeRawValue(position.userId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
@@ -1005,7 +1020,7 @@ function composeOpenPositionRowForProvider(position, confirmActionHandler) {
     composeStatusMessage(position.status),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeExitPrice(position),
     composeUnrealizedNetProfit(position),
     composeUnrealizedProfitPercentage(position),
