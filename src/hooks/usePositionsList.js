@@ -167,7 +167,7 @@ const usePositionsList = (type, positionEntity = null) => {
           }
         })
         .catch((e) => {
-          if (e.code === 18) {
+          if (e.code === 18 || e.code === 12) {
             newPositions[type] = [];
             setPositions(newPositions);
           } else {
