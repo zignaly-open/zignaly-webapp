@@ -1042,6 +1042,18 @@ export function userPositionItemTransform(positionItem) {
     return "breakeven";
   };
 
+  const parseRealInvestment = () => {
+    if (positionItem.realInvestment && positionItem.realInvestment.$numberDecimal) {
+      return safeParseFloat(positionItem.realInvestment.$numberDecimal);
+    }
+
+    if (positionItem.realInvestment) {
+      return safeParseFloat(positionItem.realInvestment);
+    }
+
+    return 0;
+  };
+
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
@@ -1053,9 +1065,7 @@ export function userPositionItemTransform(positionItem) {
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
-    realInvestment:
-      safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
-      safeParseFloat(positionItem.realInvestment),
+    realInvestment: parseRealInvestment(),
     pair: `${positionItem.base}/${positionItem.quote}`,
     symbol: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
