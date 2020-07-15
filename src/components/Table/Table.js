@@ -125,8 +125,8 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     },
     customSort: (_data, colIndex, order) => {
       return _data.sort((a, b) => {
-        const aVal = a._data[colIndex];
-        const bVal = b._data[colIndex];
+        const aVal = a.data[colIndex];
+        const bVal = b.data[colIndex];
         // Handle numeric string comparison.
         const res =
           typeof a === "string"
