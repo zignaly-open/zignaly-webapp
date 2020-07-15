@@ -45,6 +45,10 @@
         justify-content: center;
         margin-top: 5px;
         width: 100%;
+
+        &.errorText {
+          font-size: 14px;
+        }
       }
     }
   }

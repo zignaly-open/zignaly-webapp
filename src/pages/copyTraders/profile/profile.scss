@@ -1,32 +1,41 @@
 .traderProfilePage {
   width: 100%;
 
-  .aboutBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    min-height: 280px;
+  .leftColumn {
     width: calc(46% - 20px);
-  }
-
-  .whoWeAreBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    min-height: 280px;
-    width: 54%;
-  }
-
-  .strategyBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-bottom: 20px;
     margin-right: 20px;
-    min-height: 430px;
-    width: calc(46% - 20px);
+
+    .aboutBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      min-height: 280px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .strategyBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      min-height: 430px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
   }
 
-  .performanceBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    min-height: 430px;
+  .rightColumn {
     width: 54%;
+
+    .whoWeAreBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      min-height: 280px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .performanceBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      min-height: 430px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
   }
 
   .cloneBox {
@@ -42,22 +51,12 @@
   .traderProfilePage {
     width: 100%;
 
-    .aboutBox {
+    .leftColumn {
       margin: 0 0 20px;
       width: 100%;
     }
 
-    .whoWeAreBox {
-      margin: 0 0 20px;
-      width: 100%;
-    }
-
-    .strategyBox {
-      margin: 0 0 20px;
-      width: 100%;
-    }
-
-    .performanceBox {
+    .rightColumn {
       margin: 0 0 20px;
       width: 100%;
     }

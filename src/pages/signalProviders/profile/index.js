@@ -56,17 +56,21 @@ const SignalProvidersProfile = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box bgcolor="grid.main" className="aboutBox">
-        <AboutUs provider={storeViews.provider} />
+      <Box className="leftColumn">
+        <Box bgcolor="grid.main" className="aboutBox">
+          <AboutUs provider={storeViews.provider} />
+        </Box>
+        <Box bgcolor="grid.main" className="strategyBox">
+          <Strategy provider={storeViews.provider} />
+        </Box>
       </Box>
-      <Box bgcolor="grid.main" className="whoWeAreBox">
-        <WhoWeAre provider={storeViews.provider} />
-      </Box>
-      <Box bgcolor="grid.main" className="strategyBox">
-        <Strategy provider={storeViews.provider} />
-      </Box>
-      <Box bgcolor="grid.main" className="performanceBox">
-        <Performance provider={storeViews.provider} />
+      <Box className="rightColumn">
+        <Box bgcolor="grid.main" className="whoWeAreBox">
+          <WhoWeAre provider={storeViews.provider} />
+        </Box>
+        <Box bgcolor="grid.main" className="performanceBox">
+          <Performance provider={storeViews.provider} />
+        </Box>
       </Box>
       {!storeViews.provider.disable && (
         <Box bgcolor="grid.main" className="optionsBox">
