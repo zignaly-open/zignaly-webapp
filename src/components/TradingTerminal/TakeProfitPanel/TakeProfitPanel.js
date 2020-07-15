@@ -65,7 +65,7 @@ const TakeProfitPanel = (props) => {
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const isReadOnly = isCopy || isClosed;
-  const disableCardinalityActions = isReadOnly || isTargetLocked;
+  const disableRemoveAction = isReadOnly || isTargetLocked;
   const { formatMessage } = useIntl();
 
   const getFieldsDisabledStatus = () => {
@@ -572,7 +572,7 @@ const TakeProfitPanel = (props) => {
             </Box>
           ))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-            {!disableCardinalityActions && (
+            {!disableRemoveAction && (
               <Button className="removeTarget" onClick={handleTargetRemove}>
                 <RemoveCircle />
                 <FormattedMessage id="terminal.target.remove" />

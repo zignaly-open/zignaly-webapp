@@ -105,7 +105,7 @@ const DCAPanel = (props) => {
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
   const isReadOnly = isCopy || isClosed;
-  const disableCardinalityActions = isReadOnly || isDoneTargetReached;
+  const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
@@ -393,7 +393,7 @@ const DCAPanel = (props) => {
         >
           {cardinalityRange.map((targetId) => displayDcaTarget(targetId))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-            {!disableCardinalityActions && (
+            {!disableRemoveAction && (
               <Button className="removeTarget" onClick={handleTargetRemove}>
                 <RemoveCircle />
                 <FormattedMessage id="terminal.target.remove" />
