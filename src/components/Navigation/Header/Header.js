@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grow, Typography, Menu } from "@material-ui/core";
+import { Box, Grow, Typography, Popper } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoWhite.svg";
 import LogoBlack from "../../../images/logo/logoBlack.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
@@ -104,22 +104,19 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            getContentAnchorEl={null}
-            onClose={() => setAnchorEl(undefined)}
-            open={Boolean(anchorEl)}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <UserMenu />
-          </Menu>
+          <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="bottom-start" transition>
+            {({ TransitionProps }) => (
+              <Grow {...TransitionProps} timeout={350}>
+                <Box
+                  bgcolor="grid.main"
+                  className="menuWrapper"
+                  onMouseLeave={() => setAnchorEl(undefined)}
+                >
+                  <UserMenu />
+                </Box>
+              </Grow>
+            )}
+          </Popper>
         </Box>
       </Box>
     </Box>
