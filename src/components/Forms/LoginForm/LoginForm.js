@@ -43,7 +43,7 @@ const LoginForm = () => {
     if (response.ask2FA) {
       showTwoFAModal(true);
     } else {
-      dispatch(loadAppUserData(response));
+      dispatch(startTradeApiSession(response));
     }
   };
 
