@@ -99,7 +99,9 @@ export const loadAppUserData = (response) => {
         typeof window !== "undefined" ? window.location.search : "",
       );
       const path = params.get("ret") || "/dashboard/positions";
-      navigate(path);
+      const pathPrefix = process.env.GATSBY_BASE_PATH || "";
+      const pathWithoutPrefix = path.replace(pathPrefix, "");
+      navigate(pathWithoutPrefix);
     }
   };
 };
