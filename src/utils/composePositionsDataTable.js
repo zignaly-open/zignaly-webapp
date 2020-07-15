@@ -1,7 +1,7 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Delete, Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
@@ -125,6 +125,21 @@ function composeAmount(position) {
 }
 
 /**
+ * Compose leverage element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose leverage for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeLeverage(position) {
+  return (
+    <>
+      {position.leverage}
+      <span className="symbol">X</span>
+    </>
+  );
+}
+
+/**
  * Compose amount element for a given position.
  *
  * @param {string|number} value Position entity to compose amount for.
@@ -144,6 +159,21 @@ function composeQuoteSize(position) {
   return (
     <>
       <span className="symbol">{position.quote}</span> {formatPrice(position.positionSizeQuote)}
+    </>
+  );
+}
+
+/**
+ * Compose position size for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose position size for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePositionSize(position) {
+  return (
+    <>
+      <span className="symbol">{position.quote}</span>{" "}
+      {formatPrice(parseFloat(position.positionSize))}
     </>
   );
 }
@@ -200,9 +230,31 @@ function composeExitPrice(position) {
 function composePriceDifference(position) {
   return (
     <>
-      <span className={position.priceDifferenceStyle}>{formatPrice(position.priceDifference)}</span>
+      <span className={position.priceDifferenceStyle}>
+        {formatPrice(position.priceDifference)} %
+      </span>
     </>
   );
+}
+
+/**
+ * Compose returns from allocated element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose returns from allocated for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeReturnsFromAllocated(position) {
+  return <>{formatPrice(position.returnFromAllocated)} %</>;
+}
+
+/**
+ * Compose returns from investment element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose returns from investment for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeReturnsFromInvestment(position) {
+  return <>{formatPrice(position.returnFromInvestment)} %</>;
 }
 
 /**
@@ -234,7 +286,9 @@ function composeProfit(position) {
  */
 function composeNetProfitPercentage(position) {
   return (
-    <span className={position.netProfitStyle}>{formatNumber(position.netProfitPercentage, 2)}</span>
+    <span className={position.netProfitStyle}>
+      {formatNumber(position.netProfitPercentage, 2)} %
+    </span>
   );
 }
 
@@ -265,7 +319,7 @@ function composeProfitPercentage(position) {
       {position.status === 1 ? (
         <span>Still entering...</span>
       ) : (
-        <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)}</span>
+        <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)} %</span>
       )}
     </>
   );
@@ -309,7 +363,7 @@ function composeUnrealizedProfitPercentage(position) {
         <>
           <span className="symbol">{position.quote}</span>
           <span className={position.unrealizedProfitStyle}>
-            {formatPrice(position.unrealizedProfitLossesPercentage)}
+            {formatPrice(position.unrealizedProfitLossesPercentage)} %
           </span>
         </>
       )}
@@ -548,6 +602,17 @@ function composeCancelActionButton(position, confirmActionHandler) {
           <XCircle color={colors.purpleLight} />
         </button>
       )}
+      {position.status === 1 && (
+        <button
+          data-action={"abort"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel entry"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
+        </button>
+      )}
     </div>
   );
 }
@@ -627,7 +692,7 @@ function composeOpenPositionRow(position, confirmActionHandler) {
     composeSymbolWithPrice(position.base, position.remainAmount),
     composeQuoteSize(position),
     composeRealInvestment(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
@@ -662,7 +727,7 @@ function composeClosePositionRow(position) {
     composeAmount(position),
     composeQuoteSize(position),
     composeRealInvestment(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeTrailingStopIcon(position),
     composeTakeProfitTargets(position),
     composeRebuyTargets(position),
@@ -707,15 +772,15 @@ function composeClosedPositionRowForProvider(position) {
   return [
     composeValue(position.amount),
     composeRawValue(position.pair),
-    composeValue(position.buyPrice),
+    composeEntryPrice(position),
     composeRawValue(position.closeDateReadable),
     composeRawValue(position.exchange),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeRawValue(position.openDateReadable),
-    composeValue(position.positionSize),
-    composeValue(position.returnFromAllocated),
-    composeValue(position.returnFromInvestment),
-    composeValue(position.sellPrice),
+    composePositionSize(position),
+    composeReturnsFromAllocated(position),
+    composeReturnsFromInvestment(position),
+    composeExitPrice(position),
     composeRawValue(position.side),
     composeStatusMessage(position.status),
   ];
@@ -886,7 +951,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeRawValue(position.userId),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeExitPrice(position),
     composeProfit(position),
     composeProfitPercentage(position),
@@ -994,11 +1059,11 @@ function composeOpenPositionRowForProvider(position, confirmActionHandler) {
     composeStatusMessage(position.status),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.leverage),
+    composeLeverage(position),
     composeExitPrice(position),
     composeUnrealizedNetProfit(position),
     composeUnrealizedProfitPercentage(position),
-    composeRawValue(position.priceDifference),
+    composePriceDifference(position),
     composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
