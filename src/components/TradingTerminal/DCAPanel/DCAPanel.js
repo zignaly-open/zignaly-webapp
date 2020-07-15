@@ -104,7 +104,8 @@ const DCAPanel = (props) => {
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
-  const disableCardinalityActions = isCopy || isClosed || isDoneTargetReached;
+  const isReadOnly = isCopy || isClosed;
+  const disableCardinalityActions = isReadOnly || isDoneTargetReached;
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
@@ -387,18 +388,20 @@ const DCAPanel = (props) => {
           justifyContent="space-around"
         >
           {cardinalityRange.map((targetId) => displayDcaTarget(targetId))}
-          {!disableCardinalityActions && (
-            <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            {!disableCardinalityActions && (
               <Button className="removeTarget" onClick={handleTargetRemove}>
                 <RemoveCircle />
                 <FormattedMessage id="terminal.target.remove" />
               </Button>
+            )}
+            {!isReadOnly && (
               <Button className="addTarget" onClick={handleTargetAdd}>
                 <AddCircle />
                 <FormattedMessage id="terminal.target.add" />
               </Button>
-            </Box>
-          )}
+            )}
+          </Box>
           {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
