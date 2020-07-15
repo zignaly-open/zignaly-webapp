@@ -491,7 +491,7 @@ const TakeProfitPanel = (props) => {
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.takeprofit" />
