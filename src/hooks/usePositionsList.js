@@ -175,7 +175,9 @@ const usePositionsList = (type, positionEntity = null) => {
           }
         })
         .finally(() => {
-          setLoading(false);
+          if (!typeRef.current || typeRef.current === type) {
+            setLoading(false);
+          }
         });
     }
   };
