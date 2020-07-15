@@ -215,7 +215,9 @@ function composeExitPrice(position) {
 function composePriceDifference(position) {
   return (
     <>
-      <span className={position.priceDifferenceStyle}>{formatPrice(position.priceDifference)}</span>
+      <span className={position.priceDifferenceStyle}>
+        {formatPrice(position.priceDifference)} %
+      </span>
     </>
   );
 }
@@ -249,7 +251,9 @@ function composeProfit(position) {
  */
 function composeNetProfitPercentage(position) {
   return (
-    <span className={position.netProfitStyle}>{formatNumber(position.netProfitPercentage, 2)}</span>
+    <span className={position.netProfitStyle}>
+      {formatNumber(position.netProfitPercentage, 2)} %
+    </span>
   );
 }
 
@@ -280,7 +284,7 @@ function composeProfitPercentage(position) {
       {position.status === 1 ? (
         <span>Still entering...</span>
       ) : (
-        <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)}</span>
+        <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)} %</span>
       )}
     </>
   );
@@ -324,7 +328,7 @@ function composeUnrealizedProfitPercentage(position) {
         <>
           <span className="symbol">{position.quote}</span>
           <span className={position.unrealizedProfitStyle}>
-            {formatPrice(position.unrealizedProfitLossesPercentage)}
+            {formatPrice(position.unrealizedProfitLossesPercentage)} %
           </span>
         </>
       )}
@@ -1024,7 +1028,7 @@ function composeOpenPositionRowForProvider(position, confirmActionHandler) {
     composeExitPrice(position),
     composeUnrealizedNetProfit(position),
     composeUnrealizedProfitPercentage(position),
-    composeRawValue(position.priceDifference),
+    composePriceDifference(position),
     composeRawValue(position.side),
     composeStopLossPrice(position),
     composeAmount(position),
