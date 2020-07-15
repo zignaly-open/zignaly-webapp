@@ -164,6 +164,20 @@ function composeQuoteSize(position) {
 }
 
 /**
+ * Compose position size for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose position size for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePositionSize(position) {
+  return (
+    <>
+      <span className="symbol">{position.quote}</span> {formatPrice(position.positionSize)}
+    </>
+  );
+}
+
+/**
  * Compose position quote size for a given position.
  *
  * @param {PositionEntity} position Position entity to compose quote size for.
@@ -220,6 +234,26 @@ function composePriceDifference(position) {
       </span>
     </>
   );
+}
+
+/**
+ * Compose returns from allocated element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose returns from allocated for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeReturnsFromAllocated(position) {
+  return <>{formatPrice(position.returnFromAllocated)} %</>;
+}
+
+/**
+ * Compose returns from investment element for a given position.
+ *
+ * @param {PositionEntity} position Position entity to compose returns from investment for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeReturnsFromInvestment(position) {
+  return <>{formatPrice(position.returnFromInvestment)} %</>;
 }
 
 /**
@@ -737,15 +771,15 @@ function composeClosedPositionRowForProvider(position) {
   return [
     composeValue(position.amount),
     composeRawValue(position.pair),
-    composeValue(position.buyPrice),
+    composeEntryPrice(position),
     composeRawValue(position.closeDateReadable),
     composeRawValue(position.exchange),
     composeLeverage(position),
     composeRawValue(position.openDateReadable),
-    composeValue(position.positionSize),
-    composeValue(position.returnFromAllocated),
-    composeValue(position.returnFromInvestment),
-    composeValue(position.sellPrice),
+    composePositionSize(position),
+    composeReturnsFromAllocated(position),
+    composeReturnsFromInvestment(position),
+    composeExitPrice(position),
     composeRawValue(position.side),
     composeStatusMessage(position.status),
   ];
