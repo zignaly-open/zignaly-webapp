@@ -172,7 +172,8 @@ function composeQuoteSize(position) {
 function composePositionSize(position) {
   return (
     <>
-      <span className="symbol">{position.quote}</span> {formatPrice(position.positionSize)}
+      <span className="symbol">{position.quote}</span>{" "}
+      {formatPrice(parseFloat(position.positionSize))}
     </>
   );
 }
