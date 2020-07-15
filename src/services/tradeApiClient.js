@@ -376,6 +376,22 @@ class TradeApiClient {
   }
 
   /**
+   * Cancel position entry.
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionCancel(payload) {
+    const endpointPath = "/fe/api.php?action=cancelBuy";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
    * Get a position.
    *
    * @param {PositionActionPayload} payload Position action payload.
