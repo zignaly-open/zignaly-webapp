@@ -973,7 +973,7 @@ export function userPositionItemTransform(positionItem) {
       return `/copyTraders/${positionItem.providerId}/profile`;
     }
 
-    return `/signalsProviders/${positionItem.providerId}/profile`;
+    return `/signalProviders/${positionItem.providerId}/profile`;
   };
 
   /**
