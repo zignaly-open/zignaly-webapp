@@ -550,10 +550,10 @@ function composeCancelActionButton(position, confirmActionHandler) {
       )}
       {position.status === 1 && (
         <button
-          data-action={"cancel"}
+          data-action={"abort"}
           data-position-id={position.positionId}
           onClick={confirmActionHandler}
-          title="cancel"
+          title="cancel entry"
           type="button"
         >
           <Delete color={colors.purpleLight} />

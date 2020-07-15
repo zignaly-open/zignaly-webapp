@@ -98,6 +98,14 @@ const PositionsTable = (props) => {
       });
     }
 
+    if (action === "abort") {
+      setConfirmConfig({
+        titleTranslationId: "confirm.positionabort.title",
+        messageTranslationId: "confirm.positionabort.message",
+        visible: true,
+      });
+    }
+
     if (action === "exit") {
       setConfirmConfig({
         titleTranslationId: "confirm.positionexit.title",
@@ -125,6 +133,20 @@ const PositionsTable = (props) => {
         })
         .catch((e) => {
           alert(`Cancel position failed: ${e.message}`);
+        });
+    }
+
+    if (action === "abort") {
+      tradeApi
+        .positionCancel({
+          positionId: positionId,
+          token: storeSession.tradeApi.accessToken,
+        })
+        .then((position) => {
+          alert(`Position ${position.positionId} entry was cancelled.`);
+        })
+        .catch((e) => {
+          alert(`Cancel position entry failed: ${e.message}`);
         });
     }
 
