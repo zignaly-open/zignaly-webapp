@@ -1,5 +1,5 @@
 .testimonials {
-  padding: 50px 130px;
+  width: calc(100% - 264px);
 
   .title {
     color: $black2;
@@ -10,9 +10,30 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .testimonials {
+    width: 100%;
     padding: 30px 20px;
+
+    .title {
+      text-align: center;
+    }
+  }
+}
+
+@include media(">lg", "<=xl") {
+  .testimonials {
+    width: calc(100% - 464px);
+
+    .title {
+      text-align: center;
+    }
+  }
+}
+
+@include media(">xl") {
+  .testimonials {
+    width: calc(100% - 664px);
 
     .title {
       text-align: center;

@@ -25,20 +25,22 @@ const LoginHeader = ({ children }) => {
       justifyContent="space-around"
     >
       <Box className="headerImage" />
-      <Box
-        alignItems="start"
-        className="tagLineBox"
-        display="flex"
-        flexDirection="column"
-        justifyContent="start"
-      >
-        <img alt="Zignaly" className="logo" src={Logo} />
-        <span className="tagLine">What could a pro trader do with your crypto?</span>
-        <span className="slogan">
-          <b>Copy pro traders </b>and earn same profits as they do.{" "}
-        </span>
+      <Box className="headerRow" display="flex" flexDirection="row" justifyContent="space-between">
+        <Box
+          alignItems="start"
+          className="tagLineBox"
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+        >
+          <img alt="Zignaly" className="logo" src={Logo} />
+          <span className="tagLine">What could a pro trader do with your crypto?</span>
+          <span className="slogan">
+            <b>Copy pro traders </b>and earn same profits as they do.{" "}
+          </span>
+        </Box>
+        {children}
       </Box>
-      {children}
     </Box>
   );
 };
