@@ -349,6 +349,7 @@ copyt.management.float: "CH-Float"
 copyt.management.trialing: "CH-Trialing:"
 copyt.copy.error1: "CH-Your current account, {selected}, is a {exchange} account and it does not match the provider configuration which is for {required} accounts."
 copyt.copy.error2: "CH-You need to add an exchange in order to copy this trader."
+copyt.copy.error3: "CH-You do not have enough {quote} to start copying this trader."
 
 srv.followprovider: "CH-Follow this provider"
 srv.stopfollowing: "CH-Stop Following"

@@ -18,21 +18,21 @@ import { showErrorAlert } from "../store/actions/ui";
 /**
  * Provides balance summary for exchange.
  *
+ * @param {string} internalId ID of the exchange.
  * @returns {HookData} Balance.
  */
-const useUserExchangeAssets = () => {
+const useUserExchangeAssets = (internalId) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
     setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalId: storeSettings.selectedExchange.internalId,
+      internalId: internalId,
     };
 
     tradeApi
@@ -48,10 +48,7 @@ const useUserExchangeAssets = () => {
       });
   };
 
-  useEffect(loadData, [
-    storeSettings.selectedExchange.internalId,
-    storeSession.tradeApi.accessToken,
-  ]);
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
 
   return {
     loading: loading,

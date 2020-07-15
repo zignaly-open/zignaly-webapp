@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography } from "@material-ui/core";
+import { Box, TextField, Typography, CircularProgress } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -13,6 +13,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
+import useAvailableBalance from "../../../hooks/useAvailableBalance";
 
 /**
  * @typedef {Object} DefaultProps
@@ -30,11 +31,12 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [loading, setLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
   const [alert, setAlert] = useState(undefined);
   const { errors, handleSubmit, register, setError, setValue } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
+  const { balance, loading } = useAvailableBalance(storeSettings.selectedExchange.internalId);
 
   const initFormData = () => {
     if (provider.exchangeInternalId && !provider.disable) {
@@ -55,14 +57,14 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (validate()) {
+    if (validateExchange() && validateBalance()) {
       let added = parseFloat(data.allocatedBalance);
       let needed =
         typeof provider.minAllocatedBalance === "string"
           ? parseFloat(provider.minAllocatedBalance)
           : provider.minAllocatedBalance;
       if (added >= needed) {
-        setLoading(true);
+        setActionLoading(true);
         const payload = {
           allocatedBalance: data.allocatedBalance,
           balanceFilter: true,
@@ -88,7 +90,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             dispatch(showErrorAlert(e));
           })
           .finally(() => {
-            setLoading(false);
+            setActionLoading(false);
           });
       } else {
         setError("allocatedBalance", "invalid amount");
@@ -96,7 +98,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
     }
   };
 
-  const validate = () => {
+  const validateExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
@@ -124,6 +126,22 @@ const CopyTraderForm = ({ provider, onClose }) => {
       return false;
     }
     return true;
+  };
+
+  const validateBalance = () => {
+    let needed =
+      typeof provider.minAllocatedBalance === "string"
+        ? parseFloat(provider.minAllocatedBalance)
+        : provider.minAllocatedBalance;
+    let neededQuote = provider.copyTradingQuote;
+    /*@ts-ignore */
+    let userBalance = balance[neededQuote];
+    if (userBalance && userBalance > needed) {
+      return true;
+    }
+    let msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
+    setAlert(msg);
+    return false;
   };
 
   /**
@@ -160,57 +178,62 @@ const CopyTraderForm = ({ provider, onClose }) => {
         flexDirection="column"
         justifyContent="center"
       >
-        {Boolean(alert) && (
-          <Alert className="alert" severity="error">
-            {alert}
-          </Alert>
-        )}
-        <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
-        <Typography variant="body1">
-          Copy every move proportionately with thie followong amount.
-        </Typography>
-        <Box
-          alignItems="center"
-          className="fieldBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="center"
-        >
-          <Box
-            alignItems="start"
-            className="inputBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="start"
-          >
-            <label className="customLabel">Choose allocated amount </label>
-            <TextField
-              className="customInput"
-              error={!!errors.allocatedBalance}
-              fullWidth
-              inputRef={register({
-                required: true,
-              })}
-              name="allocatedBalance"
-              variant="outlined"
-            />
-            <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-              {`Minimum allocated amount ${provider.copyTradingQuote}`}{" "}
-              {provider.minAllocatedBalance}
-            </span>
-          </Box>
-        </Box>
+        {loading && <CircularProgress color="primary" size={40} />}
+        {!loading && (
+          <>
+            {Boolean(alert) && (
+              <Alert className="alert" severity="error">
+                {alert}
+              </Alert>
+            )}
+            <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
+            <Typography variant="body1">
+              Copy every move proportionately with thie followong amount.
+            </Typography>
+            <Box
+              alignItems="center"
+              className="fieldBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+            >
+              <Box
+                alignItems="start"
+                className="inputBox"
+                display="flex"
+                flexDirection="column"
+                justifyContent="start"
+              >
+                <label className="customLabel">Choose allocated amount </label>
+                <TextField
+                  className="customInput"
+                  error={!!errors.allocatedBalance}
+                  fullWidth
+                  inputRef={register({
+                    required: true,
+                  })}
+                  name="allocatedBalance"
+                  variant="outlined"
+                />
+                <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+                  {`Minimum allocated amount ${provider.copyTradingQuote}`}{" "}
+                  {provider.minAllocatedBalance}
+                </span>
+              </Box>
+            </Box>
 
-        <Box className="inputBox">
-          <CustomButton
-            className="full submitButton"
-            loading={loading}
-            onClick={handleSubmitClick}
-            type="submit"
-          >
-            <FormattedMessage id="trader.start" />
-          </CustomButton>
-        </Box>
+            <Box className="inputBox">
+              <CustomButton
+                className="full submitButton"
+                loading={actionLoading}
+                onClick={handleSubmitClick}
+                type="submit"
+              >
+                <FormattedMessage id="trader.start" />
+              </CustomButton>
+            </Box>
+          </>
+        )}
       </Box>
     </form>
   );
