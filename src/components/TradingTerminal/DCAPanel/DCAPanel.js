@@ -248,7 +248,11 @@ const DCAPanel = (props) => {
     }
 
     if (!rebuyUnitsChange(targetId)) {
-      validateCostLimits(rebuyPositionSize, composeTargetPropertyName("rebuyPercentage", targetId));
+      validateCostLimits(
+        rebuyPositionSize,
+        composeTargetPropertyName("rebuyPercentage", targetId),
+        "terminal.dca.limit",
+      );
     }
   };
 
