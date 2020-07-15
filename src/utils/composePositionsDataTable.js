@@ -1,7 +1,7 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
+import { Delete, Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
@@ -546,6 +546,17 @@ function composeCancelActionButton(position, confirmActionHandler) {
           type="button"
         >
           <XCircle color={colors.purpleLight} />
+        </button>
+      )}
+      {position.status === 1 && (
+        <button
+          data-action={"cancel"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
         </button>
       )}
     </div>
