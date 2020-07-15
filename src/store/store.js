@@ -15,10 +15,10 @@ import initialState from "./initialState";
  */
 
 const migrations = {
-  0: (/** @type {PersistedState} */ state) => {
+  2: (/** @type {PersistedState} */ state) => {
     return {
       ...state,
-      settings: cloneDeep(initialState.settings),
+      ...cloneDeep(initialState),
     };
   },
 };
@@ -28,7 +28,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   blacklist: ["ui"],
-  version: 1,
+  version: 2,
   migrate: createMigrate(migrations, { debug: false }),
 };
 
