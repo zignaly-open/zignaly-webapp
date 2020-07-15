@@ -30,12 +30,15 @@ const Captcha = ({ onChange, recaptchaRef }) => {
   };
 
   const onErroredReCAPTCHA = () => {
-    dispatch(
-      showErrorAlert(
-        "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
-      ),
-    );
-    onChange("");
+    // Prevent alerts on non production builds, ReCaptcha is not allowed for localhost.
+    if (process.env.GATSBY_BUILD_MODE === "production") {
+      dispatch(
+        showErrorAlert(
+          "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
+        ),
+      );
+      onChange("");
+    }
   };
 
   return (
