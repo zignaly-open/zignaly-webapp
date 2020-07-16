@@ -262,6 +262,7 @@ coins.filter.title: "CH-Hide Low value assets"
 # FILTERS AND SORT BY
 fil.allcoins: "CH-All Coins"
 fil.allexchanges: "CH-All Exchanges"
+fil.allexchangeTypes: "CH-All types"
 fil.filters: "CH-Filters"
 fil.clearall: "CH-CLEAR ALL"
 fil.hide: "CH-HIDE"

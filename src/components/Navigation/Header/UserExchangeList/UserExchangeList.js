@@ -5,6 +5,7 @@ import ExchangeList from "./ExchangeList";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import "./UserExchangeList.scss";
+import DownIcon from "../../../../images/header/chevron-down.svg";
 
 /**
  * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
@@ -36,6 +37,7 @@ const UserExchangeList = () => {
             (<FormattedMessage id="menu.testnet" />){" "}
           </span>
         )}
+        <img src={DownIcon} />
       </Box>
       <Popover
         anchorEl={anchorEl}

@@ -2,7 +2,6 @@ import React from "react";
 import { Box, CircularProgress } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
 import "./ProvidersList.scss";
-import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -30,9 +29,14 @@ const ProvidersList = (props) => {
       {providers ? (
         <Box className="tradersBox">
           {providers.map((provider) => (
-            <LazyLoad height={450} key={provider.id} offset={950}>
-              <TraderCard provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
-            </LazyLoad>
+            // <LazyLoad height={450} key={provider.id} offset={950}>
+            <TraderCard
+              key={provider.id}
+              provider={provider}
+              showSummary={showSummary}
+              timeFrame={timeFrame}
+            />
+            // </LazyLoad>
           ))}
         </Box>
       ) : (

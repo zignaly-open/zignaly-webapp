@@ -1,6 +1,5 @@
 import React from "react";
 import "./TraderCard.scss";
-import { Box } from "@material-ui/core";
 import TraderCardHeader from "./TraderCardHeader";
 import TraderCardBody from "./TraderCardBody";
 
@@ -24,16 +23,10 @@ const TraderCard = (props) => {
   const { provider, showSummary, timeFrame } = props;
 
   return (
-    <Box
-      bgcolor="grid.main"
-      className="traderCard"
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-    >
+    <div className="traderCard">
       <TraderCardHeader provider={provider} />
       <TraderCardBody provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
-    </Box>
+    </div>
   );
 };
 

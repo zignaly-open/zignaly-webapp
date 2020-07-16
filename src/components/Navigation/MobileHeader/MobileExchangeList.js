@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ExchangeList from "../Header/UserExchangeList/ExchangeList";
+import DownIcon from "../../../images/header/chevron-down.svg";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -37,6 +38,7 @@ const MobileExchangeList = () => {
             (<FormattedMessage id="menu.testnet" />){" "}
           </span>
         )}
+        <img src={DownIcon} />
       </Box>
 
       <Slide direction="up" in={list}>
