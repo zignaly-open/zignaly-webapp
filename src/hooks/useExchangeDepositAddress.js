@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeDepositAddress} ExchangeDepositAddress
@@ -16,6 +18,7 @@ import tradeApi from "../services/tradeApiClient";
  */
 const useExchangeDepositAddress = (internalId, asset, network) => {
   const [depositAddress, setDepositAddress] = useState();
+  const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();
 
@@ -25,6 +28,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
       // Dependency updated, reset the value while it's loading
       setDepositAddress(null);
     }
+    console.log("load add", network);
 
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -42,7 +46,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
         }
       })
       .catch((e) => {
-        alert(`ERROR: ${e.message}`);
+        dispatch(showErrorAlert(e));
       });
 
     return () => {

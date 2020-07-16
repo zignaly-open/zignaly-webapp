@@ -25,28 +25,57 @@ import useExchangeAssets from "./useExchangeAssets";
  * @returns {AssetsSelectType} Assets select object data.
  */
 const useAssetsSelect = (internalId, type, updatedAt) => {
-  const [selectedAssetName, setSelectedAsset] = useState("BTC");
+  const [selectedAsset, setSelectedAsset] = useState({ name: null, network: null });
+  //   const [selectedAssetName, setSelectedAsset] = useState("BTC");
   const assets = useExchangeAssets(internalId, updatedAt);
-
-  const selectedAsset = assets[selectedAssetName];
   const assetsList = Object.keys(assets)
     .filter((a) => type !== "futures" || ["USDT", "BNB"].includes(a))
     .sort();
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const asset = assets[selectedAsset.name];
+
+  const setSelectedAssetByName = (name) => {
+    if (name && assets[name]) {
+      console.log("setSelectedAssetByName", name, assets);
+      setSelectedAsset({
+        name,
+        network: assets[name].networks.find((n) => n.isDefault),
+      });
+    }
+  };
+  const setSelectedNetwork = (network) => {
+    setSelectedAsset({
+      ...selectedAsset,
+      network,
+    });
+  };
+
+  useEffect(() => {
+    if (assets) {
+      // Select BTC by default
+      setSelectedAssetByName(type !== "futures" ? "BTC" : "USDT");
+    }
+  }, [assets]);
+
+  //   const selectedAsset = assets[selectedAssetName];
+
+  //   const [selectedNetwork, setSelectedNetwork] = useState(null);
 
   // Select default network
-  useEffect(() => {
-    if (selectedAsset) {
-      setSelectedNetwork(selectedAsset.networks.find((n) => n.isDefault));
-    }
-  }, [selectedAsset]);
+  //   useEffect(() => {
+  //     console.log("updt netwrok", selectedAsset);
+  //     if (selectedAsset) {
+  //       setSelectedNetwork(selectedAsset.networks.find((n) => n.isDefault));
+  //     }
+  //   }, [selectedAsset]);
+
+  const selectAsset = () => {};
 
   return {
-    selectedAssetName,
-    setSelectedAsset,
+    selectedAssetName: selectedAsset.name,
+    setSelectedAsset: setSelectedAssetByName,
     assetsList,
-    selectedAsset,
-    selectedNetwork,
+    selectedAsset: asset,
+    selectedNetwork: selectedAsset.network,
     setSelectedNetwork,
   };
 };
