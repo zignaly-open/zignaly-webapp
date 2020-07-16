@@ -8,6 +8,10 @@ import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
 
 /**
+ * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ */
+
+/**
  * @typedef {Object} WithdrawHistoryTablePropTypes
  * @property {string} internalId Exchange account internal id.
  * @property {Date} updatedAt Last updated date to force data refresh.
@@ -42,6 +46,9 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
     loadData();
   }, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
   let columns = [
     {
       name: "status",

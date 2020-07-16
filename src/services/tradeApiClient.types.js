@@ -866,27 +866,16 @@ function providerItemTransform(providerItem) {
     floating: parseFloat(providerItem.floating) || 0,
   });
 
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.map((d) => ({
-    ...d,
-    name: new Date(d.name),
-  }));
-
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
-    (a, b) => a.name - b.name,
-  );
   transformedResponse.dailyReturns.forEach((item) => {
-    // if (isCopyTrading) {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    item.name = new Date(item.name);
     transformedResponse.returns += item.returns;
     transformedResponse.closedPositions += item.positions;
-    // } else {
-    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
-    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
-    //   //   if (cumulativeTotalInvested) {
-    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-    //   //   }
-    // }
   });
+
+  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
+    (a, b) => a.name.getTime() - b.name.getTime(),
+  );
 
   return transformedResponse;
 }

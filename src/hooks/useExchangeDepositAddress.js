@@ -28,7 +28,6 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
       // Dependency updated, reset the value while it's loading
       setDepositAddress(null);
     }
-    console.log("load add", network);
 
     const payload = {
       token: storeSession.tradeApi.accessToken,

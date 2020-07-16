@@ -1,24 +1,24 @@
 .traderCardBody {
   .returnsBox {
-    height: 60px;
-    padding: 0 20px;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    display: flex;
     flex-direction: row;
+    height: 60px;
+    justify-content: space-between;
+    padding: 0 20px;
 
     .returns {
-      height: 40px;
       display: flex;
       flex-direction: column;
+      height: 40px;
       justify-content: space-between;
     }
 
     .openPositions {
-      height: 40px;
-      display: flex;
       align-items: flex-end;
+      display: flex;
       flex-direction: column;
+      height: 40px;
       justify-content: space-between;
     }
   }
@@ -65,17 +65,17 @@
     }
 
     .actions {
-      display: flex;
       align-items: center;
+      display: flex;
       flex-direction: row;
       justify-content: space-around;
     }
 
     .followers {
-      padding-bottom: 14px;
       display: flex;
       flex-direction: row;
       justify-content: center;
+      padding-bottom: 14px;
     }
   }
 

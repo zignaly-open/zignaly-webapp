@@ -1,20 +1,20 @@
 .traderCardHeader {
   align-items: flex-start;
   border-bottom: 1px solid $borderColor;
+  display: flex;
+  flex-direction: row;
   height: 80px;
   padding: 18px 20px 0;
   width: 100%;
-  display: flex;
-  flex-direction: row;
 
   .traderCardHeaderTitleBox {
     // height: 40px;
-    margin-left: 17px;
-    width: 100%;
     align-items: flex-start;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-left: 17px;
+    width: 100%;
 
     .nameBox {
       align-items: flex-start;
@@ -39,11 +39,11 @@
       }
 
       .commissionBox {
-        margin-left: 5px;
-        position: relative;
+        align-items: flex-end;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        margin-left: 5px;
+        position: relative;
 
         .price {
           bottom: -17px;
@@ -53,8 +53,8 @@
     }
 
     .tradesInfoBox {
-      display: flex;
       align-items: "center";
+      display: flex;
       flex-direction: row;
 
       .tradeType {

@@ -33,12 +33,12 @@ const ProviderLogo = ({ url, size, title }) => {
 
   return (
     <LazyLoad
+      height={size}
       offset={300}
       once
       placeholder={
         <img className="providerLogo" height={size} src={LogoIcon} title={title} width={size} />
       }
-      height={size}
     >
       <img
         className="providerLogo"

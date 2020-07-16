@@ -1,7 +1,5 @@
 import moment from "moment";
 import { capitalize, isNil } from "lodash";
-import { FormattedDate } from "react-intl";
-import React from "react";
 
 /**
  * Format string to float with 2 decimals.

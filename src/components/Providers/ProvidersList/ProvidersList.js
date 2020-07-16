@@ -2,7 +2,6 @@ import React from "react";
 import { Box, CircularProgress } from "@material-ui/core";
 import TraderCard from "../../../components/TraderCard";
 import "./ProvidersList.scss";
-import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection

@@ -1,6 +1,5 @@
 import React from "react";
 import "./TraderCard.scss";
-import { Box } from "@material-ui/core";
 import TraderCardHeader from "./TraderCardHeader";
 import TraderCardBody from "./TraderCardBody";
 

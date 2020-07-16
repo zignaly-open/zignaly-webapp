@@ -1,11 +1,11 @@
 .traderCard {
+  background: $white;
   border: 1px solid $borderColor;
   border-radius: 4px;
   box-sizing: border-box;
-  justify-content: flex-start;
   display: flex;
   flex-direction: column;
-  background: $white;
+  justify-content: flex-start;
 }
 
 @include media("<=sm") {
