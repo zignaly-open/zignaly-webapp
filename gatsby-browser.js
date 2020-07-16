@@ -5,7 +5,7 @@ import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
 import * as ReactRedux from "react-redux";
 import { navigate } from "gatsby";
-import tradeApi from "./src/services/tradeApiClient";
+import { showLoader } from "./src/store/actions/ui";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -27,9 +27,9 @@ export const onClientEntry = () => {
 
 export const onInitialClientRender = () => {
   const state = store.getState();
-  /*@ts-ignore */
+  // @ts-ignore
   const token = state.session.tradeApi.accessToken;
-  /*@ts-ignore */
+  // @ts-ignore
   const sessionData = state.session.sessionData;
   let path = "";
   if (typeof window !== "undefined") {
@@ -39,12 +39,16 @@ export const onInitialClientRender = () => {
   if (!path.match(/login|signup|recover/g)) {
     verifySessionData(token, sessionData);
   }
+
+  setInterval(() => {
+    store.dispatch(showLoader(false));
+  }, 500);
 };
 
 export const onPreRouteUpdate = ({ location, prevLocation }) => {
   const path = location.pathname;
   const state = store.getState();
-  /*@ts-ignore */
+  // @ts-ignore
   const token = state.session.tradeApi.accessToken;
 
   if (!path.match(/login|signup|recover/g)) {
