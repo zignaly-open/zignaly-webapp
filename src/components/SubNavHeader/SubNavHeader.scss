@@ -5,11 +5,12 @@
   position: relative;
 
   &::before {
-    border-bottom: 2px solid $borderColor;
+    background: $borderColor;
     content: "";
-    height: 100%;
+    height: 2px;
     position: absolute;
     width: 100%;
+    bottom: 0;
   }
 
   .dashboardLink {

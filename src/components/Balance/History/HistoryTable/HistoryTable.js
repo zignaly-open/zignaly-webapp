@@ -127,14 +127,13 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
           customBodyRender: formatFloat,
         },
       };
-      if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
-        obj.name = "locked" + quotes[a];
-        obj.label.id = "col.lockedquote";
-        /* @ts-ignore */
-        obj.label.quote = quotes[a];
-        /* @ts-ignore */
-        columns.push(obj);
-      }
+
+      obj.name = "locked" + quotes[a];
+      obj.label.id = "col.lockedquote";
+      /* @ts-ignore */
+      obj.label.quote = quotes[a];
+      /* @ts-ignore */
+      columns.push(obj);
     }
   };
 

@@ -67,13 +67,7 @@ export const registerUser = (payload, setLoading) => {
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
-      const action = {
-        type: START_TRADE_API_SESSION,
-        payload: responseData,
-      };
-
-      dispatch(action);
-      dispatch(loadAppUserData(responseData));
+      dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
       dispatch(showErrorAlert(e));

@@ -21,6 +21,7 @@ export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
  * @typedef {import("../../services/tradeApiClient.types").UserEquityPayload} UserEquityPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  * @typedef {import('redux').AnyAction} AnyAction
+ * @typedef {import("../../services/tradeApiClient.types").UserEquityPayload}
  */
 
 /**
@@ -57,11 +58,13 @@ export const setUserExchanges = (payload) => {
 
       dispatch(action);
       dispatch(action2);
-      /**
-       * @type {import("../../services/tradeApiClient.types").UserEquityPayload}
-       */
-      let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
-      dispatch(setDailyUserBalance(balancePayload));
+      if (responseData.length > 0) {
+        /**
+         * @type {UserEquityPayload}
+         */
+        let balancePayload = { ...payload, exchangeInternalId: action2.payload.internalId };
+        dispatch(setDailyUserBalance(balancePayload));
+      }
     } catch (e) {
       alert(`ERROR: ${e.message}`);
     }
@@ -139,7 +142,7 @@ export const setDailyUserBalance = (payload) => {
       };
       dispatch(action);
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };

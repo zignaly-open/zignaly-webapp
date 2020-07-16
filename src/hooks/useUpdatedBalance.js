@@ -41,22 +41,24 @@ const useUpdatedBalance = () => {
   useEffect(showLoader, [storeSettings.selectedExchange.internalId]);
 
   const loadData = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
-    };
+    if (storeSettings.selectedExchange.internalId) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        exchangeInternalId: storeSettings.selectedExchange.internalId,
+      };
 
-    tradeApi
-      .userBalanceGet(payload)
-      .then((data) => {
-        setBalance(data);
-        if (storeBalanceLoader) {
-          dispatch(showBalanceLoader(false));
-        }
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+      tradeApi
+        .userBalanceGet(payload)
+        .then((data) => {
+          setBalance(data);
+          if (storeBalanceLoader) {
+            dispatch(showBalanceLoader(false));
+          }
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
 
   useInterval(loadData, 5000);
