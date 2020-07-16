@@ -303,6 +303,11 @@ const theme = (darkStyle) => {
           fontSize: "12px",
         },
       },
+      MuiCircularProgress: {
+        root: {
+          padding: "3px",
+        },
+      },
     },
     props: {
       MuiButtonBase: {

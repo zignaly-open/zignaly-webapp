@@ -4,7 +4,7 @@ import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
+import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import {
   OutlinedInput,
   FormControlLabel,
@@ -18,6 +18,7 @@ import {
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
+import { CircularProgress } from "@material-ui/core";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -43,8 +44,6 @@ const IncreaseStrategyPanel = (props) => {
   const { control, errors, register, watch } = useFormContext();
   const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
-  const dailyBalance = useStoreUserDailyBalance();
-  const lastDayBalance = dailyBalance.balances[0] || null;
   const {
     positionSizeChange,
     priceChange,
@@ -52,26 +51,9 @@ const IncreaseStrategyPanel = (props) => {
     unitsChange,
     validatePositionSize,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
-
-  const getQuoteBalance = () => {
-    if (!lastDayBalance) {
-      return 0;
-    }
-
-    const propertyKey = `totalFree${symbolData.quote}`;
-    // @ts-ignore
-    return lastDayBalance[propertyKey] || 0;
-  };
-
-  const getBaseBalance = () => {
-    if (!lastDayBalance) {
-      return 0;
-    }
-
-    const propertyKey = `totalFree${symbolData.base}`;
-    // @ts-ignore
-    return lastDayBalance[propertyKey] || 0;
-  };
+  const { balance, loading } = useAvailableBalance(selectedExchange.internalId);
+  const baseBalance = (balance && balance[symbolData.base]) || 0;
+  const quoteBalance = (balance && balance[symbolData.quote]) || 0;
 
   /**
    * Handle toggle switch action.
@@ -177,7 +159,12 @@ const IncreaseStrategyPanel = (props) => {
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
               <FormHelperText>
-                <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+                <FormattedMessage id="terminal.available" />{" "}
+                {loading ? (
+                  <CircularProgress color="primary" size={20} />
+                ) : (
+                  <span className="balance">{quoteBalance}</span>
+                )}
               </FormHelperText>
             </FormControl>
           )}
@@ -197,7 +184,12 @@ const IncreaseStrategyPanel = (props) => {
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+              <FormattedMessage id="terminal.available" />{" "}
+              {loading ? (
+                <CircularProgress color="primary" size={20} />
+              ) : (
+                <span className="balance">{quoteBalance}</span>
+              )}
             </FormHelperText>
             {errors.positionSize && (
               <span className="errorText">{errors.positionSize.message}</span>
@@ -216,7 +208,12 @@ const IncreaseStrategyPanel = (props) => {
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getBaseBalance()}
+              <FormattedMessage id="terminal.available" />{" "}
+              {loading ? (
+                <CircularProgress color="primary" size={15} />
+              ) : (
+                <span className="balance">{baseBalance}</span>
+              )}
             </FormHelperText>
             {errors.units && <span className="errorText">{errors.units.message}</span>}
           </FormControl>
