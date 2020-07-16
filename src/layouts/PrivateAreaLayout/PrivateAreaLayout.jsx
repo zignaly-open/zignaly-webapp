@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { refreshSessionData } from "../../store/actions/session";
 import useInterval from "use-interval";
+import { minToMillisec } from "../../utils/timeConvert";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -38,7 +39,7 @@ const PrivateAreaLayout = (props) => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
   };
 
-  useInterval(updateSession, 60000);
+  useInterval(updateSession, minToMillisec(60));
 
   return (
     <>
