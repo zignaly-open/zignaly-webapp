@@ -51,7 +51,7 @@ const IncreaseStrategyPanel = (props) => {
     unitsChange,
     validatePositionSize,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
-  const { balance, loading } = useAvailableBalance(selectedExchange.internalId);
+  const { balance, loading } = useAvailableBalance();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
 

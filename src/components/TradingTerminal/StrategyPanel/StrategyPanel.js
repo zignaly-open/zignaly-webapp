@@ -45,7 +45,7 @@ const StrategyPanel = (props) => {
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const [modalVisible, setModalVisible] = useState(false);
-  const { balance, loading } = useAvailableBalance(selectedExchange.internalId);
+  const { balance, loading } = useAvailableBalance();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
 
@@ -159,7 +159,7 @@ const StrategyPanel = (props) => {
             <FormHelperText>
               <FormattedMessage id="terminal.available" />{" "}
               {loading ? (
-                <CircularProgress color="primary" size={20} />
+                <CircularProgress color="primary" size={15} />
               ) : (
                 <span className="balance">{quoteBalance}</span>
               )}
