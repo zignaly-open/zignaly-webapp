@@ -129,6 +129,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
   };
 
   const validateBalance = () => {
+    // Skip balance validation on paper trading exchange.
+    if (storeSettings.selectedExchange.paperTrading) {
+      return true;
+    }
+
     let needed =
       typeof provider.minAllocatedBalance === "string"
         ? parseFloat(provider.minAllocatedBalance)
