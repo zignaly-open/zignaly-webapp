@@ -324,7 +324,9 @@ const StrategyForm = (props) => {
    * @returns {CreatePositionPayload} Create position payload.
    */
   const composeCreatePositionPayload = (draftPosition) => {
-    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition));
+    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition), {
+      leverage: parseInt(draftPosition.leverage) || 1,
+    });
   };
 
   /**
