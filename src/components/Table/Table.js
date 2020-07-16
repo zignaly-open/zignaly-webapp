@@ -124,7 +124,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       },
     },
     customSort: (_data, colIndex, order) => {
-      return _data.sort((a, b) => {
+      const res = _data.sort((a, b) => {
         const aVal = a._data[colIndex];
         const bVal = b._data[colIndex];
         // Handle numeric string comparison.
@@ -137,6 +137,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             : aVal - bVal;
         return order === "asc" ? res : -res;
       });
+      return res;
     },
     ...customOptions,
   };

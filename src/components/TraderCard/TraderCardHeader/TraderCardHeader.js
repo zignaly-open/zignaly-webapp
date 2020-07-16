@@ -1,6 +1,6 @@
 import React from "react";
 import "./TraderCardHeader.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
@@ -34,33 +34,15 @@ const TraderCardHeader = (props) => {
   const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}/profile`;
 
   return (
-    <Box alignItems="center" className="traderCardHeader" display="flex" flexDirection="row">
+    <div className="traderCardHeader">
       <ProviderLogo size="40px" title={name} url={logoUrl} />
-      <Box
-        alignItems="flex-start"
-        className="traderCardHeaderTitleBox"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Box
-          alignItems="flex-start"
-          className="nameBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          width={1}
-        >
+      <div className="traderCardHeaderTitleBox">
+        <div className="nameBox">
           <Link className="name" to={profileLink}>
             <Typography variant="h4">{name}</Typography>
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
-          <Box
-            alignItems="flex-end"
-            className="commissionBox"
-            display="flex"
-            flexDirection="column"
-          >
+          <div className="commissionBox">
             <Typography variant="h4">
               {price ? (
                 <span>
@@ -74,15 +56,15 @@ const TraderCardHeader = (props) => {
             <Typography className="price" variant="subtitle1">
               <FormattedMessage id="srv.edit.price" />
             </Typography>
-          </Box>
-        </Box>
+          </div>
+        </div>
         {/* <Box
           className="nameBox"
           display="flex"
           flexDirection="column"
 
         > */}
-        <Box alignItems="center" className="tradesInfoBox" display="flex" flexDirection="row">
+        <div className="tradesInfoBox">
           <Typography className="tradeType" variant="caption">
             <FormattedMessage
               id="srv.trades"
@@ -96,15 +78,15 @@ const TraderCardHeader = (props) => {
             <ExchangeIcon exchange={exchange} key={index} size="xsmall" />
           ))}
           {/* </Box> */}
-        </Box>
+        </div>
 
         {/* <CustomToolip
           title={<FormattedMessage id="srv.comission.tooltip" values={{ comission: price || 0 }} />}
         > */}
 
         {/* </CustomToolip> */}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

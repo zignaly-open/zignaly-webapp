@@ -30,9 +30,14 @@ const ProvidersList = (props) => {
       {providers ? (
         <Box className="tradersBox">
           {providers.map((provider) => (
-            <LazyLoad height={450} key={provider.id} offset={950}>
-              <TraderCard provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
-            </LazyLoad>
+            // <LazyLoad height={450} key={provider.id} offset={950}>
+            <TraderCard
+              key={provider.id}
+              provider={provider}
+              showSummary={showSummary}
+              timeFrame={timeFrame}
+            />
+            // </LazyLoad>
           ))}
         </Box>
       ) : (

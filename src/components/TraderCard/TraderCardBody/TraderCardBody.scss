@@ -2,13 +2,24 @@
   .returnsBox {
     height: 60px;
     padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
 
     .returns {
       height: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .openPositions {
       height: 40px;
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 
@@ -41,6 +52,9 @@
   }
 
   .actionsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 15px 0 24px;
 
     &.positive {
@@ -56,8 +70,18 @@
       opacity: 0.6;
     }
 
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
     .followers {
       padding-bottom: 14px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
     }
   }
 

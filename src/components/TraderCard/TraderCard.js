@@ -24,16 +24,10 @@ const TraderCard = (props) => {
   const { provider, showSummary, timeFrame } = props;
 
   return (
-    <Box
-      bgcolor="grid.main"
-      className="traderCard"
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-    >
+    <div className="traderCard">
       <TraderCardHeader provider={provider} />
       <TraderCardBody provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
-    </Box>
+    </div>
   );
 };
 

@@ -460,7 +460,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} DailyReturn
- * @property {string} name
+ * @property {Date} name
  * @property {number} [positions]
  * @property {number} returns
  * @property {string} [totalInvested]
@@ -855,8 +855,13 @@ function providerItemTransform(providerItem) {
     floating: parseFloat(providerItem.floating) || 0,
   });
 
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort((a, b) =>
-    moment(a.name).diff(moment(b.name)),
+  transformedResponse.dailyReturns = transformedResponse.dailyReturns.map((d) => ({
+    ...d,
+    name: new Date(d.name),
+  }));
+
+  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
+    (a, b) => a.name - b.name,
   );
   transformedResponse.dailyReturns.forEach((item) => {
     // if (isCopyTrading) {

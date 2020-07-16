@@ -38,9 +38,10 @@ const ProviderLogo = ({ url, size, title }) => {
       placeholder={
         <img className="providerLogo" height={size} src={LogoIcon} title={title} width={size} />
       }
+      height={size}
     >
       <img
-        alt={title}
+        alt="logo"
         className="providerLogo"
         height={size}
         onError={onLogoError}

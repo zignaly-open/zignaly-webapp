@@ -62,11 +62,10 @@ const useProvidersList = (options) => {
   const { copyTradersOnly, connectedOnly } = options;
 
   /**
-   * @type {ProvidersCollection} initialState
+   * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
-  const initialState = null;
+  const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
-  const [providersFiltered, setProvidersFiltered] = useState(initialState);
 
   const initTimeFrame = () => {
     if (copyTradersOnly && connectedOnly) {
@@ -162,12 +161,12 @@ const useProvidersList = (options) => {
       return direction === "ASC" ? res : -res;
     });
 
-    setProvidersFiltered(listSorted);
+    setProviders((s) => ({ ...s, filteredList: listSorted }));
   };
   // Sort providers on sort option change
   useEffect(() => {
-    if (providersFiltered) {
-      sortProviders(providersFiltered);
+    if (providers.filteredList) {
+      sortProviders(providers.filteredList);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
@@ -188,8 +187,8 @@ const useProvidersList = (options) => {
   };
   // Filter providers on filter change
   useEffect(() => {
-    if (providers) {
-      filterProviders(providers);
+    if (providers.list) {
+      filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coin, exchange]);
@@ -208,8 +207,8 @@ const useProvidersList = (options) => {
       .providersGet(payload)
       .then((responseData) => {
         const uniqueProviders = uniqBy(responseData, "id");
+        setProviders((s) => ({ ...s, list: uniqueProviders }));
         filterProviders(uniqueProviders);
-        setProviders(uniqueProviders);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -225,7 +224,7 @@ const useProvidersList = (options) => {
   ]);
 
   return {
-    providers: providersFiltered,
+    providers: providers.filteredList,
     timeFrame,
     setTimeFrame,
     coin,
