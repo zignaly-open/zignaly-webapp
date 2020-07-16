@@ -60,6 +60,7 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       label: "col.date",
       options: {
         customBodyRender: FormatedDateTime,
+        sortDirection: "desc",
       },
     },
     {

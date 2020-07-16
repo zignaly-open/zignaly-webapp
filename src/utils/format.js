@@ -189,15 +189,15 @@ export const formatDate = (date, format) => {
  * Format date with time
  *
  * @param {Date|string} date Date.
- * @returns {JSX.Element} Formatted date component.
+ * @returns {string} Formatted date.
  */
-export const FormatedDateTime = (date) => (
-  <FormattedDate
-    day="numeric"
-    hour="numeric"
-    minute="numeric"
-    month="numeric"
-    value={date}
-    year="numeric"
-  />
-);
+export const FormatedDateTime = (date) =>
+  //   <FormattedDate
+  //     day="numeric"
+  //     hour="numeric"
+  //     minute="numeric"
+  //     month="numeric"
+  //     value={date}
+  //     year="numeric"
+  //   />
+  moment(date).format("YYYY/MM/DD HH:mm");

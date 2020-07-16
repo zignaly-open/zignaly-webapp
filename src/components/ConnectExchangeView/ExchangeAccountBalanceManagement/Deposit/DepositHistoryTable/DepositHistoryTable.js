@@ -58,6 +58,7 @@ const DepositHistoryTable = ({ internalId }) => {
       label: "col.date",
       options: {
         customBodyRender: FormatedDateTime,
+        sortDirection: "desc",
       },
     },
     {
