@@ -34,6 +34,7 @@ import {
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
   userExchangeAssetsResponseTransform,
+  sessionDataResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -1187,6 +1188,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Function to clone a provider.
+   *
+   * @param {AuthorizationPayload} payload Clone provider payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async sessionDataGet(payload) {
+    const endpointPath = "/fe/api.php?action=getSessionData";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return sessionDataResponseTransform(responseData);
   }
 }
 

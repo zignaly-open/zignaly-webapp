@@ -7,6 +7,8 @@ import tradeApi from "../../services/tradeApiClient";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
+export const REFRESH_SESSION_DATA = "REFRESH_SESSION_DATA_ACTION";
+export const CLEAR_SESSION_DATA = "CLEAR_SESSION_DATA_ACTION";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
@@ -29,6 +31,7 @@ export const startTradeApiSession = (response) => {
     };
 
     dispatch(action);
+    dispatch(refreshSessionData(response.token));
     dispatch(loadAppUserData(response));
   };
 };
@@ -46,6 +49,7 @@ export const endTradeApiSession = () => {
       dispatch(action);
       dispatch(unsetUserExchanges());
       dispatch(unsetProvider());
+      dispatch(clearSessionData());
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -103,5 +107,34 @@ export const loadAppUserData = (response) => {
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
     }
+  };
+};
+
+/**
+ * @param {string} token Access token.
+ * @returns {AppThunk} Thunk Action.
+ */
+export const refreshSessionData = (token) => {
+  return async (dispatch) => {
+    try {
+      const payload = {
+        token: token,
+      };
+      const responseData = await tradeApi.sessionDataGet(payload);
+      const action = {
+        type: REFRESH_SESSION_DATA,
+        payload: responseData,
+      };
+
+      dispatch(action);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
+    }
+  };
+};
+
+export const clearSessionData = () => {
+  return {
+    type: CLEAR_SESSION_DATA,
   };
 };
