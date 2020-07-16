@@ -126,89 +126,93 @@ const TraderCard = (props) => {
   };
 
   return (
-    <div className="traderCardBody">
-      <div className="returnsBox">
-        <CustomToolip
-          title={
-            <FormattedMessage
-              id="srv.closedpos.tooltip"
-              values={{ count: closedPositions, days: timeFrame }}
-            />
-          }
-        >
-          <div className="returns">
-            <Typography className={colorClass} variant="h4">
-              {formatFloat2Dec(returns)}%
-            </Typography>
-            <Typography variant="subtitle1">{`${intl.formatMessage({
-              id: "sort.return",
-            })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
-          </div>
-        </CustomToolip>
-
-        {isCopyTrading && (
+    <LazyLoad height="310px" offset={600} once>
+      <div className="traderCardBody">
+        <div className="returnsBox">
           <CustomToolip
-            title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
+            title={
+              <FormattedMessage
+                id="srv.closedpos.tooltip"
+                values={{ count: closedPositions, days: timeFrame }}
+              />
+            }
           >
-            <div className="openPositions">
-              <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
-                {formatFloat2Dec(floating)}%
+            <div className="returns">
+              <Typography className={colorClass} variant="h4">
+                {formatFloat2Dec(returns)}%
               </Typography>
-              <Typography variant="subtitle1">
-                <FormattedMessage id="srv.openpos" />
-              </Typography>
+              <Typography variant="subtitle1">{`${intl.formatMessage({
+                id: "sort.return",
+              })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
             </div>
           </CustomToolip>
-        )}
-      </div>
-      <div>
-        <div className="traderCardGraph">
-          <div className="chartWrapper">
-            <LazyLoad height="100%" offset={600} once>
+
+          {isCopyTrading && (
+            <CustomToolip
+              title={
+                <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />
+              }
+            >
+              <div className="openPositions">
+                <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
+                  {formatFloat2Dec(floating)}%
+                </Typography>
+                <Typography variant="subtitle1">
+                  <FormattedMessage id="srv.openpos" />
+                </Typography>
+              </div>
+            </CustomToolip>
+          )}
+        </div>
+        <div>
+          <div className="traderCardGraph">
+            <div className="chartWrapper">
+              {/* <LazyLoad height="100%" offset={600} once> */}
               <LineChart
                 chartData={chartData}
                 colorsOptions={colorsOptions}
                 tooltipFormat={tooltipFormat}
               />
-            </LazyLoad>
+              {/* </LazyLoad> */}
+            </div>
           </div>
-        </div>
-        <div className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}>
-          <div className="followers">
-            {!disable ? (
-              <h6 className={`callout2 ${colorClass}`}>
-                <FormattedMessage
-                  id={isCopyTrading ? "trader.others" : "provider.others"}
-                  values={{
-                    count: followers - 1,
-                  }}
-                />
-              </h6>
-            ) : (
-              <h6 className="callout1">
-                {followers}{" "}
-                <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
-              </h6>
-            )}
-          </div>
+          <div className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}>
+            <div className="followers">
+              {!disable ? (
+                <h6 className={`callout2 ${colorClass}`}>
+                  <FormattedMessage
+                    id={isCopyTrading ? "trader.others" : "provider.others"}
+                    values={{
+                      count: followers - 1,
+                    }}
+                  />
+                </h6>
+              ) : (
+                <h6 className="callout1">
+                  {followers}{" "}
+                  <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
+                </h6>
+              )}
+            </div>
 
-          <div className="actions">
-            {!disable && (
-              <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
-                <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+            <div className="actions">
+              {!disable && (
+                <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
+                  <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                </CustomButton>
+              )}
+              <CustomButton
+                className={darkStyle ? "textPurple" : "textDefault"}
+                onClick={redirectToProfile}
+              >
+                <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
               </CustomButton>
-            )}
-            <CustomButton
-              className={darkStyle ? "textPurple" : "textDefault"}
-              onClick={redirectToProfile}
-            >
-              <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
-            </CustomButton>
+            </div>
           </div>
         </div>
+        {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
       </div>
-      {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
-    </div>
+    </LazyLoad>
   );
 };
 

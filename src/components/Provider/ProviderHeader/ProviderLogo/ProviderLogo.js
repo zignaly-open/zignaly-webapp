@@ -41,7 +41,6 @@ const ProviderLogo = ({ url, size, title }) => {
       height={size}
     >
       <img
-        alt="logo"
         className="providerLogo"
         height={size}
         onError={onLogoError}
