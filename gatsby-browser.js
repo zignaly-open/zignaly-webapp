@@ -66,14 +66,16 @@ const verifySessionData = async (token, sessionData) => {
       if (!isValid(sessionData.validUntil)) {
         navigate("/login");
       }
+    } else {
+      navigate("/login");
     }
   }
 };
 
 const isValid = (milliseconds) => {
   let currentTime = new Date().getTime();
-  if (milliseconds > currentTime) {
-    return true;
+  if (milliseconds <= currentTime) {
+    return false;
   }
-  return false;
+  return true;
 };

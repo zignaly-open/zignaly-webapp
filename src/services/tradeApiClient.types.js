@@ -3304,7 +3304,6 @@ const createEmptyUserExchangeAssetsEntity = () => {
 export function sessionDataResponseTransform(response) {
   return {
     status: response.status,
-    validUntil:
-      new Date(response.validUntil * 1000).getTime() + new Date().getTimezoneOffset() * 60 * 1000,
+    validUntil: response.validUntil * 1000,
   };
 }
