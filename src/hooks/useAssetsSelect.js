@@ -43,10 +43,12 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
     }
   };
   const setSelectedNetwork = (network) => {
-    setSelectedAsset({
-      ...selectedAsset,
-      network,
-    });
+    if (network) {
+      setSelectedAsset({
+        ...selectedAsset,
+        network,
+      });
+    }
   };
 
   useEffect(() => {
