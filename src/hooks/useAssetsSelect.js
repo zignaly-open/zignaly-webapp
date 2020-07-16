@@ -25,28 +25,57 @@ import useExchangeAssets from "./useExchangeAssets";
  * @returns {AssetsSelectType} Assets select object data.
  */
 const useAssetsSelect = (internalId, type, updatedAt) => {
-  const [selectedAssetName, setSelectedAsset] = useState("BTC");
-  const assets = useExchangeAssets(internalId, updatedAt);
+  const [selectedAsset, setSelectedAsset] = useState({
+    name: null,
+    network: null,
+  });
 
-  const selectedAsset = assets[selectedAssetName];
+  const assets = useExchangeAssets(internalId, updatedAt);
   const assetsList = Object.keys(assets)
     .filter((a) => type !== "futures" || ["USDT", "BNB"].includes(a))
     .sort();
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const asset = assets[selectedAsset.name];
 
-  // Select default network
-  useEffect(() => {
-    if (selectedAsset) {
-      setSelectedNetwork(selectedAsset.networks.find((n) => n.isDefault));
+  /**
+   * @param {string} name name
+   * @returns {void}
+   */
+  const setSelectedAssetByName = (name) => {
+    if (name && assets[name]) {
+      setSelectedAsset({
+        name,
+        network: assets[name].networks.find((n) => n.isDefault),
+      });
     }
-  }, [selectedAsset]);
+  };
+
+  /**
+   * @param {CoinNetwork} network network
+   * @returns {void}
+   */
+  const setSelectedNetwork = (network) => {
+    if (network) {
+      setSelectedAsset({
+        ...selectedAsset,
+        network,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (assets) {
+      // Select BTC by default
+      setSelectedAssetByName(type !== "futures" ? "BTC" : "USDT");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assets]);
 
   return {
-    selectedAssetName,
-    setSelectedAsset,
+    selectedAssetName: selectedAsset.name,
+    setSelectedAsset: setSelectedAssetByName,
     assetsList,
-    selectedAsset,
-    selectedNetwork,
+    selectedAsset: asset,
+    selectedNetwork: selectedAsset.network,
     setSelectedNetwork,
   };
 };

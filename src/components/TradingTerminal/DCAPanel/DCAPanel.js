@@ -376,7 +376,7 @@ const DCAPanel = (props) => {
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.dca" />

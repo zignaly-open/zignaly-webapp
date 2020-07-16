@@ -469,7 +469,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} DailyReturn
- * @property {string} name
+ * @property {Date} name
  * @property {number} [positions]
  * @property {number} returns
  * @property {string} [totalInvested]
@@ -866,22 +866,16 @@ function providerItemTransform(providerItem) {
     floating: parseFloat(providerItem.floating) || 0,
   });
 
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort((a, b) =>
-    moment(a.name).diff(moment(b.name)),
-  );
   transformedResponse.dailyReturns.forEach((item) => {
-    // if (isCopyTrading) {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
+    item.name = new Date(item.name);
     transformedResponse.returns += item.returns;
     transformedResponse.closedPositions += item.positions;
-    // } else {
-    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
-    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
-    //   //   if (cumulativeTotalInvested) {
-    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-    //   //   }
-    // }
   });
+
+  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
+    (a, b) => a.name.getTime() - b.name.getTime(),
+  );
 
   return transformedResponse;
 }
@@ -3304,7 +3298,6 @@ const createEmptyUserExchangeAssetsEntity = () => {
 export function sessionDataResponseTransform(response) {
   return {
     status: response.status,
-    validUntil:
-      new Date(response.validUntil * 1000).getTime() + new Date().getTimezoneOffset() * 60 * 1000,
+    validUntil: response.validUntil * 1000,
   };
 }

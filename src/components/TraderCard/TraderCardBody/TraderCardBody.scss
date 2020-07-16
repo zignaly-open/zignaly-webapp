@@ -1,14 +1,25 @@
 .traderCardBody {
   .returnsBox {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
     height: 60px;
+    justify-content: space-between;
     padding: 0 20px;
 
     .returns {
+      display: flex;
+      flex-direction: column;
       height: 40px;
+      justify-content: space-between;
     }
 
     .openPositions {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
       height: 40px;
+      justify-content: space-between;
     }
   }
 
@@ -24,12 +35,6 @@
       position: absolute;
       right: 0;
       top: 0;
-
-      > div {
-        height: 100%;
-        position: relative;
-        width: 100%;
-      }
     }
 
     .gradientChart {
@@ -41,6 +46,9 @@
   }
 
   .actionsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 15px 0 24px;
 
     &.positive {
@@ -56,8 +64,19 @@
       opacity: 0.6;
     }
 
+    .actions {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
     .followers {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
       padding-bottom: 14px;
+      text-align: center;
     }
   }
 

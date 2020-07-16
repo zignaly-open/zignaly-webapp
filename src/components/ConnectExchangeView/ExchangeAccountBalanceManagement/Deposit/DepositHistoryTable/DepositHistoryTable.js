@@ -8,6 +8,10 @@ import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
 
 /**
+ * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ */
+
+/**
  * @typedef {Object} DepositHistoryTablePropTypes
  * @property {string} internalId Exchange account internal id.
  */
@@ -40,6 +44,9 @@ const DepositHistoryTable = ({ internalId }) => {
     loadData();
   }, [internalId, storeSession.tradeApi.accessToken]);
 
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
   let columns = [
     {
       name: "status",
@@ -58,6 +65,7 @@ const DepositHistoryTable = ({ internalId }) => {
       label: "col.date",
       options: {
         customBodyRender: FormatedDateTime,
+        sortDirection: "desc",
       },
     },
     {

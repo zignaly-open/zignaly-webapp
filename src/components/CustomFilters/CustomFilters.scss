@@ -15,6 +15,18 @@
       width: 100px;
     }
   }
+
+  .customSelect {
+    margin-right: 40px;
+
+    .searchRoot {
+      margin-right: 0;
+    }
+
+    .select {
+      margin: 0;
+    }
+  }
 }
 
 @include media("<=sm") {
@@ -35,18 +47,21 @@
       }
 
       label {
-        margin-bottom: 5px;
-        margin-top: 5px;
-      }
+        margin: 5px 0;
 
-      .customSelect {
-        margin-left: 16px;
+        > span {
+          display: none;
+        }
       }
     }
 
     .actions {
       min-height: 40px;
       width: 100%;
+
+      .customButton {
+        width: 100%;
+      }
     }
   }
 }
