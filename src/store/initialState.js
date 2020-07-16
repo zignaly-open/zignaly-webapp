@@ -390,7 +390,7 @@ const initialState = {
         open: false,
       },
     },
-    loader: true,
+    loader: false,
     ask2FA: false,
     balanceLoader: false,
     timeFrame: {

@@ -40,9 +40,10 @@ export const onInitialClientRender = () => {
     verifySessionData(token, sessionData);
   }
 
-  setInterval(() => {
-    store.dispatch(showLoader(false));
-  }, 500);
+  // TODO: Disable due to weird behaviors caused in login page render and blank page on other pages reload.
+  // setInterval(() => {
+  //   store.dispatch(showLoader(false));
+  // }, 500);
 };
 
 export const onPreRouteUpdate = ({ location, prevLocation }) => {
