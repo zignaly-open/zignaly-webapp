@@ -261,7 +261,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   return (
-    <Box bgcolor="grid.main" className="formWrapper">
+    <Box bgcolor="grid.content" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="flex-start"
@@ -271,7 +271,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           flexWrap="wrap"
           justifyContent="flex-start"
         >
-          <Box bgcolor="grid.main" className="aboutBox">
+          <Box bgcolor="grid.content" className="aboutBox">
             <Typography variant="h3">
               <FormattedMessage id="srv.about" />
             </Typography>
@@ -308,7 +308,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             />
           </Box>
 
-          <Box bgcolor="grid.main" className="strategyBox">
+          <Box bgcolor="grid.content" className="strategyBox">
             <Typography variant="h3">
               <FormattedMessage id="srv.strategy" />
             </Typography>
@@ -325,7 +325,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box
-            bgcolor="grid.main"
+            bgcolor="grid.content"
             className="profileBox"
             display="flex"
             flexDirection="row"

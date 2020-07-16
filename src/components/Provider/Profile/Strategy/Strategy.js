@@ -18,7 +18,6 @@ const Strategy = ({ provider }) => {
   return (
     <Box
       alignItems="flex-start"
-      bgcolor="grid.main"
       className="strategy"
       display="flex"
       flexDirection="column"

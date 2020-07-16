@@ -56,18 +56,18 @@ const CopyTradersProfile = () => {
         </title>
       </Helmet>
       <Box className="leftColumn">
-        <Box bgcolor="grid.main" className="aboutBox">
+        <Box bgcolor="grid.content" className="aboutBox">
           <AboutUs provider={storeViews.provider} />
         </Box>
-        <Box bgcolor="grid.main" className="strategyBox">
+        <Box bgcolor="grid.content" className="strategyBox">
           <Strategy provider={storeViews.provider} />
         </Box>
       </Box>
       <Box className="rightColumn">
-        <Box bgcolor="grid.main" className="whoWeAreBox">
+        <Box bgcolor="grid.content" className="whoWeAreBox">
           <WhoWeAre provider={storeViews.provider} />
         </Box>
-        <Box bgcolor="grid.main" className="performanceBox">
+        <Box bgcolor="grid.content" className="performanceBox">
           <Performance provider={storeViews.provider} />
         </Box>
       </Box>

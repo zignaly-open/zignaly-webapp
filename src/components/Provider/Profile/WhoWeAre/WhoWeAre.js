@@ -88,7 +88,6 @@ const WhoWeAre = ({ provider }) => {
   return (
     <Box
       alignItems="flex-start"
-      bgcolor="grid.main"
       className="whoWeAre"
       display="flex"
       flexDirection="column"

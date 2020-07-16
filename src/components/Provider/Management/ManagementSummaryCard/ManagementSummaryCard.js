@@ -27,7 +27,7 @@ const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) 
   return (
     <Box
       alignItems="center"
-      bgcolor="grid.main"
+      bgcolor="grid.content"
       className="managementSummaryCard"
       display="flex"
       flexDirection="column"

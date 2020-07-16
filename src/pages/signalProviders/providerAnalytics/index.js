@@ -99,7 +99,7 @@ const SignalProvidersAnalytics = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box bgcolor="grid.main" className="tradingPerformanceBox">
+      <Box bgcolor="grid.content" className="tradingPerformanceBox">
         <Typography className="boxTitle" variant="h3">
           <FormattedMessage id="copyt.tradingperformance" />
         </Typography>
@@ -116,7 +116,7 @@ const SignalProvidersAnalytics = () => {
         </Box>
       </Box>
 
-      <Box bgcolor="grid.main" className="copiersBox">
+      <Box bgcolor="grid.content" className="copiersBox">
         <Box alignItems="center" className="titleBox" display="flex" flexDirection="row">
           <Typography variant="h3">
             <FormattedMessage id="trader.people" />
@@ -143,7 +143,7 @@ const SignalProvidersAnalytics = () => {
         </Box>
       </Box>
 
-      <Box bgcolor="grid.main" className="moreInfoBox">
+      <Box bgcolor="grid.content" className="moreInfoBox">
         <MoreInfo provider={storeViews.provider} />
       </Box>
     </Box>

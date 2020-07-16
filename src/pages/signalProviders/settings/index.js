@@ -61,7 +61,7 @@ const SignalProvidersSettings = () => {
       {loading && (
         <Box
           alignItems="center"
-          bgcolor="grid.main"
+          bgcolor="grid.content"
           className="loadingBox"
           display="flex"
           flexDirection="row"
