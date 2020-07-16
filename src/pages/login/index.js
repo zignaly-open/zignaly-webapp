@@ -28,7 +28,7 @@ const LoginPage = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box className="loginPage">
+      <Box alignItems="center" className="loginPage" display="flex" flexDirection="column">
         <LoginHeader>
           <LoginTabs>
             <LoginForm />

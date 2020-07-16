@@ -3286,3 +3286,24 @@ const createEmptyUserExchangeAssetsEntity = () => {
     coin: "",
   };
 };
+
+/**
+ *
+ * @typedef {Object} SessionResponse
+ * @property {String} status
+ * @property {Number} validUntil
+ */
+
+/**
+ * Transform user entity response to typed object.
+ *
+ * @export
+ * @param {*} response Trade API user object.
+ * @returns {SessionResponse} User entity.
+ */
+export function sessionDataResponseTransform(response) {
+  return {
+    status: response.status,
+    validUntil: response.validUntil * 1000,
+  };
+}

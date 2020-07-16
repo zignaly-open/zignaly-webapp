@@ -39,9 +39,16 @@
  */
 
 /**
+ * @typedef {Object} DefaultSessionData
+ * @property {string} status
+ * @property {number} validUntil
+ */
+
+/**
  * @typedef {Object} DefaultStateSession
  * @property {DefaultStateSessionTradeApi} tradeApi
  * @property {DefaultStateSessionCoinRay} coinRay
+ * @property {DefaultSessionData} sessionData
  */
 
 /**
@@ -123,6 +130,10 @@ const initialState = {
     },
     coinRay: {
       accessToken: "",
+    },
+    sessionData: {
+      status: "",
+      validUntil: 0,
     },
   },
   settings: {
@@ -379,7 +390,7 @@ const initialState = {
         open: false,
       },
     },
-    loader: false,
+    loader: true,
     ask2FA: false,
     balanceLoader: false,
     timeFrame: {

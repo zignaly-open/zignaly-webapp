@@ -20,7 +20,7 @@ import "./SubNavHeader.scss";
  */
 const SubNavHeader = ({ links, rightComponent }) => (
   <Box
-    alignItems="center"
+    alignItems="flex-start"
     className="subNavHeader"
     display="flex"
     flexDirection="row"

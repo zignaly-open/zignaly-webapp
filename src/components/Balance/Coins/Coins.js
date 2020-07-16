@@ -4,6 +4,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import CoinsTable from "./CoinsTable";
 import useUserExchangeAssets from "../../../hooks/useUserExchangeAssets";
 import CoinsFilter from "./CoinsFilter";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  *
@@ -12,7 +13,8 @@ import CoinsFilter from "./CoinsFilter";
 
 const Coins = () => {
   const [list, setList] = useState([]);
-  const { loading, data } = useUserExchangeAssets();
+  const storeSettings = useStoreSettingsSelector();
+  const { loading, data } = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
 
   const initData = () => {
     setList(data);

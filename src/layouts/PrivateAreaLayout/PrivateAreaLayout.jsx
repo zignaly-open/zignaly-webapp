@@ -12,6 +12,10 @@ import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import useScript from "../../hooks/useScript";
 import { withPrefix } from "gatsby";
+import { useDispatch } from "react-redux";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
+import { refreshSessionData } from "../../store/actions/session";
+import useInterval from "use-interval";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -26,7 +30,15 @@ import { withPrefix } from "gatsby";
  */
 const PrivateAreaLayout = (props) => {
   const { children } = props;
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   useScript(withPrefix("widgets/freshDeskWidget.js"));
+
+  const updateSession = () => {
+    dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
+  };
+
+  useInterval(updateSession, 60000);
 
   return (
     <>

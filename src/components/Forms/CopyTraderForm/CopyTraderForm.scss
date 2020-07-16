@@ -1,5 +1,6 @@
 .copyTraderForm {
-  padding: 40px 20px;
+  min-height: 300px;
+  padding: 40px;
 
   .alert {
     margin-bottom: 20px;
@@ -12,13 +13,13 @@
     margin-bottom: 20px;
     text-align: center;
     text-transform: initial;
-    width: 100%;
+    width: 80%;
   }
 
   p {
     margin-bottom: 20px;
     text-align: center;
-    width: 100%;
+    width: 80%;
   }
 
   .fieldBox {
@@ -44,6 +45,10 @@
         justify-content: center;
         margin-top: 5px;
         width: 100%;
+
+        &.errorText {
+          font-size: 14px;
+        }
       }
     }
   }
@@ -52,6 +57,14 @@
 @include media("<=sm") {
   .copyTraderForm {
     padding: 40px 15px;
+
+    h3 {
+      width: 100%;
+    }
+
+    p {
+      width: 100%;
+    }
 
     .fieldBox {
       .inputBox {
