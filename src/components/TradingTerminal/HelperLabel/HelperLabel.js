@@ -20,7 +20,7 @@ const HelperLabel = (props) => {
   const intl = useIntl();
 
   return (
-    <Box alignItems="center" className="help" display="flex">
+    <Box alignItems="end" className="help" display="flex" flexDirection="row">
       <FormHelperText>
         <FormattedMessage id={labelId} />
       </FormHelperText>

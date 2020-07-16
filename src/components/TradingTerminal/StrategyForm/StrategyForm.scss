@@ -7,6 +7,10 @@
     flex: 0 0 100%;
   }
 
+  @include media(">=lg") {
+    flex: 0 0 20%;
+  }
+
   .panel {
     border: $greyBackground solid 1px;
     border-radius: 4px;
@@ -34,6 +38,10 @@
   .panelContent {
     justify-content: space-between;
     padding: 0 20px 20px;
+
+    .help {
+      margin-top: 12px;
+    }
 
     .help,
     .targetStatus {

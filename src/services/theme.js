@@ -297,6 +297,11 @@ const theme = (darkStyle) => {
           },
         },
       },
+      MuiFormHelperText: {
+        root: {
+          fontSize: "12px",
+        },
+      },
     },
     props: {
       MuiButtonBase: {
