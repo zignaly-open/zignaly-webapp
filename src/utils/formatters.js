@@ -32,17 +32,23 @@ export const addThousandsSeparator = (value, separator = " ") => {
  *
  * @param {number} price Price to format.
  * @param {string} nanDisplay Value to display when price is NaN.
+ * @param {string} thousandSeparator Character to use for thousand separator.
  *
  * @returns {string} Formatter price for display.
  */
-export const formatPrice = (price, nanDisplay = "-") => {
+export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") => {
   if (isNaN(price)) {
     return nanDisplay;
   }
 
+  let formattedPrice = price.toFixed(8);
   if (price > 1 || price < -1) {
-    return addThousandsSeparator(price.toFixed(2));
+    formattedPrice = price.toFixed(2);
   }
 
-  return addThousandsSeparator(price.toFixed(8));
+  if (thousandSeparator) {
+    return addThousandsSeparator(formattedPrice);
+  }
+
+  return formattedPrice;
 };
