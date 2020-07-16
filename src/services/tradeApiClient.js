@@ -1176,9 +1176,9 @@ class TradeApiClient {
   }
 
   /**
-   * Function to clone a provider.
+   * Get user exchange available balance.
    *
-   * @param {UserEquityPayload} payload Clone provider payload.
+   * @param {UserEquityPayload} payload Get user balance payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient

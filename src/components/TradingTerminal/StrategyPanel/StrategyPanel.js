@@ -15,9 +15,10 @@ import {
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import Modal from "../../Modal";
+import { CircularProgress } from "@material-ui/core";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
+import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { LeverageForm } from "..";
 import "./StrategyPanel.scss";
 
@@ -41,11 +42,12 @@ const StrategyPanel = (props) => {
   const { symbolData } = props;
   const { control, errors, register, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
-  const dailyBalance = useStoreUserDailyBalance();
-  const lastDayBalance = dailyBalance.balances[0] || null;
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const [modalVisible, setModalVisible] = useState(false);
+  const { balance, loading } = useAvailableBalance();
+  const baseBalance = (balance && balance[symbolData.base]) || 0;
+  const quoteBalance = (balance && balance[symbolData.quote]) || 0;
 
   const {
     positionSizeChange,
@@ -55,26 +57,6 @@ const StrategyPanel = (props) => {
     validatePositionSize,
     validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData);
-
-  const getQuoteBalance = () => {
-    if (!lastDayBalance) {
-      return 0;
-    }
-
-    const propertyKey = `totalFree${symbolData.quote}`;
-    // @ts-ignore
-    return lastDayBalance[propertyKey] || 0;
-  };
-
-  const getBaseBalance = () => {
-    if (!lastDayBalance) {
-      return 0;
-    }
-
-    const propertyKey = `totalFree${symbolData.base}`;
-    // @ts-ignore
-    return lastDayBalance[propertyKey] || 0;
-  };
 
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
@@ -175,7 +157,12 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+              <FormattedMessage id="terminal.available" />{" "}
+              {loading ? (
+                <CircularProgress color="primary" size={15} />
+              ) : (
+                <span className="balance">{quoteBalance}</span>
+              )}
             </FormHelperText>
           </FormControl>
         )}
@@ -199,7 +186,12 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getQuoteBalance()}
+              <FormattedMessage id="terminal.available" />{" "}
+              {loading ? (
+                <CircularProgress color="primary" size={15} />
+              ) : (
+                <span className="balance">{quoteBalance}</span>
+              )}
             </FormHelperText>
             {errors.positionSize && (
               <span className="errorText">{errors.positionSize.message}</span>
@@ -246,7 +238,12 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">{symbolData.base}</div>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.available" /> {getBaseBalance()}
+              <FormattedMessage id="terminal.available" />{" "}
+              {loading ? (
+                <CircularProgress color="primary" size={15} />
+              ) : (
+                <span className="balance">{baseBalance}</span>
+              )}
             </FormHelperText>
             {errors.units && <span className="errorText">{errors.units.message}</span>}
           </FormControl>

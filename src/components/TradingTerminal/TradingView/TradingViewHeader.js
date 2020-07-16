@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { size, isBoolean } from "lodash";
 import { Box } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import CustomSelect from "../../CustomSelect/CustomSelect";
@@ -41,11 +41,26 @@ const TradingViewHeader = (props) => {
     };
 
     tradeApi.userOwnCopyTradersProvidersOptions(payload).then((data) => {
-      setOwnCopyTradersProviders(data);
+      if (Array.isArray(data)) {
+        // Digest providers data to handle translation.
+        const digestedProviders = data.map((provider) => {
+          if (provider.providerId === 1) {
+            return { ...provider, providerName: formatMessage({ id: "terminal.provider.manual" }) };
+          }
+
+          return provider;
+        });
+
+        setOwnCopyTradersProviders(digestedProviders);
+      }
     });
   };
 
-  useEffect(loadOwnCopyTradersProviders, [storeSettings.selectedExchange.internalId]);
+  const { formatMessage } = useIntl();
+  useEffect(loadOwnCopyTradersProviders, [
+    storeSettings.selectedExchange.internalId,
+    storeSettings.languageCode,
+  ]);
 
   const providerOptions = ownCopyTradersProviders.map((provider) => {
     return {
@@ -61,7 +76,7 @@ const TradingViewHeader = (props) => {
   ) || {
     providerPayableBalance: 0,
     providerConsumedBalance: 0,
-    providerName: "Manual Trading",
+    providerName: formatMessage({ id: "terminal.provider.manual" }),
     providerId: "1",
   };
 

@@ -40,6 +40,10 @@
       height: 400px;
       margin-bottom: 15px;
     }
+
+    @include media(">=lg") {
+      flex: 0 0 calc(80% - 15px);
+    }
   }
 
   .symbolsSelector,
