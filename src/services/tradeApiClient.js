@@ -744,7 +744,7 @@ class TradeApiClient {
    *
    * @param {UpdatePositionPayload} payload Update manual position payload.
 
-   * @returns {Promise<PositionEntity>} Promise that resolve updated position entity.
+   * @returns {Promise<string>} Promise that resolve updated position ID.
    *
    * @memberof TradeApiClient
    */
@@ -752,7 +752,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=updatePosition";
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
-    return userPositionItemTransform(responseData);
+    return responseData;
   }
 
   /**
