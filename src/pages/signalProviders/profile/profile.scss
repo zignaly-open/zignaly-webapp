@@ -2,21 +2,21 @@
   width: 100%;
 
   .leftColumn {
-    width: calc(46% - 20px);
     margin-right: 20px;
+    width: calc(46% - 20px);
 
     .aboutBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
       min-height: 280px;
       width: 100%;
-      margin-bottom: 20px;
     }
 
     .strategyBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
       min-height: 430px;
       width: 100%;
-      margin-bottom: 20px;
     }
   }
 
@@ -25,24 +25,24 @@
 
     .whoWeAreBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
       min-height: 280px;
       width: 100%;
-      margin-bottom: 20px;
     }
 
     .performanceBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
       min-height: 430px;
       width: 100%;
-      margin-bottom: 20px;
     }
   }
 
   .optionsBox {
     box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
     min-height: 400px;
     width: 100%;
-    margin-bottom: 20px;
   }
 
   .cloneBox {

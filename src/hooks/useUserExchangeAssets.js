@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 

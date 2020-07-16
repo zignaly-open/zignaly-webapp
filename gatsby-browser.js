@@ -62,20 +62,6 @@ const verifySessionData = async (token, sessionData) => {
       if (!isValid(sessionData.validUntil)) {
         navigate("/login");
       }
-    } else {
-      const payload = {
-        token: token,
-      };
-      tradeApi
-        .sessionDataGet(payload)
-        .then((response) => {
-          if (!isValid(response.validUntil)) {
-            navigate("/login");
-          }
-        })
-        .catch(() => {
-          navigate("/login");
-        });
     }
   }
 };

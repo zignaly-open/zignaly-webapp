@@ -134,7 +134,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         ? parseFloat(provider.minAllocatedBalance)
         : provider.minAllocatedBalance;
     let neededQuote = provider.copyTradingQuote;
-    /*@ts-ignore */
+    /* @ts-ignore */
     let userBalance = balance[neededQuote];
     if (userBalance && userBalance > needed) {
       return true;

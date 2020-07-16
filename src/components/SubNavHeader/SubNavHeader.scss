@@ -18,13 +18,13 @@
     cursor: pointer;
     font-family: "PlexSans-Regular";
     font-size: 21px;
+    height: 60px;
     margin: 0 50px 0 0;
     opacity: 0.6;
-    height: 60px;
+    position: relative;
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
-    position: relative;
 
     &.active {
       opacity: 1;

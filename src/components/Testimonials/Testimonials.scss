@@ -12,8 +12,8 @@
 
 @include media("<=sm") {
   .testimonials {
-    width: 100%;
     padding: 30px 20px;
+    width: 100%;
 
     .title {
       text-align: center;

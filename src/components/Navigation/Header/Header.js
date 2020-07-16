@@ -104,7 +104,7 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="bottom-start" transition>
+          <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement="bottom-start" transition>
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} timeout={350}>
                 <Box
