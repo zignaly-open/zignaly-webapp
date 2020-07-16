@@ -41,11 +41,10 @@ const StopLossPanel = (props) => {
   // Strategy panels inputs to observe for changes.
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isClosed = positionEntity ? positionEntity.closed : false;
 
   const getFieldsDisabledStatus = () => {
-    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-    const isClosed = positionEntity ? positionEntity.closed : false;
-
     /**
      * @type {Object<string, boolean>}
      */
@@ -197,7 +196,7 @@ const StopLossPanel = (props) => {
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />

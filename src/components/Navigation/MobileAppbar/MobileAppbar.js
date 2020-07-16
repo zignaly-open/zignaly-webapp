@@ -30,6 +30,74 @@ const MobileAppbar = () => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
+  /**
+   *
+   * @param {string} link String to test in the url.
+   * @returns {Boolean} Flag if the link is active or not.
+   */
+  const active = (link) => {
+    let url = "";
+    if (typeof window !== "undefined") {
+      url = window.location.href;
+    }
+    if (url.includes(link)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   *
+   * @param {string} link Name of the link to get icon.
+   * @returns {*} JS component or nothing.
+   */
+  const getIcon = (link) => {
+    let url = "";
+    if (typeof window !== "undefined") {
+      url = window.location.href;
+    }
+    switch (link) {
+      case "dashboard":
+        if (storeSettings.darkStyle) {
+          return DashboardWhite;
+        }
+        if (url.includes(link)) {
+          return DashboardWhite;
+        }
+        return DashboardBlack;
+
+      case "copyTraders":
+        if (storeSettings.darkStyle) {
+          return CopyWhite;
+        }
+        if (url.includes(link)) {
+          return CopyWhite;
+        }
+        return CopyBlack;
+
+      case "signalProviders":
+        if (storeSettings.darkStyle) {
+          return SignalWhite;
+        }
+        if (url.includes(link)) {
+          return SignalWhite;
+        }
+        return SignalBlack;
+
+      case "tradingTerminal":
+        if (storeSettings.darkStyle) {
+          return TerminalWhite;
+        }
+        if (url.includes(link)) {
+          return TerminalWhite;
+        }
+        return TerminlBlack;
+
+      default:
+        return "";
+    }
+  };
+
   return (
     <Box
       alignItems="center"
@@ -40,48 +108,32 @@ const MobileAppbar = () => {
       justifyContent="space-between"
     >
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("dashboard") ? "active" : "")}
         partiallyActive={true}
         to="/dashboard/positions"
       >
-        <img
-          alt="zignaly"
-          className="icon"
-          src={storeSettings.darkStyle ? DashboardWhite : DashboardBlack}
-        />
+        <img alt="zignaly" className={"icon"} src={getIcon("dashboard")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
         partiallyActive={true}
         to="/copyTraders/browse"
       >
-        <img alt="zignaly" className="icon" src={storeSettings.darkStyle ? CopyWhite : CopyBlack} />
+        <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
         partiallyActive={true}
         to="/signalProviders/browse"
       >
-        <img
-          alt="zignaly"
-          className="icon"
-          src={storeSettings.darkStyle ? SignalWhite : SignalBlack}
-        />
+        <img alt="zignaly" className="icon" src={getIcon("signalProviders")} />
       </Link>
       <Link
-        activeClassName="active"
-        className="sideBarLink"
+        className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}
         partiallyActive={true}
         to="/tradingTerminal"
       >
-        <img
-          alt="zignaly"
-          className={"icon"}
-          src={storeSettings.darkStyle ? TerminalWhite : TerminlBlack}
-        />
+        <img alt="zignaly" className={"icon"} src={getIcon("tradingTerminal")} />
       </Link>
       <Box
         className="sideBarLink"

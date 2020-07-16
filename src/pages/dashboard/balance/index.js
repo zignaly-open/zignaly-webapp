@@ -7,11 +7,11 @@ import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
 import AvailableBalance from "../../../components/Balance/AvailableBalance";
-import History from "../../../components/Balance/History";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useIntl } from "react-intl";
+import BalanceTabs from "../../../components/Balance/BalanceTabs";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
@@ -47,7 +47,7 @@ const Balance = () => {
           <AvailableBalance balance={balance} />
         </Box>
         <Box className="historyBox">
-          <History dailyBalance={dailyBalance} />
+          <BalanceTabs dailyBalance={dailyBalance} />
         </Box>
       </Box>
     </>

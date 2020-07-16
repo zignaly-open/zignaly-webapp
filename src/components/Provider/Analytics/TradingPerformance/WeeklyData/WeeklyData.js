@@ -89,11 +89,11 @@ const WeeklyData = ({ list, selected, onChange }) => {
             </Typography>
             {item.weeklyStats.map((item2, index2) => (
               <Typography className={item2.return >= 0 ? "green" : "red"} key={index2} variant="h5">
-                {item2.return ? item2.return.toFixed(2) : "--"}
+                {item2.return ? `${item2.return.toFixed(2)}%` : "--"}
               </Typography>
             ))}
             <Typography className={"total " + (item.total >= 0 ? "green" : "red")} variant="h5">
-              {item.total ? item.total.toFixed(2) : "--"}
+              {item.total ? `${item.total.toFixed(2)}%` : "--"}
             </Typography>
           </Box>
         ))}

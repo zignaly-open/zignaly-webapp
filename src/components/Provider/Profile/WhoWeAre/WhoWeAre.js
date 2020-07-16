@@ -74,7 +74,7 @@ const WhoWeAre = ({ provider }) => {
    * @returns {void} None.
    */
   const redirectToSocial = (link) => {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       window.open(link, "_blank");
     }
   };
@@ -104,7 +104,7 @@ const WhoWeAre = ({ provider }) => {
         <Typography variant="h3">
           <FormattedMessage id="srv.who" />
         </Typography>
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
+        <Box className="teamBox" display="flex" flexDirection="row" flexWrap="wrap">
           {team.map((item, index) => (
             <Box
               alignItems="center"

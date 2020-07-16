@@ -17,6 +17,9 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import WithdrawHistoryTable from "./WithdrawHistoryTable";
 import ModalPathContext from "../../ModalPathContext";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import Modal from "../../../Modal";
+import TwoFAForm from "../../../Forms/TwoFAForm";
 
 const Withdraw = () => {
   const {
@@ -24,9 +27,12 @@ const Withdraw = () => {
   } = useContext(ModalPathContext);
   const { handleSubmit, register, errors, watch, reset } = useForm({ mode: "onBlur" });
   const storeSession = useStoreSessionSelector();
+  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState(null);
+  const [twoFAModal, showTwoFAModal] = useState(false);
+  const [formData, setFormData] = useState(null);
   const amount = watch("amount");
 
   const {
@@ -38,6 +44,10 @@ const Withdraw = () => {
     setSelectedNetwork,
   } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, updatedAt);
 
+  const onSuccess = () => {
+    performWithdraw(formData);
+  };
+
   /**
    * @typedef {Object} FormData
    * @property {String} address
@@ -46,14 +56,11 @@ const Withdraw = () => {
    */
 
   /**
-   * Function to submit form.
    *
    * @param {FormData} data Form data.
    * @returns {void}
    */
-  const onSubmit = (data) => {
-    setIsLoading(true);
-
+  const performWithdraw = (data) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalId: selectedAccount.internalId,
@@ -78,12 +85,37 @@ const Withdraw = () => {
       })
       .finally(() => {
         setIsLoading(false);
+        showTwoFAModal(false);
       });
+  };
+
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {void}
+   */
+  const onSubmit = (data) => {
+    setIsLoading(true);
+    if (userData.ask2FA) {
+      showTwoFAModal(true);
+      setFormData(data);
+    } else {
+      performWithdraw(data);
+    }
   };
 
   return (
     <BalanceManagement>
       <Box className="exchangeAccountWithdraw">
+        <Modal
+          onClose={() => showTwoFAModal(false)}
+          persist={false}
+          size="small"
+          state={twoFAModal}
+        >
+          <TwoFAForm data={userData} onSuccess={onSuccess} />
+        </Modal>
         <Box className="transferBox">
           {!assetsList.length || !selectedNetwork ? (
             <Box

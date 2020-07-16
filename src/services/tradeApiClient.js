@@ -27,13 +27,13 @@ import {
   exchangeDepositsResponseTransform,
   withdrawResponseTransform,
   exchangeWithdrawsResponseTransform,
-  userGetResponseTransform,
   providerExchangeSettingsResponseTransform,
   providerDataPointsResponseTransform,
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
+  userExchangeAssetsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -92,6 +92,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
  * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
+ * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  */
 
 /**
@@ -146,7 +147,7 @@ class TradeApiClient {
     }
 
     if (responseData.error) {
-      const customError = responseData.error.error;
+      const customError = responseData.error.error || responseData.error;
 
       if (customError.code === 13) {
         // Session expired
@@ -369,6 +370,22 @@ class TradeApiClient {
    */
   async positionExit(payload) {
     const endpointPath = "/fe/api.php?action=sellPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Cancel position entry.
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+
+   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionCancel(payload) {
+    const endpointPath = "/fe/api.php?action=cancelBuy";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userPositionItemTransform(responseData);
@@ -716,7 +733,7 @@ class TradeApiClient {
    */
   async manualPositionCreate(payload) {
     const endpointPath = "/fe/api.php?action=createManualPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return responseData;
   }
@@ -731,8 +748,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async manualPositionUpdate(payload) {
-    const endpointPath = "/fe/api.php?action=newUpdatePosition3";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const endpointPath = "/fe/api.php?action=updatePosition";
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionItemTransform(responseData);
   }
@@ -765,7 +782,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getUserData";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userGetResponseTransform(responseData);
+    return userEntityResponseTransform(responseData);
   }
 
   /**
@@ -1140,6 +1157,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Function to clone a provider.
+   *
+   * @param {UserExchangeAssetsPayload} payload Clone provider payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async userExchangeAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return userExchangeAssetsResponseTransform(responseData);
   }
 }
 

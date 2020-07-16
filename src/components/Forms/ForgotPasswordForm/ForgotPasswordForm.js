@@ -33,13 +33,14 @@ const ForgotPasswordForm = () => {
     tradeApi
       .forgotPasswordStep1(payload)
       .then(() => {
-        setLoading(false);
         dispatch(
           showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step1.body"),
         );
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
         setLoading(false);
       });
   };

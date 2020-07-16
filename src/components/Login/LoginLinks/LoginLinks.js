@@ -5,6 +5,22 @@ import Link from "../../LocalizedLink";
 import { FormattedMessage } from "react-intl";
 
 const LoginLinks = () => {
+  /**
+   *
+   * @param {string} link String to test in the url.
+   * @returns {Boolean} Flag if the link is active or not.
+   */
+  const active = (link) => {
+    let url = "";
+    if (typeof window !== "undefined") {
+      url = window.location.href;
+    }
+    if (url.includes(link)) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Box
       alignItems="center"
@@ -13,10 +29,10 @@ const LoginLinks = () => {
       flexDirection="row"
       justifyContent="space-evenly"
     >
-      <Link activeClassName="activeLink" className="loginLinkItem" to="/login">
+      <Link className={"loginLinkItem " + (active("login") ? "activeLink" : "")} to="/login">
         <FormattedMessage id="login.title" />
       </Link>
-      <Link activeClassName="activeLink" className="loginLinkItem" to="/signup">
+      <Link className={"loginLinkItem " + (active("signup") ? "activeLink" : "")} to="/signup">
         <FormattedMessage id="signup.title" />
       </Link>
     </Box>

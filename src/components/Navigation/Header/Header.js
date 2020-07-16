@@ -104,7 +104,20 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <Menu anchorEl={anchorEl} onClose={() => setAnchorEl(undefined)} open={Boolean(anchorEl)}>
+          <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            getContentAnchorEl={null}
+            onClose={() => setAnchorEl(undefined)}
+            open={Boolean(anchorEl)}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
             <UserMenu />
           </Menu>
         </Box>

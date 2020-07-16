@@ -15,6 +15,17 @@ export const formatNumber = (value, precision = 8) => {
 };
 
 /**
+ * Add thousands separator in string numeric value.
+ *
+ * @param {string} value String numeric value.
+ * @param {string} [separator=" "] Thousands separator character.
+ * @returns {string} String numeric value with added thousands separator chars.
+ */
+export const addThousandsSeparator = (value, separator = " ") => {
+  return value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator);
+};
+
+/**
  * Format price for display.
  *
  * Numbers greater than 1 show 2 digits precision, floats show 8 digits precision.
@@ -30,8 +41,8 @@ export const formatPrice = (price, nanDisplay = "-") => {
   }
 
   if (price > 1 || price < -1) {
-    return price.toFixed(2);
+    return addThousandsSeparator(price.toFixed(2));
   }
 
-  return price.toFixed(8);
+  return addThousandsSeparator(price.toFixed(8));
 };

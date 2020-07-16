@@ -12,6 +12,7 @@ export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const GET_USER_DATA = "GET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
+export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -30,7 +31,7 @@ export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
  * @returns {AppThunk} Thunk action function.
  */
 export const setUserExchanges = (payload) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       const responseData = await tradeApi.userExchangesGet(payload);
       const action = {
@@ -38,9 +39,20 @@ export const setUserExchanges = (payload) => {
         payload: responseData,
       };
 
+      const state = getState();
+      /* @ts-ignore */
+      let id = state.settings.selectedExchange.internalId;
+      let selected;
+      if (responseData.length > 0) {
+        selected = responseData.find((item) => item.internalId === id);
+      }
+      if (!selected) {
+        selected =
+          responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange;
+      }
       const action2 = {
         type: SET_SELECTED_EXCHANGE,
-        payload: responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange,
+        payload: selected,
       };
 
       dispatch(action);
@@ -117,6 +129,9 @@ export const removeUserExchange = (internalId) => {
 export const setDailyUserBalance = (payload) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: SET_DAILY_BALANCE_LOADER,
+      });
       const response = await tradeApi.userEquityGet(payload);
       const action = {
         type: GET_DAILY_USER_BALANCE,

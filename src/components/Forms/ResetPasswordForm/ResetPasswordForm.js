@@ -107,13 +107,14 @@ const ResetPasswordForm = ({ token, setVerified }) => {
           dispatch(
             showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step3.body"),
           );
-          setLoading(false);
           navigate("/login");
         })
         .catch((e) => {
-          setLoading(false);
           dispatch(showErrorAlert(e));
           setVerified(false);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       setPasswordDoNotMatch(true);

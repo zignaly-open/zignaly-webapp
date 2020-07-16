@@ -1,4 +1,4 @@
-.profilePage {
+.traderProfilePage {
   width: 100%;
 
   .aboutBox {
@@ -39,7 +39,7 @@
 }
 
 @include media("<=sm") {
-  .profilePage {
+  .traderProfilePage {
     width: 100%;
 
     .aboutBox {

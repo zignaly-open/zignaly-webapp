@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./TotalEquity.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
@@ -51,27 +51,42 @@ const TotalEquity = ({ dailyBalance }) => {
   };
 
   return (
-    <Box
-      alignItems="flex-start"
-      className="totalEquity"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-    >
-      <Box
-        alignItems="flex-start"
-        className="equityHeader"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        width="100%"
-      >
-        <TitleBar balance={balance} />
-        <EquityFilter list={list} onChange={handleChange} />
-      </Box>
-      <TotalEquityGraph list={list} />
-      <EquityGraphLabels list={list} />
-    </Box>
+    <>
+      {dailyBalance.loading && (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      )}
+      {!dailyBalance.loading && (
+        <Box
+          alignItems="flex-start"
+          className="totalEquity"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+        >
+          <Box
+            alignItems="flex-start"
+            className="equityHeader"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            width="100%"
+          >
+            <TitleBar balance={balance} />
+            <EquityFilter list={list} onChange={handleChange} />
+          </Box>
+          <TotalEquityGraph list={list} />
+          <EquityGraphLabels list={list} />
+        </Box>
+      )}
+    </>
   );
 };
 

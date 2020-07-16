@@ -16,6 +16,7 @@ const useEquity = (internalId) => {
   const [equity, setEquity] = useState({
     balances: [],
     quotes: [],
+    loading: false,
   });
 
   const storeSession = useStoreSessionSelector();

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./History.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import HistoryTable from "./HistoryTable";
-import HistoryFilter from "./HistoryFilter";
+import EquityFilter from "../TotalEquity/EquityFilter";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -36,31 +36,38 @@ const History = ({ dailyBalance }) => {
     setList(data);
   };
 
-  const embedFilter = <HistoryFilter list={dailyBalance.balances} onChange={handleChange} />;
+  const embedFilter = <EquityFilter list={dailyBalance.balances} onChange={handleChange} />;
 
   return (
-    <Box
-      alignItems="flex-start"
-      className="history"
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-    >
-      <Box
-        alignItems="center"
-        bgcolor="grid.content"
-        className="historyHeader"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-end"
-      />
-      <HistoryTable
-        list={list}
-        persistKey="dailyBalance"
-        quotes={dailyBalance.quotes}
-        title={embedFilter}
-      />
-    </Box>
+    <>
+      {dailyBalance.loading && (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      )}
+      {!dailyBalance.loading && (
+        <Box
+          alignItems="flex-start"
+          className="history"
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-start"
+        >
+          <HistoryTable
+            list={list}
+            persistKey="dailyBalance"
+            quotes={dailyBalance.quotes}
+            title={embedFilter}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

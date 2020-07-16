@@ -44,10 +44,10 @@ const TrailingStopPanel = (props) => {
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isClosed = positionEntity ? positionEntity.closed : false;
 
   const getFieldsDisabledStatus = () => {
-    const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-    const isClosed = positionEntity ? positionEntity.closed : false;
     const isTriggered = positionEntity ? positionEntity.trailingStopTriggered : false;
 
     /**
@@ -246,7 +246,7 @@ const TrailingStopPanel = (props) => {
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.trailingstop" />

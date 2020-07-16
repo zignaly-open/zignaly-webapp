@@ -55,21 +55,23 @@ const PerformanceOverview = ({ provider }) => {
           <Typography variant="h4">{provider.performance.closePositions}</Typography>
         </Box>
 
-        <Box
-          alignItems="center"
-          className="infoRow"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          <Typography variant="body1">
-            {provider.copyTradingQuote}&nbsp;
-            <FormattedMessage id="accounts.balance" />
-          </Typography>
-          <Typography className="green" variant="h4">
-            {formatCurrency(provider.performance.totalBalance)}
-          </Typography>
-        </Box>
+        {provider.isCopyTrading && (
+          <Box
+            alignItems="center"
+            className="infoRow"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Typography variant="body1">
+              {provider.copyTradingQuote}&nbsp;
+              <FormattedMessage id="accounts.balance" />
+            </Typography>
+            <Typography className="green" variant="h4">
+              {formatCurrency(provider.performance.totalBalance)}
+            </Typography>
+          </Box>
+        )}
 
         <Box
           alignItems="center"

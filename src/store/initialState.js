@@ -16,7 +16,7 @@
  * @typedef {import('../services/tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import('../services/tradeApiClient.types').UserEntity} UserEntity
+ * @typedef {import('../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  *
  */
 
@@ -25,7 +25,7 @@
  * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
- * @property {UserEntity} userData
+ * @property {UserLoginResponse} userData
  */
 
 /**
@@ -163,6 +163,15 @@ const initialState = {
         "totalLockedBTC",
         "freeETH",
         "freeBNB",
+      ],
+      exchangeAssets: [
+        "coin",
+        "name",
+        "balanceTotal",
+        "balanceFree",
+        "balanceLocked",
+        "balanceTotalBTC",
+        "balanceTotalUSDT",
       ],
       copytProfileUsers: [
         "userId",
@@ -324,10 +333,11 @@ const initialState = {
     dailyBalance: {
       balances: [],
       quotes: [],
+      loading: false,
     },
     userData: {
       ask2FA: false,
-      TwoFAEnable: false,
+      twoFAEnable: false,
       binanceConnected: false,
       buysCount: 0,
       createdAt: "",

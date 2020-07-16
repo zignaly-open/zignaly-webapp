@@ -1,0 +1,67 @@
+.tabsMenu {
+  border-bottom: 1px solid $borderColor;
+  min-height: 70px;
+  padding: 0 10px;
+  width: 100%;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: fit-content;
+  }
+
+  button {
+    font-family: "PlexSans-SemiBold";
+    font-size: 16px;
+    max-width: 130px;
+    min-height: 70px;
+    min-width: 100px;
+    opacity: 0.6;
+    padding: 0;
+    text-transform: capitalize;
+
+    &:focus {
+      outline: none;
+    }
+
+    &.selected {
+      color: $purple;
+      opacity: 1;
+    }
+  }
+
+  .indicator {
+    display: none;
+  }
+}
+
+@include media("<=sm") {
+  .tabsMenu {
+    min-height: 70px;
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      width: fit-content;
+
+      button {
+        font-family: "PlexSans-Bold";
+        font-size: 16px;
+        max-width: 100px;
+        min-height: 70px;
+        padding: 0;
+        text-transform: capitalize;
+
+        &:focus {
+          outline: none;
+        }
+
+        &.selected {
+          color: $purple;
+        }
+      }
+    }
+  }
+}

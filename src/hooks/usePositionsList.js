@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "use-interval";
-import { assign, cloneDeep, filter, omitBy } from "lodash";
+import { assign, cloneDeep, filter, isEmpty, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -46,7 +46,7 @@ const usePositionsList = (type, positionEntity = null) => {
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(storeSettings.selectedExchange.exchangeId);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const defaultFilters = {
     provider: "all",
     pair: "all",
@@ -69,6 +69,11 @@ const usePositionsList = (type, positionEntity = null) => {
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
 
   const storeSession = useStoreSessionSelector();
+  /**
+   * Resolve a Trade API fetch method to fetch positions of a given category.
+   *
+   * @returns {Promise<UserPositionsCollection>} Promise method when category mapping is resolved, empty promise otherwise.
+   */
   const routeFetchMethod = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
@@ -80,24 +85,30 @@ const usePositionsList = (type, positionEntity = null) => {
       providerId: storeViews.provider.id,
     };
 
-    if (positionEntity) {
-      // On fist load rely on position entity passed by parent to avoid extra rquest.
-      return new Promise((resolve) => {
-        resolve([positionEntity]);
-      });
-    } else if (type === "closed") {
-      return tradeApi.closedPositionsGet(payload);
-    } else if (type === "log") {
-      return tradeApi.logPositionsGet(payload);
-    } else if (type === "open") {
-      return tradeApi.openPositionsGet(payload);
-    } else if (type === "profileOpen") {
-      return tradeApi.providerOpenPositions(providerPayload);
-    } else if (type === "profileClosed") {
-      return tradeApi.providerSoldPositions(providerPayload);
+    // Skip request if required parameters is empty.
+    if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerPayload.providerId)) {
+      if (positionEntity) {
+        // On fist load rely on position entity passed by parent to avoid extra rquest.
+        return new Promise((resolve) => {
+          resolve([positionEntity]);
+        });
+      } else if (type === "closed") {
+        return tradeApi.closedPositionsGet(payload);
+      } else if (type === "log") {
+        return tradeApi.logPositionsGet(payload);
+      } else if (type === "open") {
+        return tradeApi.openPositionsGet(payload);
+      } else if (type === "profileOpen") {
+        return tradeApi.providerOpenPositions(providerPayload);
+      } else if (type === "profileClosed") {
+        return tradeApi.providerSoldPositions(providerPayload);
+      }
     }
 
-    return false;
+    // Fallback to null promise when method not resolved.
+    return new Promise((resolve) => {
+      resolve(null);
+    });
   };
 
   /**
@@ -156,7 +167,7 @@ const usePositionsList = (type, positionEntity = null) => {
           }
         })
         .catch((e) => {
-          if (e.code === 18) {
+          if (e.code === 18 || e.code === 12) {
             newPositions[type] = [];
             setPositions(newPositions);
           } else {
@@ -164,7 +175,9 @@ const usePositionsList = (type, positionEntity = null) => {
           }
         })
         .finally(() => {
-          setLoading(false);
+          if (!typeRef.current || typeRef.current === type) {
+            setLoading(false);
+          }
         });
     }
   };
@@ -174,6 +187,11 @@ const usePositionsList = (type, positionEntity = null) => {
     storeSettings.selectedExchange.internalId,
   ]);
 
+  /**
+   * Load a specific position by ID.
+   *
+   * @returns {boolean} false in case that required parameter was missing, true otherwise.
+   */
   const loadPosition = () => {
     const payload = {
       version: 2,
@@ -181,6 +199,11 @@ const usePositionsList = (type, positionEntity = null) => {
       positionId: positionEntity.positionId,
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
+
+    // Skip request if required parameters are empty.
+    if (isEmpty(payload.internalExchangeId) || isEmpty(positionEntity.positionId)) {
+      return false;
+    }
 
     const newPositions = prepareNewPositionsState();
     tradeApi
@@ -195,6 +218,8 @@ const usePositionsList = (type, positionEntity = null) => {
       .finally(() => {
         setLoading(false);
       });
+
+    return true;
   };
 
   const updateData = () => {

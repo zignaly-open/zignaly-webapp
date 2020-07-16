@@ -104,11 +104,12 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
       });
       tradeApi
         .providerExchangeSettingsUpdate(payload)
-        .then(() => {
-          setLoading(false);
-        })
+        .then(() => {})
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } catch (e) {
       dispatch(showErrorAlert(e));

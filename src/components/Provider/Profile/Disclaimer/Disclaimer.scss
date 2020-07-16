@@ -1,5 +1,6 @@
 .disclaimer {
-  margin: 50px 0;
+  height: 300px;
+  padding: 40px 20px;
   width: 100%;
 
   h3 {
@@ -11,12 +12,25 @@
     margin: 0;
     text-align: center;
   }
+
+  .actions {
+    width: 100%;
+
+    .textButton {
+      min-width: 150px;
+    }
+  }
 }
 
 @include media("<=sm") {
   .disclaimer {
-    margin: 30px 0;
-    padding: 30px 10px;
+    padding: 30px 15px;
     width: 100%;
+
+    .actions {
+      .textButton {
+        min-width: fit-content;
+      }
+    }
   }
 }

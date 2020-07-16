@@ -1,4 +1,4 @@
-.profilePage {
+.providerProfilePage {
   width: 100%;
 
   .aboutBox {
@@ -46,7 +46,7 @@
 }
 
 @include media("<=sm") {
-  .profilePage {
+  .providerProfilePage {
     width: 100%;
 
     .aboutBox {

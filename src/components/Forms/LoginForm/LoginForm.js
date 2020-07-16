@@ -6,29 +6,50 @@ import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { startTradeApiSession } from "../../../store/actions/session";
+import { loadAppUserData, startTradeApiSession } from "../../../store/actions/session";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
-import useStoreUIAsk2FASelector from "../../../hooks/useStoreUIAsk2FASelector";
+import { showErrorAlert } from "../../../store/actions/ui";
+import tradeApi from "../../../services/tradeApiClient";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
+ *
  */
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [modal, showModal] = useState(false);
+  const [forgotModal, showForgotModal] = useState(false);
+  const [twoFAModal, showTwoFAModal] = useState(false);
+  const [loginResponse, setLoginResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
-  const ask2FA = useStoreUIAsk2FASelector();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+
+  /**
+   *
+   * @param {UserLoginResponse} response User login response.
+   * @returns {void} None.
+   */
+  const check2FA = (response) => {
+    if (response.ask2FA) {
+      showTwoFAModal(true);
+    } else {
+      dispatch(startTradeApiSession(response));
+    }
+  };
+
+  const onSuccess = () => {
+    dispatch(startTradeApiSession(loginResponse));
+  };
 
   /**
    * @typedef {Object} LoginFormSubmission
@@ -44,16 +65,32 @@ const LoginForm = () => {
    */
   const onSubmit = (data) => {
     setLoading(true);
-    dispatch(startTradeApiSession({ ...data, gRecaptchaResponse }, setLoading));
+    tradeApi
+      .userLogin({ ...data, gRecaptchaResponse })
+      .then((response) => {
+        setLoginResponse(response);
+        check2FA(response);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <>
-      <Modal onClose={() => showModal(false)} persist={false} size="small" state={modal}>
+      <Modal
+        onClose={() => showForgotModal(false)}
+        persist={false}
+        size="small"
+        state={forgotModal}
+      >
         <ForgotPasswordForm />
       </Modal>
-      <Modal onClose={() => {}} persist={true} size="small" state={ask2FA}>
-        <TwoFAForm />
+      <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
+        <TwoFAForm data={loginResponse} onSuccess={onSuccess} />
       </Modal>
       <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
         <Box
@@ -120,7 +157,7 @@ const LoginForm = () => {
             </CustomButton>
           </Box>
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
-            <span className="link" onClick={() => showModal(true)}>
+            <span className="link" onClick={() => showForgotModal(true)}>
               <FormattedMessage id="action.forgot" />
             </span>
           </Box>

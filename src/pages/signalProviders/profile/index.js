@@ -6,7 +6,6 @@ import AboutUs from "../../../components/Provider/Profile/AboutUs";
 import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
-import Disclaimer from "../../../components/Provider/Profile/Disclaimer";
 import Options from "../../../components/Provider/Profile/Options";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
@@ -20,7 +19,7 @@ const SignalProvidersProfile = () => {
   const intl = useIntl();
 
   const checkPaymentStatus = () => {
-    if (typeof window !== undefined) {
+    if (typeof window !== "undefined") {
       let url = window.location.href;
       if (url.includes("error")) {
         let error = {
@@ -44,7 +43,7 @@ const SignalProvidersProfile = () => {
   return (
     <Box
       alignItems="flex-start"
-      className="profilePage"
+      className="providerProfilePage"
       display="flex"
       flexDirection="row"
       flexWrap="wrap"
@@ -81,7 +80,6 @@ const SignalProvidersProfile = () => {
             <CloneProviderButton provider={storeViews.provider} />
           </Box>
         )}
-      <Disclaimer />
     </Box>
   );
 };

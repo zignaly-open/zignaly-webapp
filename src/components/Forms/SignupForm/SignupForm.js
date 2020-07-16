@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Captcha from "../../Captcha";
 import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
@@ -16,7 +16,7 @@ const SignupForm = () => {
   const [ref] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearError, setError } = formMethods;
+  const { errors, handleSubmit, register, clearError, setError, control } = formMethods;
   const dispatch = useDispatch();
 
   /**
@@ -135,11 +135,21 @@ const SignupForm = () => {
               justifyContent="start"
             >
               <span className="text">I agree to</span>
-              <a className="link" href={"/legal/terms"}>
+              <a
+                className="link"
+                href="https://zignaly.com/legal/terms"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 Terms and condition
               </a>
               <span className="text">and</span>
-              <a className="link" href={"/legal/privacy"}>
+              <a
+                className="link"
+                href="https://zignaly.com/legal/privacy"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 privacy policy
               </a>
             </Box>
@@ -148,7 +158,12 @@ const SignupForm = () => {
 
         <Box className="inputBox checkbox">
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <Checkbox className="checkboxInput" inputRef={register} name="subscribe" />
+            <Controller
+              as={<Checkbox className="checkboxInput" />}
+              control={control}
+              defaultValue={true}
+              name="subscribe"
+            />
             <span className="termsText">Subscribe to notifications</span>
           </Box>
         </Box>

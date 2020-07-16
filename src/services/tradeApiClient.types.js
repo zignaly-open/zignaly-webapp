@@ -68,6 +68,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|boolean} stopLossPercentage
  * @property {number|boolean} buyTTL
  * @property {PositionEntryType} buyType
+ * @property {PositionEntryType} type
  * @property {number} buyStopPrice
  * @property {number|boolean} sellByTTL
  * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
@@ -139,6 +140,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Boolean} subscribe
  * @property {Boolean} array
  * @property {string} ref
+ */
+
+/**
+ * @typedef {Object} UserExchangeAssetsPayload
+ * @property {string} token
+ * @property {string} internalId
  */
 
 /**
@@ -243,13 +250,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} createdAt Creation timestamp: e.g. (2020-05-14T14:34:48).
  * @property {boolean} providerEnable Indicates if user is subscribed to signal providers.
  * @property {boolean} twoFAEnable Indicate if 2FA is enabled.
- * @property {boolean} ref
+ * @property {string} ref
  * @property {boolean} subscribe
  * @property {boolean} isAdmin Indicate if user is administrator.
  * @property {boolean} binanceConnected Indicates if user has Binance exchange connected.
  * @property {number} buysCount Counts the number of buys positions.
  * @property {number} sellsCount Counts the number of sell positions.
- * @property {number} planId Reference of the Zignaly subscription plan.
+ * @property {string} planId Reference of the Zignaly subscription plan.
  * @property {string} planName Name of the Zignaly plan that user is subscribed to.
  * @property {string} planType
  * @property {string} projectId
@@ -257,13 +264,15 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} status Indicate if user is active or not.
  * @property {Onboarding} onboarding Indicate user onboarding stage.
  * @property {string} refCode
+ * @property {string} dashlyEchoAuth
+ * @property {string} dashlyHash
  */
 
 /**
  * @typedef {Object} Onboarding
  * @property {boolean} finished
  * @property {boolean} paused
- * @property {number} step
+ * @property {string} step
  */
 
 /**
@@ -807,8 +816,8 @@ export function userEntityResponseTransform(response) {
     userId: response.userId,
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
-    twoFAEnable: response.twoFAEnable,
-    ref: response.ref,
+    twoFAEnable: response["2FAEnable"] ? response["2FAEnable"] : false,
+    ref: response.ref ? response.ref : "",
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,
     binanceConnected: response.binanceConnected,
@@ -822,6 +831,8 @@ export function userEntityResponseTransform(response) {
     status: response.status,
     onboarding: response.onboarding,
     refCode: response.refCode,
+    dashlyHash: response.dashlyHash ? response.dashlyHash : "",
+    dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
   };
 }
 
@@ -967,7 +978,7 @@ export function userPositionItemTransform(positionItem) {
       return `/copyTraders/${positionItem.providerId}/profile`;
     }
 
-    return `/signalsProviders/${positionItem.providerId}/profile`;
+    return `/signalProviders/${positionItem.providerId}/profile`;
   };
 
   /**
@@ -1036,6 +1047,18 @@ export function userPositionItemTransform(positionItem) {
     return "breakeven";
   };
 
+  const parseRealInvestment = () => {
+    if (positionItem.realInvestment && positionItem.realInvestment.$numberDecimal) {
+      return safeParseFloat(positionItem.realInvestment.$numberDecimal);
+    }
+
+    if (positionItem.realInvestment) {
+      return safeParseFloat(positionItem.realInvestment);
+    }
+
+    return 0;
+  };
+
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
   const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
@@ -1047,9 +1070,7 @@ export function userPositionItemTransform(positionItem) {
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
-    realInvestment:
-      safeParseFloat(positionItem.realInvestment.$numberDecimal) ||
-      safeParseFloat(positionItem.realInvestment),
+    realInvestment: parseRealInvestment(),
     pair: `${positionItem.base}/${positionItem.quote}`,
     symbol: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
@@ -1444,6 +1465,7 @@ function createUserBalanceEntity(response) {
  * @typedef {Object} DefaultDailyBalanceEntity
  * @property {Array<UserEquityEntity>} balances
  * @property {Array<String>} quotes
+ * @property {Boolean} loading
  */
 
 /**
@@ -1569,6 +1591,7 @@ function createUserEquityResponseEntity(response) {
   return {
     balances: response.balances,
     quotes: response.quotes,
+    loading: false,
   };
 }
 
@@ -2827,92 +2850,6 @@ export function convertAssetResponseTransform(response) {
 
 /**
  *
- * @typedef {Object} UserOnboardingObject
- * @property {Boolean} finished
- * @property {Boolean} paused
- * @property {String} step
- */
-
-/**
- *
- * @typedef {Object} UserEntity
- * @property {Boolean} TwoFAEnable
- * @property {Boolean} ask2FA
- * @property {Boolean} binanceConnected
- * @property {Number} buysCount
- * @property {String} createdAt
- * @property {String} dashlyEchoAuth
- * @property {String} dashlyHash
- * @property {String} email
- * @property {String} firstName
- * @property {Boolean} isAdmin
- * @property {Boolean} minimumProviderSettings
- * @property {UserOnboardingObject} onboarding
- * @property {String} planId
- * @property {String} planName
- * @property {String} planType
- * @property {String} projectId
- * @property {Boolean} providerEnable
- * @property {String} ref
- * @property {String} refCode
- * @property {Number} sellsCount
- * @property {Number} status
- * @property {Boolean} subscribe
- * @property {String} token
- * @property {String} userId
- */
-
-/**
- * Transform User get response.
- *
- * @param {*} response .
- * @returns {UserEntity} User profile entity.
- */
-export function userGetResponseTransform(response) {
-  const emptyUserEntity = creatEmptyUserEntity();
-  // Override the empty entity with the values that came in from API.
-  let val = "2FAEnable";
-  const TwoFAEnable = response[val];
-  const transformedResponse = assign(emptyUserEntity, response, { TwoFAEnable: TwoFAEnable });
-
-  return transformedResponse;
-}
-
-/**
- * Create user entity.
- * @returns {UserEntity} User entity.
- */
-function creatEmptyUserEntity() {
-  return {
-    TwoFAEnable: false,
-    ask2FA: false,
-    binanceConnected: false,
-    buysCount: 0,
-    createdAt: "",
-    dashlyEchoAuth: "",
-    dashlyHash: "",
-    email: "",
-    firstName: "",
-    isAdmin: null,
-    minimumProviderSettings: true,
-    onboarding: { finished: false, paused: true, step: "2" },
-    planId: "",
-    planName: "",
-    planType: "",
-    projectId: "",
-    providerEnable: true,
-    ref: "",
-    refCode: "",
-    sellsCount: 0,
-    status: 0,
-    subscribe: false,
-    token: "",
-    userId: "",
-  };
-}
-
-/**
- *
  * @typedef {Object} ProviderSettingsTargetObject
  * @property {String} targetId
  * @property {String} priceTargetPercentage
@@ -3290,5 +3227,67 @@ const createEmptyNewProviderEntity = () => {
     lockedBy: "",
     lockedFrom: "",
     copyTradingStatsLastUpdate: null,
+  };
+};
+
+/**
+ * @typedef {Object} UserExchangeAssetObject
+ * @property {String} balanceFree
+ * @property {String} balanceFreeBTC
+ * @property {String} balanceFreeUSDT
+ * @property {String} balanceLocked
+ * @property {String} balanceLockedBTC
+ * @property {String} balanceLockedUSDT
+ * @property {String} balanceTotal
+ * @property {String} balanceTotalBTC
+ * @property {String} balanceTotalExchCoin
+ * @property {String} balanceTotalUSDT
+ * @property {String} exchCoin
+ * @property {String} name
+ * @property {Array<*>} networks
+ * @property {String} coin
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {Array<UserExchangeAssetObject>} Provider
+ */
+export function userExchangeAssetsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object of user exchange assets mapping");
+  }
+
+  let transformedResponse = Object.values(response).map((item, index) => {
+    let emptyEntity = createEmptyUserExchangeAssetsEntity();
+    emptyEntity.coin = Object.keys(response)[index];
+    let transformedEntity = assign(emptyEntity, item);
+    return transformedEntity;
+  });
+
+  return transformedResponse;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {UserExchangeAssetObject} New Provider entity.
+ */
+const createEmptyUserExchangeAssetsEntity = () => {
+  return {
+    balanceFree: "0",
+    balanceFreeBTC: "0",
+    balanceFreeUSDT: "0",
+    balanceLocked: "0",
+    balanceLockedBTC: "0",
+    balanceLockedUSDT: "0",
+    balanceTotal: "0",
+    balanceTotalBTC: "0",
+    balanceTotalExchCoin: "0",
+    balanceTotalUSDT: "0",
+    exchCoin: "BNB",
+    name: "Cardano",
+    networks: [],
+    coin: "",
   };
 };

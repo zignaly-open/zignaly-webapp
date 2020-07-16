@@ -15,6 +15,11 @@
       margin-bottom: 16px;
     }
 
+    .teamBox {
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
     .teamItem {
       margin-right: 15px;
       width: fit-content;
@@ -39,6 +44,7 @@
         color: $purple;
         cursor: pointer;
         height: 39px;
+        margin-bottom: 20px;
         margin-right: 30px;
         width: 39px;
       }
@@ -62,6 +68,10 @@
         text-align: center;
         width: 100%;
       }
+
+      .teamBox {
+        justify-content: center;
+      }
     }
 
     .bottomBox {
@@ -69,6 +79,17 @@
         margin-bottom: 16px;
         text-align: center;
         width: 100%;
+      }
+
+      .socialBox {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .icon {
+          height: 35px;
+          margin-right: 20px;
+          width: 35px;
+        }
       }
     }
   }

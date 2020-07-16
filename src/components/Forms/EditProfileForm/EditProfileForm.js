@@ -16,8 +16,9 @@ import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
-import { showSuccessAlert } from "../../../store/actions/ui";
 import UploadImage from "../../UploadImage";
+import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
@@ -91,7 +92,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       tradeApi
         .providerEdit(payload)
         .then(() => {
-          setLoading(false);
           const payload2 = {
             token: payload.token,
             providerId: payload.providerId,
@@ -100,8 +100,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           dispatch(setProvider(payload2));
           dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
         })
-        .catch((error) => {
-          alert(error.message);
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
           setLoading(false);
         });
     }
@@ -241,13 +243,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const disableList = () => {
-    if (listSwitch) {
-      return false;
+    if (!storeUserData.isAdmin) {
+      if (listSwitch) {
+        return false;
+      }
+      return true;
     }
-    if (storeUserData.isAdmin) {
-      return false;
-    }
-    return true;
+    return false;
   };
 
   /**

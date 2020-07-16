@@ -25,6 +25,7 @@
     height: 40px;
     justify-content: flex-start;
     margin-bottom: 50px;
+    opacity: 0.6;
     overflow: hidden;
     padding: 8px;
     text-decoration: none;
@@ -32,9 +33,10 @@
     width: 100%;
 
     &.active {
-      background-image: $purpleDarkGradient;
+      background-image: $purpleLightGradient;
       border-radius: 19px;
       color: $white;
+      opacity: 1;
     }
 
     .icon {

@@ -64,7 +64,8 @@ const TakeProfitPanel = (props) => {
   const isClosed = positionEntity ? positionEntity.closed : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
-  const disableCardinalityActions = isCopy || isClosed || isTargetLocked;
+  const isReadOnly = isCopy || isClosed;
+  const disableRemoveAction = isReadOnly || isTargetLocked;
   const { formatMessage } = useIntl();
 
   const getFieldsDisabledStatus = () => {
@@ -490,7 +491,7 @@ const TakeProfitPanel = (props) => {
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.takeprofit" />
@@ -570,18 +571,20 @@ const TakeProfitPanel = (props) => {
               </Box>
             </Box>
           ))}
-          {!disableCardinalityActions && (
-            <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+          <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
+            {!disableRemoveAction && (
               <Button className="removeTarget" onClick={handleTargetRemove}>
                 <RemoveCircle />
                 <FormattedMessage id="terminal.target.remove" />
               </Button>
+            )}
+            {!isReadOnly && (
               <Button className="addTarget" onClick={handleTargetAdd}>
                 <AddCircle />
                 <FormattedMessage id="terminal.target.add" />
               </Button>
-            </Box>
-          )}
+            )}
+          </Box>
         </Box>
       )}
     </Box>

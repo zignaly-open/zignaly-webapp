@@ -41,7 +41,7 @@ const TradingPerformance = ({ performance }) => {
         /**
          * @type {*}
          */
-        let quarter = { weeklyStats: [], total: 0, id: 0, label: "" };
+        let quarter = { weeklyStats: [], total: 0, id: 0, label: "", quarterNumber: a + 1 };
         let total = 0;
         for (let b = 0; b < 13; b++) {
           let stats = weeklyStats[week];
@@ -56,10 +56,18 @@ const TradingPerformance = ({ performance }) => {
         }
         quarter.id = Math.random();
         quarter.label = `'20 Q${Math.ceil(week / 13)}`;
-        listing.push(quarter);
+        if (quarter.total) {
+          listing.push(quarter);
+        }
       }
+      listing.sort((a, b) => {
+        return b.quarterNumber - a.quarterNumber;
+      });
       setList([...listing]);
-      setSelectedQuarter(listing[0]);
+      let initital = listing.length
+        ? listing[0]
+        : { weeklyStats: [], total: 0, id: 0, label: "", quarterNumber: 0 };
+      setSelectedQuarter(initital);
     }
   };
 

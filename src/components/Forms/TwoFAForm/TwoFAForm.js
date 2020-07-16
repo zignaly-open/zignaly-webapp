@@ -1,103 +1,85 @@
 import React, { useState } from "react";
 import "./TwoFAForm.scss";
-import { Box, Typography } from "@material-ui/core";
-import CustomButton from "../../CustomButton/CustomButton";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
-import { useForm, Controller } from "react-hook-form";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { authenticate2FA } from "../../../store/actions/session";
-import { FormattedMessage } from "react-intl";
+import tradeApi from "../../../services/tradeApiClient";
+import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
  * @typedef {import('react').KeyboardEvent} KeyboardEvent
+ * @typedef {import('../../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
  */
 
-const TwoFAForm = () => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {Function} onSuccess
+ * @property {UserLoginResponse} data
+ */
+
+/**
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSx component.
+ */
+const TwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
-  const [codeError, setCodeError] = useState(false);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-
-  const { errors, handleSubmit, control, formState } = useForm({
-    mode: "onChange",
-  });
-
-  const { isValid } = formState;
-
-  /**
-   * @typedef {Object} FormData
-   * @property {string} code
-   */
 
   /**
    * Function to submit form.
    *
-   * @param {FormData} data Form data.
-   * @returns {void}
+   * @param {String} code verification code.
+   * @returns {void} None.
    */
-  const submitCode = (data) => {
+  const submitCode = (code) => {
     setLoading(true);
     const payload = {
-      code: data.code,
-      token: storeSession.tradeApi.accessToken,
+      code: code,
+      token: data.token,
     };
-    dispatch(authenticate2FA(payload, setLoading));
+    tradeApi
+      .verify2FA(payload)
+      .then(() => {
+        onSuccess();
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
-    <form id="twoFAForm" onSubmit={handleSubmit(submitCode)}>
-      <Box
-        alignItems="center"
-        className="twoFAForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <Typography variant="h3">2 Factor Authentication</Typography>
-        <Box
-          alignItems="center"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">
-            <Typography>Input Your Authentication Code</Typography>
-          </label>
-          <Controller
-            // @ts-ignore
-            as={ReactCodeInput}
-            className="codeInput"
-            control={control}
-            error={!!errors.code}
-            fields={6}
-            name="code"
-            onChange={(val) => {
-              setCodeError(false);
-              return val[0];
-            }}
-            rules={{
-              required: true,
-              minLength: 6,
-            }}
-          />
-          {/* {errors.code && <span className="errorText">{errors.code.message}</span>} */}
-          {codeError && <span className="errorText">Wrong code.</span>}
-          <CustomButton
-            className="bgPurple"
-            disabled={!isValid}
-            form="twoFAForm"
-            fullWidth={true}
-            loading={loading}
-            type="submit"
+    <Box
+      alignItems="center"
+      className="twoFAForm"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      {loading && <CircularProgress color="primary" size={40} />}
+      {!loading && (
+        <>
+          <Typography variant="h3">2 Factor Authentication</Typography>
+          <Box
+            alignItems="center"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
           >
-            <FormattedMessage id="action.authenticate" />
-          </CustomButton>
-        </Box>
-      </Box>
-    </form>
+            <label className="customLabel">
+              <Typography>Input Your Authentication Code</Typography>
+            </label>
+            {/* @ts-ignore */}
+            <ReactCodeInput className="code-input" fields={6} onComplete={submitCode} />
+          </Box>
+        </>
+      )}
+    </Box>
   );
 };
 
