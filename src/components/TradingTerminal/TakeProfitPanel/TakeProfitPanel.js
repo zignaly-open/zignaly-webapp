@@ -173,7 +173,7 @@ const TakeProfitPanel = (props) => {
     }
 
     if (isNumber(targetPercentage)) {
-      setValue(priceProperty, formatPrice(targetPrice));
+      setValue(priceProperty, formatPrice(targetPrice, "", ""));
     } else {
       setValue(priceProperty, "");
     }
@@ -274,7 +274,7 @@ const TakeProfitPanel = (props) => {
 
     if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
-      setValue(unitsProperty, formatPrice(targetUnits));
+      setValue(unitsProperty, formatPrice(targetUnits, "", ""));
     } else {
       setValue(unitsProperty, "");
     }

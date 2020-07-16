@@ -495,7 +495,7 @@ const StrategyForm = (props) => {
       const dcaTargetPrice1 = calculateDcaPrice(entryPrice, percentage);
       drawLine({
         id: "dcaTargetPricePercentage1",
-        price: Number(formatPrice(dcaTargetPrice1)) || 0,
+        price: Number(formatPrice(dcaTargetPrice1, "", "")) || 0,
         label: formatMessage({ id: "terminal.line.dca.label" }, { index: 1 }),
         color: colors.black,
       });

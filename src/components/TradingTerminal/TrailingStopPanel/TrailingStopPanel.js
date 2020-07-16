@@ -122,7 +122,7 @@ const TrailingStopPanel = (props) => {
     }
 
     if (price > 0) {
-      setValue("trailingStopPrice", formatPrice(trailingStopPrice, ""));
+      setValue("trailingStopPrice", formatPrice(trailingStopPrice, "", ""));
     } else {
       setValue("trailingStopPrice", "");
     }

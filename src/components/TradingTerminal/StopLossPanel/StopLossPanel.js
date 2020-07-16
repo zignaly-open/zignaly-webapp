@@ -98,7 +98,7 @@ const StopLossPanel = (props) => {
     }
 
     if (!isNaN(price) && price > 0) {
-      setValue("stopLossPrice", formatPrice(stopLossPrice, ""));
+      setValue("stopLossPrice", formatPrice(stopLossPrice, "", ""));
     } else {
       setValue("stopLossPrice", "");
     }
