@@ -33,6 +33,7 @@ const ProviderLogo = ({ url, size, title }) => {
 
   return (
     <LazyLoad
+      height={size}
       offset={300}
       once
       placeholder={
@@ -40,7 +41,6 @@ const ProviderLogo = ({ url, size, title }) => {
       }
     >
       <img
-        alt={title}
         className="providerLogo"
         height={size}
         onError={onLogoError}

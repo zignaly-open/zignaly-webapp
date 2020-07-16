@@ -6,7 +6,7 @@ import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { loadAppUserData, startTradeApiSession } from "../../../store/actions/session";
+import { startTradeApiSession } from "../../../store/actions/session";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage } from "react-intl";

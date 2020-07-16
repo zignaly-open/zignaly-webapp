@@ -15,23 +15,23 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 const PaymentForm = ({ provider }) => {
   const storeUserData = useStoreUserData();
   const ipnURL = "https://zignaly.com/api/cryptoPaymentListener.php";
+  const baseURL = process.env.GATSBY_BASE_APP_URL;
 
   const createReturnSuccessUrl = () => {
     if (provider.isCopyTrading) {
-      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#success`;
+      return `${baseURL}/copyTraders/${provider.id}/profile#success`;
     }
-    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#success`;
+    return `${baseURL}/signalProviders/${provider.id}/profile#success`;
   };
 
   const createReturnErrorUrl = () => {
     if (provider.isCopyTrading) {
-      return `https://test.zignaly.com/app2/copyTraders/${provider.id}/profile#error`;
+      return `${baseURL}/copyTraders/${provider.id}/profile#error`;
     }
-    return `https://test.zignaly.com/app2/signalProviders/${provider.id}/profile#error`;
+    return `${baseURL}/signalProviders/${provider.id}/profile#error`;
   };
 
   const returnSuccessURL = createReturnSuccessUrl();
-
   const returnErrorURL = createReturnErrorUrl();
 
   return (

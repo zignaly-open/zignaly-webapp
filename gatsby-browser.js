@@ -4,6 +4,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
 import * as ReactRedux from "react-redux";
+import { navigate } from "gatsby";
+import { showLoader } from "./src/store/actions/ui";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -12,6 +14,7 @@ export const wrapRootElement = ({ element }) => {
     </Provider>
   );
 };
+
 export const onClientEntry = () => {
   if (process.env.NODE_ENV === "development") {
     // const whyDidYouRender = require("@welldone-software/why-did-you-render");
@@ -20,4 +23,60 @@ export const onClientEntry = () => {
     //   trackExtraHooks: [[require("react-redux/lib"), "useSelector"]],
     // });
   }
+};
+
+export const onInitialClientRender = () => {
+  const state = store.getState();
+  // @ts-ignore
+  const token = state.session.tradeApi.accessToken;
+  // @ts-ignore
+  const sessionData = state.session.sessionData;
+  let path = "";
+  if (typeof window !== "undefined") {
+    path = window.location.pathname;
+  }
+
+  if (!path.match(/login|signup|recover/g)) {
+    verifySessionData(token, sessionData);
+  }
+
+  // TODO: Disable due to weird behaviors caused in login page render and blank page on other pages reload.
+  // setInterval(() => {
+  //   store.dispatch(showLoader(false));
+  // }, 500);
+};
+
+export const onPreRouteUpdate = ({ location, prevLocation }) => {
+  const path = location.pathname;
+  const state = store.getState();
+  // @ts-ignore
+  const token = state.session.tradeApi.accessToken;
+
+  if (!path.match(/login|signup|recover/g)) {
+    if (!token) {
+      navigate("/login");
+    }
+  }
+};
+
+const verifySessionData = async (token, sessionData) => {
+  if (!token) {
+    navigate("/login");
+  } else {
+    if (sessionData && sessionData.validUntil) {
+      if (!isValid(sessionData.validUntil)) {
+        navigate("/login");
+      }
+    } else {
+      navigate("/login");
+    }
+  }
+};
+
+const isValid = (milliseconds) => {
+  let currentTime = new Date().getTime();
+  if (milliseconds <= currentTime) {
+    return false;
+  }
+  return true;
 };

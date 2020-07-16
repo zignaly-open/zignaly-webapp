@@ -210,7 +210,8 @@ const theme = (darkStyle) => {
       h5: {
         // for BTC counts inside Available Balance and Total Equity (Number 1/2)
         fontSize: "14px",
-        fontFamily: "PlexMono-Medium",
+        // fontFamily: "PlexMono-Medium",
+        fontFamily: "PlexSans-Medium",
         textTransform: "capitalize",
         lineHeight: 1.5,
         letterSpacing: "0.53px",

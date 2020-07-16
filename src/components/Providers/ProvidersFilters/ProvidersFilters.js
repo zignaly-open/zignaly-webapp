@@ -13,10 +13,13 @@ import { useIntl } from "react-intl";
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} onCoinChange Callback that delegate coin change to caller.
  * @property {function} onExchangeChange Callback that delegate exchange change to caller.
+ * @property {function} onExchangeTypeChange Callback that delegate exchange type change to caller.
  * @property {OptionType} coin Selected coin.
  * @property {Array<OptionType>} coins Coins options.
  * @property {string} exchange Selected exchange.
  * @property {Array<OptionType>} exchanges Exchanges options.
+ * @property {string} exchangeType Selected exchange type.
+ * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
  */
 
@@ -32,6 +35,9 @@ const ProvidersFilters = ({
   coins,
   exchange,
   exchanges,
+  exchangeType,
+  exchangeTypes,
+  onExchangeTypeChange,
   onCoinChange,
   onExchangeChange,
   clearFilters,
@@ -63,6 +69,14 @@ const ProvidersFilters = ({
         onChange={onExchangeChange}
         options={exchanges}
         value={exchange}
+      />
+      <CustomSelect
+        label={intl.formatMessage({
+          id: "srv.edit.exchangetype",
+        })}
+        onChange={onExchangeTypeChange}
+        options={exchangeTypes}
+        value={exchangeType}
       />
     </CustomFilters>
   ) : null;

@@ -1,6 +1,6 @@
 import React from "react";
 import "./TraderCardBody.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
@@ -9,6 +9,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { useSelector } from "react-redux";
 import { formatFloat2Dec } from "../../../utils/format";
+import moment from "moment";
+import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -26,10 +28,10 @@ import { formatFloat2Dec } from "../../../utils/format";
  * @returns {React.ReactNode} Tooltip content.
  */
 const tooltipFormat = (tooltipItem) => (
-  <Box className="traderCardTooltip">
-    <Box>{formatFloat2Dec(tooltipItem.yLabel) + "%"}</Box>
-    <Box className="subtitleTooltip">{tooltipItem.xLabel}</Box>
-  </Box>
+  <div className="traderCardTooltip">
+    <div>{formatFloat2Dec(tooltipItem.yLabel) + "%"}</div>
+    <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("DD/MM/YYYY")}</div>
+  </div>
 );
 
 /**
@@ -124,115 +126,93 @@ const TraderCard = (props) => {
   };
 
   return (
-    <Box className="traderCardBody">
-      <Box
-        alignItems="center"
-        className="returnsBox"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <CustomToolip
-          title={
-            <FormattedMessage
-              id="srv.closedpos.tooltip"
-              values={{ count: closedPositions, days: timeFrame }}
-            />
-          }
-        >
-          <Box
-            className="returns"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Typography className={colorClass} variant="h4">
-              {formatFloat2Dec(returns)}%
-            </Typography>
-            <Typography variant="subtitle1">{`${intl.formatMessage({
-              id: "sort.return",
-            })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
-          </Box>
-        </CustomToolip>
-
-        {isCopyTrading && (
+    <LazyLoad height="310px" offset={600} once>
+      <div className="traderCardBody">
+        <div className="returnsBox">
           <CustomToolip
-            title={<FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />}
+            title={
+              <FormattedMessage
+                id="srv.closedpos.tooltip"
+                values={{ count: closedPositions, days: timeFrame }}
+              />
+            }
           >
-            <Box
-              alignItems="flex-end"
-              className="openPositions"
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-            >
-              <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
-                {formatFloat2Dec(floating)}%
+            <div className="returns">
+              <Typography className={colorClass} variant="h4">
+                {formatFloat2Dec(returns)}%
               </Typography>
-              <Typography variant="subtitle1">
-                <FormattedMessage id="srv.openpos" />
-              </Typography>
-            </Box>
+              <Typography variant="subtitle1">{`${intl.formatMessage({
+                id: "sort.return",
+              })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
+            </div>
           </CustomToolip>
-        )}
-      </Box>
-      <Box>
-        <Box className="traderCardGraph">
-          <Box className="chartWrapper">
-            <LineChart
-              chartData={chartData}
-              colorsOptions={colorsOptions}
-              tooltipFormat={tooltipFormat}
-            />
-          </Box>
-        </Box>
-        <Box
-          className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
-          <Box className="followers" display="flex" flexDirection="row" justifyContent="center">
-            {!disable ? (
-              <h6 className={`callout2 ${colorClass}`}>
-                <FormattedMessage
-                  id={isCopyTrading ? "trader.others" : "provider.others"}
-                  values={{
-                    count: followers - 1,
-                  }}
-                />
-              </h6>
-            ) : (
-              <h6 className="callout1">
-                {followers}{" "}
-                <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
-              </h6>
-            )}
-          </Box>
 
-          <Box
-            alignItems="center"
-            className="actions"
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-around"
-          >
-            {!disable && (
-              <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
-                <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
-              </CustomButton>
-            )}
-            <CustomButton
-              className={darkStyle ? "textPurple" : "textDefault"}
-              onClick={redirectToProfile}
+          {isCopyTrading && (
+            <CustomToolip
+              title={
+                <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />
+              }
             >
-              <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
-            </CustomButton>
-          </Box>
-        </Box>
-      </Box>
-      {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
-    </Box>
+              <div className="openPositions">
+                <Typography className={floating >= 0 ? "green" : "red"} variant="h4">
+                  {formatFloat2Dec(floating)}%
+                </Typography>
+                <Typography variant="subtitle1">
+                  <FormattedMessage id="srv.openpos" />
+                </Typography>
+              </div>
+            </CustomToolip>
+          )}
+        </div>
+        <div>
+          <div className="traderCardGraph">
+            <div className="chartWrapper">
+              {/* <LazyLoad height="100%" offset={600} once> */}
+              <LineChart
+                chartData={chartData}
+                colorsOptions={colorsOptions}
+                tooltipFormat={tooltipFormat}
+              />
+              {/* </LazyLoad> */}
+            </div>
+          </div>
+          <div className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}>
+            <div className="followers">
+              {!disable ? (
+                <h6 className={`callout2 ${colorClass}`}>
+                  <FormattedMessage
+                    id={isCopyTrading ? "trader.others" : "provider.others"}
+                    values={{
+                      count: followers - 1,
+                    }}
+                  />
+                </h6>
+              ) : (
+                <h6 className="callout1">
+                  {followers}{" "}
+                  <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
+                </h6>
+              )}
+            </div>
+
+            <div className="actions">
+              {!disable && (
+                <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
+                  <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                </CustomButton>
+              )}
+              <CustomButton
+                className={darkStyle ? "textPurple" : "textDefault"}
+                onClick={redirectToProfile}
+              >
+                <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
+              </CustomButton>
+            </div>
+          </div>
+        </div>
+        {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
+      </div>
+    </LazyLoad>
   );
 };
 

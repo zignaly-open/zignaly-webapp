@@ -1,42 +1,51 @@
 .providerProfilePage {
   width: 100%;
 
-  .aboutBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-bottom: 20px;
+  .leftColumn {
     margin-right: 20px;
-    min-height: 280px;
-    width: calc(48% - 20px);
+    width: calc(46% - 20px);
+
+    .aboutBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
+      min-height: 280px;
+      width: 100%;
+    }
+
+    .strategyBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
+      min-height: 430px;
+      width: 100%;
+    }
   }
 
-  .whoWeAreBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    min-height: 280px;
-    width: 52%;
-  }
+  .rightColumn {
+    width: 54%;
 
-  .strategyBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    min-height: 430px;
-    width: calc(48% - 20px);
-  }
+    .whoWeAreBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
+      min-height: 280px;
+      width: 100%;
+    }
 
-  .performanceBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    min-height: 430px;
-    width: 52%;
+    .performanceBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      margin-bottom: 20px;
+      min-height: 430px;
+      width: 100%;
+    }
   }
 
   .optionsBox {
     box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 20px;
     min-height: 400px;
-    width: calc(100%);
+    width: 100%;
   }
 
   .cloneBox {
-    margin-top: 20px;
     width: 100%;
 
     .submitButton {
@@ -49,22 +58,12 @@
   .providerProfilePage {
     width: 100%;
 
-    .aboutBox {
+    .leftColumn {
       margin: 0 0 20px;
       width: 100%;
     }
 
-    .whoWeAreBox {
-      margin: 0 0 20px;
-      width: 100%;
-    }
-
-    .strategyBox {
-      margin: 0 0 20px;
-      width: 100%;
-    }
-
-    .performanceBox {
+    .rightColumn {
       margin: 0 0 20px;
       width: 100%;
     }

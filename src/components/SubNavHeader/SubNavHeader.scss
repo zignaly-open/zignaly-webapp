@@ -1,8 +1,16 @@
 .subNavHeader {
-  border-bottom: 2px solid $borderColor;
   box-sizing: border-box;
   margin-bottom: 32px;
   overflow-x: auto;
+  position: relative;
+
+  &::before {
+    border-bottom: 2px solid $borderColor;
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
 
   .dashboardLink {
     box-sizing: border-box;
@@ -10,16 +18,24 @@
     cursor: pointer;
     font-family: "PlexSans-Regular";
     font-size: 21px;
-    margin: 0 30px 0 0;
+    height: 60px;
+    margin: 0 50px 0 0;
     opacity: 0.6;
-    padding: 12px 12px 21px 0;
+    position: relative;
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
 
     &.active {
-      border-bottom: 2px solid $purple;
       opacity: 1;
+
+      &::before {
+        border-bottom: 2px solid $purple;
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 100%;
+      }
     }
   }
 

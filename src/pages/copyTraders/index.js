@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { setProvider, unsetProvider } from "../../store/actions/views";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
-import ProviderLayout from "../../layouts/providerLayout";
+import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
 
 /**

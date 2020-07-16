@@ -14,7 +14,7 @@ import useChartTooltip from "../../../hooks/useChartTooltip";
 /**
  * @typedef {Object} ChartData
  * @property {Array<Number>} values Chart values.
- * @property {Array<String>} labels Chart labels.
+ * @property {Array<String|Date>} labels Chart labels.
  */
 
 /**

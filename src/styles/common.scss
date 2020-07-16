@@ -2,12 +2,6 @@ html {
   height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
-  scrollbar-width: none;
-
-  &::scrollbar {
-    height: 0;
-    width: 0;
-  }
 }
 
 body {

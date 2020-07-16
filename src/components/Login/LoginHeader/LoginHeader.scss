@@ -22,6 +22,10 @@
     }
   }
 
+  .headerRow {
+    width: calc(100% - 264px);
+  }
+
   .tagLineBox {
     height: 300px;
     margin-top: 150px;
@@ -56,6 +60,11 @@
     flex-direction: column;
     position: relative;
 
+    .headerRow {
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
     .headerImage {
       height: 250px;
       top: 0;
@@ -87,6 +96,22 @@
         margin-top: 40px;
         width: 100%;
       }
+    }
+  }
+}
+
+@include media(">lg", "<=xl") {
+  .loginHeader {
+    .headerRow {
+      width: calc(100% - 464px);
+    }
+  }
+}
+
+@include media(">xl") {
+  .loginHeader {
+    .headerRow {
+      width: calc(100% - 664px);
     }
   }
 }
