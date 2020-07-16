@@ -61,13 +61,13 @@ const ProvidersBrowse = ({
           coin={coin}
           coins={coins}
           exchange={exchange}
+          exchangeType={exchangeType}
+          exchangeTypes={exchangeTypes}
           exchanges={exchanges}
           onClose={toggleFilters}
           onCoinChange={setCoin}
           onExchangeChange={setExchange}
-          exchangeType={exchangeType}
           onExchangeTypeChange={setExchangeType}
-          exchangeTypes={exchangeTypes}
           open={showFilters}
         />
       )}
