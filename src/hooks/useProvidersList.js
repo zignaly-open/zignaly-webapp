@@ -39,7 +39,10 @@ import useStoreUITimeframeSelector from "./useStoreUITimeframeSelector";
  * @property {function} setCoin
  * @property {string} exchange
  * @property {Array<OptionType>} exchanges
+ * @property {string} exchangeType
+ * @property {Array<OptionType>} exchangeTypes
  * @property {function} setExchange
+ * @property {function} setExchangeType
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
@@ -104,11 +107,22 @@ const useProvidersList = (options) => {
   const exchanges = useExchangesOptions(true);
   const [exchange, setExchange] = useState("ALL");
 
+  const exchangeTypes = [
+    {
+      val: "ALL",
+      label: intl.formatMessage({ id: "fil.allexchangeTypes" }),
+    },
+    { val: "spot", label: "Spot" },
+    { val: "futures", label: "Futures" },
+  ];
+  const [exchangeType, setExchangeType] = useState("ALL");
+
   const [sort, setSort] = useState("RETURNS_DESC");
 
   const clearFilters = () => {
     setCoin(coins[0]);
     setExchange("ALL");
+    setExchangeType("ALL");
   };
 
   const clearSort = () => {
@@ -181,7 +195,8 @@ const useProvidersList = (options) => {
     const res = list.filter(
       (p) =>
         (coin.val === "ALL" || p.quote === coin.val) &&
-        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())),
+        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
+        (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
     );
     sortProviders(res);
   };
@@ -191,7 +206,7 @@ const useProvidersList = (options) => {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin, exchange]);
+  }, [coin, exchange, exchangeType]);
 
   const loadProviders = () => {
     const payload = {
@@ -233,6 +248,9 @@ const useProvidersList = (options) => {
     exchange,
     exchanges,
     setExchange,
+    exchangeType,
+    setExchangeType,
+    exchangeTypes,
     sort,
     setSort,
     clearFilters,
