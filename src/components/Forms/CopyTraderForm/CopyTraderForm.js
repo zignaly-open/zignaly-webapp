@@ -36,7 +36,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const { errors, handleSubmit, register, setError, setValue } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { balance, loading } = useAvailableBalance(storeSettings.selectedExchange.internalId);
+  const { balance, loading } = useAvailableBalance();
 
   const initFormData = () => {
     if (provider.exchangeInternalId && !provider.disable) {
@@ -140,7 +140,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         : provider.minAllocatedBalance;
     let neededQuote = provider.copyTradingQuote;
     /* @ts-ignore */
-    let userBalance = balance[neededQuote];
+    let userBalance = balance[neededQuote] || 0;
     if (userBalance && userBalance > needed) {
       return true;
     }
