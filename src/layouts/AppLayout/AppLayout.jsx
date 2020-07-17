@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import { compose } from "recompose";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
@@ -9,6 +9,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import { triggerTz } from "../../services/tz";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -28,10 +29,22 @@ const AppLayout = (props) => {
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
+  const ref = useRef(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
   }, [storeSettings.darkStyle]);
+
+  const hash = typeof window !== "undefined" ? window.location.hash : "";
+  useEffect(() => {
+    // Internal tracking for hash navigation
+    const location = typeof window !== "undefined" ? window.location : null;
+    if (hash && location) {
+      triggerTz(location, ref.current);
+      // Save prev location
+      ref.current = location;
+    }
+  }, [hash]);
 
   return (
     <StylesProvider injectFirst>

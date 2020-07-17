@@ -6,6 +6,7 @@ import { persistor } from "./src/store/store.js";
 import * as ReactRedux from "react-redux";
 import { navigate } from "gatsby";
 import { showLoader } from "./src/store/actions/ui";
+import { triggerTz } from "./src/services/tz";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -79,4 +80,9 @@ const isValid = (milliseconds) => {
     return false;
   }
   return true;
+};
+
+export const onRouteUpdate = ({ location, prevLocation }) => {
+  // Triger internal tracking event
+  triggerTz(location, prevLocation);
 };
