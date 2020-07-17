@@ -6,11 +6,11 @@
 
   &::before {
     background: $borderColor;
+    bottom: 0;
     content: "";
     height: 2px;
     position: absolute;
     width: 100%;
-    bottom: 0;
   }
 
   .dashboardLink {

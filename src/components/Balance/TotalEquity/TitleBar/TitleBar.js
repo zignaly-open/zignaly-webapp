@@ -35,7 +35,7 @@ const TitleBar = ({ balance }) => {
         justifyContent="flex-start"
       >
         <Typography className="boxTitle" variant="h3">
-          <FormattedMessage id="dashboard.balance.totalequity" />
+          <FormattedMessage id="dashboard.balance" />
         </Typography>
         <Box
           alignItems="center"
