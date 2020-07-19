@@ -54,6 +54,15 @@ const ExchangeAccountTopBar = ({ account }) => {
         </Box>
       </Box>
       <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
+        <CustomButton className="textDefault" onClick={() => navigateToPath("orders", account)}>
+          {isMobile ? (
+            <CustomToolip title={<FormattedMessage id="accounts.orders" />}>
+              <Settings />
+            </CustomToolip>
+          ) : (
+            <FormattedMessage id="accounts.orders" />
+          )}
+        </CustomButton>
         <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
           {isMobile ? (
             <CustomToolip title={<FormattedMessage id="accounts.settings" />}>

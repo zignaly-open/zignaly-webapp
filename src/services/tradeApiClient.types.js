@@ -3301,3 +3301,53 @@ export function sessionDataResponseTransform(response) {
     validUntil: response.validUntil * 1000,
   };
 }
+
+/**
+ * @typedef {Object} ExchangeOpenOrdersObject
+ * @property {String} orderId
+ * @property {String} positionId
+ * @property {String} symbol
+ * @property {Number} amount
+ * @property {Number} price
+ * @property {String} side
+ * @property {String} type
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} status
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {Array<ExchangeOpenOrdersObject>} Provider
+ */
+export function exchangeOpenOrdersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of objects");
+  }
+
+  return response.map((item) => {
+    let emptyEntity = createEmptyExchangeOpenOrdersEntity();
+    return assign(emptyEntity, item);
+  });
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {ExchangeOpenOrdersObject} New Provider entity.
+ */
+const createEmptyExchangeOpenOrdersEntity = () => {
+  return {
+    orderId: "",
+    positionId: "",
+    symbol: "",
+    amount: 0,
+    price: 0,
+    side: "",
+    type: "",
+    timestamp: 0,
+    datetime: "",
+    status: "",
+  };
+};
