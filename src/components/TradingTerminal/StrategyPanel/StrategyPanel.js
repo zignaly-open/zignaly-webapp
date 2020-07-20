@@ -40,7 +40,7 @@ import "./StrategyPanel.scss";
  */
 const StrategyPanel = (props) => {
   const { symbolData } = props;
-  const { control, errors, register, watch } = useFormContext();
+  const { control, errors, register, setValue, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
@@ -251,7 +251,7 @@ const StrategyPanel = (props) => {
               size="small"
               state={modalVisible}
             >
-              <LeverageForm max={125} min={1} />
+              <LeverageForm leverage={parseInt(leverage)} max={125} min={1} setValue={setValue} />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>

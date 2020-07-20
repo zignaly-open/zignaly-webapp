@@ -8,6 +8,8 @@ import { FormattedMessage } from "react-intl";
  * @typedef {Object} LeverageFormProps
  * @property {number} min Minimum leverage limit.
  * @property {number} max Maximum leverage limit.
+ * @property {number} leverage Current leverage.
+ * @property {function} setValue Hook form setValue callback.
  */
 
 /**
@@ -17,9 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max } = props;
-  const { setValue, watch } = useFormContext();
-  const leverage = watch("leverage");
+  const { min, max, leverage, setValue } = props;
 
   /**
    * Leverage slided change handler.
