@@ -67,7 +67,7 @@ const StrategyPanel = (props) => {
 
   const leverage = watch("leverage");
   const lastPrice = watch("lastPrice");
-  const entryType = watch("entryType");
+  const entryType = "LONG";
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
   const providerAllocatedBalance = watch("providerPayableBalance");
@@ -96,18 +96,8 @@ const StrategyPanel = (props) => {
             <Controller
               as={
                 <RadioGroup aria-label={formatMessage({ id: "terminal.entrytype" })}>
-                  <FormControlLabel
-                    control={<Radio />}
-                    inputRef={register}
-                    label={<FormattedMessage id="col.side.long" />}
-                    value="LONG"
-                  />
-                  <FormControlLabel
-                    control={<Radio />}
-                    inputRef={register}
-                    label={<FormattedMessage id="col.side.short" />}
-                    value="SHORT"
-                  />
+                  <Radio />
+                  <Radio />
                 </RadioGroup>
               }
               control={control}

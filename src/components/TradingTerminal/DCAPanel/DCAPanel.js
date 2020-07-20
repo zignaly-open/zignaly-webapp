@@ -106,7 +106,7 @@ const DCAPanel = (props) => {
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
   const isReadOnly = isCopy || isClosed;
   const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
-  const entryType = positionEntity ? positionEntity.side : watch("entryType");
+  const entryType = "LONG";
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
 
@@ -238,15 +238,21 @@ const DCAPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
+    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
+    console.log("rebuyPercentage: ", rebuyPercentage);
+    console.log("error: ", errors);
     if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
-      setError(
-        composeTargetPropertyName("rebuyPercentage", targetId),
-        "error",
-        formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
-      );
+      if (!errors[rebuyPercentageProperty]) {
+        setError(
+          rebuyPercentageProperty,
+          "error",
+          formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
+        );
+      }
 
+      console.log("error2: ", errors);
       return;
     }
 
@@ -254,18 +260,12 @@ const DCAPanel = (props) => {
       return;
     }
 
-    if (
-      !validateCostLimits(
-        rebuyPositionSize,
-        composeTargetPropertyName("rebuyPercentage", targetId),
-        "terminal.dca.limit",
-      )
-    ) {
+    if (!validateCostLimits(rebuyPositionSize, rebuyPercentageProperty, "terminal.dca.limit")) {
       return;
     }
 
     // All validations passed clear errors.
-    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearError(rebuyPercentageProperty);
   };
 
   /**
@@ -301,7 +301,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  // useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -321,7 +321,8 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  // useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  console.log("finalErrors: ", errors);
 
   /**
    * Display DCA target group.
