@@ -417,6 +417,7 @@ const StrategyForm = (props) => {
 
   // @ts-ignore
   const updatePriceField = () => {
+    console.log("lastPrice: ", lastPrice);
     setValue("price", lastPrice);
     // Hidden price input used when strategy panels is collapsed due to the fact
     // that unmounted input value is removed from form state.

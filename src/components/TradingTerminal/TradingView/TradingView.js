@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
+import { formatPrice } from "../../../utils/formatters";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
@@ -140,7 +142,10 @@ const TradingView = () => {
 
         if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
           if (eventSymbol !== dataParsed.data.original_name) {
-            setLastPrice(dataParsed.data.last_price);
+            const receivedPrice = isNumber(dataParsed.data.last_price)
+              ? formatPrice(dataParsed.data.last_price)
+              : dataParsed.data.last_price;
+            setLastPrice(receivedPrice);
             eventSymbol = dataParsed.data.original_name;
           }
         }
