@@ -114,12 +114,14 @@ const PlexSansLight = {
 export const colors = {
   black2: "#1b1b2c",
   black: "#191927",
+  blackBackground: "#12111d",
+  blackTooltip: "#1b1b25",
   darkGrey: "#808080",
   blue: "#017aff",
   green: "#08a441",
   red: "#b52a00",
   yellow: "#f6ad3f",
-  lightBlack: "#27273f",
+  lightBlack: "#27273F",
   offWhite: "#fbfafc",
   purple: "#770fc8",
   purpleLight: "#a946f6",
@@ -165,7 +167,7 @@ const theme = (darkStyle) => {
   return {
     palette: {
       background: {
-        default: darkStyle ? colors.black : colors.offWhite,
+        default: darkStyle ? colors.blackBackground : colors.offWhite,
         paper: darkStyle ? colors.black2 : colors.white,
       },
       grid: {
@@ -274,7 +276,7 @@ const theme = (darkStyle) => {
         tooltip: {
           fontSize: "14px",
           color: colors.white,
-          backgroundColor: colors.black,
+          backgroundColor: colors.blackTooltip,
         },
       },
       MuiToggleButton: {

@@ -17,5 +17,6 @@
 [data-theme="dark"] {
   .traderCard {
     background: $lightBlackBackground;
+    border-color: $darkBorderColor;
   }
 }
