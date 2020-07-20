@@ -195,7 +195,9 @@ const DCAPanel = (props) => {
       return;
     }
 
-    if (!rebuyUnitsChange(targetId)) {
+    // Only perform validation if no other active errors exists for this property.
+    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
+    if (errors[rebuyPercentageProperty] && !rebuyUnitsChange(targetId)) {
       return;
     }
 
@@ -219,13 +221,10 @@ const DCAPanel = (props) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
+    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
 
     const units = Math.abs(rebuyPositionSize / targetPrice);
-    return validateUnitsLimits(
-      units,
-      composeTargetPropertyName("rebuyPercentage", targetId),
-      "terminal.dca.limit",
-    );
+    return validateUnitsLimits(units, rebuyPercentageProperty, "terminal.dca.limit");
   };
 
   /**
