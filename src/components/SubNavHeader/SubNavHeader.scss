@@ -38,6 +38,10 @@
         width: 100%;
       }
     }
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   @include media("<=sm") {

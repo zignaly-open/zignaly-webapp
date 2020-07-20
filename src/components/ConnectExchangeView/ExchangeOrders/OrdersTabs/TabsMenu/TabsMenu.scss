@@ -29,6 +29,10 @@
       color: $purple;
       opacity: 1;
     }
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .indicator {
