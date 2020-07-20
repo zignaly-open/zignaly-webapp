@@ -98,13 +98,11 @@ const StrategyPanel = (props) => {
                 <RadioGroup aria-label={formatMessage({ id: "terminal.entrytype" })}>
                   <FormControlLabel
                     control={<Radio />}
-                    inputRef={register}
                     label={<FormattedMessage id="col.side.long" />}
                     value="LONG"
                   />
                   <FormControlLabel
                     control={<Radio />}
-                    inputRef={register}
                     label={<FormattedMessage id="col.side.short" />}
                     value="SHORT"
                   />
