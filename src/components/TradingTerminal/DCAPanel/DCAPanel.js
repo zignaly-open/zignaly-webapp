@@ -309,7 +309,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedUnitsUpdates, [expanded, entryType, strategyPositionSize]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyPositionSize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
