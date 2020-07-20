@@ -5,7 +5,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { useFormContext } from "react-hook-form";
-import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
+import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
@@ -150,8 +150,8 @@ const DCAPanel = (props) => {
     if (positionEntity) {
       dcaAllIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[Number(index)];
-        const triggerPercentage = revertPercentageRange(profitTarget.triggerPercentage);
-        const quantityPercentage = revertPercentageRange(profitTarget.quantity);
+        const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
+        const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
         setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
       });

@@ -146,7 +146,7 @@ const TradingView = () => {
         if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
           if (eventSymbol !== dataParsed.data.original_name) {
             const receivedPrice = isNumber(dataParsed.data.last_price)
-              ? formatPrice(dataParsed.data.last_price)
+              ? formatPrice(dataParsed.data.last_price, "", "")
               : dataParsed.data.last_price;
             setLastPrice(receivedPrice);
             eventSymbol = dataParsed.data.original_name;
