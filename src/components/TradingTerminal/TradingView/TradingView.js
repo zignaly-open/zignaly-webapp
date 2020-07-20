@@ -3,7 +3,10 @@ import { isNumber } from "lodash";
 import { useDispatch } from "react-redux";
 import { FormContext, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
+import {
+  createWidgetOptions,
+  mapExchangeConnectionToTradingViewId,
+} from "../../../tradingView/dataFeedOptions";
 import { formatPrice } from "../../../utils/formatters";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -217,10 +220,11 @@ const TradingView = () => {
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
     const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
+    const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: symbolCode } },
+        { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
         "*",
       );
     }
