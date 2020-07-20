@@ -513,7 +513,7 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading } = position;
+  const { isCopyTrading, closed } = position;
 
   return (
     <div className="actions">
@@ -537,7 +537,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && position.type === "open" && (
+      {!isCopyTrading && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -560,9 +560,10 @@ function composeAllActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeManagementActionButtons(position, confirmActionHandler) {
+  const { isCopyTrading, closed } = position;
   return (
     <div className="actions">
-      {position.type === "open" ? (
+      {!position.closed ? (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -581,7 +582,7 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {(!position.isCopyTrading || position.type === "open") && (
+      {!isCopyTrading && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
