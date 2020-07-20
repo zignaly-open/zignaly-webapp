@@ -403,7 +403,7 @@ class TradeApiClient {
    */
   async positionGet(payload) {
     const endpointPath = "/fe/api.php?action=getPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionItemTransform(responseData);
   }
