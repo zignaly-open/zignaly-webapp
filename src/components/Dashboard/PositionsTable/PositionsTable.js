@@ -182,11 +182,6 @@ const PositionsTable = (props) => {
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
-
-      if (positionEntity) {
-        // Exclude actions for edit position page.
-        dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
@@ -196,6 +191,16 @@ const PositionsTable = (props) => {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
+    }
+
+    if (positionEntity) {
+      if (["closed", "log"].includes(type)) {
+        // Exclude actions display for closed / log positions in view page.
+        dataTable = excludeDataTableColumn(dataTable, "col.actions");
+      } else if (type === "open" && positionEntity.isCopyTrading) {
+        // Exclude actions on copy trading open position.
+        dataTable = excludeDataTableColumn(dataTable, "col.actions");
+      }
     }
 
     return dataTable;
