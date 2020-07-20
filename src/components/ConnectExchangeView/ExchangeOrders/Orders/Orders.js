@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./Coins.scss";
+import "./Orders.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import ModalPathContext from "../../ModalPathContext";
+import OrdersTable from "./OrdersTable";
 
 const Orders = () => {
   const {
@@ -13,7 +14,7 @@ const Orders = () => {
   } = useContext(ModalPathContext);
   const [loading, setLoading] = useState(false);
   const storeSession = useStoreSessionSelector();
-  const [list, setList] = useState(null);
+  const [list, setList] = useState([]);
   const dispatch = useDispatch();
 
   const loadData = () => {
@@ -53,11 +54,13 @@ const Orders = () => {
       {!loading && (
         <Box
           alignItems="flex-start"
-          className="history"
+          className="orders"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"
-        ></Box>
+        >
+          <OrdersTable list={list} title="" />
+        </Box>
       )}
     </>
   );

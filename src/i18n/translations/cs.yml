@@ -659,6 +659,7 @@ accounts.withdraw: "CH-Withdraw"
 accounts.withdraw.history: "CH-Withdraw History"
 accounts.selected: "CH-Selected"
 accounts.orders: "CH-Orders"
+accounts.contracts: "CH-Contracts"
 
 accounts.options.blacklist: "CH-Global Blacklist"
 accounts.options.blacklist.help: "CH-It won't open any position for symbols include here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

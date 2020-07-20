@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import TabsMenu from "./TabsMenu";
 import "./OrdersTabs.scss";
+import Orders from "../Orders/Orders";
 
 const OrdersTabs = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -27,7 +28,11 @@ const OrdersTabs = () => {
         justifyContent="flex-start"
       >
         <TabsMenu changeTab={changeTab} tabValue={tabValue} />
-        {tabValue === 0 && <Box className="tabPanel"></Box>}
+        {tabValue === 0 && (
+          <Box className="tabPanel">
+            <Orders />
+          </Box>
+        )}
         {tabValue === 1 && <Box className="tabPanel"></Box>}
       </Box>
     </Box>

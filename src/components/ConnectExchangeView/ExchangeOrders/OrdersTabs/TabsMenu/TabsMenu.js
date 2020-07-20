@@ -29,13 +29,10 @@ const TabsMenu = (props) => {
       onChange={changeTab}
       value={tabValue}
     >
+      <Tab classes={{ selected: "selected" }} label={<FormattedMessage id="accounts.orders" />} />
       <Tab
         classes={{ selected: "selected" }}
-        label={<FormattedMessage id="dashboard.balance.historical" />}
-      />
-      <Tab
-        classes={{ selected: "selected" }}
-        label={<FormattedMessage id="dashboard.balance.coins" />}
+        label={<FormattedMessage id="accounts.contracts" />}
       />
     </Tabs>
   );

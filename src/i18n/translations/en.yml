@@ -659,6 +659,7 @@ accounts.withdraw: "Withdraw"
 accounts.withdraw.history: "Withdraw History"
 accounts.selected: "Selected"
 accounts.orders: "Orders"
+accounts.contracts: "Contracts"
 
 accounts.options.blacklist: "Global Blacklist"
 accounts.options.blacklist.help: "It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

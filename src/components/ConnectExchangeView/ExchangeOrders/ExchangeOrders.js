@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import "./ExchangeOrders.scss";
 import ModalPathContext from "../ModalPathContext";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
 import OrdersTabs from "./OrdersTabs";
 
 const ExchangeOrders = () => {

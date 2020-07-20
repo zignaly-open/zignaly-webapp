@@ -297,6 +297,17 @@ const initialState = {
         "col.invested",
         "col.actions",
       ],
+      ordersTable: [
+        "col.orderid",
+        "col.positionid",
+        "col.symbol",
+        "col.amount",
+        "col.price",
+        "col.side",
+        "col.type",
+        "col.datetime",
+        "col.actions",
+      ],
     },
     selectedExchange: {
       id: "",

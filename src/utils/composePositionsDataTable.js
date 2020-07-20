@@ -12,6 +12,7 @@ import { Box } from "@material-ui/core";
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  *
  */
 
@@ -1120,5 +1121,53 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
     data: positions.map((position) =>
       composeOpenPositionRowForProvider(position, confirmActionHandler),
     ),
+  };
+}
+
+/**
+ * Compose MUI Data Table row for profile open position entity.
+ *
+ * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeOpenOrdersRow(order, confirmActionHandler) {
+  return [
+    composeRawValue(order.orderId),
+    composeRawValue(order.positionId),
+    composeRawValue(order.symbol),
+    composeRawValue(order.amount),
+    composeRawValue(order.price),
+    composeRawValue(order.side),
+    composeRawValue(order.type),
+    composeRawValue(order.datetime),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {Array<ExchangeOpenOrdersObject>} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ *
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeOrdersDataTable(positions, confirmActionHandler) {
+  const columnsIds = [
+    "col.orderid",
+    "col.positionid",
+    "col.symbol",
+    "col.amount",
+    "col.price",
+    "col.side",
+    "col.type",
+    "col.datetime",
+    "col.actions",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((order) => composeOpenOrdersRow(order, confirmActionHandler)),
   };
 }
