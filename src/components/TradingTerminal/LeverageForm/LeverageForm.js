@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
-import { useFormContext } from "react-hook-form";
 import "./LeverageForm.scss";
 import { FormattedMessage } from "react-intl";
 
@@ -44,7 +43,7 @@ const LeverageForm = (props) => {
   };
 
   const protectLimits = () => {
-    if (parseFloat(leverage) < min) {
+    if (leverage < min) {
       setValue("leverage", min);
     } else if (leverage > max) {
       setValue("leverage", max);
@@ -52,14 +51,14 @@ const LeverageForm = (props) => {
   };
 
   const increaseValue = () => {
-    const newValue = parseFloat(leverage) + 1;
+    const newValue = leverage + 1;
     if (newValue <= max) {
       setValue("leverage", newValue);
     }
   };
 
   const decreaseValue = () => {
-    const newValue = parseFloat(leverage) - 1;
+    const newValue = leverage - 1;
     if (newValue >= min) {
       setValue("leverage", newValue);
     }
