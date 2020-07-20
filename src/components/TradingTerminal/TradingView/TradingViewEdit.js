@@ -64,8 +64,8 @@ const TradingViewEdit = (props) => {
     try {
       const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
       setMarketData(data);
-    } catch (error) {
-      alert(`ERROR: ${error.message}`);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
     }
   };
 

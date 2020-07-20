@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isNumber } from "lodash";
+import { useDispatch } from "react-redux";
 import { FormContext, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
@@ -9,6 +10,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
 
 /**
@@ -37,6 +39,7 @@ const TradingView = () => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [marketData, setMarketData] = useState(null);
+  const dispatch = useDispatch();
 
   const getMarketData = async () => {
     const marketDataPayload = {
@@ -47,8 +50,8 @@ const TradingView = () => {
     try {
       const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
       setMarketData(data);
-    } catch (error) {
-      alert(`ERROR: ${error.message}`);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
     }
   };
 

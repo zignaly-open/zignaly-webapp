@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
-import "./LeverageForm.scss";
 import { FormattedMessage } from "react-intl";
+import "./LeverageForm.scss";
 
 /**
  * @typedef {Object} LeverageFormProps
