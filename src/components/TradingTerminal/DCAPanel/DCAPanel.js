@@ -92,7 +92,6 @@ const DCAPanel = (props) => {
     handleTargetAdd,
     handleTargetRemove,
     setTargetPropertyValue,
-    simulateInputChangeEvent,
   } = useTargetGroup("dca", positionTargetsCardinality);
 
   const {
@@ -162,13 +161,12 @@ const DCAPanel = (props) => {
   useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
-   * Calculate the target price and trigger validation.
+   * Perform price percentage validations.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
+   * @param {string} targetId Target group ID.
+   * @returns {Void} None.
    */
-  const targetPricePercentageChange = (event) => {
-    const targetId = getGroupTargetId(event);
+  const pricePercentageValidations = (targetId) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
@@ -197,12 +195,25 @@ const DCAPanel = (props) => {
 
     // Only perform validation if no other active errors exists for this property.
     const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
-    if (errors[rebuyPercentageProperty] && !rebuyUnitsChange(targetId)) {
-      return;
+    if (!errors[rebuyPercentageProperty]) {
+      if (!rebuyUnitsChange(targetId)) {
+        return;
+      }
     }
 
     // All validations passed clear errors.
     clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+  };
+
+  /**
+   * Calculate the target price and trigger validation.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const targetPricePercentageChange = (event) => {
+    const targetId = getGroupTargetId(event);
+    pricePercentageValidations(targetId);
   };
 
   /**
@@ -228,13 +239,12 @@ const DCAPanel = (props) => {
   };
 
   /**
-   * Calculate the target position size and trigger validation.
+   * Perform rebuy percentage validations.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
+   * @param {string} targetId Target group ID.
+   * @returns {Void} None.
    */
-  const rebuyPercentageChange = (event) => {
-    const targetId = getGroupTargetId(event);
+  const rebuyPercentageValidations = (targetId) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
@@ -268,6 +278,17 @@ const DCAPanel = (props) => {
   };
 
   /**
+   * Calculate the target position size and trigger validation.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const rebuyPercentageChange = (event) => {
+    const targetId = getGroupTargetId(event);
+    rebuyPercentageValidations(targetId);
+  };
+
+  /**
    * Compose dynamic target property errors.
    *
    * @param {string} propertyName Property base name.
@@ -294,7 +315,7 @@ const DCAPanel = (props) => {
           setTargetPropertyValue("targetPricePercentage", targetId, sign);
         } else {
           setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+          pricePercentageValidations(targetId);
         }
       });
     }
@@ -304,7 +325,7 @@ const DCAPanel = (props) => {
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
-      simulateInputChangeEvent(composeTargetPropertyName("rebuyPercentage", "1"));
+      rebuyPercentageValidations(composeTargetPropertyName("rebuyPercentage", "1"));
     }
   };
 
