@@ -31,7 +31,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
   const { errors, clearError, getValues, setError, setValue, watch } = useFormContext();
   const leverage = defaultLeverage || watch("leverage");
-  // const entryType = watch("entryType");
+  const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
@@ -46,22 +46,22 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(positionSize);
 
     if (isNaN(value)) {
-      // setError("positionSize", "error", "Position size must be a numeric value.");
+      setError("positionSize", "error", "Position size must be a numeric value.");
       return false;
     }
 
     if (limits.cost.min && value < limits.cost.min) {
-      // setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
+      setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
       return false;
     }
 
     if (limits.cost.max && value > limits.cost.max) {
-      // setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
+      setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
       return false;
     }
 
     if (errors.positionSize) {
-      // clearError("positionSize");
+      clearError("positionSize");
     }
 
     return true;
@@ -102,22 +102,22 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(units);
 
     if (isNaN(value)) {
-      // setError("units", "error", "Position size must be a numeric value.");
+      setError("units", "error", "Position size must be a numeric value.");
       return false;
     }
 
     if (limits.amount.min && value < limits.amount.min) {
-      // setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
+      setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
       return false;
     }
 
     if (limits.amount.max && value > limits.amount.max) {
-      // setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
+      setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
       return false;
     }
 
     if (errors.units) {
-      // clearError("units");
+      clearError("units");
     }
 
     return true;
@@ -161,11 +161,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const positionSizeChange = () => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
-    // validatePositionSize(positionSize);
+    validatePositionSize(positionSize);
 
     const units = positionSize / currentPrice;
     setValue("units", units.toFixed(8));
-    // validateUnits(units);
+    validateUnits(units);
 
     const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
@@ -192,7 +192,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     simulateInputChangeEvent("realInvestment");
   };
 
-  // useEffect(chainedPriceUpdates, [entryType, leverage]);
+  useEffect(chainedPriceUpdates, [entryType, leverage]);
 
   return {
     positionSizeChange,

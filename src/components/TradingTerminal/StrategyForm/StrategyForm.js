@@ -510,7 +510,14 @@ const StrategyForm = (props) => {
   return (
     <Box className="strategyForm" textAlign="center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SidebarCreatePanels currentSymbolData={currentSymbolData} />
+        {isPositionView ? (
+          <SidebarEditPanels
+            currentSymbolData={currentSymbolData}
+            positionEntity={positionEntity}
+          />
+        ) : (
+          <SidebarCreatePanels currentSymbolData={currentSymbolData} />
+        )}
         {!isClosed && !isCopyTrading && (
           <CustomButton
             className={"full submitButton"}

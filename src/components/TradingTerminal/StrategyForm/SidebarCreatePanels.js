@@ -29,7 +29,12 @@ const SidebarCreatePanels = (props) => {
   return (
     <>
       <StrategyPanel symbolData={currentSymbolData} />
+      <TakeProfitPanel symbolData={currentSymbolData} />
       <DCAPanel symbolData={currentSymbolData} />
+      <StopLossPanel symbolData={currentSymbolData} />
+      <TrailingStopPanel symbolData={currentSymbolData} />
+      <EntryExpirationPanel />
+      <AutoclosePanel />
     </>
   );
 };
