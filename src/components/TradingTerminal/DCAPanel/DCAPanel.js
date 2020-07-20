@@ -106,7 +106,7 @@ const DCAPanel = (props) => {
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
   const isReadOnly = isCopy || isClosed;
   const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
 
@@ -175,8 +175,6 @@ const DCAPanel = (props) => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
-    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
-    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
@@ -194,8 +192,15 @@ const DCAPanel = (props) => {
         "terminal.dca.limit",
       )
     ) {
-      rebuyUnitsChange(targetId);
+      return;
     }
+
+    if (!rebuyUnitsChange(targetId)) {
+      return;
+    }
+
+    // All validations passed clear errors.
+    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
   };
 
   /**
@@ -235,8 +240,6 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
-    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
     if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
@@ -248,12 +251,21 @@ const DCAPanel = (props) => {
     }
 
     if (!rebuyUnitsChange(targetId)) {
-      validateCostLimits(
+      return;
+    }
+
+    if (
+      !validateCostLimits(
         rebuyPositionSize,
         composeTargetPropertyName("rebuyPercentage", targetId),
         "terminal.dca.limit",
-      );
+      )
+    ) {
+      return;
     }
+
+    // All validations passed clear errors.
+    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
   };
 
   /**
@@ -297,7 +309,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedUnitsUpdates, [expanded, strategyPositionSize]);
+  useEffect(chainedUnitsUpdates, [expanded, entryType, strategyPositionSize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
