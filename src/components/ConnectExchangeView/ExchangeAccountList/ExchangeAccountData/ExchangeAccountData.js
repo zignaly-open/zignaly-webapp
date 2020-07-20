@@ -48,7 +48,7 @@ const ExchangeAccountData = ({ account }) => {
                   width={1}
                 >
                   <Typography variant="h3">
-                    {!account.balanceSynced ? (
+                    {!account.balanceSynced && !account.isBrokerAccount ? (
                       <FormattedMessage id="accounts.balance.synchronizing" />
                     ) : (
                       <FormattedMessage
