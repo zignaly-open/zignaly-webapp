@@ -140,7 +140,7 @@ const ResetPasswordForm = ({ token, setVerified }) => {
         flexDirection="column"
         justifyContent="center"
       >
-        <Typography variant="h3">Reset Password From</Typography>
+        <Typography variant="h3">Reset Password</Typography>
         <Popper
           anchorEl={anchorEl}
           className="passwordStrengthBox"

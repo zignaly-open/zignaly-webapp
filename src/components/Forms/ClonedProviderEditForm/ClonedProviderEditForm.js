@@ -121,32 +121,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           )}
         </Box>
 
-        <Box className="inputBox" display="flex" flexDirection="column">
-          <label className="customLabel">
-            <FormattedMessage id="srv.edit.logo" />
-          </label>
-          <Controller
-            as={
-              <TextField
-                className={
-                  "customInput " +
-                  (storeSettings.darkStyle ? " dark " : " light ") +
-                  (errors.logoUrl ? "error" : "")
-                }
-                fullWidth
-                variant="outlined"
-              />
-            }
-            control={control}
-            defaultValue={provider.logoUrl}
-            name="logoUrl"
-            rules={{ required: false, pattern: /^(ftp|http|https):\/\/[^ "]+$/ }}
-          />
-          {errors.logoUrl && (
-            <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
-          )}
-        </Box>
-
         <Box className="formAction" display="flex" flexDirection="row" justifyContent="center">
           <CustomButton
             className={"full submitButton"}
