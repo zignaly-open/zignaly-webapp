@@ -7,6 +7,7 @@ import * as ReactRedux from "react-redux";
 import { navigate } from "gatsby";
 import { showLoader } from "./src/store/actions/ui";
 import { triggerTz } from "./src/services/tz";
+import { navigateLogin } from "./src/services/navigation";
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -55,22 +56,14 @@ export const onPreRouteUpdate = ({ location, prevLocation }) => {
 
   if (!path.match(/login|signup|recover/g)) {
     if (!token) {
-      navigate("/login");
+      navigateLogin();
     }
   }
 };
 
 const verifySessionData = async (token, sessionData) => {
-  if (!token) {
-    navigate("/login");
-  } else {
-    if (sessionData && sessionData.validUntil) {
-      if (!isValid(sessionData.validUntil)) {
-        navigate("/login");
-      }
-    } else {
-      navigate("/login");
-    }
+  if (!token || !sessionData || !sessionData.validUntil || !isValid(sessionData.validUntil)) {
+    navigateLogin();
   }
 };
 
