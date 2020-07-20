@@ -39,7 +39,7 @@ const StopLossPanel = (props) => {
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
