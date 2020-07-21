@@ -5,9 +5,10 @@
  */
 
 exports.onCreatePage = ({ page, actions }) => {
-  const { createPage } = actions;
+  const { createPage, deletePage } = actions;
 
   if (page.internalComponentName === "ComponentDev404Page") {
+    deletePage(page);
     return;
   }
 
