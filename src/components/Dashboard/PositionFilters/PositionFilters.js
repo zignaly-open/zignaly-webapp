@@ -21,7 +21,7 @@ import { uniqBy, sortBy } from "lodash";
 const PositionFilters = (props) => {
   const { onChange, positions, showTypesFilter } = props;
   const defaultFilters = {
-    provider: "all",
+    providerName: "all",
     pair: "all",
     side: "all",
     type: "all",
@@ -76,7 +76,7 @@ const PositionFilters = (props) => {
   const setProvider = (value) => {
     setFilters({
       ...filters,
-      provider: value,
+      providerName: value,
     });
   };
 
@@ -130,7 +130,7 @@ const PositionFilters = (props) => {
         label=""
         onChange={setProvider}
         options={providerOptions}
-        value={filters.provider}
+        value={filters.providerName}
       />
       <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
       <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
