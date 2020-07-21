@@ -125,7 +125,7 @@ const FollowProviderButton = ({ provider }) => {
         )
       ) : (
         <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-          <FormattedMessage id="copyt.stopcopyingtrader" />
+          <FormattedMessage id="srv.stopfollowing" />
         </CustomButton>
       )}
     </Box>

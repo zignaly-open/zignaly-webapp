@@ -89,7 +89,7 @@ export const formatCurrency = (value) => {
     case 2:
       return `${formatFloat(value)}`;
     case 3:
-      return `${formatFloat(value / 1000)} Thousand`;
+      return `${formatFloat(value)}`;
     case 4:
       return `${formatFloat(value / 1000)} Thousand`;
     case 5:
