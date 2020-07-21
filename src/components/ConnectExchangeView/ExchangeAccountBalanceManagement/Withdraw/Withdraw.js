@@ -20,6 +20,7 @@ import ModalPathContext from "../../ModalPathContext";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import TwoFAForm from "../../../Forms/TwoFAForm";
+import { Alert } from "@material-ui/lab";
 
 const Withdraw = () => {
   const {
@@ -155,141 +156,152 @@ const Withdraw = () => {
                       selectedNetwork={selectedNetwork}
                       setSelectedNetwork={setSelectedNetwork}
                     />
-                    <FormControl className="controlInput" fullWidth={true}>
-                      <Box className="labelBox" display="flex" flexDirection="row">
-                        <label>
-                          <Typography variant="body1">
-                            <FormattedMessage
-                              id="withdraw.address"
-                              values={{ coin: selectedAssetName }}
+                    {!selectedNetwork.withdrawEnable ? (
+                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                    ) : (
+                      <>
+                        <FormControl className="controlInput" fullWidth={true}>
+                          <Box className="labelBox" display="flex" flexDirection="row">
+                            <label>
+                              <Typography variant="body1">
+                                <FormattedMessage
+                                  id="withdraw.address"
+                                  values={{ coin: selectedAssetName }}
+                                />
+                              </Typography>
+                            </label>
+                          </Box>
+                          <OutlinedInput
+                            fullWidth={true}
+                            inputRef={register({
+                              required: "Please specify an address",
+                              pattern: {
+                                value: RegExp(selectedNetwork.addressRegex),
+                                message: "Invalid address",
+                              },
+                            })}
+                            name="address"
+                          />
+                          {errors.address && (
+                            <span className="errorText">{errors.address.message}</span>
+                          )}
+                        </FormControl>
+
+                        {selectedNetwork.memoRegex && (
+                          <FormControl className="controlInput" fullWidth={true}>
+                            <label>
+                              <Typography variant="body1">
+                                <FormattedMessage id="withdraw.memo" />
+                              </Typography>
+                            </label>
+                            <OutlinedInput
+                              fullWidth={true}
+                              inputRef={register({
+                                required: "Please specify a MEMO/Tag",
+                                pattern: {
+                                  value: RegExp(selectedNetwork.memoRegex),
+                                  message:
+                                    "MEMO/Tag is invalid, please review your target wallet network details.",
+                                },
+                              })}
+                              name="memo"
                             />
-                          </Typography>
-                        </label>
-                      </Box>
-                      <OutlinedInput
-                        fullWidth={true}
-                        inputRef={register({
-                          required: "Please specify an address",
-                          pattern: {
-                            value: RegExp(selectedNetwork.addressRegex),
-                            message: "Invalid address",
-                          },
-                        })}
-                        name="address"
-                      />
-                      {errors.address && (
-                        <span className="errorText">{errors.address.message}</span>
-                      )}
-                    </FormControl>
+                            {errors.memo && (
+                              <span className="errorText">{errors.memo.message}</span>
+                            )}
+                          </FormControl>
+                        )}
 
-                    {selectedNetwork.memoRegex && (
-                      <FormControl className="controlInput" fullWidth={true}>
-                        <label>
-                          <Typography variant="body1">
-                            <FormattedMessage id="withdraw.memo" />
-                          </Typography>
-                        </label>
-                        <OutlinedInput
-                          fullWidth={true}
-                          inputRef={register({
-                            required: "Please specify a MEMO/Tag",
-                            pattern: {
-                              value: RegExp(selectedNetwork.memoRegex),
-                              message:
-                                "MEMO/Tag is invalid, please review your target wallet network details.",
-                            },
-                          })}
-                          name="memo"
-                        />
-                        {errors.memo && <span className="errorText">{errors.memo.message}</span>}
-                      </FormControl>
-                    )}
-
-                    <FormControl className="controlInput" fullWidth={true}>
-                      <Box display="flex" flexDirection="row" justifyContent="space-between">
-                        <label>
-                          <Typography variant="body1">
-                            <FormattedMessage id="withdraw.amount" />
-                          </Typography>
-                        </label>
-                        <Typography
-                          className={`callout2 ${
-                            parseFloat(selectedAsset.balanceFree) >=
-                            parseFloat(selectedNetwork.withdrawMin)
-                              ? "green"
-                              : "red"
-                          }`}
-                        >
-                          <span className="labelAvailable">
-                            <FormattedMessage id="deposit.available" />
-                          </span>
+                        <FormControl className="controlInput" fullWidth={true}>
+                          <Box display="flex" flexDirection="row" justifyContent="space-between">
+                            <label>
+                              <Typography variant="body1">
+                                <FormattedMessage id="withdraw.amount" />
+                              </Typography>
+                            </label>
+                            <Typography
+                              className={`callout2 ${
+                                parseFloat(selectedAsset.balanceFree) >=
+                                parseFloat(selectedNetwork.withdrawMin)
+                                  ? "green"
+                                  : "red"
+                              }`}
+                            >
+                              <span className="labelAvailable">
+                                <FormattedMessage id="deposit.available" />
+                              </span>
+                              <b>
+                                {selectedAssetName} {formatFloat(selectedAsset.balanceFree)}
+                              </b>
+                            </Typography>
+                          </Box>
+                          <OutlinedInput
+                            fullWidth={true}
+                            inputProps={{
+                              min: parseFloat(selectedNetwork.withdrawMin),
+                              step: 0.00000001,
+                            }}
+                            inputRef={register({
+                              min: {
+                                value: parseFloat(selectedNetwork.withdrawMin),
+                                message:
+                                  "Please enter an amount above the minimum withdrawal amount.",
+                              },
+                              max: {
+                                value: parseFloat(selectedAsset.balanceFree),
+                                message: "You do not have this amount available in your account.",
+                              },
+                            })}
+                            name="amount"
+                            type="number"
+                          />
+                          {errors.amount && (
+                            <span className="errorText">{errors.amount.message}</span>
+                          )}
+                        </FormControl>
+                        <Typography className="callout1 minAmount">
+                          <FormattedMessage id="withdraw.minimum" />
                           <b>
-                            {selectedAssetName} {formatFloat(selectedAsset.balanceFree)}
+                            {selectedAssetName} {selectedNetwork.withdrawMin}
                           </b>
                         </Typography>
-                      </Box>
-                      <OutlinedInput
-                        fullWidth={true}
-                        inputProps={{
-                          min: parseFloat(selectedNetwork.withdrawMin),
-                          step: 0.00000001,
-                        }}
-                        inputRef={register({
-                          min: {
-                            value: parseFloat(selectedNetwork.withdrawMin),
-                            message: "Please enter an amount above the minimum withdrawal amount.",
-                          },
-                          max: {
-                            value: parseFloat(selectedAsset.balanceFree),
-                            message: "You do not have this amount available in your account.",
-                          },
-                        })}
-                        name="amount"
-                        type="number"
-                      />
-                      {errors.amount && <span className="errorText">{errors.amount.message}</span>}
-                    </FormControl>
-                    <Typography className="callout1 minAmount">
-                      <FormattedMessage id="withdraw.minimum" />
-                      <b>
-                        {selectedAssetName} {selectedNetwork.withdrawMin}
-                      </b>
-                    </Typography>
-                    <Box
-                      display="flex"
-                      flexDirection="row"
-                      justifyContent="space-between"
-                      mb="24px"
-                      width={1}
-                    >
-                      <Typography className="bold" variant="body1">
-                        <FormattedMessage id="withdraw.fee" />
-                      </Typography>
-                      <Typography className="bold" variant="body1">
-                        {selectedAssetName} {selectedNetwork.withdrawFee}
-                      </Typography>
-                    </Box>
-                    <Box
-                      display="flex"
-                      flexDirection="row"
-                      justifyContent="space-between"
-                      width={1}
-                    >
-                      <Typography className="bold" variant="body1">
-                        <FormattedMessage id="withdraw.get" />
-                      </Typography>
-                      <Typography className="bold" variant="body1">
-                        {selectedAssetName}{" "}
-                        {formatFloat(
-                          Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee)),
-                        )}
-                      </Typography>
-                    </Box>
-                    <CustomButton className="bgPurple" loading={isLoading} type="submit">
-                      <Typography className="bold" variant="body1">
-                        <FormattedMessage id="accounts.withdraw" />
-                      </Typography>
-                    </CustomButton>
+                        <Box
+                          display="flex"
+                          flexDirection="row"
+                          justifyContent="space-between"
+                          mb="24px"
+                          width={1}
+                        >
+                          <Typography className="bold" variant="body1">
+                            <FormattedMessage id="withdraw.fee" />
+                          </Typography>
+                          <Typography className="bold" variant="body1">
+                            {selectedAssetName} {selectedNetwork.withdrawFee}
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          flexDirection="row"
+                          justifyContent="space-between"
+                          width={1}
+                        >
+                          <Typography className="bold" variant="body1">
+                            <FormattedMessage id="withdraw.get" />
+                          </Typography>
+                          <Typography className="bold" variant="body1">
+                            {selectedAssetName}{" "}
+                            {formatFloat(
+                              Math.max(0, (amount || 0) - parseFloat(selectedNetwork.withdrawFee)),
+                            )}
+                          </Typography>
+                        </Box>
+                        <CustomButton className="bgPurple" loading={isLoading} type="submit">
+                          <Typography className="bold" variant="body1">
+                            <FormattedMessage id="accounts.withdraw" />
+                          </Typography>
+                        </CustomButton>
+                      </>
+                    )}
                   </form>
                 </Box>
               </Box>

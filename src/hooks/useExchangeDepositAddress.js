@@ -6,6 +6,7 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeDepositAddress} ExchangeDepositAddress
+ * @typedef {import("../services/tradeApiClient.types").CoinNetwork} CoinNetwork
  */
 
 /**
@@ -13,7 +14,7 @@ import { showErrorAlert } from "../store/actions/ui";
  *
  * @param {string} internalId Exchange account internal id.
  * @param {string} asset Asset name.
- * @param {string} network Coin network.
+ * @param {CoinNetwork} network Coin network.
  * @returns {ExchangeDepositAddress} Deposit address object.
  */
 const useExchangeDepositAddress = (internalId, asset, network) => {
@@ -23,7 +24,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
   const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    if (!internalId || !network || !asset) return undefined;
+    if (!internalId || !network || !network.withdrawEnable || !asset) return undefined;
     if (depositAddress) {
       // Dependency updated, reset the value while it's loading
       setDepositAddress(null);
@@ -32,7 +33,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalId,
-      network,
+      network: network.network,
       asset,
     };
     let canceled = false;
