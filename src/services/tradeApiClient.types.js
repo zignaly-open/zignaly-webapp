@@ -927,7 +927,14 @@ function createEmptyProviderEntity() {
  * @returns {number} The parsed amount value.
  */
 function safeParseFloat(value) {
-  const safeValue = String(value).replace(/[^0-9\\.\\-]/g, "");
+  let safeValue = String(value)
+    .toUpperCase()
+    .replace(/[^0-9.E\\-]/g, "");
+
+  // Convert the scientific notation numbers to 8 digits precision.
+  if (safeValue.indexOf("E") !== -1) {
+    safeValue = parseFloat(safeValue).toFixed(8);
+  }
 
   return parseFloat(safeValue);
 }
