@@ -14,3 +14,25 @@
     }
   }
 }
+
+@include media("<=sm") {
+  .copyTraderButton {
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+
+    .submitButton {
+      margin-right: 0;
+      min-width: 100%;
+    }
+
+    .actionHelpBox {
+      margin-right: 0;
+
+      h4 {
+        font-family: "PlexSans-Bold";
+        margin-right: 0;
+      }
+    }
+  }
+}

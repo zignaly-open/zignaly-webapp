@@ -1,6 +1,6 @@
 import React from "react";
 import "./TraderHeaderActions.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
@@ -19,10 +19,11 @@ const ProviderHeaderActions = () => {
   return (
     <Box
       alignItems="center"
-      className="providerHeaderActions"
+      className="traderHeaderActions"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
+      flexWrap="wrap"
     >
       <Box
         alignItems="center"
@@ -42,8 +43,12 @@ const ProviderHeaderActions = () => {
         )}
       </Box>
       <CopyTraderButton provider={storeViews.provider} />
-      {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
-      {storeViews.provider.internalPaymentInfo && <PaymentButton provider={storeViews.provider} />}
+      <Hidden xsDown>
+        {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
+        {storeViews.provider.internalPaymentInfo && (
+          <PaymentButton provider={storeViews.provider} />
+        )}
+      </Hidden>
     </Box>
   );
 };

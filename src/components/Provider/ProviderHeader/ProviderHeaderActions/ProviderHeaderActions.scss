@@ -1,5 +1,5 @@
 .providerHeaderActions {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   width: 100%;
 
   .titleBox {
@@ -7,8 +7,9 @@
     max-width: 500px;
 
     .providerLogo {
+      height: 40px;
       margin-right: 16px;
-      min-width: 40px;
+      width: 40px;
     }
 
     h1 {
@@ -18,7 +19,7 @@
 
   h4 {
     font-family: "PlexSans-Regular";
-    margin-right: 40px;
+    margin-right: 30px;
 
     b {
       font-family: "PlexSans-Bold";
@@ -29,5 +30,30 @@
   .loadMoreButton {
     margin-right: 40px;
     min-width: 215px;
+  }
+}
+
+@include media("<=sm") {
+  .providerHeaderActions {
+    .titleBox {
+      margin-right: 0;
+      width: 100%;
+      max-width: 100%;
+
+      .providerLogo {
+        height: 30px;
+        margin-right: 10px;
+        width: 30px;
+      }
+
+      h1 {
+        margin-right: 0;
+      }
+    }
+
+    .loadMoreButton {
+      margin-right: 0;
+      min-width: 100%;
+    }
   }
 }

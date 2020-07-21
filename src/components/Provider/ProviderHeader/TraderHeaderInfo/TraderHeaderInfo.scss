@@ -2,39 +2,84 @@
   margin-bottom: 30px;
   width: 100%;
 
-  h4 {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    font-family: "PlexSans-Regular";
-    justify-content: flex-start;
-    margin-right: 40px;
-    text-transform: capitalize;
+  .infoActionBox {
+    width: 100%;
+    margin-bottom: 20px;
 
-    b {
-      font-family: "PlexSans-Bold";
-      margin-left: 5px;
+    h3 {
+      color: $purple;
     }
 
-    .imageBox {
-      margin-left: 8px;
-      width: fit-content;
-
-      .exchangeIcon {
-        height: 17px;
-        width: 17px;
-      }
-    }
-
-    .editIcon {
-      cursor: pointer;
+    .expandIcon {
+      color: $purple;
+      width: 30px;
+      height: 30px;
       margin-left: 10px;
     }
   }
 
-  .submitButton,
-  .loadMoreButton {
-    margin-right: 40px;
-    min-width: 215px;
+  .infoDataBox {
+    width: 100%;
+
+    h4 {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      font-family: "PlexSans-Regular";
+      justify-content: flex-start;
+      margin-right: 40px;
+      text-transform: capitalize;
+
+      b {
+        font-family: "PlexSans-Bold";
+        margin-left: 5px;
+      }
+
+      .imageBox {
+        margin-left: 8px;
+        width: fit-content;
+
+        .exchangeIcon {
+          height: 17px;
+          width: 17px;
+        }
+      }
+
+      .editIcon {
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+@include media("<=sm") {
+  .providerHeaderInfo {
+    margin-bottom: 30px;
+    width: 100%;
+
+    .infoDataBox {
+      width: 100%;
+      justify-content: center;
+
+      h4 {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+        margin-bottom: 10px;
+
+        b {
+          font-family: "PlexSans-Bold";
+          margin-left: 5px;
+        }
+
+        .editIcon {
+          cursor: pointer;
+          margin-left: 10px;
+          width: 26px;
+          height: 26px;
+        }
+      }
+    }
   }
 }

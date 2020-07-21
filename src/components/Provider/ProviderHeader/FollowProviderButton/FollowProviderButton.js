@@ -91,7 +91,7 @@ const FollowProviderButton = ({ provider }) => {
   return (
     <Box
       alignItems="center"
-      className="copyTraderButton"
+      className="followProviderButton"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"

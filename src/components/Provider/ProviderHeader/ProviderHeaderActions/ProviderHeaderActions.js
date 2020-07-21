@@ -24,6 +24,7 @@ const ProviderHeaderActions = () => {
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
+      flexWrap="wrap"
     >
       <Box
         alignItems="center"
