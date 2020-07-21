@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./management.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import { creatEmptyProviderDataPointsEntity } from "../../../services/tradeApiClient.types";
 import ManagementSummary from "../../../components/Provider/Management/ManagementSummary";
 import ManagementTable from "../../../components/Provider/Management/ManagementTable";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
@@ -11,39 +10,17 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
+import useManagementSymmary from "../../../hooks/useManagementSymmary";
 
 const CopyTradersManagement = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
-  const emptyObject = creatEmptyProviderDataPointsEntity();
-  const [summary, setSummary] = useState(emptyObject);
   const [tablePositions, setTablePositions] = useState([]);
   const [allPositions, setAllPositions] = useState({});
-  const [summaryLoading, setSummaryLoading] = useState(false);
   const [positionsLoading, setPositionsLoading] = useState(false);
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  const loadSummary = () => {
-    if (storeViews.provider.id) {
-      setSummaryLoading(true);
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: storeViews.provider.id,
-      };
-      tradeApi
-        .providerCopyTradingDataPointsGet(payload)
-        .then((response) => {
-          setSummaryLoading(false);
-          setSummary(response);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
-  };
-
-  useEffect(loadSummary, [storeViews.provider.id]);
+  const { summaryLoading, summary } = useManagementSymmary(storeViews.provider.id);
 
   const loadPositions = () => {
     if (storeViews.provider.id) {
