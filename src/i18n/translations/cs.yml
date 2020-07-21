@@ -318,10 +318,10 @@ trader.returnsince.tooltip: "CH-Return since the last allocated balance input."
 trader.start: "CH-Start Copying"
 trader.stop: "CH-STOP COPYING"
 trader.view: "CH-VIEW TRADER"
-provider.others: "CH-You and {count} others are listening this provider"
-provider.stop: "CH-STOP LISTENING"
+provider.others: "CH-You and {count} others are following this provider"
+provider.stop: "CH-STOP FOLLOWING"
 provider.view: "CH-VIEW PROVIDER"
-provider.people: "CH-people copying this provider"
+provider.people: "CH-people following this provider"
 
 graph.others: "CH-Others"
 
