@@ -105,7 +105,7 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <img src={DownIcon} className="arrow" />
+          <img className="arrow" src={DownIcon} />
           <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement="bottom-start" transition>
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} timeout={350}>

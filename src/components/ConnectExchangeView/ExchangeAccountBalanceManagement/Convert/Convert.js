@@ -119,9 +119,9 @@ const Convert = () => {
         </Box>
         <ConvertTable
           assets={convertAssets}
+          loading={isEmpty(assets)}
           onSelect={onSelect}
           rowsSelected={rowsSelected}
-          loading={isEmpty(assets)}
         />
       </Box>
     </BalanceManagement>

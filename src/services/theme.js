@@ -310,6 +310,11 @@ const theme = (darkStyle) => {
           padding: "3px",
         },
       },
+      MuiDialog: {
+        paper: {
+          backgroundColor: darkStyle ? colors.black2 : colors.offWhite,
+        },
+      },
     },
     props: {
       MuiButtonBase: {

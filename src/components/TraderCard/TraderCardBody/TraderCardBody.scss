@@ -118,11 +118,11 @@
   .traderCardBody {
     .actionsWrapper {
       &.positive {
-        background: linear-gradient(180deg, $darkGreenChartBottom 0%, #151521 100%);
+        background: linear-gradient(180deg, $darkGreenChartBottom 0%, $darkChartBottom 100%);
       }
 
       &.negative {
-        background: linear-gradient(180deg, $darkRedChartBottom 0%, #151521 100%);
+        background: linear-gradient(180deg, $darkRedChartBottom 0%, $darkChartBottom 100%);
       }
     }
   }

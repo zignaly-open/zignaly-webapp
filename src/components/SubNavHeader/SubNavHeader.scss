@@ -9,8 +9,8 @@
     bottom: 0;
     content: "";
     height: 2px;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
   }
 
@@ -20,21 +20,21 @@
     cursor: pointer;
     font-family: "PlexSans-Regular";
     font-size: 21px;
-    margin: 0 66px 0px 0;
+    margin: 0 66px 0 0;
     opacity: 0.6;
     padding: 12px 12px 21px 0;
+    position: relative;
     text-decoration: none;
     text-transform: capitalize;
     white-space: nowrap;
-    position: relative;
 
     &.active {
       opacity: 1;
 
       &::before {
         border-bottom: 2px solid $purple;
-        content: "";
         bottom: 0;
+        content: "";
         position: absolute;
         width: 100%;
       }

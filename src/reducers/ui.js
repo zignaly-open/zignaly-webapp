@@ -13,6 +13,7 @@ import {
   COPYT_TIMEFRAME,
   SIGNALP_TIMEFRAME,
   SHOW_BALANCE_LOADER,
+  SHOW_GLOBAL_MODAL,
 } from "../store/actions/ui";
 
 /**
@@ -106,6 +107,10 @@ const ui = (state = initialState.ui, action) => {
 
     case SHOW_BALANCE_LOADER:
       newState.balanceLoader = action.payload;
+      break;
+
+    case SHOW_GLOBAL_MODAL:
+      newState.modal = { ...state.modal, globalModal: action.payload };
       break;
 
     default:

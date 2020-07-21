@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
-import useInterval from "use-interval";
+import useInterval from "./useInterval";
 import { assign, cloneDeep, filter, isEmpty, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
@@ -233,7 +233,7 @@ const usePositionsList = (type, positionEntity = null) => {
       }
     }
   };
-  useInterval(updateData, 5000);
+  useInterval(updateData, 5000, true);
 
   /**
    * Update filters with selected exchange.
