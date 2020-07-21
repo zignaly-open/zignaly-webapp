@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Table from "../../../../Table";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
@@ -27,7 +27,7 @@ import "./WithdrawHistoryTable.scss";
  */
 const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
   const storeSession = useStoreSessionSelector();
-  const [withdraws, setWithdraws] = useState([]);
+  const [withdraws, setWithdraws] = useState(null);
   const dispatch = useDispatch();
   const loadData = () => {
     const payload = {
@@ -83,12 +83,24 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
 
   return (
     <Box className="withdrawHistoryTable" display="flex" flexDirection="column" width={1}>
-      <Table
-        columns={columns}
-        data={withdraws}
-        persistKey="withdrawHistory"
-        title={<FormattedMessage id="accounts.withdraw.history" />}
-      />
+      {!withdraws ? (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      ) : (
+        <Table
+          columns={columns}
+          data={withdraws}
+          persistKey="withdrawHistory"
+          title={<FormattedMessage id="accounts.withdraw.history" />}
+        />
+      )}
     </Box>
   );
 };
