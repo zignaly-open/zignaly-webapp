@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { isNumber } from "lodash";
+import { useDispatch } from "react-redux";
 import { FormContext, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
+import {
+  createWidgetOptions,
+  mapExchangeConnectionToTradingViewId,
+} from "../../../tradingView/dataFeedOptions";
+import { formatPrice } from "../../../utils/formatters";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
 
 /**
@@ -35,6 +42,7 @@ const TradingView = () => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [marketData, setMarketData] = useState(null);
+  const dispatch = useDispatch();
 
   const getMarketData = async () => {
     const marketDataPayload = {
@@ -45,8 +53,8 @@ const TradingView = () => {
     try {
       const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
       setMarketData(data);
-    } catch (error) {
-      alert(`ERROR: ${error.message}`);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
     }
   };
 
@@ -140,7 +148,10 @@ const TradingView = () => {
 
         if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
           if (eventSymbol !== dataParsed.data.original_name) {
-            setLastPrice(dataParsed.data.last_price);
+            const receivedPrice = isNumber(dataParsed.data.last_price)
+              ? formatPrice(dataParsed.data.last_price, "", "")
+              : dataParsed.data.last_price;
+            setLastPrice(receivedPrice);
             eventSymbol = dataParsed.data.original_name;
           }
         }
@@ -209,10 +220,11 @@ const TradingView = () => {
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
     const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
+    const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: symbolCode } },
+        { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
         "*",
       );
     }

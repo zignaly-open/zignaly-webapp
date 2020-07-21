@@ -39,8 +39,15 @@ const TrailingStopPanel = (props) => {
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const entryType = watch("entryType");
   const strategyPrice = watch("price");
-  const trailingStopDistance = parseFloat(watch("trailingStopDistance")) || 0;
-  const trailingStopPercentage = parseFloat(watch("trailingStopPercentage")) || 0;
+  const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
+  const trailingStopDistance = parseFloat(watch("trailingStopDistance", initTrailingStopDistance));
+  const initTrailingStopPercentage = positionEntity
+    ? positionEntity.trailingStopTriggerPercentage
+    : 0;
+  const trailingStopPercentage = parseFloat(
+    watch("trailingStopPercentage", initTrailingStopPercentage),
+  );
+
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -63,17 +70,6 @@ const TrailingStopPanel = (props) => {
   };
 
   const fieldsDisabled = getFieldsDisabledStatus();
-
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity && existsTrailingStop) {
-      const initTrailingStopPercentage = 100 * (1 - positionEntity.trailingStopTriggerPercentage);
-      const initTrailingStopDistance = 100 * (1 - positionEntity.trailingStopPercentage);
-      setValue("trailingStopPercentage", formatFloat2Dec(initTrailingStopPercentage));
-      setValue("trailingStopDistance", formatFloat2Dec(initTrailingStopDistance));
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate trailing stop distance when change.

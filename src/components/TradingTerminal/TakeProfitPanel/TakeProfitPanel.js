@@ -6,7 +6,7 @@ import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
-import { formatFloat2Dec, revertPercentageRange } from "../../../utils/format";
+import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
@@ -98,8 +98,8 @@ const TakeProfitPanel = (props) => {
     if (positionEntity) {
       targetIndexes.forEach((index) => {
         const profitTarget = positionEntity.takeProfitTargets[index];
-        const priceTargetPercentage = revertPercentageRange(profitTarget.priceTargetPercentage);
-        const amountPercentage = revertPercentageRange(profitTarget.amountPercentage);
+        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
       });

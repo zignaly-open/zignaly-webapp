@@ -40,7 +40,7 @@ import "./StrategyPanel.scss";
  */
 const StrategyPanel = (props) => {
   const { symbolData } = props;
-  const { control, errors, register, watch } = useFormContext();
+  const { control, errors, register, setValue, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
@@ -98,13 +98,11 @@ const StrategyPanel = (props) => {
                 <RadioGroup aria-label={formatMessage({ id: "terminal.entrytype" })}>
                   <FormControlLabel
                     control={<Radio />}
-                    inputRef={register}
                     label={<FormattedMessage id="col.side.long" />}
                     value="LONG"
                   />
                   <FormControlLabel
                     control={<Radio />}
-                    inputRef={register}
                     label={<FormattedMessage id="col.side.short" />}
                     value="SHORT"
                   />
@@ -261,7 +259,7 @@ const StrategyPanel = (props) => {
               size="small"
               state={modalVisible}
             >
-              <LeverageForm max={125} min={1} />
+              <LeverageForm leverage={parseInt(leverage)} max={125} min={1} setValue={setValue} />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>

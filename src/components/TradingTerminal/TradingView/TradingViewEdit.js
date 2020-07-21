@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
 import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
@@ -9,6 +10,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { formatPrice } from "../../../utils/formatters";
 import "./TradingView.scss";
 
 /**
@@ -64,8 +66,8 @@ const TradingViewEdit = (props) => {
     try {
       const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
       setMarketData(data);
-    } catch (error) {
-      alert(`ERROR: ${error.message}`);
+    } catch (e) {
+      dispatch(showErrorAlert(e));
     }
   };
 
@@ -76,7 +78,6 @@ const TradingViewEdit = (props) => {
    */
   const fetchPosition = () => {
     const payload = {
-      version: 2,
       token: storeSession.tradeApi.accessToken,
       positionId,
       internalExchangeId: storeSettings.selectedExchange.internalId,
@@ -154,7 +155,10 @@ const TradingViewEdit = (props) => {
 
           if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
             if (eventSymbol !== dataParsed.data.original_name) {
-              setLastPrice(dataParsed.data.last_price);
+              const receivedPrice = isNumber(dataParsed.data.last_price)
+                ? formatPrice(dataParsed.data.last_price, "", "")
+                : dataParsed.data.last_price;
+              setLastPrice(receivedPrice);
               eventSymbol = dataParsed.data.original_name;
             }
           }

@@ -33,7 +33,7 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  useScript(withPrefix("widgets/freshDeskWidget.js"));
+  useScript(withPrefix("widgets/customerSupportWidget.js"));
 
   const updateSession = () => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));

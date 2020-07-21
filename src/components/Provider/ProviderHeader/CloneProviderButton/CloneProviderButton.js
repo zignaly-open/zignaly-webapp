@@ -5,6 +5,8 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../../../../store/actions/ui";
 import { navigate } from "@reach/router";
 
 /**
@@ -20,6 +22,7 @@ import { navigate } from "@reach/router";
 const CloneProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
 
   /**
    *  Function to redirect to cloned provider's profile.
@@ -48,7 +51,7 @@ const CloneProviderButton = ({ provider }) => {
         redirect(response);
       }
     } catch (e) {
-      alert(e.message);
+      dispatch(showErrorAlert(e));
     }
   };
 

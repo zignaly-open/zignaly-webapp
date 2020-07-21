@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import Table from "../../../../Table";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
-import "./WithdrawHistoryTable.scss";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
+import { showErrorAlert } from "../../../../../store/actions/ui";
+import "./WithdrawHistoryTable.scss";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -26,25 +28,24 @@ import { FormatedDateTime } from "../../../../../utils/format";
 const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
   const storeSession = useStoreSessionSelector();
   const [withdraws, setWithdraws] = useState([]);
-
-  useEffect(() => {
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        internalId,
-      };
-
-      tradeApi
-        .exchangeLastWithdrawalsGet(payload)
-        .then((data) => {
-          setWithdraws(data);
-        })
-        .catch((e) => {
-          alert(`ERROR: ${e.message}`);
-        });
+  const dispatch = useDispatch();
+  const loadData = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
+
+    tradeApi
+      .exchangeLastWithdrawalsGet(payload)
+      .then((data) => {
+        setWithdraws(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
