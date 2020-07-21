@@ -298,6 +298,16 @@ const theme = (darkStyle) => {
           },
         },
       },
+      MuiFormHelperText: {
+        root: {
+          fontSize: "12px",
+        },
+      },
+      MuiCircularProgress: {
+        root: {
+          padding: "3px",
+        },
+      },
     },
     props: {
       MuiButtonBase: {

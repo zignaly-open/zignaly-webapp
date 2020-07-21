@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { isEmpty } from "lodash";
-import "./PositionsTable.scss";
 import { Box, CircularProgress } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";
 import {
@@ -18,6 +18,8 @@ import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import "./PositionsTable.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -43,6 +45,7 @@ const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
   const { positionsAll, positionsFiltered, setFilters, loading } = usePositionsList(
     type,
     positionEntity,
@@ -129,10 +132,15 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
-          alert(`Position ${position.positionId} was cancelled.`);
+          dispatch(
+            showSuccessAlert(
+              "Position cancelled",
+              `Position ${position.positionId} was cancelled.`,
+            ),
+          );
         })
         .catch((e) => {
-          alert(`Cancel position failed: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
 
@@ -143,10 +151,15 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
-          alert(`Position ${position.positionId} entry was cancelled.`);
+          dispatch(
+            showSuccessAlert(
+              "Position cancelled",
+              `Position ${position.positionId} was cancelled.`,
+            ),
+          );
         })
         .catch((e) => {
-          alert(`Cancel position entry failed: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
 
@@ -157,10 +170,12 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
-          alert(`Position ${position.positionId} was exited.`);
+          dispatch(
+            showSuccessAlert("Position exited", `Position ${position.positionId} was exited.`),
+          );
         })
         .catch((e) => {
-          alert(`Exit position failed: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
   };
@@ -182,11 +197,6 @@ const PositionsTable = (props) => {
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
-
-      if (positionEntity) {
-        // Exclude actions for edit position page.
-        dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       if (storeSettings.selectedExchange.exchangeType === "futures") {
@@ -196,6 +206,16 @@ const PositionsTable = (props) => {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
       throw new Error(`Invalid positions collection type: ${type}`);
+    }
+
+    if (positionEntity) {
+      if (["closed", "log"].includes(type)) {
+        // Exclude actions display for closed / log positions in view page.
+        dataTable = excludeDataTableColumn(dataTable, "col.actions");
+      } else if (type === "open" && positionEntity.isCopyTrading) {
+        // Exclude actions on copy trading open position.
+        dataTable = excludeDataTableColumn(dataTable, "col.actions");
+      }
     }
 
     return dataTable;

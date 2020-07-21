@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import "./ManagementTable.scss";
 import { Box } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import Table from "../../../Table";
 import { ConfirmDialog } from "../../../Dialogs";
 import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import ExpandedRow from "../ExpandedRow";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import "./ManagementTable.scss";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -29,6 +31,7 @@ import ExpandedRow from "../ExpandedRow";
 const ManagementTable = ({ list, allPositions }) => {
   const storeSession = useStoreSessionSelector();
   const tablePersistsKey = "managementPositions";
+  const dispatch = useDispatch();
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -92,10 +95,15 @@ const ManagementTable = ({ list, allPositions }) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
-          alert(`Position ${position.positionId} was cancelled.`);
+          dispatch(
+            showSuccessAlert(
+              "Position cancelled",
+              `Position ${position.positionId} was cancelled.`,
+            ),
+          );
         })
         .catch((e) => {
-          alert(`Cancel position failed: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
 
@@ -106,10 +114,12 @@ const ManagementTable = ({ list, allPositions }) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
-          alert(`Position ${position.positionId} was exited.`);
+          dispatch(
+            showSuccessAlert("Position exited", `Position ${position.positionId} was exited.`),
+          );
         })
         .catch((e) => {
-          alert(`Exit position failed: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
   };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {Object} HookData
@@ -11,34 +12,39 @@ import tradeApi from "../services/tradeApiClient";
 /**
  * Provides balance summary for exchange.
  *
- * @param {string} internalId Internal exchange id.
  * @returns {HookData} Balance.
  */
-const useAvailableBalance = (internalId) => {
-  const [balance, setBalance] = useState(null);
+const useAvailableBalance = () => {
+  const [balance, setBalance] = useState({});
   const [loading, setLoading] = useState(false);
-
+  const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    setLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: internalId,
-    };
+    // Skip balance fetch for paper trading exchanges.
+    if (!storeSettings.selectedExchange.paperTrading) {
+      setLoading(true);
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        exchangeInternalId: storeSettings.selectedExchange.internalId,
+      };
 
-    tradeApi
-      .userAvailableBalanceGetGet(payload)
-      .then((data) => {
-        setBalance(data);
-      })
-      .catch(() => {})
-      .finally(() => {
-        setLoading(false);
-      });
+      tradeApi
+        .userAvailableBalanceGetGet(payload)
+        .then((data) => {
+          setBalance(data);
+        })
+        .catch(() => {})
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [
+    storeSettings.selectedExchange.internalId,
+    storeSession.tradeApi.accessToken,
+  ]);
 
   return { balance, loading };
 };

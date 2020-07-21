@@ -495,6 +495,18 @@ function gotoPositionDetail(event) {
 }
 
 /**
+ * Checks if viewed page is a position edit view.
+ *
+ * @param {PositionEntity} position Position entity to check.
+ * @returns {boolean} true if is edit view, false otherwise.
+ */
+function isEditView(position) {
+  // When URL path contains positionID, indicates that is the edit view page.
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+  return currentPath.includes(position.positionId);
+}
+
+/**
  * Compose all action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
@@ -502,9 +514,11 @@ function gotoPositionDetail(event) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
+  const { isCopyTrading, closed } = position;
+
   return (
     <div className="actions">
-      {position.isCopyTrading ? (
+      {isCopyTrading && !isEditView(position) && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -513,7 +527,8 @@ function composeAllActionButtons(position, confirmActionHandler) {
         >
           <Eye color={colors.purpleLight} />
         </button>
-      ) : (
+      )}
+      {!isCopyTrading && !isEditView(position) && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -523,7 +538,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {(!position.isCopyTrading || position.type === "open") && (
+      {!isCopyTrading && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -546,9 +561,10 @@ function composeAllActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeManagementActionButtons(position, confirmActionHandler) {
+  const { isCopyTrading, closed } = position;
   return (
     <div className="actions">
-      {position.type === "open" ? (
+      {!position.closed ? (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -567,7 +583,7 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {(!position.isCopyTrading || position.type === "open") && (
+      {!isCopyTrading && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}

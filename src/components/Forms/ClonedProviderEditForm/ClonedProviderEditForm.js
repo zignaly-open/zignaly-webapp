@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ClonedProviderEditForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
@@ -9,8 +8,9 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../store/actions/views";
+import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+import "./ClonedProviderEditForm.scss";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { showSuccessAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -61,8 +61,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         dispatch(setProvider(payload2));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
       })
-      .catch((error) => {
-        alert(error.message);
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
       })
       .finally(() => {
         setLoading(false);

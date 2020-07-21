@@ -3,9 +3,11 @@ import Table from "../../../../Table";
 import { Box } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
-import "./DepositHistoryTable.scss";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
+import { showErrorAlert } from "../../../../../store/actions/ui";
+import { useDispatch } from "react-redux";
+import "./DepositHistoryTable.scss";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -25,24 +27,24 @@ import { FormatedDateTime } from "../../../../../utils/format";
 const DepositHistoryTable = ({ internalId }) => {
   const storeSession = useStoreSessionSelector();
   const [deposits, setDeposits] = useState([]);
-  useEffect(() => {
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        internalId,
-      };
-
-      tradeApi
-        .exchangeLastDepositsGet(payload)
-        .then((data) => {
-          setDeposits(data);
-        })
-        .catch((e) => {
-          alert(`ERROR: ${e.message}`);
-        });
+  const dispatch = useDispatch();
+  const loadData = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+
+    tradeApi
+      .exchangeLastDepositsGet(payload)
+      .then((data) => {
+        setDeposits(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
 
   /**
    * @type {Array<MUIDataTableColumn>} Table columns

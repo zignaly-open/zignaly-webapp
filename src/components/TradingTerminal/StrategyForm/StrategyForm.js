@@ -324,7 +324,9 @@ const StrategyForm = (props) => {
    * @returns {CreatePositionPayload} Create position payload.
    */
   const composeCreatePositionPayload = (draftPosition) => {
-    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition));
+    return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition), {
+      leverage: parseInt(draftPosition.leverage) || 1,
+    });
   };
 
   /**
@@ -495,7 +497,7 @@ const StrategyForm = (props) => {
       const dcaTargetPrice1 = calculateDcaPrice(entryPrice, percentage);
       drawLine({
         id: "dcaTargetPricePercentage1",
-        price: Number(formatPrice(dcaTargetPrice1)) || 0,
+        price: Number(formatPrice(dcaTargetPrice1, "", "")) || 0,
         label: formatMessage({ id: "terminal.line.dca.label" }, { index: 1 }),
         color: colors.black,
       });

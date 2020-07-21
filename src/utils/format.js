@@ -156,19 +156,6 @@ export const formatDuration = (time) => {
 };
 
 /**
- * Revert percentage to standard 0-100 range.
- *
- * @param {Number} percentage Percentage value.
- * @returns {Number} Reverted percentage.
- */
-export const revertPercentageRange = (percentage) => {
-  // TODO: Remove this function after backend return raw percentages.
-  // This is commented so Tole can work on the backend and validate in the UI.
-  // return percentage === 1 ? 100 : 100 * (1 - percentage);
-  return percentage;
-};
-
-/**
  * Format unixtime date with given Moment format rule.
  *
  * @param {Number} date Unix time.
