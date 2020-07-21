@@ -2037,6 +2037,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
  * @property {Boolean} [customerKey]
+ * @property {Boolean} allowClones
  */
 
 /**
@@ -2174,7 +2175,6 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
  * @property {Boolean} loading
- * @property {Boolean} allowClones
  */
 
 /**
@@ -2238,6 +2238,7 @@ function createEmptyProviderGetEntity() {
       terms: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      allowClones: true,
     },
     public: false,
     shortDesc: "",
@@ -2307,7 +2308,6 @@ function createEmptyProviderGetEntity() {
     useLeverageFromSignal: false,
     price: 0,
     loading: false,
-    allowClones: true,
   };
 }
 

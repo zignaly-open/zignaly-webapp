@@ -619,6 +619,29 @@ function composeCancelActionButton(position, confirmActionHandler) {
 }
 
 /**
+ * Compose delete action button element for a given position.
+ *
+ * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composeOrdersCancelActionButton(order, confirmActionHandler) {
+  return (
+    <div className="actions">
+      <button
+        data-action={"cancel"}
+        data-position-id={order.positionId}
+        onClick={confirmActionHandler}
+        title="cancel"
+        type="button"
+      >
+        <XCircle color={colors.purpleLight} />
+      </button>
+    </div>
+  );
+}
+
+/**
  * Compose view action button element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
@@ -771,18 +794,18 @@ function composeLogPositionRow(position) {
  */
 function composeClosedPositionRowForProvider(position) {
   return [
-    composeValue(position.amount),
+    composeRawValue(position.openDateReadable),
+    composeRawValue(position.closeDateReadable),
     composeRawValue(position.pair),
     composeEntryPrice(position),
-    composeRawValue(position.closeDateReadable),
-    composeRawValue(position.exchange),
-    composeLeverage(position),
-    composeRawValue(position.openDateReadable),
-    composePositionSize(position),
-    composeReturnsFromAllocated(position),
-    composeReturnsFromInvestment(position),
     composeExitPrice(position),
+    composeReturnsFromInvestment(position),
+    composeReturnsFromAllocated(position),
     composeRawValue(position.side),
+    composeValue(position.amount),
+    composePositionSize(position),
+    composeLeverage(position),
+    composeRawValue(position.exchange),
     composeStatusMessage(position.status),
   ];
 }
@@ -1024,18 +1047,18 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
  */
 export function composeClosedPositionsForProvider(positions) {
   const columnsIds = [
-    "col.amount",
-    "col.pair",
-    "col.buyprice",
-    "col.date.close",
-    "col.exchange",
-    "col.leverage",
     "col.date.open",
-    "col.positionsize",
-    "col.returnfromallocated",
+    "col.date.close",
+    "col.pair",
+    "col.entryprice",
+    "col.exitprice",
     "col.returnfrominvestment",
-    "col.sellprice",
+    "col.returnfromallocated",
     "col.side",
+    "col.amount",
+    "col.invested",
+    "col.leverage",
+    "col.exchange",
     "col.status",
   ];
 
@@ -1055,8 +1078,6 @@ export function composeClosedPositionsForProvider(positions) {
 function composeOpenPositionRowForProvider(position, confirmActionHandler) {
   return [
     composeRawValue(position.openDateReadable),
-    composeRawValue(position.positionId),
-    composeRawValue(position.signalId),
     composeStatusMessage(position.status),
     composeRawValue(position.pair),
     composeEntryPrice(position),
@@ -1076,7 +1097,6 @@ function composeOpenPositionRowForProvider(position, confirmActionHandler) {
     composeRebuyTargets(position),
     composeRisk(position),
     composeAllActionButtons(position, confirmActionHandler),
-    composeCancelActionButton(position, confirmActionHandler),
   ];
 }
 
@@ -1092,8 +1112,6 @@ function composeOpenPositionRowForProvider(position, confirmActionHandler) {
 export function composeOpenPositionsForProvider(positions, confirmActionHandler) {
   const columnsIds = [
     "col.date.open",
-    "col.positionid",
-    "col.signalid",
     "col.status",
     "col.pair",
     "col.price.entry",
@@ -1113,7 +1131,6 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
     "col.dca",
     "col.risk",
     "col.actions",
-    "col.cancel",
   ];
 
   return {
@@ -1141,6 +1158,7 @@ function composeOpenOrdersRow(order, confirmActionHandler) {
     composeRawValue(order.side),
     composeRawValue(order.type),
     composeRawValue(order.datetime),
+    composeOrdersCancelActionButton(order, confirmActionHandler),
   ];
 }
 
@@ -1155,13 +1173,13 @@ function composeOpenOrdersRow(order, confirmActionHandler) {
  */
 export function composeOrdersDataTable(positions, confirmActionHandler) {
   const columnsIds = [
-    "col.orderid",
+    "col.orders.orderid",
     "col.positionid",
-    "col.symbol",
+    "col.orders.symbol",
     "col.amount",
-    "col.price",
+    "col.orders.price",
     "col.side",
-    "col.type",
+    "col.orders.type",
     "col.datetime",
     "col.actions",
   ];
