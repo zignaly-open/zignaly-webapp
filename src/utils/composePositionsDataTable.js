@@ -514,11 +514,11 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed } = position;
 
   return (
     <div className="actions">
-      {isCopyTrading && !isEditView(position) && (
+      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -528,7 +528,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !isEditView(position) && (
+      {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -538,7 +538,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -561,7 +561,8 @@ function composeAllActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeManagementActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed } = position;
+
   return (
     <div className="actions">
       {!position.closed ? (
@@ -583,7 +584,7 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
