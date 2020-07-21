@@ -56,7 +56,10 @@ const ProfileSettings = () => {
         <Typography variant="body1">
           <FormattedMessage id="profile.email" />
         </Typography>
-        <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} />
+        <Typography className="userId" variant="body1">
+          {storeUserData.email}
+        </Typography>
+        {/* <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} /> */}
       </label>
     </Box>
     // </form>
