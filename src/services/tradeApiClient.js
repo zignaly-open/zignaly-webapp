@@ -407,6 +407,20 @@ class TradeApiClient {
   }
 
   /**
+   * Get a raw position (for debug).
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+   * @returns {Promise<*>} Promise that resolve raw position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionRawGet(payload) {
+    const endpointPath = "/fe/api.php?action=getRawPosition";
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    return responseData;
+  }
+
+  /**
    * @typedef {import('./tradeApiClient.types').QuotesAssetsGetPayload} QuotesAssetsGetPayload
    * @typedef {import('./tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
    * @typedef {import('./tradeApiClient.types').BaseAssetsDict} BaseAssetsDict
