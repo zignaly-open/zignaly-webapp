@@ -106,7 +106,13 @@ const Header = () => {
             src={ProfileIcon}
           />
           <img className="arrow" src={DownIcon} />
-          <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement="bottom-start" transition>
+          <Popper
+            anchorEl={anchorEl}
+            className="popper"
+            open={Boolean(anchorEl)}
+            placement="bottom-start"
+            transition
+          >
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} timeout={350}>
                 <Box

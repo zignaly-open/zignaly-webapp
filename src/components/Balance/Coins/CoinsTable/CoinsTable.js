@@ -55,7 +55,7 @@ const CoinsTable = ({ title, persistKey, list }) => {
     },
     {
       name: "balanceLocked",
-      label: "col.coins.inorder",
+      label: "col.coins.locked",
       options: {
         customBodyRender: formatFloat,
       },

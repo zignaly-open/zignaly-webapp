@@ -23,7 +23,8 @@
   }
 
   .headerRow {
-    width: calc(100% - 264px);
+    max-width: 1200px;
+    width: 100%;
   }
 
   .tagLineBox {

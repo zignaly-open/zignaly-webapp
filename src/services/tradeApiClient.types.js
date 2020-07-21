@@ -2037,6 +2037,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
  * @property {Boolean} [customerKey]
+ * @property {Boolean} allowClones
  */
 
 /**
@@ -2174,7 +2175,6 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
  * @property {Boolean} loading
- * @property {Boolean} allowClones
  */
 
 /**
@@ -2238,6 +2238,7 @@ function createEmptyProviderGetEntity() {
       terms: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      allowClones: true,
     },
     public: false,
     shortDesc: "",
@@ -2307,7 +2308,6 @@ function createEmptyProviderGetEntity() {
     useLeverageFromSignal: false,
     price: 0,
     loading: false,
-    allowClones: true,
   };
 }
 
@@ -3202,6 +3202,7 @@ const createEmptyNewProviderEntity = () => {
       terms: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      allowClones: true,
     },
     minAllocatedBalance: "",
     isCopyTrading: false,
@@ -3301,3 +3302,67 @@ export function sessionDataResponseTransform(response) {
     validUntil: response.validUntil * 1000,
   };
 }
+
+/**
+ * @typedef {Object} ExchangeOpenOrdersObject
+ * @property {String} orderId
+ * @property {String} positionId
+ * @property {String} symbol
+ * @property {Number} amount
+ * @property {Number} price
+ * @property {String} side
+ * @property {String} type
+ * @property {Number} timestamp
+ * @property {String} datetime
+ * @property {String} status
+ * @property {String} datetimeReadable
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {Array<ExchangeOpenOrdersObject>} Provider
+ */
+export function exchangeOpenOrdersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of objects");
+  }
+
+  return response.map((item) => {
+    return exchangeOrdersItemTransform(item);
+  });
+}
+
+/**
+ *
+ * @param {*} order Exchange open orders item from response.
+ * @returns {ExchangeOpenOrdersObject} transformed open orders item.
+ */
+function exchangeOrdersItemTransform(order) {
+  const time = moment(Number(order.timestamp));
+  const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
+    datetimeReadable: time.format("YY/MM/DD HH:mm"),
+  });
+  return orderEntity;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {ExchangeOpenOrdersObject} New Provider entity.
+ */
+const createEmptyExchangeOpenOrdersEntity = () => {
+  return {
+    orderId: "",
+    positionId: "",
+    symbol: "",
+    amount: 0,
+    price: 0,
+    side: "",
+    type: "",
+    timestamp: 0,
+    datetime: "",
+    datetimeReadable: "",
+    status: "",
+  };
+};

@@ -1,5 +1,6 @@
 .testimonials {
-  width: calc(100% - 264px);
+  max-width: 1200px;
+  width: 100%;
 
   .title {
     color: $black2;

@@ -73,7 +73,7 @@ const CopyTradersProfile = () => {
       </Box>
       {!storeViews.provider.disable &&
         !storeViews.provider.isClone &&
-        storeViews.provider.allowClones && (
+        storeViews.provider.options.allowClones && (
           <Box className="cloneBox">
             <CloneProviderButton provider={storeViews.provider} />
           </Box>

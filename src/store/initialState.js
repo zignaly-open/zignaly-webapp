@@ -298,6 +298,17 @@ const initialState = {
         "col.invested",
         "col.actions",
       ],
+      ordersTable: [
+        "col.orders.orderid",
+        "col.positionid",
+        "col.orders.symbol",
+        "col.amount",
+        "col.orders.price",
+        "col.side",
+        "col.orders.type",
+        "col.orders.datetime",
+        "col.actions",
+      ],
     },
     selectedExchange: {
       id: "",
@@ -449,6 +460,7 @@ const initialState = {
         trailingStopFromSignal: false,
         useLeverageFromSignal: false,
         customerKey: false,
+        allowClones: true,
       },
       public: false,
       shortDesc: "",
@@ -518,7 +530,6 @@ const initialState = {
       useLeverageFromSignal: false,
       price: 0,
       loading: false,
-      allowClones: true,
     },
   },
 };

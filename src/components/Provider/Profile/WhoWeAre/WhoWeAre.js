@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import "./WhoWeAre.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -7,8 +7,9 @@ import TwitterIcon from "../../../../images/ct/twitter.svg";
 import DiscordIcon from "../../../../images/ct/discord.svg";
 import LinkedinIcon from "../../../../images/ct/linkedin.svg";
 import TelegramIcon from "../../../../images/ct/telegram.svg";
-import { countries } from "countries-list";
 import EmailIcon from "@material-ui/icons/Email";
+// @ts-ignore
+import Flag from "react-world-flags";
 
 /**
  * @typedef {Object} DefaultProps
@@ -21,52 +22,6 @@ import EmailIcon from "@material-ui/icons/Email";
  * @returns {JSX.Element} Component JSX.
  */
 const WhoWeAre = ({ provider }) => {
-  const [team, setTeam] = useState([]);
-  const createList = () => {
-    let obj = {
-      name: "",
-      native: "",
-      phone: "",
-      continent: "",
-      capital: "",
-      currency: "",
-      languages: [""],
-      emoji: "",
-      emojiU: "",
-      countryCode: "",
-    };
-    return Object.entries(countries).map((item) => {
-      let val = { ...obj, ...item[1] };
-      val.countryCode = item[0];
-      return val;
-    });
-  };
-
-  const list = createList();
-
-  const initializeCounties = () => {
-    if (provider.team && provider.team.length > 0) {
-      let data = [];
-      for (let a = 0; a < provider.team.length; a++) {
-        let obj = { name: "", country: {} };
-        let found = list.find(
-          (item) =>
-            provider.team[a].countryCode &&
-            item.countryCode.toLowerCase() === provider.team[a].countryCode.toLowerCase(),
-        );
-        if (found) {
-          obj.name = provider.team[a].name;
-          obj.country = found;
-          data.push(obj);
-        }
-      }
-      // console.log(data);
-      setTeam(data);
-    }
-  };
-
-  useEffect(initializeCounties, [provider.team]);
-
   /**
    * Function to redirect to social links.
    *
@@ -78,12 +33,6 @@ const WhoWeAre = ({ provider }) => {
       window.open(link, "_blank");
     }
   };
-
-  /**
-   * Function to redirect to social profile.
-   *
-   * @param {String} link Link to the social media.
-   */
 
   return (
     <Box
@@ -104,18 +53,20 @@ const WhoWeAre = ({ provider }) => {
           <FormattedMessage id="srv.who" />
         </Typography>
         <Box className="teamBox" display="flex" flexDirection="row" flexWrap="wrap">
-          {team.map((item, index) => (
-            <Box
-              alignItems="center"
-              className="teamItem"
-              display="flex"
-              flexDirection="row"
-              key={index}
-            >
-              <span className="name">{item.name}</span>
-              <span className="flag">{item.country.emoji}</span>,
-            </Box>
-          ))}
+          {provider.team &&
+            provider.team.length > 0 &&
+            provider.team.map((item, index) => (
+              <Box
+                alignItems="center"
+                className="teamItem"
+                display="flex"
+                flexDirection="row"
+                key={index}
+              >
+                <span className="name">{item.name}</span>
+                <Flag className="flag" code={item.countryCode.toUpperCase()} />
+              </Box>
+            ))}
         </Box>
       </Box>
       <Box

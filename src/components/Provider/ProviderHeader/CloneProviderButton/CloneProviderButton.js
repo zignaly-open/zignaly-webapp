@@ -5,9 +5,9 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import { navigate } from "@reach/router";
 
 /**
  * @typedef {Object} DefaultProps
