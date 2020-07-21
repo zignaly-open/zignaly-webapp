@@ -105,8 +105,8 @@ const Header = () => {
             src={ProfileIcon}
           />
           <Popper
-            className="popper"
             anchorEl={anchorEl}
+            className="popper"
             open={Boolean(anchorEl)}
             placement="bottom-start"
             transition

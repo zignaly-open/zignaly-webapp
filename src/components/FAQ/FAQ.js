@@ -6,7 +6,7 @@ import { Box } from "@material-ui/core";
 // import DocsIcon from "../../images/documents.svg";
 
 const FAQ = () => {
-  return <Box></Box>;
+  return <Box />;
   // return (
   //   <Box
   //     alignItems="flex-start"

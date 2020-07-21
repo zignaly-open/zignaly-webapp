@@ -33,7 +33,7 @@ const OrdersTabs = () => {
             <Orders />
           </Box>
         )}
-        {tabValue === 1 && <Box className="tabPanel"></Box>}
+        {tabValue === 1 && <Box className="tabPanel" />}
       </Box>
     </Box>
   );

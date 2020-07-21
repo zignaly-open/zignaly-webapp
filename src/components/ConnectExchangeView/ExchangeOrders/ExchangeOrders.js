@@ -26,11 +26,11 @@ const ExchangeOrders = () => {
 
   return (
     <Box
+      alignItems="flex-start"
       className="exchangeOrders"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
-      alignItems="flex-start"
     >
       <OrdersTabs />
     </Box>

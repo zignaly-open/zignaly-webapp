@@ -634,28 +634,28 @@ function composeCancelActionButton(position, confirmActionHandler) {
   );
 }
 
-/**
- * Compose delete action button element for a given position.
- *
- * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {JSX.Element} Composed JSX element.
- */
-function composeOrdersCancelActionButton(order, confirmActionHandler) {
-  return (
-    <div className="actions">
-      <button
-        data-action={"cancel"}
-        data-position-id={order.positionId}
-        onClick={confirmActionHandler}
-        title="cancel"
-        type="button"
-      >
-        <XCircle color={colors.purpleLight} />
-      </button>
-    </div>
-  );
-}
+// /**
+//  * Compose delete action button element for a given position.
+//  *
+//  * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
+//  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+//  * @returns {JSX.Element} Composed JSX element.
+//  */
+// function composeOrdersCancelActionButton(order, confirmActionHandler) {
+//   return (
+//     <div className="actions">
+//       <button
+//         data-action={"cancel"}
+//         data-position-id={order.positionId}
+//         onClick={confirmActionHandler}
+//         title="cancel"
+//         type="button"
+//       >
+//         <XCircle color={colors.purpleLight} />
+//       </button>
+//     </div>
+//   );
+// }
 
 /**
  * Compose view action button element for a given position.
@@ -1161,10 +1161,9 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
  * Compose MUI Data Table row for profile open position entity.
  *
  * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableDataRow} Row data array.
  */
-function composeOpenOrdersRow(order, confirmActionHandler) {
+function composeOpenOrdersRow(order) {
   return [
     composeRawValue(order.orderId),
     composeRawValue(order.positionId),
@@ -1183,11 +1182,9 @@ function composeOpenOrdersRow(order, confirmActionHandler) {
  *
  * @export
  * @param {Array<ExchangeOpenOrdersObject>} positions Positions collection.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- *
  * @returns {DataTableContent} Open positions data table structure.
  */
-export function composeOrdersDataTable(positions, confirmActionHandler) {
+export function composeOrdersDataTable(positions) {
   const columnsIds = [
     "col.orders.orderid",
     "col.positionid",
@@ -1202,6 +1199,6 @@ export function composeOrdersDataTable(positions, confirmActionHandler) {
 
   return {
     columns: columnsIds.map(composeColumnOptions),
-    data: positions.map((order) => composeOpenOrdersRow(order, confirmActionHandler)),
+    data: positions.map((order) => composeOpenOrdersRow(order)),
   };
 }

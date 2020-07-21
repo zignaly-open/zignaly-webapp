@@ -3202,6 +3202,7 @@ const createEmptyNewProviderEntity = () => {
       terms: false,
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
+      allowClones: true,
     },
     minAllocatedBalance: "",
     isCopyTrading: false,
@@ -3335,7 +3336,8 @@ export function exchangeOpenOrdersResponseTransform(response) {
 
 /**
  *
- * @param {*} order
+ * @param {*} order Exchange open orders item from response.
+ * @returns {ExchangeOpenOrdersObject} transformed open orders item.
  */
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
