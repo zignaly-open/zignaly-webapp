@@ -305,7 +305,7 @@ const initialState = {
         "col.orders.price",
         "col.side",
         "col.orders.type",
-        "col.datetime",
+        "col.orders.datetime",
         "col.actions",
       ],
     },

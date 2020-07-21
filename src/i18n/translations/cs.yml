@@ -264,6 +264,7 @@ col.orders.price: "CH-PRICE"
 col.orders.orderid: "CH-ORDER ID"
 col.orders.symbol: "CH-SYMBOL"
 col.orders.type: "CH-TYPE"
+col.orders.datetime: "CH-TIME"
 
 # FILTERS AND SORT BY
 fil.allcoins: "CH-All Coins"

@@ -264,7 +264,7 @@ col.orders.price: "PRICE"
 col.orders.orderid: "ORDER ID"
 col.orders.symbol: "SYMBOL"
 col.orders.type: "TYPE"
-
+col.orders.datetime: "TIME"
 
 # FILTERS AND SORT BY
 fil.allcoins: "All Coins"

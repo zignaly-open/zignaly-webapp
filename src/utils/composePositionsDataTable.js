@@ -1157,7 +1157,7 @@ function composeOpenOrdersRow(order, confirmActionHandler) {
     composeRawValue(order.price),
     composeRawValue(order.side),
     composeRawValue(order.type),
-    composeRawValue(order.datetime),
+    composeRawValue(order.datetimeReadable),
     composeOrdersCancelActionButton(order, confirmActionHandler),
   ];
 }
@@ -1180,7 +1180,7 @@ export function composeOrdersDataTable(positions, confirmActionHandler) {
     "col.orders.price",
     "col.side",
     "col.orders.type",
-    "col.datetime",
+    "col.orders.datetime",
     "col.actions",
   ];
 

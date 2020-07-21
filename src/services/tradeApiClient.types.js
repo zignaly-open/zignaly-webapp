@@ -3314,6 +3314,7 @@ export function sessionDataResponseTransform(response) {
  * @property {Number} timestamp
  * @property {String} datetime
  * @property {String} status
+ * @property {String} datetimeReadable
  */
 
 /**
@@ -3328,9 +3329,20 @@ export function exchangeOpenOrdersResponseTransform(response) {
   }
 
   return response.map((item) => {
-    let emptyEntity = createEmptyExchangeOpenOrdersEntity();
-    return assign(emptyEntity, item);
+    return exchangeOrdersItemTransform(item);
   });
+}
+
+/**
+ *
+ * @param {*} order
+ */
+function exchangeOrdersItemTransform(order) {
+  const time = moment(Number(order.timestamp));
+  const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
+    datetimeReadable: time.format("YY/MM/DD HH:mm"),
+  });
+  return orderEntity;
 }
 
 /**
@@ -3348,6 +3360,7 @@ const createEmptyExchangeOpenOrdersEntity = () => {
     type: "",
     timestamp: 0,
     datetime: "",
+    datetimeReadable: "",
     status: "",
   };
 };
