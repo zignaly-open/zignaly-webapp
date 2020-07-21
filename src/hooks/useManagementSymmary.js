@@ -4,7 +4,7 @@ import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import { creatEmptyProviderDataPointsEntity } from "../services/tradeApiClient.types";
-import useInterval from "use-interval";
+import useInterval from "./useInterval";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ProviderDataPointsEntity} ProviderDataPointsEntity
@@ -47,7 +47,7 @@ const useManagementSymmary = (providerId) => {
     }
   };
 
-  useInterval(loadSummary, 5000);
+  useInterval(loadSummary, 5000, true);
 
   return {
     summaryLoading: loading,
