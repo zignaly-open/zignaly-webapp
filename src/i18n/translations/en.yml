@@ -28,7 +28,7 @@ balance.available: "Available"
 balance.invested: "Invested"
 balance.profit: "Profit"
 balance.total: "Total Equity"
-balance.profitlosses: "P/L #"
+balance.profitlosses: "UP/L #"
 
 # EXCHANGES
 exchange.binance: "binance"

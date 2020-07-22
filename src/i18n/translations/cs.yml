@@ -29,7 +29,7 @@ balance.available: "CH-Available"
 balance.invested: "CH-Invested"
 balance.profit: "CH-Profit"
 balance.total: "CH-Total Equity"
-balance.profitlosses: "CH-P/L #"
+balance.profitlosses: "CH-UP/L #"
 
 # EXCHANGES
 exchange.binance: "CH-binance"
