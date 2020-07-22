@@ -1,7 +1,13 @@
 import React from "react";
 import "./TabsMenu.scss";
 import { Tab, Tabs } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+
+/**
+ *
+ * @typedef {Object} DefaultTabsObject
+ * @property {Boolean} display
+ * @property {JSX.Element} label
+ */
 
 /**
  *
@@ -9,7 +15,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {Object} DefaultProps
  * @property {Number} tabValue
  * @property {TabTypeMap["props"]["onChange"]} changeTab
- * @property {Boolean} [isProfile]
+ * @property {Array<DefaultTabsObject>} tabs
  */
 
 /**
@@ -18,7 +24,7 @@ import { FormattedMessage } from "react-intl";
  */
 
 const TabsMenu = (props) => {
-  const { changeTab, tabValue, isProfile } = props;
+  const { changeTab, tabValue, tabs } = props;
 
   return (
     <Tabs
@@ -30,19 +36,9 @@ const TabsMenu = (props) => {
       onChange={changeTab}
       value={tabValue}
     >
-      <Tab
-        classes={{ selected: "selected" }}
-        label={<FormattedMessage id="dashboard.positions.open" />}
-      />
-      <Tab
-        classes={{ selected: "selected" }}
-        label={<FormattedMessage id="dashboard.positions.closed" />}
-      />
-      {!isProfile && (
-        <Tab
-          classes={{ selected: "selected" }}
-          label={<FormattedMessage id="dashboard.positions.log" />}
-        />
+      {tabs.map(
+        (item, index) =>
+          item.display && <Tab key={index} classes={{ selected: "selected" }} label={item.label} />,
       )}
     </Tabs>
   );

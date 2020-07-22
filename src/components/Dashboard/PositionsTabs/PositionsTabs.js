@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-import TabsMenu from "./TabsMenu";
+import TabsMenu from "../../TabsMenu";
 import { PositionsTabContent } from "./";
 import "./PositionsTabs.scss";
 import { navigate as navigateReach } from "@reach/router";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -19,6 +20,21 @@ import { navigate as navigateReach } from "@reach/router";
  */
 const PositionsTabs = ({ isProfile }) => {
   const [tabValue, setTabValue] = useState(0);
+
+  const tabsList = [
+    {
+      display: true,
+      label: <FormattedMessage id="dashboard.positions.open" />,
+    },
+    {
+      display: true,
+      label: <FormattedMessage id="dashboard.positions.closed" />,
+    },
+    {
+      display: isProfile ? false : true,
+      label: <FormattedMessage id="dashboard.positions.log" />,
+    },
+  ];
 
   /**
    * Map tab index to positions collection type.
@@ -109,7 +125,7 @@ const PositionsTabs = ({ isProfile }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <TabsMenu changeTab={changeTab} isProfile={isProfile} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} tabs={tabsList} tabValue={tabValue} />
       </Box>
       <PositionsTabContent isProfile={isProfile} type={selectedType} />
     </Box>

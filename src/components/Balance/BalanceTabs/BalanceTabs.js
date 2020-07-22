@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import TabsMenu from "./TabsMenu";
+import TabsMenu from "../../TabsMenu";
 import "./BalanceTabs.scss";
 import History from "../History";
 import Coins from "../Coins";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -30,6 +31,17 @@ const BalanceTabs = ({ dailyBalance }) => {
     setTabValue(val);
   };
 
+  const tabsList = [
+    {
+      display: true,
+      label: <FormattedMessage id="dashboard.balance.historical" />,
+    },
+    {
+      display: true,
+      label: <FormattedMessage id="dashboard.balance.coins" />,
+    },
+  ];
+
   return (
     <Box bgcolor="grid.content" className="balanceTabs">
       <Box
@@ -39,7 +51,7 @@ const BalanceTabs = ({ dailyBalance }) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <TabsMenu changeTab={changeTab} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
         {tabValue === 0 && (
           <Box className="tabPanel">
             <History dailyBalance={dailyBalance} />

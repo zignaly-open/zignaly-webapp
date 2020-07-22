@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box } from "@material-ui/core";
-import TabsMenu from "./TabsMenu";
+import TabsMenu from "../../../TabsMenu";
 import "./OrdersTabs.scss";
 import Orders from "../Orders/Orders";
+import { FormattedMessage } from "react-intl";
+import ModalPathContext from "../../ModalPathContext";
 
 const OrdersTabs = () => {
+  const {
+    pathParams: { selectedAccount },
+  } = useContext(ModalPathContext);
   const [tabValue, setTabValue] = useState(0);
+
+  const tabsList = [
+    {
+      display: true,
+      label: <FormattedMessage id="accounts.orders" />,
+    },
+    {
+      display: selectedAccount.exchangeType.toLowerCase() === "futures" ? true : false,
+      label: <FormattedMessage id="accounts.contracts" />,
+    },
+  ];
 
   /**
    * Event handler to change tab value.
@@ -27,7 +43,7 @@ const OrdersTabs = () => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <TabsMenu changeTab={changeTab} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} tabs={tabsList} tabValue={tabValue} />
         {tabValue === 0 && (
           <Box className="tabPanel">
             <Orders />
