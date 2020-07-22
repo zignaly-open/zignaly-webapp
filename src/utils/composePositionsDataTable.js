@@ -659,12 +659,15 @@ function composeManagementActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeCancelActionButton(position, confirmActionHandler) {
+  const { exchange, positionId, updating } = position;
+  const isZignaly = exchange.toLowerCase() === "zignaly";
+
   return (
     <div className="actions">
-      {position.updating && (
+      {updating && !isZignaly && (
         <button
           data-action={"cancel"}
-          data-position-id={position.positionId}
+          data-position-id={positionId}
           onClick={confirmActionHandler}
           title="cancel"
           type="button"
