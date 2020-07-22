@@ -47,11 +47,13 @@ const PositionsTable = (props) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
-  const { positionsAll, positionsFiltered, setFilters, loading } = usePositionsList(
-    type,
-    positionEntity,
-    notifyPositionsUpdate,
-  );
+  const {
+    flagPositionUpdating,
+    positionsAll,
+    positionsFiltered,
+    setFilters,
+    loading,
+  } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
   const showTypesFilter = type === "log";
 
   const getTablePersistKey = () => {
@@ -127,6 +129,8 @@ const PositionsTable = (props) => {
    */
   const executeAction = () => {
     const { positionId, action } = actionData;
+    flagPositionUpdating(positionId);
+
     if (action === "cancel") {
       tradeApi
         .positionClose({

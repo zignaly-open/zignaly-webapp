@@ -20,6 +20,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
  * @property {Boolean} loading
+ * @property {Function} flagPositionUpdating
  */
 
 /**
@@ -264,6 +265,26 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   useEffect(handlePositionTypeChange, [type]);
 
   /**
+   * Flag a given position as updating.
+   *
+   * @param {string} positionId Position ID to flag.
+   * @returns {Void} None.
+   */
+  const flagPositionUpdating = (positionId) => {
+    if (positions[type]) {
+      const newPositions = positions[type].map((position) => {
+        if (position.positionId === positionId) {
+          return { ...position, updating: true };
+        }
+
+        return position;
+      });
+
+      setPositions({ ...positions, [type]: newPositions });
+    }
+  };
+
+  /**
    * Combine external state filters with local state.
    *
    * @param {defaultFilters} values External filter values.
@@ -280,6 +301,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
     loading: loading,
+    flagPositionUpdating,
   };
 };
 
