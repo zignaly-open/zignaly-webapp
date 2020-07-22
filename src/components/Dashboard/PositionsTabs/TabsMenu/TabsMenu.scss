@@ -24,7 +24,7 @@
     }
 
     &.selected {
-      color: $purple;
+      color: var(--purple);
       opacity: 1;
     }
 
@@ -58,10 +58,6 @@
 
         &:focus {
           outline: none;
-        }
-
-        &.selected {
-          color: $purple;
         }
       }
     }

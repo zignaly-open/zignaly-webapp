@@ -114,3 +114,11 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .mobileHeader {
+    .currentSelectionBox {
+      background-image: $purpleDarkGradient;
+    }
+  }
+}

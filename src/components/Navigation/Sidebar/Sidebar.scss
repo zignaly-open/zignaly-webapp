@@ -50,3 +50,13 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .sidebar {
+    .sideBarLink {
+      &.active {
+        background-image: $purpleDarkGradient;
+      }
+    }
+  }
+}

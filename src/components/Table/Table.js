@@ -187,7 +187,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             },
             stackedCommon: {
               fontSize: "14px",
-              fontFamily: "PlexSans-Medium",
+              fontFamily: "PlexSans-SemiBold",
               minWidth: "80px",
               padding: "12px",
               whiteSpace: "nowrap",

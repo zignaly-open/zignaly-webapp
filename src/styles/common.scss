@@ -271,8 +271,21 @@ body {
   cursor: pointer;
 }
 
+table {
+  a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+}
+
 [data-theme="dark"] {
   .iconPurple {
     filter: brightness(130%);
+  }
+
+  .exchangeListItem {
+    &.selected {
+      background-image: $purpleDarkGradient;
+    }
   }
 }

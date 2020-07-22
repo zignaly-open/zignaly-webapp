@@ -29,5 +29,10 @@
     .lightBox {
       background: $themeSwitcherBackground;
     }
+
+    .checkedDarkBox,
+    .checkedLightBox {
+      background-image: $purpleDarkGradient;
+    }
   }
 }

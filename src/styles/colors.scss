@@ -84,6 +84,9 @@ $themeSwitcherBackground: #141521;
 
 $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
 
+$purpleDarkGradient: linear-gradient(to bottom, $grey, $grey),
+  linear-gradient(102deg, $purpleDarkest 5%, $purpleDark 96%);
+
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
 $pinkGradient: linear-gradient(to right, $pink2 8%, $pink 98%);
