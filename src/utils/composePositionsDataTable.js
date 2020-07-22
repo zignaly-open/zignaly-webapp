@@ -232,7 +232,7 @@ function composePriceDifference(position) {
   return (
     <>
       <span className={position.priceDifferenceStyle}>
-        {formatPrice(position.priceDifference)} %
+        {formatNumber(position.priceDifference, 2)} %
       </span>
     </>
   );
@@ -245,7 +245,7 @@ function composePriceDifference(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeReturnsFromAllocated(position) {
-  return <>{formatPrice(position.returnFromAllocated)} %</>;
+  return <>{formatNumber(position.returnFromAllocated, 2)} %</>;
 }
 
 /**
@@ -255,7 +255,7 @@ function composeReturnsFromAllocated(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeReturnsFromInvestment(position) {
-  return <>{formatPrice(position.returnFromInvestment)} %</>;
+  return <>{formatNumber(position.returnFromInvestment, 2)} %</>;
 }
 
 /**
@@ -364,7 +364,7 @@ function composeUnrealizedProfitPercentage(position) {
         <>
           <span className="symbol">{position.quote}</span>
           <span className={position.unrealizedProfitStyle}>
-            {formatPrice(position.unrealizedProfitLossesPercentage)} %
+            {formatNumber(position.unrealizedProfitLossesPercentage, 2)} %
           </span>
         </>
       )}
@@ -396,7 +396,7 @@ function composeStopLossPrice(position) {
 function composeRisk(position) {
   return (
     <>
-      <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
+      <span className={position.riskStyle}>{formatNumber(position.risk, 2)} %</span>
     </>
   );
 }
