@@ -619,6 +619,8 @@ terminal.unitstoexit: "Units to exit"
 terminal.update: "Update Position"
 terminal.updated.body: "The position with ID {positionId} was updated succesfully."
 terminal.updated.title: "Update completed"
+terminal.warning.error: "Error"
+terminal.warning.exiting: "Exiting"
 
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"
