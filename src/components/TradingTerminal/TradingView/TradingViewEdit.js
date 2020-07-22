@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isArray, isNumber } from "lodash";
+import { differenceBy, isArray, isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
@@ -19,6 +19,7 @@ import "./TradingView.scss";
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  */
 
@@ -234,12 +235,18 @@ const TradingViewEdit = (props) => {
     return "open";
   };
 
+  /**
+   * Propagate position change when affect the edit panels read-only mode.
+   *
+   * @param {UserPositionsCollection} positionsList Positions fetch interval notification.
+   * @returns {Void} None.
+   */
   const processPositionsUpdate = (positionsList) => {
-    console.log("notifiedData: ", positionsList);
     if (isArray(positionsList)) {
-      const newPositionEntity = { ...positionsList[0] };
-      console.log("positionsListNew: ", newPositionEntity);
-      setPositionEntity(newPositionEntity);
+      const newPositionEntity = positionsList[0];
+      if (differenceBy([positionEntity], positionsList, "updating")) {
+        setPositionEntity(newPositionEntity);
+      }
     }
   };
 
