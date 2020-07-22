@@ -4,7 +4,7 @@
   width: 100%;
 
   .website {
-    color: $purple;
+    color: var(--purple);
     cursor: pointer;
   }
 
@@ -46,7 +46,7 @@
 
     .socialBox {
       .icon {
-        color: $purple;
+        color: var(--purple);
         cursor: pointer;
         height: 39px;
         margin-bottom: 20px;
@@ -62,7 +62,7 @@
     padding: 20px 10px;
 
     p {
-      color: $purple;
+      color: var(--purple);
       text-align: center;
       width: 100%;
     }

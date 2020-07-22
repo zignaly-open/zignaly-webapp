@@ -16,7 +16,8 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { toggleBalanceBox } from "../../../store/actions/settings";
 import "./Header.scss";
-import DownIcon from "../../../images/header/chevronDownPurple.svg";
+import DownIconPurple from "../../../images/header/chevronDownPurple.svg";
+import DownIcon from "../../../images/header/chevron-down.svg";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -105,7 +106,7 @@ const Header = () => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             src={ProfileIcon}
           />
-          <img className="arrow" src={DownIcon} />
+          <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
           <Popper
             anchorEl={anchorEl}
             className="popper"

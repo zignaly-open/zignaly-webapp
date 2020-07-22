@@ -264,3 +264,15 @@ body {
     text-transform: capitalize;
   }
 }
+
+.link {
+  color: var(--purple);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[data-theme="dark"] {
+  .iconPurple {
+    filter: brightness(130%);
+  }
+}

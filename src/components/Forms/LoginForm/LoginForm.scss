@@ -39,13 +39,10 @@
   }
 
   .link {
-    color: $purple;
-    cursor: pointer;
     font-family: "PlexSans-Bold";
     font-size: 11px;
     letter-spacing: 0.42px;
     margin-bottom: 40px;
-    text-decoration: none;
     text-transform: uppercase;
 
     &:last-child {

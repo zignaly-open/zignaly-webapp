@@ -79,7 +79,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
               <CustomButton
                 className="textPurple borderPurple"
                 onClick={() => resetToPath(previousPath)}
-                startIcon={<img className="icon" src={LeftIcon} />}
+                startIcon={<img className="icon iconPurple" src={LeftIcon} />}
               >
                 <FormattedMessage id="accounts.back" />
               </CustomButton>

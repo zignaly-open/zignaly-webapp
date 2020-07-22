@@ -59,9 +59,10 @@
       background: linear-gradient(180deg, $redChartBottom 0%, $white 100%);
     }
 
-    h6,
-    button {
-      opacity: 0.6;
+    h6 {
+      &:not(.green):not(.red) {
+        opacity: 0.6;
+      }
     }
 
     .actions {

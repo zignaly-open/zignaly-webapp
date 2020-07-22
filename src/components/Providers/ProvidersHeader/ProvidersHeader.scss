@@ -18,9 +18,7 @@
     cursor: pointer;
     height: 24px;
     width: 24px;
-  }
 
-  span {
     &:not(:first-child) {
       margin-left: 24px;
     }

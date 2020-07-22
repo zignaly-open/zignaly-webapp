@@ -19,7 +19,7 @@
     }
 
     h6 {
-      color: $purple;
+      color: var(--purple);
       padding-left: 16px;
     }
   }
@@ -36,7 +36,7 @@
   }
 
   .customButton {
-    border: 2px solid $purple;
+    border: 2px solid var(--purple);
     margin: 0 36px;
     margin-top: 7px;
   }

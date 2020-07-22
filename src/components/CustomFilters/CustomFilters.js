@@ -52,7 +52,7 @@ const CustomFilters = (props) => {
           <CustomButtom
             className="textPurple"
             onClick={() => onClear()}
-            startIcon={<img className="icon" src={ClosetIcon} />}
+            startIcon={<img className="icon iconPurple" src={ClosetIcon} />}
           >
             <FormattedMessage id="fil.clearall" />
           </CustomButtom>
@@ -61,7 +61,7 @@ const CustomFilters = (props) => {
           <CustomButtom
             className="textPurple"
             onClick={() => onClose()}
-            startIcon={<img className="icon" src={ChevronRightIcon} />}
+            startIcon={<img className="icon iconPurple" src={ChevronRightIcon} />}
           >
             <FormattedMessage id="fil.hide" />
           </CustomButtom>

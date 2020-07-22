@@ -60,7 +60,7 @@
   }
 
   a {
-    color: $purple;
+    color: var(--purple);
     cursor: pointer;
   }
 }

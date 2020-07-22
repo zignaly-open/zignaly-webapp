@@ -16,7 +16,7 @@
       opacity: 0.6;
 
       &.selected {
-        color: $purple;
+        color: var(--purple);
       }
     }
   }

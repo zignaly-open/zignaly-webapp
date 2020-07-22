@@ -201,14 +201,11 @@ const TraderCard = (props) => {
 
             <div className="actions">
               {!disable && (
-                <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
+                <CustomButton className="textPurple">
                   <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
                 </CustomButton>
               )}
-              <CustomButton
-                className={darkStyle ? "textPurple" : "textDefault"}
-                onClick={redirectToProfile}
-              >
+              <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
               </CustomButton>
             </div>
