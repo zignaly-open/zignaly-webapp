@@ -1,7 +1,16 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Delete, Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
+import {
+  AlertTriangle,
+  Delete,
+  Edit2,
+  ExternalLink,
+  Eye,
+  LogOut,
+  TrendingUp,
+  XCircle,
+} from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
@@ -514,7 +523,7 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, isCopyTrader, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
 
   return (
     <div className="actions">
@@ -538,7 +547,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -547,6 +556,17 @@ function composeAllActionButtons(position, confirmActionHandler) {
           type="button"
         >
           <LogOut color={colors.purpleLight} />
+        </button>
+      )}
+      {status === 1 && (
+        <button
+          data-action={"abort"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel entry"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
         </button>
       )}
     </div>
@@ -618,17 +638,6 @@ function composeCancelActionButton(position, confirmActionHandler) {
           type="button"
         >
           <XCircle color={colors.purpleLight} />
-        </button>
-      )}
-      {position.status === 1 && (
-        <button
-          data-action={"abort"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="cancel entry"
-          type="button"
-        >
-          <Delete color={colors.purpleLight} />
         </button>
       )}
     </div>
