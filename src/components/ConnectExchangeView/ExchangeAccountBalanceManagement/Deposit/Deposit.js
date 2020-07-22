@@ -115,8 +115,8 @@ const Deposit = () => {
                 <Box className="networkColumn">
                   {selectedAsset.networks.length > 1 && (
                     <NetworksToggleGroup
-                      networks={selectedAsset.networks}
-                      selectedNetwork={selectedNetwork}
+                      networks={selectedAsset.networks.map((n) => n.name)}
+                      selectedNetwork={selectedNetwork.name}
                       setSelectedNetwork={setSelectedNetwork}
                     />
                   )}

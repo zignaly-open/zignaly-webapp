@@ -10,8 +10,8 @@ import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 
 /**
  * @typedef {Object} NetworksToggleGroupPropTypes
- * @property {Array<CoinNetwork>} networks Networks.
- * @property {CoinNetwork} selectedNetwork Selected network.
+ * @property {Array<string>} networks Networks.
+ * @property {string} selectedNetwork Selected network.
  * @property {function} setSelectedNetwork Callback to select network.
  */
 
@@ -36,8 +36,8 @@ const NetworksToggleGroup = ({ networks, selectedNetwork, setSelectedNetwork }) 
         value={selectedNetwork}
       >
         {networks.map((n) => (
-          <ToggleButton key={n.name} value={n}>
-            {n.name}
+          <ToggleButton key={n} value={n}>
+            {n}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>

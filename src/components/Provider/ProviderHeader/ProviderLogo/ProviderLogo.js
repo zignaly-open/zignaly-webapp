@@ -2,6 +2,7 @@ import React from "react";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
 // import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
 import LazyLoad from "react-lazyload";
+import "./ProviderLogo.scss";
 
 /**
  * @typedef {Object} ProviderLogoPropTypes
