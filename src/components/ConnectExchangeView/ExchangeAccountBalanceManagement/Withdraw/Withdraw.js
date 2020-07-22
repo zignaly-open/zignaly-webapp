@@ -157,7 +157,11 @@ const Withdraw = () => {
                       setSelectedNetwork={setSelectedNetwork}
                     />
                     {!selectedNetwork.withdrawEnable ? (
-                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                      <Alert severity="error">
+                        {selectedNetwork.withdrawDesc || (
+                          <FormattedMessage id="withdraw.notavailable" />
+                        )}
+                      </Alert>
                     ) : (
                       <>
                         <FormControl className="controlInput" fullWidth={true}>

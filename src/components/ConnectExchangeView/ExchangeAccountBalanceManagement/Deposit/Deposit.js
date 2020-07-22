@@ -125,7 +125,11 @@ const Deposit = () => {
                   </Typography>
                   <Box display="flex" flexDirection="row">
                     {selectedNetwork && !selectedNetwork.withdrawEnable ? (
-                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                      <Alert severity="error">
+                        {selectedNetwork.withdrawDesc || (
+                          <FormattedMessage id="withdraw.notavailable" />
+                        )}
+                      </Alert>
                     ) : depositAddress ? (
                       <>
                         <Typography className="address bold" variant="body1">

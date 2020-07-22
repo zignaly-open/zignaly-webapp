@@ -721,6 +721,7 @@ withdraw.get: "CH-You will get"
 withdraw.history: "CH-Withdraw History"
 withdraw.memo: "CH-MEMO/Tag"
 withdraw.minimum: "CH-Minimum withdrawal"
+withdraw.notavailable: "CH-Network not available."
 withdraw.success: "CH-Withdraw initiated. Please check this page to see when it is completed."
 
 # SETTINGS
