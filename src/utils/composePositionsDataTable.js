@@ -1158,6 +1158,25 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
 }
 
 /**
+ * Compose all action buttons element for a given position.
+ *
+ * @param {String} positionId Position entity to compose buttons for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePositionLinkButton(positionId) {
+  return (
+    <span
+      data-position-id={positionId}
+      onClick={gotoPositionDetail}
+      title="View Position"
+      className="positionLink"
+    >
+      {positionId}
+    </span>
+  );
+}
+
+/**
  * Compose MUI Data Table row for profile open position entity.
  *
  * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
@@ -1166,7 +1185,7 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
 function composeOpenOrdersRow(order) {
   return [
     composeRawValue(order.orderId),
-    composeRawValue(order.positionId),
+    composePositionLinkButton(order.positionId),
     composeRawValue(order.symbol),
     composeRawValue(order.amount),
     composeRawValue(order.price),

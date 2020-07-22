@@ -49,6 +49,7 @@ const Doughnut = (props) => {
       display: true,
       position: "right",
     },
+    cutoutPercentage: 60,
     elements: {
       arc: {
         borderWidth: 0,
