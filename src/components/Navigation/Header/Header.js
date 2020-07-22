@@ -100,13 +100,10 @@ const Header = () => {
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
         <Box className="linkBox">
-          <img
-            alt="zignaly-user"
-            className="icon"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            src={ProfileIcon}
-          />
-          <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+          <Box onClick={(e) => setAnchorEl(e.currentTarget)} className="iconOpen">
+            <img alt="zignaly-user" className="icon" src={ProfileIcon} />
+            <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+          </Box>
           <Popper
             anchorEl={anchorEl}
             className="popper"
