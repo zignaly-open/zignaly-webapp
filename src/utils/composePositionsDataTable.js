@@ -549,16 +549,6 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {updating && (
-        <Tooltip
-          arrow
-          enterTouchDelay={50}
-          placement="left-end"
-          title={<FormattedMessage id="terminal.warning.updating" />}
-        >
-          <CircularProgress color="primary" size={25} />
-        </Tooltip>
-      )}
       {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button
           data-action={"exit"}
@@ -599,6 +589,16 @@ function composeAllActionButtons(position, confirmActionHandler) {
           title={<FormattedMessage id="terminal.warning.exiting" />}
         >
           <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {updating && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.updating" />}
+        >
+          <CircularProgress color="primary" size={22} />
         </Tooltip>
       )}
     </div>
