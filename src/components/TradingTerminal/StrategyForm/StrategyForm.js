@@ -66,6 +66,7 @@ const StrategyForm = (props) => {
   const isPositionView = isObject(positionEntity);
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
@@ -507,6 +508,8 @@ const StrategyForm = (props) => {
   };
   useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
+  const isReadOnly = (isCopyTrading && !isCopyTrader) || isClosed;
+
   return (
     <Box className="strategyForm" textAlign="center">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -518,7 +521,7 @@ const StrategyForm = (props) => {
         ) : (
           <SidebarCreatePanels currentSymbolData={currentSymbolData} />
         )}
-        {!isClosed && !isCopyTrading && (
+        {!isReadOnly && (
           <CustomButton
             className={"full submitButton"}
             disabled={!isEmpty(errors) || processing}
