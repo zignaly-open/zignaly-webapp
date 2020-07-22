@@ -24,7 +24,6 @@ import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPane
  */
 const SidebarEditPanels = (props) => {
   const { positionEntity, currentSymbolData } = props;
-  console.log("positionEntityUpdate: ", positionEntity);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
