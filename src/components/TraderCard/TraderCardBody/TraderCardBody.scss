@@ -82,7 +82,7 @@
   }
 
   .userSummary {
-    border-top: 1px solid $borderColor;
+    border-top: 1px solid var(--border-color);
     padding: 10px 20px;
 
     h5 {

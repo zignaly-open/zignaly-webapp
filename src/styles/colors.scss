@@ -70,8 +70,6 @@ $borderColor: rgba(0, 0, 0, 0.1);
 
 $darkBorderColor: #1c1a27;
 
-$tooltipBorder: rgba(64, 57, 70, 0.37);
-
 $tooltipBackground: #1c2549;
 
 $tooltipText: rgba(255, 255, 255, 0.94);
@@ -104,8 +102,10 @@ $greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey
 
 :root {
   --purple: #{$purple};
+  --border-color: #{$borderColor};
 }
 
 [data-theme="dark"] {
   --purple: #{$purpleLight};
+  --border-color: #{$darkBorderColor};
 }

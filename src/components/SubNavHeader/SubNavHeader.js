@@ -27,13 +27,17 @@ const SubNavHeader = ({ links, rightComponent }) => (
     justifyContent="flex-start"
   >
     {links.map((item, index) => (
-      <GatsbyLink activeClassName="active" className="dashboardLink" key={index} to={item.to}>
+      <GatsbyLink
+        activeClassName="active"
+        partiallyActive={true}
+        className="dashboardLink"
+        key={index}
+        to={item.to}
+      >
         <FormattedMessage id={item.id} />
       </GatsbyLink>
     ))}
-    {/* <Box className="rightComponent" display="flex" flexDirection="row" flexWrap="wrap"> */}
     {rightComponent && rightComponent}
-    {/* </Box> */}
   </Box>
 );
 

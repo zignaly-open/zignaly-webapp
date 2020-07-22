@@ -5,7 +5,7 @@
   position: relative;
 
   &::before {
-    background: $borderColor;
+    background: var(--border-color);
     bottom: 0;
     content: "";
     height: 2px;

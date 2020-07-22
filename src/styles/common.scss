@@ -245,7 +245,7 @@ body {
   }
 
   &.action {
-    border-top: 1px solid $borderColor;
+    border-top: 1px solid var(--border-color);
     height: 50px;
 
     img {
