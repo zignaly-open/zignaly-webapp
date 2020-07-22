@@ -3,9 +3,10 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
-import * as ReactRedux from "react-redux";
-import { navigate } from "gatsby";
-import { showLoader } from "./src/store/actions/ui";
+import { triggerTz } from "./src/services/tz";
+import { navigateLogin } from "./src/services/navigation";
+// import { createHistory } from "@reach/router";
+// const history = typeof window !== "undefined" ? createHistory(window) : null;
 
 export const wrapRootElement = ({ element }) => {
   return (
@@ -36,7 +37,7 @@ export const onInitialClientRender = () => {
     path = window.location.pathname;
   }
 
-  if (!path.match(/login|signup|recover/g)) {
+  if (!path.match(/404|login|signup|recover/g)) {
     verifySessionData(token, sessionData);
   }
 
@@ -46,30 +47,22 @@ export const onInitialClientRender = () => {
   // }, 500);
 };
 
-export const onPreRouteUpdate = ({ location, prevLocation }) => {
+export const onPreRouteUpdate = ({ location }) => {
   const path = location.pathname;
   const state = store.getState();
   // @ts-ignore
   const token = state.session.tradeApi.accessToken;
 
-  if (!path.match(/login|signup|recover/g)) {
+  if (!path.match(/404|login|signup|recover/g)) {
     if (!token) {
-      navigate("/login");
+      navigateLogin();
     }
   }
 };
 
 const verifySessionData = async (token, sessionData) => {
-  if (!token) {
-    navigate("/login");
-  } else {
-    if (sessionData && sessionData.validUntil) {
-      if (!isValid(sessionData.validUntil)) {
-        navigate("/login");
-      }
-    } else {
-      navigate("/login");
-    }
+  if (!token || !sessionData || !sessionData.validUntil || !isValid(sessionData.validUntil)) {
+    navigateLogin();
   }
 };
 
@@ -79,4 +72,9 @@ const isValid = (milliseconds) => {
     return false;
   }
   return true;
+};
+
+export const onRouteUpdate = ({ location, prevLocation }) => {
+  // Triger internal tracking event
+  triggerTz(location, prevLocation);
 };

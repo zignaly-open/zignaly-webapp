@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
-import useInterval from "use-interval";
+import useInterval from "./useInterval";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showBalanceLoader } from "../store/actions/ui";
@@ -61,7 +61,7 @@ const useUpdatedBalance = () => {
     }
   };
 
-  useInterval(loadData, 5000);
+  useInterval(loadData, 5000, true);
 
   return balance;
 };

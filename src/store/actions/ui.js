@@ -10,6 +10,7 @@ export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME_ACTION";
 export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME_ACTION";
 export const SIGNALP_TIMEFRAME = "SIGNALP_TIMEFRAME_ACTION";
 export const SHOW_BALANCE_LOADER = "SHOW_BALANCE_LOADER_ACTION";
+export const SHOW_GLOBAL_MODAL = "SHOW_GLOBAL_MODAL";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -157,6 +158,17 @@ export const setSignalpTimeframe = (payload) => {
 export const showBalanceLoader = (payload) => {
   return {
     type: SHOW_BALANCE_LOADER,
+    payload,
+  };
+};
+
+/**
+ * @param {boolean} payload Flag to indicate if global modal is displayed.
+ * @returns {AnyAction} return action object.
+ */
+export const showGlobalModal = (payload) => {
+  return {
+    type: SHOW_GLOBAL_MODAL,
     payload,
   };
 };

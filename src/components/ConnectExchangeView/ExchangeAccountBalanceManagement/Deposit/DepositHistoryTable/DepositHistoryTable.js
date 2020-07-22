@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../../Table";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import { FormattedMessage } from "react-intl";
@@ -26,7 +26,7 @@ import "./DepositHistoryTable.scss";
  */
 const DepositHistoryTable = ({ internalId }) => {
   const storeSession = useStoreSessionSelector();
-  const [deposits, setDeposits] = useState([]);
+  const [deposits, setDeposits] = useState(null);
   const dispatch = useDispatch();
   const loadData = () => {
     const payload = {
@@ -78,12 +78,24 @@ const DepositHistoryTable = ({ internalId }) => {
 
   return (
     <Box className="depositHistoryTable" display="flex" flexDirection="column" width={1}>
-      <Table
-        columns={columns}
-        data={deposits}
-        persistKey="depositHistory"
-        title={<FormattedMessage id="accounts.deposit.history" />}
-      />
+      {!deposits ? (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      ) : (
+        <Table
+          columns={columns}
+          data={deposits}
+          persistKey="depositHistory"
+          title={<FormattedMessage id="accounts.deposit.history" />}
+        />
+      )}
     </Box>
   );
 };

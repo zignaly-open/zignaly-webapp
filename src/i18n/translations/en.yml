@@ -328,7 +328,7 @@ trader.view: "VIEW TRADER"
 provider.others: "You and {count} others are following this provider"
 provider.stop: "STOP FOLLOWING"
 provider.view: "VIEW PROVIDER"
-provider.people: "people copying this provider"
+provider.people: "people following this provider"
 
 graph.others: "Others"
 

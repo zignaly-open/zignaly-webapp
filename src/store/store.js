@@ -21,6 +21,14 @@ const migrations = {
       ...cloneDeep(initialState),
     };
   },
+  3: (/** @type {PersistedState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...cloneDeep(initialState.settings),
+      },
+    };
+  },
 };
 
 const persistConfig = {
@@ -28,7 +36,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   blacklist: ["ui"],
-  version: 2,
+  version: 3,
   migrate: createMigrate(migrations, { debug: false }),
 };
 

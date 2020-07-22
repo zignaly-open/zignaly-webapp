@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, OutlinedInput } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";
@@ -56,7 +56,10 @@ const ProfileSettings = () => {
         <Typography variant="body1">
           <FormattedMessage id="profile.email" />
         </Typography>
-        <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} />
+        <Typography className="userId" variant="body1">
+          {storeUserData.email}
+        </Typography>
+        {/* <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} /> */}
       </label>
     </Box>
     // </form>

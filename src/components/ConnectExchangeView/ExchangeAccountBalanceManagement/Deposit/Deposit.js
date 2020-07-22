@@ -20,6 +20,7 @@ import NetworksToggleGroup from "../NetworksToggleGroup";
 import TipBox from "../TipBox";
 import Modal from "../../../Modal";
 import DepositQRCodes from "./DepositQRCodes";
+import { Alert } from "@material-ui/lab";
 
 const Deposit = () => {
   const {
@@ -39,7 +40,7 @@ const Deposit = () => {
   const depositAddress = useExchangeDepositAddress(
     selectedAccount.internalId,
     selectedAssetName,
-    selectedNetwork && selectedNetwork.network,
+    selectedNetwork,
   );
 
   const copyAddress = () => {
@@ -123,14 +124,18 @@ const Deposit = () => {
                     {selectedAssetName} <FormattedMessage id="deposit.address" />
                   </Typography>
                   <Box display="flex" flexDirection="row">
-                    {depositAddress ? (
-                      <Typography className="address bold" variant="body1">
-                        {depositAddress.address}
-                      </Typography>
+                    {selectedNetwork && !selectedNetwork.withdrawEnable ? (
+                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                    ) : depositAddress ? (
+                      <>
+                        <Typography className="address bold" variant="body1">
+                          {depositAddress.address}
+                        </Typography>
+                        <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
+                      </>
                     ) : (
                       <CircularProgress disableShrink size={21} />
                     )}
-                    <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
                   </Box>
                   {depositAddress && depositAddress.tag && (
                     <Box>

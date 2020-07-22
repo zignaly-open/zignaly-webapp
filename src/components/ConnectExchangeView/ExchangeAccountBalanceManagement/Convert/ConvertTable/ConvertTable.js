@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "../../../../Table";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import "./ConvertTable.scss";
 
 /**
@@ -16,6 +16,7 @@ import "./ConvertTable.scss";
  * @property {ExchangeAssetsWithName} assets Exchange assets that can be converted.
  * @property {function} onSelect Coin selected callback.
  * @property {Array<Number>} rowsSelected Selected rows indexes.
+ * @property {boolean} loading Flag to indicate if data is loading.
  */
 
 /**
@@ -24,7 +25,7 @@ import "./ConvertTable.scss";
  * @param {DepositHistoryTablePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ConvertTable = ({ assets, onSelect, rowsSelected }) => {
+const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
   let columns = [
     {
       name: "coin",
@@ -64,17 +65,29 @@ const ConvertTable = ({ assets, onSelect, rowsSelected }) => {
 
   return (
     <Box className="convertTable" display="flex" flexDirection="column" width={1}>
-      <Table
-        columns={columns}
-        components={{
-          TableToolbarSelect: () => <></>,
-          TableToolbar: () => <></>,
-        }}
-        data={assets}
-        options={options}
-        persistKey="convertAssets"
-        title=""
-      />
+      {loading ? (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      ) : (
+        <Table
+          columns={columns}
+          components={{
+            TableToolbarSelect: () => <></>,
+            TableToolbar: () => <></>,
+          }}
+          data={assets}
+          options={options}
+          persistKey="convertAssets"
+          title=""
+        />
+      )}
     </Box>
   );
 };

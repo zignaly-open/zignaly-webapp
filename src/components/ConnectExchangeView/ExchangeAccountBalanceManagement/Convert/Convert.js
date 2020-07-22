@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConvertTable from "./ConvertTable";
 import ModalPathContext from "../../ModalPathContext";
+import { isEmpty } from "lodash";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
@@ -31,15 +32,16 @@ const Convert = () => {
   /**
    * @type {ExchangeAssetsWithName}
    */
-  let assetsList = [];
+  let convertAssets = [];
   for (const [key, value] of Object.entries(assets)) {
+    // Add assets that can be converted
     const balanceBTC = parseFloat(value.balanceFreeBTC);
-    if (balanceBTC > 0 && balanceBTC <= 0.001) {
-      assetsList.push({ ...assets[key], coin: key });
+    if (balanceBTC > 0 && balanceBTC <= 0.001 && key !== "BNB") {
+      convertAssets.push({ ...assets[key], coin: key });
     }
   }
 
-  const selectedAssets = rowsSelected.map((index) => assetsList[index]);
+  const selectedAssets = rowsSelected.map((index) => convertAssets[index]);
   const totalSelectedBNB = selectedAssets.reduce(
     (total, a) => total + parseFloat(a.balanceTotalExchCoin),
     0,
@@ -115,7 +117,12 @@ const Convert = () => {
             </Typography>
           </CustomButton>
         </Box>
-        <ConvertTable assets={assetsList} onSelect={onSelect} rowsSelected={rowsSelected} />
+        <ConvertTable
+          assets={convertAssets}
+          loading={isEmpty(assets)}
+          onSelect={onSelect}
+          rowsSelected={rowsSelected}
+        />
       </Box>
     </BalanceManagement>
   );

@@ -1,4 +1,5 @@
 .themeSwitcher {
+  border: solid 1px $borderColor;
   border-radius: 20px;
   overflow: hidden;
   width: fit-content;
@@ -9,21 +10,26 @@
     width: 24px;
   }
 
-  .darkBox {
-    padding: 8px;
-  }
-
-  .checkedDarkBox {
-    background-image: $purpleLightGradient;
-    padding: 8px;
-  }
-
-  .lightBox {
-    padding: 8px;
-  }
-
+  .checkedDarkBox,
   .checkedLightBox {
     background-image: $purpleLightGradient;
     padding: 8px;
+  }
+
+  .darkBox,
+  .lightBox {
+    background: $white;
+    padding: 8px;
+  }
+}
+
+[data-theme="dark"] {
+  .themeSwitcher {
+    border: solid 1px $tooltipBorder;
+
+    .darkBox,
+    .lightBox {
+      background: $themeSwitcherBackground;
+    }
   }
 }

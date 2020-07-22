@@ -102,18 +102,18 @@ const TraderCard = (props) => {
    */
   let colorsOptions = {
     backgroundColor: "",
-    borderColor: "#00cb3a",
-    gradientColor1: "#b6f2cb",
-    gradientColor2: "#e5f8ed",
+    borderColor: darkStyle ? "#14672f" : "#00cb3a",
+    gradientColor1: darkStyle ? "#152324" : "#b6f2cb",
+    gradientColor2: darkStyle ? "#181e26" : "#e5f8ed",
   };
 
   if (returns < 0) {
     colorClass = "red";
     colorsOptions = {
       ...colorsOptions,
-      borderColor: "#f0226f",
-      gradientColor1: "#fccbde",
-      gradientColor2: "#fcecf3",
+      borderColor: darkStyle ? "#761d45" : "#f0226f",
+      gradientColor1: darkStyle ? "#271728" : "#fccbde",
+      gradientColor2: darkStyle ? "#1f1827" : "#fcecf3",
     };
   }
 
@@ -176,7 +176,11 @@ const TraderCard = (props) => {
               {/* </LazyLoad> */}
             </div>
           </div>
-          <div className={`actionsWrapper ${returns >= 0 ? "positive" : "negative"}`}>
+          <div
+            className={`actionsWrapper ${
+              dailyReturns.length ? (returns >= 0 ? "positive" : "negative") : ""
+            }`}
+          >
             <div className="followers">
               {!disable ? (
                 <h6 className={`callout2 ${colorClass}`}>

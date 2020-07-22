@@ -1,5 +1,5 @@
 import fetch from "cross-fetch";
-import { navigate } from "gatsby";
+import { navigateLogin } from "./navigation";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
@@ -153,10 +153,7 @@ class TradeApiClient {
 
       if (customError.code === 13) {
         // Session expired
-        const path = typeof window !== "undefined" ? window.location.pathname : "";
-        if (!path.startsWith("/login")) {
-          navigate("/login?ret=" + path);
-        }
+        navigateLogin();
       }
       throw customError;
     }

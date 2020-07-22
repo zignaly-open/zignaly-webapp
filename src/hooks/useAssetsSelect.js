@@ -63,7 +63,7 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
   };
 
   useEffect(() => {
-    if (assets) {
+    if (assets && !asset) {
       // Select BTC by default
       setSelectedAssetByName(type !== "futures" ? "BTC" : "USDT");
     }
