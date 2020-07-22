@@ -44,7 +44,9 @@ const StopLossPanel = (props) => {
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
   const getFieldsDisabledStatus = () => {
     /**

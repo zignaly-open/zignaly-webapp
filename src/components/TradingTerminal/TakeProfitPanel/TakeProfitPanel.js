@@ -63,9 +63,11 @@ const TakeProfitPanel = (props) => {
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
   const disableRemoveAction = isReadOnly || isTargetLocked;
   const { formatMessage } = useIntl();
 
@@ -80,7 +82,7 @@ const TakeProfitPanel = (props) => {
       let disabled = false;
       if (target.done) {
         disabled = true;
-      } else if (isCopy || isClosed) {
+      } else if (isReadOnly || isClosed) {
         disabled = true;
       }
 
