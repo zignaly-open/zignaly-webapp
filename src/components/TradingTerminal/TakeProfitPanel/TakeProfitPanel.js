@@ -62,9 +62,10 @@ const TakeProfitPanel = (props) => {
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
-  const isReadOnly = isCopy || isClosed;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed;
   const disableRemoveAction = isReadOnly || isTargetLocked;
   const { formatMessage } = useIntl();
 

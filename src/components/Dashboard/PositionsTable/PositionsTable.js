@@ -212,8 +212,8 @@ const PositionsTable = (props) => {
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      } else if (type === "open" && positionEntity.isCopyTrading) {
-        // Exclude actions on copy trading open position.
+      } else if (type === "open" && positionEntity.isCopyTrading && !positionEntity.isCopyTrader) {
+        // Exclude actions on copy trading open position, except for the owner.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
       }
     }

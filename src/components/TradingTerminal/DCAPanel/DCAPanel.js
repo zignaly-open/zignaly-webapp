@@ -102,8 +102,9 @@ const DCAPanel = (props) => {
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
-  const isReadOnly = isCopy || isClosed;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed;
   const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");

@@ -43,6 +43,8 @@ const StopLossPanel = (props) => {
   const strategyPrice = watch("price");
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed;
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -50,7 +52,7 @@ const StopLossPanel = (props) => {
      */
     const fieldsDisabled = {};
     let disabled = false;
-    if (isCopy || isClosed) {
+    if (isReadOnly) {
       disabled = true;
     }
 
