@@ -591,7 +591,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <AlertTriangle color={colors.purpleLight} />
         </Tooltip>
       )}
-      {updating && (
+      {(updating || status === 1) && (
         <Tooltip
           arrow
           enterTouchDelay={50}
