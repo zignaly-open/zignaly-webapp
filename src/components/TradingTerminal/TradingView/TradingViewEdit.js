@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
-import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
+import {
+  createWidgetOptions,
+  mapExchangeConnectionToTradingViewId,
+} from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -188,11 +191,12 @@ const TradingViewEdit = (props) => {
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
     const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
+    const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
     const checkExist = setInterval(() => {
       if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
         tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol: symbolCode } },
+          { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
           "*",
         );
         clearInterval(checkExist);
