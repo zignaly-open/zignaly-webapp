@@ -326,7 +326,7 @@ const DCAPanel = (props) => {
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
-      rebuyPercentageValidations(composeTargetPropertyName("rebuyPercentage", "1"));
+      rebuyPercentageValidations("1");
     }
   };
 
