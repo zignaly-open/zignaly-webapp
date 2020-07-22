@@ -16,6 +16,7 @@ import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { formatFloat } from "./format";
+import { CircularProgress } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
@@ -547,6 +548,16 @@ function composeAllActionButtons(position, confirmActionHandler) {
         >
           <Edit2 color={colors.purpleLight} />
         </button>
+      )}
+      {updating && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.updating" />}
+        >
+          <CircularProgress color="primary" size={25} />
+        </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button

@@ -621,6 +621,7 @@ terminal.updated.body: "CH-The position with ID {positionId} was updated succesf
 terminal.updated.title: "CH-Update completed"
 terminal.warning.error: "CH-Error"
 terminal.warning.exiting: "CH-Exiting"
+terminal.warning.updating: "CH-Updating"
 
 # EXCHANGE ACCOUNTS
 accounts.title: "CH-My Exchange Accounts"

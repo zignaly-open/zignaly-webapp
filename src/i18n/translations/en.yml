@@ -621,6 +621,7 @@ terminal.updated.body: "The position with ID {positionId} was updated succesfull
 terminal.updated.title: "Update completed"
 terminal.warning.error: "Error"
 terminal.warning.exiting: "Exiting"
+terminal.warning.updating: "Updating"
 
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"
