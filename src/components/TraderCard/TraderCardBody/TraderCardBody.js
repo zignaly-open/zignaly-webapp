@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { formatFloat2Dec } from "../../../utils/format";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -62,14 +63,8 @@ const TraderCard = (props) => {
     closedPositions,
     returns,
   } = provider;
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-  const darkStyleSelector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(darkStyleSelector);
+
+  const { darkStyle } = useStoreSettingsSelector();
 
   /**
    * @type {ChartData}
