@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import { assign, cloneDeep, filter, isEmpty, omitBy } from "lodash";
+import { assign, cloneDeep, filter, isEmpty, isFunction, omitBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -38,9 +38,10 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
  * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
+ * @param {function} [notifyPositionsUpdate] Callback to notify the updated positions list.
  * @returns {HookPositionsListData} Positions collection.
  */
-const usePositionsList = (type, positionEntity = null) => {
+const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = null) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
   const storeViews = useStoreViewsSelector();
@@ -164,6 +165,10 @@ const usePositionsList = (type, positionEntity = null) => {
           if (!typeRef.current || typeRef.current === type) {
             newPositions[type] = fetchData;
             setPositions(newPositions);
+
+            if (isFunction(notifyPositionsUpdate)) {
+              notifyPositionsUpdate(newPositions[type]);
+            }
           }
         })
         .catch((e) => {
@@ -210,6 +215,10 @@ const usePositionsList = (type, positionEntity = null) => {
       .then((data) => {
         newPositions[type] = [data];
         setPositions(newPositions);
+
+        if (isFunction(notifyPositionsUpdate)) {
+          notifyPositionsUpdate(newPositions[type]);
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

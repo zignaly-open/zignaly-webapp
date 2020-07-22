@@ -32,6 +32,7 @@ import "./PositionsTable.scss";
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
+ * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */
 
@@ -42,13 +43,14 @@ import "./PositionsTable.scss";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type, isProfile, positionEntity = null } = props;
+  const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const { positionsAll, positionsFiltered, setFilters, loading } = usePositionsList(
     type,
     positionEntity,
+    notifyPositionsUpdate,
   );
   const showTypesFilter = type === "log";
 

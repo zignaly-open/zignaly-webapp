@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isNumber } from "lodash";
+import { isArray, isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
@@ -234,11 +234,24 @@ const TradingViewEdit = (props) => {
     return "open";
   };
 
+  const processPositionsUpdate = (positionsList) => {
+    console.log("notifiedData: ", positionsList);
+    if (isArray(positionsList)) {
+      const newPositionEntity = { ...positionsList[0] };
+      console.log("positionsListNew: ", newPositionEntity);
+      setPositionEntity(newPositionEntity);
+    }
+  };
+
   return (
     <FormContext {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
         {!isLoading && (
-          <PositionsTable positionEntity={positionEntity} type={getPositionStatusType()} />
+          <PositionsTable
+            notifyPositionsUpdate={processPositionsUpdate}
+            positionEntity={positionEntity}
+            type={getPositionStatusType()}
+          />
         )}
         <Box
           bgcolor="grid.content"

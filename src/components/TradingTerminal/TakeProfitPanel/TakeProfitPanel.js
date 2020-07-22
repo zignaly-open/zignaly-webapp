@@ -39,6 +39,8 @@ const TakeProfitPanel = (props) => {
     positionTargetsCardinality > 0,
   );
 
+  console.log("positionEntity: ", positionEntity);
+
   const { clearError, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = positionTargetsCardinality || 1;
   const {
