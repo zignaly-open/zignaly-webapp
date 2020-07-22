@@ -89,6 +89,7 @@ const UpdatePassword = () => {
 
           {!editing && (
             <img
+              className="iconPurple"
               aria-labelledby="Edit password"
               onClick={() => setEditing(true)}
               src={EditIcon}

@@ -122,10 +122,13 @@ export const colors = {
   red: "#b52a00",
   yellow: "#f6ad3f",
   lightBlack: "#27273F",
+  lightBlackBackground: "#151521",
   offWhite: "#fbfafc",
   purple: "#770fc8",
   purpleLight: "#a946f6",
   white: "#ffffff",
+  borderColor: "rgba(0, 0, 0, 0.1)",
+  darkBorderColor: "#1c1a27",
 };
 
 /**
@@ -168,11 +171,11 @@ const theme = (darkStyle) => {
     palette: {
       background: {
         default: darkStyle ? colors.blackBackground : colors.offWhite,
-        paper: darkStyle ? colors.black2 : colors.white,
+        paper: darkStyle ? colors.lightBlackBackground : colors.white,
       },
       grid: {
         main: darkStyle ? colors.lightBlack : colors.white,
-        content: darkStyle ? colors.black2 : colors.white,
+        content: darkStyle ? colors.lightBlackBackground : colors.white,
       },
       primary: {
         main: colors.purple,
@@ -313,6 +316,11 @@ const theme = (darkStyle) => {
       MuiDialog: {
         paper: {
           backgroundColor: darkStyle ? colors.black2 : colors.offWhite,
+        },
+      },
+      MuiTableCell: {
+        root: {
+          borderBottom: `1px solid ${darkStyle ? colors.darkBorderColor : colors.borderColor}`,
         },
       },
     },
