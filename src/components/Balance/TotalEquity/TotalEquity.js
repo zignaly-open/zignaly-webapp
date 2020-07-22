@@ -19,7 +19,7 @@ import { isObject } from "lodash";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TotalEquity = ({ dailyBalance }) => {
+const TotalEquity = ({ dailyBalance, modal }) => {
   const [list, setList] = useState(dailyBalance.balances);
   const [balance, setBalance] = useState({ totalBTC: 0, totalUSDT: 0 });
 
@@ -86,7 +86,7 @@ const TotalEquity = ({ dailyBalance }) => {
             <TitleBar balance={balance} />
             <EquityFilter list={list} onChange={handleChange} />
           </Box>
-          <TotalEquityGraph list={list} />
+          <TotalEquityGraph list={list} modal={modal} />
           <EquityGraphLabels list={list} />
         </Box>
       )}
