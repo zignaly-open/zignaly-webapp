@@ -20,6 +20,7 @@ import usePositionsList from "../../../hooks/usePositionsList";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import "./PositionsTable.scss";
+import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -186,6 +187,8 @@ const PositionsTable = (props) => {
     }
   };
 
+  const positionsTableCompose = usePositionDataTableCompose(positionsFiltered, confirmAction);
+
   /**
    * Compose MUI data table for positions collection of selected type.
    *
@@ -199,9 +202,9 @@ const PositionsTable = (props) => {
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable(positionsFiltered);
     } else if (type === "open") {
-      dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+      dataTable = positionsTableCompose.composeOpenPositionsDataTable();
       if (storeSettings.selectedExchange.exchangeType === "futures") {
-        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+        dataTable = positionsTableCompose.excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
