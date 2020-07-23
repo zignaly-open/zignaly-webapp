@@ -176,7 +176,6 @@ const ManagementTable = ({ list, allPositions }) => {
           options={customOptions}
           persistKey={tablePersistsKey}
           title=""
-          useLabelAsId={true}
         />
       </Box>
     </>
