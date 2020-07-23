@@ -819,16 +819,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose MUI Data Table row for closed position entity.
-   *
-   * @param {PositionEntity} position Position entity to compose data table row for.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeClosePositionRow(position) {
-    return [];
-  }
-
-  /**
    * Compose MUI Data Table row for log position entity.
    *
    * @param {PositionEntity} position Position entity to compose data table row for.
@@ -1067,24 +1057,44 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function composeLogPositionsDataTable() {
     const columnsIds = [
-      "col.date.open",
-      "col.type",
-      "col.provider.logo",
-      "col.provider.name",
-      "col.stat",
-      "col.signalid",
-      "col.pair",
-      "col.price.entry",
-      "col.side",
-      "col.amount",
-      "col.remainingamount",
-      "col.invested",
-      "col.actions",
+      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      { columnId: "col.type", propertyName: "type", renderFunction: null },
+      {
+        columnId: "col.provider.logo",
+        propertyName: "providerLogo",
+        renderFunction: composeProviderIcon,
+      },
+      {
+        columnId: "col.provider.name",
+        propertyName: "providerName",
+        renderFunction: composeProviderName,
+      },
+      { columnId: "col.stat", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
+      { columnId: "col.pair", propertyName: "pair", renderFunction: null },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.side", propertyName: "side", renderFunction: null },
+      { columnId: "col.amount", propertyName: "amount", renderFunction: composeAmount },
+      {
+        columnId: "col.remainingamount",
+        propertyName: "remainAmount",
+        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+      },
+      {
+        columnId: "col.invested",
+        propertyName: "positionSizeQuote",
+        renderFunction: composeQuoteSize,
+      },
+      {
+        columnId: "col.actions",
+        propertyName: "updating",
+        renderFunction: composeViewActionButton,
+      },
     ];
 
     return {
       columns: columnsIds.map(composeColumnOptions),
-      data: positions.map(composeLogPositionRow),
+      data: positions,
     };
   }
 
