@@ -42,7 +42,7 @@ const UserMenu = React.forwardRef(() => {
           navigateReach("#exchangeAccounts");
         }}
       >
-        <img alt="zignaly" src={MyExchange} />
+        <img alt="zignaly" src={MyExchange} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.exchangeaccount" />
         </span>
@@ -54,31 +54,31 @@ const UserMenu = React.forwardRef(() => {
           navigateReach("#settings");
         }}
       >
-        <img alt="zignaly" src={Settings} />
+        <img alt="zignaly" src={Settings} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.settings" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDiscord}>
-        <img alt="zignaly" src={Message} />
+        <img alt="zignaly" src={Message} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.discord" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDocs}>
-        <img alt="zignaly" src={Documents} />
+        <img alt="zignaly" src={Documents} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.help" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem">
-        <img alt="zignaly" src={Support} />
+        <img alt="zignaly" src={Support} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.support" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={() => showLanguageSelector(!languageSelector)}>
-        <LanguageIcon className="icon" color="primary" />
+        <LanguageIcon className="icon iconPurple" color="primary" />
         <span className="item">
           <FormattedMessage id="menu.language" />
         </span>
@@ -96,7 +96,7 @@ const UserMenu = React.forwardRef(() => {
         </Grow>
       )}
       <MenuItem className="userMenuItem" onClick={logout}>
-        <img alt="zignaly" src={SignOut} />
+        <img alt="zignaly" src={SignOut} className="iconPurple" />
         <span className="item">
           <FormattedMessage id="menu.signout" />
         </span>
