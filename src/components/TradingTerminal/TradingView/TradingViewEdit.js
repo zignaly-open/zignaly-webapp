@@ -21,6 +21,7 @@ import "./TradingView.scss";
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  */
 
@@ -45,6 +46,7 @@ const TradingViewEdit = (props) => {
   );
   const [lastPrice, setLastPrice] = useState(null);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  const [providerEntity, setProviderEntity] = useState(/** @type {ProviderEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
   const [marketData, setMarketData] = useState(null);
@@ -63,6 +65,9 @@ const TradingViewEdit = (props) => {
   const initializePosition = (responseData) => {
     setSelectedSymbol(responseData.symbol);
     setPositionEntity(responseData);
+    if (!providerEntity) {
+      fetchPositionProvider(responseData.providerId);
+    }
   };
 
   const getMarketData = async () => {
@@ -108,6 +113,30 @@ const TradingViewEdit = (props) => {
     }
   };
 
+  /**
+   * Fetch a position provider.
+   *
+   * @param {string} providerId Position provider ID.
+   *
+   * @returns {Void} None.
+   */
+  const fetchPositionProvider = (providerId) => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId,
+      version: 2,
+    };
+
+    tradeApi
+      .providerGet(payload)
+      .then((data) => {
+        setProviderEntity(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
   const loadDependencies = () => {
     getMarketData();
     fetchPosition();
@@ -129,7 +158,12 @@ const TradingViewEdit = (props) => {
     fetchPosition();
   };
 
-  const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
+  const isLoading =
+    tradingViewWidget === null ||
+    !positionEntity ||
+    !libraryReady ||
+    !marketData ||
+    !providerEntity;
 
   /**
    * Resolve exchange name from selected exchange.
@@ -268,6 +302,7 @@ const TradingViewEdit = (props) => {
           <PositionsTable
             notifyPositionsUpdate={processPositionsUpdate}
             positionEntity={positionEntity}
+            providerEntity={providerEntity}
             type={getPositionStatusType()}
           />
         )}

@@ -12,6 +12,7 @@ import usePositionsList from "../../../hooks/usePositionsList";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
 
 /**
@@ -19,12 +20,14 @@ import "./PositionsTable.scss";
  * @typedef {import("../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  */
 
 /**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
+ * @property {ProviderEntity} [providerEntity]
  * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */
@@ -36,9 +39,16 @@ import "./PositionsTable.scss";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
+  const {
+    type,
+    isProfile,
+    positionEntity = null,
+    providerEntity = null,
+    notifyPositionsUpdate = null,
+  } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const {
     flagPositionUpdating,
@@ -218,10 +228,11 @@ const PositionsTable = (props) => {
     }
 
     if (positionEntity) {
+      const isProviderOwner = userData.userId === providerEntity.userPaymentInfo.userId;
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      } else if (type === "open" && positionEntity.isCopyTrading && !positionEntity.isCopyTrader) {
+      } else if (type === "open" && positionEntity.isCopyTrading && !isProviderOwner) {
         // Exclude actions on copy trading open position, except for the owner.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
       }
