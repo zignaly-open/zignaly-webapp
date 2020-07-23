@@ -75,7 +75,8 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         ((c.options && c.options.viewColumns === false) ||
         (persistKey &&
           storeSettings.displayColumns[persistKey] &&
-          storeSettings.displayColumns[persistKey].includes(c.name))
+          (storeSettings.displayColumns[persistKey].includes(c.name) ||
+            storeSettings.displayColumns[persistKey].includes(c.label)))
           ? "true"
           : "false"),
     },
