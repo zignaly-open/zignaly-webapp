@@ -228,7 +228,8 @@ const PositionsTable = (props) => {
     }
 
     if (positionEntity) {
-      const isProviderOwner = userData.userId === providerEntity.userPaymentInfo.userId;
+      const isProviderOwner =
+        providerEntity && userData.userId === providerEntity.userPaymentInfo.userId;
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
