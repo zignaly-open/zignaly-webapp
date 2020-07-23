@@ -15,7 +15,6 @@ import { formatNumber, formatPrice } from "../utils/formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
-import { formatFloat } from "../utils/format";
 import { CircularProgress } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
@@ -187,16 +186,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         <span className="symbol">X</span>
       </>
     );
-  }
-
-  /**
-   * Compose amount element for a given position.
-   *
-   * @param {string|number} value Position entity to compose amount for.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function renderValue(value) {
-    return <>{formatFloat(value)}</>;
   }
 
   /**
@@ -542,16 +531,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         )}
       </>
     );
-  }
-
-  /**
-   * Compose React fragment element for a given value.
-   *
-   * @param {string|number} value Value to wrap in fragment.
-   * @returns {string|number} Composed JSX element.
-   */
-  function renderRawValue(value) {
-    return value ? value : "-";
   }
 
   /**
