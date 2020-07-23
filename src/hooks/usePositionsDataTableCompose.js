@@ -726,7 +726,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         propertyName: "updating",
         renderFunction: renderAllActionButtons,
       },
-      { columnId: "col.cancel", propertyName: "status", renderFunction: renderCancelActionButton },
+      { columnId: "col.cancel", propertyName: "cancel", renderFunction: renderCancelActionButton },
     ];
 
     const dataTable = {
