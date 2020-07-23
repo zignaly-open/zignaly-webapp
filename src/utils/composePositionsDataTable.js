@@ -619,7 +619,7 @@ export function composeOrdersDataTable(positions) {
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: columnsIds.map((column) => composeColumnOptions(column[0])),
     data: positions.map((order) => composeOpenOrdersRow(order)),
   };
 }
@@ -667,7 +667,7 @@ export function composeContractsDataTable(positions) {
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: columnsIds.map((column) => composeColumnOptions(column[0])),
     data: positions.map((order) => composeContractsRow(order)),
   };
 }
