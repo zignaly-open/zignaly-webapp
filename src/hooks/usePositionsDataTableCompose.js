@@ -1199,71 +1199,85 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose MUI Data Table row for profile open position entity.
-   *
-   * @param {PositionEntity} position Position entity to compose data table row for.
-   * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeOpenPositionRowForProvider(position, confirmActionHandler) {
-    return [
-      composeRawValue(position.openDateReadable),
-      composeStatusMessage(position.status),
-      composeRawValue(position.pair),
-      composeEntryPrice(position),
-      composeLeverage(position),
-      composeExitPrice(position),
-      composeUnrealizedNetProfit(position),
-      composeUnrealizedProfitPercentage(position),
-      composePriceDifference(position),
-      composeRawValue(position.side),
-      composeStopLossPrice(position),
-      composeAmount(position),
-      composeBaseSymbolWithPrice(position.base, position.remainAmount),
-      composeQuoteSize(position),
-      composeRealInvestment(position),
-      composeTrailingStopIcon(position),
-      composeTakeProfitTargets(position),
-      composeRebuyTargets(position),
-      composeRisk(position),
-      composeAllActionButtons(position, confirmActionHandler),
-    ];
-  }
-
-  /**
    * Compose MUI Data Table data structure from positions entities collection.
    *
    * @returns {DataTableContent} Open positions data table structure.
    */
   function composeOpenPositionsForProvider() {
     const columnsIds = [
-      "col.date.open",
-      "col.status",
-      "col.pair",
-      "col.price.entry",
-      "col.leverage",
-      "col.price.current",
-      "col.unrealizedplnumber",
-      "col.unrealizedplpercentage",
-      "col.pricedifference",
-      "col.side",
-      "col.stoplossprice",
-      "col.initialamount",
-      "col.remainingamount",
-      "col.invested",
-      "col.realinvestment",
-      "col.tsl",
-      "col.tp",
-      "col.dca",
-      "col.risk",
-      "col.actions",
+      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      { columnId: "col.status", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.pair", propertyName: "pair", renderFunction: null },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      {
+        columnId: "col.price.current",
+        propertyName: "sellPrice",
+        renderFunction: composeExitPrice,
+      },
+      {
+        columnId: "col.unrealizedplnumber",
+        propertyName: "unrealizedProfitLosses",
+        renderFunction: composeUnrealizedNetProfit,
+      },
+      {
+        columnId: "col.unrealizedplpercentage",
+        propertyName: "unrealizedProfitLossesPercentage",
+        renderFunction: composeUnrealizedProfitPercentage,
+      },
+      {
+        columnId: "col.pricedifference",
+        propertyName: "priceDifference",
+        renderFunction: composePriceDifference,
+      },
+      { columnId: "col.side", propertyName: "side", renderFunction: null },
+      {
+        columnId: "col.stoplossprice",
+        propertyName: "stopLossPrice",
+        renderFunction: composeStopLossPrice,
+      },
+      { columnId: "col.initialamount", propertyName: "amount", renderFunction: composeAmount },
+      {
+        columnId: "col.remainingamount",
+        propertyName: "remainAmount",
+        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+      },
+      {
+        columnId: "col.invested",
+        propertyName: "positionSizeQuote",
+        renderFunction: composeQuoteSize,
+      },
+      {
+        columnId: "col.realinvestment",
+        propertyName: "realInvestment",
+        renderFunction: composeRealInvestment,
+      },
+      {
+        columnId: "col.tsl",
+        propertyName: "trailingStopTriggered",
+        renderFunction: composeTrailingStopIcon,
+      },
+      {
+        columnId: "col.tp",
+        propertyName: "takeProfitTargetsCountPending",
+        renderFunction: composeTakeProfitTargets,
+      },
+      {
+        columnId: "col.dca",
+        propertyName: "reBuyTargetsCountPending",
+        renderFunction: composeRebuyTargets,
+      },
+      { columnId: "col.risk", propertyName: "risk", renderFunction: composeRisk },
+      {
+        columnId: "col.actions",
+        propertyName: "updating",
+        renderFunction: composeAllActionButtons,
+      },
     ];
 
     return {
       columns: columnsIds.map(composeColumnOptions),
-      data: positions.map((position) =>
-        composeOpenPositionRowForProvider(position, confirmActionHandler),
-      ),
+      data: positions,
     };
   }
 
