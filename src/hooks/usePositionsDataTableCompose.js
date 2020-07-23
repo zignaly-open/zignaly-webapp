@@ -627,7 +627,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
             <AlertTriangle color={colors.purpleLight} />
           </Tooltip>
         )}
-        {updating && (
+        {(updating || status === 1) && (
           <Tooltip
             arrow
             enterTouchDelay={50}
