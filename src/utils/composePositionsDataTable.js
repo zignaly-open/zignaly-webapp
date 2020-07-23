@@ -1,12 +1,23 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Delete, Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
+import {
+  AlertTriangle,
+  Delete,
+  Edit2,
+  ExternalLink,
+  Eye,
+  LogOut,
+  TrendingUp,
+  XCircle,
+} from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { formatFloat } from "./format";
+import { CircularProgress } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
 /**
@@ -515,11 +526,11 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
 
   return (
     <div className="actions">
-      {isCopyTrading && !isEditView(position) && (
+      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -529,7 +540,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !isEditView(position) && (
+      {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -539,7 +550,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -549,6 +560,47 @@ function composeAllActionButtons(position, confirmActionHandler) {
         >
           <LogOut color={colors.purpleLight} />
         </button>
+      )}
+      {status === 1 && (
+        <button
+          data-action={"abort"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel entry"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
+        </button>
+      )}
+      {status === 0 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.error" />}
+        >
+          <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {status > 9 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.exiting" />}
+        >
+          <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {updating && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.updating" />}
+        >
+          <CircularProgress color="primary" size={22} />
+        </Tooltip>
       )}
     </div>
   );
@@ -562,7 +614,8 @@ function composeAllActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeManagementActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed } = position;
+
   return (
     <div className="actions">
       {!position.closed ? (
@@ -584,7 +637,7 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -607,28 +660,20 @@ function composeManagementActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeCancelActionButton(position, confirmActionHandler) {
+  const { exchange, positionId, updating } = position;
+  const isZignaly = exchange.toLowerCase() === "zignaly";
+
   return (
     <div className="actions">
-      {position.updating && (
+      {updating && !isZignaly && (
         <button
           data-action={"cancel"}
-          data-position-id={position.positionId}
+          data-position-id={positionId}
           onClick={confirmActionHandler}
           title="cancel"
           type="button"
         >
           <XCircle color={colors.purpleLight} />
-        </button>
-      )}
-      {position.status === 1 && (
-        <button
-          data-action={"abort"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="cancel entry"
-          type="button"
-        >
-          <Delete color={colors.purpleLight} />
         </button>
       )}
     </div>

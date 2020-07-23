@@ -26,7 +26,11 @@ const SidebarEditPanels = (props) => {
   const { positionEntity, currentSymbolData } = props;
 
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
   return (
     <>
@@ -34,7 +38,7 @@ const SidebarEditPanels = (props) => {
       <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      {!isClosed && !isCopyTrading && (
+      {!isReadOnly && (
         <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       )}
     </>

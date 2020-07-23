@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { isNumber } from "lodash";
+import { differenceBy, isArray, isNumber } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
-import { createWidgetOptions } from "../../../tradingView/dataFeedOptions";
+import {
+  createWidgetOptions,
+  mapExchangeConnectionToTradingViewId,
+} from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -16,6 +19,7 @@ import "./TradingView.scss";
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  */
 
@@ -188,11 +192,12 @@ const TradingViewEdit = (props) => {
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
     const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
+    const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
     const checkExist = setInterval(() => {
       if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
         tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol: symbolCode } },
+          { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
           "*",
         );
         clearInterval(checkExist);
@@ -230,11 +235,30 @@ const TradingViewEdit = (props) => {
     return "open";
   };
 
+  /**
+   * Propagate position change when affect the edit panels read-only mode.
+   *
+   * @param {UserPositionsCollection} positionsList Positions fetch interval notification.
+   * @returns {Void} None.
+   */
+  const processPositionsUpdate = (positionsList) => {
+    if (isArray(positionsList)) {
+      const newPositionEntity = positionsList[0];
+      if (differenceBy([positionEntity], positionsList, "updating")) {
+        setPositionEntity(newPositionEntity);
+      }
+    }
+  };
+
   return (
     <FormContext {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
         {!isLoading && (
-          <PositionsTable positionEntity={positionEntity} type={getPositionStatusType()} />
+          <PositionsTable
+            notifyPositionsUpdate={processPositionsUpdate}
+            positionEntity={positionEntity}
+            type={getPositionStatusType()}
+          />
         )}
         <Box
           bgcolor="grid.content"

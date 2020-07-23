@@ -42,6 +42,10 @@
     }
 
     @include media(">=lg") {
+      flex: 0 0 calc(75% - 15px);
+    }
+
+    @include media(">=xl") {
       flex: 0 0 calc(80% - 15px);
     }
   }

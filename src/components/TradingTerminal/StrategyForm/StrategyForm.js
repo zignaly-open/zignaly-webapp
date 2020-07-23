@@ -64,8 +64,6 @@ const StrategyForm = (props) => {
 
   const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
   const isPositionView = isObject(positionEntity);
-  const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrading = positionEntity ? positionEntity.isCopyTrading : false;
 
   const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
@@ -507,6 +505,13 @@ const StrategyForm = (props) => {
   };
   useEffect(drawDCATargetPriceLines, [dcaTargetPercentage1]);
 
+  const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
+
   return (
     <Box className="strategyForm" textAlign="center">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -518,7 +523,7 @@ const StrategyForm = (props) => {
         ) : (
           <SidebarCreatePanels currentSymbolData={currentSymbolData} />
         )}
-        {!isClosed && !isCopyTrading && (
+        {!isReadOnly && (
           <CustomButton
             className={"full submitButton"}
             disabled={!isEmpty(errors) || processing}
