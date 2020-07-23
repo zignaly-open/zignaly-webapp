@@ -4,14 +4,6 @@ import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";
-import {
-  composeOpenPositionsDataTable,
-  composeClosePositionsDataTable,
-  composeLogPositionsDataTable,
-  excludeDataTableColumn,
-  composeClosedPositionsForProvider,
-  composeOpenPositionsForProvider,
-} from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
@@ -187,7 +179,14 @@ const PositionsTable = (props) => {
     }
   };
 
-  const positionsTableCompose = usePositionDataTableCompose(positionsFiltered, confirmAction);
+  const {
+    composeClosePositionsDataTable,
+    composeLogPositionsDataTable,
+    composeOpenPositionsDataTable,
+    composeOpenPositionsForProvider,
+    composeClosedPositionsForProvider,
+    excludeDataTableColumn,
+  } = usePositionDataTableCompose(positionsFiltered, confirmAction);
 
   /**
    * Compose MUI data table for positions collection of selected type.
@@ -198,13 +197,13 @@ const PositionsTable = (props) => {
     let dataTable;
 
     if (type === "closed") {
-      dataTable = positionsTableCompose.composeClosePositionsDataTable();
+      dataTable = composeClosePositionsDataTable();
     } else if (type === "log") {
-      dataTable = positionsTableCompose.composeLogPositionsDataTable();
+      dataTable = composeLogPositionsDataTable();
     } else if (type === "open") {
-      dataTable = positionsTableCompose.composeOpenPositionsDataTable();
+      dataTable = composeOpenPositionsDataTable();
       if (storeSettings.selectedExchange.exchangeType === "futures") {
-        dataTable = positionsTableCompose.excludeDataTableColumn(dataTable, "col.cancel");
+        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);

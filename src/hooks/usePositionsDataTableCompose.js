@@ -46,11 +46,22 @@ import { Box } from "@material-ui/core";
  */
 
 /**
+ * @typedef {Object} PositionDataTableComposeHook
+ * @property {function} composeClosePositionsDataTable
+ * @property {function} composeClosedPositionsForProvider
+ * @property {function} composeLogPositionsDataTable
+ * @property {function} composeManagementPositionsDataTable
+ * @property {function} composeOpenPositionsDataTable
+ * @property {function} composeOpenPositionsForProvider
+ * @property {function} excludeDataTableColumn
+ */
+
+/**
  * Compose positions MUI data table object.
  *
  * @param {UserPositionsCollection} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {Object} Position data table compose hook.
+ * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler) {
   /**
@@ -1256,58 +1267,13 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     };
   }
 
-  /**
-   * Compose MUI Data Table row for profile open position entity.
-   *
-   * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeOpenOrdersRow(order) {
-    return [
-      composeRawValue(order.orderId),
-      composeRawValue(order.positionId),
-      composeRawValue(order.symbol),
-      composeRawValue(order.amount),
-      composeRawValue(order.price),
-      composeRawValue(order.side),
-      composeRawValue(order.type),
-      composeRawValue(order.datetimeReadable),
-      // composeOrdersCancelActionButton(order, confirmActionHandler),
-    ];
-  }
-
-  /**
-   * Compose MUI Data Table data structure from positions entities collection.
-   *
-   * @returns {DataTableContent} Open positions data table structure.
-   */
-  function composeOrdersDataTable() {
-    const columnsIds = [
-      "col.orders.orderid",
-      "col.positionid",
-      "col.orders.symbol",
-      "col.amount",
-      "col.orders.price",
-      "col.side",
-      "col.orders.type",
-      "col.orders.datetime",
-      // "col.actions",
-    ];
-
-    return {
-      columns: columnsIds.map(composeColumnOptions),
-      data: positions.map((order) => composeOpenOrdersRow(order)),
-    };
-  }
-
   return {
+    composeClosePositionsDataTable,
     composeLogPositionsDataTable,
     composeManagementPositionsDataTable,
-    composeOpenPositionRowForProvider,
     composeOpenPositionsDataTable,
     composeOpenPositionsForProvider,
-    composeClosePositionsDataTable,
-    composeOrdersDataTable,
+    composeClosedPositionsForProvider,
     excludeDataTableColumn,
   };
 }
