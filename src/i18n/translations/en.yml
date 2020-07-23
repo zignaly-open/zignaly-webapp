@@ -265,6 +265,9 @@ col.orders.orderid: "ORDER ID"
 col.orders.symbol: "SYMBOL"
 col.orders.type: "TYPE"
 col.orders.datetime: "TIME"
+col.contracts.liquidationprice: "LIQUIDATION PRICE"
+col.contracts.markprice: "MARKET PRICE"
+col.contracts.margin: "MARGIN"
 
 # FILTERS AND SORT BY
 fil.allcoins: "All Coins"

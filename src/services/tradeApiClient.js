@@ -36,6 +36,7 @@ import {
   userExchangeAssetsResponseTransform,
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
+  exchangeContractsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -1204,9 +1205,9 @@ class TradeApiClient {
   }
 
   /**
-   * Function to clone a provider.
+   * Function to get exchange open orders.
    *
-   * @param {UserEquityPayload} payload Clone provider payload.
+   * @param {UserEquityPayload} payload exchange orders payload.
    * @returns {Promise<*>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1216,6 +1217,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeOpenOrdersResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get exchange contracts.
+   *
+   * @param {UserEquityPayload} payload exchange contracts payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async exchangeContractsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeContracts";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeContractsResponseTransform(responseData);
   }
 }
 

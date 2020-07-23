@@ -13,6 +13,7 @@ import { Box } from "@material-ui/core";
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import("../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  *
  */
 
@@ -1219,5 +1220,53 @@ export function composeOrdersDataTable(positions) {
   return {
     columns: columnsIds.map(composeColumnOptions),
     data: positions.map((order) => composeOpenOrdersRow(order)),
+  };
+}
+
+/**
+ * Compose MUI Data Table row for profile open position entity.
+ *
+ * @param {ExchangeContractsObject} contract Position entity to compose data table row for.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeContractsRow(contract) {
+  return [
+    composePositionLinkButton(contract.position),
+    composeRawValue(contract.symbol),
+    composeRawValue(contract.amount),
+    composeRawValue(contract.leverage),
+    composeRawValue(contract.liquidationprice),
+    composeRawValue(contract.side),
+    composeRawValue(contract.entryprice),
+    composeRawValue(contract.markprice),
+    composeRawValue(contract.margin),
+    // composeOrdersCancelActionButton(order, confirmActionHandler),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {Array<ExchangeContractsObject>} positions Positions collection.
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeContractsDataTable(positions) {
+  const columnsIds = [
+    "col.positionid",
+    "col.orders.symbol",
+    "col.amount",
+    "col.leverage",
+    "col.contracts.liquidationprice",
+    "col.side",
+    "col.entryprice",
+    "col.contracts.markprice",
+    "col.contracts.margin",
+    // "col.actions",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((order) => composeContractsRow(order)),
   };
 }

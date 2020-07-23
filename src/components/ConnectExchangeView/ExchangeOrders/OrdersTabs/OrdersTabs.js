@@ -5,6 +5,7 @@ import "./OrdersTabs.scss";
 import Orders from "../Orders/Orders";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
+import Contracts from "../Contracts";
 
 const OrdersTabs = () => {
   const {
@@ -49,7 +50,11 @@ const OrdersTabs = () => {
             <Orders />
           </Box>
         )}
-        {tabValue === 1 && <Box className="tabPanel" />}
+        {tabValue === 1 && (
+          <Box className="tabPanel">
+            <Contracts />
+          </Box>
+        )}
       </Box>
     </Box>
   );
