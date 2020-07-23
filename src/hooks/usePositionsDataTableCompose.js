@@ -566,6 +566,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
     const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
+    let updatingMessageId = "terminal.warning.updating";
+    if (status === 1) {
+      updatingMessageId = "terminal.warning.entering";
+    } else if (status > 9) {
+      updatingMessageId = "terminal.warning.exiting";
+    }
 
     return (
       <div className="actions">
@@ -621,22 +627,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
             <AlertTriangle color={colors.purpleLight} />
           </Tooltip>
         )}
-        {status > 9 && (
-          <Tooltip
-            arrow
-            enterTouchDelay={50}
-            placement="left-end"
-            title={<FormattedMessage id="terminal.warning.exiting" />}
-          >
-            <AlertTriangle color={colors.purpleLight} />
-          </Tooltip>
-        )}
         {updating && (
           <Tooltip
             arrow
             enterTouchDelay={50}
             placement="left-end"
-            title={<FormattedMessage id="terminal.warning.updating" />}
+            title={<FormattedMessage id={updatingMessageId} />}
           >
             <CircularProgress color="primary" size={22} />
           </Tooltip>
