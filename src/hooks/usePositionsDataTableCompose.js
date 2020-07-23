@@ -458,19 +458,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose formatted date.
-   *
-   * @param {PositionEntityKeys} propertyName Position entity property to retrieve the price to display.
-   * @param {number} dataIndex Data entity index.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function composeDateFormatted(propertyName, dataIndex) {
-    const position = positions[dataIndex];
-
-    return <>{position[propertyName]}</>;
-  }
-
-  /**
    * Compose formatted price with currency symbol element.
    *
    * @param {PositionEntityKeys} propertyName Position entity property to retrieve the price to display.
