@@ -70,7 +70,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeProviderIcon(dataIndex) {
+  function renderProviderIcon(dataIndex) {
     const position = positions[dataIndex];
     // Wrap with link to provider profile when available.
     if (position.providerLink) {
@@ -94,7 +94,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeProviderName(dataIndex) {
+  function renderProviderName(dataIndex) {
     const position = positions[dataIndex];
     // Wrap with link to provider profile when available.
     if (position.providerLink) {
@@ -114,7 +114,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Formatted message element.
    */
-  function composeStatusMessage(dataIndex) {
+  function renderStatusMessage(dataIndex) {
     const position = positions[dataIndex];
     const statusCode = position.status;
     const statusTranslationId = `status.${statusCode}`;
@@ -136,7 +136,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element|null} Composed JSX element or null.
    */
-  function composeTrailingStopIcon(dataIndex) {
+  function renderTrailingStopIcon(dataIndex) {
     const position = positions[dataIndex];
     const trailingStopColor = position.trailingStopTriggered ? colors.green : colors.darkGrey;
     if (position.trailingStopTriggerPercentage) {
@@ -152,7 +152,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeAmount(dataIndex) {
+  function renderAmount(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -168,7 +168,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeAge(dataIndex) {
+  function renderAge(dataIndex) {
     const position = positions[dataIndex];
     return <>{position.age}</>;
   }
@@ -179,7 +179,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeLeverage(dataIndex) {
+  function renderLeverage(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -195,7 +195,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {string|number} value Position entity to compose amount for.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeValue(value) {
+  function renderValue(value) {
     return <>{formatFloat(value)}</>;
   }
 
@@ -205,7 +205,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeQuoteSize(dataIndex) {
+  function renderQuoteSize(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -220,7 +220,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composePositionSize(dataIndex) {
+  function renderPositionSize(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -236,7 +236,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeRealInvestment(dataIndex) {
+  function renderRealInvestment(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -251,7 +251,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeEntryPrice(dataIndex) {
+  function renderEntryPrice(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -266,7 +266,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeExitPrice(dataIndex) {
+  function renderExitPrice(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -282,7 +282,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composePriceDifference(dataIndex) {
+  function renderPriceDifference(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -299,7 +299,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeReturnsFromAllocated(dataIndex) {
+  function renderReturnsFromAllocated(dataIndex) {
     const position = positions[dataIndex];
     return <>{formatPrice(position.returnFromAllocated)} %</>;
   }
@@ -310,7 +310,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeReturnsFromInvestment(dataIndex) {
+  function renderReturnsFromInvestment(dataIndex) {
     const position = positions[dataIndex];
     return <>{formatPrice(position.returnFromInvestment)} %</>;
   }
@@ -321,7 +321,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeProfit(dataIndex) {
+  function renderProfit(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -343,7 +343,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeNetProfitPercentage(dataIndex) {
+  function renderNetProfitPercentage(dataIndex) {
     const position = positions[dataIndex];
     return (
       <span className={position.netProfitStyle}>
@@ -358,7 +358,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeNetProfit(dataIndex) {
+  function renderNetProfit(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -374,7 +374,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeProfitPercentage(dataIndex) {
+  function renderProfitPercentage(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -395,7 +395,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeUnrealizedNetProfit(dataIndex) {
+  function renderUnrealizedNetProfit(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -419,7 +419,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeUnrealizedProfitPercentage(dataIndex) {
+  function renderUnrealizedProfitPercentage(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -443,7 +443,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeStopLossPrice(dataIndex) {
+  function renderStopLossPrice(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -459,7 +459,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeRisk(dataIndex) {
+  function renderRisk(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -475,7 +475,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeBaseSymbolWithPrice(propertyName, dataIndex) {
+  function renderBaseSymbolWithPrice(propertyName, dataIndex) {
     const position = positions[dataIndex];
     const price = /** @type {number} */ (position[propertyName] || 0);
 
@@ -492,7 +492,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeTakeProfitTargets(dataIndex) {
+  function renderTakeProfitTargets(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -521,7 +521,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeRebuyTargets(dataIndex) {
+  function renderRebuyTargets(dataIndex) {
     const position = positions[dataIndex];
     return (
       <>
@@ -550,7 +550,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {string|number} value Value to wrap in fragment.
    * @returns {string|number} Composed JSX element.
    */
-  function composeRawValue(value) {
+  function renderRawValue(value) {
     return value ? value : "-";
   }
 
@@ -584,7 +584,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeAllActionButtons(dataIndex) {
+  function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
     const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
 
@@ -672,7 +672,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeManagementActionButtons(dataIndex) {
+  function renderManagementActionButtons(dataIndex) {
     const position = positions[dataIndex];
     const { isCopyTrading, isCopyTrader, closed } = position;
 
@@ -718,7 +718,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeCancelActionButton(dataIndex) {
+  function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
     const { exchange, positionId, updating } = position;
     const isZignaly = exchange.toLowerCase() === "zignaly";
@@ -746,7 +746,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeViewActionButton(dataIndex) {
+  function renderViewActionButton(dataIndex) {
     const position = positions[dataIndex];
     return (
       <div className="actions">
@@ -821,78 +821,78 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       {
         columnId: "col.provider.logo",
         propertyName: "providerLogo",
-        renderFunction: composeProviderIcon,
+        renderFunction: renderProviderIcon,
       },
       {
         columnId: "col.provider.name",
         propertyName: "providerName",
-        renderFunction: composeProviderName,
+        renderFunction: renderProviderName,
       },
       { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
-      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: renderEntryPrice },
       {
         columnId: "col.price.current",
         propertyName: "sellPrice",
-        renderFunction: composeExitPrice,
+        renderFunction: renderExitPrice,
       },
-      { columnId: "col.plnumber", propertyName: "profit", renderFunction: composeProfit },
+      { columnId: "col.plnumber", propertyName: "profit", renderFunction: renderProfit },
       {
         columnId: "col.plpercentage",
         propertyName: "profitPercentage",
-        renderFunction: composeProfitPercentage,
+        renderFunction: renderProfitPercentage,
       },
       {
         columnId: "col.pricedifference",
         propertyName: "priceDifference",
-        renderFunction: composePriceDifference,
+        renderFunction: renderPriceDifference,
       },
       { columnId: "col.side", propertyName: "side", renderFunction: null },
       {
         columnId: "col.stoplossprice",
         propertyName: "stopLossPrice",
-        renderFunction: composeStopLossPrice,
+        renderFunction: renderStopLossPrice,
       },
-      { columnId: "col.initialamount", propertyName: "amount", renderFunction: composeAmount },
+      { columnId: "col.initialamount", propertyName: "amount", renderFunction: renderAmount },
       {
         columnId: "col.remainingamount",
         propertyName: "remainAmount",
-        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+        renderFunction: partial(renderBaseSymbolWithPrice, "remainAmount"),
       },
       {
         columnId: "col.invested",
         propertyName: "positionSizeQuote",
-        renderFunction: composeQuoteSize,
+        renderFunction: renderQuoteSize,
       },
       {
         columnId: "col.realinvestment",
         propertyName: "realInvestment",
-        renderFunction: composeRealInvestment,
+        renderFunction: renderRealInvestment,
       },
-      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: renderLeverage },
       {
         columnId: "col.tsl",
         propertyName: "trailingStopTriggered",
-        renderFunction: composeTrailingStopIcon,
+        renderFunction: renderTrailingStopIcon,
       },
       {
         columnId: "col.tp",
         propertyName: "takeProfitTargetsCountPending",
-        renderFunction: composeTakeProfitTargets,
+        renderFunction: renderTakeProfitTargets,
       },
       {
         columnId: "col.dca",
         propertyName: "reBuyTargetsCountPending",
-        renderFunction: composeRebuyTargets,
+        renderFunction: renderRebuyTargets,
       },
-      { columnId: "col.risk", propertyName: "risk", renderFunction: composeRisk },
-      { columnId: "col.age", propertyName: "ageSeconds", renderFunction: composeAge },
+      { columnId: "col.risk", propertyName: "risk", renderFunction: renderRisk },
+      { columnId: "col.age", propertyName: "ageSeconds", renderFunction: renderAge },
       {
         columnId: "col.actions",
         propertyName: "updating",
-        renderFunction: composeAllActionButtons,
+        renderFunction: renderAllActionButtons,
       },
-      { columnId: "col.cancel", propertyName: "status", renderFunction: composeCancelActionButton },
+      { columnId: "col.cancel", propertyName: "status", renderFunction: renderCancelActionButton },
     ];
 
     const dataTable = {
@@ -915,72 +915,72 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       {
         columnId: "col.provider.logo",
         propertyName: "providerLogo",
-        renderFunction: composeProviderIcon,
+        renderFunction: renderProviderIcon,
       },
       {
         columnId: "col.provider.name",
         propertyName: "providerName",
-        renderFunction: composeProviderName,
+        renderFunction: renderProviderName,
       },
-      { columnId: "col.stat", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.stat", propertyName: "status", renderFunction: renderStatusMessage },
       { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
-      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
-      { columnId: "col.price.exit", propertyName: "sellPrice", renderFunction: composeExitPrice },
-      { columnId: "col.plnumber", propertyName: "profit", renderFunction: composeProfit },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: renderEntryPrice },
+      { columnId: "col.price.exit", propertyName: "sellPrice", renderFunction: renderExitPrice },
+      { columnId: "col.plnumber", propertyName: "profit", renderFunction: renderProfit },
       {
         columnId: "col.plpercentage",
         propertyName: "profitPercentage",
-        renderFunction: composeProfitPercentage,
+        renderFunction: renderProfitPercentage,
       },
       { columnId: "col.side", propertyName: "side", renderFunction: null },
       {
         columnId: "col.stoplossprice",
         propertyName: "stopLossPrice",
-        renderFunction: composeStopLossPrice,
+        renderFunction: renderStopLossPrice,
       },
-      { columnId: "col.amount", propertyName: "remainAmount", renderFunction: composeAmount },
+      { columnId: "col.amount", propertyName: "remainAmount", renderFunction: renderAmount },
       {
         columnId: "col.invested",
         propertyName: "positionSizeQuote",
-        renderFunction: composeQuoteSize,
+        renderFunction: renderQuoteSize,
       },
       {
         columnId: "col.realinvestment",
         propertyName: "realInvestment",
-        renderFunction: composeRealInvestment,
+        renderFunction: renderRealInvestment,
       },
-      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: renderLeverage },
       {
         columnId: "col.tsl",
         propertyName: "trailingStopTriggered",
-        renderFunction: composeTrailingStopIcon,
+        renderFunction: renderTrailingStopIcon,
       },
       {
         columnId: "col.tp",
         propertyName: "takeProfitTargetsCountPending",
-        renderFunction: composeTakeProfitTargets,
+        renderFunction: renderTakeProfitTargets,
       },
       {
         columnId: "col.dca",
         propertyName: "reBuyTargetsCountPending",
-        renderFunction: composeRebuyTargets,
+        renderFunction: renderRebuyTargets,
       },
       { columnId: "col.fees", propertyName: "fees", renderFunction: null },
       {
         columnId: "col.netprofit.percentage",
         propertyName: "netProfitPercentage",
-        renderFunction: composeNetProfitPercentage,
+        renderFunction: renderNetProfitPercentage,
       },
       {
         columnId: "col.netprofit.amount",
         propertyName: "netProfit",
-        renderFunction: composeNetProfit,
+        renderFunction: renderNetProfit,
       },
       {
         columnId: "col.actions",
         propertyName: "updating",
-        renderFunction: composeViewActionButton,
+        renderFunction: renderViewActionButton,
       },
     ];
 
@@ -1002,33 +1002,33 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       {
         columnId: "col.provider.logo",
         propertyName: "providerLogo",
-        renderFunction: composeProviderIcon,
+        renderFunction: renderProviderIcon,
       },
       {
         columnId: "col.provider.name",
         propertyName: "providerName",
-        renderFunction: composeProviderName,
+        renderFunction: renderProviderName,
       },
-      { columnId: "col.stat", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.stat", propertyName: "status", renderFunction: renderStatusMessage },
       { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
-      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: renderEntryPrice },
       { columnId: "col.side", propertyName: "side", renderFunction: null },
-      { columnId: "col.amount", propertyName: "amount", renderFunction: composeAmount },
+      { columnId: "col.amount", propertyName: "amount", renderFunction: renderAmount },
       {
         columnId: "col.remainingamount",
         propertyName: "remainAmount",
-        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+        renderFunction: partial(renderBaseSymbolWithPrice, "remainAmount"),
       },
       {
         columnId: "col.invested",
         propertyName: "positionSizeQuote",
-        renderFunction: composeQuoteSize,
+        renderFunction: renderQuoteSize,
       },
       {
         columnId: "col.actions",
         propertyName: "updating",
-        renderFunction: composeViewActionButton,
+        renderFunction: renderViewActionButton,
       },
     ];
 
@@ -1156,28 +1156,28 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
       { columnId: "col.date.close", propertyName: "closeDateReadable", renderFunction: null },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
-      { columnId: "col.entryprice", propertyName: "buyPrice", renderFunction: composeEntryPrice },
-      { columnId: "col.exitprice", propertyName: "sellPrice", renderFunction: composeExitPrice },
+      { columnId: "col.entryprice", propertyName: "buyPrice", renderFunction: renderEntryPrice },
+      { columnId: "col.exitprice", propertyName: "sellPrice", renderFunction: renderExitPrice },
       {
         columnId: "col.returnfrominvestment",
         propertyName: "returnFromInvestment",
-        renderFunction: composeReturnsFromInvestment,
+        renderFunction: renderReturnsFromInvestment,
       },
       {
         columnId: "col.returnfromallocated",
         propertyName: "returnFromAllocated",
-        renderFunction: composeReturnsFromAllocated,
+        renderFunction: renderReturnsFromAllocated,
       },
       { columnId: "col.side", propertyName: "side", renderFunction: null },
-      { columnId: "col.amount", propertyName: "amount", renderFunction: composeAmount },
+      { columnId: "col.amount", propertyName: "amount", renderFunction: renderAmount },
       {
         columnId: "col.invested",
         propertyName: "positionSize",
-        renderFunction: composePositionSize,
+        renderFunction: renderPositionSize,
       },
-      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: renderLeverage },
       { columnId: "col.exchange", propertyName: "exchange", renderFunction: null },
-      { columnId: "col.status", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.status", propertyName: "status", renderFunction: renderStatusMessage },
     ];
 
     return {
@@ -1194,72 +1194,72 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   function composeOpenPositionsForProvider() {
     const columnsIds = [
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
-      { columnId: "col.status", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.status", propertyName: "status", renderFunction: renderStatusMessage },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
-      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
-      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: renderEntryPrice },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: renderLeverage },
       {
         columnId: "col.price.current",
         propertyName: "sellPrice",
-        renderFunction: composeExitPrice,
+        renderFunction: renderExitPrice,
       },
       {
         columnId: "col.unrealizedplnumber",
         propertyName: "unrealizedProfitLosses",
-        renderFunction: composeUnrealizedNetProfit,
+        renderFunction: renderUnrealizedNetProfit,
       },
       {
         columnId: "col.unrealizedplpercentage",
         propertyName: "unrealizedProfitLossesPercentage",
-        renderFunction: composeUnrealizedProfitPercentage,
+        renderFunction: renderUnrealizedProfitPercentage,
       },
       {
         columnId: "col.pricedifference",
         propertyName: "priceDifference",
-        renderFunction: composePriceDifference,
+        renderFunction: renderPriceDifference,
       },
       { columnId: "col.side", propertyName: "side", renderFunction: null },
       {
         columnId: "col.stoplossprice",
         propertyName: "stopLossPrice",
-        renderFunction: composeStopLossPrice,
+        renderFunction: renderStopLossPrice,
       },
-      { columnId: "col.initialamount", propertyName: "amount", renderFunction: composeAmount },
+      { columnId: "col.initialamount", propertyName: "amount", renderFunction: renderAmount },
       {
         columnId: "col.remainingamount",
         propertyName: "remainAmount",
-        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+        renderFunction: partial(renderBaseSymbolWithPrice, "remainAmount"),
       },
       {
         columnId: "col.invested",
         propertyName: "positionSizeQuote",
-        renderFunction: composeQuoteSize,
+        renderFunction: renderQuoteSize,
       },
       {
         columnId: "col.realinvestment",
         propertyName: "realInvestment",
-        renderFunction: composeRealInvestment,
+        renderFunction: renderRealInvestment,
       },
       {
         columnId: "col.tsl",
         propertyName: "trailingStopTriggered",
-        renderFunction: composeTrailingStopIcon,
+        renderFunction: renderTrailingStopIcon,
       },
       {
         columnId: "col.tp",
         propertyName: "takeProfitTargetsCountPending",
-        renderFunction: composeTakeProfitTargets,
+        renderFunction: renderTakeProfitTargets,
       },
       {
         columnId: "col.dca",
         propertyName: "reBuyTargetsCountPending",
-        renderFunction: composeRebuyTargets,
+        renderFunction: renderRebuyTargets,
       },
-      { columnId: "col.risk", propertyName: "risk", renderFunction: composeRisk },
+      { columnId: "col.risk", propertyName: "risk", renderFunction: renderRisk },
       {
         columnId: "col.actions",
         propertyName: "updating",
-        renderFunction: composeAllActionButtons,
+        renderFunction: renderAllActionButtons,
       },
     ];
 
