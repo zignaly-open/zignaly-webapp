@@ -8,6 +8,10 @@
   }
 
   @include media(">=lg") {
+    flex: 0 0 25%;
+  }
+
+  @include media(">=xl") {
     flex: 0 0 20%;
   }
 

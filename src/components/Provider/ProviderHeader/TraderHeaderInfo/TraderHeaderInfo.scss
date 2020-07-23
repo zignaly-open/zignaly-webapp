@@ -31,10 +31,65 @@
       margin-left: 10px;
     }
   }
+}
 
-  .submitButton,
-  .loadMoreButton {
-    margin-right: 40px;
-    min-width: 215px;
+@include media("<=sm") {
+  .providerHeaderInfo {
+    flex-wrap: wrap;
+
+    h4 {
+      margin: 5px 20px 5px 0;
+
+      &.base {
+        margin: 5px 0;
+        width: 18.75%;
+      }
+
+      &.trade {
+        margin: 5px 0;
+        width: 18.75%;
+      }
+
+      &.type {
+        margin: 5px 0;
+        width: 18.75%;
+      }
+
+      &.copiers {
+        margin: 5px 0;
+        width: 15.75%;
+      }
+
+      &.price {
+        margin: 5px 0;
+        width: 28%;
+      }
+
+      span {
+        display: none;
+      }
+
+      b {
+        font-family: "PlexSans-Bold";
+        margin-left: 5px;
+      }
+
+      .imageBox {
+        margin-left: 8px;
+        width: fit-content;
+
+        .exchangeIcon {
+          height: 17px;
+          width: 17px;
+        }
+      }
+
+      .editIcon {
+        cursor: pointer;
+        height: 24px;
+        margin-left: 10px;
+        width: 24px;
+      }
+    }
   }
 }

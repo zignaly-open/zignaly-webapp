@@ -92,28 +92,24 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    try {
-      setLoading(true);
-      const payload = assign(emptySettings, data, {
-        takeProfitTargets: prepareProfitTargetsPayload(),
-        reBuyTargets: prepareBuyTargetsPayload(),
-        token: storeSession.tradeApi.accessToken,
-        providerId: storeViews.provider.id,
-        internalExchangeId: storeSettings.selectedExchange.internalId,
-        exchangeId: storeSettings.selectedExchange.id,
+    setLoading(true);
+    const payload = assign(emptySettings, data, {
+      takeProfitTargets: prepareProfitTargetsPayload(),
+      reBuyTargets: prepareBuyTargetsPayload(),
+      token: storeSession.tradeApi.accessToken,
+      providerId: storeViews.provider.id,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+      exchangeId: storeSettings.selectedExchange.id,
+    });
+    tradeApi
+      .providerExchangeSettingsUpdate(payload)
+      .then(() => {})
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      tradeApi
-        .providerExchangeSettingsUpdate(payload)
-        .then(() => {})
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-    }
   };
 
   const prepareProfitTargetsPayload = () => {

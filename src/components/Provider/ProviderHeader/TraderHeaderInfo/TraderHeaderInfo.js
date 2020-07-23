@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./TraderHeaderInfo.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
@@ -8,13 +8,15 @@ import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import { formatFloat } from "../../../../utils/format";
+import PaymentButton from "../PaymentButton";
+import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 
 /**
  * Provides the navigation bar for the dashboard.
  *
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderHeaderInfo = () => {
+const TraderHeaderInfo = () => {
   const storeViews = useStoreViewsSelector();
   const [copyModal, showCopyModal] = useState(false);
 
@@ -30,8 +32,10 @@ const ProviderHeaderInfo = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Typography variant="h4">
-        <FormattedMessage id="srv.basecurrency" />
+      <Typography className="base" variant="h4">
+        <span>
+          <FormattedMessage id="srv.basecurrency" />
+        </span>
         <b>
           {storeViews.provider.copyTradingQuote
             ? storeViews.provider.copyTradingQuote.toUpperCase()
@@ -39,8 +43,10 @@ const ProviderHeaderInfo = () => {
         </b>
       </Typography>
 
-      <Typography variant="h4">
-        <FormattedMessage id="copyt.trading" />
+      <Typography className="trade" variant="h4">
+        <span>
+          <FormattedMessage id="copyt.trading" />
+        </span>
         <Box className="imageBox">
           {storeViews.provider.exchanges.map((item, index) => (
             <ExchangeIcon exchange={item} key={index} size="small" />
@@ -48,20 +54,26 @@ const ProviderHeaderInfo = () => {
         </Box>
       </Typography>
 
-      <Typography variant="h4">
-        <FormattedMessage id="accounts.exchange.type" />
+      <Typography className="type" variant="h4">
+        <span>
+          <FormattedMessage id="accounts.exchange.type" />
+        </span>
         <b>
           {storeViews.provider.exchangeType ? storeViews.provider.exchangeType.toUpperCase() : ""}
         </b>
       </Typography>
 
-      <Typography variant="h4">
-        <FormattedMessage id="copyt.copiers" />
+      <Typography className="copiers" variant="h4">
+        <span>
+          <FormattedMessage id="copyt.copiers" />
+        </span>
         <b>{storeViews.provider.followers} </b>
       </Typography>
 
-      <Typography variant="h4">
-        <FormattedMessage id="srv.edit.price" />
+      <Typography className="price" variant="h4">
+        <span>
+          <FormattedMessage id="srv.edit.price" />
+        </span>
         <b>{`$${storeViews.provider.price}/Month`}</b>
       </Typography>
       <Typography variant="h4">
@@ -95,6 +107,12 @@ const ProviderHeaderInfo = () => {
           />
         )}
       </Typography>
+      <Hidden smUp>
+        {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
+        {storeViews.provider.internalPaymentInfo && (
+          <PaymentButton provider={storeViews.provider} />
+        )}
+      </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={storeViews.provider} />
       </Modal>
@@ -102,4 +120,4 @@ const ProviderHeaderInfo = () => {
   );
 };
 
-export default ProviderHeaderInfo;
+export default TraderHeaderInfo;

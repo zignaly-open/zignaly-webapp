@@ -47,12 +47,16 @@ const ProviderHeaderActions = () => {
       {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
 
       <Typography variant="h4">
-        <FormattedMessage id="copyt.copiers" />
+        <span>
+          <FormattedMessage id="copyt.copiers" />
+        </span>
         <b>{storeViews.provider.followers} </b>
       </Typography>
 
       <Typography variant="h4">
-        <FormattedMessage id="srv.edit.price" />
+        <span>
+          <FormattedMessage id="srv.edit.price" />
+        </span>
         <b>{`$${storeViews.provider.price}/Month`}</b>
       </Typography>
 

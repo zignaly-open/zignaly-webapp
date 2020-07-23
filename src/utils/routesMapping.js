@@ -176,15 +176,15 @@ export const createTraderRoutes = (providerId, provider) => {
           id: "srv.edit",
           to: `/copyTraders/${provider.id}/edit`,
         });
+        data.links.push({
+          id: "srv.users",
+          to: `/copyTraders/${provider.id}/users`,
+        });
+        data.links.push({
+          id: "srv.management",
+          to: `/copyTraders/${provider.id}/management`,
+        });
       }
-      data.links.push({
-        id: "srv.users",
-        to: `/copyTraders/${provider.id}/users`,
-      });
-      data.links.push({
-        id: "srv.management",
-        to: `/copyTraders/${provider.id}/management`,
-      });
     }
     return data;
   }
@@ -243,11 +243,11 @@ export const createProviderRoutes = (providerId, provider) => {
           id: "srv.edit",
           to: `/signalProviders/${provider.id}/edit`,
         });
+        data.links.push({
+          id: "srv.users",
+          to: `/signalProviders/${provider.id}/users`,
+        });
       }
-      data.links.push({
-        id: "srv.users",
-        to: `/signalProviders/${provider.id}/users`,
-      });
     }
     return data;
   }

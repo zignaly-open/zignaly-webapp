@@ -1,7 +1,13 @@
 import React from "react";
 import "./TabsMenu.scss";
 import { Tab, Tabs } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+
+/**
+ *
+ * @typedef {Object} DefaultTabsObject
+ * @property {Boolean} display
+ * @property {JSX.Element} label
+ */
 
 /**
  *
@@ -9,6 +15,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {Object} DefaultProps
  * @property {Number} tabValue
  * @property {TabTypeMap["props"]["onChange"]} changeTab
+ * @property {Array<DefaultTabsObject>} tabs
  */
 
 /**
@@ -17,7 +24,7 @@ import { FormattedMessage } from "react-intl";
  */
 
 const TabsMenu = (props) => {
-  const { changeTab, tabValue } = props;
+  const { changeTab, tabValue, tabs } = props;
 
   return (
     <Tabs
@@ -29,11 +36,10 @@ const TabsMenu = (props) => {
       onChange={changeTab}
       value={tabValue}
     >
-      <Tab classes={{ selected: "selected" }} label={<FormattedMessage id="accounts.orders" />} />
-      <Tab
-        classes={{ selected: "selected" }}
-        label={<FormattedMessage id="accounts.contracts" />}
-      />
+      {tabs.map(
+        (item, index) =>
+          item.display && <Tab classes={{ selected: "selected" }} key={index} label={item.label} />,
+      )}
     </Tabs>
   );
 };

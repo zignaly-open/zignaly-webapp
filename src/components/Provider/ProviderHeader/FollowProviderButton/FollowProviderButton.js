@@ -91,7 +91,7 @@ const FollowProviderButton = ({ provider }) => {
   return (
     <Box
       alignItems="center"
-      className="copyTraderButton"
+      className="followProviderButton"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
@@ -125,7 +125,7 @@ const FollowProviderButton = ({ provider }) => {
         )
       ) : (
         <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-          <FormattedMessage id="copyt.stopcopyingtrader" />
+          <FormattedMessage id="srv.stopfollowing" />
         </CustomButton>
       )}
     </Box>

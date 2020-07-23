@@ -85,25 +85,25 @@ export const formatCurrency = (value) => {
   const numberLength = Math.round(log10(value));
   switch (numberLength) {
     case 1:
-      return `${formatFloat(value)}`;
+      return `${formatFloat2Dec(value)}`;
     case 2:
-      return `${formatFloat(value)}`;
+      return `${formatFloat2Dec(value)}`;
     case 3:
-      return `${formatFloat(value / 1000)} Thousand`;
+      return `${formatFloat2Dec(value)}`;
     case 4:
-      return `${formatFloat(value / 1000)} Thousand`;
+      return `${formatFloat2Dec(value)}`;
     case 5:
-      return `${formatFloat(value / 1000)} Thousand`;
+      return `${formatFloat2Dec(value)}`;
     case 6:
-      return `${formatFloat(value / 1000000)} Million`;
+      return `${formatFloat2Dec(value / 1000000)} Million`;
     case 7:
-      return `${formatFloat(value / 1000000)}. Million`;
+      return `${formatFloat2Dec(value / 1000000)}. Million`;
     case 8:
-      return `${formatFloat(value / 1000000)} Million`;
+      return `${formatFloat2Dec(value / 1000000)} Million`;
     case 9:
-      return `${formatFloat(value / 1000000)} Million`;
+      return `${formatFloat2Dec(value / 1000000)} Million`;
     case 10:
-      return `${formatFloat(value / 1000000)} Million`;
+      return `${formatFloat2Dec(value / 1000000)} Million`;
     default:
       return "";
   }

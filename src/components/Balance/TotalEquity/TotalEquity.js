@@ -84,7 +84,7 @@ const TotalEquity = ({ dailyBalance, modal }) => {
             width="100%"
           >
             <TitleBar balance={balance} />
-            <EquityFilter list={list} onChange={handleChange} />
+            <EquityFilter list={dailyBalance.balances} onChange={handleChange} />
           </Box>
           <TotalEquityGraph list={list} modal={modal} />
           <EquityGraphLabels list={list} />

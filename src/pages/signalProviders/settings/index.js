@@ -38,6 +38,9 @@ const SignalProvidersSettings = () => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

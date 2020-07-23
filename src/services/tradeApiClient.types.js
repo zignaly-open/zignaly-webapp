@@ -927,7 +927,14 @@ function createEmptyProviderEntity() {
  * @returns {number} The parsed amount value.
  */
 function safeParseFloat(value) {
-  const safeValue = String(value).replace(/[^0-9\\.\\-]/g, "");
+  let safeValue = String(value)
+    .toUpperCase()
+    .replace(/[^0-9.E\\-]/g, "");
+
+  // Convert the scientific notation numbers to 8 digits precision.
+  if (safeValue.indexOf("E") !== -1) {
+    safeValue = parseFloat(safeValue).toFixed(8);
+  }
 
   return parseFloat(safeValue);
 }
@@ -3364,5 +3371,64 @@ const createEmptyExchangeOpenOrdersEntity = () => {
     datetime: "",
     datetimeReadable: "",
     status: "",
+  };
+};
+
+/**
+ * @typedef {Object} ExchangeContractsObject
+ * @property {String} positionId
+ * @property {Number} amount
+ * @property {Number} entryprice
+ * @property {Number} leverage
+ * @property {Number} liquidationprice
+ * @property {Number} margin
+ * @property {Number} markprice
+ * @property {String} side
+ * @property {String} symbol
+ */
+
+/**
+ * Transform Create Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {Array<ExchangeContractsObject>} Provider
+ */
+export function exchangeContractsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of objects");
+  }
+
+  return response.map((item) => {
+    return exchangeContractsItemTransform(item);
+  });
+}
+
+/**
+ *
+ * @param {*} contract Exchange open orders item from response.
+ * @returns {ExchangeContractsObject} transformed open orders item.
+ */
+function exchangeContractsItemTransform(contract) {
+  const orderEntity = assign(createEmptyExchangeContractsEntity(), contract, {
+    positionId: contract.position,
+  });
+  return orderEntity;
+}
+
+/**
+ * Create an empty Created Provider Entity
+ * @returns {ExchangeContractsObject} New Provider entity.
+ */
+const createEmptyExchangeContractsEntity = () => {
+  return {
+    positionId: "",
+    amount: 0,
+    entryprice: 0,
+    leverage: 0,
+    liquidationprice: 0,
+    margin: 0,
+    markprice: 0,
+    side: "",
+    symbol: "",
   };
 };

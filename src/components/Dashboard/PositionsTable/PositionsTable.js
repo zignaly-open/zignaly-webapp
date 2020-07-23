@@ -32,6 +32,7 @@ import "./PositionsTable.scss";
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
+ * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */
 
@@ -42,14 +43,17 @@ import "./PositionsTable.scss";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const { type, isProfile, positionEntity = null } = props;
+  const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
-  const { positionsAll, positionsFiltered, setFilters, loading } = usePositionsList(
-    type,
-    positionEntity,
-  );
+  const {
+    flagPositionUpdating,
+    positionsAll,
+    positionsFiltered,
+    setFilters,
+    loading,
+  } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
   const showTypesFilter = type === "log";
 
   const getTablePersistKey = () => {
@@ -125,6 +129,8 @@ const PositionsTable = (props) => {
    */
   const executeAction = () => {
     const { positionId, action } = actionData;
+    flagPositionUpdating(positionId);
+
     if (action === "cancel") {
       tradeApi
         .positionClose({
@@ -212,8 +218,8 @@ const PositionsTable = (props) => {
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      } else if (type === "open" && positionEntity.isCopyTrading) {
-        // Exclude actions on copy trading open position.
+      } else if (type === "open" && positionEntity.isCopyTrading && !positionEntity.isCopyTrader) {
+        // Exclude actions on copy trading open position, except for the owner.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
       }
     }

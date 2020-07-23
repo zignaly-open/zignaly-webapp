@@ -309,6 +309,17 @@ const initialState = {
         "col.orders.datetime",
         "col.actions",
       ],
+      contractsTable: [
+        "col.positionid",
+        "col.orders.symbol",
+        "col.amount",
+        "col.leverage",
+        "col.contracts.liquidationprice",
+        "col.side",
+        "col.entryprice",
+        "col.contracts.markprice",
+        "col.contracts.margin",
+      ],
     },
     selectedExchange: {
       id: "",

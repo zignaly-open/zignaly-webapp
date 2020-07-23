@@ -74,7 +74,7 @@ const BalanceBox = () => {
             justifyContent="space-between"
           >
             <Typography className="title" variant="subtitle1">
-              <FormattedMessage id="col.plnumber" />
+              <FormattedMessage id="balance.profitlosses" />
             </Typography>
             <Typography className={balance.pnlBTC > 0 ? "green" : "red"} variant="h5">
               BTC {balance.pnlBTC}

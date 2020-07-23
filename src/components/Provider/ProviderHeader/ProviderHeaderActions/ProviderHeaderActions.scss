@@ -1,14 +1,16 @@
 .providerHeaderActions {
-  margin-bottom: 50px;
+  flex-wrap: nowrap;
+  margin-bottom: 30px;
   width: 100%;
 
   .titleBox {
     margin-right: 40px;
-    max-width: 500px;
+    max-width: 400px;
 
     .providerLogo {
+      height: 40px;
       margin-right: 16px;
-      min-width: 40px;
+      width: 40px;
     }
 
     h1 {
@@ -18,7 +20,7 @@
 
   h4 {
     font-family: "PlexSans-Regular";
-    margin-right: 40px;
+    margin-right: 30px;
 
     b {
       font-family: "PlexSans-Bold";
@@ -29,5 +31,45 @@
   .loadMoreButton {
     margin-right: 40px;
     min-width: 215px;
+  }
+}
+
+@include media("<=sm") {
+  .providerHeaderActions {
+    flex-wrap: wrap;
+
+    .titleBox {
+      margin-right: 0;
+      max-width: 100%;
+      width: 100%;
+
+      .providerLogo {
+        height: 30px;
+        margin-right: 10px;
+        width: 30px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-right: 0;
+      }
+    }
+
+    h4 {
+      font-family: "PlexSans-Regular";
+      margin: 10px 30px 10px 0;
+      margin-right: 0;
+      width: fit-content;
+
+      b {
+        font-family: "PlexSans-Bold";
+        margin-left: 5px;
+      }
+    }
+
+    .loadMoreButton {
+      margin-right: 0;
+      min-width: 100%;
+    }
   }
 }

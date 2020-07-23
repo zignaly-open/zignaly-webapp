@@ -1,18 +1,30 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Delete, Edit2, ExternalLink, Eye, LogOut, TrendingUp, XCircle } from "react-feather";
+import {
+  AlertTriangle,
+  Delete,
+  Edit2,
+  ExternalLink,
+  Eye,
+  LogOut,
+  TrendingUp,
+  XCircle,
+} from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { formatFloat } from "./format";
+import { CircularProgress } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import("../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  *
  */
 
@@ -232,7 +244,7 @@ function composePriceDifference(position) {
   return (
     <>
       <span className={position.priceDifferenceStyle}>
-        {formatPrice(position.priceDifference)} %
+        {formatNumber(position.priceDifference, 2)} %
       </span>
     </>
   );
@@ -245,7 +257,7 @@ function composePriceDifference(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeReturnsFromAllocated(position) {
-  return <>{formatPrice(position.returnFromAllocated)} %</>;
+  return <>{formatNumber(position.returnFromAllocated, 2)} %</>;
 }
 
 /**
@@ -255,7 +267,7 @@ function composeReturnsFromAllocated(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeReturnsFromInvestment(position) {
-  return <>{formatPrice(position.returnFromInvestment)} %</>;
+  return <>{formatNumber(position.returnFromInvestment, 2)} %</>;
 }
 
 /**
@@ -364,7 +376,7 @@ function composeUnrealizedProfitPercentage(position) {
         <>
           <span className="symbol">{position.quote}</span>
           <span className={position.unrealizedProfitStyle}>
-            {formatPrice(position.unrealizedProfitLossesPercentage)} %
+            {formatNumber(position.unrealizedProfitLossesPercentage, 2)} %
           </span>
         </>
       )}
@@ -396,7 +408,7 @@ function composeStopLossPrice(position) {
 function composeRisk(position) {
   return (
     <>
-      <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
+      <span className={position.riskStyle}>{formatNumber(position.risk, 2)} %</span>
     </>
   );
 }
@@ -514,11 +526,11 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
 
   return (
     <div className="actions">
-      {isCopyTrading && !isEditView(position) && (
+      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -528,7 +540,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !isEditView(position) && (
+      {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -538,7 +550,7 @@ function composeAllActionButtons(position, confirmActionHandler) {
           <Edit2 color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -548,6 +560,47 @@ function composeAllActionButtons(position, confirmActionHandler) {
         >
           <LogOut color={colors.purpleLight} />
         </button>
+      )}
+      {status === 1 && (
+        <button
+          data-action={"abort"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel entry"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
+        </button>
+      )}
+      {status === 0 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.error" />}
+        >
+          <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {status > 9 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.exiting" />}
+        >
+          <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {updating && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.updating" />}
+        >
+          <CircularProgress color="primary" size={22} />
+        </Tooltip>
       )}
     </div>
   );
@@ -561,7 +614,8 @@ function composeAllActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeManagementActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, closed } = position;
+  const { isCopyTrading, isCopyTrader, closed } = position;
+
   return (
     <div className="actions">
       {!position.closed ? (
@@ -583,7 +637,7 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {!isCopyTrading && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !closed && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -606,28 +660,20 @@ function composeManagementActionButtons(position, confirmActionHandler) {
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeCancelActionButton(position, confirmActionHandler) {
+  const { exchange, positionId, updating } = position;
+  const isZignaly = exchange.toLowerCase() === "zignaly";
+
   return (
     <div className="actions">
-      {position.updating && (
+      {updating && !isZignaly && (
         <button
           data-action={"cancel"}
-          data-position-id={position.positionId}
+          data-position-id={positionId}
           onClick={confirmActionHandler}
           title="cancel"
           type="button"
         >
           <XCircle color={colors.purpleLight} />
-        </button>
-      )}
-      {position.status === 1 && (
-        <button
-          data-action={"abort"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="cancel entry"
-          type="button"
-        >
-          <Delete color={colors.purpleLight} />
         </button>
       )}
     </div>
@@ -1158,6 +1204,25 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
 }
 
 /**
+ * Compose all action buttons element for a given position.
+ *
+ * @param {String} positionId Position entity to compose buttons for.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+function composePositionLinkButton(positionId) {
+  return (
+    <span
+      className="positionLink"
+      data-position-id={positionId}
+      onClick={gotoPositionDetail}
+      title="View Position"
+    >
+      {positionId}
+    </span>
+  );
+}
+
+/**
  * Compose MUI Data Table row for profile open position entity.
  *
  * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
@@ -1166,7 +1231,7 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
 function composeOpenOrdersRow(order) {
   return [
     composeRawValue(order.orderId),
-    composeRawValue(order.positionId),
+    composePositionLinkButton(order.positionId),
     composeRawValue(order.symbol),
     composeRawValue(order.amount),
     composeRawValue(order.price),
@@ -1200,5 +1265,53 @@ export function composeOrdersDataTable(positions) {
   return {
     columns: columnsIds.map(composeColumnOptions),
     data: positions.map((order) => composeOpenOrdersRow(order)),
+  };
+}
+
+/**
+ * Compose MUI Data Table row for profile open position entity.
+ *
+ * @param {ExchangeContractsObject} contract Position entity to compose data table row for.
+ * @returns {DataTableDataRow} Row data array.
+ */
+function composeContractsRow(contract) {
+  return [
+    composePositionLinkButton(contract.positionId),
+    composeRawValue(contract.symbol),
+    composeRawValue(contract.amount),
+    composeRawValue(contract.leverage),
+    composeRawValue(contract.liquidationprice),
+    composeRawValue(contract.side),
+    composeRawValue(contract.entryprice),
+    composeRawValue(contract.markprice),
+    composeRawValue(contract.margin),
+    // composeOrdersCancelActionButton(order, confirmActionHandler),
+  ];
+}
+
+/**
+ * Compose MUI Data Table data structure from positions entities collection.
+ *
+ * @export
+ * @param {Array<ExchangeContractsObject>} positions Positions collection.
+ * @returns {DataTableContent} Open positions data table structure.
+ */
+export function composeContractsDataTable(positions) {
+  const columnsIds = [
+    "col.positionid",
+    "col.orders.symbol",
+    "col.amount",
+    "col.leverage",
+    "col.contracts.liquidationprice",
+    "col.side",
+    "col.entryprice",
+    "col.contracts.markprice",
+    "col.contracts.margin",
+    // "col.actions",
+  ];
+
+  return {
+    columns: columnsIds.map(composeColumnOptions),
+    data: positions.map((order) => composeContractsRow(order)),
   };
 }

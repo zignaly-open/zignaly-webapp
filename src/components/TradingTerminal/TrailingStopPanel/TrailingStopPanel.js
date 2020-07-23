@@ -37,8 +37,6 @@ const TrailingStopPanel = (props) => {
     : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsTrailingStop);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
-  const entryType = watch("entryType");
-  const strategyPrice = watch("price");
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
   const trailingStopDistance = parseFloat(watch("trailingStopDistance", initTrailingStopDistance));
   const initTrailingStopPercentage = positionEntity
@@ -53,6 +51,13 @@ const TrailingStopPanel = (props) => {
   const { formatMessage } = useIntl();
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
+
+  const entryType = watch("entryType");
+  const strategyPrice = watch("price");
 
   const getFieldsDisabledStatus = () => {
     const isTriggered = positionEntity ? positionEntity.trailingStopTriggered : false;
@@ -62,9 +67,9 @@ const TrailingStopPanel = (props) => {
      */
     const fieldsDisabled = {};
 
-    fieldsDisabled.trailingStopPercentage = isCopy || isClosed || isTriggered;
-    fieldsDisabled.trailingStopPrice = isCopy || isClosed || isTriggered;
-    fieldsDisabled.trailingStopDistance = isCopy || isClosed;
+    fieldsDisabled.trailingStopPercentage = isReadOnly || isTriggered;
+    fieldsDisabled.trailingStopPrice = isReadOnly || isTriggered;
+    fieldsDisabled.trailingStopDistance = isReadOnly;
 
     return fieldsDisabled;
   };
@@ -190,14 +195,14 @@ const TrailingStopPanel = (props) => {
     const percentageSign = entryType === "SHORT" ? "-" : "";
     const distanceSign = entryType === "SHORT" ? "" : "-";
 
-    if (trailingStopDistance === 0) {
+    if (!trailingStopDistance) {
       setValue("trailingStopDistance", distanceSign);
     } else {
       setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
       simulateInputChangeEvent("trailingStopDistance");
     }
 
-    if (trailingStopPercentage === 0) {
+    if (!trailingStopPercentage) {
       setValue("trailingStopPercentage", percentageSign);
     } else {
       setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);

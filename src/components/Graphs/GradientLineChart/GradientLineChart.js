@@ -119,7 +119,7 @@ const LineChart = (props) => {
       ],
       yAxes: [
         {
-          stacked: true,
+          stacked: false,
           ticks: {
             display: false,
           },

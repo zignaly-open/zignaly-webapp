@@ -116,7 +116,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           />
           {errors.name && (
             <span className="errorText">
-              Name is reuired of max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)
+              <FormattedMessage id="profile.error.name" />
             </span>
           )}
         </Box>

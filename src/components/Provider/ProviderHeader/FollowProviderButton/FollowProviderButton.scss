@@ -1,4 +1,4 @@
-.copyTraderButton {
+.followProviderButton {
   .submitButton {
     margin-right: 40px;
     min-width: 215px;
@@ -11,6 +11,29 @@
     h4 {
       font-family: "PlexSans-Bold";
       margin-right: 10px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .followProviderButton {
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
+
+    .submitButton {
+      margin-right: 0;
+      min-width: 100%;
+    }
+
+    .actionHelpBox {
+      margin-right: 0;
+
+      h4 {
+        font-family: "PlexSans-Bold";
+        margin-right: 0;
+      }
     }
   }
 }
