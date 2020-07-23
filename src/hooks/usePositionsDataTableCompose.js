@@ -152,6 +152,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose age element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function composeAge(dataIndex) {
+    const position = positions[dataIndex];
+    return <>{position.age}</>;
+  }
+
+  /**
    * Compose leverage element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -444,6 +455,19 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         <span className={position.riskStyle}>{position.risk.toFixed(2)} %</span>{" "}
       </>
     );
+  }
+
+  /**
+   * Compose formatted date.
+   *
+   * @param {PositionEntityKeys} propertyName Position entity property to retrieve the price to display.
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function composeDateFormatted(propertyName, dataIndex) {
+    const position = positions[dataIndex];
+
+    return <>{position[propertyName]}</>;
   }
 
   /**
@@ -897,10 +921,14 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function composeOpenPositionsDataTable() {
     const configColumns = [
-      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      {
+        columnId: "col.date.open",
+        propertyName: "openDate",
+        renderFunction: partial(composeDateFormatted, "openDateReadable"),
+      },
       {
         columnId: "col.provider.logo",
-        propertyName: "providerName",
+        propertyName: "providerLogo",
         renderFunction: composeProviderIcon,
       },
       {
@@ -957,16 +985,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.tp",
-        propertyName: "takeProfitTargetsCountSuccess",
+        propertyName: "takeProfitTargetsCountPending",
         renderFunction: composeTakeProfitTargets,
       },
       {
         columnId: "col.dca",
-        propertyName: "reBuyTargetsCountSuccess",
+        propertyName: "reBuyTargetsCountPending",
         renderFunction: composeRebuyTargets,
       },
       { columnId: "col.risk", propertyName: "risk", renderFunction: composeRisk },
-      { columnId: "col.age", propertyName: "age", renderFunction: null },
+      { columnId: "col.age", propertyName: "ageSeconds", renderFunction: composeAge },
       {
         columnId: "col.actions",
         propertyName: "updating",
