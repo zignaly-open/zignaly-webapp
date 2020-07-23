@@ -97,7 +97,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
+    <form onSubmit={handleSubmit(submitForm)} noValidate>
       <Box
         alignItems="center"
         className="createProviderForm"
