@@ -1172,8 +1172,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       { columnId: "col.amount", propertyName: "amount", renderFunction: composeAmount },
       {
         columnId: "col.invested",
-        propertyName: "positionSizeQuote",
-        renderFunction: composeQuoteSize,
+        propertyName: "positionSize",
+        renderFunction: composePositionSize,
       },
       { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
       { columnId: "col.exchange", propertyName: "exchange", renderFunction: null },
