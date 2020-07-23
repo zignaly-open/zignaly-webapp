@@ -807,30 +807,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose MUI Data Table row for closed position entity.
-   *
-   * @param {PositionEntity} position Position entity to compose data table row for.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeClosedPositionRowForProvider(position) {
-    return [
-      composeRawValue(position.openDateReadable),
-      composeRawValue(position.closeDateReadable),
-      composeRawValue(position.pair),
-      composeEntryPrice(position),
-      composeExitPrice(position),
-      composeReturnsFromInvestment(position),
-      composeReturnsFromAllocated(position),
-      composeRawValue(position.side),
-      composeValue(position.amount),
-      composePositionSize(position),
-      composeLeverage(position),
-      composeRawValue(position.exchange),
-      composeStatusMessage(position.status),
-    ];
-  }
-
-  /**
    * Compose MUI Data Table data structure from positions entities collection.
    *
    * @returns {DataTableContent} Open positions data table structure.
@@ -1177,24 +1153,36 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function composeClosedPositionsForProvider() {
     const columnsIds = [
-      "col.date.open",
-      "col.date.close",
-      "col.pair",
-      "col.entryprice",
-      "col.exitprice",
-      "col.returnfrominvestment",
-      "col.returnfromallocated",
-      "col.side",
-      "col.amount",
-      "col.invested",
-      "col.leverage",
-      "col.exchange",
-      "col.status",
+      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      { columnId: "col.date.close", propertyName: "closeDateReadable", renderFunction: null },
+      { columnId: "col.pair", propertyName: "pair", renderFunction: null },
+      { columnId: "col.entryprice", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.exitprice", propertyName: "sellPrice", renderFunction: composeExitPrice },
+      {
+        columnId: "col.returnfrominvestment",
+        propertyName: "returnFromInvestment",
+        renderFunction: composeReturnsFromInvestment,
+      },
+      {
+        columnId: "col.returnfromallocated",
+        propertyName: "returnFromAllocated",
+        renderFunction: composeReturnsFromAllocated,
+      },
+      { columnId: "col.side", propertyName: "side", renderFunction: null },
+      { columnId: "col.amount", propertyName: "amount", renderFunction: composeAmount },
+      {
+        columnId: "col.invested",
+        propertyName: "positionSizeQuote",
+        renderFunction: composeQuoteSize,
+      },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      { columnId: "col.exchange", propertyName: "exchange", renderFunction: null },
+      { columnId: "col.status", propertyName: "status", renderFunction: composeStatusMessage },
     ];
 
     return {
       columns: columnsIds.map(composeColumnOptions),
-      data: positions.map(composeClosedPositionRowForProvider),
+      data: positions,
     };
   }
 
