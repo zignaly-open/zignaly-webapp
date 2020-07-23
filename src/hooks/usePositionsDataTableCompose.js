@@ -729,29 +729,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     );
   }
 
-  // /**
-  //  * Compose delete action button element for a given position.
-  //  *
-  //  * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
-  //  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
-  //  * @returns {JSX.Element} Composed JSX element.
-  //  */
-  // function composeOrdersCancelActionButton(order, confirmActionHandler) {
-  //   return (
-  //     <div className="actions">
-  //       <button
-  //         data-action={"cancel"}
-  //         data-position-id={order.positionId}
-  //         onClick={confirmActionHandler}
-  //         title="cancel"
-  //         type="button"
-  //       >
-  //         <XCircle color={colors.purpleLight} />
-  //       </button>
-  //     </div>
-  //   );
-  // }
-
   /**
    * Compose view action button element for a given position.
    *
@@ -816,30 +793,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     }
 
     return allOptions;
-  }
-
-  /**
-   * Compose MUI Data Table row for log position entity.
-   *
-   * @param {PositionEntity} position Position entity to compose data table row for.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeLogPositionRow(position) {
-    return [
-      composeRawValue(position.openDateReadable),
-      composeRawValue(position.type),
-      composeProviderIcon(position),
-      composeProviderName(position),
-      composeStatusMessage(position.status),
-      composeRawValue(position.signalId),
-      composeRawValue(position.pair),
-      composeEntryPrice(position),
-      composeRawValue(position.side),
-      composeAmount(position),
-      composeBaseSymbolWithPrice(position.base, position.remainAmount),
-      composeQuoteSize(position),
-      composeViewActionButton(position),
-    ];
   }
 
   /**
