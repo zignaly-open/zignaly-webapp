@@ -37,7 +37,8 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   const [loading, setLoading] = useState(false);
   const [takeProfitTargets, setProfitTargets] = useState([]);
   const [reBuyTargets, setBuyTargets] = useState([]);
-  const { handleSubmit, control } = useForm();
+  const formMethods = useForm();
+  const { handleSubmit, register, control } = formMethods;
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
 
@@ -114,6 +115,9 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
 
   const prepareProfitTargetsPayload = () => {
     if (takeProfitTargets.length) {
+      takeProfitTargets.forEach((item) => {
+        delete item.delete;
+      });
       return takeProfitTargets;
     }
     return false;
@@ -121,6 +125,9 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
 
   const prepareBuyTargetsPayload = () => {
     if (reBuyTargets.length) {
+      reBuyTargets.forEach((item) => {
+        delete item.delete;
+      });
       return reBuyTargets;
     }
     return false;
@@ -154,7 +161,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             {quotes &&
               Object.keys(quotes).map((item, index) => (
                 <ToggleSelectInput
-                  control={control}
+                  formMethods={formMethods}
                   key={index}
                   label={
                     <FormattedMessage id="signalp.settings.amounts" values={{ quote: item }} />
@@ -189,7 +196,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             </Typography>
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.pricedeviation.entry"
               name="priceDeviation"
               tooltip="signalp.settings.pricedeviation.entry.help"
@@ -198,7 +205,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.pricedeviation.exit"
               name="sellPriceDeviation"
               tooltip="signalp.settings.pricedeviation.exit.help"
@@ -207,7 +214,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.entryexpiration"
               name="buyTTL"
               tooltip="signalp.settings.entryexpiration.help"
@@ -216,7 +223,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.timeautoclose"
               name="sellByTTL"
               tooltip="signalp.settings.timeautoclose.help"
@@ -225,7 +232,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.stoploss"
               name="stopLoss"
               tooltip="signalp.settings.stoploss.help"
@@ -234,7 +241,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleDoubleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.trailingstop"
               name1="trailingStopTrigger"
               name2="trailingStop"
@@ -251,16 +258,18 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
               label="signalp.settings.takeprofit"
               onChange={handleProfitTargetsChange}
               value={settings.takeProfitTargets}
+              type="takeprofit"
             />
 
             <ToggleTargetFields
               label="signalp.settings.dca"
               onChange={handleBuyTargetsChange}
               value={settings.reBuyTargets}
+              type="dca"
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.maxconcurrent"
               name="maxPositions"
               tooltip="signalp.settings.maxconcurrent.help"
@@ -269,7 +278,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.minvolume"
               name="minVolume"
               tooltip="signalp.settings.minvolume.help"
@@ -278,7 +287,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.limitpositions"
               name="positionsPerMarket"
               tooltip="signalp.settings.limitpositions.help"
@@ -287,7 +296,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleInput
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.leverage"
               name="leverage"
               tooltip="signalp.settings.leverage.help"
@@ -296,7 +305,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleTextarea
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.blacklist"
               name="blacklist"
               tooltip="signalp.settings.blacklist.help"
@@ -304,7 +313,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             />
 
             <ToggleTextarea
-              control={control}
+              formMethods={formMethods}
               label="signalp.settings.whitelist"
               name="whitelist"
               tooltip="signalp.settings.whitelist.help"

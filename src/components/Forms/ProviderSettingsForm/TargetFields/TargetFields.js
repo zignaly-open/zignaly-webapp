@@ -10,6 +10,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @typedef {Object} DefaultProps Default props.
  * @property {Function} onChange Change event.
  * @property {Array<*>} defaultValue
+ * @property {String} type
  */
 
 /**
@@ -17,11 +18,22 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} Component JSX.
  */
-const TargetFields = ({ onChange, defaultValue }) => {
+const TargetFields = ({ onChange, defaultValue, type }) => {
+  /**
+   * @typedef {Object} TargetObject
+   * @property {Number} targetId
+   * @property {Number} amountPercentage
+   * @property {Number} priceTargetPercentage
+   * @property {Boolean} delete
+   */
+
+  /**
+   * @type {TargetObject}
+   */
   const targetFieldObject = {
-    targetId: Math.random(),
-    amountPercentage: "",
-    priceTargetPercentage: "",
+    targetId: 1,
+    amountPercentage: 0,
+    priceTargetPercentage: 0,
     delete: false,
   };
 
@@ -29,9 +41,11 @@ const TargetFields = ({ onChange, defaultValue }) => {
 
   const initData = () => {
     if (defaultValue && defaultValue.length) {
+      let count = 1;
       for (let a = 0; a < defaultValue.length; a++) {
-        defaultValue[a].targetId = Math.random();
+        defaultValue[a].targetId = count;
         defaultValue[a].delete = true;
+        count++;
       }
       defaultValue[0].delete = false;
       setValues(defaultValue);
@@ -57,9 +71,18 @@ const TargetFields = ({ onChange, defaultValue }) => {
     let index = list.findIndex((item) => item.targetId === id);
     let field = list.find((item) => item.targetId === id);
     if (target.name === "amount") {
-      field.amountPercentage = target.value;
+      //convert amount to positive for both dca and take profit targets.
+      field.amountPercentage = Math.sign(target.value) === -1 ? target.value * -1 : target.value;
     } else {
-      field.priceTargetPercentage = target.value;
+      if (type === "dca") {
+        //convert value to negative for price targets of dca targets.
+        field.priceTargetPercentage =
+          Math.sign(target.value) === 1 ? target.value * -1 : target.value;
+      } else {
+        //convert value to negative for price targets of take profits targets.
+        field.priceTargetPercentage =
+          Math.sign(target.value) === -1 ? target.value * -1 : target.value;
+      }
     }
     list[index] = field;
     setValues(list);
@@ -69,7 +92,7 @@ const TargetFields = ({ onChange, defaultValue }) => {
     let field = { ...targetFieldObject };
     let list = [...values];
     field.delete = true;
-    field.targetId = Math.random();
+    field.targetId = list[list.length - 1].targetId + 1;
     list.push(field);
     setValues(list);
   };

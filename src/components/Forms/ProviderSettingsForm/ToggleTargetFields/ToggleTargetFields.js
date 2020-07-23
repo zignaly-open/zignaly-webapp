@@ -10,6 +10,7 @@ import TargetFields from "../TargetFields";
  * @property {String} label
  * @property {Array<*>} value
  * @property {Function} onChange
+ * @property {String} type
  */
 
 /**
@@ -18,14 +19,25 @@ import TargetFields from "../TargetFields";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const ToggleInput = ({ value, label, onChange }) => {
+const ToggleInput = ({ value, label, onChange, type }) => {
   const [toggle, setToggle] = useState(!!(value && value.length));
+  const [data, setData] = useState(value);
 
   const initData = () => {
     setToggle(!!(value && value.length));
+    setData(value);
   };
 
   useEffect(initData, [value]);
+
+  const clearValues = () => {
+    if (!toggle) {
+      onChange([]);
+      setData([]);
+    }
+  };
+
+  useEffect(clearValues, [toggle]);
 
   return (
     <Box alignItems="flex-start" className="toggleTargetFields" display="flex" flexDirection="row">
@@ -42,7 +54,7 @@ const ToggleInput = ({ value, label, onChange }) => {
         <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} />
       </Box>
 
-      {toggle && <TargetFields defaultValue={value} onChange={onChange} />}
+      {toggle && <TargetFields defaultValue={data} onChange={onChange} type={type} />}
     </Box>
   );
 };

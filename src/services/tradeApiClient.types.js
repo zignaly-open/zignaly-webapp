@@ -2936,6 +2936,8 @@ export function providerExchangeSettingsResponseTransform(response) {
   const transformedResponse = assign(emptySettingsEntity, response, {
     reBuyTargets: reBuyTargets,
     takeProfitTargets: takeProfitTargets,
+    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL,
+    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL,
   });
 
   return transformedResponse;
