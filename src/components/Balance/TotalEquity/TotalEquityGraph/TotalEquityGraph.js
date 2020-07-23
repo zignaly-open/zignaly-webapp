@@ -15,6 +15,7 @@ import { colors } from "../../../../services/theme";
  *
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
+ * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
  */
 
 /**

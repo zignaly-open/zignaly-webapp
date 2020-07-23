@@ -42,7 +42,7 @@ const UserMenu = React.forwardRef(() => {
           navigateReach("#exchangeAccounts");
         }}
       >
-        <img alt="zignaly" src={MyExchange} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={MyExchange} />
         <span className="item">
           <FormattedMessage id="menu.exchangeaccount" />
         </span>
@@ -54,25 +54,25 @@ const UserMenu = React.forwardRef(() => {
           navigateReach("#settings");
         }}
       >
-        <img alt="zignaly" src={Settings} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={Settings} />
         <span className="item">
           <FormattedMessage id="menu.settings" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDiscord}>
-        <img alt="zignaly" src={Message} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={Message} />
         <span className="item">
           <FormattedMessage id="menu.discord" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDocs}>
-        <img alt="zignaly" src={Documents} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={Documents} />
         <span className="item">
           <FormattedMessage id="menu.help" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem">
-        <img alt="zignaly" src={Support} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={Support} />
         <span className="item">
           <FormattedMessage id="menu.support" />
         </span>
@@ -96,7 +96,7 @@ const UserMenu = React.forwardRef(() => {
         </Grow>
       )}
       <MenuItem className="userMenuItem" onClick={logout}>
-        <img alt="zignaly" src={SignOut} className="iconPurple" />
+        <img alt="zignaly" className="iconPurple" src={SignOut} />
         <span className="item">
           <FormattedMessage id="menu.signout" />
         </span>

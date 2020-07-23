@@ -13,6 +13,7 @@ import { isObject } from "lodash";
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
  * @property {UserBalanceEntity} [balance]
+ * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
  */
 
 /**
