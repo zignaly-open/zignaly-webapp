@@ -28,13 +28,21 @@ import { merge } from "lodash";
  * @property {Array<Object>} data Table Data.
  * @property {string} [persistKey] Key to save display columns settings.
  * @property {MUIDataTableOptions} [options] Table options.
+ * @property {boolean} [useLabelAsId] Flag to use label as column ID instead of name.
  * @property {*} [components] Custom table components.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
- *
  */
-const Table = ({ columns, data, persistKey, title, options: customOptions, components }) => {
+const Table = ({
+  columns,
+  data,
+  persistKey,
+  title,
+  options: customOptions,
+  components,
+  useLabelAsId = false,
+}) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -83,6 +91,8 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     },
   }));
 
+  console.log("columnsCustom: ", columnsCustom);
+
   /**
    * @type {MUIDataTableOptions}
    */
@@ -103,10 +113,14 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     },
     // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
+      const columnInfo = columns.find((column) => column.name === changedColumn);
+      const columnId = useLabelAsId ? columnInfo.label : columnInfo.name;
+      console.log("columnId: ", columnId);
+
       dispatch(
         setDisplayColumn({
           table: persistKey,
-          changedColumn,
+          columnId,
           action,
         }),
       );

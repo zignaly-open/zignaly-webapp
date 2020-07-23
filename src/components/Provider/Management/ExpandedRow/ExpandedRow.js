@@ -42,13 +42,14 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
          * @type {TranformedObject}
          */
         let obj = { id: "", data: "" };
-        obj.id = columns[b].name;
+        obj.id = columns[b].label;
         /* @ts-ignore */
         obj.data = data[a][b];
         transformedRow.push(obj);
       }
       newList[a] = transformedRow;
     }
+    console.log("storeSettings: ", storeSettings.displayColumns[persistKey]);
     setList([...newList]);
   };
 

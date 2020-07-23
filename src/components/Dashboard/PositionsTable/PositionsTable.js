@@ -283,6 +283,7 @@ const PositionsTable = (props) => {
                 data={data}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
+                useLabelAsId={true}
               />
             </Box>
           )}
