@@ -923,7 +923,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const configColumns = [
       {
         columnId: "col.date.open",
-        propertyName: "openDate",
+        propertyName: "openDateReadable",
         renderFunction: partial(composeDateFormatted, "openDateReadable"),
       },
       {
