@@ -129,7 +129,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         const bVal = b.data[colIndex];
         // Handle numeric string comparison.
         const res =
-          typeof a === "string"
+          typeof aVal === "string"
             ? aVal.localeCompare(bVal, undefined, {
                 numeric: true,
                 sensitivity: "base",
