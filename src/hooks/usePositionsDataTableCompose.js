@@ -882,7 +882,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
 
   function excludeDataTableColumn(dataTable, columnId) {
-    const columnIndex = findIndex(dataTable.columns, { name: columnId });
+    const columnIndex = findIndex(dataTable.columns, { label: columnId });
     const { columns, data } = dataTable;
 
     // Remove column when exists.

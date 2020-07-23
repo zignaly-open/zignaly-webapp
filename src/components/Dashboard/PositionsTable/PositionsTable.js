@@ -11,8 +11,8 @@ import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import "./PositionsTable.scss";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
+import "./PositionsTable.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -207,6 +207,7 @@ const PositionsTable = (props) => {
       }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
+      dataTable = excludeDataTableColumn(dataTable, "col.actions");
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
