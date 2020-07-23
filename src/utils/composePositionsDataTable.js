@@ -607,15 +607,14 @@ function composeOpenOrdersRow(order) {
  */
 export function composeOrdersDataTable(positions) {
   const columnsIds = [
-    "col.orders.orderid",
-    "col.positionid",
-    "col.orders.symbol",
-    "col.amount",
-    "col.orders.price",
-    "col.side",
-    "col.orders.type",
-    "col.orders.datetime",
-    // "col.actions",
+    ["col.orders.orderid"],
+    ["col.positionid"],
+    ["col.orders.symbol"],
+    ["col.amount"],
+    ["col.orders.price"],
+    ["col.side"],
+    ["col.orders.type"],
+    ["col.orders.datetime"],
   ];
 
   return {
@@ -654,16 +653,15 @@ function composeContractsRow(contract) {
  */
 export function composeContractsDataTable(positions) {
   const columnsIds = [
-    "col.positionid",
-    "col.orders.symbol",
-    "col.amount",
-    "col.leverage",
-    "col.contracts.liquidationprice",
-    "col.side",
-    "col.entryprice",
-    "col.contracts.markprice",
-    "col.contracts.margin",
-    // "col.actions",
+    ["col.positionid"],
+    ["col.orders.symbol"],
+    ["col.amount"],
+    ["col.leverage"],
+    ["col.contracts.liquidationprice"],
+    ["col.side"],
+    ["col.entryprice"],
+    ["col.contracts.markprice"],
+    ["col.contracts.margin"],
   ];
 
   return {
