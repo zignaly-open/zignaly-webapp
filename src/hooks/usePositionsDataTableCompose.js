@@ -838,32 +838,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @returns {DataTableDataRow} Row data array.
    */
   function composeClosePositionRow(position) {
-    return [
-      composeRawValue(position.openDateReadable),
-      composeRawValue(position.closeDateReadable),
-      composeProviderIcon(position),
-      composeProviderName(position),
-      composeStatusMessage(position.status),
-      composeRawValue(position.signalId),
-      composeRawValue(position.pair),
-      composeEntryPrice(position),
-      composeExitPrice(position),
-      composeProfit(position),
-      composeProfitPercentage(position),
-      composeRawValue(position.side),
-      composeStopLossPrice(position),
-      composeAmount(position),
-      composeQuoteSize(position),
-      composeRealInvestment(position),
-      composeLeverage(position),
-      composeTrailingStopIcon(position),
-      composeTakeProfitTargets(position),
-      composeRebuyTargets(position),
-      composeBaseSymbolWithPrice(position.quote, position.fees),
-      composeNetProfitPercentage(position),
-      composeNetProfit(position),
-      composeViewActionButton(position),
-    ];
+    return [];
   }
 
   /**
@@ -924,7 +899,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
-        renderFunction: partial(composeDateFormatted, "openDateReadable"),
+        renderFunction: null,
       },
       {
         columnId: "col.provider.logo",
@@ -1018,35 +993,83 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function composeClosePositionsDataTable() {
     const columnsIds = [
-      "col.date.open",
-      "col.date.close",
-      "col.provider.logo",
-      "col.provider.name",
-      "col.stat",
-      "col.signalid",
-      "col.pair",
-      "col.price.entry",
-      "col.price.exit",
-      "col.plnumber",
-      "col.plpercentage",
-      "col.side",
-      "col.stoplossprice",
-      "col.amount",
-      "col.invested",
-      "col.realinvestment",
-      "col.leverage",
-      "col.tsl",
-      "col.tp",
-      "col.dca",
-      "col.fees",
-      "col.netprofit.percentage",
-      "col.netprofit.amount",
-      "col.actions",
+      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      { columnId: "col.date.close", propertyName: "closeDateReadable", renderFunction: null },
+      {
+        columnId: "col.provider.logo",
+        propertyName: "providerLogo",
+        renderFunction: composeProviderIcon,
+      },
+      {
+        columnId: "col.provider.name",
+        propertyName: "providerName",
+        renderFunction: composeProviderName,
+      },
+      { columnId: "col.stat", propertyName: "status", renderFunction: composeStatusMessage },
+      { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
+      { columnId: "col.pair", propertyName: "pair", renderFunction: null },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      { columnId: "col.price.exit", propertyName: "sellPrice", renderFunction: composeExitPrice },
+      { columnId: "col.plnumber", propertyName: "profit", renderFunction: composeProfit },
+      {
+        columnId: "col.plpercentage",
+        propertyName: "profitPercentage",
+        renderFunction: composeProfitPercentage,
+      },
+      { columnId: "col.side", propertyName: "side", renderFunction: null },
+      {
+        columnId: "col.stoplossprice",
+        propertyName: "stopLossPrice",
+        renderFunction: composeStopLossPrice,
+      },
+      { columnId: "col.amount", propertyName: "remainAmount", renderFunction: composeAmount },
+      {
+        columnId: "col.invested",
+        propertyName: "positionSizeQuote",
+        renderFunction: composeQuoteSize,
+      },
+      {
+        columnId: "col.realinvestment",
+        propertyName: "realInvestment",
+        renderFunction: composeRealInvestment,
+      },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      {
+        columnId: "col.tsl",
+        propertyName: "trailingStopTriggered",
+        renderFunction: composeTrailingStopIcon,
+      },
+      {
+        columnId: "col.tp",
+        propertyName: "takeProfitTargetsCountPending",
+        renderFunction: composeTakeProfitTargets,
+      },
+      {
+        columnId: "col.dca",
+        propertyName: "reBuyTargetsCountPending",
+        renderFunction: composeRebuyTargets,
+      },
+      { columnId: "col.fees", propertyName: "fees", renderFunction: null },
+      {
+        columnId: "col.netprofit.percentage",
+        propertyName: "netProfitPercentage",
+        renderFunction: composeNetProfitPercentage,
+      },
+      {
+        columnId: "col.netprofit.amount",
+        propertyName: "netProfit",
+        renderFunction: composeNetProfit,
+      },
+      {
+        columnId: "col.actions",
+        propertyName: "updating",
+        renderFunction: composeViewActionButton,
+      },
     ];
 
     return {
       columns: columnsIds.map(composeColumnOptions),
-      data: positions.map(composeClosePositionRow),
+      data: positions,
     };
   }
 
@@ -1333,6 +1356,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     composeOpenPositionRowForProvider,
     composeOpenPositionsDataTable,
     composeOpenPositionsForProvider,
+    composeClosePositionsDataTable,
     composeOrdersDataTable,
     excludeDataTableColumn,
   };

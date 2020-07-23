@@ -198,9 +198,9 @@ const PositionsTable = (props) => {
     let dataTable;
 
     if (type === "closed") {
-      dataTable = composeClosePositionsDataTable(positionsFiltered);
+      dataTable = positionsTableCompose.composeClosePositionsDataTable();
     } else if (type === "log") {
-      dataTable = composeLogPositionsDataTable(positionsFiltered);
+      dataTable = positionsTableCompose.composeLogPositionsDataTable();
     } else if (type === "open") {
       dataTable = positionsTableCompose.composeOpenPositionsDataTable();
       if (storeSettings.selectedExchange.exchangeType === "futures") {
