@@ -36,5 +36,15 @@ module.exports = {
         icon: "src/images/logo/logoIcon.svg",
       },
     },
+    {
+      resolve: "gatsby-plugin-google-tagmanager",
+      options: {
+        id: "'GTM-5ZQ4JLK",
+        // Defaults to false meaning GTM will only be loaded in production.
+        includeInDevelopment: false,
+        defaultDataLayer: { platform: "webapp2" },
+        routeChangeEventName: "route_change",
+      },
+    },
   ],
 };
