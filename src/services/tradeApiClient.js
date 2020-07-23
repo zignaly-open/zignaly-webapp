@@ -96,6 +96,7 @@ import {
  * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
+ * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
  */
 
 /**
@@ -1101,10 +1102,10 @@ class TradeApiClient {
   }
 
   /**
-   * Create a new provider
+   * Create a new copy trader.
    *
    * @param {ProviderCreatePayload} payload Provider Create payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<NewProviderEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1144,10 +1145,10 @@ class TradeApiClient {
   }
 
   /**
-   * Create a new provider
+   * Create a new signal provider.
    *
    * @param {ProviderCreatePayload} payload Provider Create payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<NewProviderEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */

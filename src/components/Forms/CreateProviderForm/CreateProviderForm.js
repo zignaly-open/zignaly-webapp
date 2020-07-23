@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showCreateProvider } from "../../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
@@ -89,6 +89,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         }/edit`;
 
         navigate(profileLink);
+        dispatch(showCreateProvider(false));
       })
       .catch((/** @type {*} **/ e) => {
         dispatch(showErrorAlert(e));
@@ -106,7 +107,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         justifyContent="center"
       >
         <Box className="formContent">
-          {selectedExchange ? (
+          {!isCopyTrading || selectedExchange ? (
             <>
               <Typography variant="h3">
                 <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
@@ -217,7 +218,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
               </CustomButton>
             </>
           ) : (
-            isCopyTrading && <CircularProgress className="loader" />
+            <CircularProgress className="loader" />
           )}
         </Box>
       </Box>
