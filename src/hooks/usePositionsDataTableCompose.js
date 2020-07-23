@@ -765,14 +765,20 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * @typedef {Object} RawColumnOptions
+   * @property {string} columnId Column ID.
+   * @property {string} propertyName Property name from data entity to user as column value.
+   * @property {function} [renderFunction] Column rich markup render function.
+   */
+
+  /**
    * Compose MUI Data Table default options for a column translation ID.
    *
-   * @param {string} columnId Column ID.
-   * @param {string} propertyName Property name from data entity to user as column value.
-   * @param {function} [renderFunction] Column rich markup render function.
-   * @returns {DataTableDataColumns} Column options.
+   * @param {RawColumnOptions} columnOptions Single column options.
+   * @returns {DataTableDataColumns} Composed data table column options.
    */
-  function composeColumnOptions(columnId, propertyName, renderFunction = null) {
+  function composeColumnOptions(columnOptions) {
+    const { columnId, propertyName, renderFunction = null } = columnOptions;
     const permanentColumnIds = ["col.paper", "col.stat", "col.type", "col.actions"];
     const defaultSortColumnId = "col.date.open";
     let allOptions = {
@@ -891,37 +897,86 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function composeOpenPositionsDataTable() {
     const configColumns = [
-      ["col.date.open", "openDateReadable"],
-      ["col.provider.logo", "providerName", composeProviderIcon],
-      ["col.provider.name", "providerName", composeProviderName],
-      ["col.signalid", "signalId"],
-      ["col.pair", "pair"],
-      ["col.price.entry", "buyPrice", composeEntryPrice],
-      ["col.price.current", "sellPrice", composeExitPrice],
-      ["col.plnumber", "profit", composeProfit],
-      ["col.plpercentage", "profitPercentage", composeProfitPercentage],
-      ["col.pricedifference", "priceDifference", composePriceDifference],
-      ["col.side", "side"],
-      ["col.stoplossprice", "stopLossPrice", composeStopLossPrice],
-      ["col.initialamount", "amount", composeAmount],
-      ["col.remainingamount", "remainAmount", partial(composeBaseSymbolWithPrice, "remainAmount")],
-      ["col.invested", "positionSizeQuote", composeQuoteSize],
-      ["col.realinvestment", "realInvestment", composeRealInvestment],
-      ["col.leverage", "leverage", composeLeverage],
-      ["col.tsl", "trailingStopTriggered", composeTrailingStopIcon],
-      ["col.tp", "takeProfitTargetsCountSuccess", composeTakeProfitTargets],
-      ["col.dca", "reBuyTargetsCountSuccess", composeRebuyTargets],
-      ["col.risk", "risk", composeRisk],
-      ["col.age", "age"],
-      ["col.actions", "updating", composeAllActionButtons],
-      ["col.cancel", "status", composeCancelActionButton],
+      { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
+      {
+        columnId: "col.provider.logo",
+        propertyName: "providerName",
+        renderFunction: composeProviderIcon,
+      },
+      {
+        columnId: "col.provider.name",
+        propertyName: "providerName",
+        renderFunction: composeProviderName,
+      },
+      { columnId: "col.signalid", propertyName: "signalId", renderFunction: null },
+      { columnId: "col.pair", propertyName: "pair", renderFunction: null },
+      { columnId: "col.price.entry", propertyName: "buyPrice", renderFunction: composeEntryPrice },
+      {
+        columnId: "col.price.current",
+        propertyName: "sellPrice",
+        renderFunction: composeExitPrice,
+      },
+      { columnId: "col.plnumber", propertyName: "profit", renderFunction: composeProfit },
+      {
+        columnId: "col.plpercentage",
+        propertyName: "profitPercentage",
+        renderFunction: composeProfitPercentage,
+      },
+      {
+        columnId: "col.pricedifference",
+        propertyName: "priceDifference",
+        renderFunction: composePriceDifference,
+      },
+      { columnId: "col.side", propertyName: "side", renderFunction: null },
+      {
+        columnId: "col.stoplossprice",
+        propertyName: "stopLossPrice",
+        renderFunction: composeStopLossPrice,
+      },
+      { columnId: "col.initialamount", propertyName: "amount", renderFunction: composeAmount },
+      {
+        columnId: "col.remainingamount",
+        propertyName: "remainAmount",
+        renderFunction: partial(composeBaseSymbolWithPrice, "remainAmount"),
+      },
+      {
+        columnId: "col.invested",
+        propertyName: "positionSizeQuote",
+        renderFunction: composeQuoteSize,
+      },
+      {
+        columnId: "col.realinvestment",
+        propertyName: "realInvestment",
+        renderFunction: composeRealInvestment,
+      },
+      { columnId: "col.leverage", propertyName: "leverage", renderFunction: composeLeverage },
+      {
+        columnId: "col.tsl",
+        propertyName: "trailingStopTriggered",
+        renderFunction: composeTrailingStopIcon,
+      },
+      {
+        columnId: "col.tp",
+        propertyName: "takeProfitTargetsCountSuccess",
+        renderFunction: composeTakeProfitTargets,
+      },
+      {
+        columnId: "col.dca",
+        propertyName: "reBuyTargetsCountSuccess",
+        renderFunction: composeRebuyTargets,
+      },
+      { columnId: "col.risk", propertyName: "risk", renderFunction: composeRisk },
+      { columnId: "col.age", propertyName: "age", renderFunction: null },
+      {
+        columnId: "col.actions",
+        propertyName: "updating",
+        renderFunction: composeAllActionButtons,
+      },
+      { columnId: "col.cancel", propertyName: "status", renderFunction: composeCancelActionButton },
     ];
 
     const dataTable = {
-      columns: configColumns.map((config) => {
-        // @ts-ignore
-        return composeColumnOptions(...config);
-      }),
+      columns: configColumns.map(composeColumnOptions),
       data: positions,
     };
 
