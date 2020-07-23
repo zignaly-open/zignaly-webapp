@@ -3376,7 +3376,7 @@ const createEmptyExchangeOpenOrdersEntity = () => {
 
 /**
  * @typedef {Object} ExchangeContractsObject
- * @property {String} position
+ * @property {String} positionId
  * @property {Number} amount
  * @property {Number} entryprice
  * @property {Number} leverage
@@ -3399,8 +3399,20 @@ export function exchangeContractsResponseTransform(response) {
   }
 
   return response.map((item) => {
-    return assign(createEmptyExchangeContractsEntity(), item);
+    return exchangeContractsItemTransform(item);
   });
+}
+
+/**
+ *
+ * @param {*} contract Exchange open orders item from response.
+ * @returns {ExchangeContractsObject} transformed open orders item.
+ */
+function exchangeContractsItemTransform(contract) {
+  const orderEntity = assign(createEmptyExchangeContractsEntity(), contract, {
+    positionId: contract.position,
+  });
+  return orderEntity;
 }
 
 /**
@@ -3409,7 +3421,7 @@ export function exchangeContractsResponseTransform(response) {
  */
 const createEmptyExchangeContractsEntity = () => {
   return {
-    position: "",
+    positionId: "",
     amount: 0,
     entryprice: 0,
     leverage: 0,
