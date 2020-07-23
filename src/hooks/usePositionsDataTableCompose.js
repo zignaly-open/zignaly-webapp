@@ -24,6 +24,7 @@ import { Box } from "@material-ui/core";
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {keyof PositionEntity} PositionEntityKeys
  *
  */
 
@@ -448,14 +449,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   /**
    * Compose formatted price with currency symbol element.
    *
-   * @param {string} symbol Currency symbol.
-   * @param {number} price Price.
+   * @param {PositionEntityKeys} propertyName Position entity property to retrieve the price to display.
+   * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composeSymbolWithPrice(symbol, price) {
+  function composeBaseSymbolWithPrice(propertyName, dataIndex) {
+    const position = positions[dataIndex];
+    const price = /** @type {number} */ (position[propertyName] || 0);
+
     return (
       <>
-        <span className="symbol">{symbol}</span> {formatPrice(price)}
+        <span className="symbol">{position.base}</span> {formatPrice(price)}
       </>
     );
   }
@@ -825,7 +829,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       composeTrailingStopIcon(position),
       composeTakeProfitTargets(position),
       composeRebuyTargets(position),
-      composeSymbolWithPrice(position.quote, position.fees),
+      composeBaseSymbolWithPrice(position.quote, position.fees),
       composeNetProfitPercentage(position),
       composeNetProfit(position),
       composeViewActionButton(position),
@@ -850,7 +854,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       composeEntryPrice(position),
       composeRawValue(position.side),
       composeAmount(position),
-      composeSymbolWithPrice(position.base, position.remainAmount),
+      composeBaseSymbolWithPrice(position.base, position.remainAmount),
       composeQuoteSize(position),
       composeViewActionButton(position),
     ];
@@ -900,7 +904,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       ["col.side", "side"],
       ["col.stoplossprice", "stopLossPrice", composeStopLossPrice],
       ["col.initialamount", "amount", composeAmount],
-      ["col.remainingamount", "remainAmount", partial(composeSymbolWithPrice, "base")],
+      ["col.remainingamount", "remainAmount", partial(composeBaseSymbolWithPrice, "remainAmount")],
       ["col.invested", "positionSizeQuote", composeQuoteSize],
       ["col.realinvestment", "realInvestment", composeRealInvestment],
       ["col.leverage", "leverage", composeLeverage],
@@ -1046,7 +1050,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       composeRawValue(position.side),
       composeStopLossPrice(position),
       composeAmount(position),
-      composeSymbolWithPrice(position.base, position.remainAmount),
+      composeBaseSymbolWithPrice(position.base, position.remainAmount),
       composeQuoteSize(position),
       composeTrailingStopIcon(position),
       composeTakeProfitTargets(position),
@@ -1148,7 +1152,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       composeRawValue(position.side),
       composeStopLossPrice(position),
       composeAmount(position),
-      composeSymbolWithPrice(position.base, position.remainAmount),
+      composeBaseSymbolWithPrice(position.base, position.remainAmount),
       composeQuoteSize(position),
       composeRealInvestment(position),
       composeTrailingStopIcon(position),
