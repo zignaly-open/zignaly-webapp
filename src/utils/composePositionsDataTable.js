@@ -1,10 +1,12 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, ExternalLink, Eye, LogOut, TrendingUp } from "react-feather";
+import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, Delete, AlertTriangle } from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
+import { CircularProgress } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
 /**
@@ -321,27 +323,36 @@ function gotoPositionDetail(event) {
 }
 
 /**
+ * Checks if viewed page is a position edit view.
+ *
+ * @param {PositionEntity} position Position entity to check.
+ * @returns {boolean} true if is edit view, false otherwise.
+ */
+function isEditView(position) {
+  // When URL path contains positionID, indicates that is the edit view page.
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+  return currentPath.includes(position.positionId);
+}
+
+/**
  * Compose all action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {JSX.Element} Composed JSX element.
  */
-function composeManagementActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, isCopyTrader, closed } = position;
+export function composeAllActionButtons(position, confirmActionHandler) {
+  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
+  let updatingMessageId = "terminal.warning.updating";
+  if (status === 1) {
+    updatingMessageId = "terminal.warning.entering";
+  } else if (status > 9) {
+    updatingMessageId = "terminal.warning.exiting";
+  }
 
   return (
     <div className="actions">
-      {!position.closed ? (
-        <button
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="Edit Position"
-          type="button"
-        >
-          <Edit2 color={colors.purpleLight} />
-        </button>
-      ) : (
+      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
         <button
           data-position-id={position.positionId}
           onClick={gotoPositionDetail}
@@ -351,7 +362,17 @@ function composeManagementActionButtons(position, confirmActionHandler) {
           <Eye color={colors.purpleLight} />
         </button>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && (
+      {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
+        <button
+          data-position-id={position.positionId}
+          onClick={gotoPositionDetail}
+          title="Edit Position"
+          type="button"
+        >
+          <Edit2 color={colors.purpleLight} />
+        </button>
+      )}
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
         <button
           data-action={"exit"}
           data-position-id={position.positionId}
@@ -361,6 +382,37 @@ function composeManagementActionButtons(position, confirmActionHandler) {
         >
           <LogOut color={colors.purpleLight} />
         </button>
+      )}
+      {status === 1 && (
+        <button
+          data-action={"abort"}
+          data-position-id={position.positionId}
+          onClick={confirmActionHandler}
+          title="cancel entry"
+          type="button"
+        >
+          <Delete color={colors.purpleLight} />
+        </button>
+      )}
+      {status === 0 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="terminal.warning.error" />}
+        >
+          <AlertTriangle color={colors.purpleLight} />
+        </Tooltip>
+      )}
+      {(updating || status === 1) && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id={updatingMessageId} />}
+        >
+          <CircularProgress color="primary" size={22} />
+        </Tooltip>
       )}
     </div>
   );
@@ -456,7 +508,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeRebuyTargets(position),
     composeRisk(position),
     composeRawValue(position.age),
-    composeManagementActionButtons(position, confirmActionHandler),
+    composeAllActionButtons(position, confirmActionHandler),
   ];
 }
 
