@@ -16,18 +16,6 @@ body {
   margin: 0;
 }
 
-.hideScroll {
-  overflow: scroll;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  scrollbar-width: none;
-
-  &::scrollbar {
-    height: 0;
-    width: 0;
-  }
-}
-
 .selectInput {
   border-radius: 4px;
   height: 32px;
@@ -91,7 +79,7 @@ body {
     height: 32px;
   }
 
-  & > div {
+  > div {
     padding-right: 10px;
   }
 
@@ -114,7 +102,7 @@ body {
   margin: 0;
   width: 100%;
 
-  & > div {
+  > div {
     padding-right: 10px;
   }
 
@@ -245,7 +233,7 @@ body {
   }
 
   &.action {
-    border-top: 1px solid $borderColor;
+    border-top: 1px solid var(--border-color);
     height: 50px;
 
     img {
@@ -262,6 +250,31 @@ body {
     font-family: "PlexSans-Medium";
     margin-right: 5px;
     text-transform: capitalize;
+  }
+}
+
+.link {
+  color: var(--purple);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+table {
+  a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+}
+
+[data-theme="dark"] {
+  .iconPurple {
+    filter: brightness(130%);
+  }
+
+  .exchangeListItem {
+    &.selected {
+      background-image: $purpleDarkGradient;
+    }
   }
 }
 

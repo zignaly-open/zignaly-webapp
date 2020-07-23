@@ -152,12 +152,16 @@ const Withdraw = () => {
                 <Box className="networkColumn">
                   <form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <NetworksToggleGroup
-                      networks={selectedAsset.networks}
-                      selectedNetwork={selectedNetwork}
+                      networks={selectedAsset.networks.map((n) => n.name)}
+                      selectedNetwork={selectedNetwork.name}
                       setSelectedNetwork={setSelectedNetwork}
                     />
                     {!selectedNetwork.withdrawEnable ? (
-                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                      <Alert severity="error">
+                        {selectedNetwork.withdrawDesc || (
+                          <FormattedMessage id="withdraw.notavailable" />
+                        )}
+                      </Alert>
                     ) : (
                       <>
                         <FormControl className="controlInput" fullWidth={true}>
@@ -242,15 +246,15 @@ const Withdraw = () => {
                               step: 0.00000001,
                             }}
                             inputRef={register({
-                              min: {
-                                value: parseFloat(selectedNetwork.withdrawMin),
-                                message:
-                                  "Please enter an amount above the minimum withdrawal amount.",
-                              },
-                              max: {
-                                value: parseFloat(selectedAsset.balanceFree),
-                                message: "You do not have this amount available in your account.",
-                              },
+                              //   min: {
+                              //     value: parseFloat(selectedNetwork.withdrawMin),
+                              //     message:
+                              //       "Please enter an amount above the minimum withdrawal amount.",
+                              //   },
+                              //   max: {
+                              //     value: parseFloat(selectedAsset.balanceFree),
+                              //     message: "You do not have this amount available in your account.",
+                              //   },
                             })}
                             name="amount"
                             type="number"

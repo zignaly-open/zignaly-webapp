@@ -7,10 +7,10 @@ import CustomButton from "../../CustomButton";
 import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
-import { useSelector } from "react-redux";
 import { formatFloat2Dec } from "../../../utils/format";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -62,14 +62,8 @@ const TraderCard = (props) => {
     closedPositions,
     returns,
   } = provider;
-  /**
-   * Settings darkStyle selector.
-   *
-   * @param {DefaultState} state Redux store state data.
-   * @return {boolean} Flag that indicates if darkStyle is enabled.
-   */
-  const darkStyleSelector = (state) => state.settings.darkStyle;
-  const darkStyle = useSelector(darkStyleSelector);
+
+  const { darkStyle } = useStoreSettingsSelector();
 
   /**
    * @type {ChartData}
@@ -201,14 +195,11 @@ const TraderCard = (props) => {
 
             <div className="actions">
               {!disable && (
-                <CustomButton className={darkStyle ? "textPurple" : "textDefault"}>
+                <CustomButton className="textPurple">
                   <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
                 </CustomButton>
               )}
-              <CustomButton
-                className={darkStyle ? "textPurple" : "textDefault"}
-                onClick={redirectToProfile}
-              >
+              <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
               </CustomButton>
             </div>

@@ -1,6 +1,6 @@
 .traderCard {
   background: $white;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
   display: flex;
@@ -17,6 +17,5 @@
 [data-theme="dark"] {
   .traderCard {
     background: $lightBlackBackground;
-    border-color: $darkBorderColor;
   }
 }

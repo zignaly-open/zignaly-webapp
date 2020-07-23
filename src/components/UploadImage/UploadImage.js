@@ -52,7 +52,12 @@ const UploadImage = ({ imageUrl, onChange }) => {
   };
 
   const handleDelete = () => {
-    onChange(original);
+    if (modified) {
+      onChange(original);
+    } else {
+      // Set default image
+      onChange("");
+    }
     setModified(false);
   };
 
@@ -74,7 +79,7 @@ const UploadImage = ({ imageUrl, onChange }) => {
         </label>
         <CustomButton
           className="defaultText deleteButton"
-          disabled={!modified}
+          disabled={!imageUrl}
           onClick={handleDelete}
         >
           <FormattedMessage id="srv.edit.delete" />

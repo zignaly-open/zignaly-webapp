@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./ProvidersProfitsTable.scss";
 import { Box } from "@material-ui/core";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
 import Table from "../../Table";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
+import { merge } from "lodash";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
@@ -29,6 +30,8 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
+  const theme = useTheme();
+
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -443,25 +446,24 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
    * @param {ThemeOptions} theme Material UI theme options.
    * @returns {Theme} Theme overridden.
    */
-  const getMuiTheme = (theme) =>
-    createMuiTheme({
-      ...theme,
-      /**
-       * @type {*}
-       */
-      overrides: {
-        MUIDataTableHeadCell: {
-          root: {
-            // Don't wrap small headers and avoid wrapping long headers too much
-            minWidth: "128px",
+  const extendedTheme = useMemo(
+    () =>
+      merge({}, theme, {
+        overrides: {
+          MUIDataTableHeadCell: {
+            root: {
+              // Don't wrap small headers and avoid wrapping long headers too much
+              minWidth: "128px",
+            },
           },
         },
-      },
-    });
+      }),
+    [theme],
+  );
 
   return (
     <Box className="providersProfitsTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
+      <MuiThemeProvider theme={extendedTheme}>
         <Table columns={columns} data={stats} persistKey={persistKey} title={title} />
       </MuiThemeProvider>
     </Box>

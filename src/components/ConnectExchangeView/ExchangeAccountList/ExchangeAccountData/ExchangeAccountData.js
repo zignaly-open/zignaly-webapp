@@ -65,7 +65,7 @@ const ExchangeAccountData = ({ account }) => {
                   </Typography>
                 </Box>
               ) : (
-                <TotalEquity balance={balance} dailyBalance={dailyBalance} />
+                <TotalEquity balance={balance} dailyBalance={dailyBalance} modal={true} />
               )}
             </Box>
             <Box className="cryptoBox">

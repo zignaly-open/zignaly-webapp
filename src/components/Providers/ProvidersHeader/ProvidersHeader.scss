@@ -1,6 +1,14 @@
 .providersHeader {
   width: 100%;
 
+  @include media("<=sm") {
+    padding-bottom: 8px;
+
+    .settings {
+      margin-left: auto;
+    }
+  }
+
   .settings {
     border-radius: 4px;
     bottom: 0;
@@ -18,19 +26,9 @@
     cursor: pointer;
     height: 24px;
     width: 24px;
-  }
 
-  span {
     &:not(:first-child) {
       margin-left: 24px;
-    }
-  }
-
-  @include media("<=sm") {
-    padding-bottom: 8px;
-
-    .settings {
-      margin-left: auto;
     }
   }
 }

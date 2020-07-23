@@ -96,6 +96,7 @@ import {
  * @typedef {import('./tradeApiClient.types').CopyTraderCreatePayload} CopyTraderCreatePayload
  * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
+ * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
  */
 
 /**
@@ -405,6 +406,20 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return userPositionItemTransform(responseData);
+  }
+
+  /**
+   * Get a raw position (for debug).
+   *
+   * @param {PositionActionPayload} payload Position action payload.
+   * @returns {Promise<*>} Promise that resolve raw position entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async positionRawGet(payload) {
+    const endpointPath = "/fe/api.php?action=getRawPosition";
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    return responseData;
   }
 
   /**
@@ -1087,10 +1102,10 @@ class TradeApiClient {
   }
 
   /**
-   * Create a new provider
+   * Create a new copy trader.
    *
    * @param {ProviderCreatePayload} payload Provider Create payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<NewProviderEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1130,10 +1145,10 @@ class TradeApiClient {
   }
 
   /**
-   * Create a new provider
+   * Create a new signal provider.
    *
    * @param {ProviderCreatePayload} payload Provider Create payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<NewProviderEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */

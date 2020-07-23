@@ -1,6 +1,6 @@
 .traderCardHeader {
   align-items: flex-start;
-  border-bottom: 1px solid $borderColor;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: row;
   height: 80px;
@@ -27,7 +27,7 @@
       //   }
 
       .name {
-        color: $purple;
+        color: var(--purple);
         text-decoration: none;
       }
 
@@ -44,11 +44,11 @@
         flex-direction: column;
         margin-left: 5px;
         position: relative;
+      }
 
-        .price {
-          bottom: -17px;
-          position: absolute;
-        }
+      .price {
+        bottom: -17px;
+        position: absolute;
       }
     }
 

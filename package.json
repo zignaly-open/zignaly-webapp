@@ -91,8 +91,10 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "react-test-renderer": "^16.13.1",
-    "sass-lint": "^1.13.1",
-    "sass-lint-auto-fix": "^0.21.0",
+    "stylelint": "^13.6.1",
+    "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
     "typescript": "^3.9.3"
   },
   "scripts": {
@@ -100,7 +102,7 @@
     "build:test": "STAGE=test npm run build",
     "build:beta": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
     "build:prod": "STAGE=prod GATSBY_API_KEY=\"\" npm run build",
-    "checkall": "npm run sasslint && npm run tscheck && npm run jslint",
+    "checkall": "npm run stylelint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
@@ -108,8 +110,7 @@
     "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\";exit 0",
     "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs;exit 0",
     "reset": "rm -rf .cache/ public/ types/",
-    "sassfix": "sass-lint-auto-fix -c .sass-lint-auto-fix.yml --config-sass-lint .sass-lint.yml -d",
-    "sasslint": "env FORCE_COLOR=1 sass-lint -v",
+    "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
     "test": "STAGE=test jest"
   }

@@ -59,9 +59,10 @@
       background: linear-gradient(180deg, $redChartBottom 0%, $white 100%);
     }
 
-    h6,
-    button {
-      opacity: 0.6;
+    h6 {
+      &:not(.green):not(.red) {
+        opacity: 0.6;
+      }
     }
 
     .actions {
@@ -81,7 +82,7 @@
   }
 
   .userSummary {
-    border-top: 1px solid $borderColor;
+    border-top: 1px solid var(--border-color);
     padding: 10px 20px;
 
     h5 {
@@ -118,11 +119,11 @@
   .traderCardBody {
     .actionsWrapper {
       &.positive {
-        background: linear-gradient(180deg, $darkGreenChartBottom 0%, $darkChartBottom 100%);
+        background: linear-gradient(180deg, $darkGreenChartBottom 0%, $lightBlackBackground 100%);
       }
 
       &.negative {
-        background: linear-gradient(180deg, $darkRedChartBottom 0%, $darkChartBottom 100%);
+        background: linear-gradient(180deg, $darkRedChartBottom 0%, $lightBlackBackground 100%);
       }
     }
   }

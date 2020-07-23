@@ -8,7 +8,7 @@
 
   .questionContainer {
     .question {
-      color: $purple;
+      color: var(--purple);
       margin: 16px 40px 0 0;
       word-spacing: initial;
     }
@@ -21,7 +21,7 @@
       }
 
       .docs {
-        color: $purple;
+        color: var(--purple);
         word-spacing: initial;
       }
     }

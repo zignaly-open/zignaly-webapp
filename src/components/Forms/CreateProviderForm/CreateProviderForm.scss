@@ -1,6 +1,41 @@
 .createProviderForm {
   padding: 50px;
 
+  @include media("<=sm") {
+    .customButton {
+      width: 100%;
+    }
+
+    .inputBox {
+      flex-direction: column;
+    }
+
+    .customSelect {
+      &#{&} {
+        margin-left: 0;
+      }
+    }
+
+    .customSelect {
+      &:first-child {
+        margin-bottom: 18px;
+      }
+
+      > span {
+        margin: 0;
+        padding: 0;
+
+        > p {
+          margin-right: 0;
+        }
+      }
+    }
+
+    label {
+      text-align: center;
+    }
+  }
+
   .formContent {
     max-width: 556px;
   }
@@ -48,40 +83,5 @@
 
   .minBalanceBox {
     margin-right: 20px;
-  }
-
-  @include media("<=sm") {
-    .customButton {
-      width: 100%;
-    }
-
-    .inputBox {
-      flex-direction: column;
-    }
-
-    .customSelect {
-      &#{&} {
-        margin-left: 0;
-      }
-    }
-
-    .customSelect {
-      &:first-child {
-        margin-bottom: 18px;
-      }
-
-      > span {
-        margin: 0;
-        padding: 0;
-
-        > p {
-          margin-right: 0;
-        }
-      }
-    }
-
-    label {
-      text-align: center;
-    }
   }
 }

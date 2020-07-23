@@ -37,27 +37,28 @@
       bottom: 0;
       height: 100%;
       left: 0;
+      overflow: auto;
       padding: 20px 0 0;
       position: fixed;
       right: 0;
       top: 0;
       width: 100%;
       z-index: 1002;
+    }
 
-      .drawerHeader {
-        margin-bottom: 30px;
-        padding: 0 15px;
-        width: 100%;
+    .drawerHeader {
+      margin-bottom: 30px;
+      padding: 0 15px;
+      width: 100%;
 
-        h3 {
-          font-family: "PlexSans-SemiBold";
-          width: fit-content;
-        }
+      h3 {
+        font-family: "PlexSans-SemiBold";
+        width: fit-content;
+      }
 
-        .closeIcon {
-          height: 24px;
-          width: 24px;
-        }
+      .closeIcon {
+        height: 24px;
+        width: 24px;
       }
     }
 
@@ -98,19 +99,27 @@
       .balanceBox {
         height: 42px;
         width: fit-content;
-
-        .balance {
-          text-transform: uppercase;
-
-          &.red {
-            color: $red;
-          }
-
-          &.green {
-            color: $green;
-          }
-        }
       }
+    }
+
+    .balance {
+      text-transform: uppercase;
+
+      &.red {
+        color: $red;
+      }
+
+      &.green {
+        color: $green;
+      }
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .mobileHeader {
+    .currentSelectionBox {
+      background-image: $purpleDarkGradient;
     }
   }
 }

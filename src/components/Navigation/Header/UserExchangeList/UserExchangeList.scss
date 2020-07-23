@@ -20,3 +20,11 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .userExchangeList {
+    .currentSelectionBox {
+      background-image: $purpleDarkGradient;
+    }
+  }
+}

@@ -7,12 +7,13 @@ import {
 } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { formatPrice } from "../../../utils/formatters";
 import "./TradingView.scss";
 
@@ -44,10 +45,13 @@ const TradingViewEdit = (props) => {
   );
   const [lastPrice, setLastPrice] = useState(null);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  // Raw position entity (for debug)
+  const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
   const [marketData, setMarketData] = useState(null);
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
 
   /**
@@ -95,6 +99,13 @@ const TradingViewEdit = (props) => {
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
+
+    if (storeUserData.isAdmin) {
+      // Get position raw data for debug
+      tradeApi.positionRawGet(payload).then((data) => {
+        setPositionRawData(data);
+      });
+    }
   };
 
   const loadDependencies = () => {
@@ -290,6 +301,12 @@ const TradingViewEdit = (props) => {
             />
           )}
         </Box>
+        {positionRawData && (
+          <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
+            <Typography variant="h6">Debug</Typography>
+            <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
+          </Box>
+        )}
       </Box>
     </FormContext>
   );

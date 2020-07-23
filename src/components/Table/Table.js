@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
@@ -7,8 +7,8 @@ import MUIDataTable from "mui-datatables";
 import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
+import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
+import { merge } from "lodash";
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../store/initialState").DefaultStateSettings} DefaultStateSettings
@@ -39,6 +39,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   const dispatch = useDispatch();
   const intl = useIntl();
   const countRows = size(data);
+  const theme = useTheme();
 
   /**
    * Functionn to create column labels.
@@ -149,78 +150,80 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
    * @param {ThemeOptions} theme Material UI theme options.
    * @returns {Theme} Theme overridden.
    */
-  const getMuiTheme = (theme) =>
-    createMuiTheme({
-      ...theme,
-      /**
-       * @type {*}
-       */
-      overrides: {
-        MUIDataTableHeadRow: {
-          root: {
-            verticalAlign: "top",
-          },
-        },
-        MUIDataTableToolbar: {
-          root: {
-            // body2
-            fontSize: "16px",
-            fontFamily: "PlexSans-SemiBold",
-            lineHeight: 1.31,
-            letterSpacing: "0.61px",
-          },
-        },
-        MUIDataTableHeadCell: {
-          root: {
-            // footnote
-            fontSize: "11px",
-            fontFamily: "PlexSans-Bold",
-            textTransform: "uppercase",
-            opacity: "0.6",
-            lineHeight: 1.45,
-            letterSpacing: "0.42px",
-            minWidth: "112px",
-            padding: "12px",
-          },
-        },
-        MUIDataTableBodyCell: {
-          stackedParent: {
-            padding: 0,
-          },
-          stackedCommon: {
-            fontSize: "14px",
-            fontFamily: "PlexSans-Medium",
-            minWidth: "80px",
-            padding: "12px",
-            whiteSpace: "nowrap",
-            [theme.breakpoints.down("sm")]: {
-              height: "auto",
-              textAlign: "left",
-              whiteSpace: "normal",
-              padding: "5px",
+  const extendedTheme = useMemo(
+    () =>
+      merge({}, theme, {
+        /**
+         * @type {*}
+         */
+        overrides: {
+          MUIDataTableHeadRow: {
+            root: {
+              verticalAlign: "top",
             },
           },
-        },
-        MUIDataTablePagination: {
-          root: {
-            [theme.breakpoints.down("sm")]: {
-              "&:last-child": {
+          MUIDataTableToolbar: {
+            root: {
+              // body2
+              fontSize: "16px",
+              fontFamily: "PlexSans-SemiBold",
+              lineHeight: 1.31,
+              letterSpacing: "0.61px",
+            },
+          },
+          MUIDataTableHeadCell: {
+            root: {
+              // footnote
+              fontSize: "11px",
+              fontFamily: "PlexSans-Bold",
+              textTransform: "uppercase",
+              opacity: "0.6",
+              lineHeight: 1.45,
+              letterSpacing: "0.42px",
+              minWidth: "112px",
+              padding: "12px",
+            },
+          },
+          MUIDataTableBodyCell: {
+            stackedParent: {
+              padding: 0,
+            },
+            stackedCommon: {
+              fontSize: "14px",
+              fontFamily: "PlexSans-SemiBold",
+              minWidth: "80px",
+              padding: "12px",
+              whiteSpace: "nowrap",
+              [theme.breakpoints.down("sm")]: {
+                height: "auto",
+                textAlign: "left",
+                whiteSpace: "normal",
+                padding: "5px",
+              },
+            },
+          },
+          MUIDataTablePagination: {
+            root: {
+              [theme.breakpoints.down("sm")]: {
+                "&:last-child": {
+                  paddingLeft: 0,
+                },
+              },
+            },
+            toolbar: {
+              [theme.breakpoints.down("sm")]: {
                 paddingLeft: 0,
               },
             },
           },
-          toolbar: {
-            [theme.breakpoints.down("sm")]: {
-              paddingLeft: 0,
-            },
-          },
         },
-      },
-    });
+      }),
+    [theme],
+  );
 
   return (
     <Box className="customTable">
-      <MuiThemeProvider theme={(outerTheme) => getMuiTheme(outerTheme)}>
+      <MuiThemeProvider theme={extendedTheme}>
         <MUIDataTable
           columns={columnsCustom}
           // @ts-ignore (wait for datatables types v3)

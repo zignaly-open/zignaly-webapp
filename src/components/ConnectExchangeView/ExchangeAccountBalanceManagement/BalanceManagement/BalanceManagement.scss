@@ -38,7 +38,7 @@
   }
 
   .coinColumn {
-    border-right: 1px solid $borderColor;
+    border-right: 1px solid var(--border-color);
     max-width: 553px;
     padding-right: 69px;
     width: 100%;

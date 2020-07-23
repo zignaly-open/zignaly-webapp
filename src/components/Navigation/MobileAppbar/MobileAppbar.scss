@@ -30,12 +30,7 @@
     width: 24px;
   }
 
-  .checkedDarkBox {
-    background-image: $purpleLightGradient;
-    border-radius: 100%;
-    padding: 10px;
-  }
-
+  .checkedDarkBox,
   .checkedLightBox {
     background-image: $purpleLightGradient;
     border-radius: 100%;
@@ -50,5 +45,20 @@
     right: 0;
     top: 0;
     width: 100%;
+  }
+}
+
+[data-theme="dark"] {
+  .mobileAppbar {
+    .sideBarLink {
+      &.active {
+        background-image: $purpleDarkGradient;
+      }
+    }
+
+    .checkedDarkBox,
+    .checkedLightBox {
+      background-image: $purpleDarkGradient;
+    }
   }
 }

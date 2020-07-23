@@ -15,10 +15,13 @@
       margin: 0 12px;
 
       .icon {
-        cursor: pointer;
         font-size: 28px;
         height: 32px;
         widows: 32px;
+      }
+
+      .iconOpen {
+        cursor: pointer;
       }
     }
 
@@ -36,12 +39,12 @@
         &:last-child {
           width: 100px;
         }
+      }
 
-        .expandIcon {
-          cursor: pointer;
-          height: 24px;
-          width: 24px;
-        }
+      .expandIcon {
+        cursor: pointer;
+        height: 24px;
+        width: 24px;
       }
 
       .balanceContainer {

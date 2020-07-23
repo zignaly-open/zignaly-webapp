@@ -59,7 +59,7 @@
     }
 
     .callout {
-      & + span {
+      + span {
         margin-bottom: 5px;
         order: 1;
         padding-right: 5px;

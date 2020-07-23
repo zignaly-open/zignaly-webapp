@@ -1,5 +1,5 @@
 .sidebar {
-  border: 1px solid $borderColor;
+  border: 1px solid var(--border-color);
   border-radius: 28px;
   box-sizing: border-box;
   left: 27px;
@@ -47,6 +47,16 @@
       height: 24px;
       margin-right: 12px;
       width: 24px;
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .sidebar {
+    .sideBarLink {
+      &.active {
+        background-image: $purpleDarkGradient;
+      }
     }
   }
 }

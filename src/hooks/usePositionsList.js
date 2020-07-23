@@ -233,7 +233,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
 
   const updateData = () => {
     // Only open positions needs continuos updates.
-    if (type === "open") {
+    if (type === "open" || type === "profileOpen") {
       // Single position update.
       if (positionEntity) {
         loadPosition();

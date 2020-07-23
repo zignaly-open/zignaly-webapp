@@ -2,13 +2,21 @@
   padding-bottom: 24px;
   width: 100%;
 
+  @include media("<=sm") {
+    .actionBar {
+      .submitButton {
+        width: 100%;
+      }
+    }
+  }
+
   .actionBar {
-    border-bottom: 1px solid $borderColor;
+    border-bottom: 1px solid var(--border-color);
     padding: 10px;
     width: 100%;
 
     .customButton {
-      & + * {
+      + * {
         margin-left: 24px;
       }
     }
@@ -33,14 +41,6 @@
 
     .separator {
       margin: 0 12px;
-    }
-  }
-
-  @include media("<=sm") {
-    .actionBar {
-      .submitButton {
-        width: 100%;
-      }
     }
   }
 }

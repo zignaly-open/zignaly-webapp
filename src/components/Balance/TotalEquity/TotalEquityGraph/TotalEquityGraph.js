@@ -3,6 +3,8 @@ import "./TotalEquityGraph.scss";
 import GenericChart from "../../../Graphs/GradientLineChart";
 import { Box } from "@material-ui/core";
 import { toNumber } from "lodash";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { colors } from "../../../../services/theme";
 
 /**
  *
@@ -13,6 +15,7 @@ import { toNumber } from "lodash";
  *
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
+ * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
  */
 
 /**
@@ -20,7 +23,9 @@ import { toNumber } from "lodash";
  * @param {DefaultProps} props Default props.
  */
 
-const TotalEquityGraph = ({ list }) => {
+const TotalEquityGraph = ({ list, modal }) => {
+  const { darkStyle } = useStoreSettingsSelector();
+
   /**
    * @typedef {import("../../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
    * @type {ChartData}
@@ -29,9 +34,9 @@ const TotalEquityGraph = ({ list }) => {
 
   const colorsOptions = {
     backgroundColor: "",
-    borderColor: "#a946f6",
-    gradientColor1: "#a946f6",
-    gradientColor2: "#fafafa",
+    borderColor: darkStyle ? "#460088" : "#a946f6",
+    gradientColor1: darkStyle ? (modal ? "#191328" : "#170823") : "#9c39eb",
+    gradientColor2: darkStyle ? (modal ? colors.black2 : "#12111d") : "#fafafa",
   };
 
   const prepareChartData = () => {

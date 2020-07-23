@@ -1,4 +1,6 @@
 .customButton {
+  min-height: 48px;
+  min-width: 250px;
   @include media("<=sm") {
     width: 90%;
 
@@ -6,9 +8,6 @@
       min-width: 100%;
     }
   }
-
-  min-height: 48px;
-  min-width: 250px;
 
   span {
     font-family: "PlexSans-SemiBold";
@@ -48,18 +47,18 @@
 
   &.loadMoreButton {
     background: transparent;
-    border: 2px solid $purple;
-    color: $purple;
+    border: 2px solid var(--purple);
+    color: var(--purple);
     min-width: 250px;
 
     .loader {
-      color: $purple;
+      color: var(--purple);
     }
   }
 
   &.textPurple {
     background: transparent;
-    color: $purple;
+    color: var(--purple);
     min-width: 120px;
   }
 
@@ -73,7 +72,7 @@
   }
 
   &.borderPurple {
-    border: 2px solid $purple;
+    border: 2px solid var(--purple);
   }
 
   &.textDefault {

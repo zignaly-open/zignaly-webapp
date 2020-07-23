@@ -42,7 +42,7 @@ const MobileExchangeList = () => {
       </Box>
 
       <Slide direction="up" in={list}>
-        <Box bgcolor="grid.content" className="mobileExchangeListDrawer hideScroll">
+        <Box bgcolor="grid.content" className="mobileExchangeListDrawer">
           <Box
             alignItems="center"
             className="drawerHeader"

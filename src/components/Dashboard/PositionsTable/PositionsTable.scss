@@ -72,7 +72,7 @@
   }
 
   .name {
-    color: $purple;
+    color: var(--purple);
     text-decoration: none;
   }
 }
@@ -89,7 +89,7 @@
 
     > :last-child {
       background: $transparentBackground;
-      border-bottom: 1px solid $borderColor;
+      border-bottom: 1px solid var(--border-color);
       box-sizing: boorder-box;
       margin-bottom: 16px;
       min-height: 70px;

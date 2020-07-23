@@ -70,8 +70,6 @@ $borderColor: rgba(0, 0, 0, 0.1);
 
 $darkBorderColor: #1c1a27;
 
-$tooltipBorder: rgba(64, 57, 70, 0.37);
-
 $tooltipBackground: #1c2549;
 
 $tooltipText: rgba(255, 255, 255, 0.94);
@@ -84,9 +82,10 @@ $passwordStrengthBackground: rgba(0, 0, 0, 0.9);
 
 $themeSwitcherBackground: #141521;
 
-$darkChartBottom: #151521;
-
 $purpleLightGradient: linear-gradient(to right, $purple, $purpleMedium);
+
+$purpleDarkGradient: linear-gradient(to bottom, $grey, $grey),
+  linear-gradient(102deg, $purpleDarkest 5%, $purpleDark 96%);
 
 $greenGradient: linear-gradient(to right, $green2, $green3 98%);
 
@@ -101,3 +100,13 @@ $redGradient: linear-gradient(99deg, $red2, $red3 96%);
 $purpleDarkGradient: $greyGradient, linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
 
 $greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey 96%);
+
+:root {
+  --purple: #{$purple};
+  --border-color: #{$borderColor};
+}
+
+[data-theme="dark"] {
+  --purple: #{$purpleLight};
+  --border-color: #{$darkBorderColor};
+}

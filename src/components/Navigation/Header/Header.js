@@ -16,7 +16,8 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { toggleBalanceBox } from "../../../store/actions/settings";
 import "./Header.scss";
-import DownIcon from "../../../images/header/chevronDownPurple.svg";
+import DownIconPurple from "../../../images/header/chevronDownPurple.svg";
+import DownIcon from "../../../images/header/chevron-down.svg";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -99,13 +100,10 @@ const Header = () => {
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
         <Box className="linkBox">
-          <img
-            alt="zignaly-user"
-            className="icon"
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            src={ProfileIcon}
-          />
-          <img className="arrow" src={DownIcon} />
+          <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
+            <img alt="zignaly-user" className="icon" src={ProfileIcon} />
+            <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+          </Box>
           <Popper
             anchorEl={anchorEl}
             className="popper"

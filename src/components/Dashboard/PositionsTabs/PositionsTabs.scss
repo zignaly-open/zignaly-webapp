@@ -4,7 +4,7 @@
   width: 100%;
 
   .tabsBox {
-    border-bottom: solid 1px $borderColor;
+    border-bottom: solid 1px var(--border-color);
 
     .settings {
       padding: 0 20px;
@@ -19,7 +19,7 @@
   }
 
   .customTable {
-    & > div {
+    > div {
       box-shadow: none;
     }
   }

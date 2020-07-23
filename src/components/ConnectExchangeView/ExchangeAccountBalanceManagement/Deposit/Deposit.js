@@ -115,8 +115,8 @@ const Deposit = () => {
                 <Box className="networkColumn">
                   {selectedAsset.networks.length > 1 && (
                     <NetworksToggleGroup
-                      networks={selectedAsset.networks}
-                      selectedNetwork={selectedNetwork}
+                      networks={selectedAsset.networks.map((n) => n.name)}
+                      selectedNetwork={selectedNetwork.name}
                       setSelectedNetwork={setSelectedNetwork}
                     />
                   )}
@@ -125,7 +125,11 @@ const Deposit = () => {
                   </Typography>
                   <Box display="flex" flexDirection="row">
                     {selectedNetwork && !selectedNetwork.withdrawEnable ? (
-                      <Alert severity="error">{selectedNetwork.withdrawDesc}</Alert>
+                      <Alert severity="error">
+                        {selectedNetwork.withdrawDesc || (
+                          <FormattedMessage id="withdraw.notavailable" />
+                        )}
+                      </Alert>
                     ) : depositAddress ? (
                       <>
                         <Typography className="address bold" variant="body1">

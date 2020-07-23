@@ -7,7 +7,7 @@
       font-family: "PlexSans-Regular";
       margin-right: 5px;
 
-      & + span {
+      + span {
         font-family: "PlexSans-Bold";
       }
     }
@@ -15,7 +15,7 @@
 
   &[x-placement*="top"] {
     .customArrowTooltip {
-      background-color: $borderColor;
+      background-color: var(--border-color);
       bottom: auto;
       height: 26px;
       margin: 6px 0 0 -2px;
@@ -33,7 +33,7 @@
 .customTooltip {
   @extend %body1;
   background-color: $tooltipBackground;
-  border: solid 1px $tooltipBorder;
+  border: solid 1px $darkBorderColor;
   color: $tooltipText;
   padding: 16px;
   text-align: center;

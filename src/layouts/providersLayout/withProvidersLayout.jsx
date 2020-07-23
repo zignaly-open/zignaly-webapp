@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getDisplayName } from "../../utils";
-import { Box, Icon, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
@@ -80,23 +80,19 @@ const withProvidersLayout = (Component) => {
           justifyContent="space-around"
         >
           {isCopyTrading && (
-            <Icon>
-              <img
-                className="icon"
-                onClick={() => toggleFilters()}
-                src={showFilters ? FilterFillIcon : FilterIcon}
-                title="Filter"
-              />
-            </Icon>
-          )}
-          <Icon>
             <img
-              className="icon"
-              onClick={() => toggleSort()}
-              src={showSort ? SortFillIcon : SortIcon}
-              title="Sort"
+              className="icon iconPurple"
+              onClick={() => toggleFilters()}
+              src={showFilters ? FilterFillIcon : FilterIcon}
+              title="Filter"
             />
-          </Icon>
+          )}
+          <img
+            className="icon iconPurple"
+            onClick={() => toggleSort()}
+            src={showSort ? SortFillIcon : SortIcon}
+            title="Sort"
+          />
         </Box>
       </>
     );
