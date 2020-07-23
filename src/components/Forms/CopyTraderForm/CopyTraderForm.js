@@ -57,9 +57,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (validateExchange() && validateBalance()) {
-      let added = parseFloat(data.allocatedBalance);
-      let needed =
+    if (validateExchange() && validateBalance(data.allocatedBalance)) {
+      const added = parseFloat(data.allocatedBalance);
+      const needed =
         typeof provider.minAllocatedBalance === "string"
           ? parseFloat(provider.minAllocatedBalance)
           : provider.minAllocatedBalance;
@@ -128,20 +128,20 @@ const CopyTraderForm = ({ provider, onClose }) => {
     return true;
   };
 
-  const validateBalance = () => {
+  /**
+   *
+   * @param {String} allocatedBalance
+   */
+  const validateBalance = (allocatedBalance) => {
     // Skip balance validation on paper trading exchange.
+    const added = parseFloat(allocatedBalance);
     if (storeSettings.selectedExchange.paperTrading) {
       return true;
     }
-
-    let needed =
-      typeof provider.minAllocatedBalance === "string"
-        ? parseFloat(provider.minAllocatedBalance)
-        : provider.minAllocatedBalance;
     let neededQuote = provider.copyTradingQuote;
     /* @ts-ignore */
     let userBalance = balance[neededQuote] || 0;
-    if (userBalance && userBalance > needed) {
+    if (userBalance && userBalance > added) {
       return true;
     }
     let msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
