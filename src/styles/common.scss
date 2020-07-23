@@ -16,18 +16,6 @@ body {
   margin: 0;
 }
 
-.hideScroll {
-  overflow: scroll;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  scrollbar-width: none;
-
-  &::scrollbar {
-    height: 0;
-    width: 0;
-  }
-}
-
 .selectInput {
   border-radius: 4px;
   height: 32px;
@@ -91,7 +79,7 @@ body {
     height: 32px;
   }
 
-  & > div {
+  > div {
     padding-right: 10px;
   }
 
@@ -114,7 +102,7 @@ body {
   margin: 0;
   width: 100%;
 
-  & > div {
+  > div {
     padding-right: 10px;
   }
 
@@ -267,8 +255,8 @@ body {
 
 .link {
   color: var(--purple);
-  text-decoration: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 table {

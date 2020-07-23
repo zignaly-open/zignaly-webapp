@@ -7,7 +7,6 @@ import CustomButton from "../../CustomButton";
 import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
-import { useSelector } from "react-redux";
 import { formatFloat2Dec } from "../../../utils/format";
 import moment from "moment";
 import LazyLoad from "react-lazyload";

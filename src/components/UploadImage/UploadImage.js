@@ -79,8 +79,8 @@ const UploadImage = ({ imageUrl, onChange }) => {
         </label>
         <CustomButton
           className="defaultText deleteButton"
+          disabled={!imageUrl}
           onClick={handleDelete}
-          disabled={!Boolean(imageUrl)}
         >
           <FormattedMessage id="srv.edit.delete" />
         </CustomButton>

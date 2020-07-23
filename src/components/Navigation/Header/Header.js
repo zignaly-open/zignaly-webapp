@@ -100,7 +100,7 @@ const Header = () => {
         {exchangeConnections.length === 0 && <ConnectExchangeButton />}
         {exchangeConnections.length > 0 && <UserExchangeList />}
         <Box className="linkBox">
-          <Box onClick={(e) => setAnchorEl(e.currentTarget)} className="iconOpen">
+          <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
             <img alt="zignaly-user" className="icon" src={ProfileIcon} />
             <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
           </Box>

@@ -25,30 +25,30 @@
   .fieldBox {
     margin-bottom: 40px;
     width: 100%;
+  }
 
-    .inputBox {
-      width: 300px;
+  .inputBox {
+    width: 300px;
 
-      .customLabel {
-        text-align: center;
-        width: 100%;
+    .customLabel {
+      text-align: center;
+      width: 100%;
 
-        h4 {
-          margin-left: 10px;
-          width: fit-content;
-        }
+      h4 {
+        margin-left: 10px;
+        width: fit-content;
       }
+    }
 
-      .text {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 5px;
-        width: 100%;
+    .text {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 5px;
+      width: 100%;
 
-        &.errorText {
-          font-size: 14px;
-        }
+      &.errorText {
+        font-size: 14px;
       }
     }
   }

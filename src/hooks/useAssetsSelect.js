@@ -50,7 +50,7 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
   };
 
   /**
-   * @param {CoinNetwork} network network
+   * @param {string} name network name
    * @returns {void}
    */
   const setSelectedNetworkByName = (name) => {

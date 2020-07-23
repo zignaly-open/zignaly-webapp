@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
@@ -7,7 +7,7 @@ import MUIDataTable from "mui-datatables";
 import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box } from "@material-ui/core";
-import { MuiThemeProvider, createMuiTheme, useTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { merge } from "lodash";
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType

@@ -10,7 +10,6 @@ import useBalance from "../../../../hooks/useBalance";
 import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
-import { useTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity

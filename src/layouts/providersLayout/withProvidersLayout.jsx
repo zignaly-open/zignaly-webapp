@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getDisplayName } from "../../utils";
-import { Box, Icon, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";

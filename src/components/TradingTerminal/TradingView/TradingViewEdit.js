@@ -278,7 +278,7 @@ const TradingViewEdit = (props) => {
           )}
         </Box>
         {positionRawData && (
-          <Box display="flex" flexDirection="column" alignItems="center" mt="24px">
+          <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
             <Typography variant="h6">Debug</Typography>
             <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
           </Box>

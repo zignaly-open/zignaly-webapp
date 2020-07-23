@@ -29,9 +29,9 @@ const SubNavHeader = ({ links, rightComponent }) => (
     {links.map((item, index) => (
       <GatsbyLink
         activeClassName="active"
-        partiallyActive={true}
         className="dashboardLink"
         key={index}
+        partiallyActive={true}
         to={item.to}
       >
         <FormattedMessage id={item.id} />

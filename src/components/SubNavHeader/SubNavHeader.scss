@@ -4,6 +4,14 @@
   overflow-x: auto;
   position: relative;
 
+  @include media("<=sm") {
+    margin-bottom: 12px;
+
+    .dashboardLink {
+      margin-right: 32px;
+    }
+  }
+
   &::before {
     background: var(--border-color);
     bottom: 0;
@@ -42,14 +50,6 @@
 
     &:hover {
       opacity: 1;
-    }
-  }
-
-  @include media("<=sm") {
-    margin-bottom: 12px;
-
-    .dashboardLink {
-      margin-right: 32px;
     }
   }
 }
