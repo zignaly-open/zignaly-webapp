@@ -371,6 +371,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
  * @property {string} age
+ * @property {number} ageSeconds
  * @property {number} amount
  * @property {string} base
  * @property {number} buyPrice
@@ -964,6 +965,7 @@ export function userPositionsResponseTransform(response) {
 export function userPositionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
+  const nowDate = moment();
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
     if (positionItem.providerId === "1") {
@@ -1093,6 +1095,7 @@ export function userPositionItemTransform(positionItem) {
   const risk = calculateRisk(positionEntity);
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
+    ageSeconds: openDateMoment.diff(nowDate),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
@@ -1215,6 +1218,7 @@ function createEmptyPositionEntity() {
   return {
     accounting: false,
     age: "",
+    ageSeconds: 0,
     amount: 0,
     base: "",
     buyPrice: 0,

@@ -3,11 +3,11 @@ import { Box } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Table from "../../../Table";
 import { ConfirmDialog } from "../../../Dialogs";
-import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import ExpandedRow from "../ExpandedRow";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { usePositionDataTableCompose } from "../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 
 /**
@@ -124,6 +124,8 @@ const ManagementTable = ({ list, allPositions }) => {
     }
   };
 
+  const { composeManagementPositionsDataTable } = usePositionDataTableCompose(list, confirmAction);
+
   /**
    * Compose MUI data table for positions collection of selected type.
    *
@@ -131,7 +133,7 @@ const ManagementTable = ({ list, allPositions }) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
-    dataTable = composeManagementPositionsDataTable(list, confirmAction);
+    dataTable = composeManagementPositionsDataTable();
     return dataTable;
   };
 

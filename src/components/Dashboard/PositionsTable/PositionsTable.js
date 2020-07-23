@@ -4,14 +4,6 @@ import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";
-import {
-  composeOpenPositionsDataTable,
-  composeClosePositionsDataTable,
-  composeLogPositionsDataTable,
-  excludeDataTableColumn,
-  composeClosedPositionsForProvider,
-  composeOpenPositionsForProvider,
-} from "../../../utils/composePositionsDataTable";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
@@ -20,6 +12,7 @@ import usePositionsList from "../../../hooks/usePositionsList";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import "./PositionsTable.scss";
+import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -186,6 +179,15 @@ const PositionsTable = (props) => {
     }
   };
 
+  const {
+    composeClosePositionsDataTable,
+    composeLogPositionsDataTable,
+    composeOpenPositionsDataTable,
+    composeOpenPositionsForProvider,
+    composeClosedPositionsForProvider,
+    excludeDataTableColumn,
+  } = usePositionDataTableCompose(positionsFiltered, confirmAction);
+
   /**
    * Compose MUI data table for positions collection of selected type.
    *
@@ -195,11 +197,11 @@ const PositionsTable = (props) => {
     let dataTable;
 
     if (type === "closed") {
-      dataTable = composeClosePositionsDataTable(positionsFiltered);
+      dataTable = composeClosePositionsDataTable();
     } else if (type === "log") {
-      dataTable = composeLogPositionsDataTable(positionsFiltered);
+      dataTable = composeLogPositionsDataTable();
     } else if (type === "open") {
-      dataTable = composeOpenPositionsDataTable(positionsFiltered, confirmAction);
+      dataTable = composeOpenPositionsDataTable();
       if (storeSettings.selectedExchange.exchangeType === "futures") {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }

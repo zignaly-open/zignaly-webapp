@@ -22,7 +22,14 @@ export const formatNumber = (value, precision = 8) => {
  * @returns {string} String numeric value with added thousands separator chars.
  */
 export const addThousandsSeparator = (value, separator = " ") => {
-  return value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator);
+  const valueNumber = parseFloat(value);
+
+  if (valueNumber) {
+    let finalValue = String(valueNumber.toLocaleString("en-US"));
+    return finalValue.replace(",", separator);
+  }
+
+  return "";
 };
 
 /**
