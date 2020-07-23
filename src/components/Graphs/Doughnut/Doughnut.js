@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./Doughnut.scss";
 import { Box } from "@material-ui/core";
 import { Doughnut as DoughnutChart } from "react-chartjs-2";
@@ -26,8 +26,10 @@ import { Doughnut as DoughnutChart } from "react-chartjs-2";
 
 const Doughnut = (props) => {
   const { values, labels, colorOptions } = props;
+  const chartRef = useRef(null);
+  const legendId = `legendBox${Math.random()}`;
   /**
-   * @type Chart.ChartData
+   * @type ChartData
    */
   const data = {
     labels: labels,
@@ -41,15 +43,35 @@ const Doughnut = (props) => {
   };
 
   /**
-   * @type Chart.ChartOptions
+   * @type ChartOptions
    */
   const options = {
-    responsive: true,
+    layout: {
+      padding: {
+        right: 100,
+      },
+    },
     legend: {
-      display: true,
+      display: false,
       position: "right",
     },
-    cutoutPercentage: 60,
+    legendCallback: function (chart) {
+      var ul = document.createElement("ul");
+      chart.data.datasets.forEach(function (dataset, datasetIndex) {
+        let backgroundColor = colorOptions.backgroundColor;
+        labels.forEach(function (label, labelIndex) {
+          ul.innerHTML += `
+                  <li>
+                     <span class="circle" style="background-color: ${backgroundColor[labelIndex]}"></span>
+                     <span class="value">${dataset.data[labelIndex]}%</span>
+                     <span class="quote">${label}</span>
+                   </li>
+                `;
+        });
+      });
+      return ul.outerHTML;
+    },
+    cutoutPercentage: 65,
     elements: {
       arc: {
         borderWidth: 0,
@@ -57,9 +79,20 @@ const Doughnut = (props) => {
     },
   };
 
+  useEffect(() => {
+    document.getElementById(legendId).innerHTML = chartRef.current.chartInstance.generateLegend();
+  }, [data, labels]);
+
   return (
-    <Box className="doughnut">
-      <DoughnutChart data={data} options={options} />
+    <Box
+      className="doughnut"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <DoughnutChart data={data} options={options} ref={chartRef} />
+      <Box className="legendBox" id={legendId}></Box>
     </Box>
   );
 };

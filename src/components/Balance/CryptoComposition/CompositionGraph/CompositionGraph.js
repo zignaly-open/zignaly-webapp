@@ -61,7 +61,7 @@ const CompositionGraph = ({ list, quotes }) => {
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
           values.push(value.toFixed(2));
-          labels.push(quotes[a] + "%");
+          labels.push(quotes[a]);
         }
       }
       if (equity.otherPercentage > 0) {
