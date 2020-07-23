@@ -667,52 +667,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose all action buttons element for a given position.
-   *
-   * @param {number} dataIndex Data entity index.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function renderManagementActionButtons(dataIndex) {
-    const position = positions[dataIndex];
-    const { isCopyTrading, isCopyTrader, closed } = position;
-
-    return (
-      <div className="actions">
-        {!position.closed ? (
-          <button
-            data-position-id={position.positionId}
-            onClick={gotoPositionDetail}
-            title="Edit Position"
-            type="button"
-          >
-            <Edit2 color={colors.purpleLight} />
-          </button>
-        ) : (
-          <button
-            data-position-id={position.positionId}
-            onClick={gotoPositionDetail}
-            title="View Position"
-            type="button"
-          >
-            <Eye color={colors.purpleLight} />
-          </button>
-        )}
-        {(!isCopyTrading || isCopyTrader) && !closed && (
-          <button
-            data-action={"exit"}
-            data-position-id={position.positionId}
-            onClick={confirmActionHandler}
-            title="Exit Position"
-            type="button"
-          >
-            <LogOut color={colors.purpleLight} />
-          </button>
-        )}
-      </div>
-    );
-  }
-
-  /**
    * Compose delete action button element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -909,7 +863,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @returns {DataTableContent} Closed positions data table structure.
    */
   function composeClosePositionsDataTable() {
-    const columnsIds = [
+    const configColumns = [
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
       { columnId: "col.date.close", propertyName: "closeDateReadable", renderFunction: null },
       {
@@ -985,7 +939,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     ];
 
     return {
-      columns: columnsIds.map(composeColumnOptions),
+      columns: configColumns.map(composeColumnOptions),
       data: positions,
     };
   }
@@ -996,7 +950,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @returns {DataTableContent} Log positions data table structure.
    */
   function composeLogPositionsDataTable() {
-    const columnsIds = [
+    const configColumns = [
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
       { columnId: "col.type", propertyName: "type", renderFunction: null },
       {
@@ -1033,7 +987,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     ];
 
     return {
-      columns: columnsIds.map(composeColumnOptions),
+      columns: configColumns.map(composeColumnOptions),
       data: positions,
     };
   }
@@ -1068,81 +1022,42 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose MUI Data Table row for open position entity.
-   *
-   * @param {PositionEntity} position Position entity to compose data table row for.
-   * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
-   * @returns {DataTableDataRow} Row data array.
-   */
-  function composeManagementPositionRow(position, confirmActionHandler) {
-    return [
-      composeRawValue(position.subPositions),
-      composeRawValue(position.openDateReadable),
-      composeRawValue(position.providerName),
-      composeRawValue(position.copyTradingTotals.totalPositions),
-      composeRawValue(position.copyTradingTotals.soldPositions),
-      composeStatusMessage(position.status),
-      composeRawValue(position.signalId),
-      composeRawValue(position.userId),
-      composeRawValue(position.pair),
-      composeEntryPrice(position),
-      composeLeverage(position),
-      composeExitPrice(position),
-      composeProfit(position),
-      composeProfitPercentage(position),
-      composeRawValue(position.side),
-      composeStopLossPrice(position),
-      composeAmount(position),
-      composeBaseSymbolWithPrice(position.base, position.remainAmount),
-      composeQuoteSize(position),
-      composeTrailingStopIcon(position),
-      composeTakeProfitTargets(position),
-      composeRebuyTargets(position),
-      composeRisk(position),
-      composeRawValue(position.age),
-      composeManagementActionButtons(position, confirmActionHandler),
-    ];
-  }
-
-  /**
    * Compose MUI Data Table data structure from positions entities collection.
    *
    * @returns {DataTableContent} Open positions data table structure.
    */
   function composeManagementPositionsDataTable() {
-    const columnsIds = [
-      "col.provider.subpositions",
-      "col.date.open",
-      "col.provider.name",
-      "col.provider.totalpositions",
-      "col.provider.soldpositions",
-      "col.status",
-      "col.signalid",
-      "col.users.userid",
-      "col.pair",
-      "col.price.entry",
-      "col.leverage",
-      "col.price.current",
-      "col.plnumber",
-      "col.plpercentage",
-      "col.side",
-      "col.stoplossprice",
-      "col.initialamount",
-      "col.remainingamount",
-      "col.invested",
-      "col.tsl",
-      "col.tp",
-      "col.dca",
-      "col.risk",
-      "col.age",
-      "col.actions",
+    const configColumns = [
+      { columnId: "col.provider.subpositions", propertyName: "", renderFunction: null },
+      { columnId: "col.date.open", propertyName: "", renderFunction: null },
+      { columnId: "col.provider.name", propertyName: "", renderFunction: null },
+      { columnId: "col.provider.totalpositions", propertyName: "", renderFunction: null },
+      { columnId: "col.provider.soldpositions", propertyName: "", renderFunction: null },
+      { columnId: "col.status", propertyName: "", renderFunction: null },
+      { columnId: "col.signalid", propertyName: "", renderFunction: null },
+      { columnId: "col.users.userid", propertyName: "", renderFunction: null },
+      { columnId: "col.pair", propertyName: "", renderFunction: null },
+      { columnId: "col.price.entry", propertyName: "", renderFunction: null },
+      { columnId: "col.leverage", propertyName: "", renderFunction: null },
+      { columnId: "col.price.current", propertyName: "", renderFunction: null },
+      { columnId: "col.plnumber", propertyName: "", renderFunction: null },
+      { columnId: "col.plpercentage", propertyName: "", renderFunction: null },
+      { columnId: "col.side", propertyName: "", renderFunction: null },
+      { columnId: "col.stoplossprice", propertyName: "", renderFunction: null },
+      { columnId: "col.initialamount", propertyName: "", renderFunction: null },
+      { columnId: "col.remainingamount", propertyName: "", renderFunction: null },
+      { columnId: "col.invested", propertyName: "", renderFunction: null },
+      { columnId: "col.tsl", propertyName: "", renderFunction: null },
+      { columnId: "col.tp", propertyName: "", renderFunction: null },
+      { columnId: "col.dca", propertyName: "", renderFunction: null },
+      { columnId: "col.risk", propertyName: "", renderFunction: null },
+      { columnId: "col.age", propertyName: "", renderFunction: null },
+      { columnId: "col.actions", propertyName: "", renderFunction: null },
     ];
 
     return {
-      columns: columnsIds.map(composeColumnOptions),
-      data: positions.map((position) =>
-        composeManagementPositionRow(position, confirmActionHandler),
-      ),
+      columns: configColumns.map(composeColumnOptions),
+      data: positions,
     };
   }
 
@@ -1152,7 +1067,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @returns {DataTableContent} Closed positions data table structure.
    */
   function composeClosedPositionsForProvider() {
-    const columnsIds = [
+    const configColumns = [
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
       { columnId: "col.date.close", propertyName: "closeDateReadable", renderFunction: null },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
@@ -1181,7 +1096,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     ];
 
     return {
-      columns: columnsIds.map(composeColumnOptions),
+      columns: configColumns.map(composeColumnOptions),
       data: positions,
     };
   }
@@ -1192,7 +1107,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    * @returns {DataTableContent} Open positions data table structure.
    */
   function composeOpenPositionsForProvider() {
-    const columnsIds = [
+    const configColumns = [
       { columnId: "col.date.open", propertyName: "openDateReadable", renderFunction: null },
       { columnId: "col.status", propertyName: "status", renderFunction: renderStatusMessage },
       { columnId: "col.pair", propertyName: "pair", renderFunction: null },
@@ -1264,7 +1179,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     ];
 
     return {
-      columns: columnsIds.map(composeColumnOptions),
+      columns: configColumns.map(composeColumnOptions),
       data: positions,
     };
   }
