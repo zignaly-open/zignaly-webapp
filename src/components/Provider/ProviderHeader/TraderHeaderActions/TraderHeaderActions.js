@@ -22,8 +22,8 @@ const ProviderHeaderActions = () => {
       className="traderHeaderActions"
       display="flex"
       flexDirection="row"
-      justifyContent="flex-start"
       flexWrap="wrap"
+      justifyContent="flex-start"
     >
       <Box
         alignItems="center"

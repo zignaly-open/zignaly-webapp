@@ -17,10 +17,10 @@
 
 @include media("<=sm") {
   .followProviderButton {
-    width: 100%;
     justify-content: center;
-    margin-top: 20px;
     margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
 
     .submitButton {
       margin-right: 0;

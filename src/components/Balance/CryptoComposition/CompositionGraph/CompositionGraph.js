@@ -49,7 +49,6 @@ const CompositionGraph = ({ list, quotes }) => {
   };
 
   const prepareChartData = () => {
-    let currentDate = new Date();
     /**
      * @type {*}
      */

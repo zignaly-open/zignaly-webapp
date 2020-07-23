@@ -1212,10 +1212,10 @@ export function composeOpenPositionsForProvider(positions, confirmActionHandler)
 function composePositionLinkButton(positionId) {
   return (
     <span
+      className="positionLink"
       data-position-id={positionId}
       onClick={gotoPositionDetail}
       title="View Position"
-      className="positionLink"
     >
       {positionId}
     </span>
@@ -1276,7 +1276,7 @@ export function composeOrdersDataTable(positions) {
  */
 function composeContractsRow(contract) {
   return [
-    composePositionLinkButton(contract.position),
+    composePositionLinkButton(contract.positionId),
     composeRawValue(contract.symbol),
     composeRawValue(contract.amount),
     composeRawValue(contract.leverage),

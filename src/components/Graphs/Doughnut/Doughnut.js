@@ -29,7 +29,7 @@ const Doughnut = (props) => {
   const chartRef = useRef(null);
   const legendId = `legendBox${Math.random()}`;
   /**
-   * @type ChartData
+   * @type {ChartData}
    */
   const data = {
     labels: labels,
@@ -43,7 +43,7 @@ const Doughnut = (props) => {
   };
 
   /**
-   * @type ChartOptions
+   * @type {ChartOptions}
    */
   const options = {
     layout: {
@@ -55,11 +55,12 @@ const Doughnut = (props) => {
       display: false,
       position: "right",
     },
-    legendCallback: function (chart) {
-      var ul = document.createElement("ul");
-      chart.data.datasets.forEach(function (dataset, datasetIndex) {
+    /* @ts-ignore */
+    legendCallback: (chart) => {
+      let ul = document.createElement("ul");
+      chart.data.datasets.forEach((dataset) => {
         let backgroundColor = colorOptions.backgroundColor;
-        labels.forEach(function (label, labelIndex) {
+        labels.forEach((label, labelIndex) => {
           ul.innerHTML += `
                   <li>
                      <span class="circle" style="background-color: ${backgroundColor[labelIndex]}"></span>
@@ -79,20 +80,22 @@ const Doughnut = (props) => {
     },
   };
 
-  useEffect(() => {
+  const renderLegend = () => {
     document.getElementById(legendId).innerHTML = chartRef.current.chartInstance.generateLegend();
-  }, [data, labels]);
+  };
+
+  useEffect(renderLegend, [data, labels]);
 
   return (
     <Box
+      alignItems="center"
       className="doughnut"
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      alignItems="center"
     >
       <DoughnutChart data={data} options={options} ref={chartRef} />
-      <Box className="legendBox" id={legendId}></Box>
+      <Box className="legendBox" id={legendId} />
     </Box>
   );
 };

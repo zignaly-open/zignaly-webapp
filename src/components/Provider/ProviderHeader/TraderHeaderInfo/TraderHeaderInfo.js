@@ -32,7 +32,7 @@ const TraderHeaderInfo = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Typography variant="h4" className="base">
+      <Typography className="base" variant="h4">
         <span>
           <FormattedMessage id="srv.basecurrency" />
         </span>
@@ -43,7 +43,7 @@ const TraderHeaderInfo = () => {
         </b>
       </Typography>
 
-      <Typography variant="h4" className="trade">
+      <Typography className="trade" variant="h4">
         <span>
           <FormattedMessage id="copyt.trading" />
         </span>
@@ -54,7 +54,7 @@ const TraderHeaderInfo = () => {
         </Box>
       </Typography>
 
-      <Typography variant="h4" className="type">
+      <Typography className="type" variant="h4">
         <span>
           <FormattedMessage id="accounts.exchange.type" />
         </span>
@@ -63,14 +63,14 @@ const TraderHeaderInfo = () => {
         </b>
       </Typography>
 
-      <Typography variant="h4" className="copiers">
+      <Typography className="copiers" variant="h4">
         <span>
           <FormattedMessage id="copyt.copiers" />
         </span>
         <b>{storeViews.provider.followers} </b>
       </Typography>
 
-      <Typography variant="h4" className="price">
+      <Typography className="price" variant="h4">
         <span>
           <FormattedMessage id="srv.edit.price" />
         </span>

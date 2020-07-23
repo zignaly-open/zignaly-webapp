@@ -1,7 +1,7 @@
 .providerHeaderActions {
+  flex-wrap: nowrap;
   margin-bottom: 30px;
   width: 100%;
-  flex-wrap: nowrap;
 
   .titleBox {
     margin-right: 40px;
@@ -40,8 +40,8 @@
 
     .titleBox {
       margin-right: 0;
-      width: 100%;
       max-width: 100%;
+      width: 100%;
 
       .providerLogo {
         height: 30px;
@@ -50,16 +50,16 @@
       }
 
       h1 {
-        margin-right: 0;
         font-size: 24px;
+        margin-right: 0;
       }
     }
 
     h4 {
       font-family: "PlexSans-Regular";
+      margin: 10px 30px 10px 0;
       margin-right: 0;
       width: fit-content;
-      margin: 10px 30px 10px 0;
 
       b {
         font-family: "PlexSans-Bold";

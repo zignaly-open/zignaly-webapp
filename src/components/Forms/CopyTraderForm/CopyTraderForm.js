@@ -130,7 +130,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
   /**
    *
-   * @param {String} allocatedBalance
+   * @param {String} allocatedBalance balance inout from user.
+   * @returns {Boolean} whether the input value is valid or not.
    */
   const validateBalance = (allocatedBalance) => {
     // Skip balance validation on paper trading exchange.

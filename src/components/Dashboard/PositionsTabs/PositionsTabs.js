@@ -31,7 +31,7 @@ const PositionsTabs = ({ isProfile }) => {
       label: <FormattedMessage id="dashboard.positions.closed" />,
     },
     {
-      display: isProfile ? false : true,
+      display: !isProfile,
       label: <FormattedMessage id="dashboard.positions.log" />,
     },
   ];
@@ -125,7 +125,7 @@ const PositionsTabs = ({ isProfile }) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <TabsMenu changeTab={changeTab} tabs={tabsList} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
       </Box>
       <PositionsTabContent isProfile={isProfile} type={selectedType} />
     </Box>

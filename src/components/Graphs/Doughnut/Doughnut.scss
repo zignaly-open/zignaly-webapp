@@ -14,19 +14,19 @@
       padding: 0;
 
       li {
+        align-items: center;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        align-items: center;
       }
     }
 
     .circle {
-      width: 10px;
-      height: 10px;
-      display: block;
       border-radius: 100%;
+      display: block;
+      height: 10px;
       margin-right: 5px;
+      width: 10px;
     }
 
     .value {

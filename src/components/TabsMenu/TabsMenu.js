@@ -38,7 +38,7 @@ const TabsMenu = (props) => {
     >
       {tabs.map(
         (item, index) =>
-          item.display && <Tab key={index} classes={{ selected: "selected" }} label={item.label} />,
+          item.display && <Tab classes={{ selected: "selected" }} key={index} label={item.label} />,
       )}
     </Tabs>
   );

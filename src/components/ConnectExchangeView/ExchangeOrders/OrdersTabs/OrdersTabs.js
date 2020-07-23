@@ -19,7 +19,7 @@ const OrdersTabs = () => {
       label: <FormattedMessage id="accounts.orders" />,
     },
     {
-      display: selectedAccount.exchangeType.toLowerCase() === "futures" ? true : false,
+      display: selectedAccount.exchangeType.toLowerCase() === "futures",
       label: <FormattedMessage id="accounts.contracts" />,
     },
   ];
@@ -44,7 +44,7 @@ const OrdersTabs = () => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <TabsMenu changeTab={changeTab} tabs={tabsList} tabValue={tabValue} />
+        <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
         {tabValue === 0 && (
           <Box className="tabPanel">
             <Orders />
