@@ -422,14 +422,15 @@ export function composeAllActionButtons(position, confirmActionHandler) {
  * Compose MUI Data Table default options for a column translation ID.
  *
  * @param {string} columnId Column ID.
+ * @param {string} [columnName] Column name.
  * @returns {DataTableDataColumns} Column options.
  */
-function composeColumnOptions(columnId) {
+function composeColumnOptions(columnId, columnName = null) {
   const permanentColumnIds = ["col.paper", "col.stat", "col.type", "col.actions"];
   const defaultSortColumnId = "col.date.open";
 
   const columnOptions = {
-    name: columnId,
+    name: columnName ? columnName : columnId,
     label: columnId,
     options: {
       viewColumns: !permanentColumnIds.includes(columnId),
@@ -522,36 +523,38 @@ function composeManagementPositionRow(position, confirmActionHandler) {
  * @returns {DataTableContent} Open positions data table structure.
  */
 export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
-  const columnsIds = [
-    "col.provider.subpositions",
-    "col.date.open",
-    "col.provider.name",
-    "col.provider.totalpositions",
-    "col.provider.soldpositions",
-    "col.status",
-    "col.signalid",
-    "col.users.userid",
-    "col.pair",
-    "col.price.entry",
-    "col.leverage",
-    "col.price.current",
-    "col.plnumber",
-    "col.plpercentage",
-    "col.side",
-    "col.stoplossprice",
-    "col.initialamount",
-    "col.remainingamount",
-    "col.invested",
-    "col.tsl",
-    "col.tp",
-    "col.dca",
-    "col.risk",
-    "col.age",
-    "col.actions",
+  const configColumns = [
+    ["col.provider.subpositions", "subPositions"],
+    ["col.date.open", "openDateReadable"],
+    ["col.provider.name", "providerName"],
+    ["col.provider.totalpositions", "copyTradingTotals.totalPositions"],
+    ["col.provider.soldpositions", "copyTradingTogals.soldPositions"],
+    ["col.status", "status"],
+    ["col.signalid", "signalId"],
+    ["col.users.userid", "userId"],
+    ["col.pair", "pair"],
+    ["col.price.entry", "buyPrice"],
+    ["col.leverage", "leverage"],
+    ["col.price.current", "sellPrice"],
+    ["col.plnumber", "profit"],
+    ["col.plpercentage", "profitPercentage"],
+    ["col.side", "side"],
+    ["col.stoplossprice", "stopLossPrice"],
+    ["col.initialamount", "amount"],
+    ["col.remainingamount", "remainAmount"],
+    ["col.invested", "positionSizeQuote"],
+    ["col.tsl", "trailingStopTriggered"],
+    ["col.tp", "takeProfitTargetsCountPending"],
+    ["col.dca", "reBuyTargetsCountPending"],
+    ["col.risk", "risk"],
+    ["col.age", "ageSeconds"],
+    ["col.actions", "updating"],
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: configColumns.map((configColumn) =>
+      composeColumnOptions(configColumn[0], configColumn[1]),
+    ),
     data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
   };
 }
