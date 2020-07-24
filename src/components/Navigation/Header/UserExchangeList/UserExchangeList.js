@@ -16,7 +16,7 @@ const UserExchangeList = () => {
   const storeSettings = useStoreSettingsSelector();
 
   return (
-    <Box className="userExchangeList" bgcolor="">
+    <Box className="userExchangeList">
       <Box
         alignItems="center"
         className="currentSelectionBox"

@@ -53,6 +53,8 @@
 
 [data-theme="dark"] {
   .sidebar {
+    background: $lightestBlack;
+
     .sideBarLink {
       &.active {
         background-image: $purpleDarkGradient;

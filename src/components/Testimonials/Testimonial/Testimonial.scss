@@ -22,7 +22,7 @@
     height: 42px;
 
     .time {
-      color: $black2;
+      color: $lighterBlack;
       font-size: 14px;
       letter-spacing: 0.53px;
       margin-right: 1rem;
@@ -41,14 +41,14 @@
     margin-top: 16px;
 
     .title {
-      color: $black2;
+      color: $lighterBlack;
       font-size: 21px;
       font-weight: 700;
       letter-spacing: 0.8px;
       margin: 0;
 
       + p {
-        color: $black2;
+        color: $lighterBlack;
         font-size: 16px;
         letter-spacing: 0.61px;
         line-height: 21px;

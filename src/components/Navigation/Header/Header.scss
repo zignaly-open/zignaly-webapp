@@ -69,3 +69,11 @@
     margin-top: 10px;
   }
 }
+
+[data-theme="dark"] {
+  .popper {
+    .menuWrapper {
+      background-color: $lightestBlack;
+    }
+  }
+}

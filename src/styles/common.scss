@@ -276,6 +276,8 @@ table {
   }
 
   .exchangeListItem {
+    background-color: $lightestBlack;
+
     &.selected {
       background-image: $purpleDarkGradient;
     }

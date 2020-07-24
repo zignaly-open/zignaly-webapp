@@ -32,3 +32,12 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .providersHeader {
+    .settings {
+      border: 1px solid $cardDarkBorder;
+      box-shadow: none;
+    }
+  }
+}

@@ -112,17 +112,16 @@ const PlexSansLight = {
 };
 
 export const colors = {
-  black2: "#1b1b2c",
   black: "#191927",
-  blackBackground: "#12111d",
+  lightBlack: "#151521",
+  lighterBlack: "#1b1b2c",
+  lightestBlack: "#27273F",
   blackTooltip: "#1b1b25",
   darkGrey: "#808080",
   blue: "#017aff",
   green: "#08a441",
   red: "#b52a00",
   yellow: "#f6ad3f",
-  lightBlack: "#27273F",
-  lightBlackBackground: "#151521",
   offWhite: "#fbfafc",
   purple: "#770fc8",
   purpleLight: "#a946f6",
@@ -170,12 +169,12 @@ const theme = (darkStyle) => {
   return {
     palette: {
       background: {
-        default: darkStyle ? colors.blackBackground : colors.offWhite,
-        paper: darkStyle ? colors.lightBlackBackground : colors.white,
+        default: darkStyle ? colors.lightBlack : colors.offWhite,
+        paper: darkStyle ? colors.lighterBlack : colors.white,
       },
       grid: {
-        main: darkStyle ? colors.lightBlack : colors.white,
-        content: darkStyle ? colors.lightBlackBackground : colors.white,
+        main: darkStyle ? colors.lighterBlack : colors.white,
+        content: darkStyle ? colors.lighterBlack : colors.white,
       },
       primary: {
         main: colors.purple,
@@ -285,7 +284,7 @@ const theme = (darkStyle) => {
       MuiToggleButton: {
         root: {
           color: colors.purple,
-          backgroundColor: darkStyle ? colors.lightBlack : colors.white,
+          backgroundColor: darkStyle ? colors.lightestBlack : colors.white,
           borderColor: colors.purple,
           "&$selected": {
             color: colors.white,
@@ -315,7 +314,7 @@ const theme = (darkStyle) => {
       },
       MuiDialog: {
         paper: {
-          backgroundColor: darkStyle ? colors.black2 : colors.offWhite,
+          backgroundColor: darkStyle ? colors.lighterBlack : colors.offWhite,
         },
       },
       MuiTableCell: {
