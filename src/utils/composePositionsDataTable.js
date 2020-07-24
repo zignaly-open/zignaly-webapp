@@ -1,11 +1,20 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, Delete, AlertTriangle } from "react-feather";
+import {
+  Edit2,
+  ExternalLink,
+  Eye,
+  LogOut,
+  TrendingUp,
+  Delete,
+  AlertTriangle,
+  RotateCw,
+} from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
-import { CircularProgress } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
@@ -353,46 +362,59 @@ export function composeAllActionButtons(position, confirmActionHandler) {
   return (
     <div className="actions">
       {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <button
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="View Position"
-          type="button"
-        >
-          <Eye color={colors.purpleLight} />
-        </button>
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="View Position">
+          <IconButton
+            className="iconPurple"
+            data-position-id={position.positionId}
+            onClick={gotoPositionDetail}
+          >
+            <Eye />
+          </IconButton>
+        </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
-        <button
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="Edit Position"
-          type="button"
-        >
-          <Edit2 color={colors.purpleLight} />
-        </button>
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Edit Position">
+          <IconButton
+            className="iconPurple"
+            data-position-id={position.positionId}
+            onClick={gotoPositionDetail}
+          >
+            <Edit2 />
+          </IconButton>
+        </Tooltip>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
-        <button
-          data-action={"exit"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="Exit Position"
-          type="button"
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && status !== 1 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={`${status > 9 ? "Exiting Position" : "Exit Position"}`}
         >
-          <LogOut color={colors.purpleLight} />
-        </button>
+          <div>
+            <IconButton
+              className="iconPurple"
+              data-action={"exit"}
+              data-position-id={position.positionId}
+              //   disabled={status > 9}
+              disabled={true}
+              onClick={confirmActionHandler}
+            >
+              <LogOut />
+            </IconButton>
+          </div>
+        </Tooltip>
       )}
-      {status === 1 && (
-        <button
-          data-action={"abort"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="cancel entry"
-          type="button"
-        >
-          <Delete color={colors.purpleLight} />
-        </button>
+      {!updating && status === 1 && (
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Cancel entry">
+          <IconButton
+            className="iconPurple"
+            data-action={"abort"}
+            data-position-id={position.positionId}
+            onClick={confirmActionHandler}
+          >
+            <Delete />
+          </IconButton>
+        </Tooltip>
       )}
       {status === 0 && (
         <Tooltip
@@ -401,17 +423,17 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="terminal.warning.error" />}
         >
-          <AlertTriangle color={colors.purpleLight} />
+          <AlertTriangle className="iconPurple" />
         </Tooltip>
       )}
-      {(updating || status === 1) && (
+      {updating && (
         <Tooltip
           arrow
           enterTouchDelay={50}
           placement="left-end"
           title={<FormattedMessage id={updatingMessageId} />}
         >
-          <CircularProgress color="primary" size={22} />
+          <RotateCw className="iconPurple" />
         </Tooltip>
       )}
     </div>

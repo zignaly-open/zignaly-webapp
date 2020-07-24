@@ -266,6 +266,10 @@ table {
   }
 }
 
+.iconPurple {
+  color: $purple;
+}
+
 [data-theme="dark"] {
   .iconPurple {
     filter: brightness(130%);
