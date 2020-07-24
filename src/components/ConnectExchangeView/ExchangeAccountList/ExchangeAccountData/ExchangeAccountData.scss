@@ -28,8 +28,8 @@
     flex: 1;
 
     h3 {
-      font-family: "PlexSans-Regular";
       font-size: 21px;
+      font-weight: 400;
     }
   }
 
@@ -54,7 +54,7 @@
 
   .noBalance {
     h3 {
-      font-family: "PlexSans-Regular";
+      font-weight: 400;
       text-transform: initial;
     }
   }

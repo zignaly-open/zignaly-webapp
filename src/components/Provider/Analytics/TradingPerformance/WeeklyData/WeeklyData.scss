@@ -12,14 +12,14 @@
     }
 
     h5 {
-      font-family: "PlexSans-Regular";
+      font-weight: 400;
       text-align: center;
       text-transform: capitalize;
       width: 80px;
     }
 
     .total {
-      font-family: "PlexSans-SemiBold";
+      font-weight: 600;
       text-align: right;
       width: 80px;
     }
@@ -94,15 +94,15 @@
       }
 
       h5 {
-        font-family: "PlexSans-Regular";
         font-size: 12px;
+        font-weight: 400;
         text-align: center;
         text-transform: capitalize;
         width: fit-content;
       }
 
       .total {
-        font-family: "PlexSans-SemiBold";
+        font-weight: 600;
         text-align: right;
         width: fit-content;
       }

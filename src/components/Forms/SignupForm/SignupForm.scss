@@ -56,13 +56,13 @@
 
   .errorText {
     color: $red;
-    font-family: "PlexSans-Regular";
     font-size: 11px;
+    font-weight: 400;
     margin-bottom: 40px;
 
     &.bold {
-      font-family: "PlexSans-Medium";
       font-size: 13px;
+      font-weight: 500;
     }
   }
 
@@ -77,7 +77,7 @@
 
     .link {
       align-self: center;
-      font-family: "PlexSans-Bold";
+      font-weight: 700;
       margin: 0 7px;
       text-transform: uppercase;
     }

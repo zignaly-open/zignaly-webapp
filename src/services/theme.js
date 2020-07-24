@@ -14,10 +14,10 @@ import PlexMonoMediumttf from "../styles/fonts/Mono/IBMPlexMono-Medium.ttf";
  * @type {CSSProperties["@font-face"]} PlexMonoBold
  */
 const PlexMonoBold = {
-  fontFamily: "PlexMono-Bold",
+  fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 700,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoBoldttf}) format('woff2')
@@ -29,10 +29,10 @@ const PlexMonoBold = {
  * @type {CSSProperties["@font-face"]} PlexMonoMedium
  */
 const PlexMonoMedium = {
-  fontFamily: "PlexMono-Medium",
+  fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 600,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoMediumttf}) format('woff2')
@@ -44,10 +44,10 @@ const PlexMonoMedium = {
  * @type {CSSProperties["@font-face"]} PlexSansBold
  */
 const PlexSansBold = {
-  fontFamily: "PlexSans-Bold",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 700,
   src: `
     local('PlesSans-Bold'),
     url(${PlexSansBoldttf}) format('woff2')
@@ -58,10 +58,10 @@ const PlexSansBold = {
  * @type {CSSProperties["@font-face"]} PlexSansSemiBold
  */
 const PlexSansSemiBold = {
-  fontFamily: "PlexSans-SemiBold",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 600,
   src: `
     local('PlesSans-SemiBold'),
     url(${PlexSansSemiBoldttf}) format('woff2')
@@ -76,7 +76,7 @@ const PlexSansMedium = {
   fontFamily: "PlexSans-Medium",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 500,
   src: `
     local('PlesSans-Medium'),
     url(${PlexSansMediumttf}) format('woff2')
@@ -87,7 +87,7 @@ const PlexSansMedium = {
  * @type {CSSProperties["@font-face"]} PlexSansRegular
  */
 const PlexSansRegular = {
-  fontFamily: "PlexSans-Regular",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
@@ -101,10 +101,10 @@ const PlexSansRegular = {
  * @type {CSSProperties["@font-face"]} PlexSansLight
  */
 const PlexSansLight = {
-  fontFamily: "PlexSans-Light",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 300,
   src: `
     local('PlesSans-Light'),
     url(${PlexSansLightttf}) format('woff2')

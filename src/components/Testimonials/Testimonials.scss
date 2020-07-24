@@ -1,40 +1,21 @@
 .testimonials {
+  margin: 0 auto;
   max-width: 1200px;
-  width: 100%;
 
   .title {
     color: $black2;
     display: block;
-    font-family: "PlexSans-Medium";
     font-size: 28px;
+    font-weight: 500;
     text-align: left;
   }
 }
 
-@include media("<=sm") {
+@media only screen and (max-width: 600px) {
   .testimonials {
-    padding: 30px 20px;
-    width: 100%;
-
-    .title {
-      text-align: center;
-    }
-  }
-}
-
-@include media(">lg", "<=xl") {
-  .testimonials {
-    width: calc(100% - 464px);
-
-    .title {
-      text-align: center;
-    }
-  }
-}
-
-@include media(">xl") {
-  .testimonials {
-    width: calc(100% - 664px);
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 50px 0;
 
     .title {
       text-align: center;

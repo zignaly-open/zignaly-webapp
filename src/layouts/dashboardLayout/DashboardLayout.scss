@@ -15,8 +15,8 @@
     }
 
     .title {
-      font-family: "PlexSans-Medium";
       font-size: 21px;
+      font-weight: 500;
       margin-bottom: 16px;
       width: 450px;
 
@@ -28,13 +28,13 @@
     }
 
     .subtitle {
-      font-family: "PlexSans-Light";
       font-size: 18px;
+      font-weight: 300;
       margin-bottom: 20px;
       width: 450px;
 
       span {
-        font-family: "PlexSans-Medium";
+        font-weight: 500;
         margin-right: 5px;
         text-transform: capitalize;
 
