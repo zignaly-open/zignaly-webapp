@@ -8,12 +8,13 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 
 /**
  *
+ * @typedef {import('react-hook-form').FormContextValues} FormContextValues
  * @typedef {Object} DefaultProps
+ * @property {FormContextValues} formMethods
  * @property {String} label
  * @property {String|Number|Boolean} value
  * @property {String} name
  * @property {String} tooltip
- * @property {import('react-hook-form').Controller} control
  */
 
 /**
@@ -22,9 +23,10 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const ToggleTextarea = ({ value, control, label, name, tooltip }) => {
+const ToggleTextarea = ({ value, formMethods, label, name, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!value);
+  const { control } = formMethods;
 
   const initData = () => {
     setToggle(!!value);

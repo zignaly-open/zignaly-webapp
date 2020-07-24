@@ -30,6 +30,7 @@ const SignalProvidersSettings = () => {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       internalExchangeId: storeSettings.selectedExchange.internalId,
+      version: 2,
     };
     tradeApi
       .providerExchangeSettingsGet(payload)

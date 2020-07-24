@@ -285,6 +285,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {String} providerId
+ * @property {Number} version
  */
 
 /**
@@ -2936,6 +2937,8 @@ export function providerExchangeSettingsResponseTransform(response) {
   const transformedResponse = assign(emptySettingsEntity, response, {
     reBuyTargets: reBuyTargets,
     takeProfitTargets: takeProfitTargets,
+    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL,
+    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL,
   });
 
   return transformedResponse;

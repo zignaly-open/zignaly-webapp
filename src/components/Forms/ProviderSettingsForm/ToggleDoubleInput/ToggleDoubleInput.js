@@ -8,14 +8,15 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 
 /**
  *
+ * @typedef {import('react-hook-form').FormContextValues} FormContextValues
  * @typedef {Object} DefaultProps
+ * @property {FormContextValues} formMethods
  * @property {String} label
  * @property {String|Number} value1
  * @property {String} name1
  * @property {String|Number} value2
  * @property {String} name2
  * @property {String} tooltip
- * @property {import('react-hook-form').Controller} control
  * @property {String} unitLeft1
  * @property {String} unitLeft2
  * @property {String} unitRight1
@@ -31,7 +32,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 const ToggleInput = ({
   value1,
   value2,
-  control,
+  formMethods,
   label,
   name1,
   name2,
@@ -43,6 +44,7 @@ const ToggleInput = ({
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!(value1 || value2));
+  const { control } = formMethods;
 
   const initData = () => {
     setToggle(!!(value1 || value2));

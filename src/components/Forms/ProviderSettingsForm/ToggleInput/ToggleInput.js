@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import "./ToggleInput.scss";
 import { Box, Typography, TextField, Tooltip, Switch, InputAdornment } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { Controller } from "react-hook-form";
 import HelpIcon from "@material-ui/icons/Help";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**
- *
+ * @typedef {import('react-hook-form').FormContextValues} FormContextValues
  * @typedef {Object} DefaultProps
+ * @property {FormContextValues} formMethods
  * @property {String} label
  * @property {String|Number} value
  * @property {String} name
  * @property {String} tooltip
- * @property {import('react-hook-form').Controller} control
  * @property {String} unit
  */
 
@@ -23,15 +22,30 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const ToggleInput = ({ value, control, label, name, tooltip, unit }) => {
+const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!value);
+  const [val, setVal] = useState(value);
+  const { register } = formMethods;
 
   const initData = () => {
     setToggle(!!value);
   };
 
   useEffect(initData, [value]);
+
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {Void} None.
+   */
+  const handleChange = (e) => {
+    if (name === "stopLoss") {
+      setVal(Math.sign(e.target.value) === 1 ? e.target.value * -1 : e.target.value);
+    } else {
+      setVal(e.target.value);
+    }
+  };
 
   return (
     <Box alignItems="center" className="toggleInput" display="flex" flexDirection="row">
@@ -60,21 +74,18 @@ const ToggleInput = ({ value, control, label, name, tooltip, unit }) => {
 
       {toggle && (
         <Box className="fieldInputBox" display="flex" flexDirection="row">
-          <Controller
-            as={
-              <TextField
-                InputProps={{
-                  endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
-                }}
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                type="number"
-                variant="outlined"
-              />
-            }
-            control={control}
-            defaultValue={value ? value : 0}
+          <TextField
+            InputProps={{
+              endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
+            }}
+            className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+            fullWidth
+            inputRef={register}
             name={name}
+            onChange={handleChange}
+            type="number"
+            value={val}
+            variant="outlined"
           />
         </Box>
       )}

@@ -7,14 +7,15 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 
 /**
  *
+ * @typedef {import('react-hook-form').FormContextValues} FormContextValues
  * @typedef {Object} DefaultProps
+ * @property {FormContextValues} formMethods
  * @property {JSX.Element} label
  * @property {String|Number} value1
  * @property {String|Number} value2
  * @property {String} name1
  * @property {String} name2
  * @property {JSX.Element} tooltip
- * @property {import('react-hook-form').Controller} control
  */
 
 /**
@@ -23,8 +24,9 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const SelectInput = ({ value1, value2, control, label, name1, name2, tooltip }) => {
+const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
+  const { control } = formMethods;
 
   return (
     <Box alignItems="center" className="selectInputBox" display="flex" flexDirection="row">
