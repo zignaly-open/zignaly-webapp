@@ -285,6 +285,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {String} providerId
+ * @property {Number} version
  */
 
 /**

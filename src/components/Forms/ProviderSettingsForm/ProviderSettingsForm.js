@@ -101,6 +101,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
       providerId: storeViews.provider.id,
       internalExchangeId: storeSettings.selectedExchange.internalId,
       exchangeId: storeSettings.selectedExchange.id,
+      version: 2,
     });
     tradeApi
       .providerExchangeSettingsUpdate(payload)
