@@ -73,7 +73,7 @@ const PlexSansSemiBold = {
  * @type {CSSProperties["@font-face"]} PlexSansMedium
  */
 const PlexSansMedium = {
-  fontFamily: "PlexSans-Medium",
+  fontWeight: 500,
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 500,
@@ -192,7 +192,7 @@ const theme = (darkStyle) => {
       h1: {
         // this is for page title eg "Dashboard" (Large Title)
         fontSize: "33px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.21,
         letterSpacing: "1.25px",
@@ -200,7 +200,7 @@ const theme = (darkStyle) => {
       h3: {
         // this is for titles inside components eg: "Total Equity" (Title 2/3)
         fontSize: "21px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.24,
         letterSpacing: "0.8px",
@@ -208,7 +208,7 @@ const theme = (darkStyle) => {
       h4: {
         // this is sub headings eg "Available", "Invested" inside crypto composition (Body 1/2)
         fontSize: "16px",
-        fontFamily: "PlexSans-SemiBold",
+        fontWeight: 600,
         lineHeight: 1.31,
         letterSpacing: "0.61px",
       },
@@ -216,7 +216,7 @@ const theme = (darkStyle) => {
         // for BTC counts inside Available Balance and Total Equity (Number 1/2)
         fontSize: "14px",
         // fontFamily: "PlexMono-Medium",
-        fontFamily: "PlexSans-Medium",
+        fontWeight: 500,
         textTransform: "capitalize",
         lineHeight: 1.5,
         letterSpacing: "0.53px",
@@ -224,7 +224,7 @@ const theme = (darkStyle) => {
       subtitle1: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Footnote)
         fontSize: "11px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         lineHeight: 1.45,
         letterSpacing: ".42px",
         textTransform: "uppercase",
@@ -233,7 +233,7 @@ const theme = (darkStyle) => {
       subtitle2: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Caption 1)
         fontSize: "12px",
-        fontFamily: "PlexSans-Light",
+        fontWeight: 300,
         textTransform: "capitalize",
         lineHeight: 1.08,
         letterSpacing: "0.46px",
@@ -241,7 +241,7 @@ const theme = (darkStyle) => {
       h6: {
         // this is for sidebar link but we can use it anywhere else as well (Callout 2)
         fontSize: "14px",
-        fontFamily: "PlexSans-SemiBold",
+        fontWeight: 600,
         textTransform: "capitalize",
         lineHeight: 1.43,
         letterSpacing: "0.53px",
@@ -249,14 +249,14 @@ const theme = (darkStyle) => {
       caption: {
         // this is for sidebar link but we can use it anywhere else as well (Callout 1)
         fontSize: "14px",
-        fontFamily: "PlexSans-Regular",
+        fontWeight: 400,
         textTransform: "capitalize",
         lineHeight: 1.43,
         letterSpacing: "0.53px",
       },
       body1: {
         fontSize: "16px",
-        fontFamily: "PlexSans-Regular",
+        fontWeight: 400,
         letterSpacing: "0.61px",
         lineHeight: 1.31,
       },
