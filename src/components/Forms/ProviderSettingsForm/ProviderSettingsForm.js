@@ -38,7 +38,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   const [takeProfitTargets, setProfitTargets] = useState([]);
   const [reBuyTargets, setBuyTargets] = useState([]);
   const formMethods = useForm();
-  const { handleSubmit, register, control } = formMethods;
+  const { handleSubmit } = formMethods;
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
 
@@ -258,15 +258,15 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
             <ToggleTargetFields
               label="signalp.settings.takeprofit"
               onChange={handleProfitTargetsChange}
-              value={settings.takeProfitTargets}
               type="takeprofit"
+              value={settings.takeProfitTargets}
             />
 
             <ToggleTargetFields
               label="signalp.settings.dca"
               onChange={handleBuyTargetsChange}
-              value={settings.reBuyTargets}
               type="dca"
+              value={settings.reBuyTargets}
             />
 
             <ToggleInput

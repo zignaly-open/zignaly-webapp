@@ -36,7 +36,8 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
 
   /**
    *
-   * @param {React.ChangeEvent<*>} e
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {Void} None.
    */
   const handleChange = (e) => {
     if (name === "stopLoss") {
@@ -77,14 +78,14 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
             InputProps={{
               endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
             }}
-            inputRef={register}
             className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
             fullWidth
-            type="number"
-            variant="outlined"
-            value={val}
+            inputRef={register}
             name={name}
             onChange={handleChange}
+            type="number"
+            value={val}
+            variant="outlined"
           />
         </Box>
       )}

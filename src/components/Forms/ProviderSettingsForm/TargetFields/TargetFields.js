@@ -71,19 +71,17 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
     let index = list.findIndex((item) => item.targetId === id);
     let field = list.find((item) => item.targetId === id);
     if (target.name === "amount") {
-      //convert amount to positive for both dca and take profit targets.
+      // convert amount to positive for both dca and take profit targets.
       field.amountPercentage = Math.sign(target.value) === -1 ? target.value * -1 : target.value;
-    } else {
-      if (type === "dca") {
-        //convert value to negative for price targets of dca targets.
+    } else if (type === "dca") {
+        // convert value to negative for price targets of dca targets.
         field.priceTargetPercentage =
           Math.sign(target.value) === 1 ? target.value * -1 : target.value;
       } else {
-        //convert value to negative for price targets of take profits targets.
+        // convert value to negative for price targets of take profits targets.
         field.priceTargetPercentage =
           Math.sign(target.value) === -1 ? target.value * -1 : target.value;
       }
-    }
     list[index] = field;
     setValues(list);
   };
