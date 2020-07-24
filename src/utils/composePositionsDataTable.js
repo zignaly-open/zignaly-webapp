@@ -395,8 +395,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
               className="iconPurple"
               data-action={"exit"}
               data-position-id={position.positionId}
-              //   disabled={status > 9}
-              disabled={true}
+              disabled={status > 9}
               onClick={confirmActionHandler}
             >
               <LogOut />
