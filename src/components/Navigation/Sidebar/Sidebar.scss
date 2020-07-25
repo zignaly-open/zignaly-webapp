@@ -54,6 +54,7 @@
 [data-theme="dark"] {
   .sidebar {
     background: $lightestBlack;
+    border-color: $lightBlackBorder;
 
     .sideBarLink {
       &.active {

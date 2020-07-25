@@ -58,3 +58,9 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .modal {
+    background: $lightestBlack;
+  }
+}
