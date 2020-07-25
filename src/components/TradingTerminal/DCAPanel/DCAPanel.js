@@ -252,7 +252,7 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
+    if (isNaN(rebuyPercentage) || rebuyPercentage <= 0) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",
