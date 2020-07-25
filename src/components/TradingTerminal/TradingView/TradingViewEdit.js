@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { differenceBy, isArray, isNumber } from "lodash";
+import { isArray, isEqual, isNumber, pick } from "lodash";
 import { FormContext, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
@@ -283,7 +283,13 @@ const TradingViewEdit = (props) => {
   const processPositionsUpdate = (positionsList) => {
     if (isArray(positionsList)) {
       const newPositionEntity = positionsList[0];
-      if (differenceBy([positionEntity], positionsList, "updating")) {
+      const compareFields = ["updating", "closed"];
+      const propagateChange = !isEqual(
+        pick(positionEntity, compareFields),
+        pick(newPositionEntity, compareFields),
+      );
+
+      if (propagateChange) {
         setPositionEntity(newPositionEntity);
       }
     }
