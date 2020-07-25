@@ -39,3 +39,10 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .positionsTabs {
+    border: 1px solid $lightBlackBorder;
+    box-shadow: none;
+  }
+}

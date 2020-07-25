@@ -116,6 +116,9 @@ export const colors = {
   lightBlack: "#151521",
   lighterBlack: "#1b1b2c",
   lightestBlack: "#27273F",
+  borderColor: "rgba(0, 0, 0, 0.1)",
+  lighterBlackBorder: "#1c1a27",
+  lightBlackBorder: "rgba(64, 57, 70, 0.37)",
   blackTooltip: "#1b1b25",
   darkGrey: "#808080",
   blue: "#017aff",
@@ -126,8 +129,7 @@ export const colors = {
   purple: "#770fc8",
   purpleLight: "#a946f6",
   white: "#ffffff",
-  borderColor: "rgba(0, 0, 0, 0.1)",
-  darkBorderColor: "#1c1a27",
+  lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
 /**
@@ -183,7 +185,7 @@ const theme = (darkStyle) => {
         main: colors.purpleLight,
       },
       text: {
-        primary: darkStyle ? colors.white : colors.black,
+        primary: darkStyle ? colors.lightWhite : colors.black,
       },
       type: darkStyle ? "dark" : "light",
     },
@@ -319,7 +321,13 @@ const theme = (darkStyle) => {
       },
       MuiTableCell: {
         root: {
-          borderBottom: `1px solid ${darkStyle ? colors.darkBorderColor : colors.borderColor}`,
+          borderBottom: `1px solid ${darkStyle ? colors.lighterBlackBorder : colors.borderColor}`,
+        },
+      },
+      MuiPaper: {
+        elevation1: {
+          boxShadow: darkStyle ? "none" : "0 2px 8px 0 rgba(64, 34, 95, 0.2);",
+          border: darkStyle ? `1px solid ${colors.lightBlackBorder}` : "none",
         },
       },
     },

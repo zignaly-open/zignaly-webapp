@@ -68,6 +68,7 @@
 
 [data-theme="dark"] {
   .customFilters {
-    background: transparent;
+    background: $lighterBlack;
+    border: 1px solid $lightBlackBorder;
   }
 }

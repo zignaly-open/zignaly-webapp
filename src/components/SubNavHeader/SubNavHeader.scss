@@ -53,3 +53,11 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .subNavHeader {
+    &::before {
+      background-color: $lightBlackBorder;
+    }
+  }
+}
