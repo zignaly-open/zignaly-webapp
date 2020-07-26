@@ -175,6 +175,8 @@ const initialState = {
         "totalLockedBTC",
         "freeETH",
         "freeBNB",
+        "col.availablePercentage",
+        "col.investedPercentage",
       ],
       exchangeAssets: [
         "coin",

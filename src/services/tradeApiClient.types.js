@@ -1543,6 +1543,8 @@ function createUserBalanceEntity(response) {
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
+ * @property {Number} availablePercentage
+ * @property {Number} investedPercentage
  *
  */
 
@@ -1578,7 +1580,10 @@ export function userEquityResponseTransform(response) {
 function userEquityItemTransform(userEquityItem) {
   const emptyEquityEntity = createUserEquityEntity();
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyEquityEntity, userEquityItem);
+  const transformedResponse = assign(emptyEquityEntity, userEquityItem, {
+    availablePercentage: (userEquityItem.totalFreeUSDT / userEquityItem.totalUSDT) * 100,
+    investedPercentage: (userEquityItem.totalLockedUSDT / userEquityItem.totalUSDT) * 100,
+  });
 
   return transformedResponse;
 }
@@ -1674,6 +1679,8 @@ function createUserEquityEntity() {
     totalLockedBTC: 0,
     totalLockedUSDT: 0,
     totalUSDT: 0,
+    availablePercentage: 0,
+    investedPercentage: 0,
   };
 }
 
