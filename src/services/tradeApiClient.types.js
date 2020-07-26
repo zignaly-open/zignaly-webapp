@@ -2048,8 +2048,9 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} terms
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
- * @property {Boolean} [customerKey]
+ * @property {Boolean} customerKey
  * @property {Boolean} allowClones
+ * @property {String} disclaimer
  */
 
 /**
@@ -2162,6 +2163,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} acceptUpdateSignal
  * @property {Boolean} allowSendingBuyOrdersAsMarket
  * @property {String} customerKey
+ * @property {Boolean} disclaimer
  * @property {Boolean} enablePanicSellSignals
  * @property {Boolean} enableSellSignals
  * @property {Boolean} limitPriceFromSignal
@@ -2200,8 +2202,22 @@ export function providerGetResponseTransform(response) {
     throw new Error("Response must be an object with different properties.");
   }
 
+  /**
+   *
+   * @param {*} response provider object response.
+   */
+  function checkClones(response) {
+    if (response.options.allowClones !== undefined) {
+      return response.options.allowClones;
+    } else {
+      return true;
+    }
+  }
+
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  return { ...emptyProviderEntity, ...response };
+  let transformed = assign(emptyProviderEntity, response);
+  transformed.options.allowClones = checkClones(response);
+  return transformed;
 }
 
 function createEmptyProviderGetEntity() {
@@ -2251,6 +2267,7 @@ function createEmptyProviderGetEntity() {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       allowClones: true,
+      disclaimer: "",
     },
     public: false,
     shortDesc: "",
@@ -2295,6 +2312,7 @@ function createEmptyProviderGetEntity() {
     acceptUpdateSignal: false,
     allowSendingBuyOrdersAsMarket: false,
     customerKey: "",
+    disclaimer: false,
     enablePanicSellSignals: false,
     enableSellSignals: false,
     limitPriceFromSignal: false,

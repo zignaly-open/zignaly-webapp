@@ -38,7 +38,7 @@ const Balance = () => {
         justifyContent="center"
       >
         <Box className="equityBox">
-                  <TotalEquity dailyBalance={dailyBalance} modal={false}/>
+          <TotalEquity dailyBalance={dailyBalance} modal={false} />
         </Box>
         <Box className="cryptoBox">
           <CryptoComposition dailyBalance={dailyBalance} />

@@ -1,3 +1,5 @@
+import { isObject } from "lodash";
+
 export const SHOW_LOADER = "SHOW_LOADER_ACTION";
 export const SHOW_ERROR_ALERT = "SHOW_ERROR_ALERT";
 export const HIDE_ERROR_ALERT = "HIDE_ERROR_ALERT";
@@ -41,9 +43,32 @@ export const showErrorAlert = (error) => {
     type: SHOW_ERROR_ALERT,
     payload: {
       title: "error.occured",
-      body: error && error.code ? `error.${error.code}` : "error.noidea",
+      body: prepareErrorMessage(error),
     },
   };
+};
+
+/**
+ *
+ * @typedef {Object} ErrorObject
+ * @property {Number} code
+ * @property {String} message
+ */
+/**
+ *
+ * @param {ErrorObject} error Error object from the backend.
+ * @returns {String} String of error message translation.
+ */
+const prepareErrorMessage = (error) => {
+  if (isObject(error)) {
+    if (error && error.code) {
+      return `error.${error.code}`;
+    } else {
+      ("error.noidea");
+    }
+  } else {
+    return error;
+  }
 };
 
 /**

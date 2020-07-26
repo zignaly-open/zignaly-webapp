@@ -27,7 +27,7 @@ recover.error: "CH-Link expired! Please start the process again from login page!
 # BALANCE
 balance.available: "CH-Available"
 balance.invested: "CH-Invested"
-balance.profit: "CH-Profit"
+balance.profit: "CH-Unrealized Profit"
 balance.total: "CH-Total Equity"
 balance.profitlosses: "CH-UP/L #"
 
@@ -508,8 +508,10 @@ signalp.option.checkterms.mid: "CH-Mid term"
 signalp.option.checkterms.long: "CH-Long term"
 signalp.option.filterrisk.sub: "CH-From 1 to 5, being 5 the riskier"
 signalp.option.minimumsuccess.sub: "CH-Signals with success rate below this value will be ignored."
+signalp.option.disclaimer: "CH-In order to use this Provider, you need to accept its {disclaimer}!"
 signalp.option.DCA.error: "CH-IF you are accepting DCA/ReBuys signal, this value has to be greater than 1."
 signalp.option.minimumsuccess.error: "CH-Minimum allowed success rate is 1."
+signalp.option.disclaimer.error: "CH-You need to accept the disclaimer from this provider."
 
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "CH-Create account"
