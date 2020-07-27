@@ -76,7 +76,6 @@ const PlexSansMedium = {
   fontWeight: 500,
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 500,
   src: `
     local('PlesSans-Medium'),
     url(${PlexSansMediumttf}) format('woff2')
@@ -285,7 +284,7 @@ const theme = (darkStyle) => {
       },
       MuiToggleButton: {
         root: {
-          color: colors.purple,
+          color: darkStyle ? colors.purpleLight : colors.purple,
           backgroundColor: darkStyle ? colors.lightestBlack : colors.white,
           borderColor: colors.purple,
           "&$selected": {

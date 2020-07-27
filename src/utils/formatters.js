@@ -44,13 +44,14 @@ export const addThousandsSeparator = (value, separator = " ") => {
  * @returns {string} Formatter price for display.
  */
 export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") => {
-  if (isNaN(price)) {
+  const priceFloat = typeof price === "string" ? parseFloat(price) : price;
+  if (isNaN(priceFloat)) {
     return nanDisplay;
   }
 
-  let formattedPrice = price.toFixed(8);
-  if (price > 1 || price < -1) {
-    formattedPrice = price.toFixed(2);
+  let formattedPrice = priceFloat.toFixed(8);
+  if (priceFloat > 1 || priceFloat < -1) {
+    formattedPrice = priceFloat.toFixed(2);
   }
 
   if (thousandSeparator) {

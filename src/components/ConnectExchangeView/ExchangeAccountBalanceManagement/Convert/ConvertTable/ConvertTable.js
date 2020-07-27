@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "../../../../Table";
+import { formatPrice } from "../../../../../utils/formatters";
 import { Box, CircularProgress } from "@material-ui/core";
 import "./ConvertTable.scss";
 
@@ -34,18 +35,30 @@ const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
     {
       name: "balanceFree",
       label: "col.balance.available",
+      options: {
+        customBodyRender: formatPrice,
+      },
     },
     {
       name: "balanceFreeBTC",
       label: "col.valueBTC",
+      options: {
+        customBodyRender: formatPrice,
+      },
     },
     {
       name: "balanceFreeUSDT",
       label: "col.valueUSDT",
+      options: {
+        customBodyRender: formatPrice,
+      },
     },
     {
       name: "balanceTotalExchCoin",
       label: "col.valueBNBapprox",
+      options: {
+        customBodyRender: formatPrice,
+      },
     },
   ];
 
