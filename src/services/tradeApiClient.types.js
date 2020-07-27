@@ -1579,10 +1579,25 @@ export function userEquityResponseTransform(response) {
  */
 function userEquityItemTransform(userEquityItem) {
   const emptyEquityEntity = createUserEquityEntity();
+
+  function prepareAvailablePercentage() {
+    if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
+      return (userEquityItem.totalFreeUSDT / userEquityItem.totalUSDT) * 100;
+    }
+    return 0;
+  }
+
+  function prepareInvestedPercentage() {
+    if (userEquityItem.totalLockedUSDT && userEquityItem.totalUSDT) {
+      return (userEquityItem.totalLockedUSDT / userEquityItem.totalUSDT) * 100;
+    }
+    return 0;
+  }
+
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyEquityEntity, userEquityItem, {
-    availablePercentage: (userEquityItem.totalFreeUSDT / userEquityItem.totalUSDT) * 100,
-    investedPercentage: (userEquityItem.totalLockedUSDT / userEquityItem.totalUSDT) * 100,
+    availablePercentage: prepareAvailablePercentage(),
+    investedPercentage: prepareInvestedPercentage(),
   });
 
   return transformedResponse;
