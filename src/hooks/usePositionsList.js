@@ -184,7 +184,6 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       fetchMethod
         .then((fetchData) => {
           if (isOriginalInitiator) {
-            console.log("Set positions: ", fetchData);
             newPositions[type] = fetchData;
             setPositions(newPositions);
 
@@ -204,7 +203,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
           }
         })
         .finally(() => {
-          if (isOriginalInitiator) {
+          if (isOriginalInitiator && loading) {
             setLoading(false);
           }
         });
@@ -250,7 +249,9 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
         dispatch(showErrorAlert(e));
       })
       .finally(() => {
-        setLoading(false);
+        if (loading) {
+          setLoading(false);
+        }
       });
 
     return true;
