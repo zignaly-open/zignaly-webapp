@@ -210,7 +210,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose position quote size for a given position.
+   * Compose real investment for a given position.
    *
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
@@ -220,6 +220,21 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         <span className="symbol">{position.quote}</span> {formatPrice(position.realInvestment)}
+      </>
+    );
+  }
+
+  /**
+   * Compose invested amount for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderInvested(dataIndex) {
+    const position = positions[dataIndex];
+    return (
+      <>
+        <span className="symbol">{position.investedQuote}</span> {formatPrice(position.invested)}
       </>
     );
   }
@@ -856,8 +871,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.invested",
-        propertyName: "positionSizeQuote",
-        renderFunction: renderQuoteSize,
+        propertyName: "invested",
+        renderFunction: renderInvested,
       },
       {
         columnId: "col.actions",

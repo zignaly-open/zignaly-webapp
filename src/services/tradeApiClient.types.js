@@ -382,7 +382,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} exchangeInternalName
  * @property {string} exitPriceStyle
  * @property {string} internalExchangeId
- * @property {string} invested
+ * @property {number} invested
  * @property {string} investedQuote
  * @property {string} logoUrl
  * @property {string} openDateReadable
@@ -1070,6 +1070,7 @@ export function userPositionItemTransform(positionItem) {
     openDate: Number(positionItem.openDate),
     positionSizeQuote: safeParseFloat(positionItem.positionSizeQuote),
     realInvestment: parseRealInvestment(),
+    invested: safeParseFloat(positionItem.invested),
     pair: `${positionItem.base}/${positionItem.quote}`,
     symbol: `${positionItem.base}/${positionItem.quote}`,
     priceDifference: safeParseFloat(positionItem.priceDifference) || 0,
@@ -1235,7 +1236,7 @@ function createEmptyPositionEntity() {
     exitPriceStyle: "",
     fees: 0,
     internalExchangeId: "",
-    invested: "",
+    invested: 0,
     investedQuote: "",
     isCopyTrader: false,
     isCopyTrading: false,
