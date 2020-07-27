@@ -19,9 +19,16 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ToggleTextarea from "./ToggleTextarea";
 
 /**
+ *
+ * @typedef {import('../../../services/tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import('../../../services/tradeApiClient.types').QuoteAssetsDict} QuoteAssetsDict
+ */
+
+/**
  * @typedef {Object} DefaultProps
- * @property {import('../../../services/tradeApiClient.types').ProviderExchangeSettingsObject} settings
+ * @property {ProviderExchangeSettingsObject} settings
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
+ * @property {Function} onUpdate
  */
 /**
  * Provides the navigation bar for the dashboard.
@@ -30,7 +37,7 @@ import ToggleTextarea from "./ToggleTextarea";
  * @returns {JSX.Element} Component JSX.
  */
 
-const ProviderSettingsForm = ({ settings, quotes }) => {
+const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -89,7 +96,7 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
 
   /**
    *
-   * @param {Object} data Form data.
+   * @param {ProviderExchangeSettingsObject} data Form data.
    * @returns {void} None.
    */
   const onSubmit = (data) => {
@@ -102,10 +109,14 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
       exchangeId: storeSettings.selectedExchange.id,
       version: 2,
+      buyTTL: data.buyTTL ? data.buyTTL * 60 : false,
+      sellByTTL: data.sellByTTL ? data.sellByTTL * 3600 : false,
     });
     tradeApi
       .providerExchangeSettingsUpdate(payload)
-      .then(() => {})
+      .then(() => {
+        onUpdate();
+      })
       .catch((e) => {
         dispatch(showErrorAlert(e));
       })
@@ -117,7 +128,8 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
   const prepareProfitTargetsPayload = () => {
     if (takeProfitTargets.length) {
       takeProfitTargets.forEach((item) => {
-        delete item.delete;
+        delete item.amountError;
+        delete item.priceError;
       });
       return takeProfitTargets;
     }
@@ -126,9 +138,6 @@ const ProviderSettingsForm = ({ settings, quotes }) => {
 
   const prepareBuyTargetsPayload = () => {
     if (reBuyTargets.length) {
-      reBuyTargets.forEach((item) => {
-        delete item.delete;
-      });
       return reBuyTargets;
     }
     return false;

@@ -44,13 +44,33 @@ const ToggleInput = ({
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!(value1 || value2));
-  const { control } = formMethods;
+  const [data1, setData1] = useState(value1);
+  const [data2, setData2] = useState(value2);
+  const { register } = formMethods;
 
   const initData = () => {
     setToggle(!!(value1 || value2));
   };
 
   useEffect(initData, [value1, value2]);
+
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {void} None.
+   */
+  const handleData1Change = (e) => {
+    setData1(Math.sign(e.target.value) === -1 ? e.target.value * -1 : e.target.value);
+  };
+
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {void} None.
+   */
+  const handleData2Change = (e) => {
+    setData2(Math.sign(e.target.value) === 1 ? e.target.value * -1 : e.target.value);
+  };
 
   return (
     <Box alignItems="center" className="toggleDoubleInput" display="flex" flexDirection="row">
@@ -75,41 +95,33 @@ const ToggleInput = ({
 
       {toggle && (
         <Box className="multiInputBox" display="flex" flexDirection="column">
-          <Controller
-            as={
-              <TextField
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">{unitLeft1}</InputAdornment>,
-                  endAdornment: <InputAdornment position="end">{unitRight1}</InputAdornment>,
-                }}
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                type="number"
-                variant="outlined"
-              />
-            }
-            control={control}
-            defaultValue={value1}
+          <TextField
+            InputProps={{
+              startAdornment: <InputAdornment position="start">{unitLeft1}</InputAdornment>,
+              endAdornment: <InputAdornment position="end">{unitRight1}</InputAdornment>,
+            }}
+            className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+            fullWidth
+            type="number"
+            variant="outlined"
+            inputRef={register({ max: 100 })}
             name={name1}
-            rules={{ required: true }}
+            value={data1}
+            onChange={handleData1Change}
           />
-          <Controller
-            as={
-              <TextField
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">{unitLeft2}</InputAdornment>,
-                  endAdornment: <InputAdornment position="end">{unitRight2}</InputAdornment>,
-                }}
-                className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-                fullWidth
-                type="number"
-                variant="outlined"
-              />
-            }
-            control={control}
-            defaultValue={value2}
+          <TextField
+            InputProps={{
+              startAdornment: <InputAdornment position="start">{unitLeft2}</InputAdornment>,
+              endAdornment: <InputAdornment position="end">{unitRight2}</InputAdornment>,
+            }}
+            className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+            fullWidth
+            type="number"
+            variant="outlined"
+            inputRef={register({ max: 100 })}
             name={name2}
-            rules={{ required: true }}
+            value={data2}
+            onChange={handleData2Change}
           />
         </Box>
       )}
