@@ -19,14 +19,20 @@ export const formatNumber = (value, precision = 8) => {
  *
  * @param {string} value String numeric value.
  * @param {string} [separator=" "] Thousands separator character.
+ * @param {number} [precision=2] Fractional digits precision.
  * @returns {string} String numeric value with added thousands separator chars.
  */
-export const addThousandsSeparator = (value, separator = " ") => {
+export const addThousandsSeparator = (value, separator = " ", precision = 2) => {
   const valueNumber = parseFloat(value);
 
   if (valueNumber) {
-    let finalValue = String(valueNumber.toLocaleString("en-US", { minimumFractionDigits: 8 }));
-    return finalValue.replace(",", separator);
+    let finalValue = String(
+      valueNumber.toLocaleString("en-US", {
+        minimumFractionDigits: precision,
+        maximumFractionDigits: precision,
+      }),
+    );
+    return finalValue.replace(/,/g, separator);
   }
 
   return "";
@@ -48,14 +54,11 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
     return nanDisplay;
   }
 
-  let formattedPrice = price.toFixed(8);
-  if (thousandSeparator) {
-    formattedPrice = addThousandsSeparator(formattedPrice);
-  }
-
+  let precision = 8;
+  let formattedPrice = price.toFixed(precision);
   if (price > 1 || price < -1) {
-    formattedPrice = price.toFixed(2);
+    precision = 2;
   }
 
-  return formattedPrice;
+  return addThousandsSeparator(formattedPrice, thousandSeparator, precision);
 };
