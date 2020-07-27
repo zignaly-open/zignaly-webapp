@@ -578,7 +578,7 @@ terminal.stoploss.help: "If the current price is equal or less than this value, 
 terminal.stoploss.limit.maxprice: "Exit Position Price cannot be greater than {value}"
 terminal.stoploss.limit.minprice: "Exit Position Price cannot be lower than {value}"
 terminal.stoploss.limit.zero: "Stop loss price must be a number greater than 0."
-terminal.stoploss.valid.percentage: "Stop loss percentage must be a number {type} than {value} to avoid exceed current price."
+terminal.stoploss.valid.percentage: "Stop loss percentage must be a number {type} than {value} to avoid exceeding current price."
 terminal.stoploss: "Stop-Loss"
 terminal.stopprice: "Stop Price"
 terminal.strategy.import: "Import from Exchange"
