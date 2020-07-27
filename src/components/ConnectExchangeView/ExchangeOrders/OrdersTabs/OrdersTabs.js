@@ -36,7 +36,7 @@ const OrdersTabs = () => {
   };
 
   return (
-    <Box bgcolor="grid.content" className="ordersTabs">
+    <Box className="ordersTabs">
       <Box
         alignItems="flex-start"
         className="tabsBox"
