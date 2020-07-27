@@ -25,7 +25,7 @@ export const addThousandsSeparator = (value, separator = " ") => {
   const valueNumber = parseFloat(value);
 
   if (valueNumber) {
-    let finalValue = String(valueNumber.toLocaleString("en-US"));
+    let finalValue = String(valueNumber.toLocaleString("en-US", { minimumFractionDigits: 8 }));
     return finalValue.replace(",", separator);
   }
 
@@ -49,12 +49,12 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
   }
 
   let formattedPrice = price.toFixed(8);
-  if (price > 1 || price < -1) {
-    formattedPrice = price.toFixed(2);
+  if (thousandSeparator) {
+    formattedPrice = addThousandsSeparator(formattedPrice);
   }
 
-  if (thousandSeparator) {
-    return addThousandsSeparator(formattedPrice);
+  if (price > 1 || price < -1) {
+    formattedPrice = price.toFixed(2);
   }
 
   return formattedPrice;
