@@ -4,8 +4,12 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
+ * @typedef {import("../services/tradeApiClient.types").UserAvailableBalanceObject} UserAvailableBalanceObject
+ */
+
+/**
  * @typedef {Object} HookData
- * @property {*} balance
+ * @property {UserAvailableBalanceObject} balance
  * @property {Boolean} loading
  */
 
@@ -30,8 +34,9 @@ const useAvailableBalance = () => {
       };
 
       tradeApi
-        .userAvailableBalanceGetGet(payload)
+        .userAvailableBalanceGet(payload)
         .then((data) => {
+          console.log(data);
           setBalance(data);
         })
         .catch(() => {})

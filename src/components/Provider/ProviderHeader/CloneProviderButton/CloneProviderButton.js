@@ -48,7 +48,7 @@ const CloneProviderButton = ({ provider }) => {
       const response = await tradeApi.cloneProvider(payload);
       if (response) {
         setLoader(false);
-        redirect(response);
+        redirect(response.providerId);
       }
     } catch (e) {
       dispatch(showErrorAlert(e));

@@ -37,6 +37,8 @@ import {
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
   exchangeContractsResponseTransform,
+  userAvailableBalanceResponseTransform,
+  cloneProviderResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -97,6 +99,13 @@ import {
  * @typedef {import('./tradeApiClient.types').EditClonedProvderPayload} EditClonedProvderPayload
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
+ * @typedef {import('./tradeApiClient.types').CloneActionResponseObject} CloneActionResponseObject
+ * @typedef {import('./tradeApiClient.types').UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
+ * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
+ * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ *
  */
 
 /**
@@ -801,11 +810,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get provider exchange settings.
    *
-   * @param {ProviderExchangeSettingsPayload} payload Get providers stats payload.
+   * @param {ProviderExchangeSettingsPayload} payload Get providers exchange settings payload.
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -817,11 +826,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Update provider settings.
    *
-   * @param {ProviderExchangeSettingsUpdatePayload} payload Get providers stats payload.
+   * @param {ProviderExchangeSettingsUpdatePayload} payload Provider settings update payload.
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -829,15 +838,15 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=updateProviderExchangeSettingsNew";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return providerExchangeSettingsResponseTransform(responseData);
   }
 
   /**
-   * Get providers profits stats.
+   * Get provider's profit/management stats.
    *
-   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+   * @param {GetProviderFollowersPayload} payload Provider's stats payload.
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<ProviderDataPointsEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -892,10 +901,10 @@ class TradeApiClient {
   }
 
   /**
-   * Modify user's subscription fron users table in traders profile.
+   * Modify user's subscription.
    *
    * @param {ModifySubscriptionPayload} payload payload.
-   * @returns {Promise<WithdrawReply>} Returns promise.
+   * @returns {Promise<Boolean>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -907,10 +916,10 @@ class TradeApiClient {
   }
 
   /**
-   * Cancel user's subscription fron users table in traders profile.
+   * Cancel user's subscription.
    *
-   * @param {CancelSubscriptionPayload} payload payload.
-   * @returns {Promise<WithdrawReply>} Returns promise.
+   * @param {CancelSubscriptionPayload} payload Cancel subscription payload.
+   * @returns {Promise<Boolean>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1057,10 +1066,10 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get Management positions.
+   * Function to get provider's open positions.
    *
-   * @param {GetProviderFollowersPayload} payload Management poistions payload.
-   * @returns {Promise<*>} Returns promise.
+   * @param {GetProviderFollowersPayload} payload Provider's open poistions payload.
+   * @returns {Promise<UserPositionsCollection>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1072,10 +1081,10 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get Management positions.
+   * Function to get provider's closed positions.
    *
-   * @param {GetProviderFollowersPayload} payload Management poistions payload.
-   * @returns {Promise<*>} Returns promise.
+   * @param {GetProviderFollowersPayload} payload Provider's closed poistions payload.
+   * @returns {Promise<UserPositionsCollection>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1087,10 +1096,10 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get request password change in step 1.
+   * Function to request password change through email.
    *
-   * @param {ForgotPasswordStep1Payload} payload Request Password change payload.
-   * @returns {Promise<*>} Returns promise.
+   * @param {ForgotPasswordStep1Payload} payload Request Password change step 1 payload.
+   * @returns {Promise<"OK">} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1117,10 +1126,10 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get request password change in step 2.
+   * Function to verify token received by completing step 1 of password change.
    *
-   * @param {AuthorizationPayload} payload Request Password change payload.
-   * @return {Promise<boolean>} Promise that resolve boolean result.
+   * @param {AuthorizationPayload} payload Password change token verification payload.
+   * @return {Promise<"OK">} Promise that resolve boolean result.
    * */
   async forgotPasswordStep2(payload) {
     const endpointPath = "/fe/api.php?action=forgottenPassword2Step";
@@ -1130,10 +1139,10 @@ class TradeApiClient {
   }
 
   /**
-   * Function to get request password change in step 2.
+   * Function to change password after completing step 2 of password change.
    *
    * @param {ForgotPasswordStep3Payload} payload Request Password change payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<"OK">} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1163,7 +1172,7 @@ class TradeApiClient {
    * Function to clone a provider.
    *
    * @param {GetProviderFollowersPayload} payload Clone provider payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<CloneActionResponseObject>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1171,14 +1180,14 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=cloneProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return cloneProviderResponseTransform(responseData);
   }
 
   /**
    * Function to clone a provider.
    *
    * @param {UserExchangeAssetsPayload} payload Clone provider payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1197,18 +1206,18 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async userAvailableBalanceGetGet(payload) {
+  async userAvailableBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getAvailableBalance";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return userAvailableBalanceResponseTransform(responseData);
   }
 
   /**
    * Function to clone a provider.
    *
    * @param {AuthorizationPayload} payload Clone provider payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<SessionResponseObject>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1223,7 +1232,7 @@ class TradeApiClient {
    * Function to get exchange open orders.
    *
    * @param {UserEquityPayload} payload exchange orders payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<Array<ExchangeOpenOrdersObject>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
