@@ -58,13 +58,6 @@ const StrategyPanel = (props) => {
     validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData);
 
-  const entryStrategyOptions = [
-    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
-    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
-    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
-    { label: formatMessage({ id: "terminal.strategy.import" }), val: "import" },
-  ];
-
   const leverage = watch("leverage");
   const lastPrice = watch("lastPrice");
   const entryType = watch("entryType");
@@ -73,6 +66,19 @@ const StrategyPanel = (props) => {
   const providerAllocatedBalance = watch("providerPayableBalance");
   const providerConsumedBalance = watch("providerConsumedBalance");
   const isCopyProvider = providerService && providerService !== "1";
+
+  const entryStrategyOptions = [
+    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
+    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
+  ];
+
+  if (!isCopyProvider) {
+    entryStrategyOptions.push({
+      label: formatMessage({ id: "terminal.strategy.import" }),
+      val: "import",
+    });
+  }
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
