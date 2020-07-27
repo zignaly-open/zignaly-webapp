@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { inRange, lt, gt } from "lodash";
+import { lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
