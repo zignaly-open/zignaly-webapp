@@ -63,12 +63,10 @@ const prepareErrorMessage = (error) => {
   if (isObject(error)) {
     if (error && error.code) {
       return `error.${error.code}`;
-    } else {
-      ("error.noidea");
     }
-  } else {
-    return error;
+    return "error.noidea";
   }
+  return error;
 };
 
 /**

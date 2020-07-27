@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./ToggleDoubleInput.scss";
 import { Box, Typography, TextField, Tooltip, Switch, InputAdornment } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { Controller } from "react-hook-form";
 import HelpIcon from "@material-ui/icons/Help";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
@@ -102,12 +101,12 @@ const ToggleInput = ({
             }}
             className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
             fullWidth
-            type="number"
-            variant="outlined"
             inputRef={register({ max: 100 })}
             name={name1}
-            value={data1}
             onChange={handleData1Change}
+            type="number"
+            value={data1}
+            variant="outlined"
           />
           <TextField
             InputProps={{
@@ -116,12 +115,12 @@ const ToggleInput = ({
             }}
             className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
             fullWidth
-            type="number"
-            variant="outlined"
             inputRef={register({ max: 100 })}
             name={name2}
-            value={data2}
             onChange={handleData2Change}
+            type="number"
+            value={data2}
+            variant="outlined"
           />
         </Box>
       )}

@@ -29,9 +29,6 @@ import { formatNumber } from "../../../../utils/formatters";
  */
 const HistoryTable = ({ title, persistKey, list, quotes }) => {
   let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  /**
-   * @type {Array<MUIDataTableColumn>} Table columns
-   */
 
   /**
    * Format Yes/No value.
@@ -39,7 +36,9 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
    * @returns {React.ReactNode} Formatted node.
    */
   const renderPercentage = (val) => <span>{formatNumber(val, 2)}%</span>;
-
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
   let columns = [
     {
       name: "date",

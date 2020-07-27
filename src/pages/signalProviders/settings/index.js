@@ -76,7 +76,7 @@ const SignalProvidersSettings = () => {
         </Box>
       )}
       {!loading && (
-        <ProviderSettingsForm quotes={quotes} settings={settings} onUpdate={loadSettings} />
+        <ProviderSettingsForm onUpdate={loadSettings} quotes={quotes} settings={settings} />
       )}
     </Box>
   );

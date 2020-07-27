@@ -644,8 +644,8 @@ const ProviderOptionsForm = ({ provider }) => {
                     disclaimer: (
                       <a
                         href={provider.options.disclaimer}
-                        target="_blank"
                         rel="noopener noreferrer"
+                        target="_blank"
                       >
                         Disclaimer
                       </a>

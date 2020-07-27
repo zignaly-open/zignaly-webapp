@@ -5,6 +5,16 @@
     min-height: 200px;
     width: 100%;
 
+    a {
+      color: $blue;
+      text-decoration: none;
+      width: 100%;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .keyInputBox {
       margin-bottom: 15px;
     }
@@ -20,16 +30,6 @@
 
       .customLabel {
         margin-bottom: 0;
-
-        a {
-          color: $blue;
-          text-decoration: none;
-          width: 100%;
-
-          &:hover {
-            text-decoration: underline;
-          }
-        }
       }
     }
 

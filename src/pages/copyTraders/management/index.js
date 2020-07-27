@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./management.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import ManagementSummary from "../../../components/Provider/Management/ManagementSummary";

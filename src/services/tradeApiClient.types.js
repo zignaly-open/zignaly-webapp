@@ -2224,21 +2224,16 @@ export function providerGetResponseTransform(response) {
     throw new Error("Response must be an object with different properties.");
   }
 
-  /**
-   *
-   * @param {*} response provider object response.
-   */
-  function checkClones(response) {
+  function checkClones() {
     if (response.options.allowClones !== undefined) {
       return response.options.allowClones;
-    } else {
-      return true;
     }
+    return true;
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
   let transformed = assign(emptyProviderEntity, response);
-  transformed.options.allowClones = checkClones(response);
+  transformed.options.allowClones = checkClones();
   return transformed;
 }
 
@@ -3257,6 +3252,8 @@ const createEmptyNewProviderEntity = () => {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       allowClones: true,
+      customerKey: false,
+      disclaimer: "",
     },
     minAllocatedBalance: "",
     isCopyTrading: false,
