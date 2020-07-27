@@ -9,6 +9,27 @@ body {
   margin: 0;
 }
 
+* {
+  scrollbar-color: dark;
+  scrollbar-width: thin;
+}
+
+[data-os="win"] {
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(94, 102, 115);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    height: 7px;
+    width: 7px;
+  }
+}
+
 .boxTitle {
   font-size: 24px;
   font-weight: 500;

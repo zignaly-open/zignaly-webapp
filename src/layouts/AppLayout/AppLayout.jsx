@@ -35,6 +35,12 @@ const AppLayout = (props) => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
   }, [storeSettings.darkStyle]);
 
+  useEffect(() => {
+    if (window.navigator.userAgent.includes("Windows")) {
+      document.documentElement.setAttribute("data-os", "win");
+    }
+  }, []);
+
   const hash = typeof window !== "undefined" ? window.location.hash : "";
   useEffect(() => {
     // Internal tracking for hash navigation
