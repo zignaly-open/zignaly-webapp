@@ -296,7 +296,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
- * @property {String} exchangeInternalId
+ * @property {String} exchangeInternalId Internal ID of exchange.
  */
 
 /**
@@ -3341,11 +3341,10 @@ const createEmptyUserExchangeAssetsEntity = () => {
  */
 
 /**
- * Transform user entity response to typed object.
+ * Transform session response to session entity.
  *
- * @export
- * @param {*} response Trade API user object.
- * @returns {SessionResponse} User entity.
+ * @param {*} response Response from backend.
+ * @returns {SessionResponse} Session entity.
  */
 export function sessionDataResponseTransform(response) {
   return {
@@ -3399,8 +3398,8 @@ function exchangeOrdersItemTransform(order) {
 }
 
 /**
- * Create an empty Created Provider Entity
- * @returns {ExchangeOpenOrdersObject} New Provider entity.
+ * Create an empty exchange order Entity
+ * @returns {ExchangeOpenOrdersObject} Exchange order entity.
  */
 const createEmptyExchangeOpenOrdersEntity = () => {
   return {
