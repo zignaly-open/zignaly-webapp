@@ -36,7 +36,7 @@ const StopLossPanel = (props) => {
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
-  const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
@@ -89,13 +89,17 @@ const StopLossPanel = (props) => {
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
+    const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
 
     if (draftPosition.stopLossPercentage !== "-") {
-      if (isNaN(stopLossPercentage) || compareFn(stopLossPercentage, 0)) {
+      if (isNaN(stopLossPercentage) || compareFn(stopLossPercentage, pricePercentChange)) {
         setError(
           "stopLossPercentage",
           "error",
-          formatMessage({ id: "terminal.stoploss.valid.percentage" }, { type: valueType }),
+          formatMessage(
+            { id: "terminal.stoploss.valid.percentage" },
+            { type: valueType, value: pricePercentChange },
+          ),
         );
         return;
       }

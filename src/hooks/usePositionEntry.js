@@ -9,6 +9,7 @@ import { useFormContext } from "react-hook-form";
  * @property {function} getEntryPrice
  * @property {function} getEntrySize
  * @property {function} getEntrySizeQuote
+ * @property {function} getEntryPricePercentChange
  */
 
 /**
@@ -43,6 +44,22 @@ function usePositionEntry(positionEntity) {
   };
 
   /**
+   * Calculate price percent change from existing position.
+   *
+   * @returns {number} Price percentage change form entry price.
+   */
+  const getEntryPricePercentChange = () => {
+    if (positionEntity && positionEntity.buyPrice > 0 && lastPrice > 0) {
+      const { buyPrice } = positionEntity;
+      const percentChange = (1 - buyPrice / lastPrice) * 100;
+      return percentChange;
+    }
+
+    // Not known yet.
+    return 0;
+  };
+
+  /**
    * Resolve position entry size (base) for new or existing position.
    *
    * @returns {number} Base entry size.
@@ -68,7 +85,7 @@ function usePositionEntry(positionEntity) {
     return parseFloat(positionSize) || 0;
   };
 
-  return { getEntryPrice, getEntrySize, getEntrySizeQuote };
+  return { getEntryPrice, getEntryPricePercentChange, getEntrySize, getEntrySizeQuote };
 }
 
 export default usePositionEntry;
