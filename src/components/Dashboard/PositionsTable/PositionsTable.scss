@@ -1,5 +1,9 @@
 %position-table-base {
   .actions {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+
     button {
       background-color: transparent;
       border: 0;

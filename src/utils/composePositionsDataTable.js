@@ -1,11 +1,20 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
 import { Link, navigate } from "gatsby";
-import { Edit2, ExternalLink, Eye, LogOut, TrendingUp, Delete, AlertTriangle } from "react-feather";
+import {
+  Edit2,
+  ExternalLink,
+  Eye,
+  LogOut,
+  TrendingUp,
+  Delete,
+  AlertTriangle,
+  RotateCw,
+} from "react-feather";
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
-import { CircularProgress } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 
@@ -353,46 +362,58 @@ export function composeAllActionButtons(position, confirmActionHandler) {
   return (
     <div className="actions">
       {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <button
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="View Position"
-          type="button"
-        >
-          <Eye color={colors.purpleLight} />
-        </button>
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="View Position">
+          <IconButton
+            className="iconPurple"
+            data-position-id={position.positionId}
+            onClick={gotoPositionDetail}
+          >
+            <Eye />
+          </IconButton>
+        </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
-        <button
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="Edit Position"
-          type="button"
-        >
-          <Edit2 color={colors.purpleLight} />
-        </button>
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Edit Position">
+          <IconButton
+            className="iconPurple"
+            data-position-id={position.positionId}
+            onClick={gotoPositionDetail}
+          >
+            <Edit2 />
+          </IconButton>
+        </Tooltip>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && !updating && (
-        <button
-          data-action={"exit"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="Exit Position"
-          type="button"
+      {(!isCopyTrading || isCopyTrader) && !closed && !updating && status !== 1 && (
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={`${status > 9 ? "Exiting Position" : "Exit Position"}`}
         >
-          <LogOut color={colors.purpleLight} />
-        </button>
+          <div>
+            <IconButton
+              className="iconPurple"
+              data-action={"exit"}
+              data-position-id={position.positionId}
+              disabled={status > 9}
+              onClick={confirmActionHandler}
+            >
+              <LogOut />
+            </IconButton>
+          </div>
+        </Tooltip>
       )}
-      {status === 1 && (
-        <button
-          data-action={"abort"}
-          data-position-id={position.positionId}
-          onClick={confirmActionHandler}
-          title="cancel entry"
-          type="button"
-        >
-          <Delete color={colors.purpleLight} />
-        </button>
+      {!updating && status === 1 && (
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Cancel entry">
+          <IconButton
+            className="iconPurple"
+            data-action={"abort"}
+            data-position-id={position.positionId}
+            onClick={confirmActionHandler}
+          >
+            <Delete />
+          </IconButton>
+        </Tooltip>
       )}
       {status === 0 && (
         <Tooltip
@@ -401,17 +422,17 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="terminal.warning.error" />}
         >
-          <AlertTriangle color={colors.purpleLight} />
+          <AlertTriangle className="iconPurple" />
         </Tooltip>
       )}
-      {(updating || status === 1) && (
+      {updating && (
         <Tooltip
           arrow
           enterTouchDelay={50}
           placement="left-end"
           title={<FormattedMessage id={updatingMessageId} />}
         >
-          <CircularProgress color="primary" size={22} />
+          <RotateCw className="iconPurple" />
         </Tooltip>
       )}
     </div>
@@ -422,14 +443,15 @@ export function composeAllActionButtons(position, confirmActionHandler) {
  * Compose MUI Data Table default options for a column translation ID.
  *
  * @param {string} columnId Column ID.
+ * @param {string} [columnName] Column name.
  * @returns {DataTableDataColumns} Column options.
  */
-function composeColumnOptions(columnId) {
+function composeColumnOptions(columnId, columnName = null) {
   const permanentColumnIds = ["col.paper", "col.stat", "col.type", "col.actions"];
   const defaultSortColumnId = "col.date.open";
 
   const columnOptions = {
-    name: columnId,
+    name: columnName ? columnName : columnId,
     label: columnId,
     options: {
       viewColumns: !permanentColumnIds.includes(columnId),
@@ -522,36 +544,38 @@ function composeManagementPositionRow(position, confirmActionHandler) {
  * @returns {DataTableContent} Open positions data table structure.
  */
 export function composeManagementPositionsDataTable(positions, confirmActionHandler) {
-  const columnsIds = [
-    "col.provider.subpositions",
-    "col.date.open",
-    "col.provider.name",
-    "col.provider.totalpositions",
-    "col.provider.soldpositions",
-    "col.status",
-    "col.signalid",
-    "col.users.userid",
-    "col.pair",
-    "col.price.entry",
-    "col.leverage",
-    "col.price.current",
-    "col.plnumber",
-    "col.plpercentage",
-    "col.side",
-    "col.stoplossprice",
-    "col.initialamount",
-    "col.remainingamount",
-    "col.invested",
-    "col.tsl",
-    "col.tp",
-    "col.dca",
-    "col.risk",
-    "col.age",
-    "col.actions",
+  const configColumns = [
+    ["col.provider.subpositions", "subPositions"],
+    ["col.date.open", "openDateReadable"],
+    ["col.provider.name", "providerName"],
+    ["col.provider.totalpositions", "copyTradingTotals.totalPositions"],
+    ["col.provider.soldpositions", "copyTradingTogals.soldPositions"],
+    ["col.status", "status"],
+    ["col.signalid", "signalId"],
+    ["col.users.userid", "userId"],
+    ["col.pair", "pair"],
+    ["col.price.entry", "buyPrice"],
+    ["col.leverage", "leverage"],
+    ["col.price.current", "sellPrice"],
+    ["col.plnumber", "profit"],
+    ["col.plpercentage", "profitPercentage"],
+    ["col.side", "side"],
+    ["col.stoplossprice", "stopLossPrice"],
+    ["col.initialamount", "amount"],
+    ["col.remainingamount", "remainAmount"],
+    ["col.invested", "positionSizeQuote"],
+    ["col.tsl", "trailingStopTriggered"],
+    ["col.tp", "takeProfitTargetsCountPending"],
+    ["col.dca", "reBuyTargetsCountPending"],
+    ["col.risk", "risk"],
+    ["col.age", "ageSeconds"],
+    ["col.actions", "updating"],
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: configColumns.map((configColumn) =>
+      composeColumnOptions(configColumn[0], configColumn[1]),
+    ),
     data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
   };
 }
@@ -604,19 +628,18 @@ function composeOpenOrdersRow(order) {
  */
 export function composeOrdersDataTable(positions) {
   const columnsIds = [
-    "col.orders.orderid",
-    "col.positionid",
-    "col.orders.symbol",
-    "col.amount",
-    "col.orders.price",
-    "col.side",
-    "col.orders.type",
-    "col.orders.datetime",
-    // "col.actions",
+    ["col.orders.orderid"],
+    ["col.positionid"],
+    ["col.orders.symbol"],
+    ["col.amount"],
+    ["col.orders.price"],
+    ["col.side"],
+    ["col.orders.type"],
+    ["col.orders.datetime"],
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: columnsIds.map((column) => composeColumnOptions(column[0])),
     data: positions.map((order) => composeOpenOrdersRow(order)),
   };
 }
@@ -651,20 +674,19 @@ function composeContractsRow(contract) {
  */
 export function composeContractsDataTable(positions) {
   const columnsIds = [
-    "col.positionid",
-    "col.orders.symbol",
-    "col.amount",
-    "col.leverage",
-    "col.contracts.liquidationprice",
-    "col.side",
-    "col.entryprice",
-    "col.contracts.markprice",
-    "col.contracts.margin",
-    // "col.actions",
+    ["col.positionid"],
+    ["col.orders.symbol"],
+    ["col.amount"],
+    ["col.leverage"],
+    ["col.contracts.liquidationprice"],
+    ["col.side"],
+    ["col.entryprice"],
+    ["col.contracts.markprice"],
+    ["col.contracts.margin"],
   ];
 
   return {
-    columns: columnsIds.map(composeColumnOptions),
+    columns: columnsIds.map((column) => composeColumnOptions(column[0])),
     data: positions.map((order) => composeContractsRow(order)),
   };
 }

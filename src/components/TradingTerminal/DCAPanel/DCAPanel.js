@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { lt, gt, inRange, keys, size } from "lodash";
+import { lt, gt, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -252,7 +252,7 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    if (isNaN(rebuyPercentage) || !inRange(rebuyPercentage, 0, 100.0001)) {
+    if (isNaN(rebuyPercentage) || rebuyPercentage <= 0) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",
