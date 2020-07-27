@@ -66,17 +66,6 @@ const StopLossPanel = (props) => {
 
   const fieldsDisabled = getFieldsDisabledStatus();
 
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity && existsStopLoss) {
-      const stopLossPercentage = positionEntity.stopLossPercentage;
-      if (inRange(Math.abs(stopLossPercentage), 0, 100.0001)) {
-        setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
-      }
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
-
   /**
    * Calculate price based on percentage when value is changed.
    *
@@ -154,7 +143,9 @@ const StopLossPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
-    const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage) || 0;
+    const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : 0;
+    const stopLossPercentage =
+      parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
@@ -171,7 +162,7 @@ const StopLossPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   /**
    * Display property errors.

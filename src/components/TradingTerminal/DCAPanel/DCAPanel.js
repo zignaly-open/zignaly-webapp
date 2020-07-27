@@ -147,22 +147,6 @@ const DCAPanel = (props) => {
     return fieldsDisabled;
   };
 
-  const fieldsDisabled = getFieldsDisabledStatus();
-
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity) {
-      dcaAllIndexes.forEach((index) => {
-        const profitTarget = positionEntity.reBuyTargets[Number(index)];
-        const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
-        const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
-        setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
-        setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
-      });
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
-
   /**
    * Perform price percentage validations.
    *
@@ -307,7 +291,20 @@ const DCAPanel = (props) => {
     return null;
   };
 
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      dcaAllIndexes.forEach((index) => {
+        const profitTarget = positionEntity.reBuyTargets[Number(index)];
+        const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
+        const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
+        setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
+        setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
+      });
+    }
+  };
+
   const chainedPriceUpdates = () => {
+    initValuesFromPositionEntity();
     if (expanded) {
       cardinalityRange.forEach((targetId) => {
         const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
@@ -324,7 +321,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -345,6 +342,7 @@ const DCAPanel = (props) => {
   };
 
   useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  const fieldsDisabled = getFieldsDisabledStatus();
 
   /**
    * Display DCA target group.

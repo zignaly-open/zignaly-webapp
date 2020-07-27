@@ -54,7 +54,7 @@ const TakeProfitPanel = (props) => {
   } = useTargetGroup("takeProfit", defaultCardinality);
 
   // Other panels watched variables to react on changes.
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
 
@@ -97,19 +97,6 @@ const TakeProfitPanel = (props) => {
 
   const fieldsDisabled = getFieldsDisabledStatus();
   const profitTargets = positionEntity ? positionEntity.takeProfitTargets : {};
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity) {
-      targetIndexes.forEach((index) => {
-        const profitTarget = positionEntity.takeProfitTargets[index];
-        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
-        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
-        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
-        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
-      });
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate result of changed target units event.
@@ -431,7 +418,20 @@ const TakeProfitPanel = (props) => {
     return true;
   };
 
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      targetIndexes.forEach((index) => {
+        const profitTarget = positionEntity.takeProfitTargets[index];
+        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
+        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+      });
+    }
+  };
+
   const chainedPriceUpdates = () => {
+    initValuesFromPositionEntity();
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
@@ -449,7 +449,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {

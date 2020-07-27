@@ -56,7 +56,7 @@ const TrailingStopPanel = (props) => {
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
 
   const getFieldsDisabledStatus = () => {
@@ -214,7 +214,7 @@ const TrailingStopPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   /**
    * Display property errors.
