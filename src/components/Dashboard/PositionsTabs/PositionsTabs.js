@@ -19,8 +19,6 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} JSX component.
  */
 const PositionsTabs = ({ isProfile }) => {
-  const [tabValue, setTabValue] = useState(0);
-
   const tabsList = [
     {
       display: true,
@@ -79,8 +77,12 @@ const PositionsTabs = ({ isProfile }) => {
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
 
+  const [tabValue, setTabValue] = useState(mapCollectionTypeToIndex(currentHash));
   const updateActiveTab = () => {
-    setTabValue(mapCollectionTypeToIndex(currentHash));
+    const newTabValue = mapCollectionTypeToIndex(currentHash);
+    if (tabValue !== newTabValue) {
+      setTabValue(newTabValue);
+    }
   };
   useEffect(updateActiveTab, [currentHash]);
 

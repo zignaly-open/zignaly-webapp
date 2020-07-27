@@ -152,7 +152,6 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     if (exchangeRef.current !== initiatorExchangeInternalId) {
       newPositions = cloneDeep(defaultPositionsState);
       exchangeRef.current = selectedExchange.internalId;
-      setPositions(newPositions);
     }
 
     // Only show loader at initial load to avoid loader experience disruption on updates.
@@ -185,6 +184,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       fetchMethod
         .then((fetchData) => {
           if (isOriginalInitiator) {
+            console.log("Set positions: ", fetchData);
             newPositions[type] = fetchData;
             setPositions(newPositions);
 
@@ -204,7 +204,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
           }
         })
         .finally(() => {
-          if (isOriginalInitiator && loading) {
+          if (isOriginalInitiator) {
             setLoading(false);
           }
         });
