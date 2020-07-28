@@ -68,6 +68,7 @@ const ProviderOptionsForm = ({ provider }) => {
    * @property {Boolean} long
    * @property {Number} risk
    * @property {Number} successRate
+   * @property {Boolean} disclaimer
    */
   /**
    *
@@ -76,34 +77,53 @@ const ProviderOptionsForm = ({ provider }) => {
    */
   const onSubmit = (data) => {
     try {
-      setLoading(true);
-      const payload = {
-        ...data,
-        connected: true,
-        providerId: provider.id,
-        token: storeSession.tradeApi.accessToken,
-      };
-      tradeApi
-        .providerConnect(payload)
-        .then((response) => {
-          if (response) {
-            const payload2 = {
-              token: storeSession.tradeApi.accessToken,
-              providerId: provider.id,
-              version: 2,
-            };
-            dispatch(setProvider(payload2));
-          }
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      if (validateDisclaimer(data)) {
+        setLoading(true);
+        const payload = {
+          ...data,
+          connected: true,
+          providerId: provider.id,
+          token: storeSession.tradeApi.accessToken,
+        };
+        tradeApi
+          .providerConnect(payload)
+          .then((response) => {
+            if (response) {
+              const payload2 = {
+                token: storeSession.tradeApi.accessToken,
+                providerId: provider.id,
+                version: 2,
+              };
+              dispatch(setProvider(payload2));
+            }
+          })
+          .catch((e) => {
+            dispatch(showErrorAlert(e));
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        dispatch(showErrorAlert("signalp.option.disclaimer.error"));
+      }
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+
+  /**
+   *
+   * @param {SubmitObject} data Form submission object.
+   * @returns {Boolean} whether the disclaimer is valid or not.
+   */
+  const validateDisclaimer = (data) => {
+    if (provider.disclaimer) {
+      if (data.disclaimer) {
+        return true;
+      }
+      return false;
+    }
+    return true;
   };
 
   /**
@@ -606,6 +626,33 @@ const ProviderOptionsForm = ({ provider }) => {
                   </span>
                 )}
               </Box>
+            </Box>
+          )}
+
+          {provider.disclaimer && (
+            <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
+              <Controller
+                as={<Checkbox className="checkboxInput" />}
+                control={control}
+                defaultValue={provider.disclaimer}
+                name="disclaimer"
+              />
+              <label className={"customLabel"}>
+                <FormattedMessage
+                  id="signalp.option.disclaimer"
+                  values={{
+                    disclaimer: (
+                      <a
+                        href={provider.options.disclaimer}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Disclaimer
+                      </a>
+                    ),
+                  }}
+                />
+              </label>
             </Box>
           )}
         </Box>

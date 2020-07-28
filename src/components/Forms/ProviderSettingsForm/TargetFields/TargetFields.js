@@ -24,7 +24,8 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
    * @property {Number} targetId
    * @property {Number} amountPercentage
    * @property {Number} priceTargetPercentage
-   * @property {Boolean} delete
+   * @property {Boolean} amountError
+   * @property {Boolean} priceError
    */
 
   /**
@@ -34,7 +35,8 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
     targetId: 1,
     amountPercentage: 0,
     priceTargetPercentage: 0,
-    delete: false,
+    amountError: false,
+    priceError: false,
   };
 
   const [values, setValues] = useState([targetFieldObject]);
@@ -73,15 +75,22 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
     if (target.name === "amount") {
       // convert amount to positive for both dca and take profit targets.
       field.amountPercentage = Math.sign(target.value) === -1 ? target.value * -1 : target.value;
-    } else if (type === "dca") {
-        // convert value to negative for price targets of dca targets.
-        field.priceTargetPercentage =
-          Math.sign(target.value) === 1 ? target.value * -1 : target.value;
-      } else {
-        // convert value to negative for price targets of take profits targets.
-        field.priceTargetPercentage =
-          Math.sign(target.value) === -1 ? target.value * -1 : target.value;
+      if (type === "takeprofit") {
+        if (field.amountPercentage > 100) {
+          field.amountError = true;
+        } else {
+          field.amountError = false;
+        }
       }
+    } else if (type === "dca") {
+      // convert value to negative for price targets of dca targets.
+      field.priceTargetPercentage =
+        Math.sign(target.value) === 1 ? target.value * -1 : target.value;
+    } else {
+      // convert value to negative for price targets of take profits targets.
+      field.priceTargetPercentage =
+        Math.sign(target.value) === -1 ? target.value * -1 : target.value;
+    }
     list[index] = field;
     setValues(list);
   };
@@ -89,24 +98,14 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
   const addField = () => {
     let field = { ...targetFieldObject };
     let list = [...values];
-    field.delete = true;
-    field.targetId = list[list.length - 1].targetId + 1;
+    field.targetId = list.length ? list[list.length - 1].targetId + 1 : 0;
     list.push(field);
     setValues(list);
   };
 
-  /**
-   * Function to add new field.
-   *
-   * @param {Number|String} id id of the field object.
-   * @returns {void} None.
-   */
-  const removeField = (id) => {
+  const removeField = () => {
     let list = [...values];
-    let index = list.findIndex((item) => item.targetId === id);
-    if (index) {
-      list.splice(index, 1);
-    }
+    list.splice(list.length - 1, 1);
     setValues(list);
     onChange(list);
   };
@@ -115,54 +114,44 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
     <Box className="targetFields">
       {values.map((obj, index) => (
         <Box
-          alignItems="flex-start"
+          alignItems="center"
+          className="fieldBox"
           display="flex"
-          flexDirection="row"
+          flexDirection="column"
           justifyContent="space-between"
           key={index}
-          width="100%"
         >
-          <Box
-            alignItems="center"
-            className="fieldBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            key={index}
-          >
-            <TextField
-              InputProps={{
-                startAdornment: <InputAdornment position="start">Price Target</InputAdornment>,
-                endAdornment: <InputAdornment position="end">%</InputAdornment>,
-              }}
-              className="customInput"
-              name="price"
-              onBlur={updateParent}
-              onChange={(e) => handleChange(e, obj.targetId)}
-              type="number"
-              value={obj.priceTargetPercentage}
-              variant="outlined"
-            />
+          <TextField
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Price Target</InputAdornment>,
+              endAdornment: <InputAdornment position="end">%</InputAdornment>,
+            }}
+            className="customInput"
+            name="price"
+            onBlur={updateParent}
+            onChange={(e) => handleChange(e, obj.targetId)}
+            type="number"
+            value={obj.priceTargetPercentage}
+            variant="outlined"
+          />
 
-            <TextField
-              InputProps={{
-                startAdornment: <InputAdornment position="start">Qty</InputAdornment>,
-                endAdornment: <InputAdornment position="end">%</InputAdornment>,
-              }}
-              className="customInput"
-              name="amount"
-              onChange={(e) => handleChange(e, obj.targetId)}
-              type="number"
-              value={obj.amountPercentage}
-              variant="outlined"
-            />
-          </Box>
-          {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
-          {obj.delete && (
-            <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.targetId)} />
-          )}
+          <TextField
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Qty</InputAdornment>,
+              endAdornment: <InputAdornment position="end">%</InputAdornment>,
+            }}
+            className="customInput"
+            name="amount"
+            onChange={(e) => handleChange(e, obj.targetId)}
+            type="number"
+            value={obj.amountPercentage}
+            variant="outlined"
+          />
+          {obj.amountError && <span className="errorText">Amount cannot be greater than 100.</span>}
         </Box>
       ))}
+      <AddCircleOutlineIcon className="icon add" onClick={addField} />
+      <HighlightOffIcon className="icon delete" onClick={removeField} />
     </Box>
   );
 };

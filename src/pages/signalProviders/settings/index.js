@@ -19,13 +19,14 @@ const SignalProvidersSettings = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
   const quotes = useQuoteAssets();
   const intl = useIntl();
 
   const loadSettings = () => {
+    setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
@@ -45,7 +46,7 @@ const SignalProvidersSettings = () => {
       });
   };
 
-  useEffect(loadSettings, []);
+  useEffect(loadSettings, [storeSettings.selectedExchange.internalId]);
 
   useEffect(() => {
     if (settings.name && !isEmpty(quotes)) {
@@ -74,7 +75,9 @@ const SignalProvidersSettings = () => {
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
-      {!loading && <ProviderSettingsForm quotes={quotes} settings={settings} />}
+      {!loading && (
+        <ProviderSettingsForm onUpdate={loadSettings} quotes={quotes} settings={settings} />
+      )}
     </Box>
   );
 };

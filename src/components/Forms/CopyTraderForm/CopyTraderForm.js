@@ -194,7 +194,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             )}
             <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
             <Typography variant="body1">
-              Copy every move proportionately with thie followong amount.
+              Copy every move proportionally with the following amount.
             </Typography>
             <Box
               alignItems="center"

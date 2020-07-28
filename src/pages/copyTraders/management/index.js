@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./management.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import ManagementSummary from "../../../components/Provider/Management/ManagementSummary";
@@ -11,20 +11,20 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import useManagementSymmary from "../../../hooks/useManagementSymmary";
+import useInterval from "../../../hooks/useInterval";
 
 const CopyTradersManagement = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
   const [allPositions, setAllPositions] = useState({});
-  const [positionsLoading, setPositionsLoading] = useState(false);
+  const [positionsLoading, setPositionsLoading] = useState(true);
   const dispatch = useDispatch();
   const intl = useIntl();
   const { summaryLoading, summary } = useManagementSymmary(storeViews.provider.id);
 
   const loadPositions = () => {
     if (storeViews.provider.id) {
-      setPositionsLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: storeViews.provider.id,
@@ -42,7 +42,7 @@ const CopyTradersManagement = () => {
     }
   };
 
-  useEffect(loadPositions, [storeViews.provider.id]);
+  useInterval(loadPositions, 5000, true);
 
   /**
    *
