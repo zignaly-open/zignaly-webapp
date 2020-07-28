@@ -136,7 +136,7 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then(() => {
-          dispatch(showSuccessAlert("", "dashboard.position.action.cancel"));
+          dispatch(showSuccessAlert("", "dashboard.positions.action.cancel"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -150,7 +150,7 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then(() => {
-          dispatch(showSuccessAlert("", "dashboard.position.action.abort"));
+          dispatch(showSuccessAlert("", "dashboard.positions.action.abort"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -164,7 +164,7 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then(() => {
-          dispatch(showSuccessAlert("", "dashboard.position.action.exited"));
+          dispatch(showSuccessAlert("", "dashboard.positions.action.exited"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));

@@ -381,7 +381,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           arrow
           enterTouchDelay={50}
           placement="left-end"
-          title={<FormattedMessage id="dashboard.position.icon.view" />}
+          title={<FormattedMessage id="dashboard.positions.icon.view" />}
         >
           <IconButton
             className="iconPurple"
@@ -397,7 +397,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           arrow
           enterTouchDelay={50}
           placement="left-end"
-          title={<FormattedMessage id="dashboard.position.icon.edit" />}
+          title={<FormattedMessage id="dashboard.positions.icon.edit" />}
         >
           <IconButton
             className="iconPurple"
@@ -428,7 +428,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           arrow
           enterTouchDelay={50}
           placement="left-end"
-          title={<FormattedMessage id="dashboard.position.icon.abort" />}
+          title={<FormattedMessage id="dashboard.positions.icon.abort" />}
         >
           <IconButton
             className="iconPurple"
