@@ -164,7 +164,7 @@ const PositionsTable = (props) => {
           token: storeSession.tradeApi.accessToken,
         })
         .then(() => {
-          dispatch(showSuccessAlert("", "dashboard.positions.action.exited"));
+          dispatch(showSuccessAlert("", "dashboard.positions.action.exit"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
