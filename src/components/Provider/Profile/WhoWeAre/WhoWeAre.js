@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import "./WhoWeAre.scss";
-import { Box, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import FacebookIcon from "../../../../images/ct/facebook.svg";
 import TwitterIcon from "../../../../images/ct/twitter.svg";
@@ -10,9 +10,9 @@ import TelegramIcon from "../../../../images/ct/telegram.svg";
 import EmailIcon from "@material-ui/icons/Email";
 // @ts-ignore
 import Flag from "react-world-flags";
-import { useTheme } from "@material-ui/core/styles";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 
 /**
  * @typedef {Object} DefaultProps
@@ -25,19 +25,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
  * @returns {JSX.Element} Component JSX.
  */
 const WhoWeAre = ({ provider }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [show, setShow] = useState(false);
-
-  const initShow = () => {
-    if (!isMobile) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  };
-
-  useEffect(initShow, [isMobile]);
+  const { show, setShow, isMobile } = useProfileBoxShow();
 
   /**
    * Function to redirect to social links.

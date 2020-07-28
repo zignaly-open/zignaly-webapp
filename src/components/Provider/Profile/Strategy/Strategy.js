@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Strategy.scss";
-import { Box, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ReactMarkdown from "react-markdown";
-import { useTheme } from "@material-ui/core/styles";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 
 /**
  * @typedef {Object} DefaultProps
@@ -18,21 +18,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
  * @returns {JSX.Element} Component JSX.
  */
 const Strategy = ({ provider }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [show, setShow] = useState(false);
-
-  const initShow = () => {
-    if (!isMobile) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  };
-
-  useEffect(initShow, [isMobile]);
-
-  console.log(show);
+  const { show, setShow, isMobile } = useProfileBoxShow();
 
   return (
     <Box
