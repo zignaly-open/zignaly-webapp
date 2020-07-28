@@ -1,5 +1,5 @@
 import moment from "moment";
-import { assign, isArray, isObject, mapValues } from "lodash";
+import { assign, isArray, isObject, mapValues, isString } from "lodash";
 import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
@@ -150,25 +150,33 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} GetProviderPayload
- * @property {string} token
- * @property {string} providerId
- * @property {Number} version
+ * @property {string} token user's access token
+ * @property {string} providerId Provider ID
+ * @property {Number} version api endpoint version number.
  */
 
 /**
  * @typedef {Object} GetProviderFollowersPayload
+ * @property {string} token user access token.
+ * @property {string} providerId provider ID.
+ */
+
+/**
+ * @typedef {Object} ConnectTraderPayload
  * @property {string} token
  * @property {string} providerId
+ * @property {String} allocatedBalance
+ * @property {String} exchangeInternalId
+ * @property {Boolean} balanceFilter
+ * @property {Boolean} connected
  */
 
 /**
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
- * @property {String} [allocatedBalance]
- * @property {String} [exchangeInternalId]
- * @property {Boolean} [balanceFilter]
- * @property {Boolean} [connected]
+ * @property {String} exchangeInternalId
+ * @property {Boolean} connected
  * @property {Boolean} [acceptUpdateSignal]
  * @property {Boolean} [allowSendingBuyOrdersAsMarket]
  * @property {Boolean} [enablePanicSellSignals]
@@ -207,6 +215,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerId
  * @property {String} type
  * @property {Boolean} disable
+ */
+
+/**
+ * @typedef {Object} DeleteProviderPayload
+ * @property {string} token
+ * @property {string} providerId
  */
 
 /**
@@ -296,7 +310,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
- * @property {String} exchangeInternalId
+ * @property {String} exchangeInternalId Internal ID of exchange.
  */
 
 /**
@@ -754,8 +768,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ForgotPasswordStep1Payload
- * @property {string} email
- * @property {Boolean} array
+ * @property {string} email User's email.
+ * @property {Boolean} array Default backend param equal to "true".
  */
 
 /**
@@ -2960,14 +2974,13 @@ export function convertAssetResponseTransform(response) {
  */
 
 /**
- * Transform Provider Exchange Settings response.
+ * Transform provider exchange settings response.
  *
  * @param {*} response .
- * @returns {ProviderExchangeSettingsObject} Provider Exchange Settings entity.
+ * @returns {ProviderExchangeSettingsObject} Provider exchange settings entity.
  */
 export function providerExchangeSettingsResponseTransform(response) {
   const emptySettingsEntity = creatEmptySettingsEntity();
-  // Override the empty entity with the values that came in from API.
   let reBuyTargets = response.reBuyTargets ? Object.values(response.reBuyTargets) : [];
   let takeProfitTargets = response.takeProfitTargets
     ? Object.values(response.takeProfitTargets)
@@ -2975,16 +2988,17 @@ export function providerExchangeSettingsResponseTransform(response) {
   const transformedResponse = assign(emptySettingsEntity, response, {
     reBuyTargets: reBuyTargets,
     takeProfitTargets: takeProfitTargets,
-    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL,
-    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL,
+    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL, // Convert seconds to minutes.
+    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL, // Convert seconds to hours.
   });
 
   return transformedResponse;
 }
 
 /**
- * Create provider exchange settings entity.
- * @returns {ProviderExchangeSettingsObject} Provider exchange settings entity.
+ * Create provider exchange settings empty entity.
+ *
+ * @returns {ProviderExchangeSettingsObject} Provider exchange settings empty entity.
  */
 export function creatEmptySettingsEntity() {
   return {
@@ -3077,16 +3091,13 @@ export function creatEmptySettingsEntity() {
  * @returns {ProviderDataPointsEntity} Provider Data points entity.
  */
 export function providerDataPointsResponseTransform(response) {
-  const emptyDataPointsEntity = creatEmptyProviderDataPointsEntity();
-  // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyDataPointsEntity, response);
-
-  return transformedResponse;
+  return assign(creatEmptyProviderDataPointsEntity(), response);
 }
 
 /**
- * Create user entity.
- * @returns {ProviderDataPointsEntity} User entity.
+ * Create provider data points entity.
+ *
+ * @returns {ProviderDataPointsEntity} Provider data points entity.
  */
 export function creatEmptyProviderDataPointsEntity() {
   return {
@@ -3112,7 +3123,7 @@ export function creatEmptyProviderDataPointsEntity() {
 /**
  * Transform management positions response to typed object mapping.
  *
- * @param {*} response Trade API positions list response.
+ * @param {*} response Management positions list response.
  * @returns {Object} Positions entities mapping with management ids.
  */
 export function managementPositionsResponseTransform(response) {
@@ -3275,6 +3286,25 @@ const createEmptyNewProviderEntity = () => {
 };
 
 /**
+ * @typedef {Object} CloneActionResponseObject
+ * @property {String} providerId
+ */
+
+/**
+ * Transform Clone Provider response.
+ *
+ * @param {*} response Trade API create provider response.
+ * @returns {CloneActionResponseObject} Provider
+ */
+export function cloneProviderResponseTransform(response) {
+  if (!isString(response)) {
+    throw new Error("Response must be a string of provider ID.");
+  }
+
+  return { providerId: response };
+}
+
+/**
  * @typedef {Object} UserExchangeAssetObject
  * @property {String} balanceFree
  * @property {String} balanceFreeBTC
@@ -3293,10 +3323,10 @@ const createEmptyNewProviderEntity = () => {
  */
 
 /**
- * Transform Create Provider response.
+ * Transform User's exchange assets response.
  *
- * @param {*} response Trade API create provider response.
- * @returns {Array<UserExchangeAssetObject>} Provider
+ * @param {*} response User's exchange assets response.
+ * @returns {Array<UserExchangeAssetObject>} Transformed user exchange assets.
  */
 export function userExchangeAssetsResponseTransform(response) {
   if (!isObject(response)) {
@@ -3314,8 +3344,8 @@ export function userExchangeAssetsResponseTransform(response) {
 }
 
 /**
- * Create an empty Created Provider Entity
- * @returns {UserExchangeAssetObject} New Provider entity.
+ * Create an empty user exchnage assets entity.
+ * @returns {UserExchangeAssetObject} User exchange assets entity.
  */
 const createEmptyUserExchangeAssetsEntity = () => {
   return {
@@ -3337,18 +3367,73 @@ const createEmptyUserExchangeAssetsEntity = () => {
 };
 
 /**
+ * @typedef {Object} UserAvailableBalanceObject
+ * @property {Number} BNB
+ * @property {Number} BNT
+ * @property {Number} PERL
+ * @property {Number} ARK
+ * @property {Number} ATOM
+ * @property {Number} EOS
+ * @property {Number} KAVA
+ * @property {Number} KMD
+ * @property {Number} LOOM
+ * @property {Number} ONE
+ * @property {Number} TFUEL
+ * @property {Number} TOMO
+ * @property {Number} VTHO
+ * @property {Number} USDT
+ */
+
+/**
+ * Transform User's available balance response.
  *
- * @typedef {Object} SessionResponse
+ * @param {*} response User's available balance response.
+ * @returns {UserAvailableBalanceObject} User's available balance entity.
+ */
+export function userAvailableBalanceResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object of user exchange coins.");
+  }
+
+  return assign(createEmptyAvailableBalanceEntity(), response);
+}
+
+/**
+ * Create User's available balance emoty entity.
+ *
+ * @returns {UserAvailableBalanceObject} User's available balance empty entity.
+ */
+const createEmptyAvailableBalanceEntity = () => {
+  return {
+    BNB: 0,
+    BNT: 0,
+    PERL: 0,
+    ARK: 0,
+    ATOM: 0,
+    EOS: 0,
+    KAVA: 0,
+    KMD: 0,
+    LOOM: 0,
+    ONE: 0,
+    TFUEL: 0,
+    TOMO: 0,
+    VTHO: 0,
+    USDT: 0,
+  };
+};
+
+/**
+ *
+ * @typedef {Object} SessionResponseObject
  * @property {String} status
  * @property {Number} validUntil
  */
 
 /**
- * Transform user entity response to typed object.
+ * Transform session response to session entity.
  *
- * @export
- * @param {*} response Trade API user object.
- * @returns {SessionResponse} User entity.
+ * @param {*} response Response from backend.
+ * @returns {SessionResponseObject} Session entity.
  */
 export function sessionDataResponseTransform(response) {
   return {
@@ -3373,10 +3458,10 @@ export function sessionDataResponseTransform(response) {
  */
 
 /**
- * Transform Create Provider response.
+ * Transform exchange open orders response.
  *
- * @param {*} response Trade API create provider response.
- * @returns {Array<ExchangeOpenOrdersObject>} Provider
+ * @param {*} response Exchange open orders response.
+ * @returns {Array<ExchangeOpenOrdersObject>} Exchange open orders response entity.
  */
 export function exchangeOpenOrdersResponseTransform(response) {
   if (!isArray(response)) {
@@ -3389,9 +3474,10 @@ export function exchangeOpenOrdersResponseTransform(response) {
 }
 
 /**
+ * Transform open orders entity from response.
  *
- * @param {*} order Exchange open orders item from response.
- * @returns {ExchangeOpenOrdersObject} transformed open orders item.
+ * @param {*} order Exchange open orders entity from response.
+ * @returns {ExchangeOpenOrdersObject} Transformed open orders entity.
  */
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
@@ -3402,8 +3488,9 @@ function exchangeOrdersItemTransform(order) {
 }
 
 /**
- * Create an empty Created Provider Entity
- * @returns {ExchangeOpenOrdersObject} New Provider entity.
+ * Create an empty exchange order Entity.
+ *
+ * @returns {ExchangeOpenOrdersObject} Empty exchange order entity.
  */
 const createEmptyExchangeOpenOrdersEntity = () => {
   return {
@@ -3435,10 +3522,10 @@ const createEmptyExchangeOpenOrdersEntity = () => {
  */
 
 /**
- * Transform Create Provider response.
+ * Transform exchange contract response.
  *
- * @param {*} response Trade API create provider response.
- * @returns {Array<ExchangeContractsObject>} Provider
+ * @param {*} response Exchange contract response.
+ * @returns {Array<ExchangeContractsObject>} Exchange contract entity.
  */
 export function exchangeContractsResponseTransform(response) {
   if (!isArray(response)) {
@@ -3451,9 +3538,10 @@ export function exchangeContractsResponseTransform(response) {
 }
 
 /**
+ * Transform exchange contract entity from response.
  *
- * @param {*} contract Exchange open orders item from response.
- * @returns {ExchangeContractsObject} transformed open orders item.
+ * @param {*} contract Exchange contracts entity from response.
+ * @returns {ExchangeContractsObject} Transformed contracts entity.
  */
 function exchangeContractsItemTransform(contract) {
   const orderEntity = assign(createEmptyExchangeContractsEntity(), contract, {
@@ -3463,8 +3551,9 @@ function exchangeContractsItemTransform(contract) {
 }
 
 /**
- * Create an empty Created Provider Entity
- * @returns {ExchangeContractsObject} New Provider entity.
+ * Create an empty exchange contract entity
+ *
+ * @returns {ExchangeContractsObject} Empty exchaneg conytract entity.
  */
 const createEmptyExchangeContractsEntity = () => {
   return {

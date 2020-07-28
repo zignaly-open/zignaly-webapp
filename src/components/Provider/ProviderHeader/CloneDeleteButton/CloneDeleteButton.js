@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CloneProviderButton.scss";
+import "./CloneDeleteButton.scss";
 import { Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
@@ -7,48 +7,45 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * Delete button component for clones.
  *
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const CloneProviderButton = ({ provider }) => {
+const CloneDeleteButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
 
-  /**
-   *  Function to redirect to cloned provider's profile.
-   *
-   * @param {String} id Id of the cloned provider.
-   * @returns {void} None.
-   */
-  const redirect = (id) => {
+  const redirect = () => {
     if (provider.isCopyTrading) {
-      navigate(`/copyTraders/${id}/profile`);
+      navigate("/copyTraders/browse");
     } else {
-      navigate(`/signalProviders/${id}/profile`);
+      navigate("/signalProviders/browse");
     }
   };
 
-  const cloneProvider = async () => {
+  const deleteClone = async () => {
     try {
       setLoader(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
-      const response = await tradeApi.cloneProvider(payload);
+      const response = await tradeApi.providerDelete(payload);
       if (response) {
         setLoader(false);
-        redirect(response.providerId);
+        dispatch(
+          showSuccessAlert("srv.deleteprovider.alert.title", "srv.deleteprovider.alert.body"),
+        );
+        redirect();
       }
     } catch (e) {
       dispatch(showErrorAlert(e));
@@ -58,20 +55,20 @@ const CloneProviderButton = ({ provider }) => {
   return (
     <Box
       alignItems="center"
-      className="cloneTraderButton"
+      className="cloneDeleteButton"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <CustomButton className="submitButton" loading={loader} onClick={cloneProvider}>
+      <CustomButton className="deleteButton" loading={loader} onClick={deleteClone}>
         {provider.isCopyTrading ? (
-          <FormattedMessage id="srv.clonetrader" />
+          <FormattedMessage id="srv.deletetrader" />
         ) : (
-          <FormattedMessage id="srv.cloneprovider" />
+          <FormattedMessage id="srv.deleteprovider" />
         )}
       </CustomButton>
     </Box>
   );
 };
 
-export default CloneProviderButton;
+export default CloneDeleteButton;

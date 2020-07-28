@@ -37,6 +37,7 @@
 @include media("<=sm") {
   .providerHeaderActions {
     flex-wrap: wrap;
+    justify-content: space-between;
 
     .titleBox {
       margin-right: 0;

@@ -2,11 +2,8 @@
   padding: 30px 20px;
   width: 100%;
 
-  h3 {
-    margin-bottom: 20px;
-  }
-
   .infoBox {
+    margin-top: 20px;
     width: 400px;
 
     .infoRow {
@@ -35,8 +32,18 @@
     padding: 20px;
 
     h3 {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       text-align: center;
       width: 100%;
+
+      .expandIcon {
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+      }
     }
 
     .infoBox {

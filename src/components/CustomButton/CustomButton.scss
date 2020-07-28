@@ -100,4 +100,14 @@
   &.exchangeButton {
     min-width: 336px;
   }
+
+  &.deleteButton {
+    background: $red;
+    color: $white;
+    padding: 0 20px;
+
+    &:hover {
+      background: $pink;
+    }
+  }
 }

@@ -3,6 +3,9 @@ import "./AboutUs.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ReactMarkdown from "react-markdown";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,6 +18,8 @@ import ReactMarkdown from "react-markdown";
  * @returns {JSX.Element} Component JSX.
  */
 const AboutUs = ({ provider }) => {
+  const { show, setShow, isMobile } = useProfileBoxShow();
+
   return (
     <Box
       alignItems="flex-start"
@@ -23,10 +28,25 @@ const AboutUs = ({ provider }) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Typography variant="h3">
-        <FormattedMessage id="srv.about" />
-      </Typography>
-      <ReactMarkdown linkTarget="_blank" source={provider.about} />
+      {!isMobile && (
+        <Typography variant="h3">
+          <FormattedMessage id="srv.about" />
+        </Typography>
+      )}
+
+      {isMobile && (
+        <Typography onClick={() => setShow(!show)} variant="h3">
+          <FormattedMessage id="srv.about" />
+          {show && <ExpandLessIcon className="expandIcon" />}
+          {!show && <ExpandMoreIcon className="expandIcon" />}
+        </Typography>
+      )}
+
+      {show && (
+        <Box className="aboutBody">
+          <ReactMarkdown linkTarget="_blank" source={provider.about} />
+        </Box>
+      )}
     </Box>
   );
 };

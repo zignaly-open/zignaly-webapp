@@ -84,9 +84,10 @@ const ProviderOptionsForm = ({ provider }) => {
           connected: true,
           providerId: provider.id,
           token: storeSession.tradeApi.accessToken,
+          exchangeInternalId: "",
         };
         tradeApi
-          .providerConnect(payload)
+          .serviceConnect(payload)
           .then((response) => {
             if (response) {
               const payload2 = {

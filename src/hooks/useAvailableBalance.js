@@ -30,7 +30,7 @@ const useAvailableBalance = () => {
       };
 
       tradeApi
-        .userAvailableBalanceGetGet(payload)
+        .userAvailableBalanceGet(payload)
         .then((data) => {
           setBalance(data);
         })

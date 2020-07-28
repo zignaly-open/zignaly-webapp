@@ -1,0 +1,14 @@
+.cloneDeleteButton {
+  .deleteButton {
+    margin-right: 0;
+    min-width: 215px;
+  }
+}
+
+@include media("<=sm") {
+  .cloneDeleteButton {
+    .deleteButton {
+      min-width: 100%;
+    }
+  }
+}

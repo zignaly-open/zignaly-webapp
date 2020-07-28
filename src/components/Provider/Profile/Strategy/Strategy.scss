@@ -3,8 +3,8 @@
   padding: 30px 20px;
   width: 100%;
 
-  .strategyHead {
-    margin-bottom: 20px;
+  .strategyBody {
+    margin-top: 20px;
   }
 
   p {
@@ -19,12 +19,26 @@
     padding: 20px;
 
     .strategyHead {
+      align-items: flex-start;
       flex-direction: column;
-      margin-bottom: 20px;
 
       h3 {
-        margin-bottom: 10px;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         text-align: center;
+        width: 100%;
+
+        .expandIcon {
+          cursor: pointer;
+          height: 32px;
+          width: 32px;
+        }
+      }
+
+      h4 {
+        margin-top: 10px;
       }
     }
   }

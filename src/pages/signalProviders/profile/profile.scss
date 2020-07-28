@@ -61,15 +61,32 @@
     .leftColumn {
       margin: 0 0 20px;
       width: 100%;
+
+      .aboutBox {
+        min-height: 50px;
+      }
+
+      .strategyBox {
+        min-height: 50px;
+      }
     }
 
     .rightColumn {
       margin: 0 0 20px;
       width: 100%;
+
+      .whoWeAreBox {
+        min-height: 50px;
+      }
+
+      .performanceBox {
+        min-height: 50px;
+      }
     }
 
     .optionsBox {
       margin: 0 0 20px;
+      min-height: 50px;
       width: 100%;
     }
 
