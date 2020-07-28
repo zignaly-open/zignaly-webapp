@@ -12,6 +12,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import { useIntl } from "react-intl";
 import { Helmet } from "react-helmet";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
+import CloneDeleteButton from "../../../components/Provider/ProviderHeader/CloneDeleteButton";
 
 const SignalProvidersProfile = () => {
   const storeViews = useStoreViewsSelector();
@@ -84,6 +85,11 @@ const SignalProvidersProfile = () => {
             <CloneProviderButton provider={storeViews.provider} />
           </Box>
         )}
+      {storeViews.provider.isAdmin && storeViews.provider.isClone && (
+        <Box className="cloneBox">
+          <CloneDeleteButton provider={storeViews.provider} />
+        </Box>
+      )}
     </Box>
   );
 };

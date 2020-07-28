@@ -2,8 +2,6 @@
   min-height: 48px;
   min-width: 250px;
   @include media("<=sm") {
-    width: 90%;
-
     &.exchangeButton {
       min-width: 100%;
     }
@@ -99,5 +97,15 @@
 
   &.exchangeButton {
     min-width: 336px;
+  }
+
+  &.deleteButton {
+    background: $red;
+    color: $white;
+    padding: 0 20px;
+
+    &:hover {
+      background: $pink;
+    }
   }
 }

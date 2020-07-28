@@ -62,6 +62,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectTraderPayload} ConnectTraderPayload
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
+ * @typedef {import('./tradeApiClient.types').DeleteProviderPayload} DeleteProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsPayload} ExchangeAssetsPayload
@@ -602,13 +603,30 @@ class TradeApiClient {
    *
    * @param {DisableProviderPayload} payload Get providers stats payload.
 
-   * @returns {Promise<*>}
+   * @returns {Promise<Array<*>>}
    *
    * @memberof TradeApiClient
    */
 
   async providerDisable(payload) {
     const endpointPath = "/fe/api.php?action=toggleProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Get providers profits stats.
+   *
+   * @param {DeleteProviderPayload} payload Get providers stats payload.
+
+   * @returns {Promise<Array<*>>}
+   *
+   * @memberof TradeApiClient
+   */
+
+  async providerDelete(payload) {
+    const endpointPath = "/fe/api.php?action=deleteProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

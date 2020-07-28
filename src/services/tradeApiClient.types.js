@@ -218,6 +218,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} DeleteProviderPayload
+ * @property {string} token
+ * @property {string} providerId
+ */
+
+/**
  * @typedef {Object} EditProvderPayload
  * @property {string} token
  * @property {string} providerId
