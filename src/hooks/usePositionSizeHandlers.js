@@ -76,8 +76,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * @returns {boolean} Validation result.
    */
   function validatePositionSizePercentage(positionSizePercentage) {
-    const value = parseFloat(positionSizePercentage);
-
     if (!isValidIntOrFloat(positionSizePercentage)) {
       setError("positionSizePercentage", "error", "Position size percentage must be a number.");
       return false;
