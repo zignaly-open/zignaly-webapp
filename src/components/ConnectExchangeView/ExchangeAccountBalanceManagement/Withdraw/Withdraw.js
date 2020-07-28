@@ -21,6 +21,7 @@ import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import TwoFAForm from "../../../Forms/TwoFAForm";
 import { Alert } from "@material-ui/lab";
+import { validateDecimals } from "../../../../utils/validators";
 
 const Withdraw = () => {
   const {
@@ -105,6 +106,10 @@ const Withdraw = () => {
       performWithdraw(data);
     }
   };
+
+  if (selectedNetwork) {
+    console.log(selectedNetwork.integerMultiple);
+  }
 
   return (
     <BalanceManagement>
@@ -243,18 +248,20 @@ const Withdraw = () => {
                             fullWidth={true}
                             inputProps={{
                               min: parseFloat(selectedNetwork.withdrawMin),
-                              step: 0.00000001,
+                              step: parseFloat(selectedNetwork.integerMultiple),
                             }}
                             inputRef={register({
-                              //   min: {
-                              //     value: parseFloat(selectedNetwork.withdrawMin),
-                              //     message:
-                              //       "Please enter an amount above the minimum withdrawal amount.",
-                              //   },
-                              //   max: {
-                              //     value: parseFloat(selectedAsset.balanceFree),
-                              //     message: "You do not have this amount available in your account.",
-                              //   },
+                              validate: {
+                                min: (value) =>
+                                  value >= parseFloat(selectedNetwork.withdrawMin) ||
+                                  "Please enter an amount above the minimum withdrawal amount.",
+                                max: (value) =>
+                                  value <= parseFloat(selectedAsset.balanceFree) ||
+                                  "You do not have this amount available in your account.",
+                                step: (value) => {
+                                  return validateDecimals(value, selectedNetwork.integerMultiple);
+                                },
+                              },
                             })}
                             name="amount"
                             type="number"

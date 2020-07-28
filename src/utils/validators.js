@@ -31,3 +31,23 @@ export const validatePassword = (password) => {
   }
   return strength;
 };
+
+/**
+ * Validate if number has correct amount of decimals
+ * @param {string} value
+ * @param {string} integerMultiple
+ * @returns {boolean|string}
+ */
+export const validateDecimals = (value, integerMultiple) => {
+  if (!value) return false;
+  const splitValueDot = value.split(".");
+  if (splitValueDot.length !== 2) return false;
+  const decimals = splitValueDot[1].length;
+
+  const integerMultipleFloat = parseFloat(integerMultiple);
+  const maxDecimals = integerMultipleFloat > 1 ? 0 : Math.abs(Math.log10(integerMultipleFloat));
+  return (
+    decimals < maxDecimals ||
+    `Please enter numbers with no more than ${maxDecimals} decimal places.`
+  );
+};

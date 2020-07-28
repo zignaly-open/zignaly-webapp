@@ -2571,6 +2571,7 @@ function createProviderFollowersListEmptyEntity() {
  * @property {boolean} withdrawEnable
  * @property {string} withdrawFee
  * @property {string} withdrawMin
+ * @property {string} integerMultiple
  */
 
 /**
