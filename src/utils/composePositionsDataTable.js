@@ -17,6 +17,7 @@ import { FormattedMessage } from "react-intl";
 import { IconButton } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
+import { store } from "../store/store.js";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -351,7 +352,15 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 export function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
+  const { isCopyTrading, isCopyTrader, closed, providerOwnerUserId, status, updating } = position;
+  /**
+   * @typedef {import("../store/initialState").DefaultState} DefaultStateType
+   * @type {DefaultStateType}
+   */
+  // @ts-ignore
+  const storeState = store.getState();
+  const currentUserId = storeState.user ? storeState.user.userData.userId : "";
+  const isProviderOwner = providerOwnerUserId === currentUserId;
   let updatingMessageId = "terminal.warning.updating";
   if (status === 1) {
     updatingMessageId = "terminal.warning.entering";
@@ -383,7 +392,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           </IconButton>
         </Tooltip>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && !updating && status !== 1 && (
+      {(!isCopyTrading || isCopyTrader || isProviderOwner) && !closed && !updating && status !== 1 && (
         <Tooltip
           arrow
           enterTouchDelay={50}

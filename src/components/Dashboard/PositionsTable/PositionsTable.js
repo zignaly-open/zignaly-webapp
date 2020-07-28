@@ -27,7 +27,6 @@ import "./PositionsTable.scss";
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
- * @property {ProviderEntity} [providerEntity]
  * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */
@@ -39,13 +38,7 @@ import "./PositionsTable.scss";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const {
-    type,
-    isProfile,
-    positionEntity = null,
-    providerEntity = null,
-    notifyPositionsUpdate = null,
-  } = props;
+  const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
@@ -228,8 +221,7 @@ const PositionsTable = (props) => {
     }
 
     if (positionEntity) {
-      const isProviderOwner =
-        providerEntity && userData.userId === providerEntity.userPaymentInfo.userId;
+      const isProviderOwner = userData.userId === positionEntity.providerOwnerUserId;
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");
