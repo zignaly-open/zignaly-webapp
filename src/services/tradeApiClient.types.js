@@ -162,13 +162,21 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ConnectTraderPayload
+ * @property {string} token
+ * @property {string} providerId
+ * @property {String} allocatedBalance
+ * @property {String} exchangeInternalId
+ * @property {Boolean} balanceFilter
+ * @property {Boolean} connected
+ */
+
+/**
  * @typedef {Object} ConnectProviderPayload
  * @property {string} token
  * @property {string} providerId
- * @property {String} [allocatedBalance]
- * @property {String} [exchangeInternalId]
- * @property {Boolean} [balanceFilter]
- * @property {Boolean} [connected]
+ * @property {String} exchangeInternalId
+ * @property {Boolean} connected
  * @property {Boolean} [acceptUpdateSignal]
  * @property {Boolean} [allowSendingBuyOrdersAsMarket]
  * @property {Boolean} [enablePanicSellSignals]

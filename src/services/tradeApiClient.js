@@ -59,6 +59,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
  * @typedef {import('./tradeApiClient.types').GetProviderFollowersPayload} GetProviderFollowersPayload
+ * @typedef {import('./tradeApiClient.types').ConnectTraderPayload} ConnectTraderPayload
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
@@ -565,16 +566,32 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Connect to a copy trader service.
    *
-   * @param {ConnectProviderPayload} payload Get providers stats payload.
+   * @param {ConnectTraderPayload} payload Connect trader payload.
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<"OK">} Returns promise.
    *
    * @memberof TradeApiClient
    */
   async providerConnect(payload) {
     const endpointPath = "/fe/api.php?action=createProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Connect to a signal provider service.
+   *
+   * @param {ConnectProviderPayload} payload Connect provider payload.
+
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async serviceConnect(payload) {
+    const endpointPath = "/fe/api.php?action=connectService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
