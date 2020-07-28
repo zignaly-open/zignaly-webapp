@@ -311,11 +311,11 @@ const DCAPanel = (props) => {
     initValuesFromPositionEntity();
     if (expanded) {
       cardinalityRange.forEach((targetId) => {
-        const currentValue = getTargetPropertyRawValue("targetPricePercentage", targetId);
-        const newValue = formatFloat2Dec(Math.abs(parseFloat(currentValue)));
+        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(currentValue));
         const sign = entryType === "LONG" ? "-" : "";
 
-        if (!isValidIntOrFloat(currentValue)) {
+        if (isNaN(currentValue)) {
           setTargetPropertyValue("targetPricePercentage", targetId, sign);
         } else {
           setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
