@@ -166,14 +166,16 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
    * Load user positions for a given exchange.
    *
    * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
-   * @returns {Void} None.
+   * @returns {React.EffectCallback} Effect clean callback.
    */
   const loadPositions = (initiatorExchangeInternalId) => {
+    let cancel = false;
     const fetchMethod = routeFetchMethod();
     // Check to prevent other tabs / exchanages leftover requests race condition
     // that override current tab data.
     const isOriginalInitiator = () => {
       return (
+        !cancel &&
         (!typeRef.current || typeRef.current === type) &&
         (!exchangeRef.current || exchangeRef.current === initiatorExchangeInternalId)
       );
@@ -208,6 +210,10 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
           }
         });
     }
+
+    return () => {
+      cancel = true;
+    };
   };
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
   useEffect(loadPositionsForExchange, [
