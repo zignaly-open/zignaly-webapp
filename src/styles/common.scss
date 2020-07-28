@@ -10,23 +10,22 @@ body {
 }
 
 * {
-  scrollbar-color: dark;
+  /* Hide scrollbar on Edge */
+  -ms-overflow-style: none;
+  /* Force thin scrollbar on Firefox */
   scrollbar-width: thin;
 }
 
 [data-os="win"] {
-  ::-webkit-scrollbar-track {
-    background: transparent;
+  /* Custom scrollbar for Windows (Chrome) */
+  ::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgb(94, 102, 115);
-    border-radius: 3px;
-  }
-
-  ::-webkit-scrollbar {
-    height: 7px;
-    width: 7px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
   }
 }
 
@@ -292,6 +291,12 @@ table {
 }
 
 [data-theme="dark"] {
+  &[data-os="win"] {
+    ::-webkit-scrollbar-thumb {
+      background: #909090;
+    }
+  }
+
   .iconPurple {
     filter: brightness(130%);
   }
