@@ -3,6 +3,9 @@ import "./Options.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ProviderOptionsForm from "../../../Forms/ProviderOptionsForm";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,6 +18,8 @@ import ProviderOptionsForm from "../../../Forms/ProviderOptionsForm";
  * @returns {JSX.Element} Component JSX.
  */
 const AboutUs = ({ provider }) => {
+  const { show, setShow, isMobile } = useProfileBoxShow();
+
   return (
     <Box
       alignItems="flex-start"
@@ -23,10 +28,24 @@ const AboutUs = ({ provider }) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <Typography variant="h3">
-        <FormattedMessage id="srv.options" />
-      </Typography>
-      <ProviderOptionsForm provider={provider} />
+      {!isMobile && (
+        <Typography variant="h3">
+          <FormattedMessage id="srv.options" />
+        </Typography>
+      )}
+
+      {isMobile && (
+        <Typography onClick={() => setShow(!show)} variant="h3">
+          <FormattedMessage id="srv.options" />
+          {show && <ExpandLessIcon className="expandIcon" />}
+          {!show && <ExpandMoreIcon className="expandIcon" />}
+        </Typography>
+      )}
+      {show && (
+        <Box className="optionsBody">
+          <ProviderOptionsForm provider={provider} />
+        </Box>
+      )}
     </Box>
   );
 };

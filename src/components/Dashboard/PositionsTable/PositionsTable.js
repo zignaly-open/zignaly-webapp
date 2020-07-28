@@ -14,6 +14,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -27,7 +28,6 @@ import "./PositionsTable.scss";
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
  * @property {PositionEntity} [positionEntity]
- * @property {ProviderEntity} [providerEntity]
  * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */
@@ -39,13 +39,7 @@ import "./PositionsTable.scss";
  * @returns {JSX.Element} Positions table element.
  */
 const PositionsTable = (props) => {
-  const {
-    type,
-    isProfile,
-    positionEntity = null,
-    providerEntity = null,
-    notifyPositionsUpdate = null,
-  } = props;
+  const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
@@ -58,6 +52,7 @@ const PositionsTable = (props) => {
     loading,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
   const showTypesFilter = type === "log";
+  const { formatMessage } = useIntl();
 
   const getTablePersistKey = () => {
     // Use different persist key to edit position table to support different default columns.
@@ -140,13 +135,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert(
-              "Position cancelled",
-              `Position ${position.positionId} was cancelled.`,
-            ),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.positions.action.cancel"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -159,13 +149,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert(
-              "Position cancelled",
-              `Position ${position.positionId} was cancelled.`,
-            ),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.positions.action.abort"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -178,10 +163,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert("Position exited", `Position ${position.positionId} was exited.`),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.positions.action.exit"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -224,12 +207,11 @@ const PositionsTable = (props) => {
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
-      throw new Error(`Invalid positions collection type: ${type}`);
+      throw new Error(formatMessage({ id: "dashboard.positions.type.invalid" }));
     }
 
     if (positionEntity) {
-      const isProviderOwner =
-        providerEntity && userData.userId === providerEntity.userPaymentInfo.userId;
+      const isProviderOwner = userData.userId === positionEntity.providerOwnerUserId;
       if (["closed", "log"].includes(type)) {
         // Exclude actions display for closed / log positions in view page.
         dataTable = excludeDataTableColumn(dataTable, "col.actions");

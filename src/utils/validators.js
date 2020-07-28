@@ -1,3 +1,5 @@
+import { isString, isEmpty } from "lodash";
+
 /**
  *
  * @param {string} password
@@ -30,6 +32,24 @@ export const validatePassword = (password) => {
     }
   }
   return strength;
+};
+
+/**
+ * Validate if value is valid integer or float without separators and only one fractional point.
+ *
+ * @param {number|string} value Numeric value to check.
+ * @returns {boolean} true if validation pass, false otherwise.
+ */
+export const isValidIntOrFloat = (value) => {
+  // Assume empty string as pass check.
+  if (isString(value) && isEmpty(value)) {
+    return true;
+  }
+
+  const pattern = new RegExp(/^-{0,1}\d*\.{0,1}\d+$/);
+  const passed = pattern.test(String(value));
+
+  return passed;
 };
 
 /**

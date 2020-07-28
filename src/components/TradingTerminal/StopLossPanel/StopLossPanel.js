@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { inRange, lt, gt } from "lodash";
+import { lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import "./StopLossPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import "./StopLossPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -36,7 +37,7 @@ const StopLossPanel = (props) => {
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
-  const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
@@ -66,17 +67,6 @@ const StopLossPanel = (props) => {
 
   const fieldsDisabled = getFieldsDisabledStatus();
 
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity && existsStopLoss) {
-      const stopLossPercentage = positionEntity.stopLossPercentage;
-      if (inRange(Math.abs(stopLossPercentage), 0, 100.0001)) {
-        setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
-      }
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
-
   /**
    * Calculate price based on percentage when value is changed.
    *
@@ -89,13 +79,20 @@ const StopLossPanel = (props) => {
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
+    const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
 
     if (draftPosition.stopLossPercentage !== "-") {
-      if (isNaN(stopLossPercentage) || compareFn(stopLossPercentage, 0)) {
+      if (
+        !isValidIntOrFloat(draftPosition.stopLossPercentage) ||
+        compareFn(stopLossPercentage, pricePercentChange)
+      ) {
         setError(
           "stopLossPercentage",
           "error",
-          formatMessage({ id: "terminal.stoploss.valid.percentage" }, { type: valueType }),
+          formatMessage(
+            { id: "terminal.stoploss.valid.percentage" },
+            { type: valueType, value: pricePercentChange },
+          ),
         );
         return;
       }
@@ -127,7 +124,7 @@ const StopLossPanel = (props) => {
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
-    if (isNaN(stopLossPrice) || stopLossPrice < 0) {
+    if (!isValidIntOrFloat(draftPosition.stopLossPrice) || stopLossPrice < 0) {
       setError("stopLossPrice", "error", formatMessage({ id: "terminal.stoploss.limit.zero" }));
       return;
     }
@@ -150,7 +147,9 @@ const StopLossPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
-    const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage) || 0;
+    const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : 0;
+    const stopLossPercentage =
+      parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
@@ -167,7 +166,7 @@ const StopLossPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   /**
    * Display property errors.

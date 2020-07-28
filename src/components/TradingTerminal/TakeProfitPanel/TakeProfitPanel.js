@@ -8,6 +8,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -46,6 +47,7 @@ const TakeProfitPanel = (props) => {
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
+    getTargetPropertyRawValue,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -54,7 +56,7 @@ const TakeProfitPanel = (props) => {
   } = useTargetGroup("takeProfit", defaultCardinality);
 
   // Other panels watched variables to react on changes.
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
 
@@ -97,19 +99,6 @@ const TakeProfitPanel = (props) => {
 
   const fieldsDisabled = getFieldsDisabledStatus();
   const profitTargets = positionEntity ? positionEntity.takeProfitTargets : {};
-  const initValuesFromPositionEntity = () => {
-    if (positionEntity) {
-      targetIndexes.forEach((index) => {
-        const profitTarget = positionEntity.takeProfitTargets[index];
-        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
-        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
-        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
-        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
-      });
-    }
-  };
-
-  useEffect(initValuesFromPositionEntity, [positionEntity, expanded]);
 
   /**
    * Validate result of changed target units event.
@@ -155,12 +144,13 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const targetPercentageRaw = getTargetPropertyRawValue("targetPricePercentage", targetId);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const valueType = entryType === "LONG" ? "greater" : "lower";
     const compareFn = entryType === "LONG" ? lt : gt;
     let targetPrice = price;
 
-    if (isNaN(targetPercentage) || compareFn(targetPercentage, 0)) {
+    if (!isValidIntOrFloat(targetPercentageRaw) || compareFn(targetPercentage, 0)) {
       setError(
         pricePercentageProperty,
         "error",
@@ -199,15 +189,16 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const targetPriceRaw = getTargetPropertyRawValue("targetPrice", targetId);
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
 
-    if (isNaN(targetPrice)) {
+    if (!isValidIntOrFloat(targetPriceRaw)) {
       setError(priceProperty, "error", formatMessage({ id: "terminal.takeprofit.valid.price" }));
       setValue(pricePercentageProperty, "");
       return;
     }
 
-    if (isNumber(targetPrice) && targetPrice !== 0) {
+    if (targetPrice !== 0) {
       const priceDiff = targetPrice - price;
       const targetPercentage = (priceDiff / price) * 100;
       setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
@@ -263,8 +254,9 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
+    const unitsPercentageRaw = getTargetPropertyRawValue("exitUnitsPercentage", targetId);
 
-    if (isNaN(unitsPercentage) || !inRange(unitsPercentage, 0, 100.0001)) {
+    if (!isValidIntOrFloat(unitsPercentageRaw) || !inRange(unitsPercentage, 0, 100.0001)) {
       setError(
         composeTargetPropertyName("exitUnitsPercentage", targetId),
         "error",
@@ -304,8 +296,9 @@ const TakeProfitPanel = (props) => {
     const targetId = getGroupTargetId(event);
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const exitUnitsRaw = getTargetPropertyRawValue("exitUnits", targetId);
 
-    if (isNaN(exitUnits) || exitUnits <= 0) {
+    if (!isValidIntOrFloat(exitUnitsRaw) || exitUnits <= 0) {
       setError(
         composeTargetPropertyName("exitUnits", targetId),
         "error",
@@ -431,7 +424,20 @@ const TakeProfitPanel = (props) => {
     return true;
   };
 
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      targetIndexes.forEach((index) => {
+        const profitTarget = positionEntity.takeProfitTargets[index];
+        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
+        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+      });
+    }
+  };
+
   const chainedPriceUpdates = () => {
+    initValuesFromPositionEntity();
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
@@ -449,7 +455,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     cardinalityRange.forEach((targetId) => {

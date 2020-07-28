@@ -76,6 +76,9 @@ const TraderHeaderInfo = () => {
         </span>
         <b>{`$${storeViews.provider.price}/Month`}</b>
       </Typography>
+      <Hidden smUp>
+        {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
+      </Hidden>
       <Typography variant="h4">
         {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
           <>
@@ -108,7 +111,6 @@ const TraderHeaderInfo = () => {
         )}
       </Typography>
       <Hidden smUp>
-        {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
         {storeViews.provider.internalPaymentInfo && (
           <PaymentButton provider={storeViews.provider} />
         )}

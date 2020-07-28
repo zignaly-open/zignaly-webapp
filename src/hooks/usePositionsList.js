@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import { assign, cloneDeep, filter, isEmpty, isFunction, omitBy } from "lodash";
+import { assign, cloneDeep, filter, isEmpty, isFunction, omitBy, partial } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -45,8 +45,9 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
 const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = null) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = storeSettings;
   const storeViews = useStoreViewsSelector();
-  const exchangeRef = useRef(storeSettings.selectedExchange.exchangeId);
+  const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const defaultFilters = {
@@ -69,8 +70,8 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
 
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
-
   const storeSession = useStoreSessionSelector();
+
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
    *
@@ -139,12 +140,18 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     return /** @type {UserPositionsCollection} */ (matches);
   };
 
-  const prepareNewPositionsState = () => {
+  /**
+   * Prepare new positions state, clearing any previous state when needed.
+   *
+   * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
+   * @returns {PositionsState} Positions state.
+   */
+  const prepareNewPositionsState = (initiatorExchangeInternalId) => {
     let newPositions = { ...positions };
     // Reset new positions state on exchange change.
-    if (exchangeRef.current !== storeSettings.selectedExchange.internalId) {
+    if (exchangeRef.current !== initiatorExchangeInternalId) {
       newPositions = cloneDeep(defaultPositionsState);
-      exchangeRef.current = storeSettings.selectedExchange.internalId;
+      exchangeRef.current = selectedExchange.internalId;
     }
 
     // Only show loader at initial load to avoid loader experience disruption on updates.
@@ -155,15 +162,30 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     return newPositions;
   };
 
-  const loadPositions = () => {
+  /**
+   * Load user positions for a given exchange.
+   *
+   * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
+   * @returns {React.EffectCallback} Effect clean callback.
+   */
+  const loadPositions = (initiatorExchangeInternalId) => {
+    let cancel = false;
     const fetchMethod = routeFetchMethod();
+    // Check to prevent other tabs / exchanages leftover requests race condition
+    // that override current tab data.
+    const isOriginalInitiator = () => {
+      return (
+        !cancel &&
+        (!typeRef.current || typeRef.current === type) &&
+        (!exchangeRef.current || exchangeRef.current === initiatorExchangeInternalId)
+      );
+    };
 
+    const newPositions = prepareNewPositionsState(initiatorExchangeInternalId);
     if (fetchMethod) {
-      const newPositions = prepareNewPositionsState();
       fetchMethod
         .then((fetchData) => {
-          // Prevent other tabs request leftover to from race condition that override current tab data.
-          if (!typeRef.current || typeRef.current === type) {
+          if (isOriginalInitiator()) {
             newPositions[type] = fetchData;
             setPositions(newPositions);
 
@@ -173,36 +195,44 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
           }
         })
         .catch((e) => {
-          if (e.code === 18 || e.code === 12) {
-            newPositions[type] = [];
-            setPositions(newPositions);
-          } else {
-            dispatch(showErrorAlert(e));
+          if (isOriginalInitiator()) {
+            if (e.code === 18 || e.code === 12) {
+              newPositions[type] = [];
+              setPositions(newPositions);
+            } else {
+              dispatch(showErrorAlert(e));
+            }
           }
         })
         .finally(() => {
-          if (!typeRef.current || typeRef.current === type) {
+          if (isOriginalInitiator()) {
             setLoading(false);
           }
         });
     }
+
+    return () => {
+      cancel = true;
+    };
   };
-  useEffect(loadPositions, [
+  const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
+  useEffect(loadPositionsForExchange, [
     type,
     storeSession.tradeApi.accessToken,
-    storeSettings.selectedExchange.internalId,
+    selectedExchange.internalId,
   ]);
 
   /**
    * Load a specific position by ID.
    *
+   * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
    * @returns {boolean} false in case that required parameter was missing, true otherwise.
    */
-  const loadPosition = () => {
+  const loadPosition = (initiatorExchangeInternalId) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
     // Skip request if required parameters are empty.
@@ -210,7 +240,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       return false;
     }
 
-    const newPositions = prepareNewPositionsState();
+    const newPositions = prepareNewPositionsState(initiatorExchangeInternalId);
     tradeApi
       .positionGet(payload)
       .then((data) => {
@@ -231,15 +261,16 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     return true;
   };
 
+  const loadPositionForExchange = partial(loadPosition, selectedExchange.internalId);
   const updateData = () => {
     // Only open positions needs continuos updates.
     if (type === "open" || type === "profileOpen") {
       // Single position update.
       if (positionEntity) {
-        loadPosition();
+        loadPositionForExchange();
       } else {
         // Multiples position update.
-        loadPositions();
+        loadPositionsForExchange();
       }
     }
   };

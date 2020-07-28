@@ -4,6 +4,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import "./EntryExpirationPanel.scss";
 
 /**
@@ -26,7 +27,7 @@ const EntryExpirationPanel = () => {
     const entryExpiration = parseFloat(draftPosition.entryExpiration);
 
     clearError("entryExpiration");
-    if (isNaN(entryExpiration) || entryExpiration <= 0) {
+    if (!isValidIntOrFloat(draftPosition.entryExpiration) || entryExpiration <= 0) {
       setError("entryExpiration", "error", formatMessage({ id: "terminal.expiration.limit.zero" }));
     }
   };
