@@ -394,6 +394,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} profitStyle
  * @property {string} provider
  * @property {string} providerId
+ * @property {string} providerOwnerUserId
  * @property {string} providerLink
  * @property {string} providerLogo
  * @property {string} providerName
@@ -1259,6 +1260,7 @@ function createEmptyPositionEntity() {
     unrealizedProfitStyle: "",
     provider: "",
     providerId: "",
+    providerOwnerUserId: "",
     providerLink: "",
     providerLogo: "",
     providerName: "",

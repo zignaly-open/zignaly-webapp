@@ -7,6 +7,7 @@ import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { composeAllActionButtons } from "../utils/composePositionsDataTable";
+import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
 
 /**
@@ -53,6 +54,8 @@ import { Box } from "@material-ui/core";
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler) {
+  const storeUserData = useStoreUserData();
+
   /**
    * Compose provider icon element for a given position.
    *
@@ -571,10 +574,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     const { exchange, positionId, updating } = position;
     const isZignaly = exchange.toLowerCase() === "zignaly";
+    const isProviderOwner = position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
-        {updating && !isZignaly && (
+        {updating && !isZignaly && !isProviderOwner && (
           <button
             data-action={"cancel"}
             data-position-id={positionId}
