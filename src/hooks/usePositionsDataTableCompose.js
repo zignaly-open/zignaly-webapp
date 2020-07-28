@@ -498,7 +498,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         {position.takeProfitTargetsCountFail > 0 && (
           <span
             className="targetRed"
-            title={formatMessage({ id: "dashboard.positions.targets.takeproft.failed" })}
+            title={formatMessage({ id: "dashboard.positions.targets.tp.failed" })}
           >
             {position.takeProfitTargetsCountFail}
           </span>
@@ -506,7 +506,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         {position.takeProfitTargetsCountSuccess > 0 && (
           <span
             className="targetGreen"
-            title={formatMessage({ id: "dashboard.positions.targets.takeproft.completed" })}
+            title={formatMessage({ id: "dashboard.positions.targets.tp.completed" })}
           >
             {position.takeProfitTargetsCountSuccess}
           </span>
@@ -514,7 +514,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         {position.takeProfitTargetsCountPending > 0 && (
           <span
             className="targetGray"
-            title={formatMessage({ id: "dashboard.positions.targets.takeproft.pending" })}
+            title={formatMessage({ id: "dashboard.positions.targets.tp.pending" })}
           >
             {position.takeProfitTargetsCountPending}
           </span>

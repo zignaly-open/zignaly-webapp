@@ -14,6 +14,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -51,6 +52,7 @@ const PositionsTable = (props) => {
     loading,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
   const showTypesFilter = type === "log";
+  const { formatMessage } = useIntl();
 
   const getTablePersistKey = () => {
     // Use different persist key to edit position table to support different default columns.
@@ -133,13 +135,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert(
-              "Position cancelled",
-              `Position ${position.positionId} was cancelled.`,
-            ),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.position.action.cancel"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -152,13 +149,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert(
-              "Position cancelled",
-              `Position ${position.positionId} was cancelled.`,
-            ),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.position.action.abort"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -171,10 +163,8 @@ const PositionsTable = (props) => {
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })
-        .then((position) => {
-          dispatch(
-            showSuccessAlert("Position exited", `Position ${position.positionId} was exited.`),
-          );
+        .then(() => {
+          dispatch(showSuccessAlert("", "dashboard.position.action.exited"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -217,7 +207,7 @@ const PositionsTable = (props) => {
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
-      throw new Error(`Invalid positions collection type: ${type}`);
+      throw new Error(formatMessage({ id: "dashboard.positions.type.invalid" }));
     }
 
     if (positionEntity) {
