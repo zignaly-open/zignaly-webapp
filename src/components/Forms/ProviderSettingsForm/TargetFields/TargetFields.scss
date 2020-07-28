@@ -21,8 +21,9 @@
   .icon {
     color: $lightGrey;
     cursor: pointer;
-    height: 24px;
-    width: 24px;
+    height: 28px;
+    margin-right: 15px;
+    width: 28px;
 
     &.add {
       color: $green;

@@ -25,14 +25,9 @@ const TotalEquity = ({ dailyBalance, modal }) => {
   const [balance, setBalance] = useState({ totalBTC: 0, totalUSDT: 0 });
 
   const filterBalance = () => {
-    let currentDate = new Date();
     let obj = { ...balance };
     let data = dailyBalance.balances.length
-      ? dailyBalance.balances.find(
-          (item) =>
-            new Date(item.date).getDate() === currentDate.getDate() &&
-            new Date(item.date).getMonth() === currentDate.getMonth(),
-        )
+      ? dailyBalance.balances[dailyBalance.balances.length - 1]
       : { totalBTC: 0, totalUSDT: 0 };
     obj.totalBTC = isObject(data) ? data.totalBTC : 0;
     obj.totalUSDT = isObject(data) ? data.totalUSDT : 0;

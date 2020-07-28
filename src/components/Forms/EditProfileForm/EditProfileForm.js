@@ -48,9 +48,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
 
-  const signalUrl = `https://test.zignaly.com/api/signals.php?key=${provider.key}`;
   const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
   const listSwitch = watch("list", provider.list);
+  const baseURL = process.env.GATSBY_TRADEAPI_URL;
+  const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
   /**
    *

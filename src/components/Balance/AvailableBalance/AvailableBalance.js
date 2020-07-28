@@ -46,7 +46,7 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.available" />
               </Typography>
               <Typography className="smallText" variant="subtitle2">
-                = USD {balance.totalFreeUSDT}
+                = USDT {balance.totalFreeUSDT}
               </Typography>
             </Box>
             <Typography variant="h5">
@@ -72,7 +72,7 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.invested" />
               </Typography>
               <Typography className="smallText" variant="subtitle2">
-                = USD {balance.totalLockedUSDT}
+                = USDT {balance.totalLockedUSDT}
               </Typography>
             </Box>
             <Typography variant="h5">
@@ -98,15 +98,18 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.profit" />
               </Typography>
               <Typography className={`smallText ${color}`} variant="subtitle2">
-                = USD {balance.pnlUSDT}
+                = USDT {balance.pnlUSDT}
               </Typography>
             </Box>
-            <Box display="flex" flexDirection="row">
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
               <Typography className={color} variant="h5">
                 BTC {balance.pnlBTC}
               </Typography>
               <Typography className={`pnlPercent ${color}`} variant="subtitle2">
-                {formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)}%
+                {balance.pnlBTC && balance.totalLockedBTC
+                  ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
+                  : 0}
+                %
               </Typography>
             </Box>
           </Box>
@@ -129,7 +132,7 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.total" />
               </Typography>
               <Typography className="smallText" variant="subtitle2">
-                = USD {balance.totalUSDT}
+                = USDT {balance.totalUSDT}
               </Typography>
             </Box>
             <Typography variant="h5">BTC {balance.totalBTC}</Typography>

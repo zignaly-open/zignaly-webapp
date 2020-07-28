@@ -1543,6 +1543,8 @@ function createUserBalanceEntity(response) {
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
+ * @property {Number} availablePercentage
+ * @property {Number} investedPercentage
  *
  */
 
@@ -1577,8 +1579,26 @@ export function userEquityResponseTransform(response) {
  */
 function userEquityItemTransform(userEquityItem) {
   const emptyEquityEntity = createUserEquityEntity();
+
+  function prepareAvailablePercentage() {
+    if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
+      return (userEquityItem.totalFreeUSDT / userEquityItem.totalUSDT) * 100;
+    }
+    return 0;
+  }
+
+  function prepareInvestedPercentage() {
+    if (userEquityItem.totalLockedUSDT && userEquityItem.totalUSDT) {
+      return (userEquityItem.totalLockedUSDT / userEquityItem.totalUSDT) * 100;
+    }
+    return 0;
+  }
+
   // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyEquityEntity, userEquityItem);
+  const transformedResponse = assign(emptyEquityEntity, userEquityItem, {
+    availablePercentage: prepareAvailablePercentage(),
+    investedPercentage: prepareInvestedPercentage(),
+  });
 
   return transformedResponse;
 }
@@ -1674,6 +1694,8 @@ function createUserEquityEntity() {
     totalLockedBTC: 0,
     totalLockedUSDT: 0,
     totalUSDT: 0,
+    availablePercentage: 0,
+    investedPercentage: 0,
   };
 }
 
@@ -2048,8 +2070,9 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} terms
  * @property {Boolean} trailingStopFromSignal
  * @property {Boolean} useLeverageFromSignal
- * @property {Boolean} [customerKey]
+ * @property {Boolean} customerKey
  * @property {Boolean} allowClones
+ * @property {String} disclaimer
  */
 
 /**
@@ -2162,6 +2185,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} acceptUpdateSignal
  * @property {Boolean} allowSendingBuyOrdersAsMarket
  * @property {String} customerKey
+ * @property {Boolean} disclaimer
  * @property {Boolean} enablePanicSellSignals
  * @property {Boolean} enableSellSignals
  * @property {Boolean} limitPriceFromSignal
@@ -2200,8 +2224,17 @@ export function providerGetResponseTransform(response) {
     throw new Error("Response must be an object with different properties.");
   }
 
+  function checkClones() {
+    if (response.options.allowClones !== undefined) {
+      return response.options.allowClones;
+    }
+    return true;
+  }
+
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  return { ...emptyProviderEntity, ...response };
+  let transformed = assign(emptyProviderEntity, response);
+  transformed.options.allowClones = checkClones();
+  return transformed;
 }
 
 function createEmptyProviderGetEntity() {
@@ -2251,6 +2284,7 @@ function createEmptyProviderGetEntity() {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       allowClones: true,
+      disclaimer: "",
     },
     public: false,
     shortDesc: "",
@@ -2295,6 +2329,7 @@ function createEmptyProviderGetEntity() {
     acceptUpdateSignal: false,
     allowSendingBuyOrdersAsMarket: false,
     customerKey: "",
+    disclaimer: false,
     enablePanicSellSignals: false,
     enableSellSignals: false,
     limitPriceFromSignal: false,
@@ -3218,6 +3253,8 @@ const createEmptyNewProviderEntity = () => {
       trailingStopFromSignal: false,
       useLeverageFromSignal: false,
       allowClones: true,
+      customerKey: false,
+      disclaimer: "",
     },
     minAllocatedBalance: "",
     isCopyTrading: false,

@@ -3,6 +3,7 @@ import "./HistoryTable.scss";
 import { Box } from "@material-ui/core";
 import { formatFloat } from "../../../../utils/format";
 import Table from "../../../Table";
+import { formatNumber } from "../../../../utils/formatters";
 
 /**
  * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
@@ -28,10 +29,16 @@ import Table from "../../../Table";
  */
 const HistoryTable = ({ title, persistKey, list, quotes }) => {
   let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  /**
+   * Format Yes/No value.
+   * @param {Number} val Val.
+   * @returns {React.ReactNode} Formatted node.
+   */
+  const renderPercentage = (val) => <span>{formatNumber(val, 2)}%</span>;
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
-
   let columns = [
     {
       name: "date",
@@ -81,6 +88,20 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       label: "col.totalBTCalloc",
       options: {
         customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "availablePercentage",
+      label: "col.availablePercentage",
+      options: {
+        customBodyRender: renderPercentage,
+      },
+    },
+    {
+      name: "investedPercentage",
+      label: "col.investedPercentage",
+      options: {
+        customBodyRender: renderPercentage,
       },
     },
     {
