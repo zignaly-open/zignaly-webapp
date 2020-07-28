@@ -10,6 +10,7 @@ import { simulateInputChangeEvent } from "../utils/events";
  * @property {function} composeTargetPropertyName
  * @property {function} getGroupTargetId
  * @property {function} getTargetPropertyValue
+ * @property {function} getTargetPropertyRawValue
  * @property {React.MouseEventHandler} handleTargetAdd
  * @property {React.MouseEventHandler} handleTargetRemove
  * @property {function} setTargetPropertyValue
@@ -52,7 +53,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
   };
 
   /**
-   * Get target property form state value.
+   * Get parsed target property form state value.
    *
    * @param {string} propertyName Property base name.
    * @param {string} targetId Target index ID.
@@ -63,6 +64,20 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
     const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
 
     return parseFloat(draftPosition[targetPropertyName]);
+  }
+
+  /**
+   * Get raw target property form state value.
+   *
+   * @param {string} propertyName Property base name.
+   * @param {string} targetId Target index ID.
+   * @returns {number} Target property value.
+   */
+  function getTargetPropertyRawValue(propertyName, targetId) {
+    const draftPosition = getValues();
+    const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
+
+    return draftPosition[targetPropertyName];
   }
 
   /**
@@ -99,6 +114,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
     composeTargetPropertyName,
     getGroupTargetId,
     getTargetPropertyValue,
+    getTargetPropertyRawValue,
     handleTargetAdd,
     handleTargetRemove,
     setTargetPropertyValue,

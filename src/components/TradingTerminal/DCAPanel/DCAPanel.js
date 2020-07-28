@@ -12,6 +12,7 @@ import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import "./DCAPanel.scss";
 
 /**
@@ -88,6 +89,7 @@ const DCAPanel = (props) => {
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
+    getTargetPropertyRawValue,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -156,11 +158,12 @@ const DCAPanel = (props) => {
   const pricePercentageValidations = (targetId) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const targetPricePercentageRaw = getTargetPropertyRawValue("targetPricePercentage", targetId);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (isNaN(targetPricePercentage) || compareFn(targetPricePercentage, 0)) {
+    if (!isValidIntOrFloat(targetPricePercentageRaw) || compareFn(targetPricePercentage, 0)) {
       setError(
         composeTargetPropertyName("targetPricePercentage", targetId),
         "error",
@@ -234,9 +237,10 @@ const DCAPanel = (props) => {
   const rebuyPercentageValidations = (targetId) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
+    const rebuyPercentageRaw = getTargetPropertyRawValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
-    if (isNaN(rebuyPercentage) || rebuyPercentage <= 0) {
+    if (!isValidIntOrFloat(rebuyPercentageRaw) || rebuyPercentage <= 0) {
       setError(
         composeTargetPropertyName("rebuyPercentage", targetId),
         "error",
@@ -307,11 +311,11 @@ const DCAPanel = (props) => {
     initValuesFromPositionEntity();
     if (expanded) {
       cardinalityRange.forEach((targetId) => {
-        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-        const newValue = formatFloat2Dec(Math.abs(currentValue));
+        const currentValue = getTargetPropertyRawValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(parseFloat(currentValue)));
         const sign = entryType === "LONG" ? "-" : "";
 
-        if (isNaN(currentValue)) {
+        if (!isValidIntOrFloat(currentValue)) {
           setTargetPropertyValue("targetPricePercentage", targetId, sign);
         } else {
           setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
+import { isValidIntOrFloat } from "../utils/validators";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -10,6 +11,7 @@ import { simulateInputChangeEvent } from "../utils/events";
 /**
  * @typedef {Object} PositionSizeHandlersHook
  * @property {React.ChangeEventHandler} positionSizeChange
+ * @property {React.ChangeEventHandler} positionSizePercentageChange
  * @property {React.ChangeEventHandler} priceChange
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
@@ -45,7 +47,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validatePositionSize(positionSize) {
     const value = parseFloat(positionSize);
 
-    if (isNaN(value)) {
+    if (!isValidIntOrFloat(positionSize)) {
       setError("positionSize", "error", "Position size must be a numeric value.");
       return false;
     }
@@ -76,7 +78,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validatePositionSizePercentage(positionSizePercentage) {
     const value = parseFloat(positionSizePercentage);
 
-    if (isNaN(value)) {
+    if (!isValidIntOrFloat(positionSizePercentage)) {
       setError(
         "positionSizePercentage",
         "error",
@@ -101,7 +103,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   function validateUnits(units) {
     const value = parseFloat(units);
 
-    if (isNaN(value)) {
+    if (!isValidIntOrFloat(units)) {
       setError("units", "error", "Position size must be a numeric value.");
       return false;
     }
@@ -126,16 +128,23 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   /**
    * Validate that price is within limits.
    *
-   * @param {number} price Price value.
+   * @param {any} price Price value.
    * @returns {boolean} Validation result.
    */
   function validatePrice(price) {
-    if (limits.price.min && price < limits.price.min) {
+    const value = parseFloat(price);
+
+    if (!isValidIntOrFloat(price)) {
+      setError("price", "error", "Price must be a numeric value.");
+      return false;
+    }
+
+    if (limits.price.min && value < limits.price.min) {
       setError("price", "error", `Price cannot be lower than ${limits.price.min}`);
       return false;
     }
 
-    if (limits.price.max && price > limits.price.max) {
+    if (limits.price.max && value > limits.price.max) {
       setError("price", "error", `Price cannot be greater than ${limits.price.max}`);
       return false;
     }
@@ -161,7 +170,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const positionSizeChange = () => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
-    validatePositionSize(positionSize);
+    validatePositionSize(draftPosition.positionSize);
 
     const units = positionSize / currentPrice;
     setValue("units", units.toFixed(8));
@@ -171,10 +180,15 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("realInvestment", realInvestment.toFixed(8));
   };
 
+  const positionSizePercentageChange = () => {
+    const draftPosition = getValues();
+    validatePositionSizePercentage(draftPosition.positionSizePercentage);
+  };
+
   const unitsChange = () => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units);
-    validateUnits(units);
+    validateUnits(draftPosition.units);
 
     const positionSize = units * currentPrice;
     setValue("positionSize", positionSize.toFixed(8));
@@ -185,7 +199,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   };
 
   const priceChange = () => {
-    validatePrice(parseFloat(strategyPrice));
+    validatePrice(strategyPrice);
   };
 
   const chainedPriceUpdates = () => {
@@ -196,6 +210,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
   return {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,

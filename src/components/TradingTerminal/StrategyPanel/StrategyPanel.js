@@ -51,6 +51,7 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
@@ -216,6 +217,7 @@ const StrategyPanel = (props) => {
                   validate: validatePositionSizePercentage,
                 })}
                 name="positionSizePercentage"
+                onChange={positionSizePercentageChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">%</div>
@@ -223,8 +225,8 @@ const StrategyPanel = (props) => {
             <FormHelperText>
               Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
             </FormHelperText>
-            {errors.positionSize && (
-              <span className="errorText">{errors.positionSize.message}</span>
+            {errors.positionSizePercentage && (
+              <span className="errorText">{errors.positionSizePercentage.message}</span>
             )}
           </FormControl>
         )}

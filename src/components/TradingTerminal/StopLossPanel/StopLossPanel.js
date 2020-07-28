@@ -5,12 +5,13 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import "./StopLossPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import "./StopLossPanel.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -81,7 +82,10 @@ const StopLossPanel = (props) => {
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
 
     if (draftPosition.stopLossPercentage !== "-") {
-      if (isNaN(stopLossPercentage) || compareFn(stopLossPercentage, pricePercentChange)) {
+      if (
+        !isValidIntOrFloat(draftPosition.stopLossPercentage) ||
+        compareFn(stopLossPercentage, pricePercentChange)
+      ) {
         setError(
           "stopLossPercentage",
           "error",
@@ -120,7 +124,7 @@ const StopLossPanel = (props) => {
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
-    if (isNaN(stopLossPrice) || stopLossPrice < 0) {
+    if (!isValidIntOrFloat(draftPosition.stopLossPrice) || stopLossPrice < 0) {
       setError("stopLossPrice", "error", formatMessage({ id: "terminal.stoploss.limit.zero" }));
       return;
     }
