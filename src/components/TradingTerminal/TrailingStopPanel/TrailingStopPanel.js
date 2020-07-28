@@ -45,7 +45,7 @@ const TrailingStopPanel = (props) => {
     ? positionEntity.trailingStopTriggerPercentage
     : 0;
   const trailingStopPercentageRaw = watch("trailingStopPercentage", initTrailingStopPercentage);
-  const trailingStopPercentage = parseFloat(trailingStopDistanceRaw);
+  const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
