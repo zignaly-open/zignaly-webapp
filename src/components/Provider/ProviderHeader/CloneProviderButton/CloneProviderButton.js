@@ -58,7 +58,7 @@ const CloneProviderButton = ({ provider }) => {
   return (
     <Box
       alignItems="center"
-      className="copyTraderButton"
+      className="cloneTraderButton"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"

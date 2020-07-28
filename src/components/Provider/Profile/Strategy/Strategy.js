@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Strategy.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, useMediaQuery } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ReactMarkdown from "react-markdown";
+import { useTheme } from "@material-ui/core/styles";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,6 +18,22 @@ import ReactMarkdown from "react-markdown";
  * @returns {JSX.Element} Component JSX.
  */
 const Strategy = ({ provider }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [show, setShow] = useState(false);
+
+  const initShow = () => {
+    if (!isMobile) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  };
+
+  useEffect(initShow, [isMobile]);
+
+  console.log(show);
+
   return (
     <Box
       alignItems="flex-start"
@@ -31,14 +50,31 @@ const Strategy = ({ provider }) => {
         justifyContent="space-between"
         width="100%"
       >
-        <Typography variant="h3">
-          <FormattedMessage id="srv.strategy" />
-        </Typography>
-        <Typography variant="h4">
-          <FormattedMessage id="srv.strategy.subtitle" />
-        </Typography>
+        {!isMobile && (
+          <Typography variant="h3">
+            <FormattedMessage id="srv.strategy" />
+          </Typography>
+        )}
+
+        {isMobile && (
+          <Typography variant="h3" onClick={() => setShow(!show)}>
+            <FormattedMessage id="srv.strategy" />
+            {show && <ExpandLessIcon className="expandIcon" />}
+            {!show && <ExpandMoreIcon className="expandIcon" />}
+          </Typography>
+        )}
+
+        {show && (
+          <Typography variant="h4">
+            <FormattedMessage id="srv.strategy.subtitle" />
+          </Typography>
+        )}
       </Box>
-      <ReactMarkdown linkTarget="_blank" source={provider.strategy} />
+      {show && (
+        <Box className="strategyBody">
+          <ReactMarkdown linkTarget="_blank" source={provider.strategy} />
+        </Box>
+      )}
     </Box>
   );
 };

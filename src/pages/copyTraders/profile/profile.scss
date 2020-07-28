@@ -14,7 +14,6 @@
 
     .strategyBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
-      margin-bottom: 20px;
       min-height: 430px;
       width: 100%;
     }
@@ -32,13 +31,13 @@
 
     .performanceBox {
       box-shadow: 0 2px 8px 0 $boxShadowColor;
-      margin-bottom: 20px;
       min-height: 430px;
       width: 100%;
     }
   }
 
   .cloneBox {
+    margin-top: 20px;
     width: 100%;
 
     .submitButton {
@@ -54,11 +53,27 @@
     .leftColumn {
       margin: 0 0 20px;
       width: 100%;
+
+      .aboutBox {
+        min-height: 50px;
+      }
+
+      .strategyBox {
+        min-height: 50px;
+      }
     }
 
     .rightColumn {
       margin: 0 0 20px;
       width: 100%;
+
+      .whoWeAreBox {
+        min-height: 50px;
+      }
+
+      .performanceBox {
+        min-height: 50px;
+      }
     }
 
     .cloneBox {

@@ -36,33 +36,46 @@
 @include media("<=sm") {
   .providerHeaderInfo {
     flex-wrap: wrap;
+    justify-content: space-between;
 
     h4 {
+      display: flex;
+      flex-direction: row;
       margin: 5px 20px 5px 0;
 
       &.base {
-        margin: 5px 0;
-        width: 18.75%;
+        justify-content: flex-start;
+        margin: 5px 0 10px;
+        min-width: 33%;
       }
 
       &.trade {
-        margin: 5px 0;
-        width: 18.75%;
+        justify-content: center;
+        margin: 5px 0 10px;
+        min-width: 33%;
       }
 
       &.type {
-        margin: 5px 0;
-        width: 18.75%;
+        justify-content: flex-end;
+        margin: 5px 0 10px;
+        min-width: 33%;
       }
 
       &.copiers {
-        margin: 5px 0;
-        width: 15.75%;
+        margin: 5px 0 10px;
+        min-width: fit-content;
       }
 
       &.price {
-        margin: 5px 0;
-        width: 28%;
+        justify-content: center;
+        margin: 5px 0 10px;
+        min-width: fit-content;
+      }
+
+      &.trial {
+        justify-content: flex-end;
+        margin: 5px 0 10px;
+        min-width: fit-content;
       }
 
       span {
