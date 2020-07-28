@@ -24,7 +24,7 @@ const TrialPeriod = ({ provider }) => {
     return (
       <>
         {parseInt(provider.stripe.cancelDate) - currentTime > 0 ? (
-          <Typography variant="h4" className="trial">
+          <Typography className="trial" variant="h4">
             <b>
               <FormattedMessage id="srv.text.expires" />
               {getTime()}
@@ -46,7 +46,7 @@ const TrialPeriod = ({ provider }) => {
       {provider.exchangeInternalId && !provider.disable ? (
         <Expiry />
       ) : (
-        <Typography variant="h4" className="trial">
+        <Typography className="trial" variant="h4">
           <FormattedMessage id="copyt.trial" />
           <b>
             {provider.internalPaymentInfo.trial ? provider.internalPaymentInfo.trial : 0}

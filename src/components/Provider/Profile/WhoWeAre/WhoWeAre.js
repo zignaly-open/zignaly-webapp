@@ -54,7 +54,7 @@ const WhoWeAre = ({ provider }) => {
       )}
 
       {isMobile && (
-        <Typography variant="h3" onClick={() => setShow(!show)}>
+        <Typography onClick={() => setShow(!show)} variant="h3">
           <FormattedMessage id="srv.who" />
           {show && <ExpandLessIcon className="expandIcon" />}
           {!show && <ExpandMoreIcon className="expandIcon" />}

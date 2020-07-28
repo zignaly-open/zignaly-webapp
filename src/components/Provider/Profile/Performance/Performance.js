@@ -36,7 +36,7 @@ const PerformanceOverview = ({ provider }) => {
       )}
 
       {isMobile && (
-        <Typography variant="h3" onClick={() => setShow(!show)}>
+        <Typography onClick={() => setShow(!show)} variant="h3">
           <FormattedMessage id="srv.performanceoverview" />
           {show && <ExpandLessIcon className="expandIcon" />}
           {!show && <ExpandMoreIcon className="expandIcon" />}

@@ -1,7 +1,6 @@
 import React from "react";
 import Doughnut from "../../../Graphs/Doughnut";
 import { useIntl } from "react-intl";
-import { formatFloat } from "../../../../utils/format";
 
 /**
  *

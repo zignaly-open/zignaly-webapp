@@ -43,7 +43,7 @@ const Strategy = ({ provider }) => {
         )}
 
         {isMobile && (
-          <Typography variant="h3" onClick={() => setShow(!show)}>
+          <Typography onClick={() => setShow(!show)} variant="h3">
             <FormattedMessage id="srv.strategy" />
             {show && <ExpandLessIcon className="expandIcon" />}
             {!show && <ExpandMoreIcon className="expandIcon" />}

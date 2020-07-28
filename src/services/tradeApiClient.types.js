@@ -2985,8 +2985,8 @@ export function providerExchangeSettingsResponseTransform(response) {
   const transformedResponse = assign(emptySettingsEntity, response, {
     reBuyTargets: reBuyTargets,
     takeProfitTargets: takeProfitTargets,
-    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL, //Convert seconds to minutes.
-    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL, //Convert seconds to hours.
+    buyTTL: response.buyTTL ? response.buyTTL / 60 : response.buyTTL, // Convert seconds to minutes.
+    sellByTTL: response.sellByTTL ? response.sellByTTL / 3600 : response.sellByTTL, // Convert seconds to hours.
   });
 
   return transformedResponse;
