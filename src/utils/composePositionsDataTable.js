@@ -353,6 +353,7 @@ function isEditView(position) {
  */
 export function composeAllActionButtons(position, confirmActionHandler) {
   const { isCopyTrading, isCopyTrader, closed, providerOwnerUserId, status, updating } = position;
+
   /**
    * @typedef {import("../store/initialState").DefaultState} DefaultStateType
    * @type {DefaultStateType}
@@ -368,10 +369,20 @@ export function composeAllActionButtons(position, confirmActionHandler) {
     updatingMessageId = "terminal.warning.exiting";
   }
 
+  let exitIconTitle = <FormattedMessage id="dashboard.positions.icon.exit" />;
+  if (status > 9) {
+    exitIconTitle = <FormattedMessage id="dashboard.positions.icon.exiting" />;
+  }
+
   return (
     <div className="actions">
       {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="View Position">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.position.icon.view" />}
+        >
           <IconButton
             className="iconPurple"
             data-position-id={position.positionId}
@@ -382,7 +393,12 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Edit Position">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.position.icon.edit" />}
+        >
           <IconButton
             className="iconPurple"
             data-position-id={position.positionId}
@@ -393,12 +409,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader || isProviderOwner) && !closed && !updating && status !== 1 && (
-        <Tooltip
-          arrow
-          enterTouchDelay={50}
-          placement="left-end"
-          title={`${status > 9 ? "Exiting Position" : "Exit Position"}`}
-        >
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title={exitIconTitle}>
           <div>
             <IconButton
               className="iconPurple"
@@ -413,7 +424,12 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         </Tooltip>
       )}
       {!updating && status === 1 && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Cancel entry">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.position.icon.abort" />}
+        >
           <IconButton
             className="iconPurple"
             data-action={"abort"}
