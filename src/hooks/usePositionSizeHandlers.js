@@ -48,7 +48,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(positionSize);
 
     if (!isValidIntOrFloat(positionSize)) {
-      setError("positionSize", "error", "Position size must be a numeric value.");
+      setError("positionSize", "error", "Position size must be a number.");
       return false;
     }
 
@@ -79,11 +79,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(positionSizePercentage);
 
     if (!isValidIntOrFloat(positionSizePercentage)) {
-      setError(
-        "positionSizePercentage",
-        "error",
-        "Position size percentage must be a numeric value.",
-      );
+      setError("positionSizePercentage", "error", "Position size percentage must be a number.");
       return false;
     }
 
@@ -104,7 +100,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(units);
 
     if (!isValidIntOrFloat(units)) {
-      setError("units", "error", "Position size must be a numeric value.");
+      setError("units", "error", "Position size must be a number.");
       return false;
     }
 
@@ -135,7 +131,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(price);
 
     if (!isValidIntOrFloat(price)) {
-      setError("price", "error", "Price must be a numeric value.");
+      setError("price", "error", "Price must be a number.");
       return false;
     }
 
