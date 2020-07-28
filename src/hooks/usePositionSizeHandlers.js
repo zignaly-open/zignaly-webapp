@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { isValidIntOrFloat } from "../utils/validators";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -37,6 +38,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
+  const { formatMessage } = useIntl();
 
   /**
    * Validate that position size is within limits.
@@ -48,17 +50,25 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(positionSize);
 
     if (!isValidIntOrFloat(positionSize)) {
-      setError("positionSize", "error", "Position size must be a number.");
+      setError("positionSize", "error", formatMessage({ id: "terminal.positionsize.limit.zero" }));
       return false;
     }
 
     if (limits.cost.min && value < limits.cost.min) {
-      setError("positionSize", "error", `Position size cannot be lower than ${limits.cost.min}`);
+      setError(
+        "positionSize",
+        "error",
+        formatMessage({ id: "terminal.positionsize.limit.min" }, { value: limits.cost.min }),
+      );
       return false;
     }
 
     if (limits.cost.max && value > limits.cost.max) {
-      setError("positionSize", "error", `Position size cannot be greater than ${limits.cost.max}`);
+      setError(
+        "positionSize",
+        "error",
+        formatMessage({ id: "terminal.positionsize.limit.max" }, { value: limits.cost.max }),
+      );
       return false;
     }
 
@@ -77,7 +87,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    */
   function validatePositionSizePercentage(positionSizePercentage) {
     if (!isValidIntOrFloat(positionSizePercentage)) {
-      setError("positionSizePercentage", "error", "Position size percentage must be a number.");
+      setError(
+        "positionSizePercentage",
+        "error",
+        formatMessage({ id: "terminal.positionsize.valid.percentage" }),
+      );
       return false;
     }
 
@@ -98,17 +112,25 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(units);
 
     if (!isValidIntOrFloat(units)) {
-      setError("units", "error", "Position size must be a number.");
+      setError("units", "error", formatMessage({ id: "terminal.positionunits.limit.zero" }));
       return false;
     }
 
     if (limits.amount.min && value < limits.amount.min) {
-      setError("units", "error", `Units cannot be lower than ${limits.amount.min}`);
+      setError(
+        "units",
+        "error",
+        formatMessage({ id: "terminal.positionunits.limit.min" }, { value: limits.amount.min }),
+      );
       return false;
     }
 
     if (limits.amount.max && value > limits.amount.max) {
-      setError("units", "error", `Units cannot be greater than ${limits.amount.max}`);
+      setError(
+        "units",
+        "error",
+        formatMessage({ id: "terminal.positionunits.limit.max" }, { value: limits.amount.max }),
+      );
       return false;
     }
 
@@ -129,17 +151,25 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(price);
 
     if (!isValidIntOrFloat(price)) {
-      setError("price", "error", "Price must be a number.");
+      setError("price", "error", formatMessage({ id: "terminal.positionprice.limit.zero" }));
       return false;
     }
 
     if (limits.price.min && value < limits.price.min) {
-      setError("price", "error", `Price cannot be lower than ${limits.price.min}`);
+      setError(
+        "price",
+        "error",
+        formatMessage({ id: "terminal.positionprice.limit.min" }, { value: limits.price.min }),
+      );
       return false;
     }
 
     if (limits.price.max && value > limits.price.max) {
-      setError("price", "error", `Price cannot be greater than ${limits.price.max}`);
+      setError(
+        "price",
+        "error",
+        formatMessage({ id: "terminal.positionprice.limit.max" }, { value: limits.price.max }),
+      );
       return false;
     }
 

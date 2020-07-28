@@ -9,6 +9,7 @@ import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { composeAllActionButtons } from "../utils/composePositionsDataTable";
 import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -55,6 +56,7 @@ import { Box } from "@material-ui/core";
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler) {
   const storeUserData = useStoreUserData();
+  const { formatMessage } = useIntl();
 
   /**
    * Compose provider icon element for a given position.
@@ -494,17 +496,26 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         {position.takeProfitTargetsCountFail > 0 && (
-          <span className="targetRed" title="Take profits failed.">
+          <span
+            className="targetRed"
+            title={formatMessage({ id: "dashboard.positions.targets.takeproft.failed" })}
+          >
             {position.takeProfitTargetsCountFail}
           </span>
         )}
         {position.takeProfitTargetsCountSuccess > 0 && (
-          <span className="targetGreen" title="Take profits successfully completed.">
+          <span
+            className="targetGreen"
+            title={formatMessage({ id: "dashboard.positions.targets.takeproft.completed" })}
+          >
             {position.takeProfitTargetsCountSuccess}
           </span>
         )}
         {position.takeProfitTargetsCountPending > 0 && (
-          <span className="targetGray" title="Pending take profits.">
+          <span
+            className="targetGray"
+            title={formatMessage({ id: "dashboard.positions.targets.takeproft.pending" })}
+          >
             {position.takeProfitTargetsCountPending}
           </span>
         )}
