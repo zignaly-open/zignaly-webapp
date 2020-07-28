@@ -2,6 +2,7 @@ import React from "react";
 import "./TitleBar.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import { formatFloat } from "../../../../utils/format";
 
 /**
  *
@@ -44,9 +45,9 @@ const TitleBar = ({ balance }) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">BTC {balance.totalBTC}</Typography>
+          <Typography variant="h4">BTC {formatFloat(balance.totalBTC)}</Typography>
           <Typography className="smallText" variant="subtitle2">
-            = USDT {balance.totalUSDT}
+            = USDT {formatFloat(balance.totalUSDT)}
           </Typography>
         </Box>
       </Box>

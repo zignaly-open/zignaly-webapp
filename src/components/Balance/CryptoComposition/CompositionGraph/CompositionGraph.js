@@ -64,8 +64,7 @@ const CompositionGraph = ({ list, quotes }) => {
         }
       }
       if (equity.otherPercentage > 0) {
-        /* @ts-ignore */
-        values.push(formatFloat(equity.otherPercentage));
+        values.push(equity.otherPercentage.toFixed(2));
         labels.push(intl.formatMessage({ id: "graph.others" }));
       }
     }
