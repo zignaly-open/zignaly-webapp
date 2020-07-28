@@ -107,10 +107,6 @@ const Withdraw = () => {
     }
   };
 
-  if (selectedNetwork) {
-    console.log(selectedNetwork.integerMultiple);
-  }
-
   return (
     <BalanceManagement>
       <Box className="exchangeAccountWithdraw">

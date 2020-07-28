@@ -38,8 +38,8 @@ export const addThousandsSeparator = (value, separator = " ") => {
  * Numbers greater than 1 show 2 digits precision, floats show 8 digits precision.
  *
  * @param {number} price Price to format.
- * @param {string} nanDisplay Value to display when price is NaN.
- * @param {string} thousandSeparator Character to use for thousand separator.
+ * @param {string} [nanDisplay] Value to display when price is NaN.
+ * @param {string} [thousandSeparator] Character to use for thousand separator.
  *
  * @returns {string} Formatter price for display.
  */

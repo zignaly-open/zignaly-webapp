@@ -34,14 +34,16 @@ export const validatePassword = (password) => {
 
 /**
  * Validate if number has correct amount of decimals
- * @param {string} value
- * @param {string} integerMultiple
- * @returns {boolean|string}
+ * @param {string} value Value
+ * @param {string} integerMultiple Precision number
+ * @returns {boolean|string} Validity or error message.
  */
 export const validateDecimals = (value, integerMultiple) => {
   if (!value) return false;
+
   const splitValueDot = value.split(".");
   if (splitValueDot.length !== 2) return false;
+
   const decimals = splitValueDot[1].length;
 
   const integerMultipleFloat = parseFloat(integerMultiple);

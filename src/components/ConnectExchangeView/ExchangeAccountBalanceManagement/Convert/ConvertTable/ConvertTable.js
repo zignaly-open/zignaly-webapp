@@ -5,6 +5,10 @@ import { Box, CircularProgress } from "@material-ui/core";
 import "./ConvertTable.scss";
 
 /**
+ * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ */
+
+/**
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  */
 
@@ -27,6 +31,9 @@ import "./ConvertTable.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
   let columns = [
     {
       name: "coin",
@@ -36,28 +43,28 @@ const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
       name: "balanceFree",
       label: "col.balance.available",
       options: {
-        customBodyRender: formatPrice,
+        customBodyRender: (val) => formatPrice(val),
       },
     },
     {
       name: "balanceFreeBTC",
       label: "col.valueBTC",
       options: {
-        customBodyRender: formatPrice,
+        customBodyRender: (val) => formatPrice(val),
       },
     },
     {
       name: "balanceFreeUSDT",
       label: "col.valueUSDT",
       options: {
-        customBodyRender: formatPrice,
+        customBodyRender: (val) => formatPrice(val),
       },
     },
     {
       name: "balanceTotalExchCoin",
       label: "col.valueBNBapprox",
       options: {
-        customBodyRender: formatPrice,
+        customBodyRender: (val) => formatPrice(val),
       },
     },
   ];
