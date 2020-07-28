@@ -109,6 +109,6 @@ $greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey
 
 [data-theme="dark"] {
   --purple: #{$purpleLight};
-  --border-color: #{$lighterBlackBorder};
+  --border-color: #{$lightBlackBorder};
   --background-color: #{$lighterBlack};
 }
