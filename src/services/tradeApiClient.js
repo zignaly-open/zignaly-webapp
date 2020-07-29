@@ -375,9 +375,11 @@ class TradeApiClient {
   /**
    * Exit a position.
    *
+   * Performs an exit order of current position in the exchange.
+   *
    * @param {PositionActionPayload} payload Position action payload.
-
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */

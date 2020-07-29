@@ -362,38 +362,38 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
  * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
  * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
- * @property {boolean} trailingStopPrice
- * @property {boolean} trailingStopTriggered
- * @property {boolean} updating
- * @property {number} buyTTL
+ * @property {number|boolean} trailingStopPrice Trailing stop price or false when not enabled.
+ * @property {boolean} trailingStopTriggered Flag that indicates when trailing stop is triggered.
+ * @property {boolean} updating Flag that indicates that some position updates are in progress.
+ * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
  * @property {number} closeDate Close date represented in unix time epoch seconds.
- * @property {number} fees
+ * @property {number} fees Exchange transaction fees.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
- * @property {number} netProfit
- * @property {number} netProfitPercentage
- * @property {string} netProfitStyle
- * @property {string} unrealizedProfitStyle
+ * @property {number} netProfit Net profit amount.
+ * @property {number} netProfitPercentage Net percentage profit.
+ * @property {string} netProfitStyle Profit style (coloring) based on gain/loss.
+ * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {number} openDate Open date represented in unix time epoch seconds.
- * @property {number} positionSizeQuote
- * @property {number} profit
- * @property {number} reBuyTargetsCountFail
- * @property {number} reBuyTargetsCountPending
- * @property {number} reBuyTargetsCountSuccess
+ * @property {number} positionSizeQuote Position size represented in quote currency.
+ * @property {number} profit Profit amount without fees substraction.
+ * @property {number} reBuyTargetsCountFail Rebuy / DCA targets that was executed with failures counter.
+ * @property {number} reBuyTargetsCountPending Rebuy / DCA targets not yet reached and not executed counter.
+ * @property {number} reBuyTargetsCountSuccess Rebuy / DCA targets succesfully executed counter.
  * @property {number} risk Invested amount percentage that is still in risk relative to current price and exit protections (stop loss / trailing stop).
  * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
  * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
  * @property {number} stopLossPrice Stop loss price.
- * @property {number} takeProfitTargetsCountFail
- * @property {number} takeProfitTargetsCountPending
- * @property {number} takeProfitTargetsCountSuccess
+ * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
+ * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
+ * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage
  * @property {number} trailingStopTriggerPercentage
- * @property {string} age
- * @property {number} ageSeconds
+ * @property {string} age Elapsed time since position was opened in human readable format.
+ * @property {number} ageSeconds Elapsed seconds since position was opened.
  * @property {number} amount
  * @property {string} base
  * @property {number} buyPrice
- * @property {string} closeDateReadable
+ * @property {string} closeDateReadable Close date in human readable format.
  * @property {string} closeTrigger
  * @property {string} exchange
  * @property {string} exchangeInternalName
@@ -402,7 +402,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} invested
  * @property {string} investedQuote
  * @property {string} logoUrl
- * @property {string} openDateReadable
+ * @property {string} openDateReadable Open date in human readable format.
  * @property {string} openTrigger
  * @property {string} pair
  * @property {string} positionId
