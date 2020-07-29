@@ -1839,8 +1839,8 @@ function createProviderStatsEmptyEntity() {
 
 /**
  * @typedef {Object} ServerTime
- * @property {number} serverTime
- * @property {number} dbTime
+ * @property {number} serverTime Server time expressed in unix time epoch seconds.
+ * @property {number} dbTime Database time expressed in unix time epoch seconds.
  */
 
 /**

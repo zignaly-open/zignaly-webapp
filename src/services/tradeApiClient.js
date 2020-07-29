@@ -477,6 +477,9 @@ class TradeApiClient {
   /**
    * Get Trade API server time.
    *
+   * This endpoint is useful when client local time needs to be compared with
+   * Trade API server time. Note that server time uses UTC.
+   *
    * @param {AuthorizationPayload} payload User authorization.
    * @returns {Promise<ServerTime>} Promise that resolves server time value object.
    *
