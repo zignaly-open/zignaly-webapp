@@ -67,6 +67,7 @@ const StrategyForm = (props) => {
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
   const { formatMessage } = useIntl();
+  const { selectedExchange } = storeSettings;
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -257,7 +258,7 @@ const StrategyForm = (props) => {
   const composePositionStrategy = (draftPosition) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const strategy = {
-      // buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       type: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
       positionSizeQuote: currentSymbolData.quote,
@@ -284,7 +285,6 @@ const StrategyForm = (props) => {
    */
   const composePositionPayload = (draftPosition) => {
     const { quote, base } = currentSymbolData;
-    const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
     const buyTTL = parseFloat(draftPosition.entryExpiration);
     const sellTTL = parseFloat(draftPosition.autoclose);
@@ -296,7 +296,7 @@ const StrategyForm = (props) => {
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: minToSeconds(buyTTL) || false,
-      buyStopPrice: parseFloat(draftPosition.stopPrice) || false,
+      buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
       sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
@@ -328,13 +328,31 @@ const StrategyForm = (props) => {
    * @returns {UpdatePositionPayload} Update position payload.
    */
   const composeUpdatePositionPayload = (draftPosition) => {
+    const { quote } = currentSymbolData;
     const positionStrategy = draftPosition.positionSize
       ? composePositionStrategy(draftPosition)
       : {};
 
-    return assign(composePositionPayload(draftPosition), positionStrategy, {
-      positionId: positionEntity.positionId,
-    });
+    console.log("draftPosition: ", draftPosition);
+
+    return assign(
+      {
+        token: storeSession.tradeApi.accessToken,
+        positionSizeQuote: quote,
+        side: mapSideToEnum(draftPosition.entryType),
+        stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
+        takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
+        reBuyTargets: composePositionDcaTargets(draftPosition),
+        trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+        trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+        providerId: 1,
+        providerName: "Manual Trading",
+        internalExchangeId: selectedExchange.internalId,
+        positionId: positionEntity.positionId,
+      },
+      positionStrategy,
+    );
   };
 
   /**

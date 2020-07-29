@@ -89,7 +89,26 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {CreatePositionPayload & PositionActionPayload} UpdatePositionPayload
+ * Payload to update existing position, the size could be increased passing optional parameters.
+ *
+ * @typedef {Object} UpdatePositionPayload
+ * @property {string} token Authorization token.
+ * @property {number} [limitPrice] Order limit price.
+ * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
+ * @property {number} [positionSize] Position size.
+ * @property {number} [buyStopPrice] Entry stop price.
+ * @property {number} [realInvestment] Real invested amount excluding the leverage.
+ * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
+ * @property {PositionOrderType} [buyType] Entry order type.
+ * @property {PositionEntrySide} [side] Position side.
+ * @property {number|boolean} stopLossPercentage Stop loss percentage.
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
+ * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
+ * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
+ * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
+ * @property {string} providerName Provider name when is a position published for copy trader service.
+ * @property {string} internalExchangeId Exchange connection ID.
  */
 
 /**
