@@ -490,10 +490,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get a coinray access token for authenticated Trade API user.
+   * Get a coinray access token for the authenticated user.
    *
-   * @param {AuthorizationPayload} payload User authorization.
-   * @returns {Promise<CoinRayToken>} Promise that resolves server time value object.
+   * @param {AuthorizationPayload} payload User Trade API authorization.
+   * @returns {Promise<CoinRayToken>} Promise that resolves CoinRay token object.
    *
    * @memberof TradeApiClient
    */
