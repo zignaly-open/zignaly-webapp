@@ -13,6 +13,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
+import ConnectExchange from "../../../Modal/ConnectExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -30,8 +31,17 @@ const CopyTraderButton = ({ provider }) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
+  const [connectModal, showConnectModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
   const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
+
+  const startCopying = () => {
+    if (exchangeConnections.length) {
+      showCopyModal(true);
+    } else {
+      showConnectModal(true);
+    }
+  };
 
   const stopCopying = async () => {
     try {
@@ -61,6 +71,10 @@ const CopyTraderButton = ({ provider }) => {
     showCopyModal(false);
   };
 
+  const handleConnectModalClose = () => {
+    showConnectModal(false);
+  };
+
   const initFollowingFrom = () => {
     let found = [...exchangeConnections].find(
       (item) => item.internalId === provider.exchangeInternalId,
@@ -81,7 +95,7 @@ const CopyTraderButton = ({ provider }) => {
       justifyContent="flex-start"
     >
       {provider.disable ? (
-        <CustomButton className="submitButton" onClick={() => showCopyModal(true)}>
+        <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       ) : provider.exchangeInternalId ? (
@@ -114,6 +128,9 @@ const CopyTraderButton = ({ provider }) => {
       )}
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
+      </Modal>
+      <Modal onClose={handleConnectModalClose} size="small" state={connectModal}>
+        <ConnectExchange onClose={handleConnectModalClose} />
       </Modal>
     </Box>
   );

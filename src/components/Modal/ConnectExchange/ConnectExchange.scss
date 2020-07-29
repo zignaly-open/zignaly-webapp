@@ -1,0 +1,33 @@
+.connectExchangeModal {
+  padding: 64px 24px;
+  text-align: center;
+
+  @include media("<=sm") {
+    padding: 32px 18px;
+  }
+
+  h3 {
+    margin-bottom: 22px;
+  }
+
+  .real {
+    border-bottom: 1px solid var(--border-color);
+    padding: 40px;
+  }
+
+  .demo {
+    padding-top: 40px;
+  }
+
+  h4 {
+    padding-bottom: 12px;
+  }
+}
+
+[data-theme="dark"] {
+  .connectExchangeModal {
+    .real {
+      border-color: $lighterBlackBorder;
+    }
+  }
+}

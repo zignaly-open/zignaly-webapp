@@ -15,6 +15,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
+import ConnectExchange from "../../Modal/ConnectExchange";
 
 /**
  * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
@@ -43,6 +44,10 @@ const TradingView = () => {
   const storeSettings = useStoreSettingsSelector();
   const [marketData, setMarketData] = useState(null);
   const dispatch = useDispatch();
+
+  if (!storeSettings.selectedExchange.internalId) {
+    return <ConnectExchange />;
+  }
 
   const getMarketData = async () => {
     const marketDataPayload = {
@@ -245,45 +250,47 @@ const TradingView = () => {
   });
 
   return (
-    <FormContext {...methods}>
-      <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-        {!isLoading && (
-          <TradingViewHeader
-            handleSymbolChange={handleSymbolChange}
-            selectedSymbol={selectedSymbol}
-            symbolsList={marketData}
-          />
-        )}
-        <Box
-          bgcolor="grid.content"
-          className="tradingViewContainer"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          width={1}
-        >
-          {isLoading && (
-            <Box
-              className="loadProgress"
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <CircularProgress disableShrink />
-            </Box>
-          )}
-          <Box className="tradingViewChart" id="trading_view_chart" />
-          {!isLoading && !isLastPriceLoading && (
-            <StrategyForm
-              lastPrice={lastPrice}
+    <>
+      <FormContext {...methods}>
+        <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+          {!isLoading && (
+            <TradingViewHeader
+              handleSymbolChange={handleSymbolChange}
               selectedSymbol={selectedSymbol}
-              symbolsData={marketData}
-              tradingViewWidget={tradingViewWidget}
+              symbolsList={marketData}
             />
           )}
+          <Box
+            bgcolor="grid.content"
+            className="tradingViewContainer"
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            width={1}
+          >
+            {isLoading && (
+              <Box
+                className="loadProgress"
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+              >
+                <CircularProgress disableShrink />
+              </Box>
+            )}
+            <Box className="tradingViewChart" id="trading_view_chart" />
+            {!isLoading && !isLastPriceLoading && (
+              <StrategyForm
+                lastPrice={lastPrice}
+                selectedSymbol={selectedSymbol}
+                symbolsData={marketData}
+                tradingViewWidget={tradingViewWidget}
+              />
+            )}
+          </Box>
         </Box>
-      </Box>
-    </FormContext>
+      </FormContext>
+    </>
   );
 };
 
