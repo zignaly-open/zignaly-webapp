@@ -1895,39 +1895,43 @@ export function coinRayTokenResponseTransform(response) {
 
 /**
  * @typedef {Object} MarketSymbol
- * @property {string} id
- * @property {string} symbol
- * @property {string} base
- * @property {string} quote
- * @property {string} baseId
- * @property {string} quoteId
- * @property {PricePrecision} precision
- * @property {SymbolLimits} limits
- * @property {string} coinrayQuote
- * @property {string} coinrayBase
+ * @property {string} id Pair ID, i.e. BTCUSDT.
+ * @property {string} symbol Separated pair ID, i.e. BTC/USDT.
+ * @property {string} base Base currency, i.e. BTC.
+ * @property {string} quote Quote currency, i.e. USDT.
+ * @property {string} baseId Same as base.
+ * @property {string} quoteId Same as quote.
+ * @property {PricePrecision} precision Symbol required price precision details.
+ * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
+ * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
+ * @property {string} coinrayBase Base currency ID adapted to CoinRay.
  */
 
 /**
  * @typedef {Object} SymbolLimits
- * @property {AmountLimit} cost:
- * @property {AmountLimit} price:
- * @property {AmountLimit} amount:
+ * @property {AmountLimit} cost Cost limits.
+ * @property {AmountLimit} price Price limits.
+ * @property {AmountLimit} amount Amount limits.
  */
 
 /**
  * @typedef {Object} AmountLimit
- * @property {number} min:
- * @property {number} max:
+ * @property {number} min Minimum allowed value, when null no limit is imposed.
+ * @property {number} max Maximum allowed value, when null no limit is imposed.
  */
 
 /**
  * @typedef {Object} PricePrecision
  *
- * @property {number} amount:
- * @property {number} price:
+ * @property {number} amount Fractional digits amount precision.
+ * @property {number} price Fractional digits price precision.
+ * @property {number} base Fractional digits base size precision.
+ * @property {number} quote Fractional digits quote size precision.
  */
 
 /**
+ * Collection of market symbols objects.
+ *
  * @typedef {Array<MarketSymbol>} MarketSymbolsCollection
  */
 

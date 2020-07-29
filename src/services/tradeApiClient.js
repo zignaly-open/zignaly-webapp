@@ -508,10 +508,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get user exchange connnection market data.
+   * Get user exchange connnection market data coins pairs (symbols).
    *
    * @param {AuthorizationPayload} payload Authorized exchange data payload.
-   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market (symbols) data collection.
+   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market symbols data collection.
    *
    * @memberof TradeApiClient
    */
