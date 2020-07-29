@@ -2433,17 +2433,21 @@ function createExchangeListEmptyEntity() {
     type: [""],
   };
 }
+
 /**
  * @typedef {Object} CopyTradersProvidersOptionsPayload
  * @property {string} token User access token.
- * @property {String} internalExchangeId
+ * @property {string} internalExchangeId Exchange connection ID associated to the copy trading provider owned services.
  */
 
 /**
  * @typedef {Object} CopyTradersProvidersOption
- * @property {number} providerId
- * @property {string} providerName
- * @property {boolean} providerQuote
+ * @property {number|string} providerId Provider ID.
+ * @property {string} providerName Provider name.
+ * @property {string|false} providerQuote Currency quote traded by the copy trading provider service.
+ * @property {number} providerConsumedBalance Balance (amount in quote currency) that is currently consumed.
+ * @property {number} providerConsumedBalancePercentage Balance (percentage) that is currently consumed.
+ * @property {number} providerPayableBalance Copy trader provider allocated balance for this signals service.
  */
 
 /**
@@ -2456,12 +2460,12 @@ function createExchangeListEmptyEntity() {
  * @param {*} response Trade API own copy traders providers options raw response.
  * @returns {CopyTradersProvidersOptionsCollection} Options collection.
  */
-export function ownCopyTraderProvidersOptionsResponseTransform(response) {
+export function ownedCopyTraderProvidersOptionsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of copy trader providers options.");
   }
 
-  return response.map(ownCopyTraderProviderOptionResponseTransform);
+  return response.map(ownedCopyTraderProviderOptionResponseTransform);
 }
 
 /**
@@ -2471,7 +2475,7 @@ export function ownCopyTraderProvidersOptionsResponseTransform(response) {
  * @returns {CopyTradersProvidersOption} Options collection.
  */
 
-function ownCopyTraderProviderOptionResponseTransform(option) {
+function ownedCopyTraderProviderOptionResponseTransform(option) {
   return assign(createEmptyOwnCopyTraderProviderOption(), option);
 }
 
@@ -2484,7 +2488,10 @@ function createEmptyOwnCopyTraderProviderOption() {
   return {
     providerId: 0,
     providerName: "",
-    providerQuote: false,
+    providerQuote: "",
+    providerConsumedBalance: 0,
+    providerConsumedBalancePercentage: 0,
+    providerPayableBalance: 0,
   };
 }
 

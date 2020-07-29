@@ -40,7 +40,7 @@ const TradingViewHeader = (props) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((data) => {
+    tradeApi.ownedCopyTradersProvidersOptions(payload).then((data) => {
       if (Array.isArray(data)) {
         // Digest providers data to handle translation.
         const digestedProviders = data.map((provider) => {
