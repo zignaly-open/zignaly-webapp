@@ -1948,7 +1948,7 @@ function createMarketSymbolEmptyValueObject() {
     quote: "",
     baseId: "",
     quoteId: "",
-    precision: { amount: 0, price: 0 },
+    precision: { amount: 0, price: 0, quote: 0, base: 0 },
     limits: {
       cost: { min: 0, max: 0 },
       price: { min: 0, max: 0 },
