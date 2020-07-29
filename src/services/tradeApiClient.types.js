@@ -354,40 +354,35 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} PositionEntity
- * @property {Object<number, ReBuyTarget>} reBuyTargets
- * @property {Object<number, ProfitTarget>} takeProfitTargets
- * @property {Number} realInvestment
- * @property {boolean} accounting
- * @property {boolean} checkStop
- * @property {boolean} closed
- * @property {boolean} copyTraderId
- * @property {boolean} isCopyTrader
- * @property {boolean} isCopyTrading
- * @property {boolean} paperTrading
- * @property {boolean} sellByTTL
- * @property {boolean} signalMetadata
- * @property {boolean} takeProfit
+ * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
+ * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
+ * @property {Number} realInvestment Invested amount without account the leveraged part.
+ * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
+ * @property {boolean} closed Flag that indicate when a position is closed.
+ * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
+ * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
+ * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
  * @property {boolean} trailingStopPrice
  * @property {boolean} trailingStopTriggered
  * @property {boolean} updating
  * @property {number} buyTTL
- * @property {number} closeDate
+ * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees
- * @property {number} leverage
+ * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit
  * @property {number} netProfitPercentage
  * @property {string} netProfitStyle
  * @property {string} unrealizedProfitStyle
- * @property {number} openDate
+ * @property {number} openDate Open date represented in unix time epoch seconds.
  * @property {number} positionSizeQuote
  * @property {number} profit
  * @property {number} reBuyTargetsCountFail
  * @property {number} reBuyTargetsCountPending
  * @property {number} reBuyTargetsCountSuccess
- * @property {number} risk
- * @property {number} status
- * @property {number} stopLossPercentage
- * @property {number} stopLossPrice
+ * @property {number} risk Invested amount percentage that is still in risk relative to current price and exit protections (stop loss / trailing stop).
+ * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
+ * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
+ * @property {number} stopLossPrice Stop loss price.
  * @property {number} takeProfitTargetsCountFail
  * @property {number} takeProfitTargetsCountPending
  * @property {number} takeProfitTargetsCountSuccess
@@ -424,12 +419,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} quoteAsset
  * @property {number} remainAmount
  * @property {string} riskStyle
- * @property {string} sellPlaceOrderAt
  * @property {number} sellPrice
  * @property {string} side
  * @property {string} signalId
- * @property {string} signalTerm
- * @property {string} statusDesc
  * @property {string} stopLossStyle
  * @property {string} symbol
  * @property {string} userId
@@ -1248,12 +1240,10 @@ function createEmptyPositionEntity() {
     base: "",
     buyPrice: 0,
     buyTTL: 0,
-    checkStop: false,
     closeDate: 0,
     closeDateReadable: "",
     closeTrigger: "",
     closed: false,
-    copyTraderId: false,
     exchange: "",
     exchangeInternalName: "",
     exitPriceStyle: "",
@@ -1296,20 +1286,14 @@ function createEmptyPositionEntity() {
     remainAmount: 0,
     risk: 0,
     riskStyle: "",
-    sellByTTL: false,
-    sellPlaceOrderAt: "",
     sellPrice: 0,
     side: "",
     signalId: "",
-    signalMetadata: false,
-    signalTerm: "",
     status: 0,
-    statusDesc: "",
     stopLossPercentage: 0,
     stopLossPrice: 0,
     stopLossStyle: "",
     symbol: "",
-    takeProfit: false,
     takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
     takeProfitTargetsCountPending: 0,

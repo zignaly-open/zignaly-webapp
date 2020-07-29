@@ -391,9 +391,11 @@ class TradeApiClient {
   /**
    * Cancel position entry.
    *
+   * Performs a cancellation of position entry if order has not been executed yet in the exchange.
+   *
    * @param {PositionActionPayload} payload Position action payload.
-
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -408,7 +410,7 @@ class TradeApiClient {
    * Get a position.
    *
    * @param {PositionGetPayload} payload Position action payload.
-
+   *
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
