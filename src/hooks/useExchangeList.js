@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -12,7 +14,8 @@ import tradeApi from "../services/tradeApiClient";
  * @returns {Array<ExchangeListEntity>} Exchange list.
  */
 const useExchangeList = (shouldExecute = true) => {
-  const [exchanges, setExchanges] = useState([]);
+  const [exchanges, setExchanges] = useState(null);
+  const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();
 
@@ -28,7 +31,7 @@ const useExchangeList = (shouldExecute = true) => {
           setExchanges(data);
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     };
     if (shouldExecute) {

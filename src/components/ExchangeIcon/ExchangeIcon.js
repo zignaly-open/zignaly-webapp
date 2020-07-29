@@ -8,6 +8,8 @@ import KucoinIcon from "../../images/exchanges/kucoin.svg";
  * @typedef {Object} ExchangeIconPropTypes
  * @property {string} exchange Exchange name.
  * @property {String} [size] Icon size.
+ * @property {String} [className] className
+ * @property {function} [onClick] onClick
  */
 
 /**
@@ -17,7 +19,7 @@ import KucoinIcon from "../../images/exchanges/kucoin.svg";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeIcon = (props) => {
-  const { exchange, size } = props;
+  const { exchange, size, onClick, className } = props;
   let icon = null;
 
   switch (exchange) {
@@ -38,9 +40,10 @@ const ExchangeIcon = (props) => {
   return (
     <img
       alt="zignaly"
-      className={"exchangeIcon " + (size ? size : "")}
+      className={`exchangeIcon ${size ? size : ""} ${className ? className : ""}`}
       src={icon}
       title={exchange}
+      onClick={onClick}
     />
   );
 };

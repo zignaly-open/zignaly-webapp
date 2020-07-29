@@ -4,6 +4,7 @@ import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import Deposit from "../ExchangeAccountBalanceManagement/Deposit";
 import Withdraw from "../ExchangeAccountBalanceManagement/Withdraw";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
+import ExchangeAccountConnect from "../ExchangeAccountConnect";
 import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 import ExchangeOrders from "../ExchangeOrders";
@@ -25,8 +26,7 @@ const ConnectExchangeViewContent = () => {
     case "createDemoAccount":
       return <ExchangeAccountAdd create={true} demo={path === "createDemoAccount"} />;
     case "connectAccount":
-    case "connectDemoAccount":
-      return <ExchangeAccountAdd create={false} demo={path === "connectDemoAccount"} />;
+      return <ExchangeAccountConnect />;
     case "settings":
       return <ExchangeAccountSettings />;
     case "deposit":

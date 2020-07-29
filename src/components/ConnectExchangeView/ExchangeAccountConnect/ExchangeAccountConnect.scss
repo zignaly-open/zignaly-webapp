@@ -1,0 +1,45 @@
+.exchangeAccountConnect {
+  display: flex;
+  flex-direction: row;
+  padding: 32px 24px;
+  width: 100%;
+
+  .step1 {
+    border-right: solid 1px var(--border-color);
+    width: 300px;
+  }
+
+  .exchangeIcon {
+    border: solid 2px transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 62px;
+    margin: 28px 56px 33px 0;
+    padding: 4px;
+    width: 62px;
+
+    &.selected {
+      border-color: var(--purple);
+    }
+  }
+
+  .name {
+    margin-bottom: 24px;
+    width: 250px;
+
+    .controlWrapper {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .accountLabel {
+      font-weight: 600;
+      margin-bottom: 33px;
+    }
+  }
+
+  .step2 {
+    border-right: solid 1px var(--border-color);
+    width: 691px;
+  }
+}
