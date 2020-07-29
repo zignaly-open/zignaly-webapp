@@ -262,7 +262,7 @@ const StrategyForm = (props) => {
       positionSize,
       positionSizeQuote: currentSymbolData.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
-      limitPrice: draftPosition.price || lastPrice,
+      limitPrice: parseFloat(draftPosition.price) || parseFloat(lastPrice),
     };
 
     if (draftPosition.positionSizePercentage) {
@@ -296,7 +296,7 @@ const StrategyForm = (props) => {
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: minToSeconds(buyTTL) || false,
-      buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
+      buyStopPrice: parseFloat(draftPosition.stopPrice) || false,
       sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),

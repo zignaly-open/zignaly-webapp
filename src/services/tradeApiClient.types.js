@@ -1199,7 +1199,7 @@ export function mapEntryTypeToEnum(entryType) {
       return POSITION_ENTRY_TYPE_MARKET;
     case "limit":
       return POSITION_ENTRY_TYPE_LIMIT;
-    case "stop_loss_limit":
+    case "stop_limit":
       return POSITION_ENTRY_TYPE_SLLIMIT;
     case "import":
       return POSITION_ENTRY_TYPE_IMPORT;
