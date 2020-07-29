@@ -305,6 +305,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
+ * @property {String} symbol symbol.
  */
 
 /**

@@ -308,7 +308,7 @@ const initialState = {
         "col.side",
         "col.orders.type",
         "col.orders.datetime",
-        "col.actions",
+        "col.cancel",
       ],
       contractsTable: [
         "col.positionid",
