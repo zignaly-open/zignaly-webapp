@@ -782,11 +782,13 @@ class TradeApiClient {
   }
 
   /**
-   * Create manual position.
+   * Create manual position order.
+   *
+   * This supports market order, limit, stop-limit order and import order from exchange.
    *
    * @param {CreatePositionPayload} payload Create manual position payload.
 
-   * @returns {Promise<string>} Promise that resolve created position ID.
+   * @returns {Promise<string>} Promise that resolve Zignaly position ID.
    *
    * @memberof TradeApiClient
    */
