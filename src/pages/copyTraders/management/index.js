@@ -13,11 +13,17 @@ import { useIntl } from "react-intl";
 import useManagementSymmary from "../../../hooks/useManagementSymmary";
 import useInterval from "../../../hooks/useInterval";
 
+/**
+ *
+ * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
+ */
+
 const CopyTradersManagement = () => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
-  const [allPositions, setAllPositions] = useState({});
+  const [allPositions, setAllPositions] = useState([]);
   const [positionsLoading, setPositionsLoading] = useState(true);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -45,25 +51,18 @@ const CopyTradersManagement = () => {
   useInterval(loadPositions, 5000, true);
 
   /**
-   *
-   * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
-   */
-
-  /**
    * Function to prepare list of the table.
    *
-   * @param {Object} data default data from backend.
+   * @param {Array<ManagementPositionsEntity>} data default data from backend.
    * @returns {Array<PositionEntity>} Array of position entities.
    */
   const prepareTableList = (data) => {
     /**
-     * @type {*}
+     * @type {Array<PositionEntity>}
      */
     let list = [];
-    Object.keys(data).forEach((item) => {
-      /* @ts-ignore */
-      let innerList = data[item];
-      list.push(innerList[0]);
+    data.forEach((item) => {
+      list.push(item.position);
     });
     return list;
   };

@@ -1,7 +1,6 @@
 import fetch from "cross-fetch";
 import { navigateLogin } from "./navigation";
 import {
-  userCreateResponseTransform,
   userEntityResponseTransform,
   userPositionsResponseTransform,
   providersResponseTransform,
@@ -19,7 +18,7 @@ import {
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
   ownCopyTraderProvidersOptionsResponseTransform,
-  providerFollowersResponseTransform,
+  providerCopiersResponseTransform,
   providerFollowersListResponseTransform,
   exchangeAssetsResponseTransform,
   exchangeDepositAddressResponseTransform,
@@ -51,11 +50,9 @@ import {
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
- * @typedef {import('./tradeApiClient.types').UserCreatePayload} UserCreatePayload
- * @typedef {import('./tradeApiClient.types').UserCreateResponse} UserCreateResponse
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
  * @typedef {import('./tradeApiClient.types').UserRegisterPayload} UserRegisterPayload
- * @typedef {import('./tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('./tradeApiClient.types').UserEntity} UserEntity
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
  * @typedef {import('./tradeApiClient.types').GetProviderPayload} GetProviderPayload
  * @typedef {import('./tradeApiClient.types').GetProviderFollowersPayload} GetProviderFollowersPayload
@@ -107,6 +104,16 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
+ * @typedef {import('./tradeApiClient.types').ProviderPerformanceEntity} ProviderPerformanceEntity
+ * @typedef {import('./tradeApiClient.types').ProviderFollowersEntity} ProviderFollowersEntity
+ * @typedef {import('./tradeApiClient.types').ProviderCopiersEntity} ProviderCopiersEntity
+ * @typedef {import('./tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
+ * @typedef {import('./tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import('./tradeApiClient.types').DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
+ * @typedef {import('./tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
+ * @typedef {import('./tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import('./tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  *
  */
 
@@ -179,7 +186,7 @@ class TradeApiClient {
    *
    * @param {UserLoginPayload} payload User login payload
    *
-   * @returns {Promise<UserLoginResponse>} Promise that resolves user login response
+   * @returns {Promise<UserEntity>} Promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
@@ -191,11 +198,11 @@ class TradeApiClient {
   }
 
   /**
-   * Login a user in Trade API.
+   * Register a user in Trade API.
    *
-   * @param {UserRegisterPayload} payload User login payload
+   * @param {UserRegisterPayload} payload User register payload.
    *
-   * @returns {Promise<UserLoginResponse>} Promise that resolves user login response
+   * @returns {Promise<UserEntity>} Promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
@@ -204,24 +211,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userEntityResponseTransform(responseData);
-  }
-
-  userLogout() {}
-
-  /**
-   * Create user at Zignaly Trade API.
-   *
-   * @param {UserCreatePayload} payload User create payload.
-   *
-   * @returns {Promise<UserCreateResponse>} Promise that resolves user create response.
-   *
-   * @memberof TradeApiClient
-   */
-  async userCreate(payload) {
-    const endpointPath = "/fe/api.php?action=signup";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userCreateResponseTransform(responseData);
   }
 
   /**
@@ -295,10 +284,10 @@ class TradeApiClient {
   }
 
   /**
+   * Get user's exchange connections.
    *
-   *
-   * @param {AuthorizationPayload} payload
-   * @returns
+   * @param {AuthorizationPayload} payload User's exchange connections payload.
+   * @returns {Promise<Array<ExchangeConnectionEntity>>} Promise that resolbves user's exchange connections.
    * @memberof TradeApiClient
    */
 
@@ -310,10 +299,10 @@ class TradeApiClient {
   }
 
   /**
+   * Get user's quick balance summary.
    *
-   *
-   * @param {UserEquityPayload} payload
-   * @returns
+   * @param {UserEquityPayload} payload Get user balance summary payload.
+   * @returns {Promise<UserBalanceEntity>} Promise that resolves user balance entity.
    * @memberof TradeApiClient
    */
 
@@ -325,10 +314,10 @@ class TradeApiClient {
   }
 
   /**
+   * Get user's daily balance for an exchange.
    *
-   *
-   * @param {UserEquityPayload} payload
-   * @returns
+   * @param {UserEquityPayload} payload Get daily balance payload.
+   * @returns {Promise<DefaultDailyBalanceEntity>} Promise that resolves user's daily balance list.
    * @memberof TradeApiClient
    */
 
@@ -455,11 +444,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get provider's data.
    *
-   * @param {GetProviderPayload} payload Get providers stats payload.
+   * @param {GetProviderPayload} payload Get provider's data payload.
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<DefaultProviderGetObject>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -469,6 +458,7 @@ class TradeApiClient {
 
     return providerGetResponseTransform(responseData);
   }
+
   /**
    * @typedef {import('./tradeApiClient.types').ServerTime} ServerTime
    */
@@ -637,7 +627,7 @@ class TradeApiClient {
    *
    * @param {AuthorizationPayload} payload Get providers stats payload.
 
-   * @returns {Promise<*>}
+   * @returns {Promise<Array<ExchangeListEntity>>}
    *
    * @memberof TradeApiClient
    */
@@ -734,27 +724,27 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get providers copiers data.
    *
-   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+   * @param {GetProviderFollowersPayload} payload Get providers copiers payload.
    *
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<Array<ProviderCopiersEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async providerFollowersGet(payload) {
+  async providerCopiersGet(payload) {
     const endpointPath = "/fe/api.php?action=getFollowersChartForProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return providerFollowersResponseTransform(responseData);
+    return providerCopiersResponseTransform(responseData);
   }
 
   /**
-   * Get providers profits stats.
+   * Get providers followers data.
    *
-   * @param {GetProviderFollowersPayload} payload Get providers stats payload.
+   * @param {GetProviderFollowersPayload} payload Get providers followers payload.
    *
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<Array<ProviderFollowersEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -814,10 +804,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get providers yearly performance stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<ProviderPerformanceEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -829,11 +819,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get user profile data.
    *
-   * @param {AuthorizationPayload} payload Get providers stats payload.
+   * @param {AuthorizationPayload} payload User profile payloaad..
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<UserEntity>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -984,7 +974,7 @@ class TradeApiClient {
    * Function to get Management positions.
    *
    * @param {GetProviderFollowersPayload} payload Management poistions payload.
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<Array<ManagementPositionsEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -1219,9 +1209,9 @@ class TradeApiClient {
   }
 
   /**
-   * Function to clone a provider.
+   * Get user exchange assets.
    *
-   * @param {UserExchangeAssetsPayload} payload Clone provider payload.
+   * @param {UserExchangeAssetsPayload} payload Get user exchange assets payload.
    * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1291,6 +1281,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeContractsResponseTransform(responseData);
+  }
+
+  /**
+   * Canel exchange order.
+   *
+   * @param {CancelOrderPayload} payload Cancel exchange order payload.
+   * @returns {Promise<*>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async cancelExchangeOrder(payload) {
+    const endpointPath = "/fe/api.php?action=cancelOrder";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
   }
 }
 

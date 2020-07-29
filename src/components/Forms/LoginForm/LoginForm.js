@@ -17,7 +17,7 @@ import tradeApi from "../../../services/tradeApiClient";
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
- * @typedef {import("../../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
+ * @typedef {import("../../../services/tradeApiClient.types").UserEntity} UserEntity
  *
  */
 
@@ -36,7 +36,7 @@ const LoginForm = () => {
 
   /**
    *
-   * @param {UserLoginResponse} response User login response.
+   * @param {UserEntity} response User login response.
    * @returns {void} None.
    */
   const check2FA = (response) => {

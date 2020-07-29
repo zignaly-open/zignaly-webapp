@@ -9,13 +9,13 @@ import { showErrorAlert } from "../../../store/actions/ui";
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
  * @typedef {import('react').KeyboardEvent} KeyboardEvent
- * @typedef {import('../../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('../../../services/tradeApiClient.types').UserEntity} UserEntity
  */
 
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} onSuccess
- * @property {UserLoginResponse} data
+ * @property {UserEntity} data
  */
 
 /**
