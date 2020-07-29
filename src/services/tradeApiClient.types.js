@@ -89,6 +89,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} PositionGetPayload
+ * @property {string} positionId Position ID to cancel.
+ * @property {string} token Access token.
+ * @property {string} internalExchangeId Exchange connection ID associated to the position.
+ */
+
+/**
  * Payload to update existing position, the size could be increased passing optional parameters.
  *
  * @typedef {Object} UpdatePositionPayload

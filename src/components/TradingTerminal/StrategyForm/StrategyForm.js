@@ -333,8 +333,6 @@ const StrategyForm = (props) => {
       ? composePositionStrategy(draftPosition)
       : {};
 
-    console.log("draftPosition: ", draftPosition);
-
     return assign(
       {
         token: storeSession.tradeApi.accessToken,

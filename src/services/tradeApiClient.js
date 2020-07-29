@@ -45,6 +45,7 @@ import {
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
+ * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
@@ -406,7 +407,7 @@ class TradeApiClient {
   /**
    * Get a position.
    *
-   * @param {PositionActionPayload} payload Position action payload.
+   * @param {PositionGetPayload} payload Position action payload.
 
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
