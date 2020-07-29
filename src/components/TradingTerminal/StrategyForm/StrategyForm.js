@@ -8,11 +8,7 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  POSITION_TYPE_ENTRY,
-  mapEntryTypeToEnum,
-  mapSideToEnum,
-} from "../../../services/tradeApiClient.types";
+import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -244,8 +240,7 @@ const StrategyForm = (props) => {
 
   /**
    * @typedef {Object} PositionStrategyParams
-   * @property {CreatePositionPayload['buyType']} buyType
-   * @property {CreatePositionPayload['buyType']} type
+   * @property {CreatePositionPayload['type']} type
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
@@ -262,7 +257,7 @@ const StrategyForm = (props) => {
   const composePositionStrategy = (draftPosition) => {
     const positionSize = parseFloat(draftPosition.positionSize) || 0;
     const strategy = {
-      buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
+      // buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       type: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
       positionSizeQuote: currentSymbolData.quote,
@@ -299,7 +294,6 @@ const StrategyForm = (props) => {
       pair: `${base}  ${quote}`,
       positionSizeQuote: quote,
       side: mapSideToEnum(draftPosition.entryType),
-      type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,

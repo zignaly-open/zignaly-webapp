@@ -4,16 +4,6 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
- * @type {('entry')}
- */
-export const POSITION_TYPE_ENTRY = "entry";
-
-/**
- * @type {('exit')}
- */
-export const POSITION_TYPE_EXIT = "exit";
-
-/**
  * @type {('LONG')}
  */
 export const POSITION_SIDE_LONG = "LONG";
@@ -48,40 +38,32 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionEntryType
- */
-
-/**
- * @typedef {('entry' | 'exit')} PositionOrderType
+ * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionOrderType
  */
 
 /**
  * @typedef {Object} CreatePositionPayload
- * @property {string} token
- * @property {string} pair
- * @property {number} limitPrice
- * @property {string} positionSizeQuote
- * @property {number} positionSize
- * @property {number} realInvestment
- * @property {PositionOrderType} type
- * @property {PositionEntrySide} side
- * @property {number|boolean} stopLossPercentage
- * @property {number|boolean} buyTTL
- * @property {PositionEntryType} buyType
- * @property {PositionEntryType} type
- * @property {number} buyStopPrice
- * @property {number|boolean} sellByTTL
- * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
- * @property {Array<PositionDCATarget>|boolean} reBuyTargets
- * @property {number|boolean} trailingStopTriggerPercentage
- * @property {number|boolean} trailingStopPercentage
- * @property {number|string} providerId
- * @property {string} providerName
- * @property {string} exchangeName
- * @property {string} exchangeInternalId
- * @property {number} [positionSizePercentage]
- * @property {string} [providerId]
- * @property {string} [providerName]
+ * @property {string} token Authorization token.
+ * @property {string} pair Currency pair i.e. "USDT BTC".
+ * @property {number} limitPrice Order limit price.
+ * @property {string} positionSizeQuote Quote (currency) that represent the position size.
+ * @property {number} positionSize Position size.
+ * @property {number} [realInvestment] Real invested amount excluding the leverage.
+ * @property {PositionEntrySide} side Position side.
+ * @property {number|boolean} stopLossPercentage Stop loss percentage.
+ * @property {number|boolean} buyTTL Entry order time to live expiration.
+ * @property {PositionOrderType} type Entry order type.
+ * @property {number} [buyStopPrice] Entry stop price.
+ * @property {number|boolean} sellByTTL Auto exit time to live.
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
+ * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
+ * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
+ * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
+ * @property {string} providerName Provider name when is a position published for copy trader service.
+ * @property {string} exchangeName Exchange name.
+ * @property {string} internalExchangeId Exchange connection ID.
+ * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
  */
 
 /**
@@ -1209,7 +1191,7 @@ export function mapSideToEnum(entrySide) {
  * Map position entry type to typed value.
  *
  * @param {string} entryType Entry type.
- * @returns {PositionEntryType} Typed value.
+ * @returns {PositionOrderType} Typed value.
  */
 export function mapEntryTypeToEnum(entryType) {
   switch (entryType) {
