@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { navigate } from "gatsby";
 import { Box } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
-import { assign, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
+import { assign, concat, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
@@ -477,7 +477,7 @@ const StrategyForm = (props) => {
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
-  const targetGroupIndexes = range(1, 10, 1);
+  const targetGroupIndexes = concat(range(1, 10, 1), range(1000, 1020, 1));
   const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
