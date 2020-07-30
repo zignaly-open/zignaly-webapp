@@ -46,7 +46,9 @@ const TradingViewHeader = (props) => {
   ) || {
     providerPayableBalance: 0,
     providerConsumedBalance: 0,
+    providerConsumedBalancePercentage: 0,
     providerName: formatMessage({ id: "terminal.provider.manual" }),
+    providerQuote: "",
     providerId: "1",
   };
 
