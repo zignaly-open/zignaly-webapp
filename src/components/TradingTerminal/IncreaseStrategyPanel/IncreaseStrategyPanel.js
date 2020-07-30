@@ -5,16 +5,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import {
-  OutlinedInput,
-  FormControlLabel,
-  FormHelperText,
-  FormControl,
-  RadioGroup,
-  Radio,
-  Switch,
-  Typography,
-} from "@material-ui/core";
+import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
