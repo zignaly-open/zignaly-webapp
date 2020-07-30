@@ -1,36 +1,28 @@
 import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
 import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
+import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import "./ExchangeAccountConnect.scss";
-import { Controller, useForm, useFormContext } from "react-hook-form";
-import CustomSelect from "../../CustomSelect";
+import { useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
-import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
+import { CustomInput } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
-import { LiveTv } from "@material-ui/icons";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
  */
 
 /**
- * @typedef {Object} DefaultProps
- * @property {boolean} create Flag to indicate if the user is creating or connecting an account.
- * @property {boolean} demo Flag to indicate if it's a demo account.
- */
-
-/**
- * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountConnect = ({ create, demo }) => {
+const ExchangeAccountConnect = () => {
   const {
     register,
     control,
@@ -62,28 +54,32 @@ const ExchangeAccountConnect = ({ create, demo }) => {
   const [step, setStep] = useState(1);
   const [tipsExpanded, setTipsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [exchangeType, setExchangeType] = useState(null);
   const internalName = watch("internalName");
-
-  const exchangeType = watch("exchangeType");
 
   if (exchanges) {
     // Filter disabled exchanges and Zignaly
     exchanges = exchanges.filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly");
   }
-  console.log(exchanges);
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
     : null;
 
-  // Create account types options
+  // Account types options
   const typeOptions =
     selectedExchange &&
     selectedExchange.type.map((t) => ({
       val: t,
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
+
+  useEffect(() => {
+    // Set default exchange type on exchange change.
+    if (selectedExchange) {
+      setExchangeType(typeOptions[0].val);
+    }
+  }, [selectedExchange]);
 
   /**
    * @typedef {Object} FormData
@@ -102,12 +98,12 @@ const ExchangeAccountConnect = ({ create, demo }) => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
+    const { internalName, key, secret, password } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
-      exchangeType: _exchangeType,
+      exchangeType,
       key,
       secret,
       ...(password && { password }),
@@ -121,9 +117,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
     tradeApi
       .exchangeAdd(payload)
       .then(() => {
-        setTempMessage(
-          <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
-        );
+        setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
         resetToPath(previousPath);
       })
       .catch((e) => {
@@ -184,9 +178,28 @@ const ExchangeAccountConnect = ({ create, demo }) => {
       <Box className="step2">
         {step >= 2 && selectedExchange && (
           <>
-            <Typography variant="body1" className="bold title">
+            {typeOptions.length && (
+              <>
+                <Typography className="bold title">
+                  <FormattedMessage id="accounts.exchange.type" />
+                </Typography>
+                <ToggleButtonGroup
+                  className="typeButtons"
+                  exclusive
+                  onChange={(e, val) => setExchangeType(val)}
+                  value={exchangeType}
+                >
+                  {typeOptions.map((t) => (
+                    <ToggleButton key={t.val} value={t.val}>
+                      {t.label}
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+              </>
+            )}
+            {/* <Typography variant="body1" className="bold title">
               <FormattedMessage id="accounts.exchange.api" />
-            </Typography>
+            </Typography> */}
             {selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 autoComplete="new-password"
@@ -265,18 +278,6 @@ const ExchangeAccountConnect = ({ create, demo }) => {
           </>
         )}
       </Box>
-      {/* {typeOptions.length > 1 && (
-        <Controller
-          as={CustomSelect}
-          control={control}
-          defaultValue={typeOptions[0].val}
-          label={intl.formatMessage({
-            id: "accounts.exchange.type",
-          })}
-          name="exchangeType"
-          options={typeOptions}
-        />
-      )} */}
     </form>
   );
 };

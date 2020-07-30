@@ -73,6 +73,15 @@
     }
   }
 
+  .typeButtons {
+    margin-bottom: 32px;
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
+
   .step3 {
     flex: 1;
     padding-left: 42px;
