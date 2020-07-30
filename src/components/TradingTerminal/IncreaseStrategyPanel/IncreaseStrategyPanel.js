@@ -77,6 +77,19 @@ const IncreaseStrategyPanel = (props) => {
   const entryStrategy = watch("entryStrategy");
   const lastPrice = watch("lastPrice");
 
+  const isClosed = positionEntity ? positionEntity.closed : false;
+  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
+  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isUpdating = positionEntity ? positionEntity.updating : false;
+  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isDisabled = (isCopy && !isCopyTrader) || isClosed;
+  const isReadOnly = isUpdating || isOpening;
+
+  // Don't render when not granted to increase position.
+  if (isDisabled) {
+    return null;
+  }
+
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -86,7 +99,7 @@ const IncreaseStrategyPanel = (props) => {
         </Typography>
         <input name="lastPrice" ref={register} type="hidden" />
       </Box>
-      {expand && (
+      {expand && !isReadOnly && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           <FormControl className="entryType">
             <HelperLabel

@@ -25,22 +25,13 @@ import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPane
 const SidebarEditPanels = (props) => {
   const { positionEntity, currentSymbolData } = props;
 
-  const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
-
   return (
     <>
       <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      {!isReadOnly && (
-        <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      )}
+      <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
     </>
   );
 };
