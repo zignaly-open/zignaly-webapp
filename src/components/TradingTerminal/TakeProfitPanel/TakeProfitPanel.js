@@ -41,7 +41,7 @@ const TakeProfitPanel = (props) => {
   );
 
   const { clearError, errors, register, setError, setValue, watch } = useFormContext();
-  const defaultCardinality = positionTargetsCardinality || 1;
+  const defaultCardinality = 1;
   const {
     cardinality,
     cardinalityRange,
@@ -53,7 +53,10 @@ const TakeProfitPanel = (props) => {
     handleTargetRemove,
     setTargetPropertyValue,
     simulateInputChangeEvent,
-  } = useTargetGroup("takeProfit", defaultCardinality);
+  } = useTargetGroup(
+    "takeProfit",
+    positionEntity ? positionTargetsCardinality : defaultCardinality,
+  );
 
   // Other panels watched variables to react on changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
