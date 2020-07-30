@@ -325,7 +325,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded && cardinality > 0) {
