@@ -46,10 +46,12 @@ const IncreaseStrategyPanel = (props) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
+    validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { balance, loading } = useAvailableBalance();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
@@ -73,7 +75,6 @@ const IncreaseStrategyPanel = (props) => {
   ];
 
   // Watched inputs that affect components.
-  const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const lastPrice = watch("lastPrice");
 
@@ -84,6 +85,8 @@ const IncreaseStrategyPanel = (props) => {
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isDisabled = (isCopy && !isCopyTrader) || isClosed;
   const isReadOnly = isUpdating || isOpening;
+  const providerAllocatedBalance = 10;
+  const providerConsumedBalance = 20;
 
   // Don't render when not granted to increase position.
   if (isDisabled) {
@@ -99,7 +102,7 @@ const IncreaseStrategyPanel = (props) => {
         </Typography>
         <input name="lastPrice" ref={register} type="hidden" />
       </Box>
-      {expand && !isReadOnly && (
+      {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
           <FormControl className="entryType">
             <HelperLabel
@@ -113,29 +116,16 @@ const IncreaseStrategyPanel = (props) => {
               name="entryStrategy"
             />
           </FormControl>
-          {selectedExchange.exchangeType === "futures" && (
-            <FormControl className="entryType">
-              <RadioGroup aria-label="Entry Type" defaultValue={entryType} name="entryType">
-                <FormControlLabel
-                  control={<Radio />}
-                  inputRef={register}
-                  label={<FormattedMessage id="col.side.long" />}
-                  value="LONG"
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  inputRef={register}
-                  label={<FormattedMessage id="col.side.short" />}
-                  value="SHORT"
-                />
-              </RadioGroup>
-            </FormControl>
-          )}
           {entryStrategy === "stop_limit" && (
             <FormControl>
               <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+                <OutlinedInput
+                  className="outlineInput"
+                  disabled={isReadOnly}
+                  inputRef={register}
+                  name="stopPrice"
+                />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </FormControl>
@@ -147,6 +137,7 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   defaultValue={lastPrice}
+                  disabled={isReadOnly}
                   inputRef={register}
                   name="price"
                   onChange={priceChange}
@@ -164,6 +155,7 @@ const IncreaseStrategyPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
+                  disabled={isReadOnly}
                   inputRef={register}
                   name="realInvestment"
                   onChange={realInvestmentChange}
@@ -181,38 +173,73 @@ const IncreaseStrategyPanel = (props) => {
               </FormHelperText>
             </FormControl>
           )}
-          <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.position.size" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register({
-                  required: formatMessage({ id: "terminal.positionsize.required" }),
-                  validate: validatePositionSize,
-                })}
-                name="positionSize"
-                onChange={positionSizeChange}
-                placeholder={"0"}
+          {!isCopyTrader && (
+            <FormControl>
+              <HelperLabel
+                descriptionId="terminal.stoploss.help"
+                labelId="terminal.position.size"
               />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-            <FormHelperText>
-              <FormattedMessage id="terminal.available" />{" "}
-              {loading ? (
-                <CircularProgress color="primary" size={20} />
-              ) : (
-                <span className="balance">{quoteBalance}</span>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  disabled={isReadOnly}
+                  inputRef={register({
+                    required: formatMessage({ id: "terminal.positionsize.required" }),
+                    validate: validatePositionSize,
+                  })}
+                  name="positionSize"
+                  onChange={positionSizeChange}
+                  placeholder={"0"}
+                />
+                <div className="currencyBox">{symbolData.quote}</div>
+              </Box>
+              <FormHelperText>
+                <FormattedMessage id="terminal.available" />{" "}
+                {loading ? (
+                  <CircularProgress color="primary" size={20} />
+                ) : (
+                  <span className="balance">{quoteBalance}</span>
+                )}
+              </FormHelperText>
+              {errors.positionSize && (
+                <span className="errorText">{errors.positionSize.message}</span>
               )}
-            </FormHelperText>
-            {errors.positionSize && (
-              <span className="errorText">{errors.positionSize.message}</span>
-            )}
-          </FormControl>
+            </FormControl>
+          )}
+          {isCopyTrader && (
+            <FormControl>
+              <HelperLabel
+                descriptionId="terminal.position.sizepercentage.help"
+                labelId="terminal.position.sizepercentage"
+              />
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  disabled={isReadOnly}
+                  inputRef={register({
+                    required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
+                    validate: validatePositionSizePercentage,
+                  })}
+                  name="positionSizePercentage"
+                  onChange={positionSizePercentageChange}
+                  placeholder={"0"}
+                />
+                <div className="currencyBox">%</div>
+              </Box>
+              <FormHelperText>
+                Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
+              </FormHelperText>
+              {errors.positionSizePercentage && (
+                <span className="errorText">{errors.positionSizePercentage.message}</span>
+              )}
+            </FormControl>
+          )}
           <FormControl>
             <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                disabled={isReadOnly}
                 inputRef={register}
                 name="units"
                 onChange={unitsChange}
