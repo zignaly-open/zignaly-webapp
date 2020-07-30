@@ -3,12 +3,12 @@ import { navigateLogin } from "./navigation";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
-  userPositionsResponseTransform,
+  positionsResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
-  userPositionItemTransform,
+  positionItemTransform,
   userEquityResponseTransform,
   quotesResponseTransform,
   basesResponseTransform,
@@ -238,7 +238,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -257,7 +257,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -276,7 +276,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -369,7 +369,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=closePosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
@@ -387,7 +387,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=sellPosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
@@ -405,7 +405,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=cancelBuy";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
@@ -421,7 +421,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getPosition";
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
@@ -1123,7 +1123,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -1138,7 +1138,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**

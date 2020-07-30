@@ -957,28 +957,28 @@ function safeParseFloat(value) {
 }
 
 /**
- * Transform user positions response to typed object collection.
+ * Transform positions response to typed object collection.
  *
  * @param {*} response Trade API positions list response.
  * @returns {UserPositionsCollection} Positions entities collection.
  */
-export function userPositionsResponseTransform(response) {
+export function positionsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of positions.");
   }
 
   return response.map((positionItem) => {
-    return userPositionItemTransform(positionItem);
+    return positionItemTransform(positionItem);
   });
 }
 
 /**
- * Transform API position item to typed object.
+ * Transform Trade API position item to typed PositionEntity object.
  *
- * @param {*} positionItem Trade API position item.
+ * @param {*} positionItem Trade API position item object.
  * @returns {PositionEntity} Position entity.
  */
-export function userPositionItemTransform(positionItem) {
+export function positionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const nowDate = moment();
@@ -3140,7 +3140,7 @@ export function managementPositionsResponseTransform(response) {
     response[item] = response[item].map((positionItem) => {
       /* @ts-ignore */
       positionItem.subPositions = response[item].length - 1;
-      return userPositionItemTransform(positionItem);
+      return positionItemTransform(positionItem);
     });
   });
   return response;
