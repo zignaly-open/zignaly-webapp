@@ -147,13 +147,13 @@ const StopLossPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     const draftPosition = getValues();
-    const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : 0;
+    const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : null;
     const stopLossPercentage =
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (stopLossPercentage === 0) {
+    if (stopLossPercentage === null) {
       setValue("stopLossPercentage", sign);
     } else {
       setValue("stopLossPercentage", `${sign}${newValue}`);
