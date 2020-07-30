@@ -328,7 +328,7 @@ const DCAPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    if (expanded) {
+    if (expanded && cardinality > 0) {
       rebuyPercentageValidations("1");
     }
   };
