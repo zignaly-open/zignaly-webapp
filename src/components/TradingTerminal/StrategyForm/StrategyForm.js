@@ -8,11 +8,7 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  POSITION_TYPE_ENTRY,
-  mapEntryTypeToEnum,
-  mapSideToEnum,
-} from "../../../services/tradeApiClient.types";
+import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -71,6 +67,7 @@ const StrategyForm = (props) => {
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
   const { formatMessage } = useIntl();
+  const { selectedExchange } = storeSettings;
 
   /**
    * @type {Object<String, TVChartLine|null>}
@@ -244,8 +241,7 @@ const StrategyForm = (props) => {
 
   /**
    * @typedef {Object} PositionStrategyParams
-   * @property {CreatePositionPayload['buyType']} buyType
-   * @property {CreatePositionPayload['buyType']} type
+   * @property {CreatePositionPayload['type']} type
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
    * @property {CreatePositionPayload['limitPrice']} limitPrice
@@ -267,7 +263,7 @@ const StrategyForm = (props) => {
       positionSize,
       positionSizeQuote: currentSymbolData.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
-      limitPrice: draftPosition.price || lastPrice,
+      limitPrice: parseFloat(draftPosition.price) || lastPrice,
     };
 
     if (draftPosition.positionSizePercentage) {
@@ -289,7 +285,6 @@ const StrategyForm = (props) => {
    */
   const composePositionPayload = (draftPosition) => {
     const { quote, base } = currentSymbolData;
-    const { selectedExchange } = storeSettings;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
     const buyTTL = parseFloat(draftPosition.entryExpiration);
     const sellTTL = parseFloat(draftPosition.autoclose);
@@ -299,7 +294,6 @@ const StrategyForm = (props) => {
       pair: `${base}  ${quote}`,
       positionSizeQuote: quote,
       side: mapSideToEnum(draftPosition.entryType),
-      type: POSITION_TYPE_ENTRY,
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
@@ -334,13 +328,29 @@ const StrategyForm = (props) => {
    * @returns {UpdatePositionPayload} Update position payload.
    */
   const composeUpdatePositionPayload = (draftPosition) => {
+    const { quote } = currentSymbolData;
     const positionStrategy = draftPosition.positionSize
       ? composePositionStrategy(draftPosition)
       : {};
 
-    return assign(composePositionPayload(draftPosition), positionStrategy, {
-      positionId: positionEntity.positionId,
-    });
+    return assign(
+      {
+        token: storeSession.tradeApi.accessToken,
+        positionSizeQuote: quote,
+        side: mapSideToEnum(draftPosition.entryType),
+        stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
+        takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
+        reBuyTargets: composePositionDcaTargets(draftPosition),
+        trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+        trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+        providerId: 1,
+        providerName: "Manual Trading",
+        internalExchangeId: selectedExchange.internalId,
+        positionId: positionEntity.positionId,
+      },
+      positionStrategy,
+    );
   };
 
   /**

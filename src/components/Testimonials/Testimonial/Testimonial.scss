@@ -3,7 +3,7 @@
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
   box-sizing: border-box;
-  margin: 64px 0;
+  margin: 64px 12px;
   min-height: 268px;
   padding: 20px;
   position: relative;
@@ -22,8 +22,7 @@
     height: 42px;
 
     .time {
-      color: $black2;
-      font-family: "PlexSans-Light";
+      color: $lighterBlack;
       font-size: 14px;
       letter-spacing: 0.53px;
       margin-right: 1rem;
@@ -42,15 +41,14 @@
     margin-top: 16px;
 
     .title {
-      color: $black2;
-      font-family: "PlexSans-Medium";
+      color: $lighterBlack;
       font-size: 21px;
+      font-weight: 700;
       letter-spacing: 0.8px;
       margin: 0;
 
       + p {
-        color: $black2;
-        font-family: "PlexSans-Light";
+        color: $lighterBlack;
         font-size: 16px;
         letter-spacing: 0.61px;
         line-height: 21px;
@@ -70,7 +68,7 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@include media("<=sm") {
   .testimonial {
     .avatar {
       height: 60px;

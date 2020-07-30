@@ -51,19 +51,13 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
     validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData);
-
-  const entryStrategyOptions = [
-    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
-    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
-    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
-    { label: formatMessage({ id: "terminal.strategy.import" }), val: "import" },
-  ];
 
   const leverage = watch("leverage");
   const lastPrice = watch("lastPrice");
@@ -73,6 +67,19 @@ const StrategyPanel = (props) => {
   const providerAllocatedBalance = watch("providerPayableBalance");
   const providerConsumedBalance = watch("providerConsumedBalance");
   const isCopyProvider = providerService && providerService !== "1";
+
+  const entryStrategyOptions = [
+    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
+    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
+  ];
+
+  if (!isCopyProvider) {
+    entryStrategyOptions.push({
+      label: formatMessage({ id: "terminal.strategy.import" }),
+      val: "import",
+    });
+  }
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -114,7 +121,7 @@ const StrategyPanel = (props) => {
             />
           </FormControl>
         )}
-        {entryStrategy === "stop-limit" && (
+        {entryStrategy === "stop_limit" && (
           <FormControl>
             <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
@@ -210,6 +217,7 @@ const StrategyPanel = (props) => {
                   validate: validatePositionSizePercentage,
                 })}
                 name="positionSizePercentage"
+                onChange={positionSizePercentageChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">%</div>
@@ -217,8 +225,8 @@ const StrategyPanel = (props) => {
             <FormHelperText>
               Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
             </FormHelperText>
-            {errors.positionSize && (
-              <span className="errorText">{errors.positionSize.message}</span>
+            {errors.positionSizePercentage && (
+              <span className="errorText">{errors.positionSizePercentage.message}</span>
             )}
           </FormControl>
         )}

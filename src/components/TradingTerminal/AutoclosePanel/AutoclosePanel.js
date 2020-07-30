@@ -4,6 +4,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import "./AutoclosePanel.scss";
 
 /**
@@ -26,7 +27,7 @@ const AutoclosePanel = () => {
     const autoclose = parseFloat(draftPosition.autoclose);
 
     clearError("autoclose");
-    if (isNaN(autoclose) || autoclose <= 0) {
+    if (!isValidIntOrFloat(draftPosition.autoclose) || autoclose <= 0) {
       setError("autoclose", "error", formatMessage({ id: "terminal.autoclose.limit.zero" }));
     }
   };

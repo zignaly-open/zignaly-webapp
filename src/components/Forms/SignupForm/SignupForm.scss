@@ -9,7 +9,7 @@
       width: 300px;
 
       .termsText {
-        color: $black2;
+        color: $lighterBlack;
       }
     }
 
@@ -23,12 +23,12 @@
   }
 
   .customLabel {
-    color: $black2;
+    color: $lighterBlack;
   }
 
   .customInput {
     input {
-      color: $black2;
+      color: $lighterBlack;
     }
 
     svg {
@@ -56,13 +56,13 @@
 
   .errorText {
     color: $red;
-    font-family: "PlexSans-Regular";
     font-size: 11px;
+    font-weight: 400;
     margin-bottom: 40px;
 
     &.bold {
-      font-family: "PlexSans-Medium";
       font-size: 13px;
+      font-weight: 500;
     }
   }
 
@@ -72,12 +72,12 @@
     }
 
     .text {
-      color: $black2;
+      color: $lighterBlack;
     }
 
     .link {
       align-self: center;
-      font-family: "PlexSans-Bold";
+      font-weight: 700;
       margin: 0 7px;
       text-transform: uppercase;
     }

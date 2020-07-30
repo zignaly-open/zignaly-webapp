@@ -9,6 +9,7 @@ import AstronautImage from "../../images/404/astronaut.svg";
 import PlanetImage from "../../images/404/planet.svg";
 import AnimalImage from "../../images/404/animal.svg";
 import CustomButton from "../../components/CustomButton";
+import { withPrefix } from "gatsby";
 
 const NotFound = () => {
   const intl = useIntl();
@@ -39,7 +40,7 @@ const NotFound = () => {
         <FormattedMessage id="notfound.desc" />
       </Typography>
       <img src={AnimalImage} />
-      <CustomButton className="bgPurple" href="/dashboard/positions">
+      <CustomButton className="bgPurple" href={withPrefix("dashboard/positions")}>
         <FormattedMessage id="notfound.home" />
       </CustomButton>
       <Typography className="code" variant="h3">

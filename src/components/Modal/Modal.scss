@@ -58,3 +58,15 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .modal {
+    background: $lightestBlack;
+
+    [class^="MuiPaper"],
+    [class^="MuiTableCell"] {
+      background: transparent;
+      border-color: $lighterBlackBorder;
+    }
+  }
+}

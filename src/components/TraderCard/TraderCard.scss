@@ -1,5 +1,5 @@
 .traderCard {
-  background: $white;
+  background: var(--background-color);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
@@ -11,11 +11,5 @@
 @include media("<=sm") {
   .traderCard {
     margin: 30px 0 0;
-  }
-}
-
-[data-theme="dark"] {
-  .traderCard {
-    background: $lightBlackBackground;
   }
 }

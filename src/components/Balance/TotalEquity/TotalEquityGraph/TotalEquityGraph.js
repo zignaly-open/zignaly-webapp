@@ -36,7 +36,7 @@ const TotalEquityGraph = ({ list, modal }) => {
     backgroundColor: "",
     borderColor: darkStyle ? "#460088" : "#a946f6",
     gradientColor1: darkStyle ? (modal ? "#191328" : "#170823") : "#9c39eb",
-    gradientColor2: darkStyle ? (modal ? colors.black2 : "#12111d") : "#fafafa",
+    gradientColor2: darkStyle ? (modal ? colors.lightestBlack : colors.lightBlack) : "#fafafa",
   };
 
   const prepareChartData = () => {

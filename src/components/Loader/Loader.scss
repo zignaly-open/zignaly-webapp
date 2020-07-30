@@ -31,12 +31,12 @@
     }
 
     &.light {
-      background: $black2;
-      color: $black2;
+      background: $lighterBlack;
+      color: $lighterBlack;
 
       &::before,
       &::after {
-        background: $black2;
+        background: $lighterBlack;
       }
     }
 

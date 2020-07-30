@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { size, isBoolean } from "lodash";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -40,7 +40,7 @@ const TradingViewHeader = (props) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    tradeApi.userOwnCopyTradersProvidersOptions(payload).then((data) => {
+    tradeApi.ownedCopyTradersProvidersOptions(payload).then((data) => {
       if (Array.isArray(data)) {
         // Digest providers data to handle translation.
         const digestedProviders = data.map((provider) => {
@@ -97,7 +97,9 @@ const TradingViewHeader = (props) => {
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
       <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
-        <FormattedMessage id="terminal.browsecoins" />
+        <Typography variant="body1">
+          <FormattedMessage id="terminal.browsecoins" />
+        </Typography>
         <CustomSelect
           label=""
           onChange={handleSymbolChange}
@@ -113,7 +115,9 @@ const TradingViewHeader = (props) => {
           display="flex"
           flexDirection="column"
         >
-          <FormattedMessage id="terminal.providers" />
+          <Typography variant="body1">
+            <FormattedMessage id="terminal.providers" />
+          </Typography>
           <Controller
             as={<CustomSelect label="" onChange={() => {}} options={providerOptions} />}
             control={control}

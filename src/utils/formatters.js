@@ -19,14 +19,20 @@ export const formatNumber = (value, precision = 8) => {
  *
  * @param {string} value String numeric value.
  * @param {string} [separator=" "] Thousands separator character.
+ * @param {number} [precision=2] Fractional digits precision.
  * @returns {string} String numeric value with added thousands separator chars.
  */
-export const addThousandsSeparator = (value, separator = " ") => {
+export const addThousandsSeparator = (value, separator = " ", precision = 2) => {
   const valueNumber = parseFloat(value);
 
   if (valueNumber) {
-    let finalValue = String(valueNumber.toLocaleString("en-US"));
-    return finalValue.replace(",", separator);
+    let finalValue = String(
+      valueNumber.toLocaleString("en-US", {
+        minimumFractionDigits: precision,
+        maximumFractionDigits: precision,
+      }),
+    );
+    return finalValue.replace(/,/g, separator);
   }
 
   return "";
@@ -37,25 +43,23 @@ export const addThousandsSeparator = (value, separator = " ") => {
  *
  * Numbers greater than 1 show 2 digits precision, floats show 8 digits precision.
  *
- * @param {number} price Price to format.
- * @param {string} nanDisplay Value to display when price is NaN.
- * @param {string} thousandSeparator Character to use for thousand separator.
+ * @param {number|string} price Price to format.
+ * @param {string} [nanDisplay] Value to display when price is NaN.
+ * @param {string} [thousandSeparator] Character to use for thousand separator.
  *
  * @returns {string} Formatter price for display.
  */
 export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") => {
-  if (isNaN(price)) {
+  const priceFloat = typeof price === "string" ? parseFloat(price) : price;
+  if (isNaN(priceFloat)) {
     return nanDisplay;
   }
 
-  let formattedPrice = price.toFixed(8);
-  if (price > 1 || price < -1) {
-    formattedPrice = price.toFixed(2);
+  let precision = 8;
+  let formattedPrice = priceFloat.toFixed(precision);
+  if (priceFloat > 1 || priceFloat < -1) {
+    precision = 2;
   }
 
-  if (thousandSeparator) {
-    return addThousandsSeparator(formattedPrice);
-  }
-
-  return formattedPrice;
+  return addThousandsSeparator(formattedPrice, thousandSeparator, precision);
 };

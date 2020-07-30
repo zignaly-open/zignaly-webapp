@@ -6,13 +6,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    font-family: "PlexSans-Regular";
+    font-weight: 400;
     justify-content: flex-start;
     margin-right: 40px;
     text-transform: capitalize;
 
     b {
-      font-family: "PlexSans-Bold";
+      font-weight: 700;
       margin-left: 5px;
     }
 
@@ -83,7 +83,7 @@
       }
 
       b {
-        font-family: "PlexSans-Bold";
+        font-weight: 700;
         margin-left: 5px;
       }
 

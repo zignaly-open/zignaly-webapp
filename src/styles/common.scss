@@ -9,9 +9,29 @@ body {
   margin: 0;
 }
 
+* {
+  /* Hide scrollbar on Edge */
+  -ms-overflow-style: none;
+  /* Force thin scrollbar on Firefox */
+  scrollbar-width: thin;
+}
+
+[data-os="win"] {
+  /* Custom scrollbar for Windows (Chrome) */
+  ::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+  }
+}
+
 .boxTitle {
-  font-family: "PlexSans-Medium";
   font-size: 24px;
+  font-weight: 500;
   line-height: 24px;
   margin: 0;
 }
@@ -39,7 +59,7 @@ body {
   }
 
   .option {
-    font-family: "PlexSans-Bold";
+    font-weight: 700;
   }
 }
 
@@ -52,8 +72,8 @@ body {
 }
 
 .customLabel {
-  font-family: "PlexSans-Regular";
   font-size: 16px;
+  font-weight: 400;
   margin-bottom: 12px;
 
   &.dark {
@@ -134,24 +154,24 @@ body {
 }
 
 .callout1 {
-  font-family: "PlexSans-Regular";
   font-size: 14px;
+  font-weight: 400;
   letter-spacing: 0.53px;
   line-height: 1.43;
   margin: 0;
 }
 
 .callout2 {
-  font-family: "PlexSans-Bold";
   font-size: 14px;
+  font-weight: 700;
   letter-spacing: 0.53px;
   line-height: 1.43;
   margin: 0;
 }
 
 %body1 {
-  font-family: "PlexSans-Regular";
   font-size: 16px;
+  font-weight: 400;
   letter-spacing: 0.61px;
   line-height: 1.31;
   margin: 0;
@@ -163,19 +183,19 @@ body {
 
 .body2 {
   @extend %body1;
-  font-family: "PlexSans-SemiBold";
+  font-weight: 600;
 }
 
 .subHeader {
-  font-family: "PlexSans-Regular";
   font-size: 18px;
+  font-weight: 400;
   font-weight: normal;
   letter-spacing: 0.68px;
   line-height: 1.44;
 }
 
 .bold {
-  font-family: "PlexSans-SemiBold";
+  font-weight: 600;
 }
 
 .userMenu {
@@ -247,7 +267,7 @@ body {
   }
 
   .name {
-    font-family: "PlexSans-Medium";
+    font-weight: 500;
     margin-right: 5px;
     text-transform: capitalize;
   }
@@ -271,11 +291,19 @@ table {
 }
 
 [data-theme="dark"] {
+  &[data-os="win"] {
+    ::-webkit-scrollbar-thumb {
+      background: #909090;
+    }
+  }
+
   .iconPurple {
     filter: brightness(130%);
   }
 
   .exchangeListItem {
+    background-color: $lightestBlack;
+
     &.selected {
       background-image: $purpleDarkGradient;
     }
@@ -283,6 +311,6 @@ table {
 }
 
 .positionLink {
-  color: $purple;
+  color: var(--purple);
   cursor: pointer;
 }

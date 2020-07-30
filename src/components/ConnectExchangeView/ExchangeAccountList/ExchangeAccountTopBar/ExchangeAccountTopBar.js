@@ -7,7 +7,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 import ExchangeIcon from "../../../ExchangeIcon";
 import CustomButton from "../../../CustomButton";
 import { useTheme } from "@material-ui/core/styles";
-import { Settings, Sunset, Sunrise, Repeat } from "react-feather";
+import { Settings, Sunset, Sunrise, Repeat, Layers } from "react-feather";
 import CustomToolip from "../../../CustomTooltip";
 
 /**
@@ -54,15 +54,17 @@ const ExchangeAccountTopBar = ({ account }) => {
         </Box>
       </Box>
       <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
-        <CustomButton className="textDefault" onClick={() => navigateToPath("orders", account)}>
-          {isMobile ? (
-            <CustomToolip title={<FormattedMessage id="accounts.orders" />}>
-              <Settings />
-            </CustomToolip>
-          ) : (
-            <FormattedMessage id="accounts.orders" />
-          )}
-        </CustomButton>
+        {!account.paperTrading && (
+          <CustomButton className="textDefault" onClick={() => navigateToPath("orders", account)}>
+            {isMobile ? (
+              <CustomToolip title={<FormattedMessage id="accounts.orders" />}>
+                <Layers />
+              </CustomToolip>
+            ) : (
+              <FormattedMessage id="accounts.orders" />
+            )}
+          </CustomButton>
+        )}
         <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
           {isMobile ? (
             <CustomToolip title={<FormattedMessage id="accounts.settings" />}>

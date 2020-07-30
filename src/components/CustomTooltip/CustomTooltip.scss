@@ -4,11 +4,11 @@
     text-align: left;
 
     .label {
-      font-family: "PlexSans-Regular";
+      font-weight: 400;
       margin-right: 5px;
 
       + span {
-        font-family: "PlexSans-Bold";
+        font-weight: 700;
       }
     }
   }
@@ -32,8 +32,8 @@
 
 .customTooltip {
   @extend %body1;
-  background-color: $tooltipBackground;
-  border: solid 1px $darkBorderColor;
+  background-color: $lightestBlack;
+  border: 1px solid $lightBlackBorder;
   color: $tooltipText;
   padding: 16px;
   text-align: center;

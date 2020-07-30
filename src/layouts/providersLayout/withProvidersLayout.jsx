@@ -73,7 +73,7 @@ const withProvidersLayout = (Component) => {
         </Hidden>
         <Box
           alignItems="center"
-          bgcolor="grid.main"
+          bgcolor="grid.content"
           className="settings"
           display="flex"
           flexDirection="row"

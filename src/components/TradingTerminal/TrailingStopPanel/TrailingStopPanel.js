@@ -5,6 +5,7 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
+import { isValidIntOrFloat } from "../../../utils/validators";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
@@ -38,14 +39,13 @@ const TrailingStopPanel = (props) => {
   const { expanded, expandClass, expandableControl } = useExpandable(existsTrailingStop);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
-  const trailingStopDistance = parseFloat(watch("trailingStopDistance", initTrailingStopDistance));
+  const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
+  const trailingStopDistance = parseFloat(trailingStopDistanceRaw);
   const initTrailingStopPercentage = positionEntity
     ? positionEntity.trailingStopTriggerPercentage
     : 0;
-  const trailingStopPercentage = parseFloat(
-    watch("trailingStopPercentage", initTrailingStopPercentage),
-  );
-
+  const trailingStopPercentageRaw = watch("trailingStopPercentage", initTrailingStopPercentage);
+  const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -56,7 +56,7 @@ const TrailingStopPanel = (props) => {
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
-  const entryType = watch("entryType");
+  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
 
   const getFieldsDisabledStatus = () => {
@@ -85,7 +85,7 @@ const TrailingStopPanel = (props) => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
 
-    if (isNaN(trailingStopDistance) || compareFn(trailingStopDistance, 0)) {
+    if (!isValidIntOrFloat(trailingStopDistanceRaw) || compareFn(trailingStopDistance, 0)) {
       setError(
         "trailingStopDistance",
         "error",
@@ -112,7 +112,7 @@ const TrailingStopPanel = (props) => {
     const compareFn = entryType === "LONG" ? lt : gt;
 
     if (draftPosition.trailingStopPercentage !== "-") {
-      if (isNaN(trailingStopPercentage) || compareFn(trailingStopPercentage, 0)) {
+      if (!isValidIntOrFloat(trailingStopPercentageRaw) || compareFn(trailingStopPercentage, 0)) {
         setError(
           "trailingStopPercentage",
           "error",
@@ -154,7 +154,7 @@ const TrailingStopPanel = (props) => {
     const trailingStopPrice = parseFloat(draftPosition.trailingStopPrice);
     const priceDiff = trailingStopPrice - price;
 
-    if (isNaN(trailingStopPrice) || trailingStopPrice < 0) {
+    if (!isValidIntOrFloat(draftPosition.trailingStopPrice) || trailingStopPrice < 0) {
       setError(
         "trailingStopPrice",
         "error",
@@ -214,7 +214,7 @@ const TrailingStopPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
 
   /**
    * Display property errors.

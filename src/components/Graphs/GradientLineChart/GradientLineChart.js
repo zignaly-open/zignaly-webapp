@@ -109,7 +109,7 @@ const LineChart = (props) => {
         {
           ticks: {
             display: false,
-            fontFamily: "PlexSans-Bold",
+            fontStyle: "bold",
           },
           gridLines: {
             display: false,

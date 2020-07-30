@@ -8,7 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @typedef {Object} DefaultProps
  * @property {Boolean} state
  * @property {DialogProps["onClose"]} onClose
- * @property {Boolean} persist
+ * @property {Boolean} [persist]
  * @property {Object} children
  * @property {String} size
  */
@@ -20,7 +20,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @returns {JSX.Element} Modal element.
  */
 const GenericModal = (props) => {
-  const { state, onClose, persist, children, size } = props;
+  const { state, onClose, persist = false, children, size } = props;
   const fullScreen = size === "fullscreen";
 
   return (
@@ -32,9 +32,10 @@ const GenericModal = (props) => {
       maxWidth={fullScreen ? false : "lg"}
       onClose={onClose}
       open={state}
+      //   keepMounted={fullScreen}
     >
       {/* @ts-ignore */}
-      {!fullScreen && !persist && <CloseIcon className="closeIcon" onClick={onClose} />}
+      {!fullScreen && !fullScreen && <CloseIcon className="closeIcon" onClick={onClose} />}
       {children}
     </Dialog>
   );

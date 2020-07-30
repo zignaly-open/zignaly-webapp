@@ -17,6 +17,7 @@ import { FormattedMessage } from "react-intl";
 import { IconButton } from "@material-ui/core";
 import { Tooltip } from "@material-ui/core";
 import { Box } from "@material-ui/core";
+import { store } from "../store/store.js";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -351,7 +352,16 @@ function isEditView(position) {
  * @returns {JSX.Element} Composed JSX element.
  */
 export function composeAllActionButtons(position, confirmActionHandler) {
-  const { isCopyTrading, isCopyTrader, closed, status, updating } = position;
+  const { isCopyTrading, isCopyTrader, closed, providerOwnerUserId, status, updating } = position;
+
+  /**
+   * @typedef {import("../store/initialState").DefaultState} DefaultStateType
+   * @type {DefaultStateType}
+   */
+  // @ts-ignore
+  const storeState = store.getState();
+  const currentUserId = storeState.user ? storeState.user.userData.userId : "";
+  const isProviderOwner = providerOwnerUserId === currentUserId;
   let updatingMessageId = "terminal.warning.updating";
   if (status === 1) {
     updatingMessageId = "terminal.warning.entering";
@@ -359,10 +369,20 @@ export function composeAllActionButtons(position, confirmActionHandler) {
     updatingMessageId = "terminal.warning.exiting";
   }
 
+  let exitIconTitle = <FormattedMessage id="dashboard.positions.icon.exit" />;
+  if (status > 9) {
+    exitIconTitle = <FormattedMessage id="dashboard.positions.icon.exiting" />;
+  }
+
   return (
     <div className="actions">
       {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="View Position">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.positions.icon.view" />}
+        >
           <IconButton
             className="iconPurple"
             data-position-id={position.positionId}
@@ -373,7 +393,12 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Edit Position">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.positions.icon.edit" />}
+        >
           <IconButton
             className="iconPurple"
             data-position-id={position.positionId}
@@ -383,13 +408,8 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           </IconButton>
         </Tooltip>
       )}
-      {(!isCopyTrading || isCopyTrader) && !closed && !updating && status !== 1 && (
-        <Tooltip
-          arrow
-          enterTouchDelay={50}
-          placement="left-end"
-          title={`${status > 9 ? "Exiting Position" : "Exit Position"}`}
-        >
+      {(!isCopyTrading || isCopyTrader || isProviderOwner) && !closed && !updating && status !== 1 && (
+        <Tooltip arrow enterTouchDelay={50} placement="left-end" title={exitIconTitle}>
           <div>
             <IconButton
               className="iconPurple"
@@ -404,7 +424,12 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         </Tooltip>
       )}
       {!updating && status === 1 && (
-        <Tooltip arrow enterTouchDelay={50} placement="left-end" title="Cancel entry">
+        <Tooltip
+          arrow
+          enterTouchDelay={50}
+          placement="left-end"
+          title={<FormattedMessage id="dashboard.positions.icon.abort" />}
+        >
           <IconButton
             className="iconPurple"
             data-action={"abort"}

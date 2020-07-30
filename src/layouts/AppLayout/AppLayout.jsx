@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef, useLayoutEffect } from "react";
 import { compose } from "recompose";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
@@ -31,9 +31,16 @@ const AppLayout = (props) => {
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
   }, [storeSettings.darkStyle]);
+
+  useLayoutEffect(() => {
+    if (window.navigator.userAgent.includes("Windows")) {
+      // Custom scrollbar on Windows
+      document.documentElement.setAttribute("data-os", "win");
+    }
+  }, []);
 
   const hash = typeof window !== "undefined" ? window.location.hash : "";
   useEffect(() => {

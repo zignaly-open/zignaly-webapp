@@ -142,6 +142,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         return order === "asc" ? res : -res;
       });
     },
+    elevation: 1,
     ...customOptions,
   };
 
@@ -166,7 +167,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             root: {
               // body2
               fontSize: "16px",
-              fontFamily: "PlexSans-SemiBold",
+              fontWeight: 600,
               lineHeight: 1.31,
               letterSpacing: "0.61px",
             },
@@ -175,12 +176,12 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             root: {
               // footnote
               fontSize: "11px",
-              fontFamily: "PlexSans-Bold",
+              fontWeight: 700,
               textTransform: "uppercase",
               opacity: "0.6",
               lineHeight: 1.45,
               letterSpacing: "0.42px",
-              minWidth: "112px",
+              //   minWidth: "100px",
               padding: "12px",
             },
           },
@@ -190,7 +191,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
             },
             stackedCommon: {
               fontSize: "14px",
-              fontFamily: "PlexSans-SemiBold",
+              fontWeight: 600,
               minWidth: "80px",
               padding: "12px",
               whiteSpace: "nowrap",

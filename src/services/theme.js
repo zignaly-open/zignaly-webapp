@@ -14,10 +14,10 @@ import PlexMonoMediumttf from "../styles/fonts/Mono/IBMPlexMono-Medium.ttf";
  * @type {CSSProperties["@font-face"]} PlexMonoBold
  */
 const PlexMonoBold = {
-  fontFamily: "PlexMono-Bold",
+  fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 700,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoBoldttf}) format('woff2')
@@ -29,10 +29,10 @@ const PlexMonoBold = {
  * @type {CSSProperties["@font-face"]} PlexMonoMedium
  */
 const PlexMonoMedium = {
-  fontFamily: "PlexMono-Medium",
+  fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 600,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoMediumttf}) format('woff2')
@@ -44,10 +44,10 @@ const PlexMonoMedium = {
  * @type {CSSProperties["@font-face"]} PlexSansBold
  */
 const PlexSansBold = {
-  fontFamily: "PlexSans-Bold",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 700,
   src: `
     local('PlesSans-Bold'),
     url(${PlexSansBoldttf}) format('woff2')
@@ -58,10 +58,10 @@ const PlexSansBold = {
  * @type {CSSProperties["@font-face"]} PlexSansSemiBold
  */
 const PlexSansSemiBold = {
-  fontFamily: "PlexSans-SemiBold",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 600,
   src: `
     local('PlesSans-SemiBold'),
     url(${PlexSansSemiBoldttf}) format('woff2')
@@ -73,10 +73,9 @@ const PlexSansSemiBold = {
  * @type {CSSProperties["@font-face"]} PlexSansMedium
  */
 const PlexSansMedium = {
-  fontFamily: "PlexSans-Medium",
+  fontWeight: 500,
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
   src: `
     local('PlesSans-Medium'),
     url(${PlexSansMediumttf}) format('woff2')
@@ -87,7 +86,7 @@ const PlexSansMedium = {
  * @type {CSSProperties["@font-face"]} PlexSansRegular
  */
 const PlexSansRegular = {
-  fontFamily: "PlexSans-Regular",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
@@ -101,10 +100,10 @@ const PlexSansRegular = {
  * @type {CSSProperties["@font-face"]} PlexSansLight
  */
 const PlexSansLight = {
-  fontFamily: "PlexSans-Light",
+  fontFamily: "PlexSans",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 400,
+  fontWeight: 300,
   src: `
     local('PlesSans-Light'),
     url(${PlexSansLightttf}) format('woff2')
@@ -112,23 +111,24 @@ const PlexSansLight = {
 };
 
 export const colors = {
-  black2: "#1b1b2c",
   black: "#191927",
-  blackBackground: "#12111d",
+  lightBlack: "#151521",
+  lighterBlack: "#1b1b2c",
+  lightestBlack: "#27273F",
+  borderColor: "rgba(0, 0, 0, 0.1)",
+  lighterBlackBorder: "#1c1a27",
+  lightBlackBorder: "rgba(64, 57, 70, 0.37)",
   blackTooltip: "#1b1b25",
   darkGrey: "#808080",
   blue: "#017aff",
   green: "#08a441",
   red: "#b52a00",
   yellow: "#f6ad3f",
-  lightBlack: "#27273F",
-  lightBlackBackground: "#151521",
   offWhite: "#fbfafc",
   purple: "#770fc8",
   purpleLight: "#a946f6",
   white: "#ffffff",
-  borderColor: "rgba(0, 0, 0, 0.1)",
-  darkBorderColor: "#1c1a27",
+  lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
 /**
@@ -170,12 +170,12 @@ const theme = (darkStyle) => {
   return {
     palette: {
       background: {
-        default: darkStyle ? colors.blackBackground : colors.offWhite,
-        paper: darkStyle ? colors.lightBlackBackground : colors.white,
+        default: darkStyle ? colors.lightBlack : colors.offWhite,
+        paper: darkStyle ? colors.lighterBlack : colors.white,
       },
       grid: {
-        main: darkStyle ? colors.lightBlack : colors.white,
-        content: darkStyle ? colors.lightBlackBackground : colors.white,
+        main: darkStyle ? colors.lighterBlack : colors.white,
+        content: darkStyle ? colors.lighterBlack : colors.white,
       },
       primary: {
         main: colors.purple,
@@ -184,7 +184,7 @@ const theme = (darkStyle) => {
         main: colors.purpleLight,
       },
       text: {
-        primary: darkStyle ? colors.white : colors.black,
+        primary: darkStyle ? colors.lightWhite : colors.black,
       },
       type: darkStyle ? "dark" : "light",
     },
@@ -192,7 +192,7 @@ const theme = (darkStyle) => {
       h1: {
         // this is for page title eg "Dashboard" (Large Title)
         fontSize: "33px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.21,
         letterSpacing: "1.25px",
@@ -200,7 +200,7 @@ const theme = (darkStyle) => {
       h3: {
         // this is for titles inside components eg: "Total Equity" (Title 2/3)
         fontSize: "21px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.24,
         letterSpacing: "0.8px",
@@ -208,7 +208,7 @@ const theme = (darkStyle) => {
       h4: {
         // this is sub headings eg "Available", "Invested" inside crypto composition (Body 1/2)
         fontSize: "16px",
-        fontFamily: "PlexSans-SemiBold",
+        fontWeight: 600,
         lineHeight: 1.31,
         letterSpacing: "0.61px",
       },
@@ -216,7 +216,7 @@ const theme = (darkStyle) => {
         // for BTC counts inside Available Balance and Total Equity (Number 1/2)
         fontSize: "14px",
         // fontFamily: "PlexMono-Medium",
-        fontFamily: "PlexSans-Medium",
+        fontWeight: 500,
         textTransform: "capitalize",
         lineHeight: 1.5,
         letterSpacing: "0.53px",
@@ -224,7 +224,7 @@ const theme = (darkStyle) => {
       subtitle1: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Footnote)
         fontSize: "11px",
-        fontFamily: "PlexSans-Bold",
+        fontWeight: 700,
         lineHeight: 1.45,
         letterSpacing: ".42px",
         textTransform: "uppercase",
@@ -233,7 +233,7 @@ const theme = (darkStyle) => {
       subtitle2: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Caption 1)
         fontSize: "12px",
-        fontFamily: "PlexSans-Light",
+        fontWeight: 300,
         textTransform: "capitalize",
         lineHeight: 1.08,
         letterSpacing: "0.46px",
@@ -241,7 +241,7 @@ const theme = (darkStyle) => {
       h6: {
         // this is for sidebar link but we can use it anywhere else as well (Callout 2)
         fontSize: "14px",
-        fontFamily: "PlexSans-SemiBold",
+        fontWeight: 600,
         textTransform: "capitalize",
         lineHeight: 1.43,
         letterSpacing: "0.53px",
@@ -249,14 +249,14 @@ const theme = (darkStyle) => {
       caption: {
         // this is for sidebar link but we can use it anywhere else as well (Callout 1)
         fontSize: "14px",
-        fontFamily: "PlexSans-Regular",
+        fontWeight: 400,
         textTransform: "capitalize",
         lineHeight: 1.43,
         letterSpacing: "0.53px",
       },
       body1: {
         fontSize: "16px",
-        fontFamily: "PlexSans-Regular",
+        fontWeight: 400,
         letterSpacing: "0.61px",
         lineHeight: 1.31,
       },
@@ -284,8 +284,8 @@ const theme = (darkStyle) => {
       },
       MuiToggleButton: {
         root: {
-          color: colors.purple,
-          backgroundColor: darkStyle ? colors.lightBlack : colors.white,
+          color: darkStyle ? colors.purpleLight : colors.purple,
+          backgroundColor: darkStyle ? colors.lightestBlack : colors.white,
           borderColor: colors.purple,
           "&$selected": {
             color: colors.white,
@@ -315,12 +315,18 @@ const theme = (darkStyle) => {
       },
       MuiDialog: {
         paper: {
-          backgroundColor: darkStyle ? colors.black2 : colors.offWhite,
+          backgroundColor: darkStyle ? colors.lighterBlack : colors.offWhite,
         },
       },
       MuiTableCell: {
         root: {
-          borderBottom: `1px solid ${darkStyle ? colors.darkBorderColor : colors.borderColor}`,
+          borderBottom: `1px solid ${darkStyle ? colors.lighterBlackBorder : colors.borderColor}`,
+        },
+      },
+      MuiPaper: {
+        elevation1: {
+          boxShadow: darkStyle ? "none" : "0 2px 8px 0 rgba(64, 34, 95, 0.2);",
+          border: darkStyle ? `1px solid ${colors.lightBlackBorder}` : "none",
         },
       },
     },

@@ -1,13 +1,15 @@
 .loginHeader {
-  position: relative;
-  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 12px;
 
   .headerImage {
     background-image: url("../../../images/login/group.png");
     background-size: cover;
     height: 624px;
+    left: 0;
     position: absolute;
-    width: 100%;
+    right: 0;
 
     &::after {
       border-color: transparent transparent $white;
@@ -22,11 +24,6 @@
     }
   }
 
-  .headerRow {
-    max-width: 1200px;
-    width: 100%;
-  }
-
   .tagLineBox {
     height: 300px;
     margin-top: 150px;
@@ -39,7 +36,6 @@
 
     .tagLine {
       color: $white;
-      font-family: "PlexSans-Bold";
       font-size: 37px;
       line-height: 1.2;
       margin-top: 32px;
@@ -48,7 +44,6 @@
 
     .slogan {
       color: $white;
-      font-family: "PlexSans-Light";
       font-size: 18px;
       margin-top: 16px;
       width: 100%;
@@ -60,11 +55,6 @@
   .loginHeader {
     flex-direction: column;
     position: relative;
-
-    .headerRow {
-      flex-wrap: wrap;
-      width: 100%;
-    }
 
     .headerImage {
       height: 250px;
@@ -97,22 +87,6 @@
         margin-top: 40px;
         width: 100%;
       }
-    }
-  }
-}
-
-@include media(">lg", "<=xl") {
-  .loginHeader {
-    .headerRow {
-      width: calc(100% - 464px);
-    }
-  }
-}
-
-@include media(">xl") {
-  .loginHeader {
-    .headerRow {
-      width: calc(100% - 664px);
     }
   }
 }

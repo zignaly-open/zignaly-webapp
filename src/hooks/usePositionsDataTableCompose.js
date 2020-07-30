@@ -7,7 +7,9 @@ import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { composeAllActionButtons } from "../utils/composePositionsDataTable";
+import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -53,6 +55,9 @@ import { Box } from "@material-ui/core";
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler) {
+  const storeUserData = useStoreUserData();
+  const { formatMessage } = useIntl();
+
   /**
    * Compose provider icon element for a given position.
    *
@@ -210,7 +215,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose position quote size for a given position.
+   * Compose real investment for a given position.
    *
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
@@ -220,6 +225,21 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         <span className="symbol">{position.quote}</span> {formatPrice(position.realInvestment)}
+      </>
+    );
+  }
+
+  /**
+   * Compose invested amount for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderInvested(dataIndex) {
+    const position = positions[dataIndex];
+    return (
+      <>
+        <span className="symbol">{position.investedQuote}</span> {formatPrice(position.invested)}
       </>
     );
   }
@@ -476,17 +496,26 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         {position.takeProfitTargetsCountFail > 0 && (
-          <span className="targetRed" title="Take profits failed.">
+          <span
+            className="targetRed"
+            title={formatMessage({ id: "dashboard.positions.targets.tp.failed" })}
+          >
             {position.takeProfitTargetsCountFail}
           </span>
         )}
         {position.takeProfitTargetsCountSuccess > 0 && (
-          <span className="targetGreen" title="Take profits successfully completed.">
+          <span
+            className="targetGreen"
+            title={formatMessage({ id: "dashboard.positions.targets.tp.completed" })}
+          >
             {position.takeProfitTargetsCountSuccess}
           </span>
         )}
         {position.takeProfitTargetsCountPending > 0 && (
-          <span className="targetGray" title="Pending take profits.">
+          <span
+            className="targetGray"
+            title={formatMessage({ id: "dashboard.positions.targets.tp.pending" })}
+          >
             {position.takeProfitTargetsCountPending}
           </span>
         )}
@@ -556,10 +585,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     const { exchange, positionId, updating } = position;
     const isZignaly = exchange.toLowerCase() === "zignaly";
+    const isProviderOwner = position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
-        {updating && !isZignaly && (
+        {updating && !isZignaly && !isProviderOwner && (
           <button
             data-action={"cancel"}
             data-position-id={positionId}
@@ -856,8 +886,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.invested",
-        propertyName: "positionSizeQuote",
-        renderFunction: renderQuoteSize,
+        propertyName: "invested",
+        renderFunction: renderInvested,
       },
       {
         columnId: "col.actions",

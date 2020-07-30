@@ -4,8 +4,6 @@
   width: 100%;
 
   .tabsBox {
-    border-bottom: solid 1px var(--border-color);
-
     .settings {
       padding: 0 20px;
       width: 120px;
@@ -20,6 +18,7 @@
 
   .customTable {
     > div {
+      border: 0;
       box-shadow: none;
     }
   }
@@ -37,5 +36,12 @@
     .tabPanel {
       min-height: 350px;
     }
+  }
+}
+
+[data-theme="dark"] {
+  .positionsTabs {
+    border: 1px solid $lightBlackBorder;
+    box-shadow: none;
   }
 }

@@ -112,9 +112,7 @@ const Convert = () => {
             loading={isLoading}
             onClick={handleSubmit}
           >
-            <Typography variant="body2">
-              <FormattedMessage id="accounts.convert" />
-            </Typography>
+            <FormattedMessage id="accounts.convert" />
           </CustomButton>
         </Box>
         <ConvertTable
