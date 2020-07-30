@@ -4,16 +4,6 @@ import { toCamelCaseKeys } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
- * @type {('entry')}
- */
-export const POSITION_TYPE_ENTRY = "entry";
-
-/**
- * @type {('exit')}
- */
-export const POSITION_TYPE_EXIT = "exit";
-
-/**
  * @type {('LONG')}
  */
 export const POSITION_SIDE_LONG = "LONG";
@@ -48,40 +38,32 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionEntryType
- */
-
-/**
- * @typedef {('entry' | 'exit')} PositionOrderType
+ * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionOrderType
  */
 
 /**
  * @typedef {Object} CreatePositionPayload
- * @property {string} token
- * @property {string} pair
- * @property {number} limitPrice
- * @property {string} positionSizeQuote
- * @property {number} positionSize
- * @property {number} realInvestment
- * @property {PositionOrderType} type
- * @property {PositionEntrySide} side
- * @property {number|boolean} stopLossPercentage
- * @property {number|boolean} buyTTL
- * @property {PositionEntryType} buyType
- * @property {PositionEntryType} type
- * @property {number} buyStopPrice
- * @property {number|boolean} sellByTTL
- * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets
- * @property {Array<PositionDCATarget>|boolean} reBuyTargets
- * @property {number|boolean} trailingStopTriggerPercentage
- * @property {number|boolean} trailingStopPercentage
- * @property {number|string} providerId
- * @property {string} providerName
- * @property {string} exchangeName
- * @property {string} exchangeInternalId
- * @property {number} [positionSizePercentage]
- * @property {string} [providerId]
- * @property {string} [providerName]
+ * @property {string} token Authorization token.
+ * @property {string} pair Currency pair i.e. "USDT BTC".
+ * @property {number} limitPrice Order limit price.
+ * @property {string} positionSizeQuote Quote (currency) that represent the position size.
+ * @property {number} positionSize Position size.
+ * @property {number} [realInvestment] Real invested amount excluding the leverage.
+ * @property {PositionEntrySide} side Position side.
+ * @property {number|boolean} stopLossPercentage Stop loss percentage.
+ * @property {number|boolean} buyTTL Entry order time to live expiration.
+ * @property {PositionOrderType} type Entry order type.
+ * @property {number} [buyStopPrice] Entry stop price.
+ * @property {number|boolean} sellByTTL Auto exit time to live.
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
+ * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
+ * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
+ * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
+ * @property {string} providerName Provider name when is a position published for copy trader service.
+ * @property {string} exchangeName Exchange name.
+ * @property {string} internalExchangeId Exchange connection ID.
+ * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
  */
 
 /**
@@ -107,7 +89,33 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {CreatePositionPayload & PositionActionPayload} UpdatePositionPayload
+ * @typedef {Object} PositionGetPayload
+ * @property {string} positionId Position ID to cancel.
+ * @property {string} token Access token.
+ * @property {string} internalExchangeId Exchange connection ID associated to the position.
+ */
+
+/**
+ * Payload to update existing position, the size could be increased passing optional parameters.
+ *
+ * @typedef {Object} UpdatePositionPayload
+ * @property {string} token Authorization token.
+ * @property {number} [limitPrice] Order limit price.
+ * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
+ * @property {number} [positionSize] Position size.
+ * @property {number} [buyStopPrice] Entry stop price.
+ * @property {number} [realInvestment] Real invested amount excluding the leverage.
+ * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
+ * @property {PositionOrderType} [buyType] Entry order type.
+ * @property {PositionEntrySide} [side] Position side.
+ * @property {number|boolean} stopLossPercentage Stop loss percentage.
+ * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
+ * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
+ * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
+ * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
+ * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
+ * @property {string} providerName Provider name when is a position published for copy trader service.
+ * @property {string} internalExchangeId Exchange connection ID.
  */
 
 /**
@@ -346,66 +354,59 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} PositionEntity
- * @property {Object<number, ReBuyTarget>} reBuyTargets
- * @property {Object<number, ProfitTarget>} takeProfitTargets
- * @property {Number} realInvestment
- * @property {boolean} accounting
- * @property {boolean} checkStop
- * @property {boolean} closed
- * @property {boolean} copyTraderId
- * @property {boolean} isCopyTrader
- * @property {boolean} isCopyTrading
- * @property {boolean} paperTrading
- * @property {boolean} sellByTTL
- * @property {boolean} signalMetadata
- * @property {boolean} takeProfit
- * @property {boolean} trailingStopPrice
- * @property {boolean} trailingStopTriggered
- * @property {boolean} updating
- * @property {number} buyTTL
- * @property {number} closeDate
- * @property {number} fees
- * @property {number} leverage
- * @property {number} netProfit
- * @property {number} netProfitPercentage
- * @property {string} netProfitStyle
- * @property {string} unrealizedProfitStyle
- * @property {number} openDate
- * @property {number} positionSizeQuote
- * @property {number} profit
- * @property {number} reBuyTargetsCountFail
- * @property {number} reBuyTargetsCountPending
- * @property {number} reBuyTargetsCountSuccess
- * @property {number} risk
- * @property {number} status
- * @property {number} stopLossPercentage
- * @property {number} stopLossPrice
- * @property {number} takeProfitTargetsCountFail
- * @property {number} takeProfitTargetsCountPending
- * @property {number} takeProfitTargetsCountSuccess
- * @property {number} trailingStopPercentage
- * @property {number} trailingStopTriggerPercentage
- * @property {string} age
- * @property {number} ageSeconds
- * @property {number} amount
- * @property {string} base
- * @property {number} buyPrice
- * @property {string} closeDateReadable
- * @property {string} closeTrigger
- * @property {string} exchange
- * @property {string} exchangeInternalName
- * @property {string} exitPriceStyle
- * @property {string} internalExchangeId
- * @property {number} invested
- * @property {string} investedQuote
- * @property {string} logoUrl
- * @property {string} openDateReadable
- * @property {string} openTrigger
- * @property {string} pair
- * @property {string} positionId
- * @property {string} positionSize
- * @property {number} profitPercentage
- * @property {string} profitStyle
+ * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
+ * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
+ * @property {Number} realInvestment Invested amount without including the leveraged part.
+ * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
+ * @property {boolean} closed Flag that indicate when a position is closed.
+ * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
+ * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
+ * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
+ * @property {number|boolean} trailingStopPrice Trailing stop price or false when not enabled.
+ * @property {boolean} trailingStopTriggered Flag that indicates when trailing stop is triggered.
+ * @property {boolean} updating Flag that indicates that some position updates are in progress.
+ * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
+ * @property {number} closeDate Close date represented in unix time epoch seconds.
+ * @property {number} fees Exchange transaction fees.
+ * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
+ * @property {number} netProfit Net profit amount.
+ * @property {number} netProfitPercentage Net percentage profit.
+ * @property {string} netProfitStyle Profit style (coloring) based on gain/loss.
+ * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
+ * @property {number} openDate Open date represented in unix time epoch seconds.
+ * @property {number} positionSizeQuote Position size represented in quote currency.
+ * @property {number} profit Profit amount without fees substraction.
+ * @property {number} reBuyTargetsCountFail Rebuy / DCA targets that was executed with failures counter.
+ * @property {number} reBuyTargetsCountPending Rebuy / DCA targets not yet reached and not executed counter.
+ * @property {number} reBuyTargetsCountSuccess Rebuy / DCA targets succesfully executed counter.
+ * @property {number} risk Invested amount percentage that is still in risk relative to current price and exit protections (stop loss / trailing stop).
+ * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
+ * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
+ * @property {number} stopLossPrice Stop loss price.
+ * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
+ * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
+ * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
+ * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
+ * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
+ * @property {string} age Elapsed time since position was opened in human readable format.
+ * @property {number} ageSeconds Elapsed seconds since position was opened.
+ * @property {number} amount Position invested amount in quote currency.
+ * @property {string} base Base currency ID, i.e. "BTC".
+ * @property {number} buyPrice Quote currency price at the moment of order entry was filled.
+ * @property {string} closeDateReadable Close date in human readable format.
+ * @property {string} exchange Exchange name where position was filled.
+ * @property {string} exchangeInternalName Exchange connection name where position was filled.
+ * @property {string} exitPriceStyle Exit price style (coloring) based on gain/loss.
+ * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
+ * @property {number} invested Invested amount on this position, including leveraged part.
+ * @property {string} investedQuote Currency ID of the invested amount.
+ * @property {string} logoUrl Copy trader provider logo.
+ * @property {string} openDateReadable Open date in human readable format.
+ * @property {string} pair Cyrrency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} positionId Zignaly position ID.
+ * @property {string} positionSize Position size in base currency.
+ * @property {number} profitPercentage Percentage gain/loss of the position based on current price in relation to entry price.
+ * @property {string} profitStyle Profit style (coloring) based on gain/loss.
  * @property {string} provider
  * @property {string} providerId
  * @property {string} providerOwnerUserId
@@ -416,12 +417,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} quoteAsset
  * @property {number} remainAmount
  * @property {string} riskStyle
- * @property {string} sellPlaceOrderAt
  * @property {number} sellPrice
  * @property {string} side
  * @property {string} signalId
- * @property {string} signalTerm
- * @property {string} statusDesc
  * @property {string} stopLossStyle
  * @property {string} symbol
  * @property {string} userId
@@ -957,28 +955,28 @@ function safeParseFloat(value) {
 }
 
 /**
- * Transform user positions response to typed object collection.
+ * Transform positions response to typed object collection.
  *
  * @param {*} response Trade API positions list response.
  * @returns {UserPositionsCollection} Positions entities collection.
  */
-export function userPositionsResponseTransform(response) {
+export function positionsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of positions.");
   }
 
   return response.map((positionItem) => {
-    return userPositionItemTransform(positionItem);
+    return positionItemTransform(positionItem);
   });
 }
 
 /**
- * Transform API position item to typed object.
+ * Transform Trade API position item to typed PositionEntity object.
  *
- * @param {*} positionItem Trade API position item.
+ * @param {*} positionItem Trade API position item object.
  * @returns {PositionEntity} Position entity.
  */
-export function userPositionItemTransform(positionItem) {
+export function positionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
   const nowDate = moment();
@@ -1209,7 +1207,7 @@ export function mapSideToEnum(entrySide) {
  * Map position entry type to typed value.
  *
  * @param {string} entryType Entry type.
- * @returns {PositionEntryType} Typed value.
+ * @returns {PositionOrderType} Typed value.
  */
 export function mapEntryTypeToEnum(entryType) {
   switch (entryType) {
@@ -1217,7 +1215,7 @@ export function mapEntryTypeToEnum(entryType) {
       return POSITION_ENTRY_TYPE_MARKET;
     case "limit":
       return POSITION_ENTRY_TYPE_LIMIT;
-    case "stop_loss_limit":
+    case "stop_limit":
       return POSITION_ENTRY_TYPE_SLLIMIT;
     case "import":
       return POSITION_ENTRY_TYPE_IMPORT;
@@ -1240,12 +1238,9 @@ function createEmptyPositionEntity() {
     base: "",
     buyPrice: 0,
     buyTTL: 0,
-    checkStop: false,
     closeDate: 0,
     closeDateReadable: "",
-    closeTrigger: "",
     closed: false,
-    copyTraderId: false,
     exchange: "",
     exchangeInternalName: "",
     exitPriceStyle: "",
@@ -1262,7 +1257,6 @@ function createEmptyPositionEntity() {
     netProfitStyle: "",
     openDate: 0,
     openDateReadable: "",
-    openTrigger: "",
     pair: "",
     paperTrading: false,
     positionId: "",
@@ -1288,20 +1282,14 @@ function createEmptyPositionEntity() {
     remainAmount: 0,
     risk: 0,
     riskStyle: "",
-    sellByTTL: false,
-    sellPlaceOrderAt: "",
     sellPrice: 0,
     side: "",
     signalId: "",
-    signalMetadata: false,
-    signalTerm: "",
     status: 0,
-    statusDesc: "",
     stopLossPercentage: 0,
     stopLossPrice: 0,
     stopLossStyle: "",
     symbol: "",
-    takeProfit: false,
     takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
     takeProfitTargetsCountPending: 0,
@@ -1831,8 +1819,8 @@ function createProviderStatsEmptyEntity() {
 
 /**
  * @typedef {Object} ServerTime
- * @property {number} serverTime
- * @property {number} dbTime
+ * @property {number} serverTime Server time expressed in unix time epoch seconds.
+ * @property {number} dbTime Database time expressed in unix time epoch seconds.
  */
 
 /**
@@ -1887,39 +1875,43 @@ export function coinRayTokenResponseTransform(response) {
 
 /**
  * @typedef {Object} MarketSymbol
- * @property {string} id
- * @property {string} symbol
- * @property {string} base
- * @property {string} quote
- * @property {string} baseId
- * @property {string} quoteId
- * @property {PricePrecision} precision
- * @property {SymbolLimits} limits
- * @property {string} coinrayQuote
- * @property {string} coinrayBase
+ * @property {string} id Pair ID, i.e. BTCUSDT.
+ * @property {string} symbol Separated pair ID, i.e. BTC/USDT.
+ * @property {string} base Base currency, i.e. BTC.
+ * @property {string} quote Quote currency, i.e. USDT.
+ * @property {string} baseId Same as base.
+ * @property {string} quoteId Same as quote.
+ * @property {PricePrecision} precision Symbol required price precision details.
+ * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
+ * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
+ * @property {string} coinrayBase Base currency ID adapted to CoinRay.
  */
 
 /**
  * @typedef {Object} SymbolLimits
- * @property {AmountLimit} cost:
- * @property {AmountLimit} price:
- * @property {AmountLimit} amount:
+ * @property {AmountLimit} cost Cost limits.
+ * @property {AmountLimit} price Price limits.
+ * @property {AmountLimit} amount Amount limits.
  */
 
 /**
  * @typedef {Object} AmountLimit
- * @property {number} min:
- * @property {number} max:
+ * @property {number} min Minimum allowed value, when null no limit is imposed.
+ * @property {number} max Maximum allowed value, when null no limit is imposed.
  */
 
 /**
  * @typedef {Object} PricePrecision
  *
- * @property {number} amount:
- * @property {number} price:
+ * @property {number} amount Fractional digits amount precision.
+ * @property {number} price Fractional digits price precision.
+ * @property {number} base Fractional digits base size precision.
+ * @property {number} quote Fractional digits quote size precision.
  */
 
 /**
+ * Collection of market symbols objects.
+ *
  * @typedef {Array<MarketSymbol>} MarketSymbolsCollection
  */
 
@@ -1936,7 +1928,7 @@ function createMarketSymbolEmptyValueObject() {
     quote: "",
     baseId: "",
     quoteId: "",
-    precision: { amount: 0, price: 0 },
+    precision: { amount: 0, price: 0, quote: 0, base: 0 },
     limits: {
       cost: { min: 0, max: 0 },
       price: { min: 0, max: 0 },
@@ -2425,17 +2417,21 @@ function createExchangeListEmptyEntity() {
     type: [""],
   };
 }
+
 /**
  * @typedef {Object} CopyTradersProvidersOptionsPayload
  * @property {string} token User access token.
- * @property {String} internalExchangeId
+ * @property {string} internalExchangeId Exchange connection ID associated to the copy trading provider owned services.
  */
 
 /**
  * @typedef {Object} CopyTradersProvidersOption
- * @property {number} providerId
- * @property {string} providerName
- * @property {boolean} providerQuote
+ * @property {number|string} providerId Provider ID.
+ * @property {string} providerName Provider name.
+ * @property {string|false} providerQuote Currency quote traded by the copy trading provider service.
+ * @property {number} providerConsumedBalance Balance (amount in quote currency) that is currently consumed.
+ * @property {number} providerConsumedBalancePercentage Balance (percentage) that is currently consumed.
+ * @property {number} providerPayableBalance Copy trader provider allocated balance for this signals service.
  */
 
 /**
@@ -2448,12 +2444,12 @@ function createExchangeListEmptyEntity() {
  * @param {*} response Trade API own copy traders providers options raw response.
  * @returns {CopyTradersProvidersOptionsCollection} Options collection.
  */
-export function ownCopyTraderProvidersOptionsResponseTransform(response) {
+export function ownedCopyTraderProvidersOptionsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of copy trader providers options.");
   }
 
-  return response.map(ownCopyTraderProviderOptionResponseTransform);
+  return response.map(ownedCopyTraderProviderOptionResponseTransform);
 }
 
 /**
@@ -2463,7 +2459,7 @@ export function ownCopyTraderProvidersOptionsResponseTransform(response) {
  * @returns {CopyTradersProvidersOption} Options collection.
  */
 
-function ownCopyTraderProviderOptionResponseTransform(option) {
+function ownedCopyTraderProviderOptionResponseTransform(option) {
   return assign(createEmptyOwnCopyTraderProviderOption(), option);
 }
 
@@ -2476,7 +2472,10 @@ function createEmptyOwnCopyTraderProviderOption() {
   return {
     providerId: 0,
     providerName: "",
-    providerQuote: false,
+    providerQuote: "",
+    providerConsumedBalance: 0,
+    providerConsumedBalancePercentage: 0,
+    providerPayableBalance: 0,
   };
 }
 
@@ -3137,7 +3136,7 @@ export function managementPositionsResponseTransform(response) {
     response[item] = response[item].map((positionItem) => {
       /* @ts-ignore */
       positionItem.subPositions = response[item].length - 1;
-      return userPositionItemTransform(positionItem);
+      return positionItemTransform(positionItem);
     });
   });
   return response;

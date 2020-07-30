@@ -138,7 +138,7 @@ const DCAPanel = (props) => {
       let disabled = false;
       if (target.done) {
         disabled = true;
-      } else if (isCopy || isClosed) {
+      } else if (isReadOnly) {
         disabled = true;
       }
 

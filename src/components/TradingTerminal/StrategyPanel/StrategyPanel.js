@@ -71,7 +71,7 @@ const StrategyPanel = (props) => {
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
     { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
-    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop-limit" },
+    { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
 
   if (!isCopyProvider) {
@@ -121,7 +121,7 @@ const StrategyPanel = (props) => {
             />
           </FormControl>
         )}
-        {entryStrategy === "stop-limit" && (
+        {entryStrategy === "stop_limit" && (
           <FormControl>
             <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">

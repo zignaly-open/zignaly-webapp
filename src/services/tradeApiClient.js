@@ -3,12 +3,12 @@ import { navigateLogin } from "./navigation";
 import {
   userCreateResponseTransform,
   userEntityResponseTransform,
-  userPositionsResponseTransform,
+  positionsResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
   userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
-  userPositionItemTransform,
+  positionItemTransform,
   userEquityResponseTransform,
   quotesResponseTransform,
   basesResponseTransform,
@@ -18,7 +18,7 @@ import {
   coinRayTokenResponseTransform,
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
-  ownCopyTraderProvidersOptionsResponseTransform,
+  ownedCopyTraderProvidersOptionsResponseTransform,
   providerFollowersResponseTransform,
   providerFollowersListResponseTransform,
   exchangeAssetsResponseTransform,
@@ -45,6 +45,7 @@ import {
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
+ * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
@@ -237,7 +238,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -256,7 +257,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -275,7 +276,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -368,15 +369,17 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=closePosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
    * Exit a position.
    *
+   * Performs an exit order of current position in the exchange.
+   *
    * @param {PositionActionPayload} payload Position action payload.
-
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -384,15 +387,17 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=sellPosition";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
    * Cancel position entry.
    *
+   * Performs a cancellation of position entry if order has not been executed yet in the exchange.
+   *
    * @param {PositionActionPayload} payload Position action payload.
-
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   *
+   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -400,14 +405,14 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=cancelBuy";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
    * Get a position.
    *
-   * @param {PositionActionPayload} payload Position action payload.
-
+   * @param {PositionGetPayload} payload Position action payload.
+   *
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
@@ -416,7 +421,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getPosition";
     const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
-    return userPositionItemTransform(responseData);
+    return positionItemTransform(responseData);
   }
 
   /**
@@ -476,6 +481,9 @@ class TradeApiClient {
   /**
    * Get Trade API server time.
    *
+   * This endpoint is useful when client local time needs to be compared with
+   * Trade API server time. Note that server time uses UTC.
+   *
    * @param {AuthorizationPayload} payload User authorization.
    * @returns {Promise<ServerTime>} Promise that resolves server time value object.
    *
@@ -489,10 +497,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get a coinray access token for authenticated Trade API user.
+   * Get a coinray access token for the authenticated user.
    *
-   * @param {AuthorizationPayload} payload User authorization.
-   * @returns {Promise<CoinRayToken>} Promise that resolves server time value object.
+   * @param {AuthorizationPayload} payload User Trade API authorization.
+   * @returns {Promise<CoinRayToken>} Promise that resolves CoinRay token object.
    *
    * @memberof TradeApiClient
    */
@@ -504,10 +512,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get user exchange connnection market data.
+   * Get user exchange connnection market data coins pairs (symbols).
    *
    * @param {AuthorizationPayload} payload Authorized exchange data payload.
-   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market (symbols) data collection.
+   * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market symbols data collection.
    *
    * @memberof TradeApiClient
    */
@@ -648,18 +656,19 @@ class TradeApiClient {
 
     return exchangeListResponseTransform(responseData);
   }
+
   /**
-   * Get copy trader providers options.
+   * Get copy trader providers options owned by the authenticated user.
    *
    * @param {CopyTradersProvidersOptionsPayload} payload Get own copy trader providers options payload.
    * @returns {Promise<CopyTradersProvidersOptionsCollection>} Promise that resolves own copy trader providers options.
    * @memberof TradeApiClient
    */
-  async userOwnCopyTradersProvidersOptions(payload) {
+  async ownedCopyTradersProvidersOptions(payload) {
     const endpointPath = "/fe/api.php?action=getCopyTradingProvidersOptions";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return ownCopyTraderProvidersOptionsResponseTransform(responseData);
+    return ownedCopyTraderProvidersOptionsResponseTransform(responseData);
   }
 
   /**
@@ -782,11 +791,13 @@ class TradeApiClient {
   }
 
   /**
-   * Create manual position.
+   * Create manual position order.
+   *
+   * This supports market order, limit, stop-limit order and import order from exchange.
    *
    * @param {CreatePositionPayload} payload Create manual position payload.
 
-   * @returns {Promise<string>} Promise that resolve created position ID.
+   * @returns {Promise<string>} Promise that resolve Zignaly position ID.
    *
    * @memberof TradeApiClient
    */
@@ -1112,7 +1123,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
@@ -1127,7 +1138,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return userPositionsResponseTransform(responseData);
+    return positionsResponseTransform(responseData);
   }
 
   /**
