@@ -329,9 +329,8 @@ const StrategyForm = (props) => {
    */
   const composeUpdatePositionPayload = (draftPosition) => {
     const { quote } = currentSymbolData;
-    const positionStrategy = draftPosition.positionSize
-      ? composePositionStrategy(draftPosition)
-      : {};
+    const isIncreaseUpdate = draftPosition.positionSize || draftPosition.positionSizePercentage;
+    const positionStrategy = isIncreaseUpdate ? composePositionStrategy(draftPosition) : {};
 
     return assign(
       {
