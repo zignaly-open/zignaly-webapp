@@ -33,7 +33,9 @@ import "./StopLossPanel.scss";
  */
 const StopLossPanel = (props) => {
   const { symbolData, positionEntity } = props;
-  const existsStopLoss = positionEntity ? isNumber(positionEntity.stopLossPrice) : false;
+  const existsStopLoss = positionEntity
+    ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
+    : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
@@ -153,7 +155,7 @@ const StopLossPanel = (props) => {
     const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (stopLossPercentage === null) {
+    if (!stopLossPercentage) {
       setValue("stopLossPercentage", sign);
     } else {
       setValue("stopLossPercentage", `${sign}${newValue}`);
