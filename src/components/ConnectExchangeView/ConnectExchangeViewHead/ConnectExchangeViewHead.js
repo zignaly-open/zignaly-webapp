@@ -84,9 +84,11 @@ const ConnectExchangeViewHead = ({ onClose }) => {
                 <FormattedMessage id="accounts.back" />
               </CustomButton>
             )}
-            <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
-              <FormattedMessage id="accounts.done" />
-            </CustomButton>
+            {formRef.current && (
+              <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
+                <FormattedMessage id="accounts.done" />
+              </CustomButton>
+            )}
             <Typography className="tempMessage" variant="body1">
               {tempMessage}
             </Typography>

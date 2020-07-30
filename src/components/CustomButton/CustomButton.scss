@@ -1,13 +1,6 @@
 .customButton {
   min-height: 48px;
   min-width: 250px;
-  @include media("<=sm") {
-    width: 90%;
-
-    &.exchangeButton {
-      min-width: 100%;
-    }
-  }
 
   span {
     font-size: 16px;
@@ -108,6 +101,16 @@
 
     &:hover {
       background: $pink;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .customButton {
+    width: 90%;
+
+    &.exchangeButton {
+      min-width: 100%;
     }
   }
 }

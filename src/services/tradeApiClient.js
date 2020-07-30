@@ -1011,7 +1011,7 @@ class TradeApiClient {
   }
 
   /**
-   * Get code to enable 2FA.
+   * Get code and QR code to enable 2FA.
    *
    * @param {AuthorizationPayload} payload Payload
    * @returns {Promise<Array<string>>} Returns promise.
@@ -1056,7 +1056,7 @@ class TradeApiClient {
   }
 
   /**
-   * Verify 2FA.
+   * Verify if 2FA code is valid.
    *
    * @param {TwoFAPayload} payload Payload
    * @returns {Promise<Boolean>} Returns promise.

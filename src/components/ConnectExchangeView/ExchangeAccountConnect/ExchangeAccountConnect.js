@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
 import "./ExchangeAccountConnect.scss";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
@@ -43,7 +43,13 @@ const ExchangeAccountConnect = ({ create, demo }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
+  const {
+    setTitle,
+    formRef,
+    setTempMessage,
+    pathParams: { previousPath },
+    resetToPath,
+  } = useContext(ModalPathContext);
 
   useEffect(() => {
     setTitle(<FormattedMessage id="accounts.connect" />);
@@ -54,6 +60,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
   const [exchangeName, setExchangeName] = useState("");
   const [step, setStep] = useState(1);
   const [tipsExpanded, setTipsExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const internalName = watch("internalName");
 
@@ -118,12 +125,15 @@ const ExchangeAccountConnect = ({ create, demo }) => {
       testNet: false,
     };
 
+    setLoading(true);
+
     tradeApi
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(
           <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
         );
+        resetToPath(previousPath);
       })
       .catch((e) => {
         if (e.code === 72) {
@@ -135,6 +145,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
         } else {
           dispatch(showErrorAlert(e));
         }
+        setLoading(false);
       });
   };
 
@@ -206,6 +217,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
                 flexDirection="row"
                 justifyContent="space-between"
                 alignItems="flex-end"
+                className="actionStep2"
               >
                 <Box
                   display="flex"
@@ -222,19 +234,33 @@ const ExchangeAccountConnect = ({ create, demo }) => {
                 </Box>
 
                 {step === 2 && (
-                  <CustomButton
-                    className="bgPurple bold"
-                    onClick={() => setStep(3)}
-                    disabled={!isValid}
-                  >
-                    <FormattedMessage id="accounts.next" />
-                  </CustomButton>
+                  <Hidden xsDown>
+                    <CustomButton
+                      className="bgPurple bold"
+                      onClick={() => setStep(3)}
+                      disabled={!isValid}
+                    >
+                      <FormattedMessage id="accounts.next" />
+                    </CustomButton>
+                  </Hidden>
                 )}
               </Box>
               {tipsExpanded && (
                 <Typography className="tips">
                   <FormattedMessage id="accounts.exchange.api.tipdesc" />
                 </Typography>
+              )}
+              {step === 2 && (
+                <Hidden smUp>
+                  <CustomButton
+                    className="bgPurple bold"
+                    type="submit"
+                    disabled={!isValid}
+                    loading={loading}
+                  >
+                    <FormattedMessage id="accounts.connect.button" />
+                  </CustomButton>
+                </Hidden>
               )}
             </>
           ))}
@@ -245,7 +271,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
             <Typography variant="h3">
               <FormattedMessage id="accounts.connect.ready" />
             </Typography>
-            <CustomButton className="bgPurple bold" type="submit">
+            <CustomButton className="bgPurple bold" type="submit" loading={loading}>
               <FormattedMessage id="accounts.connect.button" />
             </CustomButton>
           </>

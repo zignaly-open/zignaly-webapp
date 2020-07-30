@@ -75,10 +75,42 @@
 
   .step3 {
     flex: 1;
-    margin-left: 42px;
+    padding-left: 42px;
 
     .customButton {
       margin-top: 31px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .exchangeAccountConnect {
+    flex-direction: column;
+    padding-bottom: 72px;
+    padding-top: 18px;
+
+    .step1 {
+      border-bottom: solid 1px var(--border-color);
+      border-right: 0;
+    }
+
+    .step2 {
+      border-bottom: solid 1px var(--border-color);
+      border-left: 0;
+      padding: 0;
+
+      .customButton {
+        margin-top: 18px;
+      }
+    }
+
+    .actionStep2 {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .step3 {
+      padding: 0;
     }
   }
 }

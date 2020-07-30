@@ -36,13 +36,17 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const { errors, handleSubmit, control, register, watch, setValue } = useForm();
   const exchange = watch("exchange", "binance");
   const exchanges = useExchangeList(isCopyTrading);
-  const selectedExchange = exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase());
+  const selectedExchange = exchange
+    ? exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase())
+    : null;
   const exchangeOptions = exchanges
-    .filter((e) => e.enabled)
-    .map((e) => ({
-      val: e.name.toLowerCase(),
-      label: e.name,
-    }));
+    ? exchanges
+        .filter((e) => e.enabled)
+        .map((e) => ({
+          val: e.name.toLowerCase(),
+          label: e.name,
+        }))
+    : null;
 
   const typeOptions =
     selectedExchange &&

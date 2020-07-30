@@ -44,7 +44,9 @@ const ExchangeAccountSettings = () => {
     formState: { dirtyFields },
   } = useFormContext();
   const exchanges = useExchangeList();
-  const accountExchange = exchanges.find((e) => e.id === selectedAccount.exchangeId);
+  const accountExchange = exchanges
+    ? exchanges.find((e) => e.id === selectedAccount.exchangeId)
+    : null;
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
   useEffect(() => {
