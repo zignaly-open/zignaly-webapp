@@ -372,7 +372,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
  * @property {string} netProfitStyle Profit style (coloring) based on gain/loss.
- * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {number} openDate Open date represented in unix time epoch seconds.
  * @property {number} positionSizeQuote Position size represented in quote currency.
  * @property {number} profit Profit amount without fees substraction.
@@ -400,38 +399,37 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
  * @property {number} invested Invested amount on this position, including leveraged part.
  * @property {string} investedQuote Currency ID of the invested amount.
- * @property {string} logoUrl Copy trader provider logo.
  * @property {string} openDateReadable Open date in human readable format.
- * @property {string} pair Cyrrency pair in separated format, i.e. "BTC/USDT".
  * @property {string} positionId Zignaly position ID.
  * @property {string} positionSize Position size in base currency.
  * @property {number} profitPercentage Percentage gain/loss of the position based on current price in relation to entry price.
  * @property {string} profitStyle Profit style (coloring) based on gain/loss.
- * @property {string} provider
- * @property {string} providerId
- * @property {string} providerOwnerUserId
- * @property {string} providerLink
- * @property {string} providerLogo
- * @property {string} providerName
- * @property {string} quote
- * @property {string} quoteAsset
- * @property {number} remainAmount
- * @property {string} riskStyle
- * @property {number} sellPrice
- * @property {string} side
- * @property {string} signalId
- * @property {string} stopLossStyle
- * @property {string} symbol
- * @property {string} userId
- * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type
- * @property {PositionEntityTotals} copyTradingTotals
- * @property {Number} subPositions
+ * @property {string} providerId Copy trader provider ID that originated the signal for position entry.
+ * @property {string} providerOwnerUserId Copy trader service owner user ID.
+ * @property {string} providerLink Copy trader provider profile page URL.
+ * @property {string} logoUrl Copy trader provider logo (will be deprecated in favor of provideerLogo).
+ * @property {string} providerLogo Copy trader provider logo.
+ * @property {string} providerName Copy trader provider name.
+ * @property {string} quote Quote currency ID.
+ * @property {number} remainAmount Remaining position amount after apply take profits (decrease) / rebuy (increase).
+ * @property {string} riskStyle Risk style (coloring) based on gain/loss.
+ * @property {number} sellPrice Exit price for closed position, current price for open positions.
+ * @property {string} side Position side (LONG / SHORT).
+ * @property {string} signalId Copy trader signal ID.
+ * @property {string} stopLossStyle Stop loss style (coloring) based on gain / loss.
+ * @property {string} pair Currency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} symbol Currency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} userId Zignaly user ID.
+ * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type Position status category.
+ * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
+ * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
  * @property {Number} returnFromAllocated
  * @property {Number} returnFromInvestment
- * @property {Number} priceDifference
- * @property {string} priceDifferenceStyle
- * @property {Number} unrealizedProfitLosses
- * @property {Number} unrealizedProfitLossesPercentage
+ * @property {Number} priceDifference Price difference from entry price.
+ * @property {string} priceDifferenceStyle Price difference style (coloring) based on gain/loss.
+ * @property {Number} unrealizedProfitLosses Unrealized profit / loss amount expressed in quote currency.
+ * @property {Number} unrealizedProfitLossesPercentage Unrealized profit / loss percentage.
+ * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  */
 
 /**
@@ -955,7 +953,7 @@ function safeParseFloat(value) {
 }
 
 /**
- * Transform positions response to typed object collection.
+ * Transform positions response to typed UserPositionsCollection collection.
  *
  * @param {*} response Trade API positions list response.
  * @returns {UserPositionsCollection} Positions entities collection.
