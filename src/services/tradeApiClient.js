@@ -114,6 +114,8 @@ import {
  * @typedef {import('./tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  * @typedef {import('./tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('./tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
+ * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  *
  */
 
@@ -589,11 +591,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Stop following a provider or copytrader.
    *
-   * @param {DisableProviderPayload} payload Get providers stats payload.
+   * @param {DisableProviderPayload} payload Stop following provider payload.
 
-   * @returns {Promise<Array<*>>}
+   * @returns {Promise<Array<*>>} Promise that resolves into array of provider entities.
    *
    * @memberof TradeApiClient
    */
@@ -606,11 +608,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Delete a cloned provider or copy trader.
    *
-   * @param {DeleteProviderPayload} payload Get providers stats payload.
+   * @param {DeleteProviderPayload} payload Delete provider payload.
 
-   * @returns {Promise<Array<*>>}
+   * @returns {Promise<Array<*>>} Promise that resolves into array of provider entities.
    *
    * @memberof TradeApiClient
    */
@@ -623,11 +625,11 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get exchanges supported by zignaly.
    *
-   * @param {AuthorizationPayload} payload Get providers stats payload.
+   * @param {AuthorizationPayload} payload Get exchanges payload.
 
-   * @returns {Promise<Array<ExchangeListEntity>>}
+   * @returns {Promise<Array<ExchangeListEntity>>} Promise that resolved into array of exchange list entity.
    *
    * @memberof TradeApiClient
    */
@@ -638,6 +640,7 @@ class TradeApiClient {
 
     return exchangeListResponseTransform(responseData);
   }
+
   /**
    * Get copy trader providers options.
    *
@@ -696,7 +699,7 @@ class TradeApiClient {
    *
    * @param {EditProvderPayload} payload Edit provider payload.
    *
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<DefaultProviderGetObject>} Returns promise that resolved into default provider get object.
    *
    * @memberof TradeApiClient
    */
@@ -704,15 +707,15 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=editProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return providerGetResponseTransform(responseData);
   }
 
   /**
-   * Edti cloned provider method.
+   * Edti cloned provider.
    *
-   * @param {EditClonedProvderPayload} payload Edit cloned provider.
+   * @param {EditClonedProvderPayload} payload Edit cloned provider payload.
    *
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<DefaultProviderGetObject>} Returns promise that resolves default provider get object..
    *
    * @memberof TradeApiClient
    */
@@ -720,7 +723,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=editProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return responseData;
+    return providerGetResponseTransform(responseData);
   }
 
   /**
@@ -728,7 +731,7 @@ class TradeApiClient {
    *
    * @param {GetProviderFollowersPayload} payload Get providers copiers payload.
    *
-   * @returns {Promise<Array<ProviderCopiersEntity>>} Returns promise.
+   * @returns {Promise<Array<ProviderCopiersEntity>>} Returns promise that resolves provider copiers entity.
    *
    * @memberof TradeApiClient
    */
@@ -744,7 +747,7 @@ class TradeApiClient {
    *
    * @param {GetProviderFollowersPayload} payload Get providers followers payload.
    *
-   * @returns {Promise<Array<ProviderFollowersEntity>>} Returns promise.
+   * @returns {Promise<Array<ProviderFollowersEntity>>} Returns promise that resolves provider followers entity.
    *
    * @memberof TradeApiClient
    */
@@ -807,7 +810,7 @@ class TradeApiClient {
    * Get providers yearly performance stats.
    *
    * @param {GetProviderFollowersPayload} payload Get providers stats payload.
-   * @returns {Promise<ProviderPerformanceEntity>} Returns promise.
+   * @returns {Promise<ProviderPerformanceEntity>} Returns promise that resolves provider performance entity.
    *
    * @memberof TradeApiClient
    */
@@ -823,7 +826,7 @@ class TradeApiClient {
    *
    * @param {AuthorizationPayload} payload User profile payloaad..
 
-   * @returns {Promise<UserEntity>} Returns promise.
+   * @returns {Promise<UserEntity>} Returns promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
@@ -839,7 +842,7 @@ class TradeApiClient {
    *
    * @param {ProviderExchangeSettingsPayload} payload Get providers exchange settings payload.
 
-   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise.
+   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise that resolves provider settings object.
    *
    * @memberof TradeApiClient
    */
@@ -855,7 +858,7 @@ class TradeApiClient {
    *
    * @param {ProviderExchangeSettingsUpdatePayload} payload Provider settings update payload.
 
-   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise.
+   * @returns {Promise<ProviderExchangeSettingsObject>} Returns promise that resolved provider exchange settings object.
    *
    * @memberof TradeApiClient
    */
@@ -871,7 +874,7 @@ class TradeApiClient {
    *
    * @param {GetProviderFollowersPayload} payload Provider's stats payload.
 
-   * @returns {Promise<ProviderDataPointsEntity>} Returns promise.
+   * @returns {Promise<ProviderDataPointsEntity>} Returns promise that resolves provider data points entry.
    *
    * @memberof TradeApiClient
    */
@@ -929,7 +932,8 @@ class TradeApiClient {
    * Modify user's subscription.
    *
    * @param {ModifySubscriptionPayload} payload payload.
-   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @returns {Promise<Boolean>} Returns promise that resolved a boolean true.
    *
    * @memberof TradeApiClient
    */
@@ -944,7 +948,8 @@ class TradeApiClient {
    * Cancel user's subscription.
    *
    * @param {CancelSubscriptionPayload} payload Cancel subscription payload.
-   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @returns {Promise<Boolean>} Returns promise that resolved a boolean true.
    *
    * @memberof TradeApiClient
    */
@@ -974,7 +979,8 @@ class TradeApiClient {
    * Function to get Management positions.
    *
    * @param {GetProviderFollowersPayload} payload Management poistions payload.
-   * @returns {Promise<Array<ManagementPositionsEntity>>} Returns promise.
+   *
+   * @returns {Promise<Array<ManagementPositionsEntity>>} Returns promise that resolved management positions entity.
    *
    * @memberof TradeApiClient
    */
@@ -1094,7 +1100,8 @@ class TradeApiClient {
    * Function to get provider's open positions.
    *
    * @param {GetProviderFollowersPayload} payload Provider's open poistions payload.
-   * @returns {Promise<UserPositionsCollection>} Returns promise.
+   *
+   * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user position collection.
    *
    * @memberof TradeApiClient
    */
@@ -1109,7 +1116,8 @@ class TradeApiClient {
    * Function to get provider's closed positions.
    *
    * @param {GetProviderFollowersPayload} payload Provider's closed poistions payload.
-   * @returns {Promise<UserPositionsCollection>} Returns promise.
+   *
+   * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user positions collection.
    *
    * @memberof TradeApiClient
    */
@@ -1124,6 +1132,7 @@ class TradeApiClient {
    * Function to request password change through email.
    *
    * @param {ForgotPasswordStep1Payload} payload Request Password change step 1 payload.
+   *
    * @returns {Promise<"OK">} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1154,6 +1163,7 @@ class TradeApiClient {
    * Function to verify token received by completing step 1 of password change.
    *
    * @param {AuthorizationPayload} payload Password change token verification payload.
+   *
    * @return {Promise<"OK">} Promise that resolve boolean result.
    * */
   async forgotPasswordStep2(payload) {
@@ -1167,6 +1177,7 @@ class TradeApiClient {
    * Function to change password after completing step 2 of password change.
    *
    * @param {ForgotPasswordStep3Payload} payload Request Password change payload.
+   *
    * @returns {Promise<"OK">} Returns promise.
    *
    * @memberof TradeApiClient
@@ -1197,7 +1208,8 @@ class TradeApiClient {
    * Function to clone a provider.
    *
    * @param {GetProviderFollowersPayload} payload Clone provider payload.
-   * @returns {Promise<CloneActionResponseObject>} Returns promise.
+   *
+   * @returns {Promise<CloneActionResponseObject>} Returns promise that resolved cloned provider ID.
    *
    * @memberof TradeApiClient
    */
@@ -1212,7 +1224,8 @@ class TradeApiClient {
    * Get user exchange assets.
    *
    * @param {UserExchangeAssetsPayload} payload Get user exchange assets payload.
-   * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise.
+   *
+   * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise that resolved list of user exchange assets.
    *
    * @memberof TradeApiClient
    */
@@ -1227,7 +1240,8 @@ class TradeApiClient {
    * Get user exchange available balance.
    *
    * @param {UserEquityPayload} payload Get user balance payload.
-   * @returns {Promise<*>} Returns promise.
+   *
+   * @returns {Promise<UserAvailableBalanceObject>} Returns promise that resolved user available balance object.
    *
    * @memberof TradeApiClient
    */
@@ -1242,7 +1256,8 @@ class TradeApiClient {
    * Function to clone a provider.
    *
    * @param {AuthorizationPayload} payload Clone provider payload.
-   * @returns {Promise<SessionResponseObject>} Returns promise.
+   *
+   * @returns {Promise<SessionResponseObject>} Returns promise that resolved session response object.
    *
    * @memberof TradeApiClient
    */
@@ -1257,7 +1272,8 @@ class TradeApiClient {
    * Function to get exchange open orders.
    *
    * @param {UserEquityPayload} payload exchange orders payload.
-   * @returns {Promise<Array<ExchangeOpenOrdersObject>>} Returns promise.
+   *
+   * @returns {Promise<Array<ExchangeOpenOrdersObject>>} Returns promise that resolved exchange order object.
    *
    * @memberof TradeApiClient
    */
@@ -1272,7 +1288,8 @@ class TradeApiClient {
    * Function to get exchange contracts.
    *
    * @param {UserEquityPayload} payload exchange contracts payload.
-   * @returns {Promise<*>} Returns promise.
+   *
+   * @returns {Promise<Array<ExchangeContractsObject>>} Returns promise that.
    *
    * @memberof TradeApiClient
    */
@@ -1287,7 +1304,8 @@ class TradeApiClient {
    * Canel exchange order.
    *
    * @param {CancelOrderPayload} payload Cancel exchange order payload.
-   * @returns {Promise<*>} Returns promise.
+   *
+   * @returns {Promise<Boolean>} Returns promise that resolves a boolean true.
    *
    * @memberof TradeApiClient
    */

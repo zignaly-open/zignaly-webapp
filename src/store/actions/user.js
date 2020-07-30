@@ -66,7 +66,7 @@ export const setUserExchanges = (payload) => {
         dispatch(setDailyUserBalance(balancePayload));
       }
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };

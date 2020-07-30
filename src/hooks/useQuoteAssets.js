@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
@@ -16,6 +18,7 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadData = async () => {
@@ -31,7 +34,7 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
           setQuotes(data);
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     };
     if (shouldExecute) {
