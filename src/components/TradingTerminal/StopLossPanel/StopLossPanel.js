@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { lt, gt } from "lodash";
+import { isNumber, lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -33,7 +33,7 @@ import "./StopLossPanel.scss";
  */
 const StopLossPanel = (props) => {
   const { symbolData, positionEntity } = props;
-  const existsStopLoss = positionEntity ? Boolean(positionEntity.stopLossPrice) : false;
+  const existsStopLoss = positionEntity ? isNumber(positionEntity.stopLossPrice) : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
   const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
