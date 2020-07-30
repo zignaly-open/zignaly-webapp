@@ -657,6 +657,8 @@ terminal.warning.entering: "Entering"
 terminal.warning.error: "Error"
 terminal.warning.exiting: "Exiting"
 terminal.warning.updating: "Updating"
+terminal.provider.allocated: "Current allocated:"
+terminal.provider.consumed: "Using:"
 
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"

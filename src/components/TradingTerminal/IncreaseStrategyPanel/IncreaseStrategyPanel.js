@@ -9,6 +9,8 @@ import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
+import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
+import { formatPrice } from "../../../utils/formatters";
 import { CircularProgress } from "@material-ui/core";
 
 /**
@@ -45,8 +47,15 @@ const IncreaseStrategyPanel = (props) => {
     validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { balance, loading } = useAvailableBalance();
+  const { ownCopyTraderProviders, loading: loadingProviders } = useOwnCopyTraderProviders();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
+  const providerService = ownCopyTraderProviders.find(
+    (provider) => provider.providerId === positionEntity.providerId,
+  );
+
+  const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
+  const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
 
   /**
    * Handle toggle switch action.
@@ -76,8 +85,6 @@ const IncreaseStrategyPanel = (props) => {
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isDisabled = (isCopy && !isCopyTrader) || isClosed;
   const isReadOnly = isUpdating || isOpening;
-  const providerAllocatedBalance = 10;
-  const providerConsumedBalance = 20;
 
   // Don't render when not granted to increase position.
   if (isDisabled) {
@@ -218,7 +225,16 @@ const IncreaseStrategyPanel = (props) => {
                 <div className="currencyBox">%</div>
               </Box>
               <FormHelperText>
-                Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
+                <FormattedMessage id="terminal.provider.allocated" />{" "}
+                {loadingProviders ? (
+                  <CircularProgress color="primary" size={20} />
+                ) : (
+                  <span className="balance">{formatPrice(providerAllocatedBalance)} </span>
+                )}
+                <FormattedMessage id="terminal.provider.consumed" />{" "}
+                {!loadingProviders && (
+                  <span className="balance">{formatPrice(providerConsumedBalance)}</span>
+                )}
               </FormHelperText>
               {errors.positionSizePercentage && (
                 <span className="errorText">{errors.positionSizePercentage.message}</span>
