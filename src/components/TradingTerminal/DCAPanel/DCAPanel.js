@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { lt, gt, keys, size } from "lodash";
+import { lt, gt, isEqual, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -297,6 +297,11 @@ const DCAPanel = (props) => {
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
+      // Sync any DCA increase update with local state.
+      if (!isEqual(activeDcaIncreaseIndexes, dcaIncreaseIndexes)) {
+        setActiveDCAIncreaseIndexes(dcaIncreaseIndexes);
+      }
+
       dcaAllIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[Number(index)];
         const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
