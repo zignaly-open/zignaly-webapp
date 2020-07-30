@@ -234,29 +234,31 @@ const IncreaseStrategyPanel = (props) => {
               )}
             </FormControl>
           )}
-          <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                disabled={isReadOnly}
-                inputRef={register}
-                name="units"
-                onChange={unitsChange}
-                placeholder={"0"}
-              />
-              <div className="currencyBox">{symbolData.base}</div>
-            </Box>
-            <FormHelperText>
-              <FormattedMessage id="terminal.available" />{" "}
-              {loading ? (
-                <CircularProgress color="primary" size={15} />
-              ) : (
-                <span className="balance">{baseBalance}</span>
-              )}
-            </FormHelperText>
-            {errors.units && <span className="errorText">{errors.units.message}</span>}
-          </FormControl>
+          {!isCopyTrader && (
+            <FormControl>
+              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  disabled={isReadOnly}
+                  inputRef={register}
+                  name="units"
+                  onChange={unitsChange}
+                  placeholder={"0"}
+                />
+                <div className="currencyBox">{symbolData.base}</div>
+              </Box>
+              <FormHelperText>
+                <FormattedMessage id="terminal.available" />{" "}
+                {loading ? (
+                  <CircularProgress color="primary" size={15} />
+                ) : (
+                  <span className="balance">{baseBalance}</span>
+                )}
+              </FormHelperText>
+              {errors.units && <span className="errorText">{errors.units.message}</span>}
+            </FormControl>
+          )}
         </Box>
       )}
     </Box>
