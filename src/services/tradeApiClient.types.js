@@ -356,7 +356,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
  * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
- * @property {Number} realInvestment Invested amount without account the leveraged part.
+ * @property {Number} realInvestment Invested amount without including the leveraged part.
  * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
  * @property {boolean} closed Flag that indicate when a position is closed.
  * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
@@ -386,29 +386,27 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
- * @property {number} trailingStopPercentage
- * @property {number} trailingStopTriggerPercentage
+ * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
+ * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
  * @property {string} age Elapsed time since position was opened in human readable format.
  * @property {number} ageSeconds Elapsed seconds since position was opened.
- * @property {number} amount
- * @property {string} base
- * @property {number} buyPrice
+ * @property {number} amount Position invested amount in quote currency.
+ * @property {string} base Base currency ID, i.e. "BTC".
+ * @property {number} buyPrice Quote currency price at the moment of order entry was filled.
  * @property {string} closeDateReadable Close date in human readable format.
- * @property {string} closeTrigger
- * @property {string} exchange
- * @property {string} exchangeInternalName
- * @property {string} exitPriceStyle
- * @property {string} internalExchangeId
- * @property {number} invested
- * @property {string} investedQuote
- * @property {string} logoUrl
+ * @property {string} exchange Exchange name where position was filled.
+ * @property {string} exchangeInternalName Exchange connection name where position was filled.
+ * @property {string} exitPriceStyle Exit price style (coloring) based on gain/loss.
+ * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
+ * @property {number} invested Invested amount on this position, including leveraged part.
+ * @property {string} investedQuote Currency ID of the invested amount.
+ * @property {string} logoUrl Copy trader provider logo.
  * @property {string} openDateReadable Open date in human readable format.
- * @property {string} openTrigger
- * @property {string} pair
- * @property {string} positionId
- * @property {string} positionSize
- * @property {number} profitPercentage
- * @property {string} profitStyle
+ * @property {string} pair Cyrrency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} positionId Zignaly position ID.
+ * @property {string} positionSize Position size in base currency.
+ * @property {number} profitPercentage Percentage gain/loss of the position based on current price in relation to entry price.
+ * @property {string} profitStyle Profit style (coloring) based on gain/loss.
  * @property {string} provider
  * @property {string} providerId
  * @property {string} providerOwnerUserId
