@@ -6,7 +6,8 @@
 
   .step1 {
     border-right: solid 1px var(--border-color);
-    width: 300px;
+    flex: 1;
+    padding-right: 12px;
   }
 
   .exchangeIcon {
@@ -27,19 +28,57 @@
     margin-bottom: 24px;
     width: 250px;
 
-    .controlWrapper {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
     .accountLabel {
-      font-weight: 600;
       margin-bottom: 33px;
     }
   }
 
+  .controlWrapper {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .accountLabel {
+    font-weight: 600;
+  }
+
   .step2 {
     border-right: solid 1px var(--border-color);
-    width: 691px;
+    flex: 2;
+    padding: 0 42px;
+
+    .title {
+      margin-bottom: 18px;
+    }
+
+    .accountLabel {
+      margin-bottom: 11px;
+    }
+
+    .controlWrapper {
+      margin-bottom: 32px;
+    }
+
+    .summary {
+      cursor: pointer;
+
+      svg {
+        margin-left: 19px;
+      }
+    }
+
+    .tips {
+      margin-top: 24px;
+      white-space: pre-line;
+    }
+  }
+
+  .step3 {
+    flex: 1;
+    margin-left: 42px;
+
+    .customButton {
+      margin-top: 31px;
+    }
   }
 }

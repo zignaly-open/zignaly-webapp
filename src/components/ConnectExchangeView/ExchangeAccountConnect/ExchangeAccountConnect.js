@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import "./ExchangeAccountConnect.scss";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -13,6 +13,7 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
 import { showErrorAlert } from "../../../store/actions/ui";
 import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
+import { ChevronDown, ChevronUp } from "react-feather";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -29,38 +30,34 @@ import CustomButton from "../../CustomButton";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountConnect = ({ create, demo }) => {
-  const { register, control, setValue, watch, setError } = useFormContext();
+  const {
+    register,
+    control,
+    setValue,
+    watch,
+    setError,
+    handleSubmit,
+    errors,
+    formState: { isValid },
+  } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
   const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(
-      <FormattedMessage
-        id={
-          create ? (demo ? "accounts.create.demo" : "accounts.create.exchange") : "accounts.connect"
-        }
-      />,
-    );
+    setTitle(<FormattedMessage id="accounts.connect" />);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const exchanges = useExchangeList();
-  //   const zignalyOnly = create && !demo;
-
-  // Initialize selected exchange
-  //   let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName", "binance");
   const [exchangeName, setExchangeName] = useState("");
   const [step, setStep] = useState(1);
+  const [tipsExpanded, setTipsExpanded] = useState(false);
 
   const internalName = watch("internalName");
 
   const exchangeType = watch("exchangeType");
-  const testnet = watch("testnet");
-  // Show testnet only for binance demo futures
-  const showTestnet =
-    demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
@@ -90,16 +87,6 @@ const ExchangeAccountConnect = ({ create, demo }) => {
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
 
-  // Expose submitForm handler to ref so it can be triggered from the parent.
-  useImperativeHandle(
-    formRef,
-    () => ({
-      submitForm,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedExchange],
-  );
-
   /**
    * @typedef {Object} FormData
    * @property {String} internalName
@@ -114,32 +101,29 @@ const ExchangeAccountConnect = ({ create, demo }) => {
    * Function to submit form.
    *
    * @param {FormData} data Form data.
-   * @returns {Promise<boolean>} API promise.
+   * @returns {void}
    */
-  const submitForm = async (data) => {
+  const submitForm = (data) => {
     const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType: _exchangeType,
-      ...(!create && {
-        key,
-        secret,
-        ...(password && { password }),
-      }),
+      key,
+      secret,
+      ...(password && { password }),
       mainAccount: false,
-      isPaperTrading: demo,
-      testNet,
+      isPaperTrading: false,
+      testNet: false,
     };
 
-    return tradeApi
+    tradeApi
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(
           <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
         );
-        return true;
       })
       .catch((e) => {
         if (e.code === 72) {
@@ -151,13 +135,11 @@ const ExchangeAccountConnect = ({ create, demo }) => {
         } else {
           dispatch(showErrorAlert(e));
         }
-
-        return false;
       });
   };
 
   return (
-    <form className="exchangeAccountConnect">
+    <form className="exchangeAccountConnect" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
         <Typography variant="h3" className="body1 bold">
           <FormattedMessage id="accounts.exchange.choose" />
@@ -202,37 +184,74 @@ const ExchangeAccountConnect = ({ create, demo }) => {
               <CircularProgress disableShrink />
             </Box>
           ) : (
-            selectedExchange.requiredAuthFields.map((field) => (
-              <CustomInput
-                autoComplete="new-password"
-                inputRef={register({
-                  required: intl.formatMessage({ id: `form.error.${field}` }),
-                })}
-                key={field}
-                label={`accounts.exchange.${field}`}
-                name={field}
-                type="password"
-              />
-            ))
+            <>
+              <Typography variant="body1" className="bold title">
+                <FormattedMessage id="accounts.exchange.api" />
+              </Typography>
+              {selectedExchange.requiredAuthFields.map((field) => (
+                <CustomInput
+                  autoComplete="new-password"
+                  inputRef={register({
+                    required: intl.formatMessage({ id: `form.error.${field}` }),
+                  })}
+                  key={field}
+                  label={`accounts.exchange.${field}`}
+                  name={field}
+                  type="password"
+                />
+              ))}
+
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="flex-end"
+              >
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  className="summary"
+                  onClick={() => setTipsExpanded(!tipsExpanded)}
+                >
+                  <Typography>
+                    <FormattedMessage id="accounts.exchange.api.tip" />
+                  </Typography>
+
+                  {tipsExpanded ? <ChevronUp /> : <ChevronDown />}
+                </Box>
+
+                {step === 2 && (
+                  <CustomButton
+                    className="bgPurple bold"
+                    onClick={() => setStep(3)}
+                    disabled={!isValid}
+                  >
+                    <FormattedMessage id="accounts.next" />
+                  </CustomButton>
+                )}
+              </Box>
+              {tipsExpanded && (
+                <Typography className="tips">
+                  <FormattedMessage id="accounts.exchange.api.tipdesc" />
+                </Typography>
+              )}
+            </>
           ))}
       </Box>
-      {/* <Controller
-        as={CustomSelect}
-        control={control}
-        defaultValue={selectedExchange.name.toLowerCase()}
-        label={intl.formatMessage({
-          id: "accounts.exchange.choose",
-        })}
-        name="exchangeName"
-        onChange={([e]) => {
-          setValue("exchangeType", typeOptions[0].val);
-          setValue("testnet", false);
-          return e;
-        }}
-        options={exchangesOptions}
-        rules={{ required: true }}
-      />
-      {typeOptions.length > 1 && (
+      <Box className="step3">
+        {step === 3 && (
+          <>
+            <Typography variant="h3">
+              <FormattedMessage id="accounts.connect.ready" />
+            </Typography>
+            <CustomButton className="bgPurple bold" type="submit">
+              <FormattedMessage id="accounts.connect.button" />
+            </CustomButton>
+          </>
+        )}
+      </Box>
+      {/* {typeOptions.length > 1 && (
         <Controller
           as={CustomSelect}
           control={control}
@@ -243,18 +262,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
           name="exchangeType"
           options={typeOptions}
         />
-      )}
-      {showTestnet && (
-        <CustomSwitch
-          defaultValue={false}
-          inputRef={register}
-          label="menu.testnet"
-          name="testnet"
-        />
-      )}
-
-      {(!create || testnet) &&
-         */}
+      )} */}
     </form>
   );
 };

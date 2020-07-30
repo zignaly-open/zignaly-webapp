@@ -666,6 +666,8 @@ accounts.balance: "Balance"
 accounts.balance.synchronizing: "We are synchronizing your balance, but you can start using Zignaly."
 accounts.browse: "Browse Traders to Copy"
 accounts.connect: "Connect Exchange Account"
+accounts.connect.button: "Connect Exchange"
+accounts.connect.ready: "Ready to Connect!"
 accounts.connected.success: "Account successfully connected."
 accounts.convert: "Convert"
 accounts.connect.existing: "Connect Existing Exchange Account"
@@ -690,6 +692,16 @@ accounts.deposit.history: "Deposit History"
 accounts.deposit.make: "Make a {depositLink} on this account to start trading."
 accounts.done: "Done"
 accounts.exchange: "Exchange"
+accounts.exchange.api: "Get 2 API Keys from Exchange"
+accounts.exchange.api.tip: "Where to find these keys?"
+accounts.exchange.api.tipdesc: "- Open binance.com on a new tab\n
+  - Log in to Binance\n
+  - Hover over profile and click “API Mangement”\n
+  - Give the API key a label at the top of the screen\n
+  - Click create\n
+  - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
 accounts.exchange.choose: "Choose Exchange"
 accounts.exchange.customname: "Custom name for this account"
 accounts.exchange.name: "Account Name"

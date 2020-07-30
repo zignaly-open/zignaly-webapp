@@ -56,23 +56,25 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const showTestnet =
     demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
 
-  const selectedExchange = exchanges.find(
-    (e) => e.name.toLowerCase() === exchangeName.toLowerCase(),
-  );
+  const selectedExchange = exchanges
+    ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
+    : null;
 
   // Exchange options
   const exchangesOptions = exchanges
-    // Filter disabled exchange and Zignaly if connection
-    .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
-    .map((e) => ({
-      val: e.name.toLowerCase(),
-      label:
-        e.name.toLowerCase() === "zignaly"
-          ? `${e.name} (${intl.formatMessage({
-              id: "accounts.powered",
-            })})`
-          : e.name,
-    }));
+    ? exchanges
+        // Filter disabled exchange and Zignaly if connection
+        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
+        .map((e) => ({
+          val: e.name.toLowerCase(),
+          label:
+            e.name.toLowerCase() === "zignaly"
+              ? `${e.name} (${intl.formatMessage({
+                  id: "accounts.powered",
+                })})`
+              : e.name,
+        }))
+    : null;
 
   // Create account types options
   const typeOptions =

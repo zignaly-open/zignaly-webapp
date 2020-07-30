@@ -20,7 +20,9 @@ import FAQ from "../FAQ";
  * @returns {JSX.Element} Connect exchange element.
  */
 const ConnectExchangeView = ({ onClose }) => {
-  const methods = useForm();
+  const methods = useForm({
+    mode: "onBlur",
+  });
   const modalPath = useModalPath();
 
   return (
