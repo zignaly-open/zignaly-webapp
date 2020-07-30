@@ -22,7 +22,7 @@ const ExchangeIcon = (props) => {
   const { exchange, size, onClick, className } = props;
   let icon = null;
 
-  switch (exchange) {
+  switch (exchange.toLowerCase()) {
     case "binance":
       icon = BinanceIcon;
       break;

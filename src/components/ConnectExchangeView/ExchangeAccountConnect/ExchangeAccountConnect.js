@@ -14,6 +14,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
+import { LiveTv } from "@material-ui/icons";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -56,7 +57,7 @@ const ExchangeAccountConnect = ({ create, demo }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const exchanges = useExchangeList();
+  let exchanges = useExchangeList();
   const [exchangeName, setExchangeName] = useState("");
   const [step, setStep] = useState(1);
   const [tipsExpanded, setTipsExpanded] = useState(false);
@@ -66,24 +67,14 @@ const ExchangeAccountConnect = ({ create, demo }) => {
 
   const exchangeType = watch("exchangeType");
 
+  if (exchanges) {
+    // Filter disabled exchanges and Zignaly
+    exchanges = exchanges.filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly");
+  }
+  console.log(exchanges);
+
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
-    : null;
-
-  // Exchange options
-  // Filter disabled exchange and Zignaly if connection
-  const exchangesOptions = exchanges
-    ? exchanges
-        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
-        .map((e) => ({
-          val: e.name.toLowerCase(),
-          label:
-            e.name.toLowerCase() === "zignaly"
-              ? `${e.name} (${intl.formatMessage({
-                  id: "accounts.powered",
-                })})`
-              : e.name,
-        }))
     : null;
 
   // Create account types options
@@ -149,18 +140,26 @@ const ExchangeAccountConnect = ({ create, demo }) => {
       });
   };
 
+  if (!exchanges) {
+    return (
+      <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
+        <CircularProgress disableShrink />
+      </Box>
+    );
+  }
+
   return (
     <form className="exchangeAccountConnect" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
         <Typography variant="h3" className="body1 bold">
           <FormattedMessage id="accounts.exchange.choose" />
         </Typography>
-        {["binance", "kucoin"].map((e) => (
+        {exchanges.map((e) => (
           <ExchangeIcon
-            exchange={e}
-            onClick={() => setExchangeName(e)}
-            className={exchangeName === e ? "selected" : ""}
-            key={e}
+            exchange={e.name}
+            onClick={() => setExchangeName(e.name)}
+            className={exchangeName === e.name ? "selected" : ""}
+            key={e.id}
           />
         ))}
         <div className="name">
@@ -183,87 +182,76 @@ const ExchangeAccountConnect = ({ create, demo }) => {
         )}
       </Box>
       <Box className="step2">
-        {step >= 2 &&
-          selectedExchange &&
-          (!exchanges ? (
+        {step >= 2 && selectedExchange && (
+          <>
+            <Typography variant="body1" className="bold title">
+              <FormattedMessage id="accounts.exchange.api" />
+            </Typography>
+            {selectedExchange.requiredAuthFields.map((field) => (
+              <CustomInput
+                autoComplete="new-password"
+                inputRef={register({
+                  required: intl.formatMessage({ id: `form.error.${field}` }),
+                })}
+                key={field}
+                label={`accounts.exchange.${field}`}
+                name={field}
+                type="password"
+              />
+            ))}
+
             <Box
-              className="loadProgress"
               display="flex"
               flexDirection="row"
-              justifyContent="center"
+              justifyContent="space-between"
+              alignItems="flex-end"
+              className="actionStep2"
             >
-              <CircularProgress disableShrink />
-            </Box>
-          ) : (
-            <>
-              <Typography variant="body1" className="bold title">
-                <FormattedMessage id="accounts.exchange.api" />
-              </Typography>
-              {selectedExchange.requiredAuthFields.map((field) => (
-                <CustomInput
-                  autoComplete="new-password"
-                  inputRef={register({
-                    required: intl.formatMessage({ id: `form.error.${field}` }),
-                  })}
-                  key={field}
-                  label={`accounts.exchange.${field}`}
-                  name={field}
-                  type="password"
-                />
-              ))}
-
               <Box
                 display="flex"
                 flexDirection="row"
-                justifyContent="space-between"
-                alignItems="flex-end"
-                className="actionStep2"
+                alignItems="center"
+                className="summary"
+                onClick={() => setTipsExpanded(!tipsExpanded)}
               >
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  className="summary"
-                  onClick={() => setTipsExpanded(!tipsExpanded)}
-                >
-                  <Typography>
-                    <FormattedMessage id="accounts.exchange.api.tip" />
-                  </Typography>
-
-                  {tipsExpanded ? <ChevronUp /> : <ChevronDown />}
-                </Box>
-
-                {step === 2 && (
-                  <Hidden xsDown>
-                    <CustomButton
-                      className="bgPurple bold"
-                      onClick={() => setStep(3)}
-                      disabled={!isValid}
-                    >
-                      <FormattedMessage id="accounts.next" />
-                    </CustomButton>
-                  </Hidden>
-                )}
-              </Box>
-              {tipsExpanded && (
-                <Typography className="tips">
-                  <FormattedMessage id="accounts.exchange.api.tipdesc" />
+                <Typography>
+                  <FormattedMessage id="accounts.exchange.api.tip" />
                 </Typography>
-              )}
+
+                {tipsExpanded ? <ChevronUp /> : <ChevronDown />}
+              </Box>
+
               {step === 2 && (
-                <Hidden smUp>
+                <Hidden xsDown>
                   <CustomButton
                     className="bgPurple bold"
-                    type="submit"
+                    onClick={() => setStep(3)}
                     disabled={!isValid}
-                    loading={loading}
                   >
-                    <FormattedMessage id="accounts.connect.button" />
+                    <FormattedMessage id="accounts.next" />
                   </CustomButton>
                 </Hidden>
               )}
-            </>
-          ))}
+            </Box>
+            {tipsExpanded && (
+              <Typography className="tips">
+                <FormattedMessage id="accounts.exchange.api.tipdesc" />
+              </Typography>
+            )}
+            {step === 2 && (
+              <Hidden smUp>
+                <CustomButton
+                  className="bgPurple bold"
+                  type="submit"
+                  disabled={!isValid}
+                  loading={loading}
+                >
+                  <FormattedMessage id="accounts.connect.button" />
+                </CustomButton>
+              </Hidden>
+            )}
+          </>
+        )}
       </Box>
       <Box className="step3">
         {step === 3 && (
