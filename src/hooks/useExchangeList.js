@@ -37,6 +37,7 @@ const useExchangeList = (shouldExecute = true) => {
     if (shouldExecute) {
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeSession.tradeApi.accessToken, shouldExecute]);
 
   return exchanges;

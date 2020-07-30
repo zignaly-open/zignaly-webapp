@@ -45,10 +45,6 @@ const TradingView = () => {
   const [marketData, setMarketData] = useState(null);
   const dispatch = useDispatch();
 
-  if (!storeSettings.selectedExchange.internalId) {
-    return <ConnectExchange />;
-  }
-
   const getMarketData = async () => {
     const marketDataPayload = {
       token: storeSession.tradeApi.accessToken,
@@ -294,4 +290,13 @@ const TradingView = () => {
   );
 };
 
-export default React.memo(TradingView);
+const TradingViewWrapper = () => {
+  const storeSettings = useStoreSettingsSelector();
+  if (!storeSettings.selectedExchange.internalId) {
+    return <ConnectExchange />;
+  }
+
+  return <TradingView />;
+};
+
+export default React.memo(TradingViewWrapper);

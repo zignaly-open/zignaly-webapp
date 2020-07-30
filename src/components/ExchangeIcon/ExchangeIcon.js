@@ -9,7 +9,7 @@ import KucoinIcon from "../../images/exchanges/kucoin.svg";
  * @property {string} exchange Exchange name.
  * @property {String} [size] Icon size.
  * @property {String} [className] className
- * @property {function} [onClick] onClick
+ * @property {React.MouseEventHandler} [onClick] onClick
  */
 
 /**
@@ -41,9 +41,9 @@ const ExchangeIcon = (props) => {
     <img
       alt="zignaly"
       className={`exchangeIcon ${size ? size : ""} ${className ? className : ""}`}
+      onClick={onClick}
       src={icon}
       title={exchange}
-      onClick={onClick}
     />
   );
 };

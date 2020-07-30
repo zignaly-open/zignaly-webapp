@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import "./ExchangeAccountConnect.scss";
@@ -25,12 +25,9 @@ import { ChevronDown, ChevronUp } from "react-feather";
 const ExchangeAccountConnect = () => {
   const {
     register,
-    control,
-    setValue,
     watch,
     setError,
     handleSubmit,
-    errors,
     formState: { isValid },
   } = useFormContext();
   const intl = useIntl();
@@ -38,7 +35,6 @@ const ExchangeAccountConnect = () => {
   const storeSession = useStoreSessionSelector();
   const {
     setTitle,
-    formRef,
     setTempMessage,
     pathParams: { previousPath },
     resetToPath,
@@ -79,6 +75,7 @@ const ExchangeAccountConnect = () => {
     if (selectedExchange) {
       setExchangeType(typeOptions[0].val);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExchange]);
 
   /**
@@ -98,7 +95,7 @@ const ExchangeAccountConnect = () => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    const { internalName, key, secret, password } = data;
+    const { key, secret, password } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
@@ -145,15 +142,15 @@ const ExchangeAccountConnect = () => {
   return (
     <form className="exchangeAccountConnect" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
-        <Typography variant="h3" className="body1 bold">
+        <Typography className="body1 bold" variant="h3">
           <FormattedMessage id="accounts.exchange.choose" />
         </Typography>
         {exchanges.map((e) => (
           <ExchangeIcon
-            exchange={e.name}
-            onClick={() => setExchangeName(e.name)}
             className={exchangeName === e.name ? "selected" : ""}
+            exchange={e.name}
             key={e.id}
+            onClick={() => setExchangeName(e.name)}
           />
         ))}
         <div className="name">
@@ -168,8 +165,8 @@ const ExchangeAccountConnect = () => {
         {step === 1 && (
           <CustomButton
             className="bgPurple bold"
-            onClick={() => setStep(2)}
             disabled={!internalName || !exchangeName}
+            onClick={() => setStep(2)}
           >
             <FormattedMessage id="accounts.next" />
           </CustomButton>
@@ -214,17 +211,17 @@ const ExchangeAccountConnect = () => {
             ))}
 
             <Box
+              alignItems="flex-end"
+              className="actionStep2"
               display="flex"
               flexDirection="row"
               justifyContent="space-between"
-              alignItems="flex-end"
-              className="actionStep2"
             >
               <Box
-                display="flex"
-                flexDirection="row"
                 alignItems="center"
                 className="summary"
+                display="flex"
+                flexDirection="row"
                 onClick={() => setTipsExpanded(!tipsExpanded)}
               >
                 <Typography>
@@ -238,8 +235,8 @@ const ExchangeAccountConnect = () => {
                 <Hidden xsDown>
                   <CustomButton
                     className="bgPurple bold"
-                    onClick={() => setStep(3)}
                     disabled={!isValid}
+                    onClick={() => setStep(3)}
                   >
                     <FormattedMessage id="accounts.next" />
                   </CustomButton>
@@ -255,9 +252,9 @@ const ExchangeAccountConnect = () => {
               <Hidden smUp>
                 <CustomButton
                   className="bgPurple bold"
-                  type="submit"
                   disabled={!isValid}
                   loading={loading}
+                  type="submit"
                 >
                   <FormattedMessage id="accounts.connect.button" />
                 </CustomButton>
@@ -272,7 +269,7 @@ const ExchangeAccountConnect = () => {
             <Typography variant="h3">
               <FormattedMessage id="accounts.connect.ready" />
             </Typography>
-            <CustomButton className="bgPurple bold" type="submit" loading={loading}>
+            <CustomButton className="bgPurple bold" loading={loading} type="submit">
               <FormattedMessage id="accounts.connect.button" />
             </CustomButton>
           </>

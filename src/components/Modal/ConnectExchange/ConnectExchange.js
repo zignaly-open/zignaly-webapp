@@ -23,14 +23,14 @@ const ConnectExchange = ({ onClose }) => {
   };
 
   return (
-    <Box alignItems="center" display="flex" flexDirection="column" className="connectExchangeModal">
+    <Box alignItems="center" className="connectExchangeModal" display="flex" flexDirection="column">
       <Typography variant="h3">
         <FormattedMessage id="accounts.connect" />
       </Typography>
       <Typography variant="body1">
         <FormattedMessage id="accounts.connect.first" />
       </Typography>
-      <Box display="flex" flexDirection="column" className="real">
+      <Box className="real" display="flex" flexDirection="column">
         <Typography variant="h4">
           <FormattedMessage id="accounts.create.or" />
         </Typography>
@@ -38,7 +38,7 @@ const ConnectExchange = ({ onClose }) => {
           <FormattedMessage id="accounts.connect.go" />
         </CustomButton>
       </Box>
-      <Box display="flex" flexDirection="column" className="demo">
+      <Box className="demo" display="flex" flexDirection="column">
         <Typography variant="h4">
           <FormattedMessage id="accounts.connect.experiment" />
         </Typography>
