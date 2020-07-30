@@ -423,8 +423,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type Position status category.
  * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
  * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
- * @property {Number} returnFromAllocated
- * @property {Number} returnFromInvestment
+ * @property {Number} returnFromAllocated Percentage return from copy trader service allocated balance.
+ * @property {Number} returnFromInvestment Percentage return from copy trader service invested balance.
  * @property {Number} priceDifference Price difference from entry price.
  * @property {string} priceDifferenceStyle Price difference style (coloring) based on gain/loss.
  * @property {Number} unrealizedProfitLosses Unrealized profit / loss amount expressed in quote currency.

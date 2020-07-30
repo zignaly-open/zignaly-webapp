@@ -229,7 +229,6 @@ class TradeApiClient {
    * Get user open trading positions.
    *
    * @param {PositionsListPayload} payload User authorization payload.
-
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
    * @memberof TradeApiClient
@@ -245,7 +244,6 @@ class TradeApiClient {
    * Get user closed trading positions.
    *
    * @param {PositionsListPayload} payload User authorization payload.
-
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
    * @memberof TradeApiClient
@@ -264,7 +262,6 @@ class TradeApiClient {
    * Get user unsold / unopened trading positions.
    *
    * @param {PositionsListPayload} payload User authorization payload.
-
    * @returns {Promise<UserPositionsCollection>} Promise that resolve user positions collection.
    *
    * @memberof TradeApiClient
@@ -283,7 +280,6 @@ class TradeApiClient {
    * Get providers list.
    *
    * @param {ProvidersPayload} payload Get providers payload.
-
    * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
@@ -359,8 +355,9 @@ class TradeApiClient {
   /**
    * Close a position.
    *
+   * This action will detach the position monitoring from Zignaly but will continue open in the exchange.
+   *
    * @param {PositionActionPayload} payload Position action payload.
-
    * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
