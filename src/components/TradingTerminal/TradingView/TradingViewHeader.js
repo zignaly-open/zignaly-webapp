@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { size, isBoolean } from "lodash";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
-import tradeApi from "../../../services/tradeApiClient";
 import CustomSelect from "../../CustomSelect/CustomSelect";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
@@ -27,42 +25,14 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 const TradingViewHeader = (props) => {
   const { symbolsList, handleSymbolChange, selectedSymbol } = props;
   const { control, register, watch } = useFormContext();
-  const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
   // @ts-ignore
   const symbolsOptionsAll = symbolsList.map((symbolItem) => {
     return symbolItem.symbol;
   });
-  const [ownCopyTradersProviders, setOwnCopyTradersProviders] = useState([]);
-  const loadOwnCopyTradersProviders = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-    };
-
-    tradeApi.ownedCopyTradersProvidersOptions(payload).then((data) => {
-      if (Array.isArray(data)) {
-        // Digest providers data to handle translation.
-        const digestedProviders = data.map((provider) => {
-          if (provider.providerId === 1) {
-            return { ...provider, providerName: formatMessage({ id: "terminal.provider.manual" }) };
-          }
-
-          return provider;
-        });
-
-        setOwnCopyTradersProviders(digestedProviders);
-      }
-    });
-  };
-
+  const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
   const { formatMessage } = useIntl();
-  useEffect(loadOwnCopyTradersProviders, [
-    storeSettings.selectedExchange.internalId,
-    storeSettings.languageCode,
-  ]);
 
-  const providerOptions = ownCopyTradersProviders.map((provider) => {
+  const providerOptions = ownCopyTraderProviders.map((provider) => {
     return {
       label: provider.providerName,
       val: String(provider.providerId),
@@ -71,7 +41,7 @@ const TradingViewHeader = (props) => {
 
   const selectedProviderValue = providerOptions[0] ? providerOptions[0].val : "";
   const providerId = watch("providerService");
-  const providerService = ownCopyTradersProviders.find(
+  const providerService = ownCopyTraderProviders.find(
     (provider) => provider.providerId === providerId,
   ) || {
     providerPayableBalance: 0,
@@ -108,7 +78,7 @@ const TradingViewHeader = (props) => {
           value={selectedSymbol}
         />
       </Box>
-      {size(ownCopyTradersProviders) > 1 && (
+      {size(ownCopyTraderProviders) > 1 && (
         <Box
           alignContent="left"
           className="providersSelector"

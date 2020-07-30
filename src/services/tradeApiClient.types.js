@@ -2398,7 +2398,7 @@ function createExchangeListEmptyEntity() {
  * @typedef {Object} CopyTradersProvidersOption
  * @property {number|string} providerId Provider ID.
  * @property {string} providerName Provider name.
- * @property {string|false} providerQuote Currency quote traded by the copy trading provider service.
+ * @property {string|boolean} providerQuote Currency quote traded by the copy trading provider service.
  * @property {number} providerConsumedBalance Balance (amount in quote currency) that is currently consumed.
  * @property {number} providerConsumedBalancePercentage Balance (percentage) that is currently consumed.
  * @property {number} providerPayableBalance Copy trader provider allocated balance for this signals service.
