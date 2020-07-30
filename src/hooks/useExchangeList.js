@@ -19,8 +19,8 @@ const useExchangeList = (shouldExecute = true) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadData = async () => {
+  const loadData = () => {
+    if (shouldExecute) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
       };
@@ -33,11 +33,10 @@ const useExchangeList = (shouldExecute = true) => {
         .catch((e) => {
           dispatch(showErrorAlert(e));
         });
-    };
-    if (shouldExecute) {
-      loadData();
     }
-  }, [storeSession.tradeApi.accessToken, shouldExecute]);
+  };
+
+  useEffect(loadData, [storeSession.tradeApi.accessToken, shouldExecute]);
 
   return exchanges;
 };

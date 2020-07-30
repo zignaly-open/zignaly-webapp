@@ -24,24 +24,23 @@ const useEquity = (internalId) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: internalId,
-      };
-
-      tradeApi
-        .userEquityGet(payload)
-        .then((data) => {
-          setEquity(data);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
+  const loadData = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+
+    tradeApi
+      .userEquityGet(payload)
+      .then((data) => {
+        setEquity(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
 
   return equity;
 };

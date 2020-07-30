@@ -3127,9 +3127,10 @@ export function managementPositionsResponseTransform(response) {
 }
 
 /**
+ * Transform Management positions item..
  *
- * @param {*} positionList
- * @returns {ManagementPositionsEntity}
+ * @param {*} positionList Management positions list.
+ * @returns {ManagementPositionsEntity} Management positions entitiy.
  */
 function managementPositionsItemTransform(positionList) {
   /* @ts-ignore */
@@ -3147,7 +3148,7 @@ function managementPositionsItemTransform(positionList) {
 }
 
 /**
- * @returns {ManagementPositionsEntity}
+ * @returns {ManagementPositionsEntity} Empty management positions entity.
  */
 function createEmptyManagementPositionsEntity() {
   return {

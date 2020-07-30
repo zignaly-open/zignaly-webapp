@@ -720,10 +720,10 @@ function composeContractsRow(contract) {
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
- * @param {Array<ExchangeContractsObject>} positions Positions collection.
+ * @param {Array<ExchangeContractsObject>} contracts Positions collection.
  * @returns {DataTableContent} Open positions data table structure.
  */
-export function composeContractsDataTable(positions) {
+export function composeContractsDataTable(contracts) {
   const columnsIds = [
     ["col.positionid"],
     ["col.orders.symbol"],
@@ -738,6 +738,6 @@ export function composeContractsDataTable(positions) {
 
   return {
     columns: columnsIds.map((column) => composeColumnOptions(column[0])),
-    data: positions.map((order) => composeContractsRow(order)),
+    data: contracts.map((contract) => composeContractsRow(contract)),
   };
 }

@@ -19,9 +19,8 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
 
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const loadData = async () => {
+  const loadData = () => {
+    if (shouldExecute) {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
@@ -36,11 +35,10 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
         .catch((e) => {
           dispatch(showErrorAlert(e));
         });
-    };
-    if (shouldExecute) {
-      loadData();
     }
-  }, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
+  };
+
+  useEffect(loadData, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
 
   return quotes;
 };
