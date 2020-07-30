@@ -14,12 +14,13 @@ import "./ManagementTable.scss";
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  */
 
 /**
  * @typedef {Object} PositionsTableProps
  * @property {Array<PositionEntity>} list
- * @property {Object} allPositions
+ * @property {Array<ManagementPositionsEntity>} allPositions
  */
 
 /**

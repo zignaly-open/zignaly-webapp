@@ -13,14 +13,14 @@ export const CLEAR_SESSION_DATA = "CLEAR_SESSION_DATA_ACTION";
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
  * @typedef {import("../../services/tradeApiClient.types").UserRegisterPayload} UserRegisterPayload
- * @typedef {import("../../services/tradeApiClient.types").UserLoginResponse} UserLoginResponse
+ * @typedef {import("../../services/tradeApiClient.types").UserEntity} UserEntity
  * @typedef {import("../../services/tradeApiClient.types").TwoFAPayload} TwoFAPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
- * @param {UserLoginResponse} response User login payload.
+ * @param {UserEntity} response User login payload.
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
@@ -79,7 +79,7 @@ export const registerUser = (payload, setLoading) => {
 /**
  * Function to preload user data.
  *
- * @param {UserLoginResponse} response api token.
+ * @param {UserEntity} response api token.
  * @returns {AppThunk} Thunk action.
  */
 export const loadAppUserData = (response) => {

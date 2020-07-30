@@ -12,6 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @property {string} titleTranslationId
  * @property {string} messageTranslationId
  * @property {boolean} visible
+ * @property {Object} [values]
  */
 
 /**
@@ -50,7 +51,10 @@ const ConfirmDialog = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText color="textPrimary">
-            <FormattedMessage id={confirmConfig.messageTranslationId} />
+            <FormattedMessage
+              id={confirmConfig.messageTranslationId}
+              values={confirmConfig.values ? confirmConfig.values : {}}
+            />
           </DialogContentText>
         </DialogContent>
         <DialogActions>

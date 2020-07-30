@@ -19,7 +19,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersListEntity} ProviderFollowersListEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersEntity} ProviderFollowersEntity
  */
 
 /**
@@ -28,7 +28,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
- * @property {Array<ProviderFollowersListEntity>} list
+ * @property {Array<ProviderFollowersEntity>} list
  * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.

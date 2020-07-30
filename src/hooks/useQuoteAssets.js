@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
@@ -16,9 +18,9 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
-
-  useEffect(() => {
-    const loadData = async () => {
+  const dispatch = useDispatch();
+  const loadData = () => {
+    if (shouldExecute) {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
@@ -31,13 +33,12 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
           setQuotes(data);
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
-    };
-    if (shouldExecute) {
-      loadData();
     }
-  }, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
+  };
+
+  useEffect(loadData, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
 
   return quotes;
 };

@@ -5,6 +5,8 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import { mapExchangeConnectionToCoinRayId } from "../tradingView/dataFeedOptions";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
@@ -20,6 +22,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [dataFeed, setDataFeed] = useState(null);
+  const dispatch = useDispatch();
 
   const getCoinrayToken = async () => {
     const milliSecsThreshold = 20000;
@@ -32,7 +35,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
 
         return data.jwt;
       } catch (error) {
-        alert(`ERROR: Get coinray token error: ${error.message}`);
+        dispatch(showErrorAlert(error));
       }
 
       return "";
@@ -52,7 +55,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
 
       return data;
     } catch (error) {
-      alert(`ERROR: ${error.message}`);
+      dispatch(showErrorAlert(error));
     }
 
     return [];
@@ -87,7 +90,7 @@ const useCoinRayDataFeedFactory = (symbol) => {
           setDataFeed(new CoinRayDataFeed(options));
         })
         .catch((e) => {
-          alert(`ERROR: ${e.message}`);
+          dispatch(showErrorAlert(e));
         });
     }
   };

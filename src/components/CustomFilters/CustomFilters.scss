@@ -37,9 +37,12 @@
 
     .filters {
       align-items: center;
-      flex-direction: column;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
       margin-bottom: 10px;
       min-height: 60px;
+      padding: 0 10px;
       width: 100%;
 
       .title {
@@ -52,6 +55,11 @@
         > span {
           display: none;
         }
+      }
+
+      .customSelect {
+        margin-bottom: 10px;
+        width: 48%;
       }
     }
 

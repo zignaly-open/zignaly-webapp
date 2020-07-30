@@ -7,12 +7,13 @@ import { composeManagementPositionsDataTable } from "../../../../utils/composePo
 /**
  *
  * @typedef {import('../../../../services/tradeApiClient.types').PositionEntity} PositionEntity
+ * @typedef {import('../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {Object} TranformedObject
  * @property {String} id
- * @property {String|Number|Element} data
+ * @property {String|Number|JSX.Element} data
  *
  * @typedef {Object} DefaultProps
- * @property {Object} values
+ * @property {Array<ManagementPositionsEntity>} values
  * @property {String} persistKey
  * @property {React.MouseEventHandler} confirmAction
  * @property {Number} index
@@ -29,13 +30,11 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
   const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
-    let userMapping = Object.values(values);
-    let expanded = [...userMapping[index]];
-    expanded.splice(0, 1);
+    let positions = values[index].subPositions;
     let newList = [];
-    let transformed = composeManagementPositionsDataTable(expanded, confirmAction);
+    let transformed = composeManagementPositionsDataTable(positions, confirmAction);
     let { data, columns } = transformed;
-    for (let a = 0; a < expanded.length; a++) {
+    for (let a = 0; a < positions.length; a++) {
       let transformedRow = [];
       for (let b = 0; b < columns.length; b++) {
         /**
@@ -43,12 +42,12 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
          */
         let obj = { id: "", data: "" };
         obj.id = columns[b].name;
-        /* @ts-ignore */
         obj.data = data[a][b];
         transformedRow.push(obj);
       }
       newList[a] = transformedRow;
     }
+
     setList([...newList]);
   };
 

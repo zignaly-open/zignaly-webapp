@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeAssetsDict} ExchangeAssetsDict
@@ -17,6 +19,7 @@ const useExchangeAssets = (internalId, updatedAt) => {
   const [assets, setAssets] = useState({});
 
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
   const loadData = () => {
     const payload = {
@@ -30,7 +33,7 @@ const useExchangeAssets = (internalId, updatedAt) => {
         setAssets(data);
       })
       .catch((e) => {
-        alert(`ERROR: ${e.message}`);
+        dispatch(showErrorAlert(e));
       });
   };
 

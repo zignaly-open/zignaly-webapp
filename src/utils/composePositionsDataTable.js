@@ -465,6 +465,29 @@ export function composeAllActionButtons(position, confirmActionHandler) {
 }
 
 /**
+ * Compose all action buttons element for a given position.
+ *
+ * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @returns {JSX.Element} Composed JSX element.
+ */
+export function composeOrdersCancelActionButton(order, confirmActionHandler) {
+  return (
+    <div className="actions">
+      {order.status === "open" && (
+        <IconButton
+          className="iconPurple"
+          data-order-id={order.orderId}
+          onClick={confirmActionHandler}
+        >
+          <Delete />
+        </IconButton>
+      )}
+    </div>
+  );
+}
+
+/**
  * Compose MUI Data Table default options for a column translation ID.
  *
  * @param {string} columnId Column ID.
@@ -628,9 +651,10 @@ function composePositionLinkButton(positionId) {
  * Compose MUI Data Table row for profile open position entity.
  *
  * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableDataRow} Row data array.
  */
-function composeOpenOrdersRow(order) {
+function composeOpenOrdersRow(order, confirmActionHandler) {
   return [
     composeRawValue(order.orderId),
     composePositionLinkButton(order.positionId),
@@ -640,7 +664,7 @@ function composeOpenOrdersRow(order) {
     composeRawValue(order.side),
     composeRawValue(order.type),
     composeRawValue(order.datetimeReadable),
-    // composeOrdersCancelActionButton(order, confirmActionHandler),
+    composeOrdersCancelActionButton(order, confirmActionHandler),
   ];
 }
 
@@ -649,9 +673,10 @@ function composeOpenOrdersRow(order) {
  *
  * @export
  * @param {Array<ExchangeOpenOrdersObject>} positions Positions collection.
+ * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableContent} Open positions data table structure.
  */
-export function composeOrdersDataTable(positions) {
+export function composeOrdersDataTable(positions, confirmActionHandler) {
   const columnsIds = [
     ["col.orders.orderid"],
     ["col.positionid"],
@@ -661,11 +686,12 @@ export function composeOrdersDataTable(positions) {
     ["col.side"],
     ["col.orders.type"],
     ["col.orders.datetime"],
+    ["col.cancel"],
   ];
 
   return {
     columns: columnsIds.map((column) => composeColumnOptions(column[0])),
-    data: positions.map((order) => composeOpenOrdersRow(order)),
+    data: positions.map((order) => composeOpenOrdersRow(order, confirmActionHandler)),
   };
 }
 
@@ -694,10 +720,10 @@ function composeContractsRow(contract) {
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
- * @param {Array<ExchangeContractsObject>} positions Positions collection.
+ * @param {Array<ExchangeContractsObject>} contracts Positions collection.
  * @returns {DataTableContent} Open positions data table structure.
  */
-export function composeContractsDataTable(positions) {
+export function composeContractsDataTable(contracts) {
   const columnsIds = [
     ["col.positionid"],
     ["col.orders.symbol"],
@@ -712,6 +738,6 @@ export function composeContractsDataTable(positions) {
 
   return {
     columns: columnsIds.map((column) => composeColumnOptions(column[0])),
-    data: positions.map((order) => composeContractsRow(order)),
+    data: contracts.map((contract) => composeContractsRow(contract)),
   };
 }
