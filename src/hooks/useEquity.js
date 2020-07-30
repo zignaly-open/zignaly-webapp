@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -20,25 +22,25 @@ const useEquity = (internalId) => {
   });
 
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: internalId,
-      };
-
-      tradeApi
-        .userEquityGet(payload)
-        .then((data) => {
-          setEquity(data);
-        })
-        .catch((e) => {
-          alert(`ERROR: ${e.message}`);
-        });
+  const loadData = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+
+    tradeApi
+      .userEquityGet(payload)
+      .then((data) => {
+        setEquity(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
 
   return equity;
 };

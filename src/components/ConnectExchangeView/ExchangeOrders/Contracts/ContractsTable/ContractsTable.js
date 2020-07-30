@@ -2,7 +2,7 @@ import React from "react";
 import "./ContractsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../../../Table";
-import { composeOrdersDataTable } from "../../../../../utils/composePositionsDataTable";
+import { composeContractsDataTable } from "../../../../../utils/composePositionsDataTable";
 // import tradeApi from "../../../../../services/tradeApiClient";
 // import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 // import { ConfirmDialog } from "../../../../Dialogs";
@@ -12,7 +12,7 @@ import { composeOrdersDataTable } from "../../../../../utils/composePositionsDat
  * @typedef {import("../../../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
- * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
@@ -23,7 +23,7 @@ import { composeOrdersDataTable } from "../../../../../utils/composePositionsDat
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {Array<ExchangeOpenOrdersObject>} list
+ * @property {Array<ExchangeContractsObject>} list
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -123,7 +123,7 @@ const ContractsTable = ({ title, list }) => {
    */
   const composeDataTableForOrders = () => {
     let dataTable;
-    dataTable = composeOrdersDataTable(list);
+    dataTable = composeContractsDataTable(list);
     return dataTable;
   };
 

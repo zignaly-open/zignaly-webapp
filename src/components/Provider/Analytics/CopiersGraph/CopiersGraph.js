@@ -5,13 +5,13 @@ import { Box } from "@material-ui/core";
 
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowerEntity} ProviderFollowerEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ProviderCopiersEntity} ProviderCopiersEntity
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<ProviderFollowerEntity>} list
+ * @property {Array<ProviderCopiersEntity>} list
  */
 
 /**

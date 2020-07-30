@@ -91,6 +91,8 @@ confirm.positioncancel.message: "Are you sure you want to cancel the position? C
 confirm.positioncancel.title: "Cancel Position"
 confirm.positionexit.message: "Are you sure you want to exit the position?"
 confirm.positionexit.title: "Exit Position"
+confirm.ordercancel.title: "Cancel Order"
+confirm.ordercancel.message: "Canceling this order will remove it from the exchange, if the order belong to Zignaly's open positions, mostly this position will fail. Please confirm that you want to cancel order # {order}"
 
 # COLUMNS
 col.actions: "ACTIONS"
@@ -1096,3 +1098,6 @@ notfound.title: "Page not found"
 notfound.why: "Why am I here?"
 notfound.desc: "It seems like the page you were looking for no longer exists."
 notfound.home: "Take me home"
+
+orders.alert.title: "Order Cancelled!"
+orders.alert.body: "Your order was successfully cancelled"

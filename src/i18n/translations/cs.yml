@@ -92,6 +92,8 @@ confirm.positioncancel.title: "CH-Cancel Position"
 confirm.positioncancel.message: "CH-Are you sure you want to cancel the position? Canceling the position means you will remove the position from Zignaly, keeping your current bought coins."
 confirm.positionexit.title: "CH-Exit Position"
 confirm.positionexit.message: "CH-Are you sure you want to exit the position?"
+confirm.ordercancel.title: "CH-Cancel Order"
+confirm.ordercancel.message: "CH-Canceling this order will remove it from the exchange, if the order belong to Zignaly's open positions, mostly this position will fail. Please confirm that you want to cancel order # {order}"
 
 # COLUMNS
 col.actions: "CH-ACTIONS"
@@ -1095,3 +1097,6 @@ notfound.title: "CH-Page not found"
 notfound.why: "CH-Why am I here?"
 notfound.desc: "CH-It seems like the page you were looking for no longer exists."
 notfound.home: "CH-Take me home"
+
+orders.alert.title: "CH-Order Cancelled!"
+orders.alert.body: "CH-Your order was successfully cancelled"

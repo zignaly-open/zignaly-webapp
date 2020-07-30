@@ -119,19 +119,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} UserCreatePayload
- * @property {string} firstName User first name.
- * @property {string} email User email address.
- * @property {string} password User password.
- * @property {string} gRecaptchaResponse Google captcha response.
- */
-
-/**
- * @typedef {Object} UserCreateResponse
- * @property {string} token User access token.
- */
-
-/**
  * @typedef {Object} UserLoginPayload
  * @property {string} email
  * @property {string} password
@@ -263,7 +250,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} UserLoginResponse
+ * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
  * @property {string} email User email.
@@ -322,6 +309,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelOrderPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} orderId order ID.
+ * @property {String} symbol symbol.
+ */
+
+/**
  * @typedef {Object} PositionsListPayload
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
@@ -372,7 +367,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
  * @property {string} netProfitStyle Profit style (coloring) based on gain/loss.
- * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {number} openDate Open date represented in unix time epoch seconds.
  * @property {number} positionSizeQuote Position size represented in quote currency.
  * @property {number} profit Profit amount without fees substraction.
@@ -400,38 +394,37 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
  * @property {number} invested Invested amount on this position, including leveraged part.
  * @property {string} investedQuote Currency ID of the invested amount.
- * @property {string} logoUrl Copy trader provider logo.
  * @property {string} openDateReadable Open date in human readable format.
- * @property {string} pair Cyrrency pair in separated format, i.e. "BTC/USDT".
  * @property {string} positionId Zignaly position ID.
  * @property {string} positionSize Position size in base currency.
  * @property {number} profitPercentage Percentage gain/loss of the position based on current price in relation to entry price.
  * @property {string} profitStyle Profit style (coloring) based on gain/loss.
- * @property {string} provider
- * @property {string} providerId
- * @property {string} providerOwnerUserId
- * @property {string} providerLink
- * @property {string} providerLogo
- * @property {string} providerName
- * @property {string} quote
- * @property {string} quoteAsset
- * @property {number} remainAmount
- * @property {string} riskStyle
- * @property {number} sellPrice
- * @property {string} side
- * @property {string} signalId
- * @property {string} stopLossStyle
- * @property {string} symbol
- * @property {string} userId
- * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type
- * @property {PositionEntityTotals} copyTradingTotals
- * @property {Number} subPositions
- * @property {Number} returnFromAllocated
- * @property {Number} returnFromInvestment
- * @property {Number} priceDifference
- * @property {string} priceDifferenceStyle
- * @property {Number} unrealizedProfitLosses
- * @property {Number} unrealizedProfitLossesPercentage
+ * @property {string} providerId Copy trader provider ID that originated the signal for position entry.
+ * @property {string} providerOwnerUserId Copy trader service owner user ID.
+ * @property {string} providerLink Copy trader provider profile page URL.
+ * @property {string} logoUrl Copy trader provider logo (will be deprecated in favor of provideerLogo).
+ * @property {string} providerLogo Copy trader provider logo.
+ * @property {string} providerName Copy trader provider name.
+ * @property {string} quote Quote currency ID.
+ * @property {number} remainAmount Remaining position amount after apply take profits (decrease) / rebuy (increase).
+ * @property {string} riskStyle Risk style (coloring) based on gain/loss.
+ * @property {number} sellPrice Exit price for closed position, current price for open positions.
+ * @property {string} side Position side (LONG / SHORT).
+ * @property {string} signalId Copy trader signal ID.
+ * @property {string} stopLossStyle Stop loss style (coloring) based on gain / loss.
+ * @property {string} pair Currency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} symbol Currency pair in separated format, i.e. "BTC/USDT".
+ * @property {string} userId Zignaly user ID.
+ * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type Position status category.
+ * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
+ * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
+ * @property {Number} returnFromAllocated Percentage return from copy trader service allocated balance.
+ * @property {Number} returnFromInvestment Percentage return from copy trader service invested balance.
+ * @property {Number} priceDifference Price difference from entry price.
+ * @property {string} priceDifferenceStyle Price difference style (coloring) based on gain/loss.
+ * @property {Number} unrealizedProfitLosses Unrealized profit / loss amount expressed in quote currency.
+ * @property {Number} unrealizedProfitLossesPercentage Unrealized profit / loss percentage.
+ * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  */
 
 /**
@@ -470,7 +463,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Array<UserLoginResponse>} UsersCollection
+ * @typedef {Array<UserEntity>} UsersCollection
  */
 
 /**
@@ -802,25 +795,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * Transform user create response to typed object.
- *
- * @export
- * @param {*} response Trade API user object.
- * @returns {UserCreateResponse} User entity.
- */
-export function userCreateResponseTransform(response) {
-  const transformResponse = {};
-  transformResponse.token = response;
-
-  return transformResponse;
-}
-
-/**
  * Transform user entity response to typed object.
  *
  * @export
  * @param {*} response Trade API user object.
- * @returns {UserLoginResponse} User entity.
+ * @returns {UserEntity} User entity.
  */
 export function userEntityResponseTransform(response) {
   return {
@@ -955,7 +934,7 @@ function safeParseFloat(value) {
 }
 
 /**
- * Transform positions response to typed object collection.
+ * Transform positions response to typed UserPositionsCollection collection.
  *
  * @param {*} response Trade API positions list response.
  * @returns {UserPositionsCollection} Positions entities collection.
@@ -1266,14 +1245,12 @@ function createEmptyPositionEntity() {
     profitPercentage: 0,
     profitStyle: "",
     unrealizedProfitStyle: "",
-    provider: "",
     providerId: "",
     providerOwnerUserId: "",
     providerLink: "",
     providerLogo: "",
     providerName: "",
     quote: "",
-    quoteAsset: "",
     reBuyTargets: {},
     reBuyTargetsCountFail: 0,
     reBuyTargetsCountPending: 0,
@@ -1423,13 +1400,6 @@ function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
- */
-
-/**
- * Transform API user balance response to typed object.
- *
- * @param {*} response Trade API exchange connection item.
- * @returns {UserBalanceEntity} User Balance entity.
  */
 
 /**
@@ -2483,23 +2453,23 @@ function createEmptyOwnCopyTraderProviderOption() {
  * Transform user exchange connection to typed ExchangeConnectionEntity.
  *
  * @param {*} response Trade API get exchanges raw response.
- * @returns {Array<ProviderFollowerEntity>} User exchange connections collection.
+ * @returns {Array<ProviderCopiersEntity>} User exchange connections collection.
  */
 
-export function providerFollowersResponseTransform(response) {
+export function providerCopiersResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of positions.");
   }
 
   let list = response.map((providerFollowersItem) => {
-    return providerFollowersResponseItemTransform(providerFollowersItem);
+    return providerCopiersResponseItemTransform(providerFollowersItem);
   });
   list = list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   return list;
 }
 
 /**
- * @typedef {Object} ProviderFollowerEntity
+ * @typedef {Object} ProviderCopiersEntity
  * @property {String} date
  * @property {Boolean} enabled
  * @property {String} id
@@ -2515,10 +2485,10 @@ export function providerFollowersResponseTransform(response) {
  * Transform API exchange connection item to typed object.
  *
  * @param {*} providerFollowersItem Trade API exchange connection item.
- * @returns {ProviderFollowerEntity} Exchange connection entity.
+ * @returns {ProviderCopiersEntity} Exchange connection entity.
  */
-function providerFollowersResponseItemTransform(providerFollowersItem) {
-  const emptyExchangeListEntity = createProviderFollowersEmptyEntity();
+function providerCopiersResponseItemTransform(providerFollowersItem) {
+  const emptyExchangeListEntity = createProviderCopiersEmptyEntity();
   const transformedResponse = assign(emptyExchangeListEntity, providerFollowersItem);
 
   return transformedResponse;
@@ -2527,9 +2497,9 @@ function providerFollowersResponseItemTransform(providerFollowersItem) {
 /**
  * Function to create an empty provider entity.
  *
- * @return {ProviderFollowerEntity} Provoer Follower empty entity
+ * @return {ProviderCopiersEntity} Provoer Follower empty entity
  */
-export function createProviderFollowersEmptyEntity() {
+export function createProviderCopiersEmptyEntity() {
   return {
     date: "",
     enabled: false,
@@ -2547,7 +2517,7 @@ export function createProviderFollowersEmptyEntity() {
  * Transform provider followers list response item to ProviderFollowersListEntity.
  *
  * @param {*} response Trade API get provider followers list response.
- * @returns {Array<ProviderFollowersListEntity>} Provider followers list collection.
+ * @returns {Array<ProviderFollowersEntity>} Provider followers list collection.
  */
 
 export function providerFollowersListResponseTransform(response) {
@@ -2561,7 +2531,7 @@ export function providerFollowersListResponseTransform(response) {
 }
 
 /**
- * @typedef {Object} ProviderFollowersListEntity
+ * @typedef {Object} ProviderFollowersEntity
  * @property {String} userId
  * @property {String} name
  * @property {String} email
@@ -2580,7 +2550,7 @@ export function providerFollowersListResponseTransform(response) {
  * Transform provider followers list response item to typed object.
  *
  * @param {*} providerFollowersListItem Provider followers list response item.
- * @returns {ProviderFollowersListEntity} Provider Followers List Item entity.
+ * @returns {ProviderFollowersEntity} Provider Followers List Item entity.
  */
 function providerFollowersListItemTransform(providerFollowersListItem) {
   const emptyProviderFollowersListEntity = createProviderFollowersListEmptyEntity();
@@ -3121,25 +3091,62 @@ export function creatEmptyProviderDataPointsEntity() {
 }
 
 /**
+ *
+ * @typedef {Object} ManagementPositionsEntity
+ * @property {PositionEntity} position
+ * @property {Array<PositionEntity>} subPositions
+ */
+
+/**
  * Transform management positions response to typed object mapping.
  *
  * @param {*} response Management positions list response.
- * @returns {Object} Positions entities mapping with management ids.
+ * @returns {Array<ManagementPositionsEntity>} Positions entities mapping with management ids.
  */
 export function managementPositionsResponseTransform(response) {
   if (!isObject(response)) {
     throw new Error("Response must be an object of user positions positions mapping");
   }
-
+  /**
+   * @type {Array<ManagementPositionsEntity>}
+   */
+  let transformedResponse = [];
   Object.keys(response).forEach((item) => {
     /* @ts-ignore */
-    response[item] = response[item].map((positionItem) => {
-      /* @ts-ignore */
-      positionItem.subPositions = response[item].length - 1;
-      return positionItemTransform(positionItem);
-    });
+    transformedResponse.push(managementPositionsItemTransform(response[item]));
   });
-  return response;
+  return transformedResponse;
+}
+
+/**
+ * Transform Management positions item..
+ *
+ * @param {*} positionList Management positions list.
+ * @returns {ManagementPositionsEntity} Management positions entitiy.
+ */
+function managementPositionsItemTransform(positionList) {
+  /* @ts-ignore */
+  positionList = positionList.map((item) => {
+    return positionItemTransform(item);
+  });
+
+  let managementPositionEntity = createEmptyManagementPositionsEntity();
+  managementPositionEntity.position = positionList.length ? positionList.splice(0, 1)[0] : {};
+  managementPositionEntity.subPositions = positionList.length
+    ? positionList.splice(0, positionList.length)
+    : [];
+  managementPositionEntity.position.subPositions = managementPositionEntity.subPositions.length;
+  return managementPositionEntity;
+}
+
+/**
+ * @returns {ManagementPositionsEntity} Empty management positions entity.
+ */
+function createEmptyManagementPositionsEntity() {
+  return {
+    position: createEmptyPositionEntity(),
+    subPositions: [],
+  };
 }
 
 /**
@@ -3359,8 +3366,8 @@ const createEmptyUserExchangeAssetsEntity = () => {
     balanceTotalBTC: "0",
     balanceTotalExchCoin: "0",
     balanceTotalUSDT: "0",
-    exchCoin: "BNB",
-    name: "Cardano",
+    exchCoin: "",
+    name: "",
     networks: [],
     coin: "",
   };

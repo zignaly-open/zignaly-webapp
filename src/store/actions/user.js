@@ -16,7 +16,7 @@ export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import('../../services/tradeApiClient.types').UserLoginResponse} UserLoginResponse
+ * @typedef {import('../../services/tradeApiClient.types').UserEntity} UserEntity
  * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import("../../services/tradeApiClient.types").UserEquityPayload} UserEquityPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -66,7 +66,7 @@ export const setUserExchanges = (payload) => {
         dispatch(setDailyUserBalance(balancePayload));
       }
     } catch (e) {
-      alert(`ERROR: ${e.message}`);
+      dispatch(showErrorAlert(e));
     }
   };
 };

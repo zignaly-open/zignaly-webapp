@@ -11,7 +11,7 @@ import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { createProviderFollowersEmptyEntity } from "../../../services/tradeApiClient.types";
+import { createProviderCopiersEmptyEntity } from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
 import { Helmet } from "react-helmet";
 
@@ -25,7 +25,7 @@ const SignalProvidersAnalytics = () => {
     totalTradingVolume: 0,
     weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
   };
-  const emptyFollowers = createProviderFollowersEmptyEntity();
+  const emptyFollowers = createProviderCopiersEmptyEntity();
   const [followers, setFollowers] = useState([emptyFollowers]);
   const [performance, setPerformance] = useState(emptyPerformance);
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const SignalProvidersAnalytics = () => {
   const getProviderFollowers = () => {
     setCopiersLoading(true);
     tradeApi
-      .providerFollowersGet(payload)
+      .providerCopiersGet(payload)
       .then((response) => {
         setFollowers(response);
         setCopiersLoading(false);

@@ -16,11 +16,10 @@ import { showErrorAlert } from "../store/actions/ui";
 const useExchangeList = (shouldExecute = true) => {
   const [exchanges, setExchanges] = useState(null);
   const dispatch = useDispatch();
-
   const storeSession = useStoreSessionSelector();
 
-  useEffect(() => {
-    const loadData = async () => {
+  const loadData = () => {
+    if (shouldExecute) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
       };
@@ -33,12 +32,10 @@ const useExchangeList = (shouldExecute = true) => {
         .catch((e) => {
           dispatch(showErrorAlert(e));
         });
-    };
-    if (shouldExecute) {
-      loadData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeSession.tradeApi.accessToken, shouldExecute]);
+  };
+
+  useEffect(loadData, [storeSession.tradeApi.accessToken, shouldExecute]);
 
   return exchanges;
 };
