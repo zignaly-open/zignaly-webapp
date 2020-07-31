@@ -478,9 +478,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} DailyReturn
- * @property {Date} name
- * @property {number} [positions]
- * @property {number} returns
+ * @property {Date} name Date
+ * @property {number} [positions] Number of closed positions.
+ * @property {number} returns % Returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
  */

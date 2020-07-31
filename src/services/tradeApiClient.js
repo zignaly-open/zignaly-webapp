@@ -522,7 +522,6 @@ class TradeApiClient {
    * @returns {Promise<BaseAssetsDict>} Promise that resolves base assets.
    * @memberof TradeApiClient
    */
-
   async baseAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getBaseAssets";
     const responseData = await this.doRequest(endpointPath, payload);
