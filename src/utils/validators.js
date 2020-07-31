@@ -53,23 +53,29 @@ export const isValidIntOrFloat = (value) => {
 };
 
 /**
+ * Get number of decimals from a precision number
+ * @param {string} integerMultiple Precision number (e.g. 0.00000001)
+ * @returns {number} Number of decimals.
+ */
+export const precisionNumberToDecimals = (integerMultiple) => {
+  // https://www.reddit.com/r/BinanceExchange/comments/995jra/getting_atomic_withdraw_unit_from_api/e4mi63w/
+  const integerMultipleFloat = parseFloat(integerMultiple);
+  const maxDecimals = integerMultipleFloat > 1 ? 0 : Math.abs(Math.log10(integerMultipleFloat));
+  return maxDecimals;
+};
+
+/**
  * Validate if number has correct amount of decimals
  * @param {string} value Value
- * @param {string} integerMultiple Precision number
- * @returns {boolean|string} Validity or error message.
+ * @param {number} maxDecimals Max number of decimals.
+ * @returns {boolean} Validity.
  */
-export const validateDecimals = (value, integerMultiple) => {
+export const validateDecimals = (value, maxDecimals) => {
   if (!value) return false;
 
   const splitValueDot = value.split(".");
   if (splitValueDot.length !== 2) return false;
 
   const decimals = splitValueDot[1].length;
-
-  const integerMultipleFloat = parseFloat(integerMultiple);
-  const maxDecimals = integerMultipleFloat > 1 ? 0 : Math.abs(Math.log10(integerMultipleFloat));
-  return (
-    decimals < maxDecimals ||
-    `Please enter numbers with no more than ${maxDecimals} decimal places.`
-  );
+  return decimals < maxDecimals;
 };
