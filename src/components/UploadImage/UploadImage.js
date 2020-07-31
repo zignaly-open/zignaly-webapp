@@ -61,6 +61,11 @@ const UploadImage = ({ imageUrl, onChange }) => {
     setModified(false);
   };
 
+  // Handle no provider logo, returned as "images/providersLogo/default.png"
+  if (!imageUrl.startsWith("http")) {
+    imageUrl = "";
+  }
+
   return (
     <Box
       alignItems="center"
@@ -77,11 +82,7 @@ const UploadImage = ({ imageUrl, onChange }) => {
             <FormattedMessage id="srv.edit.upload" />
           </CustomButton>
         </label>
-        <CustomButton
-          className="defaultText deleteButton"
-          disabled={!imageUrl}
-          onClick={handleDelete}
-        >
+        <CustomButton className="deleteButton" disabled={!imageUrl} onClick={handleDelete}>
           <FormattedMessage id="srv.edit.delete" />
         </CustomButton>
       </Box>

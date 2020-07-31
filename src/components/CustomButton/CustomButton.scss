@@ -95,13 +95,8 @@
   }
 
   &.deleteButton {
-    background: $red;
-    color: $white;
-    padding: 0 20px;
-
-    &:hover {
-      background: $pink;
-    }
+    color: $red;
+    min-width: 0;
   }
 }
 
