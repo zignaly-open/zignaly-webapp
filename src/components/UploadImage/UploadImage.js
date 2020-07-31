@@ -61,8 +61,8 @@ const UploadImage = ({ imageUrl, onChange }) => {
     setModified(false);
   };
 
-  // Handle no provider logo, returned as "images/providersLogo/default.png"
-  if (!imageUrl.startsWith("http")) {
+  // Handle no provider logo
+  if (imageUrl === "images/providersLogo/default.png") {
     imageUrl = "";
   }
 
