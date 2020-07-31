@@ -500,7 +500,7 @@ class TradeApiClient {
   }
 
   /**
-   * Get user exchange connnection market data coins pairs (symbols).
+   * Get user exchange connection market data coins pairs (symbols).
    *
    * @param {AuthorizationPayload} payload Authorized exchange data payload.
    * @returns {Promise<MarketSymbolsCollection>} Promise that resolves exchange market symbols data collection.
@@ -515,10 +515,9 @@ class TradeApiClient {
   }
 
   /**
+   * Get base assets.
    *
-   * Get quote assets.
-   *
-   * @param {BaseAssetsPayload} payload
+   * @param {BaseAssetsPayload} payload Get Base Assets Payload.
    * @returns {Promise<BaseAssetsDict>} Promise that resolves base assets.
    * @memberof TradeApiClient
    */
@@ -530,14 +529,12 @@ class TradeApiClient {
   }
 
   /**
-   *
    * Get exchange assets.
    *
-   * @param {ExchangeAssetsPayload} payload
+   * @param {ExchangeAssetsPayload} payload Get Exchange Assets Payload.
    * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
    * @memberof TradeApiClient
    */
-
   async exchangeAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeAssets";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -549,7 +546,7 @@ class TradeApiClient {
    *
    * Get connected provider user info.
    *
-   * @param {ConnectedProviderUserInfoPayload} payload
+   * @param {ConnectedProviderUserInfoPayload} payload Provider User Info Payload.
    * @returns {Promise<ConnectedProviderUserInfo>} Promise that resolves connected trader user info.
    * @memberof TradeApiClient
    */
