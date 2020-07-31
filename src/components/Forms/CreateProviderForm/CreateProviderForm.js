@@ -36,7 +36,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const { errors, handleSubmit, control, register, watch, setValue } = useForm();
   const exchange = watch("exchange", "binance");
   const exchanges = useExchangeList(isCopyTrading);
-  const selectedExchange = exchange
+  const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase())
     : null;
   const exchangeOptions = exchanges

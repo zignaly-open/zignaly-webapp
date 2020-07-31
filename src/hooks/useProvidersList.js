@@ -20,6 +20,7 @@ import useStoreUITimeframeSelector from "./useStoreUITimeframeSelector";
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
 
@@ -209,6 +210,9 @@ const useProvidersList = (options) => {
   }, [coin, exchange, exchangeType]);
 
   const loadProviders = () => {
+    /**
+     * @type {ProvidersPayload}
+     */
     const payload = {
       token: storeSession.tradeApi.accessToken,
       type: connectedOnly ? "connected" : "all",

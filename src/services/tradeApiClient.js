@@ -79,9 +79,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsDict} ExchangeAssetsDict
  * @typedef {import('./tradeApiClient.types').CreatePositionPayload} CreatePositionPayload
  * @typedef {import('./tradeApiClient.types').UpdatePositionPayload} UpdatePositionPayload
- * @typedef {import('./tradeApiClient.types').ExchangeDepositEntity} ExchangeDepositEntity
- * @typedef {import('./tradeApiClient.types').ExchangeWithdrawEntity} ExchangeWithdrawEntity
- * @typedef {import('./tradeApiClient.types').GetExchangeLastDepositsPayload} GetExchangeLastDepositsPayload
+ * @typedef {import('./tradeApiClient.types').TransactionEntity} TransactionEntity
+ * @typedef {import('./tradeApiClient.types').GetTransactionsPayload} GetTransactionsPayload
  * @typedef {import('./tradeApiClient.types').WithdrawPayload} WithdrawPayload
  * @typedef {import('./tradeApiClient.types').ConvertPayload} ConvertPayload
  * @typedef {import('./tradeApiClient.types').WithdrawReply} WithdrawReply
@@ -117,6 +116,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
+ * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
  *
  */
 
@@ -331,7 +331,6 @@ class TradeApiClient {
    * Get providers profits stats.
    *
    * @param {ProvidersStatsPayload} payload Get providers stats payload.
-
    * @returns {Promise<ProvidersStatsCollection>} Promise that resolves providers stats collection.
    *
    * @memberof TradeApiClient
@@ -555,7 +554,6 @@ class TradeApiClient {
    * @returns {Promise<ConnectedProviderUserInfo>} Promise that resolves connected trader user info.
    * @memberof TradeApiClient
    */
-
   async connectedProviderUserInfoGet(payload) {
     const endpointPath = "/fe/api.php?action=getCurrentAllocatedAndProfitSinceFollowing";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -687,7 +685,7 @@ class TradeApiClient {
   }
 
   /**
-   * Update an exchange.
+   * Update exchange account settings.
    *
    * @param {ExchangeUpdatePayload} payload Payload
    * @returns {Promise<boolean>} Result
@@ -768,7 +766,7 @@ class TradeApiClient {
    *
    * @param {DepositAddressGetPayload} payload Get deposit address payload
 
-   * @returns {Promise<*>} Returns promise.
+   * @returns {Promise<ExchangeDepositAddress>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -893,8 +891,8 @@ class TradeApiClient {
   }
 
   /**
-   * @param {GetExchangeLastDepositsPayload} payload Get exchange last deposits payload.
-   * @returns {Promise<Array<ExchangeDepositEntity>>} Returns promise.
+   * @param {GetTransactionsPayload} payload Get exchange last deposits payload.
+   * @returns {Promise<Array<TransactionEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
@@ -906,10 +904,10 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
+   * Get withdrawals history.
    *
-   * @param {GetExchangeLastDepositsPayload} payload Get exchange last withdrawals payload.
-   * @returns {Promise<Array<ExchangeWithdrawEntity>>} Returns promise.
+   * @param {GetTransactionsPayload} payload Get exchange last withdrawals payload.
+   * @returns {Promise<Array<TransactionEntity>>} Returns promise.
    *
    * @memberof TradeApiClient
    */

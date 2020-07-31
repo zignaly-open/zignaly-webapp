@@ -5,6 +5,7 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
  */
 
 /**
@@ -21,6 +22,9 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
   const dispatch = useDispatch();
 
   const loadData = () => {
+    /**
+     * @type {ProvidersPayload}
+     */
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,

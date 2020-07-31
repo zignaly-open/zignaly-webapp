@@ -5,6 +5,8 @@ import useQuoteAssets from "./useQuoteAssets";
 import useBaseAssets from "./useBaseAssets";
 import useTimeFramesOptions from "./useTimeFramesOptions";
 import { useIntl } from "react-intl";
+import { showErrorAlert } from "../store/actions/ui";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -45,6 +47,7 @@ const useProvidersAnalytics = (type) => {
   const storeSession = useSelector(selectStoreSession);
   const intl = useIntl();
   const [stats, setStats] = useState([]);
+  const dispatch = useDispatch();
 
   // time frames
   const timeFrames = useTimeFramesOptions();
@@ -92,7 +95,7 @@ const useProvidersAnalytics = (type) => {
         const responseData = await tradeApi.providersStatsGet(payload);
         setStats(responseData);
       } catch (e) {
-        // TODO: Display error in alert.
+        dispatch(showErrorAlert(e));
       }
     };
 
