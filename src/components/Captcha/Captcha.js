@@ -41,6 +41,14 @@ const Captcha = ({ onChange, recaptchaRef }) => {
     }
   };
 
+  if (typeof window !== "undefined") {
+    // Use recaptcha.net to avoid blocked domain
+    // @ts-ignore
+    window.recaptchaOptions = {
+      useRecaptchaNet: true,
+    };
+  }
+
   return (
     <ReCAPTCHA
       onChange={onChange}
