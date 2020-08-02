@@ -18,7 +18,9 @@ import { showErrorAlert } from "../store/actions/ui";
  * @returns {ExchangeDepositAddress} Deposit address object.
  */
 const useExchangeDepositAddress = (internalId, asset, network) => {
-  const [depositAddress, setDepositAddress] = useState();
+  const [depositAddress, setDepositAddress] = useState(
+    /** @type {ExchangeDepositAddress} */ (null),
+  );
   const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();

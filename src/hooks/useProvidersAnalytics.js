@@ -5,6 +5,8 @@ import useQuoteAssets from "./useQuoteAssets";
 import useBaseAssets from "./useBaseAssets";
 import useTimeFramesOptions from "./useTimeFramesOptions";
 import { useIntl } from "react-intl";
+import { showErrorAlert } from "../store/actions/ui";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -45,6 +47,7 @@ const useProvidersAnalytics = (type) => {
   const storeSession = useSelector(selectStoreSession);
   const intl = useIntl();
   const [stats, setStats] = useState([]);
+  const dispatch = useDispatch();
 
   // time frames
   const timeFrames = useTimeFramesOptions();
@@ -76,28 +79,34 @@ const useProvidersAnalytics = (type) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote]);
 
-  // Load stats at init and on filters change
-  useEffect(() => {
-    const loadProvidersStats = async () => {
-      try {
-        const payload = {
-          token: storeSession.tradeApi.accessToken,
-          ro: true,
-          quote,
-          base: base.val,
-          timeFrame,
-          DCAFilter: "anyDCA",
-          isCopyTrading: type === "copyt",
-        };
-        const responseData = await tradeApi.providersStatsGet(payload);
-        setStats(responseData);
-      } catch (e) {
-        // TODO: Display error in alert.
-      }
+  const loadProvidersStats = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      ro: true,
+      quote,
+      base: base.val,
+      timeFrame,
+      DCAFilter: "anyDCA",
+      isCopyTrading: type === "copyt",
     };
+    tradeApi
+      .providersStatsGet(payload)
+      .then((responseData) => {
+        setStats(responseData);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
 
-    loadProvidersStats();
-  }, [timeFrame, quote, base.val, storeSession.tradeApi.accessToken, type]);
+  // Load stats at init and on filters change
+  useEffect(loadProvidersStats, [
+    timeFrame,
+    quote,
+    base.val,
+    storeSession.tradeApi.accessToken,
+    type,
+  ]);
 
   return {
     stats,

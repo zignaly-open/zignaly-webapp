@@ -469,17 +469,18 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} ProvidersPayload
  * @property {string} token
- * @property {string} type
+ * @property {"connected"|"all"} type
  * @property {number} timeFrame
  * @property {boolean} copyTradersOnly
- * @property {boolean} [ro]
+ * @property {boolean} [ro] Read only request
+ * @property {string} internalExchangeId
  */
 
 /**
  * @typedef {Object} DailyReturn
- * @property {Date} name
- * @property {number} [positions]
- * @property {number} returns
+ * @property {Date} name Date
+ * @property {number} [positions] Number of closed positions.
+ * @property {number} returns % Returns
  * @property {string} [totalInvested]
  * @property {string} [totalProfit]
  */
@@ -491,8 +492,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} base
  * @property {string} timeFrame
  * @property {string} DCAFilter
- * @property {boolean} ro
- * @property {boolean} isCopyTrading
+ * @property {boolean} ro Read only request
+ * @property {boolean} isCopyTrading Copy traders stats
  */
 
 /**
@@ -538,7 +539,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerId
  * @property {string} name
  * @property {string} logoUrl
- * @property {string} name
  * @property {string} quote
  * @property {boolean} base
  * @property {number} signals
@@ -670,7 +670,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string|boolean} globalPositionsPerMarket
  * @property {string|boolean} globalBlacklist
  * @property {string|boolean} globalWhitelist
- * @property {boolean} globalDelisting
+ * @property {boolean} globalDelisting Avoid open position for delisted coins
  */
 
 /**
@@ -688,7 +688,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} GetExchangeLastDepositsPayload
+ * @typedef {Object} GetTransactionsPayload
  * @property {string} internalId
  */
 
@@ -704,7 +704,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} WithdrawReply
- * @property {string} id
+ * @property {string} id Transaction id.
  */
 
 /**
@@ -725,7 +725,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ConvertPayload
- * @property {Array<string>} assets
+ * @property {Array<string>} assets Assets to convert.
  * @property {string} internalId
  */
 
@@ -739,9 +739,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ConvertReply
- * @property {string} totalServiceCharge
- * @property {string} totalTransferred
- * @property {Array<TransObject>} trans
+ * @property {string} totalServiceCharge Total fees.
+ * @property {string} totalTransferred Total amount transferred.
+ * @property {Array<TransObject>} trans Converted coins transactions.
  */
 
 /**
@@ -2719,10 +2719,10 @@ export function createProviderPerformanceEmptyEntity() {
 }
 
 /**
- * Transform exchange deposit list response item to ExchangeDepositEntity list.
+ * Transform exchange deposit list response item to TransactionEntity list.
  *
  * @param {*} response Trade API get exchange deposits list response.
- * @returns {Array<ExchangeDepositEntity>} Exchange Deposits list collection.
+ * @returns {Array<TransactionEntity>} Exchange Deposits list collection.
  */
 export function exchangeDepositsResponseTransform(response) {
   if (!isArray(response)) {
@@ -2735,8 +2735,8 @@ export function exchangeDepositsResponseTransform(response) {
 }
 
 /**
- * @typedef {Object} ExchangeDepositEntity
- * @property {String} id
+ * @typedef {Object} TransactionEntity
+ * @property {String} [id]
  * @property {String} txid
  * @property {Number} timestamp
  * @property {String} datetime
@@ -2746,7 +2746,8 @@ export function exchangeDepositsResponseTransform(response) {
  * @property {Number} amount
  * @property {String} currency
  * @property {String} status
- * @property {String} fee
+ * @property {String} [statusTx]
+ * @property {FeeType} [fee] Fees (For withdrawals)
  */
 
 /**
@@ -2756,30 +2757,14 @@ export function exchangeDepositsResponseTransform(response) {
  */
 
 /**
- * @typedef {Object} ExchangeWithdrawEntity
- * @property {String} id
- * @property {String} txid
- * @property {Number} timestamp
- * @property {String} datetime
- * @property {String} address
- * @property {String} tag
- * @property {String} type
- * @property {Number} amount
- * @property {String} currency
- * @property {String} status
- * @property {String} statusTx
- * @property {FeeType} fee
- */
-
-/**
  * Transform exchange deposits list response item to typed object.
  *
  * @param {*} exchangeDepositItem Exchange Deposit response item.
- * @returns {ExchangeDepositEntity} Exchange Deposit Item entity.
+ * @returns {TransactionEntity} Exchange Deposit Item entity.
  */
 function exchangeDepositItemTransform(exchangeDepositItem) {
-  const emptyExchangeDepositEntity = createExchangeDepositEmptyEntity();
-  const transformedResponse = assign(emptyExchangeDepositEntity, exchangeDepositItem);
+  const emptyTransactionEntity = createExchangeDepositEmptyEntity();
+  const transformedResponse = assign(emptyTransactionEntity, exchangeDepositItem);
 
   return transformedResponse;
 }
@@ -2800,10 +2785,10 @@ function createExchangeDepositEmptyEntity() {
 }
 
 /**
- * Transform exchange withdraw list response item to ExchangeWithdrawEntity list.
+ * Transform exchange withdraw list response item to TransactionEntity list.
  *
  * @param {*} response Trade API get exchange withdraws list response.
- * @returns {Array<ExchangeWithdrawEntity>} Exchange withdraws list collection.
+ * @returns {Array<TransactionEntity>} Exchange withdraws list collection.
  */
 export function exchangeWithdrawsResponseTransform(response) {
   if (!isArray(response)) {
@@ -2819,11 +2804,11 @@ export function exchangeWithdrawsResponseTransform(response) {
  * Transform exchange withdraws list response item to typed object.
  *
  * @param {*} exchangeWithdrawItem Exchange withdraw response item.
- * @returns {ExchangeWithdrawEntity} Exchange withdraw Item entity.
+ * @returns {TransactionEntity} Exchange withdraw Item entity.
  */
 function exchangeWithdrawItemTransform(exchangeWithdrawItem) {
-  const emptyExchangeWithdrawEntity = createExchangeWithdrawEmptyEntity();
-  const transformedResponse = assign(emptyExchangeWithdrawEntity, exchangeWithdrawItem);
+  const emptyTransactionEntity = createExchangeWithdrawEmptyEntity();
+  const transformedResponse = assign(emptyTransactionEntity, exchangeWithdrawItem);
 
   return transformedResponse;
 }

@@ -3,7 +3,7 @@ import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@
 import "./Withdraw.scss";
 import TransferCoinPicker from "../TransferCoinPicker";
 import TipBox from "../TipBox";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useAssetsSelect from "../../../../hooks/useAssetsSelect";
 import AlertIcon from "../../../../images/exchangeAccount/alert.svg";
 import BalanceManagement from "../BalanceManagement";
@@ -21,7 +21,7 @@ import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import TwoFAForm from "../../../Forms/TwoFAForm";
 import { Alert } from "@material-ui/lab";
-import { validateDecimals } from "../../../../utils/validators";
+import { validateDecimals, precisionNumberToDecimals } from "../../../../utils/validators";
 
 const Withdraw = () => {
   const {
@@ -36,6 +36,7 @@ const Withdraw = () => {
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [formData, setFormData] = useState(null);
   const amount = watch("amount");
+  const intl = useIntl();
 
   const {
     selectedAssetName,
@@ -250,12 +251,24 @@ const Withdraw = () => {
                               validate: {
                                 min: (value) =>
                                   value >= parseFloat(selectedNetwork.withdrawMin) ||
-                                  "Please enter an amount above the minimum withdrawal amount.",
+                                  intl.formatMessage({ id: "form.error.withdraw.min" }),
                                 max: (value) =>
                                   value <= parseFloat(selectedAsset.balanceFree) ||
-                                  "You do not have this amount available in your account.",
+                                  intl.formatMessage({ id: "form.error.withdraw.max" }),
                                 step: (value) => {
-                                  return validateDecimals(value, selectedNetwork.integerMultiple);
+                                  const maxDecimals = precisionNumberToDecimals(
+                                    selectedNetwork.integerMultiple,
+                                  );
+
+                                  return (
+                                    validateDecimals(value, maxDecimals) ||
+                                    intl.formatMessage(
+                                      {
+                                        id: "form.error.number.decimals",
+                                      },
+                                      { maxDecimals },
+                                    )
+                                  );
                                 },
                               },
                             })}

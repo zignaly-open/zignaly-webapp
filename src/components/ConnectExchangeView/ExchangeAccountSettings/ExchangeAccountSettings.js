@@ -235,10 +235,7 @@ const ExchangeAccountSettings = () => {
           tooltip="accounts.options.delisted.help"
         />
 
-        <CustomButton
-          className="textDefault deleteButton"
-          onClick={() => setConfirmDeleteDialog(true)}
-        >
+        <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
           <Typography className="bold" variant="body1">
             <FormattedMessage id="accounts.delete.exchange" />
           </Typography>

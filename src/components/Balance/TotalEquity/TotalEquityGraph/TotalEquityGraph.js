@@ -34,8 +34,8 @@ const TotalEquityGraph = ({ list, modal }) => {
 
   const colorsOptions = {
     backgroundColor: "",
-    borderColor: darkStyle ? "#460088" : "#a946f6",
-    gradientColor1: darkStyle ? (modal ? "#191328" : "#170823") : "#9c39eb",
+    borderColor: darkStyle ? (modal ? "#571991" : "#460088") : "#a946f6",
+    gradientColor1: darkStyle ? (modal ? "#492C6D" : "#270B48") : "#9c39eb",
     gradientColor2: darkStyle ? (modal ? colors.lightestBlack : colors.lightBlack) : "#fafafa",
   };
 

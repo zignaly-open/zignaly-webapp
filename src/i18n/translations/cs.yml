@@ -1081,6 +1081,9 @@ form.error.password.match: "CH-The passwords do not match"
 form.error.passphrase: "CH-Enter a passphrase"
 form.error.telegram: "CH-Please enter your telegram code"
 form.error.value: "CH-Enter a value"
+form.error.withdraw.min: "Please enter an amount above the minimum withdrawal amount."
+form.error.withdraw.max: "You do not have this amount available in your account."
+form.error.number.decimals: "Please enter numbers with no more than {maxDecimals} decimal places."
 
 # GENERAL
 general.yes: "CH-Yes"
