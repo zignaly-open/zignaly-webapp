@@ -27,6 +27,9 @@ import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
 import ProviderUserOptions from "./ProviderUserOptions";
+
+const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
+
 /**
  * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
  */
@@ -86,19 +89,6 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   );
   const quotes = Object.keys(quoteAssets);
 
-  //   useEffect(() => {
-  //     if (exchanges) {
-  //       // Select all exchanges by default for signal providers
-  //       const _selectedExchanges = [];
-  //       for (let i = 0; i < exchangeOptions.length; i++) {
-  //         const e = exchangeOptions[i];
-  //         _selectedExchanges.push(e.val);
-  //       }
-  //       console.log(_selectedExchanges);
-  //       setSelectedExchanges(_selectedExchanges);
-  //     }
-  //   }, [exchanges]);
-
   /**
    * @typedef {Object} FormData
    * @property {string} name
@@ -118,10 +108,9 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     setLoading(true);
     const payload = {
       ...data,
+      ...(!isCopyTrading && { projectId: "z01", description: "", providerId: CREATE_PROVIDER_ID }),
       token: storeSession.tradeApi.accessToken,
     };
-    console.log(payload);
-    return;
 
     const apiMethod = isCopyTrading ? tradeApi.copyTraderCreate : tradeApi.providerCreate;
 
@@ -184,7 +173,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     />
                     {errors.name && <span className="errorText">{errors.name.message}</span>}
                   </Box>
-                  <Box display="flex" flexDirection="row" width={1}>
+                  <Box display="flex" flexDirection="row" className="boxWrapper">
                     {isCopyTrading && (
                       <Box display="flex" flex={1} pr={1} className="inputBox typeBox">
                         <Controller
@@ -219,7 +208,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     </Box>
                   </Box>
                   {isCopyTrading ? (
-                    <Box className="inputBox" display="flex" flexDirection="row">
+                    <Box display="flex" flexDirection="row" className="boxWrapper">
                       <Box
                         className="inputBox minBalanceBox"
                         display="flex"
@@ -249,7 +238,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                           <span className="errorText">{errors.minAllocatedBalance.message}</span>
                         )}
                       </Box>
-                      <Box ml={1} display="flex" flex={1}>
+                      <Box ml={1} display="flex" flex={1} className="inputBox">
                         <Controller
                           as={CustomSelect}
                           control={control}
