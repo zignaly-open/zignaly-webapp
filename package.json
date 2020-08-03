@@ -99,6 +99,21 @@
     "stylelint-order": "^4.1.0",
     "typescript": "^3.9.3"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "never",
+        [
+          "start-case",
+          "pascal-case"
+        ]
+      ]
+    }
+  },
   "scripts": {
     "build": "npm install && npm run reset && gatsby build --prefix-paths",
     "build:test": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
