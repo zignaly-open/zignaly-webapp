@@ -60,6 +60,8 @@
     "moment": "2.24.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
     "@types/chart.js": "^2.9.21",
     "@types/jest": "^25.2.3",
     "@types/jquery": "^3.3.38",
@@ -88,6 +90,7 @@
     "faker": "^4.1.0",
     "gatsby-plugin-env-variables": "^1.0.2",
     "gatsby-plugin-sass": "^2.3.2",
+    "husky": "^4.2.5",
     "include-media": "^1.4.9",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
