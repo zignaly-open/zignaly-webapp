@@ -13,7 +13,7 @@ import {
   Typography,
   OutlinedInput,
 } from "@material-ui/core";
-import { CheckBoxOutlineBlank, CheckBox } from "@material-ui/icons";
+import { CheckBoxOutlineBlank, CheckBox, Help } from "@material-ui/icons";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ChevronDown } from "react-feather";
@@ -22,13 +22,8 @@ import CustomSelect from "../../../CustomSelect";
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
 
-const ProviderUserOptions = ({
-  selectedExchanges,
-  setSelectedExchanges,
-  exchangeOptions,
-  quotes,
-}) => {
-  const { control, register, errors } = useFormContext();
+const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
+  const { control, register, errors, getValues } = useFormContext();
   const intl = useIntl();
 
   const userOptions = [
@@ -110,15 +105,13 @@ const ProviderUserOptions = ({
   ];
 
   const toggleExchange = (ex) => {
-    const i = selectedExchanges.findIndex((e) => e === ex);
-    if (i != -1) {
-      setSelectedExchanges((value) => value.filter((e) => e !== ex));
-    } else {
-      setSelectedExchanges((value) => [...value, ex]);
-    }
+    const { exchanges } = getValues();
+    const newExchanges =
+      exchanges && exchanges.includes(ex)
+        ? exchanges.filter((e) => e !== ex)
+        : [...(exchanges || []), ex];
+    return newExchanges;
   };
-
-  console.log("a", exchangeOptions);
 
   return (
     <>
@@ -130,30 +123,10 @@ const ProviderUserOptions = ({
         </ExpansionPanelSummary>
         <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
           <Box display="flex" flexDirection="column" width={1}>
-            <FormControl
-              error={!!errors.exchanges}
-              fullWidth={false}
-              classes={{ root: "inputBox listBox" }}
-            >
+            <FormControl error={!!errors.exchanges} classes={{ root: "inputBox listBox" }}>
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.exchanges" />
               </label>
-              {/* <FormGroup>
-                {exchangeOptions.map((e) => (
-                  <FormControlLabel
-                    control={
-                    //   <Checkbox
-                    //     checked={selectedExchanges.includes(e.val)}
-                    //     onChange={() => toggleExchange(e.val)}
-                    //         />
-                  <Controller as={Checkbox} control={control} defaultValue={false} name={o.id} />
-
-                    }
-                    label={e.label}
-                    key={e.val}
-                  />
-                ))}
-              </FormGroup> */}
               {exchangeOptions && (
                 <Controller
                   name="exchanges"
@@ -163,7 +136,7 @@ const ProviderUserOptions = ({
                         control={
                           <Checkbox
                             onChange={() => props.onChange(toggleExchange(o.val))}
-                            defaultChecked={selectedExchanges.includes(o.val)}
+                            defaultChecked={true}
                           />
                         }
                         key={o.val}
@@ -172,66 +145,19 @@ const ProviderUserOptions = ({
                     ))
                   }
                   control={control}
-                  // defaultValue={exchangeOptions.map((o) => o.val)}
+                  defaultValue={exchangeOptions.map((o) => o.val)}
+                  rules={{
+                    validate: (value) =>
+                      Boolean(value.length) || intl.formatMessage({ id: "form.error.exchanges" }),
+                  }}
                 />
               )}
-              {/* <FormHelperText>{errors.exchanges && errors.exchanges.message}</FormHelperText> */}
               {errors && errors.exchanges && (
                 <span className="errorText">{errors.exchanges.message}</span>
               )}
             </FormControl>
-            <Box
-              className="inputBox disclaimerBox"
-              display="flex"
-              flexDirection="column"
-              width="50%"
-            >
-              <label className="customLabel">
-                <FormattedMessage id="signalp.disclaimer" />
-              </label>
-              <OutlinedInput
-                className="customInput"
-                error={!!errors.name}
-                fullWidth
-                inputRef={register({
-                  validate: (value) =>
-                    value.startsWith("http") || intl.formatMessage({ id: "form.error.url" }),
-                })}
-                name="disclaimer"
-              />
-              {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
-            </Box>
-            <Box className="inputBox listBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="signalp.useroption.title" />
-              </label>
-              {userOptions.map((o) => (
-                <FormControlLabel
-                  control={
-                    <Controller as={Checkbox} control={control} defaultValue={false} name={o.id} />
-                  }
-                  label={<FormattedMessage id={o.label} />}
-                  key={o.id}
-                />
-              ))}
-            </Box>
-            {/* <CustomSelect
-              multiple
-              renderOption={(option, { selected }) => (
-                <>
-                  <Checkbox
-                    icon={icon}
-                    checkedIcon={checkedIcon}
-                    style={{ marginRight: 8 }}
-                    checked={selected}
-                  />
-                  {option.title}
-                </>
-              )}
-              options={options}
-            /> */}
             {quotes.length && (
-              <Box className="inputBox ">
+              <Box className="inputBox">
                 <Controller
                   as={CustomSelect}
                   control={control}
@@ -239,11 +165,6 @@ const ProviderUserOptions = ({
                     id: "srv.edit.quotes",
                   })}
                   name="quotes"
-                  //   onChange={([e]) => {
-                  //     setValue("exchangeType", typeOptions[0].val);
-                  //     setValue("testnet", false);
-                  //     return e;
-                  //   }}
                   options={quotes}
                   rules={{ required: true }}
                   defaultValue={quotes}
@@ -265,20 +186,44 @@ const ProviderUserOptions = ({
                 />
               </Box>
             )}
-            {/* <FormControl>
-              <label>
-                <FormattedMessage id="accounts.exchange" />
+            <Box
+              className="inputBox disclaimerBox"
+              display="flex"
+              flexDirection="column"
+              width="50%"
+            >
+              <label className="customLabel">
+                <FormattedMessage id="signalp.disclaimer" />
               </label>
-              <FormGroup>
-                {quotes.map((q) => (
-                  <FormControlLabel
-                    control={<Checkbox ref={register} name={`quotes.${q}`} />}
-                    label={q}
-                  />
-                ))}
-              </FormGroup>
-              <FormHelperText>Be careful</FormHelperText>
-            </FormControl> */}
+              <OutlinedInput
+                className="customInput"
+                error={!!errors.disclaimer}
+                fullWidth
+                inputRef={register({
+                  validate: (value) =>
+                    !value ||
+                    value.startsWith("http") ||
+                    intl.formatMessage({ id: "form.error.url" }),
+                })}
+                name="disclaimer"
+              />
+              {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
+            </Box>
+            <Box className="inputBox listBox" display="flex" flexDirection="column">
+              <label className="customLabel">
+                <FormattedMessage id="signalp.useroption.title" />
+              </label>
+              {userOptions.map((o) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={<FormattedMessage id={o.label} />}
+                  key={o.id}
+                  inputRef={register}
+                  defaultChecked={false}
+                  name={o.id}
+                />
+              ))}
+            </Box>
           </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>

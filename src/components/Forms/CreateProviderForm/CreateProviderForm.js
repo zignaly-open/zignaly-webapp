@@ -52,8 +52,6 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const { errors, handleSubmit, control, register, watch, setValue } = methods;
   const exchange = watch("exchange", "binance");
   const exchanges = useExchangeList();
-  // Selected exchanges list for signal providers.
-  const [selectedExchanges, setSelectedExchanges] = useState([]);
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase())
@@ -88,18 +86,18 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   );
   const quotes = Object.keys(quoteAssets);
 
-  useEffect(() => {
-    if (exchanges) {
-      // Select all exchanges by default for signal providers
-      const _selectedExchanges = [];
-      for (let i = 0; i < exchangeOptions.length; i++) {
-        const e = exchangeOptions[i];
-        _selectedExchanges.push(e.val);
-      }
-      console.log(_selectedExchanges);
-      setSelectedExchanges(_selectedExchanges);
-    }
-  }, [exchanges]);
+  //   useEffect(() => {
+  //     if (exchanges) {
+  //       // Select all exchanges by default for signal providers
+  //       const _selectedExchanges = [];
+  //       for (let i = 0; i < exchangeOptions.length; i++) {
+  //         const e = exchangeOptions[i];
+  //         _selectedExchanges.push(e.val);
+  //       }
+  //       console.log(_selectedExchanges);
+  //       setSelectedExchanges(_selectedExchanges);
+  //     }
+  //   }, [exchanges]);
 
   /**
    * @typedef {Object} FormData
@@ -117,13 +115,13 @@ const CreateProviderForm = ({ isCopyTrading }) => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    console.log(data);
-    return;
     setLoading(true);
     const payload = {
       ...data,
       token: storeSession.tradeApi.accessToken,
     };
+    console.log(payload);
+    return;
 
     const apiMethod = isCopyTrading ? tradeApi.copyTraderCreate : tradeApi.providerCreate;
 
@@ -271,12 +269,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                       </Box>
                     </Box>
                   ) : (
-                    <ProviderUserOptions
-                      setSelectedExchanges={setSelectedExchanges}
-                      selectedExchanges={selectedExchanges}
-                      exchangeOptions={exchangeOptions}
-                      quotes={quotes}
-                    />
+                    <ProviderUserOptions exchangeOptions={exchangeOptions} quotes={quotes} />
                   )}
                 </Box>
                 <CustomButton className="bgPurple" loading={loading} type="submit">
