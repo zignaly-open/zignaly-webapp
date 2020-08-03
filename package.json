@@ -7,7 +7,7 @@
   "repository": {
     "directory": "/",
     "type": "git",
-    "url": "git@bitbucket.org:tractionboardteam/zignaly-webapp.git"
+    "url": "git@github.com:zignaly-open/zignaly-webapp.git"
   },
   "dependencies": {
     "@material-ui/core": "4.10.1",
