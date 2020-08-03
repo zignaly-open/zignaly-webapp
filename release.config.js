@@ -9,9 +9,6 @@ module.exports = {
           { type: "refactor", release: "patch" },
           { type: "style", release: "patch" },
         ],
-        parserOpts: {
-          noteKeywords: ["BREAKING"],
-        },
       },
     ],
     "@semantic-release/release-notes-generator",
