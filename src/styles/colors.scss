@@ -100,15 +100,3 @@ $redGradient: linear-gradient(99deg, $red2, $red3 96%);
 $purpleDarkGradient: $greyGradient, linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
 
 $greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey 96%);
-
-:root {
-  --purple: #{$purple};
-  --border-color: #{$borderColor};
-  --background-color: #{$white};
-}
-
-[data-theme="dark"] {
-  --purple: #{$purpleLight};
-  --border-color: #{$lightBlackBorder};
-  --background-color: #{$lighterBlack};
-}

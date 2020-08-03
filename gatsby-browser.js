@@ -5,6 +5,7 @@ import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
 import { triggerTz } from "./src/services/tz";
 import { navigateLogin } from "./src/services/navigation";
+import "./src/styles/styles.scss";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 

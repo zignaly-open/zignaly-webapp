@@ -74,7 +74,7 @@ const UploadImage = ({ imageUrl, onChange }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <ProviderLogo size="30px" title="Logo" url={imageUrl || imageUrl} />
+      <ProviderLogo size="30px" title="Logo" url={imageUrl} />
       <Box display="flex" flexDirection="row">
         <input accept="image/*" className="logo" id="logo" onChange={uploadLogo} type="file" />
         <label htmlFor="logo">

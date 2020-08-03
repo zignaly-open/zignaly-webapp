@@ -43,7 +43,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = (props) => {
-  const { label, onChange, options, value, search, labelPlacement = "start" } = props;
+  const { label, onChange, options, value, search, labelPlacement = "start", ...others } = props;
   const storeSettings = useStoreSettingsSelector();
 
   /**
@@ -89,6 +89,7 @@ const CustomSelect = (props) => {
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
               value={value}
+              {...others}
             />
           )}
         </FormControl>
