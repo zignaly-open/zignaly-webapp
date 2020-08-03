@@ -114,6 +114,7 @@
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
-    "test": "STAGE=test jest"
+    "test": "STAGE=test jest",
+    "semantic-release": "semantic-release"
   }
 }
