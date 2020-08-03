@@ -4,18 +4,23 @@ module.exports = {
     [
       "@semantic-release/commit-analyzer",
       {
-        preset: "angular",
+        preset: "conventionalcommits",
         releaseRules: [
           { type: "refactor", release: "patch" },
           { type: "style", release: "patch" },
         ],
+        presetConfig: {
+          issuePrefixes: ["ZIG-"],
+        },
       },
     ],
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/github",
       {
-        assets: [{ path: ["public/**"], name: "zignaly-webapp2", label: "Zignaly webapp distribution" }],
+        assets: [
+          { path: ["public/**"], name: "zignaly-webapp2", label: "Zignaly webapp distribution" },
+        ],
       },
     ],
   ],
