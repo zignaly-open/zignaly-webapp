@@ -18,6 +18,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ChevronDown } from "react-feather";
 import CustomSelect from "../../../CustomSelect";
+import CustomTooltip from "../../../CustomTooltip";
+import "./ProviderUserOptions.scss";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -33,14 +35,14 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
       tooltip: "signalp.useroption.stopLossFromSignal.help",
     },
     {
-      id: "acceptUpdateSignal",
-      label: "signalp.useroption.acceptUpdateSignal",
-      tooltip: "signalp.useroption.acceptUpdateSignal.help",
-    },
-    {
       id: "takeProfitsFromSignal",
       label: "signalp.settings.takeprofit",
       tooltip: "signalp.useroption.takeProfitsFromSignal.help",
+    },
+    {
+      id: "acceptUpdateSignal",
+      label: "signalp.useroption.acceptUpdateSignal",
+      tooltip: "signalp.useroption.acceptUpdateSignal.help",
     },
     {
       id: "enableSellSignals",
@@ -68,6 +70,11 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
       tooltip: "signalp.useroption.reUseSignalIdIfClosed.help",
     },
     {
+      id: "limitPriceFromSignal",
+      label: "signalp.useroption.limitPriceFromSignal",
+      tooltip: "signalp.useroption.limitPriceFromSignal.help",
+    },
+    {
       id: "terms",
       label: "signalp.useroption.terms",
       tooltip: "signalp.useroption.terms.help",
@@ -76,11 +83,6 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
       id: "riskFilter",
       label: "signalp.useroption.riskFilter",
       tooltip: "signalp.useroption.riskFilter.help",
-    },
-    {
-      id: "limitPriceFromSignal",
-      label: "signalp.useroption.limitPriceFromSignal",
-      tooltip: "signalp.useroption.limitPriceFromSignal.help",
     },
     {
       id: "successRateFilter",
@@ -114,7 +116,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
   };
 
   return (
-    <>
+    <div className="providerUserOptions">
       <ExpansionPanel classes={{ root: "accordion" }}>
         <ExpansionPanelSummary expandIcon={<ChevronDown />} classes={{ root: "accordionSummary" }}>
           <Typography variant="h3">
@@ -216,7 +218,14 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
               {userOptions.map((o) => (
                 <FormControlLabel
                   control={<Checkbox />}
-                  label={<FormattedMessage id={o.label} />}
+                  label={
+                    <div className="optionLabel">
+                      <FormattedMessage id={o.label} />
+                      <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
+                        <Help />
+                      </CustomTooltip>
+                    </div>
+                  }
                   key={o.id}
                   inputRef={register}
                   defaultChecked={false}
@@ -227,7 +236,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
           </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-    </>
+    </div>
   );
 };
 
