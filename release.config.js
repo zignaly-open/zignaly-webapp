@@ -18,7 +18,7 @@ module.exports = {
     [
       "@semantic-release/github",
       {
-        assets: [{ path: "public", name: "zignaly-webapp2", label: "Zignaly webapp distribution" }],
+        assets: "public",
       },
     ],
   ],
