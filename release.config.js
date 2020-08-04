@@ -21,5 +21,12 @@ module.exports = {
         assets: "release.tar.gz",
       },
     ],
+    [
+      "@semantic-release/exec",
+      {
+        verifyConditionsCmd: "./verify.sh",
+        publishCmd: "mv release.tar.gz zignaly-webapp2-${nextRelease.version}.tar.gz",
+      },
+    ],
   ],
 };
