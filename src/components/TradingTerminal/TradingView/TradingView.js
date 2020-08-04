@@ -18,7 +18,7 @@ import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
 
 /**
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {any} TVWidget
  */
 
 /**
