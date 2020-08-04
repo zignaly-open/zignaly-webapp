@@ -43,18 +43,20 @@ jobs:
         run: npx semantic-release
       - name: Set Version
         run: echo ::set-env name=WEBAPP_VERSION::$(cat .semvernext)
-      - name: Show Version
-        run: echo $WEBAPP_VERSION
-      - name: copy file via ssh password
+      - name: Set Filename
+        run: echo ::set-env name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz
+      - name: Show Filename
+        run: echo $WEBAPP_PACKAGE
+      - name: Deploy Artifact
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_WEBAPP_HOST }}
           username: ${{ secrets.SSH_WEBAPP_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_WEBAPP_PORT }}
-          source: zignaly-webapp2-$WEBAPP_VERSION.tar.gz
+          source: ${{ env.WEBAPP_PACKAGE }}
           target: "/zignaly/artifacts"
-      - name: Deploy
+      - name: Unpack
         uses: JimCronqvist/action-ssh@master
         env:
           NAME: "BuildBot"
