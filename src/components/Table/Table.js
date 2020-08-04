@@ -200,6 +200,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
                 textAlign: "left",
                 whiteSpace: "normal",
                 padding: "5px",
+                fontSize: "14px",
               },
             },
           },
