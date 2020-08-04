@@ -1,4 +1,4 @@
-name: Release
+name: Beta Release
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
       - develop
 jobs:
   build_release:
-    name: Webapp Test Release
+    name: Webapp Beta Release
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
