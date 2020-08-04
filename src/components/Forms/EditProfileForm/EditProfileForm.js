@@ -150,11 +150,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.merchantId) {
       let flag = true;
       if (!data.price) {
-        setError("price", "");
+        setError("price", { type: "manual" });
         flag = false;
       }
       if (!data.ipnSecret) {
-        setError("ipnSecret", "");
+        setError("ipnSecret", { type: "manual" });
         flag = false;
       }
       return flag;
@@ -163,11 +163,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.price) {
       let flag = true;
       if (!data.merchantId) {
-        setError("merchantId", "");
+        setError("merchantId", { type: "manual" });
         flag = false;
       }
       if (!data.ipnSecret) {
-        setError("ipnSecret", "");
+        setError("ipnSecret", { type: "manual" });
         flag = false;
       }
       return flag;
@@ -176,11 +176,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.ipnSecret) {
       let flag = true;
       if (!data.merchantId) {
-        setError("merchantId", "");
+        setError("merchantId", { type: "manual" });
         flag = false;
       }
       if (!data.price) {
-        setError("price", "");
+        setError("price", { type: "manual" });
         flag = false;
       }
       return flag;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useImperativeHandle } from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, FormControlLabel, Switch } from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
 import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
@@ -18,7 +18,6 @@ import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {boolean} create Flag to indicate if the user is creating or connecting an account.
  * @property {boolean} demo Flag to indicate if it's a demo account.
  */
 
@@ -26,7 +25,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountAdd = ({ create, demo }) => {
+const ExchangeAccountAdd = ({ demo }) => {
   const { register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -34,24 +33,17 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(
-      <FormattedMessage
-        id={
-          create ? (demo ? "accounts.create.demo" : "accounts.create.exchange") : "accounts.connect"
-        }
-      />,
-    );
+    setTitle(<FormattedMessage id={demo ? "accounts.create.demo" : "accounts.create.exchange"} />);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const exchanges = useExchangeList();
-  const zignalyOnly = create && !demo;
 
   // Initialize selected exchange
-  let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName", "binance");
+  let exchangeName = !demo ? "zignaly" : watch("exchangeName", "binance");
 
   const exchangeType = watch("exchangeType");
-  const testnet = watch("testnet");
+  const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
     demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
@@ -64,7 +56,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const exchangesOptions = exchanges
     ? exchanges
         // Filter disabled exchange and Zignaly if connection
-        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
+        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || !demo))
         .map((e) => ({
           val: e.name.toLowerCase(),
           label:
@@ -104,6 +96,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @property {Boolean} testNet
    */
 
+  console.log(demo);
   /**
    * Function to submit form.
    *
@@ -117,7 +110,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType: _exchangeType,
-      ...(!create && {
+      ...(testNet && {
         key,
         secret,
         ...(password && { password }),
@@ -130,17 +123,17 @@ const ExchangeAccountAdd = ({ create, demo }) => {
     return tradeApi
       .exchangeAdd(payload)
       .then(() => {
-        setTempMessage(
-          <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
-        );
+        setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
         return true;
       })
       .catch((e) => {
         if (e.code === 72) {
           setError(
             selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
-            "notMatch",
-            intl.formatMessage({ id: "form.error.key.invalid" }),
+            {
+              type: "manual",
+              message: intl.formatMessage({ id: "form.error.key.invalid" }),
+            },
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -158,21 +151,25 @@ const ExchangeAccountAdd = ({ create, demo }) => {
         </Box>
       ) : (
         <ExchangeAccountForm>
-          {(!create || demo) && (
+          {demo && (
             <Controller
-              as={CustomSelect}
+              render={({ onChange, value }) => (
+                <CustomSelect
+                  onChange={(v) => {
+                    setValue("exchangeType", typeOptions[0].val);
+                    setValue("testNet", false);
+                    onChange(v);
+                  }}
+                  label={intl.formatMessage({
+                    id: "accounts.exchange",
+                  })}
+                  value={value}
+                  options={exchangesOptions}
+                />
+              )}
               control={control}
               defaultValue={selectedExchange.name.toLowerCase()}
-              label={intl.formatMessage({
-                id: "accounts.exchange",
-              })}
               name="exchangeName"
-              onChange={([e]) => {
-                setValue("exchangeType", typeOptions[0].val);
-                setValue("testnet", false);
-                return e;
-              }}
-              options={exchangesOptions}
               rules={{ required: true }}
             />
           )}
@@ -193,7 +190,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               defaultValue={false}
               inputRef={register}
               label="menu.testnet"
-              name="testnet"
+              name="testNet"
             />
           )}
           <CustomInput
@@ -203,7 +200,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
             label="accounts.exchange.name"
             name="internalName"
           />
-          {(!create || testnet) &&
+          {testNet &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 autoComplete="new-password"

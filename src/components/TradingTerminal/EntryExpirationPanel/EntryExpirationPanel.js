@@ -14,7 +14,7 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setError } = useFormContext();
+  const { clearErrors, errors, getValues, register, setError } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**
@@ -26,9 +26,12 @@ const EntryExpirationPanel = () => {
     const draftPosition = getValues();
     const entryExpiration = parseFloat(draftPosition.entryExpiration);
 
-    clearError("entryExpiration");
+    clearErrors("entryExpiration");
     if (!isValidIntOrFloat(draftPosition.entryExpiration) || entryExpiration <= 0) {
-      setError("entryExpiration", "error", formatMessage({ id: "terminal.expiration.limit.zero" }));
+      setError("entryExpiration", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.expiration.limit.zero" }),
+      });
     }
   };
 
@@ -48,7 +51,7 @@ const EntryExpirationPanel = () => {
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
-      clearError("entryExpiration");
+      clearErrors("entryExpiration");
     }
   };
 

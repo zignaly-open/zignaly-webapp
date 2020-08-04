@@ -60,11 +60,10 @@ const UpdatePassword = () => {
       })
       .catch((e) => {
         if (e.code === 7) {
-          setError(
-            "currentPassword",
-            "notMatch",
-            intl.formatMessage({ id: "form.error.password.invalid" }),
-          );
+          setError("currentPassword", {
+            type: "notMatch",
+            message: intl.formatMessage({ id: "form.error.password.invalid" }),
+          });
         } else {
           dispatch(showErrorAlert(e));
         }

@@ -37,7 +37,7 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -88,14 +88,13 @@ const StopLossPanel = (props) => {
         !isValidIntOrFloat(draftPosition.stopLossPercentage) ||
         compareFn(stopLossPercentage, pricePercentChange)
       ) {
-        setError(
-          "stopLossPercentage",
-          "error",
-          formatMessage(
+        setError("stopLossPercentage", {
+          type: "manual",
+          message: formatMessage(
             { id: "terminal.stoploss.valid.percentage" },
             { type: valueType, value: pricePercentChange },
           ),
-        );
+        });
         return;
       }
     }
@@ -111,7 +110,7 @@ const StopLossPanel = (props) => {
     }
 
     if (errors.stopLossPercentage) {
-      clearError("stopLossPrice");
+      clearErrors("stopLossPrice");
     }
   };
 
@@ -127,7 +126,10 @@ const StopLossPanel = (props) => {
     const priceDiff = stopLossPrice - price;
 
     if (!isValidIntOrFloat(draftPosition.stopLossPrice) || stopLossPrice < 0) {
-      setError("stopLossPrice", "error", formatMessage({ id: "terminal.stoploss.limit.zero" }));
+      setError("stopLossPrice", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.stoploss.limit.zero" }),
+      });
       return;
     }
 
@@ -143,7 +145,7 @@ const StopLossPanel = (props) => {
     }
 
     if (errors.stopLossPercentage) {
-      clearError("stopLossPrice");
+      clearErrors("stopLossPrice");
     }
   };
 
@@ -187,11 +189,11 @@ const StopLossPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       if (errors.stopLossPercentage) {
-        clearError("stopLossPercentage");
+        clearErrors("stopLossPercentage");
       }
 
       if (errors.stopLossPrice) {
-        clearError("stopLossPrice");
+        clearErrors("stopLossPrice");
       }
     }
   };

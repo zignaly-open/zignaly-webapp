@@ -177,19 +177,23 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     {isCopyTrading && (
                       <Box display="flex" flex={1} pr={1} className="inputBox typeBox">
                         <Controller
-                          as={CustomSelect}
+                          render={({ onChange, value }) => (
+                            <CustomSelect
+                              onChange={(v) => {
+                                setValue("exchangeType", typeOptions[0].val);
+                                onChange(v);
+                              }}
+                              label={intl.formatMessage({
+                                id: "accounts.exchange",
+                              })}
+                              labelPlacement="top"
+                              value={value}
+                              options={exchangeOptions}
+                            />
+                          )}
                           control={control}
                           defaultValue={selectedExchange.name.toLowerCase()}
-                          label={intl.formatMessage({
-                            id: "accounts.exchange",
-                          })}
-                          labelPlacement="top"
                           name="exchange"
-                          onChange={([e]) => {
-                            setValue("exchangeType", typeOptions[0].val);
-                            return e;
-                          }}
-                          options={exchangeOptions}
                         />
                       </Box>
                     )}

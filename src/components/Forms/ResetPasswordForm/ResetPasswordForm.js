@@ -40,7 +40,7 @@ const ResetPasswordForm = ({ token, setVerified }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
-  const { errors, handleSubmit, register, clearError, setError } = useForm();
+  const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
 
   /**
@@ -56,9 +56,9 @@ const ResetPasswordForm = ({ token, setVerified }) => {
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
     if (howStrong >= 4) {
-      clearError("password");
+      clearErrors("password");
     } else {
-      setError("password", "notStrong", "The password is weak.");
+      setError("password", { type: "notStrong", message: "The password is weak." });
     }
   };
 
@@ -75,9 +75,12 @@ const ResetPasswordForm = ({ token, setVerified }) => {
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
     if (howStrong >= 4) {
-      clearError("repeatPassword");
+      clearErrors("repeatPassword");
     } else {
-      setError("repeatPassword", "notStrong", "The repeat password is very weak.");
+      setError("repeatPassword", {
+        type: "notStrong",
+        message: "The repeat password is very weak.",
+      });
     }
   };
 
