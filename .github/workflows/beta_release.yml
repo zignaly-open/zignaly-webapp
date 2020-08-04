@@ -74,6 +74,8 @@ jobs:
           ssh webapp $CMD_UNPACK
           CMD_LINK="sudo ln -nsf $UNPACK_DIRECTORY $APP_LINK"
           ssh webapp $CMD_LINK
+          CMD_RELOAD="sudo /etc/init.d/nginx reload"
+          ssh webapp $CMD_RELOAD
         env:
           UNPACK_DIRECTORY: /zignaly/test.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
           APP_LINK: /zignaly/test.zignaly.com/app2
