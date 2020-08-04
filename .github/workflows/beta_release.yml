@@ -53,7 +53,7 @@ jobs:
           echo -e "${{ secrets.SSH_PRIVATE_KEY }}" >buildbotrsa
           chmod 600 buildbotrsa
       - name: Manual Deploy
-        run: scp -i buildbotrsa -P${{ secrets.SSH_WEBAPP_PORT }} ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }}:/zignaly/artifacts
+        run: scp -i buildbotrsa -P${{ secrets.SSH_WEBAPP_PORT }} $WEBAPP_PACKAGE ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }}:/zignaly/artifacts
       - name: Unpack
         uses: JimCronqvist/action-ssh@master
         env:
