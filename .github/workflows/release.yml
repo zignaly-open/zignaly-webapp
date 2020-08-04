@@ -24,9 +24,9 @@ jobs:
       - name: Check Types
         run: npm run tscheck
       - name: Build
-        run: npm build:test
+        run: npm run build:test
       - name: Package
-        run: npm build:package
+        run: npm run build:package
       - name: Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
