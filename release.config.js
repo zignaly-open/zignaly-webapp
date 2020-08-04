@@ -28,5 +28,12 @@ module.exports = {
         publishCmd: "mv release.tar.gz zignaly-webapp2-${nextRelease.version}.tar.gz",
       },
     ],
+    [
+      "semantic-release-slack-bot",
+      {
+        notifyOnSuccess: true,
+        notifyOnFail: true,
+      },
+    ],
   ],
 };
