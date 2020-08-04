@@ -62,6 +62,7 @@
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
+    "@semantic-release/exec": "^5.0.0",
     "@types/chart.js": "^2.9.21",
     "@types/jest": "^25.2.3",
     "@types/jquery": "^3.3.38",
