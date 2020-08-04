@@ -57,7 +57,7 @@ jobs:
             HostName $SSH_HOST
             User $SSH_USER
             Port $SSH_PORT
-            IdentityFile ~/.ssh/staging.key
+            IdentityFile ~/.ssh/buildbot.key
             StrictHostKeyChecking no
           END
         env:
