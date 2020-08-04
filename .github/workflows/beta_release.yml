@@ -68,8 +68,9 @@ jobs:
         run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
       - name: Unpack Release
         run: |
-          CMD="mkdir -p $UNPACK_DIRECTORY"
+          CMD_PREPARE="mkdir -p $UNPACK_DIRECTORY"
           echo $CMD
-          ssh webapp $CMD
+          ssh webapp $CMD_PREPARE
+          CMD_UNPACK="tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY""
         env:
-          UNPACK_DIRECTORY: /tmp/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
+          UNPACK_DIRECTORY: /zignaly/test.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
