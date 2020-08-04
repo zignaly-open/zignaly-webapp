@@ -72,4 +72,4 @@ jobs:
           echo $CMD
           ssh webapp $CMD
         env:
-          UNPACK_DIRECTORY: /tmp/zignaly-webapp2-$WEBAPP_VERSION
+          UNPACK_DIRECTORY: /tmp/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
