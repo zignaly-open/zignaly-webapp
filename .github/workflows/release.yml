@@ -5,7 +5,7 @@ on:
       - master
       - develop
 jobs:
-  release:
+  build_release:
     name: Webapp Test Release
     runs-on: ubuntu-18.04
     steps:
@@ -23,6 +23,10 @@ jobs:
         run: npm run jslint
       - name: Check Types
         run: npm run tscheck
+      - name: Build
+        run: npm build:test
+      - name: Package
+        run: npm build:package
       - name: Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
