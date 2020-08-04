@@ -40,3 +40,14 @@ jobs:
           GITHUB_COMMITTER_EMAIL: ${{ secrets.GITHUB_COMMITTER_EMAIL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+      - name: Deploy
+        uses: JimCronqvist/action-ssh@master
+        env:
+          NAME: "BuildBot"
+        with:
+          hosts: ${{ secrets.SSH_WEBAPP_HOSTS }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          debug: false
+          command: |
+            ls -lah
+            echo "I am $NAME"
