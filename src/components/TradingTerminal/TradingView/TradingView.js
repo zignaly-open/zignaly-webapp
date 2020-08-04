@@ -112,6 +112,7 @@ const TradingView = () => {
   const loadDependencies = () => {
     getMarketData();
     const checkExist = setInterval(() => {
+      // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
         setLibraryReady(true);
         clearInterval(checkExist);

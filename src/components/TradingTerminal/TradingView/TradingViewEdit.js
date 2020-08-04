@@ -113,6 +113,7 @@ const TradingViewEdit = (props) => {
     getMarketData();
     fetchPosition();
     const checkExist = setInterval(() => {
+      // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
         setLibraryReady(true);
         clearInterval(checkExist);
