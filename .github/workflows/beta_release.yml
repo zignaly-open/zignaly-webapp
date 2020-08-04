@@ -47,15 +47,28 @@ jobs:
         run: echo ::set-env name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz
       - name: Show Filename
         run: echo $WEBAPP_PACKAGE
-      - name: Import SSH Key
+      - name: Configure SSH
         run: |
-          touch buildbotrsa
-          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" >buildbotrsa
-          chmod 600 buildbotrsa
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/buildbot.key
+          chmod 600 ~/.ssh/buildbot.key
+          cat >>~/.ssh/config <<END
+          Host webapp
+            HostName $SSH_HOST
+            User $SSH_USER
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
+          SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
       - name: Deploy
-        run: scp -o StrictHostKeyChecking=no -i buildbotrsa -P${{ secrets.SSH_WEBAPP_PORT }} $WEBAPP_PACKAGE ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }}:/zignaly/artifacts
+        run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
       - name: Unpack
         run: |
-          ssh -o StrictHostKeyChecking=no -i buildbotrsa -p ${{ secrets.SSH_WEBAPP_PORT }} ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }} 'bash -s' <<'ENDSSH'
+          ssh webapp 'bash -s' <<'ENDSSH'
             ls -alh
           ENDSSH
