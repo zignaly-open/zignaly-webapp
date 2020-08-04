@@ -18,9 +18,6 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# nyc test coverage
-.nyc_output
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -30,15 +27,13 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
 # Dependency directories
 node_modules/
 jspm_packages/
 
 # Typescript v1 declaration files
 typings/
+types/
 
 # Optional npm cache directory
 .npm
@@ -71,4 +66,8 @@ yarn-error.log
 
 yarn-lock
 **types/*
+
+# Release files
+zignaly-webapp2-*.tar.gz
 release.tar.gz
+.semvernext
