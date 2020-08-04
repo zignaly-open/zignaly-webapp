@@ -69,8 +69,11 @@ jobs:
       - name: Unpack Release
         run: |
           CMD_PREPARE="mkdir -p $UNPACK_DIRECTORY"
-          echo $CMD
           ssh webapp $CMD_PREPARE
           CMD_UNPACK="tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY""
+          ssh webapp $CMD_UNPACK
+          CMD_LINK="ln -nsf $UNPACK_DIRECTORY $APP_LINK"
+          ssh webapp $CMD_LINK
         env:
           UNPACK_DIRECTORY: /zignaly/test.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
+          APP_LINK: /zignaly/test.zignaly.com/app2
