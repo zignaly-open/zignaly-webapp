@@ -47,7 +47,7 @@ jobs:
         with:
           hosts: ${{ secrets.SSH_WEBAPP_HOSTS }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          debug: false
+          debug: true
           command: |
             ls -lah
             echo "I am $NAME"
