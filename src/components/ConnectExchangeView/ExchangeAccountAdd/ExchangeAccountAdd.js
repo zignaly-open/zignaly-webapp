@@ -153,23 +153,23 @@ const ExchangeAccountAdd = ({ demo }) => {
         <ExchangeAccountForm>
           {demo && (
             <Controller
+              control={control}
+              defaultValue={selectedExchange.name.toLowerCase()}
+              name="exchangeName"
               render={({ onChange, value }) => (
                 <CustomSelect
+                  label={intl.formatMessage({
+                    id: "accounts.exchange",
+                  })}
                   onChange={(v) => {
                     setValue("exchangeType", typeOptions[0].val);
                     setValue("testNet", false);
                     onChange(v);
                   }}
-                  label={intl.formatMessage({
-                    id: "accounts.exchange",
-                  })}
-                  value={value}
                   options={exchangesOptions}
+                  value={value}
                 />
               )}
-              control={control}
-              defaultValue={selectedExchange.name.toLowerCase()}
-              name="exchangeName"
               rules={{ required: true }}
             />
           )}

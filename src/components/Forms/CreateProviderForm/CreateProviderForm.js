@@ -173,27 +173,27 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     />
                     {errors.name && <span className="errorText">{errors.name.message}</span>}
                   </Box>
-                  <Box display="flex" flexDirection="row" className="boxWrapper">
+                  <Box className="boxWrapper" display="flex" flexDirection="row">
                     {isCopyTrading && (
-                      <Box display="flex" flex={1} pr={1} className="inputBox typeBox">
+                      <Box className="inputBox typeBox" display="flex" flex={1} pr={1}>
                         <Controller
+                          control={control}
+                          defaultValue={selectedExchange.name.toLowerCase()}
+                          name="exchange"
                           render={({ onChange, value }) => (
                             <CustomSelect
-                              onChange={(v) => {
-                                setValue("exchangeType", typeOptions[0].val);
-                                onChange(v);
-                              }}
                               label={intl.formatMessage({
                                 id: "accounts.exchange",
                               })}
                               labelPlacement="top"
-                              value={value}
+                              onChange={(v) => {
+                                setValue("exchangeType", typeOptions[0].val);
+                                onChange(v);
+                              }}
                               options={exchangeOptions}
+                              value={value}
                             />
                           )}
-                          control={control}
-                          defaultValue={selectedExchange.name.toLowerCase()}
-                          name="exchange"
                         />
                       </Box>
                     )}
@@ -212,13 +212,13 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     </Box>
                   </Box>
                   {isCopyTrading ? (
-                    <Box display="flex" flexDirection="row" className="boxWrapper">
+                    <Box className="boxWrapper" display="flex" flexDirection="row">
                       <Box
                         className="inputBox minBalanceBox"
                         display="flex"
+                        flex={1}
                         flexDirection="column"
                         mr={1}
-                        flex={1}
                       >
                         <label className="customLabel">
                           <Typography noWrap>
@@ -242,7 +242,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                           <span className="errorText">{errors.minAllocatedBalance.message}</span>
                         )}
                       </Box>
-                      <Box ml={1} display="flex" flex={1} className="inputBox">
+                      <Box className="inputBox" display="flex" flex={1} ml={1}>
                         <Controller
                           as={CustomSelect}
                           control={control}

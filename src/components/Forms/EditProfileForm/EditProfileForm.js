@@ -18,6 +18,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+import breaks from "remark-breaks";
 
 /**
  * @typedef {Object} DefaultProps
@@ -261,6 +262,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setLogoUrl(url);
   };
 
+  console.log(about);
+  const about2 = about.replace(/\n/gi, "\n &nbsp;");
+
   return (
     <Box bgcolor="grid.content" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -278,7 +282,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} />)
+                Promise.resolve(<ReactMarkdown source={markdown} plugins={[breaks]} />)
               }
               onChange={handleAboutChange}
               onTabChange={setAboutTab}
@@ -315,7 +319,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} />)
+                Promise.resolve(<ReactMarkdown source={markdown} plugins={[breaks]} />)
               }
               onChange={handleStrategyChange}
               onTabChange={setStrategyTab}

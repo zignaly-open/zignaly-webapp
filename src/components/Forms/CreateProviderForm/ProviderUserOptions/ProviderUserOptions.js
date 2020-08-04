@@ -118,27 +118,29 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
   return (
     <div className="providerUserOptions">
       <ExpansionPanel classes={{ root: "accordion" }}>
-        <ExpansionPanelSummary expandIcon={<ChevronDown />} classes={{ root: "accordionSummary" }}>
+        <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
             <FormattedMessage id="signalp.optional" />
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
           <Box display="flex" flexDirection="column" width={1}>
-            <FormControl error={!!errors.exchanges} classes={{ root: "inputBox listBox" }}>
+            <FormControl classes={{ root: "inputBox listBox" }} error={!!errors.exchanges}>
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.exchanges" />
               </label>
               {exchangeOptions && (
                 <Controller
+                  control={control}
+                  defaultValue={exchangeOptions.map((o) => o.val)}
                   name="exchanges"
                   render={(props) =>
                     exchangeOptions.map((o, index) => (
                       <FormControlLabel
                         control={
                           <Checkbox
-                            onChange={() => props.onChange(toggleExchange(o.val))}
                             defaultChecked={true}
+                            onChange={() => props.onChange(toggleExchange(o.val))}
                           />
                         }
                         key={o.val}
@@ -146,8 +148,6 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                       />
                     ))
                   }
-                  control={control}
-                  defaultValue={exchangeOptions.map((o) => o.val)}
                   rules={{
                     validate: (value) =>
                       Boolean(value.length) || intl.formatMessage({ id: "form.error.exchanges" }),
@@ -163,28 +163,28 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 <Controller
                   as={CustomSelect}
                   control={control}
+                  defaultValue={quotes}
+                  disableCloseOnSelect
                   label={intl.formatMessage({
                     id: "srv.edit.quotes",
                   })}
+                  labelPlacement="top"
+                  multiple
                   name="quotes"
                   options={quotes}
-                  rules={{ required: true }}
-                  defaultValue={quotes}
-                  search
-                  multiple
                   renderOption={(option, { selected }) => (
                     <>
                       <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
                         checked={selected}
+                        checkedIcon={checkedIcon}
+                        icon={icon}
+                        style={{ marginRight: 8 }}
                       />
                       {option}
                     </>
                   )}
-                  disableCloseOnSelect
-                  labelPlacement="top"
+                  rules={{ required: true }}
+                  search
                 />
               </Box>
             )}
@@ -218,6 +218,9 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
               {userOptions.map((o) => (
                 <FormControlLabel
                   control={<Checkbox />}
+                  defaultChecked={false}
+                  inputRef={register}
+                  key={o.id}
                   label={
                     <div className="optionLabel">
                       <FormattedMessage id={o.label} />
@@ -226,9 +229,6 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                       </CustomTooltip>
                     </div>
                   }
-                  key={o.id}
-                  inputRef={register}
-                  defaultChecked={false}
                   name={o.id}
                 />
               ))}
