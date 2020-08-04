@@ -22,7 +22,7 @@ const PlexMonoBold = {
     local('PlexMono-Medium'),
     url(${PlexMonoBoldttf}) format('woff2')
   `,
-  unicodeRange: "U+0030-0039",
+  //   unicodeRange: "U+0030-0039",
 };
 
 /**
@@ -32,12 +32,12 @@ const PlexMonoMedium = {
   fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 600,
+  fontWeight: 500,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoMediumttf}) format('woff2')
   `,
-  unicodeRange: "U+0030-0039",
+  //   unicodeRange: "U+0030-0039",
 };
 
 /**
@@ -233,7 +233,7 @@ const theme = (darkStyle) => {
       subtitle2: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Caption 1)
         fontSize: "12px",
-        fontWeight: 300,
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.08,
         letterSpacing: "0.46px",

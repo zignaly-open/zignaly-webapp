@@ -6,6 +6,14 @@
   margin: 0;
 }
 
+%number1 {
+  font-family: PlexMono;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.53px;
+  line-height: 1.5;
+}
+
 @mixin text-no-wrap {
   overflow: hidden;
   text-overflow: ellipsis;

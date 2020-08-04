@@ -164,6 +164,24 @@ body {
   font-weight: 600;
 }
 
+.number1 {
+  @extend %number1;
+}
+
+.number2 {
+  @extend %number1;
+  font-weight: 600;
+}
+
+.number3 {
+  font-family: PlexMono;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.46px;
+  line-height: 1.75;
+  opacity: 0.6;
+}
+
 .subHeader {
   font-size: 18px;
   font-weight: 400;
