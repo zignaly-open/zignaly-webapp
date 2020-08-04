@@ -41,6 +41,9 @@ jobs:
           GITHUB_COMMITTER_EMAIL: ${{ secrets.GITHUB_COMMITTER_EMAIL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
+        run: npx semantic-release
+      - name: Deploy
         run: npx semantic-release
       - name: Deploy
         uses: JimCronqvist/action-ssh@master
