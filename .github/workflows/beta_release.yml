@@ -69,5 +69,7 @@ jobs:
       - name: Unpack Release
         run: |
           ssh webapp 'bash -s' <<'ENDSSH'
-            ls -alh
+            mkdir -p $UNPACK_DIRECTORY
           ENDSSH
+        env:
+          UNPACK_DIRECTORY: /tmp/zignaly-webapp2-$WEBAPP_VERSION
