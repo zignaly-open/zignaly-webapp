@@ -52,16 +52,10 @@ jobs:
           touch buildbotrsa
           echo -e "${{ secrets.SSH_PRIVATE_KEY }}" >buildbotrsa
           chmod 600 buildbotrsa
-      - name: Manual Deploy
-        run: scp -o StrictHostKeyChecking=no -v -i buildbotrsa -P${{ secrets.SSH_WEBAPP_PORT }} $WEBAPP_PACKAGE ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }}:/zignaly/artifacts
+      - name: Deploy
+        run: scp -o StrictHostKeyChecking=no -i buildbotrsa -P${{ secrets.SSH_WEBAPP_PORT }} $WEBAPP_PACKAGE ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }}:/zignaly/artifacts
       - name: Unpack
-        uses: JimCronqvist/action-ssh@master
-        env:
-          NAME: "BuildBot"
-        with:
-          hosts: ${{ secrets.SSH_WEBAPP_HOSTS }}
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          debug: true
-          command: |
-            ls -lah
-            echo "I am $NAME"
+        run: |
+          ssh -o StrictHostKeyChecking=no -i buildbotrsa -p ${{ secrets.SSH_WEBAPP_PORT }} ${{ secrets.SSH_WEBAPP_USERNAME }}@${{ secrets.SSH_WEBAPP_HOST }} 'bash -s' <<'ENDSSH'
+            ls -alh
+          ENDSSH
