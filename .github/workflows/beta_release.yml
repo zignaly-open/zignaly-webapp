@@ -4,7 +4,7 @@ on:
     branches:
       - develop
 jobs:
-  build_release:
+  build:
     name: Webapp Beta Release
     runs-on: ubuntu-18.04
     steps:
@@ -42,8 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
-        run: npx semantic-release
-      - name: Deploy
         run: npx semantic-release
       - name: Set Version
         run: echo ::set-env name=WEBAPP_VERSION::$(cat .semvernext)
