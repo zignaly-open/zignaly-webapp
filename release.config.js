@@ -18,7 +18,7 @@ module.exports = {
     [
       "@semantic-release/github",
       {
-        assets: "public",
+        assets: "release.tar.gz",
       },
     ],
   ],
