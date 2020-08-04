@@ -1,11 +1,11 @@
-name: Beta Release
+name: Prod Release
 on:
   push:
     branches:
-      - develop
+      - master
 jobs:
   build_release:
-    name: Webapp Beta Release
+    name: Webapp Prod Release
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -29,7 +29,7 @@ jobs:
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         run: npm test -- "tradeApiClient"
       - name: Build
-        run: npm run build:test
+        run: npm run build:prod
       - name: Package
         run: npm run build:package
       - name: Release
