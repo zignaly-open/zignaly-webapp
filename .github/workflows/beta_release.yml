@@ -70,7 +70,7 @@ jobs:
         run: |
           CMD_PREPARE="sudo mkdir -p $UNPACK_DIRECTORY"
           ssh webapp $CMD_PREPARE
-          CMD_UNPACK="sudo tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY""
+          CMD_UNPACK="sudo tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY"
           ssh webapp $CMD_UNPACK
           CMD_LINK="sudo ln -nsf $UNPACK_DIRECTORY $APP_LINK"
           ssh webapp $CMD_LINK
