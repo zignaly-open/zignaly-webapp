@@ -1099,6 +1099,7 @@ action.saveSettings: "Save Settings"
 action.forgot: "Forgot Password"
 
 # FORM
+form.button.save: "Save"
 form.error.allocatedBalance.min: "Please enter an amount above the minimum allocated amount."
 form.error.exchanges: "Select at least one exchange"
 form.error.quote: "Select a quote"

@@ -30,28 +30,24 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   const storeUser = useStoreUserSelector();
 
   /**
-   * Handle submit buttton click.
+   * Handle submit button click.
    *
    * @type {React.MouseEventHandler}
    * @returns {Promise<void>} Form action async promise.
    */
   const handleClick = async () => {
-    if (formRef.current) {
-      methods.handleSubmit(async (data) => {
-        setPathParams((state) => ({ ...state, isLoading: true }));
-        const res = await formRef.current.submitForm(data);
-        let params = {
-          isLoading: false,
-          ...(res && {
-            currentPath: previousPath,
-            previousPath: null,
-          }),
-        };
-        setPathParams((state) => ({ ...state, ...params }));
-      })();
-    } else {
-      onClose();
-    }
+    methods.handleSubmit(async (data) => {
+      setPathParams((state) => ({ ...state, isLoading: true }));
+      const res = await formRef.current.submitForm(data);
+      let params = {
+        isLoading: false,
+        ...(res && {
+          currentPath: previousPath,
+          previousPath: null,
+        }),
+      };
+      setPathParams((state) => ({ ...state, ...params }));
+    })();
   };
 
   // Display temp message for 10 secs.
@@ -84,10 +80,16 @@ const ConnectExchangeViewHead = ({ onClose }) => {
                 <FormattedMessage id="accounts.back" />
               </CustomButton>
             )}
-            {(!previousPath || formRef.current) && (
-              <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
+            {!previousPath ? (
+              <CustomButton className="submitButton" onClick={() => onClose()}>
                 <FormattedMessage id="accounts.done" />
               </CustomButton>
+            ) : (
+              formRef.current && (
+                <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
+                  <FormattedMessage id="form.button.save" />
+                </CustomButton>
+              )
             )}
             <Typography className="tempMessage" variant="body1">
               {tempMessage}

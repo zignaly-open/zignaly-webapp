@@ -269,11 +269,9 @@ table {
 }
 
 [data-theme="dark"] {
-  :root {
-    --purple: #{$purpleLight};
-    --border-color: #{$lightBlackBorder};
-    --background-color: #{$lighterBlack};
-  }
+  --purple: #{$purpleLight};
+  --border-color: #{$lightBlackBorder};
+  --background-color: #{$lighterBlack};
 
   &[data-os="win"] {
     ::-webkit-scrollbar-thumb {
