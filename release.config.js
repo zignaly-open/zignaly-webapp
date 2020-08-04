@@ -24,8 +24,7 @@ module.exports = {
     [
       "@semantic-release/exec",
       {
-        prepareCmd:
-          "set WEBAPP_RELEASE_VERSION=${nextRelease.version} && echo $WEBAPP_RELEASE_VERSION",
+        prepareCmd: "echo ${nextRelease.version} >> .semvernext",
         publishCmd: "mv release.tar.gz zignaly-webapp2-${nextRelease.version}.tar.gz",
       },
     ],
