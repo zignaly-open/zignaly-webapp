@@ -41,12 +41,6 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
         run: npx semantic-release
-      - name: Set Version
-        run: echo ::set-env name=WEBAPP_VERSION::$(cat .semvernext)
-      - name: Set Filename
-        run: echo ::set-env name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz
-      - name: Show Filename
-        run: echo $WEBAPP_PACKAGE
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
@@ -65,9 +59,14 @@ jobs:
           SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
           SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
           SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
-      - name: Deploy
+      - name: Prepare Deploy Variables
+        run: |
+          echo ::set-env name=WEBAPP_VERSION::$(cat .semvernext)
+          echo ::set-env name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz
+          echo $WEBAPP_PACKAGE
+      - name: Deploy Release
         run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
-      - name: Unpack
+      - name: Unpack Release
         run: |
           ssh webapp 'bash -s' <<'ENDSSH'
             ls -alh
