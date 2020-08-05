@@ -1,8 +1,8 @@
 import React from "react";
-import AnalyticsFilters from "../../Providers/AnalyticsFilters";
-import ProvidersProfitsChart from "../../Providers/ProvidersProfitsChart";
-import { Box } from "@material-ui/core";
+import Filters from "../Filters";
+import { Box, CircularProgress } from "@material-ui/core";
 import useDashboardAnalytics from "../../../hooks/useDashboardAnalytics";
+import AnalyticsChart from "../AnalyticsChart";
 
 /**
  * Dashboard analytics component.
@@ -18,18 +18,13 @@ const Analytics = () => {
     quotes,
     quote,
     setQuote,
-    bases,
-    base,
-    setBase,
     clearFilters,
+    loading,
   } = useDashboardAnalytics();
 
   return (
     <Box>
-      <AnalyticsFilters
-        base={base}
-        bases={bases}
-        onBaseChange={setBase}
+      <Filters
         onClear={clearFilters}
         onQuoteChange={setQuote}
         onTimeFrameChange={setTimeFrame}
@@ -38,10 +33,10 @@ const Analytics = () => {
         timeFrame={timeFrame}
         timeFrames={timeFrames}
       />
-      <ProvidersProfitsChart
-        base={base.label}
+      <AnalyticsChart
         quote={quote}
         stats={stats}
+        loading={loading}
         timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
       />
     </Box>

@@ -1,7 +1,8 @@
 import moment from "moment";
 import { assign, isArray, isObject, mapValues, isString } from "lodash";
-import { toCamelCaseKeys } from "../utils/format";
+import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
+import { formatNumber } from "../utils/formatters";
 
 /**
  * @type {('LONG')}
@@ -693,7 +694,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} providerId
  * @property {String} quote
  * @property {Boolean} ro
- * @property {Number} timeFrame
+ * @property {String} timeFrame
  * @property {String} timeFrameFormat
  * @property {String} token
  */
@@ -3576,8 +3577,8 @@ const createEmptyExchangeContractsEntity = () => {
  * @typedef {Object} ProfileStatsObject
  * @property {String} date
  * @property {String} invested
- * @property {String} profit
- * @property {String} profitFromInvestmentPercentage
+ * @property {Number} profit
+ * @property {Number} profitFromInvestmentPercentage
  * @property {String} quote
  * @property {String} returned
  * @property {Number} totalPositions
@@ -3606,7 +3607,10 @@ export function profileStatsResponseTransform(response) {
  * @returns {ProfileStatsObject} Transformed contracts entity.
  */
 function profileStatsItemTransform(item) {
-  return assign(createEmptyProfileStatsEntity(), item);
+  return assign(createEmptyProfileStatsEntity(), item, {
+    profit: formatFloat(item.profit),
+    profitFromInvestmentPercentage: formatFloat2Dec(item.profitFromInvestmentPercentage),
+  });
 }
 
 /**
@@ -3618,8 +3622,8 @@ const createEmptyProfileStatsEntity = () => {
   return {
     date: "",
     invested: "",
-    profit: "",
-    profitFromInvestmentPercentage: "",
+    profit: 0,
+    profitFromInvestmentPercentage: 0,
     quote: "",
     returned: "",
     totalPositions: 1,
