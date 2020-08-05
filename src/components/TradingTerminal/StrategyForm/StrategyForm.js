@@ -22,8 +22,8 @@ import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
- * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
+ * @typedef {any} TVWidget
+ * @typedef {any} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity

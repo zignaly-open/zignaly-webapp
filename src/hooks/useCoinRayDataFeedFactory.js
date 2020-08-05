@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 
 /**
- * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
+ * @typedef {any} IBasicDataFeed
  */
 
 /**

@@ -38,14 +38,6 @@ exports.onCreatePage = ({ page, actions }) => {
   }
 };
 
-// Enable development support for serving Trading View static assets. Workaround
-// until a fix is implemented for:
-// https://github.com/gatsbyjs/gatsby/issues/13072
-// exports.onCreateDevServer = ({ app }) => {
-//   const express = require(`express`);
-//   app.use(express.static("public"));
-// };
-
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 // Fix WebpackError: ReferenceError: window is not defined
 // https://www.gatsbyjs.org/docs/debugging-html-builds/

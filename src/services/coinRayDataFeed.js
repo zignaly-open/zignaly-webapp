@@ -9,7 +9,6 @@ import { isEmpty, last } from "lodash";
 
 /**
  *
- * @typedef {import("../tradingView/charting_library.min").IBasicDataFeed} IBasicDataFeed
  * @typedef {import("../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
@@ -38,7 +37,6 @@ import { isEmpty, last } from "lodash";
 /**
  * Prices data feed from CoinRay provider.
  *
- * @implements {IBasicDataFeed}
  * @property {TradeApiClient} tradeApi API client.
  * @returns {IBasicDataFeed} Trading View Chart data feed.
  */

@@ -18,7 +18,7 @@ import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
 
 /**
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {any} TVWidget
  */
 
 /**
@@ -112,6 +112,7 @@ const TradingView = () => {
   const loadDependencies = () => {
     getMarketData();
     const checkExist = setInterval(() => {
+      // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
         setLibraryReady(true);
         clearInterval(checkExist);
