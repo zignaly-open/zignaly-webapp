@@ -119,7 +119,7 @@ describe("Consume tradeApiClient service", () => {
       true,
       "Second collection position item closed flag is not true.",
     );
-  }, 10000);
+  }, 15000);
 
   it("should get all the providers", async () => {
     const getProvidersPayload = {
@@ -530,12 +530,12 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's exchange orders for an exchange.", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Binance1586927630_5e96980e40f3a",
     };
 
     const response = await client.openOrdersGet(payload);
     assert.isArray(response, "Response is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should get user's session data.", async () => {
     const payload = {
