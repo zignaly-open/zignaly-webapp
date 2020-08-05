@@ -34,9 +34,9 @@ const Analytics = () => {
         timeFrames={timeFrames}
       />
       <AnalyticsChart
+        loading={loading}
         quote={quote}
         stats={stats}
-        loading={loading}
         timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
       />
     </Box>

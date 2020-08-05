@@ -2,7 +2,6 @@ import moment from "moment";
 import { assign, isArray, isObject, mapValues, isString } from "lodash";
 import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
-import { formatNumber } from "../utils/formatters";
 
 /**
  * @type {('LONG')}

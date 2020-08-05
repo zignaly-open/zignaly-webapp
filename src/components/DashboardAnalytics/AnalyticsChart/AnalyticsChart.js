@@ -80,11 +80,11 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading }) => {
       </Box>
       {loading && (
         <Box
+          alignItems="center"
           className="loadingBox"
           display="flex"
           flexDirection="row"
           justifyContent="center"
-          alignItems="center"
         >
           <CircularProgress color="primary" size={40} />
         </Box>
