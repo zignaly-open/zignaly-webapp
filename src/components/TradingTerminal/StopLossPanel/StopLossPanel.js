@@ -224,6 +224,7 @@ const StopLossPanel = (props) => {
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />
           </Typography>
+          <input name="unrealizedProfitLossesPercentage" ref={register} type="hidden" />
         </Box>
       </Box>
       {expanded && (
