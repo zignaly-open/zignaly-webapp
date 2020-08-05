@@ -638,7 +638,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ConnectedProviderUserInfo
- * @property {number} currentAllocated
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
  * @property {number} profitsSinceCopying
  */
 
