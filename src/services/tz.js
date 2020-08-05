@@ -18,6 +18,9 @@ const sendTz = (data) => {
   const options = {
     method: "POST",
     body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 
   return fetch(process.env.GATSBY_TRADEAPI_URL + "/fe/tz.php", options);
@@ -50,7 +53,7 @@ export const triggerTz = async (location, prevLocation) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (!response.error) {
+        if (response.status === 200) {
           data.tzid = response;
           localStorage.setItem("tzid", response);
           sendTz(data);
