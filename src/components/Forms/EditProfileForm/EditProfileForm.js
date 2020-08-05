@@ -262,9 +262,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setLogoUrl(url);
   };
 
-  console.log(about);
-  const about2 = about.replace(/\n/gi, "\n &nbsp;");
-
   return (
     <Box bgcolor="grid.content" className="formWrapper">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -282,7 +279,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} plugins={[breaks]} />)
+                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
               onChange={handleAboutChange}
               onTabChange={setAboutTab}
@@ -319,7 +316,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} plugins={[breaks]} />)
+                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
               onChange={handleStrategyChange}
               onTabChange={setStrategyTab}

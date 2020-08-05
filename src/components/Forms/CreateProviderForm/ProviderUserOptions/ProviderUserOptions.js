@@ -6,10 +6,7 @@ import {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   FormControlLabel,
-  FormLabel,
   FormControl,
-  FormGroup,
-  FormHelperText,
   Typography,
   OutlinedInput,
 } from "@material-ui/core";
@@ -135,7 +132,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                   defaultValue={exchangeOptions.map((o) => o.val)}
                   name="exchanges"
                   render={(props) =>
-                    exchangeOptions.map((o, index) => (
+                    exchangeOptions.map((o) => (
                       <FormControlLabel
                         control={
                           <Checkbox

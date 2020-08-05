@@ -1,20 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./CreateProviderForm.scss";
-import {
-  Box,
-  Typography,
-  OutlinedInput,
-  CircularProgress,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  FormControlLabel,
-  FormLabel,
-  FormControl,
-  FormGroup,
-  FormHelperText,
-  Checkbox,
-} from "@material-ui/core";
+import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";

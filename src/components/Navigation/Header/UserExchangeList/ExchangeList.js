@@ -46,7 +46,6 @@ const ExchangeList = (props) => {
       exchangeInternalId: item.internalId,
     };
     dispatch(setDailyUserBalance(payload));
-    console.log(onclose);
     if (onClose) {
       onClose();
     }

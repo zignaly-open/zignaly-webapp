@@ -45,7 +45,7 @@ const AboutUs = ({ provider }) => {
 
       {show && (
         <Box className="aboutBody">
-          <ReactMarkdown linkTarget="_blank" source={provider.about} plugins={[breaks]} />
+          <ReactMarkdown linkTarget="_blank" plugins={[breaks]} source={provider.about} />
         </Box>
       )}
     </Box>

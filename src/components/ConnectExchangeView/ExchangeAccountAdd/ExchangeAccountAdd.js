@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useImperativeHandle } from "react";
-import { Box, CircularProgress, FormControlLabel, Switch } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import "./ExchangeAccountAdd.scss";
 import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";
@@ -96,7 +96,6 @@ const ExchangeAccountAdd = ({ demo }) => {
    * @property {Boolean} testNet
    */
 
-  console.log(demo);
   /**
    * Function to submit form.
    *
@@ -104,20 +103,27 @@ const ExchangeAccountAdd = ({ demo }) => {
    * @returns {Promise<boolean>} API promise.
    */
   const submitForm = async (data) => {
-    const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
+    const {
+      internalName,
+      key,
+      secret,
+      password,
+      testNet: _testNet,
+      exchangeType: _exchangeType,
+    } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType: _exchangeType,
-      ...(testNet && {
+      ...(_testNet && {
         key,
         secret,
         ...(password && { password }),
       }),
       mainAccount: false,
       isPaperTrading: demo,
-      testNet,
+      testNet: _testNet,
     };
 
     return tradeApi
