@@ -49,10 +49,8 @@ function usePositionEntry(positionEntity) {
    * @returns {number} Price percentage change form entry price.
    */
   const getEntryPricePercentChange = () => {
-    if (positionEntity && positionEntity.buyPrice > 0 && lastPrice > 0) {
-      const { buyPrice } = positionEntity;
-      const percentChange = (1 - buyPrice / lastPrice) * 100;
-      return percentChange;
+    if (positionEntity && positionEntity.unrealizedProfitLossesPercentage) {
+      return positionEntity.unrealizedProfitLossesPercentage;
     }
 
     // Not known yet.
