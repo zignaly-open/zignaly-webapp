@@ -17,9 +17,9 @@ const useStoreUISelector = () => {
    * @param {DefaultStateType} state Application store data.
    * @returns {DefaultUIObject} Store ui data.
    */
-  const selectStoreUIModal = (state) => state.ui;
+  const selectStoreUI = (state) => state.ui;
 
-  return useSelector(selectStoreUIModal);
+  return useSelector(selectStoreUI);
 };
 
 export default useStoreUISelector;
