@@ -1055,6 +1055,7 @@ export function positionItemTransform(positionItem) {
   const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
     amount: safeParseFloat(positionItem.amount),
     buyPrice: safeParseFloat(positionItem.buyPrice),
+    buyTTL: safeParseFloat(positionItem.buyTTL),
     closeDate: Number(positionItem.closeDate),
     fees: safeParseFloat(positionItem.fees),
     netProfit: safeParseFloat(positionItem.netProfit),
