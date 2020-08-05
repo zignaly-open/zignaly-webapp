@@ -33,7 +33,11 @@ describe("Consume tradeApiClient service", () => {
 
     const userEntity = await client.userLogin(payload);
     assert.equal(userEntity.firstName, "Tole", "User firstName violates expected value.");
-    assert.equal(userEntity.email, process.env.GATSBY_API_TEST_USER, "User email violates expected value.");
+    assert.equal(
+      userEntity.email,
+      process.env.GATSBY_API_TEST_USER,
+      "User email violates expected value.",
+    );
     assert.lengthOf(userEntity.token, 32, "Token seems to be invalid.");
   });
 
@@ -106,14 +110,14 @@ describe("Consume tradeApiClient service", () => {
     positionEntityStructureAssertions(positionsCollection[2]);
     // As log positions retrieve unopened the closeDate should be 0.
     assert.equal(
-      positionsCollection[0].closeDate,
-      0,
-      "First collection position item closeData is not zero.",
+      positionsCollection[0].closed,
+      true,
+      "First collection position item closed flag is not true.",
     );
     assert.equal(
-      positionsCollection[2].closeDate,
-      0,
-      "Second collection position item closeData is not zero.",
+      positionsCollection[2].closed,
+      true,
+      "Second collection position item closed flag is not true.",
     );
   }, 10000);
 
