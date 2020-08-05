@@ -70,15 +70,13 @@ const StopLossPanel = (props) => {
   const fieldsDisabled = getFieldsDisabledStatus();
 
   /**
-   * Calculate price based on percentage when value is changed.
+   * Validate target percentage limits.
    *
-   * @return {Void} None.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const stopLossPercentageChange = () => {
+  function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
-    const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
@@ -95,8 +93,27 @@ const StopLossPanel = (props) => {
             { type: valueType, value: pricePercentChange },
           ),
         });
-        return;
+
+        return false;
       }
+    }
+
+    return true;
+  }
+
+  /**
+   * Calculate price based on percentage when value is changed.
+   *
+   * @return {Void} None.
+   */
+  const stopLossPercentageChange = () => {
+    const draftPosition = getValues();
+    const price = getEntryPrice();
+    const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
+    const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
+
+    if (!validateStopLossPercentageLimits()) {
+      return;
     }
 
     if (!isNaN(price) && price > 0) {
@@ -136,6 +153,7 @@ const StopLossPanel = (props) => {
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      validateStopLossPercentageLimits();
     } else {
       setValue("stopLossPercentage", "");
     }
@@ -208,6 +226,7 @@ const StopLossPanel = (props) => {
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />
           </Typography>
+          <input name="unrealizedProfitLossesPercentage" ref={register} type="hidden" />
         </Box>
       </Box>
       {expanded && (
