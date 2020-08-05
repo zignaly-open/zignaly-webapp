@@ -27,6 +27,7 @@ function usePositionEntry(positionEntity) {
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
   const units = watch("units");
+  const positionSize = watch("positionSize");
   const unrealizedProfitLossesPercentage = watch("unrealizedProfitLossesPercentage");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
