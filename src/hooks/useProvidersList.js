@@ -163,14 +163,12 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const sortProviders = (list) => {
-    console.log(sort);
     const [key, direction] = sort.split("_");
     const listSorted = [...list].sort((a, b) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
           res = a.returns + a.floating - (b.returns + b.floating);
-          console.log(a.returns, b.returns);
           break;
         case "DATE":
           res = a.createdAt - b.createdAt;
