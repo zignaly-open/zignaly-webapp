@@ -363,9 +363,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
   const currentUserId = storeState.user ? storeState.user.userData.userId : "";
   const isProviderOwner = providerOwnerUserId === currentUserId;
   let updatingMessageId = "terminal.warning.updating";
-  if (status === 1) {
-    updatingMessageId = "terminal.warning.entering";
-  } else if (status > 9) {
+  if (status > 9) {
     updatingMessageId = "terminal.warning.exiting";
   }
 
