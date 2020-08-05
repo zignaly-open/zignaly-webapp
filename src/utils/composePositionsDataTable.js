@@ -423,7 +423,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           </div>
         </Tooltip>
       )}
-      {!updating && status === 1 && (
+      {(!isCopyTrading || isProviderOwner) && !updating && status === 1 && (
         <Tooltip
           arrow
           enterTouchDelay={50}
