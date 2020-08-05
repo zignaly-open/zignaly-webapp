@@ -21,6 +21,17 @@ import "./ProviderUserOptions.scss";
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
 
+/**
+ * @typedef {import("../../../CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {Object} ProviderUserOptionsPropTypes
+ * @property {Array<string>} quotes Quotes
+ * @property {Array<OptionType>} exchangeOptions Exchanges
+ */
+
+/**
+ * @param {ProviderUserOptionsPropTypes} props Component properties.
+ * @returns {JSX.Element} Component JSX.
+ */
 const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
   const { control, register, errors, getValues } = useFormContext();
   const intl = useIntl();
@@ -103,8 +114,14 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
     },
   ];
 
+  /**
+   * @param {string} ex exchange
+   * @returns {Array<string>} exchanges
+   */
   const toggleExchange = (ex) => {
-    const { exchanges } = getValues();
+    const values = getValues();
+    /** @type {Array<string>} */
+    const exchanges = values.exchanges;
     const newExchanges =
       exchanges && exchanges.includes(ex)
         ? exchanges.filter((e) => e !== ex)
@@ -132,12 +149,15 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                   defaultValue={exchangeOptions.map((o) => o.val)}
                   name="exchanges"
                   render={(props) =>
+                    // @ts-ignore
                     exchangeOptions.map((o) => (
                       <FormControlLabel
                         control={
                           <Checkbox
                             defaultChecked={true}
-                            onChange={() => props.onChange(toggleExchange(o.val))}
+                            onChange={() =>
+                              typeof o.val === "string" && props.onChange(toggleExchange(o.val))
+                            }
                           />
                         }
                         key={o.val}
@@ -158,30 +178,35 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
             {quotes.length && (
               <Box className="inputBox">
                 <Controller
-                  as={CustomSelect}
                   control={control}
                   defaultValue={quotes}
-                  disableCloseOnSelect
-                  label={intl.formatMessage({
-                    id: "srv.edit.quotes",
-                  })}
-                  labelPlacement="top"
-                  multiple
                   name="quotes"
-                  options={quotes}
-                  renderOption={(option, { selected }) => (
-                    <>
-                      <Checkbox
-                        checked={selected}
-                        checkedIcon={checkedIcon}
-                        icon={icon}
-                        style={{ marginRight: 8 }}
-                      />
-                      {option}
-                    </>
+                  render={({ onChange, value }) => (
+                    <CustomSelect
+                      disableCloseOnSelect
+                      label={intl.formatMessage({
+                        id: "srv.edit.quotes",
+                      })}
+                      labelPlacement="top"
+                      multiple
+                      onChange={onChange}
+                      options={quotes}
+                      renderOption={(option, { selected }) => (
+                        <>
+                          <Checkbox
+                            checked={selected}
+                            checkedIcon={checkedIcon}
+                            icon={icon}
+                            style={{ marginRight: 8 }}
+                          />
+                          {option}
+                        </>
+                      )}
+                      search
+                      value={value}
+                    />
                   )}
                   rules={{ required: true }}
-                  search
                 />
               </Box>
             )}

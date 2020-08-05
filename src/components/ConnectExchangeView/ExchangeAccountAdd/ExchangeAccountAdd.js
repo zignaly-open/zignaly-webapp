@@ -111,6 +111,7 @@ const ExchangeAccountAdd = ({ demo }) => {
       testNet: _testNet,
       exchangeType: _exchangeType,
     } = data;
+
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
@@ -167,7 +168,7 @@ const ExchangeAccountAdd = ({ demo }) => {
                   label={intl.formatMessage({
                     id: "accounts.exchange",
                   })}
-                  onChange={(v) => {
+                  onChange={(/** @type {string} **/ v) => {
                     setValue("exchangeType", typeOptions[0].val);
                     setValue("testNet", false);
                     onChange(v);
@@ -181,14 +182,19 @@ const ExchangeAccountAdd = ({ demo }) => {
           )}
           {typeOptions.length > 1 && (
             <Controller
-              as={CustomSelect}
               control={control}
               defaultValue={typeOptions[0].val}
-              label={intl.formatMessage({
-                id: "accounts.exchange.type",
-              })}
               name="exchangeType"
-              options={typeOptions}
+              render={({ onChange, value }) => (
+                <CustomSelect
+                  label={intl.formatMessage({
+                    id: "accounts.exchange.type",
+                  })}
+                  onChange={onChange}
+                  options={typeOptions}
+                  value={value}
+                />
+              )}
             />
           )}
           {showTestnet && (

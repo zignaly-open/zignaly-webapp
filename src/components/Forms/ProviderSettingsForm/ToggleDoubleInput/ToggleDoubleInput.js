@@ -7,9 +7,9 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 
 /**
  *
- * @typedef {import('react-hook-form').FormContextValues} FormContextValues
+ * @typedef {import('react-hook-form').UseFormMethods<Record<string, any>>} FormMethods
  * @typedef {Object} DefaultProps
- * @property {FormContextValues} formMethods
+ * @property {FormMethods} formMethods
  * @property {String} label
  * @property {String|Number} value1
  * @property {String} name1

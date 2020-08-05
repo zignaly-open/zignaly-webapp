@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("react-hook-form").Validate} Validate
+ * @typedef {import("react-hook-form/dist/types/form").Validate} Validate
  */
 
 /**

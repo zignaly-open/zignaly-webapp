@@ -172,7 +172,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                                 id: "accounts.exchange",
                               })}
                               labelPlacement="top"
-                              onChange={(v) => {
+                              onChange={(/** @type {string} **/ v) => {
                                 setValue("exchangeType", typeOptions[0].val);
                                 onChange(v);
                               }}
@@ -185,15 +185,20 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     )}
                     <Box className="inputBox typeBox" pl={isCopyTrading ? 1 : 0}>
                       <Controller
-                        as={CustomSelect}
                         control={control}
                         defaultValue={typeOptions[0].val}
-                        label={intl.formatMessage({
-                          id: "accounts.exchange.type",
-                        })}
-                        labelPlacement="top"
                         name="exchangeType"
-                        options={typeOptions}
+                        render={({ onChange, value }) => (
+                          <CustomSelect
+                            label={intl.formatMessage({
+                              id: "accounts.exchange.type",
+                            })}
+                            labelPlacement="top"
+                            onChange={onChange}
+                            options={typeOptions}
+                            value={value}
+                          />
+                        )}
                       />
                     </Box>
                   </Box>
@@ -230,19 +235,24 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                       </Box>
                       <Box className="inputBox" display="flex" flex={1} ml={1}>
                         <Controller
-                          as={CustomSelect}
                           control={control}
                           defaultValue={"USDT"}
-                          label={intl.formatMessage({
-                            id: "fil.quote",
-                          })}
-                          labelPlacement="top"
                           name="quote"
-                          options={quotes}
+                          render={({ onChange, value }) => (
+                            <CustomSelect
+                              label={intl.formatMessage({
+                                id: "fil.quote",
+                              })}
+                              labelPlacement="top"
+                              onChange={onChange}
+                              options={quotes}
+                              search={true}
+                              value={value}
+                            />
+                          )}
                           rules={{
                             required: intl.formatMessage({ id: "form.error.quote" }),
                           }}
-                          search={true}
                         />
                         {errors.quote && <span className="errorText">{errors.quote.message}</span>}
                       </Box>
