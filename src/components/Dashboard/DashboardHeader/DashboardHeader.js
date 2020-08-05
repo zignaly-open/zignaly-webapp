@@ -15,6 +15,7 @@ import useConnectedProviders from "../../../hooks/useConnectedProviders";
 
 /**
  * Provides the navigation bar for the dashboard.
+ *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
