@@ -33,20 +33,24 @@ const useSymbolLimitsValidate = (symbolData) => {
    */
   const validateTargetPriceLimits = (targetPrice, propertyName, errorMessageGroup) => {
     if (limits.price.min && targetPrice < limits.price.min) {
-      setError(
-        propertyName,
-        "error",
-        formatMessage({ id: errorMessageGroup + ".minprice" }, { value: limits.price.min }),
-      );
+      setError(propertyName, {
+        type: "manual",
+        message: formatMessage(
+          { id: errorMessageGroup + ".minprice" },
+          { value: limits.price.min },
+        ),
+      });
       return false;
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
-      setError(
-        propertyName,
-        "error",
-        formatMessage({ id: errorMessageGroup + ".maxprice" }, { value: limits.price.max }),
-      );
+      setError(propertyName, {
+        type: "manual",
+        message: formatMessage(
+          { id: errorMessageGroup + ".maxprice" },
+          { value: limits.price.max },
+        ),
+      });
       return false;
     }
 
@@ -64,20 +68,24 @@ const useSymbolLimitsValidate = (symbolData) => {
   const validateCostLimits = (cost, propertyName, errorMessageGroup) => {
     if (!isNaN(cost)) {
       if (limits.cost.min && cost < limits.cost.min) {
-        setError(
-          propertyName,
-          "error",
-          formatMessage({ id: errorMessageGroup + ".mincost" }, { value: limits.cost.min }),
-        );
+        setError(propertyName, {
+          type: "manual",
+          message: formatMessage(
+            { id: errorMessageGroup + ".mincost" },
+            { value: limits.cost.min },
+          ),
+        });
         return false;
       }
 
       if (limits.cost.max && cost > limits.cost.max) {
-        setError(
-          propertyName,
-          "error",
-          formatMessage({ id: errorMessageGroup + ".maxcost" }, { value: limits.cost.max }),
-        );
+        setError(propertyName, {
+          type: "manual",
+          message: formatMessage(
+            { id: errorMessageGroup + ".maxcost" },
+            { value: limits.cost.max },
+          ),
+        });
         return false;
       }
     }
@@ -95,20 +103,24 @@ const useSymbolLimitsValidate = (symbolData) => {
    */
   const validateUnitsLimits = (units, propertyName, errorMessageGroup) => {
     if (limits.amount.min && units < limits.amount.min) {
-      setError(
-        propertyName,
-        "error",
-        formatMessage({ id: errorMessageGroup + ".minunits" }, { value: limits.amount.min }),
-      );
+      setError(propertyName, {
+        type: "manual",
+        message: formatMessage(
+          { id: errorMessageGroup + ".minunits" },
+          { value: limits.amount.min },
+        ),
+      });
       return false;
     }
 
     if (limits.amount.max && units > limits.amount.max) {
-      setError(
-        propertyName,
-        "error",
-        formatMessage({ id: errorMessageGroup + "maxunits" }, { value: limits.amount.max }),
-      );
+      setError(propertyName, {
+        type: "manual",
+        message: formatMessage(
+          { id: errorMessageGroup + "maxunits" },
+          { value: limits.amount.max },
+        ),
+      });
       return false;
     }
 

@@ -639,7 +639,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ConnectedProviderUserInfo
- * @property {number} currentAllocated
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
  * @property {number} profitsSinceCopying
  */
 
@@ -1067,6 +1068,7 @@ export function positionItemTransform(positionItem) {
   const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
     amount: safeParseFloat(positionItem.amount),
     buyPrice: safeParseFloat(positionItem.buyPrice),
+    buyTTL: safeParseFloat(positionItem.buyTTL),
     closeDate: Number(positionItem.closeDate),
     fees: safeParseFloat(positionItem.fees),
     netProfit: safeParseFloat(positionItem.netProfit),
@@ -1141,7 +1143,7 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
     return {
       targetId: parseInt(rebuyTarget.targetId) || 0,
       triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
-      quantity: parseInt(rebuyTarget.quantity) || 0,
+      quantity: parseFloat(rebuyTarget.quantity) || 0,
       buying: rebuyTarget.buying || false,
       done: rebuyTarget.done || false,
       orderId: rebuyTarget.orderId || "",
@@ -2014,6 +2016,7 @@ export function connectedProviderUserInfoResponseTransform(response) {
 function createConnectedProviderUserInfoEntity(response) {
   return {
     currentAllocated: response.currentAllocated,
+    allocatedBalance: response.allocatedBalance,
     profitsSinceCopying: response.profitsSinceCopying,
   };
 }
@@ -3182,15 +3185,41 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {Object} CopyTraderCreatePayload
  * @property {string} name
- */
-
-/**
- * @typedef {Object} ProviderCreatePayload
- * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} minAllocatedBalance
  * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} ProviderOptions
+ * @property {boolean} acceptUpdateSignal
+ * @property {boolean} allowClones
+ * @property {boolean} allowSendingBuyOrdersAsMarket
+ * @property {boolean} enablePanicSellSignals
+ * @property {boolean} enableSellSignals
+ * @property {boolean} limitPriceFromSignal
+ * @property {boolean} reBuyFromProvider
+ * @property {boolean} reBuysFromSignal
+ * @property {boolean} reUseSignalIdIfClosed
+ * @property {boolean} riskFilter
+ * @property {boolean} stopLossFromSignal
+ * @property {boolean} successRateFilter
+ * @property {boolean} takeProfitsFromSignal
+ * @property {boolean} terms
+ * @property {boolean} useLeverageFromSignal
+ */
+
+/**
+ * @typedef {ProviderOptions & Object} ProviderCreatePayload
+ * @property {string} name
+ * @property {string} description
+ * @property {string} disclaimer
+ * @property {string} exchangeType
+ * @property {string} projectId
+ * @property {string} providerId
+ * @property {Array<string>} quotes
+ * @property {Array<string>} exchanges
  */
 
 /**
@@ -3227,7 +3256,7 @@ function createEmptyProfileNotificationsEntity() {
  */
 export function providerCreateResponseTransform(response) {
   const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = isObject(response._id) ? response._id.$oid : "";
+  const normalizedId = response._id ? response._id.$oid || response._id : "";
   const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyNewProviderEntity, response, {
@@ -3584,11 +3613,12 @@ const createEmptyExchangeContractsEntity = () => {
  * @property {Number} totalPositions
  * @property {Number} totalWins
  */
+
 /**
- * Transform exchange contract response.
+ * Transform profile profits stats response.
  *
- * @param {*} response Exchange contract response.
- * @returns {Array<ProfileStatsObject>} Exchange contract entity.
+ * @param {*} response Profile profits response.
+ * @returns {Array<ProfileStatsObject>} Profile profits entity collection.
  */
 export function profileStatsResponseTransform(response) {
   if (!isArray(response)) {
@@ -3601,10 +3631,10 @@ export function profileStatsResponseTransform(response) {
 }
 
 /**
- * Transform exchange contract entity from response.
+ * Transform profile profits stats response item.
  *
- * @param {*} item Exchange contracts entity from response.
- * @returns {ProfileStatsObject} Transformed contracts entity.
+ * @param {*} item Profile profits response entity.
+ * @returns {ProfileStatsObject} Profile profits entity.
  */
 function profileStatsItemTransform(item) {
   return assign(createEmptyProfileStatsEntity(), item, {
@@ -3614,9 +3644,9 @@ function profileStatsItemTransform(item) {
 }
 
 /**
- * Create an empty exchange contract entity
+ * Create an empty profile profits entity
  *
- * @returns {ProfileStatsObject} Empty exchaneg conytract entity.
+ * @returns {ProfileStatsObject} Empty profile profits entity.
  */
 const createEmptyProfileStatsEntity = () => {
   return {

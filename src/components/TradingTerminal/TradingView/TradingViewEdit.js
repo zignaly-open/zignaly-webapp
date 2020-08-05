@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isArray, isEqual, isNumber, pick } from "lodash";
-import { FormContext, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
   mapExchangeConnectionToTradingViewId,
@@ -275,7 +275,7 @@ const TradingViewEdit = (props) => {
   };
 
   return (
-    <FormContext {...methods}>
+    <FormProvider {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
         {!isLoading && (
           <PositionsTable
@@ -321,7 +321,7 @@ const TradingViewEdit = (props) => {
           </Box>
         )}
       </Box>
-    </FormContext>
+    </FormProvider>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isNumber } from "lodash";
 import { useDispatch } from "react-redux";
-import { FormContext, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import {
   createWidgetOptions,
@@ -248,7 +248,7 @@ const TradingView = () => {
 
   return (
     <>
-      <FormContext {...methods}>
+      <FormProvider {...methods}>
         <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
           {!isLoading && (
             <TradingViewHeader
@@ -286,7 +286,7 @@ const TradingView = () => {
             )}
           </Box>
         </Box>
-      </FormContext>
+      </FormProvider>
     </>
   );
 };

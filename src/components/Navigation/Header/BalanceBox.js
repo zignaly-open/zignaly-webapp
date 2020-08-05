@@ -5,6 +5,7 @@ import useUpdatedBalance from "../../../hooks/useUpdatedBalance";
 import useStoreUIBalanceLoader from "../../../hooks/useStoreUIBalanceLoader";
 import { useDispatch } from "react-redux";
 import { showBalanceLoader } from "../../../store/actions/ui";
+import { formatNumber } from "../../../utils/formatters";
 
 const BalanceBox = () => {
   const balance = useUpdatedBalance();
@@ -48,8 +49,8 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.available" />
             </Typography>
-            <Typography variant="h5">BTC {balance.totalFreeBTC}</Typography>
-            <Typography variant="subtitle2">USDT {balance.totalFreeUSDT}</Typography>
+            <Typography className="number1">BTC {formatNumber(balance.totalFreeBTC, 4)}</Typography>
+            <Typography className="number3">USDT {balance.totalFreeUSDT}</Typography>
           </Box>
 
           <Box
@@ -62,8 +63,10 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.invested" />
             </Typography>
-            <Typography variant="h5">BTC {balance.totalLockedBTC}</Typography>
-            <Typography variant="subtitle2">USDT {balance.totalLockedUSDT}</Typography>
+            <Typography className="number1">
+              BTC {formatNumber(balance.totalLockedBTC, 4)}
+            </Typography>
+            <Typography className="number3">USDT {balance.totalLockedUSDT}</Typography>
           </Box>
 
           <Box
@@ -76,10 +79,13 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.profitlosses" />
             </Typography>
-            <Typography className={balance.pnlBTC > 0 ? "green" : "red"} variant="h5">
-              BTC {balance.pnlBTC}
+            <Typography className={`${balance.pnlBTC > 0 ? "green" : "red"} number1`}>
+              BTC {formatNumber(balance.pnlBTC, 4)}
             </Typography>
-            <Typography className={balance.pnlUSDT > 0 ? "green" : "red"} variant="subtitle2">
+            <Typography
+              className={`${balance.pnlBTC > 0 ? "green" : "red"} number3`}
+              variant="subtitle2"
+            >
               USDT {balance.pnlUSDT}
             </Typography>
           </Box>

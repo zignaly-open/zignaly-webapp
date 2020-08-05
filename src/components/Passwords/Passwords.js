@@ -9,12 +9,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
- * @typedef {import('react-hook-form').FormContextValues} FormContextValues
+ * @typedef {import('react-hook-form').UseFormMethods<Record<string, any>>} FormMethods
  */
 
 /**
  * @typedef {Object} PasswordsPropTypes
- * @property {FormContextValues} formMethods
+ * @property {FormMethods} formMethods
  * @property {boolean} edit
  */
 

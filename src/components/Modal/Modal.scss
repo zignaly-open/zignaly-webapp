@@ -1,5 +1,7 @@
 .modal {
   border-radius: 4px;
+  max-height: 100%;
+  max-width: 100%;
   min-height: 300px;
   overflow: visible;
   overflow-y: auto;
@@ -14,7 +16,7 @@
 
   &:not(.fullscreen) {
     height: fit-content;
-    max-height: 700px;
+    // max-height: 700px;
   }
 
   &.small {
@@ -32,8 +34,6 @@
   &.fullscreen {
     height: auto;
     margin: 0 100px;
-    max-height: 100%;
-    max-width: 100%;
     min-height: 75%;
   }
 }

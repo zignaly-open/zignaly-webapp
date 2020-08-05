@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("react-hook-form").Validate} Validate
+ * @typedef {import("react-hook-form/dist/types/form").Validate} Validate
  */
 
 /**
@@ -32,7 +32,7 @@ import { useIntl } from "react-intl";
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
-  const { errors, clearError, getValues, setError, setValue, watch } = useFormContext();
+  const { errors, clearErrors, getValues, setError, setValue, watch } = useFormContext();
   const leverage = defaultLeverage || watch("leverage");
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
@@ -50,30 +50,37 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(positionSize);
 
     if (!isValidIntOrFloat(positionSize)) {
-      setError("positionSize", "error", formatMessage({ id: "terminal.positionsize.limit.zero" }));
+      setError("positionSize", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.positionsize.limit.zero" }),
+      });
       return false;
     }
 
     if (limits.cost.min && value < limits.cost.min) {
-      setError(
-        "positionSize",
-        "error",
-        formatMessage({ id: "terminal.positionsize.limit.min" }, { value: limits.cost.min }),
-      );
+      setError("positionSize", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionsize.limit.min" },
+          { value: limits.cost.min },
+        ),
+      });
       return false;
     }
 
     if (limits.cost.max && value > limits.cost.max) {
-      setError(
-        "positionSize",
-        "error",
-        formatMessage({ id: "terminal.positionsize.limit.max" }, { value: limits.cost.max }),
-      );
+      setError("positionSize", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionsize.limit.max" },
+          { value: limits.cost.max },
+        ),
+      });
       return false;
     }
 
     if (errors.positionSize) {
-      clearError("positionSize");
+      clearErrors("positionSize");
     }
 
     return true;
@@ -87,16 +94,15 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    */
   function validatePositionSizePercentage(positionSizePercentage) {
     if (!isValidIntOrFloat(positionSizePercentage)) {
-      setError(
-        "positionSizePercentage",
-        "error",
-        formatMessage({ id: "terminal.positionsize.valid.percentage" }),
-      );
+      setError("positionSizePercentage", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.positionsize.valid.percentage" }),
+      });
       return false;
     }
 
     if (errors.positionsSizePercentage) {
-      clearError("positionSizePercentage");
+      clearErrors("positionSizePercentage");
     }
 
     return true;
@@ -112,30 +118,37 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(units);
 
     if (!isValidIntOrFloat(units)) {
-      setError("units", "error", formatMessage({ id: "terminal.positionunits.limit.zero" }));
+      setError("units", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.positionunits.limit.zero" }),
+      });
       return false;
     }
 
     if (limits.amount.min && value < limits.amount.min) {
-      setError(
-        "units",
-        "error",
-        formatMessage({ id: "terminal.positionunits.limit.min" }, { value: limits.amount.min }),
-      );
+      setError("units", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionunits.limit.min" },
+          { value: limits.amount.min },
+        ),
+      });
       return false;
     }
 
     if (limits.amount.max && value > limits.amount.max) {
-      setError(
-        "units",
-        "error",
-        formatMessage({ id: "terminal.positionunits.limit.max" }, { value: limits.amount.max }),
-      );
+      setError("units", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionunits.limit.max" },
+          { value: limits.amount.max },
+        ),
+      });
       return false;
     }
 
     if (errors.units) {
-      clearError("units");
+      clearErrors("units");
     }
 
     return true;
@@ -151,30 +164,37 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const value = parseFloat(price);
 
     if (!isValidIntOrFloat(price)) {
-      setError("price", "error", formatMessage({ id: "terminal.positionprice.limit.zero" }));
+      setError("price", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.positionprice.limit.zero" }),
+      });
       return false;
     }
 
     if (limits.price.min && value < limits.price.min) {
-      setError(
-        "price",
-        "error",
-        formatMessage({ id: "terminal.positionprice.limit.min" }, { value: limits.price.min }),
-      );
+      setError("price", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionprice.limit.min" },
+          { value: limits.price.min },
+        ),
+      });
       return false;
     }
 
     if (limits.price.max && value > limits.price.max) {
-      setError(
-        "price",
-        "error",
-        formatMessage({ id: "terminal.positionprice.limit.max" }, { value: limits.price.max }),
-      );
+      setError("price", {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.positionprice.limit.max" },
+          { value: limits.price.max },
+        ),
+      });
       return false;
     }
 
     if (errors.price) {
-      clearError("price");
+      clearErrors("price");
     }
 
     return true;

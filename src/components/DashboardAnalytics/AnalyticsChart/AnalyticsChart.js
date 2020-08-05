@@ -4,7 +4,7 @@ import { useTheme } from "@material-ui/core/styles";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage } from "react-intl";
 import "./AnalyticsChart.scss";
-import { formatFloat2Dec, formatFloat } from "../../../utils/format";
+import { formatFloat2Dec } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
@@ -20,7 +20,7 @@ import { formatFloat2Dec, formatFloat } from "../../../utils/format";
  */
 
 /**
- * Provides chart to display providers profits.
+ * Dashboard analytics chart to display profits.
  *
  * @param {DefaultProps} props Component properties.
  * @returns {JSX.Element} Component JSX.

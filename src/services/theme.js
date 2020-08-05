@@ -22,7 +22,7 @@ const PlexMonoBold = {
     local('PlexMono-Medium'),
     url(${PlexMonoBoldttf}) format('woff2')
   `,
-  unicodeRange: "U+0030-0039",
+  //   unicodeRange: "U+0030-0039",
 };
 
 /**
@@ -32,12 +32,12 @@ const PlexMonoMedium = {
   fontFamily: "PlexMono",
   fontStyle: "normal",
   fontDisplay: "swap",
-  fontWeight: 600,
+  fontWeight: 500,
   src: `
     local('PlexMono-Medium'),
     url(${PlexMonoMediumttf}) format('woff2')
   `,
-  unicodeRange: "U+0030-0039",
+  //   unicodeRange: "U+0030-0039",
 };
 
 /**
@@ -116,7 +116,7 @@ export const colors = {
   lighterBlack: "#1b1b2c",
   lightestBlack: "#27273F",
   borderColor: "rgba(0, 0, 0, 0.1)",
-  lighterBlackBorder: "#1c1a27",
+  lighterBlackBorder: "#3e3946",
   lightBlackBorder: "rgba(64, 57, 70, 0.37)",
   blackTooltip: "#1b1b25",
   darkGrey: "#808080",
@@ -233,7 +233,7 @@ const theme = (darkStyle) => {
       subtitle2: {
         // this is a small text which is being used for balance in USD like in Available Balance component (Caption 1)
         fontSize: "12px",
-        fontWeight: 300,
+        fontWeight: 700,
         textTransform: "capitalize",
         lineHeight: 1.08,
         letterSpacing: "0.46px",
@@ -296,6 +296,27 @@ const theme = (darkStyle) => {
           },
         },
       },
+      MuiOutlinedInput: {
+        notchedOutline: {
+          borderColor: darkStyle ? colors.lightBlackBorder : colors.borderColor,
+        },
+        root: {
+          "&$focused $notchedOutline": {
+            borderColor: darkStyle ? colors.purpleLight : colors.purple,
+            borderWidth: 1,
+          },
+          "&:hover $notchedOutline": {
+            borderColor: darkStyle ? colors.lighterBlackBorder : "rgba(0, 0, 0, 0.3)",
+          },
+          // Override border for inputs inside a modal with dark theme
+          "[data-theme='dark'] .modal &:not($focused):not(:hover) $notchedOutline": {
+            borderColor: "rgba(255, 255, 255, 0.23)",
+          },
+          "[data-theme='dark'] .modal &:not($focused):hover $notchedOutline": {
+            borderColor: "rgba(255, 255, 255, 0.4)",
+          },
+        },
+      },
       MuiSelect: {
         select: {
           "&:focus": {
@@ -320,7 +341,7 @@ const theme = (darkStyle) => {
       },
       MuiTableCell: {
         root: {
-          borderBottom: `1px solid ${darkStyle ? colors.lighterBlackBorder : colors.borderColor}`,
+          borderBottom: `1px solid ${darkStyle ? colors.lightBlackBorder : colors.borderColor}`,
         },
       },
       MuiPaper: {

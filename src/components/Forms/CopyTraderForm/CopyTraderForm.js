@@ -94,7 +94,10 @@ const CopyTraderForm = ({ provider, onClose }) => {
             setActionLoading(false);
           });
       } else {
-        setError("allocatedBalance", "invalid amount");
+        setError("allocatedBalance", {
+          type: "manual",
+          message: intl.formatMessage({ id: "form.error.allocatedBalance.min" }),
+        });
       }
     }
   };

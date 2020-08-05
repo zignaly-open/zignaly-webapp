@@ -1,6 +1,6 @@
 import React from "react";
 import Filters from "../Filters";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import useDashboardAnalytics from "../../../hooks/useDashboardAnalytics";
 import AnalyticsChart from "../AnalyticsChart";
 
