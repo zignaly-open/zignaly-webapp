@@ -40,7 +40,7 @@ const withDashboardLayout = (Component) => {
       >
         {exchangeConnections.length > 0 && (
           <>
-            <DashboardHeader />
+            <DashboardHeader path={props.path} />
             <Box className="pageContent">
               <Component {...props} />
             </Box>

@@ -10,7 +10,7 @@ import { setProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
-import { showErrorAlert } from "../../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -47,6 +47,7 @@ const FollowProviderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
         setLoader(false);
       }
     } catch (e) {
@@ -71,6 +72,7 @@ const FollowProviderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         setLoader(false);
       }
     } catch (e) {

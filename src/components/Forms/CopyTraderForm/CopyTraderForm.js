@@ -9,7 +9,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { setProvider } from "../../../store/actions/views";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
@@ -83,6 +83,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 version: 2,
               };
               dispatch(setProvider(payload2));
+              dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
               onClose();
             }
           })

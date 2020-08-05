@@ -688,6 +688,17 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProfileStatsPayload
+ * @property {Boolean} includeOpenPositions
+ * @property {String} providerId
+ * @property {String} quote
+ * @property {Boolean} ro
+ * @property {Number} timeFrame
+ * @property {String} timeFrameFormat
+ * @property {String} token
+ */
+
+/**
  * @typedef {Object} GetTransactionsPayload
  * @property {string} internalId
  */
@@ -1090,7 +1101,7 @@ export function positionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     ageSeconds: openDateMoment.diff(nowDate),
-    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
       positionEntity.buyPrice,
@@ -1098,7 +1109,7 @@ export function positionItemTransform(positionItem) {
     ),
     netProfitStyle: getValueType(positionEntity.netProfit),
     openDateMoment: openDateMoment,
-    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
     profitStyle: getValueType(positionEntity.profit),
     providerLink: composeProviderLink(),
@@ -3474,7 +3485,7 @@ export function exchangeOpenOrdersResponseTransform(response) {
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
   const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
-    datetimeReadable: time.format("YY/MM/DD HH:mm"),
+    datetimeReadable: time.format("YYYY/MM/DD HH:mm"),
   });
   return orderEntity;
 }
@@ -3558,5 +3569,60 @@ const createEmptyExchangeContractsEntity = () => {
     markprice: 0,
     side: "",
     symbol: "",
+  };
+};
+
+/**
+ * @typedef {Object} ProfileStatsObject
+ * @property {String} date
+ * @property {String} invested
+ * @property {String} profit
+ * @property {String} profitFromInvestmentPercentage
+ * @property {String} quote
+ * @property {String} returned
+ * @property {Number} totalPositions
+ * @property {Number} totalWins
+ */
+/**
+ * Transform exchange contract response.
+ *
+ * @param {*} response Exchange contract response.
+ * @returns {Array<ProfileStatsObject>} Exchange contract entity.
+ */
+export function profileStatsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of objects");
+  }
+
+  return response.map((item) => {
+    return profileStatsItemTransform(item);
+  });
+}
+
+/**
+ * Transform exchange contract entity from response.
+ *
+ * @param {*} item Exchange contracts entity from response.
+ * @returns {ProfileStatsObject} Transformed contracts entity.
+ */
+function profileStatsItemTransform(item) {
+  return assign(createEmptyProfileStatsEntity(), item);
+}
+
+/**
+ * Create an empty exchange contract entity
+ *
+ * @returns {ProfileStatsObject} Empty exchaneg conytract entity.
+ */
+const createEmptyProfileStatsEntity = () => {
+  return {
+    date: "",
+    invested: "",
+    profit: "",
+    profitFromInvestmentPercentage: "",
+    quote: "",
+    returned: "",
+    totalPositions: 1,
+    totalWins: 0,
   };
 };

@@ -12,7 +12,7 @@ import { setProvider } from "../../../../store/actions/views";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
-import { showErrorAlert } from "../../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 
 /**
@@ -60,6 +60,7 @@ const CopyTraderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
         setStopCopyLoader(false);
       }
     } catch (e) {
