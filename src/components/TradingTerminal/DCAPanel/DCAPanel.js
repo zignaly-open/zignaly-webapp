@@ -133,13 +133,14 @@ const DCAPanel = (props) => {
      */
     const fieldsDisabled = {};
     dcaAllIndexes.forEach((index) => {
-      const target = positionEntity ? positionEntity.reBuyTargets[Number(index)] : { done: false };
-
       let disabled = false;
-      if (target.done) {
-        disabled = true;
-      } else if (isReadOnly) {
-        disabled = true;
+      if (positionEntity) {
+        const target = positionEntity.reBuyTargets[Number(index)];
+        if (target.done || target.skipped) {
+          disabled = true;
+        } else if (isReadOnly) {
+          disabled = true;
+        }
       }
 
       fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
