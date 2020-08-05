@@ -72,7 +72,7 @@ $grey: rgba(255, 255, 255, 0.2);
 
 $greyBackground: #b6c5de;
 
-$tooltipText: rgba(255, 255, 255, 0.94);
+$lightWhite: rgba(255, 255, 255, 0.94);
 
 $boxShadowColor: rgba(64, 34, 95, 0.2);
 
@@ -100,15 +100,3 @@ $redGradient: linear-gradient(99deg, $red2, $red3 96%);
 $purpleDarkGradient: $greyGradient, linear-gradient(134deg, $purpleDarkest 8%, $purpleDark 98%);
 
 $greyDarkGradient: $greyGradient, linear-gradient(94deg, $black 5%, $darkestGrey 96%);
-
-:root {
-  --purple: #{$purple};
-  --border-color: #{$borderColor};
-  --background-color: #{$white};
-}
-
-[data-theme="dark"] {
-  --purple: #{$purpleLight};
-  --border-color: #{$lightBlackBorder};
-  --background-color: #{$lighterBlack};
-}

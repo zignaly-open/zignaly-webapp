@@ -35,7 +35,7 @@ const CustomButton = (props) => {
     <Button
       className={"customButton " + className}
       component="button"
-      disabled={disabled}
+      disabled={loading || disabled}
       onClick={onClick}
       type={type ? type : "button"}
       {...others}

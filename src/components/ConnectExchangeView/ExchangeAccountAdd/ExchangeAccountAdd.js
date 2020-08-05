@@ -18,7 +18,6 @@ import { showErrorAlert } from "../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {boolean} create Flag to indicate if the user is creating or connecting an account.
  * @property {boolean} demo Flag to indicate if it's a demo account.
  */
 
@@ -26,7 +25,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountAdd = ({ create, demo }) => {
+const ExchangeAccountAdd = ({ demo }) => {
   const { register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -34,24 +33,17 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(
-      <FormattedMessage
-        id={
-          create ? (demo ? "accounts.create.demo" : "accounts.create.exchange") : "accounts.connect"
-        }
-      />,
-    );
+    setTitle(<FormattedMessage id={demo ? "accounts.create.demo" : "accounts.create.exchange"} />);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const exchanges = useExchangeList();
-  const zignalyOnly = create && !demo;
 
   // Initialize selected exchange
-  let exchangeName = zignalyOnly ? "zignaly" : watch("exchangeName", "binance");
+  let exchangeName = !demo ? "zignaly" : watch("exchangeName", "binance");
 
   const exchangeType = watch("exchangeType");
-  const testnet = watch("testnet");
+  const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
     demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
@@ -64,7 +56,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
   const exchangesOptions = exchanges
     ? exchanges
         // Filter disabled exchange and Zignaly if connection
-        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || create))
+        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || !demo))
         .map((e) => ({
           val: e.name.toLowerCase(),
           label:
@@ -111,36 +103,44 @@ const ExchangeAccountAdd = ({ create, demo }) => {
    * @returns {Promise<boolean>} API promise.
    */
   const submitForm = async (data) => {
-    const { internalName, key, secret, password, testNet, exchangeType: _exchangeType } = data;
+    const {
+      internalName,
+      key,
+      secret,
+      password,
+      testNet: _testNet,
+      exchangeType: _exchangeType,
+    } = data;
+
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType: _exchangeType,
-      ...(!create && {
+      ...(_testNet && {
         key,
         secret,
         ...(password && { password }),
       }),
       mainAccount: false,
       isPaperTrading: demo,
-      testNet,
+      testNet: _testNet,
     };
 
     return tradeApi
       .exchangeAdd(payload)
       .then(() => {
-        setTempMessage(
-          <FormattedMessage id={create ? "accounts.created" : "accounts.connected.success"} />,
-        );
+        setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
         return true;
       })
       .catch((e) => {
         if (e.code === 72) {
           setError(
             selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
-            "notMatch",
-            intl.formatMessage({ id: "form.error.key.invalid" }),
+            {
+              type: "manual",
+              message: intl.formatMessage({ id: "form.error.key.invalid" }),
+            },
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -158,34 +158,43 @@ const ExchangeAccountAdd = ({ create, demo }) => {
         </Box>
       ) : (
         <ExchangeAccountForm>
-          {(!create || demo) && (
+          {demo && (
             <Controller
-              as={CustomSelect}
               control={control}
               defaultValue={selectedExchange.name.toLowerCase()}
-              label={intl.formatMessage({
-                id: "accounts.exchange",
-              })}
               name="exchangeName"
-              onChange={([e]) => {
-                setValue("exchangeType", typeOptions[0].val);
-                setValue("testnet", false);
-                return e;
-              }}
-              options={exchangesOptions}
+              render={({ onChange, value }) => (
+                <CustomSelect
+                  label={intl.formatMessage({
+                    id: "accounts.exchange",
+                  })}
+                  onChange={(/** @type {string} **/ v) => {
+                    setValue("exchangeType", typeOptions[0].val);
+                    setValue("testNet", false);
+                    onChange(v);
+                  }}
+                  options={exchangesOptions}
+                  value={value}
+                />
+              )}
               rules={{ required: true }}
             />
           )}
           {typeOptions.length > 1 && (
             <Controller
-              as={CustomSelect}
               control={control}
               defaultValue={typeOptions[0].val}
-              label={intl.formatMessage({
-                id: "accounts.exchange.type",
-              })}
               name="exchangeType"
-              options={typeOptions}
+              render={({ onChange, value }) => (
+                <CustomSelect
+                  label={intl.formatMessage({
+                    id: "accounts.exchange.type",
+                  })}
+                  onChange={onChange}
+                  options={typeOptions}
+                  value={value}
+                />
+              )}
             />
           )}
           {showTestnet && (
@@ -193,7 +202,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
               defaultValue={false}
               inputRef={register}
               label="menu.testnet"
-              name="testnet"
+              name="testNet"
             />
           )}
           <CustomInput
@@ -203,7 +212,7 @@ const ExchangeAccountAdd = ({ create, demo }) => {
             label="accounts.exchange.name"
             name="internalName"
           />
-          {(!create || testnet) &&
+          {testNet &&
             selectedExchange.requiredAuthFields.map((field) => (
               <CustomInput
                 autoComplete="new-password"

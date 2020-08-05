@@ -18,6 +18,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+import breaks from "remark-breaks";
 
 /**
  * @typedef {Object} DefaultProps
@@ -150,11 +151,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.merchantId) {
       let flag = true;
       if (!data.price) {
-        setError("price", "");
+        setError("price", { type: "manual" });
         flag = false;
       }
       if (!data.ipnSecret) {
-        setError("ipnSecret", "");
+        setError("ipnSecret", { type: "manual" });
         flag = false;
       }
       return flag;
@@ -163,11 +164,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.price) {
       let flag = true;
       if (!data.merchantId) {
-        setError("merchantId", "");
+        setError("merchantId", { type: "manual" });
         flag = false;
       }
       if (!data.ipnSecret) {
-        setError("ipnSecret", "");
+        setError("ipnSecret", { type: "manual" });
         flag = false;
       }
       return flag;
@@ -176,11 +177,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     if (data.ipnSecret) {
       let flag = true;
       if (!data.merchantId) {
-        setError("merchantId", "");
+        setError("merchantId", { type: "manual" });
         flag = false;
       }
       if (!data.price) {
-        setError("price", "");
+        setError("price", { type: "manual" });
         flag = false;
       }
       return flag;
@@ -278,7 +279,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} />)
+                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
               onChange={handleAboutChange}
               onTabChange={setAboutTab}
@@ -315,7 +316,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <ReactMde
               generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown source={markdown} />)
+                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
               onChange={handleStrategyChange}
               onTabChange={setStrategyTab}

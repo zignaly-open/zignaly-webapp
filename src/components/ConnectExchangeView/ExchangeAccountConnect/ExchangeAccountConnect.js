@@ -121,8 +121,10 @@ const ExchangeAccountConnect = () => {
         if (e.code === 72) {
           setError(
             selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
-            "notMatch",
-            intl.formatMessage({ id: "form.error.key.invalid" }),
+            {
+              type: "manual",
+              message: intl.formatMessage({ id: "form.error.key.invalid" }),
+            },
           );
         } else {
           dispatch(showErrorAlert(e));

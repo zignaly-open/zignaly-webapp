@@ -45,11 +45,11 @@ const AvailableBalance = ({ balance }) => {
               <Typography variant="h4">
                 <FormattedMessage id="balance.available" />
               </Typography>
-              <Typography className="smallText" variant="subtitle2">
+              <Typography className="number3 smallText">
                 = USDT {formatFloat(balance.totalFreeUSDT)}
               </Typography>
             </Box>
-            <Typography variant="h5">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
+            <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
           </Box>
           <span className="operator">+</span>
           <Box
@@ -69,11 +69,11 @@ const AvailableBalance = ({ balance }) => {
               <Typography variant="h4">
                 <FormattedMessage id="balance.invested" />
               </Typography>
-              <Typography className="smallText" variant="subtitle2">
+              <Typography className="number3 smallText">
                 = USDT {formatFloat(balance.totalLockedUSDT)}
               </Typography>
             </Box>
-            <Typography variant="h5">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
+            <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
           </Box>
           <span className="operator">+</span>
           <Box
@@ -93,15 +93,15 @@ const AvailableBalance = ({ balance }) => {
               <Typography variant="h4">
                 <FormattedMessage id="balance.profit" />
               </Typography>
-              <Typography className={`smallText ${color}`} variant="subtitle2">
+              <Typography className={`smallText number3 ${color}`}>
                 = USDT {formatFloat(balance.pnlUSDT)}
               </Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography className={color} variant="h5">
+              <Typography className={`number1 ${color}`}>
                 BTC {formatFloat(balance.pnlBTC)}
               </Typography>
-              <Typography className={`pnlPercent ${color}`} variant="subtitle2">
+              <Typography className={`number1 pnlPercent ${color}`}>
                 {balance.pnlBTC && balance.totalLockedBTC
                   ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
                   : 0}
@@ -127,11 +127,11 @@ const AvailableBalance = ({ balance }) => {
               <Typography variant="h4">
                 <FormattedMessage id="balance.total" />
               </Typography>
-              <Typography className="smallText" variant="subtitle2">
+              <Typography className="smallText number3">
                 = USDT {formatFloat(balance.totalUSDT)}
               </Typography>
             </Box>
-            <Typography variant="h5">BTC {formatFloat(balance.totalBTC)}</Typography>
+            <Typography className="number1">BTC {formatFloat(balance.totalBTC)}</Typography>
           </Box>
         </>
       )}

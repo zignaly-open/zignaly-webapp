@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
+import breaks from "remark-breaks";
 
 /**
  * @typedef {Object} DefaultProps
@@ -44,7 +45,7 @@ const AboutUs = ({ provider }) => {
 
       {show && (
         <Box className="aboutBody">
-          <ReactMarkdown linkTarget="_blank" source={provider.about} />
+          <ReactMarkdown linkTarget="_blank" plugins={[breaks]} source={provider.about} />
         </Box>
       )}
     </Box>

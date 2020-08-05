@@ -638,7 +638,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ConnectedProviderUserInfo
- * @property {number} currentAllocated
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
  * @property {number} profitsSinceCopying
  */
 
@@ -2003,6 +2004,7 @@ export function connectedProviderUserInfoResponseTransform(response) {
 function createConnectedProviderUserInfoEntity(response) {
   return {
     currentAllocated: response.currentAllocated,
+    allocatedBalance: response.allocatedBalance,
     profitsSinceCopying: response.profitsSinceCopying,
   };
 }
@@ -3171,15 +3173,41 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {Object} CopyTraderCreatePayload
  * @property {string} name
- */
-
-/**
- * @typedef {Object} ProviderCreatePayload
- * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} minAllocatedBalance
  * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} ProviderOptions
+ * @property {boolean} acceptUpdateSignal
+ * @property {boolean} allowClones
+ * @property {boolean} allowSendingBuyOrdersAsMarket
+ * @property {boolean} enablePanicSellSignals
+ * @property {boolean} enableSellSignals
+ * @property {boolean} limitPriceFromSignal
+ * @property {boolean} reBuyFromProvider
+ * @property {boolean} reBuysFromSignal
+ * @property {boolean} reUseSignalIdIfClosed
+ * @property {boolean} riskFilter
+ * @property {boolean} stopLossFromSignal
+ * @property {boolean} successRateFilter
+ * @property {boolean} takeProfitsFromSignal
+ * @property {boolean} terms
+ * @property {boolean} useLeverageFromSignal
+ */
+
+/**
+ * @typedef {ProviderOptions & Object} ProviderCreatePayload
+ * @property {string} name
+ * @property {string} description
+ * @property {string} disclaimer
+ * @property {string} exchangeType
+ * @property {string} projectId
+ * @property {string} providerId
+ * @property {Array<string>} quotes
+ * @property {Array<string>} exchanges
  */
 
 /**
@@ -3216,7 +3244,7 @@ function createEmptyProfileNotificationsEntity() {
  */
 export function providerCreateResponseTransform(response) {
   const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = isObject(response._id) ? response._id.$oid : "";
+  const normalizedId = response._id ? response._id.$oid || response._id : "";
   const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyNewProviderEntity, response, {

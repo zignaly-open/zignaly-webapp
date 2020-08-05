@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CreateProviderForm.scss";
 import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, FormProvider } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
@@ -12,8 +12,13 @@ import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
+import ProviderUserOptions from "./ProviderUserOptions";
+
+const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
+
 /**
  * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
+ * @typedef {import('../../../services/tradeApiClient.types').ProviderOptions} ProviderOptions
  */
 
 /**
@@ -33,9 +38,11 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const { errors, handleSubmit, control, register, watch, setValue } = useForm();
+  const methods = useForm();
+  const { errors, handleSubmit, control, register, watch, setValue } = methods;
   const exchange = watch("exchange", "binance");
-  const exchanges = useExchangeList(isCopyTrading);
+  const exchanges = useExchangeList();
+
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase())
     : null;
@@ -52,22 +59,34 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     selectedExchange &&
     selectedExchange.type.map((t) => ({
       val: t,
+      // Uppercase label
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
 
+  if (!isCopyTrading && typeOptions) {
+    typeOptions.unshift({
+      val: "all",
+      label: intl.formatMessage({ id: "fil.allexchangeTypes" }),
+    });
+  }
+
   const quoteAssets = useQuoteAssets(
-    isCopyTrading && !!selectedExchange,
+    !isCopyTrading || Boolean(selectedExchange),
     selectedExchange ? selectedExchange.id : "",
   );
   const quotes = Object.keys(quoteAssets);
 
   /**
-   * @typedef {Object} FormData
+   * @typedef {ProviderOptions & Object} FormData
    * @property {string} name
    * @property {string} [exchange]
    * @property {string} [exchangeType]
    * @property {string} [minAllocatedBalance]
    * @property {string} [quote]
+   * @property {string} [disclaimer]
+   * @property {string} [exchangeType]
+   * @property {Array<string>} [quotes]
+   * @property {Array<string>} [exchanges]
    */
 
   /**
@@ -80,14 +99,21 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     setLoading(true);
     const payload = {
       ...data,
+      ...(!isCopyTrading && {
+        projectId: "z01",
+        description: "",
+        providerId: CREATE_PROVIDER_ID,
+      }),
       token: storeSession.tradeApi.accessToken,
     };
 
-    const apiMethod = isCopyTrading ? tradeApi.copyTraderCreate : tradeApi.providerCreate;
+    const apiMethod = isCopyTrading
+      ? // @ts-ignore
+        tradeApi.copyTraderCreate(payload)
+      : tradeApi.providerCreate(payload);
 
     apiMethod
-      .call(tradeApi, payload)
-      .then((/** @type {NewProviderEntity} **/ response) => {
+      .then((response) => {
         const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
           response.id
         }/edit`;
@@ -95,88 +121,109 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         navigate(profileLink);
         dispatch(showCreateProvider(false));
       })
-      .catch((/** @type {*} **/ e) => {
+      .catch((e) => {
         dispatch(showErrorAlert(e));
         setLoading(false);
       });
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit(submitForm)}>
-      <Box
-        alignItems="center"
-        className="createProviderForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <Box className="formContent">
-          {!isCopyTrading || selectedExchange ? (
-            <>
-              <Typography variant="h3">
-                <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
-              </Typography>
-              <Typography className="desc" variant="body1">
-                <FormattedMessage id="copyt.create.desc" />
-              </Typography>
-              <Box alignItems="flex-start" display="flex" flexDirection="column">
-                <Box className="inputBox" display="flex" flexDirection="column" width={1}>
-                  <label className="customLabel callout2">
-                    <FormattedMessage id="provider.name" />
-                  </label>
-                  <OutlinedInput
-                    className="customInput"
-                    error={!!errors.name}
-                    fullWidth
-                    inputRef={register({
-                      required: intl.formatMessage({ id: "form.error.name" }),
-                      minLength: {
-                        value: 5,
-                        message: intl.formatMessage({ id: "form.error.name.length" }),
-                      },
-                      maxLength: {
-                        value: 90,
-                        message: intl.formatMessage({ id: "form.error.name.length" }),
-                      },
-                    })}
-                    name="name"
-                  />
-                  {errors.name && <span className="errorText">{errors.name.message}</span>}
-                </Box>
-                {isCopyTrading && (
-                  <>
-                    <Box className="inputBox" display="flex" flexDirection="row" width={1}>
+    <FormProvider {...methods}>
+      <form noValidate onSubmit={handleSubmit(submitForm)}>
+        <Box
+          alignItems="center"
+          className="createProviderForm"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          {selectedExchange ? (
+            <Box className="formContent">
+              <>
+                <Typography variant="h3">
+                  <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
+                </Typography>
+                <Typography className="desc" variant="body1">
+                  <FormattedMessage id="copyt.create.desc" />
+                </Typography>
+                <Box alignItems="flex-start" display="flex" flexDirection="column">
+                  <Box className="inputBox nameBox" display="flex" flexDirection="column" mr={1}>
+                    <label className="customLabel">
+                      <FormattedMessage id="provider.name" />
+                    </label>
+                    <OutlinedInput
+                      className="customInput"
+                      error={!!errors.name}
+                      fullWidth
+                      inputRef={register({
+                        required: intl.formatMessage({ id: "form.error.name" }),
+                        minLength: {
+                          value: 5,
+                          message: intl.formatMessage({ id: "form.error.name.length" }),
+                        },
+                        maxLength: {
+                          value: 90,
+                          message: intl.formatMessage({ id: "form.error.name.length" }),
+                        },
+                      })}
+                      name="name"
+                    />
+                    {errors.name && <span className="errorText">{errors.name.message}</span>}
+                  </Box>
+                  <Box className="boxWrapper" display="flex" flexDirection="row">
+                    {isCopyTrading && (
+                      <Box className="inputBox typeBox" display="flex" flex={1} pr={1}>
+                        <Controller
+                          control={control}
+                          defaultValue={selectedExchange.name.toLowerCase()}
+                          name="exchange"
+                          render={({ onChange, value }) => (
+                            <CustomSelect
+                              label={intl.formatMessage({
+                                id: "accounts.exchange",
+                              })}
+                              labelPlacement="top"
+                              onChange={(/** @type {string} **/ v) => {
+                                setValue("exchangeType", typeOptions[0].val);
+                                onChange(v);
+                              }}
+                              options={exchangeOptions}
+                              value={value}
+                            />
+                          )}
+                        />
+                      </Box>
+                    )}
+                    <Box className="inputBox typeBox" pl={isCopyTrading ? 1 : 0}>
                       <Controller
-                        as={CustomSelect}
-                        control={control}
-                        defaultValue={selectedExchange.name.toLowerCase()}
-                        label={intl.formatMessage({
-                          id: "accounts.exchange",
-                        })}
-                        labelPlacement="top"
-                        name="exchange"
-                        onChange={([e]) => {
-                          setValue("exchangeType", typeOptions[0].val);
-                          return e;
-                        }}
-                        options={exchangeOptions}
-                      />
-                      <Controller
-                        as={CustomSelect}
                         control={control}
                         defaultValue={typeOptions[0].val}
-                        label={intl.formatMessage({
-                          id: "accounts.exchange.type",
-                        })}
-                        labelPlacement="top"
                         name="exchangeType"
-                        options={typeOptions}
+                        render={({ onChange, value }) => (
+                          <CustomSelect
+                            label={intl.formatMessage({
+                              id: "accounts.exchange.type",
+                            })}
+                            labelPlacement="top"
+                            onChange={onChange}
+                            options={typeOptions}
+                            value={value}
+                          />
+                        )}
                       />
                     </Box>
-                    <Box className="inputBox" display="flex" flexDirection="row">
-                      <Box className="inputBox minBalanceBox" display="flex" flexDirection="column">
+                  </Box>
+                  {isCopyTrading ? (
+                    <Box className="boxWrapper" display="flex" flexDirection="row">
+                      <Box
+                        className="inputBox minBalanceBox"
+                        display="flex"
+                        flex={1}
+                        flexDirection="column"
+                        mr={1}
+                      >
                         <label className="customLabel">
-                          <Typography className="callout2" noWrap>
+                          <Typography noWrap>
                             <FormattedMessage id="srv.edit.minbalance" />
                           </Typography>
                         </label>
@@ -197,36 +244,45 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                           <span className="errorText">{errors.minAllocatedBalance.message}</span>
                         )}
                       </Box>
-                      <Controller
-                        as={CustomSelect}
-                        control={control}
-                        defaultValue={"USDT"}
-                        label={intl.formatMessage({
-                          id: "fil.quote",
-                        })}
-                        labelPlacement="top"
-                        name="quote"
-                        options={quotes}
-                        rules={{
-                          required: intl.formatMessage({ id: "form.error.quote" }),
-                        }}
-                        search={true}
-                      />
-                      {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                      <Box className="inputBox" display="flex" flex={1} ml={1}>
+                        <Controller
+                          control={control}
+                          defaultValue={"USDT"}
+                          name="quote"
+                          render={({ onChange, value }) => (
+                            <CustomSelect
+                              label={intl.formatMessage({
+                                id: "fil.quote",
+                              })}
+                              labelPlacement="top"
+                              onChange={onChange}
+                              options={quotes}
+                              search={true}
+                              value={value}
+                            />
+                          )}
+                          rules={{
+                            required: intl.formatMessage({ id: "form.error.quote" }),
+                          }}
+                        />
+                        {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                      </Box>
                     </Box>
-                  </>
-                )}
-              </Box>
-              <CustomButton className="bgPurple" loading={loading} type="submit">
-                <FormattedMessage id="provider.createaccount" />
-              </CustomButton>
-            </>
+                  ) : (
+                    <ProviderUserOptions exchangeOptions={exchangeOptions} quotes={quotes} />
+                  )}
+                </Box>
+                <CustomButton className="bgPurple" loading={loading} type="submit">
+                  <FormattedMessage id="provider.createaccount" />
+                </CustomButton>
+              </>
+            </Box>
           ) : (
             <CircularProgress className="loader" />
           )}
         </Box>
-      </Box>
-    </form>
+      </form>
+    </FormProvider>
   );
 };
 

@@ -118,8 +118,10 @@ const ExchangeAccountSettings = () => {
         if (e.code === 72) {
           setError(
             accountExchange.requiredAuthFields[accountExchange.requiredAuthFields.length - 1],
-            "notMatch",
-            intl.formatMessage({ id: "form.error.key.invalid" }),
+            {
+              type: "manual",
+              message: intl.formatMessage({ id: "form.error.key.invalid" }),
+            },
           );
         } else {
           dispatch(showErrorAlert(e));
@@ -129,7 +131,7 @@ const ExchangeAccountSettings = () => {
   };
 
   const authFieldsModified =
-    accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields.has(f)));
+    accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields[f]));
 
   return (
     <form className="exchangeAccountSettings">
@@ -228,6 +230,7 @@ const ExchangeAccountSettings = () => {
           tooltip="accounts.options.whitelist.help"
           type="textarea"
         />
+
         <CustomSwitch
           defaultValue={selectedAccount.globalDelisting}
           label="accounts.options.delisted"

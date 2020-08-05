@@ -60,7 +60,7 @@ const MobileExchangeList = () => {
               src={storeSettings.darkStyle ? CloseWhite : CloseBlack}
             />
           </Box>
-          <ExchangeList />
+          <ExchangeList onClose={() => showList(false)} />
         </Box>
       </Slide>
     </Box>

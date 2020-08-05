@@ -1148,7 +1148,7 @@ class TradeApiClient {
   /**
    * Create a new copy trader.
    *
-   * @param {ProviderCreatePayload} payload Provider Create payload.
+   * @param {CopyTraderCreatePayload} payload Provider Create payload.
    * @returns {Promise<NewProviderEntity>} Returns promise.
    *
    * @memberof TradeApiClient
