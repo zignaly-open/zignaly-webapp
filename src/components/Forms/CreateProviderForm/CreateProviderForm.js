@@ -18,6 +18,7 @@ const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
+ * @typedef {import('../../../services/tradeApiClient.types').ProviderOptions} ProviderOptions
  */
 
 /**
@@ -76,12 +77,16 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const quotes = Object.keys(quoteAssets);
 
   /**
-   * @typedef {Object} FormData
+   * @typedef {ProviderOptions & Object} FormData
    * @property {string} name
    * @property {string} [exchange]
    * @property {string} [exchangeType]
    * @property {string} [minAllocatedBalance]
    * @property {string} [quote]
+   * @property {string} [disclaimer]
+   * @property {string} [exchangeType]
+   * @property {Array<string>} [quotes]
+   * @property {Array<string>} [exchanges]
    */
 
   /**
@@ -94,15 +99,21 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     setLoading(true);
     const payload = {
       ...data,
-      ...(!isCopyTrading && { projectId: "z01", description: "", providerId: CREATE_PROVIDER_ID }),
+      ...(!isCopyTrading && {
+        projectId: "z01",
+        description: "",
+        providerId: CREATE_PROVIDER_ID,
+      }),
       token: storeSession.tradeApi.accessToken,
     };
 
-    const apiMethod = isCopyTrading ? tradeApi.copyTraderCreate : tradeApi.providerCreate;
+    const apiMethod = isCopyTrading
+      ? // @ts-ignore
+        tradeApi.copyTraderCreate(payload)
+      : tradeApi.providerCreate(payload);
 
     apiMethod
-      .call(tradeApi, payload)
-      .then((/** @type {NewProviderEntity} **/ response) => {
+      .then((response) => {
         const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
           response.id
         }/edit`;
@@ -110,7 +121,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         navigate(profileLink);
         dispatch(showCreateProvider(false));
       })
-      .catch((/** @type {*} **/ e) => {
+      .catch((e) => {
         dispatch(showErrorAlert(e));
         setLoading(false);
       });

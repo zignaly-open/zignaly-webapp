@@ -2003,6 +2003,7 @@ export function connectedProviderUserInfoResponseTransform(response) {
 function createConnectedProviderUserInfoEntity(response) {
   return {
     currentAllocated: response.currentAllocated,
+    allocatedBalance: response.allocatedBalance,
     profitsSinceCopying: response.profitsSinceCopying,
   };
 }
@@ -3171,15 +3172,41 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {Object} CopyTraderCreatePayload
  * @property {string} name
- */
-
-/**
- * @typedef {Object} ProviderCreatePayload
- * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} minAllocatedBalance
  * @property {string} quote
+ */
+
+/**
+ * @typedef {Object} ProviderOptions
+ * @property {boolean} acceptUpdateSignal
+ * @property {boolean} allowClones
+ * @property {boolean} allowSendingBuyOrdersAsMarket
+ * @property {boolean} enablePanicSellSignals
+ * @property {boolean} enableSellSignals
+ * @property {boolean} limitPriceFromSignal
+ * @property {boolean} reBuyFromProvider
+ * @property {boolean} reBuysFromSignal
+ * @property {boolean} reUseSignalIdIfClosed
+ * @property {boolean} riskFilter
+ * @property {boolean} stopLossFromSignal
+ * @property {boolean} successRateFilter
+ * @property {boolean} takeProfitsFromSignal
+ * @property {boolean} terms
+ * @property {boolean} useLeverageFromSignal
+ */
+
+/**
+ * @typedef {ProviderOptions & Object} ProviderCreatePayload
+ * @property {string} name
+ * @property {string} description
+ * @property {string} disclaimer
+ * @property {string} exchangeType
+ * @property {string} projectId
+ * @property {string} providerId
+ * @property {Array<string>} quotes
+ * @property {Array<string>} exchanges
  */
 
 /**

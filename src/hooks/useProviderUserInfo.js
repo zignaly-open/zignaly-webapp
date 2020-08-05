@@ -20,6 +20,7 @@ const useProviderUserInfo = (providerId) => {
    */
   const initialState = {
     currentAllocated: 0,
+    allocatedBalance: 0,
     profitsSinceCopying: 0,
   };
   const [providerUserInfo, setProviderUserInfo] = useState(initialState);

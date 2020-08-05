@@ -12,9 +12,11 @@ import {
   setConnectedSignalTimeframe,
   setCopytTimeframe,
   setSignalpTimeframe,
+  setSignalpSort,
+  setCopytSort,
 } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useStoreUITimeframeSelector from "./useStoreUITimeframeSelector";
+import useStoreUISelector from "./useStoreUISelector";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -61,7 +63,7 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
-  const storeTimeframe = useStoreUITimeframeSelector();
+  const storeUI = useStoreUISelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
@@ -73,16 +75,16 @@ const useProvidersList = (options) => {
 
   const initTimeFrame = () => {
     if (copyTradersOnly && connectedOnly) {
-      return storeTimeframe.connectedCopyt;
+      return storeUI.timeFrame.connectedCopyt;
     }
     if (!copyTradersOnly && connectedOnly) {
-      return storeTimeframe.connectedSignalp;
+      return storeUI.timeFrame.connectedSignalp;
     }
     if (copyTradersOnly && !connectedOnly) {
-      return storeTimeframe.copyt;
+      return storeUI.timeFrame.copyt;
     }
     if (!copyTradersOnly && !connectedOnly) {
-      return storeTimeframe.signalp;
+      return storeUI.timeFrame.signalp;
     }
     return 90;
   };
@@ -118,7 +120,14 @@ const useProvidersList = (options) => {
   ];
   const [exchangeType, setExchangeType] = useState("ALL");
 
-  const [sort, setSort] = useState("RETURNS_DESC");
+  const initSort = () => {
+    let val;
+    if (!connectedOnly) {
+      val = copyTradersOnly ? storeUI.sort.copyt : storeUI.sort.signalp;
+    }
+    return val || "RETURNS_DESC";
+  };
+  const [sort, setSort] = useState(initSort);
 
   const clearFilters = () => {
     setCoin(coins[0]);
@@ -154,12 +163,14 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const sortProviders = (list) => {
+    console.log(sort);
     const [key, direction] = sort.split("_");
     const listSorted = [...list].sort((a, b) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
           res = a.returns + a.floating - (b.returns + b.floating);
+          console.log(a.returns, b.returns);
           break;
         case "DATE":
           res = a.createdAt - b.createdAt;
@@ -178,11 +189,22 @@ const useProvidersList = (options) => {
 
     setProviders((s) => ({ ...s, filteredList: listSorted }));
   };
+  const saveSort = () => {
+    if (!connectedOnly) {
+      if (copyTradersOnly) {
+        dispatch(setCopytSort(sort));
+      } else {
+        dispatch(setSignalpSort(sort));
+      }
+    }
+  };
+
   // Sort providers on sort option change
   useEffect(() => {
     if (providers.filteredList) {
       sortProviders(providers.filteredList);
     }
+    saveSort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 

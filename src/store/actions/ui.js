@@ -11,6 +11,8 @@ export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME_ACTION";
 export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME_ACTION";
 export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME_ACTION";
 export const SIGNALP_TIMEFRAME = "SIGNALP_TIMEFRAME_ACTION";
+export const SIGNALP_SORT = "SIGNALP_SORT";
+export const COPYT_SORT = "COPYT_SORT";
 export const SHOW_BALANCE_LOADER = "SHOW_BALANCE_LOADER_ACTION";
 export const SHOW_GLOBAL_MODAL = "SHOW_GLOBAL_MODAL";
 
@@ -170,6 +172,28 @@ export const setCopytTimeframe = (payload) => {
 export const setSignalpTimeframe = (payload) => {
   return {
     type: SIGNALP_TIMEFRAME,
+    payload,
+  };
+};
+
+/**
+ * @param {string} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setCopytSort = (payload) => {
+  return {
+    type: COPYT_SORT,
+    payload,
+  };
+};
+
+/**
+ * @param {string} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setSignalpSort = (payload) => {
+  return {
+    type: SIGNALP_SORT,
     payload,
   };
 };

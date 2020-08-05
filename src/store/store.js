@@ -7,6 +7,7 @@ import rootReducer from "../reducers/rootReducer";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { composeWithDevTools } from "redux-devtools-extension";
 import initialState from "./initialState";
+import { createFilter } from "redux-persist-transform-filter";
 
 /**
  * @typedef {import("redux").Action} Action
@@ -29,15 +30,25 @@ const migrations = {
       },
     };
   },
+  7: (/** @type {PersistedState} */ state) => {
+    return {
+      ...state,
+      ui: {
+        ...cloneDeep(initialState.ui),
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ["ui"],
-  version: 6,
+  version: 7,
   migrate: createMigrate(migrations, { debug: false }),
+  // Don't persist ui reducer except for some keys.
+  transforms: [createFilter("ui", ["sort", "timeFrame"])],
+  // blacklist: ["ui"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
