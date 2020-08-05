@@ -308,6 +308,42 @@ table {
       background-image: $purpleDarkGradient;
     }
   }
+
+  /* stylelint-disable */
+  .react-mde {
+    border-color: $lighterBlackBorder;
+
+    .mde-header {
+      background-color: $lightestBlack;
+      border-color: $lighterBlackBorder;
+    }
+
+    svg,
+    button,
+    .grip {
+      color: $lightWhite;
+    }
+
+    .mde-tabs button.selected {
+      border-color: $lighterBlackBorder;
+    }
+
+    .grip {
+      background-color: $lightestBlack;
+      border-color: $lighterBlackBorder;
+    }
+
+    .mde-text {
+      background-color: transparent;
+      border: 0;
+      color: $lightWhite;
+
+      &:focus {
+        outline: 1px solid $purpleLight;
+      }
+    }
+  }
+  /* stylelint-enable */
 }
 
 .positionLink {
