@@ -7,7 +7,6 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import useStoreViewsSelector from "./useStoreViewsSelector";
-import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -56,6 +55,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     pair: "all",
     side: "all",
     type: "all",
+    status: "",
   };
 
   /**
@@ -72,7 +72,6 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
-  const storeUserData = useStoreUserData();
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -100,7 +99,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       } else if (type === "closed") {
         return tradeApi.closedPositionsGet(payload);
       } else if (type === "log") {
-        if (storeUserData.isAdmin) {
+        if (filters.status === "all") {
           return tradeApi.logPositionsGet({ ...payload, extendedStatuses: true });
         }
 
@@ -133,7 +132,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
      * @param {string} value Value to check.
      * @returns {boolean} TRUE when equals, FALSE otherwise.
      */
-    const isAll = (value) => value === "all";
+    const isAll = (value) => value === "all" || value === "";
     const filterValues = omitBy(filters, isAll);
 
     // Only use the type filter on log positions table.
@@ -224,6 +223,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
   useEffect(loadPositionsForExchange, [
     type,
+    filters.status,
     storeSession.tradeApi.accessToken,
     selectedExchange.internalId,
   ]);

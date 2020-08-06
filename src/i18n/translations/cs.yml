@@ -284,6 +284,7 @@ col.orders.datetime: "CH-TIME"
 col.contracts.liquidationprice: "CH-LIQUIDATION PRICE"
 col.contracts.markprice: "CH-MARKET PRICE"
 col.contracts.margin: "CH-MARGIN"
+positions.log.filter.status: "CH-All statuses"
 
 # FILTERS AND SORT BY
 fil.allcoins: "CH-All Coins"
