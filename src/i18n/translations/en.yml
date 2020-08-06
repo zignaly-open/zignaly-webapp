@@ -283,6 +283,7 @@ col.orders.datetime: "TIME"
 col.contracts.liquidationprice: "LIQUIDATION PRICE"
 col.contracts.markprice: "MARKET PRICE"
 col.contracts.margin: "MARGIN"
+positions.log.filter.status: "All statuses"
 
 # FILTERS AND SORT BY
 fil.allcoins: "All Coins"
