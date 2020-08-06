@@ -36,7 +36,7 @@ export const triggerTz = async (location, prevLocation) => {
   const state = store.getState();
   // @ts-ignore
   const { isAdmin, userId } = state.user.userData;
-  //   if (isAdmin || process.env.NODE_ENV !== "production") return;
+  if (isAdmin || process.env.NODE_ENV !== "production") return;
 
   const data = {
     action: "sData",
