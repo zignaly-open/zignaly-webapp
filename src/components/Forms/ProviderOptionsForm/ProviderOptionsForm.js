@@ -630,7 +630,7 @@ const ProviderOptionsForm = ({ provider }) => {
             </Box>
           )}
 
-          {provider.disclaimer && (
+          {provider.options.disclaimer && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
                 as={<Checkbox className="checkboxInput" />}
