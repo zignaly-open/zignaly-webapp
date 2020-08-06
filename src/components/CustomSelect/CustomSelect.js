@@ -115,8 +115,8 @@ const CustomSelect = (props) => {
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
               renderOption={renderOption}
-              value={value}
               size="small"
+              value={value}
             />
           )}
         </FormControl>
