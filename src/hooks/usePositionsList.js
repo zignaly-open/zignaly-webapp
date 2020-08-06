@@ -7,6 +7,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import useStoreViewsSelector from "./useStoreViewsSelector";
+import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -71,6 +72,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
+  const storeUserData = useStoreUserData();
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -98,6 +100,10 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       } else if (type === "closed") {
         return tradeApi.closedPositionsGet(payload);
       } else if (type === "log") {
+        if (storeUserData.isAdmin) {
+          return tradeApi.logPositionsGet({ ...payload, extendedStatuses: true });
+        }
+
         return tradeApi.logPositionsGet(payload);
       } else if (type === "open") {
         return tradeApi.openPositionsGet(payload);
