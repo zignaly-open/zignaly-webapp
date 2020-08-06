@@ -134,7 +134,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
       <ExpansionPanel classes={{ root: "accordion" }}>
         <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
-            <FormattedMessage id="signalp.optional" />
+            <FormattedMessage id="signalp.general" />
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
@@ -210,28 +210,6 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 />
               </Box>
             )}
-            <Box className="inputBox listBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="signalp.useroption.title" />
-              </label>
-              {userOptions.map((o) => (
-                <FormControlLabel
-                  control={<Checkbox />}
-                  defaultChecked={false}
-                  inputRef={register}
-                  key={o.id}
-                  label={
-                    <div className="optionLabel">
-                      <FormattedMessage id={o.label} />
-                      <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
-                        <Help />
-                      </CustomTooltip>
-                    </div>
-                  }
-                  name={o.id}
-                />
-              ))}
-            </Box>
             <Box
               className="inputBox disclaimerBox"
               display="flex"
@@ -254,6 +232,36 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 name="disclaimer"
               />
               {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
+            </Box>
+          </Box>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel classes={{ root: "accordion" }}>
+        <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
+          <Typography variant="h3">
+            <FormattedMessage id="signalp.useroption.title" />
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
+          <Box display="flex" flexDirection="column" width={1}>
+            <Box className="inputBox listBox" display="flex" flexDirection="column">
+              {userOptions.map((o) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  defaultChecked={false}
+                  inputRef={register}
+                  key={o.id}
+                  label={
+                    <div className="optionLabel">
+                      <FormattedMessage id={o.label} />
+                      <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
+                        <Help />
+                      </CustomTooltip>
+                    </div>
+                  }
+                  name={o.id}
+                />
+              ))}
             </Box>
           </Box>
         </ExpansionPanelDetails>
