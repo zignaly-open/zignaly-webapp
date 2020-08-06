@@ -28,4 +28,10 @@
     height: 16px;
     width: 16px;
   }
+
+  &.zignaly {
+    background: $black;
+    border-radius: 100%;
+    padding: 4px;
+  }
 }

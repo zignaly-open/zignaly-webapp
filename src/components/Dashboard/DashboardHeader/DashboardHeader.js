@@ -8,13 +8,20 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useConnectedProviders from "../../../hooks/useConnectedProviders";
 
 /**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {String} path
+ */
+
+/**
  * Provides the navigation bar for the dashboard.
  *
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const DashboardHeader = () => {
+const DashboardHeader = ({ path }) => {
   const storeSettings = useStoreSettingsSelector();
-  const links = routesMapping("dashboard").links;
+  const links = routesMapping(path).links;
   const providers = useConnectedProviders(1, storeSettings.selectedExchange.internalId, false);
 
   if (providers.length > 0) {

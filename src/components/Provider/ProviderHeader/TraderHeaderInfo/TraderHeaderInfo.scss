@@ -78,6 +78,12 @@
         min-width: fit-content;
       }
 
+      &.allocated {
+        display: block;
+        margin: 5px auto;
+        width: fit-content;
+      }
+
       span {
         display: none;
       }

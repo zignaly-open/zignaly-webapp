@@ -9,7 +9,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { setProvider } from "../../../store/actions/views";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
@@ -24,7 +24,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 /**
  * Provides the navigation bar for the dashboard.
  *
- * @param {DefaultProps} props Default props
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderForm = ({ provider, onClose }) => {
@@ -51,6 +51,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @typedef {Object} SubmitObject
    * @property {String} allocatedBalance
    */
+
   /**
    *
    * @param {SubmitObject} data Form data.
@@ -83,6 +84,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 version: 2,
               };
               dispatch(setProvider(payload2));
+              dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
               onClose();
             }
           })

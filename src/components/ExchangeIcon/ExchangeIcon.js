@@ -1,7 +1,7 @@
 import React from "react";
 import "./ExchangeIcon.scss";
 import BinanceIcon from "../../images/exchanges/binance.svg";
-import ZignalyIcon from "../../images/exchanges/zignaly.svg";
+import ZignalyIcon from "../../images/exchanges/zignaly.png";
 import KucoinIcon from "../../images/exchanges/kucoin.svg";
 
 /**
@@ -40,7 +40,7 @@ const ExchangeIcon = (props) => {
   return (
     <img
       alt="zignaly"
-      className={`exchangeIcon ${size ? size : ""} ${className ? className : ""}`}
+      className={`exchangeIcon ${exchange} ${size ? size : ""} ${className ? className : ""}`}
       onClick={onClick}
       src={icon}
       title={exchange}

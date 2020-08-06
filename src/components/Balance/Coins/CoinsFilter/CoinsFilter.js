@@ -19,8 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Default props.
  */
 
-const CoinsFilter = (props) => {
-  const { list, onChange } = props;
+const CoinsFilter = ({ list, onChange }) => {
   const [checked, setChecked] = useState(false);
 
   /**
@@ -50,7 +49,7 @@ const CoinsFilter = (props) => {
     }
 
     let newList = [...list].filter((item) => {
-      return parseFloat(item.balanceTotalBTC) >= 0.001;
+      return parseFloat(item.balanceTotal) > 0;
     });
     return newList;
   };

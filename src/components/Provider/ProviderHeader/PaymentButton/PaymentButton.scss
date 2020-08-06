@@ -1,5 +1,6 @@
 @include media("<=sm") {
   .paymentButton {
-    margin-top: 10px;
+    display: block;
+    margin: 10px auto 0;
   }
 }
