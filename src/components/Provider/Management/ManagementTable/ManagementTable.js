@@ -162,15 +162,16 @@ const ManagementTable = ({ list, allPositions }) => {
   /**
    *
    * @param {*} currentRowsExpanded Currently expanded rows.
+   * @param {*} allRowsExpanded Currently expanded rows.
    * @returns {void} None.
    */
-  const handleRowExpansionChange = (currentRowsExpanded) => {
+  const handleRowExpansionChange = (currentRowsExpanded, allRowsExpanded) => {
     /**
      * @type {Array<Number>}
      */
     let indexes = [];
     // @ts-ignore
-    currentRowsExpanded.forEach((item) => {
+    allRowsExpanded.forEach((item) => {
       indexes.push(item.index);
     });
     setRows(indexes);
@@ -181,6 +182,7 @@ const ManagementTable = ({ list, allPositions }) => {
     renderExpandableRow: renderRow,
     rowsExpanded: rows,
     onRowExpansionChange: handleRowExpansionChange,
+    expandableRowsHeader: false,
   };
 
   return (
