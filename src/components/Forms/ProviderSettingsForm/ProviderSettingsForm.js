@@ -109,8 +109,8 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
       exchangeId: storeSettings.selectedExchange.id,
       version: 2,
-      buyTTL: data.buyTTL ? data.buyTTL * 60 : false,
-      sellByTTL: data.sellByTTL ? data.sellByTTL * 3600 : false,
+      buyTTL: data.buyTTL,
+      sellByTTL: data.sellByTTL,
     });
     tradeApi
       .providerExchangeSettingsUpdate(payload)

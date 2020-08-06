@@ -40,7 +40,13 @@ const ToggleInput = ({ value, label, onChange, type }) => {
   useEffect(clearValues, [toggle]);
 
   return (
-    <Box alignItems="flex-start" className="toggleTargetFields" display="flex" flexDirection="row">
+    <Box
+      alignItems="flex-start"
+      className="toggleTargetFields"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+    >
       <Box
         alignItems="center"
         className="labelBox"
