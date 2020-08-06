@@ -263,7 +263,7 @@ const StrategyForm = (props) => {
       positionSize,
       positionSizeQuote: currentSymbolData.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
-      limitPrice: parseFloat(draftPosition.price) || lastPrice,
+      limitPrice: draftPosition.price || lastPrice,
     };
 
     if (draftPosition.positionSizePercentage) {
