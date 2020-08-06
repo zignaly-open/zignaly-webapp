@@ -24,7 +24,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 /**
  * Provides the navigation bar for the dashboard.
  *
- * @param {DefaultProps} props Default props
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderForm = ({ provider, onClose }) => {
@@ -51,6 +51,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @typedef {Object} SubmitObject
    * @property {String} allocatedBalance
    */
+
   /**
    *
    * @param {SubmitObject} data Form data.
