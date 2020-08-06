@@ -134,7 +134,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
       <ExpansionPanel classes={{ root: "accordion" }}>
         <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
-            <FormattedMessage id="signalp.optional" />
+            <FormattedMessage id="signalp.general" />
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
@@ -233,10 +233,18 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
               />
               {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
             </Box>
+          </Box>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel classes={{ root: "accordion" }}>
+        <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
+          <Typography variant="h3">
+            <FormattedMessage id="signalp.useroption.title" />
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
+          <Box display="flex" flexDirection="column" width={1}>
             <Box className="inputBox listBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="signalp.useroption.title" />
-              </label>
               {userOptions.map((o) => (
                 <FormControlLabel
                   control={<Checkbox />}
