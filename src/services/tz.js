@@ -43,22 +43,23 @@ export const triggerTz = async (location, prevLocation) => {
     urlReferer: prevLocation ? prevLocation.href : document.referrer,
     urlDestination: location.href,
     userId,
-    tzid: localStorage.getItem("tzid"),
+    tid: localStorage.getItem("tid"),
   };
 
-  if (!data.tzid) {
-    // get tzid
+  if (!data.tid) {
+    // get tid
     sendTz({
       action: "gTid",
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.status === 200) {
-          data.tzid = response;
-          localStorage.setItem("tzid", response);
-          sendTz(data);
-        }
-      });
+    }).then(async (response) => {
+      const json = await response.json();
+      if (!response.ok) {
+        const customError = json.error || json;
+        throw customError;
+      }
+      data.tid = json;
+      localStorage.setItem("tid", json);
+      sendTz(data);
+    });
   } else {
     sendTz(data);
   }
