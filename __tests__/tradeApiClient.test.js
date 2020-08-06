@@ -217,23 +217,16 @@ describe("Consume tradeApiClient service", () => {
   });
 
   it("should get bases assets", async () => {
-    const loginPayload = {
-      email: process.env.GATSBY_API_TEST_USER,
-      password: process.env.GATSBY_API_TEST_PASS,
-      gRecaptchaResponse: "",
-    };
-
-    const userEntity = await client.userLogin(loginPayload);
     const payload = {
-      token: userEntity.token,
+      token: accessToken,
+      quote: "USDT",
       ro: true,
     };
 
     const basesAssets = await client.baseAssetsGet(payload);
-    assert.isObject(quoteAssets, "Base assets is not an object.");
-    assert.isObject(quoteAssets["BTC"], "BTC quote is not an object.");
-    assert.isString(quoteAssets["BTC"].minNominal, "BTC minNominal is not a string.");
-  });
+    assert.isObject(basesAssets, "Base assets is not an object.");
+    assert.isObject(basesAssets.BTC, "BTC quote is not an object.");
+  }, 15000);
 
   it("should get exchange connection market data", async () => {
     const payload = {
@@ -477,7 +470,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get deposit history for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeLastDepositsGet(payload);
@@ -487,7 +480,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get withdraw history for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeLastWithdrawalsGet(payload);
@@ -497,7 +490,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get deposit address for asset", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
       asset: "BTC",
       network: "BTC",
     };
