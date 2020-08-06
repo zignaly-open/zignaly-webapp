@@ -39,7 +39,7 @@ const FollowProviderButton = ({ provider }) => {
         connected: false,
         exchangeInternalId: storeSettings.selectedExchange.internalId,
       };
-      const response = await tradeApi.serviceConnect(payload);
+      const response = await tradeApi.providerConnect(payload);
       if (response) {
         const payload2 = {
           token: storeSession.tradeApi.accessToken,

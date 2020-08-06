@@ -87,7 +87,7 @@ const ProviderOptionsForm = ({ provider }) => {
           exchangeInternalId: "",
         };
         tradeApi
-          .serviceConnect(payload)
+          .providerConnect(payload)
           .then((response) => {
             if (response) {
               const payload2 = {

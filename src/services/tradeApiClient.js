@@ -569,8 +569,8 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async providerConnect(payload) {
-    const endpointPath = "/fe/api.php?action=createProvider";
+  async traderConnect(payload) {
+    const endpointPath = "/fe/api.php?action=connectService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
@@ -585,7 +585,7 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async serviceConnect(payload) {
+  async providerConnect(payload) {
     const endpointPath = "/fe/api.php?action=connectService";
     const responseData = await this.doRequest(endpointPath, payload);
 

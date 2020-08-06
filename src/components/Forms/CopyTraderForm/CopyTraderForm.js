@@ -75,7 +75,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
         tradeApi
-          .providerConnect(payload)
+          .traderConnect(payload)
           .then((response) => {
             if (response) {
               const payload2 = {
