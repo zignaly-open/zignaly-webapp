@@ -190,9 +190,11 @@ const PositionsTable = (props) => {
     let dataTable;
 
     const excludeCancelAction = () => {
+      const isFutures =
+        storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
       const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
 
-      return isZignaly;
+      return isZignaly && isFutures;
     };
 
     if (type === "closed") {
