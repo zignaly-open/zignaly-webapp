@@ -244,6 +244,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
   const priceChange = () => {
     validatePrice(strategyPrice);
+    const draftPosition = getValues();
+    if (parseFloat(draftPosition.positionSize) > 0) {
+      simulateInputChangeEvent("positionSize");
+    }
   };
 
   const chainedPriceUpdates = () => {
