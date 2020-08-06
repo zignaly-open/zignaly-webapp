@@ -12,8 +12,12 @@
 
   .targetFields {
     margin-bottom: 20px;
-    margin-left: 20px;
-    width: 50%;
+    width: 45%;
+
+    .fieldBox {
+      margin-bottom: 15px;
+      width: 100%;
+    }
   }
 }
 

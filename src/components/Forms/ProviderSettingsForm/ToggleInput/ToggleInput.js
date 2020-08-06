@@ -48,7 +48,13 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
   };
 
   return (
-    <Box alignItems="center" className="toggleInput" display="flex" flexDirection="row">
+    <Box
+      alignItems="center"
+      className="toggleInput"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+    >
       <Box
         alignItems="center"
         className="labelBox"

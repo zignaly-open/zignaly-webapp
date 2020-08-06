@@ -72,7 +72,13 @@ const ToggleInput = ({
   };
 
   return (
-    <Box alignItems="center" className="toggleDoubleInput" display="flex" flexDirection="row">
+    <Box
+      alignItems="center"
+      className="toggleDoubleInput"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+    >
       <Box
         alignItems="center"
         className="labelBox"
