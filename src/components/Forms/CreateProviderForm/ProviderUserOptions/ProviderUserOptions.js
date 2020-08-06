@@ -210,6 +210,28 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 />
               </Box>
             )}
+            <Box className="inputBox listBox" display="flex" flexDirection="column">
+              <label className="customLabel">
+                <FormattedMessage id="signalp.useroption.title" />
+              </label>
+              {userOptions.map((o) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  defaultChecked={false}
+                  inputRef={register}
+                  key={o.id}
+                  label={
+                    <div className="optionLabel">
+                      <FormattedMessage id={o.label} />
+                      <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
+                        <Help />
+                      </CustomTooltip>
+                    </div>
+                  }
+                  name={o.id}
+                />
+              ))}
+            </Box>
             <Box
               className="inputBox disclaimerBox"
               display="flex"
@@ -232,28 +254,6 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 name="disclaimer"
               />
               {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
-            </Box>
-            <Box className="inputBox listBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="signalp.useroption.title" />
-              </label>
-              {userOptions.map((o) => (
-                <FormControlLabel
-                  control={<Checkbox />}
-                  defaultChecked={false}
-                  inputRef={register}
-                  key={o.id}
-                  label={
-                    <div className="optionLabel">
-                      <FormattedMessage id={o.label} />
-                      <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
-                        <Help />
-                      </CustomTooltip>
-                    </div>
-                  }
-                  name={o.id}
-                />
-              ))}
             </Box>
           </Box>
         </ExpansionPanelDetails>
