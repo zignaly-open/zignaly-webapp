@@ -33,6 +33,7 @@ const ManagementTable = ({ list, allPositions }) => {
   const storeSession = useStoreSessionSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
+  const [rows, setRows] = useState([]);
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -158,9 +159,30 @@ const ManagementTable = ({ list, allPositions }) => {
     );
   };
 
+  /**
+   *
+   * @param {*} currentRowsExpanded Currently expanded rows.
+   * @param {*} allRowsExpanded Currently expanded rows.
+   * @returns {void} None.
+   */
+  const handleRowExpansionChange = (currentRowsExpanded, allRowsExpanded) => {
+    /**
+     * @type {Array<Number>}
+     */
+    let indexes = [];
+    // @ts-ignore
+    allRowsExpanded.forEach((item) => {
+      indexes.push(item.index);
+    });
+    setRows(indexes);
+  };
+
   const customOptions = {
     expandableRows: true,
     renderExpandableRow: renderRow,
+    rowsExpanded: rows,
+    onRowExpansionChange: handleRowExpansionChange,
+    expandableRowsHeader: false,
   };
 
   return (
