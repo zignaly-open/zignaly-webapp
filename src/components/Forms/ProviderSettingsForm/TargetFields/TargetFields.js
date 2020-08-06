@@ -5,6 +5,15 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 /**
+ * @typedef {Object} TargetObject
+ * @property {Number} targetId
+ * @property {String} amountPercentage
+ * @property {Number} priceTargetPercentage
+ * @property {Number} amountError
+ * @property {Boolean} priceError
+ */
+
+/**
  * Target Fields component to add dynamic fields.
  *
  * @typedef {Object} DefaultProps Default props.
@@ -20,22 +29,13 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  */
 const TargetFields = ({ onChange, defaultValue, type }) => {
   /**
-   * @typedef {Object} TargetObject
-   * @property {Number} targetId
-   * @property {Number} amountPercentage
-   * @property {Number} priceTargetPercentage
-   * @property {Boolean} amountError
-   * @property {Boolean} priceError
-   */
-
-  /**
    * @type {TargetObject}
    */
   const targetFieldObject = {
     targetId: 1,
-    amountPercentage: 0,
+    amountPercentage: "0",
     priceTargetPercentage: 0,
-    amountError: false,
+    amountError: 0,
     priceError: false,
   };
 
@@ -70,16 +70,23 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
   const handleChange = (e, id) => {
     let target = e.target;
     let list = [...values];
+    list = clearErrors(list);
     let index = list.findIndex((item) => item.targetId === id);
     let field = list.find((item) => item.targetId === id);
     if (target.name === "amount") {
       // convert amount to positive for both dca and take profit targets.
       field.amountPercentage = Math.sign(target.value) === -1 ? target.value * -1 : target.value;
       if (type === "takeprofit") {
-        if (field.amountPercentage > 100) {
-          field.amountError = true;
+        let previousFieldsSum = 0;
+        list.forEach((item) => {
+          if (item.targetId !== field.targetId) {
+            previousFieldsSum += parseFloat(item.amountPercentage);
+          }
+        });
+        if (previousFieldsSum + parseFloat(field.amountPercentage) > 100) {
+          field.amountError = 100 - previousFieldsSum;
         } else {
-          field.amountError = false;
+          field.amountError = 0;
         }
       }
     } else if (type === "dca") {
@@ -108,6 +115,18 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
     list.splice(list.length - 1, 1);
     setValues(list);
     onChange(list);
+  };
+
+  /**
+   *
+   * @param {Array<TargetObject>} list Target object collection.
+   * @returns {Array<TargetObject>} Target object collection.
+   */
+  const clearErrors = (list) => {
+    list.forEach((item) => {
+      item.amountError = 0;
+    });
+    return list;
   };
 
   return (
@@ -147,7 +166,9 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
             value={obj.amountPercentage}
             variant="outlined"
           />
-          {obj.amountError && <span className="errorText">Amount cannot be greater than 100.</span>}
+          {!!obj.amountError && (
+            <span className="errorText">{`Amount cannot be greater than ${obj.amountError}`}</span>
+          )}
         </Box>
       ))}
       <AddCircleOutlineIcon className="icon add" onClick={addField} />
