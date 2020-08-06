@@ -61,11 +61,7 @@ const CloneDeleteButton = ({ provider }) => {
       justifyContent="flex-start"
     >
       <CustomButton className="deleteButton" loading={loader} onClick={deleteClone}>
-        {provider.isCopyTrading ? (
-          <FormattedMessage id="srv.deletetrader" />
-        ) : (
-          <FormattedMessage id="srv.deleteprovider" />
-        )}
+        <FormattedMessage id="srv.deleteprovider" />
       </CustomButton>
     </Box>
   );

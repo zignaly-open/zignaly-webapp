@@ -19,8 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Default props.
  */
 
-const CoinsFilter = (props) => {
-  const { list, onChange } = props;
+const CoinsFilter = ({ list, onChange }) => {
   const [checked, setChecked] = useState(false);
 
   /**

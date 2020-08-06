@@ -79,7 +79,7 @@ const TraderHeaderInfo = () => {
       <Hidden smUp>
         {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
       </Hidden>
-      <Typography variant="h4">
+      <Typography className="allocated" variant="h4">
         {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
           <>
             <FormattedMessage id="srv.allocated" />
