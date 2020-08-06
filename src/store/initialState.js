@@ -98,12 +98,19 @@
  */
 
 /**
+ * @typedef {Object} SortObject
+ * @property {string} copyt
+ * @property {string} signalp
+ */
+
+/**
  * @typedef {Object} DefaultUIObject
  * @property {DefaultUIModalObject} modal
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
  * @property {TimeframeObject} timeFrame
+ * @property {SortObject} sort
  * @property {Boolean} balanceLoader
  */
 
@@ -423,6 +430,10 @@ const initialState = {
       connectedSignalp: 90,
       copyt: 90,
       signalp: 90,
+    },
+    sort: {
+      copyt: "RETURNS_DESC",
+      signalp: "RETURNS_DESC",
     },
   },
   views: {

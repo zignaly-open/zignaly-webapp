@@ -12,6 +12,10 @@ import "./CustomSelect.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 /**
+ * @typedef {import("@material-ui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
+ */
+
+/**
  * @typedef {Object} OptionType
  * @property {string} label Option label.
  * @property {string|number} val Option value.
@@ -27,13 +31,23 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  */
 
 /**
+ * @typedef {Function} RenderOptionProps
+ * @property {*} option
+ * @property {AutocompleteRenderOptionState} state
+ * @returns {React.Node}
+ */
+
+/**
  * @typedef {Object} CustomSelectPropTypes
- * @property {function} onChange Callback that delegate select changes to caller.
  * @property {OptionType|string|number} [value] Assign the selected value.
  * @property {Array<OptionType|string|number>} options List of options selectable.
  * @property {string} [label] Label for the dropdown.
  * @property {LabelPlacement} [labelPlacement] Label placement.
  * @property {boolean} [search] Display autocomplete.
+ * @property {function} onChange Callback that delegate select changes to caller.
+ * @property {boolean} [disableCloseOnSelect] Disable CloseOnSelect (multi options autocomplete).
+ * @property {renderOption} [renderOption] Custom render option function for autocomplete.
+ * @property {boolean} [multiple] Multiple options for autocomplete.
  */
 
 /**
@@ -43,7 +57,17 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const CustomSelect = (props) => {
-  const { label, onChange, options, value, search, labelPlacement = "start" } = props;
+  const {
+    label,
+    onChange,
+    options,
+    value,
+    search,
+    labelPlacement = "start",
+    renderOption,
+    disableCloseOnSelect,
+    multiple,
+  } = props;
   const storeSettings = useStoreSettingsSelector();
 
   /**
@@ -81,14 +105,18 @@ const CustomSelect = (props) => {
                 root: "searchRoot",
               }}
               disableClearable={true}
+              disableCloseOnSelect={disableCloseOnSelect}
               getOptionLabel={(option) =>
                 typeof option === "object" ? option.label : option.toString()
               }
+              multiple={multiple}
               onChange={(e, val) => onChange(val)}
               openOnFocus={true}
               options={options}
               renderInput={(params) => <TextField {...params} variant="outlined" />}
+              renderOption={renderOption}
               value={value}
+              size="small"
             />
           )}
         </FormControl>

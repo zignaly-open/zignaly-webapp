@@ -26,8 +26,9 @@ function usePositionEntry(positionEntity) {
   const { watch } = useFormContext();
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
-  const positionSize = watch("positionSize");
   const units = watch("units");
+  const positionSize = watch("positionSize");
+  const unrealizedProfitLossesPercentage = watch("unrealizedProfitLossesPercentage");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
   /**
@@ -49,13 +50,12 @@ function usePositionEntry(positionEntity) {
    * @returns {number} Price percentage change form entry price.
    */
   const getEntryPricePercentChange = () => {
-    if (positionEntity && positionEntity.buyPrice > 0 && lastPrice > 0) {
-      const { buyPrice } = positionEntity;
-      const percentChange = (1 - buyPrice / lastPrice) * 100;
-      return percentChange;
+    if (positionEntity) {
+      return (
+        unrealizedProfitLossesPercentage || positionEntity.unrealizedProfitLossesPercentage || 0
+      );
     }
 
-    // Not known yet.
     return 0;
   };
 

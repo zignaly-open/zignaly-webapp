@@ -1,13 +1,13 @@
 {
-  "name": "zignaly-starter",
-  "description": "Zignaly copy-trading webapp",
-  "version": "0.0.1",
+  "name": "zignaly-webapp",
+  "description": "Zignaly Copy Trading Webapp",
+  "version": "1.0.0",
   "author": "Zignaly Dev Team <pablo@zignaly.com>",
   "license": "UNLICENSED",
   "repository": {
-    "directory": "webapp2",
+    "directory": "/",
     "type": "git",
-    "url": "git@bitbucket.org:tractionboardteam/zignaly-api-php.git"
+    "url": "git@github.com:zignaly-open/zignaly-webapp.git"
   },
   "dependencies": {
     "@material-ui/core": "4.10.1",
@@ -41,7 +41,7 @@
     "react-feather": "^2.0.8",
     "react-google-recaptcha": "^2.1.0",
     "react-helmet": "^6.0.0",
-    "react-hook-form": "^5.7.2",
+    "react-hook-form": "^6.3.0",
     "react-intl": "^4.5.5",
     "react-lazyload": "^3.0.0",
     "react-markdown": "^4.3.1",
@@ -54,12 +54,17 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-persist-transform-filter": "0.0.20",
+    "redux-thunk": "^2.3.0",
+    "remark-breaks": "^2.0.0"
   },
   "resolutions": {
     "moment": "2.24.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
+    "@semantic-release/exec": "^5.0.0",
     "@types/chart.js": "^2.9.21",
     "@types/jest": "^25.2.3",
     "@types/jquery": "^3.3.38",
@@ -88,31 +93,56 @@
     "faker": "^4.1.0",
     "gatsby-plugin-env-variables": "^1.0.2",
     "gatsby-plugin-sass": "^2.3.2",
+    "husky": "^4.2.5",
     "include-media": "^1.4.9",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "react-test-renderer": "^16.13.1",
+    "semantic-release": "^17.1.1",
+    "semantic-release-slack-bot": "^1.6.2",
     "stylelint": "^13.6.1",
     "stylelint-config-sass-guidelines": "^7.0.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "typescript": "^3.9.3"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "never",
+        [
+          "start-case",
+          "pascal-case"
+        ]
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run checkall"
+    }
+  },
   "scripts": {
     "build": "npm install && npm run reset && gatsby build --prefix-paths",
-    "build:test": "STAGE=test npm run build",
-    "build:beta": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
+    "build:package": "tar -C public -zcvf release.tar.gz ./ && rm -rf public/",
+    "build:test": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
     "build:prod": "STAGE=prod GATSBY_API_KEY=\"\" npm run build",
     "checkall": "npm run stylelint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
-    "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\";exit 0",
-    "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs;exit 0",
+    "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\"",
+    "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs",
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
-    "test": "STAGE=test jest"
+    "test": "STAGE=test jest",
+    "semantic-release": "semantic-release"
   }
 }

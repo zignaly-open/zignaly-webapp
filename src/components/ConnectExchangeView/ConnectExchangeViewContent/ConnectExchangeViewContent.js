@@ -24,7 +24,7 @@ const ConnectExchangeViewContent = () => {
       return <ExchangeAccountList demo={path === "demoAccounts"} />;
     case "createAccount":
     case "createDemoAccount":
-      return <ExchangeAccountAdd create={true} demo={path === "createDemoAccount"} />;
+      return <ExchangeAccountAdd demo={path === "createDemoAccount"} />;
     case "connectAccount":
       return <ExchangeAccountConnect />;
     case "settings":

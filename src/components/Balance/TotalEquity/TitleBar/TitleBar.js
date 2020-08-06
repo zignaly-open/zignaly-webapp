@@ -45,8 +45,8 @@ const TitleBar = ({ balance }) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography variant="h4">BTC {formatFloat(balance.totalBTC)}</Typography>
-          <Typography className="smallText" variant="subtitle2">
+          <Typography className="number2">BTC {formatFloat(balance.totalBTC)}</Typography>
+          <Typography className="smallText number3">
             = USDT {formatFloat(balance.totalUSDT)}
           </Typography>
         </Box>

@@ -35,7 +35,7 @@ import "./DCAPanel.scss";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData } = props;
-  const { clearError, errors, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -133,13 +133,14 @@ const DCAPanel = (props) => {
      */
     const fieldsDisabled = {};
     dcaAllIndexes.forEach((index) => {
-      const target = positionEntity ? positionEntity.reBuyTargets[Number(index)] : { done: false };
-
       let disabled = false;
-      if (target.done) {
-        disabled = true;
-      } else if (isReadOnly) {
-        disabled = true;
+      if (positionEntity) {
+        const target = positionEntity.reBuyTargets[Number(index)];
+        if (target.done || target.skipped) {
+          disabled = true;
+        } else if (isReadOnly) {
+          disabled = true;
+        }
       }
 
       fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
@@ -164,11 +165,10 @@ const DCAPanel = (props) => {
     const compareFn = entryType === "LONG" ? gt : lt;
 
     if (!isValidIntOrFloat(targetPricePercentageRaw) || compareFn(targetPricePercentage, 0)) {
-      setError(
-        composeTargetPropertyName("targetPricePercentage", targetId),
-        "error",
-        formatMessage({ id: "terminal.dca.valid.pricepercentage" }, { type: valueType }),
-      );
+      setError(composeTargetPropertyName("targetPricePercentage", targetId), {
+        type: "manual",
+        message: formatMessage({ id: "terminal.dca.valid.pricepercentage" }, { type: valueType }),
+      });
 
       return;
     }
@@ -192,7 +192,7 @@ const DCAPanel = (props) => {
     }
 
     // All validations passed clear errors.
-    clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+    clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
   };
 
   /**
@@ -241,11 +241,10 @@ const DCAPanel = (props) => {
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
 
     if (!isValidIntOrFloat(rebuyPercentageRaw) || rebuyPercentage <= 0) {
-      setError(
-        composeTargetPropertyName("rebuyPercentage", targetId),
-        "error",
-        formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
-      );
+      setError(composeTargetPropertyName("rebuyPercentage", targetId), {
+        type: "manual",
+        message: formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
+      });
 
       return;
     }
@@ -265,7 +264,7 @@ const DCAPanel = (props) => {
     }
 
     // All validations passed clear errors.
-    clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+    clearErrors(composeTargetPropertyName("rebuyPercentage", targetId));
   };
 
   /**
@@ -343,8 +342,8 @@ const DCAPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
-        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
-        clearError(composeTargetPropertyName("rebuyPercentage", targetId));
+        clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearErrors(composeTargetPropertyName("rebuyPercentage", targetId));
         setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
     }

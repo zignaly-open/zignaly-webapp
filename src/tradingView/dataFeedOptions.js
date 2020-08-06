@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 
 /**
- * @typedef {import("./charting_library.min").TradingTerminalWidgetOptions} TTWOptions
- * @typedef {import("./charting_library.min").IBasicDataFeed} IBasicDataFeed
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 

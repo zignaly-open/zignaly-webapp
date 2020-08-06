@@ -4,13 +4,14 @@
   width: 100%;
 
   p {
-    margin: 0;
     width: 100%;
     word-wrap: break-word;
   }
 
   .aboutBody {
     margin-top: 20px;
+    overflow: hidden;
+    width: 100%;
   }
 }
 

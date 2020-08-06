@@ -18,8 +18,8 @@ import CustomTooltip from "../../CustomTooltip";
  */
 const UserSummary = ({ providerId, quote, isCopyTrading }) => {
   const providerUserInfo = useProviderUserInfo(providerId);
-  const profitPerc = providerUserInfo.currentAllocated
-    ? (providerUserInfo.profitsSinceCopying / providerUserInfo.currentAllocated) * 100
+  const profitPerc = providerUserInfo.allocatedBalance
+    ? (providerUserInfo.profitsSinceCopying / providerUserInfo.allocatedBalance) * 100
     : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 

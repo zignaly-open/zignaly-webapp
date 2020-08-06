@@ -37,7 +37,7 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -70,15 +70,13 @@ const StopLossPanel = (props) => {
   const fieldsDisabled = getFieldsDisabledStatus();
 
   /**
-   * Calculate price based on percentage when value is changed.
+   * Validate target percentage limits.
    *
-   * @return {Void} None.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const stopLossPercentageChange = () => {
+  function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
-    const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
@@ -88,16 +86,34 @@ const StopLossPanel = (props) => {
         !isValidIntOrFloat(draftPosition.stopLossPercentage) ||
         compareFn(stopLossPercentage, pricePercentChange)
       ) {
-        setError(
-          "stopLossPercentage",
-          "error",
-          formatMessage(
+        setError("stopLossPercentage", {
+          type: "manual",
+          message: formatMessage(
             { id: "terminal.stoploss.valid.percentage" },
             { type: valueType, value: pricePercentChange },
           ),
-        );
-        return;
+        });
+
+        return false;
       }
+    }
+
+    return true;
+  }
+
+  /**
+   * Calculate price based on percentage when value is changed.
+   *
+   * @return {Void} None.
+   */
+  const stopLossPercentageChange = () => {
+    const draftPosition = getValues();
+    const price = getEntryPrice();
+    const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
+    const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
+
+    if (!validateStopLossPercentageLimits()) {
+      return;
     }
 
     if (!isNaN(price) && price > 0) {
@@ -111,7 +127,7 @@ const StopLossPanel = (props) => {
     }
 
     if (errors.stopLossPercentage) {
-      clearError("stopLossPrice");
+      clearErrors("stopLossPrice");
     }
   };
 
@@ -127,13 +143,17 @@ const StopLossPanel = (props) => {
     const priceDiff = stopLossPrice - price;
 
     if (!isValidIntOrFloat(draftPosition.stopLossPrice) || stopLossPrice < 0) {
-      setError("stopLossPrice", "error", formatMessage({ id: "terminal.stoploss.limit.zero" }));
+      setError("stopLossPrice", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.stoploss.limit.zero" }),
+      });
       return;
     }
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      validateStopLossPercentageLimits();
     } else {
       setValue("stopLossPercentage", "");
     }
@@ -143,7 +163,7 @@ const StopLossPanel = (props) => {
     }
 
     if (errors.stopLossPercentage) {
-      clearError("stopLossPrice");
+      clearErrors("stopLossPrice");
     }
   };
 
@@ -187,11 +207,11 @@ const StopLossPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       if (errors.stopLossPercentage) {
-        clearError("stopLossPercentage");
+        clearErrors("stopLossPercentage");
       }
 
       if (errors.stopLossPrice) {
-        clearError("stopLossPrice");
+        clearErrors("stopLossPrice");
       }
     }
   };
@@ -206,6 +226,7 @@ const StopLossPanel = (props) => {
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />
           </Typography>
+          <input name="unrealizedProfitLossesPercentage" ref={register} type="hidden" />
         </Box>
       </Box>
       {expanded && (

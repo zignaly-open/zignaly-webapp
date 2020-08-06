@@ -185,11 +185,12 @@ export const CustomSwitch = ({ tooltip, label, defaultValue, controlComponent, n
       </label>
       {controlComponent || (
         <Controller
-          as={<Switch id={name} />}
           control={control}
           defaultValue={defaultValue}
           name={name}
-          type="checkbox"
+          render={({ onChange, onBlur, value }) => (
+            <Switch checked={value} onBlur={onBlur} onChange={(e) => onChange(e.target.checked)} />
+          )}
         />
       )}
     </Box>

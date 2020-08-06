@@ -22,8 +22,8 @@ import "./StrategyForm.scss";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
- * @typedef {import("../../../tradingView/charting_library.min").IPositionLineAdapter} TVChartLine
+ * @typedef {any} TVWidget
+ * @typedef {any} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -61,7 +61,7 @@ const StrategyForm = (props) => {
   const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
   const isPositionView = isObject(positionEntity);
 
-  const { errors, handleSubmit, setValue, reset, triggerValidation, watch } = useFormContext();
+  const { errors, handleSubmit, setValue, reset, trigger, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
@@ -538,7 +538,7 @@ const StrategyForm = (props) => {
             disabled={!isEmpty(errors) || processing}
             loading={processing}
             onClick={() => {
-              triggerValidation();
+              trigger();
             }}
             type="submit"
           >

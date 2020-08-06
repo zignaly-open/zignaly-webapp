@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isArray, isEqual, isNumber, pick } from "lodash";
-import { FormContext, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
   mapExchangeConnectionToTradingViewId,
@@ -18,7 +18,7 @@ import { formatPrice } from "../../../utils/formatters";
 import "./TradingView.scss";
 
 /**
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {any} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
@@ -113,6 +113,7 @@ const TradingViewEdit = (props) => {
     getMarketData();
     fetchPosition();
     const checkExist = setInterval(() => {
+      // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
         setLibraryReady(true);
         clearInterval(checkExist);
@@ -265,11 +266,16 @@ const TradingViewEdit = (props) => {
       if (propagateChange) {
         setPositionEntity(newPositionEntity);
       }
+
+      methods.setValue(
+        "unrealizedProfitLossesPercentage",
+        newPositionEntity.unrealizedProfitLossesPercentage,
+      );
     }
   };
 
   return (
-    <FormContext {...methods}>
+    <FormProvider {...methods}>
       <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
         {!isLoading && (
           <PositionsTable
@@ -315,7 +321,7 @@ const TradingViewEdit = (props) => {
           </Box>
         )}
       </Box>
-    </FormContext>
+    </FormProvider>
   );
 };
 

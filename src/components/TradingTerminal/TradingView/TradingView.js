@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isNumber } from "lodash";
 import { useDispatch } from "react-redux";
-import { FormContext, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import {
   createWidgetOptions,
@@ -18,7 +18,7 @@ import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
 
 /**
- * @typedef {import("../../../tradingView/charting_library.min").IChartingLibraryWidget} TVWidget
+ * @typedef {any} TVWidget
  */
 
 /**
@@ -112,6 +112,7 @@ const TradingView = () => {
   const loadDependencies = () => {
     getMarketData();
     const checkExist = setInterval(() => {
+      // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
         setLibraryReady(true);
         clearInterval(checkExist);
@@ -247,7 +248,7 @@ const TradingView = () => {
 
   return (
     <>
-      <FormContext {...methods}>
+      <FormProvider {...methods}>
         <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
           {!isLoading && (
             <TradingViewHeader
@@ -285,7 +286,7 @@ const TradingView = () => {
             )}
           </Box>
         </Box>
-      </FormContext>
+      </FormProvider>
     </>
   );
 };

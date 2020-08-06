@@ -14,7 +14,7 @@ import "./AutoclosePanel.scss";
  */
 const AutoclosePanel = () => {
   const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearError, errors, getValues, register, setError } = useFormContext();
+  const { clearErrors, errors, getValues, register, setError } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**
@@ -26,9 +26,12 @@ const AutoclosePanel = () => {
     const draftPosition = getValues();
     const autoclose = parseFloat(draftPosition.autoclose);
 
-    clearError("autoclose");
+    clearErrors("autoclose");
     if (!isValidIntOrFloat(draftPosition.autoclose) || autoclose <= 0) {
-      setError("autoclose", "error", formatMessage({ id: "terminal.autoclose.limit.zero" }));
+      setError("autoclose", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.autoclose.limit.zero" }),
+      });
     }
   };
 
@@ -48,7 +51,7 @@ const AutoclosePanel = () => {
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
-      clearError("autoclose");
+      clearErrors("autoclose");
     }
   };
 

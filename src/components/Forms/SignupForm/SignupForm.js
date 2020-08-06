@@ -16,7 +16,7 @@ const SignupForm = () => {
   const [ref] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearError, setError, control } = formMethods;
+  const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
   const dispatch = useDispatch();
 
   /**
@@ -51,7 +51,7 @@ const SignupForm = () => {
       };
       dispatch(registerUser(payload, setLoading));
     } else {
-      setError("repeatPassword", "Passwords do not match!");
+      setError("repeatPassword", { type: "notMatch", message: "Passwords do not match!" });
     }
   };
 
@@ -125,7 +125,7 @@ const SignupForm = () => {
               // error={errors.terms ? "true" : "false"}
               inputRef={register({ required: true })}
               name="terms"
-              onChange={() => clearError("terms")}
+              onChange={() => clearErrors("terms")}
             />
             <Box
               className={"termsBox " + (errors.terms ? " error" : "")}

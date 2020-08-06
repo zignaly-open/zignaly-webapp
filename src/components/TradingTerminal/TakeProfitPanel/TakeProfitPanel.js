@@ -40,7 +40,7 @@ const TakeProfitPanel = (props) => {
     positionTargetsCardinality > 0,
   );
 
-  const { clearError, errors, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = 1;
   const {
     cardinality,
@@ -114,13 +114,12 @@ const TakeProfitPanel = (props) => {
     const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
-    clearError(unitsPercentageProperty);
+    clearErrors(unitsPercentageProperty);
     if (exitUnits <= 0) {
-      setError(
-        unitsPercentageProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.zero" }),
-      );
+      setError(unitsPercentageProperty, {
+        type: "manual",
+        message: formatMessage({ id: "terminal.takeprofit.limit.zero" }),
+      });
 
       return false;
     }
@@ -154,11 +153,13 @@ const TakeProfitPanel = (props) => {
     let targetPrice = price;
 
     if (!isValidIntOrFloat(targetPercentageRaw) || compareFn(targetPercentage, 0)) {
-      setError(
-        pricePercentageProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.valid.pricepercentage" }, { type: valueType }),
-      );
+      setError(pricePercentageProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.valid.pricepercentage" },
+          { type: valueType },
+        ),
+      });
 
       setValue(priceProperty, "");
       return;
@@ -175,10 +176,10 @@ const TakeProfitPanel = (props) => {
     }
 
     if (validateTargetPriceLimits(targetId)) {
-      clearError(priceProperty);
+      clearErrors(priceProperty);
     }
 
-    clearError(pricePercentageProperty);
+    clearErrors(pricePercentageProperty);
   };
 
   /**
@@ -196,7 +197,10 @@ const TakeProfitPanel = (props) => {
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
 
     if (!isValidIntOrFloat(targetPriceRaw)) {
-      setError(priceProperty, "error", formatMessage({ id: "terminal.takeprofit.valid.price" }));
+      setError(priceProperty, {
+        type: "manual",
+        message: formatMessage({ id: "terminal.takeprofit.valid.price" }),
+      });
       setValue(pricePercentageProperty, "");
       return;
     }
@@ -210,7 +214,7 @@ const TakeProfitPanel = (props) => {
     }
 
     if (validateTargetPriceLimits(targetId)) {
-      clearError(priceProperty);
+      clearErrors(priceProperty);
     }
   };
 
@@ -229,18 +233,17 @@ const TakeProfitPanel = (props) => {
     const propertyNames = keys(exitUnitsPercentages);
     if (cumulativePercentage > 100) {
       propertyNames.map((unitsPercentageProperty) => {
-        setError(
-          unitsPercentageProperty,
-          "error",
-          formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
-        );
+        setError(unitsPercentageProperty, {
+          type: "manual",
+          message: formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
+        });
       });
 
       return false;
     }
 
     propertyNames.map((unitsPercentageProperty) => {
-      clearError(unitsPercentageProperty);
+      clearErrors(unitsPercentageProperty);
     });
 
     return true;
@@ -260,11 +263,10 @@ const TakeProfitPanel = (props) => {
     const unitsPercentageRaw = getTargetPropertyRawValue("exitUnitsPercentage", targetId);
 
     if (!isValidIntOrFloat(unitsPercentageRaw) || !inRange(unitsPercentage, 0, 100.0001)) {
-      setError(
-        composeTargetPropertyName("exitUnitsPercentage", targetId),
-        "error",
-        formatMessage({ id: "terminal.takeprofit.valid.unitspercentage" }),
-      );
+      setError(composeTargetPropertyName("exitUnitsPercentage", targetId), {
+        type: "manual",
+        message: formatMessage({ id: "terminal.takeprofit.valid.unitspercentage" }),
+      });
 
       setValue(unitsProperty, "");
       return;
@@ -285,7 +287,7 @@ const TakeProfitPanel = (props) => {
       return;
     }
 
-    clearError(unitsProperty);
+    clearErrors(unitsProperty);
   };
 
   /**
@@ -302,11 +304,10 @@ const TakeProfitPanel = (props) => {
     const exitUnitsRaw = getTargetPropertyRawValue("exitUnits", targetId);
 
     if (!isValidIntOrFloat(exitUnitsRaw) || exitUnits <= 0) {
-      setError(
-        composeTargetPropertyName("exitUnits", targetId),
-        "error",
-        formatMessage({ id: "terminal.takeprofit.valid.units" }),
-      );
+      setError(composeTargetPropertyName("exitUnits", targetId), {
+        type: "manual",
+        message: formatMessage({ id: "terminal.takeprofit.valid.units" }),
+      });
 
       setValue(unitsPercentageProperty, "");
       return;
@@ -334,21 +335,25 @@ const TakeProfitPanel = (props) => {
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
 
     if (limits.price.min && targetPrice < limits.price.min) {
-      setError(
-        priceProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.minprice" }, { value: limits.price.min }),
-      );
+      setError(priceProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.minprice" },
+          { value: limits.price.min },
+        ),
+      });
 
       return false;
     }
 
     if (limits.price.max && targetPrice > limits.price.max) {
-      setError(
-        priceProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.maxprice" }, { value: limits.price.max }),
-      );
+      setError(priceProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.maxprice" },
+          { value: limits.price.max },
+        ),
+      });
 
       return false;
     }
@@ -371,21 +376,25 @@ const TakeProfitPanel = (props) => {
     const cost = Math.abs(targetPrice * exitUnits);
 
     if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(
-        unitsProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.mincost" }, { value: limits.cost.min }),
-      );
+      setError(unitsProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.mincost" },
+          { value: limits.cost.min },
+        ),
+      });
 
       return false;
     }
 
     if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(
-        unitsProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.maxcost" }, { value: limits.cost.max }),
-      );
+      setError(unitsProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.maxcost" },
+          { value: limits.cost.max },
+        ),
+      });
 
       return false;
     }
@@ -403,23 +412,27 @@ const TakeProfitPanel = (props) => {
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
-    clearError(unitsProperty);
+    clearErrors(unitsProperty);
     if (limits.amount.min && exitUnits < limits.amount.min) {
-      setError(
-        unitsProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.minunits" }, { value: limits.amount.min }),
-      );
+      setError(unitsProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.minunits" },
+          { value: limits.amount.min },
+        ),
+      });
 
       return false;
     }
 
     if (limits.amount.max && exitUnits > limits.amount.max) {
-      setError(
-        unitsProperty,
-        "error",
-        formatMessage({ id: "terminal.takeprofit.limit.maxunits" }, { value: limits.amount.max }),
-      );
+      setError(unitsProperty, {
+        type: "manual",
+        message: formatMessage(
+          { id: "terminal.takeprofit.limit.maxunits" },
+          { value: limits.amount.max },
+        ),
+      });
 
       return false;
     }
@@ -473,10 +486,10 @@ const TakeProfitPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
-        clearError(composeTargetPropertyName("exitUnitsPercentage", targetId));
-        clearError(composeTargetPropertyName("exitUnits", targetId));
-        clearError(composeTargetPropertyName("targetPrice", targetId));
-        clearError(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
+        clearErrors(composeTargetPropertyName("exitUnits", targetId));
+        clearErrors(composeTargetPropertyName("targetPrice", targetId));
+        clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
         setValue(composeTargetPropertyName("targetPrice", targetId), "");
       });
     }

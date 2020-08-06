@@ -33,7 +33,11 @@ describe("Consume tradeApiClient service", () => {
 
     const userEntity = await client.userLogin(payload);
     assert.equal(userEntity.firstName, "Tole", "User firstName violates expected value.");
-    assert.equal(userEntity.email, process.env.GATSBY_API_TEST_USER, "User email violates expected value.");
+    assert.equal(
+      userEntity.email,
+      process.env.GATSBY_API_TEST_USER,
+      "User email violates expected value.",
+    );
     assert.lengthOf(userEntity.token, 32, "Token seems to be invalid.");
   });
 
@@ -106,16 +110,16 @@ describe("Consume tradeApiClient service", () => {
     positionEntityStructureAssertions(positionsCollection[2]);
     // As log positions retrieve unopened the closeDate should be 0.
     assert.equal(
-      positionsCollection[0].closeDate,
-      0,
-      "First collection position item closeData is not zero.",
+      positionsCollection[0].closed,
+      true,
+      "First collection position item closed flag is not true.",
     );
     assert.equal(
-      positionsCollection[2].closeDate,
-      0,
-      "Second collection position item closeData is not zero.",
+      positionsCollection[2].closed,
+      true,
+      "Second collection position item closed flag is not true.",
     );
-  }, 10000);
+  }, 15000);
 
   it("should get all the providers", async () => {
     const getProvidersPayload = {
@@ -213,23 +217,16 @@ describe("Consume tradeApiClient service", () => {
   });
 
   it("should get bases assets", async () => {
-    const loginPayload = {
-      email: process.env.GATSBY_API_TEST_USER,
-      password: process.env.GATSBY_API_TEST_PASS,
-      gRecaptchaResponse: "",
-    };
-
-    const userEntity = await client.userLogin(loginPayload);
     const payload = {
-      token: userEntity.token,
+      token: accessToken,
+      quote: "USDT",
       ro: true,
     };
 
     const basesAssets = await client.baseAssetsGet(payload);
-    assert.isObject(quoteAssets, "Base assets is not an object.");
-    assert.isObject(quoteAssets["BTC"], "BTC quote is not an object.");
-    assert.isString(quoteAssets["BTC"].minNominal, "BTC minNominal is not a string.");
-  });
+    assert.isObject(basesAssets, "Base assets is not an object.");
+    assert.isObject(basesAssets.BTC, "BTC quote is not an object.");
+  }, 15000);
 
   it("should get exchange connection market data", async () => {
     const payload = {
@@ -473,7 +470,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get deposit history for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeLastDepositsGet(payload);
@@ -483,7 +480,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get withdraw history for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeLastWithdrawalsGet(payload);
@@ -493,7 +490,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get deposit address for asset", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
       asset: "BTC",
       network: "BTC",
     };
@@ -526,12 +523,12 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's exchange orders for an exchange.", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Binance1586927630_5e96980e40f3a",
     };
 
     const response = await client.openOrdersGet(payload);
     assert.isArray(response, "Response is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should get user's session data.", async () => {
     const payload = {

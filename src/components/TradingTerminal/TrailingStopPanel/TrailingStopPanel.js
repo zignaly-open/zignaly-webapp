@@ -37,7 +37,7 @@ const TrailingStopPanel = (props) => {
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
   const { expanded, expandClass, expandableControl } = useExpandable(existsTrailingStop);
-  const { clearError, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
   const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
   const trailingStopDistance = parseFloat(trailingStopDistanceRaw);
@@ -86,16 +86,15 @@ const TrailingStopPanel = (props) => {
     const compareFn = entryType === "LONG" ? gt : lt;
 
     if (!isValidIntOrFloat(trailingStopDistanceRaw) || compareFn(trailingStopDistance, 0)) {
-      setError(
-        "trailingStopDistance",
-        "error",
-        formatMessage({ id: "terminal.trailingstop.limit.zero" }, { type: valueType }),
-      );
+      setError("trailingStopDistance", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.trailingstop.limit.zero" }, { type: valueType }),
+      });
       return;
     }
 
     if (errors.trailingStopDistance) {
-      clearError("trailingStopDistance");
+      clearErrors("trailingStopDistance");
     }
   };
 
@@ -113,11 +112,13 @@ const TrailingStopPanel = (props) => {
 
     if (draftPosition.trailingStopPercentage !== "-") {
       if (!isValidIntOrFloat(trailingStopPercentageRaw) || compareFn(trailingStopPercentage, 0)) {
-        setError(
-          "trailingStopPercentage",
-          "error",
-          formatMessage({ id: "terminal.trailingstop.valid.percentage" }, { type: valueType }),
-        );
+        setError("trailingStopPercentage", {
+          type: "manual",
+          message: formatMessage(
+            { id: "terminal.trailingstop.valid.percentage" },
+            { type: valueType },
+          ),
+        });
         return;
       }
     }
@@ -139,7 +140,7 @@ const TrailingStopPanel = (props) => {
     }
 
     if (errors.trailingStopPrice) {
-      clearError("trailingStopPrice");
+      clearErrors("trailingStopPrice");
     }
   };
 
@@ -155,11 +156,10 @@ const TrailingStopPanel = (props) => {
     const priceDiff = trailingStopPrice - price;
 
     if (!isValidIntOrFloat(draftPosition.trailingStopPrice) || trailingStopPrice < 0) {
-      setError(
-        "trailingStopPrice",
-        "error",
-        formatMessage({ id: "terminal.trailingstop.valid.price" }),
-      );
+      setError("trailingStopPrice", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.trailingstop.valid.price" }),
+      });
       return;
     }
 
@@ -181,11 +181,11 @@ const TrailingStopPanel = (props) => {
     }
 
     if (errors.trailingStopPrice) {
-      clearError("trailingStopPrice");
+      clearErrors("trailingStopPrice");
     }
 
     if (errors.trailingStopPercentage) {
-      clearError("trailingStopPercentage");
+      clearErrors("trailingStopPercentage");
     }
   };
 
@@ -233,11 +233,11 @@ const TrailingStopPanel = (props) => {
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
       if (errors.trailingStopPercentage) {
-        clearError("trailingStopPercentage");
+        clearErrors("trailingStopPercentage");
       }
 
       if (errors.trailingStopPrice) {
-        clearError("trailingStopPrice");
+        clearErrors("trailingStopPrice");
       }
     }
   };
