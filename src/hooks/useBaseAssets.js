@@ -29,9 +29,7 @@ const useBaseAssets = (quote) => {
       .then((data) => {
         setBases(data);
       })
-      .catch((e) => {
-        alert(`ERROR: ${e.message}`);
-      });
+      .catch(() => {});
   };
 
   useEffect(loadData, [quote, storeSession.tradeApi.accessToken]);
