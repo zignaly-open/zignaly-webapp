@@ -152,14 +152,16 @@ const PositionFilters = (props) => {
       />
       <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
       <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
-      <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
-        <Checkbox
-          checked={filters.status === "all"}
-          inputProps={{ "aria-label": "primary checkbox" }}
-          onChange={setStatus}
-        />
-        <FormattedMessage id="positions.log.filter.status" />
-      </Box>
+      {showTypesFilter && (
+        <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
+          <Checkbox
+            checked={filters.status === "all"}
+            inputProps={{ "aria-label": "primary checkbox" }}
+            onChange={setStatus}
+          />
+          <FormattedMessage id="positions.log.filter.status" />
+        </Box>
+      )}
     </CustomFilters>
   );
 };
