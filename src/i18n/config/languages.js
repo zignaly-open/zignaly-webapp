@@ -17,6 +17,7 @@ const LocalizationLanguages = [
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS) {
+  // Test localization
   LocalizationLanguages.push({
     locale: "cs",
     label: "Čeština",
