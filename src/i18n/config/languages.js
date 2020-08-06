@@ -10,14 +10,18 @@
  */
 const LocalizationLanguages = [
   {
-    locale: "cs",
-    label: "Čeština",
-  },
-  {
     default: true,
     locale: "en",
     label: "English",
   },
 ];
+
+if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS) {
+  // Test localization
+  LocalizationLanguages.push({
+    locale: "cs",
+    label: "Čeština",
+  });
+}
 
 module.exports = LocalizationLanguages;
