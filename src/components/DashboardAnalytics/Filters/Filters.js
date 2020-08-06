@@ -16,7 +16,7 @@ import { useIntl } from "react-intl";
  */
 
 /**
- * Provides filters for filtering providers.
+ * Provides filters for filtering profile stats.
  *
  * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.

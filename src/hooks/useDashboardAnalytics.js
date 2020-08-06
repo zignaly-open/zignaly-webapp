@@ -27,9 +27,9 @@ import { useDispatch } from "react-redux";
  */
 
 /**
- * Hook to generate the providers stats fetching and filtering.
+ * Hook to generate the profile profit stats fetching and filtering.
  *
- * @returns {ProviderStatsData} Providers stats and filtering objects.
+ * @returns {ProviderStatsData} Profile profit stats and filtering objects.
  */
 const useDashboardAnalytics = () => {
   /**
