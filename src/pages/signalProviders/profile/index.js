@@ -43,12 +43,15 @@ const SignalProvidersProfile = () => {
 
   const checkAvailableOptions = () => {
     let options = { ...storeViews.provider.options };
+    let available = false;
     delete options.allowClones;
     const optionValues = Object.values(options);
-    if (optionValues.includes(true)) {
-      return true;
-    }
-    return false;
+    optionValues.forEach((item) => {
+      if (item) {
+        available = true;
+      }
+    });
+    return available;
   };
 
   return (
