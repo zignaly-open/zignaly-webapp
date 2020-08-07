@@ -13,6 +13,9 @@ import { useIntl } from "react-intl";
  * @property {Array<string>} quotes Quotes options.
  * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
+ * @property {Array<OptionType>} providers Providers options.
+ * @property {string} provider Selected provider.
+ * @property {function} onProviderChange
  */
 
 /**
@@ -29,6 +32,9 @@ const Filters = ({
   onClear,
   quotes,
   timeFrames,
+  provider,
+  providers,
+  onProviderChange,
 }) => {
   const intl = useIntl();
 
@@ -50,6 +56,15 @@ const Filters = ({
         options={quotes}
         search={true}
         value={quote}
+      />
+      <CustomSelect
+        label={intl.formatMessage({
+          id: "fil.providers",
+        })}
+        onChange={onProviderChange}
+        options={providers}
+        search={true}
+        value={provider}
       />
     </CustomFilters>
   );
