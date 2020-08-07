@@ -10,10 +10,13 @@ import {
   SET_ROWS_PER_PAGE,
   CONNECTED_COPYT_TIMEFRAME,
   CONNECTED_SIGNALP_TIMEFRAME,
-  COPYT_TIMEFRAME,
-  SIGNALP_TIMEFRAME,
-  COPYT_SORT,
-  SIGNALP_SORT,
+  SET_BROWSE_EXCHANGE,
+  SET_TIMEFRAME,
+  SET_BROWSE_QUOTE,
+  SET_SORT,
+  SET_TERMINAL_PAIR,
+  SET_ANALYTICS_PAIR,
+  SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
 
 /**
@@ -82,29 +85,62 @@ const settings = (state = initialState.settings, action) => {
       break;
     }
 
-    case CONNECTED_SIGNALP_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, connectedSignalp: action.payload };
+    case SET_BROWSE_QUOTE:
+      newState.copyt = {
+        ...newState.copyt,
+        browse: { ...newState.copyt.browse, quote: action.payload },
+      };
       break;
 
-    case CONNECTED_COPYT_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, connectedCopyt: action.payload };
+    case SET_BROWSE_EXCHANGE:
+      newState.copyt = {
+        ...newState.copyt,
+        browse: { ...newState.copyt.browse, exchange: action.payload },
+      };
       break;
 
-    case COPYT_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, copyt: action.payload };
+    case SET_BROWSE_EXCHANGE_TYPE:
+      newState.copyt = {
+        ...newState.copyt,
+        browse: { ...newState.copyt.browse, exchangeType: action.payload },
+      };
       break;
 
-    case SIGNALP_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, signalp: action.payload };
+    case SET_SORT: {
+      const { page, sort } = action.payload;
+      newState.sort = {
+        ...newState.sort,
+        [page]: sort,
+      };
       break;
+    }
 
-    case COPYT_SORT:
-      newState.sort = { ...newState.sort, copyt: action.payload };
+    case SET_TIMEFRAME: {
+      const { page, timeFrame } = action.payload;
+      newState.timeFrame = {
+        ...newState.timeFrame,
+        [page]: timeFrame,
+      };
       break;
+    }
 
-    case SIGNALP_SORT:
-      newState.sort = { ...newState.sort, signalp: action.payload };
+    case SET_ANALYTICS_PAIR: {
+      const { page, pair } = action.payload;
+      newState[page] = {
+        ...newState[page],
+        analytics: { ...newState[page].analytics, pair },
+      };
       break;
+    }
+
+    case SET_TERMINAL_PAIR: {
+      const { exchange, pair } = action.payload;
+      newState.tradingTerminal = {
+        ...newState.tradingTerminal,
+        pair: { ...newState.tradingTerminal.pair, [exchange]: pair },
+      };
+      break;
+    }
 
     default:
       return state;

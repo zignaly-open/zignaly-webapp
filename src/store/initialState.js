@@ -60,6 +60,35 @@
  */
 
 /**
+ * @typedef {Object} BrowseSettings
+ * @property {string} quote
+ * @property {string} exchange
+ * @property {string} exchangeType
+ */
+
+/**
+ * @typedef {Object} AnalyticsSettings
+ * @property {string} quote
+ * @property {string} pair
+ */
+
+/**
+ * @typedef {Object} CopytSettings
+ * @property {BrowseSettings} browse
+ * @property {AnalyticsSettings} analytics
+ */
+
+/**
+ * @typedef {Object} SignalpSettings
+ * @property {AnalyticsSettings} analytics
+ */
+
+/**
+ * @typedef {Object} TradingTerminalSettings
+ * @property {Object<string, string>} pair
+ */
+
+/**
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
@@ -69,6 +98,9 @@
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
  * @property {SortObject} sort
+ * @property {CopytSettings} copyt
+ * @property {SignalpSettings} signalp
+ * @property {TradingTerminalSettings} tradingTerminal
  */
 
 /**
@@ -97,6 +129,8 @@
  * @property {Number} connectedSignalp
  * @property {Number} copyt
  * @property {Number} signalp
+ * @property {Number} signalpAnalytics
+ * @property {Number} copytAnalytics
  */
 
 /**
@@ -363,11 +397,21 @@ const initialState = {
       connectedSignalp: null,
       copyt: null,
       signalp: null,
+      copytAnalytics: null,
+      signalpAnalytics: null,
     },
     sort: {
       copyt: null,
       signalp: null,
     },
+    copyt: {
+      browse: { quote: null, exchange: null, exchangeType: null },
+      analytics: { quote: null, pair: null },
+    },
+    signalp: {
+      analytics: { quote: null, pair: null },
+    },
+    tradingTerminal: { pair: {} },
   },
   user: {
     exchangeConnections: [],

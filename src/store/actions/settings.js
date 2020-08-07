@@ -9,9 +9,17 @@ export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
 export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME_ACTION";
 export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME_ACTION";
 export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME_ACTION";
-export const SIGNALP_TIMEFRAME = "SIGNALP_TIMEFRAME_ACTION";
+export const SET_TIMEFRAME = "SET_TIMEFRAME";
 export const SIGNALP_SORT = "SIGNALP_SORT";
 export const COPYT_SORT = "COPYT_SORT";
+export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
+export const SET_SORT = "SET_SORT";
+export const SET_BROWSE_EXCHANGE = "SET_BROWSE_EXCHANGE";
+export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
+export const SET_BROWSE_EXCHANGE_TYPE = "SET_BROWSE_EXCHANGE_TYPE";
+export const SET_ANALYTICS_TIMEFRAME = "SET_ANALYTICS_TIMEFRAME";
+export const SET_ANALYTICS_QUOTE = "SET_ANALYTICS_QUOTE";
+export const SET_ANALYTICS_PAIR = "SET_ANALYTICS_PAIR";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -106,45 +114,12 @@ export const setRowsPerPage = (payload) => {
 };
 
 /**
- * @param {number} payload Timeframe for the connected ct page.
+ * @param {Object} payload Sort for the sp page.
  * @returns {AnyAction} return action object.
  */
-export const setConnectedCopytTimeframe = (payload) => {
+export const setSort = (payload) => {
   return {
-    type: CONNECTED_COPYT_TIMEFRAME,
-    payload,
-  };
-};
-
-/**
- * @param {number} payload Timeframe for the connected sp page.
- * @returns {AnyAction} return action object.
- */
-export const setConnectedSignalTimeframe = (payload) => {
-  return {
-    type: CONNECTED_SIGNALP_TIMEFRAME,
-    payload,
-  };
-};
-
-/**
- * @param {number} payload Timeframe for the ct page.
- * @returns {AnyAction} return action object.
- */
-export const setCopytTimeframe = (payload) => {
-  return {
-    type: COPYT_TIMEFRAME,
-    payload,
-  };
-};
-
-/**
- * @param {number} payload Timeframe for the sp page.
- * @returns {AnyAction} return action object.
- */
-export const setSignalpTimeframe = (payload) => {
-  return {
-    type: SIGNALP_TIMEFRAME,
+    type: SET_SORT,
     payload,
   };
 };
@@ -153,9 +128,9 @@ export const setSignalpTimeframe = (payload) => {
  * @param {string} payload Sort for the sp page.
  * @returns {AnyAction} return action object.
  */
-export const setCopytSort = (payload) => {
+export const setBrowseExchange = (payload) => {
   return {
-    type: COPYT_SORT,
+    type: SET_BROWSE_EXCHANGE,
     payload,
   };
 };
@@ -164,9 +139,64 @@ export const setCopytSort = (payload) => {
  * @param {string} payload Sort for the sp page.
  * @returns {AnyAction} return action object.
  */
-export const setSignalpSort = (payload) => {
+export const setBrowseQuote = (payload) => {
   return {
-    type: SIGNALP_SORT,
+    type: SET_BROWSE_QUOTE,
+    payload,
+  };
+};
+
+/**
+ * @param {string} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setBrowseExchangeType = (payload) => {
+  return {
+    type: SET_BROWSE_EXCHANGE_TYPE,
+    payload,
+  };
+};
+
+/**
+ * @param {Object} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setTimeFrame = (payload) => {
+  return {
+    type: SET_TIMEFRAME,
+    payload,
+  };
+};
+
+/**
+ * @param {Object} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setAnayticsQuote = (payload) => {
+  return {
+    type: SET_ANALYTICS_QUOTE,
+    payload,
+  };
+};
+
+/**
+ * @param {Object} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setAnayticsPair = (payload) => {
+  return {
+    type: SET_ANALYTICS_PAIR,
+    payload,
+  };
+};
+
+/**
+ * @param {Object} payload Sort for the sp page.
+ * @returns {AnyAction} return action object.
+ */
+export const setTerminalPair = (payload) => {
+  return {
+    type: SET_TERMINAL_PAIR,
     payload,
   };
 };

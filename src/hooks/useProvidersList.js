@@ -4,15 +4,15 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
+import useSkipFirstEffect from "./useSkipFirstEffect";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import {
-  setConnectedCopytTimeframe,
-  setConnectedSignalTimeframe,
-  setCopytTimeframe,
-  setSignalpTimeframe,
-  setSignalpSort,
-  setCopytSort,
+  setSort as setSortAction,
+  setTimeFrame as setTimeFrameAction,
+  setBrowseExchange,
+  setBrowseExchangeType,
+  setBrowseQuote,
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -71,21 +71,20 @@ const useProvidersList = (options) => {
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
 
-  const initTimeFrame = () => {
-    let val;
-    if (connectedOnly) {
-      val = copyTradersOnly
-        ? storeSettings.timeFrame.connectedCopyt
-        : storeSettings.timeFrame.connectedSignalp;
-    } else {
-      val = copyTradersOnly ? storeSettings.timeFrame.copyt : storeSettings.timeFrame.signalp;
-    }
-    return val || 90;
-  };
+  /**
+   * @type {string} Page shorthand
+   */
+  let page;
+  if (connectedOnly) {
+    page = copyTradersOnly ? "connectedCopyt" : "connectedSignalp";
+  } else {
+    page = copyTradersOnly ? "copyt" : "signalp";
+  }
 
-  const [timeFrame, setTimeFrame] = useState(initTimeFrame());
+  const initTimeFrame = storeSettings.timeFrame[page] || 90;
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
-  // Get Coins list unless connected providers only which don't need filters
+  // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const coins = [
     {
@@ -98,22 +97,49 @@ const useProvidersList = (options) => {
       label,
     })),
   );
-  const [coin, setCoin] = useState(coins[0]);
+
+  const initQuote = storeSettings.copyt.browse.quote;
+  const [coin, setCoin] = useState(initQuote ? { val: initQuote, label: initQuote } : coins[0]);
+
+  // Save settings to store when changed
+  const saveQuote = () => {
+    console.log("save");
+    dispatch(setBrowseQuote(coin.val));
+  };
+  useSkipFirstEffect(saveQuote, [coin]);
 
   // Exchanges
+  const initExchange = storeSettings.copyt.browse.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
-  const [exchange, setExchange] = useState("ALL");
+  const [exchange, setExchange] = useState(initExchange);
 
+  // Save settings to store when changed
+  const saveExchange = () => {
+    dispatch(setBrowseExchange(exchange));
+  };
+  useSkipFirstEffect(saveExchange, [exchange]);
+
+  // Exchange Types
+  const initExchangeType = storeSettings.copyt.browse.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
-      label: intl.formatMessage({ id: "fil.allexchangeTypes" }),
+      label: intl.formatMessage({
+        id: "fil.allexchangeTypes",
+      }),
     },
     { val: "spot", label: "Spot" },
     { val: "futures", label: "Futures" },
   ];
-  const [exchangeType, setExchangeType] = useState("ALL");
+  const [exchangeType, setExchangeType] = useState(initExchangeType);
 
+  // Save settings to store when changed
+  const saveExchangeType = () => {
+    dispatch(setBrowseExchangeType(exchangeType));
+  };
+  useSkipFirstEffect(saveExchangeType, [exchangeType]);
+
+  // sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
@@ -134,18 +160,7 @@ const useProvidersList = (options) => {
   };
 
   const saveTimeFrame = () => {
-    if (copyTradersOnly && connectedOnly) {
-      dispatch(setConnectedCopytTimeframe(timeFrame));
-    }
-    if (!copyTradersOnly && connectedOnly) {
-      dispatch(setConnectedSignalTimeframe(timeFrame));
-    }
-    if (copyTradersOnly && !connectedOnly) {
-      dispatch(setCopytTimeframe(timeFrame));
-    }
-    if (!copyTradersOnly && !connectedOnly) {
-      dispatch(setSignalpTimeframe(timeFrame));
-    }
+    dispatch(setTimeFrameAction({ timeFrame, page }));
   };
 
   useEffect(saveTimeFrame, [timeFrame]);
@@ -183,11 +198,7 @@ const useProvidersList = (options) => {
   };
   const saveSort = () => {
     if (!connectedOnly) {
-      if (copyTradersOnly) {
-        dispatch(setCopytSort(sort));
-      } else {
-        dispatch(setSignalpSort(sort));
-      }
+      dispatch(setSortAction({ sort, page }));
     }
   };
 
@@ -240,7 +251,10 @@ const useProvidersList = (options) => {
       .providersGet(payload)
       .then((responseData) => {
         const uniqueProviders = uniqBy(responseData, "id");
-        setProviders((s) => ({ ...s, list: uniqueProviders }));
+        setProviders((s) => ({
+          ...s,
+          list: uniqueProviders,
+        }));
         filterProviders(uniqueProviders);
       })
       .catch((e) => {
