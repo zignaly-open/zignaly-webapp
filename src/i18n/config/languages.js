@@ -18,10 +18,16 @@ const LocalizationLanguages = [
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS) {
   // Test localization
-  LocalizationLanguages.push({
-    locale: "cs",
-    label: "Čeština",
-  });
+  LocalizationLanguages.push(
+    {
+      locale: "vn",
+      label: "Vietnamese",
+    },
+    {
+      locale: "cs",
+      label: "Čeština",
+    },
+  );
 }
 
 module.exports = LocalizationLanguages;

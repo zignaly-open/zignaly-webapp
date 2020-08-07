@@ -11,8 +11,9 @@ import { changeLanguage } from "../../store/actions/settings";
  * @type {Object.<string, string>} flags
  */
 const flags = {
-  cs,
   en,
+  cs,
+  //   vn,
 };
 
 const LanguageSwitcher = () => {
