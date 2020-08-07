@@ -75,7 +75,11 @@ const useDashboardAnalytics = () => {
 
   const clearFilters = () => {
     setQuote("USDT");
-    setTimeFrame("60");
+    setTimeFrame("3");
+    setProvider({
+      val: "1",
+      label: intl.formatMessage({ id: "fil.manual" }),
+    });
   };
 
   const loadDashboardStats = () => {
