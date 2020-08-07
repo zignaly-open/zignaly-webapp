@@ -2,6 +2,7 @@
  * @typedef {Object} LocalizationLanguage
  * @property {String} locale
  * @property {String} label
+ * @property {String} countryCode
  * @property {Boolean=} default
  */
 
@@ -13,6 +14,7 @@ const LocalizationLanguages = [
     default: true,
     locale: "en",
     label: "English",
+    countryCode: "gb",
   },
 ];
 
@@ -20,12 +22,14 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS) {
   // Test localization
   LocalizationLanguages.push(
     {
-      locale: "vn",
-      label: "Vietnamese",
-    },
-    {
       locale: "cs",
       label: "Čeština",
+      countryCode: "cz",
+    },
+    {
+      locale: "vn",
+      label: "Tiếng Việt",
+      countryCode: "vn",
     },
   );
 }
