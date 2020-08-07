@@ -24,7 +24,7 @@ import { useIntl } from "react-intl";
  * @property {string} quote
  * @property {Array<string>} quotes
  * @property {function} setQuote
- * @property {string} provider
+ * @property {OptionType} provider
  * @property {Array<OptionType>} providers
  * @property {function} setProvider
  * @property {function} clearFilters
