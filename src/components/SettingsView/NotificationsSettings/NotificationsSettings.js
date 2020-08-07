@@ -222,7 +222,16 @@ const NotificationsSettings = () => {
  */
 const NotificationCheckbox = ({ name, label, control }) => (
   <FormControlLabel
-    control={<Controller as={Checkbox} control={control} defaultValue={false} name={name} />}
+    control={
+      <Controller
+        control={control}
+        defaultValue={false}
+        name={name}
+        render={({ onChange, value }) => (
+          <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
+        )}
+      />
+    }
     label={<FormattedMessage id={label} />}
   />
 );
