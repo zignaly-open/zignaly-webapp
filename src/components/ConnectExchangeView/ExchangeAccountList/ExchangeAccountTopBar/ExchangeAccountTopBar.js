@@ -9,6 +9,8 @@ import CustomButton from "../../../CustomButton";
 import { useTheme } from "@material-ui/core/styles";
 import { Settings, Sunset, Sunrise, Repeat, Layers } from "react-feather";
 import CustomToolip from "../../../CustomTooltip";
+import LinkIcon from "@material-ui/icons/Link";
+import LinkOffIcon from "@material-ui/icons/LinkOff";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -45,7 +47,14 @@ const ExchangeAccountTopBar = ({ account }) => {
       <Box alignItems="center" display="flex" flexDirection="row">
         <ExchangeIcon exchange={account.name.toLowerCase()} size="xlarge" />
         <Box className="accountName" display="flex" flexDirection="column">
-          <Typography variant="h3">{account.internalName}</Typography>
+          <Typography variant="h3">
+            {account.internalName}
+            {account.areKeysValid ? (
+              <LinkIcon className="linkOn" />
+            ) : (
+              <LinkOffIcon className="linkOff" />
+            )}
+          </Typography>
           {selectedExchangeInternalId === account.internalId && (
             <Typography className="selected" variant="subtitle1">
               <FormattedMessage id="accounts.selected" />
