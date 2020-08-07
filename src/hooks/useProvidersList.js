@@ -7,16 +7,15 @@ import useExchangesOptions from "./useExchangesOptions";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import {
-  showErrorAlert,
   setConnectedCopytTimeframe,
   setConnectedSignalTimeframe,
   setCopytTimeframe,
   setSignalpTimeframe,
   setSignalpSort,
   setCopytSort,
-} from "../store/actions/ui";
+} from "../store/actions/settings";
+import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useStoreUISelector from "./useStoreUISelector";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -63,7 +62,6 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
-  const storeUI = useStoreUISelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
@@ -74,19 +72,15 @@ const useProvidersList = (options) => {
   const [providers, setProviders] = useState(initialState);
 
   const initTimeFrame = () => {
-    if (copyTradersOnly && connectedOnly) {
-      return storeUI.timeFrame.connectedCopyt;
+    let val;
+    if (connectedOnly) {
+      val = copyTradersOnly
+        ? storeSettings.timeFrame.connectedCopyt
+        : storeSettings.timeFrame.connectedSignalp;
+    } else {
+      val = copyTradersOnly ? storeSettings.timeFrame.copyt : storeSettings.timeFrame.signalp;
     }
-    if (!copyTradersOnly && connectedOnly) {
-      return storeUI.timeFrame.connectedSignalp;
-    }
-    if (copyTradersOnly && !connectedOnly) {
-      return storeUI.timeFrame.copyt;
-    }
-    if (!copyTradersOnly && !connectedOnly) {
-      return storeUI.timeFrame.signalp;
-    }
-    return 90;
+    return val || 90;
   };
 
   const [timeFrame, setTimeFrame] = useState(initTimeFrame());
@@ -123,7 +117,7 @@ const useProvidersList = (options) => {
   const initSort = () => {
     let val;
     if (!connectedOnly) {
-      val = copyTradersOnly ? storeUI.sort.copyt : storeUI.sort.signalp;
+      val = copyTradersOnly ? storeSettings.sort.copyt : storeSettings.sort.signalp;
     }
     return val || "RETURNS_DESC";
   };

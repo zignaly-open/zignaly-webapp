@@ -8,6 +8,12 @@ import {
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
   SET_ROWS_PER_PAGE,
+  CONNECTED_COPYT_TIMEFRAME,
+  CONNECTED_SIGNALP_TIMEFRAME,
+  COPYT_TIMEFRAME,
+  SIGNALP_TIMEFRAME,
+  COPYT_SORT,
+  SIGNALP_SORT,
 } from "../store/actions/settings";
 
 /**
@@ -75,6 +81,30 @@ const settings = (state = initialState.settings, action) => {
       newState.rowsPerPage = { ...newState.rowsPerPage, [table]: numberOfRows };
       break;
     }
+
+    case CONNECTED_SIGNALP_TIMEFRAME:
+      newState.timeFrame = { ...newState.timeFrame, connectedSignalp: action.payload };
+      break;
+
+    case CONNECTED_COPYT_TIMEFRAME:
+      newState.timeFrame = { ...newState.timeFrame, connectedCopyt: action.payload };
+      break;
+
+    case COPYT_TIMEFRAME:
+      newState.timeFrame = { ...newState.timeFrame, copyt: action.payload };
+      break;
+
+    case SIGNALP_TIMEFRAME:
+      newState.timeFrame = { ...newState.timeFrame, signalp: action.payload };
+      break;
+
+    case COPYT_SORT:
+      newState.sort = { ...newState.sort, copyt: action.payload };
+      break;
+
+    case SIGNALP_SORT:
+      newState.sort = { ...newState.sort, signalp: action.payload };
+      break;
 
     default:
       return state;

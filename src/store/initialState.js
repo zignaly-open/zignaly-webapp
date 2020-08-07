@@ -67,6 +67,8 @@
  * @property {DisplayColumns} displayColumns
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
+ * @property {TimeframeObject} timeFrame
+ * @property {SortObject} sort
  */
 
 /**
@@ -109,8 +111,6 @@
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
- * @property {TimeframeObject} timeFrame
- * @property {SortObject} sort
  * @property {Boolean} balanceLoader
  */
 
@@ -358,6 +358,16 @@ const initialState = {
       globalWhitelist: false,
       balanceSynced: false,
     },
+    timeFrame: {
+      connectedCopyt: null,
+      connectedSignalp: null,
+      copyt: null,
+      signalp: null,
+    },
+    sort: {
+      copyt: null,
+      signalp: null,
+    },
   },
   user: {
     exchangeConnections: [],
@@ -425,16 +435,6 @@ const initialState = {
     loader: false,
     ask2FA: false,
     balanceLoader: false,
-    timeFrame: {
-      connectedCopyt: 90,
-      connectedSignalp: 90,
-      copyt: 90,
-      signalp: 90,
-    },
-    sort: {
-      copyt: "RETURNS_DESC",
-      signalp: "RETURNS_DESC",
-    },
   },
   views: {
     provider: {
