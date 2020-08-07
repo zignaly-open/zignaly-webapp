@@ -94,6 +94,10 @@ confirm.positionexit.message: "CH-Are you sure you want to exit the position?"
 confirm.positionexit.title: "CH-Exit Position"
 confirm.ordercancel.title: "CH-Cancel Order"
 confirm.ordercancel.message: "CH-Canceling this order will remove it from the exchange, if the order belong to Zignaly's open positions, mostly this position will fail. Please confirm that you want to cancel order # {order}"
+confirm.srv.unfollow.title: "CH-Stop Following Provider"
+confirm.srv.unfollow.message: "CH-Your positions will remains under provider management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
+confirm.copyt.unfollow.title: "CH-Stop Copying Trader"
+confirm.copyt.unfollow.message: "CH-Your positions will remains under provider management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
 
 # COLUMNS
 col.actions: "CH-ACTIONS"
