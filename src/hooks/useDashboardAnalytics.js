@@ -86,7 +86,7 @@ const useDashboardAnalytics = () => {
       quote,
       timeFrame,
       includeOpenPositions: true,
-      providerId: provider ? provider : "all",
+      providerId: provider.val,
       timeFrameFormat: "lastXDays",
     };
     tradeApi

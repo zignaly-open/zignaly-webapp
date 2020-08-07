@@ -29,15 +29,15 @@ const Analytics = () => {
     <Box>
       <Filters
         onClear={clearFilters}
+        onProviderChange={setProvider}
         onQuoteChange={setQuote}
         onTimeFrameChange={setTimeFrame}
-        onProviderChange={setProvider}
+        provider={provider}
+        providers={providers}
         quote={quote}
         quotes={quotes}
         timeFrame={timeFrame}
         timeFrames={timeFrames}
-        provider={provider}
-        providers={providers}
       />
       <AnalyticsChart
         loading={loading}
