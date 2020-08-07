@@ -42,6 +42,13 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
   const handleChange = (e) => {
     if (name === "stopLoss") {
       setVal(Math.sign(e.target.value) === 1 ? e.target.value * -1 : e.target.value);
+    } else if (name === "maxPositions" || name === "positionsPerMarket" || name === "leverage") {
+      let targetValue = Math.floor(e.target.value);
+      if (targetValue) {
+        setVal(targetValue);
+      } else {
+        setVal("");
+      }
     } else {
       setVal(e.target.value);
     }
