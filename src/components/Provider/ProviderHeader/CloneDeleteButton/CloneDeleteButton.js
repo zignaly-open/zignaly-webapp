@@ -21,7 +21,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
  */
 const CloneDeleteButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
-  const [loader, setLoader] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const redirect = () => {
@@ -34,14 +34,14 @@ const CloneDeleteButton = ({ provider }) => {
 
   const deleteClone = async () => {
     try {
-      setLoader(true);
+      setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       const response = await tradeApi.providerDelete(payload);
       if (response) {
-        setLoader(false);
+        setLoading(false);
         dispatch(
           showSuccessAlert("srv.deleteprovider.alert.title", "srv.deleteprovider.alert.body"),
         );
@@ -60,8 +60,8 @@ const CloneDeleteButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <CustomButton className="deleteButton" loading={loader} onClick={deleteClone}>
-        <FormattedMessage id="srv.deleteprovider" />
+      <CustomButton className="deleteButton" loading={loading} onClick={deleteClone}>
+        <FormattedMessage id="srv.deletetrader" />
       </CustomButton>
     </Box>
   );
