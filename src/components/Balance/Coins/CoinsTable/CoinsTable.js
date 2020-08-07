@@ -29,7 +29,6 @@ const CoinsTable = ({ title, persistKey, list }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
-
   let columns = [
     {
       name: "coin",
