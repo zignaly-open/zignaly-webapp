@@ -2,10 +2,8 @@ import React from "react";
 import "./ContractsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../../../Table";
-import { composeContractsDataTable } from "../../../../../utils/composePositionsDataTable";
-// import tradeApi from "../../../../../services/tradeApiClient";
-// import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
-// import { ConfirmDialog } from "../../../../Dialogs";
+import { formatFloat } from "../../../../../utils/format";
+import { navigate } from "gatsby";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -30,114 +28,99 @@ import { composeContractsDataTable } from "../../../../../utils/composePositions
  */
 const ContractsTable = ({ title, list }) => {
   const tablePersistsKey = "contractsTable";
-  // const storeSession = useStoreSessionSelector();
-
-  // /**
-  //  * @typedef {import("../../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
-  //  * @type {ConfirmDialogConfig} initConfirmConfig
-  //  */
-  // const initConfirmConfig = {
-  //   titleTranslationId: "",
-  //   messageTranslationId: "",
-  //   visible: false,
-  // };
-
-  // const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-  // const [actionData, setActionData] = useState({
-  //   positionId: "",
-  //   action: "",
-  // });
-
-  // /**
-  //  * Handle action element click event.
-  //  *
-  //  * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
-  //  * @returns {Void} None.
-  //  */
-  // const confirmAction = (event) => {
-  //   const targetElement = event.currentTarget;
-  //   const positionId = targetElement.getAttribute("data-position-id");
-  //   const action = targetElement.getAttribute("data-action");
-  //   setActionData({
-  //     action: action || "",
-  //     positionId: positionId || "",
-  //   });
-
-  //   if (action === "cancel") {
-  //     setConfirmConfig({
-  //       titleTranslationId: "confirm.positioncancel.title",
-  //       messageTranslationId: "confirm.positioncancel.message",
-  //       visible: true,
-  //     });
-  //   }
-
-  //   if (action === "exit") {
-  //     setConfirmConfig({
-  //       titleTranslationId: "confirm.positionexit.title",
-  //       messageTranslationId: "confirm.positionexit.message",
-  //       visible: true,
-  //     });
-  //   }
-  // };
-
-  // /**
-  //  * Handle confirm dialog post confirmation, action execution.
-  //  *
-  //  * @returns {Void} None.
-  //  */
-  // const executeAction = () => {
-  //   const { positionId, action } = actionData;
-  //   if (action === "cancel") {
-  //     tradeApi
-  //       .positionClose({
-  //         positionId: positionId,
-  //         token: storeSession.tradeApi.accessToken,
-  //       })
-  //       .then((position) => {
-  //         alert(`Position ${position.positionId} was cancelled.`);
-  //       })
-  //       .catch((e) => {
-  //         alert(`Cancel position failed: ${e.message}`);
-  //       });
-  //   }
-
-  //   if (action === "exit") {
-  //     tradeApi
-  //       .positionExit({
-  //         positionId: positionId,
-  //         token: storeSession.tradeApi.accessToken,
-  //       })
-  //       .then((position) => {
-  //         alert(`Position ${position.positionId} was exited.`);
-  //       })
-  //       .catch((e) => {
-  //         alert(`Exit position failed: ${e.message}`);
-  //       });
-  //   }
-  // };
 
   /**
-   * Compose MUI data table for positions collection of selected type.
+   * Navigate to position detail page.
    *
-   * @returns {DataTableContent} Data table content.
+   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @returns {Void} None.
    */
-  const composeDataTableForOrders = () => {
-    let dataTable;
-    dataTable = composeContractsDataTable(list);
-    return dataTable;
-  };
+  function gotoPositionDetail(event) {
+    const targetElement = event.currentTarget;
+    const positionId = targetElement.getAttribute("data-position-id");
+    navigate(`position/${positionId}`);
+  }
 
-  const { columns, data } = composeDataTableForOrders();
+  /**
+   * Compose all action buttons element for a given position.
+   *
+   * @param {String} positionId Position entity to compose buttons for.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function composePositionLinkButton(positionId) {
+    return (
+      <span
+        className="positionLink"
+        data-position-id={positionId}
+        onClick={gotoPositionDetail}
+        title="View Position"
+      >
+        {positionId}
+      </span>
+    );
+  }
+
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
+  let columns = [
+    {
+      name: "positionId",
+      label: "col.positionid",
+      options: {
+        customBodyRender: composePositionLinkButton,
+      },
+    },
+    {
+      name: "symbol",
+      label: "col.orders.symbol",
+    },
+    {
+      name: "amount",
+      label: "col.amount",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "leverage",
+      label: "col.leverage",
+    },
+    {
+      name: "liquidationprice",
+      label: "col.contracts.liquidationprice",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "side",
+      label: "col.side",
+    },
+    {
+      name: "entryprice",
+      label: "col.entryprice",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "markprice",
+      label: "col.contracts.markprice",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "margin",
+      label: "col.contracts.margin",
+    },
+  ];
 
   return (
     <>
-      {/* <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={executeAction}
-        setConfirmConfig={setConfirmConfig}
-      /> */}
       <Box className="contractsTable" display="flex" flexDirection="column" width={1}>
-        <Table columns={columns} data={data} persistKey={tablePersistsKey} title={title} />
+        <Table columns={columns} data={list} persistKey={tablePersistsKey} title={title} />
       </Box>
     </>
   );
