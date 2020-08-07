@@ -79,3 +79,17 @@ export const validateDecimals = (value, maxDecimals) => {
   const decimals = splitValueDot[1].length;
   return decimals < maxDecimals;
 };
+
+/**
+ * Validate URL
+ * @param {string} value URL
+ * @returns {boolean} result
+ */
+export const validateURL = (value) =>
+  Boolean(
+    value.match(
+      new RegExp(
+        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/,
+      ),
+    ),
+  );

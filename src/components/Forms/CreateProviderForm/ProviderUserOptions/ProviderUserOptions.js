@@ -17,6 +17,7 @@ import { ChevronDown } from "react-feather";
 import CustomSelect from "../../../CustomSelect";
 import CustomTooltip from "../../../CustomTooltip";
 import "./ProviderUserOptions.scss";
+import { validateURL } from "../../../../utils/validators";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -197,7 +198,8 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                             checked={selected}
                             checkedIcon={checkedIcon}
                             icon={icon}
-                            style={{ marginRight: 8 }}
+                            size="small"
+                            style={{ marginRight: 8, padding: 5 }}
                           />
                           {option}
                         </>
@@ -225,9 +227,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                 fullWidth
                 inputRef={register({
                   validate: (value) =>
-                    !value ||
-                    value.startsWith("http") ||
-                    intl.formatMessage({ id: "form.error.url" }),
+                    !value || validateURL(value) || intl.formatMessage({ id: "form.error.url" }),
                 })}
                 name="disclaimer"
               />

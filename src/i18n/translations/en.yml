@@ -1127,7 +1127,7 @@ form.error.value: "Enter a value"
 form.error.withdraw.min: "Please enter an amount above the minimum withdrawal amount."
 form.error.withdraw.max: "You do not have this amount available in your account."
 form.error.number.decimals: "Please enter numbers with no more than {maxDecimals} decimal places."
-form.error.url: "URL must start with http"
+form.error.url: "URL is not valid"
 
 # GENERAL
 general.yes: "Yes"
