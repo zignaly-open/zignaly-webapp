@@ -598,10 +598,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch />}
                 control={control}
                 defaultValue={provider.public}
                 name="public"
+                render={({ onChange, value }) => (
+                  <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
+                )}
               />
             </Box>
 
@@ -627,10 +629,17 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Tooltip>
               </label>
               <Controller
-                as={<Switch disabled={disableList()} />}
                 control={control}
                 defaultValue={provider.list}
                 name="list"
+                render={({ onChange, onBlur, value }) => (
+                  <Switch
+                    checked={value}
+                    disabled={disableList()}
+                    onBlur={onBlur}
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
             </Box>
           </Box>
