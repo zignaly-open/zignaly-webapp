@@ -9,7 +9,7 @@ import {
   TOGGLE_BALANCE_BOX,
   SET_ROWS_PER_PAGE,
   CONNECTED_COPYT_TIMEFRAME,
-  CONNECTED_SIGNALP_TIMEFRAME,
+  SET_ANALYTICS_QUOTE,
   SET_BROWSE_EXCHANGE,
   SET_TIMEFRAME,
   SET_BROWSE_QUOTE,
@@ -120,6 +120,15 @@ const settings = (state = initialState.settings, action) => {
       newState.timeFrame = {
         ...newState.timeFrame,
         [page]: timeFrame,
+      };
+      break;
+    }
+
+    case SET_ANALYTICS_QUOTE: {
+      const { page, quote } = action.payload;
+      newState[page] = {
+        ...newState[page],
+        analytics: { ...newState[page].analytics, quote },
       };
       break;
     }

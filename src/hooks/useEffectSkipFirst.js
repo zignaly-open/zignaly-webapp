@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const useSkipFirstEffect = (callback, dependencies) => {
+const useEffectSkipFirst = (callback, dependencies) => {
   const isFirstRun = useRef(true);
   useEffect(() => {
     if (isFirstRun.current) {
@@ -12,4 +12,4 @@ const useSkipFirstEffect = (callback, dependencies) => {
   }, dependencies);
 };
 
-export default useSkipFirstEffect;
+export default useEffectSkipFirst;

@@ -129,8 +129,8 @@
  * @property {Number} connectedSignalp
  * @property {Number} copyt
  * @property {Number} signalp
- * @property {Number} signalpAnalytics
- * @property {Number} copytAnalytics
+ * @property {string} signalpAnalytics
+ * @property {string} copytAnalytics
  */
 
 /**

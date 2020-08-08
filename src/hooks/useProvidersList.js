@@ -4,7 +4,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
-import useSkipFirstEffect from "./useSkipFirstEffect";
+import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import {
@@ -81,9 +81,6 @@ const useProvidersList = (options) => {
     page = copyTradersOnly ? "copyt" : "signalp";
   }
 
-  const initTimeFrame = storeSettings.timeFrame[page] || 90;
-  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
-
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const coins = [
@@ -99,14 +96,13 @@ const useProvidersList = (options) => {
   );
 
   const initQuote = storeSettings.copyt.browse.quote;
-  const [coin, setCoin] = useState(initQuote ? { val: initQuote, label: initQuote } : coins[0]);
+  const [quote, setQuote] = useState(initQuote ? { val: initQuote, label: initQuote } : coins[0]);
 
   // Save settings to store when changed
   const saveQuote = () => {
-    console.log("save");
-    dispatch(setBrowseQuote(coin.val));
+    dispatch(setBrowseQuote(quote.val));
   };
-  useSkipFirstEffect(saveQuote, [coin]);
+  useEffectSkipFirst(saveQuote, [quote]);
 
   // Exchanges
   const initExchange = storeSettings.copyt.browse.exchange || "ALL";
@@ -117,7 +113,7 @@ const useProvidersList = (options) => {
   const saveExchange = () => {
     dispatch(setBrowseExchange(exchange));
   };
-  useSkipFirstEffect(saveExchange, [exchange]);
+  useEffectSkipFirst(saveExchange, [exchange]);
 
   // Exchange Types
   const initExchangeType = storeSettings.copyt.browse.exchangeType || "ALL";
@@ -137,9 +133,9 @@ const useProvidersList = (options) => {
   const saveExchangeType = () => {
     dispatch(setBrowseExchangeType(exchangeType));
   };
-  useSkipFirstEffect(saveExchangeType, [exchangeType]);
+  useEffectSkipFirst(saveExchangeType, [exchangeType]);
 
-  // sort
+  // Sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
@@ -149,8 +145,9 @@ const useProvidersList = (options) => {
   };
   const [sort, setSort] = useState(initSort);
 
+  // Reset filters
   const clearFilters = () => {
-    setCoin(coins[0]);
+    setQuote(coins[0]);
     setExchange("ALL");
     setExchangeType("ALL");
   };
@@ -159,11 +156,14 @@ const useProvidersList = (options) => {
     setSort("RETURNS_DESC");
   };
 
+  // TimeFrame
+  const initTimeFrame = storeSettings.timeFrame[page] || 90;
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
+
   const saveTimeFrame = () => {
     dispatch(setTimeFrameAction({ timeFrame, page }));
   };
-
-  useEffect(saveTimeFrame, [timeFrame]);
+  useEffectSkipFirst(saveTimeFrame, [timeFrame]);
 
   /**
    * Sort providers by selected option
@@ -203,7 +203,7 @@ const useProvidersList = (options) => {
   };
 
   // Sort providers on sort option change
-  useEffect(() => {
+  useEffectSkipFirst(() => {
     if (providers.filteredList) {
       sortProviders(providers.filteredList);
     }
@@ -220,7 +220,7 @@ const useProvidersList = (options) => {
   const filterProviders = (list) => {
     const res = list.filter(
       (p) =>
-        (coin.val === "ALL" || p.quote === coin.val) &&
+        (quote.val === "ALL" || p.quote === quote.val) &&
         (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
         (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
     );
@@ -232,7 +232,7 @@ const useProvidersList = (options) => {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin, exchange, exchangeType]);
+  }, [quote, exchange, exchangeType]);
 
   const loadProviders = () => {
     /**
@@ -274,9 +274,9 @@ const useProvidersList = (options) => {
     providers: providers.filteredList,
     timeFrame,
     setTimeFrame,
-    coin,
+    coin: quote,
     coins,
-    setCoin,
+    setCoin: setQuote,
     exchange,
     exchanges,
     setExchange,
