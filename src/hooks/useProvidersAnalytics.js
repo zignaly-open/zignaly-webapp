@@ -18,6 +18,7 @@ import {
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/initialState").TimeframeObject} TimeframeObject
  * @typedef {import("../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
@@ -40,7 +41,7 @@ import {
 /**
  * Hook to generate the providers stats fetching and filtering.
  *
- * @param {string} type Type of provider to retreive.
+ * @param {'signalp'|'copyt'} type Type of provider to retreive.
  * @returns {ProviderStatsData} Providers stats and filtering objects.
  */
 const useProvidersAnalytics = (type) => {
@@ -50,7 +51,7 @@ const useProvidersAnalytics = (type) => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
 
-  const page = `${type}Analytics`;
+  const page = type === "signalp" ? "signalpAnalytics" : "copytAnalytics";
 
   // time frames
   const timeFrames = useTimeFramesOptions();

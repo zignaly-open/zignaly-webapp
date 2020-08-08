@@ -26,6 +26,26 @@ export const SET_ANALYTICS_PAIR = "SET_ANALYTICS_PAIR";
  */
 
 /**
+ * @typedef {'signalp'|'copyt'} ProviderPageType
+ */
+
+/**
+ * @typedef {{page: ProviderPageType, quote: string}} SetAnalyticsQuotePayload
+ *
+ * @typedef {Object} SetAnalyticsQuoteAction
+ * @property {typeof SET_ANALYTICS_QUOTE} type
+ * @property {SetAnalyticsQuotePayload} payload
+ */
+
+/**
+ * @typedef {{page: ProviderPageType, pair: string}} SetAnalyticsPairPayload
+ *
+ * @typedef {Object} SetAnalyticsPairAction
+ * @property {typeof SET_ANALYTICS_PAIR} type
+ * @property {SetAnalyticsPairPayload} payload
+ */
+
+/**
  * Dark style flag selected by user.
  *
  * @param {Boolean} darkStyle
@@ -169,8 +189,8 @@ export const setTimeFrame = (payload) => {
 };
 
 /**
- * @param {Object} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @param {SetAnalyticsQuotePayload} payload Quote for the analytics
+ * @returns {SetAnalyticsQuoteAction} return action object.
  */
 export const setAnayticsQuote = (payload) => {
   return {
@@ -180,8 +200,8 @@ export const setAnayticsQuote = (payload) => {
 };
 
 /**
- * @param {Object} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @param {SetAnalyticsPairPayload} payload Pair for the analytics
+ * @returns {SetAnalyticsPairAction} return action object.
  */
 export const setAnayticsPair = (payload) => {
   return {

@@ -17,6 +17,7 @@ import {
   SET_ANALYTICS_PAIR,
   SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
+import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
@@ -30,131 +31,135 @@ import {
  */
 
 /**
+ * @typedef {'signalp'|'copyt'} ProviderPageType
+ */
+
+/**
+ * @typedef {Object} SetAnalyticsQuote0
+ * @property {'SET_ANALYTICS_QUOTE'} type
+ * @property {{page: 'signalp', quote: string}} payload
+ */
+
+/**
+ * @typedef {Object} SetAnalyticsPair
+ * @property {ProviderPageType} page
+ * @property {string} pair
+ */
+
+/**
+ * @typedef {Object} SetAnalyticsQuote
+ * @property {ProviderPageType} page
+ * @property {string} quote
+ */
+
+/**
  * @param {StateSettingsType} state Current settings state.
- * @param {ActionObject} action Action to reduce.
+ * @param {SetAnalyticsQuote|ActionObject} action Action to reduce.
  * @returns {StateSettingsType} New settings state.
  */
-const settings = (state = initialState.settings, action) => {
-  const newState = assign({}, state);
+const settings = createReducer(initialState.settings, {
+  SELECT_LANGUAGE: (state, action) => {
+    state.languageCode = action.payload;
+  },
 
-  switch (action.type) {
-    case SELECT_LANGUAGE:
-      newState.languageCode = action.payload;
-      break;
+  SELECT_THEME: (state, action) => {
+    state.darkStyle = action.payload;
+  },
+  TOGGLE_BALANCE_BOX: (state, action) => {
+    state.balanceBox = action.payload;
+  },
+  SET_SELECTED_EXCHANGE: (state, action) => {
+    state.selectedExchange = action.payload;
+  },
+  UNSET_SELECTED_EXCHANGE: (state, action) => {
+    state.selectedExchange = initialState.settings.selectedExchange;
+  },
 
-    case SELECT_THEME:
-      newState.darkStyle = action.payload;
-      break;
-    case TOGGLE_BALANCE_BOX:
-      newState.balanceBox = action.payload;
-      break;
-    case SET_SELECTED_EXCHANGE:
-      newState.selectedExchange = action.payload;
-      break;
-    case UNSET_SELECTED_EXCHANGE:
-      newState.selectedExchange = initialState.settings.selectedExchange;
-      break;
+  SET_DISPLAY_COLUMN: (state, action) => {
+    /**
+     * @type {keyof DisplayColumns} table
+     */
+    const table = action.payload.table;
+    const { changedColumn, action: userAction } = action.payload;
 
-    case SET_DISPLAY_COLUMN: {
-      /**
-       * @type {keyof DisplayColumns} table
-       */
-      const table = action.payload.table;
-      const { changedColumn, action: userAction } = action.payload;
-
-      if (userAction === "add") {
-        //   Add column to displayed list
-        newState.displayColumns = {
-          ...newState.displayColumns,
-          [table]: [...newState.displayColumns[table], changedColumn],
-        };
-      } else {
-        //   Remove column to displayed list
-        newState.displayColumns = {
-          ...newState.displayColumns,
-          [table]: newState.displayColumns[table].filter((c) => c !== changedColumn),
-        };
-      }
-      break;
+    if (userAction === "add") {
+      //   Add column to displayed list
+      state.displayColumns = {
+        ...state.displayColumns,
+        [table]: [...state.displayColumns[table], changedColumn],
+      };
+    } else {
+      //   Remove column to displayed list
+      state.displayColumns = {
+        ...state.displayColumns,
+        [table]: state.displayColumns[table].filter((c) => c !== changedColumn),
+      };
     }
+  },
 
-    case SET_ROWS_PER_PAGE: {
-      const { table, numberOfRows } = action.payload;
-      newState.rowsPerPage = { ...newState.rowsPerPage, [table]: numberOfRows };
-      break;
-    }
+  SET_ROWS_PER_PAGE: (state, action) => {
+    const { table, numberOfRows } = action.payload;
+    state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
+  },
 
-    case SET_BROWSE_QUOTE:
-      newState.copyt = {
-        ...newState.copyt,
-        browse: { ...newState.copyt.browse, quote: action.payload },
-      };
-      break;
+  SET_BROWSE_QUOTE: (state, action) => {
+    state.copyt = {
+      ...state.copyt,
+      browse: { ...state.copyt.browse, quote: action.payload },
+    };
+  },
 
-    case SET_BROWSE_EXCHANGE:
-      newState.copyt = {
-        ...newState.copyt,
-        browse: { ...newState.copyt.browse, exchange: action.payload },
-      };
-      break;
+  SET_BROWSE_EXCHANGE: (state, action) => {
+    state.copyt = {
+      ...state.copyt,
+      browse: { ...state.copyt.browse, exchange: action.payload },
+    };
+  },
 
-    case SET_BROWSE_EXCHANGE_TYPE:
-      newState.copyt = {
-        ...newState.copyt,
-        browse: { ...newState.copyt.browse, exchangeType: action.payload },
-      };
-      break;
+  SET_BROWSE_EXCHANGE_TYPE: (state, action) => {
+    state.copyt = {
+      ...state.copyt,
+      browse: { ...state.copyt.browse, exchangeType: action.payload },
+    };
+  },
 
-    case SET_SORT: {
-      const { page, sort } = action.payload;
-      newState.sort = {
-        ...newState.sort,
-        [page]: sort,
-      };
-      break;
-    }
+  SET_SORT: (state, action) => {
+    const { page, sort } = action.payload;
+    state.sort = {
+      ...state.sort,
+      [page]: sort,
+    };
+  },
 
-    case SET_TIMEFRAME: {
-      const { page, timeFrame } = action.payload;
-      newState.timeFrame = {
-        ...newState.timeFrame,
-        [page]: timeFrame,
-      };
-      break;
-    }
+  SET_TIMEFRAME: (state, action) => {
+    const { page, timeFrame } = action.payload;
+    state.timeFrame = {
+      ...state.timeFrame,
+      [page]: timeFrame,
+    };
+  },
 
-    case SET_ANALYTICS_QUOTE: {
-      const { page, quote } = action.payload;
-      newState[page] = {
-        ...newState[page],
-        analytics: { ...newState[page].analytics, quote },
-      };
-      break;
-    }
+  SET_ANALYTICS_QUOTE: (state, action) => {
+    // /** @type {{page: ProviderPageType, quote: string }} */
+    /** @type {SetAnalyticsQuote} */
+    const { page, quote } = action.payload;
+    state[page].analytics.quote = quote;
+  },
 
-    case SET_ANALYTICS_PAIR: {
-      const { page, pair } = action.payload;
-      newState[page] = {
-        ...newState[page],
-        analytics: { ...newState[page].analytics, pair },
-      };
-      break;
-    }
+  SET_ANALYTICS_PAIR: (state, action) => {
+    // /** @type {{page: ProviderPageType, pair: string }} */
+    /** @type {SetAnalyticsPair} */
+    const { page, pair } = action.payload;
+    state[page].analytics.pair = pair;
+  },
 
-    case SET_TERMINAL_PAIR: {
-      const { exchange, pair } = action.payload;
-      newState.tradingTerminal = {
-        ...newState.tradingTerminal,
-        pair: { ...newState.tradingTerminal.pair, [exchange]: pair },
-      };
-      break;
-    }
-
-    default:
-      return state;
-  }
-
-  return newState;
-};
+  SET_TERMINAL_PAIR: (state, action) => {
+    const { exchange, pair } = action.payload;
+    state.tradingTerminal = {
+      ...state.tradingTerminal,
+      pair: { ...state.tradingTerminal.pair, [exchange]: pair },
+    };
+  },
+});
 
 export default settings;
