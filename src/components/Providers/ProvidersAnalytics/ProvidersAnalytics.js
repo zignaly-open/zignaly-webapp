@@ -8,7 +8,7 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef {Object} ProvidersAnalyticsPropTypes
- * @property {string} type Type of provider to retreive.
+ * @property {'signalp'|'copyt'} type Type of provider to retreive.
  */
 
 /**

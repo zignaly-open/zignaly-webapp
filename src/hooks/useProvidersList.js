@@ -19,6 +19,8 @@ import { useDispatch } from "react-redux";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/actions/settings").ProviderPageType} ProviderPageType
+ * @typedef {import("../store/actions/settings").ConnectedProviderPageType} ConnectedProviderPageType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
@@ -72,7 +74,7 @@ const useProvidersList = (options) => {
   const [providers, setProviders] = useState(initialState);
 
   /**
-   * @type {string} Page shorthand
+   * @type {ProviderPageType|ConnectedProviderPageType} Page shorthand
    */
   let page;
   if (connectedOnly) {
@@ -198,6 +200,7 @@ const useProvidersList = (options) => {
   };
   const saveSort = () => {
     if (!connectedOnly) {
+      // @ts-ignore
       dispatch(setSortAction({ sort, page }));
     }
   };

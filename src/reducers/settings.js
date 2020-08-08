@@ -22,6 +22,14 @@ import { createReducer } from "@reduxjs/toolkit";
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
  * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
+ * @typedef {import("../store/actions/settings").SetAnalyticsPairAction} SetAnalyticsPairAction
+ * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
+ * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
+ * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
+ * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
+ * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
+ * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
  */
 
 /**
@@ -31,30 +39,6 @@ import { createReducer } from "@reduxjs/toolkit";
  */
 
 /**
- * @typedef {'signalp'|'copyt'} ProviderPageType
- */
-
-/**
- * @typedef {Object} SetAnalyticsQuote0
- * @property {'SET_ANALYTICS_QUOTE'} type
- * @property {{page: 'signalp', quote: string}} payload
- */
-
-/**
- * @typedef {Object} SetAnalyticsPair
- * @property {ProviderPageType} page
- * @property {string} pair
- */
-
-/**
- * @typedef {Object} SetAnalyticsQuote
- * @property {ProviderPageType} page
- * @property {string} quote
- */
-
-/**
- * @param {StateSettingsType} state Current settings state.
- * @param {SetAnalyticsQuote|ActionObject} action Action to reduce.
  * @returns {StateSettingsType} New settings state.
  */
 const settings = createReducer(initialState.settings, {
@@ -83,17 +67,11 @@ const settings = createReducer(initialState.settings, {
     const { changedColumn, action: userAction } = action.payload;
 
     if (userAction === "add") {
-      //   Add column to displayed list
-      state.displayColumns = {
-        ...state.displayColumns,
-        [table]: [...state.displayColumns[table], changedColumn],
-      };
+      // Add column to displayed list
+      state.displayColumns[table].push(changedColumn);
     } else {
-      //   Remove column to displayed list
-      state.displayColumns = {
-        ...state.displayColumns,
-        [table]: state.displayColumns[table].filter((c) => c !== changedColumn),
-      };
+      // Remove column to displayed list
+      state.displayColumns[table] = state.displayColumns[table].filter((c) => c !== changedColumn);
     }
   },
 
@@ -102,28 +80,19 @@ const settings = createReducer(initialState.settings, {
     state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
   },
 
-  SET_BROWSE_QUOTE: (state, action) => {
-    state.copyt = {
-      ...state.copyt,
-      browse: { ...state.copyt.browse, quote: action.payload },
-    };
+  SET_BROWSE_QUOTE: (state, /** @type {SetBrowseQuoteAction} */ action) => {
+    state.copyt.browse.quote = action.payload;
   },
 
-  SET_BROWSE_EXCHANGE: (state, action) => {
-    state.copyt = {
-      ...state.copyt,
-      browse: { ...state.copyt.browse, exchange: action.payload },
-    };
+  SET_BROWSE_EXCHANGE: (state, /** @type {SetBrowseExchangeAction} */ action) => {
+    state.copyt.browse.exchange = action.payload;
   },
 
-  SET_BROWSE_EXCHANGE_TYPE: (state, action) => {
-    state.copyt = {
-      ...state.copyt,
-      browse: { ...state.copyt.browse, exchangeType: action.payload },
-    };
+  SET_BROWSE_EXCHANGE_TYPE: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
+    state.copyt.browse.exchangeType = action.payload;
   },
 
-  SET_SORT: (state, action) => {
+  SET_SORT: (state, /** @type {SetSortAction} */ action) => {
     const { page, sort } = action.payload;
     state.sort = {
       ...state.sort,
@@ -131,34 +100,25 @@ const settings = createReducer(initialState.settings, {
     };
   },
 
-  SET_TIMEFRAME: (state, action) => {
+  SET_TIMEFRAME: (state, /** @type {SetTimeFrameAction} */ action) => {
     const { page, timeFrame } = action.payload;
-    state.timeFrame = {
-      ...state.timeFrame,
-      [page]: timeFrame,
-    };
+    // @ts-ignore Analytics timeframes use string instead of numbers
+    state.timeFrame[page] = timeFrame;
   },
 
-  SET_ANALYTICS_QUOTE: (state, action) => {
-    // /** @type {{page: ProviderPageType, quote: string }} */
-    /** @type {SetAnalyticsQuote} */
+  SET_ANALYTICS_QUOTE: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
     const { page, quote } = action.payload;
     state[page].analytics.quote = quote;
   },
 
-  SET_ANALYTICS_PAIR: (state, action) => {
-    // /** @type {{page: ProviderPageType, pair: string }} */
-    /** @type {SetAnalyticsPair} */
+  SET_ANALYTICS_PAIR: (state, /** @type {SetAnalyticsPairAction} */ action) => {
     const { page, pair } = action.payload;
     state[page].analytics.pair = pair;
   },
 
-  SET_TERMINAL_PAIR: (state, action) => {
-    const { exchange, pair } = action.payload;
-    state.tradingTerminal = {
-      ...state.tradingTerminal,
-      pair: { ...state.tradingTerminal.pair, [exchange]: pair },
-    };
+  SET_TERMINAL_PAIR: (state, /** @type {SetTerminalPairAction} */ action) => {
+    const { exchangeName, pair } = action.payload;
+    state.tradingTerminal.pair[exchangeName] = pair;
   },
 });
 

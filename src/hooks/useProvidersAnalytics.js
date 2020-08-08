@@ -85,10 +85,10 @@ const useProvidersAnalytics = (type) => {
     label: intl.formatMessage({ id: "fil.pairs" }),
   });
   const initBase = storeSettings[type].analytics.pair;
-  const [base, setBase] = useState(initBase ? initBase : bases[0]);
+  const [base, setBase] = useState(initBase ? bases.find((b) => b.val === initBase) : bases[0]);
   // Save settings to store when changed
   const saveBase = () => {
-    dispatch(setAnayticsPair({ pair: base, page: type }));
+    dispatch(setAnayticsPair({ pair: base.val, page: type }));
   };
   useEffectSkipFirst(saveBase, [base]);
 

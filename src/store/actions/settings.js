@@ -27,22 +27,8 @@ export const SET_ANALYTICS_PAIR = "SET_ANALYTICS_PAIR";
 
 /**
  * @typedef {'signalp'|'copyt'} ProviderPageType
- */
-
-/**
- * @typedef {{page: ProviderPageType, quote: string}} SetAnalyticsQuotePayload
- *
- * @typedef {Object} SetAnalyticsQuoteAction
- * @property {typeof SET_ANALYTICS_QUOTE} type
- * @property {SetAnalyticsQuotePayload} payload
- */
-
-/**
- * @typedef {{page: ProviderPageType, pair: string}} SetAnalyticsPairPayload
- *
- * @typedef {Object} SetAnalyticsPairAction
- * @property {typeof SET_ANALYTICS_PAIR} type
- * @property {SetAnalyticsPairPayload} payload
+ * @typedef {'connectedSignalp'|'connectedCopyt'} ConnectedProviderPageType
+ * @typedef {'signalpAnalytics'|'copytAnalytics'} AnalyticsPageType
  */
 
 /**
@@ -134,8 +120,18 @@ export const setRowsPerPage = (payload) => {
 };
 
 /**
- * @param {Object} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetSortPayload
+ * @property {ProviderPageType} page
+ * @property {string} sort
+ *
+ * @typedef {Object} SetSortAction
+ * @property {typeof SET_SORT} type
+ * @property {SetSortPayload} payload
+ */
+
+/**
+ * @param {SetSortPayload} payload Set sort payload
+ * @returns {SetSortAction} Action object
  */
 export const setSort = (payload) => {
   return {
@@ -145,8 +141,14 @@ export const setSort = (payload) => {
 };
 
 /**
- * @param {string} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetBrowseExchangeAction
+ * @property {typeof SET_BROWSE_EXCHANGE} type
+ * @property {string} payload
+ */
+
+/**
+ * @param {string} payload Exchange
+ * @returns {SetBrowseExchangeAction} Action object
  */
 export const setBrowseExchange = (payload) => {
   return {
@@ -156,8 +158,14 @@ export const setBrowseExchange = (payload) => {
 };
 
 /**
- * @param {string} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetBrowseQuoteAction
+ * @property {typeof SET_BROWSE_QUOTE} type
+ * @property {string} payload
+ */
+
+/**
+ * @param {string} payload Quote
+ * @returns {SetBrowseQuoteAction} Action object
  */
 export const setBrowseQuote = (payload) => {
   return {
@@ -167,8 +175,14 @@ export const setBrowseQuote = (payload) => {
 };
 
 /**
- * @param {string} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetBrowseExchangeTypeAction
+ * @property {typeof SET_BROWSE_EXCHANGE_TYPE} type
+ * @property {string} payload
+ */
+
+/**
+ * @param {string} payload Exchange Type
+ * @returns {SetBrowseExchangeTypeAction} Action object.
  */
 export const setBrowseExchangeType = (payload) => {
   return {
@@ -178,8 +192,18 @@ export const setBrowseExchangeType = (payload) => {
 };
 
 /**
- * @param {Object} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetTimeFramePayload
+ * @property {ProviderPageType|ConnectedProviderPageType|AnalyticsPageType} page
+ * @property {string|number} timeFrame
+ *
+ * @typedef {Object} SetTimeFrameAction
+ * @property {typeof SET_TIMEFRAME} type
+ * @property {SetTimeFramePayload} payload
+ */
+
+/**
+ * @param {SetTimeFramePayload} payload Set timeFrame Payload
+ * @returns {SetTimeFrameAction} Action
  */
 export const setTimeFrame = (payload) => {
   return {
@@ -187,6 +211,16 @@ export const setTimeFrame = (payload) => {
     payload,
   };
 };
+
+/**
+ * @typedef {Object} SetAnalyticsQuotePayload
+ * @property {ProviderPageType} page
+ * @property {string} quote
+ *
+ * @typedef {Object} SetAnalyticsQuoteAction
+ * @property {typeof SET_ANALYTICS_QUOTE} type
+ * @property {SetAnalyticsQuotePayload} payload
+ */
 
 /**
  * @param {SetAnalyticsQuotePayload} payload Quote for the analytics
@@ -200,6 +234,14 @@ export const setAnayticsQuote = (payload) => {
 };
 
 /**
+ * @typedef {{page: ProviderPageType, pair: string}} SetAnalyticsPairPayload
+ *
+ * @typedef {Object} SetAnalyticsPairAction
+ * @property {typeof SET_ANALYTICS_PAIR} type
+ * @property {SetAnalyticsPairPayload} payload
+ */
+
+/**
  * @param {SetAnalyticsPairPayload} payload Pair for the analytics
  * @returns {SetAnalyticsPairAction} return action object.
  */
@@ -211,8 +253,18 @@ export const setAnayticsPair = (payload) => {
 };
 
 /**
- * @param {Object} payload Sort for the sp page.
- * @returns {AnyAction} return action object.
+ * @typedef {Object} SetTerminalPairPayload
+ * @property {string} exchangeName
+ * @property {string} pair
+ *
+ * @typedef {Object} SetTerminalPairAction
+ * @property {typeof SET_TERMINAL_PAIR} type
+ * @property {SetTerminalPairPayload} payload
+ */
+
+/**
+ * @param {SetTerminalPairPayload} payload Payload.
+ * @returns {SetTerminalPairAction} Action.
  */
 export const setTerminalPair = (payload) => {
   return {
