@@ -1,14 +1,14 @@
-export const SELECT_LANGUAGE = "SELECT_LANGUAGE_ACTION";
-export const SELECT_THEME = "SELECT_THEME_ACTION";
-export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX_ACTION";
+export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
+export const SELECT_THEME = "SELECT_THEME";
+export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
 export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
-export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME_ACTION";
-export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME_ACTION";
-export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME_ACTION";
+export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME";
+export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME";
+export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME";
 export const SET_TIMEFRAME = "SET_TIMEFRAME";
 export const SIGNALP_SORT = "SIGNALP_SORT";
 export const COPYT_SORT = "COPYT_SORT";
@@ -19,7 +19,7 @@ export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
 export const SET_BROWSE_EXCHANGE_TYPE = "SET_BROWSE_EXCHANGE_TYPE";
 export const SET_ANALYTICS_TIMEFRAME = "SET_ANALYTICS_TIMEFRAME";
 export const SET_ANALYTICS_QUOTE = "SET_ANALYTICS_QUOTE";
-export const SET_ANALYTICS_PAIR = "SET_ANALYTICS_PAIR";
+export const SET_ANALYTICS_BASE = "SET_ANALYTICS_BASE";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -234,27 +234,27 @@ export const setAnayticsQuote = (payload) => {
 };
 
 /**
- * @typedef {{page: ProviderPageType, pair: string}} SetAnalyticsPairPayload
+ * @typedef {{page: ProviderPageType, base: string}} SetAnalyticsBasePayload
  *
- * @typedef {Object} SetAnalyticsPairAction
- * @property {typeof SET_ANALYTICS_PAIR} type
- * @property {SetAnalyticsPairPayload} payload
+ * @typedef {Object} SetAnalyticsBaseAction
+ * @property {typeof SET_ANALYTICS_BASE} type
+ * @property {SetAnalyticsBasePayload} payload
  */
 
 /**
- * @param {SetAnalyticsPairPayload} payload Pair for the analytics
- * @returns {SetAnalyticsPairAction} return action object.
+ * @param {SetAnalyticsBasePayload} payload Pair for the analytics
+ * @returns {SetAnalyticsBaseAction} return action object.
  */
-export const setAnayticsPair = (payload) => {
+export const setAnayticsBase = (payload) => {
   return {
-    type: SET_ANALYTICS_PAIR,
+    type: SET_ANALYTICS_BASE,
     payload,
   };
 };
 
 /**
  * @typedef {Object} SetTerminalPairPayload
- * @property {string} exchangeName
+ * @property {string} exchangeId
  * @property {string} pair
  *
  * @typedef {Object} SetTerminalPairAction

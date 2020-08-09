@@ -79,7 +79,7 @@ const TradingView = () => {
    */
   const resolveDefaultSymbol = () => {
     return (
-      storeSettings.tradingTerminal.pair[exchangeName] ||
+      storeSettings.tradingTerminal.pair[storeSettings.selectedExchange.exchangeId] ||
       defaultExchangeSymbol[exchangeName] ||
       defaultExchangeSymbol.fallback
     );
@@ -241,7 +241,12 @@ const TradingView = () => {
 
   // Save symbol when changed
   const saveSelectedSymbol = () => {
-    dispatch(setTerminalPair({ exchangeName, pair: selectedSymbol }));
+    dispatch(
+      setTerminalPair({
+        exchangeId: storeSettings.selectedExchange.exchangeId,
+        pair: selectedSymbol,
+      }),
+    );
   };
   useEffectSkipFirst(saveSelectedSymbol, [selectedSymbol]);
 

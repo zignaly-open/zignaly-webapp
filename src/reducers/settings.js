@@ -14,7 +14,7 @@ import {
   SET_BROWSE_QUOTE,
   SET_SORT,
   SET_TERMINAL_PAIR,
-  SET_ANALYTICS_PAIR,
+  SET_ANALYTICS_BASE,
   SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
@@ -22,7 +22,7 @@ import { createReducer } from "@reduxjs/toolkit";
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
  * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
- * @typedef {import("../store/actions/settings").SetAnalyticsPairAction} SetAnalyticsPairAction
+ * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
  * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
  * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
@@ -42,24 +42,24 @@ import { createReducer } from "@reduxjs/toolkit";
  * @returns {StateSettingsType} New settings state.
  */
 const settings = createReducer(initialState.settings, {
-  SELECT_LANGUAGE: (state, action) => {
+  [SELECT_LANGUAGE]: (state, action) => {
     state.languageCode = action.payload;
   },
 
-  SELECT_THEME: (state, action) => {
+  [SELECT_THEME]: (state, action) => {
     state.darkStyle = action.payload;
   },
-  TOGGLE_BALANCE_BOX: (state, action) => {
+  [TOGGLE_BALANCE_BOX]: (state, action) => {
     state.balanceBox = action.payload;
   },
-  SET_SELECTED_EXCHANGE: (state, action) => {
+  [SET_SELECTED_EXCHANGE]: (state, action) => {
     state.selectedExchange = action.payload;
   },
-  UNSET_SELECTED_EXCHANGE: (state, action) => {
+  [UNSET_SELECTED_EXCHANGE]: (state, action) => {
     state.selectedExchange = initialState.settings.selectedExchange;
   },
 
-  SET_DISPLAY_COLUMN: (state, action) => {
+  [SET_DISPLAY_COLUMN]: (state, action) => {
     /**
      * @type {keyof DisplayColumns} table
      */
@@ -75,50 +75,47 @@ const settings = createReducer(initialState.settings, {
     }
   },
 
-  SET_ROWS_PER_PAGE: (state, action) => {
+  [SET_ROWS_PER_PAGE]: (state, action) => {
     const { table, numberOfRows } = action.payload;
     state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
   },
 
-  SET_BROWSE_QUOTE: (state, /** @type {SetBrowseQuoteAction} */ action) => {
+  [SET_BROWSE_QUOTE]: (state, /** @type {SetBrowseQuoteAction} */ action) => {
     state.copyt.browse.quote = action.payload;
   },
 
-  SET_BROWSE_EXCHANGE: (state, /** @type {SetBrowseExchangeAction} */ action) => {
+  [SET_BROWSE_EXCHANGE]: (state, /** @type {SetBrowseExchangeAction} */ action) => {
     state.copyt.browse.exchange = action.payload;
   },
 
-  SET_BROWSE_EXCHANGE_TYPE: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
+  [SET_BROWSE_EXCHANGE_TYPE]: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
     state.copyt.browse.exchangeType = action.payload;
   },
 
-  SET_SORT: (state, /** @type {SetSortAction} */ action) => {
+  [SET_SORT]: (state, /** @type {SetSortAction} */ action) => {
     const { page, sort } = action.payload;
-    state.sort = {
-      ...state.sort,
-      [page]: sort,
-    };
+    state.sort[page] = sort;
   },
 
-  SET_TIMEFRAME: (state, /** @type {SetTimeFrameAction} */ action) => {
+  [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
     const { page, timeFrame } = action.payload;
     // @ts-ignore Analytics timeframes use string instead of numbers
     state.timeFrame[page] = timeFrame;
   },
 
-  SET_ANALYTICS_QUOTE: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
+  [SET_ANALYTICS_QUOTE]: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
     const { page, quote } = action.payload;
     state[page].analytics.quote = quote;
   },
 
-  SET_ANALYTICS_PAIR: (state, /** @type {SetAnalyticsPairAction} */ action) => {
-    const { page, pair } = action.payload;
-    state[page].analytics.pair = pair;
+  [SET_ANALYTICS_BASE]: (state, /** @type {SetAnalyticsBaseAction} */ action) => {
+    const { page, base } = action.payload;
+    state[page].analytics.base = base;
   },
 
-  SET_TERMINAL_PAIR: (state, /** @type {SetTerminalPairAction} */ action) => {
-    const { exchangeName, pair } = action.payload;
-    state.tradingTerminal.pair[exchangeName] = pair;
+  [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {
+    const { exchangeId, pair } = action.payload;
+    state.tradingTerminal.pair[exchangeId] = pair;
   },
 });
 

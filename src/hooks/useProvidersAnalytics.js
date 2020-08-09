@@ -10,7 +10,7 @@ import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import {
-  setAnayticsPair,
+  setAnayticsBase,
   setAnayticsQuote,
   setTimeFrame as setTimeFrameAction,
 } from "../store/actions/settings";
@@ -66,7 +66,7 @@ const useProvidersAnalytics = (type) => {
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
-  const initQuote = storeSettings[type].analytics.quote || "USDT";
+  let initQuote = storeSettings[type].analytics.quote || "USDT";
   const [quote, setQuote] = useState(initQuote);
   // Save settings to store when changed
   const saveQuote = () => {
@@ -84,11 +84,13 @@ const useProvidersAnalytics = (type) => {
     val: "ALL",
     label: intl.formatMessage({ id: "fil.pairs" }),
   });
-  const initBase = storeSettings[type].analytics.pair;
-  const [base, setBase] = useState(initBase ? bases.find((b) => b.val === initBase) : bases[0]);
+
+  const savedBase = storeSettings[type].analytics.base;
+  let initBase = savedBase ? { val: savedBase, label: savedBase } : bases[0];
+  const [base, setBase] = useState(initBase);
   // Save settings to store when changed
   const saveBase = () => {
-    dispatch(setAnayticsPair({ pair: base.val, page: type }));
+    dispatch(setAnayticsBase({ base: base.val, page: type }));
   };
   useEffectSkipFirst(saveBase, [base]);
 

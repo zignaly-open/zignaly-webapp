@@ -69,7 +69,7 @@
 /**
  * @typedef {Object} AnalyticsSettings
  * @property {string} quote
- * @property {string} pair
+ * @property {string} base
  */
 
 /**
@@ -406,10 +406,10 @@ const initialState = {
     },
     copyt: {
       browse: { quote: null, exchange: null, exchangeType: null },
-      analytics: { quote: null, pair: null },
+      analytics: { quote: null, base: null },
     },
     signalp: {
-      analytics: { quote: null, pair: null },
+      analytics: { quote: null, base: null },
     },
     tradingTerminal: { pair: {} },
   },
