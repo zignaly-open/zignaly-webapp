@@ -1,5 +1,4 @@
 import initialState from "../store/initialState";
-import { assign } from "lodash";
 import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
@@ -49,13 +48,16 @@ const settings = createReducer(initialState.settings, {
   [SELECT_THEME]: (state, action) => {
     state.darkStyle = action.payload;
   },
+
   [TOGGLE_BALANCE_BOX]: (state, action) => {
     state.balanceBox = action.payload;
   },
+
   [SET_SELECTED_EXCHANGE]: (state, action) => {
     state.selectedExchange = action.payload;
   },
-  [UNSET_SELECTED_EXCHANGE]: (state, action) => {
+
+  [UNSET_SELECTED_EXCHANGE]: (state) => {
     state.selectedExchange = initialState.settings.selectedExchange;
   },
 
