@@ -127,7 +127,7 @@ const StopLossPanel = (props) => {
     }
 
     if (errors.stopLossPercentage) {
-      clearErrors("stopLossPrice");
+      clearErrors("stopLossPercentage");
     }
   };
 
@@ -153,7 +153,11 @@ const StopLossPanel = (props) => {
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
-      validateStopLossPercentageLimits();
+      if (validateStopLossPercentageLimits()) {
+        if (errors.stopLossPercentage) {
+          clearErrors("stopLossPercentage");
+        }
+      }
     } else {
       setValue("stopLossPercentage", "");
     }
@@ -162,7 +166,7 @@ const StopLossPanel = (props) => {
       return;
     }
 
-    if (errors.stopLossPercentage) {
+    if (errors.stopLossPrice) {
       clearErrors("stopLossPrice");
     }
   };

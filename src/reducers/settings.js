@@ -1,5 +1,4 @@
 import initialState from "../store/initialState";
-import { assign } from "lodash";
 import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
@@ -8,11 +7,28 @@ import {
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
   SET_ROWS_PER_PAGE,
+  SET_ANALYTICS_QUOTE,
+  SET_BROWSE_EXCHANGE,
+  SET_TIMEFRAME,
+  SET_BROWSE_QUOTE,
+  SET_SORT,
+  SET_TERMINAL_PAIR,
+  SET_ANALYTICS_BASE,
+  SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
+import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
  * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
+ * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
+ * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
+ * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
+ * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
+ * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
+ * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
+ * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
  */
 
 /**
@@ -22,65 +38,87 @@ import {
  */
 
 /**
- * @param {StateSettingsType} state Current settings state.
- * @param {ActionObject} action Action to reduce.
  * @returns {StateSettingsType} New settings state.
  */
-const settings = (state = initialState.settings, action) => {
-  const newState = assign({}, state);
+const settings = createReducer(initialState.settings, {
+  [SELECT_LANGUAGE]: (state, action) => {
+    state.languageCode = action.payload;
+  },
 
-  switch (action.type) {
-    case SELECT_LANGUAGE:
-      newState.languageCode = action.payload;
-      break;
+  [SELECT_THEME]: (state, action) => {
+    state.darkStyle = action.payload;
+  },
 
-    case SELECT_THEME:
-      newState.darkStyle = action.payload;
-      break;
-    case TOGGLE_BALANCE_BOX:
-      newState.balanceBox = action.payload;
-      break;
-    case SET_SELECTED_EXCHANGE:
-      newState.selectedExchange = action.payload;
-      break;
-    case UNSET_SELECTED_EXCHANGE:
-      newState.selectedExchange = initialState.settings.selectedExchange;
-      break;
+  [TOGGLE_BALANCE_BOX]: (state, action) => {
+    state.balanceBox = action.payload;
+  },
 
-    case SET_DISPLAY_COLUMN: {
-      /**
-       * @type {keyof DisplayColumns} table
-       */
-      const table = action.payload.table;
-      const { changedColumn, action: userAction } = action.payload;
+  [SET_SELECTED_EXCHANGE]: (state, action) => {
+    state.selectedExchange = action.payload;
+  },
 
-      if (userAction === "add") {
-        //   Add column to displayed list
-        newState.displayColumns = {
-          ...newState.displayColumns,
-          [table]: [...newState.displayColumns[table], changedColumn],
-        };
-      } else {
-        //   Remove column to displayed list
-        newState.displayColumns = {
-          ...newState.displayColumns,
-          [table]: newState.displayColumns[table].filter((c) => c !== changedColumn),
-        };
-      }
-      break;
+  [UNSET_SELECTED_EXCHANGE]: (state) => {
+    state.selectedExchange = initialState.settings.selectedExchange;
+  },
+
+  [SET_DISPLAY_COLUMN]: (state, action) => {
+    /**
+     * @type {keyof DisplayColumns} table
+     */
+    const table = action.payload.table;
+    const { changedColumn, action: userAction } = action.payload;
+
+    if (userAction === "add") {
+      // Add column to displayed list
+      state.displayColumns[table].push(changedColumn);
+    } else {
+      // Remove column to displayed list
+      state.displayColumns[table] = state.displayColumns[table].filter((c) => c !== changedColumn);
     }
+  },
 
-    case SET_ROWS_PER_PAGE: {
-      const { table, numberOfRows } = action.payload;
-      newState.rowsPerPage = { ...newState.rowsPerPage, [table]: numberOfRows };
-      break;
-    }
+  [SET_ROWS_PER_PAGE]: (state, action) => {
+    const { table, numberOfRows } = action.payload;
+    state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
+  },
 
-    default:
-      return state;
-  }
+  [SET_BROWSE_QUOTE]: (state, /** @type {SetBrowseQuoteAction} */ action) => {
+    state.copyt.browse.quote = action.payload;
+  },
 
-  return newState;
-};
+  [SET_BROWSE_EXCHANGE]: (state, /** @type {SetBrowseExchangeAction} */ action) => {
+    state.copyt.browse.exchange = action.payload;
+  },
+
+  [SET_BROWSE_EXCHANGE_TYPE]: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
+    state.copyt.browse.exchangeType = action.payload;
+  },
+
+  [SET_SORT]: (state, /** @type {SetSortAction} */ action) => {
+    const { page, sort } = action.payload;
+    state.sort[page] = sort;
+  },
+
+  [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
+    const { page, timeFrame } = action.payload;
+    // @ts-ignore Analytics timeframes use string instead of numbers
+    state.timeFrame[page] = timeFrame;
+  },
+
+  [SET_ANALYTICS_QUOTE]: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
+    const { page, quote } = action.payload;
+    state[page].analytics.quote = quote;
+  },
+
+  [SET_ANALYTICS_BASE]: (state, /** @type {SetAnalyticsBaseAction} */ action) => {
+    const { page, base } = action.payload;
+    state[page].analytics.base = base;
+  },
+
+  [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {
+    const { exchangeId, pair } = action.payload;
+    state.tradingTerminal.pair[exchangeId] = pair;
+  },
+});
 
 export default settings;

@@ -458,7 +458,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get assets for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeAssetsGet(payload);
@@ -592,7 +592,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's exchange assets.", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const response = await client.userExchangeAssetsGet(payload);

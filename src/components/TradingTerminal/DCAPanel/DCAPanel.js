@@ -225,7 +225,11 @@ const DCAPanel = (props) => {
     const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
 
     const units = Math.abs(rebuyPositionSize / targetPrice);
-    return validateUnitsLimits(units, rebuyPercentageProperty, "terminal.dca.limit");
+    if (positionSize > 0) {
+      return validateUnitsLimits(units, rebuyPercentageProperty, "terminal.dca.limit");
+    }
+
+    return true;
   };
 
   /**
@@ -254,6 +258,7 @@ const DCAPanel = (props) => {
     }
 
     if (
+      positionSize > 0 &&
       !validateCostLimits(
         rebuyPositionSize,
         composeTargetPropertyName("rebuyPercentage", targetId),

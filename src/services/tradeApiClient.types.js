@@ -478,6 +478,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProvidersListPayload
+ * @property {string} token
+ * @property {boolean} ro
+ */
+
+/**
  * @typedef {Object} DailyReturn
  * @property {Date} name Date
  * @property {number} [positions] Number of closed positions.

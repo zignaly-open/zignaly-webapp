@@ -5,6 +5,8 @@ import useQuoteAssets from "./useQuoteAssets";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import useReadOnlyProviders from "./useReadOnlyProviders";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -22,6 +24,9 @@ import { useDispatch } from "react-redux";
  * @property {string} quote
  * @property {Array<string>} quotes
  * @property {function} setQuote
+ * @property {OptionType} provider
+ * @property {Array<OptionType>} providers
+ * @property {function} setProvider
  * @property {function} clearFilters
  * @property {Boolean} loading
  */
@@ -43,19 +48,38 @@ const useDashboardAnalytics = () => {
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
 
   // time frames
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
-  const [timeFrame, setTimeFrame] = useState("60");
+  const [timeFrame, setTimeFrame] = useState("3");
 
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
   const [quote, setQuote] = useState("USDT");
 
+  const providerAssets = useReadOnlyProviders();
+  const [provider, setProvider] = useState({
+    val: "1",
+    label: intl.formatMessage({ id: "fil.manual" }),
+  });
+
+  let providers = providerAssets.map((item) => ({
+    val: item.id,
+    label: item.name,
+  }));
+
+  providers.push({ val: "1", label: intl.formatMessage({ id: "fil.manual" }) });
+  providers.push({ val: "all", label: intl.formatMessage({ id: "fil.providers.all" }) });
+
   const clearFilters = () => {
     setQuote("USDT");
-    setTimeFrame("60");
+    setTimeFrame("3");
+    setProvider({
+      val: "1",
+      label: intl.formatMessage({ id: "fil.manual" }),
+    });
   };
 
   const loadDashboardStats = () => {
@@ -66,7 +90,7 @@ const useDashboardAnalytics = () => {
       quote,
       timeFrame,
       includeOpenPositions: true,
-      providerId: "all",
+      providerId: provider.val,
       timeFrameFormat: "lastXDays",
     };
     tradeApi
@@ -83,7 +107,7 @@ const useDashboardAnalytics = () => {
   };
 
   // Load stats at init and on filters change
-  useEffect(loadDashboardStats, [timeFrame, quote, storeSession.tradeApi.accessToken]);
+  useEffect(loadDashboardStats, [timeFrame, quote, provider, storeSession.tradeApi.accessToken]);
 
   return {
     stats,
@@ -93,6 +117,9 @@ const useDashboardAnalytics = () => {
     quotes,
     quote,
     setQuote,
+    provider,
+    providers,
+    setProvider,
     clearFilters,
     loading,
   };

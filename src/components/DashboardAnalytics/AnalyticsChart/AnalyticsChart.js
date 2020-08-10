@@ -9,6 +9,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
+ * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
@@ -16,6 +17,7 @@ import { formatFloat2Dec } from "../../../utils/format";
  * @property {Array<ProfileStatsObject>} stats Table stats data.
  * @property {string} quote Selected quote (base currency).
  * @property {string} timeFrame Selected time frame.
+ * @property {OptionType} provider Selected provider.
  * @property {Boolean} loading
  */
 
@@ -25,7 +27,7 @@ import { formatFloat2Dec } from "../../../utils/format";
  * @param {DefaultProps} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const AnalyticsChart = ({ stats, timeFrame, quote, loading }) => {
+const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [tabValue, setTabValue] = useState(0);
@@ -76,7 +78,7 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading }) => {
             <FormattedMessage id="srv.netprofit" />
           </Typography>
         </Box>
-        <Typography variant="h3">{`${timeFrame} / ${quote}`}</Typography>
+        <Typography variant="h3">{`${timeFrame} / ${quote} / ${provider.label}`}</Typography>
       </Box>
       {loading && (
         <Box
