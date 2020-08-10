@@ -45,10 +45,11 @@ const ProvidersFilters = ({
 }) => {
   const intl = useIntl();
 
-  return open ? (
+  return (
     <CustomFilters
       onClear={clearFilters}
       onClose={onClose}
+      open={open}
       title={intl.formatMessage({
         id: "fil.filters",
       })}
@@ -79,7 +80,7 @@ const ProvidersFilters = ({
         value={exchangeType}
       />
     </CustomFilters>
-  ) : null;
+  );
 };
 
 export default ProvidersFilters;
