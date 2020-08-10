@@ -46,5 +46,14 @@ module.exports = {
         routeChangeEventName: "route_change",
       },
     },
+    {
+      // Generate mui styles for server side rendering
+      resolve: "gatsby-plugin-material-ui",
+      options: {
+        stylesProvider: {
+          injectFirst: true,
+        },
+      },
+    },
   ],
 };
