@@ -31,7 +31,7 @@ const LanguageSwitcher = () => {
 
       {languages.map((lang) =>
         lang.locale === storeSettings.languageCode ? (
-          <Flag className="flag" code={lang.countryCode} title={lang.label} />
+          <Flag className="flag" code={lang.countryCode} key={lang.locale} title={lang.label} />
         ) : (
           <button
             data-lang-code={lang.locale}
@@ -39,7 +39,7 @@ const LanguageSwitcher = () => {
             onClick={handleLanguageSelection}
             type="button"
           >
-            <Flag className="flag" code={lang.countryCode} title={lang.label} />
+            <Flag className="flag" code={lang.countryCode} key={lang.locale} title={lang.label} />
           </button>
         ),
       )}
