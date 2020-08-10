@@ -19,6 +19,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
+ * @property {PositionsFiltersState} filtersState
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
  */
@@ -30,6 +31,15 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} log
  * @property {UserPositionsCollection} profileOpen
  * @property {UserPositionsCollection} profileClosed
+ */
+
+/**
+ * @typedef {Object} PositionsFiltersState
+ * @property {string} provider
+ * @property {string} pair
+ * @property {string} side
+ * @property {string} type
+ * @property {string} status
  */
 
 /**
@@ -72,6 +82,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
+  const statusRef = useRef(filters.status);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -164,6 +175,11 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       setLoading(true);
     }
 
+    if (statusRef.current !== filters.status) {
+      setLoading(true);
+      statusRef.current = filters.status;
+    }
+
     return newPositions;
   };
 
@@ -220,6 +236,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       cancel = true;
     };
   };
+
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
   useEffect(loadPositionsForExchange, [
     type,
@@ -337,6 +354,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     positionsAll: positions[type] || [],
     positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
+    filtersState: filters,
     loading: loading,
     flagPositionUpdating,
   };
