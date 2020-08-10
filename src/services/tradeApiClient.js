@@ -1,5 +1,6 @@
 import fetch from "cross-fetch";
 import cache from "memory-cache";
+import { createHash } from "crypto";
 import { navigateLogin } from "./navigation";
 import {
   userEntityResponseTransform,
@@ -194,9 +195,11 @@ class TradeApiClient {
         }
       : { method: "GET" };
 
-    const cachedResponseData = cache.get(endpointPath);
+    const payloadHash = options.body ? createHash("md5").update(options.body).digest("hex") : "";
+    const cacheId = `${endpointPath}-${payloadHash}`;
+    const cachedResponseData = cache.get(cacheId);
     if (cachedResponseData) {
-      // console.log(`Request ${endpointPath} resolved from cache:`, cachedResponseData);
+      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
       return cachedResponseData;
     }
 
@@ -223,8 +226,8 @@ class TradeApiClient {
       // request should be cached or not. We need to do some refactorings in the
       // backend to properly manage the method usage.
       if (method === "GET") {
-        cache.put(endpointPath, responseData, cacheTTL);
-        // console.log(`Request ${endpointPath} performed:`, responseData);
+        cache.put(cacheId, responseData, cacheTTL);
+        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
