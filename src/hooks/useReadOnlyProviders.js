@@ -9,9 +9,10 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 
 /**
- * Provides exchange list.
+ * Provides provider list.
+ *
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
- * @returns {ProvidersCollection} Exchange list.
+ * @returns {ProvidersCollection} Provider list.
  */
 const useReadOnlyProviders = (shouldExecute = true) => {
   const [list, setList] = useState([]);
