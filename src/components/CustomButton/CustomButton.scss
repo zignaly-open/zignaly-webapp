@@ -97,6 +97,10 @@
   &.deleteButton {
     color: $red;
     min-width: 0;
+
+    .loader {
+      color: var(--purple);
+    }
   }
 }
 

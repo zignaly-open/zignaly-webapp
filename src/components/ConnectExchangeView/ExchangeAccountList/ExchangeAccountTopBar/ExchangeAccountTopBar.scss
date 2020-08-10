@@ -22,6 +22,26 @@
 
   .accountName {
     padding-left: 16px;
+
+    h3 {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .linkOn {
+      color: $green;
+      height: 28px;
+      margin-left: 15px;
+      width: 28px;
+    }
+
+    .linkOff {
+      color: $red;
+      height: 28px;
+      margin-left: 15px;
+      width: 28px;
+    }
   }
 
   h3 {

@@ -20,7 +20,13 @@ import { navigate as navigateReach } from "@reach/router";
  */
 const withDashboardLayout = (Component) => {
   /**
-   * @param {Object} props Default params.
+   *
+   * @typedef {Object} DefaultProps
+   * @property {String} path
+   */
+
+  /**
+   * @param {DefaultProps} props Default params.
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
@@ -40,7 +46,7 @@ const withDashboardLayout = (Component) => {
       >
         {exchangeConnections.length > 0 && (
           <>
-            <DashboardHeader />
+            <DashboardHeader path={props.path} />
             <Box className="pageContent">
               <Component {...props} />
             </Box>

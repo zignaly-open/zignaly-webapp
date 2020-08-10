@@ -41,6 +41,19 @@ const SignalProvidersProfile = () => {
 
   useEffect(checkPaymentStatus, []);
 
+  const checkAvailableOptions = () => {
+    let options = { ...storeViews.provider.options };
+    let available = false;
+    delete options.allowClones;
+    const optionValues = Object.values(options);
+    optionValues.forEach((item) => {
+      if (item) {
+        available = true;
+      }
+    });
+    return available;
+  };
+
   return (
     <Box
       alignItems="flex-start"
@@ -73,7 +86,7 @@ const SignalProvidersProfile = () => {
           <Performance provider={storeViews.provider} />
         </Box>
       </Box>
-      {!storeViews.provider.disable && (
+      {!storeViews.provider.disable && checkAvailableOptions() && (
         <Box bgcolor="grid.content" className="optionsBox">
           <Options provider={storeViews.provider} />
         </Box>

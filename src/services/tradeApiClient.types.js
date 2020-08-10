@@ -1,6 +1,6 @@
 import moment from "moment";
 import { assign, isArray, isObject, mapValues, isString } from "lodash";
-import { toCamelCaseKeys } from "../utils/format";
+import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
 /**
@@ -690,6 +690,17 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProfileStatsPayload
+ * @property {Boolean} includeOpenPositions
+ * @property {String} providerId
+ * @property {String} quote
+ * @property {Boolean} ro
+ * @property {String} timeFrame
+ * @property {String} timeFrameFormat
+ * @property {String} token
+ */
+
+/**
  * @typedef {Object} GetTransactionsPayload
  * @property {string} internalId
  */
@@ -1093,7 +1104,7 @@ export function positionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     ageSeconds: openDateMoment.diff(nowDate),
-    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YY/MM/DD HH:mm") : "-",
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
       positionEntity.buyPrice,
@@ -1101,7 +1112,7 @@ export function positionItemTransform(positionItem) {
     ),
     netProfitStyle: getValueType(positionEntity.netProfit),
     openDateMoment: openDateMoment,
-    openDateReadable: positionEntity.openDate ? openDateMoment.format("YY/MM/DD HH:mm") : "-",
+    openDateReadable: positionEntity.openDate ? openDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
     profitStyle: getValueType(positionEntity.profit),
     providerLink: composeProviderLink(),
@@ -3504,7 +3515,7 @@ export function exchangeOpenOrdersResponseTransform(response) {
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
   const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
-    datetimeReadable: time.format("YY/MM/DD HH:mm"),
+    datetimeReadable: time.format("YYYY/MM/DD HH:mm"),
   });
   return orderEntity;
 }
@@ -3588,5 +3599,64 @@ const createEmptyExchangeContractsEntity = () => {
     markprice: 0,
     side: "",
     symbol: "",
+  };
+};
+
+/**
+ * @typedef {Object} ProfileStatsObject
+ * @property {String} date
+ * @property {String} invested
+ * @property {Number} profit
+ * @property {Number} profitFromInvestmentPercentage
+ * @property {String} quote
+ * @property {String} returned
+ * @property {Number} totalPositions
+ * @property {Number} totalWins
+ */
+
+/**
+ * Transform profile profits stats response.
+ *
+ * @param {*} response Profile profits response.
+ * @returns {Array<ProfileStatsObject>} Profile profits entity collection.
+ */
+export function profileStatsResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of objects");
+  }
+
+  return response.map((item) => {
+    return profileStatsItemTransform(item);
+  });
+}
+
+/**
+ * Transform profile profits stats response item.
+ *
+ * @param {*} item Profile profits response entity.
+ * @returns {ProfileStatsObject} Profile profits entity.
+ */
+function profileStatsItemTransform(item) {
+  return assign(createEmptyProfileStatsEntity(), item, {
+    profit: formatFloat(item.profit),
+    profitFromInvestmentPercentage: formatFloat2Dec(item.profitFromInvestmentPercentage),
+  });
+}
+
+/**
+ * Create an empty profile profits entity
+ *
+ * @returns {ProfileStatsObject} Empty profile profits entity.
+ */
+const createEmptyProfileStatsEntity = () => {
+  return {
+    date: "",
+    invested: "",
+    profit: 0,
+    profitFromInvestmentPercentage: 0,
+    quote: "",
+    returned: "",
+    totalPositions: 1,
+    totalWins: 0,
   };
 };

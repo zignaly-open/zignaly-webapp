@@ -10,7 +10,7 @@ import { setProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
-import { showErrorAlert } from "../../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -39,7 +39,7 @@ const FollowProviderButton = ({ provider }) => {
         connected: false,
         exchangeInternalId: storeSettings.selectedExchange.internalId,
       };
-      const response = await tradeApi.serviceConnect(payload);
+      const response = await tradeApi.providerConnect(payload);
       if (response) {
         const payload2 = {
           token: storeSession.tradeApi.accessToken,
@@ -47,6 +47,7 @@ const FollowProviderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
         setLoader(false);
       }
     } catch (e) {
@@ -71,6 +72,7 @@ const FollowProviderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         setLoader(false);
       }
     } catch (e) {
@@ -104,7 +106,7 @@ const FollowProviderButton = ({ provider }) => {
       ) : provider.exchangeInternalId ? (
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
           <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-            <FormattedMessage id="copyt.stopcopyingtrader" />
+            <FormattedMessage id="srv.stopfollowing" />
           </CustomButton>
         ) : (
           <Box

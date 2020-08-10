@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 import { uniqBy, sortBy } from "lodash";
+import { FormattedMessage } from "react-intl";
+import { Checkbox } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -25,6 +28,7 @@ const PositionFilters = (props) => {
     pair: "all",
     side: "all",
     type: "all",
+    status: "",
   };
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -107,6 +111,20 @@ const PositionFilters = (props) => {
   };
 
   /**
+   * Set status filter value.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e Change event.
+   * @returns {Void} None.
+   */
+  const setStatus = (e) => {
+    const target = e.currentTarget;
+    setFilters({
+      ...filters,
+      status: target.checked ? "all" : "",
+    });
+  };
+
+  /**
    * Set type filter value.
    *
    * @param {string} value Selected type value.
@@ -134,6 +152,16 @@ const PositionFilters = (props) => {
       />
       <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
       <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
+      {showTypesFilter && (
+        <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
+          <Checkbox
+            checked={filters.status === "all"}
+            inputProps={{ "aria-label": "primary checkbox" }}
+            onChange={setStatus}
+          />
+          <FormattedMessage id="positions.log.filter.status" />
+        </Box>
+      )}
     </CustomFilters>
   );
 };

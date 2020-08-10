@@ -87,7 +87,7 @@ const ProviderOptionsForm = ({ provider }) => {
           exchangeInternalId: "",
         };
         tradeApi
-          .serviceConnect(payload)
+          .providerConnect(payload)
           .then((response) => {
             if (response) {
               const payload2 = {
@@ -176,10 +176,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.stopLossFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.stopLossFromSignal}
                 name="stopLossFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.stoploss" />
@@ -190,10 +196,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.acceptUpdateSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.acceptUpdateSignal}
                 name="acceptUpdateSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.updates" />
@@ -204,10 +216,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.trailingStopFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.trailingStopFromSignal}
                 name="trailingStopFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.trailing" />
@@ -218,10 +236,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.enableSellSignals && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.enableSellSignals}
                 name="enableSellSignals"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.exit" />
@@ -232,10 +256,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.useLeverageFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.useLeverageFromSignal}
                 name="useLeverageFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.leverage" />
@@ -246,10 +276,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.enablePanicSellSignals && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.enablePanicSellSignals}
                 name="enablePanicSellSignals"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.panicexit" />
@@ -260,10 +296,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.allowSendingBuyOrdersAsMarket && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.allowSendingBuyOrdersAsMarket}
                 name="allowSendingBuyOrdersAsMarket"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.buymarketorder" />
@@ -274,10 +316,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.reUseSignalIdIfClosed && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.reUseSignalIdIfClosed}
                 name="reUseSignalIdIfClosed"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.reusingsignalID" />
@@ -288,10 +336,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.limitPriceFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.limitPriceFromSignal}
                 name="limitPriceFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.limitprice" />
@@ -302,10 +356,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.reBuysFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.reBuysFromSignal}
                 name="reBuysFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.entryDCA" />
@@ -317,10 +377,16 @@ const ProviderOptionsForm = ({ provider }) => {
             <Box className="subInputBox">
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.reBuyFirst}
                   name="reBuyFirst"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.entryDCA.first" />
@@ -328,10 +394,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.reBuyAll}
                   name="reBuyAll"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.entryDCA.all" />
@@ -339,10 +411,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.reBuyLast}
                   name="reBuyLast"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.entryDCA.last" />
@@ -354,10 +432,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.takeProfitsFromSignal && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.takeProfitsFromSignal}
                 name="takeProfitsFromSignal"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.takeprofit" />
@@ -369,10 +453,16 @@ const ProviderOptionsForm = ({ provider }) => {
             <Box className="subInputBox">
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.takeProfitFirst}
                   name="takeProfitFirst"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.takeprofit.first" />
@@ -380,10 +470,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.takeProfitAll}
                   name="takeProfitAll"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.takeprofit.all" />
@@ -391,10 +487,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.takeProfitLast}
                   name="takeProfitLast"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.takeprofit.last" />
@@ -406,10 +508,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.reBuyFromProvider && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.reBuyFromProvider}
                 name="reBuyFromProvider"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.DCA" />
@@ -481,10 +589,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.terms && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={!!provider.terms}
                 name="terms"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.checkterms" />
@@ -496,10 +610,16 @@ const ProviderOptionsForm = ({ provider }) => {
             <Box className="subInputBox">
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.short}
                   name="short"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.checkterms.short" />
@@ -507,10 +627,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.shortmid}
                   name="shortmid"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.checkterms.shortmid" />
@@ -518,10 +644,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.mid}
                   name="mid"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.checkterms.mid" />
@@ -529,10 +661,16 @@ const ProviderOptionsForm = ({ provider }) => {
               </Box>
               <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
                 <Controller
-                  as={<Checkbox className="checkboxInput" />}
                   control={control}
                   defaultValue={provider.long}
                   name="long"
+                  render={({ onChange, value }) => (
+                    <Checkbox
+                      checked={value}
+                      className="checkboxInput"
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
                 />
                 <label className={"customLabel"}>
                   <FormattedMessage id="signalp.option.checkterms.long" />
@@ -544,10 +682,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.riskFilter && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.riskFilter}
                 name="riskFilter"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.filterrisk" />
@@ -586,10 +730,16 @@ const ProviderOptionsForm = ({ provider }) => {
           {provider.options.successRateFilter && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.successRateFilter}
                 name="successRateFilter"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage id="signalp.option.minimumsuccess" />
@@ -630,13 +780,19 @@ const ProviderOptionsForm = ({ provider }) => {
             </Box>
           )}
 
-          {provider.disclaimer && (
+          {provider.options.disclaimer && (
             <Box alignItems="center" className="inputBox" display="flex" flexDirection="row">
               <Controller
-                as={<Checkbox className="checkboxInput" />}
                 control={control}
                 defaultValue={provider.disclaimer}
                 name="disclaimer"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
               />
               <label className={"customLabel"}>
                 <FormattedMessage

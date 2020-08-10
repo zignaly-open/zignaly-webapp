@@ -189,19 +189,27 @@ const PositionsTable = (props) => {
   const composeDataTableForPositionsType = () => {
     let dataTable;
 
+    const excludeCancelAction = () => {
+      const isFutures =
+        storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
+      const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
+
+      return isZignaly && isFutures;
+    };
+
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      if (storeSettings.selectedExchange.exchangeType === "futures") {
+      if (excludeCancelAction()) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      if (storeSettings.selectedExchange.exchangeType === "futures") {
+      if (excludeCancelAction()) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
     } else if (type === "profileClosed") {

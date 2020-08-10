@@ -41,6 +41,10 @@ export const routesMapping = (path) => {
             to: "/dashboard/balance",
           },
           {
+            id: "srv.analytics",
+            to: "/dashboard/analytics",
+          },
+          {
             id: "dashboard.traders",
             to: "/dashboard/connectedTraders",
           },

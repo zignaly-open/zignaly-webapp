@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, useMediaQuery, Typography } from "@material-ui/core";
+import { Box, useMediaQuery, Typography, Tooltip } from "@material-ui/core";
 import "./ExchangeAccountTopBar.scss";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
@@ -9,6 +9,8 @@ import CustomButton from "../../../CustomButton";
 import { useTheme } from "@material-ui/core/styles";
 import { Settings, Sunset, Sunrise, Repeat, Layers } from "react-feather";
 import CustomToolip from "../../../CustomTooltip";
+import LinkIcon from "@material-ui/icons/Link";
+import LinkOffIcon from "@material-ui/icons/LinkOff";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -45,7 +47,21 @@ const ExchangeAccountTopBar = ({ account }) => {
       <Box alignItems="center" display="flex" flexDirection="row">
         <ExchangeIcon exchange={account.name.toLowerCase()} size="xlarge" />
         <Box className="accountName" display="flex" flexDirection="column">
-          <Typography variant="h3">{account.internalName}</Typography>
+          <Typography variant="h3">
+            {account.internalName}
+            {account.areKeysValid ? (
+              <Tooltip placement="top" title={<FormattedMessage id="accounts.exchangeconnected" />}>
+                <LinkIcon className="linkOn" />
+              </Tooltip>
+            ) : (
+              <Tooltip
+                placement="top"
+                title={<FormattedMessage id="accounts.exchangedisconnected" />}
+              >
+                <LinkOffIcon className="linkOff" />
+              </Tooltip>
+            )}
+          </Typography>
           {selectedExchangeInternalId === account.internalId && (
             <Typography className="selected" variant="subtitle1">
               <FormattedMessage id="accounts.selected" />

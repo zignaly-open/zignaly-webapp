@@ -38,6 +38,7 @@ import {
   exchangeContractsResponseTransform,
   userAvailableBalanceResponseTransform,
   cloneProviderResponseTransform,
+  profileStatsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -117,6 +118,8 @@ import {
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
+ * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
+ * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
  *
  */
 
@@ -566,8 +569,8 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async providerConnect(payload) {
-    const endpointPath = "/fe/api.php?action=createProvider";
+  async traderConnect(payload) {
+    const endpointPath = "/fe/api.php?action=connectService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
@@ -582,7 +585,7 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async serviceConnect(payload) {
+  async providerConnect(payload) {
     const endpointPath = "/fe/api.php?action=connectService";
     const responseData = await this.doRequest(endpointPath, payload);
 
@@ -1315,6 +1318,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
+  }
+
+  /**
+   * Canel exchange order.
+   *
+   * @param {ProfileStatsPayload} payload Cancel exchange order payload.
+   *
+   * @returns {Promise<Array<ProfileStatsObject>>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async profileStatsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProfitStatsNew";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return profileStatsResponseTransform(responseData);
   }
 }
 

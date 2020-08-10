@@ -159,10 +159,16 @@ const SignupForm = () => {
         <Box className="inputBox checkbox">
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Controller
-              as={<Checkbox className="checkboxInput" />}
               control={control}
               defaultValue={true}
               name="subscribe"
+              render={({ onChange, value }) => (
+                <Checkbox
+                  checked={value}
+                  className="checkboxInput"
+                  onChange={(e) => onChange(e.target.checked)}
+                />
+              )}
             />
             <span className="termsText">Subscribe to notifications</span>
           </Box>

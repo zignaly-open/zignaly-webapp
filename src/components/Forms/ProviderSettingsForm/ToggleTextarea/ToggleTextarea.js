@@ -35,7 +35,13 @@ const ToggleTextarea = ({ value, formMethods, label, name, tooltip }) => {
   useEffect(initData, [value]);
 
   return (
-    <Box alignItems="flex-start" className="toggleTextarea" display="flex" flexDirection="row">
+    <Box
+      alignItems="flex-start"
+      className="toggleTextarea"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+    >
       <Box
         alignItems="center"
         className="labelBox"
