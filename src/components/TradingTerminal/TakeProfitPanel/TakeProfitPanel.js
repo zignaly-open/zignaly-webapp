@@ -142,7 +142,6 @@ const TakeProfitPanel = (props) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   function validateTargetPercentageLimits(targetId) {
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPercentageRaw = getTargetPropertyRawValue("targetPricePercentage", targetId);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
@@ -223,7 +222,7 @@ const TakeProfitPanel = (props) => {
       return;
     }
 
-    if (targetPrice !== 0) {
+    if (!isNaN(targetPrice) && targetPrice !== 0) {
       const priceDiff = targetPrice - price;
       const targetPercentage = (priceDiff / price) * 100;
       setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
