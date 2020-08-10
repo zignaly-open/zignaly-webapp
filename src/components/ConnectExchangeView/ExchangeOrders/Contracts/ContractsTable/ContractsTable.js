@@ -3,7 +3,7 @@ import "./ContractsTable.scss";
 import { Box } from "@material-ui/core";
 import Table from "../../../../Table";
 import { formatFloat } from "../../../../../utils/format";
-import { navigate } from "gatsby";
+import { Link } from "gatsby";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -30,34 +30,13 @@ const ContractsTable = ({ title, list }) => {
   const tablePersistsKey = "contractsTable";
 
   /**
-   * Navigate to position detail page.
-   *
-   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
-   * @returns {Void} None.
-   */
-  function gotoPositionDetail(event) {
-    const targetElement = event.currentTarget;
-    const positionId = targetElement.getAttribute("data-position-id");
-    navigate(`position/${positionId}`);
-  }
-
-  /**
    * Compose all action buttons element for a given position.
    *
    * @param {String} positionId Position entity to compose buttons for.
    * @returns {JSX.Element} Composed JSX element.
    */
   function composePositionLinkButton(positionId) {
-    return (
-      <span
-        className="positionLink"
-        data-position-id={positionId}
-        onClick={gotoPositionDetail}
-        title="View Position"
-      >
-        {positionId}
-      </span>
-    );
+    return <Link to={`/position/${positionId}`}>{positionId}</Link>;
   }
 
   /**
