@@ -136,21 +136,18 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
-   * Calculate price based on percentage change for a given target.
+   * Validate target percentage limits.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
+   * @param {string} targetId Take profit target ID.
+   * @returns {boolean} true if validation pass, false otherwise.
    */
-  const targetPricePercentageChange = (event) => {
-    const price = getEntryPrice();
-    const targetId = getGroupTargetId(event);
+  function validateTargetPercentageLimits(targetId) {
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPercentageRaw = getTargetPropertyRawValue("targetPricePercentage", targetId);
     const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
     const valueType = entryType === "LONG" ? "greater" : "lower";
     const compareFn = entryType === "LONG" ? lt : gt;
-    let targetPrice = price;
 
     if (!isValidIntOrFloat(targetPercentageRaw) || compareFn(targetPercentage, 0)) {
       setError(pricePercentageProperty, {
@@ -161,6 +158,27 @@ const TakeProfitPanel = (props) => {
         ),
       });
 
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Calculate price based on percentage change for a given target.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @return {Void} None.
+   */
+  const targetPricePercentageChange = (event) => {
+    const price = getEntryPrice();
+    const targetId = getGroupTargetId(event);
+    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+    let targetPrice = price;
+
+    if (!validateTargetPercentageLimits(targetId)) {
       setValue(priceProperty, "");
       return;
     }
@@ -209,6 +227,10 @@ const TakeProfitPanel = (props) => {
       const priceDiff = targetPrice - price;
       const targetPercentage = (priceDiff / price) * 100;
       setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
+
+      if (validateTargetPercentageLimits(targetId)) {
+        clearErrors(pricePercentageProperty);
+      }
     } else {
       setValue(pricePercentageProperty, "");
     }
