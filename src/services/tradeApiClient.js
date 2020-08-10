@@ -50,6 +50,7 @@ import {
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
@@ -280,6 +281,21 @@ class TradeApiClient {
    */
   async providersGet(payload) {
     const endpointPath = "/fe/api.php?action=getProviderList2";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providersResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers list.
+   *
+   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersListGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderList";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providersResponseTransform(responseData);

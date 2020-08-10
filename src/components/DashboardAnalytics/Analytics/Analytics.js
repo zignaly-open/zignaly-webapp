@@ -18,6 +18,9 @@ const Analytics = () => {
     quotes,
     quote,
     setQuote,
+    provider,
+    providers,
+    setProvider,
     clearFilters,
     loading,
   } = useDashboardAnalytics();
@@ -26,8 +29,11 @@ const Analytics = () => {
     <Box>
       <Filters
         onClear={clearFilters}
+        onProviderChange={setProvider}
         onQuoteChange={setQuote}
         onTimeFrameChange={setTimeFrame}
+        provider={provider}
+        providers={providers}
         quote={quote}
         quotes={quotes}
         timeFrame={timeFrame}
@@ -35,6 +41,7 @@ const Analytics = () => {
       />
       <AnalyticsChart
         loading={loading}
+        provider={provider}
         quote={quote}
         stats={stats}
         timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
