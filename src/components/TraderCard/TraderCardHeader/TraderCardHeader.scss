@@ -3,7 +3,7 @@
   border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: row;
-  height: 80px;
+  min-height: 80px;
   padding: 18px 20px 0;
   width: 100%;
 
@@ -73,12 +73,19 @@
 
 @include media("<=sm") {
   .traderCardHeader {
+    min-height: 70px;
     padding: 8px 10px 0;
     width: 100%;
 
     .providerLogo {
       height: 30px;
       width: 30px;
+    }
+
+    .name {
+      h4 {
+        word-break: break-all;
+      }
     }
 
     .traderCardHeaderTitleBox {
