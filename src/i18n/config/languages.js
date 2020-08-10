@@ -18,7 +18,7 @@ const LocalizationLanguages = [
   },
 ];
 
-if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS) {
+if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
   // Test localization
   LocalizationLanguages.push(
     {
