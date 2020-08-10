@@ -171,8 +171,13 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     }
 
     // Only show loader at initial load to avoid loader experience disruption on updates.
-    if (newPositions[type] === null || statusRef.current !== filters.status) {
+    if (newPositions[type] === null) {
       setLoading(true);
+    }
+
+    if (statusRef.current !== filters.status) {
+      setLoading(true);
+      statusRef.current = filters.status;
     }
 
     return newPositions;
