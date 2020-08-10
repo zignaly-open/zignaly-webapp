@@ -1,5 +1,5 @@
 .traderCardHeader {
-  align-items: center;
+  align-items: flex-start;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: row;
@@ -29,10 +29,6 @@
       .name {
         color: var(--purple);
         text-decoration: none;
-
-        h4 {
-          word-break: break-all;
-        }
       }
 
       .connectedIcon {
@@ -78,12 +74,18 @@
 @include media("<=sm") {
   .traderCardHeader {
     min-height: 70px;
-    padding: 8px 10px;
+    padding: 8px 10px 0;
     width: 100%;
 
     .providerLogo {
       height: 30px;
       width: 30px;
+    }
+
+    .name {
+      h4 {
+        word-break: break-all;
+      }
     }
 
     .traderCardHeaderTitleBox {
