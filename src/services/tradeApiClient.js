@@ -1,4 +1,5 @@
 import fetch from "cross-fetch";
+import cache from "memory-cache";
 import { navigateLogin } from "./navigation";
 import {
   userEntityResponseTransform,
@@ -137,6 +138,33 @@ class TradeApiClient {
    */
   constructor() {
     this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
+
+    /**
+     * @type {Object<string, number>} Tracks request average latency.
+     */
+    this.endpointAverageLatency = {};
+  }
+
+  /**
+   * Store endpoint average latency.
+   *
+   * @param {string} endpointPath Trade API endpoint path to track.
+   * @param {number} latencyMillisec Latest request latency expressed in milliseconds.
+   * @returns {void} None.
+   *
+   * @memberof TradeApiClient
+   */
+  storeRequestAverageLatency(endpointPath, latencyMillisec) {
+    // Calculate average when there are previous observations.
+    if (this.endpointAverageLatency[endpointPath]) {
+      const currentAverage = this.endpointAverageLatency[endpointPath];
+      const newAverage = (currentAverage + latencyMillisec) / 2;
+      this.endpointAverageLatency[endpointPath] = newAverage;
+      return;
+    }
+
+    // Is the first observation.
+    this.endpointAverageLatency[endpointPath] = latencyMillisec;
   }
 
   /**
@@ -149,8 +177,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload) {
-    let responseData = {};
     const requestUrl = this.baseUrl + endpointPath;
+    let responseData = {};
 
     const options = payload
       ? {
@@ -163,13 +191,32 @@ class TradeApiClient {
         }
       : { method: "GET" };
 
+    const cachedResponseData = cache.get(endpointPath);
+    if (cachedResponseData) {
+      // console.log(`Request ${endpointPath} resolved from cache:`, cachedResponseData);
+      return cachedResponseData;
+    }
+
     try {
+      const startTime = Date.now();
       const response = await fetch(requestUrl, options);
+      const elapsedTime = Date.now() - startTime;
+      this.storeRequestAverageLatency(endpointPath, elapsedTime);
+
+      // Use average latency + some tolerance as cache expiration, when backend
+      // is saturated the average will increase and cache duration will be
+      // longer minimizing concurrent in-progress requests.
+      const cacheTTL = this.endpointAverageLatency[endpointPath] + 1000;
+      const parsedJson = await response.json();
+
       if (response.status === 200) {
-        responseData = await response.json();
+        responseData = parsedJson;
       } else {
-        responseData.error = await response.json();
+        responseData.error = parsedJson;
       }
+
+      cache.put(endpointPath, responseData, cacheTTL);
+      // console.log(`Request ${endpointPath} performed:`, responseData);
     } catch (e) {
       responseData.error = e.message;
     }
