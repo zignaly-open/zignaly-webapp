@@ -258,7 +258,6 @@ const TradingView = () => {
             />
           )}
           <Box
-            bgcolor="grid.content"
             className="tradingViewContainer"
             display="flex"
             flexDirection="row"

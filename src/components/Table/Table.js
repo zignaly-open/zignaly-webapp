@@ -87,8 +87,8 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
    * @type {MUIDataTableOptions}
    */
   const options = {
-    selectableRows: "none",
-    responsive: "stacked", // vertical
+    selectableRows: "none", // @ts-ignore
+    responsive: "vertical", // vertical
     filter: false,
     search: false,
     print: false,

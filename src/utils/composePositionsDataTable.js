@@ -507,7 +507,7 @@ function composeColumnOptions(columnId, columnName = null) {
   // Override defaults on default sort column.
   if (columnId === defaultSortColumnId) {
     return merge(columnOptions, {
-      options: { sort: true, sortDirection: "desc" },
+      options: { sort: true },
     });
   }
 

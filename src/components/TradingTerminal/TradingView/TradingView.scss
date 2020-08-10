@@ -16,7 +16,6 @@
 
   .tradingViewContainer {
     @extend %box-shadow;
-    padding: 30px 24px;
 
     @include media("<=sm") {
       flex-direction: column;
