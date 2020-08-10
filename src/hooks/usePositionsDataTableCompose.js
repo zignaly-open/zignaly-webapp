@@ -662,7 +662,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     // Override defaults on default sort column.
     if (columnId === defaultSortColumnId) {
       allOptions = merge(allOptions, {
-        options: { sort: true, sortDirection: "desc" },
+        options: { sort: true },
       });
     }
 

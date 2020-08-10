@@ -522,7 +522,7 @@ const StrategyForm = (props) => {
   const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
   return (
-    <Box className="strategyForm" textAlign="center">
+    <Box bgcolor="grid.content" className="strategyForm" textAlign="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         {isPositionView ? (
           <SidebarEditPanels

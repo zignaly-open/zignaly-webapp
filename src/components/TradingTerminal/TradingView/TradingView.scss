@@ -16,11 +16,32 @@
 
   .tradingViewContainer {
     @extend %box-shadow;
-    padding: 30px 24px;
 
     @include media("<=sm") {
       flex-direction: column;
       padding: 0;
+    }
+  }
+
+  .customTable {
+    > div {
+      background: transparent;
+      border: 1px solid transparent;
+      box-shadow: none;
+
+      div {
+        &:first-child {
+          min-height: 30px;
+        }
+
+        &:nth-child(3) {
+          @extend %box-shadow;
+        }
+      }
+
+      button {
+        padding: 0 0 10px 20px;
+      }
     }
   }
 

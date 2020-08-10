@@ -86,7 +86,6 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
           <span className={parseFloat(val) >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
         ),
         sort: true,
-        sortDirection: "desc",
       },
     },
     {
@@ -442,6 +441,10 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
     },
   ];
 
+  const options = {
+    sortOrder: { name: "percentageProfit", direction: "desc" },
+  };
+
   /**
    * @param {ThemeOptions} theme Material UI theme options.
    * @returns {Theme} Theme overridden.
@@ -464,7 +467,14 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
   return (
     <Box className="providersProfitsTable" display="flex" flexDirection="column" width={1}>
       <MuiThemeProvider theme={extendedTheme}>
-        <Table columns={columns} data={stats} persistKey={persistKey} title={title} />
+        <Table
+          columns={columns}
+          data={stats}
+          // @ts-ignore
+          options={options}
+          persistKey={persistKey}
+          title={title}
+        />
       </MuiThemeProvider>
     </Box>
   );

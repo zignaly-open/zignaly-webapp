@@ -68,7 +68,6 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       label: "col.date",
       options: {
         customBodyRender: FormatedDateTime,
-        sortDirection: "desc",
       },
     },
     {
@@ -80,6 +79,10 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       label: "col.txnid",
     },
   ];
+
+  const options = {
+    sortOrder: { name: "timestamp", direction: "desc" },
+  };
 
   return (
     <Box className="withdrawHistoryTable" display="flex" flexDirection="column" width={1}>
@@ -97,6 +100,8 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
         <Table
           columns={columns}
           data={withdraws}
+          // @ts-ignore
+          options={options}
           persistKey="withdrawHistory"
           title={<FormattedMessage id="accounts.withdraw.history" />}
         />

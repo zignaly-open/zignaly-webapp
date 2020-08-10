@@ -1,8 +1,6 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import { Helmet } from "react-helmet";
-import withDashboardLayout from "../../layouts/dashboardLayout";
 import { useIntl } from "react-intl";
 import { TradingViewEdit } from "../../components/TradingTerminal";
 import "./position.scss";
@@ -50,4 +48,4 @@ const PositionPage = (props) => {
   );
 };
 
-export default compose(withDashboardLayout)(PositionPage);
+export default PositionPage;
