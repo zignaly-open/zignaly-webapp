@@ -23,6 +23,28 @@
     }
   }
 
+  .customTable {
+    > div {
+      background: transparent;
+      border: 1px solid transparent;
+      box-shadow: none;
+
+      div {
+        &:first-child {
+          min-height: 30px;
+        }
+
+        &:nth-child(3) {
+          @extend %box-shadow;
+        }
+      }
+
+      button {
+        padding: 0 0 10px 20px;
+      }
+    }
+  }
+
   .loadProgress {
     flex: 0 0 100%;
     margin-bottom: 20px;
