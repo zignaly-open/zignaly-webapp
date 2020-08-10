@@ -8,12 +8,6 @@ import {
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
   SHOW_CREATE_PROVIDER,
-  CONNECTED_COPYT_TIMEFRAME,
-  CONNECTED_SIGNALP_TIMEFRAME,
-  COPYT_TIMEFRAME,
-  SIGNALP_TIMEFRAME,
-  COPYT_SORT,
-  SIGNALP_SORT,
   SHOW_BALANCE_LOADER,
   SHOW_GLOBAL_MODAL,
 } from "../store/actions/ui";
@@ -89,30 +83,6 @@ const ui = (state = initialState.ui, action) => {
 
     case ASK_2FA:
       newState.ask2FA = action.payload;
-      break;
-
-    case CONNECTED_SIGNALP_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, connectedSignalp: action.payload };
-      break;
-
-    case CONNECTED_COPYT_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, connectedCopyt: action.payload };
-      break;
-
-    case COPYT_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, copyt: action.payload };
-      break;
-
-    case SIGNALP_TIMEFRAME:
-      newState.timeFrame = { ...newState.timeFrame, signalp: action.payload };
-      break;
-
-    case COPYT_SORT:
-      newState.sort = { ...newState.sort, copyt: action.payload };
-      break;
-
-    case SIGNALP_SORT:
-      newState.sort = { ...newState.sort, signalp: action.payload };
       break;
 
     case SHOW_BALANCE_LOADER:
