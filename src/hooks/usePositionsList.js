@@ -280,7 +280,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       }
     }
   };
-  useInterval(updateData, 5000, true);
+  useInterval(updateData, 3000, true);
 
   /**
    * Update filters with selected exchange.
