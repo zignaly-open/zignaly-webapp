@@ -11,7 +11,6 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
-import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * @typedef {Object} DefaultProps
@@ -30,26 +29,6 @@ const FollowProviderButton = ({ provider }) => {
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
-
-  /**
-   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
-   * @type {ConfirmDialogConfig} initConfirmConfig
-   */
-  const initConfirmConfig = {
-    titleTranslationId: "",
-    messageTranslationId: "",
-    visible: false,
-  };
-
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-
-  const confirmAction = () => {
-    setConfirmConfig({
-      titleTranslationId: "confirm.srv.unfollow.title",
-      messageTranslationId: "confirm.srv.unfollow.message",
-      visible: true,
-    });
-  };
 
   const followProvider = async () => {
     try {
@@ -120,18 +99,13 @@ const FollowProviderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={stopFollowing}
-        setConfirmConfig={setConfirmConfig}
-      />
       {provider.disable ? (
         <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
           <FormattedMessage id="srv.followprovider" />
         </CustomButton>
       ) : provider.exchangeInternalId ? (
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-          <CustomButton className="loadMoreButton" loading={loader} onClick={confirmAction}>
+          <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
             <FormattedMessage id="srv.stopfollowing" />
           </CustomButton>
         ) : (
@@ -153,7 +127,7 @@ const FollowProviderButton = ({ provider }) => {
           </Box>
         )
       ) : (
-        <CustomButton className="loadMoreButton" loading={loader} onClick={confirmAction}>
+        <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
           <FormattedMessage id="srv.stopfollowing" />
         </CustomButton>
       )}
