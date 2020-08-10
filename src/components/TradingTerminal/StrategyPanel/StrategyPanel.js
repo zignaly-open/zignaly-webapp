@@ -196,7 +196,7 @@ const StrategyPanel = (props) => {
               {loading ? (
                 <CircularProgress color="primary" size={15} />
               ) : (
-                <span className="balance">{quoteBalance}</span>
+                <span className="balance">{formatPrice(quoteBalance)}</span>
               )}
             </FormHelperText>
             {errors.positionSize && (
