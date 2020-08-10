@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, useMediaQuery, Typography } from "@material-ui/core";
+import { Box, useMediaQuery, Typography, Tooltip } from "@material-ui/core";
 import "./ExchangeAccountTopBar.scss";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
@@ -50,9 +50,16 @@ const ExchangeAccountTopBar = ({ account }) => {
           <Typography variant="h3">
             {account.internalName}
             {account.areKeysValid ? (
-              <LinkIcon className="linkOn" />
+              <Tooltip placement="top" title={<FormattedMessage id="accounts.exchangeconnected" />}>
+                <LinkIcon className="linkOn" />
+              </Tooltip>
             ) : (
-              <LinkOffIcon className="linkOff" />
+              <Tooltip
+                placement="top"
+                title={<FormattedMessage id="accounts.exchangedisconnected" />}
+              >
+                <LinkOffIcon className="linkOff" />
+              </Tooltip>
             )}
           </Typography>
           {selectedExchangeInternalId === account.internalId && (
