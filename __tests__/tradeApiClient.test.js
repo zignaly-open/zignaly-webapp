@@ -453,7 +453,6 @@ describe("Consume tradeApiClient service", () => {
 
     const dataPoints = await client.providerCopyTradingDataPointsGet(payload);
     assert.isObject(dataPoints, "response is not an object.");
-    assert.isArray(dataPoints.quote, "response does not have the quote of a provider.");
   }, 10000);
 
   it("should get assets for the exchange account", async () => {
@@ -563,7 +562,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get management positions for provider.", async () => {
     const payload = {
       token: accessToken,
-      providerId: "5edf6165fc869626686e8657",
+      providerId: "5ee26419928896519668b62b",
     };
 
     const response = await client.providerManagementPositions(payload);
@@ -573,7 +572,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get provider's followers list.", async () => {
     const payload = {
       token: accessToken,
-      providerId: "5edf6165fc869626686e8657",
+      providerId: "5ee26419928896519668b62b",
     };
 
     const response = await client.providerFollowersListGet(payload);
