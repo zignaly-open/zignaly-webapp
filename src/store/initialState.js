@@ -49,6 +49,7 @@
  * @property {DefaultStateSessionTradeApi} tradeApi
  * @property {DefaultStateSessionCoinRay} coinRay
  * @property {DefaultSessionData} sessionData
+ * @property {string} appVersion
  */
 
 /**

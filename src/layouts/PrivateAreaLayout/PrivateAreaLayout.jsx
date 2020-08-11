@@ -17,6 +17,7 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { refreshSessionData } from "../../store/actions/session";
 import useInterval from "../../hooks/useInterval";
 import { minToMillisec } from "../../utils/timeConvert";
+import { showErrorAlert } from "../../../types/store/actions/ui";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -40,6 +41,19 @@ const PrivateAreaLayout = (props) => {
   };
 
   useInterval(updateSession, minToMillisec(60), true);
+
+  const appUpdatesCheck = () => {
+    try {
+      fetch(withPrefix("version.json")).then(async (response) => {
+        const version = await response.json();
+        console.log("version: ", version);
+      });
+    } catch (e) {
+      showErrorAlert(e);
+    }
+  };
+
+  useInterval(appUpdatesCheck, minToMillisec(0.3), true);
 
   return (
     <>
