@@ -28,9 +28,9 @@ jobs:
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         #run: npm test -- "tradeApiClient"
         run: echo "skipping tests"
-      - name: Build & Package
-        run: npm run build:test && npm run build:package
-      - name: Release
+      - name: Build
+        run: npm run build:test
+      - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
           GITHUB_AUTHOR_EMAIL: ${{ secrets.GITHUB_AUTHOR_EMAIL }}

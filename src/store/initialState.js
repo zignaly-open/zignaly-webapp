@@ -49,6 +49,7 @@
  * @property {DefaultStateSessionTradeApi} tradeApi
  * @property {DefaultStateSessionCoinRay} coinRay
  * @property {DefaultSessionData} sessionData
+ * @property {string} appVersion
  */
 
 /**
@@ -177,6 +178,7 @@ const initialState = {
       status: "",
       validUntil: 0,
     },
+    appVersion: "",
   },
   settings: {
     languageCode: "en",

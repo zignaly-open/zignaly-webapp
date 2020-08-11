@@ -97,6 +97,8 @@ confirm.srv.unfollow.title: "Stop Following Provider"
 confirm.srv.unfollow.message: "Your positions will remains under provider management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
 confirm.copyt.unfollow.title: "Stop Copying Trader"
 confirm.copyt.unfollow.message: "Your positions will remains under trader management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
+confirm.appupdate.title: "Application Update"
+confirm.appupdate.message: "A new Zignaly webapp update was released, we need to refresh the page to take advantage of the latest improvements."
 
 # COLUMNS
 col.actions: "ACTIONS"
