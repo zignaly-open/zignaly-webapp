@@ -42,21 +42,3 @@
     }
   }
 }
-
-@include media("<=sm") {
-  .customSelect {
-    align-items: flex-start;
-    flex-direction: column-reverse;
-    height: fit-content;
-
-    .callout {
-      + span {
-        margin-bottom: 5px;
-        order: 1;
-        padding-right: 5px;
-        text-align: center;
-        width: 100%;
-      }
-    }
-  }
-}

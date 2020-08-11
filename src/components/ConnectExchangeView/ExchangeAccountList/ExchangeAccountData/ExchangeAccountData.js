@@ -35,49 +35,53 @@ const ExchangeAccountData = ({ account }) => {
   return (
     <Box className="exchangeAccountData">
       <Box className="topBoxData" display="flex" flexDirection="row">
-        {!account.paperTrading && (
+        {(!balance || dailyBalance.loading) && !account.paperTrading ? (
+          <CircularProgress color="primary" size={40} />
+        ) : (
           <>
-            <Box className="equityBox">
-              {!balance ? (
-                <CircularProgress color="primary" className="loader" size={40} />
-              ) : !account.balanceSynced || (!balance.totalBTC && account.isBrokerAccount) ? (
-                <Box
-                  alignItems="center"
-                  className="noBalance"
-                  display="flex"
-                  height={1}
-                  justifyContent="center"
-                  width={1}
-                >
-                  <Typography variant="h3">
-                    {!account.balanceSynced && !account.isBrokerAccount ? (
-                      <FormattedMessage id="accounts.balance.synchronizing" />
-                    ) : (
-                      <FormattedMessage
-                        id="accounts.deposit.make"
-                        values={{
-                          depositLink: (
-                            <a onClick={() => navigateToPath("deposit", account)}>
-                              {intl.formatMessage({ id: "accounts.deposit" }).toLowerCase()}
-                            </a>
-                          ),
-                        }}
-                      />
-                    )}
-                  </Typography>
+            {!account.paperTrading && (
+              <>
+                <Box className="equityBox">
+                  {!account.balanceSynced || (!balance.totalBTC && account.isBrokerAccount) ? (
+                    <Box
+                      alignItems="center"
+                      className="noBalance"
+                      display="flex"
+                      height={1}
+                      justifyContent="center"
+                      width={1}
+                    >
+                      <Typography variant="h3">
+                        {!account.balanceSynced && !account.isBrokerAccount ? (
+                          <FormattedMessage id="accounts.balance.synchronizing" />
+                        ) : (
+                          <FormattedMessage
+                            id="accounts.deposit.make"
+                            values={{
+                              depositLink: (
+                                <a onClick={() => navigateToPath("deposit", account)}>
+                                  {intl.formatMessage({ id: "accounts.deposit" }).toLowerCase()}
+                                </a>
+                              ),
+                            }}
+                          />
+                        )}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <TotalEquity balance={balance} dailyBalance={dailyBalance} modal={true} />
+                  )}
                 </Box>
-              ) : (
-                <TotalEquity balance={balance} dailyBalance={dailyBalance} modal={true} />
-              )}
-            </Box>
-            <Box className="cryptoBox">
-              <CryptoComposition dailyBalance={dailyBalance} vertical={true} />
+                <Box className="cryptoBox">
+                  <CryptoComposition dailyBalance={dailyBalance} vertical={true} />
+                </Box>
+              </>
+            )}
+            <Box className="cardsBox" display="flex" flexDirection="column">
+              <ConnectedProvidersSummary providers={providers} />
             </Box>
           </>
         )}
-        <Box className="cardsBox" display="flex" flexDirection="column">
-          <ConnectedProvidersSummary providers={providers} />
-        </Box>
       </Box>
       <Box className="balanceBox">
         <AvailableBalance balance={balance} />

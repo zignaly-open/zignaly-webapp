@@ -43,9 +43,10 @@
   }
 
   .traderMiniCard {
-    margin: 7px 36px;
+    margin: 7px 28px;
     min-height: 80px;
-    width: calc(100% - 36 * 2px);
+    min-width: 310px;
+    width: calc(100% - 28 * 2px);
   }
 
   .customButton {

@@ -64,7 +64,11 @@ const CustomSelect = (props) => {
       display="flex"
       alignItems="center"
     >
-      {label && <Typography className="callout2 selectLabel">{label}</Typography>}
+      {label && (
+        <label className="selectLabel">
+          <Typography className="callout2">{label}</Typography>
+        </label>
+      )}
       <FormControl className="callout customSelectControl" variant="outlined">
         {!search ? (
           <Select

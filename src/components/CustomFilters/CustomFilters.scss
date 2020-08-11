@@ -58,8 +58,21 @@
       }
 
       .customSelect {
+        align-items: flex-start;
+        flex-direction: column;
+        height: fit-content;
         margin-bottom: 10px;
         width: 48%;
+
+        // .callout {
+        //   + span {
+        //     margin-bottom: 5px;
+        //     order: 1;
+        //     padding-right: 5px;
+        //     text-align: center;
+        //     width: 100%;
+        //   }
+        // }
       }
 
       .select,

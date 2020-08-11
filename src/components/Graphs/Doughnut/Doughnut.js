@@ -66,8 +66,7 @@ const Doughnut = (props) => {
           ul.innerHTML += `
                   <li>
                      <span class="circle" style="background-color: ${backgroundColor[labelIndex]}"></span>
-                     <span class="value">${dataset.data[labelIndex]}%</span>
-                     <span class="quote">${label}</span>
+                     <span class="value number2">${dataset.data[labelIndex]}% ${label}</span>
                    </li>
                 `;
         });
