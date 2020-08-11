@@ -1,7 +1,7 @@
 .mobileHeader {
   box-sizing: border-box;
   min-height: 50px;
-  padding: 16px;
+  padding: 16px 16px 0;
   width: 100%;
 
   .headerButton {
@@ -97,7 +97,7 @@
       width: 100%;
 
       .balanceBox {
-        height: 42px;
+        min-height: 42px;
         width: fit-content;
       }
     }

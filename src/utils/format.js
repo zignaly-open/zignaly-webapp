@@ -26,7 +26,9 @@ export const formatFloat = (val) => {
   if (isNil(valueFloat)) {
     return "-";
   }
-  return valueFloat >= 1 || valueFloat <= -1 ? valueFloat.toFixed(2) : valueFloat.toFixed(8);
+  return valueFloat >= 1 || valueFloat <= -1
+    ? valueFloat.toFixed(2).toLocaleString()
+    : valueFloat.toFixed(8).toLocaleString();
 };
 
 /**
