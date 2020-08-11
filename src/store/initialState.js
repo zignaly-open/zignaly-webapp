@@ -177,6 +177,7 @@ const initialState = {
       status: "",
       validUntil: 0,
     },
+    appVersion: "",
   },
   settings: {
     languageCode: "en",
