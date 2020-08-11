@@ -267,10 +267,7 @@ const TradingViewEdit = (props) => {
         setPositionEntity(newPositionEntity);
       }
 
-      methods.setValue(
-        "unrealizedProfitLossesPercentage",
-        newPositionEntity.unrealizedProfitLossesPercentage,
-      );
+      methods.setValue("priceDifference", newPositionEntity.priceDifference);
     }
   };
 
