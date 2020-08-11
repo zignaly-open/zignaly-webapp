@@ -5,7 +5,7 @@ import useUpdatedBalance from "../../../hooks/useUpdatedBalance";
 import useStoreUIBalanceLoader from "../../../hooks/useStoreUIBalanceLoader";
 import { useDispatch } from "react-redux";
 import { showBalanceLoader } from "../../../store/actions/ui";
-import { formatNumber } from "../../../utils/formatters";
+import { formatFloat } from "../../../utils/format";
 
 const BalanceBox = () => {
   const balance = useUpdatedBalance();
@@ -49,7 +49,7 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.available" />
             </Typography>
-            <Typography className="number1">BTC {formatNumber(balance.totalFreeBTC, 4)}</Typography>
+            <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
             <Typography className="number3">USDT {balance.totalFreeUSDT}</Typography>
           </Box>
 
@@ -63,10 +63,8 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.invested" />
             </Typography>
-            <Typography className="number1">
-              BTC {formatNumber(balance.totalLockedBTC, 4)}
-            </Typography>
-            <Typography className="number3">USDT {balance.totalLockedUSDT}</Typography>
+            <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
+            <Typography className="number3">USDT {formatFloat(balance.totalLockedUSDT)}</Typography>
           </Box>
 
           <Box
@@ -80,13 +78,13 @@ const BalanceBox = () => {
               <FormattedMessage id="balance.profitlosses" />
             </Typography>
             <Typography className={`${balance.pnlBTC > 0 ? "green" : "red"} number1`}>
-              BTC {formatNumber(balance.pnlBTC, 4)}
+              BTC {formatFloat(balance.pnlBTC)}
             </Typography>
             <Typography
               className={`${balance.pnlBTC > 0 ? "green" : "red"} number3`}
               variant="subtitle2"
             >
-              USDT {balance.pnlUSDT}
+              USDT {formatFloat(balance.pnlUSDT)}
             </Typography>
           </Box>
         </Box>
