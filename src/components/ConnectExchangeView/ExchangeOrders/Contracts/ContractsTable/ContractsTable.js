@@ -64,7 +64,6 @@ const ContractsTable = ({ title, list, loadData }) => {
    * @returns {void} None.
    */
   const confirmCancel = (data) => {
-    console.log(data);
     setPosition(data);
     setConfirmConfig({
       titleTranslationId: "contract.cancel.title",
