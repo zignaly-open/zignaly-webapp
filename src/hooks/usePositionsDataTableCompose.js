@@ -613,15 +613,9 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <div className="actions">
-        <button
-          data-action={"view"}
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="View Position"
-          type="button"
-        >
+        <Link to={`/position/${position.positionId}`}>
           <Eye color={colors.purpleLight} />
-        </button>
+        </Link>
       </div>
     );
   }
