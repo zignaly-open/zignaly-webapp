@@ -553,18 +553,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Navigate to position detail page.
-   *
-   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
-   * @returns {Void} None.
-   */
-  function gotoPositionDetail(event) {
-    const targetElement = event.currentTarget;
-    const positionId = targetElement.getAttribute("data-position-id");
-    navigate(`position/${positionId}`);
-  }
-
-  /**
    * Compose all action buttons element for a given position.
    *
    * @param {number} dataIndex Data entity index.
