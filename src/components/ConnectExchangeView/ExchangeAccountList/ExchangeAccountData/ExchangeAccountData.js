@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
 import AvailableBalance from "../../../Balance/AvailableBalance";
@@ -35,10 +35,12 @@ const ExchangeAccountData = ({ account }) => {
   return (
     <Box className="exchangeAccountData">
       <Box className="topBoxData" display="flex" flexDirection="row">
-        {balance && !account.paperTrading && (
+        {!account.paperTrading && (
           <>
             <Box className="equityBox">
-              {!account.balanceSynced || (!balance.totalBTC && account.isBrokerAccount) ? (
+              {!balance ? (
+                <CircularProgress color="primary" className="loader" size={40} />
+              ) : !account.balanceSynced || (!balance.totalBTC && account.isBrokerAccount) ? (
                 <Box
                   alignItems="center"
                   className="noBalance"
@@ -69,7 +71,7 @@ const ExchangeAccountData = ({ account }) => {
               )}
             </Box>
             <Box className="cryptoBox">
-              <CryptoComposition dailyBalance={dailyBalance} />
+              <CryptoComposition dailyBalance={dailyBalance} vertical={true} />
             </Box>
           </>
         )}

@@ -18,6 +18,10 @@
   width: 100%;
 }
 
+.modalFilter {
+  margin: 16px 0 0 auto;
+}
+
 @include media("<=sm") {
   .totalEquity {
     border: 0;

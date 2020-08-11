@@ -1,12 +1,39 @@
 .doughnut {
-  height: 100%;
-  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   width: 100%;
 
+  .canvasParent {
+    // height: 100%;
+    flex: 1;
+    position: relative;
+    // width: 100%;
+  }
+
   .legendBox {
-    position: absolute;
-    right: 0;
-    top: 50%;
+    // display: none;
+
+    &:not(.vertical) {
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+
+    &.vertical ul {
+      //   display: grid;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      //   grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      height: 80px;
+      margin-top: 20px;
+
+      li {
+        flex-basis: 107px;
+        // padding-right: 30px;
+      }
+    }
 
     ul {
       list-style: none;

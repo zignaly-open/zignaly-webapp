@@ -12,6 +12,7 @@ import { useIntl } from "react-intl";
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
+ * @property {boolean} vertical Display legend under the doughnut.
  */
 
 /**
@@ -19,7 +20,7 @@ import { useIntl } from "react-intl";
  * @param {DefaultProps} props Default props.
  */
 
-const CompositionGraph = ({ list, quotes }) => {
+const CompositionGraph = ({ list, quotes, vertical }) => {
   const intl = useIntl();
 
   const sectionColors = [
@@ -85,7 +86,9 @@ const CompositionGraph = ({ list, quotes }) => {
 
   prepareChartData();
 
-  return <Doughnut colorOptions={colorsOptions} labels={labels} values={values} />;
+  return (
+    <Doughnut colorOptions={colorsOptions} labels={labels} values={values} vertical={vertical} />
+  );
 };
 
 export default CompositionGraph;

@@ -17,6 +17,7 @@ import { Doughnut as DoughnutChart } from "react-chartjs-2";
  * @property {Array<Number>} values Chart values.
  * @property {Array<String>} labels Chart labels.
  * @property {DoughnutColorOptions} colorOptions
+ * @property {boolean} vertical Display legend under the doughnut.
  */
 
 /**
@@ -25,7 +26,7 @@ import { Doughnut as DoughnutChart } from "react-chartjs-2";
  */
 
 const Doughnut = (props) => {
-  const { values, labels, colorOptions } = props;
+  const { values, labels, colorOptions, vertical } = props;
   const chartRef = useRef(null);
   const legendId = `legendBox${Math.random()}`;
   /**
@@ -46,14 +47,15 @@ const Doughnut = (props) => {
    * @type {ChartOptions}
    */
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     layout: {
       padding: {
-        right: 100,
+        right: vertical ? 0 : 100,
       },
     },
     legend: {
       display: false,
-      position: "right",
     },
     /* @ts-ignore */
     legendCallback: (chart) => {
@@ -87,16 +89,12 @@ const Doughnut = (props) => {
   useEffect(renderLegend, [data, labels]);
 
   return (
-    <Box
-      alignItems="center"
-      className="doughnut"
-      display="flex"
-      flexDirection="row"
-      justifyContent="space-between"
-    >
-      <DoughnutChart data={data} options={options} ref={chartRef} />
-      <Box className="legendBox" id={legendId} />
-    </Box>
+    <div className="doughnut">
+      <div className="canvasParent">
+        <DoughnutChart data={data} options={options} ref={chartRef} />
+      </div>
+      <div className={`legendBox ${vertical ? "vertical" : ""}`} id={legendId} />
+    </div>
   );
 };
 

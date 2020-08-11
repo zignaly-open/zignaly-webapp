@@ -4,15 +4,21 @@
   width: 100%;
 
   .topBoxData {
-    min-height: 260px;
+    // max-height: 400px;
+    max-height: 400px;
+    // min-height: 260px;
     position: relative;
   }
 
   .equityBox {
-    flex: 1;
+    align-items: center;
+    display: flex;
+    flex: 1 1 0;
+    justify-content: center;
 
     .totalEquity {
       border: 0;
+      flex: 1;
     }
 
     .boxTitle {
@@ -25,16 +31,26 @@
   }
 
   .cryptoBox {
-    flex: 1;
+    display: flex;
+    flex: 1 1 0;
 
     h3 {
       font-size: 21px;
       font-weight: 400;
     }
+
+    .canvasParent {
+      //   flex: 0;
+      //   height: 300px;
+    }
+
+    .legendBox {
+      padding: 0 20px;
+    }
   }
 
   .cardsBox {
-    flex: 1;
+    flex: 1 1 0;
     position: relative;
   }
 
@@ -46,6 +62,8 @@
 
   .cryptoComposition {
     align-items: center;
+    display: flex;
+    flex: 1;
   }
 
   .availableBalance {
@@ -81,9 +99,6 @@
 
     .cryptoBox {
       min-height: 200px;
-    }
-
-    .cryptoBox {
       width: 100%;
     }
 
