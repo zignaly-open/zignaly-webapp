@@ -3602,7 +3602,7 @@ function exchangeContractsItemTransform(contract) {
  *
  * @returns {ExchangeContractsObject} Empty exchaneg conytract entity.
  */
-const createEmptyExchangeContractsEntity = () => {
+export const createEmptyExchangeContractsEntity = () => {
   return {
     positionId: "",
     amount: 0,
