@@ -43,16 +43,16 @@ const useAppUpdatesCheck = () => {
   const appUpdatesCheck = () => {
     try {
       fetch(withPrefix("version.json")).then(async (response) => {
-        const data = (await response.json()) || { version: null };
+        const version = (await response.json()) || null;
 
         // Version is not tracked yet so just set the latest version.
         if (!currentVersion) {
-          dispatch(setAppVersion(data.version));
+          dispatch(setAppVersion(version));
         }
 
         // App version update available, set new version in store and force refresh.
-        if (currentVersion && currentVersion !== data.version) {
-          dispatch(setAppVersion(data.version));
+        if (currentVersion && currentVersion !== version) {
+          dispatch(setAppVersion(version));
           setConfirmConfig({ ...confirmConfig, visible: true });
         }
       });
