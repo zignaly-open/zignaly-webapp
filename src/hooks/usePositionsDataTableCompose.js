@@ -1,6 +1,6 @@
 import React from "react";
 import { findIndex, isFunction, merge, partial } from "lodash";
-import { Link, navigate } from "gatsby";
+import { Link } from "gatsby";
 import { ExternalLink, Eye, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "../utils/formatters";
 import { colors } from "../services/theme";
@@ -553,18 +553,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Navigate to position detail page.
-   *
-   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
-   * @returns {Void} None.
-   */
-  function gotoPositionDetail(event) {
-    const targetElement = event.currentTarget;
-    const positionId = targetElement.getAttribute("data-position-id");
-    navigate(`position/${positionId}`);
-  }
-
-  /**
    * Compose all action buttons element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -613,15 +601,9 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <div className="actions">
-        <button
-          data-action={"view"}
-          data-position-id={position.positionId}
-          onClick={gotoPositionDetail}
-          title="View Position"
-          type="button"
-        >
+        <Link to={`/position/${position.positionId}`}>
           <Eye color={colors.purpleLight} />
-        </button>
+        </Link>
       </div>
     );
   }
