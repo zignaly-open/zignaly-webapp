@@ -42,7 +42,6 @@ module.exports = {
         releaseNameTemplate: "webapp-${version}",
         jiraHost: "zignaly.atlassian.net",
         ticketPrefixes: ["ZIG"],
-        ticketRegex: "[a-zA-Z]{3,5}-\\d{3,5}",
       },
     ],
   ],
