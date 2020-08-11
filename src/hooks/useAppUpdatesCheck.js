@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { showErrorAlert } from "../store/actions/ui";
 import { withPrefix } from "gatsby";
-import useInterval from "./useInterval";
-import { minToMillisec } from "../../types/utils/timeConvert";
-import useStoreSessionSelector from "./useStoreSessionSelector";
-import { useDispatch } from "react-redux";
 import { setAppVersion } from "../store/actions/session";
+import { minToMillisec } from "../utils/timeConvert";
+import useInterval from "./useInterval";
+import { useDispatch } from "react-redux";
+import useStoreSessionSelector from "./useStoreSessionSelector";
 
 /**
  * @typedef {import("../components/Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
