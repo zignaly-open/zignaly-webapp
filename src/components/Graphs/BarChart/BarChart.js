@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React, { useCallback } from "react";
 import "./BarChart.scss";
 import { Box } from "@material-ui/core";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 import "../Chart.roundedBarCharts";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
+import useChartTooltip from "../../../hooks/useChartTooltip";
+import TooltipChart from "../TooltipChart";
 
 // Chart.Tooltip.positioners.cursor = function (chartElements, coordinates) {
 //   return { x: coordinates.x, y: 210 };
@@ -50,7 +52,8 @@ const BarChart = (props) => {
     adjustHeightToContent,
     options: customOptions,
   } = props;
-  const chartRef = useRef(null);
+  const { chartRef, pointHoverRef, tooltipData, showTooltip } = useChartTooltip(tooltipFormat);
+  const showTooltipCallback = useCallback(showTooltip, [values]);
 
   /**
    * @type ChartData
@@ -142,14 +145,12 @@ const BarChart = (props) => {
     },
     cornerRadius: 4,
     tooltips: {
-      displayColors: false,
-      intersect: false,
       mode: "index",
-      //   position: "cursor",
-      callbacks: {
-        title: (/** tooltipItems, data**/) => "",
-        label: tooltipFormat,
-      },
+      intersect: false,
+      position: "nearest",
+      displayColors: false,
+      enabled: false,
+      custom: showTooltipCallback,
     },
     plugins: {
       legendImages: imagesElements
@@ -237,7 +238,9 @@ const BarChart = (props) => {
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <BarComponent data={data} options={options} plugins={plugins} ref={chartRef} />
+      <TooltipChart pointHoverRef={pointHoverRef} tooltipData={tooltipData}>
+        <BarComponent data={data} options={options} plugins={plugins} ref={chartRef} />
+      </TooltipChart>
     </Box>
   );
 };
