@@ -18,6 +18,7 @@ import { refreshSessionData } from "../../store/actions/session";
 import useInterval from "../../hooks/useInterval";
 import { minToMillisec } from "../../utils/timeConvert";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
+import { ConfirmDialog } from "../../../types/components/Dialogs/ConfirmDialog/ConfirmDialog";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -41,10 +42,15 @@ const PrivateAreaLayout = (props) => {
   };
 
   useInterval(updateSession, minToMillisec(60), true);
-  useAppUpdatesCheck();
+  const { confirmConfig, setConfirmConfig, executeRefresh } = useAppUpdatesCheck();
 
   return (
     <>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={executeRefresh}
+        setConfirmConfig={setConfirmConfig}
+      />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
       <Box bgcolor="background.default" className={"app"}>
