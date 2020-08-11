@@ -35,5 +35,15 @@ module.exports = {
         notifyOnFail: true,
       },
     ],
+    [
+      "semantic-release-jira-releases",
+      {
+        projectId: "ZIG",
+        releaseNameTemplate: "webapp-${version}",
+        jiraHost: "zignaly.atlassian.net",
+        ticketPrefixes: ["ZIG"],
+        ticketRegex: "[a-zA-Z]{3,5}-\\d{3,5}",
+      },
+    ],
   ],
 };
