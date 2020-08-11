@@ -48,10 +48,24 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
 
   /**
    * @param {ChartTooltipItem} tooltipItems Tooltip item.
-   * @returns {string} Tooltip text.
+   * @returns {React.ReactNode} Tooltip text.
    */
-  const tooltipFormat = (tooltipItems /* data */) =>
-    `${formatFloat2Dec(tooltipItems[isMobile ? "xLabel" : "yLabel"])} ${unit}`;
+  const tooltipFormat = (tooltipItems /* data */) => {
+    const data = stats[tooltipItems.index];
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="flex-start">
+        <Typography variant="h5">{data.date}</Typography>
+        <Typography variant="h5">{`Total Profit: ${formatFloat2Dec(
+          data[key],
+        )} ${unit}`}</Typography>
+        <Typography variant="h5">{`Coin: ${data.quote}`}</Typography>
+        <Typography variant="h5">{`Invested: ${formatFloat2Dec(data.invested)}`}</Typography>
+        <Typography variant="h5">{`Profit: ${formatFloat2Dec(data.profit)}`}</Typography>
+        <Typography variant="h5">{`Total Positions: ${data.totalPositions}`}</Typography>
+        <Typography variant="h5">{`Total Wins: ${data.totalWins}`}</Typography>
+      </Box>
+    );
+  };
 
   return (
     <Paper className="providersProfitsChart">
