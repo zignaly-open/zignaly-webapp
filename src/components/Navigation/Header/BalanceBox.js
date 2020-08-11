@@ -5,7 +5,6 @@ import useUpdatedBalance from "../../../hooks/useUpdatedBalance";
 import useStoreUIBalanceLoader from "../../../hooks/useStoreUIBalanceLoader";
 import { useDispatch } from "react-redux";
 import { showBalanceLoader } from "../../../store/actions/ui";
-import { formatNumber } from "../../../utils/formatters";
 import { formatFloat } from "../../../utils/format";
 
 const BalanceBox = () => {
