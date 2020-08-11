@@ -109,6 +109,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
+ * @typedef {import('./tradeApiClient.types').CancelContractPayload} CancelContractPayload
  * @typedef {import('./tradeApiClient.types').ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import('./tradeApiClient.types').ProviderFollowersEntity} ProviderFollowersEntity
  * @typedef {import('./tradeApiClient.types').ProviderCopiersEntity} ProviderCopiersEntity
@@ -1398,6 +1399,22 @@ class TradeApiClient {
    */
   async cancelExchangeOrder(payload) {
     const endpointPath = "/fe/api.php?action=cancelOrder";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Canel exchange contract.
+   *
+   * @param {CancelContractPayload} payload Cancel exchange contract payload.
+   *
+   * @returns {Promise<Boolean>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async cancelExchangeContract(payload) {
+    const endpointPath = "/fe/api.php?action=reduceContract";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

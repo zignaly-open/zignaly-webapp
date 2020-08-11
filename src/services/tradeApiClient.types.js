@@ -317,6 +317,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelContractPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} amount amount.
+ * @property {String} symbol symbol.
+ */
+
+/**
  * @typedef {Object} PositionsListPayload
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
@@ -3594,7 +3602,7 @@ function exchangeContractsItemTransform(contract) {
  *
  * @returns {ExchangeContractsObject} Empty exchaneg conytract entity.
  */
-const createEmptyExchangeContractsEntity = () => {
+export const createEmptyExchangeContractsEntity = () => {
   return {
     positionId: "",
     amount: 0,

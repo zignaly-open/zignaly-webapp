@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import "./ContractsTable.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../../Table";
 import { formatFloat } from "../../../../../utils/format";
 import { Link } from "gatsby";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { ConfirmDialog } from "../../../../Dialogs";
+import { useDispatch } from "react-redux";
+import tradeApi from "../../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
+import ModalPathContext from "../../../ModalPathContext";
+import { showErrorAlert } from "../../../../../store/actions/ui";
+import { createEmptyExchangeContractsEntity } from "../../../../../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -22,21 +30,81 @@ import { Link } from "gatsby";
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<ExchangeContractsObject>} list
+ * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ContractsTable = ({ title, list }) => {
+const ContractsTable = ({ title, list, loadData }) => {
   const tablePersistsKey = "contractsTable";
+  const {
+    pathParams: { selectedAccount },
+  } = useContext(ModalPathContext);
+  const storeSession = useStoreSessionSelector();
+  const [loading, setLoading] = useState(false);
+  const emptyContract = createEmptyExchangeContractsEntity();
+  const [position, setPosition] = useState(emptyContract);
+
+  /**
+   * @typedef {import("../../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const dispatch = useDispatch();
+
+  /**
+   *
+   * @param {ExchangeContractsObject} data ID of the user.
+   * @returns {void} None.
+   */
+  const confirmCancel = (data) => {
+    setPosition(data);
+    setConfirmConfig({
+      titleTranslationId: "contract.cancel.title",
+      messageTranslationId: "contract.cancel.subtitle",
+      visible: true,
+    });
+  };
+
+  /**
+   *
+   * @returns {void} None.
+   */
+  const cancelContract = () => {
+    setLoading(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: selectedAccount.internalId,
+      symbol: position.symbol,
+      amount: position.amount.toString(),
+    };
+
+    tradeApi
+      .cancelExchangeContract(payload)
+      .then(() => {
+        setLoading(false);
+        loadData();
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+        setLoading(false);
+      });
+  };
 
   /**
    * Compose all action buttons element for a given position.
    *
-   * @param {String} positionId Position entity to compose buttons for.
+   * @param {String} id Position entity to compose buttons for.
    * @returns {JSX.Element} Composed JSX element.
    */
-  function composePositionLinkButton(positionId) {
-    return <Link to={`/position/${positionId}`}>{positionId}</Link>;
+  function composePositionLinkButton(id) {
+    return <Link to={`/position/${id}`}>{id}</Link>;
   }
 
   /**
@@ -94,11 +162,34 @@ const ContractsTable = ({ title, list }) => {
       name: "margin",
       label: "col.contracts.margin",
     },
+    {
+      name: "positionId",
+      label: "col.contracts.margin",
+      options: {
+        customBodyRender: (val, row) => {
+          return loading && position.positionId === val ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            <Tooltip placement="top" title="Cancel">
+              <HighlightOffIcon
+                className="cancelIcon red" // @ts-ignore
+                onClick={() => confirmCancel(row.rowData)}
+              />
+            </Tooltip>
+          );
+        },
+      },
+    },
   ];
 
   return (
     <>
       <Box className="contractsTable" display="flex" flexDirection="column" width={1}>
+        <ConfirmDialog
+          confirmConfig={confirmConfig}
+          executeActionCallback={cancelContract}
+          setConfirmConfig={setConfirmConfig}
+        />
         <Table columns={columns} data={list} persistKey={tablePersistsKey} title={title} />
       </Box>
     </>
