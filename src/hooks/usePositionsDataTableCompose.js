@@ -1,6 +1,6 @@
 import React from "react";
 import { findIndex, isFunction, merge, partial } from "lodash";
-import { Link, navigate } from "gatsby";
+import { Link } from "gatsby";
 import { ExternalLink, Eye, TrendingUp, XCircle } from "react-feather";
 import { formatNumber, formatPrice } from "../utils/formatters";
 import { colors } from "../services/theme";
