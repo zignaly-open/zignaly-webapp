@@ -56,7 +56,7 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
 
   return (
     <Box
-      alignItems="center"
+      alignItems="flex-start"
       className="toggleInput"
       display="flex"
       flexDirection="row"

@@ -73,7 +73,7 @@ const ToggleInput = ({
 
   return (
     <Box
-      alignItems="center"
+      alignItems="flex-start"
       className="toggleDoubleInput"
       display="flex"
       flexDirection="row"
