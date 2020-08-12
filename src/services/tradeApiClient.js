@@ -146,6 +146,11 @@ class TradeApiClient {
      * @type {Object<string, number>} Tracks request average latency.
      */
     this.requestAverageLatency = {};
+
+    /**
+     * @type {Object<string, boolean>} Tracks request lock.
+     */
+    this.requestLock = {};
   }
 
   /**
@@ -169,6 +174,48 @@ class TradeApiClient {
   }
 
   /**
+   * Get a request lock.
+   *
+   * When lock is active will prevent that the same (endpoint and payload)
+   * request is performed concurrently so when latency is higuer than interval
+   * we prevent that piled up request process concurrently.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
+   * @param {number} [ttl=20000] Lock time to live in millisecs.
+   * @returns {boolean} True when lock was acquired, false when existing lock is in place.
+   *
+   * @memberof TradeApiClient
+   */
+  getRequestLock(cacheId, ttl = 20000) {
+    if (this.requestLock[cacheId]) {
+      return false;
+    }
+
+    this.requestLock[cacheId] = true;
+
+    // Timeout to automatically release the lock.
+    setTimeout(() => {
+      this.releaseRequestLock(cacheId);
+    }, ttl);
+
+    return true;
+  }
+
+  /**
+   * Release request lock.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
+   * @returns {Void} None.
+   *
+   * @memberof TradeApiClient
+   */
+  releaseRequestLock(cacheId) {
+    if (this.requestLock[cacheId]) {
+      delete this.requestLock[cacheId];
+    }
+  }
+
+  /**
    * Store endpoint average latency.
    *
    * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
@@ -180,9 +227,12 @@ class TradeApiClient {
   setRequestAverageLatency(cacheId, latencyMillisec) {
     // Calculate average when there are previous observations.
     if (this.requestAverageLatency[cacheId]) {
+      // Tolerance to account for other delays like response decode / error handling.
+      const tolerance = 500;
       const currentAverage = this.requestAverageLatency[cacheId];
       const newAverage = (currentAverage + latencyMillisec) / 2;
-      this.requestAverageLatency[cacheId] = newAverage;
+      this.requestAverageLatency[cacheId] = newAverage + tolerance;
+
       return;
     }
 
@@ -235,8 +285,17 @@ class TradeApiClient {
     const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
     const cachedResponseData = cache.get(cacheId);
     if (cachedResponseData) {
-      console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
+      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
       return cachedResponseData;
+    }
+
+    if (!this.getRequestLock(cacheId)) {
+      const tooManyRequestsError = {
+        error: "Too many requests.",
+        code: -1,
+      };
+
+      throw tooManyRequestsError;
     }
 
     try {
@@ -263,12 +322,13 @@ class TradeApiClient {
       // backend to properly manage the method usage.
       if (method === "GET") {
         cache.put(cacheId, responseData, cacheTTL);
-        console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
+        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
     }
 
+    this.releaseRequestLock(cacheId);
     if (responseData.error) {
       const customError = responseData.error.error || responseData.error;
 
