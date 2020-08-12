@@ -1,4 +1,4 @@
-.providersProfitsChart {
+.dashboardProfitsChart {
   margin-bottom: 14px;
   padding-bottom: 24px;
 
@@ -30,7 +30,7 @@
 }
 
 @include media("<=sm") {
-  .providersProfitsChart {
+  .dashboardProfitsChart {
     h3 {
       font-size: 16px;
       padding-top: 5px;

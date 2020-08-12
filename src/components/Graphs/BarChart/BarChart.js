@@ -149,7 +149,7 @@ const BarChart = (props) => {
       intersect: false,
       position: "nearest",
       displayColors: false,
-      enabled: false,
+      enabled: true,
       custom: showTooltipCallback,
     },
     plugins: {
