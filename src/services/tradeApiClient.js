@@ -292,7 +292,7 @@ class TradeApiClient {
     if (!this.getRequestLock(cacheId)) {
       const tooManyRequestsError = {
         error: "Too many requests.",
-        code: -1,
+        code: "apilatency",
       };
 
       throw tooManyRequestsError;
