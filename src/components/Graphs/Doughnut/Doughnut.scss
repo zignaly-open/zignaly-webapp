@@ -1,40 +1,51 @@
 .doughnut {
   display: flex;
-  flex: 1;
-  flex-direction: column;
+  flex-direction: row;
+  height: 100%;
+  position: relative;
   width: 100%;
+
+  &.vertical {
+    flex-direction: column;
+  }
 
   .canvasParent {
     height: 100%;
     // flex: 1;
     position: relative;
+    width: 216px;
     // width: 100%;
+  }
+
+  &.vertical .legendBox ul {
+    // display: grid;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    // grid-template-columns: repeat(auto-fit, minmax(max-content, 1fr));
+    //   height: 80px;
+    margin-top: 20px;
+    width: 100%;
+
+    li {
+      //   width: max-content;
+      flex: 1 0 50%;
+      padding: 6px 0;
+      //   width: 155px;
+      // padding-right: 30px;
+      .value {
+        margin-right: 17px;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &:not(.vertical) .legendBox ul {
+    margin-left: 51px;
   }
 
   .legendBox {
     // display: none;
-
-    &:not(.vertical) {
-      position: absolute;
-      right: 0;
-      top: 50%;
-    }
-
-    &.vertical ul {
-      //   display: grid;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      //   grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-      //   height: 80px;
-      margin-top: 20px;
-
-      li {
-        flex-basis: 125px;
-        padding: 8px 0;
-        // padding-right: 30px;
-      }
-    }
 
     ul {
       list-style: none;
@@ -52,18 +63,14 @@
     .circle {
       border-radius: 100%;
       display: block;
-      height: 10px;
-      margin-right: 5px;
-      width: 10px;
+      height: 6px;
+      margin-right: 6px;
+      width: 6px;
     }
 
     .value {
-      font-size: 12px;
       margin-right: 5px;
-    }
-
-    .quote {
-      font-size: 12px;
+      opacity: 0.6;
     }
   }
 }

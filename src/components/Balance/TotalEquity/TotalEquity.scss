@@ -33,15 +33,15 @@
 @include media(">lg", "<=xl") {
   .totalEquity {
     .gradientChart {
-      height: 280px;
+      height: 240px;
     }
   }
 }
 
-@include media(">xl") {
-  .totalEquity {
-    .gradientChart {
-      height: 400px;
-    }
-  }
-}
+// @include media(">xl") {
+//   .totalEquity {
+//     .gradientChart {
+//       height: 400px;
+//     }
+//   }
+// }

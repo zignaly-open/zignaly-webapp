@@ -48,10 +48,11 @@ const Doughnut = (props) => {
    */
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
+    aspectRatio: 1,
     layout: {
       padding: {
-        right: vertical ? 0 : 100,
+        // right: vertical ? 0 : 100,
       },
     },
     legend: {
@@ -62,11 +63,19 @@ const Doughnut = (props) => {
       let ul = document.createElement("ul");
       chart.data.datasets.forEach((dataset) => {
         let backgroundColor = colorOptions.backgroundColor;
-        labels.forEach((label, labelIndex) => {
+        const labelsSorted = labels
+          .map((l, index) => ({ label: l, index, value: dataset.data[index] }))
+          .sort((a, b) => {
+            // @ts-ignore
+            return b.value - a.value;
+          });
+        labelsSorted.forEach((labelData) => {
           ul.innerHTML += `
                   <li>
-                     <span class="circle" style="background-color: ${backgroundColor[labelIndex]}"></span>
-                     <span class="value number2">${dataset.data[labelIndex]}% ${label}</span>
+                     <span class="circle" style="background-color: ${
+                       backgroundColor[labelData.index]
+                     }"></span>
+                     <span class="value number2">${labelData.value}% ${labelData.label}</span>
                    </li>
                 `;
         });
@@ -88,11 +97,11 @@ const Doughnut = (props) => {
   useEffect(renderLegend, [data, labels]);
 
   return (
-    <div className="doughnut">
+    <div className={`doughnut ${vertical ? "vertical" : ""}`}>
       <div className="canvasParent">
-        <DoughnutChart data={data} options={options} ref={chartRef} />
+        <DoughnutChart height={null} width={null} data={data} options={options} ref={chartRef} />
       </div>
-      <div className={`legendBox ${vertical ? "vertical" : ""}`} id={legendId} />
+      <div className="legendBox" id={legendId} />
     </div>
   );
 };

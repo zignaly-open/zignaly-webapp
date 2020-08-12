@@ -44,7 +44,7 @@
     }
 
     .legendBox {
-      padding: 0 40px;
+      padding: 0 20px;
     }
 
     .canvasParent {
@@ -67,6 +67,10 @@
     align-items: center;
     display: flex;
     flex: 1;
+
+    .doughnut {
+      align-items: center;
+    }
   }
 
   .availableBalance {
