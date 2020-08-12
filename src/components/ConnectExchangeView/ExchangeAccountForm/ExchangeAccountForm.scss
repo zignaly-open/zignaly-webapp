@@ -11,7 +11,13 @@
 
   .customSelectControl,
   .customInput {
+    padding: 8px;
     width: 100%;
+
+    textarea {
+      height: 120px;
+      overflow: auto;
+    }
   }
 
   .customSelect {
@@ -60,7 +66,7 @@
 
     .customInput {
       align-items: flex-start;
-      height: 100px;
+      height: 136px;
     }
   }
 }

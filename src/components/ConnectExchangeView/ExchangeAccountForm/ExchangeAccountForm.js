@@ -106,6 +106,7 @@ const SwitchInputComponent = ({ inputRef, name, defaultValue, type, unit }) => {
           inputRef={inputRef}
           multiline={type === "textarea"}
           name={name}
+          rows="5"
           type={type || "string"}
         />
       )}
