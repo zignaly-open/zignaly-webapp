@@ -1,7 +1,6 @@
 import React from "react";
 import Doughnut from "../../../Graphs/Doughnut";
 import { useIntl } from "react-intl";
-import { formatFloat2Dec } from "../../../../utils/format";
 
 /**
  *
@@ -50,7 +49,7 @@ const CompositionGraph = ({ list, quotes, vertical }) => {
   ];
 
   /**
-   * @type {Array<String>}
+   * @type {Array<Number>}
    */
   let values = [];
 
@@ -74,13 +73,12 @@ const CompositionGraph = ({ list, quotes, vertical }) => {
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          //   values.push(formatFloat2Dec(value));
           values.push(value);
           labels.push(quotes[i]);
         }
       }
       if (equity.otherPercentage > 0) {
-        values.push(formatFloat2Dec(equity.otherPercentage));
+        values.push(equity.otherPercentage);
 
         labels.push(
           intl.formatMessage({

@@ -1,4 +1,4 @@
-import React, { version } from "react";
+import React from "react";
 import "./CryptoComposition.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -8,7 +8,7 @@ import CompositionGraph from "./CompositionGraph";
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
- * @property {boolean} vertical Display legend under the doughnut.
+ * @property {boolean} [vertical] Display legend under the doughnut.
  */
 
 /**

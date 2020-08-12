@@ -2,7 +2,6 @@ import React from "react";
 import { FormControl, Box, Select, MenuItem, Typography, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
-import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("@material-ui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
@@ -59,10 +58,10 @@ const CustomSelect = (props) => {
 
   return (
     <Box
-      className="customSelect"
-      flexDirection={labelPlacement === "top" ? "column" : "row"}
-      display="flex"
       alignItems="center"
+      className="customSelect"
+      display="flex"
+      flexDirection={labelPlacement === "top" ? "column" : "row"}
     >
       {label && (
         <label className="selectLabel">

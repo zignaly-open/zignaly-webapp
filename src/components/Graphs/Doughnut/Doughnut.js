@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import "./Doughnut.scss";
-import { Box } from "@material-ui/core";
+import { formatFloat2Dec } from "../../../utils/format";
 import { Doughnut as DoughnutChart } from "react-chartjs-2";
 
 /**
@@ -50,11 +50,6 @@ const Doughnut = (props) => {
     responsive: true,
     maintainAspectRatio: true,
     aspectRatio: 1,
-    layout: {
-      padding: {
-        // right: vertical ? 0 : 100,
-      },
-    },
     legend: {
       display: false,
     },
@@ -75,7 +70,10 @@ const Doughnut = (props) => {
                      <span class="circle" style="background-color: ${
                        backgroundColor[labelData.index]
                      }"></span>
-                     <span class="value number2">${labelData.value}% ${labelData.label}</span>
+                     <span class="value number2">${formatFloat2Dec(
+                       // @ts-ignore
+                       labelData.value,
+                     )}% ${labelData.label}</span>
                    </li>
                 `;
         });
@@ -98,11 +96,9 @@ const Doughnut = (props) => {
 
   return (
     <div className={`doughnut ${vertical ? "vertical" : ""}`}>
-      {/* <div className="test"> */}
       <div className="canvasParent">
-        <DoughnutChart height={null} width={null} data={data} options={options} ref={chartRef} />
+        <DoughnutChart data={data} height={null} options={options} ref={chartRef} width={null} />
       </div>
-      {/* </div> */}
       <div className="legendBox" id={legendId} />
     </div>
   );
