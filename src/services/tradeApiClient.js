@@ -145,29 +145,64 @@ class TradeApiClient {
     /**
      * @type {Object<string, number>} Tracks request average latency.
      */
-    this.endpointAverageLatency = {};
+    this.requestAverageLatency = {};
+  }
+
+  /**
+   * Generate a request unique cache ID.
+   *
+   * The ID will be unique for the requested endpoint with same payload
+   * parameters so endpoints like getClosedPositions which resolve close/log
+   * with different average latency could be differentiated.
+   *
+   * @param {string} endpointPath Endpoint path of the request.
+   * @param {string} payload Request payload JSON stringified or empty string.
+   * @returns {string} Request cache ID.
+   *
+   * @memberof TradeApiClient
+   */
+  generateRequestCacheId(endpointPath, payload) {
+    const payloadHash = createHash("md5").update(payload).digest("hex");
+    const cacheId = `${endpointPath}-${payloadHash}`;
+
+    return cacheId;
   }
 
   /**
    * Store endpoint average latency.
    *
-   * @param {string} endpointPath Trade API endpoint path to track.
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
    * @param {number} latencyMillisec Latest request latency expressed in milliseconds.
    * @returns {void} None.
    *
    * @memberof TradeApiClient
    */
-  storeRequestAverageLatency(endpointPath, latencyMillisec) {
+  setRequestAverageLatency(cacheId, latencyMillisec) {
     // Calculate average when there are previous observations.
-    if (this.endpointAverageLatency[endpointPath]) {
-      const currentAverage = this.endpointAverageLatency[endpointPath];
+    if (this.requestAverageLatency[cacheId]) {
+      const currentAverage = this.requestAverageLatency[cacheId];
       const newAverage = (currentAverage + latencyMillisec) / 2;
-      this.endpointAverageLatency[endpointPath] = newAverage;
+      this.requestAverageLatency[cacheId] = newAverage;
       return;
     }
 
     // Is the first observation.
-    this.endpointAverageLatency[endpointPath] = latencyMillisec;
+    this.requestAverageLatency[cacheId] = latencyMillisec;
+  }
+
+  /**
+   * Get similar request historical average latency.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
+   * @returns {number} Average latency time in milliseconds.
+   *
+   * @memberof TradeApiClient
+   */
+  getRequestAverageLatency(cacheId) {
+    // Default to 5 seconds when no previous average exists so when initial
+    // request don't respond, and we don't have average time, we ensure to have
+    // a minimum limit to avoid stampede requests.
+    return this.requestAverageLatency[cacheId] || 5000;
   }
 
   /**
@@ -197,11 +232,10 @@ class TradeApiClient {
         }
       : { method: "GET" };
 
-    const payloadHash = options.body ? createHash("md5").update(options.body).digest("hex") : "";
-    const cacheId = `${endpointPath}-${payloadHash}`;
+    const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
     const cachedResponseData = cache.get(cacheId);
     if (cachedResponseData) {
-      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
+      console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
       return cachedResponseData;
     }
 
@@ -209,12 +243,12 @@ class TradeApiClient {
       const startTime = Date.now();
       const response = await fetch(requestUrl, options);
       const elapsedTime = Date.now() - startTime;
-      this.storeRequestAverageLatency(endpointPath, elapsedTime);
+      this.setRequestAverageLatency(cacheId, elapsedTime);
 
       // Use average latency + some tolerance as cache expiration, when backend
       // is saturated the average will increase and cache duration will be
       // longer minimizing concurrent in-progress requests.
-      const cacheTTL = this.endpointAverageLatency[endpointPath] + 1000;
+      const cacheTTL = this.getRequestAverageLatency(cacheId);
       const parsedJson = await response.json();
 
       if (response.status === 200) {
@@ -229,7 +263,7 @@ class TradeApiClient {
       // backend to properly manage the method usage.
       if (method === "GET") {
         cache.put(cacheId, responseData, cacheTTL);
-        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
+        console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
