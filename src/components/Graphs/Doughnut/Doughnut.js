@@ -98,9 +98,11 @@ const Doughnut = (props) => {
 
   return (
     <div className={`doughnut ${vertical ? "vertical" : ""}`}>
+      {/* <div className="test"> */}
       <div className="canvasParent">
         <DoughnutChart height={null} width={null} data={data} options={options} ref={chartRef} />
       </div>
+      {/* </div> */}
       <div className="legendBox" id={legendId} />
     </div>
   );

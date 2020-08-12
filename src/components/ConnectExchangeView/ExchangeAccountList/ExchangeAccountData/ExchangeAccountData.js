@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { useMediaQuery, Box, Typography, CircularProgress } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
 import AvailableBalance from "../../../Balance/AvailableBalance";
@@ -10,6 +10,7 @@ import useBalance from "../../../../hooks/useBalance";
 import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
+import { useTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -31,6 +32,8 @@ const ExchangeAccountData = ({ account }) => {
   const balance = useBalance(account.internalId);
   const providers = useConnectedProviders(30, account.internalId, true);
   const intl = useIntl();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box className="exchangeAccountData">
@@ -73,7 +76,7 @@ const ExchangeAccountData = ({ account }) => {
                   )}
                 </Box>
                 <Box className="cryptoBox">
-                  <CryptoComposition dailyBalance={dailyBalance} vertical={true} />
+                  <CryptoComposition dailyBalance={dailyBalance} vertical={!isMobile} />
                 </Box>
               </>
             )}
