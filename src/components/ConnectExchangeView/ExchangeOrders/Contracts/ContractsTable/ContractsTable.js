@@ -11,7 +11,6 @@ import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../../../ModalPathContext";
 import { showErrorAlert } from "../../../../../store/actions/ui";
-import { createEmptyExchangeContractsEntity } from "../../../../../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -42,8 +41,7 @@ const ContractsTable = ({ title, list, loadData }) => {
   } = useContext(ModalPathContext);
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
-  const emptyContract = createEmptyExchangeContractsEntity();
-  const [position, setPosition] = useState(emptyContract);
+  const [position, setPosition] = useState("");
 
   /**
    * @typedef {import("../../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -60,7 +58,7 @@ const ContractsTable = ({ title, list, loadData }) => {
 
   /**
    *
-   * @param {ExchangeContractsObject} data ID of the user.
+   * @param {string} data ID of the user.
    * @returns {void} None.
    */
   const confirmCancel = (data) => {
@@ -78,11 +76,12 @@ const ContractsTable = ({ title, list, loadData }) => {
    */
   const cancelContract = () => {
     setLoading(true);
+    const contract = list.find((item) => item.id === position);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedAccount.internalId,
-      symbol: position.symbol,
-      amount: position.amount.toString(),
+      symbol: contract.symbol,
+      amount: contract.amount.toString(),
     };
 
     tradeApi
@@ -163,17 +162,17 @@ const ContractsTable = ({ title, list, loadData }) => {
       label: "col.contracts.margin",
     },
     {
-      name: "positionId",
+      name: "id",
       label: "col.contracts.margin",
       options: {
-        customBodyRender: (val, row) => {
-          return loading && position.positionId === val ? (
+        customBodyRender: (val) => {
+          return loading && position === val ? (
             <CircularProgress color="primary" size={24} />
           ) : (
             <Tooltip placement="top" title="Cancel">
               <HighlightOffIcon
                 className="cancelIcon red" // @ts-ignore
-                onClick={() => confirmCancel(row.rowData)}
+                onClick={() => confirmCancel(val)}
               />
             </Tooltip>
           );
