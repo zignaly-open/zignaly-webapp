@@ -10,6 +10,7 @@ import { Box } from "@material-ui/core";
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
  * @typedef {import("../../../hooks/usePositionsList").PositionsFiltersState} PositionsFiltersState
+ * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
@@ -30,7 +31,7 @@ const PositionFilters = (props) => {
   const { initialState, onChange, positions, showTypesFilter } = props;
   const defaultFilters = {
     provider: "all",
-    pair: "all",
+    pair: { label: "All Pairs", val: "all" },
     side: "all",
     type: "all",
     status: "",
@@ -92,7 +93,7 @@ const PositionFilters = (props) => {
   /**
    * Set coin pair filter value.
    *
-   * @param {string} value Selected coin value.
+   * @param {OptionType} value Selected coin value.
    * @returns {Void} None.
    */
   const setCoin = (value) => {
@@ -155,7 +156,13 @@ const PositionFilters = (props) => {
         options={providerOptions}
         value={filters.provider}
       />
-      <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
+      <CustomSelect
+        label=""
+        onChange={setCoin}
+        options={pairOptions}
+        search={true}
+        value={filters.pair}
+      />
       <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
       {showTypesFilter && (
         <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">

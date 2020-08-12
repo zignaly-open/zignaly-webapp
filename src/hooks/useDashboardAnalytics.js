@@ -60,11 +60,6 @@ const useDashboardAnalytics = () => {
   const [quote, setQuote] = useState("USDT");
 
   const providerAssets = useReadOnlyProviders();
-  const [provider, setProvider] = useState({
-    val: "1",
-    label: intl.formatMessage({ id: "fil.manual" }),
-  });
-
   let providers = providerAssets.map((item) => ({
     val: item.id,
     label: item.name,
@@ -72,6 +67,11 @@ const useDashboardAnalytics = () => {
 
   providers.push({ val: "1", label: intl.formatMessage({ id: "fil.manual" }) });
   providers.push({ val: "all", label: intl.formatMessage({ id: "fil.providers.all" }) });
+
+  const [provider, setProvider] = useState({
+    val: "1",
+    label: intl.formatMessage({ id: "fil.manual" }),
+  });
 
   const clearFilters = () => {
     setQuote("USDT");
