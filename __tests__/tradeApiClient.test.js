@@ -548,17 +548,6 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(response, "Response is not an object.");
   }, 10000);
 
-  it("should clone a provider.", async () => {
-    const payload = {
-      token: accessToken,
-      providerId: "5edf6165fc869626686e8657",
-    };
-
-    const response = await client.cloneProvider(payload);
-    assert.isObject(response, "Response is not an object with provider ID");
-    assert.isString(response.providerId, "provider ID is not a string.");
-  }, 10000);
-
   it("should get management positions for provider.", async () => {
     const payload = {
       token: accessToken,
