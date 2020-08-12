@@ -16,11 +16,8 @@
   }
 
   .select {
-    // margin-right: 50px;
-    // min-width: 150px;
     border-radius: 4px;
     height: 32px;
-    margin-right: 20px;
     min-width: 130px;
 
     > div {
@@ -32,7 +29,6 @@
   }
 
   .searchRoot {
-    margin-right: 50px;
     width: 150px;
   }
 
@@ -43,29 +39,6 @@
 
     .searchInput {
       padding: 0;
-    }
-  }
-}
-
-@include media("<=sm") {
-  .customSelect {
-    align-items: flex-start;
-    flex-direction: column-reverse;
-    height: fit-content;
-
-    .select,
-    .searchRoot {
-      margin-right: 0;
-    }
-
-    .callout {
-      + span {
-        margin-bottom: 5px;
-        order: 1;
-        padding-right: 5px;
-        text-align: center;
-        width: 100%;
-      }
     }
   }
 }

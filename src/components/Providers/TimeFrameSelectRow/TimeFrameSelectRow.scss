@@ -5,9 +5,7 @@
   @include media("<=sm") {
     .customSelect {
       align-items: center;
-      flex-direction: row-reverse;
-      margin-left: 0;
-      width: 100%;
+      flex-direction: row;
 
       > span {
         margin-bottom: 0;

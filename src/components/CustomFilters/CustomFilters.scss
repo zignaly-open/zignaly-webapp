@@ -50,16 +50,20 @@
       }
 
       label {
-        margin: 5px 0;
-
-        > span {
-          display: none;
-        }
+        display: none;
       }
 
       .customSelect {
-        margin-bottom: 10px;
+        align-items: flex-start;
+        flex-direction: column;
+        height: fit-content;
+        margin: 5px 0 10px;
         width: 48%;
+      }
+
+      .select,
+      .searchRoot {
+        margin-right: 0;
       }
     }
 

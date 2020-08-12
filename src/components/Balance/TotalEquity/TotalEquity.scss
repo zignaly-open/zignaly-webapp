@@ -18,6 +18,10 @@
   width: 100%;
 }
 
+.modalFilter {
+  margin-left: auto;
+}
+
 @include media("<=sm") {
   .totalEquity {
     border: 0;
@@ -29,15 +33,15 @@
 @include media(">lg", "<=xl") {
   .totalEquity {
     .gradientChart {
-      height: 280px;
+      height: 240px;
     }
   }
 }
 
-@include media(">xl") {
-  .totalEquity {
-    .gradientChart {
-      height: 400px;
-    }
-  }
-}
+// @include media(">xl") {
+//   .totalEquity {
+//     .gradientChart {
+//       height: 400px;
+//     }
+//   }
+// }

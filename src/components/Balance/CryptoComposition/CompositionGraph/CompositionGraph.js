@@ -12,6 +12,7 @@ import { useIntl } from "react-intl";
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
+ * @property {boolean} vertical Display legend under the doughnut.
  */
 
 /**
@@ -19,7 +20,7 @@ import { useIntl } from "react-intl";
  * @param {DefaultProps} props Default props.
  */
 
-const CompositionGraph = ({ list, quotes }) => {
+const CompositionGraph = ({ list, quotes, vertical }) => {
   const intl = useIntl();
 
   const sectionColors = [
@@ -67,25 +68,32 @@ const CompositionGraph = ({ list, quotes }) => {
      */
     let equity = list.length ? list[list.length - 1] : {};
     if (equity) {
-      for (let a = 0; a < quotes.length; a++) {
-        let property = quotes[a] + "percentage";
+      for (let i = 0; i < quotes.length; i++) {
+        let property = quotes[i] + "percentage";
         let value =
           typeof equity[property] === "string" ? parseFloat(equity[property]) : equity[property];
         if (value > 0) {
-          values.push(value.toFixed(2));
-          labels.push(quotes[a]);
+          values.push(value);
+          labels.push(quotes[i]);
         }
       }
       if (equity.otherPercentage > 0) {
-        values.push(equity.otherPercentage.toFixed(2));
-        labels.push(intl.formatMessage({ id: "graph.others" }));
+        values.push(equity.otherPercentage);
+
+        labels.push(
+          intl.formatMessage({
+            id: "graph.others",
+          }),
+        );
       }
     }
   };
 
   prepareChartData();
 
-  return <Doughnut colorOptions={colorsOptions} labels={labels} values={values} />;
+  return (
+    <Doughnut colorOptions={colorsOptions} labels={labels} values={values} vertical={vertical} />
+  );
 };
 
 export default CompositionGraph;

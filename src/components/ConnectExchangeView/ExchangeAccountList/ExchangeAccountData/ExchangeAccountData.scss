@@ -4,15 +4,27 @@
   width: 100%;
 
   .topBoxData {
-    min-height: 260px;
+    display: flex;
+    height: 383px;
+    justify-content: center;
+    padding-bottom: 12px;
     position: relative;
   }
 
   .equityBox {
     flex: 1;
 
+    .equityHeader {
+      margin-bottom: 0;
+    }
+
     .totalEquity {
       border: 0;
+      height: 100%;
+    }
+
+    .gradientChart {
+      height: 176px;
     }
 
     .boxTitle {
@@ -31,6 +43,17 @@
       font-size: 21px;
       font-weight: 400;
     }
+
+    .legendBox {
+      padding: 0 20px;
+    }
+
+    .canvasParent {
+      @include media(">sm") {
+        height: 200px;
+        width: 200px;
+      }
+    }
   }
 
   .cardsBox {
@@ -40,12 +63,17 @@
 
   .balanceBox {
     border-top: 1px solid var(--border-color);
-    margin-top: 30px;
     width: 100%;
   }
 
   .cryptoComposition {
     align-items: center;
+    display: flex;
+    flex: 1;
+
+    .doughnut {
+      align-items: center;
+    }
   }
 
   .availableBalance {
@@ -70,25 +98,63 @@
     padding: 12px;
 
     .topBoxData {
-      align-items: flex-start;
+      align-items: center;
       flex-direction: column;
-      max-height: none;
+      height: auto;
     }
 
     .equityBox {
       width: 100%;
+
+      .gradientChart {
+        height: auto;
+      }
+
+      .equityFilter {
+        margin-top: 18px;
+      }
     }
 
     .cryptoBox {
       min-height: 200px;
-    }
-
-    .cryptoBox {
       width: 100%;
+
+      .legendBox {
+        padding: 0;
+      }
+
+      .doughnut {
+        align-items: flex-start;
+      }
+
+      .canvasParent {
+        // height: 176px;
+        // width: 176px;
+      }
     }
 
     .noBalance {
       margin: 32px 0;
+    }
+  }
+}
+
+@include media(">sm", "<=lg") {
+  .exchangeAccountData {
+    .equityBox {
+      .totalEquity {
+        padding-right: 5px;
+      }
+    }
+
+    .cryptoBox {
+      .legendBox {
+        padding: 0 28px;
+      }
+    }
+
+    .cryptoComposition {
+      padding-left: 5px;
     }
   }
 }
