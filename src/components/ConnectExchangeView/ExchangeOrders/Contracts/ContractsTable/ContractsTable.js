@@ -11,7 +11,6 @@ import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../../../ModalPathContext";
 import { showErrorAlert } from "../../../../../store/actions/ui";
-import { createEmptyExchangeContractsEntity } from "../../../../../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
