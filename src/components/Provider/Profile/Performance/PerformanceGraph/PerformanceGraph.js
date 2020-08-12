@@ -37,10 +37,16 @@ const PerformanceGraph = ({ provider }) => {
    */
   const prepareValues = () => {
     let stats = provider.performance.weeklyStats;
-    stats.sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
-    let values = null;
-    let labels = null;
+    /**
+     * @type {Array<Number>}
+     */
+    let values = [];
+    /**
+     * @type {Array<String>}
+     */
+    let labels = [];
     if (stats) {
+      stats.sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
       if (stats.length > 12) {
         const list = [...stats].splice(stats.length - 12, 12);
         values = list.map((item) => item.return);
