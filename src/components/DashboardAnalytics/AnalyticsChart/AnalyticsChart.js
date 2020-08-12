@@ -68,7 +68,7 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
   };
 
   return (
-    <Paper className="providersProfitsChart">
+    <Paper className="dashboardProfitsChart">
       <Box
         className="profitsHeader"
         display="flex"
