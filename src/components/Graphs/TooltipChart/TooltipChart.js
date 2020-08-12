@@ -11,6 +11,7 @@ import CustomToolip from "../../CustomTooltip";
  * @property {ChartTooltipDataType} tooltipData Tooltip config data.
  * @property {React.MutableRefObject<any>} pointHoverRef Ref to line hover point.
  * @property {React.ReactElement} children Chart component to wrap with tooltip.
+ * @property {boolean} [showPointHover] Flag to display the point hover (tooltip base).
  */
 
 /**
@@ -19,7 +20,7 @@ import CustomToolip from "../../CustomTooltip";
  * @param {TooltipChartPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TooltipChart = ({ pointHoverRef, tooltipData, children }) => {
+const TooltipChart = ({ pointHoverRef, tooltipData, children, showPointHover = true }) => {
   return (
     <>
       <div
@@ -27,7 +28,14 @@ const TooltipChart = ({ pointHoverRef, tooltipData, children }) => {
         ref={pointHoverRef}
         style={{
           visibility: tooltipData.isVisible ? "visible" : "hidden",
-          transform: `translate(${tooltipData.pos.left - 8}px, ${tooltipData.pos.top - 8}px)`,
+          transform: `translate(${tooltipData.pos.left - (showPointHover ? 8 : 0)}px, ${
+            tooltipData.pos.top - (showPointHover ? 8 : 0)
+          }px)`,
+          ...(!showPointHover && {
+            height: 0,
+            border: 0,
+            width: 0,
+          }),
         }}
       />
 

@@ -179,6 +179,7 @@ const BarChart = (props) => {
           }
         : false,
     },
+    // events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [
@@ -257,7 +258,7 @@ const BarChart = (props) => {
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <TooltipChart pointHoverRef={pointHoverRef} tooltipData={tooltipData}>
+      <TooltipChart pointHoverRef={pointHoverRef} showPointHover={false} tooltipData={tooltipData}>
         <BarComponent data={data} options={options} plugins={plugins} ref={chartRef} />
       </TooltipChart>
     </Box>

@@ -16,10 +16,11 @@
   &[x-placement*="top"] {
     .customArrowTooltip {
       background-color: var(--border-color);
-      bottom: auto;
       height: 26px;
       margin: 6px 0 0 -2px;
       position: absolute;
+      //   bottom: auto;
+      transform: translate(0, 100%);
       width: 2px;
       will-change: left;
 
