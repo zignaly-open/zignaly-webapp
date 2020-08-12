@@ -24,7 +24,7 @@
   }
 
   .customTable {
-    div[class*="MUIDataTable-paper"] {
+    div[class*="MuiPaper-root"] {
       background: transparent;
       border: 1px solid transparent;
       box-shadow: none;
@@ -33,7 +33,7 @@
         min-height: 30px;
       }
 
-      div[class*="MUIDataTable-responsiveBase"] {
+      &:nth-child(3) {
         @extend %box-shadow;
       }
 
