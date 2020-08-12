@@ -3557,6 +3557,7 @@ const createEmptyExchangeOpenOrdersEntity = () => {
 
 /**
  * @typedef {Object} ExchangeContractsObject
+ * @property {String} id
  * @property {String} positionId
  * @property {Number} amount
  * @property {Number} entryprice
@@ -3592,6 +3593,7 @@ export function exchangeContractsResponseTransform(response) {
  */
 function exchangeContractsItemTransform(contract) {
   const orderEntity = assign(createEmptyExchangeContractsEntity(), contract, {
+    id: Math.random().toString(),
     positionId: contract.position,
   });
   return orderEntity;
@@ -3604,6 +3606,7 @@ function exchangeContractsItemTransform(contract) {
  */
 export const createEmptyExchangeContractsEntity = () => {
   return {
+    id: "",
     positionId: "",
     amount: 0,
     entryprice: 0,
