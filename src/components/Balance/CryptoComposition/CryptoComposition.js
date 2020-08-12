@@ -8,13 +8,14 @@ import CompositionGraph from "./CompositionGraph";
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {boolean} [vertical] Display legend under the doughnut.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const CryptoComposition = ({ dailyBalance }) => {
+const CryptoComposition = ({ dailyBalance, vertical }) => {
   return (
     <>
       {dailyBalance.loading && (
@@ -39,7 +40,11 @@ const CryptoComposition = ({ dailyBalance }) => {
           <Typography className="boxTitle" variant="h3">
             <FormattedMessage id="dashboard.balance.cryptocompo" />
           </Typography>
-          <CompositionGraph list={dailyBalance.balances} quotes={dailyBalance.quotes} />
+          <CompositionGraph
+            list={dailyBalance.balances}
+            quotes={dailyBalance.quotes}
+            vertical={vertical}
+          />
         </Box>
       )}
     </>

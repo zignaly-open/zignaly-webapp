@@ -59,7 +59,7 @@ const Contracts = () => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <ContractsTable list={list} title="" />
+          <ContractsTable list={list} loadData={loadData} title="" />
         </Box>
       )}
     </>

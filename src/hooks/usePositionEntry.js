@@ -28,7 +28,7 @@ function usePositionEntry(positionEntity) {
   const strategyPrice = watch("price");
   const units = watch("units");
   const positionSize = watch("positionSize");
-  const unrealizedProfitLossesPercentage = watch("unrealizedProfitLossesPercentage");
+  const priceDifference = watch("priceDifference");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
 
   /**
@@ -45,15 +45,13 @@ function usePositionEntry(positionEntity) {
   };
 
   /**
-   * Calculate price percent change from existing position.
+   * Get position price difference from entry price.
    *
-   * @returns {number} Price percentage change form entry price.
+   * @returns {number} Price difference.
    */
   const getEntryPricePercentChange = () => {
     if (positionEntity) {
-      return (
-        unrealizedProfitLossesPercentage || positionEntity.unrealizedProfitLossesPercentage || 0
-      );
+      return priceDifference || positionEntity.priceDifference || 0;
     }
 
     return 0;

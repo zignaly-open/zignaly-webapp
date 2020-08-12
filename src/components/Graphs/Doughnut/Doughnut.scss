@@ -1,12 +1,50 @@
 .doughnut {
-  height: 100%;
+  display: flex;
+  flex-direction: row;
   position: relative;
   width: 100%;
 
+  &.vertical {
+    flex-direction: column;
+  }
+
+  .canvasParent {
+    height: 216px;
+    position: relative;
+    width: 216px;
+    @include media("<=sm") {
+      height: auto;
+      width: calc(100% - 150px);
+    }
+  }
+
+  &.vertical .legendBox ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    width: 100%;
+
+    li {
+      flex: 1 0 50%;
+      padding: 4px 0;
+    }
+
+    .value {
+      margin-right: 17px;
+      white-space: nowrap;
+    }
+  }
+
+  &:not(.vertical) .legendBox ul {
+    margin-left: 51px;
+    @include media("<=sm") {
+      margin-left: 12px;
+    }
+  }
+
   .legendBox {
-    position: absolute;
-    right: 0;
-    top: 50%;
+    // display: none;
 
     ul {
       list-style: none;
@@ -24,18 +62,15 @@
     .circle {
       border-radius: 100%;
       display: block;
-      height: 10px;
-      margin-right: 5px;
-      width: 10px;
+      flex-shrink: 0;
+      height: 6px;
+      margin-right: 6px;
+      width: 6px;
     }
 
     .value {
-      font-size: 12px;
       margin-right: 5px;
-    }
-
-    .quote {
-      font-size: 12px;
+      opacity: 0.6;
     }
   }
 }

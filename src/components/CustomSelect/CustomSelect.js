@@ -1,15 +1,7 @@
 import React from "react";
-import {
-  FormControl,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Typography,
-  TextField,
-} from "@material-ui/core";
+import { FormControl, Box, Select, MenuItem, Typography, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
-import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("@material-ui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
@@ -22,12 +14,7 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  */
 
 /**
- * @typedef {"start"|"top"|"end"|"bottom"} LabelPlacement
- */
-
-/**
- * @typedef {Object} LabelExtraProps
- * @property {LabelPlacement} [labelPlacement]
+ * @typedef {"start"|"top"} LabelPlacement
  */
 
 /**
@@ -63,67 +50,66 @@ const CustomSelect = (props) => {
     options,
     value,
     search,
-    labelPlacement = "start",
     renderOption,
     disableCloseOnSelect,
     multiple,
+    labelPlacement,
   } = props;
-  const storeSettings = useStoreSettingsSelector();
-
-  /**
-   * @type {LabelExtraProps} extraProps
-   */
-  const extraProps = label === "" ? {} : { labelPlacement };
 
   return (
-    <FormControlLabel
-      className={"customSelect " + (storeSettings.darkStyle ? "dark" : "light")}
-      control={
-        <FormControl className="callout customSelectControl" variant="outlined">
-          {!search ? (
-            <Select
-              className="select"
-              classes={{
-                root: "callout1",
-              }}
-              displayEmpty={true}
-              onChange={(e) => onChange(e.target.value)}
-              value={value}
-              variant="outlined"
-            >
-              {options.map((item, index) => (
-                <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
-                  {typeof item === "object" ? item.label : item}
-                </MenuItem>
-              ))}
-            </Select>
-          ) : (
-            <Autocomplete
-              classes={{
-                inputRoot: "searchInputRoot callout1",
-                input: "searchInput",
-                root: "searchRoot",
-              }}
-              disableClearable={true}
-              disableCloseOnSelect={disableCloseOnSelect}
-              getOptionLabel={(option) =>
-                typeof option === "object" ? option.label : option.toString()
-              }
-              multiple={multiple}
-              onChange={(e, val) => onChange(val)}
-              openOnFocus={true}
-              options={options}
-              renderInput={(params) => <TextField {...params} variant="outlined" />}
-              renderOption={renderOption}
-              size="small"
-              value={value}
-            />
-          )}
-        </FormControl>
-      }
-      label={label ? <Typography className="callout2 selectLabel">{label}</Typography> : null}
-      {...extraProps}
-    />
+    <Box
+      alignItems="center"
+      className="customSelect"
+      display="flex"
+      flexDirection={labelPlacement === "top" ? "column" : "row"}
+    >
+      {label && (
+        <label className="selectLabel">
+          <Typography className="callout2">{label}</Typography>
+        </label>
+      )}
+      <FormControl className="callout customSelectControl" variant="outlined">
+        {!search ? (
+          <Select
+            className="select"
+            classes={{
+              root: "callout1",
+            }}
+            displayEmpty={true}
+            onChange={(e) => onChange(e.target.value)}
+            value={value}
+            variant="outlined"
+          >
+            {options.map((item, index) => (
+              <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
+                {typeof item === "object" ? item.label : item}
+              </MenuItem>
+            ))}
+          </Select>
+        ) : (
+          <Autocomplete
+            classes={{
+              inputRoot: "searchInputRoot callout1",
+              input: "searchInput",
+              root: "searchRoot",
+            }}
+            disableClearable={true}
+            disableCloseOnSelect={disableCloseOnSelect}
+            getOptionLabel={(option) =>
+              typeof option === "object" ? option.label : option.toString()
+            }
+            multiple={multiple}
+            onChange={(e, val) => onChange(val)}
+            openOnFocus={true}
+            options={options}
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+            renderOption={renderOption}
+            size="small"
+            value={value}
+          />
+        )}
+      </FormControl>
+    </Box>
   );
 };
 export default CustomSelect;

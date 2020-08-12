@@ -458,7 +458,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get assets for the exchange account", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const assets = await client.exchangeAssetsGet(payload);
@@ -548,17 +548,6 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(response, "Response is not an object.");
   }, 10000);
 
-  it("should clone a provider.", async () => {
-    const payload = {
-      token: accessToken,
-      providerId: "5edf6165fc869626686e8657",
-    };
-
-    const response = await client.cloneProvider(payload);
-    assert.isObject(response, "Response is not an object with provider ID");
-    assert.isString(response.providerId, "provider ID is not a string.");
-  }, 10000);
-
   it("should get management positions for provider.", async () => {
     const payload = {
       token: accessToken,
@@ -592,7 +581,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's exchange assets.", async () => {
     const payload = {
       token: accessToken,
-      internalId: "Binance1578301457_5e12f811deda4",
+      internalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const response = await client.userExchangeAssetsGet(payload);

@@ -49,6 +49,7 @@ const PositionsTable = (props) => {
     positionsAll,
     positionsFiltered,
     setFilters,
+    filtersState,
     loading,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
   const showTypesFilter = type === "log";
@@ -246,6 +247,7 @@ const PositionsTable = (props) => {
 
     return (
       <PositionFilters
+        initialState={filtersState}
         onChange={setFilters}
         positions={positionsAll}
         showTypesFilter={showTypesFilter}

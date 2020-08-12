@@ -1,7 +1,7 @@
 import React from "react";
 import "./LoginHeader.scss";
 import { Box } from "@material-ui/core";
-import Logo from "../../../images/logo/logoWhite.svg";
+import Logo from "../../../images/logo/logoWhite.png";
 
 /**
  *

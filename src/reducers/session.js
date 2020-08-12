@@ -1,6 +1,7 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
 import {
+  SET_APP_VERSION,
   START_TRADE_API_SESSION,
   END_TRADE_API_SESSION,
   REFRESH_SESSION_DATA,
@@ -39,6 +40,9 @@ const settings = (state = initialState.session, action) => {
       break;
     case CLEAR_SESSION_DATA:
       newState.sessionData = initialState.session.sessionData;
+      break;
+    case SET_APP_VERSION:
+      newState.appVersion = action.payload;
       break;
 
     default:

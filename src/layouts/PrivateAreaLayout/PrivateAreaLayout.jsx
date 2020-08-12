@@ -10,13 +10,15 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
-import useScript from "../../hooks/useScript";
 import { withPrefix } from "gatsby";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { refreshSessionData } from "../../store/actions/session";
-import useInterval from "../../hooks/useInterval";
 import { minToMillisec } from "../../utils/timeConvert";
+import { ConfirmDialog } from "../../components/Dialogs";
+import useScript from "../../hooks/useScript";
+import useInterval from "../../hooks/useInterval";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
+import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -40,9 +42,15 @@ const PrivateAreaLayout = (props) => {
   };
 
   useInterval(updateSession, minToMillisec(60), true);
+  const { confirmConfig, setConfirmConfig, executeRefresh } = useAppUpdatesCheck();
 
   return (
     <>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={executeRefresh}
+        setConfirmConfig={setConfirmConfig}
+      />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
       <Box bgcolor="background.default" className={"app"}>

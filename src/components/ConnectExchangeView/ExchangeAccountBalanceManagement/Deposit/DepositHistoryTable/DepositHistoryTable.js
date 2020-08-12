@@ -67,7 +67,6 @@ const DepositHistoryTable = ({ internalId }) => {
       label: "col.date",
       options: {
         customBodyRender: FormatedDateTime,
-        sortDirection: "desc",
       },
     },
     {
@@ -75,6 +74,10 @@ const DepositHistoryTable = ({ internalId }) => {
       label: "col.txnid",
     },
   ];
+
+  const options = {
+    sortOrder: { name: "timestamp", direction: "desc" },
+  };
 
   return (
     <Box className="depositHistoryTable" display="flex" flexDirection="column" width={1}>
@@ -92,6 +95,8 @@ const DepositHistoryTable = ({ internalId }) => {
         <Table
           columns={columns}
           data={deposits}
+          // @ts-ignore
+          options={options}
           persistKey="depositHistory"
           title={<FormattedMessage id="accounts.deposit.history" />}
         />

@@ -48,6 +48,9 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const images = statsSorted.map((s) => s.logoUrl);
   const options = {};
 
+  // Get base without quote
+  let actualBase = base.split("/")[0] || base;
+
   /**
    * @param {ChartTooltipItem} tooltipItems Tooltip item.
    * @returns {string} Tooltip text.
@@ -82,7 +85,7 @@ const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
             <FormattedMessage id="srv.netprofit" />
           </Typography>
         </Box>
-        <Typography variant="h3">{`${timeFrame} / ${quote} / ${base}`}</Typography>
+        <Typography variant="h3">{`${timeFrame} / ${quote} / ${actualBase}`}</Typography>
       </Box>
       <BarChart
         adjustHeightToContent={isMobile}

@@ -1,16 +1,24 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import { useSelector } from "react-redux";
+import useEffectSkipFirst from "./useEffectSkipFirst";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useStoreSessionSelector from "./useStoreSessionSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import useBaseAssets from "./useBaseAssets";
 import useTimeFramesOptions from "./useTimeFramesOptions";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import {
+  setAnayticsBase,
+  setAnayticsQuote,
+  setTimeFrame as setTimeFrameAction,
+} from "../store/actions/settings";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/initialState").TimeframeObject} TimeframeObject
  * @typedef {import("../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  */
@@ -33,30 +41,38 @@ import { useDispatch } from "react-redux";
 /**
  * Hook to generate the providers stats fetching and filtering.
  *
- * @param {string} type Type of provider to retreive.
+ * @param {'signalp'|'copyt'} type Type of provider to retreive.
  * @returns {ProviderStatsData} Providers stats and filtering objects.
  */
 const useProvidersAnalytics = (type) => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
   const intl = useIntl();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
+  const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
+
+  const page = type === "signalp" ? "signalpAnalytics" : "copytAnalytics";
 
   // time frames
   const timeFrames = useTimeFramesOptions();
-  const [timeFrame, setTimeFrame] = useState("30days");
+  const initTimeFrame = storeSettings.timeFrame[page] || "30days";
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
+  // Save settings to store when changed
+  const saveTimeFrame = () => {
+    dispatch(setTimeFrameAction({ timeFrame, page }));
+  };
+  useEffectSkipFirst(saveTimeFrame, [timeFrame]);
 
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
-  const [quote, setQuote] = useState("USDT");
+  let initQuote = storeSettings[type].analytics.quote || "USDT";
+  const [quote, setQuote] = useState(initQuote);
+  // Save settings to store when changed
+  const saveQuote = () => {
+    dispatch(setAnayticsQuote({ quote, page: type }));
+  };
+  useEffectSkipFirst(saveQuote, [quote]);
 
   // bases
   const baseAssets = useBaseAssets(quote);
@@ -64,8 +80,19 @@ const useProvidersAnalytics = (type) => {
     val: key,
     label: val.base + "/" + val.quote,
   }));
-  bases.unshift({ val: "ALL", label: intl.formatMessage({ id: "fil.pairs" }) });
-  const [base, setBase] = useState(bases[0]);
+  bases.unshift({
+    val: "ALL",
+    label: intl.formatMessage({ id: "fil.pairs" }),
+  });
+
+  const savedBase = storeSettings[type].analytics.base;
+  let initBase = savedBase ? { val: savedBase, label: savedBase } : bases[0];
+  const [base, setBase] = useState(initBase);
+  // Save settings to store when changed
+  const saveBase = () => {
+    dispatch(setAnayticsBase({ base: base.val, page: type }));
+  };
+  useEffectSkipFirst(saveBase, [base]);
 
   const clearFilters = () => {
     setQuote("USDT");
@@ -74,7 +101,7 @@ const useProvidersAnalytics = (type) => {
   };
 
   // Select all bases by default on quote change
-  useEffect(() => {
+  useEffectSkipFirst(() => {
     setBase(bases[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quote]);

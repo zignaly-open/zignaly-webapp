@@ -58,17 +58,18 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open }) => {
 
   const intl = useIntl();
 
-  return open ? (
+  return (
     <Box className="providersSort">
       <CustomFilters
         onClear={clearFilters}
         onClose={onClose}
+        open={open}
         title={intl.formatMessage({ id: "sort.sortby" })}
       >
         <CustomSelect label="" onChange={onChange} options={sorts} value={sort} />
       </CustomFilters>
     </Box>
-  ) : null;
+  );
 };
 
 export default ProvidersSort;

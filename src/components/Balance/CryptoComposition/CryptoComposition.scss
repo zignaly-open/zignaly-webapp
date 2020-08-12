@@ -1,4 +1,5 @@
 .cryptoComposition {
+  height: 75%;
   padding: 0 0 0 30px;
   width: 100%;
 
@@ -15,7 +16,7 @@
 
 @include media("<=sm") {
   .cryptoComposition {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding: 0;
     width: 100%;
 

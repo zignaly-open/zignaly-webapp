@@ -1,8 +1,8 @@
 import React from "react";
 import "./Loader.scss";
 import { Box } from "@material-ui/core";
-import LogoWhite from "../../images/logo/logoWhite.svg";
-import LogoBlack from "../../images/logo/logoBlack.svg";
+import LogoWhite from "../../images/logo/logoWhite.png";
+import LogoBlack from "../../images/logo/logoBlack.png";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 
 const Loader = () => {

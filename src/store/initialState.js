@@ -49,6 +49,7 @@
  * @property {DefaultStateSessionTradeApi} tradeApi
  * @property {DefaultStateSessionCoinRay} coinRay
  * @property {DefaultSessionData} sessionData
+ * @property {string} appVersion
  */
 
 /**
@@ -60,6 +61,35 @@
  */
 
 /**
+ * @typedef {Object} BrowseSettings
+ * @property {string} quote
+ * @property {string} exchange
+ * @property {string} exchangeType
+ */
+
+/**
+ * @typedef {Object} AnalyticsSettings
+ * @property {string} quote
+ * @property {string} base
+ */
+
+/**
+ * @typedef {Object} CopytSettings
+ * @property {BrowseSettings} browse
+ * @property {AnalyticsSettings} analytics
+ */
+
+/**
+ * @typedef {Object} SignalpSettings
+ * @property {AnalyticsSettings} analytics
+ */
+
+/**
+ * @typedef {Object} TradingTerminalSettings
+ * @property {Object<string, string>} pair
+ */
+
+/**
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
@@ -67,6 +97,11 @@
  * @property {DisplayColumns} displayColumns
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
+ * @property {TimeframeObject} timeFrame
+ * @property {SortObject} sort
+ * @property {CopytSettings} copyt
+ * @property {SignalpSettings} signalp
+ * @property {TradingTerminalSettings} tradingTerminal
  */
 
 /**
@@ -95,6 +130,8 @@
  * @property {Number} connectedSignalp
  * @property {Number} copyt
  * @property {Number} signalp
+ * @property {string} signalpAnalytics
+ * @property {string} copytAnalytics
  */
 
 /**
@@ -109,8 +146,6 @@
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
- * @property {TimeframeObject} timeFrame
- * @property {SortObject} sort
  * @property {Boolean} balanceLoader
  */
 
@@ -143,6 +178,7 @@ const initialState = {
       status: "",
       validUntil: 0,
     },
+    appVersion: "",
   },
   settings: {
     languageCode: "en",
@@ -358,6 +394,26 @@ const initialState = {
       globalWhitelist: false,
       balanceSynced: false,
     },
+    timeFrame: {
+      connectedCopyt: null,
+      connectedSignalp: null,
+      copyt: null,
+      signalp: null,
+      copytAnalytics: null,
+      signalpAnalytics: null,
+    },
+    sort: {
+      copyt: null,
+      signalp: null,
+    },
+    copyt: {
+      browse: { quote: null, exchange: null, exchangeType: null },
+      analytics: { quote: null, base: null },
+    },
+    signalp: {
+      analytics: { quote: null, base: null },
+    },
+    tradingTerminal: { pair: {} },
   },
   user: {
     exchangeConnections: [],
@@ -425,16 +481,6 @@ const initialState = {
     loader: false,
     ask2FA: false,
     balanceLoader: false,
-    timeFrame: {
-      connectedCopyt: 90,
-      connectedSignalp: 90,
-      copyt: 90,
-      signalp: 90,
-    },
-    sort: {
-      copyt: "RETURNS_DESC",
-      signalp: "RETURNS_DESC",
-    },
   },
   views: {
     provider: {

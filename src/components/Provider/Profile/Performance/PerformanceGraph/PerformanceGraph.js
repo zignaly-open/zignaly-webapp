@@ -1,7 +1,7 @@
 import React from "react";
 import "./PerformanceGraph.scss";
 import BarChart from "../../../../Graphs/BarChart";
-import { Box, useMediaQuery } from "@material-ui/core";
+import { Box, useMediaQuery, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { formatFloat2Dec } from "../../../../../utils/format";
 
@@ -26,31 +26,52 @@ const PerformanceGraph = ({ provider }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  /**
+   * @typedef {Object} ValuesObject
+   * @property {Array<Number>} values
+   * @property {Array<String>} labels
+   */
+
+  /**
+   * @returns {ValuesObject} Values object for graoh.
+   */
   const prepareValues = () => {
     let stats = provider.performance.weeklyStats;
+    /**
+     * @type {Array<Number>}
+     */
     let values = [];
+    /**
+     * @type {Array<String>}
+     */
+    let labels = [];
     if (stats) {
+      stats.sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
       if (stats.length > 12) {
-        let list = [...stats].sort((a, b) => b.week - a.week);
-        values = [...list].splice(0, 12);
-        return values.map((item) => item.return);
+        const list = [...stats].splice(stats.length - 12, 12);
+        values = list.map((item) => item.return);
+        labels = list.map((item) => item.day);
+      } else {
+        values = stats.map((item) => item.return);
+        labels = stats.map((item) => item.day);
+
+        for (let a = 0; a < 12 - stats.length; a++) {
+          values.unshift(0);
+          labels.unshift("");
+        }
       }
-      let list = [...stats].sort((a, b) => a.week - b.week);
-      values = list.map((item) => item.return);
-      for (let a = 0; a < 12 - stats.length; a++) {
-        values.unshift(0);
-      }
-      return values;
     }
-    return [];
+    return { labels, values };
   };
 
-  const values = prepareValues();
-  const labels = [...values].map(() => "");
+  const { labels, values } = prepareValues();
   const options = {
     scales: {
       xAxes: [
         {
+          ticks: {
+            display: false,
+          },
           gridLines: {
             display: false,
           },
@@ -75,10 +96,18 @@ const PerformanceGraph = ({ provider }) => {
 
   /**
    * @param {ChartTooltipItem} tooltipItems Tooltip item.
-   * @returns {string} Tooltip text.
+   * @returns {React.ReactNode} Tooltip text.
    */
-  const tooltipFormat = (tooltipItems /* data */) =>
-    `${formatFloat2Dec(tooltipItems[isMobile ? "xLabel" : "yLabel"])}%`;
+  const tooltipFormat = (tooltipItems /* data */) => {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="flex-start">
+        <Typography variant="h5">{tooltipItems.label}</Typography>
+        <Typography variant="h5">
+          {`${formatFloat2Dec(tooltipItems[isMobile ? "xLabel" : "yLabel"])}%`}
+        </Typography>
+      </Box>
+    );
+  };
 
   return (
     <Box className="performanceGraph">

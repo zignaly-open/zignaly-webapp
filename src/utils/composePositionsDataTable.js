@@ -1,6 +1,6 @@
 import React from "react";
 import { findIndex, merge } from "lodash";
-import { Link, navigate } from "gatsby";
+import { Link } from "gatsby";
 import {
   Edit2,
   ExternalLink,
@@ -321,18 +321,6 @@ function composeRawValue(value) {
 }
 
 /**
- * Navigate to position detail page.
- *
- * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
- * @returns {Void} None.
- */
-function gotoPositionDetail(event) {
-  const targetElement = event.currentTarget;
-  const positionId = targetElement.getAttribute("data-position-id");
-  navigate(`position/${positionId}`);
-}
-
-/**
  * Checks if viewed page is a position edit view.
  *
  * @param {PositionEntity} position Position entity to check.
@@ -381,13 +369,9 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.view" />}
         >
-          <IconButton
-            className="iconPurple"
-            data-position-id={position.positionId}
-            onClick={gotoPositionDetail}
-          >
+          <Link to={`/position/${position.positionId}`}>
             <Eye />
-          </IconButton>
+          </Link>
         </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
@@ -397,13 +381,9 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.edit" />}
         >
-          <IconButton
-            className="iconPurple"
-            data-position-id={position.positionId}
-            onClick={gotoPositionDetail}
-          >
+          <Link to={`/position/${position.positionId}`}>
             <Edit2 />
-          </IconButton>
+          </Link>
         </Tooltip>
       )}
       {(!isCopyTrading || isCopyTrader || isProviderOwner) && !closed && !updating && status !== 1 && (
@@ -507,7 +487,7 @@ function composeColumnOptions(columnId, columnName = null) {
   // Override defaults on default sort column.
   if (columnId === defaultSortColumnId) {
     return merge(columnOptions, {
-      options: { sort: true, sortDirection: "desc" },
+      options: { sort: true },
     });
   }
 
@@ -633,16 +613,7 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
  * @returns {JSX.Element} Composed JSX element.
  */
 function composePositionLinkButton(positionId) {
-  return (
-    <span
-      className="positionLink"
-      data-position-id={positionId}
-      onClick={gotoPositionDetail}
-      title="View Position"
-    >
-      {positionId}
-    </span>
-  );
+  return <Link to={`/position/${positionId}`}>{positionId}</Link>;
 }
 
 /**

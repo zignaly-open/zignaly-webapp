@@ -4,22 +4,23 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
+import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
 import { uniqBy } from "lodash";
 import {
-  showErrorAlert,
-  setConnectedCopytTimeframe,
-  setConnectedSignalTimeframe,
-  setCopytTimeframe,
-  setSignalpTimeframe,
-  setSignalpSort,
-  setCopytSort,
-} from "../store/actions/ui";
+  setSort as setSortAction,
+  setTimeFrame as setTimeFrameAction,
+  setBrowseExchange,
+  setBrowseExchangeType,
+  setBrowseQuote,
+} from "../store/actions/settings";
+import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useStoreUISelector from "./useStoreUISelector";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/actions/settings").ProviderPageType} ProviderPageType
+ * @typedef {import("../store/actions/settings").ConnectedProviderPageType} ConnectedProviderPageType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
@@ -63,7 +64,6 @@ const useProvidersList = (options) => {
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
-  const storeUI = useStoreUISelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
 
@@ -73,25 +73,17 @@ const useProvidersList = (options) => {
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
 
-  const initTimeFrame = () => {
-    if (copyTradersOnly && connectedOnly) {
-      return storeUI.timeFrame.connectedCopyt;
-    }
-    if (!copyTradersOnly && connectedOnly) {
-      return storeUI.timeFrame.connectedSignalp;
-    }
-    if (copyTradersOnly && !connectedOnly) {
-      return storeUI.timeFrame.copyt;
-    }
-    if (!copyTradersOnly && !connectedOnly) {
-      return storeUI.timeFrame.signalp;
-    }
-    return 90;
-  };
+  /**
+   * @type {ProviderPageType|ConnectedProviderPageType} Page shorthand
+   */
+  let page;
+  if (connectedOnly) {
+    page = copyTradersOnly ? "connectedCopyt" : "connectedSignalp";
+  } else {
+    page = copyTradersOnly ? "copyt" : "signalp";
+  }
 
-  const [timeFrame, setTimeFrame] = useState(initTimeFrame());
-
-  // Get Coins list unless connected providers only which don't need filters
+  // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const coins = [
     {
@@ -104,33 +96,60 @@ const useProvidersList = (options) => {
       label,
     })),
   );
-  const [coin, setCoin] = useState(coins[0]);
+
+  const initQuote = storeSettings.copyt.browse.quote;
+  const [quote, setQuote] = useState(initQuote ? { val: initQuote, label: initQuote } : coins[0]);
+
+  // Save settings to store when changed
+  const saveQuote = () => {
+    dispatch(setBrowseQuote(quote.val));
+  };
+  useEffectSkipFirst(saveQuote, [quote]);
 
   // Exchanges
+  const initExchange = storeSettings.copyt.browse.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
-  const [exchange, setExchange] = useState("ALL");
+  const [exchange, setExchange] = useState(initExchange);
 
+  // Save settings to store when changed
+  const saveExchange = () => {
+    dispatch(setBrowseExchange(exchange));
+  };
+  useEffectSkipFirst(saveExchange, [exchange]);
+
+  // Exchange Types
+  const initExchangeType = storeSettings.copyt.browse.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
-      label: intl.formatMessage({ id: "fil.allexchangeTypes" }),
+      label: intl.formatMessage({
+        id: "fil.allexchangeTypes",
+      }),
     },
     { val: "spot", label: "Spot" },
     { val: "futures", label: "Futures" },
   ];
-  const [exchangeType, setExchangeType] = useState("ALL");
+  const [exchangeType, setExchangeType] = useState(initExchangeType);
 
+  // Save settings to store when changed
+  const saveExchangeType = () => {
+    dispatch(setBrowseExchangeType(exchangeType));
+  };
+  useEffectSkipFirst(saveExchangeType, [exchangeType]);
+
+  // Sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
-      val = copyTradersOnly ? storeUI.sort.copyt : storeUI.sort.signalp;
+      val = copyTradersOnly ? storeSettings.sort.copyt : storeSettings.sort.signalp;
     }
     return val || "RETURNS_DESC";
   };
   const [sort, setSort] = useState(initSort);
 
+  // Reset filters
   const clearFilters = () => {
-    setCoin(coins[0]);
+    setQuote(coins[0]);
     setExchange("ALL");
     setExchangeType("ALL");
   };
@@ -139,22 +158,14 @@ const useProvidersList = (options) => {
     setSort("RETURNS_DESC");
   };
 
-  const saveTimeFrame = () => {
-    if (copyTradersOnly && connectedOnly) {
-      dispatch(setConnectedCopytTimeframe(timeFrame));
-    }
-    if (!copyTradersOnly && connectedOnly) {
-      dispatch(setConnectedSignalTimeframe(timeFrame));
-    }
-    if (copyTradersOnly && !connectedOnly) {
-      dispatch(setCopytTimeframe(timeFrame));
-    }
-    if (!copyTradersOnly && !connectedOnly) {
-      dispatch(setSignalpTimeframe(timeFrame));
-    }
-  };
+  // TimeFrame
+  const initTimeFrame = storeSettings.timeFrame[page] || 90;
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
-  useEffect(saveTimeFrame, [timeFrame]);
+  const saveTimeFrame = () => {
+    dispatch(setTimeFrameAction({ timeFrame, page }));
+  };
+  useEffectSkipFirst(saveTimeFrame, [timeFrame]);
 
   /**
    * Sort providers by selected option
@@ -189,16 +200,13 @@ const useProvidersList = (options) => {
   };
   const saveSort = () => {
     if (!connectedOnly) {
-      if (copyTradersOnly) {
-        dispatch(setCopytSort(sort));
-      } else {
-        dispatch(setSignalpSort(sort));
-      }
+      // @ts-ignore
+      dispatch(setSortAction({ sort, page }));
     }
   };
 
   // Sort providers on sort option change
-  useEffect(() => {
+  useEffectSkipFirst(() => {
     if (providers.filteredList) {
       sortProviders(providers.filteredList);
     }
@@ -215,7 +223,7 @@ const useProvidersList = (options) => {
   const filterProviders = (list) => {
     const res = list.filter(
       (p) =>
-        (coin.val === "ALL" || p.quote === coin.val) &&
+        (quote.val === "ALL" || p.quote === quote.val) &&
         (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
         (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
     );
@@ -227,7 +235,7 @@ const useProvidersList = (options) => {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin, exchange, exchangeType]);
+  }, [quote, exchange, exchangeType]);
 
   const loadProviders = () => {
     /**
@@ -246,7 +254,10 @@ const useProvidersList = (options) => {
       .providersGet(payload)
       .then((responseData) => {
         const uniqueProviders = uniqBy(responseData, "id");
-        setProviders((s) => ({ ...s, list: uniqueProviders }));
+        setProviders((s) => ({
+          ...s,
+          list: uniqueProviders,
+        }));
         filterProviders(uniqueProviders);
       })
       .catch((e) => {
@@ -266,9 +277,9 @@ const useProvidersList = (options) => {
     providers: providers.filteredList,
     timeFrame,
     setTimeFrame,
-    coin,
+    coin: quote,
     coins,
-    setCoin,
+    setCoin: setQuote,
     exchange,
     exchanges,
     setExchange,

@@ -317,6 +317,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelContractPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} amount amount.
+ * @property {String} symbol symbol.
+ */
+
+/**
  * @typedef {Object} PositionsListPayload
  * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
@@ -475,6 +483,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} copyTradersOnly
  * @property {boolean} [ro] Read only request
  * @property {string} internalExchangeId
+ */
+
+/**
+ * @typedef {Object} ProvidersListPayload
+ * @property {string} token
+ * @property {boolean} ro
  */
 
 /**
@@ -3543,6 +3557,7 @@ const createEmptyExchangeOpenOrdersEntity = () => {
 
 /**
  * @typedef {Object} ExchangeContractsObject
+ * @property {String} id
  * @property {String} positionId
  * @property {Number} amount
  * @property {Number} entryprice
@@ -3578,6 +3593,7 @@ export function exchangeContractsResponseTransform(response) {
  */
 function exchangeContractsItemTransform(contract) {
   const orderEntity = assign(createEmptyExchangeContractsEntity(), contract, {
+    id: Math.random().toString(),
     positionId: contract.position,
   });
   return orderEntity;
@@ -3588,8 +3604,9 @@ function exchangeContractsItemTransform(contract) {
  *
  * @returns {ExchangeContractsObject} Empty exchaneg conytract entity.
  */
-const createEmptyExchangeContractsEntity = () => {
+export const createEmptyExchangeContractsEntity = () => {
   return {
+    id: "",
     positionId: "",
     amount: 0,
     entryprice: 0,

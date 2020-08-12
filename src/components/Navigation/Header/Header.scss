@@ -5,9 +5,9 @@
   width: 100%;
 
   .headerLogo {
-    height: 42px;
+    height: 32px;
     margin: 0 16px 0 0;
-    width: 106px;
+    width: 115px;
   }
 
   .linksContainer {
@@ -54,7 +54,12 @@
 
       .balanceBox {
         height: 42px;
+        margin-right: 20px;
         width: fit-content;
+
+        &:last-child {
+          margin-right: 0;
+        }
       }
     }
   }

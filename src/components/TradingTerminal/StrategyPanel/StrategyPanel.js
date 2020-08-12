@@ -16,10 +16,11 @@ import {
 import HelperLabel from "../HelperLabel/HelperLabel";
 import Modal from "../../Modal";
 import { CircularProgress } from "@material-ui/core";
+import { LeverageForm } from "..";
+import { formatPrice } from "../../../utils/formatters";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import { LeverageForm } from "..";
 import "./StrategyPanel.scss";
 
 /**
@@ -166,7 +167,7 @@ const StrategyPanel = (props) => {
               {loading ? (
                 <CircularProgress color="primary" size={15} />
               ) : (
-                <span className="balance">{quoteBalance}</span>
+                <span className="balance">{formatPrice(quoteBalance)}</span>
               )}
             </FormHelperText>
           </FormControl>
@@ -195,7 +196,7 @@ const StrategyPanel = (props) => {
               {loading ? (
                 <CircularProgress color="primary" size={15} />
               ) : (
-                <span className="balance">{quoteBalance}</span>
+                <span className="balance">{formatPrice(quoteBalance)}</span>
               )}
             </FormHelperText>
             {errors.positionSize && (
@@ -248,7 +249,7 @@ const StrategyPanel = (props) => {
               {loading ? (
                 <CircularProgress color="primary" size={15} />
               ) : (
-                <span className="balance">{baseBalance}</span>
+                <span className="balance">{formatPrice(baseBalance)}</span>
               )}
             </FormHelperText>
             {errors.units && <span className="errorText">{errors.units.message}</span>}

@@ -9,10 +9,16 @@ import { Box } from "@material-ui/core";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
+ * @typedef {import("../../../hooks/usePositionsList").PositionsFiltersState} PositionsFiltersState
+ * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
+ */
+
+/**
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback to broadcast filters changes to caller.
- * @property {UserPositionsCollection} positions
- * @property {boolean} showTypesFilter
+ * @property {UserPositionsCollection} positions Positions collection.
+ * @property {PositionsFiltersState} initialState Filters initial state.
+ * @property {boolean} showTypesFilter Flag to indicate whether types dropdown filter display or not.
  */
 
 /**
@@ -22,15 +28,15 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { onChange, positions, showTypesFilter } = props;
+  const { initialState, onChange, positions, showTypesFilter } = props;
   const defaultFilters = {
-    providerName: "all",
-    pair: "all",
+    provider: "all",
+    pair: { label: "All Pairs", val: "all" },
     side: "all",
     type: "all",
     status: "",
   };
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(initialState);
 
   const extractPairOptions = () => {
     const coinsDistinct = uniqBy(positions, "pair").map((position) => {
@@ -80,14 +86,14 @@ const PositionFilters = (props) => {
   const setProvider = (value) => {
     setFilters({
       ...filters,
-      providerName: value,
+      provider: value,
     });
   };
 
   /**
    * Set coin pair filter value.
    *
-   * @param {string} value Selected coin value.
+   * @param {OptionType} value Selected coin value.
    * @returns {Void} None.
    */
   const setCoin = (value) => {
@@ -148,9 +154,15 @@ const PositionFilters = (props) => {
         label=""
         onChange={setProvider}
         options={providerOptions}
-        value={filters.providerName}
+        value={filters.provider}
       />
-      <CustomSelect label="" onChange={setCoin} options={pairOptions} value={filters.pair} />
+      <CustomSelect
+        label=""
+        onChange={setCoin}
+        options={pairOptions}
+        search={true}
+        value={filters.pair}
+      />
       <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
       {showTypesFilter && (
         <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">

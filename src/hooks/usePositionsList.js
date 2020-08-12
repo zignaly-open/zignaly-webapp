@@ -12,6 +12,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
+ * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
  */
 
 /**
@@ -19,6 +20,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
+ * @property {PositionsFiltersState} filtersState
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
  */
@@ -30,6 +32,15 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {UserPositionsCollection} log
  * @property {UserPositionsCollection} profileOpen
  * @property {UserPositionsCollection} profileClosed
+ */
+
+/**
+ * @typedef {Object} PositionsFiltersState
+ * @property {string} provider
+ * @property {OptionType} pair
+ * @property {string} side
+ * @property {string} type
+ * @property {string} status
  */
 
 /**
@@ -52,7 +63,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [loading, setLoading] = useState(true);
   const defaultFilters = {
     provider: "all",
-    pair: "all",
+    pair: { label: "All Pairs", val: "all" },
     side: "all",
     type: "all",
     status: "",
@@ -72,6 +83,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [filters, setFilters] = useState(defaultFilters);
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
+  const statusRef = useRef(filters.status);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -129,11 +141,20 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     /**
      * Checks if value equals to "all".
      *
-     * @param {string} value Value to check.
+     * @param {string|OptionType} value Value to check.
      * @returns {boolean} TRUE when equals, FALSE otherwise.
      */
-    const isAll = (value) => value === "all" || value === "";
-    const filterValues = omitBy(filters, isAll);
+    const isAll = (value) => {
+      if (typeof value === "object") {
+        return value.val === "all";
+      }
+      return value === "all" || value === "";
+    };
+    let filterValues = omitBy(filters, isAll);
+    if (filterValues.pair) {
+      // @ts-ignore
+      filterValues.pair = filterValues.pair.val;
+    }
 
     // Only use the type filter on log positions table.
     if (type !== "log") {
@@ -162,6 +183,11 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     // Only show loader at initial load to avoid loader experience disruption on updates.
     if (newPositions[type] === null) {
       setLoading(true);
+    }
+
+    if (statusRef.current !== filters.status) {
+      setLoading(true);
+      statusRef.current = filters.status;
     }
 
     return newPositions;
@@ -220,6 +246,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       cancel = true;
     };
   };
+
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
   useEffect(loadPositionsForExchange, [
     type,
@@ -280,7 +307,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       }
     }
   };
-  useInterval(updateData, 5000, true);
+  useInterval(updateData, 3000, true);
 
   /**
    * Update filters with selected exchange.
@@ -337,6 +364,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     positionsAll: positions[type] || [],
     positionsFiltered: filterData(positions[type] || []),
     setFilters: combineFilters,
+    filtersState: filters,
     loading: loading,
     flagPositionUpdating,
   };

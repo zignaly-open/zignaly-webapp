@@ -1,4 +1,6 @@
 import fetch from "cross-fetch";
+import cache from "memory-cache";
+import { createHash } from "crypto";
 import { navigateLogin } from "./navigation";
 import {
   userEntityResponseTransform,
@@ -50,6 +52,7 @@ import {
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
@@ -106,6 +109,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
+ * @typedef {import('./tradeApiClient.types').CancelContractPayload} CancelContractPayload
  * @typedef {import('./tradeApiClient.types').ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import('./tradeApiClient.types').ProviderFollowersEntity} ProviderFollowersEntity
  * @typedef {import('./tradeApiClient.types').ProviderCopiersEntity} ProviderCopiersEntity
@@ -137,6 +141,33 @@ class TradeApiClient {
    */
   constructor() {
     this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
+
+    /**
+     * @type {Object<string, number>} Tracks request average latency.
+     */
+    this.endpointAverageLatency = {};
+  }
+
+  /**
+   * Store endpoint average latency.
+   *
+   * @param {string} endpointPath Trade API endpoint path to track.
+   * @param {number} latencyMillisec Latest request latency expressed in milliseconds.
+   * @returns {void} None.
+   *
+   * @memberof TradeApiClient
+   */
+  storeRequestAverageLatency(endpointPath, latencyMillisec) {
+    // Calculate average when there are previous observations.
+    if (this.endpointAverageLatency[endpointPath]) {
+      const currentAverage = this.endpointAverageLatency[endpointPath];
+      const newAverage = (currentAverage + latencyMillisec) / 2;
+      this.endpointAverageLatency[endpointPath] = newAverage;
+      return;
+    }
+
+    // Is the first observation.
+    this.endpointAverageLatency[endpointPath] = latencyMillisec;
   }
 
   /**
@@ -144,14 +175,17 @@ class TradeApiClient {
    *
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
+   * @param {string} [method] Request HTTP method, currently used only for cache purposes.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload) {
-    let responseData = {};
+  async doRequest(endpointPath, payload, method = "") {
     const requestUrl = this.baseUrl + endpointPath;
+    let responseData = {};
 
+    // TODO: Comply with request method parameter once backend resolve a GET
+    // method usage issue for requests that needs payload as query string.
     const options = payload
       ? {
           method: "POST",
@@ -163,12 +197,39 @@ class TradeApiClient {
         }
       : { method: "GET" };
 
+    const payloadHash = options.body ? createHash("md5").update(options.body).digest("hex") : "";
+    const cacheId = `${endpointPath}-${payloadHash}`;
+    const cachedResponseData = cache.get(cacheId);
+    if (cachedResponseData) {
+      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
+      return cachedResponseData;
+    }
+
     try {
+      const startTime = Date.now();
       const response = await fetch(requestUrl, options);
+      const elapsedTime = Date.now() - startTime;
+      this.storeRequestAverageLatency(endpointPath, elapsedTime);
+
+      // Use average latency + some tolerance as cache expiration, when backend
+      // is saturated the average will increase and cache duration will be
+      // longer minimizing concurrent in-progress requests.
+      const cacheTTL = this.endpointAverageLatency[endpointPath] + 1000;
+      const parsedJson = await response.json();
+
       if (response.status === 200) {
-        responseData = await response.json();
+        responseData = parsedJson;
       } else {
-        responseData.error = await response.json();
+        responseData.error = parsedJson;
+      }
+
+      // Currently method is not taking the real effect on the HTTP method we
+      // use, and it's unique effect for now is to control when a endpoint
+      // request should be cached or not. We need to do some refactorings in the
+      // backend to properly manage the method usage.
+      if (method === "GET") {
+        cache.put(cacheId, responseData, cacheTTL);
+        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
@@ -229,7 +290,7 @@ class TradeApiClient {
    */
   async openPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 }, "GET");
 
     return positionsResponseTransform(responseData);
   }
@@ -244,10 +305,14 @@ class TradeApiClient {
    */
   async closedPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
-    const responseData = await this.doRequest(endpointPath, {
-      type: "sold",
-      ...payload,
-    });
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        type: "sold",
+        ...payload,
+      },
+      "GET",
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -262,10 +327,14 @@ class TradeApiClient {
    */
   async logPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
-    const responseData = await this.doRequest(endpointPath, {
-      type: "log",
-      ...payload,
-    });
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        type: "log",
+        ...payload,
+      },
+      "GET",
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -280,6 +349,21 @@ class TradeApiClient {
    */
   async providersGet(payload) {
     const endpointPath = "/fe/api.php?action=getProviderList2";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return providersResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers list.
+   *
+   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersListGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderList";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providersResponseTransform(responseData);
@@ -884,7 +968,7 @@ class TradeApiClient {
    */
   async providerCopyTradingDataPointsGet(payload) {
     const endpointPath = "/fe/api.php?action=getCopyTradingDataPoints";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return providerDataPointsResponseTransform(responseData);
   }
@@ -990,7 +1074,7 @@ class TradeApiClient {
    */
   async providerManagementPositions(payload) {
     const endpointPath = "/fe/api.php?action=getCopyTradingPositions";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return managementPositionsResponseTransform(responseData);
   }
@@ -1111,7 +1195,7 @@ class TradeApiClient {
    */
   async providerOpenPositions(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return positionsResponseTransform(responseData);
   }
@@ -1127,7 +1211,7 @@ class TradeApiClient {
    */
   async providerSoldPositions(payload) {
     const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return positionsResponseTransform(responseData);
   }
@@ -1267,7 +1351,7 @@ class TradeApiClient {
    */
   async sessionDataGet(payload) {
     const endpointPath = "/fe/api.php?action=getSessionData";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return sessionDataResponseTransform(responseData);
   }
@@ -1315,6 +1399,22 @@ class TradeApiClient {
    */
   async cancelExchangeOrder(payload) {
     const endpointPath = "/fe/api.php?action=cancelOrder";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Canel exchange contract.
+   *
+   * @param {CancelContractPayload} payload Cancel exchange contract payload.
+   *
+   * @returns {Promise<Boolean>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async cancelExchangeContract(payload) {
+    const endpointPath = "/fe/api.php?action=reduceContract";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
