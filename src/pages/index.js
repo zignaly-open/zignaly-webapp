@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import { navigate } from "gatsby";
+import useStoreSessionSelector from "../hooks/useStoreSessionSelector";
+import { verifySessionData } from "../utils/auth";
 
 const IndexPage = () => {
-  const redirect = () => {
-    navigate("/dashboard/positions", { replace: true });
-  };
+  const storeSession = useStoreSessionSelector();
 
-  useEffect(redirect, []);
+  if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
+    navigate("/dashboard/positions", { replace: true });
+  } else {
+    navigate("/login", { replace: true });
+  }
 
   return (
     <Helmet>
