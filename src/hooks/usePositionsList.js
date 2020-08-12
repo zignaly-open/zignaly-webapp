@@ -12,6 +12,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
+ * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
  */
 
 /**
@@ -36,7 +37,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
 /**
  * @typedef {Object} PositionsFiltersState
  * @property {string} provider
- * @property {string} pair
+ * @property {OptionType} pair
  * @property {string} side
  * @property {string} type
  * @property {string} status
@@ -62,7 +63,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const [loading, setLoading] = useState(true);
   const defaultFilters = {
     provider: "all",
-    pair: "all",
+    pair: { label: "All Pairs", val: "all" },
     side: "all",
     type: "all",
     status: "",
@@ -140,11 +141,20 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     /**
      * Checks if value equals to "all".
      *
-     * @param {string} value Value to check.
+     * @param {string|OptionType} value Value to check.
      * @returns {boolean} TRUE when equals, FALSE otherwise.
      */
-    const isAll = (value) => value === "all" || value === "";
-    const filterValues = omitBy(filters, isAll);
+    const isAll = (value) => {
+      if (typeof value === "object") {
+        return value.val === "all";
+      }
+      return value === "all" || value === "";
+    };
+    let filterValues = omitBy(filters, isAll);
+    if (filterValues.pair) {
+      // @ts-ignore
+      filterValues.pair = filterValues.pair.val;
+    }
 
     // Only use the type filter on log positions table.
     if (type !== "log") {
@@ -297,7 +307,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       }
     }
   };
-  useInterval(updateData, 3000, true);
+  useEffect(updateData, []);
 
   /**
    * Update filters with selected exchange.
