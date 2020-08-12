@@ -307,7 +307,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
       }
     }
   };
-  useEffect(updateData, []);
+  useInterval(updateData, 3000, true);
 
   /**
    * Update filters with selected exchange.
