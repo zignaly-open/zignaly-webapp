@@ -33,7 +33,7 @@
         min-height: 30px;
       }
 
-      &:nth-child(3) {
+      div:nth-child(3) {
         @extend %box-shadow;
       }
 
