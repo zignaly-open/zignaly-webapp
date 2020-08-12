@@ -24,19 +24,17 @@
   }
 
   .customTable {
-    > div {
+    div[class*="MUIDataTable-paper"] {
       background: transparent;
       border: 1px solid transparent;
       box-shadow: none;
 
-      div {
-        &:first-child {
-          min-height: 30px;
-        }
+      div[class*="MuiToolbar-root"] {
+        min-height: 30px;
+      }
 
-        &:nth-child(3) {
-          @extend %box-shadow;
-        }
+      div[class*="MUIDataTable-responsiveBase"] {
+        @extend %box-shadow;
       }
 
       button {
@@ -60,6 +58,7 @@
       flex: 0 0 100%;
       height: 400px;
       margin-bottom: 15px;
+      margin-right: 0;
     }
 
     @include media(">=lg") {
@@ -73,16 +72,25 @@
 
   .symbolsSelector,
   .providersSelector {
-    margin-right: 10px;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-right: 20px;
 
     @include media("<=sm") {
+      flex-direction: column;
       margin-bottom: 15px;
     }
 
     .customSelect {
       align-items: flex-start;
       flex-direction: column;
-      margin: 10px 0 0;
+      margin: 0 0 0 10px;
+
+      @include media("<=sm") {
+        margin: 10px 0 0;
+      }
     }
 
     .callout {
