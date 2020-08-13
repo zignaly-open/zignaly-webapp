@@ -98,6 +98,9 @@ const CustomSelect = (props) => {
             getOptionLabel={(option) =>
               typeof option === "object" ? option.label : option.toString()
             }
+            getOptionSelected={(option, v) =>
+              option === "object" ? option.val === v.val : option === v
+            }
             multiple={multiple}
             onChange={(e, val) => onChange(val)}
             openOnFocus={true}
@@ -106,7 +109,6 @@ const CustomSelect = (props) => {
             renderOption={renderOption}
             size="small"
             value={value}
-            getOptionSelected={(option, value) => option.val === value.val}
           />
         )}
       </FormControl>

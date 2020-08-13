@@ -1,5 +1,4 @@
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
-import { unsetSelectedExchange } from "./settings";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
 import { isEmpty } from "lodash";
