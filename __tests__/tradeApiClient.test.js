@@ -78,7 +78,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 10000);
+  }, 15000);
 
   it("should get user closed positions", async () => {
     const payload = {
@@ -93,7 +93,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 10000);
+  }, 15000);
 
   it("should get user log positions", async () => {
     const payload = {

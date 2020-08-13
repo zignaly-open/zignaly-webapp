@@ -1,1 +1,3 @@
-export { default } from "./positions";
+import positions from "./positions";
+
+export default positions;

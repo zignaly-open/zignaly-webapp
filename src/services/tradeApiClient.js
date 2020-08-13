@@ -145,29 +145,158 @@ class TradeApiClient {
     /**
      * @type {Object<string, number>} Tracks request average latency.
      */
-    this.endpointAverageLatency = {};
+    this.requestAverageLatency = {};
+
+    /**
+     * @type {Object<string, boolean>} Tracks request lock.
+     */
+    this.requestLock = {};
+  }
+
+  /**
+   * Generate a request unique cache ID.
+   *
+   * The ID will be unique for the requested endpoint with same payload
+   * parameters so endpoints like getClosedPositions which resolve close/log
+   * with different average latency could be differentiated.
+   *
+   * @param {string} endpointPath Endpoint path of the request.
+   * @param {string} payload Request payload JSON stringified or empty string.
+   * @returns {string} Request cache ID.
+   *
+   * @memberof TradeApiClient
+   */
+  generateRequestCacheId(endpointPath, payload) {
+    const payloadHash = createHash("md5").update(payload).digest("hex");
+    const cacheId = `${endpointPath}-${payloadHash}`;
+
+    return cacheId;
+  }
+
+  /**
+   * Get a request lock.
+   *
+   * When lock is active will prevent that the same (endpoint and payload)
+   * request is performed concurrently so when latency is higuer than interval
+   * we prevent that piled up request process concurrently.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
+   * @param {number} [timeout=20000] Lock time to live in millisecs.
+   * @returns {boolean} True when lock was acquired, false when existing lock is in place.
+   *
+   * @memberof TradeApiClient
+   */
+  getRequestLock(cacheId, timeout = 20000) {
+    if (this.requestLock[cacheId]) {
+      return false;
+    }
+
+    this.requestLock[cacheId] = true;
+
+    // Timeout to automatically release the lock.
+    setTimeout(() => {
+      this.releaseRequestLock(cacheId);
+    }, timeout);
+
+    return true;
+  }
+
+  /**
+   * Release request lock.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
+   * @returns {Void} None.
+   *
+   * @memberof TradeApiClient
+   */
+  releaseRequestLock(cacheId) {
+    if (this.requestLock[cacheId]) {
+      delete this.requestLock[cacheId];
+    }
   }
 
   /**
    * Store endpoint average latency.
    *
-   * @param {string} endpointPath Trade API endpoint path to track.
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
    * @param {number} latencyMillisec Latest request latency expressed in milliseconds.
    * @returns {void} None.
    *
    * @memberof TradeApiClient
    */
-  storeRequestAverageLatency(endpointPath, latencyMillisec) {
+  setRequestAverageLatency(cacheId, latencyMillisec) {
     // Calculate average when there are previous observations.
-    if (this.endpointAverageLatency[endpointPath]) {
-      const currentAverage = this.endpointAverageLatency[endpointPath];
+    if (this.requestAverageLatency[cacheId]) {
+      // Tolerance to account for other delays like response decode / error handling.
+      const tolerance = 500;
+      const currentAverage = this.requestAverageLatency[cacheId];
       const newAverage = (currentAverage + latencyMillisec) / 2;
-      this.endpointAverageLatency[endpointPath] = newAverage;
+      this.requestAverageLatency[cacheId] = newAverage + tolerance;
+
       return;
     }
 
     // Is the first observation.
-    this.endpointAverageLatency[endpointPath] = latencyMillisec;
+    this.requestAverageLatency[cacheId] = latencyMillisec;
+  }
+
+  /**
+   * Get similar request historical average latency.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
+   * @returns {number} Average latency time in milliseconds.
+   *
+   * @memberof TradeApiClient
+   */
+  getRequestAverageLatency(cacheId) {
+    // Default to 5 seconds when no previous average exists so when initial
+    // request don't respond, and we don't have average time, we ensure to have
+    // a minimum limit to avoid stampede requests.
+    return this.requestAverageLatency[cacheId] || 5000;
+  }
+
+  /**
+   * Throw too many requests exception.
+   *
+   * This error throws when duplicated requests to same endpoint and parameters
+   * are accumulated due to increased latency of backend.
+   *
+   * @returns {any} Error object.
+   *
+   * @memberof TradeApiClient
+   */
+  tooManyRequestsError() {
+    return {
+      error: "Too many requests.",
+      code: "apilatency",
+    };
+  }
+
+  /**
+   * Resolve response from cache and fail when data not found within timeout.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
+   *
+   * @returns {Promise<any>} Request cached response.
+   */
+  async resolveFromCache(cacheId) {
+    const timeout = 10000;
+    return new Promise((resolve, reject) => {
+      const checkInterval = setInterval(() => {
+        const responseData = cache.get(cacheId);
+        if (responseData) {
+          // console.log(`Request ${cacheId} resolved from cache:`, responseData);
+          resolve(responseData);
+          clearInterval(checkInterval);
+        }
+      }, 100);
+
+      // Timeout exceeded, this means higher than expected latency in backend.
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        reject(this.tooManyRequestsError());
+      }, timeout);
+    });
   }
 
   /**
@@ -197,26 +326,30 @@ class TradeApiClient {
         }
       : { method: "GET" };
 
-    const payloadHash = options.body ? createHash("md5").update(options.body).digest("hex") : "";
-    const cacheId = `${endpointPath}-${payloadHash}`;
-    const cachedResponseData = cache.get(cacheId);
-    if (cachedResponseData) {
-      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
-      return cachedResponseData;
+    const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
+    if (method === "GET") {
+      let cacheResponseData = cache.get(cacheId);
+      if (cacheResponseData) {
+        return cacheResponseData;
+      }
+
+      // When duplicated request is running try during interval to resolve the
+      // response from the other process cache.
+      if (!this.getRequestLock(cacheId)) {
+        cacheResponseData = await this.resolveFromCache(cacheId);
+        if (cacheResponseData) {
+          return cacheResponseData;
+        }
+      }
     }
 
     try {
       const startTime = Date.now();
       const response = await fetch(requestUrl, options);
       const elapsedTime = Date.now() - startTime;
-      this.storeRequestAverageLatency(endpointPath, elapsedTime);
+      this.setRequestAverageLatency(cacheId, elapsedTime);
 
-      // Use average latency + some tolerance as cache expiration, when backend
-      // is saturated the average will increase and cache duration will be
-      // longer minimizing concurrent in-progress requests.
-      const cacheTTL = this.endpointAverageLatency[endpointPath] + 1000;
       const parsedJson = await response.json();
-
       if (response.status === 200) {
         responseData = parsedJson;
       } else {
@@ -228,7 +361,9 @@ class TradeApiClient {
       // request should be cached or not. We need to do some refactorings in the
       // backend to properly manage the method usage.
       if (method === "GET") {
+        const cacheTTL = this.getRequestAverageLatency(cacheId);
         cache.put(cacheId, responseData, cacheTTL);
+        this.releaseRequestLock(cacheId);
         // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
@@ -237,11 +372,11 @@ class TradeApiClient {
 
     if (responseData.error) {
       const customError = responseData.error.error || responseData.error;
-
       if (customError.code === 13) {
         // Session expired
         navigateLogin();
       }
+
       throw customError;
     }
 
@@ -394,7 +529,7 @@ class TradeApiClient {
 
   async userBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return userBalanceResponseTransform(responseData);
   }
