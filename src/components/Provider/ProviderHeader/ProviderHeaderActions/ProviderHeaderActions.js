@@ -48,7 +48,7 @@ const ProviderHeaderActions = () => {
 
       <Typography variant="h4">
         <span>
-          <FormattedMessage id="copyt.copiers" />
+          <FormattedMessage id="srv.followers" />
         </span>
         <b>{storeViews.provider.followers} </b>
       </Typography>
