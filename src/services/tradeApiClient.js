@@ -261,17 +261,15 @@ class TradeApiClient {
    * This error throws when duplicated requests to same endpoint and parameters
    * are accumulated due to increased latency of backend.
    *
-   * @returns {Void} None.
+   * @returns {any} Error object.
    *
    * @memberof TradeApiClient
    */
-  throwTooManyRequests() {
-    const tooManyRequestsError = {
+  tooManyRequestsError() {
+    return {
       error: "Too many requests.",
       code: "apilatency",
     };
-
-    throw tooManyRequestsError;
   }
 
   /**
@@ -287,15 +285,16 @@ class TradeApiClient {
       const checkInterval = setInterval(() => {
         const responseData = cache.get(cacheId);
         if (responseData) {
-          console.log(`Request ${cacheId} resolved from cache:`, responseData);
+          // console.log(`Request ${cacheId} resolved from cache:`, responseData);
           resolve(responseData);
           clearInterval(checkInterval);
         }
       }, 100);
 
+      // Timeout exceeded, this means higher than expected latency in backend.
       setTimeout(() => {
         clearInterval(checkInterval);
-        reject(null);
+        reject(this.tooManyRequestsError());
       }, timeout);
     });
   }
@@ -341,9 +340,6 @@ class TradeApiClient {
         if (cacheResponseData) {
           return cacheResponseData;
         }
-
-        // Timeout exceeded, this means higher than expected latency in backend.
-        this.throwTooManyRequests();
       }
     }
 
@@ -368,7 +364,7 @@ class TradeApiClient {
         const cacheTTL = this.getRequestAverageLatency(cacheId);
         cache.put(cacheId, responseData, cacheTTL);
         this.releaseRequestLock(cacheId);
-        console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
+        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
@@ -533,7 +529,7 @@ class TradeApiClient {
 
   async userBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return userBalanceResponseTransform(responseData);
   }
