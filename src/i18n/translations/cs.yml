@@ -996,6 +996,12 @@ status.83: "CH-A position already exists for this market in this exchange accoun
 status.84: "CH-Margin is insufficient"
 status.85: "CH-Your subscription to this service has been suspended by the service's provider"
 status.86: "CH-The exchange responded that the position was no longer opened, so it couldn't be reduced"
+status.87: "CH-Leverage tokens are not enabled in your account."
+status.88: "CH-The configured exchange and or exchange type, does not match the one from the signal."
+status.89: "CH-The current service does not allow clones."
+status.90: "CH-The exchange attached to this position is no longer connected to your account."
+status.91: "CH-The balance between the position and the contract does not match."
+status.92: "CH-Hedge mode not supported"
 status.99: "CH-Unknown Error, Pending Review"
 
 # ERROR CODES
