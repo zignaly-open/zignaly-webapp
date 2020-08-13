@@ -52,7 +52,7 @@ export const CustomInput = ({ inputRef, name, label, defaultValue, ...others }) 
 
   return (
     <Box alignItems="center" className="controlWrapper" display="flex" flexDirection="row">
-      <label htmlFor={name}>
+      <label htmlFor={name} className="customLabel0">
         <Typography className="accountLabel">
           <FormattedMessage id={label} />
         </Typography>

@@ -64,8 +64,8 @@ const CustomSelect = (props) => {
       flexDirection={labelPlacement === "top" ? "column" : "row"}
     >
       {label && (
-        <label className="selectLabel">
-          <Typography className="callout2">{label}</Typography>
+        <label>
+          <Typography className="callout2 selectLabel">{label}</Typography>
         </label>
       )}
       <FormControl className="callout customSelectControl" variant="outlined">
@@ -106,6 +106,7 @@ const CustomSelect = (props) => {
             renderOption={renderOption}
             size="small"
             value={value}
+            getOptionSelected={(option, value) => option.val === value.val}
           />
         )}
       </FormControl>
