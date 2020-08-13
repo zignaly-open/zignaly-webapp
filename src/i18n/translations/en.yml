@@ -995,6 +995,12 @@ status.83: "A position already exists for this market in this exchange account"
 status.84: "Margin is insufficient"
 status.85: "Your subscription to this service has been suspended by the service's provider"
 status.86: "The exchange responded that the position was no longer opened, so it couldn't be reduced"
+status.87: "Leverage tokens are not enabled in your account."
+status.88: "The configured exchange and or exchange type, does not match the one from the signal."
+status.89: "The current service does not allow clones."
+status.90: "The exchange attached to this position is no longer connected to your account."
+status.91: "The balance between the position and the contract does not match."
+status.92: "Hedge mode not supported"
 status.99: "Unknown Error, Pending Review"
 
 # ERROR CODES
