@@ -49,11 +49,11 @@ module.exports = {
     {
       // Generate mui styles for server side rendering
       resolve: "gatsby-plugin-material-ui",
-      options: {
-        stylesProvider: {
-          injectFirst: true,
-        },
-      },
+      //   options: {
+      //     stylesProvider: {
+      //       injectFirst: true,
+      //     },
+      //   },
     },
   ],
 };

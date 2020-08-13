@@ -23,7 +23,7 @@ import { navigate } from "gatsby";
  */
 const NoPositions = ({ isProfile, type }) => {
   const redirect = () => {
-    navigate("/copyTraders/browse");
+    navigate("/copyTraders");
   };
 
   const emptyMessage = () => {

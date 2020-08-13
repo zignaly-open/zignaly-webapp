@@ -40,7 +40,7 @@ const NotFound = () => {
         <FormattedMessage id="notfound.desc" />
       </Typography>
       <img src={AnimalImage} />
-      <CustomButton className="bgPurple" href={withPrefix("dashboard/positions")}>
+      <CustomButton className="bgPurple" href={withPrefix("dashboard")}>
         <FormattedMessage id="notfound.home" />
       </CustomButton>
       <Typography className="code" variant="h3">

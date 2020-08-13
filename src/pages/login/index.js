@@ -9,15 +9,24 @@ import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../store/actions/session";
 import LoginForm from "../../components/Forms/LoginForm";
 import LoginHeader from "../../components/Login/LoginHeader";
+import { navigate } from "gatsby";
+import { verifySessionData } from "../../utils/auth";
+import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
+  const storeSession = useStoreSessionSelector();
 
-  const dispatchLogout = () => {
-    dispatch(endTradeApiSession());
+  const handleSession = () => {
+    if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
+      navigate("/dashboard", { replace: true });
+    } else {
+      dispatch(endTradeApiSession());
+    }
   };
-  useEffect(dispatchLogout, []);
+
+  useEffect(handleSession, []);
 
   return (
     <>

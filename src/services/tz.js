@@ -33,6 +33,9 @@ const sendTz = (data) => {
  * @returns {Promise<void>} Promise
  */
 export const triggerTz = async (location, prevLocation) => {
+  // Root page will be redirected
+  if (location.pathname === "/") return;
+
   const state = store.getState();
   // @ts-ignore
   const { isAdmin, userId } = state.user.userData;
