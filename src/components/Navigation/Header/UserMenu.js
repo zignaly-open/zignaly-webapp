@@ -3,7 +3,6 @@ import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
 import SignOut from "../../../images/header/signOut.svg";
-import Support from "../../../images/header/support.svg";
 import Settings from "../../../images/dashboard/settings.svg";
 import { Box, MenuItem, Grow } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -69,12 +68,6 @@ const UserMenu = React.forwardRef(() => {
         <img alt="zignaly" className="iconPurple" src={Documents} />
         <span className="item">
           <FormattedMessage id="menu.help" />
-        </span>
-      </MenuItem>
-      <MenuItem className="userMenuItem">
-        <img alt="zignaly" className="iconPurple" src={Support} />
-        <span className="item">
-          <FormattedMessage id="menu.support" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={() => showLanguageSelector(!languageSelector)}>

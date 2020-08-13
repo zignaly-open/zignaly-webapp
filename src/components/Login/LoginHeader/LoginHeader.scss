@@ -54,6 +54,7 @@
 @include media("<=sm") {
   .loginHeader {
     flex-direction: column;
+    padding: 0;
     position: relative;
 
     .headerImage {

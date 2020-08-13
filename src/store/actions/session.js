@@ -1,5 +1,4 @@
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
-import { unsetSelectedExchange } from "./settings";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
 import { isEmpty } from "lodash";
@@ -51,7 +50,6 @@ export const endTradeApiSession = () => {
       dispatch(action);
       dispatch(unsetUserExchanges());
       dispatch(unsetProvider());
-      dispatch(unsetSelectedExchange());
       dispatch(clearSessionData());
     } catch (e) {
       dispatch(showErrorAlert(e));
@@ -99,7 +97,7 @@ export const loadAppUserData = (response) => {
       const params = new URLSearchParams(
         typeof window !== "undefined" ? window.location.search : "",
       );
-      const path = params.get("ret") || "/dashboard/positions";
+      const path = params.get("ret") || "/dashboard";
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);

@@ -59,7 +59,9 @@ const useDashboardAnalytics = () => {
   const quotes = Object.keys(quoteAssets);
   const [quote, setQuote] = useState("USDT");
 
-  const providerAssets = useReadOnlyProviders();
+  let providerAssets = useReadOnlyProviders();
+  providerAssets = providerAssets.filter((item) => item.hasBeenUsed);
+
   let providers = providerAssets.map((item) => ({
     val: item.id,
     label: item.name,

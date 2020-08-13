@@ -6,10 +6,25 @@ import "../Chart.roundedBarCharts";
 import LogoIcon from "../../../images/logo/logoIcon.svg";
 import useChartTooltip from "../../../hooks/useChartTooltip";
 import TooltipChart from "../TooltipChart";
+import { isEqual } from "lodash";
 
 // Chart.Tooltip.positioners.cursor = function (chartElements, coordinates) {
 //   return { x: coordinates.x, y: 210 };
 // };
+
+/**
+ * Check that props are equals (deep comparison)
+ * @param {*} prevProps prevProps
+ * @param {*} nextProps nextProps
+ * @returns {boolean} Equality
+ */
+const propsEqual = (prevProps, nextProps) =>
+  isEqual(prevProps.data, nextProps.data) && isEqual(prevProps.options, nextProps.options);
+
+// Memoize the chart and only re-renders when the data is updated.
+// Otherwise it will be rendered everytime the toolip is triggered(state update).
+const MemoizedBar = React.memo(Bar, propsEqual);
+const MemoizedHorizontalBar = React.memo(HorizontalBar, propsEqual);
 
 /**
  * @typedef {import('chart.js').ChartData} ChartData
@@ -145,12 +160,16 @@ const BarChart = (props) => {
     },
     cornerRadius: 4,
     tooltips: {
-      mode: "index",
-      intersect: false,
-      position: "nearest",
-      displayColors: false,
       enabled: false,
       custom: showTooltipCallback,
+    },
+    animation: {
+      duration: 0,
+    },
+    hover: {
+      intersect: false,
+      mode: "index",
+      animationDuration: 0,
     },
     plugins: {
       legendImages: imagesElements
@@ -160,6 +179,7 @@ const BarChart = (props) => {
           }
         : false,
     },
+    // events: ["click", "touchstart", "touchmove"],
   };
 
   const plugins = [
@@ -224,7 +244,7 @@ const BarChart = (props) => {
   // Merge user options
   options = Object.assign(options, customOptions);
 
-  const BarComponent = horizontal ? HorizontalBar : Bar;
+  const BarComponent = horizontal ? MemoizedHorizontalBar : MemoizedBar;
 
   let height = 0;
   if (horizontal && adjustHeightToContent) {
@@ -238,7 +258,7 @@ const BarChart = (props) => {
 
   return (
     <Box className="barChart" style={{ ...(height && { height }) }}>
-      <TooltipChart pointHoverRef={pointHoverRef} tooltipData={tooltipData}>
+      <TooltipChart pointHoverRef={pointHoverRef} showPointHover={false} tooltipData={tooltipData}>
         <BarComponent data={data} options={options} plugins={plugins} ref={chartRef} />
       </TooltipChart>
     </Box>

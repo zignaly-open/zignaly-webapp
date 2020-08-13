@@ -38,6 +38,10 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/login")) {
     return PublicPage();
   }
+  // Root page is just to redirect
+  if (currentPath === "/") {
+    return PublicPage();
+  }
   // Signup don't use any layout.
   if (currentPath.match("/signup")) {
     return PublicPage();

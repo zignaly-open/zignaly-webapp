@@ -98,7 +98,14 @@ const useProvidersList = (options) => {
   );
 
   const initQuote = storeSettings.copyt.browse.quote;
-  const [quote, setQuote] = useState(initQuote ? { val: initQuote, label: initQuote } : coins[0]);
+  const [quote, setQuote] = useState(
+    initQuote
+      ? {
+          val: initQuote,
+          label: initQuote === "ALL" ? intl.formatMessage({ id: "fil.allcoins" }) : initQuote,
+        }
+      : coins[0],
+  );
 
   // Save settings to store when changed
   const saveQuote = () => {
@@ -221,12 +228,15 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    const res = list.filter(
-      (p) =>
-        (quote.val === "ALL" || p.quote === quote.val) &&
-        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
-        (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
-    );
+    // Filter only copy traders
+    const res = copyTradersOnly
+      ? list.filter(
+          (p) =>
+            (quote.val === "ALL" || p.quote === quote.val) &&
+            (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
+            (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
+        )
+      : list;
     sortProviders(res);
   };
   // Filter providers on filter change

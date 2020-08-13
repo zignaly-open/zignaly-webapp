@@ -34,7 +34,7 @@ export const routesMapping = (path) => {
         links: [
           {
             id: "dashboard.positions",
-            to: "/dashboard/positions",
+            to: "/dashboard",
           },
           {
             id: "dashboard.balance",
@@ -58,7 +58,7 @@ export const routesMapping = (path) => {
         links: [
           {
             id: "srv.browse",
-            to: "/copyTraders/browse",
+            to: "/copyTraders",
           },
           {
             id: "srv.analytics",
@@ -74,7 +74,7 @@ export const routesMapping = (path) => {
         links: [
           {
             id: "srv.browse",
-            to: "/signalProviders/browse",
+            to: "/signalProviders",
           },
           {
             id: "srv.analytics",
@@ -130,7 +130,7 @@ export const routesMapping = (path) => {
         links: [
           {
             id: "dashboard.positions",
-            to: "/dashboard/positions",
+            to: "/dashboard",
           },
           {
             id: "dashboard.balance",

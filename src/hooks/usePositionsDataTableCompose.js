@@ -286,7 +286,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         <span className={position.priceDifferenceStyle}>
-          {formatPrice(position.priceDifference)} %
+          {formatNumber(position.priceDifference, 2)} %
         </span>
       </>
     );
@@ -365,6 +365,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         <span className={position.netProfitStyle}>{formatPrice(position.netProfit)}</span>
       </>
     );
+  }
+
+  /**
+   * Compose fee element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderFee(dataIndex) {
+    const position = positions[dataIndex];
+    return <span>{formatPrice(position.fees)}</span>;
   }
 
   /**
@@ -811,7 +822,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         propertyName: "reBuyTargetsCountPending",
         renderFunction: renderRebuyTargets,
       },
-      { columnId: "col.fees", propertyName: "fees", renderFunction: null },
+      { columnId: "col.fees", propertyName: "fees", renderFunction: renderFee },
       {
         columnId: "col.netprofit.percentage",
         propertyName: "netProfitPercentage",
