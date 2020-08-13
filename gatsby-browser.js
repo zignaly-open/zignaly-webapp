@@ -17,7 +17,27 @@ export const wrapRootElement = ({ element }) => {
   );
 };
 
+/**
+ * Cleanup process to unregister any SW installed by legacy webapp1.
+ *
+ * @returns {Void} None.
+ */
+const serviceWorkerCleanup = () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+
+      if (Array.isArray(registrations) && registrations.length > 0) {
+        location.reload();
+      }
+    });
+  }
+};
+
 export const onClientEntry = () => {
+  serviceWorkerCleanup();
   if (process.env.NODE_ENV === "development") {
     // const whyDidYouRender = require("@welldone-software/why-did-you-render");
     // whyDidYouRender(React, {

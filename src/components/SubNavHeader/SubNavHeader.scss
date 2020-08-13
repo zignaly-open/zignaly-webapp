@@ -4,14 +4,6 @@
   overflow-x: auto;
   position: relative;
 
-  @include media("<=sm") {
-    margin-bottom: 12px;
-
-    .dashboardLink {
-      margin-right: 32px;
-    }
-  }
-
   &::before {
     background: var(--border-color);
     bottom: 0;
@@ -58,6 +50,17 @@
   .subNavHeader {
     &::before {
       background-color: $lightBlackBorder;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .subNavHeader {
+    margin-bottom: 12px;
+
+    .dashboardLink {
+      margin: 0 30px 0 0;
+      padding: 12px 0 16px;
     }
   }
 }
