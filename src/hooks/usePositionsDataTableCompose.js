@@ -286,7 +286,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return (
       <>
         <span className={position.priceDifferenceStyle}>
-          {formatPrice(position.priceDifference)} %
+          {formatNumber(position.priceDifference, 2)} %
         </span>
       </>
     );
