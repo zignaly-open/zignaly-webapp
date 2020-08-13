@@ -99,7 +99,7 @@ export const loadAppUserData = (response) => {
       const params = new URLSearchParams(
         typeof window !== "undefined" ? window.location.search : "",
       );
-      const path = params.get("ret") || "/dashboard/positions";
+      const path = params.get("ret") || "/dashboard";
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);

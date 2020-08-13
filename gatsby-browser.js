@@ -51,7 +51,7 @@ export const onInitialClientRender = () => {
       }
     } else if (sessionValid) {
       // Redirect to dashboard when navigating login pages with an active session.
-      navigate("/dashboard/positions");
+      navigate("/dashboard");
     }
   }
 

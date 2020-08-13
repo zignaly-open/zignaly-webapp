@@ -43,7 +43,7 @@ const Header = () => {
       justifyContent="space-between"
     >
       <Box alignItems="center" className={"logoContainer"} display="flex" flexDirection="row">
-        <Link to="/dashboard/positions">
+        <Link to="/dashboard">
           <img
             alt="zignaly-logo"
             className={"headerLogo"}

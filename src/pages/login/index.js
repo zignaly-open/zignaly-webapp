@@ -20,7 +20,7 @@ const LoginPage = () => {
 
   const handleSession = () => {
     if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
-      navigate("/dashboard/positions", { replace: true });
+      navigate("/dashboard", { replace: true });
     } else {
       dispatch(endTradeApiSession());
     }

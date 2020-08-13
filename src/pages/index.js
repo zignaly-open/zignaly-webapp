@@ -8,7 +8,7 @@ const IndexPage = () => {
   const storeSession = useStoreSessionSelector();
 
   if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
-    navigate("/dashboard/positions", { replace: true });
+    navigate("/dashboard", { replace: true });
   } else {
     navigate("/login", { replace: true });
   }

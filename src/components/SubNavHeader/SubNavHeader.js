@@ -4,6 +4,12 @@ import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
+const isPartiallyActive = (props) => {
+  const currentPath = props.location.pathname.replace(/\/$/, "");
+  const match = currentPath === props.href;
+  return { className: `dashboardLink ${match ? "active" : ""}` };
+};
+
 /**
  * @typedef {import("../../utils/routesMapping").NavigationLink} NavigationLink
  *
@@ -27,13 +33,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
     justifyContent="flex-start"
   >
     {links.map((item, index) => (
-      <GatsbyLink
-        activeClassName="active"
-        className="dashboardLink"
-        key={index}
-        partiallyActive={true}
-        to={item.to}
-      >
+      <GatsbyLink getProps={isPartiallyActive} key={index} to={item.to}>
         <FormattedMessage id={item.id} />
       </GatsbyLink>
     ))}
