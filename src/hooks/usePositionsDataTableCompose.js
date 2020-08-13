@@ -368,6 +368,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose fee element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderFee(dataIndex) {
+    const position = positions[dataIndex];
+    return <span>{formatPrice(position.fees)}</span>;
+  }
+
+  /**
    * Compose profit percentage element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -811,7 +822,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         propertyName: "reBuyTargetsCountPending",
         renderFunction: renderRebuyTargets,
       },
-      { columnId: "col.fees", propertyName: "fees", renderFunction: null },
+      { columnId: "col.fees", propertyName: "fees", renderFunction: renderFee },
       {
         columnId: "col.netprofit.percentage",
         propertyName: "netProfitPercentage",
