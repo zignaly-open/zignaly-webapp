@@ -13,11 +13,11 @@
       }
 
       > :nth-child(3) {
-        flex: 0 0 35%;
+        flex: 0 0 40%;
       }
 
       > :nth-child(4) {
-        flex: 0 0 calc(65% - 15px);
+        flex: 0 0 calc(60% - 15px);
       }
     }
 
@@ -29,11 +29,11 @@
       }
 
       > :nth-child(2) {
-        flex: 0 0 35%;
+        flex: 0 0 40%;
       }
 
       > :nth-child(3) {
-        flex: 0 0 calc(65% - 15px);
+        flex: 0 0 calc(60% - 15px);
       }
     }
   }
