@@ -363,6 +363,7 @@ const initialState = {
         "col.entryprice",
         "col.contracts.markprice",
         "col.contracts.margin",
+        "col.cancel",
       ],
     },
     selectedExchange: {
