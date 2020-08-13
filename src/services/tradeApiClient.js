@@ -181,12 +181,12 @@ class TradeApiClient {
    * we prevent that piled up request process concurrently.
    *
    * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
-   * @param {number} [ttl=20000] Lock time to live in millisecs.
+   * @param {number} [timeout=20000] Lock time to live in millisecs.
    * @returns {boolean} True when lock was acquired, false when existing lock is in place.
    *
    * @memberof TradeApiClient
    */
-  getRequestLock(cacheId, ttl = 20000) {
+  getRequestLock(cacheId, timeout = 20000) {
     if (this.requestLock[cacheId]) {
       return false;
     }
@@ -196,7 +196,7 @@ class TradeApiClient {
     // Timeout to automatically release the lock.
     setTimeout(() => {
       this.releaseRequestLock(cacheId);
-    }, ttl);
+    }, timeout);
 
     return true;
   }
@@ -256,6 +256,51 @@ class TradeApiClient {
   }
 
   /**
+   * Throw too many requests exception.
+   *
+   * This error throws when duplicated requests to same endpoint and parameters
+   * are accumulated due to increased latency of backend.
+   *
+   * @returns {Void} None.
+   *
+   * @memberof TradeApiClient
+   */
+  throwTooManyRequests() {
+    const tooManyRequestsError = {
+      error: "Too many requests.",
+      code: "apilatency",
+    };
+
+    throw tooManyRequestsError;
+  }
+
+  /**
+   * Resolve response from cache and fail when data not found within timeout.
+   *
+   * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to store latency for.
+   *
+   * @returns {Promise<any>} Request cached response.
+   */
+  async resolveFromCache(cacheId) {
+    const timeout = 10000;
+    return new Promise((resolve, reject) => {
+      const checkInterval = setInterval(() => {
+        const responseData = cache.get(cacheId);
+        if (responseData) {
+          console.log(`Request ${cacheId} resolved from cache:`, responseData);
+          resolve(responseData);
+          clearInterval(checkInterval);
+        }
+      }, 100);
+
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        reject(null);
+      }, timeout);
+    });
+  }
+
+  /**
    * Process API HTTP request.
    *
    * @param {string} endpointPath API endpoint path and action.
@@ -283,19 +328,23 @@ class TradeApiClient {
       : { method: "GET" };
 
     const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
-    const cachedResponseData = cache.get(cacheId);
-    if (cachedResponseData) {
-      // console.log(`Request ${cacheId} resolved from cache:`, cachedResponseData);
-      return cachedResponseData;
-    }
+    if (method === "GET") {
+      let cacheResponseData = cache.get(cacheId);
+      if (cacheResponseData) {
+        return cacheResponseData;
+      }
 
-    if (!this.getRequestLock(cacheId)) {
-      const tooManyRequestsError = {
-        error: "Too many requests.",
-        code: "apilatency",
-      };
+      // When duplicated request is running try during interval to resolve the
+      // response from the other process cache.
+      if (!this.getRequestLock(cacheId)) {
+        cacheResponseData = await this.resolveFromCache(cacheId);
+        if (cacheResponseData) {
+          return cacheResponseData;
+        }
 
-      throw tooManyRequestsError;
+        // Timeout exceeded, this means higher than expected latency in backend.
+        this.throwTooManyRequests();
+      }
     }
 
     try {
@@ -304,12 +353,7 @@ class TradeApiClient {
       const elapsedTime = Date.now() - startTime;
       this.setRequestAverageLatency(cacheId, elapsedTime);
 
-      // Use average latency + some tolerance as cache expiration, when backend
-      // is saturated the average will increase and cache duration will be
-      // longer minimizing concurrent in-progress requests.
-      const cacheTTL = this.getRequestAverageLatency(cacheId);
       const parsedJson = await response.json();
-
       if (response.status === 200) {
         responseData = parsedJson;
       } else {
@@ -321,21 +365,22 @@ class TradeApiClient {
       // request should be cached or not. We need to do some refactorings in the
       // backend to properly manage the method usage.
       if (method === "GET") {
+        const cacheTTL = this.getRequestAverageLatency(cacheId);
         cache.put(cacheId, responseData, cacheTTL);
-        // console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
+        this.releaseRequestLock(cacheId);
+        console.log(`Request ${cacheId} performed - TTL ${cacheTTL}:`, responseData);
       }
     } catch (e) {
       responseData.error = e.message;
     }
 
-    this.releaseRequestLock(cacheId);
     if (responseData.error) {
       const customError = responseData.error.error || responseData.error;
-
       if (customError.code === 13) {
         // Session expired
         navigateLogin();
       }
+
       throw customError;
     }
 
