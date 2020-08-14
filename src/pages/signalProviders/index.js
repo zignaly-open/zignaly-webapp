@@ -12,6 +12,7 @@ import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
+import BrowsePage from "./browse";
 
 /**
  *
@@ -31,7 +32,8 @@ import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComp
  * @returns {JSX.Element} Position page element.
  */
 
-const SignalProviders = ({ location }) => {
+const SignalProviders = (props) => {
+  const { location } = props;
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   // On production the application is served through an /app directory, ID position is +1 level.
@@ -49,11 +51,16 @@ const SignalProviders = ({ location }) => {
       };
       dispatch(setProvider(payload));
     };
-    if (providerId.length === 24 && storeViews.provider.id !== providerId) {
+    if (providerId && providerId.length === 24 && storeViews.provider.id !== providerId) {
       loadProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
+
+  if (!providerId) {
+    // Render Browse page
+    return <BrowsePage {...props} />;
+  }
 
   return (
     <ProviderLayout>

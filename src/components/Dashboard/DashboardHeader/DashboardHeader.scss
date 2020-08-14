@@ -8,10 +8,32 @@
     width: 100%;
 
     .exchangeTitle {
+      align-items: center;
       color: var(--purple);
+      display: flex;
+      flex-direction: row;
       font-size: 16px;
       font-weight: 700;
       margin: 8px 0 0 16px;
+      text-transform: capitalize;
+
+      span {
+        margin-left: 5px;
+      }
+
+      .linkOn {
+        color: $green;
+        height: 24px;
+        margin-left: 10px;
+        width: 24px;
+      }
+
+      .linkOff {
+        color: $red;
+        height: 24px;
+        margin-left: 10px;
+        width: 24px;
+      }
     }
   }
 }

@@ -41,7 +41,7 @@
 
   .panelContent {
     justify-content: space-between;
-    padding: 0 20px 20px;
+    padding: 0 16px 16px;
 
     .help {
       margin-top: 12px;
@@ -76,7 +76,7 @@
       width: 100%;
 
       input {
-        padding: 8px 12px;
+        padding: 8px;
       }
     }
 
@@ -87,7 +87,7 @@
       border-left: 0;
       border-top-right-radius: 3px;
       height: 35px;
-      padding: 6px 12px;
+      padding: 6px;
       width: 70px;
     }
   }

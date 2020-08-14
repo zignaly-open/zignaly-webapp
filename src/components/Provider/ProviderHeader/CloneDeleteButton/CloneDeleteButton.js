@@ -26,9 +26,9 @@ const CloneDeleteButton = ({ provider }) => {
 
   const redirect = () => {
     if (provider.isCopyTrading) {
-      navigate("/copyTraders/browse");
+      navigate("/copyTraders");
     } else {
-      navigate("/signalProviders/browse");
+      navigate("/signalProviders");
     }
   };
 

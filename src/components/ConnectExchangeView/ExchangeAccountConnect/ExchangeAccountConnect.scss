@@ -99,17 +99,29 @@
     padding-top: 18px;
 
     .step1 {
-      border-bottom: solid 1px var(--border-color);
-      border-right: 0;
+      border: 0;
+      padding-right: 0;
+
+      .name {
+        margin-bottom: 20px;
+        width: 100%;
+      }
+
+      .accountLabel {
+        margin-bottom: 11px;
+        width: 100%;
+      }
     }
 
     .step2 {
-      border-bottom: solid 1px var(--border-color);
-      border-left: 0;
+      border: 0;
+      margin-top: 14px;
       padding: 0;
+      width: 100%;
 
       .customButton {
         margin-top: 18px;
+        width: 100%;
       }
     }
 

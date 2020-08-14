@@ -5,6 +5,21 @@ import GatsbyLink from "../LocalizedLink";
 import "./SubNavHeader.scss";
 
 /**
+ * @typedef {import('@reach/router').LinkGetProps} LinkGetProps
+ */
+
+/**
+ * Apply active class if current url matches the link (ignore trailing slash)
+ * @param {LinkGetProps} props props
+ * @returns {Object} link props
+ */
+const isPartiallyActive = (props) => {
+  const currentPath = props.location.pathname.replace(/\/$/, "");
+  const match = currentPath === props.href;
+  return { className: `dashboardLink ${match ? "active" : ""}` };
+};
+
+/**
  * @typedef {import("../../utils/routesMapping").NavigationLink} NavigationLink
  *
  * @typedef {Object} SubNavHeaderPropTypes
@@ -27,13 +42,7 @@ const SubNavHeader = ({ links, rightComponent }) => (
     justifyContent="flex-start"
   >
     {links.map((item, index) => (
-      <GatsbyLink
-        activeClassName="active"
-        className="dashboardLink"
-        key={index}
-        partiallyActive={true}
-        to={item.to}
-      >
+      <GatsbyLink getProps={isPartiallyActive} key={index} to={item.to}>
         <FormattedMessage id={item.id} />
       </GatsbyLink>
     ))}

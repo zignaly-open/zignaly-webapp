@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
@@ -6,9 +6,11 @@ import "./Table.scss";
 import MUIDataTable from "mui-datatables";
 import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import { Box } from "@material-ui/core";
+import { Box, Hidden, IconButton, Tooltip } from "@material-ui/core";
 import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { merge } from "lodash";
+import TableChartIcon from "@material-ui/icons/TableChart";
+
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../store/initialState").DefaultStateSettings} DefaultStateSettings
@@ -86,9 +88,20 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   /**
    * @type {MUIDataTableOptions}
    */
-  const options = {
+  let options = {
     selectableRows: "none", // @ts-ignore
     responsive: "vertical", // vertical
+    customToolbar: () => {
+      return (
+        <Hidden smUp>
+          <Tooltip placement="bottom" title="Change View">
+            <IconButton onClick={changeResponsiveView}>
+              <TableChartIcon />
+            </IconButton>
+          </Tooltip>
+        </Hidden>
+      );
+    },
     filter: false,
     search: false,
     print: false,
@@ -144,6 +157,27 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     },
     elevation: 1,
     ...customOptions,
+  };
+
+  const [tableOptions, setOptions] = useState(options);
+
+  const initOptions = () => {
+    setOptions({ ...tableOptions, ...customOptions });
+  };
+
+  useEffect(initOptions, [customOptions]);
+
+  const changeResponsiveView = () => {
+    // @ts-ignore
+    if (options.responsive === "vertical") {
+      // @ts-ignore
+      options = { ...tableOptions, responsive: "standard" };
+      setOptions(options);
+    } else {
+      // @ts-ignore
+      options = { ...tableOptions, responsive: "vertical" };
+      setOptions(options);
+    }
   };
 
   /**
@@ -231,7 +265,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
           // @ts-ignore (wait for datatables types v3)
           components={components}
           data={data}
-          options={options}
+          options={tableOptions}
           title={title}
         />
       </MuiThemeProvider>
