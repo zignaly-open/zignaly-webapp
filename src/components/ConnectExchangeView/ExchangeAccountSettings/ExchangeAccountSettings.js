@@ -16,7 +16,7 @@ import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { Typography } from "@material-ui/core";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 
 /**
@@ -33,6 +33,7 @@ const ExchangeAccountSettings = () => {
     setTitle,
     formRef,
     setTempMessage,
+    setPathParams,
   } = useContext(ModalPathContext);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -48,6 +49,7 @@ const ExchangeAccountSettings = () => {
     ? exchanges.find((e) => e.id === selectedAccount.exchangeId)
     : null;
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTitle(
@@ -68,6 +70,19 @@ const ExchangeAccountSettings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [accountExchange],
   );
+
+  const loadAccount = () => {
+    const authorizationPayload = {
+      token: storeSession.tradeApi.accessToken,
+    };
+    tradeApi.userExchangesGet(authorizationPayload).then((response) => {
+      const account = response.find((a) => a.internalId === selectedAccount.internalId);
+      setPathParams((params) => ({ ...params, selectedAccount: account }));
+      setLoading(false);
+    });
+  };
+  // Refresh accounts
+  useEffect(loadAccount, []);
 
   /**
    *
@@ -135,115 +150,129 @@ const ExchangeAccountSettings = () => {
 
   return (
     <form className="exchangeAccountSettings">
-      <ConfirmDeleteDialog
-        onClose={() => setConfirmDeleteDialog(false)}
-        open={confirmDeleteDialog}
-      />
-      <ExchangeAccountForm>
-        <Box className="typeBox" display="flex" flexDirection="row">
-          <label>
-            <Typography className="accountLabel">
-              <FormattedMessage id="accounts.exchange.type" />
-            </Typography>
-          </label>
-          <Box width={1}>
-            <Typography className="type" variant="body1">
-              {selectedAccount.exchangeType}
-            </Typography>
-          </Box>
+      {loading ? (
+        <Box
+          alignItems="center"
+          className="loaderBox"
+          display="flex"
+          flex={1}
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
         </Box>
-        <CustomInput
-          defaultValue={selectedAccount.internalName}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.name" }),
-          })}
-          label="accounts.exchange.name"
-          name="internalName"
-        />
-        {!selectedAccount.paperTrading &&
-          accountExchange &&
-          accountExchange.requiredAuthFields.map((field) => (
+      ) : (
+        <>
+          <ConfirmDeleteDialog
+            onClose={() => setConfirmDeleteDialog(false)}
+            open={confirmDeleteDialog}
+          />
+          <ExchangeAccountForm>
+            <Box className="typeBox" display="flex" flexDirection="row">
+              <label>
+                <Typography className="accountLabel">
+                  <FormattedMessage id="accounts.exchange.type" />
+                </Typography>
+              </label>
+              <Box width={1}>
+                <Typography className="type" variant="body1">
+                  {selectedAccount.exchangeType}
+                </Typography>
+              </Box>
+            </Box>
             <CustomInput
-              autoComplete="new-password"
+              defaultValue={selectedAccount.internalName}
               inputRef={register({
-                required: authFieldsModified
-                  ? intl.formatMessage({ id: `form.error.${field}` })
-                  : false,
+                required: intl.formatMessage({ id: "form.error.name" }),
               })}
-              key={field}
-              label={`accounts.exchange.${field}`}
-              name={field}
-              placeholder={
-                selectedAccount.areKeysValid ? "***************************************" : ""
-              }
-              type="password"
+              label="accounts.exchange.name"
+              name="internalName"
             />
-          ))}
-        <CustomSwitchInput
-          defaultValue={selectedAccount.globalMaxPositions}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.value" }),
-          })}
-          label="accounts.options.maxconcurrent"
-          name="globalMaxPositions"
-          tooltip="accounts.options.maxconcurrent.help"
-          type="number"
-        />
-        <CustomSwitchInput
-          defaultValue={selectedAccount.globalMinVolume}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.value" }),
-          })}
-          label="accounts.options.minvolume"
-          name="globalMinVolume"
-          tooltip="accounts.options.minvolume.help"
-          type="number"
-          unit="BTC"
-        />
-        <CustomSwitchInput
-          defaultValue={selectedAccount.globalPositionsPerMarket}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.value" }),
-          })}
-          label="accounts.options.limitpositions"
-          name="globalPositionsPerMarket"
-          tooltip="accounts.options.limitpositions.help"
-          type="number"
-        />
-        <CustomSwitchInput
-          defaultValue={selectedAccount.globalBlacklist}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.value" }),
-          })}
-          label="accounts.options.blacklist"
-          name="globalBlacklist"
-          tooltip="accounts.options.blacklist.help"
-          type="textarea"
-        />
-        <CustomSwitchInput
-          defaultValue={selectedAccount.globalWhitelist}
-          inputRef={register({
-            required: intl.formatMessage({ id: "form.error.value" }),
-          })}
-          label="accounts.options.whitelist"
-          name="globalWhitelist"
-          tooltip="accounts.options.whitelist.help"
-          type="textarea"
-        />
+            {!selectedAccount.paperTrading &&
+              accountExchange &&
+              accountExchange.requiredAuthFields.map((field) => (
+                <CustomInput
+                  autoComplete="new-password"
+                  inputRef={register({
+                    required: authFieldsModified
+                      ? intl.formatMessage({ id: `form.error.${field}` })
+                      : false,
+                  })}
+                  key={field}
+                  label={`accounts.exchange.${field}`}
+                  name={field}
+                  placeholder={
+                    selectedAccount.areKeysValid ? "***************************************" : ""
+                  }
+                  type="password"
+                />
+              ))}
+            <CustomSwitchInput
+              defaultValue={selectedAccount.globalMaxPositions}
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.value" }),
+              })}
+              label="accounts.options.maxconcurrent"
+              name="globalMaxPositions"
+              tooltip="accounts.options.maxconcurrent.help"
+              type="number"
+            />
+            <CustomSwitchInput
+              defaultValue={selectedAccount.globalMinVolume}
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.value" }),
+              })}
+              label="accounts.options.minvolume"
+              name="globalMinVolume"
+              tooltip="accounts.options.minvolume.help"
+              type="number"
+              unit="BTC"
+            />
+            <CustomSwitchInput
+              defaultValue={selectedAccount.globalPositionsPerMarket}
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.value" }),
+              })}
+              label="accounts.options.limitpositions"
+              name="globalPositionsPerMarket"
+              tooltip="accounts.options.limitpositions.help"
+              type="number"
+            />
+            <CustomSwitchInput
+              defaultValue={selectedAccount.globalBlacklist}
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.value" }),
+              })}
+              label="accounts.options.blacklist"
+              name="globalBlacklist"
+              tooltip="accounts.options.blacklist.help"
+              type="textarea"
+            />
+            <CustomSwitchInput
+              defaultValue={selectedAccount.globalWhitelist}
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.value" }),
+              })}
+              label="accounts.options.whitelist"
+              name="globalWhitelist"
+              tooltip="accounts.options.whitelist.help"
+              type="textarea"
+            />
 
-        <CustomSwitch
-          defaultValue={selectedAccount.globalDelisting}
-          label="accounts.options.delisted"
-          name="globalDelisting"
-          tooltip="accounts.options.delisted.help"
-        />
+            <CustomSwitch
+              defaultValue={selectedAccount.globalDelisting}
+              label="accounts.options.delisted"
+              name="globalDelisting"
+              tooltip="accounts.options.delisted.help"
+            />
 
-        <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
-          <Typography className="bold" variant="body1">
-            <FormattedMessage id="accounts.delete.exchange" />
-          </Typography>
-        </CustomButton>
-      </ExchangeAccountForm>
+            <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
+              <Typography className="bold" variant="body1">
+                <FormattedMessage id="accounts.delete.exchange" />
+              </Typography>
+            </CustomButton>
+          </ExchangeAccountForm>
+        </>
+      )}
     </form>
   );
 };
