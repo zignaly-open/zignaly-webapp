@@ -13,6 +13,7 @@ import {
   SET_BROWSE_QUOTE,
   SET_SORT,
   SET_TERMINAL_PAIR,
+  SET_TERMINAL_PROVIDER,
   SET_ANALYTICS_BASE,
   SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
@@ -24,6 +25,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
  * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
  * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
  * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
@@ -118,6 +120,10 @@ const settings = createReducer(initialState.settings, {
   [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {
     const { exchangeId, pair } = action.payload;
     state.tradingTerminal.pair[exchangeId] = pair;
+  },
+
+  [SET_TERMINAL_PROVIDER]: (state, /** @type {SetTerminalProviderAction} */ action) => {
+    state.tradingTerminal.provider = action.payload;
   },
 });
 

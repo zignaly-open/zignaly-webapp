@@ -87,6 +87,7 @@
 /**
  * @typedef {Object} TradingTerminalSettings
  * @property {Object<string, string>} pair
+ * @property {string} provider
  */
 
 /**
@@ -414,7 +415,7 @@ const initialState = {
     signalp: {
       analytics: { quote: null, base: null },
     },
-    tradingTerminal: { pair: {} },
+    tradingTerminal: { pair: {}, provider: null },
   },
   user: {
     exchangeConnections: [],

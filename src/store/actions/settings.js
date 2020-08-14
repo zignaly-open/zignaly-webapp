@@ -13,6 +13,7 @@ export const SET_TIMEFRAME = "SET_TIMEFRAME";
 export const SIGNALP_SORT = "SIGNALP_SORT";
 export const COPYT_SORT = "COPYT_SORT";
 export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
+export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
 export const SET_SORT = "SET_SORT";
 export const SET_BROWSE_EXCHANGE = "SET_BROWSE_EXCHANGE";
 export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
@@ -269,6 +270,23 @@ export const setAnayticsBase = (payload) => {
 export const setTerminalPair = (payload) => {
   return {
     type: SET_TERMINAL_PAIR,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetTerminalProviderAction
+ * @property {typeof SET_TERMINAL_PROVIDER} type
+ * @property {string} payload
+ */
+
+/**
+ * @param {string} payload Payload.
+ * @returns {SetTerminalProviderAction} Action.
+ */
+export const setTerminalProvider = (payload) => {
+  return {
+    type: SET_TERMINAL_PROVIDER,
     payload,
   };
 };

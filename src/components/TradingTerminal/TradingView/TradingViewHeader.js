@@ -5,6 +5,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { setTerminalProvider } from "../../../store/actions/settings";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
@@ -31,6 +34,8 @@ const TradingViewHeader = (props) => {
   });
   const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
   const { formatMessage } = useIntl();
+  const storeSettings = useStoreSettingsSelector();
+  const dispatch = useDispatch();
 
   const providerOptions = ownCopyTraderProviders.map((provider) => {
     return {
@@ -39,7 +44,14 @@ const TradingViewHeader = (props) => {
     };
   });
 
-  const selectedProviderValue = providerOptions[0] ? providerOptions[0].val : "";
+  // Select saved provider or default to first option
+  const selectedProviderValue = providerOptions.find(
+    (o) => o.val === storeSettings.tradingTerminal.provider,
+  )
+    ? storeSettings.tradingTerminal.provider
+    : providerOptions[0]
+    ? providerOptions[0].val
+    : "";
   const providerId = watch("providerService");
   const providerService = ownCopyTraderProviders.find(
     (provider) => provider.providerId === providerId,
@@ -47,9 +59,16 @@ const TradingViewHeader = (props) => {
     providerPayableBalance: 0,
     providerConsumedBalance: 0,
     providerConsumedBalancePercentage: 0,
-    providerName: formatMessage({ id: "terminal.provider.manual" }),
+    providerName: formatMessage({
+      id: "terminal.provider.manual",
+    }),
     providerQuote: "",
     providerId: "1",
+  };
+
+  // Save provider when changed
+  const saveSelectedProvider = (/** @type {string} **/ value) => {
+    dispatch(setTerminalProvider(value));
   };
 
   // Filter signal provider symbols options when is selected.
@@ -91,10 +110,20 @@ const TradingViewHeader = (props) => {
             <FormattedMessage id="terminal.providers" />
           </Typography>
           <Controller
-            as={<CustomSelect label="" onChange={() => {}} options={providerOptions} />}
             control={control}
             defaultValue={selectedProviderValue}
             name="providerService"
+            render={({ onChange, value }) => (
+              <CustomSelect
+                label=""
+                onChange={(/** @type {string} **/ v) => {
+                  saveSelectedProvider(v);
+                  onChange(v);
+                }}
+                options={providerOptions}
+                value={value}
+              />
+            )}
           />
           <input
             name="providerPayableBalance"
