@@ -74,7 +74,8 @@ export const validateDecimals = (value, maxDecimals) => {
   if (!value) return false;
 
   const splitValueDot = value.split(".");
-  if (splitValueDot.length > 1) return false;
+  // Handle incorrect number
+  if (splitValueDot.length > 2) return false;
 
   const decimals = splitValueDot.length === 1 ? 0 : splitValueDot[1].length;
   return decimals < maxDecimals;
