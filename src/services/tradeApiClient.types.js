@@ -712,6 +712,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} timeFrame
  * @property {String} timeFrameFormat
  * @property {String} token
+ * @property {String} internalExchangeId
  */
 
 /**
