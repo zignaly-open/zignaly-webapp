@@ -25,3 +25,5 @@ jobs:
           GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         run: npm test -- "tradeApiClient"
+      - name: Build
+        run: npm run build:prod

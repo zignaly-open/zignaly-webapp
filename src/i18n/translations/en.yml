@@ -747,12 +747,20 @@ accounts.done: "Done"
 accounts.exchange: "Exchange"
 accounts.exchange.api: "Get 2 API Keys from Exchange"
 accounts.exchange.api.tip: "Where to find these keys?"
-accounts.exchange.api.tipdesc: "- Open binance.com on a new tab\n
+accounts.exchange.api.tip.binance: "- Open binance.com on a new tab\n
   - Log in to Binance\n
-  - Hover over profile and click “API Mangement”\n
+  - Hover over profile and click “API Management”\n
   - Give the API key a label at the top of the screen\n
   - Click create\n
   - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.kucoin: "- Open kucoin.com on a new tab\n
+  - Log in to your account\n
+  - In the dropdown menu, click “API Management“\n
+  - Enable the two security protection methods\n
+  - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.choose: "Choose Exchange"
@@ -1007,6 +1015,7 @@ status.99: "Unknown Error, Pending Review"
 error.occured: "Error Occured"
 error.noidea: "Something went wrong!"
 error.paymentnotcompleted: "Payment not completed."
+error.apilatency: "We are experiencing a temporal degradation in our services response time."
 error.1: "Email exists in our DB"
 error.2: "Error Storing the document in the DB"
 error.3: "First Name field is mandatory"

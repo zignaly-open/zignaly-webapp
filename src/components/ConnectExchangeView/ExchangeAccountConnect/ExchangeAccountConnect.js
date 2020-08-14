@@ -247,7 +247,7 @@ const ExchangeAccountConnect = () => {
             </Box>
             {tipsExpanded && (
               <Typography className="tips">
-                <FormattedMessage id="accounts.exchange.api.tipdesc" />
+                <FormattedMessage id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`} />
               </Typography>
             )}
             {step === 2 && (

@@ -30,25 +30,27 @@ const ExpandedRow = ({ values, persistKey, confirmAction, index }) => {
   const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
-    let positions = values[index].subPositions;
-    let newList = [];
-    let transformed = composeManagementPositionsDataTable(positions, confirmAction);
-    let { data, columns } = transformed;
-    for (let a = 0; a < positions.length; a++) {
-      let transformedRow = [];
-      for (let b = 0; b < columns.length; b++) {
-        /**
-         * @type {TranformedObject}
-         */
-        let obj = { id: "", data: "" };
-        obj.id = columns[b].name;
-        obj.data = data[a][b];
-        transformedRow.push(obj);
+    if (values.length) {
+      let positions = values[index].subPositions;
+      let newList = [];
+      let transformed = composeManagementPositionsDataTable(positions, confirmAction);
+      let { data, columns } = transformed;
+      for (let a = 0; a < positions.length; a++) {
+        let transformedRow = [];
+        for (let b = 0; b < columns.length; b++) {
+          /**
+           * @type {TranformedObject}
+           */
+          let obj = { id: "", data: "" };
+          obj.id = columns[b].name;
+          obj.data = data[a][b];
+          transformedRow.push(obj);
+        }
+        newList[a] = transformedRow;
       }
-      newList[a] = transformedRow;
-    }
 
-    setList([...newList]);
+      setList([...newList]);
+    }
   };
 
   useEffect(prepareList, []);
