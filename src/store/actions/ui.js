@@ -35,6 +35,10 @@ export const showLoader = (flag) => {
  * @returns {AnyAction} Action object.
  */
 export const showErrorAlert = (error) => {
+  // Filter apilatency error messages
+  // @ts-ignore
+  if (isObject(error) && error.code === "apilatency") return { type: "" };
+
   return {
     type: SHOW_ERROR_ALERT,
     payload: {
