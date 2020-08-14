@@ -162,7 +162,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   const [tableOptions, setOptions] = useState(options);
 
   const initOptions = () => {
-    setOptions(options);
+    setOptions({ ...tableOptions, ...customOptions });
   };
 
   useEffect(initOptions, [customOptions]);
