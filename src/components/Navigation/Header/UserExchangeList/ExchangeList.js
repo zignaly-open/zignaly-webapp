@@ -8,6 +8,8 @@ import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { setDailyUserBalance } from "../../../../store/actions/user";
+import LinkIcon from "@material-ui/icons/Link";
+import LinkOffIcon from "@material-ui/icons/LinkOff";
 
 /**
  * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
@@ -75,6 +77,11 @@ const ExchangeList = (props) => {
               <span className="name">
                 (<FormattedMessage id="menu.testnet" />)
               </span>
+            )}
+            {item.areKeysValid ? (
+              <LinkIcon className="linkOn" />
+            ) : (
+              <LinkOffIcon className="linkOff" />
             )}
           </MenuItem>
         ))}
