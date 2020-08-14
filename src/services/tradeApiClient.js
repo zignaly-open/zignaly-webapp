@@ -280,8 +280,8 @@ class TradeApiClient {
    * @returns {Promise<any>} Request cached response.
    */
   async resolveFromCache(cacheId) {
-    const timeout = 10000;
-    return new Promise((resolve, reject) => {
+    // const timeout = 10000;
+    return new Promise((resolve) => {
       const checkInterval = setInterval(() => {
         const responseData = cache.get(cacheId);
         if (responseData) {
@@ -292,10 +292,10 @@ class TradeApiClient {
       }, 100);
 
       // Timeout exceeded, this means higher than expected latency in backend.
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        reject(this.tooManyRequestsError());
-      }, timeout);
+      //   setTimeout(() => {
+      //     clearInterval(checkInterval);
+      //     reject(this.tooManyRequestsError());
+      //   }, timeout);
     });
   }
 
