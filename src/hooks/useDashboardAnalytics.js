@@ -69,8 +69,8 @@ const useDashboardAnalytics = () => {
     label: item.name,
   }));
 
-  providers.push({ val: "1", label: intl.formatMessage({ id: "fil.manual" }) });
-  providers.push({ val: "all", label: intl.formatMessage({ id: "fil.providers.all" }) });
+  providers.unshift({ val: "1", label: intl.formatMessage({ id: "fil.manual" }) });
+  providers.unshift({ val: "all", label: intl.formatMessage({ id: "fil.providers.all" }) });
 
   const [provider, setProvider] = useState({
     val: "1",
