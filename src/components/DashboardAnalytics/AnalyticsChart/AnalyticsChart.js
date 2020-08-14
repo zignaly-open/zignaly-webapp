@@ -4,7 +4,7 @@ import { useTheme } from "@material-ui/core/styles";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage } from "react-intl";
 import "./AnalyticsChart.scss";
-import { formatFloat } from "../../../utils/format";
+import { formatFloat, formatFloat2Dec } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
@@ -55,7 +55,9 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
     return (
       <Box display="flex" flexDirection="column" justifyContent="flex-start">
         <Typography variant="h5">{data.date}</Typography>
-        <Typography variant="h5">{`Total Profit: ${formatFloat(data[key])} ${unit}`}</Typography>
+        <Typography variant="h5">{`Total Profit: ${
+          unit === "%" ? formatFloat2Dec(data[key]) : formatFloat(data[key])
+        } ${unit}`}</Typography>
         <Typography variant="h5">{`Coin: ${data.quote}`}</Typography>
         <Typography variant="h5">{`Invested: ${formatFloat(data.invested)}`}</Typography>
         <Typography variant="h5">{`Profit: ${formatFloat(data.profit)}`}</Typography>
