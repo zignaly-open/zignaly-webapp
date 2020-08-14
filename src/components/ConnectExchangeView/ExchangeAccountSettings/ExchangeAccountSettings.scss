@@ -1,6 +1,10 @@
 .exchangeAccountSettings {
   width: 100%;
 
+  > .loaderBox {
+    margin-top: 50px;
+  }
+
   .typeBox {
     margin-bottom: 20px;
     width: 100%;
