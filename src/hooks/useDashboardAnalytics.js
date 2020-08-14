@@ -7,6 +7,7 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -45,6 +46,7 @@ const useDashboardAnalytics = () => {
    */
   const selectStoreSession = (state) => state.session;
   const storeSession = useSelector(selectStoreSession);
+  const storeSettings = useStoreSettingsSelector();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -94,6 +96,7 @@ const useDashboardAnalytics = () => {
       includeOpenPositions: true,
       providerId: provider.val,
       timeFrameFormat: "lastXDays",
+      internalExchangeId: storeSettings.selectedExchange.internalId,
     };
     tradeApi
       .profileStatsGet(payload)
@@ -109,7 +112,13 @@ const useDashboardAnalytics = () => {
   };
 
   // Load stats at init and on filters change
-  useEffect(loadDashboardStats, [timeFrame, quote, provider, storeSession.tradeApi.accessToken]);
+  useEffect(loadDashboardStats, [
+    timeFrame,
+    quote,
+    provider,
+    storeSettings.selectedExchange.internalId,
+    storeSession.tradeApi.accessToken,
+  ]);
 
   return {
     stats,
