@@ -32,9 +32,9 @@ const CloneProviderButton = ({ provider }) => {
    */
   const redirect = (id) => {
     if (provider.isCopyTrading) {
-      navigate(`/copyTraders/${id}/profile`);
+      navigate(`/copyTraders/${id}`);
     } else {
-      navigate(`/signalProviders/${id}/profile`);
+      navigate(`/signalProviders/${id}`);
     }
   };
 

@@ -70,7 +70,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
           <Link
             to={`${type === "signalp" ? "/signalProviders" : "/copyTraders"}/${
               tableMeta.rowData[0]
-            }/profile`}
+            }`}
           >
             {val}
           </Link>

@@ -67,7 +67,7 @@ const SignalProviders = (props) => {
       <Router>
         <SignalProviderRoute
           component={Profile}
-          path={withPrefix("/signalProviders/:providerId/profile")}
+          path={withPrefix("/signalProviders/:providerId")}
           providerId={providerId}
         />
         <SignalProviderRoute

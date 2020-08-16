@@ -31,7 +31,7 @@ const TraderCardHeader = (props) => {
     exchangeType,
   } = props.provider;
 
-  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}/profile`;
+  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
 
   return (
     <div className="traderCardHeader">
