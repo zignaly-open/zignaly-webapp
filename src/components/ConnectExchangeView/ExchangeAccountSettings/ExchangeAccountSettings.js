@@ -206,6 +206,9 @@ const ExchangeAccountSettings = () => {
                   type="password"
                 />
               ))}
+            <Typography className="positionSettingsTitle" variant="h3">
+              <FormattedMessage id="accounts.exchange.positionsettings.title" />
+            </Typography>
             <CustomSwitchInput
               defaultValue={selectedAccount.globalMaxPositions}
               inputRef={register({
