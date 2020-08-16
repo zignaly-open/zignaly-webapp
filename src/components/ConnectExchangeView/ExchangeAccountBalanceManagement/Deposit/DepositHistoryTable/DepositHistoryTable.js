@@ -95,7 +95,6 @@ const DepositHistoryTable = ({ internalId }) => {
         <Table
           columns={columns}
           data={deposits}
-          // @ts-ignore
           options={options}
           persistKey="depositHistory"
           title={<FormattedMessage id="accounts.deposit.history" />}

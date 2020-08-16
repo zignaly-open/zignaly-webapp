@@ -78,9 +78,12 @@ const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
    */
   const options = {
     selectableRows: "multiple",
-    // @ts-ignore (wait for datatables types v3)
     onRowSelectionChange: onSelect,
     rowsSelected,
+    sortOrder: {
+      name: "col.balance.available",
+      direction: "desc",
+    },
   };
 
   return (

@@ -183,6 +183,10 @@ const ManagementTable = ({ list, allPositions }) => {
     rowsExpanded: rows,
     onRowExpansionChange: handleRowExpansionChange,
     expandableRowsHeader: false,
+    sortOrder: {
+      name: "col.date.open",
+      direction: "desc",
+    },
   };
 
   return (

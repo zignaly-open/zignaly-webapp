@@ -3,6 +3,7 @@ import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
   SET_DISPLAY_COLUMN,
+  SET_SORT_COLUMN,
   SELECT_THEME,
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
@@ -31,6 +32,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
  * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
+ * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
  */
 
 /**
@@ -77,6 +79,11 @@ const settings = createReducer(initialState.settings, {
       // Remove column to displayed list
       state.displayColumns[table] = state.displayColumns[table].filter((c) => c !== changedColumn);
     }
+  },
+
+  [SET_SORT_COLUMN]: (state, /** @type {SetSortColumnAction} */ action) => {
+    const { table, name, direction } = action.payload;
+    state.sortColumns[table] = { name, direction };
   },
 
   [SET_ROWS_PER_PAGE]: (state, action) => {

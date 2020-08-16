@@ -9,6 +9,7 @@ import Table from "../../../Table";
  * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
@@ -75,9 +76,25 @@ const CoinsTable = ({ title, persistKey, list }) => {
     },
   ];
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
+  const options = {
+    sortOrder: {
+      name: "balanceTotalBTC",
+      direction: "desc",
+    },
+  };
+
   return (
     <Box className="coinsTable" display="flex" flexDirection="column" width={1}>
-      <Table columns={columns} data={list} persistKey={persistKey} title={title} />
+      <Table
+        options={options}
+        columns={columns}
+        data={list}
+        persistKey={persistKey}
+        title={title}
+      />
     </Box>
   );
 };

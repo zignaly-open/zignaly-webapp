@@ -2,6 +2,7 @@ export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
 export const SELECT_THEME = "SELECT_THEME";
 export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
+export const SET_SORT_COLUMN = "SET_SORT_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
@@ -103,6 +104,28 @@ export const unsetSelectedExchange = () => {
 export const setDisplayColumn = (payload) => {
   return {
     type: SET_DISPLAY_COLUMN,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetSortColumnPayload
+ * @property {string} name
+ * @property {'asc'|'desc'} direction
+ * @property {string} table
+ *
+ * @typedef {Object} SetSortColumnAction
+ * @property {typeof SET_SORT_COLUMN} type
+ * @property {SetSortColumnPayload} payload
+ */
+
+/**
+ * @param {SetSortColumnPayload} payload Selected column for sorting
+ * @returns {SetSortColumnAction} Action object
+ */
+export const setSortColumn = (payload) => {
+  return {
+    type: SET_SORT_COLUMN,
     payload,
   };
 };

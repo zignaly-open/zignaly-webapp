@@ -53,7 +53,14 @@
  */
 
 /**
+ * @typedef {Object} SortColumnType
+ * @property {string} name
+ * @property {'asc'|'desc'} direction
+ */
+
+/**
  * @typedef {Object<string, Array<string>>} DisplayColumns
+ * @typedef {Object<string, SortColumnType>} SortColumns
  */
 
 /**
@@ -96,6 +103,7 @@
  * @property {Boolean} darkStyle
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
+ * @property {SortColumns} sortColumns
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
@@ -367,6 +375,7 @@ const initialState = {
         "col.cancel",
       ],
     },
+    sortColumns: {},
     selectedExchange: {
       id: "",
       name: "",

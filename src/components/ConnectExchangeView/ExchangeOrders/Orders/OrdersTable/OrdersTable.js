@@ -14,6 +14,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
  * @typedef {import("../../../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
@@ -66,7 +67,9 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
       titleTranslationId: "confirm.ordercancel.title",
       messageTranslationId: "confirm.ordercancel.message",
       visible: true,
-      values: { order: <b>{orderId}</b> },
+      values: {
+        order: <b>{orderId}</b>,
+      },
     });
   };
 
@@ -93,18 +96,17 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
       });
   };
 
-  /**
-   * Compose MUI data table for positions collection of selected type.
-   *
-   * @returns {DataTableContent} Data table content.
-   */
-  const composeDataTableForOrders = () => {
-    let dataTable;
-    dataTable = composeOrdersDataTable(list, confirmAction);
-    return dataTable;
-  };
+  const { columns, data } = composeOrdersDataTable(list, confirmAction);
 
-  const { columns, data } = composeDataTableForOrders();
+  /**
+   * @type {MUIDataTableOptions}
+   */
+  const options = {
+    sortOrder: {
+      name: "col.orders.datetime",
+      direction: "desc",
+    },
+  };
 
   return (
     <>
@@ -114,7 +116,13 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Box className="ordersTable" display="flex" flexDirection="column" width={1}>
-        <Table columns={columns} data={data} persistKey={tablePersistsKey} title={title} />
+        <Table
+          columns={columns}
+          data={data}
+          persistKey={tablePersistsKey}
+          title={title}
+          options={options}
+        />
       </Box>
     </>
   );

@@ -10,6 +10,7 @@ import { formatNumber } from "../../../../utils/formatters";
  * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
@@ -122,6 +123,13 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
   ];
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
+  const options = {
+    sortOrder: { name: "date", direction: "desc" },
+  };
+
   const dynamicColumns = () => {
     for (let a = 0; a < quotes.length; a++) {
       let obj = {
@@ -162,7 +170,13 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
 
   return (
     <Box className="historyTable" display="flex" flexDirection="column" width={1}>
-      <Table columns={columns} data={data} persistKey={persistKey} title={title} />
+      <Table
+        columns={columns}
+        data={data}
+        persistKey={persistKey}
+        title={title}
+        options={options}
+      />
     </Box>
   );
 };

@@ -100,7 +100,6 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
         <Table
           columns={columns}
           data={withdraws}
-          // @ts-ignore
           options={options}
           persistKey="withdrawHistory"
           title={<FormattedMessage id="accounts.withdraw.history" />}
