@@ -12,6 +12,7 @@ import { merge } from "lodash";
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
@@ -441,6 +442,9 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
     },
   ];
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
   const options = {
     sortOrder: { name: "percentageProfit", direction: "desc" },
   };
@@ -470,7 +474,6 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
         <Table
           columns={columns}
           data={stats}
-          // @ts-ignore
           options={options}
           persistKey={persistKey}
           title={title}

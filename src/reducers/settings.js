@@ -3,6 +3,7 @@ import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
   SET_DISPLAY_COLUMN,
+  SET_SORT_COLUMN,
   SELECT_THEME,
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
@@ -13,6 +14,7 @@ import {
   SET_BROWSE_QUOTE,
   SET_SORT,
   SET_TERMINAL_PAIR,
+  SET_TERMINAL_PROVIDER,
   SET_ANALYTICS_BASE,
   SET_BROWSE_EXCHANGE_TYPE,
 } from "../store/actions/settings";
@@ -24,11 +26,13 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
  * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
  * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
  * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
  * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
+ * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
  */
 
 /**
@@ -77,6 +81,11 @@ const settings = createReducer(initialState.settings, {
     }
   },
 
+  [SET_SORT_COLUMN]: (state, /** @type {SetSortColumnAction} */ action) => {
+    const { table, name, direction } = action.payload;
+    state.sortColumns[table] = { name, direction };
+  },
+
   [SET_ROWS_PER_PAGE]: (state, action) => {
     const { table, numberOfRows } = action.payload;
     state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
@@ -118,6 +127,10 @@ const settings = createReducer(initialState.settings, {
   [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {
     const { exchangeId, pair } = action.payload;
     state.tradingTerminal.pair[exchangeId] = pair;
+  },
+
+  [SET_TERMINAL_PROVIDER]: (state, /** @type {SetTerminalProviderAction} */ action) => {
+    state.tradingTerminal.provider = action.payload;
   },
 });
 

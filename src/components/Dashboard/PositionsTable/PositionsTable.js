@@ -22,6 +22,7 @@ import { useIntl } from "react-intl";
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 /**
@@ -235,6 +236,13 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
+  const options = {
+    sortOrder: { name: "openDateReadable", direction: "desc" },
+  };
+
   const embedFilters = () => {
     // Don't display filters on single position display.
     if (positionEntity) {
@@ -285,6 +293,7 @@ const PositionsTable = (props) => {
               <Table
                 columns={columns}
                 data={data}
+                options={options}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
               />
