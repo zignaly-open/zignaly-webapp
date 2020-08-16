@@ -71,7 +71,7 @@
     "@types/jest": "^25.2.3",
     "@types/jquery": "^3.3.38",
     "@types/memory-cache": "^0.2.1",
-    "@types/mui-datatables": "^3.2.0",
+    "@types/mui-datatables": "^2.14.2",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.0.0",
     "@types/react-lazyload": "^2.6.0",

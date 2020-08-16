@@ -6,8 +6,6 @@ import "./ConvertTable.scss";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
- * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("mui-datatables").MUIDataTableOptions['onRowSelectionChange']} OnRowSelectionChange
  */
 
 /**
@@ -21,7 +19,7 @@ import "./ConvertTable.scss";
 /**
  * @typedef {Object} DepositHistoryTablePropTypes
  * @property {ExchangeAssetsWithName} assets Exchange assets that can be converted.
- * @property {OnRowSelectionChange} onSelect Coin selected callback.
+ * @property {function} onSelect Coin selected callback.
  * @property {Array<Number>} rowsSelected Selected rows indexes.
  * @property {boolean} loading Flag to indicate if data is loading.
  */
@@ -72,16 +70,17 @@ const ConvertTable = ({ assets, onSelect, rowsSelected, loading }) => {
   ];
 
   /**
+   * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
+   *
+   */
+  /**
    * @type {MUIDataTableOptions}
    */
   const options = {
     selectableRows: "multiple",
+    // @ts-ignore (wait for datatables types v3)
     onRowSelectionChange: onSelect,
     rowsSelected,
-    sortOrder: {
-      name: "col.balance.available",
-      direction: "desc",
-    },
   };
 
   return (

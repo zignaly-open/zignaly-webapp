@@ -11,7 +11,6 @@ import "./DepositHistoryTable.scss";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
- * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 /**
@@ -76,14 +75,8 @@ const DepositHistoryTable = ({ internalId }) => {
     },
   ];
 
-  /**
-   * @type {MUIDataTableOptions}
-   */
   const options = {
-    sortOrder: {
-      name: "balanceTotalBTC",
-      direction: "desc",
-    },
+    sortOrder: { name: "timestamp", direction: "desc" },
   };
 
   return (
@@ -102,6 +95,7 @@ const DepositHistoryTable = ({ internalId }) => {
         <Table
           columns={columns}
           data={deposits}
+          // @ts-ignore
           options={options}
           persistKey="depositHistory"
           title={<FormattedMessage id="accounts.deposit.history" />}

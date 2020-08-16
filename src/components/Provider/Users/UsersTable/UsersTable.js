@@ -62,29 +62,16 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
    * @returns {React.ReactNode} Formatted node.
    */
   const renderYesNo = (val) => (
-    <span>
-      {intl.formatMessage({
-        id: val ? "general.yes" : "general.no",
-      })}
-    </span>
+    <span>{intl.formatMessage({ id: val ? "general.yes" : "general.no" })}</span>
   );
 
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
   let columns = [
-    {
-      name: "userId",
-      label: "col.users.userid",
-    },
-    {
-      name: "email",
-      label: "col.users.email",
-    },
-    {
-      name: "name",
-      label: "col.users.name",
-    },
+    { name: "userId", label: "col.users.userid" },
+    { name: "email", label: "col.users.email" },
+    { name: "name", label: "col.users.name" },
     {
       name: "connected",
       label: "col.users.connected",
@@ -126,22 +113,10 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         },
       },
     },
-    {
-      name: "allocatedBalance",
-      label: "col.users.allocatedbalance",
-    },
-    {
-      name: "profitsFromClosedBalance",
-      label: "col.users.profits",
-    },
-    {
-      name: "code",
-      label: "col.users.code",
-    },
-    {
-      name: "lastTransactionId",
-      label: "col.users.lasttransaction",
-    },
+    { name: "allocatedBalance", label: "col.users.allocatedbalance" },
+    { name: "profitsFromClosedBalance", label: "col.users.profits" },
+    { name: "code", label: "col.users.code" },
+    { name: "lastTransactionId", label: "col.users.lasttransaction" },
     {
       name: "cancelDate",
       label: "col.users.canceldate",

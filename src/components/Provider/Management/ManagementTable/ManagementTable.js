@@ -15,7 +15,6 @@ import "./ManagementTable.scss";
  * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
- * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 /**
@@ -178,19 +177,12 @@ const ManagementTable = ({ list, allPositions }) => {
     setRows(indexes);
   };
 
-  /**
-   * @type {MUIDataTableOptions}
-   */
-  const options = {
+  const customOptions = {
     expandableRows: true,
     renderExpandableRow: renderRow,
     rowsExpanded: rows,
     onRowExpansionChange: handleRowExpansionChange,
     expandableRowsHeader: false,
-    sortOrder: {
-      name: "col.date.open",
-      direction: "desc",
-    },
   };
 
   return (
@@ -204,7 +196,7 @@ const ManagementTable = ({ list, allPositions }) => {
         <Table
           columns={columns}
           data={data}
-          options={options}
+          options={customOptions}
           persistKey={tablePersistsKey}
           title=""
         />

@@ -2,7 +2,6 @@ export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
 export const SELECT_THEME = "SELECT_THEME";
 export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
-export const SET_SORT_COLUMN = "SET_SORT_COLUMN";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
@@ -14,7 +13,6 @@ export const SET_TIMEFRAME = "SET_TIMEFRAME";
 export const SIGNALP_SORT = "SIGNALP_SORT";
 export const COPYT_SORT = "COPYT_SORT";
 export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
-export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
 export const SET_SORT = "SET_SORT";
 export const SET_BROWSE_EXCHANGE = "SET_BROWSE_EXCHANGE";
 export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
@@ -104,28 +102,6 @@ export const unsetSelectedExchange = () => {
 export const setDisplayColumn = (payload) => {
   return {
     type: SET_DISPLAY_COLUMN,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetSortColumnPayload
- * @property {string} name
- * @property {'asc'|'desc'} direction
- * @property {string} table
- *
- * @typedef {Object} SetSortColumnAction
- * @property {typeof SET_SORT_COLUMN} type
- * @property {SetSortColumnPayload} payload
- */
-
-/**
- * @param {SetSortColumnPayload} payload Selected column for sorting
- * @returns {SetSortColumnAction} Action object
- */
-export const setSortColumn = (payload) => {
-  return {
-    type: SET_SORT_COLUMN,
     payload,
   };
 };
@@ -293,23 +269,6 @@ export const setAnayticsBase = (payload) => {
 export const setTerminalPair = (payload) => {
   return {
     type: SET_TERMINAL_PAIR,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetTerminalProviderAction
- * @property {typeof SET_TERMINAL_PROVIDER} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Payload.
- * @returns {SetTerminalProviderAction} Action.
- */
-export const setTerminalProvider = (payload) => {
-  return {
-    type: SET_TERMINAL_PROVIDER,
     payload,
   };
 };

@@ -53,14 +53,7 @@
  */
 
 /**
- * @typedef {Object} SortColumnType
- * @property {string} name
- * @property {'asc'|'desc'} direction
- */
-
-/**
  * @typedef {Object<string, Array<string>>} DisplayColumns
- * @typedef {Object<string, SortColumnType>} SortColumns
  */
 
 /**
@@ -94,7 +87,6 @@
 /**
  * @typedef {Object} TradingTerminalSettings
  * @property {Object<string, string>} pair
- * @property {string} provider
  */
 
 /**
@@ -103,7 +95,6 @@
  * @property {Boolean} darkStyle
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
- * @property {SortColumns} sortColumns
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
@@ -375,7 +366,6 @@ const initialState = {
         "col.cancel",
       ],
     },
-    sortColumns: {},
     selectedExchange: {
       id: "",
       name: "",
@@ -424,7 +414,7 @@ const initialState = {
     signalp: {
       analytics: { quote: null, base: null },
     },
-    tradingTerminal: { pair: {}, provider: null },
+    tradingTerminal: { pair: {} },
   },
   user: {
     exchangeConnections: [],

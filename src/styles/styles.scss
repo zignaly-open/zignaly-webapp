@@ -258,25 +258,8 @@ body {
 
   .name {
     font-weight: 500;
+    margin-right: 5px;
     text-transform: capitalize;
-
-    + span {
-      margin-left: 5px;
-    }
-  }
-
-  .linkOn {
-    color: $green;
-    height: 20px;
-    margin-left: 5px;
-    width: 20px;
-  }
-
-  .linkOff {
-    color: $red;
-    height: 20px;
-    margin-left: 5px;
-    width: 20px;
   }
 }
 
