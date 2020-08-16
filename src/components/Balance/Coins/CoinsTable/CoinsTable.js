@@ -89,9 +89,9 @@ const CoinsTable = ({ title, persistKey, list }) => {
   return (
     <Box className="coinsTable" display="flex" flexDirection="column" width={1}>
       <Table
-        options={options}
         columns={columns}
         data={list}
+        options={options}
         persistKey={persistKey}
         title={title}
       />

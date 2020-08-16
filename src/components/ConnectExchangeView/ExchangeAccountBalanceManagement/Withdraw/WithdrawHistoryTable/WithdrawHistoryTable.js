@@ -11,6 +11,7 @@ import "./WithdrawHistoryTable.scss";
 
 /**
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 /**
@@ -80,8 +81,14 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
     },
   ];
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
   const options = {
-    sortOrder: { name: "timestamp", direction: "desc" },
+    sortOrder: {
+      name: "timestamp",
+      direction: "desc",
+    },
   };
 
   return (

@@ -173,9 +173,9 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
       <Table
         columns={columns}
         data={data}
+        options={options}
         persistKey={persistKey}
         title={title}
-        options={options}
       />
     </Box>
   );

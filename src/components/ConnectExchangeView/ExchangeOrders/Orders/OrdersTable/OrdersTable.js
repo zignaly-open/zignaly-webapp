@@ -119,9 +119,9 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
         <Table
           columns={columns}
           data={data}
+          options={options}
           persistKey={tablePersistsKey}
           title={title}
-          options={options}
         />
       </Box>
     </>

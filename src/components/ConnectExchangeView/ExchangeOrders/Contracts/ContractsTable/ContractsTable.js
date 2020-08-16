@@ -103,7 +103,11 @@ const ContractsTable = ({ title, list, loadData }) => {
    * @returns {JSX.Element} Composed JSX element.
    */
   function composePositionLinkButton(id) {
-    return <Link to={`/position/${id}`}>{id}</Link>;
+    return (
+      <Link className="link" to={`/position/${id}`}>
+        {id}
+      </Link>
+    );
   }
 
   /**
