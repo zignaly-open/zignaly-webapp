@@ -19,16 +19,16 @@ const PaymentForm = ({ provider }) => {
 
   const createReturnSuccessUrl = () => {
     if (provider.isCopyTrading) {
-      return `${baseURL}/copyTraders/${provider.id}/profile#success`;
+      return `${baseURL}/copyTraders/${provider.id}#success`;
     }
-    return `${baseURL}/signalProviders/${provider.id}/profile#success`;
+    return `${baseURL}/signalProviders/${provider.id}#success`;
   };
 
   const createReturnErrorUrl = () => {
     if (provider.isCopyTrading) {
-      return `${baseURL}/copyTraders/${provider.id}/profile#error`;
+      return `${baseURL}/copyTraders/${provider.id}#error`;
     }
-    return `${baseURL}/signalProviders/${provider.id}/profile#error`;
+    return `${baseURL}/signalProviders/${provider.id}#error`;
   };
 
   const returnSuccessURL = createReturnSuccessUrl();

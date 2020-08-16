@@ -994,10 +994,10 @@ export function positionItemTransform(positionItem) {
     }
 
     if (positionItem.isCopyTrading) {
-      return `/copyTraders/${positionItem.providerId}/profile`;
+      return `/copyTraders/${positionItem.providerId}`;
     }
 
-    return `/signalProviders/${positionItem.providerId}/profile`;
+    return `/signalProviders/${positionItem.providerId}`;
   };
 
   /**
