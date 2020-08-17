@@ -68,7 +68,7 @@ const CopyTraders = (props) => {
       <Router>
         <CopyTraderRoute
           component={Profile}
-          path={withPrefix("/copyTraders/:providerId/profile")}
+          path={withPrefix("/copyTraders/:providerId")}
           providerId={providerId}
         />
         <CopyTraderRoute
