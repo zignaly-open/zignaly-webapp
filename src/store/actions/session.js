@@ -26,12 +26,18 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
+  const { gtmEventPush } = gtmPushApi();
+  const eventData = {
+    event: "login",
+  };
+
   return async (dispatch) => {
     const action = {
       type: START_TRADE_API_SESSION,
       payload: response,
     };
 
+    gtmEventPush(eventData);
     dispatch(action);
     dispatch(refreshSessionData(response.token));
     dispatch(loadAppUserData(response));
