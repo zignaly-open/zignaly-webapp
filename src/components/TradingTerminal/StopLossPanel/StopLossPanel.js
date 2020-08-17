@@ -126,6 +126,10 @@ const StopLossPanel = (props) => {
       return;
     }
 
+    if (errors.stopLossPrice) {
+      clearErrors("stopLossPrice");
+    }
+
     if (errors.stopLossPercentage) {
       clearErrors("stopLossPercentage");
     }
