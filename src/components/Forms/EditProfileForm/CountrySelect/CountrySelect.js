@@ -5,6 +5,8 @@ import { countries } from "countries-list";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { useIntl } from "react-intl";
+// @ts-ignore
+import Flag from "react-world-flags";
 
 /**
  *
@@ -130,7 +132,7 @@ const CountrySelect = ({ onChange, defaultValue }) => {
                   key={item.countryCode}
                   value={item.countryCode.toLowerCase()}
                 >
-                  <span className="mr">{item.emoji}</span>
+                  <Flag className="flag" code={item.countryCode.toUpperCase()} />
                   <span className="mr">{item.name}</span>
                 </MenuItem>
               ))}
