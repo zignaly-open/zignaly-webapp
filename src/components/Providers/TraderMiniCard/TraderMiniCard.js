@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import LogoIcon from "../../../images/logo/logoIcon.svg";
 import "./TraderMiniCard.scss";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { FormattedMessage } from "react-intl";
 import { Link } from "gatsby";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
@@ -40,7 +40,7 @@ const TraderMiniCard = ({ provider }) => {
             {name}
           </Typography>
         </Link>
-        <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
+        <ProviderLogo size="32px" title={name} url={logoUrl} />
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">
