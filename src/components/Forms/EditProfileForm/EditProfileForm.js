@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
 import { Box, TextField, Typography, Switch, Tooltip } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -19,10 +19,12 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
+import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 
 /**
+ * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
- * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {DefaultProviderGetObject} provider
  */
 /**
  * About us compoennt for CT profile.
@@ -43,6 +45,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [selectedSocials, setSelectedSocials] = useState(provider.social);
   const [socialError, setSocialError] = useState(false);
   const [logoUrl, setLogoUrl] = useState(provider.logoUrl);
+  const [positions, setPositions] = useState([]);
   const dispatch = useDispatch();
   // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
@@ -53,6 +56,25 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const listSwitch = watch("list", provider.list);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
+
+  const loadPositions = () => {
+    if (provider.id) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+      };
+      tradeApi
+        .providerManagementPositions(payload)
+        .then((response) => {
+          setPositions(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
+  };
+
+  useEffect(loadPositions, [provider.id]);
 
   /**
    *
@@ -260,6 +282,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    */
   const handleLogoChange = (url) => {
     setLogoUrl(url);
+  };
+
+  const checkIfCanBeDeleted = () => {
+    if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -645,6 +674,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
+            <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
+
             <CustomButton
               className={"full submitButton"}
               loading={loading}
