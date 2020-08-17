@@ -183,6 +183,10 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", sign);
     } else {
       setValue("stopLossPercentage", `${sign}${newValue}`);
+      // When SL come from backend rely on the existing sign and value.
+      if (initialStopLossPercentage) {
+        setValue("stopLossPercentage", formatFloat2Dec(initialStopLossPercentage));
+      }
     }
 
     if (expanded) {
