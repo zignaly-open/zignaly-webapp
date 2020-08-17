@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CloneDeleteButton.scss";
+import "./ProviderDeleteButton.scss";
 import { Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
@@ -19,7 +19,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const CloneDeleteButton = ({ provider }) => {
+const ProviderDeleteButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -55,16 +55,21 @@ const CloneDeleteButton = ({ provider }) => {
   return (
     <Box
       alignItems="center"
-      className="cloneDeleteButton"
+      className="providerDeleteButton"
       display="flex"
       flexDirection="row"
       justifyContent="flex-start"
     >
       <CustomButton className="deleteButton" loading={loading} onClick={deleteClone}>
-        <FormattedMessage id="srv.deletetrader" />
+        {provider.isClone && <FormattedMessage id="srv.deleteclone" />}
+        {!provider.isClone && (
+          <FormattedMessage
+            id={provider.isCopyTrading ? "srv.deletetrader" : "srv.deleteprovider"}
+          />
+        )}
       </CustomButton>
     </Box>
   );
 };
 
-export default CloneDeleteButton;
+export default ProviderDeleteButton;
