@@ -22,8 +22,9 @@ import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 
 /**
+ * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
- * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {DefaultProviderGetObject} provider
  */
 /**
  * About us compoennt for CT profile.
@@ -281,6 +282,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    */
   const handleLogoChange = (url) => {
     setLogoUrl(url);
+  };
+
+  const checkIfCanBeDeleted = () => {
+    if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -666,9 +674,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-            {!provider.public && !provider.list && provider.disable && positions.length === 0 && (
-              <ProviderDeleteButton provider={provider} />
-            )}
+            <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
 
             <CustomButton
               className={"full submitButton"}

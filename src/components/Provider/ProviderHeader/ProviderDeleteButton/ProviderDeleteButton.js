@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ProviderDeleteButton.scss";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -12,6 +12,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {Boolean} [disabled]
  */
 /**
  * Delete button component for clones.
@@ -19,7 +20,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderDeleteButton = ({ provider }) => {
+const ProviderDeleteButton = ({ provider, disabled }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -52,6 +53,16 @@ const ProviderDeleteButton = ({ provider }) => {
     }
   };
 
+  const getTooltip = () => {
+    if (disabled) {
+      if (provider.isCopyTrading) {
+        return <FormattedMessage id="copyt.deletedisabled.tooltip" />;
+      }
+      return <FormattedMessage id="srv.deletedisabled.tooltip" />;
+    }
+    return "";
+  };
+
   return (
     <Box
       alignItems="center"
@@ -60,14 +71,28 @@ const ProviderDeleteButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <CustomButton className="deleteButton" loading={loading} onClick={deleteClone}>
-        {provider.isClone && <FormattedMessage id="srv.deleteclone" />}
-        {!provider.isClone && (
-          <FormattedMessage
-            id={provider.isCopyTrading ? "srv.deletetrader" : "srv.deleteprovider"}
-          />
-        )}
-      </CustomButton>
+      {provider.isClone && (
+        <CustomButton className="deleteButton" loading={loading} onClick={deleteClone}>
+          <FormattedMessage id="srv.deleteclone" />
+        </CustomButton>
+      )}
+
+      {!provider.isClone && (
+        <Tooltip placement="top" title={getTooltip()}>
+          <span>
+            <CustomButton
+              className="deleteButton"
+              disabled={!!disabled}
+              loading={loading}
+              onClick={deleteClone}
+            >
+              <FormattedMessage
+                id={provider.isCopyTrading ? "srv.deletetrader" : "srv.deleteprovider"}
+              />
+            </CustomButton>
+          </span>
+        </Tooltip>
+      )}
     </Box>
   );
 };
