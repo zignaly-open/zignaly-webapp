@@ -1,7 +1,7 @@
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
-import { isEmpty } from "lodash";
+import { assign, isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
@@ -27,7 +27,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  */
 export const startTradeApiSession = (response) => {
   const { gtmEventPush } = gtmPushApi();
-  const eventData = {
+  const eventType = {
     event: "login",
   };
 
@@ -37,8 +37,9 @@ export const startTradeApiSession = (response) => {
       payload: response,
     };
 
-    gtmEventPush(eventData);
     dispatch(action);
+    // Add event type with user entity properties.
+    gtmEventPush(assign(eventType, response));
     dispatch(refreshSessionData(response.token));
     dispatch(loadAppUserData(response));
   };
@@ -73,22 +74,15 @@ export const endTradeApiSession = () => {
  */
 export const registerUser = (payload, setLoading) => {
   const { gtmEventPush } = gtmPushApi();
-  const eventData = {
+  const eventType = {
     event: "signup",
   };
 
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
-      // TODO: webapp1 is passing user data to the event but based on
-      // https://support.google.com/tagmanager/answer/7679219 I don't see
-      // that this data is really tracked so will check with David
-      // and may violate GDRP regulation if we don't ask user consent.
-      // Object.keys(responseData).forEach((key) => {
-      //   eventData[key] = responseData[key];
-      // });
-
-      gtmEventPush(eventData);
+      // Add event type with user entity properties.
+      gtmEventPush(assign(eventType, responseData));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
