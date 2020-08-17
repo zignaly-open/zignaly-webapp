@@ -6,6 +6,7 @@ import { assign, cloneDeep, filter, isEmpty, isFunction, omitBy, partial } from 
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import { setFilters as setFiltersAction } from "../store/actions/settings";
 import useStoreViewsSelector from "./useStoreViewsSelector";
 
 /**
@@ -36,7 +37,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
 
 /**
  * @typedef {Object} PositionsFiltersState
- * @property {string} provider
+ * @property {string} providerId
  * @property {OptionType} pair
  * @property {string} side
  * @property {string} type
@@ -51,22 +52,29 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @param {PositionsCollectionType} type Collection type to fetch.
  * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
  * @param {function} [notifyPositionsUpdate] Callback to notify the updated positions list.
+ * @param {"dashboardPositions"} [persistKey] Key to persist filters to store.
  * @returns {HookPositionsListData} Positions collection.
  */
-const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = null) => {
+const usePositionsList = (
+  type,
+  positionEntity = null,
+  notifyPositionsUpdate = null,
+  persistKey,
+) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
+  const storeFilters = storeSettings.filters[persistKey];
   const { selectedExchange } = storeSettings;
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const defaultFilters = {
-    provider: "all",
+    providerId: (storeFilters && storeFilters.providerId) || "all",
     pair: { label: "All Pairs", val: "all" },
-    side: "all",
-    type: "all",
-    status: "",
+    side: (storeFilters && storeFilters.side) || "all",
+    type: (storeFilters && storeFilters.type) || "all",
+    status: (storeFilters && storeFilters.status) || "",
   };
 
   /**
@@ -160,7 +168,6 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
     if (type !== "log") {
       delete filterValues.type;
     }
-
     const matches = filter(filterPositions, filterValues);
 
     return /** @type {UserPositionsCollection} */ (matches);
@@ -358,6 +365,7 @@ const usePositionsList = (type, positionEntity = null, notifyPositionsUpdate = n
   const combineFilters = (values) => {
     const newFilters = assign({}, filters, values);
     setFilters(newFilters);
+    dispatch(setFiltersAction({ page: persistKey, filters: newFilters }));
   };
 
   return {

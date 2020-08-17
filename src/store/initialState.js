@@ -105,8 +105,18 @@
  */
 
 /**
+ * @typedef {Object} DashboardPositionsFilters
+ * @property {string} providerId
+ * @property {string} pair
+ * @property {string} side
+ * @property {string} type
+ * @property {string} status
+ */
+
+/**
  * @typedef {Object} Filters
  * @property {DashboardAnalyticsFilters} dashboardAnalytics
+ * @property {DashboardPositionsFilters} dashboardPositions
  */
 
 /**
@@ -440,6 +450,7 @@ const initialState = {
     },
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
+      dashboardPositions: { provider: "", pair: "", side: "", type: "", status: "" },
     },
     dashboard: {
       positions: {},

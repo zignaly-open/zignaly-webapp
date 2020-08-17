@@ -222,11 +222,14 @@ export const setBrowseQuote = (payload) => {
   };
 };
 
-// * @property {ProviderPageType|ConnectedProviderPageType|AnalyticsPageType} page
+/**
+ * @typedef {'dashboardAnalytics'|'dashboardPositions'} PageType
+ */
+
 /**
  * @typedef {Object} SetFiltersPayload
- * @property {'dashboardAnalytics'} page
- * @property {Filters['dashboardAnalytics']} filters
+ * @property {PageType} page
+ * @property {Filters[PageType]} filters
  *
  * @typedef {Object} SetFiltersAction
  * @property {typeof SET_FILTERS} type

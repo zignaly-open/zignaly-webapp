@@ -5,6 +5,10 @@ import { uniqBy, sortBy } from "lodash";
 import { FormattedMessage } from "react-intl";
 import { Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
+import { useDispatch } from "react-redux";
+import { setFilters as setFiltersAction } from "../../../store/actions/settings";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -29,8 +33,10 @@ import { Box } from "@material-ui/core";
  */
 const PositionFilters = (props) => {
   const { initialState, onChange, positions, showTypesFilter } = props;
+  const dispatch = useDispatch();
+  const persistKey = "dashboardPositions";
   const defaultFilters = {
-    provider: "all",
+    providerId: "all",
     pair: { label: "All Pairs", val: "all" },
     side: "all",
     type: "all",
@@ -47,11 +53,14 @@ const PositionFilters = (props) => {
   };
 
   const extractProviderOptions = () => {
-    const coinsDistinct = uniqBy(positions, "providerName").map((position) => {
-      return { label: position.providerName, val: position.providerName };
+    const providersDistinct = uniqBy(positions, "providerName").map((position) => {
+      return {
+        label: position.providerName,
+        val: position.providerId,
+      };
     });
 
-    return [{ label: "All Providers", val: "all" }].concat(sortBy(coinsDistinct, "label"));
+    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
   };
 
   const pairOptions = extractPairOptions();
@@ -68,6 +77,17 @@ const PositionFilters = (props) => {
   ];
 
   const providerOptions = extractProviderOptions();
+
+  // Save filters to settings store when changed
+  //   const saveFilters = () => {
+  //     dispatch(
+  //       setFiltersAction({
+  //         page: persistKey,
+  //         filters,
+  //       }),
+  //     );
+  //   };
+  //   useEffectSkipFirst(saveFilters, [filters]);
 
   const clearFilters = () => {
     setFilters(defaultFilters);
@@ -86,7 +106,7 @@ const PositionFilters = (props) => {
   const setProvider = (value) => {
     setFilters({
       ...filters,
-      provider: value,
+      providerId: value,
     });
   };
 
@@ -145,6 +165,14 @@ const PositionFilters = (props) => {
 
   useEffect(broadcastChange, [filters]);
 
+  //   console.log(
+  //     providerOptions.find((p) => p.val === filters.providerId),
+  //     filters.providerName,
+  //   );
+  //   const selectedProvider = providerOptions.find((p) => p.val === filters.providerName)
+  //     ? filters.providerName
+  //     : defaultFilters.providerName;
+
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (
@@ -154,7 +182,7 @@ const PositionFilters = (props) => {
         label=""
         onChange={setProvider}
         options={providerOptions}
-        value={filters.provider}
+        value={filters.providerId}
       />
       <CustomSelect
         label=""

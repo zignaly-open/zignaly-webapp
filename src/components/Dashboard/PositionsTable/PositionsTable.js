@@ -45,6 +45,7 @@ const PositionsTable = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
+  const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;
   const {
     flagPositionUpdating,
     positionsAll,
@@ -52,7 +53,7 @@ const PositionsTable = (props) => {
     setFilters,
     filtersState,
     loading,
-  } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
+  } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
 
