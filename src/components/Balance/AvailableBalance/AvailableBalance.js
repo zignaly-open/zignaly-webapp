@@ -49,7 +49,15 @@ const AvailableBalance = ({ balance }) => {
                 = USDT {formatFloat(balance.totalFreeUSDT)}
               </Typography>
             </Box>
-            <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
+              <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
+              <Typography className="number1 pnlPercent">
+                {balance.totalFreeBTC && balance.totalBTC
+                  ? formatFloat2Dec((balance.totalFreeBTC / balance.totalBTC) * 100)
+                  : 0}
+                %
+              </Typography>
+            </Box>
           </Box>
           <span className="operator">+</span>
           <Box
@@ -73,7 +81,15 @@ const AvailableBalance = ({ balance }) => {
                 = USDT {formatFloat(balance.totalLockedUSDT)}
               </Typography>
             </Box>
-            <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
+              <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
+              <Typography className="number1 pnlPercent">
+                {balance.totalLockedBTC && balance.totalBTC
+                  ? formatFloat2Dec((balance.totalLockedBTC / balance.totalBTC) * 100)
+                  : 0}
+                %
+              </Typography>
+            </Box>
           </Box>
           <span className="operator">+</span>
           <Box
