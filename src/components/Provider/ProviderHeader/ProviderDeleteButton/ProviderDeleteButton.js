@@ -8,6 +8,7 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * @typedef {Object} DefaultProps
@@ -25,6 +26,18 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
   const redirect = () => {
     if (provider.isCopyTrading) {
       navigate("/copyTraders");
@@ -33,7 +46,7 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
     }
   };
 
-  const deleteClone = async () => {
+  const deleteProvider = async () => {
     try {
       setLoading(true);
       const payload = {
@@ -50,6 +63,30 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
       }
     } catch (e) {
       dispatch(showErrorAlert(e));
+    }
+  };
+
+  const confirmAction = () => {
+    if (provider.isClone) {
+      setConfirmConfig({
+        titleTranslationId: "confirm.deleteclone.title",
+        messageTranslationId: "confirm.deleteclone.message",
+        visible: true,
+      });
+    }
+    if (!provider.isClone && provider.isCopyTrading) {
+      setConfirmConfig({
+        titleTranslationId: "confirm.deletetrader.title",
+        messageTranslationId: "confirm.deletetrader.message",
+        visible: true,
+      });
+    }
+    if (!provider.isClone && !provider.isCopyTrading) {
+      setConfirmConfig({
+        titleTranslationId: "confirm.deleteprovider.title",
+        messageTranslationId: "confirm.deleteprovider.message",
+        visible: true,
+      });
     }
   };
 
@@ -71,8 +108,13 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={deleteProvider}
+        setConfirmConfig={setConfirmConfig}
+      />
       {provider.isClone && (
-        <CustomButton className="deleteButton" loading={loading} onClick={deleteClone}>
+        <CustomButton className="deleteButton" loading={loading} onClick={confirmAction}>
           <FormattedMessage id="srv.deleteclone" />
         </CustomButton>
       )}
@@ -84,7 +126,7 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
               className="deleteButton"
               disabled={!!disabled}
               loading={loading}
-              onClick={deleteClone}
+              onClick={confirmAction}
             >
               <FormattedMessage
                 id={provider.isCopyTrading ? "srv.deletetrader" : "srv.deleteprovider"}

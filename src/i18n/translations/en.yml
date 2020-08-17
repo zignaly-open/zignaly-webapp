@@ -99,6 +99,12 @@ confirm.copyt.unfollow.title: "Stop Copying Trader"
 confirm.copyt.unfollow.message: "Your positions will remains under trader management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
 confirm.appupdate.title: "Application Update"
 confirm.appupdate.message: "A new Zignaly webapp update was released, we need to refresh the page to take advantage of the latest improvements."
+confirm.deleteclone.title: "Delete Clone"
+confirm.deleteclone.message: "Are you sure you want to delete this Clone?"
+confirm.deletetrader.title: "Delete Trader"
+confirm.deletetrader.message: "Are you sure you want to delete this Trader?"
+confirm.deleteprovider.title: "Delete Provider"
+confirm.deleteprovider.message: "Are you sure you want to delete this Provider?"
 
 # COLUMNS
 col.actions: "ACTIONS"
