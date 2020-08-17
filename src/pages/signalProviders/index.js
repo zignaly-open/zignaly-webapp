@@ -5,6 +5,7 @@ import Edit from "./edit";
 import Settings from "./settings";
 import Analytics from "./providerAnalytics";
 import Users from "./users";
+import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider, unsetProvider } from "../../store/actions/views";
@@ -88,6 +89,11 @@ const SignalProviders = (props) => {
         <SignalProviderRoute
           component={Users}
           path={withPrefix("/signalProviders/:providerId/users")}
+          providerId={providerId}
+        />
+        <SignalProviderRoute
+          component={News}
+          path={withPrefix("/signalProviders/:providerId/news")}
           providerId={providerId}
         />
       </Router>
