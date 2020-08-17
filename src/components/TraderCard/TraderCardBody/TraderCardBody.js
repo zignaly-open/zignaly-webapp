@@ -113,9 +113,9 @@ const TraderCard = (props) => {
 
   const redirectToProfile = () => {
     if (isCopyTrading) {
-      navigate(`/copyTraders/${provider.id}/profile`);
+      navigate(`/copyTraders/${provider.id}`);
     } else {
-      navigate(`/signalProviders/${provider.id}/profile`);
+      navigate(`/signalProviders/${provider.id}`);
     }
   };
 

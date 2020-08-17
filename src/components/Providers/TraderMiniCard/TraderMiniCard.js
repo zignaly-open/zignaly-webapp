@@ -1,10 +1,11 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import LogoIcon from "../../../images/logo/logoIcon.svg";
 import "./TraderMiniCard.scss";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { FormattedMessage } from "react-intl";
+import { Link } from "gatsby";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
@@ -19,9 +20,11 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderMiniCard = ({ provider }) => {
-  const { name, logoUrl, quote, returns } = provider;
-  const providerUserInfo = useProviderUserInfo(provider.id);
+  const { name, logoUrl, quote, returns, isCopyTrading, id } = provider;
+  const providerUserInfo = useProviderUserInfo(id);
   const color = returns >= 0 ? "green" : "red";
+
+  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
 
   return (
     <Box
@@ -32,10 +35,12 @@ const TraderMiniCard = ({ provider }) => {
       justifyContent="space-between"
     >
       <Box alignItems="center" display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography className="name" variant="h4">
-          {name}
-        </Typography>
-        <img alt={name} className="logoIcon" src={logoUrl || LogoIcon} />
+        <Link className="link" to={profileLink}>
+          <Typography className="name" variant="h4">
+            {name}
+          </Typography>
+        </Link>
+        <ProviderLogo size="32px" title={name} url={logoUrl} />
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">

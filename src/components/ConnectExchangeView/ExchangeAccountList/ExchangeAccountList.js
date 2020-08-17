@@ -13,6 +13,7 @@ import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import { useDispatch } from "react-redux";
 import { setUserExchanges } from "../../../store/actions/user";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import LazyLoad from "react-lazyload";
 
 /**
  * @typedef {Object} DefaultProps
@@ -80,8 +81,10 @@ const ExchangeAccountList = ({ demo }) => {
         <Box className={`exchangeAccountContainer ${currentPath}`}>
           {exchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
-              <ExchangeAccountTopBar account={account} />
-              <ExchangeAccountData account={account} />
+              <LazyLoad height={512} offset={200} overflow={true} scrollContainer=".modal">
+                <ExchangeAccountTopBar account={account} />
+                <ExchangeAccountData account={account} />
+              </LazyLoad>
             </Box>
           ))}
           {!demo ? (

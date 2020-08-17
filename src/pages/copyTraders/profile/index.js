@@ -7,13 +7,16 @@ import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
 import CloneDeleteButton from "../../../components/Provider/ProviderHeader/CloneDeleteButton";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { setProvider } from "../../../store/actions/views";
 
 const CopyTradersProfile = () => {
+  const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -21,19 +24,25 @@ const CopyTradersProfile = () => {
   const checkPaymentStatus = () => {
     if (typeof window !== "undefined") {
       let url = window.location.href;
+      const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
+      const providerId = location.pathname.split("/")[idIndex];
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: providerId,
+        version: 2,
+      };
       if (url.includes("error")) {
         let error = {
           code: "paymentnotcompleted",
         };
         history.pushState({}, "error", url.split("#")[0]);
         dispatch(showErrorAlert(error));
+        dispatch(setProvider(payload));
       }
       if (url.includes("success")) {
-        let success = {
-          code: "paymentnotcompleted",
-        };
         history.pushState({}, "success", url.split("#")[0]);
-        dispatch(showErrorAlert(success));
+        dispatch(showSuccessAlert("alert.payment.title", "alert.payment.body"));
+        dispatch(setProvider(payload));
       }
     }
   };

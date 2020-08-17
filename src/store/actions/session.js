@@ -1,9 +1,10 @@
 import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
-import { isEmpty } from "lodash";
+import { assign, isEmpty } from "lodash";
 import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
+import gtmPushApi from "../../utils/gtmPushApi";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -25,6 +26,11 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
+  const { gtmEventPush } = gtmPushApi();
+  const eventType = {
+    event: "login",
+  };
+
   return async (dispatch) => {
     const action = {
       type: START_TRADE_API_SESSION,
@@ -32,6 +38,8 @@ export const startTradeApiSession = (response) => {
     };
 
     dispatch(action);
+    // Add event type with user entity properties.
+    gtmEventPush(assign(eventType, response));
     dispatch(refreshSessionData(response.token));
     dispatch(loadAppUserData(response));
   };
@@ -65,9 +73,16 @@ export const endTradeApiSession = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const registerUser = (payload, setLoading) => {
+  const { gtmEventPush } = gtmPushApi();
+  const eventType = {
+    event: "signup",
+  };
+
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
+      // Add event type with user entity properties.
+      gtmEventPush(assign(eventType, responseData));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
