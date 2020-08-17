@@ -4,7 +4,12 @@ import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
-import { setDisplayColumn, setRowsPerPage, setSortColumn } from "../../store/actions/settings";
+import {
+  setDisplayColumn,
+  setRowsPerPage,
+  setSortColumn,
+  setResponsiveTable,
+} from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box, Hidden, IconButton, Tooltip } from "@material-ui/core";
 import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
@@ -43,11 +48,9 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   const countRows = size(data);
   const theme = useTheme();
 
-  /** @type {MUIDataTableOptions} */
-  const initState = {
-    responsive: "vertical",
-  };
-  const [dynamicOptions, setOptions] = useState(initState);
+  const [responsive, setResponsive] = useState(
+    storeSettings.responsiveTables[persistKey] !== false,
+  );
 
   /**
    * Function to create column labels.
@@ -120,22 +123,26 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       }
     },
     onColumnViewChange: (changedColumn, action) => {
-      dispatch(
-        setDisplayColumn({
-          table: persistKey,
-          changedColumn,
-          action,
-        }),
-      );
+      if (persistKey) {
+        dispatch(
+          setDisplayColumn({
+            table: persistKey,
+            changedColumn,
+            action,
+          }),
+        );
+      }
     },
     onColumnSortChange: (changedColumn, direction) => {
-      dispatch(
-        setSortColumn({
-          table: persistKey,
-          name: changedColumn,
-          direction,
-        }),
-      );
+      if (persistKey) {
+        dispatch(
+          setSortColumn({
+            table: persistKey,
+            name: changedColumn,
+            direction,
+          }),
+        );
+      }
     },
     fixedHeader: true,
     textLabels: {
@@ -175,14 +182,14 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
     ...(storeSettings.sortColumns[persistKey] && {
       sortOrder: storeSettings.sortColumns[persistKey],
     }),
-    // Apply dynamic options
-    ...dynamicOptions,
+    responsive: responsive ? "vertical" : "standard",
   };
 
   const changeResponsiveView = () => {
-    setOptions({
-      responsive: dynamicOptions.responsive === "vertical" ? "standard" : "vertical",
-    });
+    setResponsive(!responsive);
+    if (persistKey) {
+      dispatch(setResponsiveTable({ table: persistKey, responsive: !responsive }));
+    }
   };
 
   /**

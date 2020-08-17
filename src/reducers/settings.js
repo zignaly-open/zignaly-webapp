@@ -17,6 +17,7 @@ import {
   SET_TERMINAL_PROVIDER,
   SET_ANALYTICS_BASE,
   SET_BROWSE_EXCHANGE_TYPE,
+  SET_RESPONSIVE_TABLE,
 } from "../store/actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -33,6 +34,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
  * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
  * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
+ * @typedef {import("../store/actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
  */
 
 /**
@@ -84,6 +86,11 @@ const settings = createReducer(initialState.settings, {
   [SET_SORT_COLUMN]: (state, /** @type {SetSortColumnAction} */ action) => {
     const { table, name, direction } = action.payload;
     state.sortColumns[table] = { name, direction };
+  },
+
+  [SET_RESPONSIVE_TABLE]: (state, /** @type {SetResponsiveTableAction} */ action) => {
+    const { table, responsive } = action.payload;
+    state.responsiveTables[table] = responsive;
   },
 
   [SET_ROWS_PER_PAGE]: (state, action) => {

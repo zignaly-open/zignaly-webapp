@@ -61,6 +61,7 @@
 /**
  * @typedef {Object<string, Array<string>>} DisplayColumns
  * @typedef {Object<string, SortColumnType>} SortColumns
+ * @typedef {Object<string, boolean>} ResponsiveTables
  */
 
 /**
@@ -104,6 +105,7 @@
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
  * @property {SortColumns} sortColumns
+ * @property {ResponsiveTables} responsiveTables
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
@@ -376,6 +378,7 @@ const initialState = {
       ],
     },
     sortColumns: {},
+    responsiveTables: {},
     selectedExchange: {
       id: "",
       name: "",

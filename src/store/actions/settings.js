@@ -3,6 +3,7 @@ export const SELECT_THEME = "SELECT_THEME";
 export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
 export const SET_SORT_COLUMN = "SET_SORT_COLUMN";
+export const SET_RESPONSIVE_TABLE = "SET_RESPONSIVE_TABLE";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
@@ -126,6 +127,27 @@ export const setDisplayColumn = (payload) => {
 export const setSortColumn = (payload) => {
   return {
     type: SET_SORT_COLUMN,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetResponsiveTablePayload
+ * @property {boolean} responsive
+ * @property {string} table
+ *
+ * @typedef {Object} SetResponsiveTableAction
+ * @property {typeof SET_RESPONSIVE_TABLE} type
+ * @property {SetResponsiveTablePayload} payload
+ */
+
+/**
+ * @param {SetResponsiveTablePayload} payload Payload
+ * @returns {SetResponsiveTableAction} Action object
+ */
+export const setResponsiveTable = (payload) => {
+  return {
+    type: SET_RESPONSIVE_TABLE,
     payload,
   };
 };
