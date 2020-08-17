@@ -1187,3 +1187,8 @@ srv.follow.alert.title: "CH-Success"
 srv.follow.alert.body: "CH-You are now Following this Provider!"
 srv.unfollow.alert.title: "CH-Success"
 srv.unfollow.alert.body: "CH-You are not Following this Provider anymore!"
+
+# WALL
+wall.post: "CH-Post"
+wall.completeprofile.title: "CH-Complete Profile"
+wall.completeprofile.desc: "CH-In order to continue, you need to set an username."
