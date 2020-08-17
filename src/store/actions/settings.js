@@ -23,15 +23,17 @@ export const SET_BROWSE_EXCHANGE_TYPE = "SET_BROWSE_EXCHANGE_TYPE";
 export const SET_ANALYTICS_TIMEFRAME = "SET_ANALYTICS_TIMEFRAME";
 export const SET_ANALYTICS_QUOTE = "SET_ANALYTICS_QUOTE";
 export const SET_ANALYTICS_BASE = "SET_ANALYTICS_BASE";
+export const SET_FILTERS = "SET_FILTERS";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
+ * @typedef {import('../initialState').Filters} Filters
  */
 
 /**
  * @typedef {'signalp'|'copyt'} ProviderPageType
  * @typedef {'connectedSignalp'|'connectedCopyt'} ConnectedProviderPageType
- * @typedef {'signalpAnalytics'|'copytAnalytics'} AnalyticsPageType
+ * @typedef {'signalpAnalytics'|'copytAnalytics'|'dashboardAnalytics'} AnalyticsPageType
  */
 
 /**
@@ -216,6 +218,28 @@ export const setBrowseExchange = (payload) => {
 export const setBrowseQuote = (payload) => {
   return {
     type: SET_BROWSE_QUOTE,
+    payload,
+  };
+};
+
+// * @property {ProviderPageType|ConnectedProviderPageType|AnalyticsPageType} page
+/**
+ * @typedef {Object} SetFiltersPayload
+ * @property {'dashboardAnalytics'} page
+ * @property {Filters['dashboardAnalytics']} filters
+ *
+ * @typedef {Object} SetFiltersAction
+ * @property {typeof SET_FILTERS} type
+ * @property {SetFiltersPayload} payload
+ */
+
+/**
+ * @param {SetFiltersPayload} payload Payload
+ * @returns {SetFiltersAction} Action object
+ */
+export const setFilters = (payload) => {
+  return {
+    type: SET_FILTERS,
     payload,
   };
 };

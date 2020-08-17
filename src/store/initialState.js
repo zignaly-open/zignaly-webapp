@@ -17,7 +17,6 @@
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import('../services/tradeApiClient.types').UserEntity} UserEntity
- *
  */
 
 /**
@@ -93,6 +92,24 @@
  */
 
 /**
+ * @typedef {Object} OptionTypeStr
+ * @property {string} label
+ * @property {string} val
+ */
+
+/**
+ * @typedef {Object} DashboardAnalyticsFilters
+ * @property {string} timeFrame
+ * @property {string} quote
+ * @property {OptionTypeStr} provider
+ */
+
+/**
+ * @typedef {Object} Filters
+ * @property {DashboardAnalyticsFilters} dashboardAnalytics
+ */
+
+/**
  * @typedef {Object} TradingTerminalSettings
  * @property {Object<string, string>} pair
  * @property {string} provider
@@ -112,6 +129,7 @@
  * @property {SortObject} sort
  * @property {CopytSettings} copyt
  * @property {SignalpSettings} signalp
+ * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
  */
 
@@ -419,6 +437,13 @@ const initialState = {
     sort: {
       copyt: null,
       signalp: null,
+    },
+    filters: {
+      dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
+    },
+    dashboard: {
+      positions: {},
+      analytics: {},
     },
     copyt: {
       browse: { quote: null, exchange: null, exchangeType: null },

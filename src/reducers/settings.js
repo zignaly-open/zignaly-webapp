@@ -13,6 +13,7 @@ import {
   SET_TIMEFRAME,
   SET_BROWSE_QUOTE,
   SET_SORT,
+  SET_FILTERS,
   SET_TERMINAL_PAIR,
   SET_TERMINAL_PROVIDER,
   SET_ANALYTICS_BASE,
@@ -30,6 +31,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
  * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
+ * @typedef {import("../store/actions/settings").SetFiltersAction} SetFiltersAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
  * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
  * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
@@ -113,6 +115,11 @@ const settings = createReducer(initialState.settings, {
   [SET_SORT]: (state, /** @type {SetSortAction} */ action) => {
     const { page, sort } = action.payload;
     state.sort[page] = sort;
+  },
+
+  [SET_FILTERS]: (state, /** @type {SetFiltersAction} */ action) => {
+    const { page, filters } = action.payload;
+    state.filters[page] = filters;
   },
 
   [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
