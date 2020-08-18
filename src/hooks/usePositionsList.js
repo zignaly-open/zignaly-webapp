@@ -38,7 +38,7 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
 /**
  * @typedef {Object} PositionsFiltersState
  * @property {string} providerId
- * @property {OptionType} pair
+ * @property {string} pair
  * @property {string} side
  * @property {string} type
  * @property {string} status
@@ -71,7 +71,7 @@ const usePositionsList = (
   const [loading, setLoading] = useState(true);
   const defaultFilters = {
     providerId: (storeFilters && storeFilters.providerId) || "all",
-    pair: { label: "All Pairs", val: "all" },
+    pair: (storeFilters && storeFilters.pair) || "all",
     side: (storeFilters && storeFilters.side) || "all",
     type: (storeFilters && storeFilters.type) || "all",
     status: (storeFilters && storeFilters.status) || "",
@@ -159,10 +159,6 @@ const usePositionsList = (
       return value === "all" || value === "";
     };
     let filterValues = omitBy(filters, isAll);
-    if (filterValues.pair) {
-      // @ts-ignore
-      filterValues.pair = filterValues.pair.val;
-    }
 
     // Only use the type filter on log positions table.
     if (type !== "log") {

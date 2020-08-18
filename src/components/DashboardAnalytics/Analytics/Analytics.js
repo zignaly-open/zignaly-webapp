@@ -25,6 +25,13 @@ const Analytics = () => {
     loading,
   } = useDashboardAnalytics();
 
+  console.log(
+    provider,
+    providers,
+    providers.length,
+    providers.find((p) => p.val === provider),
+  );
+
   return (
     <Box>
       <Filters
@@ -41,7 +48,7 @@ const Analytics = () => {
       />
       <AnalyticsChart
         loading={loading}
-        provider={provider}
+        provider={providers.find((p) => p.val === provider).label}
         quote={quote}
         stats={stats}
         timeFrame={timeFrames.find((t) => t.val === timeFrame).label}

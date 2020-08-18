@@ -8,22 +8,11 @@ export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
 export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
-export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME";
-export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME";
-export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME";
 export const SET_TIMEFRAME = "SET_TIMEFRAME";
-export const SIGNALP_SORT = "SIGNALP_SORT";
-export const COPYT_SORT = "COPYT_SORT";
+export const SET_SORT = "SET_SORT";
+export const SET_FILTERS = "SET_FILTERS";
 export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
 export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
-export const SET_SORT = "SET_SORT";
-export const SET_BROWSE_EXCHANGE = "SET_BROWSE_EXCHANGE";
-export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
-export const SET_BROWSE_EXCHANGE_TYPE = "SET_BROWSE_EXCHANGE_TYPE";
-export const SET_ANALYTICS_TIMEFRAME = "SET_ANALYTICS_TIMEFRAME";
-export const SET_ANALYTICS_QUOTE = "SET_ANALYTICS_QUOTE";
-export const SET_ANALYTICS_BASE = "SET_ANALYTICS_BASE";
-export const SET_FILTERS = "SET_FILTERS";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -189,47 +178,13 @@ export const setSort = (payload) => {
 };
 
 /**
- * @typedef {Object} SetBrowseExchangeAction
- * @property {typeof SET_BROWSE_EXCHANGE} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Exchange
- * @returns {SetBrowseExchangeAction} Action object
- */
-export const setBrowseExchange = (payload) => {
-  return {
-    type: SET_BROWSE_EXCHANGE,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetBrowseQuoteAction
- * @property {typeof SET_BROWSE_QUOTE} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Quote
- * @returns {SetBrowseQuoteAction} Action object
- */
-export const setBrowseQuote = (payload) => {
-  return {
-    type: SET_BROWSE_QUOTE,
-    payload,
-  };
-};
-
-/**
- * @typedef {'dashboardAnalytics'|'dashboardPositions'} PageType
+ * @typedef {"copyt"|"dashboardPositions"|AnalyticsPageType} FilterPage
  */
 
 /**
  * @typedef {Object} SetFiltersPayload
- * @property {PageType} page
- * @property {Filters[PageType]} filters
+ * @property {FilterPage} page
+ * @property {Filters[FilterPage]} filters
  *
  * @typedef {Object} SetFiltersAction
  * @property {typeof SET_FILTERS} type
@@ -243,23 +198,6 @@ export const setBrowseQuote = (payload) => {
 export const setFilters = (payload) => {
   return {
     type: SET_FILTERS,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetBrowseExchangeTypeAction
- * @property {typeof SET_BROWSE_EXCHANGE_TYPE} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Exchange Type
- * @returns {SetBrowseExchangeTypeAction} Action object.
- */
-export const setBrowseExchangeType = (payload) => {
-  return {
-    type: SET_BROWSE_EXCHANGE_TYPE,
     payload,
   };
 };
@@ -284,47 +222,6 @@ export const setTimeFrame = (payload) => {
     payload,
   };
 };
-
-/**
- * @typedef {Object} SetAnalyticsQuotePayload
- * @property {ProviderPageType} page
- * @property {string} quote
- *
- * @typedef {Object} SetAnalyticsQuoteAction
- * @property {typeof SET_ANALYTICS_QUOTE} type
- * @property {SetAnalyticsQuotePayload} payload
- */
-
-/**
- * @param {SetAnalyticsQuotePayload} payload Quote for the analytics
- * @returns {SetAnalyticsQuoteAction} return action object.
- */
-export const setAnayticsQuote = (payload) => {
-  return {
-    type: SET_ANALYTICS_QUOTE,
-    payload,
-  };
-};
-
-/**
- * @typedef {{page: ProviderPageType, base: string}} SetAnalyticsBasePayload
- *
- * @typedef {Object} SetAnalyticsBaseAction
- * @property {typeof SET_ANALYTICS_BASE} type
- * @property {SetAnalyticsBasePayload} payload
- */
-
-/**
- * @param {SetAnalyticsBasePayload} payload Pair for the analytics
- * @returns {SetAnalyticsBaseAction} return action object.
- */
-export const setAnayticsBase = (payload) => {
-  return {
-    type: SET_ANALYTICS_BASE,
-    payload,
-  };
-};
-
 /**
  * @typedef {Object} SetTerminalPairPayload
  * @property {string} exchangeId

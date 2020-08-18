@@ -6,8 +6,9 @@ import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { setTerminalProvider } from "../../../store/actions/settings";
+import { setTerminalProvider, setTerminalPair } from "../../../store/actions/settings";
 import { useDispatch } from "react-redux";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
@@ -66,7 +67,17 @@ const TradingViewHeader = (props) => {
     providerId: "1",
   };
 
-  // Save provider when changed
+  // Save filters to store when changed
+  const saveSelectedSymbol = () => {
+    dispatch(
+      setTerminalPair({
+        exchangeId: storeSettings.selectedExchange.exchangeId,
+        pair: selectedSymbol,
+      }),
+    );
+  };
+  useEffectSkipFirst(saveSelectedSymbol, [selectedSymbol]);
+
   const saveSelectedProvider = (/** @type {string} **/ value) => {
     dispatch(setTerminalProvider(value));
   };

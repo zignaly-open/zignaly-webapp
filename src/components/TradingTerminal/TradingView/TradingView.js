@@ -16,7 +16,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
-import { setTerminalPair } from "../../../store/actions/settings";
+import { setFilters as setFiltersAction } from "../../../store/actions/settings";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
 /**
@@ -238,17 +238,6 @@ const TradingView = () => {
       );
     }
   };
-
-  // Save symbol when changed
-  const saveSelectedSymbol = () => {
-    dispatch(
-      setTerminalPair({
-        exchangeId: storeSettings.selectedExchange.exchangeId,
-        pair: selectedSymbol,
-      }),
-    );
-  };
-  useEffectSkipFirst(saveSelectedSymbol, [selectedSymbol]);
 
   const methods = useForm({
     mode: "onChange",

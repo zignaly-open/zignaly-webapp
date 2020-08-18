@@ -8,35 +8,25 @@ import {
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
   SET_ROWS_PER_PAGE,
-  SET_ANALYTICS_QUOTE,
-  SET_BROWSE_EXCHANGE,
   SET_TIMEFRAME,
-  SET_BROWSE_QUOTE,
   SET_SORT,
   SET_FILTERS,
+  SET_RESPONSIVE_TABLE,
   SET_TERMINAL_PAIR,
   SET_TERMINAL_PROVIDER,
-  SET_ANALYTICS_BASE,
-  SET_BROWSE_EXCHANGE_TYPE,
-  SET_RESPONSIVE_TABLE,
 } from "../store/actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
  * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
- * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
- * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
- * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
- * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
  * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
  * @typedef {import("../store/actions/settings").SetFiltersAction} SetFiltersAction
- * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
- * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
- * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
  * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
  * @typedef {import("../store/actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
+ * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  */
 
 /**
@@ -100,18 +90,6 @@ const settings = createReducer(initialState.settings, {
     state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
   },
 
-  [SET_BROWSE_QUOTE]: (state, /** @type {SetBrowseQuoteAction} */ action) => {
-    state.copyt.browse.quote = action.payload;
-  },
-
-  [SET_BROWSE_EXCHANGE]: (state, /** @type {SetBrowseExchangeAction} */ action) => {
-    state.copyt.browse.exchange = action.payload;
-  },
-
-  [SET_BROWSE_EXCHANGE_TYPE]: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
-    state.copyt.browse.exchangeType = action.payload;
-  },
-
   [SET_SORT]: (state, /** @type {SetSortAction} */ action) => {
     const { page, sort } = action.payload;
     state.sort[page] = sort;
@@ -119,23 +97,17 @@ const settings = createReducer(initialState.settings, {
 
   [SET_FILTERS]: (state, /** @type {SetFiltersAction} */ action) => {
     const { page, filters } = action.payload;
-    state.filters[page] = filters;
+    // @ts-ignore
+    state.filters[page] = {
+      ...state.filters[page],
+      ...filters,
+    };
   },
 
   [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
     const { page, timeFrame } = action.payload;
     // @ts-ignore Analytics timeframes use string instead of numbers
     state.timeFrame[page] = timeFrame;
-  },
-
-  [SET_ANALYTICS_QUOTE]: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
-    const { page, quote } = action.payload;
-    state[page].analytics.quote = quote;
-  },
-
-  [SET_ANALYTICS_BASE]: (state, /** @type {SetAnalyticsBaseAction} */ action) => {
-    const { page, base } = action.payload;
-    state[page].analytics.base = base;
   },
 
   [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {

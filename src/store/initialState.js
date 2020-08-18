@@ -68,27 +68,16 @@
  */
 
 /**
- * @typedef {Object} BrowseSettings
+ * @typedef {Object} BrowseFilters
  * @property {string} quote
  * @property {string} exchange
  * @property {string} exchangeType
  */
 
 /**
- * @typedef {Object} AnalyticsSettings
+ * @typedef {Object} AnalyticsFilters
  * @property {string} quote
  * @property {string} base
- */
-
-/**
- * @typedef {Object} CopytSettings
- * @property {BrowseSettings} browse
- * @property {AnalyticsSettings} analytics
- */
-
-/**
- * @typedef {Object} SignalpSettings
- * @property {AnalyticsSettings} analytics
  */
 
 /**
@@ -101,7 +90,7 @@
  * @typedef {Object} DashboardAnalyticsFilters
  * @property {string} timeFrame
  * @property {string} quote
- * @property {OptionTypeStr} provider
+ * @property {string} provider
  */
 
 /**
@@ -117,6 +106,9 @@
  * @typedef {Object} Filters
  * @property {DashboardAnalyticsFilters} dashboardAnalytics
  * @property {DashboardPositionsFilters} dashboardPositions
+ * @property {BrowseFilters} copyt
+ * @property {AnalyticsFilters} copytAnalytics
+ * @property {AnalyticsFilters} signalpAnalytics
  */
 
 /**
@@ -137,8 +129,6 @@
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
  * @property {SortObject} sort
- * @property {CopytSettings} copyt
- * @property {SignalpSettings} signalp
  * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
  */
@@ -449,21 +439,13 @@ const initialState = {
       signalp: null,
     },
     filters: {
-      dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
-      dashboardPositions: { provider: "", pair: "", side: "", type: "", status: "" },
+      dashboardAnalytics: { timeFrame: "", quote: "", provider: "" },
+      dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "" },
+      copytAnalytics: { quote: "", base: "" },
+      signalpAnalytics: { quote: "", base: "" },
     },
-    dashboard: {
-      positions: {},
-      analytics: {},
-    },
-    copyt: {
-      browse: { quote: null, exchange: null, exchangeType: null },
-      analytics: { quote: null, base: null },
-    },
-    signalp: {
-      analytics: { quote: null, base: null },
-    },
-    tradingTerminal: { pair: {}, provider: null },
+    tradingTerminal: { pair: {}, provider: "" },
   },
   user: {
     exchangeConnections: [],

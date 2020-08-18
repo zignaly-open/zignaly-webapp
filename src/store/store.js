@@ -37,13 +37,21 @@ const migrations = {
       },
     };
   },
+  10: (/** @type {PersistedState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...cloneDeep(initialState.settings),
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 9,
+  version: 10,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };

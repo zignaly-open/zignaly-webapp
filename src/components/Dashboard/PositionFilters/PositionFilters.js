@@ -5,10 +5,7 @@ import { uniqBy, sortBy } from "lodash";
 import { FormattedMessage } from "react-intl";
 import { Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
-import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { useDispatch } from "react-redux";
-import { setFilters as setFiltersAction } from "../../../store/actions/settings";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -33,11 +30,9 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const PositionFilters = (props) => {
   const { initialState, onChange, positions, showTypesFilter } = props;
-  const dispatch = useDispatch();
-  const persistKey = "dashboardPositions";
   const defaultFilters = {
     providerId: "all",
-    pair: { label: "All Pairs", val: "all" },
+    pair: "all",
     side: "all",
     type: "all",
     status: "",
@@ -78,17 +73,6 @@ const PositionFilters = (props) => {
 
   const providerOptions = extractProviderOptions();
 
-  // Save filters to settings store when changed
-  //   const saveFilters = () => {
-  //     dispatch(
-  //       setFiltersAction({
-  //         page: persistKey,
-  //         filters,
-  //       }),
-  //     );
-  //   };
-  //   useEffectSkipFirst(saveFilters, [filters]);
-
   const clearFilters = () => {
     setFilters(defaultFilters);
   };
@@ -113,7 +97,7 @@ const PositionFilters = (props) => {
   /**
    * Set coin pair filter value.
    *
-   * @param {OptionType} value Selected coin value.
+   * @param {string} value Selected coin value.
    * @returns {Void} None.
    */
   const setCoin = (value) => {

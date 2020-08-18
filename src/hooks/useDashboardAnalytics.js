@@ -27,7 +27,7 @@ import useEffectSkipFirst from "./useEffectSkipFirst";
  * @property {string} quote
  * @property {Array<string>} quotes
  * @property {function} setQuote
- * @property {OptionType} provider
+ * @property {string} provider
  * @property {Array<OptionType>} providers
  * @property {function} setProvider
  * @property {function} clearFilters
@@ -83,7 +83,7 @@ const useDashboardAnalytics = () => {
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
 
-  const initProvider = storeSettings.filters[pageKey].provider || providers[1];
+  const initProvider = storeSettings.filters[pageKey].provider || providers[1].val;
   const [provider, setProvider] = useState(initProvider);
 
   // Save settings to store when changed
@@ -104,7 +104,7 @@ const useDashboardAnalytics = () => {
   const clearFilters = () => {
     setQuote("USDT");
     setTimeFrame("3");
-    setProvider(providers[1]);
+    setProvider(providers[1].val);
   };
 
   const loadDashboardStats = () => {
@@ -115,7 +115,7 @@ const useDashboardAnalytics = () => {
       quote,
       timeFrame,
       includeOpenPositions: true,
-      providerId: provider.val,
+      providerId: provider,
       timeFrameFormat: "lastXDays",
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };

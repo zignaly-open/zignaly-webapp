@@ -14,7 +14,7 @@ import { useIntl } from "react-intl";
  * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
  * @property {Array<OptionType>} providers Providers options.
- * @property {OptionType} provider Selected provider.
+ * @property {string} provider Selected provider.
  * @property {function} onProviderChange
  */
 
