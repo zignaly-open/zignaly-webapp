@@ -5,7 +5,6 @@ import { uniqBy, sortBy } from "lodash";
 import { FormattedMessage } from "react-intl";
 import { Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
-import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection

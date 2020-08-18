@@ -60,6 +60,7 @@ const usePositionsList = (
   positionEntity = null,
   notifyPositionsUpdate = null,
   persistKey,
+  // eslint-disable-next-line max-params
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();

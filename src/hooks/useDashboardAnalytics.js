@@ -83,6 +83,9 @@ const useDashboardAnalytics = () => {
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
 
+  // Load saved provider.
+  // We store the label and value in order to display it in the
+  // dropdown before the providers list is resolved)
   const savedProvider = storeSettings.filters[pageKey].provider;
   const initProvider = savedProvider || providers[1];
   const [provider, setProvider] = useState(initProvider);

@@ -16,8 +16,6 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
-import { setFilters as setFiltersAction } from "../../../store/actions/settings";
-import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
 /**
  * @typedef {any} TVWidget
