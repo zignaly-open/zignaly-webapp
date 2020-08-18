@@ -90,7 +90,7 @@
  * @typedef {Object} DashboardAnalyticsFilters
  * @property {string} timeFrame
  * @property {string} quote
- * @property {string} provider
+ * @property {OptionTypeStr} provider
  */
 
 /**
@@ -439,7 +439,7 @@ const initialState = {
       signalp: null,
     },
     filters: {
-      dashboardAnalytics: { timeFrame: "", quote: "", provider: "" },
+      dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
       copyt: { quote: "", exchange: "", exchangeType: "" },
       copytAnalytics: { quote: "", base: "" },

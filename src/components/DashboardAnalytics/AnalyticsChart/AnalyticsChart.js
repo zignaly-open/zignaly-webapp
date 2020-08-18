@@ -17,7 +17,7 @@ import { formatFloat } from "../../../utils/format";
  * @property {Array<ProfileStatsObject>} stats Table stats data.
  * @property {string} quote Selected quote (base currency).
  * @property {string} timeFrame Selected time frame.
- * @property {string} provider Selected provider.
+ * @property {OptionType} provider Selected provider.
  * @property {Boolean} loading
  */
 
@@ -90,7 +90,7 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
             <FormattedMessage id="srv.netprofit" />
           </Typography>
         </Box>
-        <Typography variant="h3">{`${timeFrame} / ${quote} / ${provider}`}</Typography>
+        <Typography variant="h3">{`${timeFrame} / ${quote} / ${provider.label}`}</Typography>
       </Box>
       {loading && (
         <Box
