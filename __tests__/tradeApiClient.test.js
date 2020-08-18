@@ -427,7 +427,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get trading performance data for a provider", async () => {
     const payload = {
       token: accessToken,
-      providerId: "5ebdc98dda8e96310c265c55",
+      providerId: "5ee26419928896519668b62b",
     };
 
     const provider = await client.providerPerformanceGet(payload);
@@ -448,7 +448,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get copy trading points data for a provider", async () => {
     const payload = {
       token: accessToken,
-      providerId: "5ebdc98dda8e96310c265c55",
+      providerId: "5ee26419928896519668b62b",
     };
 
     const dataPoints = await client.providerCopyTradingDataPointsGet(payload);
