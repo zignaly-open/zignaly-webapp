@@ -116,7 +116,7 @@ const IncreaseStrategyPanel = (props) => {
           </FormControl>
           {entryStrategy === "stop_limit" && (
             <FormControl>
-              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
+              <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -130,7 +130,7 @@ const IncreaseStrategyPanel = (props) => {
           )}
           {entryStrategy !== "market" ? (
             <FormControl>
-              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.price" />
+              <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -149,7 +149,7 @@ const IncreaseStrategyPanel = (props) => {
           )}
           {selectedExchange.exchangeType === "futures" && (
             <FormControl>
-              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.realinvest" />
+              <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
@@ -174,7 +174,7 @@ const IncreaseStrategyPanel = (props) => {
           {!isCopyTrader && (
             <FormControl>
               <HelperLabel
-                descriptionId="terminal.stoploss.help"
+                descriptionId="terminal.position.size.help"
                 labelId="terminal.position.size"
               />
               <Box alignItems="center" display="flex">
@@ -243,7 +243,7 @@ const IncreaseStrategyPanel = (props) => {
           )}
           {!isCopyTrader && (
             <FormControl>
-              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
+              <HelperLabel descriptionId="terminal.units.help" labelId="terminal.units" />
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
