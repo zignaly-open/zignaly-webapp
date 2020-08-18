@@ -51,7 +51,6 @@
 
   .tradingViewChart {
     flex: 0 0 calc(70% - 15px);
-    height: 700px;
     margin-right: 15px;
 
     @include media("<=sm") {
@@ -62,6 +61,7 @@
     }
 
     @include media(">=lg") {
+      height: calc(100vh - 300px);
       flex: 0 0 calc(75% - 15px);
     }
 
