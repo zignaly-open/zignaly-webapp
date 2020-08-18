@@ -1,7 +1,6 @@
 .strategyForm {
   flex: 0 0 30%;
   margin-bottom: 10px;
-  overflow-y: auto;
 
   @include media("<=sm") {
     flex: 0 0 100%;
@@ -10,7 +9,6 @@
 
   @include media(">=lg") {
     flex: 0 0 25%;
-    height: calc(100vh - 300px);
   }
 
   @include media(">=xl") {
