@@ -30,8 +30,8 @@ import { Box } from "@material-ui/core";
 const PositionFilters = (props) => {
   const { initialState, onChange, positions, showTypesFilter } = props;
   const defaultFilters = {
-    provider: "all",
-    pair: { label: "All Pairs", val: "all" },
+    providerId: "all",
+    pair: "all",
     side: "all",
     type: "all",
     status: "",
@@ -47,11 +47,14 @@ const PositionFilters = (props) => {
   };
 
   const extractProviderOptions = () => {
-    const coinsDistinct = uniqBy(positions, "providerName").map((position) => {
-      return { label: position.providerName, val: position.providerName };
+    const providersDistinct = uniqBy(positions, "providerName").map((position) => {
+      return {
+        label: position.providerName,
+        val: position.providerId,
+      };
     });
 
-    return [{ label: "All Providers", val: "all" }].concat(sortBy(coinsDistinct, "label"));
+    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
   };
 
   const pairOptions = extractPairOptions();
@@ -86,14 +89,14 @@ const PositionFilters = (props) => {
   const setProvider = (value) => {
     setFilters({
       ...filters,
-      provider: value,
+      providerId: value,
     });
   };
 
   /**
    * Set coin pair filter value.
    *
-   * @param {OptionType} value Selected coin value.
+   * @param {string} value Selected coin value.
    * @returns {Void} None.
    */
   const setCoin = (value) => {
@@ -145,6 +148,14 @@ const PositionFilters = (props) => {
 
   useEffect(broadcastChange, [filters]);
 
+  //   console.log(
+  //     providerOptions.find((p) => p.val === filters.providerId),
+  //     filters.providerName,
+  //   );
+  //   const selectedProvider = providerOptions.find((p) => p.val === filters.providerName)
+  //     ? filters.providerName
+  //     : defaultFilters.providerName;
+
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (
@@ -154,7 +165,7 @@ const PositionFilters = (props) => {
         label=""
         onChange={setProvider}
         options={providerOptions}
-        value={filters.provider}
+        value={filters.providerId}
       />
       <CustomSelect
         label=""

@@ -17,7 +17,6 @@
  * @typedef {import('../services/tradeApiClient.types').UserEquityEntity} UserEquityEntity
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import('../services/tradeApiClient.types').UserEntity} UserEntity
- *
  */
 
 /**
@@ -53,7 +52,15 @@
  */
 
 /**
+ * @typedef {Object} SortColumnType
+ * @property {string} name
+ * @property {'asc'|'desc'} direction
+ */
+
+/**
  * @typedef {Object<string, Array<string>>} DisplayColumns
+ * @typedef {Object<string, SortColumnType>} SortColumns
+ * @typedef {Object<string, boolean>} ResponsiveTables
  */
 
 /**
@@ -61,32 +68,53 @@
  */
 
 /**
- * @typedef {Object} BrowseSettings
+ * @typedef {Object} BrowseFilters
  * @property {string} quote
  * @property {string} exchange
  * @property {string} exchangeType
  */
 
 /**
- * @typedef {Object} AnalyticsSettings
+ * @typedef {Object} AnalyticsFilters
  * @property {string} quote
  * @property {string} base
  */
 
 /**
- * @typedef {Object} CopytSettings
- * @property {BrowseSettings} browse
- * @property {AnalyticsSettings} analytics
+ * @typedef {Object} OptionTypeStr
+ * @property {string} label
+ * @property {string} val
  */
 
 /**
- * @typedef {Object} SignalpSettings
- * @property {AnalyticsSettings} analytics
+ * @typedef {Object} DashboardAnalyticsFilters
+ * @property {string} timeFrame
+ * @property {string} quote
+ * @property {OptionTypeStr} provider
+ */
+
+/**
+ * @typedef {Object} DashboardPositionsFilters
+ * @property {string} providerId
+ * @property {string} pair
+ * @property {string} side
+ * @property {string} type
+ * @property {string} status
+ */
+
+/**
+ * @typedef {Object} Filters
+ * @property {DashboardAnalyticsFilters} dashboardAnalytics
+ * @property {DashboardPositionsFilters} dashboardPositions
+ * @property {BrowseFilters} copyt
+ * @property {AnalyticsFilters} copytAnalytics
+ * @property {AnalyticsFilters} signalpAnalytics
  */
 
 /**
  * @typedef {Object} TradingTerminalSettings
  * @property {Object<string, string>} pair
+ * @property {string} provider
  */
 
 /**
@@ -95,12 +123,13 @@
  * @property {Boolean} darkStyle
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
+ * @property {SortColumns} sortColumns
+ * @property {ResponsiveTables} responsiveTables
  * @property {RowsPerPage} rowsPerPage
  * @property {ExchangeConnectionEntity} selectedExchange
  * @property {TimeframeObject} timeFrame
  * @property {SortObject} sort
- * @property {CopytSettings} copyt
- * @property {SignalpSettings} signalp
+ * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
  */
 
@@ -366,6 +395,8 @@ const initialState = {
         "col.cancel",
       ],
     },
+    sortColumns: {},
+    responsiveTables: {},
     selectedExchange: {
       id: "",
       name: "",
@@ -407,14 +438,14 @@ const initialState = {
       copyt: null,
       signalp: null,
     },
-    copyt: {
-      browse: { quote: null, exchange: null, exchangeType: null },
-      analytics: { quote: null, base: null },
+    filters: {
+      dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
+      dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "" },
+      copytAnalytics: { quote: "", base: "" },
+      signalpAnalytics: { quote: "", base: "" },
     },
-    signalp: {
-      analytics: { quote: null, base: null },
-    },
-    tradingTerminal: { pair: {} },
+    tradingTerminal: { pair: {}, provider: "" },
   },
   user: {
     exchangeConnections: [],

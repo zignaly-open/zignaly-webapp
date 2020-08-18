@@ -1556,7 +1556,7 @@ class TradeApiClient {
   }
 
   /**
-   * Canel exchange order.
+   * Cancel exchange order.
    *
    * @param {ProfileStatsPayload} payload Cancel exchange order payload.
    *

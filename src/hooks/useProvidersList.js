@@ -10,9 +10,7 @@ import { uniqBy } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
-  setBrowseExchange,
-  setBrowseExchangeType,
-  setBrowseQuote,
+  setFilters as setFiltersAction,
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -97,35 +95,23 @@ const useProvidersList = (options) => {
     })),
   );
 
-  const initQuote = storeSettings.copyt.browse.quote;
+  const initQuote = storeSettings.filters.copyt.quote;
   const [quote, setQuote] = useState(
-    initQuote
-      ? {
+    !initQuote || initQuote === "ALL"
+      ? coins[0]
+      : {
           val: initQuote,
-          label: initQuote === "ALL" ? intl.formatMessage({ id: "fil.allcoins" }) : initQuote,
-        }
-      : coins[0],
+          label: initQuote,
+        },
   );
 
-  // Save settings to store when changed
-  const saveQuote = () => {
-    dispatch(setBrowseQuote(quote.val));
-  };
-  useEffectSkipFirst(saveQuote, [quote]);
-
   // Exchanges
-  const initExchange = storeSettings.copyt.browse.exchange || "ALL";
+  const initExchange = storeSettings.filters.copyt.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
   const [exchange, setExchange] = useState(initExchange);
 
-  // Save settings to store when changed
-  const saveExchange = () => {
-    dispatch(setBrowseExchange(exchange));
-  };
-  useEffectSkipFirst(saveExchange, [exchange]);
-
   // Exchange Types
-  const initExchangeType = storeSettings.copyt.browse.exchangeType || "ALL";
+  const initExchangeType = storeSettings.filters.copyt.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
@@ -138,11 +124,17 @@ const useProvidersList = (options) => {
   ];
   const [exchangeType, setExchangeType] = useState(initExchangeType);
 
-  // Save settings to store when changed
-  const saveExchangeType = () => {
-    dispatch(setBrowseExchangeType(exchangeType));
+  // Save filters to store when changed
+  const saveFilters = () => {
+    dispatch(
+      setFiltersAction({
+        filters: { exchange, quote: quote.val, exchangeType },
+        // @ts-ignore
+        page,
+      }),
+    );
   };
-  useEffectSkipFirst(saveExchangeType, [exchangeType]);
+  useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType]);
 
   // Sort
   const initSort = () => {
@@ -169,6 +161,7 @@ const useProvidersList = (options) => {
   const initTimeFrame = storeSettings.timeFrame[page] || 90;
   const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
+  // Save timeFrame to store once changed
   const saveTimeFrame = () => {
     dispatch(setTimeFrameAction({ timeFrame, page }));
   };

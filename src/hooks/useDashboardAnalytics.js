@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import { setFilters } from "../store/actions/settings";
+import useEffectSkipFirst from "./useEffectSkipFirst";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -51,15 +53,18 @@ const useDashboardAnalytics = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
+  const pageKey = "dashboardAnalytics";
 
   // time frames
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
-  const [timeFrame, setTimeFrame] = useState("3");
+  const initTimeFrame = storeSettings.filters[pageKey].timeFrame || "3";
+  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
-  const [quote, setQuote] = useState("USDT");
+  const initQuote = storeSettings.filters[pageKey].quote || "USDT";
+  const [quote, setQuote] = useState(initQuote);
 
   let providerAssets = useReadOnlyProviders();
   providerAssets = providerAssets.filter((item) => item.hasBeenUsed);
@@ -69,21 +74,41 @@ const useDashboardAnalytics = () => {
     label: item.name,
   }));
 
-  providers.unshift({ val: "1", label: intl.formatMessage({ id: "fil.manual" }) });
-  providers.unshift({ val: "all", label: intl.formatMessage({ id: "fil.providers.all" }) });
-
-  const [provider, setProvider] = useState({
+  providers.unshift({
     val: "1",
     label: intl.formatMessage({ id: "fil.manual" }),
   });
+  providers.unshift({
+    val: "all",
+    label: intl.formatMessage({ id: "fil.providers.all" }),
+  });
+
+  // Load saved provider.
+  // We store the label and value in order to display it in the
+  // dropdown before the providers list is resolved)
+  const savedProvider = storeSettings.filters[pageKey].provider;
+  const initProvider = savedProvider || providers[1];
+  const [provider, setProvider] = useState(initProvider);
+
+  // Save settings to store when changed
+  const saveQuote = () => {
+    dispatch(
+      setFilters({
+        page: pageKey,
+        filters: {
+          timeFrame,
+          quote,
+          provider,
+        },
+      }),
+    );
+  };
+  useEffectSkipFirst(saveQuote, [timeFrame, quote, provider]);
 
   const clearFilters = () => {
     setQuote("USDT");
     setTimeFrame("3");
-    setProvider({
-      val: "1",
-      label: intl.formatMessage({ id: "fil.manual" }),
-    });
+    setProvider(providers[1]);
   };
 
   const loadDashboardStats = () => {

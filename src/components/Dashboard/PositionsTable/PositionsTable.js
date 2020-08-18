@@ -22,6 +22,7 @@ import { useIntl } from "react-intl";
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
 /**
@@ -44,6 +45,7 @@ const PositionsTable = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
+  const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;
   const {
     flagPositionUpdating,
     positionsAll,
@@ -51,7 +53,7 @@ const PositionsTable = (props) => {
     setFilters,
     filtersState,
     loading,
-  } = usePositionsList(type, positionEntity, notifyPositionsUpdate);
+  } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
 
@@ -235,6 +237,13 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
+  /**
+   * @type {MUIDataTableOptions}
+   */
+  const options = {
+    sortOrder: { name: "openDateReadable", direction: "desc" },
+  };
+
   const embedFilters = () => {
     // Don't display filters on single position display.
     if (positionEntity) {
@@ -285,6 +294,7 @@ const PositionsTable = (props) => {
               <Table
                 columns={columns}
                 data={data}
+                options={options}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
               />
