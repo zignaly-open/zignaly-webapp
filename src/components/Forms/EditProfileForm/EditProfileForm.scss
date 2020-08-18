@@ -127,6 +127,11 @@
     padding: 20px;
     width: 100%;
 
+    .deleteButton {
+      margin-right: 20px;
+      min-width: 220px;
+    }
+
     .submitButton {
       width: 220px;
     }
@@ -168,9 +173,17 @@
       }
 
       .formAction {
+        flex-wrap: wrap;
         justify-content: center;
 
+        .deleteButton {
+          margin-right: 0;
+          margin-top: 20px;
+          order: 2;
+        }
+
         .submitButton {
+          order: 1;
           width: 100%;
         }
       }

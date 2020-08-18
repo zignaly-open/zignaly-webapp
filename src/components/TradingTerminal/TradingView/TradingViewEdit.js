@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isArray, isEqual, isNumber, pick } from "lodash";
+import { isArray, isEqual, pick } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
-import { formatPrice } from "../../../utils/formatters";
+import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
 
 /**
@@ -41,10 +41,7 @@ import "./TradingView.scss";
 const TradingViewEdit = (props) => {
   const { positionId } = props;
   const [libraryReady, setLibraryReady] = useState(false);
-  const [tradingViewWidget, setTradingViewWidget] = useState(
-    /** @type {TVWidget} tradingViewWidgetPointer */ null,
-  );
-  const [lastPrice, setLastPrice] = useState(null);
+  const { instantiateWidget, lastPrice, tradingViewWidget } = useTradingTerminal();
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -154,46 +151,9 @@ const TradingViewEdit = (props) => {
       storeSettings.darkStyle,
     );
 
-    // @ts-ignore
-    // eslint-disable-next-line new-cap
-    const externalWidget = new window.TradingView.widget(widgetOptions);
-    let eventSymbol = "";
-    // @ts-ignore
-    const handleWidgetReady = (event) => {
-      const dataRaw = /** @type {Object<string, any>} */ event.data;
-      if (typeof dataRaw === "string") {
-        try {
-          const dataParsed = JSON.parse(dataRaw);
-
-          // @ts-ignore
-          if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-            setTradingViewWidget(externalWidget);
-          }
-
-          if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
-            if (eventSymbol !== dataParsed.data.original_name) {
-              const receivedPrice = isNumber(dataParsed.data.last_price)
-                ? formatPrice(dataParsed.data.last_price, "", "")
-                : dataParsed.data.last_price;
-              setLastPrice(receivedPrice);
-              eventSymbol = dataParsed.data.original_name;
-            }
-          }
-        } catch (e) {
-          // Not a valid JSON, skip event.
-          return;
-        }
-      }
-    };
-
-    window.addEventListener("message", handleWidgetReady);
-
+    const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        window.removeEventListener("message", handleWidgetReady);
-      }
+      cleanupWidget();
     };
   };
 

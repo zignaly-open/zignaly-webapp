@@ -198,6 +198,36 @@ const usePositionsList = (
   };
 
   /**
+   * Get all statuses log positions.
+   *
+   * Fallback request when reduced statuses requests don't retrieved positions.
+   *
+   * @returns {Promise<UserPositionsCollection|null>} All statuses log positions.
+   */
+  const fallbackLogPositionsAllStatuses = async () => {
+    let requestData = null;
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+    };
+
+    try {
+      requestData = await tradeApi.logPositionsGet({ ...payload, extendedStatuses: true });
+      // If got results, activate all statuses checkbox.
+      if (!isEmpty(requestData)) {
+        setFilters({
+          ...filters,
+          status: "all",
+        });
+      }
+    } catch (e) {
+      dispatch(showErrorAlert(e));
+    }
+
+    return requestData;
+  };
+
+  /**
    * Load user positions for a given exchange.
    *
    * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
@@ -206,6 +236,7 @@ const usePositionsList = (
   const loadPositions = (initiatorExchangeInternalId) => {
     let cancel = false;
     const fetchMethod = routeFetchMethod();
+    const newPositions = prepareNewPositionsState(initiatorExchangeInternalId);
     // Check to prevent other tabs / exchanages leftover requests race condition
     // that override current tab data.
     const isOriginalInitiator = () => {
@@ -216,14 +247,16 @@ const usePositionsList = (
       );
     };
 
-    const newPositions = prepareNewPositionsState(initiatorExchangeInternalId);
     if (fetchMethod) {
       fetchMethod
-        .then((fetchData) => {
+        .then(async (fetchData) => {
           if (isOriginalInitiator()) {
             newPositions[type] = fetchData;
-            setPositions(newPositions);
+            if (type === "log" && filters.status === "" && isEmpty(fetchData)) {
+              newPositions[type] = (await fallbackLogPositionsAllStatuses()) || [];
+            }
 
+            setPositions(newPositions);
             if (isFunction(notifyPositionsUpdate)) {
               notifyPositionsUpdate(newPositions[type]);
             }

@@ -11,7 +11,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
-import CloneDeleteButton from "../../../components/Provider/ProviderHeader/CloneDeleteButton";
+import CloneDeleteButton from "../../../components/Provider/ProviderHeader/ProviderDeleteButton";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { setProvider } from "../../../store/actions/views";
 
