@@ -24,6 +24,8 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {PositionsFiltersState} filtersState
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
+ * @property {Boolean} filtersVisibility
+ * @property {Function} setFiltersVisibility
  */
 
 /**
@@ -93,6 +95,7 @@ const usePositionsList = (
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
   const statusRef = useRef(filters.status);
+  const [filtersVisibility, setFiltersVisibility] = useState(false);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -405,6 +408,8 @@ const usePositionsList = (
     filtersState: filters,
     loading: loading,
     flagPositionUpdating,
+    filtersVisibility,
+    setFiltersVisibility,
   };
 };
 
