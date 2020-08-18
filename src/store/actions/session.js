@@ -39,7 +39,7 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
-    gtmEventPush(assign(eventType, response));
+    gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
     dispatch(loadAppUserData(response));
   };
@@ -82,7 +82,7 @@ export const registerUser = (payload, setLoading) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
       // Add event type with user entity properties.
-      gtmEventPush(assign(eventType, responseData));
+      gtmEventPush(assign(eventType, responseData || {}));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
