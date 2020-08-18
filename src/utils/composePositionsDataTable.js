@@ -369,7 +369,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.view" />}
         >
-          <Link to={`/position/${position.positionId}`}>
+          <Link className="action" to={`/position/${position.positionId}`}>
             <Eye />
           </Link>
         </Tooltip>
@@ -381,7 +381,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.edit" />}
         >
-          <Link to={`/position/${position.positionId}`}>
+          <Link className="action" to={`/position/${position.positionId}`}>
             <Edit2 />
           </Link>
         </Tooltip>
@@ -390,7 +390,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         <Tooltip arrow enterTouchDelay={50} placement="left-end" title={exitIconTitle}>
           <div>
             <IconButton
-              className="iconPurple"
+              className="iconPurple action"
               data-action={"exit"}
               data-position-id={position.positionId}
               disabled={status > 9}
@@ -409,7 +409,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           title={<FormattedMessage id="dashboard.positions.icon.abort" />}
         >
           <IconButton
-            className="iconPurple"
+            className="iconPurple action"
             data-action={"abort"}
             data-position-id={position.positionId}
             onClick={confirmActionHandler}
@@ -425,7 +425,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="terminal.warning.error" />}
         >
-          <AlertTriangle className="iconPurple" />
+          <AlertTriangle className="iconPurple action" />
         </Tooltip>
       )}
       {updating && (
@@ -435,7 +435,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id={updatingMessageId} />}
         >
-          <RotateCw className="iconPurple" />
+          <RotateCw className="iconPurple action" />
         </Tooltip>
       )}
     </div>
