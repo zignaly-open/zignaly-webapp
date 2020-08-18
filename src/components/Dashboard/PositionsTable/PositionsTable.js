@@ -53,9 +53,15 @@ const PositionsTable = (props) => {
     setFilters,
     filtersState,
     loading,
+    filtersVisibility,
+    setFiltersVisibility,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
+
+  const toggleFilters = () => {
+    setFiltersVisibility(!filtersVisibility);
+  };
 
   const getTablePersistKey = () => {
     // Use different persist key to edit position table to support different default columns.
@@ -254,6 +260,10 @@ const PositionsTable = (props) => {
       return null;
     }
 
+    if (!filtersVisibility) {
+      return null;
+    }
+
     return (
       <PositionFilters
         initialState={filtersState}
@@ -291,12 +301,14 @@ const PositionsTable = (props) => {
             <NoPositions isProfile={isProfile} type={type} />
           ) : (
             <Box className={tableClass} display="flex" flexDirection="column" width={1}>
+              {/* <Button onClick={toggleFiltersVisibility}>Malik</Button> */}
               <Table
                 columns={columns}
                 data={data}
                 options={options}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
+                toggleFilters={toggleFilters}
               />
             </Box>
           )}

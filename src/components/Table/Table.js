@@ -15,6 +15,7 @@ import { Box, Hidden, IconButton, Tooltip } from "@material-ui/core";
 import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { merge } from "lodash";
 import TableChartIcon from "@material-ui/icons/TableChart";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -36,12 +37,21 @@ import TableChartIcon from "@material-ui/icons/TableChart";
  * @property {string} [persistKey] Key to save display columns settings.
  * @property {MUIDataTableOptions} [options] Table options.
  * @property {*} [components] Custom table components.
+ * @property {Function} [toggleFilters] Custom table components.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  *
  */
-const Table = ({ columns, data, persistKey, title, options: customOptions, components }) => {
+const Table = ({
+  columns,
+  data,
+  persistKey,
+  title,
+  options: customOptions,
+  components,
+  toggleFilters,
+}) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -107,6 +117,12 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
               <TableChartIcon />
             </IconButton>
           </Tooltip>
+          {toggleFilters && (
+            // @ts-ignore
+            <IconButton onClick={toggleFilters}>
+              <FilterListIcon />
+            </IconButton>
+          )}
         </Hidden>
       );
     },
@@ -284,4 +300,4 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   );
 };
 
-export default React.memo(Table);
+export default Table;

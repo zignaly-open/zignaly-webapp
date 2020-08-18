@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import { setFilters as setFiltersAction } from "../store/actions/settings";
 import useStoreViewsSelector from "./useStoreViewsSelector";
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -24,6 +26,8 @@ import useStoreViewsSelector from "./useStoreViewsSelector";
  * @property {PositionsFiltersState} filtersState
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
+ * @property {Boolean} filtersVisibility
+ * @property {Function} setFiltersVisibility
  */
 
 /**
@@ -70,6 +74,8 @@ const usePositionsList = (
   const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const defaultFilters = {
     providerId: (storeFilters && storeFilters.providerId) || "all",
     pair: (storeFilters && storeFilters.pair) || "all",
@@ -93,6 +99,7 @@ const usePositionsList = (
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
   const statusRef = useRef(filters.status);
+  const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -405,6 +412,8 @@ const usePositionsList = (
     filtersState: filters,
     loading: loading,
     flagPositionUpdating,
+    filtersVisibility,
+    setFiltersVisibility,
   };
 };
 
