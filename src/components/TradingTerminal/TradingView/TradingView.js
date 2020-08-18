@@ -12,11 +12,11 @@ import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
-import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
 import { setTerminalPair } from "../../../store/actions/settings";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
+import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
@@ -145,7 +145,6 @@ const TradingView = () => {
     );
 
     const cleanupWidget = instantiateWidget(widgetOptions);
-
     return () => {
       cleanupWidget();
     };
