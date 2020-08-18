@@ -434,6 +434,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} unrealizedProfitLosses Unrealized profit / loss amount expressed in quote currency.
  * @property {Number} unrealizedProfitLossesPercentage Unrealized profit / loss percentage.
  * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
+ * @property {Number} currentAllocatedBalance Allocated copy trading balance when the trade was open.
+ * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
  */
 
 /**
@@ -1113,6 +1115,8 @@ export function positionItemTransform(positionItem) {
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
       ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : false,
+    positionSizePercentage: safeParseFloat(positionItem.positionSizePercentage),
+    currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1320,6 +1324,8 @@ function createEmptyPositionEntity() {
     priceDifferenceStyle: "",
     unrealizedProfitLosses: 0,
     unrealizedProfitLossesPercentage: 0,
+    positionSizePercentage: 0,
+    currentAllocatedBalance: 0,
   };
 }
 
