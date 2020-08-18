@@ -61,8 +61,8 @@
     }
 
     @include media(">=lg") {
-      height: calc(100vh - 300px);
       flex: 0 0 calc(75% - 15px);
+      height: calc(100vh - 300px);
     }
 
     @include media(">=xl") {

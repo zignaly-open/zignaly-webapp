@@ -1,14 +1,16 @@
 .strategyForm {
   flex: 0 0 30%;
+  margin-bottom: 10px;
   overflow-y: auto;
 
   @include media("<=sm") {
     flex: 0 0 100%;
+    margin-bottom: 60px;
   }
 
   @include media(">=lg") {
-    height: calc(100vh - 300px);
     flex: 0 0 25%;
+    height: calc(100vh - 300px);
   }
 
   @include media(">=xl") {
@@ -89,14 +91,6 @@
       height: 35px;
       padding: 6px;
       width: 70px;
-    }
-  }
-
-  .submitButton {
-    margin-bottom: 10px;
-
-    @include media("<=sm") {
-      margin-bottom: 60px;
     }
   }
 }
