@@ -79,14 +79,12 @@ const withProvidersLayout = (Component) => {
           flexDirection="row"
           justifyContent="space-around"
         >
-          {isCopyTrading && (
-            <img
-              className="icon iconPurple"
-              onClick={() => toggleFilters()}
-              src={showFilters ? FilterFillIcon : FilterIcon}
-              title="Filter"
-            />
-          )}
+          <img
+            className="icon iconPurple"
+            onClick={() => toggleFilters()}
+            src={showFilters ? FilterFillIcon : FilterIcon}
+            title="Filter"
+          />
           <img
             className="icon iconPurple"
             onClick={() => toggleSort()}

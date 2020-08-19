@@ -39,7 +39,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-google-tagmanager",
       options: {
-        id: "GTM-5ZQ4JLK",
+        id: process.env.GATSBY_GTM_ID,
         // Defaults to false meaning GTM will only be loaded in production.
         includeInDevelopment: false,
         defaultDataLayer: { platform: "webapp2" },

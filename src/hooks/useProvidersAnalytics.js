@@ -10,9 +10,8 @@ import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import {
-  setAnayticsBase,
-  setAnayticsQuote,
   setTimeFrame as setTimeFrameAction,
+  setFilters as setFiltersAction,
 } from "../store/actions/settings";
 
 /**
@@ -66,13 +65,8 @@ const useProvidersAnalytics = (type) => {
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
-  let initQuote = storeSettings[type].analytics.quote || "USDT";
+  let initQuote = storeSettings.filters[page].quote || "USDT";
   const [quote, setQuote] = useState(initQuote);
-  // Save settings to store when changed
-  const saveQuote = () => {
-    dispatch(setAnayticsQuote({ quote, page: type }));
-  };
-  useEffectSkipFirst(saveQuote, [quote]);
 
   // bases
   const baseAssets = useBaseAssets(quote);
@@ -85,14 +79,20 @@ const useProvidersAnalytics = (type) => {
     label: intl.formatMessage({ id: "fil.pairs" }),
   });
 
-  const savedBase = storeSettings[type].analytics.base;
+  const savedBase = storeSettings.filters[page].base;
   let initBase = savedBase ? { val: savedBase, label: savedBase } : bases[0];
   const [base, setBase] = useState(initBase);
-  // Save settings to store when changed
-  const saveBase = () => {
-    dispatch(setAnayticsBase({ base: base.val, page: type }));
+
+  // Save filters to store when changed
+  const saveFilters = () => {
+    dispatch(
+      setFiltersAction({
+        filters: { quote, base: base.val },
+        page,
+      }),
+    );
   };
-  useEffectSkipFirst(saveBase, [base]);
+  useEffectSkipFirst(saveFilters, [quote, base]);
 
   const clearFilters = () => {
     setQuote("USDT");

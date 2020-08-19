@@ -126,6 +126,10 @@ const StopLossPanel = (props) => {
       return;
     }
 
+    if (errors.stopLossPrice) {
+      clearErrors("stopLossPrice");
+    }
+
     if (errors.stopLossPercentage) {
       clearErrors("stopLossPercentage");
     }
@@ -183,6 +187,10 @@ const StopLossPanel = (props) => {
       setValue("stopLossPercentage", sign);
     } else {
       setValue("stopLossPercentage", `${sign}${newValue}`);
+      // When SL come from backend rely on the existing sign and value.
+      if (initialStopLossPercentage) {
+        setValue("stopLossPercentage", formatFloat2Dec(initialStopLossPercentage));
+      }
     }
 
     if (expanded) {

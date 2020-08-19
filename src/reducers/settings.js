@@ -3,32 +3,30 @@ import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
   SET_DISPLAY_COLUMN,
+  SET_SORT_COLUMN,
   SELECT_THEME,
   UNSET_SELECTED_EXCHANGE,
   TOGGLE_BALANCE_BOX,
   SET_ROWS_PER_PAGE,
-  SET_ANALYTICS_QUOTE,
-  SET_BROWSE_EXCHANGE,
   SET_TIMEFRAME,
-  SET_BROWSE_QUOTE,
   SET_SORT,
+  SET_FILTERS,
+  SET_RESPONSIVE_TABLE,
   SET_TERMINAL_PAIR,
-  SET_ANALYTICS_BASE,
-  SET_BROWSE_EXCHANGE_TYPE,
+  SET_TERMINAL_PROVIDER,
 } from "../store/actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
  * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
- * @typedef {import("../store/actions/settings").SetAnalyticsBaseAction} SetAnalyticsBaseAction
- * @typedef {import("../store/actions/settings").SetAnalyticsQuoteAction} SetAnalyticsQuoteAction
- * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
  * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
  * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
- * @typedef {import("../store/actions/settings").SetBrowseExchangeTypeAction} SetBrowseExchangeTypeAction
- * @typedef {import("../store/actions/settings").SetBrowseExchangeAction} SetBrowseExchangeAction
- * @typedef {import("../store/actions/settings").SetBrowseQuoteAction} SetBrowseQuoteAction
+ * @typedef {import("../store/actions/settings").SetFiltersAction} SetFiltersAction
+ * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
+ * @typedef {import("../store/actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
+ * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  */
 
 /**
@@ -77,26 +75,33 @@ const settings = createReducer(initialState.settings, {
     }
   },
 
+  [SET_SORT_COLUMN]: (state, /** @type {SetSortColumnAction} */ action) => {
+    const { table, name, direction } = action.payload;
+    state.sortColumns[table] = { name, direction };
+  },
+
+  [SET_RESPONSIVE_TABLE]: (state, /** @type {SetResponsiveTableAction} */ action) => {
+    const { table, responsive } = action.payload;
+    state.responsiveTables[table] = responsive;
+  },
+
   [SET_ROWS_PER_PAGE]: (state, action) => {
     const { table, numberOfRows } = action.payload;
     state.rowsPerPage = { ...state.rowsPerPage, [table]: numberOfRows };
   },
 
-  [SET_BROWSE_QUOTE]: (state, /** @type {SetBrowseQuoteAction} */ action) => {
-    state.copyt.browse.quote = action.payload;
-  },
-
-  [SET_BROWSE_EXCHANGE]: (state, /** @type {SetBrowseExchangeAction} */ action) => {
-    state.copyt.browse.exchange = action.payload;
-  },
-
-  [SET_BROWSE_EXCHANGE_TYPE]: (state, /** @type {SetBrowseExchangeTypeAction} */ action) => {
-    state.copyt.browse.exchangeType = action.payload;
-  },
-
   [SET_SORT]: (state, /** @type {SetSortAction} */ action) => {
     const { page, sort } = action.payload;
     state.sort[page] = sort;
+  },
+
+  [SET_FILTERS]: (state, /** @type {SetFiltersAction} */ action) => {
+    const { page, filters } = action.payload;
+    // @ts-ignore
+    state.filters[page] = {
+      ...state.filters[page],
+      ...filters,
+    };
   },
 
   [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
@@ -105,19 +110,13 @@ const settings = createReducer(initialState.settings, {
     state.timeFrame[page] = timeFrame;
   },
 
-  [SET_ANALYTICS_QUOTE]: (state, /** @type {SetAnalyticsQuoteAction} */ action) => {
-    const { page, quote } = action.payload;
-    state[page].analytics.quote = quote;
-  },
-
-  [SET_ANALYTICS_BASE]: (state, /** @type {SetAnalyticsBaseAction} */ action) => {
-    const { page, base } = action.payload;
-    state[page].analytics.base = base;
-  },
-
   [SET_TERMINAL_PAIR]: (state, /** @type {SetTerminalPairAction} */ action) => {
     const { exchangeId, pair } = action.payload;
     state.tradingTerminal.pair[exchangeId] = pair;
+  },
+
+  [SET_TERMINAL_PROVIDER]: (state, /** @type {SetTerminalProviderAction} */ action) => {
+    state.tradingTerminal.provider = action.payload;
   },
 });
 

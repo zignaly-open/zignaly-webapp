@@ -2,11 +2,11 @@ window.zESettings = {
   webWidget: {
     position: { horizontal: "right", vertical: "bottom" },
     offset: {
-      horizontal: "0",
-      vertical: "20px",
+      horizontal: "-10px",
+      vertical: "-5px",
       mobile: {
         horizontal: "-10px",
-        vertical: "50px",
+        vertical: "-5px",
       },
     },
   },

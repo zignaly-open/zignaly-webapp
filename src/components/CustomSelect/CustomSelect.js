@@ -25,9 +25,14 @@ import "./CustomSelect.scss";
  */
 
 /**
+ * @typedef {OptionType|string|number} Option
+ * @typedef {Array<Option>} Options
+ */
+
+/**
  * @typedef {Object} CustomSelectPropTypes
- * @property {OptionType|string|number} [value] Assign the selected value.
- * @property {Array<OptionType|string|number>} options List of options selectable.
+ * @property {Option} [value] Assign the selected value.
+ * @property {Options} options List of options selectable.
  * @property {string} [label] Label for the dropdown.
  * @property {LabelPlacement} [labelPlacement] Label placement.
  * @property {boolean} [search] Display autocomplete.
@@ -36,6 +41,31 @@ import "./CustomSelect.scss";
  * @property {renderOption} [renderOption] Custom render option function for autocomplete.
  * @property {boolean} [multiple] Multiple options for autocomplete.
  */
+
+/**
+ * Extract value from option item
+ * @param {Option} option option
+ * @returns {string|number} value
+ */
+const extractVal = (option) => (typeof option === "object" ? option.val : option);
+
+/**
+ * Extract label from option item
+ * @param {Option} option option
+ * @param {Options} [options] Options array to find the label by value.
+ * @returns {string} value
+ */
+const extractLabel = (option, options) => {
+  if (typeof option === "object") {
+    return option.label;
+  } else if (options && options.length && typeof options[0] === "object") {
+    // Find option object by val
+    // @ts-ignore
+    return options.find((o) => o.val === option).label;
+  }
+
+  return option.toString();
+};
 
 /**
  * Provides a list to browse signal providers.
@@ -80,9 +110,9 @@ const CustomSelect = (props) => {
             value={value}
             variant="outlined"
           >
-            {options.map((item, index) => (
-              <MenuItem key={index} value={typeof item === "object" ? item.val : item}>
-                {typeof item === "object" ? item.label : item}
+            {options.map((option, index) => (
+              <MenuItem key={index} value={extractVal(option)}>
+                {extractLabel(option)}
               </MenuItem>
             ))}
           </Select>
@@ -95,12 +125,12 @@ const CustomSelect = (props) => {
             }}
             disableClearable={true}
             disableCloseOnSelect={disableCloseOnSelect}
-            getOptionLabel={(option) =>
-              typeof option === "object" ? option.label : option.toString()
-            }
-            getOptionSelected={(option, v) =>
-              option === "object" ? option.val === v.val : option === v
-            }
+            getOptionLabel={(option) => extractLabel(option, options)}
+            getOptionSelected={(option, v) => {
+              const optionVal = extractVal(option);
+              const val = extractVal(v);
+              return optionVal === val;
+            }}
             multiple={multiple}
             onChange={(e, val) => onChange(val)}
             openOnFocus={true}

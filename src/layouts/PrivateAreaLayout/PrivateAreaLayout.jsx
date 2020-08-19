@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { compose } from "recompose";
 import "./PrivateAreaLayout.scss";
 import { Box, Hidden } from "@material-ui/core";
@@ -12,7 +12,7 @@ import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import { withPrefix } from "gatsby";
 import { useDispatch } from "react-redux";
-import { refreshSessionData } from "../../store/actions/session";
+import { loadAppUserData, refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
 import { ConfirmDialog } from "../../components/Dialogs";
 import useScript from "../../hooks/useScript";
@@ -43,6 +43,11 @@ const PrivateAreaLayout = (props) => {
 
   useInterval(updateSession, minToMillisec(60), true);
   const { confirmConfig, setConfirmConfig, executeRefresh } = useAppUpdatesCheck();
+
+  const loadUserData = () => {
+    dispatch(loadAppUserData(storeSession.tradeApi.accessToken));
+  };
+  useEffect(loadUserData, []);
 
   return (
     <>

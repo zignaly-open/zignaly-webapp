@@ -369,7 +369,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.view" />}
         >
-          <Link to={`/position/${position.positionId}`}>
+          <Link className="action" to={`/position/${position.positionId}`}>
             <Eye />
           </Link>
         </Tooltip>
@@ -381,7 +381,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="dashboard.positions.icon.edit" />}
         >
-          <Link to={`/position/${position.positionId}`}>
+          <Link className="action" to={`/position/${position.positionId}`}>
             <Edit2 />
           </Link>
         </Tooltip>
@@ -390,7 +390,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         <Tooltip arrow enterTouchDelay={50} placement="left-end" title={exitIconTitle}>
           <div>
             <IconButton
-              className="iconPurple"
+              className="iconPurple action"
               data-action={"exit"}
               data-position-id={position.positionId}
               disabled={status > 9}
@@ -409,7 +409,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           title={<FormattedMessage id="dashboard.positions.icon.abort" />}
         >
           <IconButton
-            className="iconPurple"
+            className="iconPurple action"
             data-action={"abort"}
             data-position-id={position.positionId}
             onClick={confirmActionHandler}
@@ -425,7 +425,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id="terminal.warning.error" />}
         >
-          <AlertTriangle className="iconPurple" />
+          <AlertTriangle className="iconPurple action" />
         </Tooltip>
       )}
       {updating && (
@@ -435,7 +435,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           placement="left-end"
           title={<FormattedMessage id={updatingMessageId} />}
         >
-          <RotateCw className="iconPurple" />
+          <RotateCw className="iconPurple action" />
         </Tooltip>
       )}
     </div>
@@ -603,63 +603,5 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
       composeColumnOptions(configColumn[0], configColumn[1]),
     ),
     data: positions.map((position) => composeManagementPositionRow(position, confirmActionHandler)),
-  };
-}
-
-/**
- * Compose all action buttons element for a given position.
- *
- * @param {String} positionId Position entity to compose buttons for.
- * @returns {JSX.Element} Composed JSX element.
- */
-function composePositionLinkButton(positionId) {
-  return <Link to={`/position/${positionId}`}>{positionId}</Link>;
-}
-
-/**
- * Compose MUI Data Table row for profile open position entity.
- *
- * @param {ExchangeOpenOrdersObject} order Position entity to compose data table row for.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {DataTableDataRow} Row data array.
- */
-function composeOpenOrdersRow(order, confirmActionHandler) {
-  return [
-    composeRawValue(order.orderId),
-    composePositionLinkButton(order.positionId),
-    composeRawValue(order.symbol),
-    composeRawValue(order.amount),
-    composeRawValue(order.price),
-    composeRawValue(order.side),
-    composeRawValue(order.type),
-    composeRawValue(order.datetimeReadable),
-    composeOrdersCancelActionButton(order, confirmActionHandler),
-  ];
-}
-
-/**
- * Compose MUI Data Table data structure from positions entities collection.
- *
- * @export
- * @param {Array<ExchangeOpenOrdersObject>} positions Positions collection.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {DataTableContent} Open positions data table structure.
- */
-export function composeOrdersDataTable(positions, confirmActionHandler) {
-  const columnsIds = [
-    ["col.orders.orderid"],
-    ["col.positionid"],
-    ["col.orders.symbol"],
-    ["col.amount"],
-    ["col.orders.price"],
-    ["col.side"],
-    ["col.orders.type"],
-    ["col.orders.datetime"],
-    ["col.cancel"],
-  ];
-
-  return {
-    columns: columnsIds.map((column) => composeColumnOptions(column[0])),
-    data: positions.map((order) => composeOpenOrdersRow(order, confirmActionHandler)),
   };
 }

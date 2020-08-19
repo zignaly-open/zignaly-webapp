@@ -124,7 +124,7 @@ const StrategyPanel = (props) => {
         )}
         {entryStrategy === "stop_limit" && (
           <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stopprice" />
+            <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
               <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
               <div className="currencyBox">{symbolData.quote}</div>
@@ -133,7 +133,7 @@ const StrategyPanel = (props) => {
         )}
         {entryStrategy !== "market" ? (
           <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.price" />
+            <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
@@ -151,7 +151,7 @@ const StrategyPanel = (props) => {
         )}
         {selectedExchange.exchangeType === "futures" && !isCopyProvider && (
           <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.realinvest" />
+            <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
@@ -233,7 +233,7 @@ const StrategyPanel = (props) => {
         )}
         {!isCopyProvider && (
           <FormControl>
-            <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.units" />
+            <HelperLabel descriptionId="terminal.units.help" labelId="terminal.units" />
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"

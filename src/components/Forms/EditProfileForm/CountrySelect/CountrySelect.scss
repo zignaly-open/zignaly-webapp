@@ -16,6 +16,12 @@
       span {
         margin-right: 5px;
       }
+
+      .flag {
+        height: 18px;
+        margin-right: 10px;
+        width: 18px;
+      }
     }
 
     .customInput {
@@ -40,6 +46,14 @@
         color: $red2;
       }
     }
+  }
+}
+
+.selectItem {
+  .flag {
+    height: 18px;
+    margin-right: 10px;
+    width: 18px;
   }
 }
 
