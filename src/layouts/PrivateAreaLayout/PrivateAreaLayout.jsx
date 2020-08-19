@@ -10,12 +10,10 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
-import { withPrefix } from "gatsby";
 import { useDispatch } from "react-redux";
 import { loadAppUserData, refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
 import { ConfirmDialog } from "../../components/Dialogs";
-import useScript from "../../hooks/useScript";
 import useInterval from "../../hooks/useInterval";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
@@ -35,7 +33,6 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  useScript(withPrefix("widgets/customerSupportWidget.js"));
 
   const updateSession = () => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
