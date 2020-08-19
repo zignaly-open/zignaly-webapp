@@ -12,7 +12,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * Get user info for a connected provider.
  *
  * @param {string} providerId Quote of the bases.
- * @returns {ConnectedProviderUserInfo} Provider user info.
+ * @returns {{providerUserInfo: ConnectedProviderUserInfo, profitPerc: number}} Provider user info.
  */
 const useProviderUserInfo = (providerId) => {
   /**
@@ -47,7 +47,14 @@ const useProviderUserInfo = (providerId) => {
 
   useEffect(loadData, [storeSession.tradeApi.accessToken, providerId]);
 
-  return providerUserInfo;
+  let profitPerc = 0;
+  if (providerUserInfo.profitsSinceCopying && providerUserInfo.allocatedBalance) {
+    profitPerc = providerUserInfo.allocatedBalance
+      ? (providerUserInfo.profitsSinceCopying / providerUserInfo.allocatedBalance) * 100
+      : 0;
+  }
+
+  return { profitPerc, providerUserInfo };
 };
 
 export default useProviderUserInfo;
