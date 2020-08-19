@@ -45,6 +45,9 @@ import { useDispatch } from "react-redux";
  * @property {Array<OptionType>} exchangeTypes
  * @property {function} setExchange
  * @property {function} setExchangeType
+ * @property {function} setFromUser
+ * @property {string} fromUser
+ * @property {Array<OptionType>} fromUserOptions
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
@@ -124,17 +127,24 @@ const useProvidersList = (options) => {
   ];
   const [exchangeType, setExchangeType] = useState(initExchangeType);
 
+  const initFromUser = storeSettings.filters.copyt.fromUser || "ALL";
+  const fromUserOptions = [
+    { val: "ALL", label: "All Services" },
+    { val: "userOwned", label: "My Services" },
+  ];
+  const [fromUser, setFromUser] = useState(initFromUser);
+
   // Save filters to store when changed
   const saveFilters = () => {
     dispatch(
       setFiltersAction({
-        filters: { exchange, quote: quote.val, exchangeType },
+        filters: { exchange, quote: quote.val, exchangeType, fromUser },
         // @ts-ignore
         page,
       }),
     );
   };
-  useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType]);
+  useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType, fromUser]);
 
   // Sort
   const initSort = () => {
@@ -227,9 +237,11 @@ const useProvidersList = (options) => {
           (p) =>
             (quote.val === "ALL" || p.quote === quote.val) &&
             (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
-            (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()),
+            (exchangeType === "ALL" ||
+              p.exchangeType.toLowerCase() === exchangeType.toLowerCase()) &&
+            (fromUser === "ALL" || p.isFromUser),
         )
-      : list;
+      : list.filter((p) => fromUser === "ALL" || p.isFromUser);
     sortProviders(res);
   };
   // Filter providers on filter change
@@ -238,7 +250,7 @@ const useProvidersList = (options) => {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote, exchange, exchangeType]);
+  }, [quote, exchange, exchangeType, fromUser]);
 
   const loadProviders = () => {
     /**
@@ -289,6 +301,9 @@ const useProvidersList = (options) => {
     exchangeType,
     setExchangeType,
     exchangeTypes,
+    fromUser,
+    setFromUser,
+    fromUserOptions,
     sort,
     setSort,
     clearFilters,
