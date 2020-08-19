@@ -11,7 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import { useDispatch } from "react-redux";
-import { setUserExchanges } from "../../../store/actions/user";
+import { getUserExchanges } from "../../../store/actions/user";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import LazyLoad from "react-lazyload";
 
@@ -43,7 +43,7 @@ const ExchangeAccountList = ({ demo }) => {
     const authorizationPayload = {
       token: storeSession.tradeApi.accessToken,
     };
-    dispatch(setUserExchanges(authorizationPayload));
+    dispatch(getUserExchanges(authorizationPayload));
   };
   // Refresh accounts
   useEffect(loadAccounts, []);

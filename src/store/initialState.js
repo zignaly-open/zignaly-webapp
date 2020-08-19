@@ -448,6 +448,7 @@ const initialState = {
     tradingTerminal: { pair: {}, provider: "" },
   },
   user: {
+    loaded: false,
     exchangeConnections: [],
     balance: {
       pnlBTC: 0,

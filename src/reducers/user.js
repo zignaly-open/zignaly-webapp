@@ -1,8 +1,8 @@
 import { assign } from "lodash";
 import initialState from "../store/initialState";
 import {
-  GET_USER_EXCHNAGES,
-  REMOVE_USER_EXCHNAGES,
+  SET_USER_EXCHANGES,
+  REMOVE_USER,
   GET_USER_BALANCE,
   REMOVE_USER_BALANCE,
   GET_DAILY_USER_BALANCE,
@@ -12,6 +12,7 @@ import {
   ENABLE_TWO_FA,
   SET_DAILY_BALANCE_LOADER,
 } from "../store/actions/user";
+import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * @typedef {import("../store/initialState").UserObject} UserObject
@@ -29,57 +30,49 @@ import {
  * @param {ActionObject} action
  */
 
-const userExchanges = (state = initialState.user, action) => {
-  const newState = assign({}, state);
+const user = createReducer(initialState.user, {
+  [SET_USER_EXCHANGES]: (state, action) => {
+    state.loaded = true;
+    state.exchangeConnections = action.payload;
+  },
 
-  switch (action.type) {
-    case GET_USER_EXCHNAGES:
-      newState.exchangeConnections = action.payload;
-      break;
+  [REMOVE_USER]: () => {
+    return initialState.user;
+  },
 
-    case REMOVE_USER_EXCHNAGES:
-      newState.exchangeConnections = initialState.user.exchangeConnections;
-      break;
+  [GET_USER_BALANCE]: (state, action) => {
+    state.balance = action.payload;
+  },
 
-    case GET_USER_BALANCE:
-      newState.balance = action.payload;
-      break;
+  [SET_USER_BALANCE_LOADER]: (state, action) => {
+    state.balance = { ...state.balance, loading: true };
+  },
 
-    case SET_USER_BALANCE_LOADER:
-      newState.balance = { ...newState.balance, loading: true };
-      break;
+  [REMOVE_USER_BALANCE]: (state, action) => {
+    state.balance = initialState.user.balance;
+  },
 
-    case REMOVE_USER_BALANCE:
-      newState.balance = initialState.user.balance;
-      break;
+  [GET_DAILY_USER_BALANCE]: (state, action) => {
+    state.dailyBalance = action.payload;
+  },
 
-    case GET_DAILY_USER_BALANCE:
-      newState.dailyBalance = action.payload;
-      break;
+  [GET_USER_DATA]: (state, action) => {
+    state.userData = action.payload;
+  },
 
-    case GET_USER_DATA:
-      newState.userData = action.payload;
-      break;
+  [REMOVE_USER_EXCHANGE]: (state, action) => {
+    state.exchangeConnections = state.exchangeConnections.filter(
+      (item) => item.internalId !== action.payload,
+    );
+  },
 
-    case REMOVE_USER_EXCHANGE:
-      newState.exchangeConnections = newState.exchangeConnections.filter(
-        (item) => item.internalId !== action.payload,
-      );
-      break;
+  [ENABLE_TWO_FA]: (state, action) => {
+    state.userData = { ...state.userData, twoFAEnable: action.payload };
+  },
 
-    case ENABLE_TWO_FA:
-      newState.userData = { ...newState.userData, twoFAEnable: action.payload };
-      break;
+  [SET_DAILY_BALANCE_LOADER]: (state, action) => {
+    state.dailyBalance = { ...state.dailyBalance, loading: true };
+  },
+});
 
-    case SET_DAILY_BALANCE_LOADER:
-      newState.dailyBalance = { ...newState.dailyBalance, loading: true };
-      break;
-
-    default:
-      return state;
-  }
-
-  return newState;
-};
-
-export default userExchanges;
+export default user;
