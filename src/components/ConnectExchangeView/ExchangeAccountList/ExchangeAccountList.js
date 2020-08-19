@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./ExchangeAccountList.scss";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
@@ -10,9 +10,6 @@ import NoDemoAccount from "./NoDemoAccount";
 import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
-import { useDispatch } from "react-redux";
-import { getUserExchanges } from "../../../store/actions/user";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import LazyLoad from "react-lazyload";
 
 /**
@@ -33,20 +30,9 @@ const ExchangeAccountList = ({ demo }) => {
   } = useContext(ModalPathContext);
 
   const storeUser = useStoreUserSelector();
-  const storeSession = useStoreSessionSelector();
-  const dispatch = useDispatch();
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
-
-  const loadAccounts = () => {
-    const authorizationPayload = {
-      token: storeSession.tradeApi.accessToken,
-    };
-    dispatch(getUserExchanges(authorizationPayload));
-  };
-  // Refresh accounts
-  useEffect(loadAccounts, []);
 
   const tabs = [
     {

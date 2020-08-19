@@ -25,6 +25,7 @@
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
  * @property {UserEntity} userData
+ * @property {boolean} loaded
  */
 
 /**

@@ -1,4 +1,3 @@
-import { assign } from "lodash";
 import initialState from "../store/initialState";
 import {
   SET_USER_EXCHANGES,
@@ -44,11 +43,11 @@ const user = createReducer(initialState.user, {
     state.balance = action.payload;
   },
 
-  [SET_USER_BALANCE_LOADER]: (state, action) => {
+  [SET_USER_BALANCE_LOADER]: (state) => {
     state.balance = { ...state.balance, loading: true };
   },
 
-  [REMOVE_USER_BALANCE]: (state, action) => {
+  [REMOVE_USER_BALANCE]: (state) => {
     state.balance = initialState.user.balance;
   },
 
@@ -70,7 +69,7 @@ const user = createReducer(initialState.user, {
     state.userData = { ...state.userData, twoFAEnable: action.payload };
   },
 
-  [SET_DAILY_BALANCE_LOADER]: (state, action) => {
+  [SET_DAILY_BALANCE_LOADER]: (state) => {
     state.dailyBalance = { ...state.dailyBalance, loading: true };
   },
 });

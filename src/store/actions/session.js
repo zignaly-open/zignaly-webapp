@@ -1,7 +1,7 @@
 import { unsetUser, getUserExchanges, getUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
-import { assign, isEmpty } from "lodash";
+import { assign } from "lodash";
 import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
@@ -43,7 +43,6 @@ export const startTradeApiSession = (response) => {
     // Add event type with user entity properties.
     gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
-    // dispatch(loadAppUserData(response));
 
     // Navigate to return url or dashboard
     const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");

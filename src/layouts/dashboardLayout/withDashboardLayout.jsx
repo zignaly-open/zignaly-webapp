@@ -8,7 +8,6 @@ import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../components/ExchangeIcon";
 import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
 import { navigate as navigateReach } from "@reach/router";
-import { Loader } from "../../components/Loader";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -48,7 +47,7 @@ const withDashboardLayout = (Component) => {
         {!user.loaded ? (
           <Box
             alignItems="center"
-            className="dashboardLoadingBox"
+            className="loadingBox"
             display="flex"
             flexDirection="row"
             justifyContent="center"
