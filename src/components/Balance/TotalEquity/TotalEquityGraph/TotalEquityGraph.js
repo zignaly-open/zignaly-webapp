@@ -2,9 +2,9 @@ import React from "react";
 import "./TotalEquityGraph.scss";
 import GenericChart from "../../../Graphs/GradientLineChart";
 import { Box } from "@material-ui/core";
-import { toNumber } from "lodash";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { colors } from "../../../../services/theme";
+import { formatFloat } from "../../../../utils/format";
 
 /**
  *
@@ -69,19 +69,11 @@ const TotalEquityGraph = ({ list, modal }) => {
         </Box>
         <Box>
           <span className="label">BTC:</span>
-          <span>
-            {toNumber(list[tooltipItem.index].totalBTC) > 1
-              ? +toNumber(list[tooltipItem.index].totalBTC).toFixed(2)
-              : +toNumber(list[tooltipItem.index].totalBTC).toFixed(8)}
-          </span>
+          <span>{formatFloat(list[tooltipItem.index].totalBTC)}</span>
         </Box>
         <Box>
           <span className="label">USDT:</span>
-          <span>
-            {toNumber(list[tooltipItem.index].totalUSDT) > 1
-              ? +toNumber(list[tooltipItem.index].totalUSDT).toFixed(2)
-              : +toNumber(list[tooltipItem.index].totalUSDT).toFixed(8)}
-          </span>
+          <span>{formatFloat(list[tooltipItem.index].totalUSDT)}</span>
         </Box>
       </Box>
     );

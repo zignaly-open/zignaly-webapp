@@ -1,7 +1,7 @@
-import { unsetUserExchanges, setUserExchanges, setUserData } from "./user";
+import { unsetUser, getUserExchanges, getUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
-import { assign, isEmpty } from "lodash";
+import { assign } from "lodash";
 import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
@@ -32,6 +32,8 @@ export const startTradeApiSession = (response) => {
   };
 
   return async (dispatch) => {
+    if (!response.token) return;
+
     const action = {
       type: START_TRADE_API_SESSION,
       payload: response,
@@ -39,9 +41,15 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
-    gtmEventPush(assign(eventType, response));
+    gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
-    dispatch(loadAppUserData(response));
+
+    // Navigate to return url or dashboard
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+    const path = params.get("ret") || "/dashboard";
+    const pathPrefix = process.env.GATSBY_BASE_PATH || "";
+    const pathWithoutPrefix = path.replace(pathPrefix, "");
+    navigate(pathWithoutPrefix);
   };
 };
 
@@ -56,7 +64,7 @@ export const endTradeApiSession = () => {
       };
 
       dispatch(action);
-      dispatch(unsetUserExchanges());
+      dispatch(unsetUser());
       dispatch(unsetProvider());
       dispatch(clearSessionData());
     } catch (e) {
@@ -82,7 +90,7 @@ export const registerUser = (payload, setLoading) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
       // Add event type with user entity properties.
-      gtmEventPush(assign(eventType, responseData));
+      gtmEventPush(assign(eventType, responseData || {}));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
@@ -95,27 +103,18 @@ export const registerUser = (payload, setLoading) => {
 /**
  * Function to preload user data.
  *
- * @param {UserEntity} response api token.
+ * @param {string} token api token.
  * @returns {AppThunk} Thunk action.
  */
-export const loadAppUserData = (response) => {
+export const loadAppUserData = (token) => {
   return async (dispatch) => {
-    if (!isEmpty(response.token)) {
+    if (token) {
       const authorizationPayload = {
-        token: response.token,
+        token,
       };
 
-      dispatch(setUserExchanges(authorizationPayload));
-      dispatch(setUserData(authorizationPayload));
-
-      // Navigate to return url or dashboard
-      const params = new URLSearchParams(
-        typeof window !== "undefined" ? window.location.search : "",
-      );
-      const path = params.get("ret") || "/dashboard";
-      const pathPrefix = process.env.GATSBY_BASE_PATH || "";
-      const pathWithoutPrefix = path.replace(pathPrefix, "");
-      navigate(pathWithoutPrefix);
+      dispatch(getUserExchanges(authorizationPayload));
+      dispatch(getUserData(authorizationPayload));
     }
   };
 };

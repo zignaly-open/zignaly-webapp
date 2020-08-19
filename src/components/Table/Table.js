@@ -1,15 +1,21 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { size } from "lodash";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import "./Table.scss";
 import MUIDataTable from "mui-datatables";
-import { setDisplayColumn, setRowsPerPage } from "../../store/actions/settings";
+import {
+  setDisplayColumn,
+  setRowsPerPage,
+  setSortColumn,
+  setResponsiveTable,
+} from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { Box, Hidden, IconButton, Tooltip } from "@material-ui/core";
 import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { merge } from "lodash";
 import TableChartIcon from "@material-ui/icons/TableChart";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -31,20 +37,33 @@ import TableChartIcon from "@material-ui/icons/TableChart";
  * @property {string} [persistKey] Key to save display columns settings.
  * @property {MUIDataTableOptions} [options] Table options.
  * @property {*} [components] Custom table components.
+ * @property {Function} [toggleFilters] Custom table components.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  *
  */
-const Table = ({ columns, data, persistKey, title, options: customOptions, components }) => {
+const Table = ({
+  columns,
+  data,
+  persistKey,
+  title,
+  options: customOptions,
+  components,
+  toggleFilters,
+}) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
   const countRows = size(data);
   const theme = useTheme();
 
+  const [responsive, setResponsive] = useState(
+    storeSettings.responsiveTables[persistKey] !== false,
+  );
+
   /**
-   * Functionn to create column labels.
+   * Function to create column labels.
    *
    * @param {*} label initial data for label.
    * @returns {String} formatted label.
@@ -89,8 +108,7 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
    * @type {MUIDataTableOptions}
    */
   let options = {
-    selectableRows: "none", // @ts-ignore
-    responsive: "vertical", // vertical
+    selectableRows: "none",
     customToolbar: () => {
       return (
         <Hidden smUp>
@@ -99,6 +117,12 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
               <TableChartIcon />
             </IconButton>
           </Tooltip>
+          {toggleFilters && (
+            // @ts-ignore
+            <IconButton onClick={toggleFilters}>
+              <FilterListIcon />
+            </IconButton>
+          )}
         </Hidden>
       );
     },
@@ -114,15 +138,27 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
         dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
       }
     },
-    // onViewColumnsChange
     onColumnViewChange: (changedColumn, action) => {
-      dispatch(
-        setDisplayColumn({
-          table: persistKey,
-          changedColumn,
-          action,
-        }),
-      );
+      if (persistKey) {
+        dispatch(
+          setDisplayColumn({
+            table: persistKey,
+            changedColumn,
+            action,
+          }),
+        );
+      }
+    },
+    onColumnSortChange: (changedColumn, direction) => {
+      if (persistKey) {
+        dispatch(
+          setSortColumn({
+            table: persistKey,
+            name: changedColumn,
+            direction,
+          }),
+        );
+      }
     },
     fixedHeader: true,
     textLabels: {
@@ -156,27 +192,19 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       });
     },
     elevation: 1,
+    // Override options with the ones passed to Table component
     ...customOptions,
+    // Override sort order with the last saved option
+    ...(storeSettings.sortColumns[persistKey] && {
+      sortOrder: storeSettings.sortColumns[persistKey],
+    }),
+    responsive: responsive ? "vertical" : "standard",
   };
-
-  const [tableOptions, setOptions] = useState(options);
-
-  const initOptions = () => {
-    setOptions({ ...tableOptions, ...customOptions });
-  };
-
-  useEffect(initOptions, [customOptions]);
 
   const changeResponsiveView = () => {
-    // @ts-ignore
-    if (options.responsive === "vertical") {
-      // @ts-ignore
-      options = { ...tableOptions, responsive: "standard" };
-      setOptions(options);
-    } else {
-      // @ts-ignore
-      options = { ...tableOptions, responsive: "vertical" };
-      setOptions(options);
+    setResponsive(!responsive);
+    if (persistKey) {
+      dispatch(setResponsiveTable({ table: persistKey, responsive: !responsive }));
     }
   };
 
@@ -262,10 +290,9 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
       <MuiThemeProvider theme={extendedTheme}>
         <MUIDataTable
           columns={columnsCustom}
-          // @ts-ignore (wait for datatables types v3)
           components={components}
           data={data}
-          options={tableOptions}
+          options={options}
           title={title}
         />
       </MuiThemeProvider>
@@ -273,4 +300,4 @@ const Table = ({ columns, data, persistKey, title, options: customOptions, compo
   );
 };
 
-export default React.memo(Table);
+export default Table;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { isNumber } from "lodash";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -7,17 +6,16 @@ import {
   createWidgetOptions,
   mapExchangeConnectionToTradingViewId,
 } from "../../../tradingView/dataFeedOptions";
-import { formatPrice } from "../../../utils/formatters";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
-import "./TradingView.scss";
 import ConnectExchange from "../../Modal/ConnectExchange";
-import { setTerminalPair } from "../../../store/actions/settings";
-import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
+import useTradingTerminal from "../../../hooks/useTradingTerminal";
+import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
@@ -40,8 +38,13 @@ const defaultExchangeSymbol = {
  */
 const TradingView = () => {
   const [libraryReady, setLibraryReady] = useState(false);
-  const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
-  const [lastPrice, setLastPrice] = useState(null);
+  const {
+    instantiateWidget,
+    lastPrice,
+    setLastPrice,
+    setTradingViewWidget,
+    tradingViewWidget,
+  } = useTradingTerminal();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [marketData, setMarketData] = useState(null);
@@ -140,40 +143,9 @@ const TradingView = () => {
       storeSettings.darkStyle,
     );
 
-    // @ts-ignore
-    // eslint-disable-next-line new-cap
-    const externalWidget = new window.TradingView.widget(widgetOptions);
-    let eventSymbol = "";
-    // @ts-ignore
-    const handleWidgetReady = (event) => {
-      const dataRaw = /** @type {Object<string, any>} */ event.data;
-      if (typeof dataRaw === "string") {
-        const dataParsed = JSON.parse(dataRaw);
-        // @ts-ignore
-        if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-          setTradingViewWidget(externalWidget);
-        }
-
-        if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
-          if (eventSymbol !== dataParsed.data.original_name) {
-            const receivedPrice = isNumber(dataParsed.data.last_price)
-              ? formatPrice(dataParsed.data.last_price, "", "")
-              : dataParsed.data.last_price;
-            setLastPrice(receivedPrice);
-            eventSymbol = dataParsed.data.original_name;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("message", handleWidgetReady);
-
+    const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        window.removeEventListener("message", handleWidgetReady);
-      }
+      cleanupWidget();
     };
   };
 
@@ -239,17 +211,6 @@ const TradingView = () => {
     }
   };
 
-  // Save symbol when changed
-  const saveSelectedSymbol = () => {
-    dispatch(
-      setTerminalPair({
-        exchangeId: storeSettings.selectedExchange.exchangeId,
-        pair: selectedSymbol,
-      }),
-    );
-  };
-  useEffectSkipFirst(saveSelectedSymbol, [selectedSymbol]);
-
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
@@ -310,6 +271,22 @@ const TradingView = () => {
 
 const TradingViewWrapper = () => {
   const storeSettings = useStoreSettingsSelector();
+  const storeUser = useStoreUserSelector();
+
+  if (!storeUser.loaded) {
+    return (
+      <Box
+        alignItems="center"
+        className="loadingBox"
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+      >
+        <CircularProgress size={50} />
+      </Box>
+    );
+  }
+
   if (!storeSettings.selectedExchange.internalId) {
     return <ConnectExchange />;
   }

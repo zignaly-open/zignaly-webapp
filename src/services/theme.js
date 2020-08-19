@@ -196,6 +196,9 @@ const theme = (darkStyle) => {
         textTransform: "capitalize",
         lineHeight: 1.21,
         letterSpacing: "1.25px",
+        "@media (max-width:600px)": {
+          fontSize: "21px",
+        },
       },
       h3: {
         // this is for titles inside components eg: "Total Equity" (Title 2/3)

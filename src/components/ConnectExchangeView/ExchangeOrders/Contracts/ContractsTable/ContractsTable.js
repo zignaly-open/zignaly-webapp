@@ -4,13 +4,13 @@ import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../../Table";
 import { formatFloat } from "../../../../../utils/format";
 import { Link } from "gatsby";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { ConfirmDialog } from "../../../../Dialogs";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../../../ModalPathContext";
 import { showErrorAlert } from "../../../../../store/actions/ui";
+import { Delete } from "react-feather";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -103,7 +103,11 @@ const ContractsTable = ({ title, list, loadData }) => {
    * @returns {JSX.Element} Composed JSX element.
    */
   function composePositionLinkButton(id) {
-    return <Link to={`/position/${id}`}>{id}</Link>;
+    return (
+      <Link className="link" to={`/position/${id}`}>
+        {id}
+      </Link>
+    );
   }
 
   /**
@@ -170,7 +174,7 @@ const ContractsTable = ({ title, list, loadData }) => {
             <CircularProgress color="primary" size={24} />
           ) : (
             <Tooltip placement="top" title="Cancel">
-              <HighlightOffIcon
+              <Delete
                 className="cancelIcon red" // @ts-ignore
                 onClick={() => confirmCancel(val)}
               />

@@ -2,33 +2,27 @@ export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
 export const SELECT_THEME = "SELECT_THEME";
 export const TOGGLE_BALANCE_BOX = "TOGGLE_BALANCE_BOX";
 export const SET_DISPLAY_COLUMN = "SET_DISPLAY_COLUMN";
+export const SET_SORT_COLUMN = "SET_SORT_COLUMN";
+export const SET_RESPONSIVE_TABLE = "SET_RESPONSIVE_TABLE";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
 export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
-export const CONNECTED_COPYT_TIMEFRAME = "CONNECTED_COPYT_TIMEFRAME";
-export const CONNECTED_SIGNALP_TIMEFRAME = "CONNECTED_SIGNALP_TIMEFRAME";
-export const COPYT_TIMEFRAME = "COPYT_TIMEFRAME";
 export const SET_TIMEFRAME = "SET_TIMEFRAME";
-export const SIGNALP_SORT = "SIGNALP_SORT";
-export const COPYT_SORT = "COPYT_SORT";
-export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
 export const SET_SORT = "SET_SORT";
-export const SET_BROWSE_EXCHANGE = "SET_BROWSE_EXCHANGE";
-export const SET_BROWSE_QUOTE = "SET_BROWSE_QUOTE";
-export const SET_BROWSE_EXCHANGE_TYPE = "SET_BROWSE_EXCHANGE_TYPE";
-export const SET_ANALYTICS_TIMEFRAME = "SET_ANALYTICS_TIMEFRAME";
-export const SET_ANALYTICS_QUOTE = "SET_ANALYTICS_QUOTE";
-export const SET_ANALYTICS_BASE = "SET_ANALYTICS_BASE";
+export const SET_FILTERS = "SET_FILTERS";
+export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
+export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
+ * @typedef {import('../initialState').Filters} Filters
  */
 
 /**
  * @typedef {'signalp'|'copyt'} ProviderPageType
  * @typedef {'connectedSignalp'|'connectedCopyt'} ConnectedProviderPageType
- * @typedef {'signalpAnalytics'|'copytAnalytics'} AnalyticsPageType
+ * @typedef {'signalpAnalytics'|'copytAnalytics'|'dashboardAnalytics'} AnalyticsPageType
  */
 
 /**
@@ -107,6 +101,49 @@ export const setDisplayColumn = (payload) => {
 };
 
 /**
+ * @typedef {Object} SetSortColumnPayload
+ * @property {string} name
+ * @property {'asc'|'desc'} direction
+ * @property {string} table
+ *
+ * @typedef {Object} SetSortColumnAction
+ * @property {typeof SET_SORT_COLUMN} type
+ * @property {SetSortColumnPayload} payload
+ */
+
+/**
+ * @param {SetSortColumnPayload} payload Selected column for sorting
+ * @returns {SetSortColumnAction} Action object
+ */
+export const setSortColumn = (payload) => {
+  return {
+    type: SET_SORT_COLUMN,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetResponsiveTablePayload
+ * @property {boolean} responsive
+ * @property {string} table
+ *
+ * @typedef {Object} SetResponsiveTableAction
+ * @property {typeof SET_RESPONSIVE_TABLE} type
+ * @property {SetResponsiveTablePayload} payload
+ */
+
+/**
+ * @param {SetResponsiveTablePayload} payload Payload
+ * @returns {SetResponsiveTableAction} Action object
+ */
+export const setResponsiveTable = (payload) => {
+  return {
+    type: SET_RESPONSIVE_TABLE,
+    payload,
+  };
+};
+
+/**
  * User rows per page table selection.
  *
  * @param {Object} payload payload.
@@ -141,52 +178,26 @@ export const setSort = (payload) => {
 };
 
 /**
- * @typedef {Object} SetBrowseExchangeAction
- * @property {typeof SET_BROWSE_EXCHANGE} type
- * @property {string} payload
+ * @typedef {"copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType} FilterPage
  */
 
 /**
- * @param {string} payload Exchange
- * @returns {SetBrowseExchangeAction} Action object
+ * @typedef {Object} SetFiltersPayload
+ * @property {FilterPage} page
+ * @property {Filters[FilterPage]} filters
+ *
+ * @typedef {Object} SetFiltersAction
+ * @property {typeof SET_FILTERS} type
+ * @property {SetFiltersPayload} payload
  */
-export const setBrowseExchange = (payload) => {
+
+/**
+ * @param {SetFiltersPayload} payload Payload
+ * @returns {SetFiltersAction} Action object
+ */
+export const setFilters = (payload) => {
   return {
-    type: SET_BROWSE_EXCHANGE,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetBrowseQuoteAction
- * @property {typeof SET_BROWSE_QUOTE} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Quote
- * @returns {SetBrowseQuoteAction} Action object
- */
-export const setBrowseQuote = (payload) => {
-  return {
-    type: SET_BROWSE_QUOTE,
-    payload,
-  };
-};
-
-/**
- * @typedef {Object} SetBrowseExchangeTypeAction
- * @property {typeof SET_BROWSE_EXCHANGE_TYPE} type
- * @property {string} payload
- */
-
-/**
- * @param {string} payload Exchange Type
- * @returns {SetBrowseExchangeTypeAction} Action object.
- */
-export const setBrowseExchangeType = (payload) => {
-  return {
-    type: SET_BROWSE_EXCHANGE_TYPE,
+    type: SET_FILTERS,
     payload,
   };
 };
@@ -211,47 +222,6 @@ export const setTimeFrame = (payload) => {
     payload,
   };
 };
-
-/**
- * @typedef {Object} SetAnalyticsQuotePayload
- * @property {ProviderPageType} page
- * @property {string} quote
- *
- * @typedef {Object} SetAnalyticsQuoteAction
- * @property {typeof SET_ANALYTICS_QUOTE} type
- * @property {SetAnalyticsQuotePayload} payload
- */
-
-/**
- * @param {SetAnalyticsQuotePayload} payload Quote for the analytics
- * @returns {SetAnalyticsQuoteAction} return action object.
- */
-export const setAnayticsQuote = (payload) => {
-  return {
-    type: SET_ANALYTICS_QUOTE,
-    payload,
-  };
-};
-
-/**
- * @typedef {{page: ProviderPageType, base: string}} SetAnalyticsBasePayload
- *
- * @typedef {Object} SetAnalyticsBaseAction
- * @property {typeof SET_ANALYTICS_BASE} type
- * @property {SetAnalyticsBasePayload} payload
- */
-
-/**
- * @param {SetAnalyticsBasePayload} payload Pair for the analytics
- * @returns {SetAnalyticsBaseAction} return action object.
- */
-export const setAnayticsBase = (payload) => {
-  return {
-    type: SET_ANALYTICS_BASE,
-    payload,
-  };
-};
-
 /**
  * @typedef {Object} SetTerminalPairPayload
  * @property {string} exchangeId
@@ -269,6 +239,23 @@ export const setAnayticsBase = (payload) => {
 export const setTerminalPair = (payload) => {
   return {
     type: SET_TERMINAL_PAIR,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetTerminalProviderAction
+ * @property {typeof SET_TERMINAL_PROVIDER} type
+ * @property {string} payload
+ */
+
+/**
+ * @param {string} payload Payload.
+ * @returns {SetTerminalProviderAction} Action.
+ */
+export const setTerminalProvider = (payload) => {
+  return {
+    type: SET_TERMINAL_PROVIDER,
     payload,
   };
 };

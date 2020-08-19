@@ -16,22 +16,20 @@ const LocalizationLanguages = [
     label: "English",
     countryCode: "gb",
   },
+  {
+    locale: "vn",
+    label: "Tiếng Việt",
+    countryCode: "vn",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
   // Test localization
-  LocalizationLanguages.push(
-    {
-      locale: "cs",
-      label: "Čeština",
-      countryCode: "cz",
-    },
-    {
-      locale: "vn",
-      label: "Tiếng Việt",
-      countryCode: "vn",
-    },
-  );
+  LocalizationLanguages.push({
+    locale: "cs",
+    label: "Čeština",
+    countryCode: "cz",
+  });
 }
 
 module.exports = LocalizationLanguages;
