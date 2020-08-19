@@ -93,9 +93,34 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   const getTooltip = () => {
     if (disabled) {
       if (provider.isCopyTrading) {
-        return <FormattedMessage id="copyt.deletedisabled.tooltip" />;
+        return (
+          <Box>
+            <ul>
+              <li>
+                <FormattedMessage id="copyt.deletedisabled.tooltip.point.1" />
+              </li>
+              <li>
+                <FormattedMessage id="copyt.deletedisabled.tooltip.point.2" />
+              </li>
+              <li>
+                <FormattedMessage id="copyt.deletedisabled.tooltip.point.3" />
+              </li>
+            </ul>
+          </Box>
+        );
       }
-      return <FormattedMessage id="srv.deletedisabled.tooltip" />;
+      return (
+        <Box>
+          <ul>
+            <li>
+              <FormattedMessage id="srv.deletedisabled.tooltip.point.1" />
+            </li>
+            <li>
+              <FormattedMessage id="srv.deletedisabled.tooltip.point.2" />
+            </li>
+          </ul>
+        </Box>
+      );
     }
     return "";
   };
