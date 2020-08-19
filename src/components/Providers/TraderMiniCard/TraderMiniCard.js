@@ -21,8 +21,8 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  */
 const TraderMiniCard = ({ provider }) => {
   const { name, logoUrl, quote, returns, isCopyTrading, id } = provider;
-  const providerUserInfo = useProviderUserInfo(id);
-  const color = returns >= 0 ? "green" : "red";
+  const { providerUserInfo, profitPerc } = useProviderUserInfo(id);
+  const color = profitPerc >= 0 ? "green" : "red";
 
   const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
 
@@ -53,7 +53,7 @@ const TraderMiniCard = ({ provider }) => {
           </Typography>
           <Box pl="7px">
             <Typography className={color} variant="h5">
-              {formatFloat2Dec(returns)}
+              {formatFloat2Dec(profitPerc)}
             </Typography>
           </Box>
         </Box>
