@@ -136,13 +136,23 @@ const useProvidersList = (options) => {
 
   // Save filters to store when changed
   const saveFilters = () => {
-    dispatch(
-      setFiltersAction({
-        filters: { exchange, quote: quote.val, exchangeType, fromUser },
-        // @ts-ignore
-        page,
-      }),
-    );
+    if (page === "signalp") {
+      dispatch(
+        setFiltersAction({
+          filters: { fromUser },
+          // @ts-ignore
+          page,
+        }),
+      );
+    } else {
+      dispatch(
+        setFiltersAction({
+          filters: { exchange, quote: quote.val, exchangeType, fromUser },
+          // @ts-ignore
+          page,
+        }),
+      );
+    }
   };
   useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType, fromUser]);
 
