@@ -20,7 +20,7 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderMiniCard = ({ provider }) => {
-  const { name, logoUrl, quote, returns, isCopyTrading, id } = provider;
+  const { name, logoUrl, quote, isCopyTrading, id } = provider;
   const { providerUserInfo, profitPerc } = useProviderUserInfo(id);
   const color = profitPerc >= 0 ? "green" : "red";
 
