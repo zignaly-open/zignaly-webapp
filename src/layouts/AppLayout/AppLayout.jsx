@@ -10,6 +10,8 @@ import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 import { triggerTz } from "../../services/tz";
+import { withPrefix } from "gatsby";
+import useScript from "../../hooks/useScript";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -30,6 +32,7 @@ const AppLayout = (props) => {
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
+  useScript(withPrefix("widgets/customerSupportWidget.js"));
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
