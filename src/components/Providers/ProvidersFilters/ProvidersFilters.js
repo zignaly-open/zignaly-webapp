@@ -21,6 +21,10 @@ import { useIntl } from "react-intl";
  * @property {string} exchangeType Selected exchange type.
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
+ * @property {string} fromUser Selected from user filters
+ * @property {function} onFromUserChange Function to handle changes for user owned services select.
+ * @property {Array<OptionType>} fromUserOptions Options array for user owned services select.
+ * @property {boolean} copyTradersOnly
  */
 
 /**
@@ -42,6 +46,10 @@ const ProvidersFilters = ({
   onExchangeChange,
   clearFilters,
   open,
+  fromUser,
+  fromUserOptions,
+  onFromUserChange,
+  copyTradersOnly,
 }) => {
   const intl = useIntl();
 
@@ -54,30 +62,44 @@ const ProvidersFilters = ({
         id: "fil.filters",
       })}
     >
+      {copyTradersOnly && (
+        <CustomSelect
+          label={intl.formatMessage({
+            id: "col.coin",
+          })}
+          onChange={onCoinChange}
+          options={coins}
+          search={true}
+          value={coin}
+        />
+      )}
+      {copyTradersOnly && (
+        <CustomSelect
+          label={intl.formatMessage({
+            id: "accounts.exchange",
+          })}
+          onChange={onExchangeChange}
+          options={exchanges}
+          value={exchange}
+        />
+      )}
+      {copyTradersOnly && (
+        <CustomSelect
+          label={intl.formatMessage({
+            id: "srv.edit.exchangetype",
+          })}
+          onChange={onExchangeTypeChange}
+          options={exchangeTypes}
+          value={exchangeType}
+        />
+      )}
       <CustomSelect
         label={intl.formatMessage({
-          id: "col.coin",
+          id: "srv.filters.userowned",
         })}
-        onChange={onCoinChange}
-        options={coins}
-        search={true}
-        value={coin}
-      />
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "accounts.exchange",
-        })}
-        onChange={onExchangeChange}
-        options={exchanges}
-        value={exchange}
-      />
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "srv.edit.exchangetype",
-        })}
-        onChange={onExchangeTypeChange}
-        options={exchangeTypes}
-        value={exchangeType}
+        onChange={onFromUserChange}
+        options={fromUserOptions}
+        value={fromUser}
       />
     </CustomFilters>
   );

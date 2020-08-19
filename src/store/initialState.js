@@ -72,6 +72,12 @@
  * @property {string} quote
  * @property {string} exchange
  * @property {string} exchangeType
+ * @property {string} fromUser
+ */
+
+/**
+ * @typedef {Object} SignalPBrowseFilters
+ * @property {string} fromUser
  */
 
 /**
@@ -107,6 +113,7 @@
  * @property {DashboardAnalyticsFilters} dashboardAnalytics
  * @property {DashboardPositionsFilters} dashboardPositions
  * @property {BrowseFilters} copyt
+ * @property {SignalPBrowseFilters} signalp
  * @property {AnalyticsFilters} copytAnalytics
  * @property {AnalyticsFilters} signalpAnalytics
  */
@@ -441,7 +448,8 @@ const initialState = {
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
-      copyt: { quote: "", exchange: "", exchangeType: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
+      signalp: { fromUser: "" },
       copytAnalytics: { quote: "", base: "" },
       signalpAnalytics: { quote: "", base: "" },
     },

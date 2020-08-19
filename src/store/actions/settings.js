@@ -178,7 +178,7 @@ export const setSort = (payload) => {
 };
 
 /**
- * @typedef {"copyt"|"dashboardPositions"|AnalyticsPageType} FilterPage
+ * @typedef {"copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType} FilterPage
  */
 
 /**
