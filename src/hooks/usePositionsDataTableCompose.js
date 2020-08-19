@@ -932,6 +932,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: renderRealInvestment,
       },
       {
+        columnId: "col.allocated",
+        propertyName: "currentAllocatedBalance",
+        renderFunction: renderAllocated,
+      },
+      {
+        columnId: "col.allocated-percentage",
+        propertyName: "positionSizePercentage",
+        renderFunction: renderAllocatedPercentage,
+      },
+      {
         columnId: "col.leverage",
         propertyName: "leverage",
         renderFunction: renderLeverage,
@@ -970,16 +980,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.actions",
         propertyName: "updating",
         renderFunction: renderViewActionButton,
-      },
-      {
-        columnId: "col.allocated",
-        propertyName: "currentAllocatedBalance",
-        renderFunction: renderAllocated,
-      },
-      {
-        columnId: "col.allocated-percentage",
-        propertyName: "positionSizePercentage",
-        renderFunction: renderAllocatedPercentage,
       },
     ];
 
