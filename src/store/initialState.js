@@ -384,6 +384,7 @@ const initialState = {
         "col.positionid",
         "col.orders.symbol",
         "col.amount",
+        "col.orders.status",
         "col.orders.price",
         "col.side",
         "col.orders.type",

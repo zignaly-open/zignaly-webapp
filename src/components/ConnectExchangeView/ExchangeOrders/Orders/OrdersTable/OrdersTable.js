@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./OrdersTable.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../../Table";
-import { composeOrdersDataTable } from "../../../../../utils/composePositionsDataTable";
 import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import { ConfirmDialog } from "../../../../Dialogs";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/ui";
+import { Link } from "gatsby";
+import { formatFloat } from "../../../../../utils/format";
+import { Delete } from "react-feather";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -37,6 +39,8 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
 const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
   const tablePersistsKey = "ordersTable";
   const storeSession = useStoreSessionSelector();
+  const [loading, setLoading] = useState(false);
+  const [order, setOrder] = useState("");
   const dispatch = useDispatch();
 
   /**
@@ -50,25 +54,102 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
   };
 
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-  const [actionData, setActionData] = useState("");
+
+  /**
+   * Compose all action buttons element for a given position.
+   *
+   * @param {String} id Position entity to compose buttons for.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function composePositionLinkButton(id) {
+    return (
+      <Link className="link" to={`/position/${id}`}>
+        {id}
+      </Link>
+    );
+  }
+
+  /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
+  let columns = [
+    {
+      name: "orderId",
+      label: "col.orders.orderid",
+    },
+    {
+      name: "positionId",
+      label: "col.positionid",
+      options: {
+        customBodyRender: composePositionLinkButton,
+      },
+    },
+    {
+      name: "symbol",
+      label: "col.orders.symbol",
+    },
+    {
+      name: "amount",
+      label: "col.amount",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "status",
+      label: "col.orders.status",
+    },
+    {
+      name: "price",
+      label: "col.orders.price",
+    },
+    {
+      name: "side",
+      label: "col.side",
+    },
+    {
+      name: "type",
+      label: "col.orders.type",
+    },
+    {
+      name: "datetimeReadable",
+      label: "col.orders.datetime",
+    },
+    {
+      name: "orderId",
+      label: "col.cancel",
+      options: {
+        customBodyRender: (val) => {
+          return loading && order === val ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            <Tooltip placement="top" title="Cancel">
+              <Delete
+                className="cancelIcon red" // @ts-ignore
+                onClick={() => confirmCancel(val)}
+              />
+            </Tooltip>
+          );
+        },
+      },
+    },
+  ];
 
   /**
    * Handle action element click event.
    *
-   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @param {String} id Order id.
    * @returns {Void} None.
    */
-  const confirmAction = (event) => {
-    const targetElement = event.currentTarget;
-    const orderId = targetElement.getAttribute("data-order-id");
-    setActionData(orderId);
+  const confirmCancel = (id) => {
+    setOrder(id);
 
     setConfirmConfig({
       titleTranslationId: "confirm.ordercancel.title",
       messageTranslationId: "confirm.ordercancel.message",
       visible: true,
       values: {
-        order: <b>{orderId}</b>,
+        order: <b>{id}</b>,
       },
     });
   };
@@ -79,7 +160,8 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
    * @returns {Void} None.
    */
   const executeAction = () => {
-    const found = list.find((item) => item.orderId === actionData);
+    setLoading(true);
+    const found = list.find((item) => item.orderId === order);
     tradeApi
       .cancelExchangeOrder({
         orderId: found.orderId,
@@ -95,8 +177,6 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
         dispatch(showErrorAlert(e));
       });
   };
-
-  const { columns, data } = composeOrdersDataTable(list, confirmAction);
 
   /**
    * @type {MUIDataTableOptions}
@@ -118,7 +198,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
       <Box className="ordersTable" display="flex" flexDirection="column" width={1}>
         <Table
           columns={columns}
-          data={data}
+          data={list}
           options={options}
           persistKey={tablePersistsKey}
           title={title}
