@@ -7,6 +7,7 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import ProviderHeaderActions from "./ProviderHeaderActions";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -15,16 +16,17 @@ import ProviderHeaderActions from "./ProviderHeaderActions";
  */
 const ProviderHeader = () => {
   const storeViews = useStoreViewsSelector();
+  const storeSettings = useStoreSettingsSelector();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
     const data = storeViews.provider.isCopyTrading
       ? createTraderRoutes(providerId, storeViews.provider)
-      : createProviderRoutes(providerId, storeViews.provider);
+      : createProviderRoutes(providerId, storeViews.provider, storeSettings.selectedExchange);
     setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeViews.provider.id]);
+  }, [storeViews.provider.id, storeSettings.selectedExchange.internalId]);
 
   return (
     <Box
