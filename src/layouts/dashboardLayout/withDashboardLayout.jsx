@@ -1,12 +1,12 @@
 import React from "react";
 import "./DashboardLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../components/ExchangeIcon";
-import { useStoreUserExchangeConnections } from "../../hooks/useStoreUserSelector";
+import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
 import { navigate as navigateReach } from "@reach/router";
 
 /**
@@ -30,7 +30,7 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const exchangeConnections = useStoreUserExchangeConnections();
+    const user = useStoreUserSelector();
 
     const handleClickEvent = () => {
       navigateReach("#exchangeAccounts");
@@ -44,7 +44,17 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {exchangeConnections.length > 0 && (
+        {!user.loaded ? (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={50} />
+          </Box>
+        ) : user.exchangeConnections.length > 0 ? (
           <>
             <DashboardHeader path={props.path} />
             <Box className="pageContent">
@@ -54,8 +64,7 @@ const withDashboardLayout = (Component) => {
               <FAQ />
             </Box>
           </>
-        )}
-        {exchangeConnections.length === 0 && (
+        ) : (
           <Box
             className="noExchangeBox"
             display="flex"

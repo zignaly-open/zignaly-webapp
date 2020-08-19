@@ -25,6 +25,7 @@
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
  * @property {UserEntity} userData
+ * @property {boolean} loaded
  */
 
 /**
@@ -456,6 +457,7 @@ const initialState = {
     tradingTerminal: { pair: {}, provider: "" },
   },
   user: {
+    loaded: false,
     exchangeConnections: [],
     balance: {
       pnlBTC: 0,

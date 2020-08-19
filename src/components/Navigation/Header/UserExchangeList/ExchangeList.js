@@ -7,7 +7,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import { setDailyUserBalance } from "../../../../store/actions/user";
+import { getDailyUserBalance } from "../../../../store/actions/user";
 
 /**
  * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
@@ -45,7 +45,7 @@ const ExchangeList = (props) => {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: item.internalId,
     };
-    dispatch(setDailyUserBalance(payload));
+    dispatch(getDailyUserBalance(payload));
     if (onClose) {
       onClose();
     }

@@ -11,6 +11,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ConnectExchange from "../../Modal/ConnectExchange";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
@@ -270,6 +271,22 @@ const TradingView = () => {
 
 const TradingViewWrapper = () => {
   const storeSettings = useStoreSettingsSelector();
+  const storeUser = useStoreUserSelector();
+
+  if (!storeUser.loaded) {
+    return (
+      <Box
+        alignItems="center"
+        className="loadingBox"
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+      >
+        <CircularProgress size={50} />
+      </Box>
+    );
+  }
+
   if (!storeSettings.selectedExchange.internalId) {
     return <ConnectExchange />;
   }
