@@ -3,7 +3,7 @@ import { SET_SELECTED_EXCHANGE } from "./settings";
 import initialState from "../initialState";
 import { showErrorAlert } from "./ui";
 
-export const SET_USER_EXCHANGES = "ADD_USER_EXCHNAGES_ACTION";
+export const SET_USER_EXCHANGES = "SET_USER_EXCHANGES";
 export const REMOVE_USER = "REMOVE_USER_ACTION";
 export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
@@ -35,10 +35,6 @@ export const getUserExchanges = (payload) => {
   return async (dispatch, getState) => {
     try {
       const responseData = await tradeApi.userExchangesGet(payload);
-      const action = {
-        type: SET_USER_EXCHANGES,
-        payload: responseData,
-      };
 
       const state = getState();
       /* @ts-ignore */
@@ -48,13 +44,9 @@ export const getUserExchanges = (payload) => {
         selected =
           responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange;
       }
-      const action2 = {
-        type: SET_SELECTED_EXCHANGE,
-        payload: selected,
-      };
 
-      dispatch(action);
-      dispatch(action2);
+      dispatch(setSelectedExchange(selected));
+      dispatch(setUserExchanges(responseData));
       if (responseData.length > 0) {
         /**
          * @type {UserEquityPayload}
@@ -65,6 +57,30 @@ export const getUserExchanges = (payload) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+};
+
+/**
+ *
+ * @param {ExchangeConnectionEntity} payload Exchange connection.
+ * @returns {AnyAction} Action object
+ */
+export const setSelectedExchange = (payload) => {
+  return {
+    type: SET_SELECTED_EXCHANGE,
+    payload,
+  };
+};
+
+/**
+ *
+ * @param {Array<ExchangeConnectionEntity>} payload Exchange connections response.
+ * @returns {AnyAction} Action object
+ */
+export const setUserExchanges = (payload) => {
+  return {
+    type: SET_USER_EXCHANGES,
+    payload,
   };
 };
 
