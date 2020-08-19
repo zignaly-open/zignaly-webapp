@@ -275,6 +275,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} refCode
  * @property {string} dashlyEchoAuth
  * @property {string} dashlyHash
+ * @property {string} userName
+ * @property {string} imageUrl
  */
 
 /**
@@ -857,6 +859,8 @@ export function userEntityResponseTransform(response) {
     refCode: response.refCode,
     dashlyHash: response.dashlyHash ? response.dashlyHash : "",
     dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
+    userName: response.userName,
+    imageUrl: response.imageUrl,
   };
 }
 
