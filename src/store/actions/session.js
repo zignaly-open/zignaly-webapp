@@ -26,7 +26,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
-  const { gtmEventPush } = gtmPushApi();
+  const { gtmEvent } = gtmPushApi();
   const eventType = {
     event: "login",
   };
@@ -41,17 +41,9 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
-    // console.log(gtmEventPush, eventType, response);
-    // console.log("test", assign(eventType, response || {}));
-    // // @ts-ignore
-    // console.log(
-    //   "win",
-    //   window.dataLayer,
-    //   window.dataLayer.push({ test: true }),
-    //   window.dataLayer.push === gtmEventPush,
-    // );
-    // console.log(gtmEventPush(assign(eventType, response || {})));
-    gtmEventPush(assign(eventType, response || {}));
+    if (gtmEvent) {
+      gtmEvent.push(assign(eventType, response));
+    }
     dispatch(refreshSessionData(response.token));
 
     // Navigate to return url or dashboard
@@ -91,7 +83,7 @@ export const endTradeApiSession = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const registerUser = (payload, setLoading) => {
-  const { gtmEventPush } = gtmPushApi();
+  const { gtmEvent } = gtmPushApi();
   const eventType = {
     event: "signup",
   };
@@ -100,7 +92,7 @@ export const registerUser = (payload, setLoading) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
       // Add event type with user entity properties.
-      gtmEventPush(assign(eventType, responseData || {}));
+      gtmEvent.push(assign(eventType, responseData || {}));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
