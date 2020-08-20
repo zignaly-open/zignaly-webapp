@@ -54,8 +54,11 @@ export const startTradeApiSession = (response) => {
     );
     // console.log(gtmEventPush(assign(eventType, response || {})));
     // gtmEventPush(assign(eventType, response || {}));
-    if (window.dataLayer) {
+    // @ts-ignore
+    if (typeof window !== "undefined" && window.dataLayer) {
       console.log("window.dataLayer");
+      // @ts-ignore
+
       window.dataLayer.push(assign(eventType, response || {}));
       console.log("gtm");
       gtmEventPush({ test: true });
