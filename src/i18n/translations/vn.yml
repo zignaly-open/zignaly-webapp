@@ -919,6 +919,7 @@ error.81: "Loại tài khoản hợp đồng tương lai chỉ có thể kết n
 error.82: "Bạn cần phải có một mô tả và logo trước khi được liệt kê"
 error.83: "Bạn không thể được liệt kê nếu bạn đang quản lý dịch vụ bằng tài khoản demo hoặc chưa kết nối với dịch vụ của bạn"
 error.84: "Dịch vụ này cần được công khai trước khi đưa lên thị trường"
+error.89: "You need to connect the service before trading it."
 error.1003: "Mua không thành vì TTL"
 error.1005: "Giá hiện tại dưới giá tối thiểu"
 error.1012: "Không có số tiền tối thiểu"

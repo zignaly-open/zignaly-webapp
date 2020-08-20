@@ -26,27 +26,29 @@ const SignalProvidersSettings = () => {
   const intl = useIntl();
 
   const loadSettings = () => {
-    setLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-      version: 2,
-    };
-    tradeApi
-      .providerExchangeSettingsGet(payload)
-      .then((response) => {
-        setSettings(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (storeViews.provider.id) {
+      setLoading(true);
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: storeViews.provider.id,
+        internalExchangeId: storeSettings.selectedExchange.internalId,
+        version: 2,
+      };
+      tradeApi
+        .providerExchangeSettingsGet(payload)
+        .then((response) => {
+          setSettings(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
-  useEffect(loadSettings, [storeSettings.selectedExchange.internalId]);
+  useEffect(loadSettings, [storeSettings.selectedExchange.internalId, storeViews.provider.id]);
 
   useEffect(() => {
     if (settings.name && !isEmpty(quotes)) {
