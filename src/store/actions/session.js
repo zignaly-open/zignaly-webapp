@@ -41,10 +41,10 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
-    console.log(gtmEventPush, eventType, response);
-    console.log(assign(eventType, response || {}));
-    console.log(gtmEventPush(assign(eventType, response || {})));
-    console.log(window.dataLayer.push({ test: true }));
+    // console.log(gtmEventPush, eventType, response);
+    // console.log(assign(eventType, response || {}));
+    // console.log(gtmEventPush(assign(eventType, response || {})));
+    // console.log(window.dataLayer.push({ test: true }));
     gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
 
