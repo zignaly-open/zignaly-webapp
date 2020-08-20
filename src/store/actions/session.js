@@ -44,7 +44,12 @@ export const startTradeApiSession = (response) => {
     console.log(gtmEventPush, eventType, response);
     console.log("test", assign(eventType, response || {}));
     // @ts-ignore
-    console.log("win", window.dataLayer, window.dataLayer.push({ test: true }));
+    console.log(
+      "win",
+      window.dataLayer,
+      window.dataLayer.push({ test: true }),
+      window.dataLayer.push === gtmEventPush,
+    );
     console.log(gtmEventPush(assign(eventType, response || {})));
     gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
