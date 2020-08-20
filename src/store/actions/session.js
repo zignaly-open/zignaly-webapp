@@ -26,8 +26,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
-  // @ts-ignore
-  const { gtmEventPush, gtmEvent } = gtmPushApi();
+  const { gtmEvent } = gtmPushApi();
   const eventType = {
     event: "login",
   };
@@ -42,29 +41,8 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
-    console.log(gtmEventPush, eventType, response);
-    console.log("test", assign(eventType, response || {}));
-    console.log(
-      "win",
-      // @ts-ignore
-      window.dataLayer,
-      // @ts-ignore
-      window.dataLayer.push === gtmEventPush,
-      // @ts-ignore
-      window.dataLayer.push === gtmEventPush ? true : false,
-    );
-    // console.log(gtmEventPush(assign(eventType, response || {})));
-    // gtmEventPush(assign(eventType, response || {}));
-    // @ts-ignore
-    if (typeof window !== "undefined" && window.dataLayer) {
-      console.log("window.dataLayer");
-      // @ts-ignore
-      window.dataLayer.push(assign(eventType, response || {}));
-      console.log("gtmEvent");
-      // @ts-ignore
-      gtmEvent.push(assign(eventType, response || {}));
-      console.log("gtm");
-      gtmEventPush({ test: true });
+    if (gtmEvent) {
+      gtmEvent.push(assign(eventType, response));
     }
     dispatch(refreshSessionData(response.token));
 
