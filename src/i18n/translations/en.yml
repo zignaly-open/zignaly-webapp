@@ -348,6 +348,8 @@ timeframe.days.60: "Last 60 Days"
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.settings.amounts: "Allocated amounts"
 srv.settings.strategy: "Strategy options"
+srv.settings.empty.1: "To modify your settings, change your current exchange account to "
+srv.settings.empty.2: "In order to connect from this exchange "
 srv.text.days: "Days"
 srv.text.expires: "Expires in "
 srv.text.expired: "Expired"

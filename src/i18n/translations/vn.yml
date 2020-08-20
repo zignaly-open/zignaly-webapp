@@ -287,6 +287,8 @@ timeframe.total: "Tổng"
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.settings.amounts: "Số tiền được phân bổ"
 srv.settings.strategy: "Lựa chọn chiến lược"
+srv.settings.empty.1: "CH-To modify your settings, change your current exchange account to "
+srv.settings.empty.2: "CH-In order to connect from this exchange "
 srv.text.days: "Ngày"
 srv.text.expires: "Hết hạn trong "
 srv.text.expired: "Đã hết hạn"

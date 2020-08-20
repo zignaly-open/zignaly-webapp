@@ -1393,7 +1393,11 @@ function userExchangeConnectionItemTransform(exchangeConnectionItem) {
   return transformedResponse;
 }
 
-function createExchangeConnectionEmptyEntity() {
+/**
+ *
+ * @returns {ExchangeConnectionEntity} Exchange connection entity.
+ */
+export function createExchangeConnectionEmptyEntity() {
   return {
     id: "",
     name: "",
