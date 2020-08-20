@@ -10,9 +10,9 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
-import { isEmpty } from "lodash";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
+import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView";
 
 const SignalProvidersSettings = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -22,37 +22,47 @@ const SignalProvidersSettings = () => {
   const [loading, setLoading] = useState(false);
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
+  const [settingsView, setSettingsView] = useState(false);
   const quotes = useQuoteAssets();
   const intl = useIntl();
 
   const loadSettings = () => {
-    setLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-      version: 2,
-    };
-    tradeApi
-      .providerExchangeSettingsGet(payload)
-      .then((response) => {
-        setSettings(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (
+      storeViews.provider.id &&
+      storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId
+    ) {
+      setLoading(true);
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: storeViews.provider.id,
+        internalExchangeId: storeSettings.selectedExchange.internalId,
+        version: 2,
+      };
+      tradeApi
+        .providerExchangeSettingsGet(payload)
+        .then((response) => {
+          setSettings(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
-  useEffect(loadSettings, [storeSettings.selectedExchange.internalId]);
+  useEffect(loadSettings, [storeSettings.selectedExchange.internalId, storeViews.provider.id]);
 
-  useEffect(() => {
-    if (settings.name && !isEmpty(quotes)) {
-      setLoading(false);
+  const matchExchange = () => {
+    if (storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId) {
+      setSettingsView(true);
+    } else {
+      setSettingsView(false);
     }
-  }, [settings, quotes]);
+  };
+
+  useEffect(matchExchange, [storeSettings.selectedExchange.internalId]);
 
   return (
     <Box className="profileSettingsPage">
@@ -75,9 +85,11 @@ const SignalProvidersSettings = () => {
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
-      {!loading && (
+      {!loading && settingsView && (
         <ProviderSettingsForm onUpdate={loadSettings} quotes={quotes} settings={settings} />
       )}
+
+      {!loading && !settingsView && <NoSettingsView />}
     </Box>
   );
 };
