@@ -41,6 +41,8 @@ export const startTradeApiSession = (response) => {
 
     dispatch(action);
     // Add event type with user entity properties.
+    console.log(gtmEventPush, eventType, response);
+    console.log(assign(eventType, response || {}));
     gtmEventPush(assign(eventType, response || {}));
     dispatch(refreshSessionData(response.token));
 
