@@ -349,6 +349,8 @@ timeframe.days.60: "CH-Last 60 Days"
 # TRADERS AND PROVIDERS - SERVICE CARDS
 srv.settings.amounts: "CH-Allocated amounts"
 srv.settings.strategy: "CH-Strategy options"
+srv.settings.empty.1: "CH-To modify your settings, change your current exchange account to "
+srv.settings.empty.2: "CH-In order to connect from this exchange "
 srv.text.days: "CH-Days"
 srv.text.expires: "CH-Expires in "
 srv.text.expired: "CH-Expired"
