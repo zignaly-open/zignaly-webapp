@@ -545,6 +545,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} openPositions
  * @property {number} closedPositions
  * @property {string} exchangeType
+ * @property {string} exchangeInternalId Connected exchange account id
  */
 
 /**
