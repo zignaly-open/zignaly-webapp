@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SelectInput.scss";
 import { Box, Typography, TextField, Select, MenuItem, Tooltip } from "@material-ui/core";
 import { Controller } from "react-hook-form";
@@ -26,7 +26,17 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  */
 const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
-  const { control } = formMethods;
+  const [val1, setVal1] = useState(value1);
+  const { control, register } = formMethods;
+
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {Void} None.
+   */
+  const handleChange1 = (e) => {
+    setVal1(e.target.value);
+  };
 
   return (
     <Box alignItems="center" className="selectInputBox" display="flex" flexDirection="row">
@@ -44,19 +54,15 @@ const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip
       </Box>
 
       <Box className="fieldInputBox" display="flex" flexDirection="row">
-        <Controller
-          as={
-            <TextField
-              className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
-              fullWidth
-              type="number"
-              variant="outlined"
-            />
-          }
-          control={control}
-          /* @ts-ignore */
-          defaultValue={value1}
+        <TextField
+          className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+          fullWidth
+          inputRef={register}
           name={name1}
+          onChange={handleChange1}
+          type="text"
+          value={val1}
+          variant="outlined"
         />
 
         <Controller
@@ -67,7 +73,6 @@ const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip
             </Select>
           }
           control={control}
-          /* @ts-ignore */
           defaultValue={value2}
           name={name2}
         />
