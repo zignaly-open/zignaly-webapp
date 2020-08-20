@@ -26,7 +26,8 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @returns {AppThunk} return action object.
  */
 export const startTradeApiSession = (response) => {
-  const { gtmEventPush } = gtmPushApi();
+  // @ts-ignore
+  const { gtmEventPush, gtmEvent } = gtmPushApi();
   const eventType = {
     event: "login",
   };
@@ -58,8 +59,10 @@ export const startTradeApiSession = (response) => {
     if (typeof window !== "undefined" && window.dataLayer) {
       console.log("window.dataLayer");
       // @ts-ignore
-
       window.dataLayer.push(assign(eventType, response || {}));
+      console.log("gtmEvent");
+      // @ts-ignore
+      gtmEvent.push(assign(eventType, response || {}));
       console.log("gtm");
       gtmEventPush({ test: true });
     }

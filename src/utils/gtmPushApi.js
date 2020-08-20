@@ -21,14 +21,19 @@ const gtmPushApi = () => {
    */
   let dataLayerPush = noop;
 
+  let dataLayer = null;
+
   // Check that GTM is loaded and available for usage.
   // @ts-ignore
   if (typeof window !== "undefined" && window.dataLayer) {
     // @ts-ignore
     dataLayerPush = window.dataLayer.push;
+    // @ts-ignore
+    dataLayer = window.dataLayer;
   }
 
-  return { gtmEventPush: dataLayerPush };
+  // @ts-ignore
+  return { gtmEventPush: dataLayerPush, gtmEvent: dataLayer };
 };
 
 export default gtmPushApi;
