@@ -52,8 +52,14 @@ export const startTradeApiSession = (response) => {
       // @ts-ignore
       window.dataLayer.push === gtmEventPush ? true : false,
     );
-    console.log(gtmEventPush(assign(eventType, response || {})));
-    gtmEventPush(assign(eventType, response || {}));
+    // console.log(gtmEventPush(assign(eventType, response || {})));
+    // gtmEventPush(assign(eventType, response || {}));
+    if (window.dataLayer) {
+      console.log("window.dataLayer");
+      window.dataLayer.push(assign(eventType, response || {}));
+      console.log("gtm");
+      gtmEventPush({ test: true });
+    }
     dispatch(refreshSessionData(response.token));
 
     // Navigate to return url or dashboard
