@@ -83,7 +83,7 @@ export const endTradeApiSession = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const registerUser = (payload, setLoading) => {
-  const { gtmEventPush } = gtmPushApi();
+  const { gtmEvent } = gtmPushApi();
   const eventType = {
     event: "signup",
   };
@@ -92,7 +92,7 @@ export const registerUser = (payload, setLoading) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
       // Add event type with user entity properties.
-      gtmEventPush(assign(eventType, responseData || {}));
+      gtmEvent.push(assign(eventType, responseData || {}));
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {
