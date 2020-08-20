@@ -17,10 +17,7 @@ import CustomTooltip from "../../CustomTooltip";
  * @returns {JSX.Element} Component JSX.
  */
 const UserSummary = ({ providerId, quote, isCopyTrading }) => {
-  const providerUserInfo = useProviderUserInfo(providerId);
-  const profitPerc = providerUserInfo.allocatedBalance
-    ? (providerUserInfo.profitsSinceCopying / providerUserInfo.allocatedBalance) * 100
-    : 0;
+  const { providerUserInfo, profitPerc } = useProviderUserInfo(providerId);
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (

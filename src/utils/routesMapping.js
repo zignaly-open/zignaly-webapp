@@ -1,6 +1,7 @@
 /**
  *
  * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 /**
  * @typedef {Object} NavigationLink Navigation link object.
@@ -225,10 +226,11 @@ export const createTraderRoutes = (providerId, provider) => {
  * Map path to section navigation object.
  *
  * @param {String} providerId ID of the opened signalProvider.
- * @param {DefaultProviderGetObject} provider Path to map section links for.
+ * @param {DefaultProviderGetObject} provider Provider entity.
+ * @param {ExchangeConnectionEntity} selectedExchange Selected exchange account.
  * @returns {SectionNavigation} A section navigation object.
  */
-export const createProviderRoutes = (providerId, provider) => {
+export const createProviderRoutes = (providerId, provider, selectedExchange) => {
   if (providerId) {
     let data = {
       id: "providerProfile",
@@ -243,10 +245,6 @@ export const createProviderRoutes = (providerId, provider) => {
           id: "srv.analytics",
           to: `/signalProviders/${provider.id}/analytics`,
         },
-        {
-          id: "srv.settings",
-          to: `/signalProviders/${provider.id}/settings`,
-        },
       ],
     };
 
@@ -254,6 +252,13 @@ export const createProviderRoutes = (providerId, provider) => {
       data.links.push({
         id: "srv.newsfeed",
         to: `/signalProviders/${provider.id}/news`,
+      });
+    }
+
+    if (!provider.disable && provider.exchangeInternalId === selectedExchange.internalId) {
+      data.links.push({
+        id: "srv.settings",
+        to: `/signalProviders/${provider.id}/settings`,
       });
     }
 
