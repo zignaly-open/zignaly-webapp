@@ -43,11 +43,13 @@ export const startTradeApiSession = (response) => {
     // Add event type with user entity properties.
     console.log(gtmEventPush, eventType, response);
     console.log("test", assign(eventType, response || {}));
-    // @ts-ignore
     console.log(
       "win",
+      // @ts-ignore
       window.dataLayer,
+      // @ts-ignore
       window.dataLayer.push({ test: true }),
+      // @ts-ignore
       window.dataLayer.push === gtmEventPush,
     );
     console.log(gtmEventPush(assign(eventType, response || {})));
