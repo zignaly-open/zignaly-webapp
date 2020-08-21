@@ -6,7 +6,7 @@ import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
-import { uniqBy } from "lodash";
+import { uniqBy, assign } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
@@ -14,6 +14,7 @@ import {
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
@@ -32,26 +33,29 @@ import { useDispatch } from "react-redux";
  */
 
 /**
+ * @typedef {Object} Filters
+ * @property {string} quote
+ * @property {string} exchange
+ * @property {string} exchangeType
+ * @property {string} fromUser
+ */
+
+/**
  * @typedef {Object} ProvidersData
  * @property {ProvidersCollection} providers
  * @property {number} timeFrame
  * @property {function} setTimeFrame
- * @property {OptionType} coin
- * @property {Array<OptionType>} coins
- * @property {function} setCoin
- * @property {string} exchange
+ * @property {Array<OptionType>} quotes
  * @property {Array<OptionType>} exchanges
- * @property {string} exchangeType
  * @property {Array<OptionType>} exchangeTypes
- * @property {function} setExchange
  * @property {function} setExchangeType
- * @property {function} setFromUser
- * @property {string} fromUser
  * @property {Array<OptionType>} fromUserOptions
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
  * @property {function} clearSort
+ * @property {function} setFilters
+ * @property {Filters} filters
  */
 
 /**
@@ -87,9 +91,20 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const storeFilters = storeSettings.filters[page] || {};
 
+  const [filters, setFilters] = useState({
+    ...(!connectedOnly && {
+      ...(copyTradersOnly && {
+        quote: storeFilters.quote || "ALL",
+        exchange: storeFilters.exchange || "ALL",
+        exchangeType: storeFilters.exchangeType || "ALL",
+      }),
+      fromUser: storeFilters.fromUser || "ALL",
+    }),
+  });
+
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
-  const coins = [
+  const quotes = [
     {
       val: "ALL",
       label: intl.formatMessage({ id: "fil.allcoins" }),
@@ -101,23 +116,8 @@ const useProvidersList = (options) => {
     })),
   );
 
-  const initQuote = storeSettings.filters.copyt.quote;
-  const [quote, setQuote] = useState(
-    !initQuote || initQuote === "ALL"
-      ? coins[0]
-      : {
-          val: initQuote,
-          label: initQuote,
-        },
-  );
-
-  // Exchanges
-  const initExchange = storeFilters.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
-  const [exchange, setExchange] = useState(initExchange);
 
-  // Exchange Types
-  const initExchangeType = storeFilters.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
@@ -128,29 +128,11 @@ const useProvidersList = (options) => {
     { val: "spot", label: "Spot" },
     { val: "futures", label: "Futures" },
   ];
-  const [exchangeType, setExchangeType] = useState(initExchangeType);
 
-  const initFromUser = storeFilters.fromUser || "ALL";
   const fromUserOptions = [
     { val: "ALL", label: "All Services" },
     { val: "userOwned", label: "My Services" },
   ];
-  const [fromUser, setFromUser] = useState(initFromUser);
-
-  // Save filters to store when changed
-  const saveFilters = () => {
-    dispatch(
-      setFiltersAction({
-        filters: {
-          fromUser,
-          ...(page === "copyt" && { exchange, quote: quote.val, exchangeType }),
-        },
-        // @ts-ignore
-        page,
-      }),
-    );
-  };
-  useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType, fromUser]);
 
   // Sort
   const initSort = () => {
@@ -164,10 +146,14 @@ const useProvidersList = (options) => {
 
   // Reset filters
   const clearFilters = () => {
-    setQuote(coins[0]);
-    setExchange("ALL");
-    setExchangeType("ALL");
-    setFromUser("ALL");
+    setFilters({
+      ...(copyTradersOnly && {
+        quote: "ALL",
+        exchange: "ALL",
+        exchangeType: "ALL",
+      }),
+      fromUser: "ALL",
+    });
   };
 
   const clearSort = () => {
@@ -238,22 +224,27 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    const res = list.filter(
+    const matches = list.filter(
       (p) =>
-        (quote.val === "ALL" || p.quote === quote.val) &&
-        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
-        (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()) &&
-        (fromUser === "ALL" || p.isFromUser),
+        (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
+        (!filters.exchange ||
+          filters.exchange === "ALL" ||
+          p.exchanges.includes(filters.exchange.toLowerCase())) &&
+        (!filters.exchangeType ||
+          filters.exchangeType === "ALL" ||
+          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
     );
-    sortProviders(res);
+    sortProviders(matches);
   };
+
   // Filter providers on filter change
   useEffect(() => {
     if (providers.list) {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote, exchange, exchangeType, fromUser]);
+  }, [filters]);
 
   const loadProviders = () => {
     /**
@@ -291,26 +282,51 @@ const useProvidersList = (options) => {
     internalExchangeId,
   ]);
 
+  const modifiedFilters = () => {
+    let count = 0;
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== "ALL") {
+        count++;
+      }
+    });
+    return count;
+  };
+
+  /**
+   * Combine external state filters with local state.
+   *
+   * @param {defaultFilters} values External filter values.
+   *
+   * @returns {Void} None.
+   */
+  const combineFilters = (values) => {
+    const newFilters = assign({}, filters, values);
+    setFilters(newFilters);
+
+    dispatch(
+      setFiltersAction({
+        filters,
+        // @ts-ignore
+        page,
+      }),
+    );
+  };
+
   return {
     providers: providers.filteredList,
     timeFrame,
     setTimeFrame,
-    coin: quote,
-    coins,
-    setCoin: setQuote,
-    exchange,
+    quotes,
     exchanges,
-    setExchange,
-    exchangeType,
-    setExchangeType,
     exchangeTypes,
-    fromUser,
-    setFromUser,
     fromUserOptions,
+    filters,
+    setFilters: combineFilters,
     sort,
     setSort,
     clearFilters,
     clearSort,
+    modifiedFilters: modifiedFilters(),
   };
 };
 

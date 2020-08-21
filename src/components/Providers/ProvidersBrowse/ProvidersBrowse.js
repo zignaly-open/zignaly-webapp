@@ -37,8 +37,7 @@ const ProvidersBrowse = ({
     providers,
     timeFrame,
     setTimeFrame,
-    coin,
-    coins,
+    quotes,
     setCoin,
     exchange,
     exchanges,
@@ -53,6 +52,8 @@ const ProvidersBrowse = ({
     setSort,
     clearFilters,
     clearSort,
+    filters,
+    setFilters,
   } = useProvidersList(providersOptions);
   const intl = useIntl();
 
@@ -61,8 +62,7 @@ const ProvidersBrowse = ({
       {toggleFilters && (
         <ProvidersFilters
           clearFilters={clearFilters}
-          coin={coin}
-          coins={coins}
+          quotes={quotes}
           copyTradersOnly={copyTradersOnly}
           exchange={exchange}
           exchangeType={exchangeType}
@@ -76,6 +76,8 @@ const ProvidersBrowse = ({
           onExchangeTypeChange={setExchangeType}
           onFromUserChange={setFromUser}
           open={showFilters}
+          setFilters={setFilters}
+          filters={filters}
         />
       )}
       {toggleSort && (

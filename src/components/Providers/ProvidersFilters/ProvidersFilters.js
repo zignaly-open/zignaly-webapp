@@ -35,21 +35,15 @@ import { useIntl } from "react-intl";
  */
 const ProvidersFilters = ({
   onClose,
-  coin,
-  coins,
-  exchange,
+  quotes,
   exchanges,
-  exchangeType,
   exchangeTypes,
-  onExchangeTypeChange,
-  onCoinChange,
-  onExchangeChange,
   clearFilters,
   open,
-  fromUser,
   fromUserOptions,
-  onFromUserChange,
   copyTradersOnly,
+  filters,
+  setFilters,
 }) => {
   const intl = useIntl();
 
@@ -67,10 +61,10 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "col.coin",
           })}
-          onChange={onCoinChange}
-          options={coins}
+          onChange={(val) => setFilters({ quote: val.val })}
+          options={quotes}
           search={true}
-          value={coin}
+          value={filters.quote}
         />
       )}
       {copyTradersOnly && (
@@ -78,9 +72,9 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "accounts.exchange",
           })}
-          onChange={onExchangeChange}
+          onChange={(v) => setFilters({ exchange: v })}
           options={exchanges}
-          value={exchange}
+          value={filters.exchange}
         />
       )}
       {copyTradersOnly && (
@@ -88,18 +82,18 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "srv.edit.exchangetype",
           })}
-          onChange={onExchangeTypeChange}
+          onChange={(v) => setFilters({ exchangeType: v })}
           options={exchangeTypes}
-          value={exchangeType}
+          value={filters.exchangeType}
         />
       )}
       <CustomSelect
         label={intl.formatMessage({
           id: "srv.filters.userowned",
         })}
-        onChange={onFromUserChange}
+        onChange={(v) => setFilters({ fromUser: v })}
         options={fromUserOptions}
-        value={fromUser}
+        value={filters.fromUser}
       />
     </CustomFilters>
   );
