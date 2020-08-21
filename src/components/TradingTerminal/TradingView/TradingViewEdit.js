@@ -13,9 +13,13 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
+import {
+  useStoreUserData,
+  useStoreUserExchangeConnections,
+} from "../../../hooks/useStoreUserSelector";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
+import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiClient.types";
 
 /**
  * @typedef {any} TVWidget
@@ -47,8 +51,10 @@ const TradingViewEdit = (props) => {
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
   const [marketData, setMarketData] = useState(null);
   const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
 
@@ -63,17 +69,35 @@ const TradingViewEdit = (props) => {
     setPositionEntity(responseData);
   };
 
-  const getMarketData = async () => {
+  /**
+   *
+   * @param {String} exchangeInternalId Exchange internal id.
+   * @returns {Void} None.
+   */
+  const getMarketData = (exchangeInternalId) => {
     const marketDataPayload = {
       token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
+      exchangeInternalId: exchangeInternalId,
     };
+    tradeApi
+      .exchangeConnectionMarketDataGet(marketDataPayload)
+      .then((data) => {
+        setMarketData(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
 
-    try {
-      const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
-      setMarketData(data);
-    } catch (e) {
-      dispatch(showErrorAlert(e));
+  /**
+   *
+   * @param {String} exchangeInternalId Exchange internal id.
+   * @returns {Void} None.
+   */
+  const filterExchange = (exchangeInternalId) => {
+    let found = exchangeConnections.find((item) => item.internalId === exchangeInternalId);
+    if (found) {
+      setExchange(found);
     }
   };
 
@@ -93,6 +117,8 @@ const TradingViewEdit = (props) => {
       .positionGet(payload)
       .then((data) => {
         initializePosition(data);
+        getMarketData(data.internalExchangeId);
+        filterExchange(data.internalExchangeId);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -107,7 +133,6 @@ const TradingViewEdit = (props) => {
   };
 
   const loadDependencies = () => {
-    getMarketData();
     fetchPosition();
     const checkExist = setInterval(() => {
       // @ts-ignore
@@ -136,7 +161,7 @@ const TradingViewEdit = (props) => {
    * @returns {string} Exchange name.
    */
   const resolveExchangeName = () => {
-    return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+    return exchange.exchangeName || exchange.name;
   };
 
   const bootstrapWidget = () => {
@@ -162,8 +187,7 @@ const TradingViewEdit = (props) => {
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
-    const symbolSuffix =
-      storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+    const symbolSuffix = exchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
     const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
