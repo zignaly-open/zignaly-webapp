@@ -1,8 +1,6 @@
-import { noop } from "lodash";
-
 /**
  * @typedef {Object} GtmPushApi
- * @property {Function} gtmEventPush GTM API push function.
+ * @property {Array<*>} gtmEvent GTM API push function.
  */
 
 /**
@@ -16,19 +14,16 @@ import { noop } from "lodash";
  * @returns {GtmPushApi} GTM push hook object.
  */
 const gtmPushApi = () => {
-  /**
-   * @type {Function}
-   */
-  let dataLayerPush = noop;
+  let dataLayer = null;
 
   // Check that GTM is loaded and available for usage.
   // @ts-ignore
   if (typeof window !== "undefined" && window.dataLayer) {
     // @ts-ignore
-    dataLayerPush = window.dataLayer.push;
+    dataLayer = window.dataLayer;
   }
 
-  return { gtmEventPush: dataLayerPush };
+  return { gtmEvent: dataLayer };
 };
 
 export default gtmPushApi;
