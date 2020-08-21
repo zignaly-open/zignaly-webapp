@@ -84,6 +84,9 @@ const useProvidersList = (options) => {
     page = copyTradersOnly ? "copyt" : "signalp";
   }
 
+  // @ts-ignore
+  const storeFilters = storeSettings.filters[page] || {};
+
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const coins = [
@@ -109,12 +112,12 @@ const useProvidersList = (options) => {
   );
 
   // Exchanges
-  const initExchange = storeSettings.filters.copyt.exchange || "ALL";
+  const initExchange = storeFilters.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
   const [exchange, setExchange] = useState(initExchange);
 
   // Exchange Types
-  const initExchangeType = storeSettings.filters.copyt.exchangeType || "ALL";
+  const initExchangeType = storeFilters.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
@@ -127,7 +130,7 @@ const useProvidersList = (options) => {
   ];
   const [exchangeType, setExchangeType] = useState(initExchangeType);
 
-  const initFromUser = storeSettings.filters.copyt.fromUser || "ALL";
+  const initFromUser = storeFilters.fromUser || "ALL";
   const fromUserOptions = [
     { val: "ALL", label: "All Services" },
     { val: "userOwned", label: "My Services" },
@@ -136,23 +139,16 @@ const useProvidersList = (options) => {
 
   // Save filters to store when changed
   const saveFilters = () => {
-    if (page === "signalp") {
-      dispatch(
-        setFiltersAction({
-          filters: { fromUser },
-          // @ts-ignore
-          page,
-        }),
-      );
-    } else {
-      dispatch(
-        setFiltersAction({
-          filters: { exchange, quote: quote.val, exchangeType, fromUser },
-          // @ts-ignore
-          page,
-        }),
-      );
-    }
+    dispatch(
+      setFiltersAction({
+        filters: {
+          fromUser,
+          ...(page === "copyt" && { exchange, quote: quote.val, exchangeType }),
+        },
+        // @ts-ignore
+        page,
+      }),
+    );
   };
   useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType, fromUser]);
 
@@ -171,6 +167,7 @@ const useProvidersList = (options) => {
     setQuote(coins[0]);
     setExchange("ALL");
     setExchangeType("ALL");
+    setFromUser("ALL");
   };
 
   const clearSort = () => {
@@ -241,17 +238,13 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    // Filter only copy traders
-    const res = copyTradersOnly
-      ? list.filter(
-          (p) =>
-            (quote.val === "ALL" || p.quote === quote.val) &&
-            (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
-            (exchangeType === "ALL" ||
-              p.exchangeType.toLowerCase() === exchangeType.toLowerCase()) &&
-            (fromUser === "ALL" || p.isFromUser),
-        )
-      : list.filter((p) => fromUser === "ALL" || p.isFromUser);
+    const res = list.filter(
+      (p) =>
+        (quote.val === "ALL" || p.quote === quote.val) &&
+        (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
+        (exchangeType === "ALL" || p.exchangeType.toLowerCase() === exchangeType.toLowerCase()) &&
+        (fromUser === "ALL" || p.isFromUser),
+    );
     sortProviders(res);
   };
   // Filter providers on filter change
