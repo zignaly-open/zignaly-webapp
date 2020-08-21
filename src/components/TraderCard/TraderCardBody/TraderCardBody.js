@@ -11,6 +11,8 @@ import { formatFloat2Dec } from "../../../utils/format";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import ConditionalWrapper from "../../ConditionalWrapper";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -63,28 +65,15 @@ const TraderCard = (props) => {
     returns,
   } = provider;
 
-  const { darkStyle } = useStoreSettingsSelector();
+  const { darkStyle, selectedExchange, conn } = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
 
   /**
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-  //   let cumulativeTotalProfits = 0;
-  //   let cumulativeTotalInvested = 0;
   dailyReturns.reduce((acc, item) => {
-    // if (isCopyTrading) {
     acc += item.returns;
-    // } else {
-    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
-    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
-    //   //   if (cumulativeTotalInvested) {
-    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-    //   //   }
-    // }
-    // chartData.push({
-    //   day: item.name,
-    //   returns: acc.toFixed(2),
-    // });
     chartData.values.push(acc);
     chartData.labels.push(item.name);
     return acc;
@@ -194,11 +183,35 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {!disable && (
-                <CustomButton className="textPurple">
-                  <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
-                </CustomButton>
-              )}
+              {!disable &&
+                (selectedExchange.internalId !== provider.exchangeInternalId ? (
+                  <CustomToolip
+                    title={
+                      <FormattedMessage
+                        id={
+                          isCopyTrading
+                            ? "copyt.follow.anotheraccount"
+                            : "srv.follow.anotheraccount"
+                        }
+                        values={{
+                          account: exchangeConnections.find(
+                            (a) => a.internalId === provider.exchangeInternalId,
+                          ).internalName,
+                        }}
+                      />
+                    }
+                  >
+                    <div>
+                      <CustomButton className="textPurple" disabled={true}>
+                        <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                      </CustomButton>
+                    </div>
+                  </CustomToolip>
+                ) : (
+                  <CustomButton className="textPurple">
+                    <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                  </CustomButton>
+                ))}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
               </CustomButton>
