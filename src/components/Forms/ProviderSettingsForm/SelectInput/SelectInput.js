@@ -11,8 +11,8 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @typedef {Object} DefaultProps
  * @property {FormMethods} formMethods
  * @property {JSX.Element} label
- * @property {String|Number} value1
- * @property {String|Number} value2
+ * @property {String} value1
+ * @property {String} value2
  * @property {String} name1
  * @property {String} name2
  * @property {JSX.Element} tooltip
@@ -26,7 +26,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  */
 const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
-  const [val1, setVal1] = useState(value1);
+  const [val1, setVal1] = useState(value1.toString().replace(",", "."));
   const { control, register } = formMethods;
 
   /**
@@ -35,7 +35,10 @@ const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip
    * @returns {Void} None.
    */
   const handleChange1 = (e) => {
-    setVal1(e.target.value);
+    let data = e.target.value;
+    if (data.match(/^[0-9]\d*(?:\.\d{0,8})?$/) || data === "") {
+      setVal1(data);
+    }
   };
 
   return (
