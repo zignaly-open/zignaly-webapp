@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TraderCardBody.scss";
 import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
@@ -12,7 +12,10 @@ import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
-import ConditionalWrapper from "../../ConditionalWrapper";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../services/tradeApiClient";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -51,6 +54,7 @@ const tooltipFormat = (tooltipItem) => (
  */
 const TraderCard = (props) => {
   const intl = useIntl();
+  const dispatch = useDispatch();
   const { provider, showSummary, timeFrame } = props;
   const {
     openPositions,
@@ -67,6 +71,8 @@ const TraderCard = (props) => {
 
   const { darkStyle, selectedExchange, conn } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
+  const storeSession = useStoreSessionSelector();
+  const [loading, setLoading] = useState(false);
 
   /**
    * @type {ChartData}
@@ -106,6 +112,29 @@ const TraderCard = (props) => {
     } else {
       navigate(`/signalProviders/${provider.id}`);
     }
+  };
+
+  const stopFollowing = () => {
+    setLoading(true);
+    const payload = {
+      disable: true,
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      type: "connected",
+    };
+    tradeApi
+      .providerDisable(payload)
+      .then((response) => {
+        if (response) {
+          dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -208,7 +237,7 @@ const TraderCard = (props) => {
                     </div>
                   </CustomToolip>
                 ) : (
-                  <CustomButton className="textPurple">
+                  <CustomButton className="textPurple" loading={loading}>
                     <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
                   </CustomButton>
                 ))}
