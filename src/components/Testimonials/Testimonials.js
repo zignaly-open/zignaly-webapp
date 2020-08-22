@@ -1,42 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Testimonials.scss";
 import { Box } from "@material-ui/core";
 import Testimonial from "./Testimonial";
 import CustomButton from "../CustomButton";
-import { default as testominalFeed } from "../../utils/testimonialFeed.json";
+import testominalFeed from "../../utils/testimonialFeed.json";
 
 const Testimonials = () => {
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(6);
-
-  useEffect(() => {
-    /**
-     * Testimonials pagination.
-     *
-     * @param {Number} size Size of testimonials to display
-     * @returns {void}
-     */
-    const feedData = (size) => {
-      let arr = [];
-      for (let a = 0; a < size; a++) {
-        arr.push(testominalFeed[a]);
-      }
-      setData(arr);
-    };
-
-    feedData(pageSize);
-  }, [pageSize]);
 
   const loadMoreData = () => {
     let size = pageSize + 6 > testominalFeed.length ? testominalFeed.length : pageSize + 6;
     setPageSize(size);
   };
 
+  const testimonials = testominalFeed.slice(0, pageSize);
+
   return (
     <Box className="testimonials">
       <span className="title">Testimonials</span>
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
-        {data && data.map((item) => <Testimonial data={item} key={item.id} />)}
+        {testimonials.map((item) => (
+          <Testimonial data={item} key={item.id} />
+        ))}
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="center">
         <CustomButton

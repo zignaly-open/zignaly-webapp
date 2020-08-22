@@ -18,7 +18,8 @@
             "esnext"
         ],
         "removeComments": false,
-        "pretty": true
+        "pretty": true,
+        "resolveJsonModule": true,
     },
     "include": [
         "./src/**/*",
