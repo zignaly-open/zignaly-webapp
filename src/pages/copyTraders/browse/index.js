@@ -22,7 +22,7 @@ import "./copyTradersBrowse.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTradersBrowse = (props) => {
-  const { showFilters, showSort, toggleFilters, toggleSort } = props;
+  const { showFilters, showSort, toggleFilters, toggleSort, setModifiedFiltersCount } = props;
   const intl = useIntl();
 
   return (
@@ -43,6 +43,7 @@ const CopyTradersBrowse = (props) => {
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
+        setModifiedFiltersCount={setModifiedFiltersCount}
         type="copyt"
       />
     </Box>

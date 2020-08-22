@@ -305,7 +305,7 @@ const useProvidersList = (options) => {
 
     dispatch(
       setFiltersAction({
-        filters,
+        filters: newFilters,
         // @ts-ignore
         page,
       }),

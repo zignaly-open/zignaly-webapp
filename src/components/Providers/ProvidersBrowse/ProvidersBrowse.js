@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useIntl } from "react-intl";
 import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
@@ -30,6 +30,7 @@ const ProvidersBrowse = ({
   showSort,
   type,
   connectedOnly,
+  setModifiedFiltersCount,
 }) => {
   const copyTradersOnly = type === "copyt";
   const providersOptions = { copyTradersOnly, connectedOnly };
@@ -38,24 +39,22 @@ const ProvidersBrowse = ({
     timeFrame,
     setTimeFrame,
     quotes,
-    setCoin,
-    exchange,
     exchanges,
-    setExchange,
-    exchangeType,
-    setExchangeType,
     exchangeTypes,
-    fromUser,
     fromUserOptions,
-    setFromUser,
     sort,
     setSort,
     clearFilters,
     clearSort,
     filters,
     setFilters,
+    modifiedFilters,
   } = useProvidersList(providersOptions);
   const intl = useIntl();
+
+  useEffect(() => {
+    setModifiedFiltersCount(modifiedFilters);
+  }, [modifiedFilters]);
 
   return (
     <Box className="providersBrowse">
@@ -64,20 +63,14 @@ const ProvidersBrowse = ({
           clearFilters={clearFilters}
           quotes={quotes}
           copyTradersOnly={copyTradersOnly}
-          exchange={exchange}
-          exchangeType={exchangeType}
-          exchangeTypes={exchangeTypes}
           exchanges={exchanges}
-          fromUser={fromUser}
+          exchangeTypes={exchangeTypes}
           fromUserOptions={fromUserOptions}
           onClose={toggleFilters}
-          onCoinChange={setCoin}
-          onExchangeChange={setExchange}
-          onExchangeTypeChange={setExchangeType}
-          onFromUserChange={setFromUser}
           open={showFilters}
           setFilters={setFilters}
           filters={filters}
+          modifiedFilters={modifiedFilters}
         />
       )}
       {toggleSort && (
