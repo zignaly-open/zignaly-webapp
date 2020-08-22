@@ -51,10 +51,11 @@ const PositionsTable = (props) => {
     positionsAll,
     positionsFiltered,
     setFilters,
-    filtersState,
+    filters,
     loading,
     filtersVisibility,
     setFiltersVisibility,
+    clearFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
@@ -266,7 +267,8 @@ const PositionsTable = (props) => {
 
     return (
       <PositionFilters
-        initialState={filtersState}
+        filters={filters}
+        clearFilters={clearFilters}
         onChange={setFilters}
         positions={positionsAll}
         showTypesFilter={showTypesFilter}

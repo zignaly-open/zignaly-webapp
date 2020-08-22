@@ -67,7 +67,9 @@ import { useDispatch } from "react-redux";
 const useFilters = (defaultValues, storeValues = {}, page) => {
   const initialValues = {};
   Object.entries(defaultValues).forEach(([key, value]) => {
-    initialValues[key] = storeValues[key] || defaultValues[key];
+    initialValues[key] =
+      (typeof storeValues[key] === typeof defaultValues[key] && storeValues[key]) ||
+      defaultValues[key];
   });
   const [filters, setFilters] = useState(initialValues);
   const dispatch = useDispatch();

@@ -10,6 +10,7 @@ import { setFilters as setFiltersAction } from "../store/actions/settings";
 import useStoreViewsSelector from "./useStoreViewsSelector";
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -68,7 +69,6 @@ const usePositionsList = (
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
-  const storeFilters = storeSettings.filters[persistKey];
   const { selectedExchange } = storeSettings;
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(selectedExchange.exchangeId);
@@ -76,13 +76,6 @@ const usePositionsList = (
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const defaultFilters = {
-    providerId: (storeFilters && storeFilters.providerId) || "all",
-    pair: (storeFilters && storeFilters.pair) || "all",
-    side: (storeFilters && storeFilters.side) || "all",
-    type: (storeFilters && storeFilters.type) || "all",
-    status: (storeFilters && storeFilters.status) || "",
-  };
 
   /**
    * @type {PositionsState}
@@ -95,7 +88,21 @@ const usePositionsList = (
     profileClosed: null,
   };
 
-  const [filters, setFilters] = useState(defaultFilters);
+  const storeFilters = storeSettings.filters[persistKey];
+  const defaultFilters = {
+    providerId: "all",
+    pair: "all",
+    side: "all",
+    type: "all",
+    status: "",
+  };
+
+  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
+    defaultFilters,
+    storeFilters,
+    persistKey,
+  );
+
   const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
   const storeSession = useStoreSessionSelector();
   const statusRef = useRef(filters.status);
@@ -353,20 +360,6 @@ const usePositionsList = (
   };
   useInterval(updateData, 3000, true);
 
-  /**
-   * Update filters with selected exchange.
-   *
-   * @returns {Void} None.
-   */
-  const updateFilters = () => {
-    const newFilters = {
-      ...filters,
-    };
-
-    setFilters(newFilters);
-  };
-  useEffect(updateFilters, []);
-
   const handlePositionTypeChange = () => {
     typeRef.current = type;
   };
@@ -392,24 +385,13 @@ const usePositionsList = (
     }
   };
 
-  /**
-   * Combine external state filters with local state.
-   *
-   * @param {defaultFilters} values External filter values.
-   *
-   * @returns {Void} None.
-   */
-  const combineFilters = (values) => {
-    const newFilters = assign({}, filters, values);
-    setFilters(newFilters);
-    dispatch(setFiltersAction({ page: persistKey, filters: newFilters }));
-  };
-
   return {
     positionsAll: positions[type] || [],
     positionsFiltered: filterData(positions[type] || []),
-    setFilters: combineFilters,
-    filtersState: filters,
+    setFilters,
+    filters,
+    clearFilters,
+    modifiedFilters,
     loading: loading,
     flagPositionUpdating,
     filtersVisibility,

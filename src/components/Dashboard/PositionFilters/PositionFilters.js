@@ -28,15 +28,7 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { initialState, onChange, positions, showTypesFilter } = props;
-  const defaultFilters = {
-    providerId: "all",
-    pair: "all",
-    side: "all",
-    type: "all",
-    status: "",
-  };
-  const [filters, setFilters] = useState(initialState);
+  const { filters, onChange, positions, showTypesFilter, clearFilters } = props;
 
   const extractPairOptions = () => {
     const coinsDistinct = uniqBy(positions, "pair").map((position) => {
@@ -71,14 +63,6 @@ const PositionFilters = (props) => {
   ];
 
   const providerOptions = extractProviderOptions();
-
-  const clearFilters = () => {
-    setFilters(defaultFilters);
-  };
-
-  const broadcastChange = () => {
-    onChange(filters);
-  };
 
   /**
    * Set provider filter value.
@@ -146,41 +130,41 @@ const PositionFilters = (props) => {
     });
   };
 
-  useEffect(broadcastChange, [filters]);
-
-  //   console.log(
-  //     providerOptions.find((p) => p.val === filters.providerId),
-  //     filters.providerName,
-  //   );
-  //   const selectedProvider = providerOptions.find((p) => p.val === filters.providerName)
-  //     ? filters.providerName
-  //     : defaultFilters.providerName;
-
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (
-        <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
+        <CustomSelect
+          label=""
+          onChange={(v) => onChange({ type: v })}
+          options={types}
+          value={filters.type}
+        />
       )}
       <CustomSelect
         label=""
-        onChange={setProvider}
+        onChange={(v) => onChange({ providerId: v })}
         options={providerOptions}
         value={filters.providerId}
       />
       <CustomSelect
         label=""
-        onChange={setCoin}
+        onChange={(v) => onChange({ pair: v.val })}
         options={pairOptions}
         search={true}
         value={filters.pair}
       />
-      <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
+      <CustomSelect
+        label=""
+        onChange={(v) => onChange({ side: v })}
+        options={sides}
+        value={filters.side}
+      />
       {showTypesFilter && (
         <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
           <Checkbox
             checked={filters.status === "all"}
             inputProps={{ "aria-label": "primary checkbox" }}
-            onChange={setStatus}
+            onChange={(e) => onChange({ status: e.currentTarget.checked ? "all" : "" })}
           />
           <FormattedMessage id="positions.log.filter.status" />
         </Box>
