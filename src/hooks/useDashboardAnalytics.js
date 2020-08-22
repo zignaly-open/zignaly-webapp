@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import { setFilters } from "../store/actions/settings";
 import useEffectSkipFirst from "./useEffectSkipFirst";
+import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -53,18 +53,6 @@ const useDashboardAnalytics = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
-  const pageKey = "dashboardAnalytics";
-
-  // time frames
-  const timeFrames = useDashboardAnalyticsTimeframeOptions();
-  const initTimeFrame = storeSettings.filters[pageKey].timeFrame || "3";
-  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
-
-  // quotes
-  const quoteAssets = useQuoteAssets();
-  const quotes = Object.keys(quoteAssets);
-  const initQuote = storeSettings.filters[pageKey].quote || "USDT";
-  const [quote, setQuote] = useState(initQuote);
 
   let providerAssets = useReadOnlyProviders();
   providerAssets = providerAssets.filter((item) => item.hasBeenUsed);
@@ -83,43 +71,36 @@ const useDashboardAnalytics = () => {
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
 
-  // Load saved provider.
-  // We store the label and value in order to display it in the
-  // dropdown before the providers list is resolved)
-  const savedProvider = storeSettings.filters[pageKey].provider;
-  const initProvider = savedProvider || providers[1];
-  const [provider, setProvider] = useState(initProvider);
-
-  // Save settings to store when changed
-  const saveQuote = () => {
-    dispatch(
-      setFilters({
-        page: pageKey,
-        filters: {
-          timeFrame,
-          quote,
-          provider,
-        },
-      }),
-    );
+  const page = "dashboardAnalytics";
+  const storeFilters = storeSettings.filters[page];
+  const defaultFilters = {
+    timeFrame: "3",
+    quote: "USDT",
+    // Store provider's label and value in order to display it in the
+    // dropdown before the providers list is resolved
+    provider: providers[1],
   };
-  useEffectSkipFirst(saveQuote, [timeFrame, quote, provider]);
 
-  const clearFilters = () => {
-    setQuote("USDT");
-    setTimeFrame("3");
-    setProvider(providers[1]);
-  };
+  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
+    defaultFilters,
+    storeFilters,
+    page,
+  );
+
+  const timeFrames = useDashboardAnalyticsTimeframeOptions();
+
+  const quoteAssets = useQuoteAssets();
+  const quotes = Object.keys(quoteAssets);
 
   const loadDashboardStats = () => {
     setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,
-      quote,
-      timeFrame,
+      quote: filters.quote,
+      timeFrame: filters.timeFrame,
       includeOpenPositions: true,
-      providerId: provider.val,
+      providerId: filters.provider.val,
       timeFrameFormat: "lastXDays",
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
@@ -138,9 +119,7 @@ const useDashboardAnalytics = () => {
 
   // Load stats at init and on filters change
   useEffect(loadDashboardStats, [
-    timeFrame,
-    quote,
-    provider,
+    filters,
     storeSettings.selectedExchange.internalId,
     storeSession.tradeApi.accessToken,
   ]);
@@ -148,16 +127,12 @@ const useDashboardAnalytics = () => {
   return {
     stats,
     timeFrames,
-    timeFrame,
-    setTimeFrame,
     quotes,
-    quote,
-    setQuote,
-    provider,
     providers,
-    setProvider,
     clearFilters,
     loading,
+    filters,
+    setFilters,
   };
 };
 

@@ -13,38 +13,30 @@ const Analytics = () => {
   const {
     stats,
     timeFrames,
-    timeFrame,
-    setTimeFrame,
     quotes,
-    quote,
-    setQuote,
-    provider,
     providers,
-    setProvider,
     clearFilters,
     loading,
+    setFilters,
+    filters,
   } = useDashboardAnalytics();
 
   return (
     <Box>
       <Filters
         onClear={clearFilters}
-        onProviderChange={setProvider}
-        onQuoteChange={setQuote}
-        onTimeFrameChange={setTimeFrame}
-        provider={provider}
         providers={providers}
-        quote={quote}
         quotes={quotes}
-        timeFrame={timeFrame}
         timeFrames={timeFrames}
+        setFilters={setFilters}
+        filters={filters}
       />
       <AnalyticsChart
         loading={loading}
-        provider={provider}
-        quote={quote}
+        provider={filters.provider}
+        quote={filters.quote}
         stats={stats}
-        timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
+        timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
       />
     </Box>
   );
