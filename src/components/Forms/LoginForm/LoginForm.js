@@ -13,6 +13,7 @@ import { FormattedMessage } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
+import useHasMounted from "../../../hooks/useHasMounted";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -33,6 +34,11 @@ const LoginForm = () => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const hasMounted = useHasMounted();
+  if (!hasMounted) {
+    // Don't render form statically
+    return null;
+  }
 
   /**
    *
