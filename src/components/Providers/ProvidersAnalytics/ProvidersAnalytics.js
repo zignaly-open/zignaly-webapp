@@ -5,6 +5,7 @@ import AnalyticsFilters from "../../Providers/AnalyticsFilters";
 import ProvidersProfitsChart from "../../Providers/ProvidersProfitsChart";
 import { FormattedMessage } from "react-intl";
 import { Box } from "@material-ui/core";
+import useTimeFramesOptions from "../../../hooks/useTimeFramesOptions";
 
 /**
  * @typedef {Object} ProvidersAnalyticsPropTypes
@@ -18,39 +19,25 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersAnalytics = ({ type }) => {
-  const {
-    stats,
-    timeFrames,
-    timeFrame,
-    setTimeFrame,
-    quotes,
-    quote,
-    setQuote,
-    bases,
-    base,
-    setBase,
-    clearFilters,
-  } = useProvidersAnalytics(type);
+  const timeFrames = useTimeFramesOptions();
+  const { stats, quotes, bases, clearFilters, filters, setFilters } = useProvidersAnalytics(type);
 
+  console.log(filters, bases);
   return (
     <Box>
       <AnalyticsFilters
-        base={base}
+        filters={filters}
         bases={bases}
-        onBaseChange={setBase}
+        setFilters={setFilters}
         onClear={clearFilters}
-        onQuoteChange={setQuote}
-        onTimeFrameChange={setTimeFrame}
-        quote={quote}
         quotes={quotes}
-        timeFrame={timeFrame}
         timeFrames={timeFrames}
       />
       <ProvidersProfitsChart
-        base={base.label}
-        quote={quote}
+        base={bases.find((b) => b.val === filters.base).label}
+        quote={filters.quote}
         stats={stats}
-        timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
+        timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}

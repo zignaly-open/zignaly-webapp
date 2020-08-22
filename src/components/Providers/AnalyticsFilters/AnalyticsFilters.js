@@ -24,18 +24,7 @@ import { useIntl } from "react-intl";
  * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const AnalyticsFilters = ({
-  quote,
-  base,
-  timeFrame,
-  onBaseChange,
-  onQuoteChange,
-  onTimeFrameChange,
-  onClear,
-  bases,
-  quotes,
-  timeFrames,
-}) => {
+const AnalyticsFilters = ({ onClear, bases, quotes, timeFrames, filters, setFilters }) => {
   const intl = useIntl();
 
   return (
@@ -44,27 +33,27 @@ const AnalyticsFilters = ({
         label={intl.formatMessage({
           id: "fil.timeframe",
         })}
-        onChange={onTimeFrameChange}
+        onChange={(v) => setFilters({ timeFrame: v })}
         options={timeFrames}
-        value={timeFrame}
+        value={filters.timeFrame}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={onQuoteChange}
+        onChange={(v) => setFilters({ quote: v })}
         options={quotes}
         search={true}
-        value={quote}
+        value={filters.quote}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.pair",
         })}
-        onChange={onBaseChange}
+        onChange={(v) => setFilters({ quote: v })}
         options={bases}
         search={true}
-        value={base}
+        value={filters.base}
       />
     </CustomFilters>
   );

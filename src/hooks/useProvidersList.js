@@ -10,10 +10,10 @@ import { uniqBy, assign } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
-  setFilters as setFiltersAction,
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -91,16 +91,29 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const storeFilters = storeSettings.filters[page] || {};
 
-  const [filters, setFilters] = useState({
+  const defaultFilters = {
+    quote: "ALL",
+    exchange: "ALL",
+    exchangeType: "ALL",
+    fromUser: "ALL",
+  };
+
+  const initialFilters = {
     ...(!connectedOnly && {
       ...(copyTradersOnly && {
-        quote: storeFilters.quote || "ALL",
-        exchange: storeFilters.exchange || "ALL",
-        exchangeType: storeFilters.exchangeType || "ALL",
+        quote: storeFilters.quote || defaultFilters.quote,
+        exchange: storeFilters.exchange || defaultFilters.exchange,
+        exchangeType: storeFilters.exchangeType || defaultFilters.exchangeType,
       }),
-      fromUser: storeFilters.fromUser || "ALL",
+      fromUser: storeFilters.fromUser || defaultFilters.fromUser,
     }),
-  });
+  };
+
+  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
+    defaultFilters,
+    initialFilters,
+    page,
+  );
 
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
@@ -143,18 +156,6 @@ const useProvidersList = (options) => {
     return val || "RETURNS_DESC";
   };
   const [sort, setSort] = useState(initSort);
-
-  // Reset filters
-  const clearFilters = () => {
-    setFilters({
-      ...(copyTradersOnly && {
-        quote: "ALL",
-        exchange: "ALL",
-        exchangeType: "ALL",
-      }),
-      fromUser: "ALL",
-    });
-  };
 
   const clearSort = () => {
     setSort("RETURNS_DESC");
@@ -282,36 +283,6 @@ const useProvidersList = (options) => {
     internalExchangeId,
   ]);
 
-  const modifiedFilters = () => {
-    let count = 0;
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== "ALL") {
-        count++;
-      }
-    });
-    return count;
-  };
-
-  /**
-   * Combine external state filters with local state.
-   *
-   * @param {defaultFilters} values External filter values.
-   *
-   * @returns {Void} None.
-   */
-  const combineFilters = (values) => {
-    const newFilters = assign({}, filters, values);
-    setFilters(newFilters);
-
-    dispatch(
-      setFiltersAction({
-        filters: newFilters,
-        // @ts-ignore
-        page,
-      }),
-    );
-  };
-
   return {
     providers: providers.filteredList,
     timeFrame,
@@ -321,12 +292,12 @@ const useProvidersList = (options) => {
     exchangeTypes,
     fromUserOptions,
     filters,
-    setFilters: combineFilters,
+    setFilters,
     sort,
     setSort,
     clearFilters,
     clearSort,
-    modifiedFilters: modifiedFilters(),
+    modifiedFilters,
   };
 };
 

@@ -36,8 +36,6 @@ const ProvidersBrowse = ({
   const providersOptions = { copyTradersOnly, connectedOnly };
   const {
     providers,
-    timeFrame,
-    setTimeFrame,
     quotes,
     exchanges,
     exchangeTypes,
@@ -49,6 +47,8 @@ const ProvidersBrowse = ({
     filters,
     setFilters,
     modifiedFilters,
+    timeFrame,
+    setTimeFrame,
   } = useProvidersList(providersOptions);
   const intl = useIntl();
 
@@ -60,8 +60,8 @@ const ProvidersBrowse = ({
     <Box className="providersBrowse">
       {toggleFilters && (
         <ProvidersFilters
-          clearFilters={clearFilters}
           quotes={quotes}
+          clearFilters={clearFilters}
           copyTradersOnly={copyTradersOnly}
           exchanges={exchanges}
           exchangeTypes={exchangeTypes}
@@ -70,7 +70,6 @@ const ProvidersBrowse = ({
           open={showFilters}
           setFilters={setFilters}
           filters={filters}
-          modifiedFilters={modifiedFilters}
         />
       )}
       {toggleSort && (

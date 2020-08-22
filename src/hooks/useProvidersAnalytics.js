@@ -5,7 +5,6 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useQuoteAssets from "./useQuoteAssets";
 import useBaseAssets from "./useBaseAssets";
-import useTimeFramesOptions from "./useTimeFramesOptions";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import {
   setTimeFrame as setTimeFrameAction,
   setFilters as setFiltersAction,
 } from "../store/actions/settings";
+import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -51,25 +51,34 @@ const useProvidersAnalytics = (type) => {
   const storeSession = useStoreSessionSelector();
 
   const page = type === "signalp" ? "signalpAnalytics" : "copytAnalytics";
+  const storeFilters = storeSettings.filters[page];
+
+  const defaultFilters = {
+    quote: "USDT",
+    base: "ALL",
+    timeFrame: "30days",
+  };
+
+  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
+    defaultFilters,
+    storeFilters,
+    page,
+  );
 
   // time frames
-  const timeFrames = useTimeFramesOptions();
-  const initTimeFrame = storeSettings.timeFrame[page] || "30days";
-  const [timeFrame, setTimeFrame] = useState(initTimeFrame);
+  //   const timeFrames = useTimeFramesOptions();
   // Save settings to store when changed
-  const saveTimeFrame = () => {
-    dispatch(setTimeFrameAction({ timeFrame, page }));
-  };
-  useEffectSkipFirst(saveTimeFrame, [timeFrame]);
+  //   const saveTimeFrame = () => {
+  //     dispatch(setTimeFrameAction({ timeFrame, page }));
+  //   };
+  //   useEffectSkipFirst(saveTimeFrame, [timeFrame]);
 
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
-  let initQuote = storeSettings.filters[page].quote || "USDT";
-  const [quote, setQuote] = useState(initQuote);
 
   // bases
-  const baseAssets = useBaseAssets(quote);
+  const baseAssets = useBaseAssets(filters.quote);
   const bases = Object.entries(baseAssets).map(([key, val]) => ({
     val: key,
     label: val.base + "/" + val.quote,
@@ -79,40 +88,19 @@ const useProvidersAnalytics = (type) => {
     label: intl.formatMessage({ id: "fil.pairs" }),
   });
 
-  const savedBase = storeSettings.filters[page].base;
-  let initBase = savedBase ? { val: savedBase, label: savedBase } : bases[0];
-  const [base, setBase] = useState(initBase);
-
-  // Save filters to store when changed
-  const saveFilters = () => {
-    dispatch(
-      setFiltersAction({
-        filters: { quote, base: base.val },
-        page,
-      }),
-    );
-  };
-  useEffectSkipFirst(saveFilters, [quote, base]);
-
-  const clearFilters = () => {
-    setQuote("USDT");
-    setBase(bases[0]);
-    setTimeFrame("30days");
-  };
-
   // Select all bases by default on quote change
   useEffectSkipFirst(() => {
-    setBase(bases[0]);
+    setFilters({ base: "ALL" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote]);
+  }, [filters.quote]);
 
   const loadProvidersStats = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,
-      quote,
-      base: base.val,
-      timeFrame,
+      quote: filters.quote,
+      base: filters.base,
+      timeFrame: filters.timeFrame,
       DCAFilter: "anyDCA",
       isCopyTrading: type === "copyt",
     };
@@ -127,26 +115,16 @@ const useProvidersAnalytics = (type) => {
   };
 
   // Load stats at init and on filters change
-  useEffect(loadProvidersStats, [
-    timeFrame,
-    quote,
-    base.val,
-    storeSession.tradeApi.accessToken,
-    type,
-  ]);
+  useEffect(loadProvidersStats, [filters, storeSession.tradeApi.accessToken, type]);
 
   return {
     stats,
-    timeFrames,
-    timeFrame,
-    setTimeFrame,
     quotes,
-    quote,
-    setQuote,
-    base,
     bases,
-    setBase,
+    setFilters,
+    filters,
     clearFilters,
+    modifiedFilters,
   };
 };
 
