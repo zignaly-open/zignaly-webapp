@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { assign } from "lodash";
+import { useState, useRef } from "react";
+import { assign, isEqual } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
@@ -82,11 +82,14 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
   const [filters, setFilters] = useState(initialValues());
   const dispatch = useDispatch();
 
-  // Initialize filters if available options change (deep comparison)
-  const initFilters = () => {
-    setFilters(initialValues());
-  };
-  useDeepCompareEffect(initFilters, [optionsFilters]);
+  // If options have changed then check the filters again right away
+  const lastOptionsFilters = useRef(optionsFilters);
+  let filtersChecked = filters;
+  if (!isEqual(lastOptionsFilters.current, optionsFilters)) {
+    filtersChecked = initialValues();
+    lastOptionsFilters.current = optionsFilters;
+    setFilters(filtersChecked);
+  }
 
   const modifiedFilters = () => {
     let count = 0;
@@ -127,10 +130,9 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
   };
 
   return {
-    filters,
+    filters: filtersChecked,
     setFilters: combineFilters,
     clearFilters,
-    initFilters,
     modifiedFilters: modifiedFilters(),
   };
 };
