@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
+import { ConfirmDialog } from "../../Dialogs";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -73,6 +74,8 @@ const TraderCard = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
+  const [canDisable, setCanDisable] = useState(!disable);
+  const type = isCopyTrading ? "copyt" : "srv";
 
   /**
    * @type {ChartData}
@@ -114,19 +117,36 @@ const TraderCard = (props) => {
     }
   };
 
-  const stopFollowing = () => {
+  const initConfirmConfig = {
+    titleTranslationId: `confirm.${type}.unfollow.title`,
+    messageTranslationId: `confirm.${type}.unfollow.message`,
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  const confirmAction = () => {
+    setConfirmConfig({
+      ...initConfirmConfig,
+      visible: true,
+    });
+  };
+
+  const stopCopying = () => {
     setLoading(true);
     const payload = {
       disable: true,
       token: storeSession.tradeApi.accessToken,
-      providerId: provider.id,
+      //   providerId: provider.id,
       type: "connected",
     };
+
     tradeApi
       .providerDisable(payload)
       .then((response) => {
         if (response) {
-          dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
+          dispatch(showSuccessAlert(`${type}.unfollow.alert.title`, `${type}.unfollow.alert.body`));
+          setCanDisable(false);
         }
       })
       .catch((e) => {
@@ -139,6 +159,11 @@ const TraderCard = (props) => {
 
   return (
     <LazyLoad height="310px" offset={600} once>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={stopCopying}
+        setConfirmConfig={setConfirmConfig}
+      />
       <div className="traderCardBody">
         <div className="returnsBox">
           <CustomToolip
@@ -155,7 +180,9 @@ const TraderCard = (props) => {
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: "sort.return",
-              })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
+              })} (${intl.formatMessage({
+                id: "time." + timeFrame + "d",
+              })})`}</Typography>
             </div>
           </CustomToolip>
 
@@ -194,7 +221,7 @@ const TraderCard = (props) => {
             }`}
           >
             <div className="followers">
-              {!disable ? (
+              {canDisable ? (
                 <h6 className={`callout2 ${colorClass}`}>
                   <FormattedMessage
                     id={isCopyTrading ? "trader.others" : "provider.others"}
@@ -212,7 +239,7 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {!disable &&
+              {canDisable &&
                 (selectedExchange.internalId !== provider.exchangeInternalId ? (
                   <CustomToolip
                     title={
@@ -237,7 +264,7 @@ const TraderCard = (props) => {
                     </div>
                   </CustomToolip>
                 ) : (
-                  <CustomButton className="textPurple" loading={loading}>
+                  <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
                     <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
                   </CustomButton>
                 ))}
