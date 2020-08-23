@@ -1,12 +1,5 @@
-import { useState, useEffect } from "react";
-import tradeApi from "../services/tradeApiClient";
-import useStoreSessionSelector from "./useStoreSessionSelector";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import useQuoteAssets from "./useQuoteAssets";
-import useExchangesOptions from "./useExchangesOptions";
-import useEffectSkipFirst from "./useEffectSkipFirst";
-import { useIntl } from "react-intl";
-import { uniqBy, assign } from "lodash";
+import { useState } from "react";
+import { assign } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
@@ -14,6 +7,8 @@ import {
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import { extractVal } from "../components/CustomSelect";
+import useDeepCompareEffect from "./useDeepCompareEffect";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -64,15 +59,34 @@ import { useDispatch } from "react-redux";
  * @param {ProvidersOptions} options Hook options.
  * @returns {ProvidersData} Providers and filtering objects.
  */
-const useFilters = (defaultValues, storeValues = {}, page) => {
-  const initialValues = {};
-  Object.entries(defaultValues).forEach(([key, value]) => {
-    initialValues[key] =
-      (typeof storeValues[key] === typeof defaultValues[key] && storeValues[key]) ||
-      defaultValues[key];
-  });
-  const [filters, setFilters] = useState(initialValues);
+const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) => {
+  const initialValues = () => {
+    // Initial values of the filters using the saved value or falling back to default
+    const values = {};
+    Object.entries(defaultValues).forEach(([key, value]) => {
+      values[key] = defaultValues[key];
+      if (storeValues[key]) {
+        // Check that saved value is of correct type
+        const typeCorrect = typeof storeValues[key] === typeof defaultValues[key];
+        // Check that saved value exists in options
+        const valueCorrect =
+          !optionsFilters[key] ||
+          optionsFilters[key].find((o) => extractVal(o) === extractVal(storeValues[key]));
+        if (typeCorrect && valueCorrect) {
+          values[key] = storeValues[key];
+        }
+      }
+    });
+    return values;
+  };
+  const [filters, setFilters] = useState(initialValues());
   const dispatch = useDispatch();
+
+  // Initialize filters if available options change (deep comparison)
+  const initFilters = () => {
+    setFilters(initialValues());
+  };
+  useDeepCompareEffect(initFilters, [optionsFilters]);
 
   const modifiedFilters = () => {
     let count = 0;
@@ -116,6 +130,7 @@ const useFilters = (defaultValues, storeValues = {}, page) => {
     filters,
     setFilters: combineFilters,
     clearFilters,
+    initFilters,
     modifiedFilters: modifiedFilters(),
   };
 };

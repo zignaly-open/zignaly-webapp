@@ -22,22 +22,22 @@ const ProvidersAnalytics = ({ type }) => {
   const timeFrames = useTimeFramesOptions();
   const { stats, quotes, bases, clearFilters, filters, setFilters } = useProvidersAnalytics(type);
 
-  console.log(filters, bases);
+  const timeFrame = timeFrames.find((t) => t.val === filters.timeFrame) || {};
   return (
     <Box>
       <AnalyticsFilters
-        filters={filters}
         bases={bases}
-        setFilters={setFilters}
+        filters={filters}
         onClear={clearFilters}
         quotes={quotes}
+        setFilters={setFilters}
         timeFrames={timeFrames}
       />
       <ProvidersProfitsChart
         base={bases.find((b) => b.val === filters.base).label}
         quote={filters.quote}
         stats={stats}
-        timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
+        timeFrame={timeFrame.label}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}

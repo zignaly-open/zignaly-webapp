@@ -28,41 +28,17 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { filters, onChange, positions, showTypesFilter, clearFilters } = props;
-
-  const extractPairOptions = () => {
-    const coinsDistinct = uniqBy(positions, "pair").map((position) => {
-      return { label: position.pair, val: position.pair };
-    });
-
-    return [{ label: "All Pairs", val: "all" }].concat(sortBy(coinsDistinct, "label"));
-  };
-
-  const extractProviderOptions = () => {
-    const providersDistinct = uniqBy(positions, "providerName").map((position) => {
-      return {
-        label: position.providerName,
-        val: position.providerId,
-      };
-    });
-
-    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
-  };
-
-  const pairOptions = extractPairOptions();
-  const sides = [
-    { label: "All Sides", val: "all" },
-    { label: "SHORT", val: "SHORT" },
-    { label: "LONG", val: "LONG" },
-  ];
-
-  const types = [
-    { label: "All Types", val: "all" },
-    { label: "UNSOLD", val: "unsold" },
-    { label: "UNOPEN", val: "unopen" },
-  ];
-
-  const providerOptions = extractProviderOptions();
+  const {
+    filters,
+    onChange,
+    positions,
+    showTypesFilter,
+    clearFilters,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
+  } = props;
 
   /**
    * Set provider filter value.
@@ -71,8 +47,7 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setProvider = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       providerId: value,
     });
   };
@@ -84,8 +59,7 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setCoin = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       pair: value,
     });
   };
@@ -97,8 +71,7 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setSide = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       side: value,
     });
   };
@@ -111,8 +84,7 @@ const PositionFilters = (props) => {
    */
   const setStatus = (e) => {
     const target = e.currentTarget;
-    setFilters({
-      ...filters,
+    onChange({
       status: target.checked ? "all" : "",
     });
   };
@@ -124,25 +96,20 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setType = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       type: value,
     });
   };
 
+  console.log("compo", filters);
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (
-        <CustomSelect
-          label=""
-          onChange={(v) => onChange({ type: v })}
-          options={types}
-          value={filters.type}
-        />
+        <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
       )}
       <CustomSelect
         label=""
-        onChange={(v) => onChange({ providerId: v })}
+        onChange={setProvider}
         options={providerOptions}
         value={filters.providerId}
       />
@@ -153,18 +120,13 @@ const PositionFilters = (props) => {
         search={true}
         value={filters.pair}
       />
-      <CustomSelect
-        label=""
-        onChange={(v) => onChange({ side: v })}
-        options={sides}
-        value={filters.side}
-      />
+      <CustomSelect label="" onChange={setSide} options={sides} value={filters.side} />
       {showTypesFilter && (
         <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
           <Checkbox
             checked={filters.status === "all"}
             inputProps={{ "aria-label": "primary checkbox" }}
-            onChange={(e) => onChange({ status: e.currentTarget.checked ? "all" : "" })}
+            onChange={setStatus}
           />
           <FormattedMessage id="positions.log.filter.status" />
         </Box>

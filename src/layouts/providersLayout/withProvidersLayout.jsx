@@ -113,11 +113,11 @@ const withProvidersLayout = (Component) => {
         <Box className="pageContent">
           <Component
             {...props}
+            setModifiedFiltersCount={setModifiedFiltersCount}
             showFilters={showFilters}
             showSort={showSort}
             toggleFilters={toggleFilters}
             toggleSort={toggleSort}
-            setModifiedFiltersCount={setModifiedFiltersCount}
           />
         </Box>
         <Box className="faq">

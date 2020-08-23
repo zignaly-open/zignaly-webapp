@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import { cloneDeep, filter, isEmpty, isFunction, omitBy, partial } from "lodash";
+import { cloneDeep, filter, isEmpty, isFunction, omitBy, partial, sortBy, uniqBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -86,6 +86,44 @@ const usePositionsList = (
     profileOpen: null,
     profileClosed: null,
   };
+  const [positions, setPositions] = useState(defaultPositionsState);
+  const positionsAll = positions[type] || [];
+  const storeSession = useStoreSessionSelector();
+  const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
+
+  const extractPairOptions = () => {
+    const coinsDistinct = uniqBy(positionsAll, "pair").map((position) => {
+      return { label: position.pair, val: position.pair };
+    });
+
+    return [{ label: "All Pairs", val: "all" }].concat(sortBy(coinsDistinct, "label"));
+  };
+
+  const extractProviderOptions = () => {
+    const providersDistinct = uniqBy(positionsAll, "providerName").map((position) => {
+      return {
+        label: position.providerName,
+        val: position.providerId,
+      };
+    });
+
+    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
+  };
+
+  const pairOptions = extractPairOptions();
+  const sides = [
+    { label: "All Sides", val: "all" },
+    { label: "SHORT", val: "SHORT" },
+    { label: "LONG", val: "LONG" },
+  ];
+
+  const types = [
+    { label: "All Types", val: "all" },
+    { label: "UNSOLD", val: "unsold" },
+    { label: "UNOPEN", val: "unopen" },
+  ];
+
+  const providerOptions = extractProviderOptions();
 
   const storeFilters = storeSettings.filters[persistKey];
   const defaultFilters = {
@@ -95,17 +133,26 @@ const usePositionsList = (
     type: "all",
     status: "",
   };
+  const optionsFilters = {
+    providerId: providerOptions,
+    pair: pairOptions,
+    side: sides,
+    type: types,
+  };
 
-  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
+  const { filters, setFilters, clearFilters, modifiedFilters, initFilters } = useFilters(
     defaultFilters,
     storeFilters,
+    optionsFilters,
     persistKey,
   );
+  console.log("hook", filters);
 
-  const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
-  const storeSession = useStoreSessionSelector();
   const statusRef = useRef(filters.status);
-  const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
+  //   const updateFilters = () => {
+  //     setFilters({ ...filters });
+  //   };
+  //   useEffect(initFilters, [type]);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -385,7 +432,7 @@ const usePositionsList = (
   };
 
   return {
-    positionsAll: positions[type] || [],
+    positionsAll,
     positionsFiltered: filterData(positions[type] || []),
     setFilters,
     filters,
@@ -395,6 +442,10 @@ const usePositionsList = (
     flagPositionUpdating,
     filtersVisibility,
     setFiltersVisibility,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
   };
 };
 

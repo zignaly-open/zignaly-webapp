@@ -53,23 +53,26 @@ const ProvidersBrowse = ({
   const intl = useIntl();
 
   useEffect(() => {
-    setModifiedFiltersCount(modifiedFilters);
+    if (setModifiedFiltersCount) {
+      setModifiedFiltersCount(modifiedFilters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modifiedFilters]);
 
   return (
     <Box className="providersBrowse">
       {toggleFilters && (
         <ProvidersFilters
-          quotes={quotes}
           clearFilters={clearFilters}
           copyTradersOnly={copyTradersOnly}
-          exchanges={exchanges}
           exchangeTypes={exchangeTypes}
+          exchanges={exchanges}
+          filters={filters}
           fromUserOptions={fromUserOptions}
           onClose={toggleFilters}
           open={showFilters}
+          quotes={quotes}
           setFilters={setFilters}
-          filters={filters}
         />
       )}
       {toggleSort && (

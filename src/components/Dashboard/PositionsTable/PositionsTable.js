@@ -56,6 +56,10 @@ const PositionsTable = (props) => {
     filtersVisibility,
     setFiltersVisibility,
     clearFilters,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
@@ -267,11 +271,15 @@ const PositionsTable = (props) => {
 
     return (
       <PositionFilters
-        filters={filters}
         clearFilters={clearFilters}
+        filters={filters}
         onChange={setFilters}
+        pairOptions={pairOptions}
         positions={positionsAll}
+        providerOptions={providerOptions}
         showTypesFilter={showTypesFilter}
+        sides={sides}
+        types={types}
       />
     );
   };

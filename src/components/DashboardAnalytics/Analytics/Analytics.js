@@ -24,12 +24,12 @@ const Analytics = () => {
   return (
     <Box>
       <Filters
+        filters={filters}
         onClear={clearFilters}
         providers={providers}
         quotes={quotes}
-        timeFrames={timeFrames}
         setFilters={setFilters}
-        filters={filters}
+        timeFrames={timeFrames}
       />
       <AnalyticsChart
         loading={loading}
