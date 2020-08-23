@@ -9,6 +9,7 @@ import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage } from "react-intl";
+import useHasMounted from "../../../hooks/useHasMounted";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -18,6 +19,11 @@ const SignupForm = () => {
   const formMethods = useForm();
   const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
   const dispatch = useDispatch();
+  const hasMounted = useHasMounted();
+  if (!hasMounted) {
+    // Don't render form statically
+    return null;
+  }
 
   /**
    *
