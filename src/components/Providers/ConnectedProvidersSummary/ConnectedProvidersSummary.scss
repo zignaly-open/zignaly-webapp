@@ -5,19 +5,6 @@
   position: absolute;
   right: 0;
 
-  @include media("<=sm") {
-    position: static;
-
-    .traderMiniCard {
-      margin: 7px 0;
-      width: calc(100% - 8px);
-    }
-
-    .customButton {
-      width: auto;
-    }
-  }
-
   a {
     text-decoration: none;
   }
@@ -53,5 +40,20 @@
     border: 2px solid var(--purple);
     margin: 0 36px;
     margin-top: 7px;
+  }
+}
+
+@include media("<=sm") {
+  .connectedProvidersSummary {
+    position: static;
+
+    .traderMiniCard {
+      margin: 7px 0;
+      width: calc(100% - 8px);
+    }
+
+    .customButton {
+      width: auto;
+    }
   }
 }
