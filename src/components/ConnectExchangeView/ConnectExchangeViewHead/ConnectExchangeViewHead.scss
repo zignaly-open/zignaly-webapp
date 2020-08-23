@@ -7,3 +7,15 @@
     }
   }
 }
+
+@include media("<=sm") {
+  .connectExchangeViewHead {
+    width: 100%;
+
+    .actionBar {
+      .textPurple {
+        min-width: 100%;
+      }
+    }
+  }
+}
