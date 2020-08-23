@@ -5,25 +5,21 @@ import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../../../store/initialState").BrowseFilters} BrowseFilters
+ * @typedef {import("../../../store/initialState").SignalPBrowseFilters} SignalPBrowseFilters
  */
 
 /**
  * @typedef {Object} ProvidersFiltersPropTypes
  * @property {function} onClose Callback that delegate filters toggle state to caller.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
- * @property {function} onCoinChange Callback that delegate coin change to caller.
- * @property {function} onExchangeChange Callback that delegate exchange change to caller.
- * @property {function} onExchangeTypeChange Callback that delegate exchange type change to caller.
- * @property {OptionType} coin Selected coin.
- * @property {Array<OptionType>} coins Coins options.
- * @property {string} exchange Selected exchange.
+ * @property {function} setFilters Callback that delegate filters update to caller.
+ * @property {BrowseFilters|SignalPBrowseFilters|{}} filters Current filters.
  * @property {Array<OptionType>} exchanges Exchanges options.
- * @property {string} exchangeType Selected exchange type.
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
- * @property {boolean} open Flag to indicates if the filters bar is open.
- * @property {string} fromUser Selected from user filters
- * @property {function} onFromUserChange Function to handle changes for user owned services select.
+ * @property {Array<OptionType>} quotes Quotes options.
  * @property {Array<OptionType>} fromUserOptions Options array for user owned services select.
+ * @property {boolean} open Flag to indicates if the filters bar is open.
  * @property {boolean} copyTradersOnly
  */
 
@@ -61,9 +57,10 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "col.coin",
           })}
-          onChange={(val) => setFilters({ quote: val.val })}
+          onChange={(/** @type {OptionType} */ val) => setFilters({ quote: val.val })}
           options={quotes}
           search={true}
+          // @ts-ignore
           value={filters.quote}
         />
       )}
@@ -72,8 +69,9 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "accounts.exchange",
           })}
-          onChange={(v) => setFilters({ exchange: v })}
+          onChange={(/** @type {string} */ v) => setFilters({ exchange: v })}
           options={exchanges}
+          // @ts-ignore
           value={filters.exchange}
         />
       )}
@@ -82,8 +80,9 @@ const ProvidersFilters = ({
           label={intl.formatMessage({
             id: "srv.edit.exchangetype",
           })}
-          onChange={(v) => setFilters({ exchangeType: v })}
+          onChange={(/** @type {string} */ v) => setFilters({ exchangeType: v })}
           options={exchangeTypes}
+          // @ts-ignore
           value={filters.exchangeType}
         />
       )}
@@ -91,8 +90,9 @@ const ProvidersFilters = ({
         label={intl.formatMessage({
           id: "srv.filters.userowned",
         })}
-        onChange={(v) => setFilters({ fromUser: v })}
+        onChange={(/** @type {string} */ v) => setFilters({ fromUser: v })}
         options={fromUserOptions}
+        // @ts-ignore
         value={filters.fromUser}
       />
     </CustomFilters>

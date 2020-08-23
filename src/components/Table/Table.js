@@ -38,6 +38,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @property {MUIDataTableOptions} [options] Table options.
  * @property {*} [components] Custom table components.
  * @property {Function} [toggleFilters] Custom table components.
+ * @property {number} [modifiedFiltersCount] Modified Filters count.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.

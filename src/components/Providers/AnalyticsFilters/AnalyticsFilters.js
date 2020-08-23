@@ -4,18 +4,18 @@ import CustomSelect from "../../CustomSelect";
 import { useIntl } from "react-intl";
 
 /**
+ * @typedef {import("../../../store/initialState").AnalyticsFilters} AnalyticsFilters
+ */
+
+/**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {Object} AnayticsFiltersPropTypes
  * @property {function} onClear Callback that delegate filters clearing to caller.
- * @property {function} onBaseChange Callback that delegate base change to caller.
- * @property {function} onQuoteChange Callback that delegate quote change to caller.
- * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
- * @property {string} quote Selected quote (base currency).
  * @property {Array<string>} quotes Quotes options.
- * @property {OptionType} base Selected base (pair).
  * @property {Array<OptionType>} bases Bases options.
- * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
+ * @property {function} setFilters Callback that delegate filters update to caller.
+ * @property {AnalyticsFilters} filters Current filters.
  */
 
 /**
@@ -33,7 +33,7 @@ const AnalyticsFilters = ({ onClear, bases, quotes, timeFrames, filters, setFilt
         label={intl.formatMessage({
           id: "fil.timeframe",
         })}
-        onChange={(v) => setFilters({ timeFrame: v })}
+        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
         options={timeFrames}
         value={filters.timeFrame}
       />
@@ -41,7 +41,7 @@ const AnalyticsFilters = ({ onClear, bases, quotes, timeFrames, filters, setFilt
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={(v) => setFilters({ quote: v })}
+        onChange={(/** @type {string} */ v) => setFilters({ quote: v })}
         options={quotes}
         search={true}
         value={filters.quote}
@@ -50,7 +50,7 @@ const AnalyticsFilters = ({ onClear, bases, quotes, timeFrames, filters, setFilt
         label={intl.formatMessage({
           id: "fil.pair",
         })}
-        onChange={(v) => setFilters({ quote: v })}
+        onChange={(/** @type {string} */ v) => setFilters({ quote: v })}
         options={bases}
         search={true}
         value={filters.base}

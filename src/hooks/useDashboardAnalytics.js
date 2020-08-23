@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import useEffectSkipFirst from "./useEffectSkipFirst";
 import useFilters from "./useFilters";
 
 /**
@@ -16,22 +15,19 @@ import useFilters from "./useFilters";
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../store/initialState").Filters} Filters
  */
 
 /**
  * @typedef {Object} ProviderStatsData
  * @property {Array<ProfileStatsObject>} stats
- * @property {string} timeFrame
  * @property {Array<OptionType>} timeFrames
- * @property {function} setTimeFrame
- * @property {string} quote
  * @property {Array<string>} quotes
- * @property {function} setQuote
- * @property {OptionType} provider
  * @property {Array<OptionType>} providers
- * @property {function} setProvider
  * @property {function} clearFilters
+ * @property {function} setFilters
  * @property {Boolean} loading
+ * @property {Filters['dashboardAnalytics']} filters
  */
 
 /**
@@ -71,6 +67,11 @@ const useDashboardAnalytics = () => {
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
 
+  const timeFrames = useDashboardAnalyticsTimeframeOptions();
+
+  const quoteAssets = useQuoteAssets();
+  const quotes = Object.keys(quoteAssets);
+
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
   const defaultFilters = {
@@ -81,16 +82,19 @@ const useDashboardAnalytics = () => {
     provider: providers[1],
   };
 
-  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
-    defaultFilters,
-    storeFilters,
-    page,
-  );
+  const optionsFilters = {
+    timeFrame: timeFrames,
+    quote: quotes,
+    provider: providers,
+  };
 
-  const timeFrames = useDashboardAnalyticsTimeframeOptions();
-
-  const quoteAssets = useQuoteAssets();
-  const quotes = Object.keys(quoteAssets);
+  const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters } = res;
+  /**
+   * @type {Filters[typeof page]}
+   */
+  // @ts-ignore
+  const filters = res.filters;
 
   const loadDashboardStats = () => {
     setLoading(true);

@@ -9,16 +9,20 @@ import { Box } from "@material-ui/core";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
- * @typedef {import("../../../hooks/usePositionsList").PositionsFiltersState} PositionsFiltersState
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../../../store/initialState").DashboardPositionsFilters} DashboardPositionsFilters
  */
 
 /**
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback to broadcast filters changes to caller.
- * @property {UserPositionsCollection} positions Positions collection.
- * @property {PositionsFiltersState} initialState Filters initial state.
  * @property {boolean} showTypesFilter Flag to indicate whether types dropdown filter display or not.
+ * @property {DashboardPositionsFilters} filters Current filters.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {Array<OptionType>} pairOptions Pair options.
+ * @property {Array<OptionType>} providerOptions Providers options.
+ * @property {Array<OptionType>} types Types options.
+ * @property {Array<OptionType>} sides Sides options.
  */
 
 /**
@@ -31,7 +35,6 @@ const PositionFilters = (props) => {
   const {
     filters,
     onChange,
-    positions,
     showTypesFilter,
     clearFilters,
     providerOptions,
@@ -114,7 +117,7 @@ const PositionFilters = (props) => {
       />
       <CustomSelect
         label=""
-        onChange={(v) => onChange({ pair: v.val })}
+        onChange={(/** @type {OptionType} */ v) => onChange({ pair: v.val })}
         options={pairOptions}
         search={true}
         value={filters.pair}

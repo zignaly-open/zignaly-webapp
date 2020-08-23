@@ -276,7 +276,6 @@ const PositionsTable = (props) => {
         filters={filters}
         onChange={setFilters}
         pairOptions={pairOptions}
-        positions={positionsAll}
         providerOptions={providerOptions}
         showTypesFilter={showTypesFilter}
         sides={sides}

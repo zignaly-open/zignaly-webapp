@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
 import { isEqual } from "lodash";
 
+/**
+ * @typedef {import('react').EffectCallback} EffectCallback
+ */
+
+/**
+ * @param {*} value value
+ * @returns {*} value
+ */
 const useDeepCompareMemoize = (value) => {
   const ref = useRef();
 
@@ -13,7 +21,7 @@ const useDeepCompareMemoize = (value) => {
 
 /**
  * Run effect on dependencies change (deep comparison)
- * @param {function} callback useEffect callback
+ * @param {EffectCallback} callback useEffect callback
  * @param {Array<any>} dependencies useEffect dependencies
  * @returns {void}
  */

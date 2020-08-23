@@ -13,6 +13,7 @@ import { Box } from "@material-ui/core";
  * @property {boolean} [showSort] Flag to indicate if sort options should be rendered.
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
+ * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
  * @property {'copyt'|'signalp'} type Type of providers to show.
  * @property {boolean} connectedOnly Only display connected providers.
  */

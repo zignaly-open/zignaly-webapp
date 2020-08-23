@@ -16,6 +16,7 @@ import useFilters from "./useFilters";
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
+ * @typedef {import("../store/initialState").Filters} Filters
  */
 
 /**
@@ -23,11 +24,17 @@ import useFilters from "./useFilters";
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
- * @property {PositionsFiltersState} filtersState
+ * @property {function} clearFilters
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
  * @property {Boolean} filtersVisibility
  * @property {Function} setFiltersVisibility
+ * @property {Filters['dashboardPositions']} filters
+ * @property {number} modifiedFilters
+ * @property {Array<OptionType>} providerOptions
+ * @property {Array<OptionType>} pairOptions
+ * @property {Array<OptionType>} sides
+ * @property {Array<OptionType>} types
  */
 
 /**
@@ -37,15 +44,6 @@ import useFilters from "./useFilters";
  * @property {UserPositionsCollection} log
  * @property {UserPositionsCollection} profileOpen
  * @property {UserPositionsCollection} profileClosed
- */
-
-/**
- * @typedef {Object} PositionsFiltersState
- * @property {string} providerId
- * @property {string} pair
- * @property {string} side
- * @property {string} type
- * @property {string} status
  */
 
 /**
@@ -143,19 +141,15 @@ const usePositionsList = (
     type: types,
   };
 
-  const { filters, setFilters, clearFilters, modifiedFilters, initFilters } = useFilters(
-    defaultFilters,
-    storeFilters,
-    optionsFilters,
-    persistKey,
-  );
-  console.log("hook", filters);
+  const res = useFilters(defaultFilters, storeFilters, optionsFilters, persistKey);
+  const { setFilters, clearFilters, modifiedFilters } = res;
+  /**
+   * @type {Filters[typeof persistKey]}
+   */
+  // @ts-ignore
+  const filters = res.filters;
 
   const statusRef = useRef(filters.status);
-  //   const updateFilters = () => {
-  //     setFilters({ ...filters });
-  //   };
-  //   useEffect(initFilters, [type]);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.

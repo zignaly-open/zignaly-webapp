@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
@@ -13,6 +13,7 @@ import {
   setFilters as setFiltersAction,
 } from "../store/actions/settings";
 import useFilters from "./useFilters";
+import useTimeFramesOptions from "./useTimeFramesOptions";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -20,21 +21,19 @@ import useFilters from "./useFilters";
  * @typedef {import("../store/initialState").TimeframeObject} TimeframeObject
  * @typedef {import("../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../store/initialState").Filters} Filters
  */
 
 /**
  * @typedef {Object} ProviderStatsData
  * @property {ProvidersStatsCollection} stats
- * @property {string} timeFrame
  * @property {Array<OptionType>} timeFrames
- * @property {function} setTimeFrame
- * @property {string} quote
  * @property {Array<string>} quotes
- * @property {function} setQuote
- * @property {OptionType} base
  * @property {Array<OptionType>} bases
- * @property {function} setBase
  * @property {function} clearFilters
+ * @property {function} setFilters
+ * @property {number} modifiedFilters
+ * @property {Filters['signalpAnalytics'|'copytAnalytics']} filters
  */
 
 /**
@@ -59,23 +58,26 @@ const useProvidersAnalytics = (type) => {
     timeFrame: "30days",
   };
 
-  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
-    defaultFilters,
-    storeFilters,
-    page,
-  );
-
-  // time frames
-  //   const timeFrames = useTimeFramesOptions();
-  // Save settings to store when changed
-  //   const saveTimeFrame = () => {
-  //     dispatch(setTimeFrameAction({ timeFrame, page }));
-  //   };
-  //   useEffectSkipFirst(saveTimeFrame, [timeFrame]);
-
   // quotes
   const quoteAssets = useQuoteAssets();
   const quotes = Object.keys(quoteAssets);
+
+  const timeFrames = useTimeFramesOptions();
+
+  const basesRef = useRef(/** @type {typeof bases}*/ []);
+  const optionsFilters = {
+    ...(quotes.length && { quote: quotes }),
+    ...(basesRef.current.length > 1 && { base: basesRef.current }),
+    timeFrame: timeFrames,
+  };
+
+  const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters, modifiedFilters } = res;
+  /**
+   * @type {Filters[typeof page]}
+   */
+  // @ts-ignore
+  const filters = res.filters;
 
   // bases
   const baseAssets = useBaseAssets(filters.quote);
@@ -87,6 +89,7 @@ const useProvidersAnalytics = (type) => {
     val: "ALL",
     label: intl.formatMessage({ id: "fil.pairs" }),
   });
+  basesRef.current = bases;
 
   // Select all bases by default on quote change
   useEffectSkipFirst(() => {
@@ -121,6 +124,7 @@ const useProvidersAnalytics = (type) => {
     stats,
     quotes,
     bases,
+    timeFrames,
     setFilters,
     filters,
     clearFilters,

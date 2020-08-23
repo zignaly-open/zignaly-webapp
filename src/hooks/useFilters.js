@@ -5,59 +5,46 @@ import { useDispatch } from "react-redux";
 import { extractVal } from "../components/CustomSelect";
 
 /**
- * @typedef {import("../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
- * @typedef {import("../store/actions/settings").ProviderPageType} ProviderPageType
- * @typedef {import("../store/actions/settings").ConnectedProviderPageType} ConnectedProviderPageType
- * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
- * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
- * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
- * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../store/actions/settings").Filter} Filter
+ * @typedef {import("../components/CustomSelect/CustomSelect").Option} Option
  */
 
 /**
- * @typedef {Object} ProvidersOptions
- * @property {boolean} copyTradersOnly
- * @property {boolean} connectedOnly
+ * @typedef {Object} UseFiltersOptions
+ * @property {Object} defaultValues
+ * @property {Object} storeValues
+ * @property {Object} optionsFilters
  */
 
 /**
- * @typedef {Object} Filters
- * @property {string} quote
- * @property {string} exchange
- * @property {string} exchangeType
- * @property {string} fromUser
- */
-
-/**
- * @typedef {Object} ProvidersData
- * @property {ProvidersCollection} providers
- * @property {number} timeFrame
- * @property {function} setTimeFrame
- * @property {Array<OptionType>} quotes
- * @property {Array<OptionType>} exchanges
- * @property {Array<OptionType>} exchangeTypes
- * @property {function} setExchangeType
- * @property {Array<OptionType>} fromUserOptions
- * @property {string} sort
- * @property {function} setSort
+ * @typedef {Object} FiltersData
  * @property {function} clearFilters
- * @property {function} clearSort
  * @property {function} setFilters
- * @property {Filters} filters
+ * @property {number} modifiedFilters
+ * @property {Filter} filters
  */
 
 /**
- * Hook to generate the providers data fetching and filtering.
+ * Hook to handle filters update/saving.
  *
- * @param {ProvidersOptions} options Hook options.
- * @returns {ProvidersData} Providers and filtering objects.
+ * @param {Filter} defaultValues Default filter values
+ * @param {Filter} storeValues Filter store object
+ * @param {Object<string, Array<Option>>} optionsFilters Object with each available filter options
+ * @param {string} page Page key
+ * @returns {FiltersData} Filters data
  */
-const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) => {
+const useFilters = (defaultValues, storeValues, optionsFilters, page) => {
+  /**
+   * Initial filters values using the saved values or falling back to default
+   * @returns {Filter} filters
+   */
   const initialValues = () => {
-    // Initial values of the filters using the saved value or falling back to default
+    /**
+     * @type {Filter}
+     */
+    // @ts-ignore
     const values = {};
-    Object.entries(defaultValues).forEach(([key, value]) => {
+    Object.keys(defaultValues).forEach((/** @type {keyof Filter} */ key) => {
       values[key] = defaultValues[key];
       if (storeValues[key]) {
         // Check that saved value is of correct type
@@ -87,7 +74,7 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
 
   const modifiedFilters = () => {
     let count = 0;
-    Object.entries(filters).forEach(([key, value]) => {
+    Object.entries(filters).forEach((/** @type {[keyof Filter, string]} */ [key, value]) => {
       if (value !== defaultValues[key]) {
         count++;
       }
@@ -95,10 +82,15 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
     return count;
   };
 
-  const persistFilters = (filters) => {
+  /**
+   * Save filters to store
+   * @param {Filter} newFilters filters
+   * @returns {void}
+   */
+  const persistFilters = (newFilters) => {
     dispatch(
       setFiltersAction({
-        filters,
+        filters: newFilters,
         // @ts-ignore
         page,
       }),
@@ -108,7 +100,7 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
   /**
    * Combine external state filters with local state.
    *
-   * @param {defaultFilters} values External filter values.
+   * @param {Filter} values External filter values.
    *
    * @returns {Void} None.
    */
@@ -119,8 +111,12 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
   };
 
   const clearFilters = () => {
+    /**
+     * @type {Filter}
+     */
+    // @ts-ignore
     const newFilters = {};
-    Object.entries(filters).forEach(([key, value]) => {
+    Object.keys(filters).forEach((/** @type {keyof Filter} */ key) => {
       newFilters[key] = defaultValues[key];
     });
     setFilters(newFilters);

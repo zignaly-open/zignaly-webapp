@@ -70,7 +70,7 @@
 
 /**
  * @typedef {Object} BrowseFilters
- * @property {string} quote
+ * @property {string} [quote]
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} fromUser
@@ -78,13 +78,14 @@
 
 /**
  * @typedef {Object} SignalPBrowseFilters
- * @property {string} fromUser
+ * @property {string} [fromUser]
  */
 
 /**
  * @typedef {Object} AnalyticsFilters
  * @property {string} quote
  * @property {string} base
+ * @property {string} timeFrame
  */
 
 /**
@@ -167,8 +168,6 @@
  * @property {Number} connectedSignalp
  * @property {Number} copyt
  * @property {Number} signalp
- * @property {string} signalpAnalytics
- * @property {string} copytAnalytics
  */
 
 /**

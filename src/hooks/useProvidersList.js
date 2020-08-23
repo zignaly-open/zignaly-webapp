@@ -6,7 +6,7 @@ import useQuoteAssets from "./useQuoteAssets";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
-import { uniqBy, assign } from "lodash";
+import { uniqBy } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
@@ -18,26 +18,24 @@ import useFilters from "./useFilters";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/initialState").Filters} Filters
  * @typedef {import("../store/actions/settings").ProviderPageType} ProviderPageType
  * @typedef {import("../store/actions/settings").ConnectedProviderPageType} ConnectedProviderPageType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("./useFilters").FiltersData} FiltersData
+ */
+
+/**
+ * @typedef {ProviderPageType|ConnectedProviderPageType} PageType
  */
 
 /**
  * @typedef {Object} ProvidersOptions
  * @property {boolean} copyTradersOnly
  * @property {boolean} connectedOnly
- */
-
-/**
- * @typedef {Object} Filters
- * @property {string} quote
- * @property {string} exchange
- * @property {string} exchangeType
- * @property {string} fromUser
  */
 
 /**
@@ -48,14 +46,14 @@ import useFilters from "./useFilters";
  * @property {Array<OptionType>} quotes
  * @property {Array<OptionType>} exchanges
  * @property {Array<OptionType>} exchangeTypes
- * @property {function} setExchangeType
  * @property {Array<OptionType>} fromUserOptions
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
  * @property {function} clearSort
  * @property {function} setFilters
- * @property {Filters} filters
+ * @property {Filters[ProviderPageType]|{}} filters
+ * @property {number} modifiedFilters
  */
 
 /**
@@ -71,7 +69,6 @@ const useProvidersList = (options) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
-
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -79,7 +76,7 @@ const useProvidersList = (options) => {
   const [providers, setProviders] = useState(initialState);
 
   /**
-   * @type {ProviderPageType|ConnectedProviderPageType} Page shorthand
+   * @type {PageType} Page shorthand
    */
   let page;
   if (connectedOnly) {
@@ -92,29 +89,15 @@ const useProvidersList = (options) => {
   const storeFilters = storeSettings.filters[page] || {};
 
   const defaultFilters = {
-    quote: "ALL",
-    exchange: "ALL",
-    exchangeType: "ALL",
-    fromUser: "ALL",
-  };
-
-  const initialFilters = {
     ...(!connectedOnly && {
       ...(copyTradersOnly && {
-        quote: storeFilters.quote || defaultFilters.quote,
-        exchange: storeFilters.exchange || defaultFilters.exchange,
-        exchangeType: storeFilters.exchangeType || defaultFilters.exchangeType,
+        quote: "ALL",
+        exchange: "ALL",
+        exchangeType: "ALL",
       }),
-      fromUser: storeFilters.fromUser || defaultFilters.fromUser,
+      fromUser: "ALL",
     }),
   };
-
-  const { filters, setFilters, clearFilters, modifiedFilters } = useFilters(
-    defaultFilters,
-    initialFilters,
-    page,
-  );
-
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const quotes = [
@@ -146,6 +129,32 @@ const useProvidersList = (options) => {
     { val: "ALL", label: "All Services" },
     { val: "userOwned", label: "My Services" },
   ];
+
+  //   const initialFilters = {
+  //     ...(!connectedOnly && {
+  //       ...(copyTradersOnly && {
+  //         quote: storeFilters.quote || defaultFilters.quote,
+  //         exchange: storeFilters.exchange || defaultFilters.exchange,
+  //         exchangeType: storeFilters.exchangeType || defaultFilters.exchangeType,
+  //       }),
+  //       fromUser: storeFilters.fromUser || defaultFilters.fromUser,
+  //     }),
+  //   };
+
+  const optionsFilters = {
+    quote: quotes,
+    exchange: exchanges,
+    exchangeType: exchangeTypes,
+    fromUser: fromUserOptions,
+  };
+
+  const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters, modifiedFilters } = res;
+  /**
+   * @type {typeof defaultFilters}
+   */
+  // @ts-ignore
+  const filters = res.filters;
 
   // Sort
   const initSort = () => {
@@ -288,7 +297,6 @@ const useProvidersList = (options) => {
     timeFrame,
     setTimeFrame,
     quotes,
-    exchanges,
     exchangeTypes,
     fromUserOptions,
     filters,
@@ -298,6 +306,7 @@ const useProvidersList = (options) => {
     clearFilters,
     clearSort,
     modifiedFilters,
+    exchanges,
   };
 };
 

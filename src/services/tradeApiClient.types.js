@@ -942,6 +942,7 @@ function createEmptyProviderEntity() {
     openPositions: 0,
     closedPositions: 0,
     exchangeType: "",
+    exchangeInternalId: "",
   };
 }
 

@@ -70,7 +70,7 @@ const TraderCard = (props) => {
     returns,
   } = provider;
 
-  const { darkStyle, selectedExchange, conn } = useStoreSettingsSelector();
+  const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
@@ -137,7 +137,7 @@ const TraderCard = (props) => {
     const payload = {
       disable: true,
       token: storeSession.tradeApi.accessToken,
-      //   providerId: provider.id,
+      providerId: provider.id,
       type: "connected",
     };
 

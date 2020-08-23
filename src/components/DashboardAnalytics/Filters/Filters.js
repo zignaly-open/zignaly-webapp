@@ -4,18 +4,18 @@ import CustomSelect from "../../CustomSelect";
 import { useIntl } from "react-intl";
 
 /**
+ * @typedef {import("../../../store/initialState").DashboardAnalyticsFilters} DashboardAnalyticsFilters
+ */
+
+/**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {Object} AnayticsFiltersPropTypes
  * @property {function} onClear Callback that delegate filters clearing to caller.
- * @property {function} onQuoteChange Callback that delegate quote change to caller.
- * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
- * @property {string} quote Selected quote (base currency).
  * @property {Array<string>} quotes Quotes options.
- * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
  * @property {Array<OptionType>} providers Providers options.
- * @property {OptionType} provider Selected provider.
- * @property {function} onProviderChange
+ * @property {function} setFilters Callback that delegate filters update to caller.
+ * @property {DashboardAnalyticsFilters} filters Current filters.
  */
 
 /**
@@ -33,7 +33,7 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
         label={intl.formatMessage({
           id: "fil.timeframe",
         })}
-        onChange={(v) => setFilters({ timeFrame: v })}
+        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
         options={timeFrames}
         value={filters.timeFrame}
       />
@@ -41,7 +41,7 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={(v) => setFilters({ quote: v.val })}
+        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v.val })}
         options={quotes}
         search={true}
         value={filters.quote}
@@ -50,7 +50,7 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
         label={intl.formatMessage({
           id: "fil.providers",
         })}
-        onChange={(v) => setFilters({ provider: v.val })}
+        onChange={(/** @type {OptionType} */ v) => setFilters({ provider: v.val })}
         options={providers}
         search={true}
         value={filters.provider}
