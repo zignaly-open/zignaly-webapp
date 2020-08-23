@@ -1,14 +1,8 @@
 import { useState, useRef } from "react";
 import { assign, isEqual } from "lodash";
-import {
-  setSort as setSortAction,
-  setTimeFrame as setTimeFrameAction,
-  setFilters as setFiltersAction,
-} from "../store/actions/settings";
-import { showErrorAlert } from "../store/actions/ui";
+import { setFilters as setFiltersAction } from "../store/actions/settings";
 import { useDispatch } from "react-redux";
 import { extractVal } from "../components/CustomSelect";
-import useDeepCompareEffect from "./useDeepCompareEffect";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -101,6 +95,16 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
     return count;
   };
 
+  const persistFilters = (filters) => {
+    dispatch(
+      setFiltersAction({
+        filters,
+        // @ts-ignore
+        page,
+      }),
+    );
+  };
+
   /**
    * Combine external state filters with local state.
    *
@@ -111,14 +115,7 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
   const combineFilters = (values) => {
     const newFilters = assign({}, filters, values);
     setFilters(newFilters);
-
-    dispatch(
-      setFiltersAction({
-        filters: newFilters,
-        // @ts-ignore
-        page,
-      }),
-    );
+    persistFilters(newFilters);
   };
 
   const clearFilters = () => {
@@ -127,6 +124,7 @@ const useFilters = (defaultValues, storeValues = {}, optionsFilters = {}, page) 
       newFilters[key] = defaultValues[key];
     });
     setFilters(newFilters);
+    persistFilters(newFilters);
   };
 
   return {
