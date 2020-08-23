@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
 import ConditionalWrapper from "../ConditionalWrapper";
 import ChevronRightIcon from "../../images/filters/chevron-right.svg";
-import ClosetIcon from "../../images/filters/close.svg";
+import CloseIcon from "../../images/filters/close.svg";
 
 /**
  * @typedef {Object} CustomFiltersPropTypes
@@ -62,7 +62,7 @@ const CustomFilters = (props) => {
             <CustomButtom
               className="textPurple"
               onClick={() => onClear()}
-              startIcon={<img className="icon iconPurple" src={ClosetIcon} />}
+              startIcon={<img className="icon iconPurple" src={CloseIcon} />}
             >
               <FormattedMessage id="fil.clearall" />
             </CustomButtom>

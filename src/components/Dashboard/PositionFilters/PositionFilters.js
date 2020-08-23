@@ -101,7 +101,6 @@ const PositionFilters = (props) => {
     });
   };
 
-  console.log("compo", filters);
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
       {showTypesFilter && (

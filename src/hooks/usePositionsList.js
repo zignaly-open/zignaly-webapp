@@ -74,7 +74,10 @@ const usePositionsList = (
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
+    // Fix wrong value at first render
+    noSsr: true,
+  });
 
   /**
    * @type {PositionsState}

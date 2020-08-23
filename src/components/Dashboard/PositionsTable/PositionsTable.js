@@ -60,6 +60,7 @@ const PositionsTable = (props) => {
     pairOptions,
     types,
     sides,
+    modifiedFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
@@ -311,7 +312,6 @@ const PositionsTable = (props) => {
             <NoPositions isProfile={isProfile} type={type} />
           ) : (
             <Box className={tableClass} display="flex" flexDirection="column" width={1}>
-              {/* <Button onClick={toggleFiltersVisibility}>Malik</Button> */}
               <Table
                 columns={columns}
                 data={data}
@@ -319,6 +319,7 @@ const PositionsTable = (props) => {
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
                 toggleFilters={toggleFilters}
+                modifiedFiltersCount={modifiedFilters}
               />
             </Box>
           )}
