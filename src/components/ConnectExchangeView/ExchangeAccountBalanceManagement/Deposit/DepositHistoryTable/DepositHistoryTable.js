@@ -81,7 +81,7 @@ const DepositHistoryTable = ({ internalId }) => {
    */
   const options = {
     sortOrder: {
-      name: "balanceTotalBTC",
+      name: "timestamp",
       direction: "desc",
     },
   };
