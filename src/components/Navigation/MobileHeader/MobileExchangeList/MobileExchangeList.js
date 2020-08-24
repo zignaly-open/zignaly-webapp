@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import "./MobileExchangeList.scss";
 import { Box, Slide, Typography } from "@material-ui/core";
-import CloseBlack from "../../../images/sidebar/closeBlack.svg";
-import CloseWhite from "../../../images/sidebar/closeWhite.svg";
+import CloseBlack from "../../../../images/sidebar/closeBlack.svg";
+import CloseWhite from "../../../../images/sidebar/closeWhite.svg";
 import { FormattedMessage } from "react-intl";
-import ExchangeIcon from "../../ExchangeIcon";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import ExchangeList from "../Header/UserExchangeList/ExchangeList";
-import DownIcon from "../../../images/header/chevron-down.svg";
+import ExchangeIcon from "../../../ExchangeIcon";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import ExchangeList from "../../Header/UserExchangeList/ExchangeList";
+import DownIcon from "../../../../images/header/chevron-down.svg";
 
 /**
- * @typedef {import('../../../store/initialState').DefaultState} DefaultState
+ * @typedef {import('../../../../store/initialState').DefaultState} DefaultState
  */
 
 const MobileExchangeList = () => {
