@@ -43,8 +43,8 @@ const ToggleInput = ({
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!(value1 || value2));
-  const [data1, setData1] = useState(value1);
-  const [data2, setData2] = useState(value2);
+  const [data1, setData1] = useState(value1 ? value1 : "");
+  const [data2, setData2] = useState(value2 ? value2 : "");
   const { register } = formMethods;
 
   const initData = () => {
@@ -59,7 +59,14 @@ const ToggleInput = ({
    * @returns {void} None.
    */
   const handleData1Change = (e) => {
-    setData1(Math.sign(e.target.value) === -1 ? e.target.value * -1 : e.target.value);
+    let targetValue = e.target.value;
+    if (
+      targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+      targetValue === "" ||
+      targetValue === "-"
+    ) {
+      setData1(Math.sign(targetValue) === -1 ? targetValue * -1 : targetValue);
+    }
   };
 
   /**
@@ -68,7 +75,14 @@ const ToggleInput = ({
    * @returns {void} None.
    */
   const handleData2Change = (e) => {
-    setData2(Math.sign(e.target.value) === 1 ? e.target.value * -1 : e.target.value);
+    let targetValue = e.target.value;
+    if (
+      targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+      targetValue === "" ||
+      targetValue === "-"
+    ) {
+      setData2(Math.sign(targetValue) === 1 ? targetValue * -1 : targetValue);
+    }
   };
 
   return (
@@ -110,7 +124,7 @@ const ToggleInput = ({
             inputRef={register({ max: 100 })}
             name={name1}
             onChange={handleData1Change}
-            type="number"
+            type="text"
             value={data1}
             variant="outlined"
           />
@@ -124,7 +138,7 @@ const ToggleInput = ({
             inputRef={register({ max: 100 })}
             name={name2}
             onChange={handleData2Change}
-            type="number"
+            type="text"
             value={data2}
             variant="outlined"
           />
