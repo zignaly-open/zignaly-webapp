@@ -1935,7 +1935,7 @@ export function coinRayTokenResponseTransform(response) {
  *
  * @returns {MarketSymbol} Empty market symbol value object.
  */
-function createMarketSymbolEmptyValueObject() {
+export function createMarketSymbolEmptyValueObject() {
   return {
     id: "",
     symbol: "",

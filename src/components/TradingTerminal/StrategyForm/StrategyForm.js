@@ -8,7 +8,11 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
+import {
+  mapEntryTypeToEnum,
+  mapSideToEnum,
+  createMarketSymbolEmptyValueObject,
+} from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -59,23 +63,22 @@ const StrategyForm = (props) => {
   } = props;
 
   const resolveCurrentSymbolData = () => {
-    const symbolDataMatch =
-      symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol)) || {};
+    const symbolDataMatch = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
 
-    if (positionEntity && !symbolDataMatch) {
-      const symbolData = {
+    if (positionEntity && isEmpty(symbolDataMatch)) {
+      const symbolData = assign(createMarketSymbolEmptyValueObject(), {
         id: positionEntity.symbol,
         base: positionEntity.base,
         baseId: positionEntity.base,
         quote: positionEntity.quote,
         quoteId: positionEntity.quote,
         limits: {},
-      };
+      });
 
       return symbolData;
     }
 
-    return symbolDataMatch;
+    return symbolDataMatch || createMarketSymbolEmptyValueObject();
   };
 
   const currentSymbolData = resolveCurrentSymbolData();
