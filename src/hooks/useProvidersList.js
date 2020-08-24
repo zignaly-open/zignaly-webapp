@@ -130,17 +130,6 @@ const useProvidersList = (options) => {
     { val: "userOwned", label: "My Services" },
   ];
 
-  //   const initialFilters = {
-  //     ...(!connectedOnly && {
-  //       ...(copyTradersOnly && {
-  //         quote: storeFilters.quote || defaultFilters.quote,
-  //         exchange: storeFilters.exchange || defaultFilters.exchange,
-  //         exchangeType: storeFilters.exchangeType || defaultFilters.exchangeType,
-  //       }),
-  //       fromUser: storeFilters.fromUser || defaultFilters.fromUser,
-  //     }),
-  //   };
-
   const optionsFilters = {
     quote: quotes,
     exchange: exchanges,
@@ -148,13 +137,13 @@ const useProvidersList = (options) => {
     fromUser: fromUserOptions,
   };
 
-  const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
-  const { setFilters, clearFilters, modifiedFilters } = res;
+  const filtersData = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters, modifiedFilters } = filtersData;
   /**
    * @type {typeof defaultFilters}
    */
   // @ts-ignore
-  const filters = res.filters;
+  const filters = filtersData.filters;
 
   // Sort
   const initSort = () => {

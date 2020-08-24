@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import { uniqBy, sortBy } from "lodash";
 import { FormattedMessage } from "react-intl";
 import { Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
@@ -52,18 +51,6 @@ const PositionFilters = (props) => {
   const setProvider = (value) => {
     onChange({
       providerId: value,
-    });
-  };
-
-  /**
-   * Set coin pair filter value.
-   *
-   * @param {string} value Selected coin value.
-   * @returns {Void} None.
-   */
-  const setCoin = (value) => {
-    onChange({
-      pair: value,
     });
   };
 

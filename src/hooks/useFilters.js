@@ -33,7 +33,13 @@ import { extractVal } from "../components/CustomSelect";
  * @param {string} page Page key
  * @returns {FiltersData} Filters data
  */
-const useFilters = (defaultValues, storeValues, optionsFilters, page) => {
+const useFilters = (
+  defaultValues,
+  storeValues,
+  optionsFilters,
+  page,
+  // eslint-disable-next-line max-params
+) => {
   /**
    * Initial filters values using the saved values or falling back to default
    * @returns {Filter} filters

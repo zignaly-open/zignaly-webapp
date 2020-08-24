@@ -8,10 +8,6 @@ import useBaseAssets from "./useBaseAssets";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import {
-  setTimeFrame as setTimeFrameAction,
-  setFilters as setFiltersAction,
-} from "../store/actions/settings";
 import useFilters from "./useFilters";
 import useTimeFramesOptions from "./useTimeFramesOptions";
 
@@ -66,18 +62,19 @@ const useProvidersAnalytics = (type) => {
 
   const basesRef = useRef(/** @type {typeof bases}*/ []);
   const optionsFilters = {
+    // wait until the options have been retreived before using them for comparison
     ...(quotes.length && { quote: quotes }),
     ...(basesRef.current.length > 1 && { base: basesRef.current }),
     timeFrame: timeFrames,
   };
 
-  const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
-  const { setFilters, clearFilters, modifiedFilters } = res;
+  const filtersData = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters, modifiedFilters } = filtersData;
   /**
    * @type {Filters[typeof page]}
    */
   // @ts-ignore
-  const filters = res.filters;
+  const filters = filtersData.filters;
 
   // bases
   const baseAssets = useBaseAssets(filters.quote);

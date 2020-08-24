@@ -314,11 +314,11 @@ const PositionsTable = (props) => {
               <Table
                 columns={columns}
                 data={data}
+                modifiedFiltersCount={modifiedFilters}
                 options={options}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}
                 toggleFilters={toggleFilters}
-                modifiedFiltersCount={modifiedFilters}
               />
             </Box>
           )}

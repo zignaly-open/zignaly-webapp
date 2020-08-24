@@ -75,11 +75,11 @@ const useDashboardAnalytics = () => {
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
   const defaultFilters = {
-    timeFrame: "3",
+    timeFrame: "7",
     quote: "USDT",
     // Store provider's label and value in order to display it in the
     // dropdown before the providers list is resolved
-    provider: providers[1],
+    provider: providers[0],
   };
 
   const optionsFilters = {
