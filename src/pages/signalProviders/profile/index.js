@@ -8,33 +8,44 @@ import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
 import Options from "../../../components/Provider/Profile/Options";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { useIntl } from "react-intl";
 import { Helmet } from "react-helmet";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
 import CloneDeleteButton from "../../../components/Provider/ProviderHeader/ProviderDeleteButton";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { setProvider } from "../../../store/actions/views";
 
 const SignalProvidersProfile = () => {
   const storeViews = useStoreViewsSelector();
+  const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
 
   const checkPaymentStatus = () => {
     if (typeof window !== "undefined") {
       let url = window.location.href;
+      const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
+      const providerId = location.pathname.split("/")[idIndex];
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: providerId,
+        version: 2,
+      };
       if (url.includes("error")) {
         let error = {
           code: "paymentnotcompleted",
         };
         history.pushState({}, "error", url.split("#")[0]);
         dispatch(showErrorAlert(error));
+        dispatch(setProvider(payload));
       }
       if (url.includes("success")) {
-        let success = {
-          code: "paymentnotcompleted",
-        };
         history.pushState({}, "success", url.split("#")[0]);
-        dispatch(showErrorAlert(success));
+        dispatch(showSuccessAlert("alert.payment.title", "alert.payment.body"));
+        dispatch(setProvider(payload));
       }
     }
   };
@@ -86,11 +97,13 @@ const SignalProvidersProfile = () => {
           <Performance provider={storeViews.provider} />
         </Box>
       </Box>
-      {!storeViews.provider.disable && checkAvailableOptions() && (
-        <Box bgcolor="grid.content" className="optionsBox">
-          <Options provider={storeViews.provider} />
-        </Box>
-      )}
+      {!storeViews.provider.disable &&
+        storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId &&
+        checkAvailableOptions() && (
+          <Box bgcolor="grid.content" className="optionsBox">
+            <Options provider={storeViews.provider} />
+          </Box>
+        )}
       {!storeViews.provider.disable &&
         !storeViews.provider.isClone &&
         storeViews.provider.options.allowClones && (

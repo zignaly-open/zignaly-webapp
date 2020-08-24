@@ -345,7 +345,7 @@ const StrategyForm = (props) => {
         trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
         providerId: 1,
         providerName: "Manual Trading",
-        internalExchangeId: selectedExchange.internalId,
+        internalExchangeId: positionEntity.internalExchangeId,
         positionId: positionEntity.positionId,
       },
       positionStrategy,

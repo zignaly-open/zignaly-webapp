@@ -179,12 +179,13 @@ export const setSort = (payload) => {
 
 /**
  * @typedef {"copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType} FilterPage
+ * @typedef {Filters["copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType]} Filter
  */
 
 /**
  * @typedef {Object} SetFiltersPayload
  * @property {FilterPage} page
- * @property {Filters[FilterPage]} filters
+ * @property {Filter} filters
  *
  * @typedef {Object} SetFiltersAction
  * @property {typeof SET_FILTERS} type
@@ -204,8 +205,8 @@ export const setFilters = (payload) => {
 
 /**
  * @typedef {Object} SetTimeFramePayload
- * @property {ProviderPageType|ConnectedProviderPageType|AnalyticsPageType} page
- * @property {string|number} timeFrame
+ * @property {ProviderPageType|ConnectedProviderPageType} page
+ * @property {number} timeFrame
  *
  * @typedef {Object} SetTimeFrameAction
  * @property {typeof SET_TIMEFRAME} type

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TraderCardBody.scss";
 import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
@@ -11,6 +11,12 @@ import { formatFloat2Dec } from "../../../utils/format";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../services/tradeApiClient";
+import { ConfirmDialog } from "../../Dialogs";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -49,6 +55,7 @@ const tooltipFormat = (tooltipItem) => (
  */
 const TraderCard = (props) => {
   const intl = useIntl();
+  const dispatch = useDispatch();
   const { provider, showSummary, timeFrame } = props;
   const {
     openPositions,
@@ -63,28 +70,19 @@ const TraderCard = (props) => {
     returns,
   } = provider;
 
-  const { darkStyle } = useStoreSettingsSelector();
+  const { darkStyle, selectedExchange } = useStoreSettingsSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
+  const storeSession = useStoreSessionSelector();
+  const [loading, setLoading] = useState(false);
+  const [canDisable, setCanDisable] = useState(!disable);
+  const type = isCopyTrading ? "copyt" : "srv";
 
   /**
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-  //   let cumulativeTotalProfits = 0;
-  //   let cumulativeTotalInvested = 0;
   dailyReturns.reduce((acc, item) => {
-    // if (isCopyTrading) {
     acc += item.returns;
-    // } else {
-    //   //   cumulativeTotalProfits += parseFloat(item.totalProfit);
-    //   //   cumulativeTotalInvested += parseFloat(item.totalInvested);
-    //   //   if (cumulativeTotalInvested) {
-    //   //     acc = (cumulativeTotalProfits / cumulativeTotalInvested) * 100;
-    //   //   }
-    // }
-    // chartData.push({
-    //   day: item.name,
-    //   returns: acc.toFixed(2),
-    // });
     chartData.values.push(acc);
     chartData.labels.push(item.name);
     return acc;
@@ -119,8 +117,53 @@ const TraderCard = (props) => {
     }
   };
 
+  const initConfirmConfig = {
+    titleTranslationId: `confirm.${type}.unfollow.title`,
+    messageTranslationId: `confirm.${type}.unfollow.message`,
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  const confirmAction = () => {
+    setConfirmConfig({
+      ...initConfirmConfig,
+      visible: true,
+    });
+  };
+
+  const stopCopying = () => {
+    setLoading(true);
+    const payload = {
+      disable: true,
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      type: "connected",
+    };
+
+    tradeApi
+      .providerDisable(payload)
+      .then((response) => {
+        if (response) {
+          dispatch(showSuccessAlert(`${type}.unfollow.alert.title`, `${type}.unfollow.alert.body`));
+          setCanDisable(false);
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <LazyLoad height="310px" offset={600} once>
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={stopCopying}
+        setConfirmConfig={setConfirmConfig}
+      />
       <div className="traderCardBody">
         <div className="returnsBox">
           <CustomToolip
@@ -137,7 +180,9 @@ const TraderCard = (props) => {
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: "sort.return",
-              })} (${intl.formatMessage({ id: "time." + timeFrame + "d" })})`}</Typography>
+              })} (${intl.formatMessage({
+                id: "time." + timeFrame + "d",
+              })})`}</Typography>
             </div>
           </CustomToolip>
 
@@ -176,7 +221,7 @@ const TraderCard = (props) => {
             }`}
           >
             <div className="followers">
-              {!disable ? (
+              {canDisable ? (
                 <h6 className={`callout2 ${colorClass}`}>
                   <FormattedMessage
                     id={isCopyTrading ? "trader.others" : "provider.others"}
@@ -194,11 +239,35 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {!disable && (
-                <CustomButton className="textPurple">
-                  <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
-                </CustomButton>
-              )}
+              {canDisable &&
+                (selectedExchange.internalId !== provider.exchangeInternalId ? (
+                  <CustomToolip
+                    title={
+                      <FormattedMessage
+                        id={
+                          isCopyTrading
+                            ? "copyt.follow.anotheraccount"
+                            : "srv.follow.anotheraccount"
+                        }
+                        values={{
+                          account: exchangeConnections.find(
+                            (a) => a.internalId === provider.exchangeInternalId,
+                          ).internalName,
+                        }}
+                      />
+                    }
+                  >
+                    <div>
+                      <CustomButton className="textPurple" disabled={true}>
+                        <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                      </CustomButton>
+                    </div>
+                  </CustomToolip>
+                ) : (
+                  <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
+                    <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                  </CustomButton>
+                ))}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
               </CustomButton>

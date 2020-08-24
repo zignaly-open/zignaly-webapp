@@ -95,7 +95,7 @@
 
 @include media("<=sm") {
   .exchangeAccountData {
-    padding: 12px;
+    padding: 12px 0;
 
     .topBoxData {
       align-items: center;
@@ -131,6 +131,10 @@
         // height: 176px;
         // width: 176px;
       }
+    }
+
+    .cardsBox {
+      width: 100%;
     }
 
     .noBalance {

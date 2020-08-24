@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import { uniqBy, sortBy } from "lodash";
 import { FormattedMessage } from "react-intl";
 import { Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
@@ -9,16 +8,20 @@ import { Box } from "@material-ui/core";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("react").MouseEventHandler} MouseEventHandler
- * @typedef {import("../../../hooks/usePositionsList").PositionsFiltersState} PositionsFiltersState
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("../../../store/initialState").DashboardPositionsFilters} DashboardPositionsFilters
  */
 
 /**
  * @typedef {Object} PositionFiltersPropTypes
  * @property {Function} onChange Callback to broadcast filters changes to caller.
- * @property {UserPositionsCollection} positions Positions collection.
- * @property {PositionsFiltersState} initialState Filters initial state.
  * @property {boolean} showTypesFilter Flag to indicate whether types dropdown filter display or not.
+ * @property {DashboardPositionsFilters} filters Current filters.
+ * @property {function} clearFilters Callback that delegate filters clearing to caller.
+ * @property {Array<OptionType>} pairOptions Pair options.
+ * @property {Array<OptionType>} providerOptions Providers options.
+ * @property {Array<OptionType>} types Types options.
+ * @property {Array<OptionType>} sides Sides options.
  */
 
 /**
@@ -28,57 +31,16 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const { initialState, onChange, positions, showTypesFilter } = props;
-  const defaultFilters = {
-    providerId: "all",
-    pair: "all",
-    side: "all",
-    type: "all",
-    status: "",
-  };
-  const [filters, setFilters] = useState(initialState);
-
-  const extractPairOptions = () => {
-    const coinsDistinct = uniqBy(positions, "pair").map((position) => {
-      return { label: position.pair, val: position.pair };
-    });
-
-    return [{ label: "All Pairs", val: "all" }].concat(sortBy(coinsDistinct, "label"));
-  };
-
-  const extractProviderOptions = () => {
-    const providersDistinct = uniqBy(positions, "providerName").map((position) => {
-      return {
-        label: position.providerName,
-        val: position.providerId,
-      };
-    });
-
-    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
-  };
-
-  const pairOptions = extractPairOptions();
-  const sides = [
-    { label: "All Sides", val: "all" },
-    { label: "SHORT", val: "SHORT" },
-    { label: "LONG", val: "LONG" },
-  ];
-
-  const types = [
-    { label: "All Types", val: "all" },
-    { label: "UNSOLD", val: "unsold" },
-    { label: "UNOPEN", val: "unopen" },
-  ];
-
-  const providerOptions = extractProviderOptions();
-
-  const clearFilters = () => {
-    setFilters(defaultFilters);
-  };
-
-  const broadcastChange = () => {
-    onChange(filters);
-  };
+  const {
+    filters,
+    onChange,
+    showTypesFilter,
+    clearFilters,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
+  } = props;
 
   /**
    * Set provider filter value.
@@ -87,22 +49,8 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setProvider = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       providerId: value,
-    });
-  };
-
-  /**
-   * Set coin pair filter value.
-   *
-   * @param {string} value Selected coin value.
-   * @returns {Void} None.
-   */
-  const setCoin = (value) => {
-    setFilters({
-      ...filters,
-      pair: value,
     });
   };
 
@@ -113,8 +61,7 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setSide = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       side: value,
     });
   };
@@ -127,8 +74,7 @@ const PositionFilters = (props) => {
    */
   const setStatus = (e) => {
     const target = e.currentTarget;
-    setFilters({
-      ...filters,
+    onChange({
       status: target.checked ? "all" : "",
     });
   };
@@ -140,21 +86,10 @@ const PositionFilters = (props) => {
    * @returns {Void} None.
    */
   const setType = (value) => {
-    setFilters({
-      ...filters,
+    onChange({
       type: value,
     });
   };
-
-  useEffect(broadcastChange, [filters]);
-
-  //   console.log(
-  //     providerOptions.find((p) => p.val === filters.providerId),
-  //     filters.providerName,
-  //   );
-  //   const selectedProvider = providerOptions.find((p) => p.val === filters.providerName)
-  //     ? filters.providerName
-  //     : defaultFilters.providerName;
 
   return (
     <CustomFilters onClear={clearFilters} title="Filters">
@@ -169,7 +104,7 @@ const PositionFilters = (props) => {
       />
       <CustomSelect
         label=""
-        onChange={setCoin}
+        onChange={(/** @type {OptionType} */ v) => onChange({ pair: v.val })}
         options={pairOptions}
         search={true}
         value={filters.pair}

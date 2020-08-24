@@ -11,7 +11,7 @@ import {
   setResponsiveTable,
 } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import { Box, Hidden, IconButton, Tooltip } from "@material-ui/core";
+import { Box, Hidden, IconButton, Tooltip, Typography } from "@material-ui/core";
 import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
 import { merge } from "lodash";
 import TableChartIcon from "@material-ui/icons/TableChart";
@@ -38,6 +38,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @property {MUIDataTableOptions} [options] Table options.
  * @property {*} [components] Custom table components.
  * @property {Function} [toggleFilters] Custom table components.
+ * @property {number} [modifiedFiltersCount] Modified Filters count.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -51,6 +52,7 @@ const Table = ({
   options: customOptions,
   components,
   toggleFilters,
+  modifiedFiltersCount,
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
@@ -118,9 +120,13 @@ const Table = ({
             </IconButton>
           </Tooltip>
           {toggleFilters && (
-            // @ts-ignore
-            <IconButton onClick={toggleFilters}>
+            <IconButton onClick={() => toggleFilters()}>
               <FilterListIcon />
+              {modifiedFiltersCount > 0 && (
+                <Typography className="modified" variant="subtitle1">
+                  {modifiedFiltersCount}
+                </Typography>
+              )}
             </IconButton>
           )}
         </Hidden>

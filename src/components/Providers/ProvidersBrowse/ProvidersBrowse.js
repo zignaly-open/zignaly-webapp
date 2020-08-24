@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useIntl } from "react-intl";
 import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
@@ -13,6 +13,7 @@ import { Box } from "@material-ui/core";
  * @property {boolean} [showSort] Flag to indicate if sort options should be rendered.
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
+ * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
  * @property {'copyt'|'signalp'} type Type of providers to show.
  * @property {boolean} connectedOnly Only display connected providers.
  */
@@ -30,52 +31,49 @@ const ProvidersBrowse = ({
   showSort,
   type,
   connectedOnly,
+  setModifiedFiltersCount,
 }) => {
   const copyTradersOnly = type === "copyt";
   const providersOptions = { copyTradersOnly, connectedOnly };
   const {
     providers,
-    timeFrame,
-    setTimeFrame,
-    coin,
-    coins,
-    setCoin,
-    exchange,
+    quotes,
     exchanges,
-    setExchange,
-    exchangeType,
-    setExchangeType,
     exchangeTypes,
-    fromUser,
     fromUserOptions,
-    setFromUser,
     sort,
     setSort,
     clearFilters,
     clearSort,
+    filters,
+    setFilters,
+    modifiedFilters,
+    timeFrame,
+    setTimeFrame,
   } = useProvidersList(providersOptions);
   const intl = useIntl();
+
+  useEffect(() => {
+    if (setModifiedFiltersCount) {
+      setModifiedFiltersCount(modifiedFilters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modifiedFilters]);
 
   return (
     <Box className="providersBrowse">
       {toggleFilters && (
         <ProvidersFilters
           clearFilters={clearFilters}
-          coin={coin}
-          coins={coins}
           copyTradersOnly={copyTradersOnly}
-          exchange={exchange}
-          exchangeType={exchangeType}
           exchangeTypes={exchangeTypes}
           exchanges={exchanges}
-          fromUser={fromUser}
+          filters={filters}
           fromUserOptions={fromUserOptions}
           onClose={toggleFilters}
-          onCoinChange={setCoin}
-          onExchangeChange={setExchange}
-          onExchangeTypeChange={setExchangeType}
-          onFromUserChange={setFromUser}
           open={showFilters}
+          quotes={quotes}
+          setFilters={setFilters}
         />
       )}
       {toggleSort && (

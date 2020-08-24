@@ -50,7 +50,7 @@ const BalanceBox = () => {
               <FormattedMessage id="balance.available" />
             </Typography>
             <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
-            <Typography className="number3">USDT {balance.totalFreeUSDT}</Typography>
+            <Typography className="number3">USDT {formatFloat(balance.totalFreeUSDT)}</Typography>
           </Box>
 
           <Box
