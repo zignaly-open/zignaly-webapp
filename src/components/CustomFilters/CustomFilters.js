@@ -3,8 +3,9 @@ import "./CustomFilters.scss";
 import { Box, Collapse } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
+import ConditionalWrapper from "../ConditionalWrapper";
 import ChevronRightIcon from "../../images/filters/chevron-right.svg";
-import ClosetIcon from "../../images/filters/close.svg";
+import CloseIcon from "../../images/filters/close.svg";
 
 /**
  * @typedef {Object} CustomFiltersPropTypes
@@ -61,7 +62,7 @@ const CustomFilters = (props) => {
             <CustomButtom
               className="textPurple"
               onClick={() => onClear()}
-              startIcon={<img className="icon iconPurple" src={ClosetIcon} />}
+              startIcon={<img className="icon iconPurple" src={CloseIcon} />}
             >
               <FormattedMessage id="fil.clearall" />
             </CustomButtom>
@@ -80,20 +81,5 @@ const CustomFilters = (props) => {
     </ConditionalWrapper>
   );
 };
-
-/**
- * @typedef {Object} ConditionalWrapperPropTypes
- * @property {boolean} condition
- * @property {React.FunctionComponent} wrapper
- * @property {JSX.Element} children
- */
-
-/**
- * Conditionally wrap children component
- * @param {ConditionalWrapperPropTypes} props Props
- * @returns {JSX.Element} Element.
- */
-const ConditionalWrapper = ({ condition, wrapper, children }) =>
-  condition ? wrapper(children) : children;
 
 export default CustomFilters;

@@ -106,7 +106,6 @@ const settings = createReducer(initialState.settings, {
 
   [SET_TIMEFRAME]: (state, /** @type {SetTimeFrameAction} */ action) => {
     const { page, timeFrame } = action.payload;
-    // @ts-ignore Analytics timeframes use string instead of numbers
     state.timeFrame[page] = timeFrame;
   },
 

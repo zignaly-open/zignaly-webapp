@@ -18,8 +18,8 @@ jobs:
         run: npm ci
       - name: Check Style Lint
         run: npm run stylelint
-      #   - name: Check JS Lint
-      #     run: npm run jslint
+      - name: Check JS Lint
+        run: npm run jslint
       - name: Check Types
         run: npm run tscheck
       - name: Test

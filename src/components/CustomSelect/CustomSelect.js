@@ -47,7 +47,7 @@ import "./CustomSelect.scss";
  * @param {Option} option option
  * @returns {string|number} value
  */
-const extractVal = (option) => (typeof option === "object" ? option.val : option);
+export const extractVal = (option) => (typeof option === "object" ? option.val : option);
 
 /**
  * Extract label from option item

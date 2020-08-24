@@ -2,20 +2,21 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import { assign, cloneDeep, filter, isEmpty, isFunction, omitBy, partial } from "lodash";
+import { cloneDeep, filter, isEmpty, isFunction, omitBy, partial, sortBy, uniqBy } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
-import { setFilters as setFiltersAction } from "../store/actions/settings";
 import useStoreViewsSelector from "./useStoreViewsSelector";
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
+ * @typedef {import("../store/initialState").Filters} Filters
  */
 
 /**
@@ -23,11 +24,17 @@ import { useTheme } from "@material-ui/core/styles";
  * @property {UserPositionsCollection} positionsAll
  * @property {UserPositionsCollection} positionsFiltered
  * @property {Function} setFilters
- * @property {PositionsFiltersState} filtersState
+ * @property {function} clearFilters
  * @property {Boolean} loading
  * @property {Function} flagPositionUpdating
  * @property {Boolean} filtersVisibility
  * @property {Function} setFiltersVisibility
+ * @property {Filters['dashboardPositions']} filters
+ * @property {number} modifiedFilters
+ * @property {Array<OptionType>} providerOptions
+ * @property {Array<OptionType>} pairOptions
+ * @property {Array<OptionType>} sides
+ * @property {Array<OptionType>} types
  */
 
 /**
@@ -37,15 +44,6 @@ import { useTheme } from "@material-ui/core/styles";
  * @property {UserPositionsCollection} log
  * @property {UserPositionsCollection} profileOpen
  * @property {UserPositionsCollection} profileClosed
- */
-
-/**
- * @typedef {Object} PositionsFiltersState
- * @property {string} providerId
- * @property {string} pair
- * @property {string} side
- * @property {string} type
- * @property {string} status
  */
 
 /**
@@ -68,21 +66,16 @@ const usePositionsList = (
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
-  const storeFilters = storeSettings.filters[persistKey];
   const { selectedExchange } = storeSettings;
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const defaultFilters = {
-    providerId: (storeFilters && storeFilters.providerId) || "all",
-    pair: (storeFilters && storeFilters.pair) || "all",
-    side: (storeFilters && storeFilters.side) || "all",
-    type: (storeFilters && storeFilters.type) || "all",
-    status: (storeFilters && storeFilters.status) || "",
-  };
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
+    // Fix wrong value at first render
+    noSsr: true,
+  });
 
   /**
    * @type {PositionsState}
@@ -94,12 +87,69 @@ const usePositionsList = (
     profileOpen: null,
     profileClosed: null,
   };
-
-  const [filters, setFilters] = useState(defaultFilters);
-  const [positions, setPositions] = useState(cloneDeep(defaultPositionsState));
+  const [positions, setPositions] = useState(defaultPositionsState);
+  const positionsAll = positions[type] || [];
   const storeSession = useStoreSessionSelector();
-  const statusRef = useRef(filters.status);
   const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
+
+  const extractPairOptions = () => {
+    const coinsDistinct = uniqBy(positionsAll, "pair").map((position) => {
+      return { label: position.pair, val: position.pair };
+    });
+
+    return [{ label: "All Pairs", val: "all" }].concat(sortBy(coinsDistinct, "label"));
+  };
+
+  const extractProviderOptions = () => {
+    const providersDistinct = uniqBy(positionsAll, "providerName").map((position) => {
+      return {
+        label: position.providerName,
+        val: position.providerId,
+      };
+    });
+
+    return [{ label: "All Providers", val: "all" }].concat(sortBy(providersDistinct, "label"));
+  };
+
+  const pairOptions = extractPairOptions();
+  const sides = [
+    { label: "All Sides", val: "all" },
+    { label: "SHORT", val: "SHORT" },
+    { label: "LONG", val: "LONG" },
+  ];
+
+  const types = [
+    { label: "All Types", val: "all" },
+    { label: "UNSOLD", val: "unsold" },
+    { label: "UNOPEN", val: "unopen" },
+  ];
+
+  const providerOptions = extractProviderOptions();
+
+  const storeFilters = storeSettings.filters[persistKey];
+  const defaultFilters = {
+    providerId: "all",
+    pair: "all",
+    side: "all",
+    type: "all",
+    status: "",
+  };
+  const optionsFilters = {
+    providerId: providerOptions,
+    pair: pairOptions,
+    side: sides,
+    type: types,
+  };
+
+  const res = useFilters(defaultFilters, storeFilters, optionsFilters, persistKey);
+  const { setFilters, clearFilters, modifiedFilters } = res;
+  /**
+   * @type {Filters[typeof persistKey]}
+   */
+  // @ts-ignore
+  const filters = res.filters;
+
+  const statusRef = useRef(filters.status);
 
   /**
    * Resolve a Trade API fetch method to fetch positions of a given category.
@@ -353,20 +403,6 @@ const usePositionsList = (
   };
   useInterval(updateData, 3000, true);
 
-  /**
-   * Update filters with selected exchange.
-   *
-   * @returns {Void} None.
-   */
-  const updateFilters = () => {
-    const newFilters = {
-      ...filters,
-    };
-
-    setFilters(newFilters);
-  };
-  useEffect(updateFilters, []);
-
   const handlePositionTypeChange = () => {
     typeRef.current = type;
   };
@@ -392,28 +428,21 @@ const usePositionsList = (
     }
   };
 
-  /**
-   * Combine external state filters with local state.
-   *
-   * @param {defaultFilters} values External filter values.
-   *
-   * @returns {Void} None.
-   */
-  const combineFilters = (values) => {
-    const newFilters = assign({}, filters, values);
-    setFilters(newFilters);
-    dispatch(setFiltersAction({ page: persistKey, filters: newFilters }));
-  };
-
   return {
-    positionsAll: positions[type] || [],
+    positionsAll,
     positionsFiltered: filterData(positions[type] || []),
-    setFilters: combineFilters,
-    filtersState: filters,
+    setFilters,
+    filters,
+    clearFilters,
+    modifiedFilters,
     loading: loading,
     flagPositionUpdating,
     filtersVisibility,
     setFiltersVisibility,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
   };
 };
 
