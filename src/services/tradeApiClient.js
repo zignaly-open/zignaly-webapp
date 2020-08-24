@@ -124,6 +124,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
  * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
+ * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
  *
  */
 
@@ -1569,6 +1570,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return profileStatsResponseTransform(responseData);
+  }
+
+  /**
+   * Update user.
+   *
+   * @param {UserPayload} payload User update payload.
+   *
+   * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async updateUser(payload) {
+    const endpointPath = "/fe/api.php?action=updateUser";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
   }
 }
 

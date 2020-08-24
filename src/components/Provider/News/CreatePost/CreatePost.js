@@ -4,11 +4,17 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { ConfirmDialog } from "../../../Dialogs";
 import { navigate as navigateReach } from "@reach/router";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 
 const CreatePost = () => {
+  const storeUserData = useStoreUserData();
+
   const createPost = () => {
-    setConfirmConfig((c) => ({ ...c, visible: true }));
+    if (!storeUserData.userName) {
+      setConfirmConfig((c) => ({ ...c, visible: true }));
+    }
   };
+
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
    * @type {ConfirmDialogConfig}

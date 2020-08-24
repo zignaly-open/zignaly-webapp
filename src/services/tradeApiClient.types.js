@@ -828,6 +828,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UserPayload
+ * @property {string} userName
+ * @property {string} [imageUrl]
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export

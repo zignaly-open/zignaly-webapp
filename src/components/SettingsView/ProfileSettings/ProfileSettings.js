@@ -7,19 +7,24 @@ import CustomButton from "../../CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import UploadImage from "../../UploadImage";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import { getUserData } from "../../../store/actions/user";
+import tradeApi from "../../../services/tradeApiClient";
+import ProfileIcon from "../../../images/header/profileIcon.svg";
 
 const ProfileSettings = () => {
-  //   const dispatch = useDispatch();
   const storeUserData = useStoreUserData();
   const { handleSubmit, register, reset, control, errors } = useForm();
   const storeSession = useStoreSessionSelector();
   const [updating, setUpdating] = useState(false);
   const [imageUrl, setImageUrl] = useState(storeUserData.imageUrl);
   const intl = useIntl();
+  const dispatch = useDispatch();
 
   /**
    * @typedef {Object} FormData
-   * @property {string} username
+   * @property {string} userName
    */
 
   /**
@@ -29,19 +34,20 @@ const ProfileSettings = () => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    const { username } = data;
+    const { userName } = data;
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      username,
+      userName,
       imageUrl,
     };
 
     setUpdating(true);
 
     tradeApi
-      .updateProfileNotifications(payload)
-      .then((data) => {
+      .updateUser(payload)
+      .then(() => {
         dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
+        dispatch(getUserData({ token: storeSession.tradeApi.accessToken }));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -82,17 +88,17 @@ const ProfileSettings = () => {
             </Typography>
           </label>
           <OutlinedInput
-            error={!!errors.username}
+            error={!!errors.userName}
             className="customInput"
-            name="username"
-            value={storeUserData.username}
+            name="userName"
+            defaultValue={storeUserData.userName || ""}
             inputRef={register({
               required: intl.formatMessage({ id: "form.error.username" }),
               minLength: 4,
               pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
             })}
           />
-          {errors.username && (
+          {errors.userName && (
             <span className="errorText">
               <FormattedMessage id="profile.username.error" />
             </span>
@@ -102,7 +108,11 @@ const ProfileSettings = () => {
           <label className="customLabel">
             <FormattedMessage id="profile.photo" />
           </label>
-          <UploadImage imageUrl={imageUrl} onChange={(url) => setImageUrl(url)} />
+          <UploadImage
+            imageUrl={imageUrl || ""}
+            onChange={(url) => setImageUrl(url)}
+            defaultImage={ProfileIcon}
+          />
         </Box>
 
         <CustomButton
