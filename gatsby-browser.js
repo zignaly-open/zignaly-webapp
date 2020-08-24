@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { Helmet } from "react-helmet";
 import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
@@ -12,9 +13,16 @@ import { navigate } from "gatsby";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
 export const wrapRootElement = ({ element }) => {
+  // Add notranslate meta to prevent Chrome translation tool mutating React virtual DOM.
+  // See: https://github.com/facebook/react/issues/11538
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>{element}</PersistGate>
+      <PersistGate persistor={persistor}>
+        <Helmet>
+          <meta content="notranslate" name="google" />
+        </Helmet>
+        {element}
+      </PersistGate>
     </Provider>
   );
 };
