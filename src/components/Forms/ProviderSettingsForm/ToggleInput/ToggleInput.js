@@ -25,7 +25,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
   const storeSettings = useStoreSettingsSelector();
   const [toggle, setToggle] = useState(!!value);
-  const [val, setVal] = useState(value);
+  const [val, setVal] = useState(value ? value : "");
   const { register } = formMethods;
 
   const initData = () => {
@@ -40,14 +40,18 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
    * @returns {Void} None.
    */
   const handleChange = (e) => {
+    let targetValue = e.target.value;
     if (name === "stopLoss") {
-      setVal(Math.sign(e.target.value) === 1 ? e.target.value * -1 : e.target.value);
+      if (
+        targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+        targetValue === "" ||
+        targetValue === "-"
+      ) {
+        setVal(Math.sign(targetValue) === 1 ? targetValue * -1 : targetValue);
+      }
     } else if (name === "maxPositions" || name === "positionsPerMarket" || name === "leverage") {
-      let targetValue = Math.floor(e.target.value);
-      if (targetValue) {
+      if (targetValue.match(/^\d+$/) || targetValue === "") {
         setVal(targetValue);
-      } else {
-        setVal("");
       }
     } else {
       setVal(e.target.value);
@@ -96,7 +100,7 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
             inputRef={register}
             name={name}
             onChange={handleChange}
-            type="number"
+            type="text"
             value={val}
             variant="outlined"
           />
