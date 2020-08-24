@@ -508,7 +508,7 @@ describe("Consume tradeApiClient service", () => {
     const response = await client.enable2FA1Step(payload);
     assert.isArray(response, "Response is not an array.");
     assert.isString(response[0], "Code is not a string.");
-  }, 10000);
+  }, 15000);
 
   it("should get user notifications settings", async () => {
     const payload = {
