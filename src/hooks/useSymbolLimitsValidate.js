@@ -32,6 +32,11 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   const validateTargetPriceLimits = (targetPrice, propertyName, errorMessageGroup) => {
+    // Skip validation when data not available.
+    if (!limits.price) {
+      return true;
+    }
+
     if (limits.price.min && targetPrice < limits.price.min) {
       setError(propertyName, {
         type: "manual",
@@ -66,6 +71,10 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   const validateCostLimits = (cost, propertyName, errorMessageGroup) => {
+    if (!limits.cost) {
+      return true;
+    }
+
     if (!isNaN(cost)) {
       if (limits.cost.min && cost < limits.cost.min) {
         setError(propertyName, {
@@ -102,6 +111,10 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean} true if validation pass, false otherwise.
    */
   const validateUnitsLimits = (units, propertyName, errorMessageGroup) => {
+    if (!limits.amount) {
+      return true;
+    }
+
     if (limits.amount.min && units < limits.amount.min) {
       setError(propertyName, {
         type: "manual",

@@ -58,7 +58,27 @@ const StrategyForm = (props) => {
     symbolsData = [],
   } = props;
 
-  const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
+  const resolveCurrentSymbolData = () => {
+    const symbolDataMatch =
+      symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol)) || {};
+
+    if (positionEntity && !symbolDataMatch) {
+      const symbolData = {
+        id: positionEntity.symbol,
+        base: positionEntity.base,
+        baseId: positionEntity.base,
+        quote: positionEntity.quote,
+        quoteId: positionEntity.quote,
+        limits: {},
+      };
+
+      return symbolData;
+    }
+
+    return symbolDataMatch;
+  };
+
+  const currentSymbolData = resolveCurrentSymbolData();
   const isPositionView = isObject(positionEntity);
 
   const { errors, handleSubmit, setValue, reset, trigger, watch } = useFormContext();

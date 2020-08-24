@@ -79,14 +79,20 @@ const TradingViewEdit = (props) => {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: exchangeInternalId,
     };
-    tradeApi
-      .exchangeConnectionMarketDataGet(marketDataPayload)
-      .then((data) => {
-        setMarketData(data);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+
+    // When position is closed avoid get market data and rely on position symbol data.
+    if (positionEntity.closed) {
+      setMarketData([]);
+    } else {
+      tradeApi
+        .exchangeConnectionMarketDataGet(marketDataPayload)
+        .then((data) => {
+          setMarketData(data);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
 
   /**
