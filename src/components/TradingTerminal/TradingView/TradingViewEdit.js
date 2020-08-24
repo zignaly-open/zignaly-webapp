@@ -70,18 +70,22 @@ const TradingViewEdit = (props) => {
   };
 
   /**
+   * Load position symbol exchange market data.
    *
-   * @param {String} exchangeInternalId Exchange internal id.
+   * @param {PositionEntity} positionData The position entity to load dependent data for.
+   *
    * @returns {Void} None.
    */
-  const getMarketData = (exchangeInternalId) => {
+  const getMarketData = (positionData) => {
     const marketDataPayload = {
       token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: exchangeInternalId,
+      exchangeInternalId: positionData.exchangeInternalId,
+      exchange: positionData.exchange,
+      exchangeType: positionData.exchangeType,
     };
 
     // When position is closed avoid get market data and rely on position symbol data.
-    if (positionEntity.closed) {
+    if (positionData.closed) {
       setMarketData([]);
     } else {
       tradeApi
@@ -123,7 +127,7 @@ const TradingViewEdit = (props) => {
       .positionGet(payload)
       .then((data) => {
         initializePosition(data);
-        getMarketData(data.internalExchangeId);
+        getMarketData(data);
         filterExchange(data.internalExchangeId);
       })
       .catch((e) => {
