@@ -28,9 +28,9 @@ import { extractVal } from "../components/CustomSelect";
  * Hook to handle filters update/saving.
  *
  * @param {Filter} defaultValues Default filter values
- * @param {Filter} storeValues Filter store object
- * @param {Object<string, Array<Option>>} optionsFilters Object with each available filter options
- * @param {string} page Page key
+ * @param {Filter} [storeValues] Filter store object
+ * @param {Object<string, Array<Option>>} [optionsFilters] Object with each available filter options
+ * @param {string} [page] Page key
  * @returns {FiltersData} Filters data
  */
 const useFilters = (
@@ -48,11 +48,10 @@ const useFilters = (
     /**
      * @type {Filter}
      */
-    // @ts-ignore
     const values = {};
     Object.keys(defaultValues).forEach((/** @type {keyof Filter} */ key) => {
       values[key] = defaultValues[key];
-      if (storeValues[key]) {
+      if (storeValues && storeValues[key]) {
         // Check that saved value is of correct type
         const typeCorrect = typeof storeValues[key] === typeof defaultValues[key];
         // Check that saved value exists in options
