@@ -546,7 +546,7 @@ const StrategyForm = (props) => {
 
   return (
     <Box bgcolor="grid.content" className="strategyForm" textAlign="center">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         {isPositionView ? (
           <SidebarEditPanels
             currentSymbolData={currentSymbolData}

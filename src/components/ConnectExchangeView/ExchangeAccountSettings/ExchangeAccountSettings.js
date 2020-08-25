@@ -149,7 +149,7 @@ const ExchangeAccountSettings = () => {
     accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields[f]));
 
   return (
-    <form className="exchangeAccountSettings">
+    <form className="exchangeAccountSettings" method="post">
       {loading ? (
         <Box
           alignItems="center"
