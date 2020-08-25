@@ -28,7 +28,6 @@ const FollowProviderButton = ({ provider }) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
 
   const followProvider = async () => {
     try {
@@ -80,16 +79,9 @@ const FollowProviderButton = ({ provider }) => {
     }
   };
 
-  const initFollowingFrom = () => {
-    let found = [...exchangeConnections].find(
-      (item) => item.internalId === provider.exchangeInternalId,
-    );
-    if (found) {
-      setFollowingFrom(found);
-    }
-  };
-
-  useEffect(initFollowingFrom, [exchangeConnections]);
+  const followingFrom = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
 
   return (
     <Box
@@ -103,33 +95,28 @@ const FollowProviderButton = ({ provider }) => {
         <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
           <FormattedMessage id="srv.followprovider" />
         </CustomButton>
-      ) : provider.exchangeInternalId ? (
+      ) : !followingFrom ||
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-          <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-            <FormattedMessage id="srv.stopfollowing" />
-          </CustomButton>
-        ) : (
-          <Box
-            alignItems="center"
-            className="actionHelpBox"
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-start"
-          >
-            <Typography variant="h4">
-              <FormattedMessage id="copyt.followingfrom" />
-            </Typography>
-            <Tooltip placement="top" title={followingFrom.internalName}>
-              <Box>
-                <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
-              </Box>
-            </Tooltip>
-          </Box>
-        )
-      ) : (
         <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
           <FormattedMessage id="srv.stopfollowing" />
         </CustomButton>
+      ) : (
+        <Box
+          alignItems="center"
+          className="actionHelpBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+        >
+          <Typography variant="h4">
+            <FormattedMessage id="copyt.followingfrom" />
+          </Typography>
+          <Tooltip placement="top" title={followingFrom.internalName}>
+            <Box>
+              <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
+            </Box>
+          </Tooltip>
+        </Box>
       )}
     </Box>
   );
