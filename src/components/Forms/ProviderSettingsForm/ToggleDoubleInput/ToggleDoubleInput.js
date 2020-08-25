@@ -61,10 +61,11 @@ const ToggleInput = ({
   const handleData1Change = (e) => {
     let targetValue = e.target.value;
     if (
-      targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+      targetValue.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) ||
       targetValue === "" ||
-      targetValue === "-"
+      targetValue.includes("-")
     ) {
+      targetValue = targetValue.replace(",", ".");
       setData1(Math.sign(targetValue) === -1 ? targetValue * -1 : targetValue);
     }
   };
@@ -77,10 +78,11 @@ const ToggleInput = ({
   const handleData2Change = (e) => {
     let targetValue = e.target.value;
     if (
-      targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+      targetValue.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) ||
       targetValue === "" ||
-      targetValue === "-"
+      targetValue.includes("-")
     ) {
+      targetValue = targetValue.replace(",", ".");
       setData2(Math.sign(targetValue) === 1 ? targetValue * -1 : targetValue);
     }
   };

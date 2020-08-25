@@ -112,7 +112,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       margin-top: 30px;
-      max-width: 80px;
+      max-width: 100%;
       width: fit-content;
 
       .quaterLabel {
@@ -126,6 +126,13 @@
         max-width: 60px;
         min-height: 500px;
         padding: 15px 0;
+
+        h5 {
+          font-size: 12px;
+          text-align: center;
+          text-transform: capitalize;
+          width: fit-content;
+        }
 
         &.selected {
           position: relative;

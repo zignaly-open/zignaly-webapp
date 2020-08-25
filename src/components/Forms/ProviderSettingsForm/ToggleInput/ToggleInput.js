@@ -43,10 +43,11 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
     let targetValue = e.target.value;
     if (name === "stopLoss") {
       if (
-        targetValue.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
+        targetValue.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) ||
         targetValue === "" ||
-        targetValue === "-"
+        targetValue.includes("-")
       ) {
+        targetValue = targetValue.replace(",", ".");
         setVal(Math.sign(targetValue) === 1 ? targetValue * -1 : targetValue);
       }
     } else if (name === "maxPositions" || name === "positionsPerMarket" || name === "leverage") {

@@ -36,7 +36,8 @@ const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip
    */
   const handleChange1 = (e) => {
     let data = e.target.value;
-    if (data.match(/^[0-9]\d*(?:\.\d{0,8})?$/) || data === "") {
+    if (data.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) || data === "") {
+      data = data.replace(",", ".");
       setVal1(data);
     }
   };
