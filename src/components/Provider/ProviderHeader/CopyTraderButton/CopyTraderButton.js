@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./CopyTraderButton.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
@@ -34,7 +34,6 @@ const CopyTraderButton = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
-  const [followingFrom, setFollowingFrom] = useState({ internalName: "", name: "" });
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -97,16 +96,9 @@ const CopyTraderButton = ({ provider }) => {
     showConnectModal(false);
   };
 
-  const initFollowingFrom = () => {
-    let found = [...exchangeConnections].find(
-      (item) => item.internalId === provider.exchangeInternalId,
-    );
-    if (found) {
-      setFollowingFrom(found);
-    }
-  };
-
-  useEffect(initFollowingFrom, [exchangeConnections]);
+  const followingFrom = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
 
   return (
     <Box
@@ -125,33 +117,28 @@ const CopyTraderButton = ({ provider }) => {
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
-      ) : provider.exchangeInternalId ? (
+      ) : !followingFrom ||
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-          <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={confirmAction}>
-            <FormattedMessage id="copyt.stopcopyingtrader" />
-          </CustomButton>
-        ) : (
-          <Box
-            alignItems="center"
-            className="actionHelpBox"
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-start"
-          >
-            <Typography variant="h4">
-              <FormattedMessage id="copyt.followingfrom" />
-            </Typography>
-            <Tooltip placement="top" title={followingFrom.internalName}>
-              <Box>
-                <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
-              </Box>
-            </Tooltip>
-          </Box>
-        )
-      ) : (
         <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={confirmAction}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
+      ) : (
+        <Box
+          alignItems="center"
+          className="actionHelpBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+        >
+          <Typography variant="h4">
+            <FormattedMessage id="copyt.followingfrom" />
+          </Typography>
+          <Tooltip placement="top" title={followingFrom.internalName}>
+            <Box>
+              <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
+            </Box>
+          </Tooltip>
+        </Box>
       )}
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
