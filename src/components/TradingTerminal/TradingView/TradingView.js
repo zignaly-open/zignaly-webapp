@@ -256,7 +256,7 @@ const TradingView = () => {
               </Box>
             )}
             <Box className="tradingViewChart" id="trading_view_chart" />
-            {!isLoading && !isLastPriceLoading && (
+            {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}
                 selectedSymbol={selectedSymbol}
