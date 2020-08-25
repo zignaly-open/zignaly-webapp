@@ -35,7 +35,6 @@ const ManagementTable = ({ list, allPositions }) => {
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
-  const [selected, setSelected] = useState([]);
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -180,34 +179,13 @@ const ManagementTable = ({ list, allPositions }) => {
   };
 
   /**
-   *
-   * @param {*} currentRowsSelected Currently expanded rows.
-   * @param {*} allRowsSelected Currently expanded rows.
-   * @returns {void} None.
-   */
-  const handleRowSelectionChange = (currentRowsSelected, allRowsSelected) => {
-    /**
-     * @type {Array<Number>}
-     */
-    let indexes = [];
-    // @ts-ignore
-    allRowsSelected.forEach((item) => {
-      indexes.push(item.index);
-    });
-    setSelected(indexes);
-  };
-
-  /**
    * @type {MUIDataTableOptions}
    */
   const options = {
-    selectableRows: "multiple",
     expandableRows: true,
     renderExpandableRow: renderRow,
     rowsExpanded: expanded,
-    rowsSelected: selected,
     onRowExpansionChange: handleRowExpansionChange,
-    onRowSelectionChange: handleRowSelectionChange,
     expandableRowsHeader: false,
     sortOrder: {
       name: "col.date.open",
