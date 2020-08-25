@@ -7,7 +7,7 @@ import CustomButton from "../../../../CustomButton";
  *
  * @typedef {import('../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {Object} DefaultProps
- * @property {Array<ManagementPositionsEntity>} values
+ * @property {Array<ManagementPositionsEntity>} [values]
  * @property {Array<String>} selectedRows
  */
 
@@ -17,7 +17,7 @@ import CustomButton from "../../../../CustomButton";
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const SelectionActions = ({ values, selectedRows }) => {
+const SelectionActions = ({ selectedRows }) => {
   return (
     <Box
       alignItems="center"
@@ -26,10 +26,10 @@ const SelectionActions = ({ values, selectedRows }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <CustomButton disabled={!selectedRows.length} className="textPurple">
+      <CustomButton className="textPurple" disabled={!selectedRows.length}>
         Cancel Entries
       </CustomButton>
-      <CustomButton disabled={!selectedRows.length} className="textPurple">
+      <CustomButton className="textPurple" disabled={!selectedRows.length}>
         Exit Entries
       </CustomButton>
     </Box>
