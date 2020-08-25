@@ -6,7 +6,6 @@ import { composeManagementPositionsDataTable } from "../../../../utils/composePo
 
 /**
  *
- * @typedef {import('../../../../services/tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {Object} TransformedObject
  * @property {String} id
@@ -16,7 +15,7 @@ import { composeManagementPositionsDataTable } from "../../../../utils/composePo
  * @property {Array<ManagementPositionsEntity>} values
  * @property {String} persistKey
  * @property {React.MouseEventHandler} confirmAction
- * @property {Number} index
+ * @property {Number} index Index of parent row.
  * @property {Function} onSelectionChange
  * @property {Array<String>} selectedRows
  */
@@ -92,10 +91,14 @@ const ExpandedRow = ({
     <>
       {list.map((row, i) => (
         <TableRow className="expandedRows" key={i}>
-          <TableCell className="checboxCell">
-            <Checkbox checked={checkedStatus(row)} onChange={(e) => handleChange(e, row)} />
-          </TableCell>
           <TableCell>&nbsp;</TableCell>
+          <TableCell className="checkboxCell">
+            <Checkbox
+              checked={checkedStatus(row)}
+              className="checkbox"
+              onChange={(e) => handleChange(e, row)}
+            />
+          </TableCell>
           {row.map(
             /* @ts-ignore */
             (cell, i2) =>

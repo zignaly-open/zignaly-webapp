@@ -9,6 +9,8 @@ import ExpandedRow from "../ExpandedRow";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
+import SelectionActions from "../ExpandedRow/SelectionActions";
+import { values } from "lodash";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -224,7 +226,7 @@ const ManagementTable = ({ list, allPositions }) => {
           data={data}
           options={options}
           persistKey={tablePersistsKey}
-          title=""
+          title={<SelectionActions values={allPositions} selectedRows={selectedRows} />}
         />
       </Box>
     </>
