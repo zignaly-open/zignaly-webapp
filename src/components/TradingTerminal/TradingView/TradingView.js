@@ -119,7 +119,9 @@ const TradingView = () => {
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const loadDependencies = () => {
+    setMarketData(null);
     getMarketData();
+
     const checkExist = setInterval(() => {
       // @ts-ignore
       if (window.TradingView && window.TradingView.widget) {
@@ -129,7 +131,7 @@ const TradingView = () => {
     }, 100);
   };
 
-  useEffect(loadDependencies, []);
+  useEffect(loadDependencies, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
