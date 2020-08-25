@@ -43,7 +43,6 @@ const withProvidersLayout = (Component) => {
     const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
     const dispatch = useDispatch();
-
     const toggleFilters = () => {
       setShowFilters(!showFilters);
     };

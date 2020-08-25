@@ -88,16 +88,6 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const storeFilters = storeSettings.filters[page] || {};
 
-  const defaultFilters = {
-    ...(!connectedOnly && {
-      ...(copyTradersOnly && {
-        quote: "ALL",
-        exchange: "ALL",
-        exchangeType: "ALL",
-      }),
-      fromUser: "ALL",
-    }),
-  };
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
   const quotes = [
@@ -131,10 +121,22 @@ const useProvidersList = (options) => {
   ];
 
   const optionsFilters = {
-    quote: quotes,
     exchange: exchanges,
     exchangeType: exchangeTypes,
     fromUser: fromUserOptions,
+    // wait until the options have been retreived before using them for comparison
+    ...(quotes.length > 1 && { quote: quotes }),
+  };
+
+  const defaultFilters = {
+    ...(!connectedOnly && {
+      ...(copyTradersOnly && {
+        quote: "ALL",
+        exchange: "ALL",
+        exchangeType: "ALL",
+      }),
+      fromUser: "ALL",
+    }),
   };
 
   const filtersData = useFilters(defaultFilters, storeFilters, optionsFilters, page);
