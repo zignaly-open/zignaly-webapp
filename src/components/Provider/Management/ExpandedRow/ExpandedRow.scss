@@ -8,4 +8,10 @@
     padding: 12px;
     white-space: nowrap;
   }
+
+  .checkboxCell {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }

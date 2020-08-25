@@ -35,6 +35,7 @@ const ManagementTable = ({ list, allPositions }) => {
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -154,7 +155,9 @@ const ManagementTable = ({ list, allPositions }) => {
       <ExpandedRow
         confirmAction={confirmAction}
         index={rowMeta.dataIndex}
+        onSelectionChange={handleRowSelectionChange}
         persistKey={tablePersistsKey}
+        selectedRows={selectedRows}
         values={allPositions}
       />
     );
@@ -176,6 +179,21 @@ const ManagementTable = ({ list, allPositions }) => {
       indexes.push(item.index);
     });
     setExpanded(indexes);
+  };
+
+  /**
+   *
+   * @param {String} id Position ID.
+   * @returns {Void} None.
+   */
+  const handleRowSelectionChange = (id) => {
+    let dataList = [...selectedRows];
+    if (dataList.includes(id)) {
+      dataList = dataList.filter((item) => item !== id);
+    } else {
+      dataList.push(id);
+    }
+    setSelectedRows(dataList);
   };
 
   /**
