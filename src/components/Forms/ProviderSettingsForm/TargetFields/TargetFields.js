@@ -76,19 +76,20 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
    * @returns {void} None.
    */
   const handleChange = (e, id) => {
-    let target = e.target;
+    let targetValue = e.target.value;
     let list = [...values];
     list = clearErrors(list);
     let index = list.findIndex((item) => item.targetId === id);
     let field = list.find((item) => item.targetId === id);
     if (
-      target.value.match(/^-?[0-9]\d*(?:\.\d{0,8})?$/) ||
-      target.value === "" ||
-      target.value === "-"
+      targetValue.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) ||
+      targetValue === "" ||
+      targetValue.includes("-")
     ) {
-      if (target.name === "amount") {
+      targetValue = targetValue.replace(",", ".");
+      if (e.target.name === "amount") {
         // convert amount to positive for both dca and take profit targets.
-        field.amountPercentage = Math.sign(target.value) === -1 ? target.value * -1 : target.value;
+        field.amountPercentage = Math.sign(targetValue) === -1 ? targetValue * -1 : targetValue;
         if (type === "takeprofit") {
           let previousFieldsSum = 0;
           list.forEach((item) => {
@@ -104,12 +105,11 @@ const TargetFields = ({ onChange, defaultValue, type }) => {
         }
       } else if (type === "dca") {
         // convert value to negative for price targets of dca targets.
-        field.priceTargetPercentage =
-          Math.sign(target.value) === 1 ? target.value * -1 : target.value;
+        field.priceTargetPercentage = Math.sign(targetValue) === 1 ? targetValue * -1 : targetValue;
       } else {
         // convert value to negative for price targets of take profits targets.
         field.priceTargetPercentage =
-          Math.sign(target.value) === -1 ? target.value * -1 : target.value;
+          Math.sign(targetValue) === -1 ? targetValue * -1 : targetValue;
       }
     }
     list[index] = field;
