@@ -11,6 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -131,6 +132,10 @@ const ExchangeAccountAdd = ({ demo }) => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
+        const exchangePayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserExchanges(exchangePayload));
         return true;
       })
       .catch((e) => {
