@@ -17,6 +17,11 @@ const LocalizationLanguages = [
     countryCode: "gb",
   },
   {
+    locale: "de",
+    label: "German",
+    countryCode: "de",
+  },
+  {
     locale: "vn",
     label: "Tiếng Việt",
     countryCode: "vn",
