@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./FollowProviderButton.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
