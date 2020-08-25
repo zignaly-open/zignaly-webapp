@@ -98,7 +98,7 @@ const LoginForm = () => {
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
         <TwoFAForm data={loginResponse} onSuccess={onSuccess} />
       </Modal>
-      <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
+      <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="center"
           className="loginForm"

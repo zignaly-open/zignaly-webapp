@@ -142,7 +142,7 @@ const ExchangeAccountConnect = () => {
   }
 
   return (
-    <form className="exchangeAccountConnect" onSubmit={handleSubmit(submitForm)}>
+    <form className="exchangeAccountConnect" method="post" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
         <Typography className="body1 bold" variant="h3">
           <FormattedMessage id="accounts.exchange.choose" />

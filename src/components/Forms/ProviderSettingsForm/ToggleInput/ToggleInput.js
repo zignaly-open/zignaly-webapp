@@ -54,8 +54,13 @@ const ToggleInput = ({ formMethods, value, label, name, tooltip, unit }) => {
       if (targetValue.match(/^\d+$/) || targetValue === "") {
         setVal(targetValue);
       }
-    } else {
-      setVal(e.target.value);
+    } else if (
+      targetValue.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) ||
+      targetValue === "" ||
+      targetValue.includes("-")
+    ) {
+      targetValue = targetValue.replace(",", ".");
+      setVal(targetValue);
     }
   };
 

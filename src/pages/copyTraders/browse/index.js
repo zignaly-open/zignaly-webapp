@@ -37,7 +37,6 @@ const CopyTradersBrowse = (props) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-
       <ProvidersBrowse
         connectedOnly={false}
         setModifiedFiltersCount={setModifiedFiltersCount}

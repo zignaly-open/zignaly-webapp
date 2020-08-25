@@ -62,7 +62,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
         className="signupForm"
