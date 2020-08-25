@@ -55,8 +55,8 @@ const ExchangeAccountAdd = ({ demo }) => {
   // Exchange options
   const exchangesOptions = exchanges
     ? exchanges
-        // Filter disabled exchange and Zignaly if connection
-        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || !demo))
+        // Filter disabled exchange
+        .filter((e) => e.enabled)
         .map((e) => ({
           val: e.name.toLowerCase(),
           label:
