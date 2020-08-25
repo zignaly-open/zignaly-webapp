@@ -356,7 +356,11 @@ const DCAPanel = (props) => {
           setTargetPropertyValue("targetPricePercentage", targetId, sign);
         } else {
           setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-          pricePercentageValidations(targetId);
+
+          // Validate only when not yet executed.
+          if (!dcaExecutionIndex[targetId]) {
+            pricePercentageValidations(targetId);
+          }
         }
       });
     }
@@ -365,7 +369,7 @@ const DCAPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    if (expanded && cardinality > 0) {
+    if (expanded && cardinality > 0 && !dcaExecutionIndex["1"]) {
       rebuyPercentageValidations("1");
     }
   };
