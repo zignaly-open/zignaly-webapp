@@ -152,7 +152,7 @@ const Withdraw = () => {
                   />
                 </Box>
                 <Box className="networkColumn">
-                  <form noValidate onSubmit={handleSubmit(onSubmit)}>
+                  <form noValidate method="post" onSubmit={handleSubmit(onSubmit)}>
                     <NetworksToggleGroup
                       networks={selectedAsset.networks.map((n) => n.name)}
                       selectedNetwork={selectedNetwork.name}

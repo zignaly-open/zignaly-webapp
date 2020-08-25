@@ -112,7 +112,7 @@ const Enable2FA = () => {
           <CircularProgress disableShrink />
         </Box>
       ) : (
-        <form onSubmit={handleSubmit(submitCode)}>
+        <form method="post" onSubmit={handleSubmit(submitCode)}>
           {!twoFAEnabled && (
             <>
               <Typography className="bold" variant="body1">
