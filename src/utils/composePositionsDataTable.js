@@ -374,18 +374,21 @@ export function composeAllActionButtons(position, confirmActionHandler) {
 
   return (
     <div className="actions">
-      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <Tooltip
-          arrow
-          enterTouchDelay={50}
-          placement="left-end"
-          title={<FormattedMessage id="dashboard.positions.icon.view" />}
-        >
-          <Link className="action" to={`/position/${position.positionId}`}>
-            <Eye />
-          </Link>
-        </Tooltip>
-      )}
+      {isCopyTrading &&
+        !isEditView(position) &&
+        !isCopyTrader &&
+        !isManagementFollowerPosition(position) && (
+          <Tooltip
+            arrow
+            enterTouchDelay={50}
+            placement="left-end"
+            title={<FormattedMessage id="dashboard.positions.icon.view" />}
+          >
+            <Link className="action" to={`/position/${position.positionId}`}>
+              <Eye />
+            </Link>
+          </Tooltip>
+        )}
       {(isManagementFollowerPosition(position) ||
         ((!isCopyTrading || isCopyTrader) && !isEditView(position))) && (
         <Tooltip
