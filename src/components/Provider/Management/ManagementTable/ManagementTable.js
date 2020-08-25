@@ -182,6 +182,7 @@ const ManagementTable = ({ list, allPositions }) => {
    * @type {MUIDataTableOptions}
    */
   const options = {
+    selectableRows: "multiple",
     expandableRows: true,
     renderExpandableRow: renderRow,
     rowsExpanded: rows,
