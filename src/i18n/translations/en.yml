@@ -1043,6 +1043,10 @@ status.89: "The current service does not allow clones."
 status.90: "The exchange attached to this position is no longer connected to your account."
 status.91: "The balance between the position and the contract does not match."
 status.92: "Hedge mode not supported"
+status.93: "KuCoin Exchange temporary suspended."
+status.94: "The exchange did not return an orderID."
+status.95: "Exceeded the maximum allowable position at current leverage"
+status.96: "Hedge mode not supported"
 status.99: "Unknown Error, Pending Review"
 
 # ERROR CODES
