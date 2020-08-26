@@ -113,7 +113,9 @@ const LoginForm = () => {
             flexDirection="column"
             justifyContent="start"
           >
-            <label className="customLabel">Email address</label>
+            <label className="customLabel">
+              <FormattedMessage id="security.email" />
+            </label>
             <TextField
               className="customInput"
               error={!!errors.email}
