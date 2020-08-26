@@ -19,9 +19,14 @@ menu.exchangeSelectionTitle: "Select Trading Account"
 menu.positionview: "View Position"
 
 login.title: "Login"
+login.header.tagline: "What could a pro trader do with your crypto?"
+login.header.tagline2.1: "Copy pro traders "
+login.header.tagline2.2: "and earn same profits as they do."
 signup.title: "Sign Up"
 recover.title: "Recover Password"
 recover.error: "Link expired! Please start the process again from login page!"
+testimonials.title: "Testimonials"
+testimonials.loadmore: "Load More"
 
 # BALANCE
 balance.available: "Available"
@@ -872,6 +877,12 @@ settings.profile: "Profile"
 preferences.2lines: "Use two lines for long numbers (Helps readability)"
 preferences.balance: "Show balance by default"
 preferences.darklight: "Dark Side"
+
+security.name: "Name"
+security.email: "Email Address"
+security.email.error.empty: "Email cannot be empty."
+security.email.error.invalid: "Email should be valid."
+security.password.error.empty: "Password cannot be empty"
 
 security: "Security"
 security.2fa: "2 Factor Authentication (2FA)"
