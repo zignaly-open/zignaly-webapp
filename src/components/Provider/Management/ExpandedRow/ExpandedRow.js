@@ -17,6 +17,7 @@ import { composeManagementPositionsDataTable } from "../../../../utils/composePo
  * @property {React.MouseEventHandler} confirmAction
  * @property {Number} index Index of parent row.
  * @property {Function} onSelectionChange
+ * @property {Function} onAllSelection
  * @property {Array<String>} selectedRows
  */
 
@@ -33,8 +34,10 @@ const ExpandedRow = ({
   index,
   onSelectionChange,
   selectedRows,
+  onAllSelection,
 }) => {
   const [list, setList] = useState([]);
+  const [checkedAll, setCheckedAll] = useState(false);
   const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
@@ -63,6 +66,25 @@ const ExpandedRow = ({
 
   useEffect(prepareList, []);
 
+  const checkIfAllChecked = () => {
+    if (selectedRows.length) {
+      let allSelected = true;
+      const subPositions = values[index].subPositions;
+      subPositions.forEach((position) => {
+        if (!selectedRows.includes(position.positionId)) {
+          allSelected = false;
+        }
+      });
+      if (allSelected) {
+        setCheckedAll(true);
+      } else {
+        setCheckedAll(false);
+      }
+    }
+  };
+
+  useEffect(checkIfAllChecked, [selectedRows]);
+
   /**
    *
    * @param {React.ChangeEvent<*>} e Change Event.
@@ -72,6 +94,16 @@ const ExpandedRow = ({
   const handleChange = (e, rowData) => {
     const obj = rowData.find((item) => item.id === "positionId");
     onSelectionChange(obj.data);
+  };
+
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change Event.
+   * @returns {Void} None.
+   */
+  const handleChangeAll = (e) => {
+    setCheckedAll(e.target.checked);
+    onAllSelection(index, e.target.checked);
   };
 
   /**
@@ -91,7 +123,17 @@ const ExpandedRow = ({
     <>
       {list.map((row, i) => (
         <TableRow className="expandedRows" key={i}>
-          <TableCell>&nbsp;</TableCell>
+          {i === 0 ? (
+            <TableCell className="checkboxCell">
+              <Checkbox
+                checked={checkedAll}
+                className="checkbox"
+                onChange={(e) => handleChangeAll(e)}
+              />
+            </TableCell>
+          ) : (
+            <TableCell>&nbsp;</TableCell>
+          )}
           <TableCell className="checkboxCell">
             <Checkbox
               checked={checkedStatus(row)}

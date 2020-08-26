@@ -156,6 +156,7 @@ const ManagementTable = ({ list, allPositions }) => {
       <ExpandedRow
         confirmAction={confirmAction}
         index={rowMeta.dataIndex}
+        onAllSelection={selectAllChild}
         onSelectionChange={handleRowSelectionChange}
         persistKey={tablePersistsKey}
         selectedRows={selectedRows}
@@ -195,6 +196,30 @@ const ManagementTable = ({ list, allPositions }) => {
       dataList.push(id);
     }
     setSelectedRows(dataList);
+  };
+
+  /**
+   *
+   * @param {Number} index index of the parent.
+   * @param {Boolean} checked Flag to indicate the status of all child selection checkbox.
+   * @returns {Void} Nobe.
+   */
+  const selectAllChild = (index, checked) => {
+    const subPositions = allPositions[index].subPositions;
+    if (checked) {
+      let dataList = [...selectedRows];
+      subPositions.forEach((position) => {
+        dataList.push(position.positionId);
+      });
+      dataList = [...new Set(dataList)];
+      setSelectedRows(dataList);
+    } else {
+      let dataList = [...selectedRows];
+      subPositions.forEach((position) => {
+        dataList = dataList.filter((listItem) => listItem !== position.positionId);
+      });
+      setSelectedRows(dataList);
+    }
   };
 
   /**
