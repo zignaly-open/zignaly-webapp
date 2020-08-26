@@ -52,7 +52,7 @@ const CopyTraders = (props) => {
       };
       dispatch(setProvider(payload));
     };
-    if (providerId && providerId.length === 24 && storeViews.provider.id !== providerId) {
+    if (providerId && providerId.length === 24) {
       loadProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
