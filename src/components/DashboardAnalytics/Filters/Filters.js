@@ -4,18 +4,18 @@ import CustomSelect from "../../CustomSelect";
 import { useIntl } from "react-intl";
 
 /**
+ * @typedef {import("../../../store/initialState").DashboardAnalyticsFilters} DashboardAnalyticsFilters
+ */
+
+/**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {Object} AnayticsFiltersPropTypes
  * @property {function} onClear Callback that delegate filters clearing to caller.
- * @property {function} onQuoteChange Callback that delegate quote change to caller.
- * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
- * @property {string} quote Selected quote (base currency).
  * @property {Array<string>} quotes Quotes options.
- * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
  * @property {Array<OptionType>} providers Providers options.
- * @property {OptionType} provider Selected provider.
- * @property {function} onProviderChange
+ * @property {function} setFilters Callback that delegate filters update to caller.
+ * @property {DashboardAnalyticsFilters} filters Current filters.
  */
 
 /**
@@ -24,18 +24,7 @@ import { useIntl } from "react-intl";
  * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const Filters = ({
-  quote,
-  timeFrame,
-  onQuoteChange,
-  onTimeFrameChange,
-  onClear,
-  quotes,
-  timeFrames,
-  provider,
-  providers,
-  onProviderChange,
-}) => {
+const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }) => {
   const intl = useIntl();
 
   return (
@@ -44,27 +33,27 @@ const Filters = ({
         label={intl.formatMessage({
           id: "fil.timeframe",
         })}
-        onChange={onTimeFrameChange}
+        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
         options={timeFrames}
-        value={timeFrame}
+        value={filters.timeFrame}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={onQuoteChange}
+        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v.val })}
         options={quotes}
         search={true}
-        value={quote}
+        value={filters.quote}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.providers",
         })}
-        onChange={onProviderChange}
+        onChange={(/** @type {OptionType} */ v) => setFilters({ provider: v.val })}
         options={providers}
         search={true}
-        value={provider}
+        value={filters.provider}
       />
     </CustomFilters>
   );

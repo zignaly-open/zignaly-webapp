@@ -39,10 +39,10 @@ const withProvidersLayout = (Component) => {
   const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
+    const [modifiedFiltersCount, setModifiedFiltersCount] = useState(0);
     const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
     const dispatch = useDispatch();
-
     const toggleFilters = () => {
       setShowFilters(!showFilters);
     };
@@ -85,6 +85,11 @@ const withProvidersLayout = (Component) => {
             src={showFilters ? FilterFillIcon : FilterIcon}
             title="Filter"
           />
+          {modifiedFiltersCount > 0 && (
+            <Typography className="modified" variant="subtitle1">
+              {modifiedFiltersCount}
+            </Typography>
+          )}
           <img
             className="icon iconPurple"
             onClick={() => toggleSort()}
@@ -107,6 +112,7 @@ const withProvidersLayout = (Component) => {
         <Box className="pageContent">
           <Component
             {...props}
+            setModifiedFiltersCount={setModifiedFiltersCount}
             showFilters={showFilters}
             showSort={showSort}
             toggleFilters={toggleFilters}

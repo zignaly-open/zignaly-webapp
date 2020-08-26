@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isNumber } from "lodash";
+import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 
 /**
@@ -42,9 +42,9 @@ const useTradingTerminal = () => {
 
     // @ts-ignore
     const handleWidgetReady = (event) => {
-      const dataRaw = /** @type {Object<string, any>} */ event.data;
-      if (typeof dataRaw === "string") {
+      if (isString(event.data)) {
         try {
+          const dataRaw = /** @type {Object<string, any>} */ event.data;
           const dataParsed = JSON.parse(dataRaw);
 
           // @ts-ignore
@@ -65,6 +65,12 @@ const useTradingTerminal = () => {
           // Not a valid JSON, skip event.
           return;
         }
+      }
+
+      // Symbol data not found by Trading View widget.
+      if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
+        setTradingViewWidget(externalWidget);
+        setLastPrice(null);
       }
     };
 

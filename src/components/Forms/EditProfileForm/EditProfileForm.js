@@ -293,7 +293,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
 
   return (
     <Box bgcolor="grid.content" className="formWrapper">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="flex-start"
           className="editProfileForm"

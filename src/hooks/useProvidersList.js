@@ -10,19 +10,26 @@ import { uniqBy } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
-  setFilters as setFiltersAction,
 } from "../store/actions/settings";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
+import useFilters from "./useFilters";
+
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../store/initialState").Filters} Filters
  * @typedef {import("../store/actions/settings").ProviderPageType} ProviderPageType
  * @typedef {import("../store/actions/settings").ConnectedProviderPageType} ConnectedProviderPageType
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
+ * @typedef {import("./useFilters").FiltersData} FiltersData
+ */
+
+/**
+ * @typedef {ProviderPageType|ConnectedProviderPageType} PageType
  */
 
 /**
@@ -36,22 +43,17 @@ import { useDispatch } from "react-redux";
  * @property {ProvidersCollection} providers
  * @property {number} timeFrame
  * @property {function} setTimeFrame
- * @property {OptionType} coin
- * @property {Array<OptionType>} coins
- * @property {function} setCoin
- * @property {string} exchange
+ * @property {Array<OptionType>} quotes
  * @property {Array<OptionType>} exchanges
- * @property {string} exchangeType
  * @property {Array<OptionType>} exchangeTypes
- * @property {function} setExchange
- * @property {function} setExchangeType
- * @property {function} setFromUser
- * @property {string} fromUser
  * @property {Array<OptionType>} fromUserOptions
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
  * @property {function} clearSort
+ * @property {function} setFilters
+ * @property {Filters[ProviderPageType]|{}} filters
+ * @property {number} modifiedFilters
  */
 
 /**
@@ -67,7 +69,6 @@ const useProvidersList = (options) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const { copyTradersOnly, connectedOnly } = options;
-
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -75,7 +76,7 @@ const useProvidersList = (options) => {
   const [providers, setProviders] = useState(initialState);
 
   /**
-   * @type {ProviderPageType|ConnectedProviderPageType} Page shorthand
+   * @type {PageType} Page shorthand
    */
   let page;
   if (connectedOnly) {
@@ -84,9 +85,12 @@ const useProvidersList = (options) => {
     page = copyTradersOnly ? "copyt" : "signalp";
   }
 
+  // @ts-ignore
+  const storeFilters = storeSettings.filters[page] || {};
+
   // Get quotes list unless connected providers only which don't need filters
   const quoteAssets = useQuoteAssets(!connectedOnly);
-  const coins = [
+  const quotes = [
     {
       val: "ALL",
       label: intl.formatMessage({ id: "fil.allcoins" }),
@@ -98,23 +102,8 @@ const useProvidersList = (options) => {
     })),
   );
 
-  const initQuote = storeSettings.filters.copyt.quote;
-  const [quote, setQuote] = useState(
-    !initQuote || initQuote === "ALL"
-      ? coins[0]
-      : {
-          val: initQuote,
-          label: initQuote,
-        },
-  );
-
-  // Exchanges
-  const initExchange = storeSettings.filters.copyt.exchange || "ALL";
   const exchanges = useExchangesOptions(true);
-  const [exchange, setExchange] = useState(initExchange);
 
-  // Exchange Types
-  const initExchangeType = storeSettings.filters.copyt.exchangeType || "ALL";
   const exchangeTypes = [
     {
       val: "ALL",
@@ -125,36 +114,38 @@ const useProvidersList = (options) => {
     { val: "spot", label: "Spot" },
     { val: "futures", label: "Futures" },
   ];
-  const [exchangeType, setExchangeType] = useState(initExchangeType);
 
-  const initFromUser = storeSettings.filters.copyt.fromUser || "ALL";
   const fromUserOptions = [
     { val: "ALL", label: "All Services" },
     { val: "userOwned", label: "My Services" },
   ];
-  const [fromUser, setFromUser] = useState(initFromUser);
 
-  // Save filters to store when changed
-  const saveFilters = () => {
-    if (page === "signalp") {
-      dispatch(
-        setFiltersAction({
-          filters: { fromUser },
-          // @ts-ignore
-          page,
-        }),
-      );
-    } else {
-      dispatch(
-        setFiltersAction({
-          filters: { exchange, quote: quote.val, exchangeType, fromUser },
-          // @ts-ignore
-          page,
-        }),
-      );
-    }
+  const optionsFilters = {
+    exchange: exchanges,
+    exchangeType: exchangeTypes,
+    fromUser: fromUserOptions,
+    // wait until the options have been retreived before using them for comparison
+    ...(quotes.length > 1 && { quote: quotes }),
   };
-  useEffectSkipFirst(saveFilters, [exchange, quote, exchangeType, fromUser]);
+
+  const defaultFilters = {
+    ...(!connectedOnly && {
+      ...(copyTradersOnly && {
+        quote: "ALL",
+        exchange: "ALL",
+        exchangeType: "ALL",
+      }),
+      fromUser: "ALL",
+    }),
+  };
+
+  const filtersData = useFilters(defaultFilters, storeFilters, optionsFilters, page);
+  const { setFilters, clearFilters, modifiedFilters } = filtersData;
+  /**
+   * @type {typeof defaultFilters}
+   */
+  // @ts-ignore
+  const filters = filtersData.filters;
 
   // Sort
   const initSort = () => {
@@ -165,13 +156,6 @@ const useProvidersList = (options) => {
     return val || "RETURNS_DESC";
   };
   const [sort, setSort] = useState(initSort);
-
-  // Reset filters
-  const clearFilters = () => {
-    setQuote(coins[0]);
-    setExchange("ALL");
-    setExchangeType("ALL");
-  };
 
   const clearSort = () => {
     setSort("RETURNS_DESC");
@@ -241,26 +225,27 @@ const useProvidersList = (options) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    // Filter only copy traders
-    const res = copyTradersOnly
-      ? list.filter(
-          (p) =>
-            (quote.val === "ALL" || p.quote === quote.val) &&
-            (exchange === "ALL" || p.exchanges.includes(exchange.toLowerCase())) &&
-            (exchangeType === "ALL" ||
-              p.exchangeType.toLowerCase() === exchangeType.toLowerCase()) &&
-            (fromUser === "ALL" || p.isFromUser),
-        )
-      : list.filter((p) => fromUser === "ALL" || p.isFromUser);
-    sortProviders(res);
+    const matches = list.filter(
+      (p) =>
+        (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
+        (!filters.exchange ||
+          filters.exchange === "ALL" ||
+          p.exchanges.includes(filters.exchange.toLowerCase())) &&
+        (!filters.exchangeType ||
+          filters.exchangeType === "ALL" ||
+          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
+    );
+    sortProviders(matches);
   };
+
   // Filter providers on filter change
   useEffect(() => {
     if (providers.list) {
       filterProviders(providers.list);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quote, exchange, exchangeType, fromUser]);
+  }, [filters]);
 
   const loadProviders = () => {
     /**
@@ -302,22 +287,17 @@ const useProvidersList = (options) => {
     providers: providers.filteredList,
     timeFrame,
     setTimeFrame,
-    coin: quote,
-    coins,
-    setCoin: setQuote,
-    exchange,
-    exchanges,
-    setExchange,
-    exchangeType,
-    setExchangeType,
+    quotes,
     exchangeTypes,
-    fromUser,
-    setFromUser,
     fromUserOptions,
+    filters,
+    setFilters,
     sort,
     setSort,
     clearFilters,
     clearSort,
+    modifiedFilters,
+    exchanges,
   };
 };
 

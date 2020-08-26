@@ -3,7 +3,7 @@
   width: 100%;
 
   .exchangeAccountContainer {
-    padding: 0 24px;
+    padding: 0 10px;
 
     .exchangeButtons {
       margin-top: 40px;
@@ -23,6 +23,8 @@
 
 @include media("<=sm") {
   .exchangeAccountList {
+    padding-bottom: 50px;
+
     .exchangeAccountInfo {
       padding: 0 0 12px;
     }

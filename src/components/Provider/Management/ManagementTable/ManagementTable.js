@@ -91,9 +91,9 @@ const ManagementTable = ({ list, allPositions }) => {
    */
   const executeAction = () => {
     const { positionId, action } = actionData;
-    if (action === "cancel") {
+    if (action === "abort") {
       tradeApi
-        .positionClose({
+        .positionCancel({
           positionId: positionId,
           token: storeSession.tradeApi.accessToken,
         })

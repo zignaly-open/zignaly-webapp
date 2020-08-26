@@ -51,10 +51,16 @@ const PositionsTable = (props) => {
     positionsAll,
     positionsFiltered,
     setFilters,
-    filtersState,
+    filters,
     loading,
     filtersVisibility,
     setFiltersVisibility,
+    clearFilters,
+    providerOptions,
+    pairOptions,
+    types,
+    sides,
+    modifiedFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
@@ -266,10 +272,14 @@ const PositionsTable = (props) => {
 
     return (
       <PositionFilters
-        initialState={filtersState}
+        clearFilters={clearFilters}
+        filters={filters}
         onChange={setFilters}
-        positions={positionsAll}
+        pairOptions={pairOptions}
+        providerOptions={providerOptions}
         showTypesFilter={showTypesFilter}
+        sides={sides}
+        types={types}
       />
     );
   };
@@ -301,10 +311,10 @@ const PositionsTable = (props) => {
             <NoPositions isProfile={isProfile} type={type} />
           ) : (
             <Box className={tableClass} display="flex" flexDirection="column" width={1}>
-              {/* <Button onClick={toggleFiltersVisibility}>Malik</Button> */}
               <Table
                 columns={columns}
                 data={data}
+                modifiedFiltersCount={modifiedFilters}
                 options={options}
                 persistKey={tablePersistsKey}
                 title={embedFilters()}

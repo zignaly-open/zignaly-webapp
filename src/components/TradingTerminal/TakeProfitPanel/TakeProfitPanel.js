@@ -355,7 +355,7 @@ const TakeProfitPanel = (props) => {
     const priceProperty = composeTargetPropertyName("targetPrice", targetId);
     const targetPrice = getTargetPropertyValue("targetPrice", targetId);
 
-    if (limits.price.min && targetPrice < limits.price.min) {
+    if (limits.price && limits.price.min && targetPrice < limits.price.min) {
       setError(priceProperty, {
         type: "manual",
         message: formatMessage(
@@ -367,7 +367,7 @@ const TakeProfitPanel = (props) => {
       return false;
     }
 
-    if (limits.price.max && targetPrice > limits.price.max) {
+    if (limits.price && limits.price.max && targetPrice > limits.price.max) {
       setError(priceProperty, {
         type: "manual",
         message: formatMessage(
@@ -396,7 +396,7 @@ const TakeProfitPanel = (props) => {
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
     const cost = Math.abs(targetPrice * exitUnits);
 
-    if (limits.cost.min && cost > 0 && cost < limits.cost.min) {
+    if (limits.cost && limits.cost.min && cost > 0 && cost < limits.cost.min) {
       setError(unitsProperty, {
         type: "manual",
         message: formatMessage(
@@ -408,7 +408,7 @@ const TakeProfitPanel = (props) => {
       return false;
     }
 
-    if (limits.cost.max && cost > 0 && cost > limits.cost.max) {
+    if (limits.cost && limits.cost.max && cost > 0 && cost > limits.cost.max) {
       setError(unitsProperty, {
         type: "manual",
         message: formatMessage(
@@ -434,7 +434,7 @@ const TakeProfitPanel = (props) => {
     const exitUnits = getTargetPropertyValue("exitUnits", targetId);
 
     clearErrors(unitsProperty);
-    if (limits.amount.min && exitUnits < limits.amount.min) {
+    if (limits.amount && limits.amount.min && exitUnits < limits.amount.min) {
       setError(unitsProperty, {
         type: "manual",
         message: formatMessage(
@@ -446,7 +446,7 @@ const TakeProfitPanel = (props) => {
       return false;
     }
 
-    if (limits.amount.max && exitUnits > limits.amount.max) {
+    if (limits.amount && limits.amount.max && exitUnits > limits.amount.max) {
       setError(unitsProperty, {
         type: "manual",
         message: formatMessage(

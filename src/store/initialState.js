@@ -70,7 +70,7 @@
 
 /**
  * @typedef {Object} BrowseFilters
- * @property {string} quote
+ * @property {string} [quote]
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} fromUser
@@ -78,13 +78,14 @@
 
 /**
  * @typedef {Object} SignalPBrowseFilters
- * @property {string} fromUser
+ * @property {string} [fromUser]
  */
 
 /**
  * @typedef {Object} AnalyticsFilters
  * @property {string} quote
  * @property {string} base
+ * @property {string} timeFrame
  */
 
 /**
@@ -167,8 +168,6 @@
  * @property {Number} connectedSignalp
  * @property {Number} copyt
  * @property {Number} signalp
- * @property {string} signalpAnalytics
- * @property {string} copytAnalytics
  */
 
 /**
@@ -440,8 +439,6 @@ const initialState = {
       connectedSignalp: null,
       copyt: null,
       signalp: null,
-      copytAnalytics: null,
-      signalpAnalytics: null,
     },
     sort: {
       copyt: null,
@@ -452,8 +449,8 @@ const initialState = {
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
       copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
       signalp: { fromUser: "" },
-      copytAnalytics: { quote: "", base: "" },
-      signalpAnalytics: { quote: "", base: "" },
+      copytAnalytics: { quote: "", base: "", timeFrame: "" },
+      signalpAnalytics: { quote: "", base: "", timeFrame: "" },
     },
     tradingTerminal: { pair: {}, provider: "" },
   },

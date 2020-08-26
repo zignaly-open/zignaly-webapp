@@ -36,6 +36,10 @@ const AppLayout = (props) => {
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
+    // Avoid Chrome translation, this complements meta tag translation see:
+    // https://github.com/facebook/react/issues/11538
+    document.documentElement.setAttribute("class", "notranslate");
+    document.documentElement.setAttribute("translate", "no");
   }, [storeSettings.darkStyle]);
 
   useLayoutEffect(() => {

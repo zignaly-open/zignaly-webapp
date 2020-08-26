@@ -11,6 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
+import { getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -55,8 +56,8 @@ const ExchangeAccountAdd = ({ demo }) => {
   // Exchange options
   const exchangesOptions = exchanges
     ? exchanges
-        // Filter disabled exchange and Zignaly if connection
-        .filter((e) => e.enabled && (e.name.toLowerCase() !== "zignaly" || !demo))
+        // Filter disabled exchange
+        .filter((e) => e.enabled)
         .map((e) => ({
           val: e.name.toLowerCase(),
           label:
@@ -131,6 +132,10 @@ const ExchangeAccountAdd = ({ demo }) => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
+        const exchangePayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserExchanges(exchangePayload));
         return true;
       })
       .catch((e) => {
@@ -151,7 +156,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   };
 
   return (
-    <form className="exchangeAccountAdd">
+    <form className="exchangeAccountAdd" method="post">
       {!selectedExchange ? (
         <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
           <CircularProgress disableShrink />

@@ -4,18 +4,18 @@ import CustomSelect from "../../CustomSelect";
 import { useIntl } from "react-intl";
 
 /**
+ * @typedef {import("../../../store/initialState").AnalyticsFilters} AnalyticsFilters
+ */
+
+/**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {Object} AnayticsFiltersPropTypes
  * @property {function} onClear Callback that delegate filters clearing to caller.
- * @property {function} onBaseChange Callback that delegate base change to caller.
- * @property {function} onQuoteChange Callback that delegate quote change to caller.
- * @property {function} onTimeFrameChange Callback that delegate time frame change to caller.
- * @property {string} quote Selected quote (base currency).
  * @property {Array<string>} quotes Quotes options.
- * @property {OptionType} base Selected base (pair).
  * @property {Array<OptionType>} bases Bases options.
- * @property {string} timeFrame Selected time frame.
  * @property {Array<OptionType>} timeFrames
+ * @property {function} setFilters Callback that delegate filters update to caller.
+ * @property {AnalyticsFilters} filters Current filters.
  */
 
 /**
@@ -24,18 +24,7 @@ import { useIntl } from "react-intl";
  * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const AnalyticsFilters = ({
-  quote,
-  base,
-  timeFrame,
-  onBaseChange,
-  onQuoteChange,
-  onTimeFrameChange,
-  onClear,
-  bases,
-  quotes,
-  timeFrames,
-}) => {
+const AnalyticsFilters = ({ onClear, bases, quotes, timeFrames, filters, setFilters }) => {
   const intl = useIntl();
 
   return (
@@ -44,27 +33,27 @@ const AnalyticsFilters = ({
         label={intl.formatMessage({
           id: "fil.timeframe",
         })}
-        onChange={onTimeFrameChange}
+        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
         options={timeFrames}
-        value={timeFrame}
+        value={filters.timeFrame}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={onQuoteChange}
+        onChange={(/** @type {string} */ v) => setFilters({ quote: v })}
         options={quotes}
         search={true}
-        value={quote}
+        value={filters.quote}
       />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.pair",
         })}
-        onChange={onBaseChange}
+        onChange={(/** @type {string} */ v) => setFilters({ quote: v })}
         options={bases}
         search={true}
-        value={base}
+        value={filters.base}
       />
     </CustomFilters>
   );

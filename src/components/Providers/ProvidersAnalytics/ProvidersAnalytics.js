@@ -20,37 +20,29 @@ import { Box } from "@material-ui/core";
 const ProvidersAnalytics = ({ type }) => {
   const {
     stats,
-    timeFrames,
-    timeFrame,
-    setTimeFrame,
     quotes,
-    quote,
-    setQuote,
     bases,
-    base,
-    setBase,
+    timeFrames,
     clearFilters,
+    filters,
+    setFilters,
   } = useProvidersAnalytics(type);
 
   return (
     <Box>
       <AnalyticsFilters
-        base={base}
         bases={bases}
-        onBaseChange={setBase}
+        filters={filters}
         onClear={clearFilters}
-        onQuoteChange={setQuote}
-        onTimeFrameChange={setTimeFrame}
-        quote={quote}
         quotes={quotes}
-        timeFrame={timeFrame}
+        setFilters={setFilters}
         timeFrames={timeFrames}
       />
       <ProvidersProfitsChart
-        base={base.label}
-        quote={quote}
+        base={bases.find((b) => b.val === filters.base).label}
+        quote={filters.quote}
         stats={stats}
-        timeFrame={timeFrames.find((t) => t.val === timeFrame).label}
+        timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
       />
       <ProvidersProfitsTable
         persistKey={`${type}Analytics`}

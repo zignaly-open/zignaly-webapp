@@ -13,6 +13,7 @@ import "./copyTradersBrowse.scss";
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
  * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
  * @property {function} toggleSort Callback that delegate sort toggle state to caller.
+ * @property {function} setModifiedFiltersCount Callback that delegate modifiedFiltersCount to caller.
  */
 
 /**
@@ -22,7 +23,7 @@ import "./copyTradersBrowse.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTradersBrowse = (props) => {
-  const { showFilters, showSort, toggleFilters, toggleSort } = props;
+  const { showFilters, showSort, toggleFilters, toggleSort, setModifiedFiltersCount } = props;
   const intl = useIntl();
 
   return (
@@ -36,9 +37,9 @@ const CopyTradersBrowse = (props) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-
       <ProvidersBrowse
         connectedOnly={false}
+        setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}

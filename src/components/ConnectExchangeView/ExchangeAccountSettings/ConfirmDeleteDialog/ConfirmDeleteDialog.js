@@ -106,7 +106,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
         </Button>
         <Button
           color="secondary"
-          disabled={!balance || !positions || brokerAccountWithFunds || positions.length}
+          disabled={Boolean(!balance || !positions || brokerAccountWithFunds || positions.length)}
           onClick={deleteExchange}
         >
           <FormattedMessage id="confirm.delete" />

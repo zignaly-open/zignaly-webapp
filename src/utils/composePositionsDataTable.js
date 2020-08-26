@@ -333,6 +333,18 @@ function isEditView(position) {
 }
 
 /**
+ * Checks if viewed page is a position edit view.
+ *
+ * @param {PositionEntity} position Position entity to check.
+ * @returns {boolean} true if is edit view, false otherwise.
+ */
+function isManagementFollowerPosition(position) {
+  // When URL path contains management, indicates that is the management page.
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+  return currentPath.includes("management") && position.userId !== position.providerOwnerUserId;
+}
+
+/**
  * Compose all action buttons element for a given position.
  *
  * @param {PositionEntity} position Position entity to compose buttons for.
@@ -362,19 +374,23 @@ export function composeAllActionButtons(position, confirmActionHandler) {
 
   return (
     <div className="actions">
-      {isCopyTrading && !isEditView(position) && !isCopyTrader && (
-        <Tooltip
-          arrow
-          enterTouchDelay={50}
-          placement="left-end"
-          title={<FormattedMessage id="dashboard.positions.icon.view" />}
-        >
-          <Link className="action" to={`/position/${position.positionId}`}>
-            <Eye />
-          </Link>
-        </Tooltip>
-      )}
-      {(!isCopyTrading || isCopyTrader) && !isEditView(position) && (
+      {isCopyTrading &&
+        !isEditView(position) &&
+        !isCopyTrader &&
+        !isManagementFollowerPosition(position) && (
+          <Tooltip
+            arrow
+            enterTouchDelay={50}
+            placement="left-end"
+            title={<FormattedMessage id="dashboard.positions.icon.view" />}
+          >
+            <Link className="action" to={`/position/${position.positionId}`}>
+              <Eye />
+            </Link>
+          </Tooltip>
+        )}
+      {(isManagementFollowerPosition(position) ||
+        ((!isCopyTrading || isCopyTrader) && !isEditView(position))) && (
         <Tooltip
           arrow
           enterTouchDelay={50}
@@ -437,29 +453,6 @@ export function composeAllActionButtons(position, confirmActionHandler) {
         >
           <RotateCw className="iconPurple action" />
         </Tooltip>
-      )}
-    </div>
-  );
-}
-
-/**
- * Compose all action buttons element for a given position.
- *
- * @param {ExchangeOpenOrdersObject} order Position entity to compose buttons for.
- * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @returns {JSX.Element} Composed JSX element.
- */
-export function composeOrdersCancelActionButton(order, confirmActionHandler) {
-  return (
-    <div className="actions">
-      {order.status === "open" && (
-        <IconButton
-          className="iconPurple"
-          data-order-id={order.orderId}
-          onClick={confirmActionHandler}
-        >
-          <Delete />
-        </IconButton>
       )}
     </div>
   );
