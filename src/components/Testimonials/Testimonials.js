@@ -4,6 +4,7 @@ import { Box } from "@material-ui/core";
 import Testimonial from "./Testimonial";
 import CustomButton from "../CustomButton";
 import testominalFeed from "../../utils/testimonialFeed.json";
+import { FormattedMessage } from "react-intl";
 
 const Testimonials = () => {
   const [pageSize, setPageSize] = useState(6);
@@ -17,7 +18,9 @@ const Testimonials = () => {
 
   return (
     <Box className="testimonials">
-      <span className="title">Testimonials</span>
+      <span className="title">
+        <FormattedMessage id="testimonials.title" />
+      </span>
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between">
         {testimonials.map((item) => (
           <Testimonial data={item} key={item.id} />
@@ -29,7 +32,7 @@ const Testimonials = () => {
           disabled={pageSize === testominalFeed.length}
           onClick={loadMoreData}
         >
-          Load More
+          <FormattedMessage id="testimonials.loadmore" />
         </CustomButton>
       </Box>
     </Box>
