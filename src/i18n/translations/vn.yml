@@ -852,7 +852,6 @@ status.93: "KuCoin Exchange temporary suspended."
 status.94: "The exchange did not return an orderID."
 status.95: "Exceeded the maximum allowable position at current leverage"
 status.96: "Hedge mode not supported"
-status.99: "Unknown Error, Pending Review"
 status.99: "Lỗi không xác định, đang chờ xem xét"
 # ERROR CODES
 error.occured: "Xuất hiện lỗi"
