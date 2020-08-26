@@ -12,8 +12,6 @@ const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
 
-  console.log(storeSettings.languageCode);
-
   /**
    * Dispatch language selection persistance in the store.
    *
