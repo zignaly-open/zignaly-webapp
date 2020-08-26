@@ -878,7 +878,12 @@ preferences.2lines: "Use two lines for long numbers (Helps readability)"
 preferences.balance: "Show balance by default"
 preferences.darklight: "Dark Side"
 
+security.name: "Name"
 security.email: "Email Address"
+security.email.error.empty: "Email cannot be empty."
+security.email.error.invalid: "Email should be valid."
+security.password.error.empty: "Password cannot be empty"
+
 security: "Security"
 security.2fa: "2 Factor Authentication (2FA)"
 security.2fa.enable: "Enable 2FA"

@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
 import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
@@ -30,6 +30,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
+  const intl = useIntl();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
@@ -121,10 +122,10 @@ const LoginForm = () => {
               error={!!errors.email}
               fullWidth
               inputRef={register({
-                required: true,
+                required: intl.formatMessage({ id: "security.email.error.empty" }),
                 pattern: {
                   value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
-                  message: "Email should be valid",
+                  message: intl.formatMessage({ id: "security.email.error.invalid" }),
                 },
               })}
               name="email"
@@ -143,7 +144,9 @@ const LoginForm = () => {
           >
             <PasswordInput
               error={!!errors.password}
-              inputRef={register({ required: "Password cannot be empty" })}
+              inputRef={register({
+                required: intl.formatMessage({ id: "security.password.error.empty" }),
+              })}
               label={<FormattedMessage id={"security.password"} />}
               name="password"
             />
