@@ -34,7 +34,7 @@ const LanguageSwitcher = () => {
         value={storeSettings.languageCode}
       >
         {languages.map((lang) => (
-          <MenuItem key={lang.locale} value={lang.countryCode}>
+          <MenuItem key={lang.locale} value={lang.locale}>
             <Flag className="flag" code={lang.countryCode} title={lang.label} />
           </MenuItem>
         ))}
