@@ -8,7 +8,6 @@ import Users from "./users";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider, unsetProvider } from "../../store/actions/views";
-import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -35,7 +34,6 @@ import BrowsePage from "./browse";
 const SignalProviders = (props) => {
   const { location } = props;
   const storeSession = useStoreSessionSelector();
-  const storeViews = useStoreViewsSelector();
   // On production the application is served through an /app directory, ID position is +1 level.
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
@@ -51,7 +49,7 @@ const SignalProviders = (props) => {
       };
       dispatch(setProvider(payload));
     };
-    if (providerId && providerId.length === 24 && storeViews.provider.id !== providerId) {
+    if (providerId && providerId.length === 24) {
       loadProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
