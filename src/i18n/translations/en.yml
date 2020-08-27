@@ -543,6 +543,10 @@ alert.forgotpassword.step1.body: "An email has been sent to your provided email 
 alert.forgotpassword.step3.body: "Your password has been reset. You can now login with new password!"
 alert.payment.title: "Payment Completed"
 alert.payment.body: "Your have payment request is completed!"
+alert.management.cancelall.title: "Cancelled Successfully!"
+alert.management.cancelall..body: "All entries were successfully cancelled."
+alert.management.exitall.title: "Exited Successfully!"
+alert.management.exitall..body: "All entries were successfully exited."
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Your API-Key from the provider"
