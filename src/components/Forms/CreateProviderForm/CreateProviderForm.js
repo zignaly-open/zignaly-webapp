@@ -103,6 +103,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         projectId: "z01",
         description: "",
         providerId: CREATE_PROVIDER_ID,
+        version: 2,
       }),
       token: storeSession.tradeApi.accessToken,
     };
@@ -115,7 +116,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     apiMethod
       .then((response) => {
         const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
-          response.id
+          response.providerId
         }/edit`;
 
         navigate(profileLink);
@@ -144,7 +145,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                   <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
                 </Typography>
                 <Typography className="desc" variant="body1">
-                  <FormattedMessage id="copyt.create.desc" />
+                  <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create.desc`} />
                 </Typography>
                 <Box alignItems="flex-start" display="flex" flexDirection="column">
                   <Box className="inputBox nameBox" display="flex" flexDirection="column" mr={1}>

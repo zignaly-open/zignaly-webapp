@@ -491,6 +491,7 @@ provider.name: "Name"
 copyt.become: "Werden Sie Copy Trader"
 copyt.create: "Einen Copy Trader Account erstellen"
 copyt.create.desc: "Bieten Sie Ihre Dienste als erfahrener Trader an, um von unseren Benutzern kopiert zu werden"
+signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
 signalp.create: "Erstellen Sie ein Signal Provider Konto"
 signalp.become: "Werden Sie Signal Provider"
 # TRADING TERMINAL
