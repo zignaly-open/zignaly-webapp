@@ -1263,12 +1263,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: null,
       },
       {
-        columnId: "col.entryprice",
+        columnId: "col.price.entry",
         propertyName: "buyPrice",
         renderFunction: renderEntryPrice,
       },
       {
-        columnId: "col.exitprice",
+        columnId: "col.price.exit",
         propertyName: "sellPrice",
         renderFunction: renderExitPrice,
       },
