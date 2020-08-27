@@ -3251,6 +3251,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} providerId
  * @property {Array<string>} quotes
  * @property {Array<string>} exchanges
+ * @property {Number} version
  */
 
 /**
@@ -3260,6 +3261,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} key
  * @property {string} userId
  * @property {string} projectId
+ * @property {string} providerId
  * @property {string} description
  * @property {Array<string>} exchanges
  * @property {string} exchangeType
@@ -3309,6 +3311,7 @@ const createEmptyNewProviderEntity = () => {
     key: "",
     userId: "",
     projectId: "",
+    providerId: "",
     description: "",
     exchanges: [],
     exchangeType: "",

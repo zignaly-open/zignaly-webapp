@@ -144,23 +144,27 @@ const SignupForm = () => {
               flexWrap="wrap"
               justifyContent="start"
             >
-              <span className="text">I agree to</span>
+              <span className="text">
+                <FormattedMessage id="signup.agree" />
+              </span>
               <a
                 className="link"
                 href="https://zignaly.com/legal/terms"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Terms and condition
+                <FormattedMessage id="signup.terms" />
               </a>
-              <span className="text">and</span>
+              <span className="text">
+                <FormattedMessage id="signup.and" />
+              </span>
               <a
                 className="link"
                 href="https://zignaly.com/legal/privacy"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                privacy policy
+                <FormattedMessage id="signup.privacy" />
               </a>
             </Box>
           </Box>

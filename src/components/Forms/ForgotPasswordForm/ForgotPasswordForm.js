@@ -64,7 +64,9 @@ const ForgotPasswordForm = () => {
         flexDirection="column"
         justifyContent="center"
       >
-        <Typography variant="h3">Password Recovery Form</Typography>
+        <Typography variant="h3">
+          <FormattedMessage id="forgotPassword.title" />
+        </Typography>
         <Box
           alignItems="start"
           className="inputBox"
@@ -72,7 +74,9 @@ const ForgotPasswordForm = () => {
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="customLabel">Enter your email address</label>
+          <label className="customLabel">
+            <FormattedMessage id="forgotPassword.subtitle" />
+          </label>
           <TextField
             className="customInput"
             error={errors.email}
@@ -85,7 +89,11 @@ const ForgotPasswordForm = () => {
             type="email"
             variant="outlined"
           />
-          {errors.email && <span className="errorText">email should be valid</span>}
+          {errors.email && (
+            <span className="errorText">
+              <FormattedMessage id="security.email.error.invalid" />
+            </span>
+          )}
         </Box>
 
         <Box className="inputBox">
