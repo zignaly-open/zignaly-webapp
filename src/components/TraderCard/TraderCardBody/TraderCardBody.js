@@ -157,6 +157,10 @@ const TraderCard = (props) => {
       });
   };
 
+  const connectedAccount = exchangeConnections.find(
+    (a) => a.internalId === provider.exchangeInternalId,
+  );
+
   return (
     <LazyLoad height="310px" offset={600} once>
       <ConfirmDialog
@@ -240,7 +244,7 @@ const TraderCard = (props) => {
 
             <div className="actions">
               {canDisable &&
-                (selectedExchange.internalId !== provider.exchangeInternalId ? (
+                (connectedAccount && selectedExchange.internalId !== provider.exchangeInternalId ? (
                   <CustomToolip
                     title={
                       <FormattedMessage
@@ -250,9 +254,7 @@ const TraderCard = (props) => {
                             : "srv.follow.anotheraccount"
                         }
                         values={{
-                          account: exchangeConnections.find(
-                            (a) => a.internalId === provider.exchangeInternalId,
-                          ).internalName,
+                          account: connectedAccount.internalName,
                         }}
                       />
                     }

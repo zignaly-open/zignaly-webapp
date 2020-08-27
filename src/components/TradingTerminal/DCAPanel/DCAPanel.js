@@ -127,20 +127,48 @@ const DCAPanel = (props) => {
     setActiveDCAIncreaseIndexes(newDcaIncreaseIndexes);
   };
 
+  /**
+   * @typedef {Object<string, boolean>} DcaFlagIndex
+   */
+
+  /**
+   * Create an index of DCA execution for existing DCAs.
+   *
+   * @returns {DcaFlagIndex} DCAs execution index.
+   */
+  const getDcaExecutionIndex = () => {
+    /**
+     * @type {DcaFlagIndex}
+     */
+    const dcaExecutionIndex = {};
+    dcaAllIndexes.forEach((index) => {
+      if (positionEntity) {
+        const target = positionEntity.reBuyTargets[Number(index)];
+        dcaExecutionIndex[index] = false;
+
+        if (target.done || target.skipped) {
+          dcaExecutionIndex[index] = true;
+        }
+      }
+    });
+
+    return dcaExecutionIndex;
+  };
+
+  /**
+   * Create an index of DCA target fields that should be disabled (read-only).
+   *
+   * @returns {DcaFlagIndex} DCA target fields disable status index.
+   */
   const getFieldsDisabledStatus = () => {
     /**
-     * @type {Object<string, boolean>}
+     * @type {DcaFlagIndex}
      */
     const fieldsDisabled = {};
     dcaAllIndexes.forEach((index) => {
       let disabled = false;
-      if (positionEntity) {
-        const target = positionEntity.reBuyTargets[Number(index)];
-        if (target.done || target.skipped) {
-          disabled = true;
-        } else if (isReadOnly) {
-          disabled = true;
-        }
+      if (dcaExecutionIndex[index] || isReadOnly) {
+        disabled = true;
       }
 
       fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
@@ -328,7 +356,11 @@ const DCAPanel = (props) => {
           setTargetPropertyValue("targetPricePercentage", targetId, sign);
         } else {
           setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-          pricePercentageValidations(targetId);
+
+          // Validate only when not yet executed.
+          if (!dcaExecutionIndex[targetId]) {
+            pricePercentageValidations(targetId);
+          }
         }
       });
     }
@@ -337,7 +369,7 @@ const DCAPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    if (expanded && cardinality > 0) {
+    if (expanded && cardinality > 0 && !dcaExecutionIndex["1"]) {
       rebuyPercentageValidations("1");
     }
   };
@@ -355,6 +387,7 @@ const DCAPanel = (props) => {
   };
 
   useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  const dcaExecutionIndex = getDcaExecutionIndex();
   const fieldsDisabled = getFieldsDisabledStatus();
 
   /**

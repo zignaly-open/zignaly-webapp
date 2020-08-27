@@ -62,7 +62,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
         className="signupForm"
@@ -77,7 +77,9 @@ const SignupForm = () => {
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="customLabel">Name</label>
+          <label className="customLabel">
+            <FormattedMessage id="security.name" />
+          </label>
           <TextField
             className="customInput"
             error={!!errors.firstName}
@@ -101,7 +103,9 @@ const SignupForm = () => {
           flexDirection="column"
           justifyContent="start"
         >
-          <label className="customLabel">Email address</label>
+          <label className="customLabel">
+            <FormattedMessage id="security.email" />
+          </label>
           <TextField
             className="customInput"
             error={!!errors.email}

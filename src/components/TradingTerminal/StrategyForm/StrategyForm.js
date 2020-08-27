@@ -8,7 +8,11 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
+import {
+  mapEntryTypeToEnum,
+  mapSideToEnum,
+  createMarketSymbolEmptyValueObject,
+} from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -58,7 +62,26 @@ const StrategyForm = (props) => {
     symbolsData = [],
   } = props;
 
-  const currentSymbolData = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
+  const resolveCurrentSymbolData = () => {
+    const symbolDataMatch = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
+
+    if (positionEntity && isEmpty(symbolDataMatch)) {
+      const symbolData = assign(createMarketSymbolEmptyValueObject(), {
+        id: positionEntity.symbol,
+        base: positionEntity.base,
+        baseId: positionEntity.base,
+        quote: positionEntity.quote,
+        quoteId: positionEntity.quote,
+        limits: {},
+      });
+
+      return symbolData;
+    }
+
+    return symbolDataMatch || createMarketSymbolEmptyValueObject();
+  };
+
+  const currentSymbolData = resolveCurrentSymbolData();
   const isPositionView = isObject(positionEntity);
 
   const { errors, handleSubmit, setValue, reset, trigger, watch } = useFormContext();
@@ -523,7 +546,7 @@ const StrategyForm = (props) => {
 
   return (
     <Box bgcolor="grid.content" className="strategyForm" textAlign="center">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form method="post" onSubmit={handleSubmit(onSubmit)}>
         {isPositionView ? (
           <SidebarEditPanels
             currentSymbolData={currentSymbolData}

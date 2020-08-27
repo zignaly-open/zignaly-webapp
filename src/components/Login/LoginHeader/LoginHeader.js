@@ -2,6 +2,8 @@ import React from "react";
 import "./LoginHeader.scss";
 import { Box } from "@material-ui/core";
 import Logo from "../../../images/logo/logoWhite.png";
+import LanguageSwitcher from "../../LanguageSwitcher";
+import { FormattedMessage } from "react-intl";
 
 /**
  *
@@ -25,6 +27,9 @@ const LoginHeader = ({ children }) => {
       justifyContent="space-between"
     >
       <Box className="headerImage" />
+      <Box className="languageBox">
+        <LanguageSwitcher />
+      </Box>
       <Box
         alignItems="start"
         className="tagLineBox"
@@ -33,9 +38,14 @@ const LoginHeader = ({ children }) => {
         justifyContent="start"
       >
         <img alt="Zignaly" className="logo" src={Logo} />
-        <span className="tagLine">What could a pro trader do with your crypto?</span>
+        <span className="tagLine">
+          <FormattedMessage id="login.header.tagline" />
+        </span>
         <span className="slogan">
-          <b>Copy pro traders </b>and earn same profits as they do.
+          <b>
+            <FormattedMessage id="login.header.tagline2.1" />
+          </b>{" "}
+          <FormattedMessage id="login.header.tagline2.2" />
         </span>
       </Box>
       {children}

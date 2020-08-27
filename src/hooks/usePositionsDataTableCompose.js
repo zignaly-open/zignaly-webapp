@@ -300,7 +300,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderReturnsFromAllocated(dataIndex) {
     const position = positions[dataIndex];
-    return <>{formatPrice(position.returnFromAllocated)} %</>;
+    return <>{formatNumber(position.returnFromAllocated, 2)} %</>;
   }
 
   /**
@@ -311,7 +311,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderReturnsFromInvestment(dataIndex) {
     const position = positions[dataIndex];
-    return <>{formatPrice(position.returnFromInvestment)} %</>;
+    return <>{formatNumber(position.returnFromInvestment, 2)} %</>;
   }
 
   /**

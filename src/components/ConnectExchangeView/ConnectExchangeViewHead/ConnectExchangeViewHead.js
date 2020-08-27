@@ -1,14 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, useMediaQuery } from "@material-ui/core";
 import CustomButton from "../../CustomButton";
 import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
+import MobileExchangeList from "../../Navigation/MobileHeader/MobileExchangeList";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
 import GlobalModalHead from "../GlobalModalHead";
+import { useTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {Object} DefaultProps
@@ -28,6 +30,8 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   } = useContext(ModalPathContext);
   const methods = useFormContext();
   const storeUser = useStoreUserSelector();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   /**
    * Handle submit button click.
@@ -95,7 +99,8 @@ const ConnectExchangeViewHead = ({ onClose }) => {
               {tempMessage}
             </Typography>
             {storeUser.exchangeConnections.length > 0 &&
-              ["demoAccounts", "realAccounts"].includes(currentPath) && <UserExchangeList />}
+              ["demoAccounts", "realAccounts"].includes(currentPath) &&
+              (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
           </>
         }
         titleBar={

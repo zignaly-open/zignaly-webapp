@@ -400,9 +400,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} buyPrice Quote currency price at the moment of order entry was filled.
  * @property {string} closeDateReadable Close date in human readable format.
  * @property {string} exchange Exchange name where position was filled.
+ * @property {string} exchangeType Exchange type (futures / spot) used to operate the position.
  * @property {string} exchangeInternalName Exchange connection name where position was filled.
  * @property {string} exitPriceStyle Exit price style (coloring) based on gain/loss.
  * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
+ * @property {string} exchangeInternalId Exchange connection ID, reference the connection of an exchange to Zignaly account.
  * @property {number} invested Invested amount on this position, including leveraged part.
  * @property {string} investedQuote Currency ID of the invested amount.
  * @property {string} openDateReadable Open date in human readable format.
@@ -1266,10 +1268,12 @@ function createEmptyPositionEntity() {
     closeDateReadable: "",
     closed: false,
     exchange: "",
+    exchangeType: "",
     exchangeInternalName: "",
     exitPriceStyle: "",
     fees: 0,
     internalExchangeId: "",
+    exchangeInternalId: "",
     invested: 0,
     investedQuote: "",
     isCopyTrader: false,
@@ -1941,7 +1945,7 @@ export function coinRayTokenResponseTransform(response) {
  *
  * @returns {MarketSymbol} Empty market symbol value object.
  */
-function createMarketSymbolEmptyValueObject() {
+export function createMarketSymbolEmptyValueObject() {
   return {
     id: "",
     symbol: "",
