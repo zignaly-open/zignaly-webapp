@@ -1049,6 +1049,10 @@ status.89: "CH-The current service does not allow clones."
 status.90: "CH-The exchange attached to this position is no longer connected to your account."
 status.91: "CH-The balance between the position and the contract does not match."
 status.92: "CH-Hedge mode not supported"
+status.93: "CH-KuCoin Exchange temporary suspended."
+status.94: "CH-The exchange did not return an orderID."
+status.95: "CH-Exceeded the maximum allowable position at current leverage"
+status.96: "CH-Hedge mode not supported"
 status.99: "CH-Unknown Error, Pending Review"
 
 # ERROR CODES
