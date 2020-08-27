@@ -41,7 +41,7 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
         label={intl.formatMessage({
           id: "fil.quote",
         })}
-        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v.val })}
+        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v })}
         options={quotes}
         search={true}
         value={filters.quote}
