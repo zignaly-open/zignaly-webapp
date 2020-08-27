@@ -499,6 +499,7 @@ provider.name: "Tên"
 copyt.become: "Trở thành Nhà giao dịch sao chép"
 copyt.create: "Tạo Một Tài Khoản Nhà Giao Dịch Sao Chép"
 copyt.create.desc: "Người dùng của chúng tôi sẽ sao chép giao dịch của bạn"
+signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
 signalp.create: "Tạo Tài Khoản Nhà Cung Cấp Tín Hiệu"
 signalp.become: "Trở thành nhà cung cấp tín hiệu"
 # TRADING TERMINAL
