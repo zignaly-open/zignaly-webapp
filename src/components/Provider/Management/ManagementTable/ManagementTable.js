@@ -23,6 +23,7 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
  * @typedef {Object} PositionsTableProps
  * @property {Array<PositionEntity>} list
  * @property {Array<ManagementPositionsEntity>} allPositions
+ * @property {React.SetStateAction<*>} setLoading
  */
 
 /**
@@ -31,7 +32,7 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
  * @param {PositionsTableProps} props Component properties.
  * @returns {JSX.Element} Positions table element.
  */
-const ManagementTable = ({ list, allPositions }) => {
+const ManagementTable = ({ list, allPositions, setLoading }) => {
   const storeSession = useStoreSessionSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
@@ -160,6 +161,8 @@ const ManagementTable = ({ list, allPositions }) => {
         onSelectionChange={handleRowSelectionChange}
         persistKey={tablePersistsKey}
         selectedRows={selectedRows}
+        setLoading={setLoading}
+        setSelectedRows={setSelectedRows}
         values={allPositions}
       />
     );
@@ -250,7 +253,14 @@ const ManagementTable = ({ list, allPositions }) => {
           data={data}
           options={options}
           persistKey={tablePersistsKey}
-          title={<SelectionActions selectedRows={selectedRows} values={allPositions} />}
+          title={
+            <SelectionActions
+              selectedRows={selectedRows}
+              setLoading={setLoading}
+              setSelectedRows={setSelectedRows}
+              values={allPositions}
+            />
+          }
         />
       </Box>
     </>
