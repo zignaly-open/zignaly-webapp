@@ -28,6 +28,10 @@ const ProviderHeader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeViews.provider.id, storeSettings.selectedExchange.internalId]);
 
+  if (typeof window !== "undefined") {
+    window.scrollTo(0, -500);
+  }
+
   return (
     <Box
       className="providerHeader"
