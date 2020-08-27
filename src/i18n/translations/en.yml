@@ -1217,6 +1217,7 @@ srv.unfollow.alert.title: "Success"
 srv.unfollow.alert.body: "You are not Following this Provider anymore!"
 
 # WALL
-wall.post: "Post"
 wall.completeprofile.title: "Complete Profile"
 wall.completeprofile.desc: "In order to continue, you need to set an username."
+wall.post: "Post"
+wall.write: "Write a post"
