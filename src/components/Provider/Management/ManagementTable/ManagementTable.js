@@ -161,8 +161,6 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
         onSelectionChange={handleRowSelectionChange}
         persistKey={tablePersistsKey}
         selectedRows={selectedRows}
-        setLoading={setLoading}
-        setSelectedRows={setSelectedRows}
         values={allPositions}
       />
     );
