@@ -9,6 +9,7 @@ import ExpandedRow from "../ExpandedRow";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
+import SelectionActions from "../ExpandedRow/SelectionActions";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -22,6 +23,7 @@ import "./ManagementTable.scss";
  * @typedef {Object} PositionsTableProps
  * @property {Array<PositionEntity>} list
  * @property {Array<ManagementPositionsEntity>} allPositions
+ * @property {React.SetStateAction<*>} setLoading
  */
 
 /**
@@ -30,11 +32,12 @@ import "./ManagementTable.scss";
  * @param {PositionsTableProps} props Component properties.
  * @returns {JSX.Element} Positions table element.
  */
-const ManagementTable = ({ list, allPositions }) => {
+const ManagementTable = ({ list, allPositions, setLoading }) => {
   const storeSession = useStoreSessionSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
-  const [rows, setRows] = useState([]);
+  const [expanded, setExpanded] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -154,7 +157,10 @@ const ManagementTable = ({ list, allPositions }) => {
       <ExpandedRow
         confirmAction={confirmAction}
         index={rowMeta.dataIndex}
+        onAllSelection={selectAllChild}
+        onSelectionChange={handleRowSelectionChange}
         persistKey={tablePersistsKey}
+        selectedRows={selectedRows}
         values={allPositions}
       />
     );
@@ -175,7 +181,46 @@ const ManagementTable = ({ list, allPositions }) => {
     allRowsExpanded.forEach((item) => {
       indexes.push(item.index);
     });
-    setRows(indexes);
+    setExpanded(indexes);
+  };
+
+  /**
+   *
+   * @param {String} id Position ID.
+   * @returns {Void} None.
+   */
+  const handleRowSelectionChange = (id) => {
+    let dataList = [...selectedRows];
+    if (dataList.includes(id)) {
+      dataList = dataList.filter((item) => item !== id);
+    } else {
+      dataList.push(id);
+    }
+    setSelectedRows(dataList);
+  };
+
+  /**
+   *
+   * @param {Number} index index of the parent.
+   * @param {Boolean} checked Flag to indicate the status of all child selection checkbox.
+   * @returns {Void} Nobe.
+   */
+  const selectAllChild = (index, checked) => {
+    const subPositions = allPositions[index].subPositions;
+    if (checked) {
+      let dataList = [...selectedRows];
+      subPositions.forEach((position) => {
+        dataList.push(position.positionId);
+      });
+      dataList = [...new Set(dataList)];
+      setSelectedRows(dataList);
+    } else {
+      let dataList = [...selectedRows];
+      subPositions.forEach((position) => {
+        dataList = dataList.filter((listItem) => listItem !== position.positionId);
+      });
+      setSelectedRows(dataList);
+    }
   };
 
   /**
@@ -184,7 +229,7 @@ const ManagementTable = ({ list, allPositions }) => {
   const options = {
     expandableRows: true,
     renderExpandableRow: renderRow,
-    rowsExpanded: rows,
+    rowsExpanded: expanded,
     onRowExpansionChange: handleRowExpansionChange,
     expandableRowsHeader: false,
     sortOrder: {
@@ -206,7 +251,14 @@ const ManagementTable = ({ list, allPositions }) => {
           data={data}
           options={options}
           persistKey={tablePersistsKey}
-          title=""
+          title={
+            <SelectionActions
+              selectedRows={selectedRows}
+              setLoading={setLoading}
+              setSelectedRows={setSelectedRows}
+              values={allPositions}
+            />
+          }
         />
       </Box>
     </>
