@@ -268,7 +268,7 @@ describe("Consume tradeApiClient service", () => {
       marketData[0].precision.quote,
       "First market symbol precision quote is not an object.",
     );
-  });
+  }, 15000);
 
   it("should get user owned copy traders options list", async () => {
     const payload = {
@@ -464,7 +464,7 @@ describe("Consume tradeApiClient service", () => {
     const assets = await client.exchangeAssetsGet(payload);
     assert.isObject(assets, "response is not an object.");
     assert.isObject(assets.BTC, "response does not have the BTC asset.");
-  }, 10000);
+  }, 15000);
 
   it("should get deposit history for the exchange account", async () => {
     const payload = {
