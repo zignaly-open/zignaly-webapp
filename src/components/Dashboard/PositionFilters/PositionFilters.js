@@ -31,16 +31,7 @@ import { Box } from "@material-ui/core";
  * @returns {JSX.Element} Component JSX.
  */
 const PositionFilters = (props) => {
-  const {
-    filters,
-    onChange,
-    showTypesFilter,
-    clearFilters,
-    providerOptions,
-    pairOptions,
-    types,
-    sides,
-  } = props;
+  const { filters, onChange, showTypesFilter, providerOptions, pairOptions, types, sides } = props;
 
   /**
    * Set provider filter value.
@@ -92,7 +83,7 @@ const PositionFilters = (props) => {
   };
 
   return (
-    <CustomFilters onClear={clearFilters} title="Filters">
+    <CustomFilters title="Filters">
       {showTypesFilter && (
         <CustomSelect label="" onChange={setType} options={types} value={filters.type} />
       )}
