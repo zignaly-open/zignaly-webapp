@@ -93,6 +93,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
           currentPath: previousPath,
         });
+        onClose();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
