@@ -68,7 +68,7 @@ const UserFilters = ({
         value={filters.suspended}
       />
       <CustomSelect
-        label={intl.formatMessage({ id: "fil.realexchange.label" })}
+        label={intl.formatMessage({ id: "fil.realexchange" })}
         onChange={(/** @type {string} */ val) => setFilters({ ...filters, connectedExchange: val })}
         options={exchangeOptions}
         // @ts-ignore
