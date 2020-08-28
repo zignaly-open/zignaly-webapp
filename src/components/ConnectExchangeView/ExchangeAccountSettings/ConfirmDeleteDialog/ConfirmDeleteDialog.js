@@ -14,8 +14,15 @@ import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { removeUserExchange } from "../../../../store/actions/user";
 import { CircularProgress, Box } from "@material-ui/core";
+import useProvidersList from "../../../../hooks/useProvidersList";
 
 /**
+ * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ *
+ * @typedef {Object} UserProviderListOptions
+ * @property {Boolean} connectedOnly
+ * @property {Boolean} copyTradersOnly
+ *
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} onClose
  * @property {boolean} open
@@ -36,6 +43,19 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const [positions, setPositions] = useState(null);
   const balance = useBalance(selectedAccount.internalId);
   const dispatch = useDispatch();
+
+  /**
+   *
+   * @param {UserProviderListOptions} options Use Provider List options.
+   * @returns {ProvidersCollection} Provders list.
+   */
+  const useTraders = (options) => {
+    const { providers } = useProvidersList(options);
+    return providers;
+  };
+
+  const traders = useTraders({ connectedOnly: true, copyTradersOnly: true });
+  const providers = useTraders({ connectedOnly: true, copyTradersOnly: false });
 
   const loadOpenPositions = () => {
     const payload = {
@@ -94,6 +114,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               <FormattedMessage id="confirm.deleteexchange.balance" />
             ) : positions.length ? (
               <FormattedMessage id="confirm.deleteexchange.openpos" />
+            ) : (traders && traders.length) || (providers && providers.length) ? (
+              <FormattedMessage id="confirm.deleteexchange.traders" />
             ) : (
               <FormattedMessage id="confirm.deleteexchange.message" />
             )}
