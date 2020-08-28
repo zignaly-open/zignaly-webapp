@@ -1116,6 +1116,7 @@ export function positionItemTransform(positionItem) {
     sellPrice: safeParseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
+    signalId: positionItem.signalId ? positionItem.signalId : "",
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
       ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : false,
