@@ -9,7 +9,6 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -42,7 +41,6 @@ import { useIntl } from "react-intl";
 const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
   const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;
