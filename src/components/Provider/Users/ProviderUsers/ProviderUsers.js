@@ -2,7 +2,7 @@ import React from "react";
 import { CircularProgress } from "@material-ui/core";
 import UsersTable from "../UsersTable";
 import useProviderUsers from "../../../../hooks/useProviderUsers";
-import { FormattedMessage } from "react-intl";
+import UserFilters from "../UserFilters";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,16 +15,44 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const ProviderUsers = ({ provider }) => {
-  const { loading, list, loadFollowersList } = useProviderUsers(provider.id);
+  const {
+    loading,
+    list,
+    loadFollowersList,
+    connectedOptions,
+    activeOptions,
+    suspendedOptions,
+    exchangeOptions,
+    filters,
+    setFilters,
+    filtersVisibility,
+    setFiltersVisibility,
+  } = useProviderUsers(provider.id);
+
+  const embedFilters = () => {
+    return (
+      <UserFilters
+        activeOptions={activeOptions}
+        connectedOptions={connectedOptions}
+        exchangeOptions={exchangeOptions}
+        filters={filters}
+        setFilters={setFilters}
+        suspendedOptions={suspendedOptions}
+      />
+    );
+  };
+
   return (
     <>
       {loading && <CircularProgress color="primary" />}
       {!loading && (
         <UsersTable
+          filtersVisibility={filtersVisibility}
           list={list}
           loadData={loadFollowersList}
           persistKey="copytProfileUsers"
-          title={<FormattedMessage id="srv.users" />}
+          setFiltersVisibility={setFiltersVisibility}
+          title={embedFilters()}
         />
       )}
     </>

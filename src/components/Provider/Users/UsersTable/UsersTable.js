@@ -30,11 +30,20 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  * @property {string} persistKey Key to save display columns settings.
  * @property {Array<ProviderFollowersEntity>} list
  * @property {Function} loadData
+ * @property {Boolean} filtersVisibility
+ * @property {React.SetStateAction<*>} setFiltersVisibility
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const UsersTable = ({ title, persistKey, list, loadData }) => {
+const UsersTable = ({
+  title,
+  persistKey,
+  list,
+  loadData,
+  filtersVisibility,
+  setFiltersVisibility,
+}) => {
   const storeViews = useStoreViewsSelector();
   const storeSession = useStoreSessionSelector();
   const intl = useIntl();
@@ -55,6 +64,10 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
   const [actionType, setActionType] = useState("cancel");
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
   const dispatch = useDispatch();
+
+  const toggleFilters = () => {
+    setFiltersVisibility(!filtersVisibility);
+  };
 
   /**
    * Format Yes/No value.
@@ -285,7 +298,13 @@ const UsersTable = ({ title, persistKey, list, loadData }) => {
         executeActionCallback={toggleSubscription}
         setConfirmConfig={setConfirmConfig}
       />
-      <Table columns={columns} data={list} persistKey={persistKey} title={title} />
+      <Table
+        columns={columns}
+        data={list}
+        persistKey={persistKey}
+        title={title}
+        toggleFilters={toggleFilters}
+      />
       <Modal onClose={handleModalClose} persist={false} size="small" state={modifyModal}>
         <ModifyUserSubscription
           followerId={followerId}
