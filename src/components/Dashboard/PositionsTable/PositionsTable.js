@@ -204,13 +204,13 @@ const PositionsTable = (props) => {
   const composeDataTableForPositionsType = () => {
     let dataTable;
 
-    const excludeCancelAction = () => {
-      const isFutures =
-        storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
-      const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
+    // const excludeCancelAction = () => {
+    //   const isFutures =
+    //     storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
+    //   const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
 
-      return isZignaly && isFutures;
-    };
+    //   return isZignaly && isFutures;
+    // };
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
@@ -218,15 +218,15 @@ const PositionsTable = (props) => {
       dataTable = composeLogPositionsDataTable();
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      if (excludeCancelAction()) {
-        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
-      }
+      // if (excludeCancelAction()) {
+      //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+      // }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      if (excludeCancelAction()) {
-        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
-      }
+      // if (excludeCancelAction()) {
+      //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+      // }
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
