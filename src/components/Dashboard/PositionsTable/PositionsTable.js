@@ -9,6 +9,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -41,6 +42,7 @@ import { useIntl } from "react-intl";
 const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
   const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;
@@ -202,13 +204,13 @@ const PositionsTable = (props) => {
   const composeDataTableForPositionsType = () => {
     let dataTable;
 
-    // const excludeCancelAction = () => {
-    //   const isFutures =
-    //     storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
-    //   const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
+    const excludeCancelAction = () => {
+      const isFutures =
+        storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
+      const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
 
-    //   return isZignaly && isFutures;
-    // };
+      return isZignaly && isFutures;
+    };
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
@@ -222,9 +224,9 @@ const PositionsTable = (props) => {
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      // if (excludeCancelAction()) {
-      //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
-      // }
+      if (excludeCancelAction()) {
+        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+      }
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
     } else {
