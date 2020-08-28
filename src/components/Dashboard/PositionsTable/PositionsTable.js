@@ -218,9 +218,9 @@ const PositionsTable = (props) => {
       dataTable = composeLogPositionsDataTable();
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      if (excludeCancelAction()) {
-        dataTable = excludeDataTableColumn(dataTable, "col.cancel");
-      }
+      // if (excludeCancelAction()) {
+      //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
+      // }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       dataTable = excludeDataTableColumn(dataTable, "col.actions");
