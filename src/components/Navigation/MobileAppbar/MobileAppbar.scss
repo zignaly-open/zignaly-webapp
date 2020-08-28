@@ -37,16 +37,17 @@
     padding: 10px;
     visibility: hidden;
   }
+}
 
-  .userMenuDrawer {
-    bottom: 0;
-    height: calc(100vh - 60px);
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 100%;
-  }
+.userMenuDrawer {
+  bottom: 0;
+  height: calc(100vh - 60px);
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1004;
 }
 
 [data-theme="dark"] {
