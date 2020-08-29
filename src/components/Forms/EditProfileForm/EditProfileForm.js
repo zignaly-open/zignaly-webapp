@@ -330,7 +330,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Typography>
             <CountrySelect defaultValue={provider.team} onChange={handleCountryChange} />
             <Typography variant="h3">
-              <FormattedMessage id="srv.find" />
+              <FormattedMessage id="srv.social" />
             </Typography>
             <SocialSelect
               defaultValue={provider.social}
