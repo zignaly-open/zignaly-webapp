@@ -21,16 +21,15 @@ const HelperLabel = (props) => {
 
   return (
     <Box alignItems="end" className="help" display="flex" flexDirection="row">
-      <FormHelperText>
-        <FormattedMessage id={labelId} />
-      </FormHelperText>
       <Tooltip
         arrow
         enterTouchDelay={50}
         placement="left-end"
         title={intl.formatMessage({ id: descriptionId })}
       >
-        <Help />
+        <FormHelperText>
+          <FormattedMessage id={labelId} />
+        </FormHelperText>
       </Tooltip>
     </Box>
   );
