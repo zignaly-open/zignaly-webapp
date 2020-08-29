@@ -426,7 +426,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} pair Currency pair in separated format, i.e. "BTC/USDT".
  * @property {string} symbol Currency pair in separated format, i.e. "BTC/USDT".
  * @property {string} userId Zignaly user ID.
- * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type Position status category.
+ * @property {('unsold' | 'sold' | 'unopened' | 'open' | 'log' | 'closed' | '')} type Position status category.
  * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
  * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
  * @property {Number} returnFromAllocated Percentage return from copy trader service allocated balance.
