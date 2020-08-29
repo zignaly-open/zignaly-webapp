@@ -233,9 +233,9 @@ const TradingViewEdit = (props) => {
    * @returns {PositionsCollectionType} Position type.
    */
   const getPositionStatusType = () => {
-    if (positionEntity.closed && positionEntity.accounting) {
+    if (positionEntity.closed && positionEntity.type === "closed") {
       return "closed";
-    } else if (positionEntity.closed && !positionEntity.accounting) {
+    } else if (positionEntity.closed && positionEntity.type === "log") {
       return "log";
     }
 
