@@ -72,7 +72,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
 
   const quoteAssets = useQuoteAssets(
     !isCopyTrading || Boolean(selectedExchange),
-    selectedExchange ? selectedExchange.id : "",
+    isCopyTrading && selectedExchange ? selectedExchange.id : "",
   );
   const quotes = Object.keys(quoteAssets);
 
