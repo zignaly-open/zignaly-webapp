@@ -268,7 +268,13 @@ const StrategyPanel = (props) => {
               size="small"
               state={modalVisible}
             >
-              <LeverageForm leverage={parseInt(leverage)} max={125} min={1} setValue={setValue} />
+              <LeverageForm
+                leverage={parseInt(leverage)}
+                max={125}
+                min={1}
+                setValue={setValue}
+                onClose={() => setModalVisible(false)}
+              />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>

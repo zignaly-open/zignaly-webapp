@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Slider, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import "./LeverageForm.scss";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import CustomButton from "../../CustomButton";
 
 /**
  * @typedef {Object} LeverageFormProps
@@ -9,6 +11,7 @@ import "./LeverageForm.scss";
  * @property {number} max Maximum leverage limit.
  * @property {number} leverage Current leverage.
  * @property {function} setValue Hook form setValue callback.
+ * @property {function} onClose Hook form setValue callback.
  */
 
 /**
@@ -18,7 +21,19 @@ import "./LeverageForm.scss";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max, leverage, setValue } = props;
+  const { min, max, leverage, setValue, onClose } = props;
+  const [val, setVal] = useState(leverage);
+  const marks = [{ value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }, { value: 125 }];
+  const { darkStyle } = useStoreSettingsSelector();
+
+  const handleCancel = () => {
+    onClose();
+  };
+
+  const handleConfirm = () => {
+    setValue("leverage", val);
+    onClose();
+  };
 
   /**
    * Leverage slided change handler.
@@ -28,7 +43,7 @@ const LeverageForm = (props) => {
    * @returns {Void} None.
    */
   const handleSliderChange = (event, newValue) => {
-    setValue("leverage", newValue);
+    setVal(newValue);
   };
 
   /**
@@ -44,49 +59,88 @@ const LeverageForm = (props) => {
 
   const protectLimits = () => {
     if (leverage < min) {
-      setValue("leverage", min);
+      setVal(min);
     } else if (leverage > max) {
-      setValue("leverage", max);
+      setVal(max);
     }
   };
 
   const increaseValue = () => {
     const newValue = leverage + 1;
     if (newValue <= max) {
-      setValue("leverage", newValue);
+      setVal(newValue);
     }
   };
 
   const decreaseValue = () => {
     const newValue = leverage - 1;
     if (newValue >= min) {
-      setValue("leverage", newValue);
+      setVal(newValue);
     }
   };
 
   return (
-    <Box className="leverageForm">
+    <Box
+      className="leverageForm"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <Typography className="title" id="range-slider" variant="h3">
         <FormattedMessage id="terminal.leverage.adjust" />
       </Typography>
-      <Box className="inputValue" display="flex" flexDirection="row">
-        <button onClick={() => decreaseValue()} type="button">
+      <Box className="inputValue" display="flex" flexDirection="row" justifyContent="space-between">
+        <button
+          className={darkStyle ? "dark" : "light"}
+          onClick={() => decreaseValue()}
+          type="button"
+        >
           −
         </button>
-        <input onBlur={protectLimits} onChange={handleInputChange} value={leverage} />
-        <button onClick={() => increaseValue()} type="button">
+        <input
+          className={darkStyle ? "dark" : "light"}
+          onBlur={protectLimits}
+          onChange={handleInputChange}
+          value={val}
+        />
+        <button
+          className={darkStyle ? "dark" : "light"}
+          onClick={() => increaseValue()}
+          type="button"
+        >
           +
         </button>
       </Box>
       <Slider
         aria-labelledby="range-slider"
         className="slider"
+        classes={{ mark: "mark", thumb: "thumb", track: "track" }}
+        marks={marks}
         max={max}
         min={min}
         onChange={handleSliderChange}
         step={1}
         value={leverage}
       />
+      {val >= 25 && (
+        <span className="errorText">
+          <FormattedMessage id="terminal.leverage.alert" />
+        </span>
+      )}
+      <Box
+        alignItems="center"
+        className="formActions"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        <CustomButton className="textDefault" onClick={handleCancel}>
+          <FormattedMessage id="terminal.leverage.cancel" />
+        </CustomButton>
+        <CustomButton className="submitButton" onClick={handleConfirm}>
+          <FormattedMessage id="terminal.leverage.confirm" />
+        </CustomButton>
+      </Box>
     </Box>
   );
 };
