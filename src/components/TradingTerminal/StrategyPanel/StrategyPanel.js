@@ -272,8 +272,8 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={125}
                 min={1}
-                setValue={setValue}
                 onClose={() => setModalVisible(false)}
+                setValue={setValue}
               />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
