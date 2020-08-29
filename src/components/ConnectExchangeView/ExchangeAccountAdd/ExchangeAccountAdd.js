@@ -124,7 +124,7 @@ const ExchangeAccountAdd = ({ demo }) => {
         ...(password && { password }),
       }),
       mainAccount: false,
-      isPaperTrading: demo,
+      isPaperTrading: demo ? (_testNet ? !_testNet : true) : false,
       testNet: _testNet,
     };
 
