@@ -94,7 +94,7 @@ const WhoWeAre = ({ provider }) => {
             justifyContent="flex-start"
           >
             <Typography variant="h3">
-              <FormattedMessage id="srv.find" />
+              <FormattedMessage id="srv.social" />
             </Typography>
 
             <Box

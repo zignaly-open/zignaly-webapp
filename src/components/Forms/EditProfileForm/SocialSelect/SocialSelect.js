@@ -21,7 +21,7 @@ import { useIntl } from "react-intl";
  */
 const SocialSelect = ({ onChange, defaultValue, onError }) => {
   const [values, setValues] = useState([socialObject]);
-  const socialList = ["Facebook", "Twitter", "Discord", "Linkedin", "Telegram", "Email"];
+  const socialList = ["Discord", "Twitter", "Facebook", "Linkedin", "Telegram", "Email"];
   const intl = useIntl();
 
   const initializeSocials = () => {
@@ -160,9 +160,10 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
 };
 
 export default SocialSelect;
+
 export const socialObject = {
   id: Math.random(),
-  network: "facebook",
+  network: "discord",
   link: "",
   delete: false,
   errorId: 0,
