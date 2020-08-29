@@ -70,7 +70,15 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     if (position.providerLink) {
       return (
         <Link to={position.providerLink}>
-          <img src={position.providerLogo} title={position.providerName} width="30px" />
+          <img
+            onError={(e) => {
+              // @ts-ignore
+              e.target.src = defaultProviderLogo;
+            }}
+            src={position.providerLogo}
+            title={position.providerName}
+            width="30px"
+          />
         </Link>
       );
     }
