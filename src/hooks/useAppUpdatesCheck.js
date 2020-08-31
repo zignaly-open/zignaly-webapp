@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { showErrorAlert } from "../store/actions/ui";
 import { withPrefix } from "gatsby";
 import { setAppVersion } from "../store/actions/session";
@@ -28,9 +28,9 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  */
 const useAppUpdatesCheck = () => {
   const storeSession = useStoreSessionSelector();
-  const currentVersion = storeSession.appVersion || "";
+  const loadedVersion = useRef(storeSession.appVersion || "");
   const dispatch = useDispatch();
-  const [latestVersion, setLatestVersion] = useState(currentVersion);
+  const [latestVersion, setLatestVersion] = useState(loadedVersion.current);
   const [intervalMills, setIntervalMills] = useState(minToMillisec(1));
   const initConfirmConfig = {
     titleTranslationId: "confirm.appupdate.title",
@@ -47,7 +47,6 @@ const useAppUpdatesCheck = () => {
    */
   const executeRefresh = () => {
     dispatch(setAppVersion(latestVersion));
-    location.reload();
   };
 
   /**
@@ -56,7 +55,7 @@ const useAppUpdatesCheck = () => {
    * @returns {Void} None.
    */
   const postponeRefresh = () => {
-    setIntervalMills(minToMillisec(5));
+    setIntervalMills(minToMillisec(10));
   };
 
   const appUpdatesCheck = () => {
@@ -65,14 +64,14 @@ const useAppUpdatesCheck = () => {
         const version = (await response.json()) || null;
 
         // Version is not tracked yet so just set the latest version.
-        if (!currentVersion) {
+        if (!loadedVersion.current) {
           dispatch(setAppVersion(version));
         }
 
         // App version update available, set new version in store and force refresh.
-        if (currentVersion && version && currentVersion !== version) {
+        if (loadedVersion.current && version && loadedVersion.current !== version) {
+          setLatestVersion(version);
           setConfirmConfig({ ...confirmConfig, visible: true });
-          setLatestVersion(latestVersion);
         }
       });
     } catch (e) {
@@ -80,8 +79,24 @@ const useAppUpdatesCheck = () => {
     }
   };
 
-  console.log("Interval executed at: ", intervalMills);
   useInterval(appUpdatesCheck, intervalMills, false);
+
+  /**
+   * Reload webapp if app version state changed and is different than the loaded version.
+   *
+   * @returns {Void} None.
+   */
+  const reloadApp = () => {
+    if (loadedVersion.current !== storeSession.appVersion) {
+      // Redux persist takes few milliseconds since update is notified and
+      // persisted to local storage so refresh need to wait a bit.
+      setInterval(() => {
+        location.reload();
+      }, 200);
+    }
+  };
+
+  useEffect(reloadApp, [storeSession.appVersion]);
 
   return {
     confirmConfig,
