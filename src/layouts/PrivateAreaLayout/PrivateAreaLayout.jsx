@@ -39,12 +39,13 @@ const PrivateAreaLayout = (props) => {
   };
 
   useInterval(updateSession, minToMillisec(60), true);
-  const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
 
   const loadUserData = () => {
     dispatch(loadAppUserData(storeSession.tradeApi.accessToken));
   };
   useEffect(loadUserData, []);
+
+  const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
 
   return (
     <>

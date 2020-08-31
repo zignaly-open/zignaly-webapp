@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -14,8 +14,6 @@ import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
-import useAppUpdatesCheck from "../../../hooks/useAppUpdatesCheck";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -26,7 +24,6 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { isNewVersionAvailable, executeRefresh } = useAppUpdatesCheck();
   const [forgotModal, showForgotModal] = useState(false);
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loginResponse, setLoginResponse] = useState(null);
@@ -34,24 +31,10 @@ const LoginForm = () => {
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const recaptchaRef = useRef(null);
   const intl = useIntl();
-  const storeSession = useStoreSessionSelector();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
-
-  const afterLogin = () => {
-    // Trigger post login application update when new version is available.
-    if (storeSession.tradeApi.accessToken !== "") {
-      isNewVersionAvailable().then((/** @type {boolean} */ update) => {
-        if (update) {
-          executeRefresh();
-        }
-      });
-    }
-  };
-
-  useEffect(afterLogin, [storeSession.tradeApi.accessToken]);
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {

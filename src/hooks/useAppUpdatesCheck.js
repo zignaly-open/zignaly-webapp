@@ -25,14 +25,16 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  *
  * This hook is used to ask for user app in-memory code refresh when new release is available.
  *
+ * @param {boolean} enableInterval Determine if periodic version update should be enabled.
+ *
  * @returns {AppUpdateCheckHook} App update check hook object.
  */
-const useAppUpdatesCheck = () => {
+const useAppUpdatesCheck = (enableInterval = true) => {
   const storeSession = useStoreSessionSelector();
-  const loadedVersion = useRef(storeSession.appVersion || "");
+  const loadedVersion = storeSession.appVersion || "";
   const dispatch = useDispatch();
-  const [latestVersion, setLatestVersion] = useState(loadedVersion.current);
-  const [intervalMills, setIntervalMills] = useState(minToMillisec(1));
+  const latestVersion = useRef(loadedVersion);
+  const [intervalMills, setIntervalMills] = useState(enableInterval ? minToMillisec(1) : null);
   const initConfirmConfig = {
     titleTranslationId: "confirm.appupdate.title",
     messageTranslationId: "confirm.appupdate.message",
@@ -47,7 +49,13 @@ const useAppUpdatesCheck = () => {
    * @returns {Void} None.
    */
   const executeRefresh = () => {
-    dispatch(setAppVersion(latestVersion));
+    dispatch(setAppVersion(latestVersion.current));
+
+    // Redux persist takes few milliseconds since update is notified and
+    // persisted to local storage so refresh need to wait a bit.
+    setInterval(() => {
+      location.reload();
+    }, 300);
   };
 
   /**
@@ -70,13 +78,13 @@ const useAppUpdatesCheck = () => {
       const version = (await response.json()) || null;
 
       // Version is not tracked yet so just set the latest version.
-      if (!loadedVersion.current) {
+      if (!loadedVersion) {
         dispatch(setAppVersion(version));
       }
 
       // App version update available, set new version in store and force refresh.
-      if (loadedVersion.current && version && loadedVersion.current !== version) {
-        setLatestVersion(version);
+      if (loadedVersion && version && loadedVersion !== version) {
+        latestVersion.current = version;
         return true;
       }
     } catch (e) {
@@ -96,22 +104,18 @@ const useAppUpdatesCheck = () => {
 
   useInterval(appUpdatesCheck, intervalMills, false);
 
-  /**
-   * Reload webapp if app version state changed and is different than the loaded version.
-   *
-   * @returns {Void} None.
-   */
-  const reloadApp = () => {
-    if (loadedVersion.current !== storeSession.appVersion) {
-      // Redux persist takes few milliseconds since update is notified and
-      // persisted to local storage so refresh need to wait a bit.
-      setInterval(() => {
-        location.reload();
-      }, 200);
+  const afterLogin = () => {
+    // Trigger post login application update when new version is available.
+    if (storeSession.sessionData.validUntil && storeSession.tradeApi.accessToken) {
+      isNewVersionAvailable().then((/** @type {boolean} */ update) => {
+        if (update) {
+          executeRefresh();
+        }
+      });
     }
   };
 
-  useEffect(reloadApp, [storeSession.appVersion]);
+  useEffect(afterLogin, [storeSession.sessionData.validUntil]);
 
   return {
     confirmConfig,
