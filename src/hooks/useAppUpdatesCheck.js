@@ -31,7 +31,7 @@ const useAppUpdatesCheck = () => {
   const currentVersion = storeSession.appVersion || "";
   const dispatch = useDispatch();
   const [latestVersion, setLatestVersion] = useState(currentVersion);
-  const [intervalMinutes, setIntervalMinutes] = useState(1);
+  const [intervalMills, setIntervalMills] = useState(minToMillisec(1));
   const initConfirmConfig = {
     titleTranslationId: "confirm.appupdate.title",
     messageTranslationId: "confirm.appupdate.message",
@@ -56,7 +56,7 @@ const useAppUpdatesCheck = () => {
    * @returns {Void} None.
    */
   const postponeRefresh = () => {
-    setIntervalMinutes(10);
+    setIntervalMills(minToMillisec(5));
   };
 
   const appUpdatesCheck = () => {
@@ -80,7 +80,8 @@ const useAppUpdatesCheck = () => {
     }
   };
 
-  useInterval(appUpdatesCheck, minToMillisec(intervalMinutes), true);
+  console.log("Interval executed at: ", intervalMills);
+  useInterval(appUpdatesCheck, intervalMills, false);
 
   return {
     confirmConfig,
