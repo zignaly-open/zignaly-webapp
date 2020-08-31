@@ -83,6 +83,20 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} PositionReduceOrder
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
+ * @property {number} targetId
+ * @property {string} type
+ * @property {number} targetPercentage
+ * @property {number} availablePercentage
+ * @property {boolean} done
+ * @property {boolean} recurring
+ * @property {boolean} persistent
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
@@ -111,6 +125,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|boolean} stopLossPercentage Stop loss percentage.
  * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
  * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
+ * @property {Array<PositionReduceOrder>|boolean} reduceOrders Reduce position size orders.
+ * @property {Array<PositionReduceOrder>|boolean} reduceOrders Reduce position size orders.
  * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
  * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
  * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
@@ -359,6 +375,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
+ * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
  * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
  * @property {Number} realInvestment Invested amount without including the leveraged part.
  * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
@@ -456,6 +473,19 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ * @property {string} errorMSG
+ */
+
+/**
+ * @typedef {Object} ReduceOrder
+ * @property {number} targetId
+ * @property {string} type
+ * @property {number} targetPercentage
+ * @property {number} availablePercentage
+ * @property {boolean} done
+ * @property {boolean} recurring
+ * @property {boolean} persistent
+ * @property {string} orderId
  * @property {string} errorMSG
  */
 
