@@ -5,7 +5,7 @@ import useStoreUIModalSelector from "./useStoreUIModalSelector";
  * Interval hook that can pause execution when a fullscreen modal is open.
  *
  * @param {function} callback Callback function
- * @param {number} delay Delay
+ * @param {number|null} delay Delay
  * @param {boolean} modalPause Flag to pause execution when modal is open.
  * @returns {void}
  */
