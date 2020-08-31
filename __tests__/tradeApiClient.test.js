@@ -411,6 +411,23 @@ describe("Consume tradeApiClient service", () => {
       10,
       "Take profit target price don't match the expected value.",
     );
+
+    const positionActionPayload = {
+      positionId: updatedPositionEntity.positionId,
+      token: accessToken,
+    };
+
+    // Position still entering, we can cancel.
+    if (updatedPositionEntity.status === 1) {
+      const cancelPosition = await client.positionCancel(positionActionPayload);
+      assert.isTrue(cancelPosition.updating, "Cancel position is not flagged as updating.");
+    }
+
+    // Position is filled, we can exit.
+    if (updatedPositionEntity.status === 9) {
+      const exitPosition = await client.positionExit(positionActionPayload);
+      assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
+    }
   }, 25000);
 
   it("should get position by ID", async () => {
