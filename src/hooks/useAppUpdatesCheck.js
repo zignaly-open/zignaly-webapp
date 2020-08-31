@@ -16,6 +16,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  * @property {ConfirmDialogConfig} confirmConfig Confirm dialog configuration.
  * @property {function} setConfirmConfig Callback to change confirm configuration state.
  * @property {function} executeRefresh Callback to execute application refresh.
+ * @property {function} postponeRefresh Callback to postpone application refresh.
  */
 
 /**
@@ -29,6 +30,8 @@ const useAppUpdatesCheck = () => {
   const storeSession = useStoreSessionSelector();
   const currentVersion = storeSession.appVersion || "";
   const dispatch = useDispatch();
+  const [latestVersion, setLatestVersion] = useState(currentVersion);
+  const [intervalMinutes, setIntervalMinutes] = useState(1);
   const initConfirmConfig = {
     titleTranslationId: "confirm.appupdate.title",
     messageTranslationId: "confirm.appupdate.message",
@@ -36,8 +39,24 @@ const useAppUpdatesCheck = () => {
   };
 
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  /**
+   * Store the newest version and perform reload.
+   *
+   * @returns {Void} None.
+   */
   const executeRefresh = () => {
+    dispatch(setAppVersion(latestVersion));
     location.reload();
+  };
+
+  /**
+   * Increase check interval if user decided to postpone the update.
+   *
+   * @returns {Void} None.
+   */
+  const postponeRefresh = () => {
+    setIntervalMinutes(10);
   };
 
   const appUpdatesCheck = () => {
@@ -51,9 +70,9 @@ const useAppUpdatesCheck = () => {
         }
 
         // App version update available, set new version in store and force refresh.
-        if (currentVersion && currentVersion !== version) {
-          dispatch(setAppVersion(version));
+        if (currentVersion && version && currentVersion !== version) {
           setConfirmConfig({ ...confirmConfig, visible: true });
+          setLatestVersion(latestVersion);
         }
       });
     } catch (e) {
@@ -61,11 +80,12 @@ const useAppUpdatesCheck = () => {
     }
   };
 
-  useInterval(appUpdatesCheck, minToMillisec(1), true);
+  useInterval(appUpdatesCheck, minToMillisec(intervalMinutes), true);
 
   return {
     confirmConfig,
     executeRefresh,
+    postponeRefresh,
     setConfirmConfig,
   };
 };

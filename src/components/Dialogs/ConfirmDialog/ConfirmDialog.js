@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { noop } from "lodash";
 
 /**
  * @typedef {Object} ConfirmDialogConfig
@@ -19,7 +20,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} setConfirmConfig Set state callback to control dialog configuration.
  * @property {ConfirmDialogConfig} confirmConfig Current dialog configuration.
- * @property {Function} executeActionCallback Callback to execute to perform the action when is confirmed.
+ * @property {Function} executeActionCallback Callback to execute when the action is confirmed.
+ * @property {Function} [executeCancelCallback] Callback to execute when the action is cancelled.
  */
 
 /**
@@ -29,13 +31,23 @@ import DialogTitle from "@material-ui/core/DialogTitle";
  * @returns {JSX.Element} Confirm dialog element.
  */
 const ConfirmDialog = (props) => {
-  const { setConfirmConfig, confirmConfig, executeActionCallback } = props;
+  const {
+    setConfirmConfig,
+    confirmConfig,
+    executeActionCallback = noop,
+    executeCancelCallback = noop,
+  } = props;
 
   const handleClose = () => {
     setConfirmConfig({
       ...confirmConfig,
       visible: false,
     });
+  };
+
+  const triggerCancelCallback = () => {
+    handleClose();
+    executeCancelCallback();
   };
 
   const triggerActionCallback = () => {
@@ -58,7 +70,7 @@ const ConfirmDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus color="secondary" onClick={handleClose}>
+          <Button autoFocus color="secondary" onClick={triggerCancelCallback}>
             <FormattedMessage id="confirm.cancel" />
           </Button>
           <Button color="secondary" onClick={triggerActionCallback}>
