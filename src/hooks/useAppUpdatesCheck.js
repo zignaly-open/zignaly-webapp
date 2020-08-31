@@ -17,6 +17,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  * @property {function} setConfirmConfig Callback to change confirm configuration state.
  * @property {function} executeRefresh Callback to execute application refresh.
  * @property {function} postponeRefresh Callback to postpone application refresh.
+ * @property {function} isNewVersionAvailable Utility function to check if new webapp version is available.
  */
 
 /**
@@ -58,25 +59,39 @@ const useAppUpdatesCheck = () => {
     setIntervalMills(minToMillisec(10));
   };
 
-  const appUpdatesCheck = () => {
+  /**
+   * Check if most recent version than loaded in memory is available.
+   *
+   * @returns {Promise<boolean>} TRUE when new update is available, FALSE otherwise.
+   */
+  const isNewVersionAvailable = async () => {
     try {
-      fetch(withPrefix("version.json")).then(async (response) => {
-        const version = (await response.json()) || null;
+      const response = await fetch(withPrefix("version.json"));
+      const version = (await response.json()) || null;
 
-        // Version is not tracked yet so just set the latest version.
-        if (!loadedVersion.current) {
-          dispatch(setAppVersion(version));
-        }
+      // Version is not tracked yet so just set the latest version.
+      if (!loadedVersion.current) {
+        dispatch(setAppVersion(version));
+      }
 
-        // App version update available, set new version in store and force refresh.
-        if (loadedVersion.current && version && loadedVersion.current !== version) {
-          setLatestVersion(version);
-          setConfirmConfig({ ...confirmConfig, visible: true });
-        }
-      });
+      // App version update available, set new version in store and force refresh.
+      if (loadedVersion.current && version && loadedVersion.current !== version) {
+        setLatestVersion(version);
+        return true;
+      }
     } catch (e) {
       showErrorAlert(e);
     }
+
+    return false;
+  };
+
+  const appUpdatesCheck = () => {
+    isNewVersionAvailable().then((update) => {
+      if (update) {
+        setConfirmConfig({ ...confirmConfig, visible: true });
+      }
+    });
   };
 
   useInterval(appUpdatesCheck, intervalMills, false);
@@ -103,6 +118,7 @@ const useAppUpdatesCheck = () => {
     executeRefresh,
     postponeRefresh,
     setConfirmConfig,
+    isNewVersionAvailable,
   };
 };
 
