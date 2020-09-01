@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ExpandedRow.scss";
-import { TableRow, TableCell, Checkbox } from "@material-ui/core";
+import { TableRow, TableCell, Checkbox, CircularProgress } from "@material-ui/core";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
 
@@ -119,11 +119,38 @@ const ExpandedRow = ({
     return false;
   };
 
+  /**
+   *
+   * @param {Array<TransformedObject>} rowData Position Entity.
+   * @returns {Boolean} Whether input is checked or not.
+   */
+  const updating = (rowData) => {
+    const obj = rowData.find((item) => item.id === "positionId");
+    const subPositions = values[index].subPositions;
+    const position = subPositions.find((item) => item.positionId === obj.data.toString());
+    if (position.updating) {
+      return true;
+    }
+    return false;
+  };
+
+  const showCheckAllButton = () => {
+    const subPositions = values[index].subPositions;
+    if (subPositions.length > 1) {
+      const updatingPositions = subPositions.filter((item) => item.updating);
+      if (subPositions.length === updatingPositions.length) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
       {list.map((row, i) => (
         <TableRow className="expandedRows" key={i}>
-          {i === 0 ? (
+          {i === 0 && showCheckAllButton() ? (
             <TableCell className="checkboxCell">
               <Checkbox
                 checked={checkedAll}
@@ -134,13 +161,19 @@ const ExpandedRow = ({
           ) : (
             <TableCell>&nbsp;</TableCell>
           )}
-          <TableCell className="checkboxCell">
-            <Checkbox
-              checked={checkedStatus(row)}
-              className="checkbox"
-              onChange={(e) => handleChange(e, row)}
-            />
-          </TableCell>
+          {!updating(row) ? (
+            <TableCell className="checkboxCell">
+              <Checkbox
+                checked={checkedStatus(row)}
+                className="checkbox"
+                onChange={(e) => handleChange(e, row)}
+              />
+            </TableCell>
+          ) : (
+            <TableCell className="checkboxCell">
+              <CircularProgress color="primary" size={30} />
+            </TableCell>
+          )}
           {row.map(
             /* @ts-ignore */
             (cell, i2) =>
