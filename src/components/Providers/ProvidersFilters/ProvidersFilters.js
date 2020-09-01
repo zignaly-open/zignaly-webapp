@@ -19,7 +19,6 @@ import { Box, Checkbox } from "@material-ui/core";
  * @property {Array<OptionType>} exchanges Exchanges options.
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {Array<OptionType>} quotes Quotes options.
- * @property {Array<OptionType>} fromUserOptions Options array for user owned services select.
  * @property {boolean} open Flag to indicates if the filters bar is open.
  * @property {boolean} copyTradersOnly
  */
@@ -37,7 +36,6 @@ const ProvidersFilters = ({
   exchangeTypes,
   clearFilters,
   open,
-  fromUserOptions,
   copyTradersOnly,
   filters,
   setFilters,
