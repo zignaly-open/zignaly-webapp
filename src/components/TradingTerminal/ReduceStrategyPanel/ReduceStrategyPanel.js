@@ -3,23 +3,16 @@ import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import {
   OutlinedInput,
   FormHelperText,
-  FormControl,
-  Switch,
   Typography,
   Checkbox,
   FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
-import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
-import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
-import { formatPrice } from "../../../utils/formatters";
-import { CircularProgress } from "@material-ui/core";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import { isValidIntOrFloat } from "../../../utils/validators";
 
@@ -35,7 +28,7 @@ import { isValidIntOrFloat } from "../../../utils/validators";
  */
 
 /**
- * Manual trading increase strategy panel component.
+ * Manual trading reduce strategy panel component.
  *
  * @param {StrategyPanelProps} props Component props.
  * @returns {JSX.Element} Strategy panel element.
@@ -46,16 +39,6 @@ const ReduceStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch, getValues, setError, setValue } = useFormContext();
   const { formatMessage } = useIntl();
-  const { selectedExchange } = useStoreSettingsSelector();
-  const {
-    positionSizeChange,
-    positionSizePercentageChange,
-    priceChange,
-    realInvestmentChange,
-    unitsChange,
-    validatePositionSize,
-    validatePositionSizePercentage,
-  } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
@@ -71,23 +54,10 @@ const ReduceStrategyPanel = (props) => {
     setExpand(targetElement.checked);
   };
 
-  const validatePercentage = (percentage, name) => {
-    if (!isValidIntOrFloat(percentage) || percentage <= 0 || percentage > 100) {
-      setError(name, {
-        type: "manual",
-        message: formatMessage({ id: "terminal.reducestrategy.percentage.limit" }),
-      });
-
-      return false;
-    }
-    return true;
-  };
-
   /**
-   * Validate result of changed target units event.
+   * Validate target percentage and update price.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @returns {boolean} true if validation passed, false otherwise.
+   * @returns {void}
    */
   const reduceTargetPercentageChange = () => {
     const entryPrice = getEntryPrice();
@@ -97,27 +67,44 @@ const ReduceStrategyPanel = (props) => {
     if (!isValidIntOrFloat(reduceTargetPercentage)) {
       setError("reduceTargetPercentage", {
         type: "manual",
+        message: formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
+      });
+
+      return;
+    }
+
+    const targetPrice = (reduceTargetPercentage / 100) * entryPrice;
+    setReduceTargetPrice(targetPrice.toString());
+  };
+
+  /**
+   * Validate units percentage and update units quantity.
+   *
+   * @returns {void}
+   */
+  const reduceAvailablePercentageChange = () => {
+    const units = getEntrySize();
+    const draftPosition = getValues();
+    const reduceAvailablePercentage = parseFloat(draftPosition.reduceAvailablePercentage);
+
+    if (
+      !isValidIntOrFloat(reduceAvailablePercentage) ||
+      reduceAvailablePercentage <= 0 ||
+      reduceAvailablePercentage > 100
+    ) {
+      setError("reduceAvailablePercentage", {
+        type: "manual",
         message: formatMessage({ id: "terminal.reducestrategy.percentage.limit" }),
       });
 
       return;
     }
 
-    const valid = validatePercentage(reduceTargetPercentage, "reduceTargetPercentage");
-    const targetPrice = valid ? (reduceTargetPercentage / 100) * entryPrice : "";
-    setReduceTargetPrice(targetPrice.toString());
-  };
-
-  const reduceAvailablePercentageChange = () => {
-    const units = getEntrySize();
-    const draftPosition = getValues();
-    const reduceAvailablePercentage = parseFloat(draftPosition.reduceAvailablePercentage);
-
-    const valid = validatePercentage(reduceAvailablePercentage, "reduceAvailablePercentage");
-    const targetUnits = valid ? (reduceAvailablePercentage / 100) * units : "";
+    const targetUnits = (reduceAvailablePercentage / 100) * units;
     setReduceTargetUnits(targetUnits.toString());
   };
 
+  // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
 
   const orderTypeOptions = [
@@ -133,20 +120,15 @@ const ReduceStrategyPanel = (props) => {
       val: "limit",
     });
   }
-
-  // Watched inputs that affect components.
-  const entryStrategy = watch("entryStrategy");
-  const lastPrice = watch("lastPrice");
-
-  const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
+  const isClosed = positionEntity.closed;
+  const isCopy = positionEntity.isCopyTrading;
+  const isCopyTrader = positionEntity.isCopyTrader;
+  const isUpdating = positionEntity.updating;
+  const isOpening = positionEntity.status === 1;
   const isDisabled = (isCopy && !isCopyTrader) || isClosed;
   const isReadOnly = isUpdating || isOpening;
 
-  // Don't render when not granted to increase position.
+  // Don't render when not granted to reduce position.
   if (isDisabled) {
     return null;
   }
@@ -158,7 +140,6 @@ const ReduceStrategyPanel = (props) => {
         <Typography variant="h5">
           <FormattedMessage id="terminal.reducestrategy" />
         </Typography>
-        {/* <input name="lastPrice" ref={register} type="hidden" /> */}
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
@@ -195,11 +176,11 @@ const ReduceStrategyPanel = (props) => {
           )}
 
           <Box
+            alignItems="flex-start"
             className="targetUnits"
             display="flex"
             flexDirection="row"
             flexWrap="wrap"
-            alignItems="flex-start"
           >
             <HelperLabel
               descriptionId="terminal.reducestrategy.availablePercentage.help"
@@ -208,14 +189,14 @@ const ReduceStrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
                 disabled={isReadOnly}
+                inputRef={register}
                 name="reduceAvailablePercentage"
                 onChange={reduceAvailablePercentageChange}
               />
               <div className="currencyBox">%</div>
             </Box>
-            <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Box alignItems="flex-start" display="flex" flexDirection="column">
               <Box display="flex" flexDirection="row">
                 <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetUnits} />
                 <div className="currencyBox">{symbolData.base}</div>
@@ -231,6 +212,7 @@ const ReduceStrategyPanel = (props) => {
           </Box>
 
           <FormControlLabel
+            className="customCheckbox"
             control={
               <Controller
                 control={control}
@@ -253,9 +235,9 @@ const ReduceStrategyPanel = (props) => {
                 labelId="terminal.reducestrategy.recurring"
               />
             }
-            className="customCheckbox"
           />
           <FormControlLabel
+            className="customCheckbox"
             control={
               <Controller
                 control={control}
@@ -272,7 +254,6 @@ const ReduceStrategyPanel = (props) => {
                 labelId="terminal.reducestrategy.persistent"
               />
             }
-            className="customCheckbox"
           />
         </Box>
       )}

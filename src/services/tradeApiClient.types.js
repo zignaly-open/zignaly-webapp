@@ -1369,6 +1369,7 @@ function createEmptyPositionEntity() {
     unrealizedProfitLossesPercentage: 0,
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
+    reduceOrders: [],
   };
 }
 

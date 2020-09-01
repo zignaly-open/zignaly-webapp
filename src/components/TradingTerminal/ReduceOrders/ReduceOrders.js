@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { lt, gt, isEqual, keys, size, values } from "lodash";
+import { size, values } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import {
   Button,
@@ -9,65 +9,86 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  FormHelperText,
+  Tooltip,
 } from "@material-ui/core";
-import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import { RemoveCircle, Help } from "@material-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
-import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
-import useTargetGroup from "../../../hooks/useTargetGroup";
-import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import { calculateDcaPrice } from "../../../utils/calculations";
-import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
-import usePositionEntry from "../../../hooks/usePositionEntry";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import "./ReduceOrders.scss";
+import { colors } from "../../../services/theme";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ReduceOrder} ReduceOrder
  */
 
 /**
- * @typedef {Object} DCAPanelProps
- * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @typedef {Object} ReduceOrderStatusProps
+ * @property {string} labelId Status label translation text ID.
+ * @property {ReduceOrder} order Position reduce order.
  */
 
 /**
- * Manual trading take profit panel component.
+ * DCA status label with detailed description tooltip.
  *
- * @param {DCAPanelProps} props Component props.
- * @returns {JSX.Element} Take profit panel element.
+ * @param {ReduceOrderStatusProps} props Component props.
+ * @returns {JSX.Element} Helper label with description in tooltip element.
+ */
+const ReduceOrderStatus = (props) => {
+  const { order, labelId } = props;
+  const { formatMessage } = useIntl();
+  let iconColor = colors.darkGrey;
+  let description = formatMessage({ id: "terminal.status.pending" });
+
+  if (!order.done && order.orderId) {
+    description = formatMessage({ id: "terminal.status.placed" }, { orderId: order.orderId });
+    iconColor = colors.blue;
+  } else if (order.done && order.orderId) {
+    description = formatMessage({ id: "terminal.status.done" });
+    iconColor = colors.green;
+  } else if (order.errorMSG) {
+    description = order.errorMSG;
+    iconColor = colors.red;
+  }
+
+  return (
+    <Box alignItems="center" className="targetStatus" display="flex" justifyContent="flex-end">
+      <FormHelperText>
+        <FormattedMessage id={labelId} />
+      </FormHelperText>
+      <Tooltip arrow enterTouchDelay={50} placement="left-end" title={description}>
+        <Help style={{ fill: iconColor }} />
+      </Tooltip>
+    </Box>
+  );
+};
+
+/**
+ * @typedef {Object} ReduceOrdersProps
+ * @property {PositionEntity} positionEntity Position entity for position edit trading view.
+ */
+
+/**
+ * Manual trading reduce orders panel component.
+ *
+ * @param {ReduceOrdersProps} props Component props.
+ * @returns {JSX.Element} Reduce Orders panel element.
  */
 const ReduceOrders = (props) => {
-  const { positionEntity, symbolData } = props;
-  const {
-    clearErrors,
-    errors,
-    register,
-    setError,
-    setValue,
-    getValues,
-    watch,
-    control,
-    reset,
-  } = useFormContext();
-  //   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
+  const { positionEntity } = props;
+  const { setValue, watch, control } = useFormContext();
   const reduceOrders = values(positionEntity.reduceOrders);
   const { expanded, expandClass, expandableControl } = useExpandable(size(reduceOrders) > 0);
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  //   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
   const isUpdating = positionEntity ? positionEntity.updating : false;
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
-  //   const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
-  const entryType = positionEntity ? positionEntity.side : watch("entryType");
   /**
-   * @type {array<number>}
+   * @type {Array<number>}
    */
   const removeReduceOrder = watch("removeReduceOrder", []);
   const isRecurringPersistent = Boolean(
@@ -85,12 +106,21 @@ const ReduceOrders = (props) => {
 
   useEffect(removeAllReduceOrders, [expanded]);
 
+  /**
+   * Remove reduce order
+   * @param {number} targetId targetId
+   * @returns {void}
+   */
   const handleRemoveReduceOrder = (targetId) => {
-    // const removeReduceOrder = [...getValues("removeReduceOrder")];
     const newRemoveReduceOrder = removeReduceOrder.concat(targetId);
     setValue("removeReduceOrder", newRemoveReduceOrder);
   };
 
+  /**
+   * Render a reduce order
+   * @param {ReduceOrder} order Reduce order
+   * @returns {JSX.Element} JSX
+   */
   const displayReduceOrder = (order) => {
     if (removeReduceOrder.find((i) => i === order.targetId)) return null;
 
@@ -102,18 +132,15 @@ const ReduceOrders = (props) => {
             descriptionId="terminal.reducestrategy.targetpercentage.help"
             labelId="terminal.target"
           />
-          <DCATargetStatus dcaTarget={order} labelId="terminal.status" />
+          <ReduceOrderStatus labelId="terminal.status" order={order} />
           <Box alignItems="center" display="flex">
             <OutlinedInput
               className="outlineInput"
               disabled={true}
               value={order.targetPercentage}
-              // name={composeTargetPropertyName("targetPricePercentage", order.targetId)}
-              // onChange={targetPricePercentageChange}
             />
             <div className="currencyBox">%</div>
           </Box>
-          {/* {displayTargetFieldErrors("targetPricePercentage", order.targetId)} */}
           <HelperLabel
             descriptionId="terminal.reducestrategy.availablePercentage.help"
             labelId="terminal.unitstoexit"
@@ -123,18 +150,14 @@ const ReduceOrders = (props) => {
               className="outlineInput"
               disabled={true}
               value={order.availablePercentage}
-              // name={composeTargetPropertyName("rebuyPercentage", order.targetId)}
-              // onChange={rebuyPercentageChange}
             />
             <div className="currencyBox">%</div>
           </Box>
         </Box>
-        {/* {displayTargetFieldErrors("rebuyPercentage", order.targetId)} */}
         {showRemove && (
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             <Button
               className="removeTarget"
-              //   data-target-id={index}
               onClick={() => handleRemoveReduceOrder(order.targetId)}
             >
               <RemoveCircle />
@@ -168,6 +191,7 @@ const ReduceOrders = (props) => {
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {isRecurringPersistent && (
               <FormControlLabel
+                className="customCheckbox"
                 control={
                   <Controller
                     control={control}
@@ -178,28 +202,10 @@ const ReduceOrders = (props) => {
                     )}
                   />
                 }
-                label={
-                  //   <FormHelperText>
-                  <FormattedMessage id="terminal.reducestrategy.persistentrecurring" />
-                  //   </FormHelperText>
-                }
-                className="customCheckbox"
+                label={<FormattedMessage id="terminal.reducestrategy.persistentrecurring" />}
               />
             )}
-            {/* {!disableRemoveAction && (
-              <Button className="removeTarget" onClick={handleTargetRemove}>
-                <RemoveCircle />
-                <FormattedMessage id="terminal.target.remove" />
-              </Button>
-            )} */}
-            {/* {!isReadOnly && (
-              <Button className="addTarget" onClick={handleTargetAdd}>
-                <AddCircle />
-                <FormattedMessage id="terminal.target.add" />
-              </Button>
-            )} */}
           </Box>
-          {/* {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))} */}
         </Box>
       )}
     </Box>

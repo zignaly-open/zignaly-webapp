@@ -34,7 +34,7 @@ const SidebarEditPanels = (props) => {
       <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      <ReduceOrders positionEntity={positionEntity} symbolData={currentSymbolData} />
+      <ReduceOrders positionEntity={positionEntity} />
       <ReduceStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
     </>
   );
