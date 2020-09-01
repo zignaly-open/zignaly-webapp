@@ -5,7 +5,15 @@ import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "@material-ui/core";
+import {
+  OutlinedInput,
+  FormHelperText,
+  FormControl,
+  Switch,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
@@ -36,7 +44,7 @@ const ReduceStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch, getValues, setError } = useFormContext();
+  const { control, errors, register, watch, getValues, setError, setValue } = useFormContext();
   const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const {
@@ -64,7 +72,7 @@ const ReduceStrategyPanel = (props) => {
   };
 
   const validatePercentage = (percentage, name) => {
-    if (!isValidIntOrFloat(percentage) || percentage < 0 || percentage > 100) {
+    if (!isValidIntOrFloat(percentage) || percentage <= 0 || percentage > 100) {
       setError(name, {
         type: "manual",
         message: formatMessage({ id: "terminal.reducestrategy.percentage.limit" }),
@@ -86,6 +94,15 @@ const ReduceStrategyPanel = (props) => {
     const draftPosition = getValues();
     const reduceTargetPercentage = parseFloat(draftPosition.reduceTargetPercentage);
 
+    if (!isValidIntOrFloat(reduceTargetPercentage)) {
+      setError("reduceTargetPercentage", {
+        type: "manual",
+        message: formatMessage({ id: "terminal.reducestrategy.percentage.limit" }),
+      });
+
+      return;
+    }
+
     const valid = validatePercentage(reduceTargetPercentage, "reduceTargetPercentage");
     const targetPrice = valid ? (reduceTargetPercentage / 100) * entryPrice : "";
     setReduceTargetPrice(targetPrice.toString());
@@ -101,10 +118,21 @@ const ReduceStrategyPanel = (props) => {
     setReduceTargetUnits(targetUnits.toString());
   };
 
+  const reduceRecurring = watch("reduceRecurring");
+
   const orderTypeOptions = [
-    { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
-    { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    {
+      label: formatMessage({ id: "terminal.strategy.market" }),
+      val: "market",
+    },
   ];
+
+  if (!reduceRecurring) {
+    orderTypeOptions.push({
+      label: formatMessage({ id: "terminal.strategy.limit" }),
+      val: "limit",
+    });
+  }
 
   // Watched inputs that affect components.
   const entryStrategy = watch("entryStrategy");
@@ -142,66 +170,110 @@ const ReduceStrategyPanel = (props) => {
             name="reduceOrderType"
           />
 
-          <FormControl>
-            <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-              <HelperLabel
-                descriptionId="terminal.reducestrategy.targetpercentage.help"
-                labelId="terminal.target"
+          <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+            <HelperLabel
+              descriptionId="terminal.reducestrategy.targetpercentage.help"
+              labelId="terminal.target"
+            />
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                disabled={isReadOnly}
+                inputRef={register}
+                name="reduceTargetPercentage"
+                onChange={reduceTargetPercentageChange}
               />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={isReadOnly}
-                  inputRef={register}
-                  name="reduceTargetPercentage"
-                  onChange={reduceTargetPercentageChange}
-                />
-                <div className="currencyBox">%</div>
-              </Box>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
-                <div className="currencyBox">{symbolData.quote}</div>
-              </Box>
+              <div className="currencyBox">%</div>
             </Box>
-            {errors.reduceTargetPercentage && (
-              <span className="errorText">{errors.reduceTargetPercentage.message}</span>
-            )}
-          </FormControl>
+            <Box alignItems="center" display="flex">
+              <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
+              <div className="currencyBox">{symbolData.quote}</div>
+            </Box>
+          </Box>
+          {errors.reduceTargetPercentage && (
+            <span className="errorText">{errors.reduceTargetPercentage.message}</span>
+          )}
 
-          <FormControl>
-            <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
-              <HelperLabel
-                descriptionId="terminal.reducestrategy.availablePercentage.help"
-                labelId="terminal.unitstoexit"
+          <Box
+            className="targetUnits"
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            alignItems="flex-start"
+          >
+            <HelperLabel
+              descriptionId="terminal.reducestrategy.availablePercentage.help"
+              labelId="terminal.unitstoexit"
+            />
+            <Box alignItems="center" display="flex">
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register}
+                disabled={isReadOnly}
+                name="reduceAvailablePercentage"
+                onChange={reduceAvailablePercentageChange}
               />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  inputRef={register}
-                  disabled={isReadOnly}
-                  name="reduceAvailablePercentage"
-                  onChange={reduceAvailablePercentageChange}
-                />
-                <div className="currencyBox">%</div>
-              </Box>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={true}
-                  inputRef={register}
-                  value={reduceTargetUnits}
-                />
+              <div className="currencyBox">%</div>
+            </Box>
+            <Box display="flex" flexDirection="column" alignItems="flex-start">
+              <Box display="flex" flexDirection="row">
+                <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetUnits} />
                 <div className="currencyBox">{symbolData.base}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
                 <span className="balance">{getEntrySize()}</span>
               </FormHelperText>
-              {errors.reduceAvailablePercentage && (
-                <span className="errorText">{errors.reduceAvailablePercentage.message}</span>
-              )}
             </Box>
-          </FormControl>
+            {errors.reduceAvailablePercentage && (
+              <span className="errorText">{errors.reduceAvailablePercentage.message}</span>
+            )}
+          </Box>
+
+          <FormControlLabel
+            control={
+              <Controller
+                control={control}
+                defaultValue={false}
+                name="reduceRecurring"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    onChange={(e) => {
+                      setValue("reduceOrderType", "market");
+                      onChange(e.target.checked);
+                    }}
+                  />
+                )}
+              />
+            }
+            label={
+              <HelperLabel
+                descriptionId="terminal.reducestrategy.recurring.help"
+                labelId="terminal.reducestrategy.recurring"
+              />
+            }
+            className="customCheckbox"
+          />
+          <FormControlLabel
+            control={
+              <Controller
+                control={control}
+                defaultValue={false}
+                name="reducePersistent"
+                render={({ onChange, value }) => (
+                  <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
+                )}
+              />
+            }
+            label={
+              <HelperLabel
+                descriptionId="terminal.reducestrategy.persistent.help"
+                labelId="terminal.reducestrategy.persistent"
+              />
+            }
+            className="customCheckbox"
+          />
         </Box>
       )}
     </Box>

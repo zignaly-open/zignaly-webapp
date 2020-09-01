@@ -125,13 +125,19 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|boolean} stopLossPercentage Stop loss percentage.
  * @property {Array<PositionProfitTarget>|boolean} takeProfitTargets Take profit targets.
  * @property {Array<PositionDCATarget>|boolean} reBuyTargets Rebuy / DCA targets.
- * @property {Array<PositionReduceOrder>|boolean} reduceOrders Reduce position size orders.
- * @property {Array<PositionReduceOrder>|boolean} reduceOrders Reduce position size orders.
  * @property {number|boolean} trailingStopTriggerPercentage Percentage that when crossed activate the trailing stop.
  * @property {number|boolean} trailingStopPercentage Percentage distance from current price that will keep moving trailing stop price following the trend.
  * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
  * @property {string} providerName Provider name when is a position published for copy trader service.
  * @property {string} internalExchangeId Exchange connection ID.
+ * @property {number} [reduceTargetPercentage] The reduce order target in percentage from the average entry price, or from the last entry price if recurring is selected.
+ * @property {number} [reduceAvailablePercentage] The amount to be sold from the position available amount for this reduce order target.
+ * @property {string} [reduceOrderType] The reduce order type that will be send to the exchange, options: market|limit
+ * @property {boolean} [reduceRecurring] If checked, each time a new DCA is filled, a reduce order will be placed in the exchange.
+ * @property {boolean} [reducePersistent] If checked, it won't close the position if there are pending DCAs.
+ * @property {boolean} [removeReduceRecurringPersistent] Remove the flag recurring and persistent.
+ * @property {Array<number>} [removeReduceOrder] An array with the list of targets ids for removing their reduce orders
+ * @property {Array<number>} [removeAllReduceOrders] Remove all pending reduce orders.
  */
 
 /**
