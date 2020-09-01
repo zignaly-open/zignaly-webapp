@@ -1,7 +1,8 @@
 import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import { useIntl } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
+import { Box, Checkbox } from "@material-ui/core";
 
 /**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
@@ -54,9 +55,6 @@ const ProvidersFilters = ({
     >
       {copyTradersOnly && (
         <CustomSelect
-          label={intl.formatMessage({
-            id: "col.coin",
-          })}
           onChange={(/** @type {OptionType} */ val) => setFilters({ quote: val.val })}
           options={quotes}
           search={true}
@@ -66,9 +64,6 @@ const ProvidersFilters = ({
       )}
       {copyTradersOnly && (
         <CustomSelect
-          label={intl.formatMessage({
-            id: "accounts.exchange",
-          })}
           onChange={(/** @type {string} */ v) => setFilters({ exchange: v })}
           options={exchanges}
           // @ts-ignore
@@ -77,24 +72,32 @@ const ProvidersFilters = ({
       )}
       {copyTradersOnly && (
         <CustomSelect
-          label={intl.formatMessage({
-            id: "srv.edit.exchangetype",
-          })}
           onChange={(/** @type {string} */ v) => setFilters({ exchangeType: v })}
           options={exchangeTypes}
           // @ts-ignore
           value={filters.exchangeType}
         />
       )}
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "srv.filters.userowned",
-        })}
-        onChange={(/** @type {string} */ v) => setFilters({ fromUser: v })}
-        options={fromUserOptions}
-        // @ts-ignore
-        value={filters.fromUser}
-      />
+      <Box
+        alignItems="center"
+        className="checkboxFilter"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
+        <Checkbox
+          // @ts-ignore
+          checked={filters.fromUser === "userOwned"}
+          onChange={(e) =>
+            e.target.checked
+              ? setFilters({ fromUser: "userOwned" })
+              : setFilters({ fromUser: "ALL" })
+          }
+        />
+        <span>
+          <FormattedMessage id="srv.filters.userowned" />
+        </span>
+      </Box>
     </CustomFilters>
   );
 };
