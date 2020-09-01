@@ -163,7 +163,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                           message: intl.formatMessage({ id: "form.error.name.length" }),
                         },
                         maxLength: {
-                          value: 90,
+                          value: 50,
                           message: intl.formatMessage({ id: "form.error.name.length" }),
                         },
                       })}
@@ -171,7 +171,12 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     />
                     {errors.name && <span className="errorText">{errors.name.message}</span>}
                   </Box>
-                  <Box className="boxWrapper" display="flex" flexDirection="row">
+                  <Box
+                    alignItems="flex-start"
+                    className="boxWrapper"
+                    display="flex"
+                    flexDirection="row"
+                  >
                     {isCopyTrading && (
                       <Box className="inputBox typeBox" display="flex" flex={1} pr={1}>
                         <Controller
@@ -215,7 +220,12 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     </Box>
                   </Box>
                   {isCopyTrading ? (
-                    <Box className="boxWrapper" display="flex" flexDirection="row">
+                    <Box
+                      alignItems="flex-start"
+                      className="boxWrapper"
+                      display="flex"
+                      flexDirection="row"
+                    >
                       <Box
                         className="inputBox minBalanceBox"
                         display="flex"
@@ -224,7 +234,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         mr={1}
                       >
                         <label className="customLabel">
-                          <Typography noWrap>
+                          <Typography className="callout2 selectLabel" noWrap>
                             <FormattedMessage id="srv.edit.minbalance" />
                           </Typography>
                         </label>
