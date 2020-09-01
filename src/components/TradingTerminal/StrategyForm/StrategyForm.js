@@ -370,6 +370,13 @@ const StrategyForm = (props) => {
         providerName: "Manual Trading",
         internalExchangeId: positionEntity.internalExchangeId,
         positionId: positionEntity.positionId,
+        reduceTargetPercentage: draftPosition.reduceTargetPercentage,
+        reduceAvailablePercentage: draftPosition.reduceAvailablePercentage,
+        reduceOrderType: draftPosition.reduceOrderType,
+        reduceRecurring: draftPosition.reduceRecurring,
+        reducePersistent: draftPosition.reducePersistent,
+        removeReduceRecurringPersistent: draftPosition.removeReduceRecurringPersistent,
+        removeReduceOrder: draftPosition.removeReduceOrder,
       },
       positionStrategy,
     );
