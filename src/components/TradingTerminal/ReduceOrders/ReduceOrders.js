@@ -76,67 +76,14 @@ const ReduceOrders = (props) => {
     ),
   );
 
-  /**
-   * Display DCA target group.
-   *
-   * @param {string} targetId Target index.
-   * @returns {JSX.Element} Target element.
-   */
-  //   const displayDcaTarget = (targetId) => {
-  //     // Not disabled and DCA within increment index range.
-  //     const index = parseInt(targetId);
-  //     const showRemove =
-  //       !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
-  //       index >= 1000;
-  //     return (
-  //       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
-  //         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-  //           <HelperLabel descriptionId="terminal.dca.help" labelId="terminal.target" />
-  //           <DCATargetStatus
-  //             dcaTarget={rebuyTargets[Number(targetId)] || null}
-  //             labelId="terminal.status"
-  //           />
-  //           <Box alignItems="center" display="flex">
-  //             <OutlinedInput
-  //               className="outlineInput"
-  //               disabled={
-  //                 fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-  //               }
-  //               inputRef={register}
-  //               name={composeTargetPropertyName("targetPricePercentage", targetId)}
-  //               onChange={targetPricePercentageChange}
-  //             />
-  //             <div className="currencyBox">%</div>
-  //           </Box>
-  //           {displayTargetFieldErrors("targetPricePercentage", targetId)}
-  //           <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
-  //           <Box alignItems="center" display="flex">
-  //             <OutlinedInput
-  //               className="outlineInput"
-  //               disabled={fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]}
-  //               inputRef={register}
-  //               name={composeTargetPropertyName("rebuyPercentage", targetId)}
-  //               onChange={rebuyPercentageChange}
-  //             />
-  //             <div className="currencyBox">%</div>
-  //           </Box>
-  //         </Box>
-  //         {displayTargetFieldErrors("rebuyPercentage", targetId)}
-  //         {showRemove && (
-  //           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
-  //             <Button
-  //               className="removeTarget"
-  //               data-target-id={index}
-  //               onClick={handleDcaIncreaseRemove}
-  //             >
-  //               <RemoveCircle />
-  //               <FormattedMessage id="terminal.target.remove" />
-  //             </Button>
-  //           </Box>
-  //         )}
-  //       </Box>
-  //     );
-  //   };
+  const removeAllReduceOrders = () => {
+    if (!expanded) {
+      const ids = reduceOrders.map((o) => o.targetId);
+      setValue("removeReduceOrder", ids);
+    }
+  };
+
+  useEffect(removeAllReduceOrders, [expanded]);
 
   const handleRemoveReduceOrder = (targetId) => {
     // const removeReduceOrder = [...getValues("removeReduceOrder")];
