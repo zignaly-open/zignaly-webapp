@@ -53,6 +53,10 @@
     background: transparent;
     color: var(--purple);
     min-width: 120px;
+
+    .loader {
+      color: var(--purple);
+    }
   }
 
   &.bgPurple {
