@@ -554,6 +554,10 @@ alert.forgotpassword.step1.body: "CH-An email has been sent to your provided ema
 alert.forgotpassword.step3.body: "CH-Your password has been reset. You can now login with new password!"
 alert.payment.title: "CH-Payment Completed"
 alert.payment.body: "CH-Your have payment request is completed!"
+alert.management.cancelall.title: "CH-Cancelled Successfully!"
+alert.management.cancelall.body: "CH-All entries were successfully cancelled."
+alert.management.exitall.title: "CH-Exited Successfully!"
+alert.management.exitall.body: "CH-All entries were successfully exited."
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "CH-Your API-Key from the provider"

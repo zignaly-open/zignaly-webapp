@@ -210,7 +210,9 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
     if (checked) {
       let dataList = [...selectedRows];
       subPositions.forEach((position) => {
-        dataList.push(position.positionId);
+        if (!position.updating) {
+          dataList.push(position.positionId);
+        }
       });
       dataList = [...new Set(dataList)];
       setSelectedRows(dataList);

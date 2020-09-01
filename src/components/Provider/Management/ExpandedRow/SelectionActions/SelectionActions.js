@@ -67,7 +67,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
             showSuccessAlert("alert.management.cancelall.title", "alert.management.cancelall.body"),
           );
         }
-        if (action === "abort") {
+        if (action === "exit") {
           dispatch(
             showSuccessAlert("alert.management.exitall.title", "alert.management.exitall.body"),
           );
