@@ -4,6 +4,15 @@
       flex: 0 0 100%;
     }
 
+    .targetGroup {
+      border-top: 1px dotted $darkestGrey;
+      padding-bottom: 20px;
+
+      &:first-child {
+        border-top: 0;
+      }
+    }
+
     .targetPrice,
     .targetUnits {
       justify-content: space-between;
