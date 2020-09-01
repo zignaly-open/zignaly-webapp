@@ -45,7 +45,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
           token: storeSession.tradeApi.accessToken,
           positionId: item,
         };
-        let promise = tradeApi.positionClose(payload);
+        let promise = tradeApi.positionCancel(payload);
         promiseArray.push(promise);
       });
     }
