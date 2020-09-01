@@ -83,6 +83,20 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} PositionReduceOrder
+ * @property {number} targetId
+ * @property {number} priceTargetPercentage
+ * @property {number} amountPercentage
+ * @property {number} targetId
+ * @property {string} type
+ * @property {number} targetPercentage
+ * @property {number} availablePercentage
+ * @property {boolean} done
+ * @property {boolean} recurring
+ * @property {boolean} persistent
+ */
+
+/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
@@ -116,6 +130,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
  * @property {string} providerName Provider name when is a position published for copy trader service.
  * @property {string} internalExchangeId Exchange connection ID.
+ * @property {number} [reduceTargetPercentage] The reduce order target in percentage from the average entry price, or from the last entry price if recurring is selected.
+ * @property {number} [reduceAvailablePercentage] The amount to be sold from the position available amount for this reduce order target.
+ * @property {string} [reduceOrderType] The reduce order type that will be send to the exchange, options: market|limit
+ * @property {boolean} [reduceRecurring] If checked, each time a new DCA is filled, a reduce order will be placed in the exchange.
+ * @property {boolean} [reducePersistent] If checked, it won't close the position if there are pending DCAs.
+ * @property {boolean} [removeReduceRecurringPersistent] Remove the flag recurring and persistent.
+ * @property {Array<number>} [removeReduceOrder] An array with the list of targets ids for removing their reduce orders
+ * @property {Array<number>} [removeAllReduceOrders] Remove all pending reduce orders.
  */
 
 /**
@@ -359,6 +381,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
+ * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
  * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
  * @property {Number} realInvestment Invested amount without including the leveraged part.
  * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
@@ -456,6 +479,19 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {string} buyType
+ * @property {string} errorMSG
+ */
+
+/**
+ * @typedef {Object} ReduceOrder
+ * @property {number} targetId
+ * @property {string} type
+ * @property {number} targetPercentage
+ * @property {number} availablePercentage
+ * @property {boolean} done
+ * @property {boolean} recurring
+ * @property {boolean} persistent
+ * @property {string} orderId
  * @property {string} errorMSG
  */
 
@@ -1333,6 +1369,7 @@ function createEmptyPositionEntity() {
     unrealizedProfitLossesPercentage: 0,
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
+    reduceOrders: [],
   };
 }
 

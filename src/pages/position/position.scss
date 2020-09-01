@@ -1,6 +1,8 @@
 .positionDetail {
-  [role="progressbar"] {
-    margin: 0 auto 30px;
+  .loadProgress {
+    [role="progressbar"] {
+      margin: 0 auto 30px;
+    }
   }
 
   .customTable {
