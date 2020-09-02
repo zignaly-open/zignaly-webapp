@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -37,7 +37,16 @@ const ReduceStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch, getValues, setError, setValue } = useFormContext();
+  const {
+    control,
+    errors,
+    register,
+    watch,
+    getValues,
+    setError,
+    setValue,
+    reset,
+  } = useFormContext();
   const { formatMessage } = useIntl();
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
@@ -106,6 +115,25 @@ const ReduceStrategyPanel = (props) => {
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
+  const updatedAt = watch("updatedAt");
+
+  // Close panel on position update
+  useEffect(() => {
+    setExpand(false);
+  }, [updatedAt]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expand) {
+      reset([
+        "reduceOrderType",
+        "reduceTargetPercentage",
+        "reduceAvailablePercentage",
+        "reduceRecurring",
+        "reducePersistent",
+      ]);
+    }
+  };
+  useEffect(emptyFieldsWhenCollapsed, [expand]);
 
   const orderTypeOptions = [
     {
@@ -136,7 +164,7 @@ const ReduceStrategyPanel = (props) => {
   return (
     <Box className={`panel reduceStrategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch defaultChecked={expand} onChange={handleToggle} size="small" />
+        <Switch checked={expand} onChange={handleToggle} size="small" />
         <Typography variant="h5">
           <FormattedMessage id="terminal.reducestrategy" />
         </Typography>
@@ -184,7 +212,7 @@ const ReduceStrategyPanel = (props) => {
           >
             <HelperLabel
               descriptionId="terminal.reducestrategy.availablePercentage.help"
-              labelId="terminal.unitstoexit"
+              labelId="terminal.reducestrategy.availablePercentage"
             />
             <Box alignItems="center" display="flex">
               <OutlinedInput

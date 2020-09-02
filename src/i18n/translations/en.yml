@@ -702,6 +702,7 @@ terminal.rebuy.help: "The amount to buy, if the target has been triggered, will 
 terminal.rebuy: "Rebuy percentage from the total position size"
 terminal.reduceorders: "Reduce Orders"
 terminal.reducestrategy: "Reduce Position Size"
+terminal.reducestrategy.availablePercentage: "Percentage from remaining amount to exit"
 terminal.reducestrategy.availablePercentage.help: "The amount to be sold from the position available amount for this target."
 terminal.reducestrategy.help: "The order type to use to reduce your position size."
 terminal.reducestrategy.percentage.error: "Percentage must be a number."

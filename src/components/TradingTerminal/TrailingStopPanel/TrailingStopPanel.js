@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { isValidIntOrFloat } from "../../../utils/validators";
@@ -36,7 +36,7 @@ const TrailingStopPanel = (props) => {
   const existsTrailingStop = positionEntity
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
-  const { expanded, expandClass, expandableControl } = useExpandable(existsTrailingStop);
+  const { expanded, expandClass, handleToggleExpanded } = useExpandable(existsTrailingStop);
   const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
   const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
@@ -247,7 +247,7 @@ const TrailingStopPanel = (props) => {
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && expandableControl}
+        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.trailingstop" />

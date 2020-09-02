@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { inRange, lt, gt, isNumber, keys, range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
-import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
@@ -36,7 +36,7 @@ const TakeProfitPanel = (props) => {
   const { symbolData, positionEntity = null } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
-  const { expanded, expandClass, expandableControl } = useExpandable(
+  const { expanded, expandClass, handleToggleExpanded } = useExpandable(
     positionTargetsCardinality > 0,
   );
 
@@ -537,7 +537,7 @@ const TakeProfitPanel = (props) => {
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && expandableControl}
+        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.takeprofit" />

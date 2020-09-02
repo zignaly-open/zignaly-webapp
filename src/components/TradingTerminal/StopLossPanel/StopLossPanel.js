@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber, lt, gt } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { isValidIntOrFloat } from "../../../utils/validators";
@@ -36,7 +36,7 @@ const StopLossPanel = (props) => {
   const existsStopLoss = positionEntity
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
-  const { expanded, expandClass, expandableControl } = useExpandable(existsStopLoss);
+  const { expanded, expandClass, handleToggleExpanded } = useExpandable(existsStopLoss);
   const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
@@ -233,7 +233,7 @@ const StopLossPanel = (props) => {
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && expandableControl}
+        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />

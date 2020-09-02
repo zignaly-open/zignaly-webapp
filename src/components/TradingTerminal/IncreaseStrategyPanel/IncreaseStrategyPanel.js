@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -34,7 +34,7 @@ const IncreaseStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch } = useFormContext();
+  const { control, errors, register, watch, reset } = useFormContext();
   const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const {
@@ -77,6 +77,26 @@ const IncreaseStrategyPanel = (props) => {
   // Watched inputs that affect components.
   const entryStrategy = watch("entryStrategy");
   const lastPrice = watch("lastPrice");
+  const updatedAt = watch("updatedAt");
+
+  // Close panel on position update
+  useEffect(() => {
+    setExpand(false);
+  }, [updatedAt]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expand) {
+      reset([
+        "stopPrice",
+        "price",
+        "realInvestment",
+        "positionSize",
+        "positionSizePercentage",
+        "units",
+      ]);
+    }
+  };
+  useEffect(emptyFieldsWhenCollapsed, [expand]);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -94,7 +114,7 @@ const IncreaseStrategyPanel = (props) => {
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch defaultChecked={expand} onChange={handleToggle} size="small" />
+        <Switch checked={expand} onChange={handleToggle} size="small" />
         <Typography variant="h5">
           <FormattedMessage id="terminal.increasestrategy" />
         </Typography>

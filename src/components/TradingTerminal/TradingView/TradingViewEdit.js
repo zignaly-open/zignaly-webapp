@@ -155,12 +155,13 @@ const TradingViewEdit = (props) => {
   useEffect(loadDependencies, []);
 
   /**
-   * Callback that to be notified when position updates are peformed.
+   * Callback that to be notified when position updates are performed.
    *
    * @returns {Void} None.
    */
   const notifyPositionUpdate = () => {
     fetchPosition();
+    methods.setValue("updatedAt", new Date());
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
@@ -295,14 +296,17 @@ const TradingViewEdit = (props) => {
           )}
           <Box className="tradingViewChart" id="trading_view_chart" />
           {!isLoading && lastPrice && (
-            <StrategyForm
-              lastPrice={lastPrice}
-              notifyPositionUpdate={notifyPositionUpdate}
-              positionEntity={positionEntity}
-              selectedSymbol={selectedSymbol}
-              symbolsData={marketData}
-              tradingViewWidget={tradingViewWidget}
-            />
+            <>
+              <input name="updatedAt" ref={methods.register} type="hidden" />
+              <StrategyForm
+                lastPrice={lastPrice}
+                notifyPositionUpdate={notifyPositionUpdate}
+                positionEntity={positionEntity}
+                selectedSymbol={selectedSymbol}
+                symbolsData={marketData}
+                tradingViewWidget={tradingViewWidget}
+              />
+            </>
           )}
         </Box>
         {positionRawData && (

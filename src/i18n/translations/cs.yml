@@ -702,6 +702,7 @@ terminal.rebuy.help: "CH-The amount to buy, if the target has been triggered, wi
 terminal.rebuy: "CH-Rebuy percentage from the total position size"
 terminal.reduceorders: "CH-Reduce Orders"
 terminal.reducestrategy: "CH-Reduce Position Size"
+terminal.reducestrategy.availablePercentage: "CH-Percentage from remaining amount to exit"
 terminal.reducestrategy.availablePercentage.help: "CH-The amount to be sold from the position available amount for this target."
 terminal.reducestrategy.help: "CH-The order type to use to reduce your position size."
 terminal.reducestrategy.percentage.error: "CH-Percentage must be a number."
