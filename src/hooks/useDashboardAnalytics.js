@@ -9,6 +9,7 @@ import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
+import { toNumber } from "lodash";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -98,14 +99,19 @@ const useDashboardAnalytics = () => {
 
   const loadDashboardStats = () => {
     setLoading(true);
+    const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,
       quote: filters.quote,
-      timeFrame: filters.timeFrame,
+      timeFrame: !timeFrmaeFormatList.includes(filters.timeFrame)
+        ? toNumber(filters.timeFrame)
+        : false,
       includeOpenPositions: true,
       providerId: filters.provider.val,
-      timeFrameFormat: "lastXDays",
+      timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
+        ? filters.timeFrame
+        : "lastXDays",
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
     tradeApi
