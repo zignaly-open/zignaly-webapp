@@ -335,6 +335,10 @@ provider.others: "Bạn và {Count} người khác đang theo dõi nhà cung c�
 provider.stop: "NGỪNG THEO DÕI"
 provider.view: "XEM NHÀ CUNG CẤP"
 provider.people: "người đang theo dõi nhà cung cấp này"
+trader.howmuch: "How much {quote} do you want to allocate to this trader."
+trader.choose: "Choose allocated amount"
+trader.everymove: "Copy every move proportionally with the following amount."
+trader.amount.error: "Minimum allocated amount {quote} {amount}"
 graph.others: "Khác"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "COPY-TRADERS"

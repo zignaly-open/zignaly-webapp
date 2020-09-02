@@ -397,6 +397,10 @@ provider.others: "You and {count} others are following this provider"
 provider.stop: "Stop Following"
 provider.view: "View Provider"
 provider.people: "people following this provider"
+trader.howmuch: "How much {quote} do you want to allocate to this trader."
+trader.choose: "Choose allocated amount"
+trader.everymove: "Copy every move proportionally with the following amount."
+trader.amount.error: "Minimum allocated amount {quote} {amount}"
 
 graph.others: "Others"
 
