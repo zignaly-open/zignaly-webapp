@@ -64,22 +64,22 @@ const LeverageForm = (props) => {
   };
 
   const protectLimits = () => {
-    if (leverage < min) {
+    if (val < min) {
       setVal(min);
-    } else if (leverage > max) {
+    } else if (val > max) {
       setVal(max);
     }
   };
 
   const increaseValue = () => {
-    const newValue = leverage + 1;
+    const newValue = val + 1;
     if (newValue <= max) {
       setVal(newValue);
     }
   };
 
   const decreaseValue = () => {
-    const newValue = leverage - 1;
+    const newValue = val - 1;
     if (newValue >= min) {
       setVal(newValue);
     }
