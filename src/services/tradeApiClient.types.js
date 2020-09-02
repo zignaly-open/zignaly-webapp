@@ -750,7 +750,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} providerId
  * @property {String} quote
  * @property {Boolean} ro
- * @property {String} timeFrame
+ * @property {Number | Boolean} timeFrame
  * @property {String} timeFrameFormat
  * @property {String} token
  * @property {String} internalExchangeId

@@ -46,13 +46,13 @@ const useTimeFramesOptions = () => {
       label: intl.formatMessage({
         id: "timeframe.weekly",
       }),
-      val: "monthly",
+      val: "weekly",
     },
     {
       label: intl.formatMessage({
         id: "timeframe.monthly",
       }),
-      val: "weekly",
+      val: "monthly",
     },
     {
       label: intl.formatMessage({
