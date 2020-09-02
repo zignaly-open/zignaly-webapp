@@ -23,7 +23,13 @@ import CustomButton from "../../CustomButton";
 const LeverageForm = (props) => {
   const { min, max, leverage, setValue, onClose } = props;
   const [val, setVal] = useState(leverage);
-  const marks = [{ value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }, { value: 125 }];
+  const marks = [
+    { value: 25, label: "25" },
+    { value: 50, label: "50" },
+    { value: 75, label: "75" },
+    { value: 100, label: "100" },
+    { value: 125, label: "125" },
+  ];
   const { darkStyle } = useStoreSettingsSelector();
 
   const handleCancel = () => {
@@ -54,7 +60,7 @@ const LeverageForm = (props) => {
    */
   const handleInputChange = (event) => {
     const targetElement = event.currentTarget;
-    setValue("leverage", Number(targetElement.value));
+    setVal(Number(targetElement.value));
   };
 
   const protectLimits = () => {
@@ -114,13 +120,13 @@ const LeverageForm = (props) => {
       <Slider
         aria-labelledby="range-slider"
         className="slider"
-        classes={{ mark: "mark", thumb: "thumb", track: "track" }}
+        classes={{ mark: "mark", thumb: "thumb", track: "track", markLabel: "markLabel" }}
         marks={marks}
         max={max}
         min={min}
         onChange={handleSliderChange}
         step={1}
-        value={leverage}
+        value={val}
       />
       {val >= 25 && (
         <span className="errorText">
