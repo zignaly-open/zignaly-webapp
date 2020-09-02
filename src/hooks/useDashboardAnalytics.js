@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import { useSelector } from "react-redux";
 import useQuoteAssets from "./useQuoteAssets";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
@@ -76,7 +75,7 @@ const useDashboardAnalytics = () => {
   const defaultFilters = {
     timeFrame: "7",
     quote: "USDT",
-    provider: providers[0].val,
+    provider: providers[0],
   };
 
   const optionsFilters = {
@@ -94,8 +93,8 @@ const useDashboardAnalytics = () => {
   const filters = res.filters;
 
   const adjustQuotes = () => {
-    if (filters.provider !== "1" && filters.provider !== "all") {
-      const provider = providerAssets.find((item) => item.id === filters.provider);
+    if (filters.provider.val !== "1" && filters.provider.val !== "all") {
+      const provider = providerAssets.find((item) => item.id === filters.provider.val);
       if (provider && provider.quote) {
         setQuotes([provider.quote]);
       } else {
@@ -119,7 +118,7 @@ const useDashboardAnalytics = () => {
         ? toNumber(filters.timeFrame)
         : false,
       includeOpenPositions: true,
-      providerId: filters.provider,
+      providerId: filters.provider.val,
       timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
         ? filters.timeFrame
         : "lastXDays",
