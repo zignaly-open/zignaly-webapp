@@ -11,12 +11,14 @@ import {
   Checkbox,
   FormHelperText,
   Tooltip,
+  Switch,
 } from "@material-ui/core";
 import { RemoveCircle, Help } from "@material-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import "./ReduceOrders.scss";
 import { colors } from "../../../services/theme";
+import { formatFloat2Dec } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -30,7 +32,7 @@ import { colors } from "../../../services/theme";
  */
 
 /**
- * DCA status label with detailed description tooltip.
+ * Orders status label with detailed description tooltip.
  *
  * @param {ReduceOrderStatusProps} props Component props.
  * @returns {JSX.Element} Helper label with description in tooltip element.
@@ -77,9 +79,9 @@ const ReduceOrderStatus = (props) => {
  */
 const ReduceOrders = (props) => {
   const { positionEntity } = props;
-  const { setValue, watch, control } = useFormContext();
+  const { setValue, watch, control, register, unregister } = useFormContext();
   const reduceOrders = values(positionEntity.reduceOrders);
-  const { expanded, expandClass, expandableControl } = useExpandable(size(reduceOrders) > 0);
+  const { expanded, expandClass, handleToggleExpanded } = useExpandable(size(reduceOrders) > 0);
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
@@ -91,6 +93,17 @@ const ReduceOrders = (props) => {
    * @type {Array<number>}
    */
   const removeReduceOrder = watch("removeReduceOrder", []);
+  //   const removeReduceOrder = useWatch({
+  //     name: "removeReduceOrder",
+  //     control,
+  //     // defaultValue: [],
+  //     defaultValue: "aa",
+  //   });
+  //   const value = useWatch({
+  //     name: "bbb",
+  //     control,
+  //     defaultValue: "default data",
+  //   });
   const isRecurringPersistent = Boolean(
     reduceOrders.find(
       (o) => (o.recurring || o.persistent) && !removeReduceOrder.includes(o.targetId),
@@ -116,13 +129,21 @@ const ReduceOrders = (props) => {
     setValue("removeReduceOrder", newRemoveReduceOrder);
   };
 
+  // Register special form element to store removed orders
+  React.useEffect(() => {
+    register("removeReduceOrder");
+    return () => unregister("removeReduceOrder");
+  }, [register, unregister]);
+
   /**
    * Render a reduce order
    * @param {ReduceOrder} order Reduce order
    * @returns {JSX.Element} JSX
    */
   const displayReduceOrder = (order) => {
-    if (removeReduceOrder.find((i) => i === order.targetId)) return null;
+    if (removeReduceOrder.find((i) => i === order.targetId)) {
+      return null;
+    }
 
     const showRemove = !order.done && !isReadOnly;
     return (
@@ -137,19 +158,19 @@ const ReduceOrders = (props) => {
             <OutlinedInput
               className="outlineInput"
               disabled={true}
-              value={order.targetPercentage}
+              value={formatFloat2Dec(order.targetPercentage)}
             />
             <div className="currencyBox">%</div>
           </Box>
           <HelperLabel
             descriptionId="terminal.reducestrategy.availablePercentage.help"
-            labelId="terminal.unitstoexit"
+            labelId="terminal.reducestrategy.availablePercentage"
           />
           <Box alignItems="center" display="flex">
             <OutlinedInput
               className="outlineInput"
               disabled={true}
-              value={order.availablePercentage}
+              value={formatFloat2Dec(order.availablePercentage)}
             />
             <div className="currencyBox">%</div>
           </Box>
@@ -172,7 +193,7 @@ const ReduceOrders = (props) => {
   return (
     <Box className={`panel reduceOrders ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && expandableControl}
+        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.reduceorders" />
@@ -187,6 +208,8 @@ const ReduceOrders = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
+          {/* <input name="removeReduceOrder" ref={register} type="hidden" defaultValues={[]} /> */}
+
           {reduceOrders.map((order) => displayReduceOrder(order))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {isRecurringPersistent && (

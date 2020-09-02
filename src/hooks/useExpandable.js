@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Switch } from "@material-ui/core";
 
 /**
  * @typedef {Object} Expandable
  * @property {boolean} expanded Flag to indicate if expanded toggle is enabled.
  * @property {string} expandClass Class name to represent expandable visual state.
- * @property {JSX.Element} expandableControl Material UI Switch.
+ * @property {function(React.ChangeEvent<HTMLInputElement>):void} handleToggleExpanded
  */
 
 /**
@@ -26,7 +25,7 @@ const useExpandable = (defaultExpand = false) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Click event.
    * @returns {Void} None.
    */
-  const handleToggle = (event) => {
+  const handleToggleExpanded = (event) => {
     const targetElement = event.currentTarget;
     setExpanded(targetElement.checked);
   };
@@ -34,7 +33,7 @@ const useExpandable = (defaultExpand = false) => {
   return {
     expanded,
     expandClass,
-    expandableControl: <Switch checked={expanded} onChange={handleToggle} size="small" />,
+    handleToggleExpanded,
   };
 };
 
