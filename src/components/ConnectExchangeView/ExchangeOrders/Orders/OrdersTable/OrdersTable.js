@@ -117,7 +117,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
     },
     {
       name: "orderId",
-      label: "col.cancel",
+      label: "col.close",
       options: {
         customBodyRender: (val) => {
           return loading && order === val ? (
