@@ -388,7 +388,7 @@ const initialState = {
         "col.side",
         "col.orders.type",
         "col.orders.datetime",
-        "col.cancel",
+        "col.close",
       ],
       contractsTable: [
         "col.positionid",
@@ -400,7 +400,7 @@ const initialState = {
         "col.entryprice",
         "col.contracts.markprice",
         "col.contracts.margin",
-        "col.cancel",
+        "col.close",
       ],
     },
     sortColumns: {},
