@@ -128,7 +128,7 @@ const ExpandedRow = ({
     const obj = rowData.find((item) => item.id === "positionId");
     const subPositions = values[index].subPositions;
     const position = subPositions.find((item) => item.positionId === obj.data.toString());
-    if (position.updating) {
+    if (position && position.updating) {
       return true;
     }
     return false;
@@ -136,14 +136,11 @@ const ExpandedRow = ({
 
   const showCheckAllButton = () => {
     const subPositions = values[index].subPositions;
-    if (subPositions.length > 1) {
-      const updatingPositions = subPositions.filter((item) => item.updating);
-      if (subPositions.length === updatingPositions.length) {
-        return false;
-      }
-      return true;
+    const updatingPositions = subPositions.filter((item) => item.updating);
+    if (subPositions.length === updatingPositions.length) {
+      return false;
     }
-    return false;
+    return true;
   };
 
   return (
