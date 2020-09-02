@@ -119,7 +119,7 @@ describe("Consume tradeApiClient service", () => {
       true,
       "Second collection position item closed flag is not true.",
     );
-  }, 15000);
+  }, 20000);
 
   it("should get all the providers", async () => {
     const getProvidersPayload = {

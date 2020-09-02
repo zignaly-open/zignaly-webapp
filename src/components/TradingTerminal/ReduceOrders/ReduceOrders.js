@@ -79,7 +79,7 @@ const ReduceOrderStatus = (props) => {
  */
 const ReduceOrders = (props) => {
   const { positionEntity } = props;
-  const { setValue, watch, control } = useFormContext();
+  const { setValue, watch, control, register, unregister } = useFormContext();
   const reduceOrders = values(positionEntity.reduceOrders);
   const { expanded, expandClass, handleToggleExpanded } = useExpandable(size(reduceOrders) > 0);
 
@@ -93,6 +93,17 @@ const ReduceOrders = (props) => {
    * @type {Array<number>}
    */
   const removeReduceOrder = watch("removeReduceOrder", []);
+  //   const removeReduceOrder = useWatch({
+  //     name: "removeReduceOrder",
+  //     control,
+  //     // defaultValue: [],
+  //     defaultValue: "aa",
+  //   });
+  //   const value = useWatch({
+  //     name: "bbb",
+  //     control,
+  //     defaultValue: "default data",
+  //   });
   const isRecurringPersistent = Boolean(
     reduceOrders.find(
       (o) => (o.recurring || o.persistent) && !removeReduceOrder.includes(o.targetId),
@@ -118,13 +129,21 @@ const ReduceOrders = (props) => {
     setValue("removeReduceOrder", newRemoveReduceOrder);
   };
 
+  // Register special form element to store removed orders
+  React.useEffect(() => {
+    register("removeReduceOrder");
+    return () => unregister("removeReduceOrder");
+  }, [register, unregister]);
+
   /**
    * Render a reduce order
    * @param {ReduceOrder} order Reduce order
    * @returns {JSX.Element} JSX
    */
   const displayReduceOrder = (order) => {
-    if (removeReduceOrder.find((i) => i === order.targetId)) return null;
+    if (removeReduceOrder.find((i) => i === order.targetId)) {
+      return null;
+    }
 
     const showRemove = !order.done && !isReadOnly;
     return (
@@ -189,6 +208,8 @@ const ReduceOrders = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
+          {/* <input name="removeReduceOrder" ref={register} type="hidden" defaultValues={[]} /> */}
+
           {reduceOrders.map((order) => displayReduceOrder(order))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {isRecurringPersistent && (
