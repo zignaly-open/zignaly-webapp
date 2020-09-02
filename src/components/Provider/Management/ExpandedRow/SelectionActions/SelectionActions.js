@@ -108,6 +108,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
           stillEntryAvailable = true;
           return false;
         }
+        return true;
       });
       return !stillEntryAvailable;
     }
@@ -123,6 +124,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
           open = true;
           return false;
         }
+        return true;
       });
       return !open;
     }
