@@ -170,7 +170,7 @@ const ReduceOrders = (props) => {
   };
 
   return (
-    <Box className={`panel dcaPanel ${expandClass}`}>
+    <Box className={`panel reduceOrders ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
         {!isClosed && expandableControl}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
