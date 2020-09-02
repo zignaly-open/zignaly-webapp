@@ -68,7 +68,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get new v2 user open positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const positionsCollection = await client.openPositionsGet(payload);
@@ -83,7 +83,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user closed positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const positionsCollection = await client.closedPositionsGet(payload);
@@ -98,7 +98,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user log positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const positionsCollection = await client.logPositionsGet(payload);
@@ -147,7 +147,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user balance", async () => {
     const getBalancePayload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const userBalance = await client.userBalanceGet(getBalancePayload);
@@ -157,7 +157,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's daily balance", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const equity = await client.userEquityGet(payload);
@@ -231,7 +231,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get exchange connection market data", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const marketData = await client.exchangeConnectionMarketDataGet(payload);
@@ -273,7 +273,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user owned copy traders options list", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const copyTradersOptions = await client.ownedCopyTradersProvidersOptions(payload);
@@ -352,7 +352,7 @@ describe("Consume tradeApiClient service", () => {
       providerId: 1,
       providerName: "Manual Trading",
       exchangeName: "Binance",
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const positionId = await client.manualPositionCreate(payload);
@@ -434,7 +434,7 @@ describe("Consume tradeApiClient service", () => {
     const payload = {
       token: accessToken,
       positionId: "5f0c715ce3975f63f47a2ef8",
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const positionEntity = await client.positionGet(payload);
@@ -558,7 +558,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's available balance for an exchange", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const response = await client.userAvailableBalanceGet(payload);
