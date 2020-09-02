@@ -116,7 +116,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     apiMethod
       .then((response) => {
         const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
-          response.providerId
+          response.id
         }/edit`;
 
         navigate(profileLink);

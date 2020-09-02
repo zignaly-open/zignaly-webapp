@@ -3299,7 +3299,6 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} key
  * @property {string} userId
  * @property {string} projectId
- * @property {string} providerId
  * @property {string} description
  * @property {Array<string>} exchanges
  * @property {string} exchangeType
@@ -3327,7 +3326,11 @@ function createEmptyProfileNotificationsEntity() {
  */
 export function providerCreateResponseTransform(response) {
   const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = response._id ? response._id.$oid || response._id : "";
+  const normalizedId = response._id
+    ? response._id.$oid || response._id
+    : response.providerId
+    ? response.providerId
+    : "";
   const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyNewProviderEntity, response, {
@@ -3349,7 +3352,6 @@ const createEmptyNewProviderEntity = () => {
     key: "",
     userId: "",
     projectId: "",
-    providerId: "",
     description: "",
     exchanges: [],
     exchangeType: "",
