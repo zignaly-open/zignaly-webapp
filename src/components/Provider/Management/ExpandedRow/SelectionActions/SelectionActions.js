@@ -10,8 +10,9 @@ import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelecto
 /**
  *
  * @typedef {import('../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {Object} DefaultProps
- * @property {Array<ManagementPositionsEntity>} [values]
+ * @property {Array<ManagementPositionsEntity>} values
  * @property {Array<String>} selectedRows
  * @property {React.SetStateAction<*>} setSelectedRows
  * @property {React.SetStateAction<*>} setLoading
@@ -23,9 +24,24 @@ import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelecto
  * @param {DefaultProps} props Default component props.
  * @returns {JSX.Element} JSX component.
  */
-const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
+const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values }) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+
+  /**
+   * @returns {Array<PositionEntity>} Position Collection.
+   */
+  const getAllSelectedSubPositions = () => {
+    /**
+     * @type {Array<PositionEntity>}
+     */
+    let allSubPositions = [];
+    values.forEach((item) => {
+      let sub = item.subPositions;
+      allSubPositions = [...allSubPositions, ...sub];
+    });
+    return allSubPositions.filter((item) => selectedRows.includes(item.positionId));
+  };
 
   /**
    *
@@ -38,25 +54,29 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
      * @type {Array<Promise<*>>}
      */
     let promiseArray = [];
-    const list = [...selectedRows];
+    const allSelectedSubPositions = getAllSelectedSubPositions();
     if (action === "abort") {
-      list.forEach((item) => {
-        let payload = {
-          token: storeSession.tradeApi.accessToken,
-          positionId: item,
-        };
-        let promise = tradeApi.positionCancel(payload);
-        promiseArray.push(promise);
+      allSelectedSubPositions.forEach((item) => {
+        if (item.status === 1) {
+          let payload = {
+            token: storeSession.tradeApi.accessToken,
+            positionId: item.positionId,
+          };
+          let promise = tradeApi.positionCancel(payload);
+          promiseArray.push(promise);
+        }
       });
     }
     if (action === "exit") {
-      list.forEach((item) => {
-        let payload = {
-          token: storeSession.tradeApi.accessToken,
-          positionId: item,
-        };
-        let promise = tradeApi.positionExit(payload);
-        promiseArray.push(promise);
+      allSelectedSubPositions.forEach((item) => {
+        if (item.status === 1) {
+          let payload = {
+            token: storeSession.tradeApi.accessToken,
+            positionId: item.positionId,
+          };
+          let promise = tradeApi.positionExit(payload);
+          promiseArray.push(promise);
+        }
       });
     }
 
@@ -79,6 +99,22 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
       });
   };
 
+  const isDisabled = () => {
+    if (selectedRows.length) {
+      const allSelectedSubPositions = getAllSelectedSubPositions();
+      let stillEntryAvailable = false;
+      allSelectedSubPositions.every((item) => {
+        if (item.status === 1) {
+          stillEntryAvailable = true;
+          return false;
+        }
+        return true;
+      });
+      return !stillEntryAvailable;
+    }
+    return true;
+  };
+
   return (
     <Box
       alignItems="center"
@@ -89,14 +125,14 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading }) => {
     >
       <CustomButton
         className="textPurple"
-        disabled={!selectedRows.length}
+        disabled={isDisabled()}
         onClick={() => executeAction("abort")}
       >
         Cancel Entries
       </CustomButton>
       <CustomButton
         className="textPurple"
-        disabled={!selectedRows.length}
+        disabled={isDisabled()}
         onClick={() => executeAction("exit")}
       >
         Exit Entries
