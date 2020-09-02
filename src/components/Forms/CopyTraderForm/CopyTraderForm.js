@@ -203,9 +203,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
               {alert}
             </Alert>
           )}
-          <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
+          <Typography variant="h3">
+            <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+          </Typography>
           <Typography variant="body1">
-            Copy every move proportionally with the following amount.
+            <FormattedMessage id="trader.everymove" />
           </Typography>
           <Box
             alignItems="center"
@@ -221,7 +223,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
               flexDirection="column"
               justifyContent="start"
             >
-              <label className="customLabel">Choose allocated amount </label>
+              <label className="customLabel">
+                <FormattedMessage id="trader.choose" />{" "}
+              </label>
               <TextField
                 className="customInput"
                 error={!!errors.allocatedBalance}
@@ -235,8 +239,13 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 variant="outlined"
               />
               <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-                {`Minimum allocated amount ${provider.copyTradingQuote}`}{" "}
-                {provider.minAllocatedBalance}
+                <FormattedMessage
+                  id="trader.amount.error"
+                  values={{
+                    quote: provider.copyTradingQuote,
+                    amount: provider.minAllocatedBalance,
+                  }}
+                />
               </span>
             </Box>
           </Box>
