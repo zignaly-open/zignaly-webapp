@@ -186,14 +186,17 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
 
   /**
    *
+   * @param {Number} index Index of parent row.
    * @param {String} id Position ID.
    * @returns {Void} None.
    */
-  const handleRowSelectionChange = (id) => {
+  const handleRowSelectionChange = (index, id) => {
+    const subPositions = allPositions[index].subPositions;
+    const position = subPositions.find((item) => item.positionId === id);
     let dataList = [...selectedRows];
     if (dataList.includes(id)) {
       dataList = dataList.filter((item) => item !== id);
-    } else {
+    } else if (position && !position.updating) {
       dataList.push(id);
     }
     setSelectedRows(dataList);

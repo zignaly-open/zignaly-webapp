@@ -93,7 +93,7 @@ const ExpandedRow = ({
    */
   const handleChange = (e, rowData) => {
     const obj = rowData.find((item) => item.id === "positionId");
-    onSelectionChange(obj.data);
+    onSelectionChange(index, obj.data);
   };
 
   /**

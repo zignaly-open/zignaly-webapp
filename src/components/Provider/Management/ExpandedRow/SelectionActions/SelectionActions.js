@@ -99,7 +99,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
       });
   };
 
-  const isDisabled = () => {
+  const isDisabledCancel = () => {
     if (selectedRows.length) {
       const allSelectedSubPositions = getAllSelectedSubPositions();
       let stillEntryAvailable = false;
@@ -108,9 +108,23 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
           stillEntryAvailable = true;
           return false;
         }
-        return true;
       });
       return !stillEntryAvailable;
+    }
+    return true;
+  };
+
+  const isDisabledExit = () => {
+    if (selectedRows.length) {
+      const allSelectedSubPositions = getAllSelectedSubPositions();
+      let open = false;
+      allSelectedSubPositions.every((item) => {
+        if (item.status !== 1) {
+          open = true;
+          return false;
+        }
+      });
+      return !open;
     }
     return true;
   };
@@ -125,14 +139,14 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
     >
       <CustomButton
         className="textPurple"
-        disabled={isDisabled()}
+        disabled={isDisabledCancel()}
         onClick={() => executeAction("abort")}
       >
         Cancel Entries
       </CustomButton>
       <CustomButton
         className="textPurple"
-        disabled={isDisabled()}
+        disabled={isDisabledExit()}
         onClick={() => executeAction("exit")}
       >
         Exit Entries
