@@ -81,7 +81,7 @@ const ReduceOrders = (props) => {
   const { positionEntity } = props;
   const { setValue, watch, control, register, unregister } = useFormContext();
   const reduceOrders = values(positionEntity.reduceOrders);
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable(size(reduceOrders) > 0);
+  const { expanded, expandClass, setExpanded } = useExpandable(size(reduceOrders) > 0);
 
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
@@ -93,17 +93,6 @@ const ReduceOrders = (props) => {
    * @type {Array<number>}
    */
   const removeReduceOrder = watch("removeReduceOrder", []);
-  //   const removeReduceOrder = useWatch({
-  //     name: "removeReduceOrder",
-  //     control,
-  //     // defaultValue: [],
-  //     defaultValue: "aa",
-  //   });
-  //   const value = useWatch({
-  //     name: "bbb",
-  //     control,
-  //     defaultValue: "default data",
-  //   });
   const isRecurringPersistent = Boolean(
     reduceOrders.find(
       (o) => (o.recurring || o.persistent) && !removeReduceOrder.includes(o.targetId),
@@ -130,10 +119,16 @@ const ReduceOrders = (props) => {
   };
 
   // Register special form element to store removed orders
-  React.useEffect(() => {
+  useEffect(() => {
     register("removeReduceOrder");
     return () => unregister("removeReduceOrder");
   }, [register, unregister]);
+
+  // Automatically expand/collpase panel depending on current reduce orders amount.
+  const autoExpandCollapse = () => {
+    setExpanded(Boolean(reduceOrders.length));
+  };
+  useEffect(autoExpandCollapse, [reduceOrders.length]);
 
   /**
    * Render a reduce order
@@ -193,7 +188,9 @@ const ReduceOrders = (props) => {
   return (
     <Box className={`panel reduceOrders ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.reduceorders" />
@@ -208,8 +205,6 @@ const ReduceOrders = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          {/* <input name="removeReduceOrder" ref={register} type="hidden" defaultValues={[]} /> */}
-
           {reduceOrders.map((order) => displayReduceOrder(order))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {isRecurringPersistent && (

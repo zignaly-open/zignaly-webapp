@@ -13,7 +13,7 @@ import "./EntryExpirationPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const EntryExpirationPanel = () => {
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable();
+  const { expanded, expandClass, setExpanded } = useExpandable();
   const { clearErrors, errors, getValues, register, setError } = useFormContext();
   const { formatMessage } = useIntl();
 
@@ -60,7 +60,7 @@ const EntryExpirationPanel = () => {
   return (
     <Box className={`panel entryExpirationPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />
+        <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.entryexpiration" />

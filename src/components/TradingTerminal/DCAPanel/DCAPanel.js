@@ -82,7 +82,7 @@ const DCAPanel = (props) => {
   } = resolveDcaIndexes();
   const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
   const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable(size(dcaAllIndexes) > 0);
+  const { expanded, expandClass, setExpanded } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
     cardinality,
@@ -455,7 +455,9 @@ const DCAPanel = (props) => {
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.dca" />

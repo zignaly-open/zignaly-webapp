@@ -36,9 +36,7 @@ const TakeProfitPanel = (props) => {
   const { symbolData, positionEntity = null } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable(
-    positionTargetsCardinality > 0,
-  );
+  const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
 
   const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = 1;
@@ -475,6 +473,9 @@ const TakeProfitPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     initValuesFromPositionEntity();
+    setTimeout(() => {
+      initValuesFromPositionEntity();
+    }, 2000);
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
@@ -537,7 +538,9 @@ const TakeProfitPanel = (props) => {
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.takeprofit" />

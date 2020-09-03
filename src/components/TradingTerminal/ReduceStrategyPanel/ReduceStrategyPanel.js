@@ -14,7 +14,9 @@ import {
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { isValidIntOrFloat } from "../../../utils/validators";
+import { formatPrice } from "../../../utils/formatters";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -82,8 +84,8 @@ const ReduceStrategyPanel = (props) => {
       return;
     }
 
-    const targetPrice = (reduceTargetPercentage / 100) * entryPrice;
-    setReduceTargetPrice(targetPrice.toString());
+    const targetPrice = entryPrice + (reduceTargetPercentage / 100) * entryPrice;
+    setReduceTargetPrice(formatPrice(targetPrice.toString()));
   };
 
   /**
@@ -119,21 +121,24 @@ const ReduceStrategyPanel = (props) => {
 
   // Close panel on position update
   useEffect(() => {
-    setExpand(false);
+    if (updatedAt) {
+      setExpand(false);
+    }
   }, [updatedAt]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expand) {
-      reset([
-        "reduceOrderType",
-        "reduceTargetPercentage",
-        "reduceAvailablePercentage",
-        "reduceRecurring",
-        "reducePersistent",
-      ]);
+      reset({
+        ...getValues(),
+        reduceOrderType: "",
+        reduceTargetPercentage: "",
+        reduceAvailablePercentage: "",
+        reduceRecurring: "",
+        reducePersistent: "",
+      });
     }
   };
-  useEffect(emptyFieldsWhenCollapsed, [expand]);
+  useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
 
   const orderTypeOptions = [
     {

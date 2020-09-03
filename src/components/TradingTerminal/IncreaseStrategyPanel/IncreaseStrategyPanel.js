@@ -12,6 +12,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import { formatPrice } from "../../../utils/formatters";
 import { CircularProgress } from "@material-ui/core";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -34,7 +35,7 @@ const IncreaseStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch, reset } = useFormContext();
+  const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const {
@@ -81,22 +82,25 @@ const IncreaseStrategyPanel = (props) => {
 
   // Close panel on position update
   useEffect(() => {
-    setExpand(false);
+    if (updatedAt) {
+      setExpand(false);
+    }
   }, [updatedAt]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expand) {
-      reset([
-        "stopPrice",
-        "price",
-        "realInvestment",
-        "positionSize",
-        "positionSizePercentage",
-        "units",
-      ]);
+      reset({
+        ...getValues(),
+        stopPrice: "",
+        price: "",
+        realInvestment: "",
+        positionSize: "",
+        positionSizePercentage: "",
+        units: "",
+      });
     }
   };
-  useEffect(emptyFieldsWhenCollapsed, [expand]);
+  useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
