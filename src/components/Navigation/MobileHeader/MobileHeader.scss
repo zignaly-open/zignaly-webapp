@@ -28,6 +28,29 @@
       }
     }
 
+    .number1,
+    .number3 {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .number1 {
+      .infinity {
+        font-size: 18px;
+        height: 18px;
+        margin-left: 10px;
+      }
+    }
+
+    .number3 {
+      .infinity {
+        font-size: 16px;
+        height: 16px;
+        margin-left: 8px;
+      }
+    }
+
     .balanceContainer {
       margin-top: 15px;
       min-height: 46px;

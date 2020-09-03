@@ -6,8 +6,11 @@ import useStoreUIBalanceLoader from "../../../hooks/useStoreUIBalanceLoader";
 import { useDispatch } from "react-redux";
 import { showBalanceLoader } from "../../../store/actions/ui";
 import { formatFloat } from "../../../utils/format";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 
 const BalanceBox = () => {
+  const { selectedExchange } = useStoreSettingsSelector();
   const balance = useUpdatedBalance();
   const storeBalanceLoader = useStoreUIBalanceLoader();
   const dispatch = useDispatch();
@@ -49,8 +52,22 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.available" />
             </Typography>
-            <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
-            <Typography className="number3">USDT {formatFloat(balance.totalFreeUSDT)}</Typography>
+            <Typography className="number1">
+              BTC{" "}
+              {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                <AllInclusiveIcon className="infinity" />
+              ) : (
+                formatFloat(balance.totalFreeBTC)
+              )}
+            </Typography>
+            <Typography className="number3">
+              USDT{" "}
+              {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                <AllInclusiveIcon className="infinity" />
+              ) : (
+                formatFloat(balance.totalFreeUSDT)
+              )}
+            </Typography>
           </Box>
 
           <Box
