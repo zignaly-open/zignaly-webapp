@@ -7,7 +7,7 @@ import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { composeAllActionButtons } from "../utils/composePositionsDataTable";
-// import { useStoreUserData } from "./useStoreUserSelector";
+import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
 import { useIntl } from "react-intl";
 
@@ -55,7 +55,7 @@ import { useIntl } from "react-intl";
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler) {
-  // const storeUserData = useStoreUserData();
+  const storeUserData = useStoreUserData();
   const { formatMessage } = useIntl();
 
   /**
@@ -634,11 +634,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
     const { positionId, closed } = position;
-    // const isProviderOwner = position.providerOwnerUserId === storeUserData.userId;
+    const isProviderOwner =
+      position.providerId !== "1" && position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
-        {!closed && (
+        {!closed && !isProviderOwner && (
           <button
             data-action={"cancel"}
             data-position-id={positionId}
