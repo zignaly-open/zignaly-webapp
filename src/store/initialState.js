@@ -641,6 +641,7 @@ const initialState = {
       useLeverageFromSignal: false,
       price: 0,
       loading: false,
+      signalProviderQuotes: [],
     },
   },
 };
