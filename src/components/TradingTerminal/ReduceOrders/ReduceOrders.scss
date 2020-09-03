@@ -4,6 +4,13 @@
       flex: 0 0 100%;
     }
 
+    .targetPrice {
+      > :nth-child(1),
+      > :nth-child(2) {
+        flex: 0 0 50%;
+      }
+    }
+
     .targetPrice,
     .targetUnits {
       justify-content: space-between;
@@ -12,9 +19,12 @@
         flex: 0 0 100%;
       }
 
-      > :nth-child(1),
-      > :nth-child(2) {
-        flex: 0 0 50%;
+      .percentageBox {
+        flex: 0 0 40%;
+      }
+
+      .valueBox {
+        flex: 0 0 calc(60% - 15px);
       }
     }
   }
