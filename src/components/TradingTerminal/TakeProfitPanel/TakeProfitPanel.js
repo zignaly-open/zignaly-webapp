@@ -82,7 +82,6 @@ const TakeProfitPanel = (props) => {
     targetIndexes.forEach((index) => {
       const target = positionEntity ? positionEntity.takeProfitTargets[index] : { done: false };
 
-      console.log(target);
       let disabled = false;
       if (target.done) {
         disabled = true;
