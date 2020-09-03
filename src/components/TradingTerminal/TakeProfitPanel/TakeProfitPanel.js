@@ -38,7 +38,7 @@ const TakeProfitPanel = (props) => {
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
 
-  const { clearErrors, errors, register, setError, setValue, watch, getValues } = useFormContext();
+  const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
   const defaultCardinality = 1;
   const {
     cardinality,
@@ -472,7 +472,6 @@ const TakeProfitPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    console.log("init");
     initValuesFromPositionEntity();
     setTimeout(() => {
       initValuesFromPositionEntity();
@@ -504,7 +503,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  //   useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
+  useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
@@ -518,7 +517,7 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  //   useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   /**
    * Compose dynamic target property errors.
@@ -535,8 +534,6 @@ const TakeProfitPanel = (props) => {
 
     return null;
   };
-
-  console.log(getValues(), expanded, cardinalityRange);
 
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
