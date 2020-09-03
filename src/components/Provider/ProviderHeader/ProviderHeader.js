@@ -39,14 +39,8 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      {storeViews.provider.isCopyTrading ? (
-        <>
-          <TraderHeaderActions />
-          <TraderHeaderInfo />
-        </>
-      ) : (
-        <ProviderHeaderActions />
-      )}
+      <TraderHeaderActions />
+      <TraderHeaderInfo />
       <SubNavHeader links={links} />
     </Box>
   );

@@ -2274,6 +2274,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
  * @property {Boolean} loading
+ * @property {Array<String>} signalProviderQuotes
  */
 
 /**
@@ -2418,6 +2419,7 @@ function createEmptyProviderGetEntity() {
     useLeverageFromSignal: false,
     price: 0,
     loading: false,
+    signalProviderQuotes: [""],
   };
 }
 

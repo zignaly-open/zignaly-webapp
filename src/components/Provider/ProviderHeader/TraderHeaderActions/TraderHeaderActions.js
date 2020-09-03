@@ -7,6 +7,7 @@ import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
 import CloneEdit from "../CloneEdit";
 import ProviderLogo from "../ProviderLogo";
+import FollowProviderButton from "../FollowProviderButton";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -42,7 +43,11 @@ const ProviderHeaderActions = () => {
           <CloneEdit provider={storeViews.provider} />
         )}
       </Box>
-      <CopyTraderButton provider={storeViews.provider} />
+      {storeViews.provider.isCopyTrading ? (
+        <CopyTraderButton provider={storeViews.provider} />
+      ) : (
+        <FollowProviderButton provider={storeViews.provider} />
+      )}
       <Hidden xsDown>
         {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
         {storeViews.provider.internalPaymentInfo && (

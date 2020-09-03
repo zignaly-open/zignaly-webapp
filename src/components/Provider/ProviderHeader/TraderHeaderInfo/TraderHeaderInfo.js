@@ -10,6 +10,7 @@ import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import { formatFloat } from "../../../../utils/format";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
+import BaseCurrency from "../BaseCurrency";
 
 /**
  * Provides the navigation bar for the dashboard.
@@ -36,11 +37,7 @@ const TraderHeaderInfo = () => {
         <span>
           <FormattedMessage id="srv.basecurrency" />
         </span>
-        <b>
-          {storeViews.provider.copyTradingQuote
-            ? storeViews.provider.copyTradingQuote.toUpperCase()
-            : ""}
-        </b>
+        <BaseCurrency provider={storeViews.provider} />
       </Typography>
 
       <Typography className="trade" variant="h4">
@@ -65,7 +62,11 @@ const TraderHeaderInfo = () => {
 
       <Typography className="copiers" variant="h4">
         <span>
-          <FormattedMessage id="copyt.copiers" />
+          {storeViews.provider.isCopyTrading ? (
+            <FormattedMessage id="copyt.copiers" />
+          ) : (
+            <FormattedMessage id="srv.followers" />
+          )}
         </span>
         <b>{storeViews.provider.followers} </b>
       </Typography>
@@ -79,37 +80,39 @@ const TraderHeaderInfo = () => {
       <Hidden smUp>
         {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
       </Hidden>
-      <Typography className="allocated" variant="h4">
-        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable ? (
-          <>
-            <FormattedMessage id="srv.allocated" />
-            <b>
-              {formatFloat(storeViews.provider.allocatedBalance)}{" "}
-              {storeViews.provider.copyTradingQuote
-                ? storeViews.provider.copyTradingQuote.toUpperCase()
-                : ""}
-            </b>
-          </>
-        ) : (
-          <>
-            <FormattedMessage id="srv.minimum" />
-            <b>
-              {formatFloat(storeViews.provider.minAllocatedBalance)}{" "}
-              {storeViews.provider.copyTradingQuote
-                ? storeViews.provider.copyTradingQuote.toUpperCase()
-                : ""}
-            </b>
-          </>
-        )}
-        {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
-          <img
-            alt="zignaly"
-            className="editIcon"
-            onClick={() => showCopyModal(true)}
-            src={EditIcon}
-          />
-        )}
-      </Typography>
+      {storeViews.provider.isCopyTrading && (
+        <Typography className="allocated" variant="h4">
+          {!storeViews.provider.disable ? (
+            <>
+              <FormattedMessage id="srv.allocated" />
+              <b>
+                {formatFloat(storeViews.provider.allocatedBalance)}{" "}
+                {storeViews.provider.copyTradingQuote
+                  ? storeViews.provider.copyTradingQuote.toUpperCase()
+                  : ""}
+              </b>
+            </>
+          ) : (
+            <>
+              <FormattedMessage id="srv.minimum" />
+              <b>
+                {formatFloat(storeViews.provider.minAllocatedBalance)}{" "}
+                {storeViews.provider.copyTradingQuote
+                  ? storeViews.provider.copyTradingQuote.toUpperCase()
+                  : ""}
+              </b>
+            </>
+          )}
+          {storeViews.provider.exchangeInternalId && !storeViews.provider.disable && (
+            <img
+              alt="zignaly"
+              className="editIcon"
+              onClick={() => showCopyModal(true)}
+              src={EditIcon}
+            />
+          )}
+        </Typography>
+      )}
       <Hidden smUp>
         {storeViews.provider.internalPaymentInfo && (
           <PaymentButton provider={storeViews.provider} />
