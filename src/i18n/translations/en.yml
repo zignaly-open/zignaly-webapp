@@ -758,6 +758,7 @@ terminal.timeautoclose.help: "If after this time passes, the position hasn't tri
 terminal.timeautoclose: "Time-based Autoclose"
 terminal.title: "Trading Terminal"
 terminal.trailingstop.help: "Once this price is reached, the trailing stop loss will active."
+terminal.trailingstop.limit.minprice: "Trailing stop position price cannot be lower than {value}"
 terminal.trailingstop.limit.zero.lower: "Trailing stop distance must be a number lower than 0."
 terminal.trailingstop.limit.zero.greater: "Trailing stop distance must be a number greater than 0."
 terminal.trailingstop.valid.percentage.greater: "Trailing stop percentage must be a number greater than 0."

@@ -23,6 +23,7 @@ const useValidation = () => {
    * @param {string} errorId error translation id
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
+  // eslint-disable-next-line max-params
   const lessThan = (value, compare, side, errorId) => {
     const sideErrorText = side.toUpperCase() === "LONG" ? "lower" : "greater";
     const compareFn = side.toUpperCase() === "LONG" ? lt : gt;
@@ -38,6 +39,7 @@ const useValidation = () => {
    * @param {string} errorId error translation id
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
+  // eslint-disable-next-line max-params
   const greaterThan = (value, compare, side, errorId) => {
     const sideErrorText = side.toUpperCase() === "LONG" ? "greater" : "lower";
     const compareFn = side.toUpperCase() === "LONG" ? gt : lt;
