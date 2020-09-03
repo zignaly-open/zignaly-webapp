@@ -122,7 +122,9 @@ const CopyTradersAnalytics = ({ provider }) => {
           </Typography>
 
           <Typography className={increase >= 0 ? "green" : "red"} variant="h4">
-            {`+${increase} (${formatFloat2Dec(increasePercentage)}%) Copiers Last 7 Days`}
+            {`+${increase} (${
+              !isNaN(increasePercentage) ? formatFloat2Dec(increasePercentage) : 0
+            }%) Copiers Last 7 Days`}
           </Typography>
         </Box>
         <Box
