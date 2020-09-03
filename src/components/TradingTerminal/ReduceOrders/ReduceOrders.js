@@ -93,17 +93,6 @@ const ReduceOrders = (props) => {
    * @type {Array<number>}
    */
   const removeReduceOrder = watch("removeReduceOrder", []);
-  //   const removeReduceOrder = useWatch({
-  //     name: "removeReduceOrder",
-  //     control,
-  //     // defaultValue: [],
-  //     defaultValue: "aa",
-  //   });
-  //   const value = useWatch({
-  //     name: "bbb",
-  //     control,
-  //     defaultValue: "default data",
-  //   });
   const isRecurringPersistent = Boolean(
     reduceOrders.find(
       (o) => (o.recurring || o.persistent) && !removeReduceOrder.includes(o.targetId),
@@ -130,7 +119,7 @@ const ReduceOrders = (props) => {
   };
 
   // Register special form element to store removed orders
-  React.useEffect(() => {
+  useEffect(() => {
     register("removeReduceOrder");
     return () => unregister("removeReduceOrder");
   }, [register, unregister]);
@@ -208,8 +197,6 @@ const ReduceOrders = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          {/* <input name="removeReduceOrder" ref={register} type="hidden" defaultValues={[]} /> */}
-
           {reduceOrders.map((order) => displayReduceOrder(order))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {isRecurringPersistent && (
