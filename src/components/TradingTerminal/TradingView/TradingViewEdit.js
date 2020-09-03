@@ -225,6 +225,7 @@ const TradingViewEdit = (props) => {
       trailingStopPrice: "",
       units: "",
       dcaTargetPricePercentage1: "",
+      dcaRebuyPercentage1: "",
     },
   });
 

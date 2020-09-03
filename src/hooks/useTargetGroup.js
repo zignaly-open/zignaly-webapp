@@ -91,6 +91,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
   function setTargetPropertyValue(propertyName, targetId, value) {
     const targetPropertyName = composeTargetPropertyName(propertyName, targetId);
 
+    console.log(targetPropertyName, value);
     return setValue(targetPropertyName, value);
   }
 

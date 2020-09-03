@@ -36,7 +36,7 @@ const TrailingStopPanel = (props) => {
   const existsTrailingStop = positionEntity
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable(existsTrailingStop);
+  const { expanded, expandClass, setExpanded } = useExpandable(existsTrailingStop);
   const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
   const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
@@ -247,7 +247,9 @@ const TrailingStopPanel = (props) => {
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.trailingstop" />

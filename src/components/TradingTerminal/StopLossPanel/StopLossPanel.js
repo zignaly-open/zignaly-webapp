@@ -36,7 +36,7 @@ const StopLossPanel = (props) => {
   const existsStopLoss = positionEntity
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
-  const { expanded, expandClass, handleToggleExpanded } = useExpandable(existsStopLoss);
+  const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
   const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
@@ -233,7 +233,9 @@ const StopLossPanel = (props) => {
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && <Switch checked={expanded} onChange={handleToggleExpanded} size="small" />}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.stoploss" />
