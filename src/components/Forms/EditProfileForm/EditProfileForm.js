@@ -38,11 +38,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, setError, watch } = useForm();
+  const { errors, handleSubmit, control, register, setError, watch } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
   const [selectedSocials, setSelectedSocials] = useState(provider.social);
+  const [minAllocatedBalance, setMinAllocatedBalance] = useState(provider.minAllocatedBalance);
   const [socialError, setSocialError] = useState(false);
   const [logoUrl, setLogoUrl] = useState(provider.logoUrl);
   const [positions, setPositions] = useState([]);
@@ -284,6 +285,18 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setLogoUrl(url);
   };
 
+  /**
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {Void} None.
+   */
+  const handleMinAllocatedChange = (e) => {
+    let data = e.target.value;
+    if (data.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) || data === "") {
+      data = data.replace(",", ".");
+      setMinAllocatedBalance(data);
+    }
+  };
+
   const checkIfCanBeDeleted = () => {
     if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
       return true;
@@ -458,24 +471,20 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.minbalance" />
                 </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.minAllocatedBalance ? "error" : "")
-                      }
-                      error={!!errors.minAllocatedBalance}
-                      fullWidth
-                      type="number"
-                      variant="outlined"
-                    />
+                <TextField
+                  className={
+                    "customInput " +
+                    (storeSettings.darkStyle ? " dark " : " light ") +
+                    (errors.minAllocatedBalance ? "error" : "")
                   }
-                  control={control}
-                  defaultValue={provider.minAllocatedBalance}
+                  error={!!errors.minAllocatedBalance}
+                  fullWidth
+                  inputRef={register({ required: true })}
                   name="minAllocatedBalance"
-                  rules={{ required: false }}
+                  onChange={handleMinAllocatedChange}
+                  type="text"
+                  value={minAllocatedBalance}
+                  variant="outlined"
                 />
               </Box>
             )}
