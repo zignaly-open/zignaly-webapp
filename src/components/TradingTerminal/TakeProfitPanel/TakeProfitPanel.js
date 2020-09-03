@@ -53,7 +53,7 @@ const TakeProfitPanel = (props) => {
     simulateInputChangeEvent,
   } = useTargetGroup(
     "takeProfit",
-    positionEntity ? positionTargetsCardinality : defaultCardinality,
+    positionEntity ? Math.max(defaultCardinality, positionTargetsCardinality) : defaultCardinality,
   );
 
   // Other panels watched variables to react on changes.
