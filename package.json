@@ -44,7 +44,7 @@
     "react-feather": "^2.0.8",
     "react-google-recaptcha": "^2.1.0",
     "react-helmet": "^6.0.0",
-    "react-hook-form": "^6.3.0",
+    "react-hook-form": "^6.7.0",
     "react-intl": "^4.5.5",
     "react-lazyload": "^3.0.0",
     "react-markdown": "^4.3.1",
