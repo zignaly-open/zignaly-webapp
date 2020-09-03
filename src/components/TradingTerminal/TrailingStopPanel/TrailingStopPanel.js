@@ -12,6 +12,8 @@ import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
+import useValidation from "../../../hooks/useValidation";
+import { triggerTz } from "../../../services/tz";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -37,7 +39,7 @@ const TrailingStopPanel = (props) => {
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsTrailingStop);
-  const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
+  const { clearErrors, errors, getValues, register, trigger, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
   const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
   const trailingStopDistance = parseFloat(trailingStopDistanceRaw);
@@ -46,7 +48,8 @@ const TrailingStopPanel = (props) => {
     : 0;
   const trailingStopPercentageRaw = watch("trailingStopPercentage", initTrailingStopPercentage);
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
-  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+  const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
+  const { lessThan, greaterThan } = useValidation();
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -77,80 +80,24 @@ const TrailingStopPanel = (props) => {
   const fieldsDisabled = getFieldsDisabledStatus();
 
   /**
-   * Validate trailing stop distance when change.
-   *
-   * @return {Void} None.
-   */
-  const trailingStopDistanceChange = () => {
-    const valueType = entryType === "LONG" ? "lower" : "greater";
-    const compareFn = entryType === "LONG" ? gt : lt;
-    const draftPosition = getValues();
-    const newTrailingStopDistance = parseFloat(draftPosition.trailingStopDistance);
-
-    if (
-      !isValidIntOrFloat(draftPosition.trailingStopDistance) ||
-      compareFn(newTrailingStopDistance, 0)
-    ) {
-      setError("trailingStopDistance", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.trailingstop.limit.zero" }, { type: valueType }),
-      });
-      return;
-    }
-
-    if (errors.trailingStopDistance) {
-      clearErrors("trailingStopDistance");
-    }
-  };
-
-  /**
    * Calculate price based on percentage when value is changed.
    *
    * @return {Void} None.
    */
   const trailingStopPercentageChange = () => {
-    const draftPosition = getValues();
     const price = getEntryPrice();
-    const newTrailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
-    const trailingStopPrice = (price * (100 + newTrailingStopPercentage)) / 100;
-    const valueType = entryType === "LONG" ? "greater" : "lower";
-    const compareFn = entryType === "LONG" ? lt : gt;
-
-    if (draftPosition.trailingStopPercentage !== "-") {
-      if (
-        !isValidIntOrFloat(draftPosition.trailingStopPercentage) ||
-        compareFn(newTrailingStopPercentage, 0)
-      ) {
-        setError("trailingStopPercentage", {
-          type: "manual",
-          message: formatMessage(
-            { id: "terminal.trailingstop.valid.percentage" },
-            { type: valueType },
-          ),
-        });
-        return;
-      }
-    }
 
     if (price > 0) {
+      // Update trailing stop price
+      const draftPosition = getValues();
+      const newTrailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
+      const trailingStopPrice = (price * (100 + newTrailingStopPercentage)) / 100;
       setValue("trailingStopPrice", formatPrice(trailingStopPrice, "", ""));
     } else {
       setValue("trailingStopPrice", "");
     }
 
-    if (
-      !validateTargetPriceLimits(
-        trailingStopPrice,
-        "trailingStopPrice",
-        "terminal.trailingstop.limit",
-      )
-    ) {
-      return;
-    }
-
-    if (errors.trailingStopPrice) {
-      clearErrors("trailingStopPrice");
-    }
+    trigger("trailingStopPrice");
   };
 
   /**
@@ -164,38 +111,15 @@ const TrailingStopPanel = (props) => {
     const trailingStopPrice = parseFloat(draftPosition.trailingStopPrice);
     const priceDiff = trailingStopPrice - price;
 
-    if (!isValidIntOrFloat(draftPosition.trailingStopPrice) || trailingStopPrice < 0) {
-      setError("trailingStopPrice", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.trailingstop.valid.price" }),
-      });
-      return;
-    }
-
     if (!isNaN(priceDiff) && priceDiff !== 0) {
+      // Update trailing stop percentage
       const newTrailingStopPercentage = (priceDiff / price) * 100;
       setValue("trailingStopPercentage", formatFloat2Dec(newTrailingStopPercentage));
     } else {
       setValue("trailingStopPercentage", "");
     }
 
-    if (
-      !validateTargetPriceLimits(
-        trailingStopPrice,
-        "trailingStopPrice",
-        "terminal.trailingstop.limit",
-      )
-    ) {
-      return;
-    }
-
-    if (errors.trailingStopPrice) {
-      clearErrors("trailingStopPrice");
-    }
-
-    if (errors.trailingStopPercentage) {
-      clearErrors("trailingStopPercentage");
-    }
+    trigger("trailingStopPercentage");
   };
 
   const chainedPriceUpdates = () => {
@@ -283,7 +207,10 @@ const TrailingStopPanel = (props) => {
                 className="outlineInput"
                 defaultValue={initTrailingStopPercentage}
                 disabled={fieldsDisabled.trailingStopPercentage}
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage"),
+                })}
                 name="trailingStopPercentage"
                 onChange={trailingStopPercentageChange}
               />
@@ -293,7 +220,11 @@ const TrailingStopPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={fieldsDisabled.trailingStopPrice}
-                inputRef={register}
+                inputRef={register({
+                  min: 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
+                  validate: (value) =>
+                    validateTargetPriceLimits2(value, "terminal.trailingstop.limit"),
+                })}
                 name="trailingStopPrice"
                 onChange={trailingStopPriceChange}
               />
@@ -306,9 +237,11 @@ const TrailingStopPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={fieldsDisabled.trailingStopDistance}
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
+                })}
                 name="trailingStopDistance"
-                onChange={trailingStopDistanceChange}
               />
               <div className="currencyBox">%</div>
             </Box>
