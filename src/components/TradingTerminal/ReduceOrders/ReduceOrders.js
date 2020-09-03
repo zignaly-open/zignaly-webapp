@@ -19,6 +19,7 @@ import useExpandable from "../../../hooks/useExpandable";
 import "./ReduceOrders.scss";
 import { colors } from "../../../services/theme";
 import { formatFloat2Dec } from "../../../utils/format";
+import { formatPrice } from "../../../utils/formatters";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -149,7 +150,7 @@ const ReduceOrders = (props) => {
             labelId="terminal.target"
           />
           <ReduceOrderStatus labelId="terminal.status" order={order} />
-          <Box alignItems="center" display="flex">
+          <Box alignItems="center" className="percentageBox" display="flex">
             <OutlinedInput
               className="outlineInput"
               disabled={true}
@@ -157,17 +158,35 @@ const ReduceOrders = (props) => {
             />
             <div className="currencyBox">%</div>
           </Box>
+          <Box alignItems="center" className="valueBox" display="flex">
+            <OutlinedInput
+              className="outlineInput"
+              disabled={true}
+              value={formatPrice(order.price)}
+            />
+            <div className="currencyBox">{positionEntity.quote}</div>
+          </Box>
+        </Box>
+        <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
           <HelperLabel
             descriptionId="terminal.reducestrategy.availablePercentage.help"
             labelId="terminal.reducestrategy.availablePercentage"
           />
-          <Box alignItems="center" display="flex">
+          <Box alignItems="center" className="percentageBox" display="flex">
             <OutlinedInput
               className="outlineInput"
               disabled={true}
               value={formatFloat2Dec(order.availablePercentage)}
             />
             <div className="currencyBox">%</div>
+          </Box>
+          <Box alignItems="center" className="valueBox" display="flex">
+            <OutlinedInput
+              className="outlineInput"
+              disabled={true}
+              value={formatPrice(order.amount)}
+            />
+            <div className="currencyBox">{positionEntity.base}</div>
           </Box>
         </Box>
         {showRemove && (

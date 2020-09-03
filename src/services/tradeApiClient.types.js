@@ -83,20 +83,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} PositionReduceOrder
- * @property {number} targetId
- * @property {number} priceTargetPercentage
- * @property {number} amountPercentage
- * @property {number} targetId
- * @property {string} type
- * @property {number} targetPercentage
- * @property {number} availablePercentage
- * @property {boolean} done
- * @property {boolean} recurring
- * @property {boolean} persistent
- */
-
-/**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
  * @property {string} token Access token.
@@ -493,6 +479,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} persistent
  * @property {string} orderId
  * @property {string} errorMSG
+ * @property {string} price
+ * @property {string} amount
  */
 
 /**
