@@ -38,7 +38,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, register, setError, setValue, watch } = useForm();
+  const { errors, handleSubmit, control, register, setError, watch } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
