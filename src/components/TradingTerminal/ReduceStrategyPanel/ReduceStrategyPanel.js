@@ -14,6 +14,7 @@ import {
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { isValidIntOrFloat } from "../../../utils/validators";
 
 /**
@@ -119,21 +120,24 @@ const ReduceStrategyPanel = (props) => {
 
   // Close panel on position update
   useEffect(() => {
-    setExpand(false);
+    if (updatedAt) {
+      setExpand(false);
+    }
   }, [updatedAt]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expand) {
-      reset([
-        "reduceOrderType",
-        "reduceTargetPercentage",
-        "reduceAvailablePercentage",
-        "reduceRecurring",
-        "reducePersistent",
-      ]);
+      reset({
+        ...getValues(),
+        reduceOrderType: "",
+        reduceTargetPercentage: "",
+        reduceAvailablePercentage: "",
+        reduceRecurring: "",
+        reducePersistent: "",
+      });
     }
   };
-  useEffect(emptyFieldsWhenCollapsed, [expand]);
+  useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
 
   const orderTypeOptions = [
     {
