@@ -84,8 +84,13 @@ const TrailingStopPanel = (props) => {
   const trailingStopDistanceChange = () => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
+    const draftPosition = getValues();
+    const newTrailingStopDistance = parseFloat(draftPosition.trailingStopDistance);
 
-    if (!isValidIntOrFloat(trailingStopDistanceRaw) || compareFn(trailingStopDistance, 0)) {
+    if (
+      !isValidIntOrFloat(draftPosition.trailingStopDistance) ||
+      compareFn(newTrailingStopDistance, 0)
+    ) {
       setError("trailingStopDistance", {
         type: "manual",
         message: formatMessage({ id: "terminal.trailingstop.limit.zero" }, { type: valueType }),
@@ -106,12 +111,16 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentageChange = () => {
     const draftPosition = getValues();
     const price = getEntryPrice();
-    const trailingStopPrice = (price * (100 + trailingStopPercentage)) / 100;
+    const newTrailingStopPercentage = parseFloat(draftPosition.trailingStopPercentage);
+    const trailingStopPrice = (price * (100 + newTrailingStopPercentage)) / 100;
     const valueType = entryType === "LONG" ? "greater" : "lower";
     const compareFn = entryType === "LONG" ? lt : gt;
 
     if (draftPosition.trailingStopPercentage !== "-") {
-      if (!isValidIntOrFloat(trailingStopPercentageRaw) || compareFn(trailingStopPercentage, 0)) {
+      if (
+        !isValidIntOrFloat(draftPosition.trailingStopPercentage) ||
+        compareFn(newTrailingStopPercentage, 0)
+      ) {
         setError("trailingStopPercentage", {
           type: "manual",
           message: formatMessage(
@@ -272,6 +281,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                defaultValue={initTrailingStopPercentage}
                 disabled={fieldsDisabled.trailingStopPercentage}
                 inputRef={register}
                 name="trailingStopPercentage"
