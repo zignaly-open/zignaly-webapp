@@ -81,7 +81,7 @@ const DCAPanel = (props) => {
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
   const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
-  const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
+  const positionTargetsCardinality = positionEntity ? Math.max(1, size(dcaRebuyIndexes)) : 1;
   const { expanded, expandClass, setExpanded } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
