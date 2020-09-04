@@ -236,7 +236,7 @@ const ReduceStrategyPanel = (props) => {
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
-                <span className="balance">{getEntrySize()}</span>
+                <span className="balance">{formatPrice(positionEntity.availableAmount)}</span>
               </FormHelperText>
             </Box>
             {errors.reduceAvailablePercentage && (
