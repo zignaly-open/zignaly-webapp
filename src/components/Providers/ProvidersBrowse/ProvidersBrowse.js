@@ -40,7 +40,6 @@ const ProvidersBrowse = ({
     quotes,
     exchanges,
     exchangeTypes,
-    fromUserOptions,
     sort,
     setSort,
     clearFilters,
@@ -69,7 +68,6 @@ const ProvidersBrowse = ({
           exchangeTypes={exchangeTypes}
           exchanges={exchanges}
           filters={filters}
-          fromUserOptions={fromUserOptions}
           onClose={toggleFilters}
           open={showFilters}
           quotes={quotes}

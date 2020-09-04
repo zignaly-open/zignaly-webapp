@@ -42,6 +42,7 @@
     background: transparent;
     border: 2px solid var(--purple);
     color: var(--purple);
+    min-height: 50px;
     min-width: 250px;
 
     .loader {
@@ -53,6 +54,10 @@
     background: transparent;
     color: var(--purple);
     min-width: 120px;
+
+    .loader {
+      color: var(--purple);
+    }
   }
 
   &.bgPurple {

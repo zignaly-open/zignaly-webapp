@@ -20,7 +20,7 @@ This is the official webapp of the crypto copy trading Zignaly platform.
 
 We crafted this app using Gatsby https://github.com/gatsbyjs/gatsby, a modern web framework based in React that provides out of the box performance optimization to bring blazing fast experience to our traders community.
 
-We use standard and modern webapp toolset:
+### We use standard and modern webapp toolset:
 
 - Jest for automated testing.
 - Material UI components for UI.
@@ -36,7 +36,7 @@ We use standard and modern webapp toolset:
 - ChartJS https://github.com/chartjs/Chart.js for our analytics / performance charts.
 - Trade API Client, is a JS implementation of Zignaly Trade API client that allow you to control copy trader / signal provider subscriptions, statistics, positions management, balance, withdraw, settings among other stuff at your Zignaly account. You can find the implementation at `src/services/tradeApiClient.js`
 
-Code organization:
+### Code organization:
 
 - All the custom source code is located at `src` directory.
   - `components` - Our React UI custom components.

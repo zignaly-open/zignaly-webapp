@@ -3,7 +3,7 @@ import "./ProviderHeaderActions.scss";
 import { Box, Typography } from "@material-ui/core";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import PaymentButton from "../PaymentButton";
-import TrialPeriod from "./TrialPeriod";
+import TrialPeriod from "../TrialPeriod";
 import { FormattedMessage } from "react-intl";
 import FollowProviderButton from "../FollowProviderButton";
 import ProviderLogo from "../ProviderLogo/";

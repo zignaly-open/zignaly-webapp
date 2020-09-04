@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -11,7 +11,9 @@ import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import { formatPrice } from "../../../utils/formatters";
+import { formatFloat2Dec } from "../../../utils/format";
 import { CircularProgress } from "@material-ui/core";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -34,7 +36,7 @@ const IncreaseStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch } = useFormContext();
+  const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
   const { selectedExchange } = useStoreSettingsSelector();
   const {
@@ -56,6 +58,9 @@ const IncreaseStrategyPanel = (props) => {
 
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
+  const providerConsumedBalancePercentage = providerService
+    ? providerService.providerConsumedBalancePercentage
+    : 0;
 
   /**
    * Handle toggle switch action.
@@ -77,6 +82,29 @@ const IncreaseStrategyPanel = (props) => {
   // Watched inputs that affect components.
   const entryStrategy = watch("entryStrategy");
   const lastPrice = watch("lastPrice");
+  const updatedAt = watch("updatedAt");
+
+  // Close panel on position update
+  useEffect(() => {
+    if (updatedAt) {
+      setExpand(false);
+    }
+  }, [updatedAt]);
+
+  const emptyFieldsWhenCollapsed = () => {
+    if (!expand) {
+      reset({
+        ...getValues(),
+        stopPrice: "",
+        price: "",
+        realInvestment: "",
+        positionSize: "",
+        positionSizePercentage: "",
+        units: "",
+      });
+    }
+  };
+  useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -94,7 +122,7 @@ const IncreaseStrategyPanel = (props) => {
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        <Switch defaultChecked={expand} onChange={handleToggle} size="small" />
+        <Switch checked={expand} onChange={handleToggle} size="small" />
         <Typography variant="h5">
           <FormattedMessage id="terminal.increasestrategy" />
         </Typography>
@@ -233,7 +261,13 @@ const IncreaseStrategyPanel = (props) => {
                 )}
                 <FormattedMessage id="terminal.provider.consumed" />{" "}
                 {!loadingProviders && (
-                  <span className="balance">{formatPrice(providerConsumedBalance)}</span>
+                  <span className="balance">{formatPrice(providerConsumedBalance)} </span>
+                )}
+                <FormattedMessage id="terminal.provider.available" />{" "}
+                {!loadingProviders && (
+                  <span className="balance">
+                    {formatFloat2Dec(100 - providerConsumedBalancePercentage)}%
+                  </span>
                 )}
               </FormHelperText>
               {errors.positionSizePercentage && (

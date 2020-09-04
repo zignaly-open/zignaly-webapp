@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { lt, gt, isEqual, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Button, Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import { useFormContext } from "react-hook-form";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -81,8 +81,8 @@ const DCAPanel = (props) => {
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
   const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
-  const positionTargetsCardinality = positionEntity ? size(dcaRebuyIndexes) : 1;
-  const { expanded, expandClass, expandableControl } = useExpandable(size(dcaAllIndexes) > 0);
+  const positionTargetsCardinality = positionEntity ? Math.max(1, size(dcaRebuyIndexes)) : 1;
+  const { expanded, expandClass, setExpanded } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
     cardinality,
@@ -455,7 +455,9 @@ const DCAPanel = (props) => {
   return (
     <Box className={`panel dcaPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {!isClosed && expandableControl}
+        {!isClosed && (
+          <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
+        )}
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.dca" />

@@ -1,7 +1,6 @@
 import React from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Box, FormHelperText, Tooltip } from "@material-ui/core";
-import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {Object} HelperLabelProps
@@ -21,16 +20,15 @@ const HelperLabel = (props) => {
 
   return (
     <Box alignItems="end" className="help" display="flex" flexDirection="row">
-      <FormHelperText>
-        <FormattedMessage id={labelId} />
-      </FormHelperText>
       <Tooltip
         arrow
         enterTouchDelay={50}
         placement="left-end"
         title={intl.formatMessage({ id: descriptionId })}
       >
-        <Help />
+        <FormHelperText>
+          <FormattedMessage id={labelId} />
+        </FormHelperText>
       </Tooltip>
     </Box>
   );

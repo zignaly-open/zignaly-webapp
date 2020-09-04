@@ -70,7 +70,15 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     if (position.providerLink) {
       return (
         <Link to={position.providerLink}>
-          <img src={position.providerLogo} title={position.providerName} width="30px" />
+          <img
+            onError={(e) => {
+              // @ts-ignore
+              e.target.src = defaultProviderLogo;
+            }}
+            src={position.providerLogo}
+            title={position.providerName}
+            width="30px"
+          />
         </Link>
       );
     }
@@ -626,7 +634,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
     const { positionId, closed } = position;
-    const isProviderOwner = position.providerOwnerUserId === storeUserData.userId;
+    const isProviderOwner =
+      position.providerId !== "1" && position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
@@ -1263,12 +1272,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: null,
       },
       {
-        columnId: "col.entryprice",
+        columnId: "col.price.entry",
         propertyName: "buyPrice",
         renderFunction: renderEntryPrice,
       },
       {
-        columnId: "col.exitprice",
+        columnId: "col.price.exit",
         propertyName: "sellPrice",
         renderFunction: renderExitPrice,
       },

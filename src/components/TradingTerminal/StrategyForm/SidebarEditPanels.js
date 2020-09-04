@@ -4,6 +4,8 @@ import DCAPanel from "../DCAPanel/DCAPanel";
 import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPanel";
+import ReduceOrders from "../ReduceOrders/ReduceOrders";
+import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -32,6 +34,8 @@ const SidebarEditPanels = (props) => {
       <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
       <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+      <ReduceOrders positionEntity={positionEntity} />
+      <ReduceStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
     </>
   );
 };

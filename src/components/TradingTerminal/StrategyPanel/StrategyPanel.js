@@ -18,6 +18,7 @@ import Modal from "../../Modal";
 import { CircularProgress } from "@material-ui/core";
 import { LeverageForm } from "..";
 import { formatPrice } from "../../../utils/formatters";
+import { formatFloat2Dec } from "../../../utils/format";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
@@ -67,6 +68,7 @@ const StrategyPanel = (props) => {
   const providerService = watch("providerService");
   const providerAllocatedBalance = watch("providerPayableBalance");
   const providerConsumedBalance = watch("providerConsumedBalance");
+  const providerConsumedBalancePercentage = watch("providerConsumedBalancePercentage");
   const isCopyProvider = providerService && providerService !== "1";
 
   const entryStrategyOptions = [
@@ -224,7 +226,12 @@ const StrategyPanel = (props) => {
               <div className="currencyBox">%</div>
             </Box>
             <FormHelperText>
-              Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
+              <FormattedMessage id="terminal.provider.allocated" />{" "}
+              <span>{formatPrice(providerAllocatedBalance)}, </span>
+              <FormattedMessage id="terminal.provider.consumed" />{" "}
+              <span>{formatPrice(providerConsumedBalance)}, </span>
+              <FormattedMessage id="terminal.provider.available" />{" "}
+              <span>{formatFloat2Dec(100 - providerConsumedBalancePercentage)}%</span>
             </FormHelperText>
             {errors.positionSizePercentage && (
               <span className="errorText">{errors.positionSizePercentage.message}</span>
@@ -268,7 +275,13 @@ const StrategyPanel = (props) => {
               size="small"
               state={modalVisible}
             >
-              <LeverageForm leverage={parseInt(leverage)} max={125} min={1} setValue={setValue} />
+              <LeverageForm
+                leverage={parseInt(leverage)}
+                max={125}
+                min={1}
+                onClose={() => setModalVisible(false)}
+                setValue={setValue}
+              />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>

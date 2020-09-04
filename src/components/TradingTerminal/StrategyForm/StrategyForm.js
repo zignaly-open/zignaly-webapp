@@ -15,6 +15,7 @@ import {
 } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
@@ -87,6 +88,7 @@ const StrategyForm = (props) => {
   const { errors, handleSubmit, setValue, reset, trigger, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
+  const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
   const { formatMessage } = useIntl();
@@ -370,6 +372,13 @@ const StrategyForm = (props) => {
         providerName: "Manual Trading",
         internalExchangeId: positionEntity.internalExchangeId,
         positionId: positionEntity.positionId,
+        reduceTargetPercentage: draftPosition.reduceTargetPercentage,
+        reduceAvailablePercentage: draftPosition.reduceAvailablePercentage,
+        reduceOrderType: draftPosition.reduceOrderType,
+        reduceRecurring: draftPosition.reduceRecurring,
+        reducePersistent: draftPosition.reducePersistent,
+        removeReduceRecurringPersistent: draftPosition.removeReduceRecurringPersistent,
+        removeReduceOrder: draftPosition.removeReduceOrder,
       },
       positionStrategy,
     );
@@ -539,7 +548,9 @@ const StrategyForm = (props) => {
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
+  const isCopyTrader = positionEntity
+    ? positionEntity.providerOwnerUserId === storeUserData.userId
+    : false;
   const isUpdating = positionEntity ? positionEntity.updating : false;
   const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;

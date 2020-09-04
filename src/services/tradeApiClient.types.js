@@ -116,6 +116,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number|string} providerId Copy trader provider ID or "1" when is a manual signal.
  * @property {string} providerName Provider name when is a position published for copy trader service.
  * @property {string} internalExchangeId Exchange connection ID.
+ * @property {number} [reduceTargetPercentage] The reduce order target in percentage from the average entry price, or from the last entry price if recurring is selected.
+ * @property {number} [reduceAvailablePercentage] The amount to be sold from the position available amount for this reduce order target.
+ * @property {string} [reduceOrderType] The reduce order type that will be send to the exchange, options: market|limit
+ * @property {boolean} [reduceRecurring] If checked, each time a new DCA is filled, a reduce order will be placed in the exchange.
+ * @property {boolean} [reducePersistent] If checked, it won't close the position if there are pending DCAs.
+ * @property {boolean} [removeReduceRecurringPersistent] Remove the flag recurring and persistent.
+ * @property {Array<number>} [removeReduceOrder] An array with the list of targets ids for removing their reduce orders
+ * @property {Array<number>} [removeAllReduceOrders] Remove all pending reduce orders.
  */
 
 /**
@@ -359,6 +367,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
+ * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
  * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
  * @property {Number} realInvestment Invested amount without including the leveraged part.
  * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
@@ -418,6 +427,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerName Copy trader provider name.
  * @property {string} quote Quote currency ID.
  * @property {number} remainAmount Remaining position amount after apply take profits (decrease) / rebuy (increase).
+ * @property {number} availableAmount Remaining position amount minus locked amount from pending buy/sell orders.
  * @property {string} riskStyle Risk style (coloring) based on gain/loss.
  * @property {number} sellPrice Exit price for closed position, current price for open positions.
  * @property {string} side Position side (LONG / SHORT).
@@ -426,7 +436,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} pair Currency pair in separated format, i.e. "BTC/USDT".
  * @property {string} symbol Currency pair in separated format, i.e. "BTC/USDT".
  * @property {string} userId Zignaly user ID.
- * @property {('unsold' | 'sold' | 'unopened' | 'open' | '')} type Position status category.
+ * @property {('unsold' | 'sold' | 'unopened' | 'open' | 'log' | 'closed' | '')} type Position status category.
  * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
  * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
  * @property {Number} returnFromAllocated Percentage return from copy trader service allocated balance.
@@ -457,6 +467,21 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} skipped
  * @property {string} buyType
  * @property {string} errorMSG
+ */
+
+/**
+ * @typedef {Object} ReduceOrder
+ * @property {number} targetId
+ * @property {string} type
+ * @property {number} targetPercentage
+ * @property {number} availablePercentage
+ * @property {boolean} done
+ * @property {boolean} recurring
+ * @property {boolean} persistent
+ * @property {string} orderId
+ * @property {string} errorMSG
+ * @property {string} price
+ * @property {string} amount
  */
 
 /**
@@ -714,7 +739,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} providerId
  * @property {String} quote
  * @property {Boolean} ro
- * @property {String} timeFrame
+ * @property {Number | Boolean} timeFrame
  * @property {String} timeFrameFormat
  * @property {String} token
  * @property {String} internalExchangeId
@@ -1116,6 +1141,7 @@ export function positionItemTransform(positionItem) {
     sellPrice: safeParseFloat(positionItem.sellPrice),
     side: positionItem.side.toUpperCase(),
     stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
+    signalId: positionItem.signalId ? positionItem.signalId : "",
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
       ? positionTakeProfitTargetsTransforrm(positionItem.takeProfitTargets)
       : false,
@@ -1296,6 +1322,7 @@ function createEmptyPositionEntity() {
     reBuyTargetsCountSuccess: 0,
     realInvestment: 0,
     remainAmount: 0,
+    availableAmount: 0,
     risk: 0,
     riskStyle: "",
     sellPrice: 0,
@@ -1332,6 +1359,7 @@ function createEmptyPositionEntity() {
     unrealizedProfitLossesPercentage: 0,
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
+    reduceOrders: [],
   };
 }
 
@@ -2236,6 +2264,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} useLeverageFromSignal
  * @property {Number} price
  * @property {Boolean} loading
+ * @property {Array<String>} signalProviderQuotes
  */
 
 /**
@@ -2380,6 +2409,7 @@ function createEmptyProviderGetEntity() {
     useLeverageFromSignal: false,
     price: 0,
     loading: false,
+    signalProviderQuotes: [""],
   };
 }
 
@@ -3251,6 +3281,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} providerId
  * @property {Array<string>} quotes
  * @property {Array<string>} exchanges
+ * @property {Number} version
  */
 
 /**
@@ -3287,7 +3318,11 @@ function createEmptyProfileNotificationsEntity() {
  */
 export function providerCreateResponseTransform(response) {
   const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = response._id ? response._id.$oid || response._id : "";
+  const normalizedId = response._id
+    ? response._id.$oid || response._id
+    : response.providerId
+    ? response.providerId
+    : "";
   const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyNewProviderEntity, response, {

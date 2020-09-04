@@ -72,7 +72,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
 
   const quoteAssets = useQuoteAssets(
     !isCopyTrading || Boolean(selectedExchange),
-    selectedExchange ? selectedExchange.id : "",
+    isCopyTrading && selectedExchange ? selectedExchange.id : "",
   );
   const quotes = Object.keys(quoteAssets);
 
@@ -103,6 +103,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
         projectId: "z01",
         description: "",
         providerId: CREATE_PROVIDER_ID,
+        version: 2,
       }),
       token: storeSession.tradeApi.accessToken,
     };
@@ -144,7 +145,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                   <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
                 </Typography>
                 <Typography className="desc" variant="body1">
-                  <FormattedMessage id="copyt.create.desc" />
+                  <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create.desc`} />
                 </Typography>
                 <Box alignItems="flex-start" display="flex" flexDirection="column">
                   <Box className="inputBox nameBox" display="flex" flexDirection="column" mr={1}>
@@ -162,7 +163,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                           message: intl.formatMessage({ id: "form.error.name.length" }),
                         },
                         maxLength: {
-                          value: 90,
+                          value: 50,
                           message: intl.formatMessage({ id: "form.error.name.length" }),
                         },
                       })}
@@ -170,7 +171,12 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     />
                     {errors.name && <span className="errorText">{errors.name.message}</span>}
                   </Box>
-                  <Box className="boxWrapper" display="flex" flexDirection="row">
+                  <Box
+                    alignItems="flex-start"
+                    className="boxWrapper"
+                    display="flex"
+                    flexDirection="row"
+                  >
                     {isCopyTrading && (
                       <Box className="inputBox typeBox" display="flex" flex={1} pr={1}>
                         <Controller
@@ -214,7 +220,12 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                     </Box>
                   </Box>
                   {isCopyTrading ? (
-                    <Box className="boxWrapper" display="flex" flexDirection="row">
+                    <Box
+                      alignItems="flex-start"
+                      className="boxWrapper"
+                      display="flex"
+                      flexDirection="row"
+                    >
                       <Box
                         className="inputBox minBalanceBox"
                         display="flex"
@@ -223,7 +234,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
                         mr={1}
                       >
                         <label className="customLabel">
-                          <Typography noWrap>
+                          <Typography className="callout2 selectLabel" noWrap>
                             <FormattedMessage id="srv.edit.minbalance" />
                           </Typography>
                         </label>

@@ -29,11 +29,11 @@ const ConnectExchangeView = ({ onClose }) => {
     <ModalPathContext.Provider value={modalPath}>
       <FormProvider {...methods}>
         <Box
-          alignItems="center"
+          alignItems="flex-start"
           className="connectExchangeView"
           display="flex"
           flexDirection="column"
-          justifyContent="center"
+          justifyContent="flex-start"
         >
           <ConnectExchangeViewHead onClose={onClose} />
           <ConnectExchangeViewContent />

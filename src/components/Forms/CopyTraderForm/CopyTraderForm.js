@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./CopyTraderForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -32,19 +32,25 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
+  const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
   const [alert, setAlert] = useState(undefined);
-  const { errors, handleSubmit, register, setError, setValue } = useForm();
+  const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
   // const { balance, loading } = useAvailableBalance();
 
-  const initFormData = () => {
-    if (provider.exchangeInternalId && !provider.disable) {
-      setValue("allocatedBalance", provider.allocatedBalance);
+  /**
+   *
+   * @param {React.ChangeEvent<*>} e Change event.
+   * @returns {Void} None.
+   */
+  const handleAllocatedChange = (e) => {
+    let data = e.target.value;
+    if (data.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) || data === "") {
+      data = data.replace(",", ".");
+      setAllocated(data);
     }
   };
-
-  useEffect(initFormData, []);
 
   /**
    *
@@ -197,9 +203,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
               {alert}
             </Alert>
           )}
-          <Typography variant="h3">{`How much ${provider.copyTradingQuote} you want to allocate to this trader.`}</Typography>
+          <Typography variant="h3">
+            <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+          </Typography>
           <Typography variant="body1">
-            Copy every move proportionally with the following amount.
+            <FormattedMessage id="trader.everymove" />
           </Typography>
           <Box
             alignItems="center"
@@ -215,7 +223,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
               flexDirection="column"
               justifyContent="start"
             >
-              <label className="customLabel">Choose allocated amount </label>
+              <label className="customLabel">
+                <FormattedMessage id="trader.choose" />{" "}
+              </label>
               <TextField
                 className="customInput"
                 error={!!errors.allocatedBalance}
@@ -224,11 +234,18 @@ const CopyTraderForm = ({ provider, onClose }) => {
                   required: true,
                 })}
                 name="allocatedBalance"
+                onChange={handleAllocatedChange}
+                value={allocated}
                 variant="outlined"
               />
               <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-                {`Minimum allocated amount ${provider.copyTradingQuote}`}{" "}
-                {provider.minAllocatedBalance}
+                <FormattedMessage
+                  id="trader.amount.error"
+                  values={{
+                    quote: provider.copyTradingQuote,
+                    amount: provider.minAllocatedBalance,
+                  }}
+                />
               </span>
             </Box>
           </Box>

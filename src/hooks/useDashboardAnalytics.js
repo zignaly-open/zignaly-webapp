@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import { useSelector } from "react-redux";
 import useQuoteAssets from "./useQuoteAssets";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
@@ -9,6 +8,8 @@ import useReadOnlyProviders from "./useReadOnlyProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
+import { toNumber } from "lodash";
+import useStoreSessionSelector from "./useStoreSessionSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -36,14 +37,7 @@ import useFilters from "./useFilters";
  * @returns {ProviderStatsData} Profile profit stats and filtering objects.
  */
 const useDashboardAnalytics = () => {
-  /**
-   * Select store session data.
-   *
-   * @param {DefaultStateType} state Application store data.
-   * @returns {StateSessionType} Store session data.
-   */
-  const selectStoreSession = (state) => state.session;
-  const storeSession = useSelector(selectStoreSession);
+  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
@@ -51,7 +45,10 @@ const useDashboardAnalytics = () => {
   const intl = useIntl();
 
   let providerAssets = useReadOnlyProviders();
-  providerAssets = providerAssets.filter((item) => item.hasBeenUsed);
+  providerAssets = providerAssets.filter(
+    (item) =>
+      item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
+  );
 
   let providers = providerAssets.map((item) => ({
     val: item.id,
@@ -70,15 +67,14 @@ const useDashboardAnalytics = () => {
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
 
   const quoteAssets = useQuoteAssets();
-  const quotes = Object.keys(quoteAssets);
+  const allQuotes = Object.keys(quoteAssets);
+  const [quotes, setQuotes] = useState([]);
 
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
   const defaultFilters = {
     timeFrame: "7",
     quote: "USDT",
-    // Store provider's label and value in order to display it in the
-    // dropdown before the providers list is resolved
     provider: providers[0],
   };
 
@@ -96,16 +92,36 @@ const useDashboardAnalytics = () => {
   // @ts-ignore
   const filters = res.filters;
 
+  const adjustQuotes = () => {
+    if (filters.provider.val !== "1" && filters.provider.val !== "all") {
+      const provider = providerAssets.find((item) => item.id === filters.provider.val);
+      if (provider && provider.quote) {
+        setQuotes([provider.quote]);
+      } else {
+        setQuotes(allQuotes);
+      }
+    } else {
+      setQuotes(allQuotes);
+    }
+  };
+
+  useEffect(adjustQuotes, [filters.provider]);
+
   const loadDashboardStats = () => {
     setLoading(true);
+    const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
     const payload = {
       token: storeSession.tradeApi.accessToken,
       ro: true,
       quote: filters.quote,
-      timeFrame: filters.timeFrame,
+      timeFrame: !timeFrmaeFormatList.includes(filters.timeFrame)
+        ? toNumber(filters.timeFrame)
+        : false,
       includeOpenPositions: true,
       providerId: filters.provider.val,
-      timeFrameFormat: "lastXDays",
+      timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
+        ? filters.timeFrame
+        : "lastXDays",
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
     tradeApi

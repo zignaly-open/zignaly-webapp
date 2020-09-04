@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import { isValidIntOrFloat } from "../../../utils/validators";
@@ -13,7 +13,7 @@ import "./EntryExpirationPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const EntryExpirationPanel = () => {
-  const { expanded, expandClass, expandableControl } = useExpandable();
+  const { expanded, expandClass, setExpanded } = useExpandable();
   const { clearErrors, errors, getValues, register, setError } = useFormContext();
   const { formatMessage } = useIntl();
 
@@ -60,7 +60,7 @@ const EntryExpirationPanel = () => {
   return (
     <Box className={`panel entryExpirationPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.entryexpiration" />

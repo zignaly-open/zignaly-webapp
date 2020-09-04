@@ -46,7 +46,6 @@ import useFilters from "./useFilters";
  * @property {Array<OptionType>} quotes
  * @property {Array<OptionType>} exchanges
  * @property {Array<OptionType>} exchangeTypes
- * @property {Array<OptionType>} fromUserOptions
  * @property {string} sort
  * @property {function} setSort
  * @property {function} clearFilters
@@ -115,15 +114,9 @@ const useProvidersList = (options) => {
     { val: "futures", label: "Futures" },
   ];
 
-  const fromUserOptions = [
-    { val: "ALL", label: "All Services" },
-    { val: "userOwned", label: "My Services" },
-  ];
-
   const optionsFilters = {
     exchange: exchanges,
     exchangeType: exchangeTypes,
-    fromUser: fromUserOptions,
     // wait until the options have been retreived before using them for comparison
     ...(quotes.length > 1 && { quote: quotes }),
   };
@@ -289,7 +282,6 @@ const useProvidersList = (options) => {
     setTimeFrame,
     quotes,
     exchangeTypes,
-    fromUserOptions,
     filters,
     setFilters,
     sort,

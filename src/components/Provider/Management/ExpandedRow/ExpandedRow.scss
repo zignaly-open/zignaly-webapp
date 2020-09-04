@@ -7,5 +7,13 @@
     min-width: 80px;
     padding: 12px;
     white-space: nowrap;
+
+    &.checkboxCell {
+      padding: 12px 12px 12px 6px;
+    }
+  }
+
+  .checkbox {
+    padding: 0;
   }
 }

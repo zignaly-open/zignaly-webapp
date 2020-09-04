@@ -167,7 +167,7 @@ const ContractsTable = ({ title, list, loadData }) => {
     },
     {
       name: "id",
-      label: "col.cancel",
+      label: "col.close",
       options: {
         customBodyRender: (val) => {
           return loading && position === val ? (
