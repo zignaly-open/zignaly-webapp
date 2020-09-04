@@ -50,7 +50,7 @@ const ReduceStrategyPanel = (props) => {
     reset,
   } = useFormContext();
   const { formatMessage } = useIntl();
-  const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
 
