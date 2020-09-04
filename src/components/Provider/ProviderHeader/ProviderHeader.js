@@ -8,7 +8,7 @@ import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import ProviderHeaderActions from "./ProviderHeaderActions";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-
+import { navigate } from "gatsby";
 /**
  * Provides the navigation bar for the opened provider.
  *
@@ -28,9 +28,11 @@ const ProviderHeader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeViews.provider.id, storeSettings.selectedExchange.internalId]);
 
-  if (typeof window !== "undefined") {
-    window.scrollTo(0, -500);
-  }
+  const checkAccess = () => {
+    // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
+    window.scrollTo(0, 0);
+  };
+  useEffect(checkAccess, []);
 
   return (
     <Box
