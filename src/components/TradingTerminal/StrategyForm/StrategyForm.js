@@ -561,6 +561,7 @@ const StrategyForm = (props) => {
         {isPositionView ? (
           <SidebarEditPanels
             currentSymbolData={currentSymbolData}
+            isReadOnly={isReadOnly}
             positionEntity={positionEntity}
           />
         ) : (

@@ -22,6 +22,7 @@ import useValidation from "../../../hooks/useValidation";
  * @typedef {Object} TrailingStopPanel
  * @property {MarketSymbol} symbolData
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
 /**
@@ -31,7 +32,7 @@ import useValidation from "../../../hooks/useValidation";
  * @returns {JSX.Element} Trailing stop panel element.
  */
 const TrailingStopPanel = (props) => {
-  const { symbolData, positionEntity } = props;
+  const { symbolData, positionEntity, isReadOnly = false } = props;
   const existsTrailingStop = positionEntity
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
@@ -49,13 +50,7 @@ const TrailingStopPanel = (props) => {
   const { lessThan, greaterThan } = useValidation();
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
-
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
 
