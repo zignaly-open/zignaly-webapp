@@ -780,6 +780,7 @@ terminal.warning.error: "Error"
 terminal.warning.exiting: "Exiting"
 terminal.warning.updating: "Updating"
 terminal.provider.allocated: "Current allocated:"
+terminal.provider.available: "Available:"
 terminal.provider.consumed: "Using:"
 
 # EXCHANGE ACCOUNTS

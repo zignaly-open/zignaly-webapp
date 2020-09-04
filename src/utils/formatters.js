@@ -25,7 +25,7 @@ export const formatNumber = (value, precision = 8) => {
 export const addThousandsSeparator = (value, separator = " ", precision = 2) => {
   const valueNumber = parseFloat(value);
 
-  if (valueNumber) {
+  if (typeof valueNumber === "number") {
     let finalValue = String(
       valueNumber.toLocaleString("en-US", {
         minimumFractionDigits: precision,
