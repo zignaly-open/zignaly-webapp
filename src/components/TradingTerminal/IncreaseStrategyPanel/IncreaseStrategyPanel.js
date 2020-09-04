@@ -11,6 +11,7 @@ import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import { formatPrice } from "../../../utils/formatters";
+import { formatFloat2Dec } from "../../../utils/format";
 import { CircularProgress } from "@material-ui/core";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 
@@ -57,6 +58,9 @@ const IncreaseStrategyPanel = (props) => {
 
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
+  const providerConsumedBalancePercentage = providerService
+    ? providerService.providerConsumedBalancePercentage
+    : 0;
 
   /**
    * Handle toggle switch action.
@@ -257,7 +261,13 @@ const IncreaseStrategyPanel = (props) => {
                 )}
                 <FormattedMessage id="terminal.provider.consumed" />{" "}
                 {!loadingProviders && (
-                  <span className="balance">{formatPrice(providerConsumedBalance)}</span>
+                  <span className="balance">{formatPrice(providerConsumedBalance)} </span>
+                )}
+                <FormattedMessage id="terminal.provider.available" />{" "}
+                {!loadingProviders && (
+                  <span className="balance">
+                    {formatFloat2Dec(100 - providerConsumedBalancePercentage)}%
+                  </span>
                 )}
               </FormHelperText>
               {errors.positionSizePercentage && (

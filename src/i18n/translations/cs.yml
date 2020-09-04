@@ -780,6 +780,7 @@ terminal.warning.error: "CH-Error"
 terminal.warning.exiting: "CH-Exiting"
 terminal.warning.updating: "CH-Updating"
 terminal.provider.allocated: "CH-Current allocated:"
+terminal.provider.available: "CH-Available:"
 terminal.provider.consumed: "CH-Using:"
 
 # EXCHANGE ACCOUNTS
