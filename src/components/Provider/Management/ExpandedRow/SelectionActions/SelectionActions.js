@@ -69,7 +69,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
     }
     if (action === "exit") {
       allSelectedSubPositions.forEach((item) => {
-        if (item.status === 1) {
+        if (item.status !== 1) {
           let payload = {
             token: storeSession.tradeApi.accessToken,
             positionId: item.positionId,
