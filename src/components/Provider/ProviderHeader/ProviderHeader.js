@@ -8,7 +8,7 @@ import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import ProviderHeaderActions from "./ProviderHeaderActions";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { navigate } from "gatsby";
+
 /**
  * Provides the navigation bar for the opened provider.
  *
