@@ -159,10 +159,22 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.total" />
               </Typography>
               <Typography className="smallText number3">
-                = USDT {formatFloat(balance.totalUSDT)}
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalUSDT)
+                )}
               </Typography>
             </Box>
-            <Typography className="number1">BTC {formatFloat(balance.totalBTC)}</Typography>
+            <Typography className="number1">
+              BTC{" "}
+              {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                <AllInclusiveIcon className="infinity" />
+              ) : (
+                formatFloat(balance.totalBTC)
+              )}
+            </Typography>
           </Box>
         </>
       )}
