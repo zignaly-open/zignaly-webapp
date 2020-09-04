@@ -427,6 +427,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} providerName Copy trader provider name.
  * @property {string} quote Quote currency ID.
  * @property {number} remainAmount Remaining position amount after apply take profits (decrease) / rebuy (increase).
+ * @property {number} availableAmount Remaining position amount minus locked amount from pending buy/sell orders.
  * @property {string} riskStyle Risk style (coloring) based on gain/loss.
  * @property {number} sellPrice Exit price for closed position, current price for open positions.
  * @property {string} side Position side (LONG / SHORT).
@@ -1321,6 +1322,7 @@ function createEmptyPositionEntity() {
     reBuyTargetsCountSuccess: 0,
     realInvestment: 0,
     remainAmount: 0,
+    availableAmount: 0,
     risk: 0,
     riskStyle: "",
     sellPrice: 0,

@@ -50,7 +50,7 @@ const ReduceStrategyPanel = (props) => {
     reset,
   } = useFormContext();
   const { formatMessage } = useIntl();
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { getEntryPrice } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
 
@@ -236,7 +236,7 @@ const ReduceStrategyPanel = (props) => {
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
-                <span className="balance">{getEntrySize()}</span>
+                <span className="balance">{formatPrice(positionEntity.availableAmount)}</span>
               </FormHelperText>
             </Box>
             {errors.reduceAvailablePercentage && (
