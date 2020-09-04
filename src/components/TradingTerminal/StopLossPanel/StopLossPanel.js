@@ -23,6 +23,7 @@ import "./StopLossPanel.scss";
  * @typedef {Object} StopLossPanel
  * @property {MarketSymbol} symbolData
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
 /**
@@ -32,7 +33,7 @@ import "./StopLossPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const StopLossPanel = (props) => {
-  const { symbolData, positionEntity } = props;
+  const { symbolData, positionEntity, isReadOnly = false } = props;
   const existsStopLoss = positionEntity
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
@@ -44,12 +45,7 @@ const StopLossPanel = (props) => {
   // Strategy panels inputs to observe for changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
 
   const getFieldsDisabledStatus = () => {
     /**
