@@ -26,6 +26,8 @@ const BaseCurrency = ({ provider }) => {
         quotes += provider.signalProviderQuotes[a];
         if (a !== 1) {
           quotes += ", ";
+        } else {
+          quotes += "...";
         }
       }
     }

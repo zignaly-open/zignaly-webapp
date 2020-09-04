@@ -5,7 +5,7 @@ import moment from "moment";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
  * Trial Period compoennt for CT profile Header.
