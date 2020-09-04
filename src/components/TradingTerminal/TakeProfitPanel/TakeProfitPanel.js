@@ -24,6 +24,7 @@ import "./TakeProfitPanel.scss";
  * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
 /**
@@ -33,7 +34,7 @@ import "./TakeProfitPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const TakeProfitPanel = (props) => {
-  const { symbolData, positionEntity = null } = props;
+  const { symbolData, positionEntity = null, isReadOnly = false } = props;
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
@@ -63,15 +64,10 @@ const TakeProfitPanel = (props) => {
 
   const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
-  const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
   const disableRemoveAction = isReadOnly || isTargetLocked;
+  const isClosed = positionEntity ? positionEntity.closed : false;
   const { formatMessage } = useIntl();
 
   const getFieldsDisabledStatus = () => {

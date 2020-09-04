@@ -25,6 +25,7 @@ import "./DCAPanel.scss";
  * @typedef {Object} DCAPanelProps
  * @property {MarketSymbol} symbolData
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
 /**
@@ -34,7 +35,7 @@ import "./DCAPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const DCAPanel = (props) => {
-  const { positionEntity, symbolData } = props;
+  const { positionEntity, symbolData, isReadOnly = false } = props;
   const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
@@ -102,13 +103,8 @@ const DCAPanel = (props) => {
     validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
   const disableRemoveAction = isReadOnly || isDoneTargetReached || cardinality === 0;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");

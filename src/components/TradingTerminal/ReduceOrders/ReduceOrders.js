@@ -70,6 +70,7 @@ const ReduceOrderStatus = (props) => {
 /**
  * @typedef {Object} ReduceOrdersProps
  * @property {PositionEntity} positionEntity Position entity for position edit trading view.
+ * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
 /**
@@ -79,17 +80,12 @@ const ReduceOrderStatus = (props) => {
  * @returns {JSX.Element} Reduce Orders panel element.
  */
 const ReduceOrders = (props) => {
-  const { positionEntity } = props;
+  const { positionEntity, isReadOnly = false } = props;
   const { setValue, watch, control, register, unregister } = useFormContext();
   const reduceOrders = values(positionEntity.reduceOrders);
   const { expanded, expandClass, setExpanded } = useExpandable(size(reduceOrders) > 0);
-
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isReadOnly = (isCopy && !isCopyTrader) || isClosed || isUpdating || isOpening;
+
   /**
    * @type {Array<number>}
    */
