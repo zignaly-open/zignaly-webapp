@@ -142,15 +142,15 @@ const ReduceStrategyPanel = (props) => {
 
   const orderTypeOptions = [
     {
-      label: formatMessage({ id: "terminal.strategy.market" }),
-      val: "market",
+      label: formatMessage({ id: "terminal.strategy.limit" }),
+      val: "limit",
     },
   ];
 
   if (!reduceRecurring) {
     orderTypeOptions.push({
-      label: formatMessage({ id: "terminal.strategy.limit" }),
-      val: "limit",
+      label: formatMessage({ id: "terminal.strategy.market" }),
+      val: "market",
     });
   }
   const isClosed = positionEntity.closed;
@@ -255,7 +255,7 @@ const ReduceStrategyPanel = (props) => {
                   <Checkbox
                     checked={value}
                     onChange={(e) => {
-                      setValue("reduceOrderType", "market");
+                      setValue("reduceOrderType", "limit");
                       onChange(e.target.checked);
                     }}
                   />
