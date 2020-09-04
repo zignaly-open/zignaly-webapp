@@ -11,6 +11,10 @@
     margin-right: 40px;
     text-transform: capitalize;
 
+    span {
+      margin-right: 3px;
+    }
+
     b {
       font-weight: 700;
       margin-left: 5px;
@@ -46,19 +50,19 @@
       &.base {
         justify-content: flex-start;
         margin: 5px 0 10px;
-        min-width: 33%;
+        min-width: 36%;
       }
 
       &.trade {
         justify-content: center;
         margin: 5px 0 10px;
-        min-width: 33%;
+        min-width: 32%;
       }
 
       &.type {
         justify-content: flex-end;
         margin: 5px 0 10px;
-        min-width: 33%;
+        min-width: 32%;
       }
 
       &.copiers {
@@ -94,7 +98,7 @@
 
       b {
         font-weight: 700;
-        margin-left: 5px;
+        margin-left: 0;
       }
 
       .imageBox {
