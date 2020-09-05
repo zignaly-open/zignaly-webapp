@@ -232,7 +232,6 @@ const StrategyPanel = (props) => {
                     formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"
-                onChange={positionSizePercentageChange}
                 placeholder={"0"}
                 error={!!errors.positionSizePercentage}
               />
