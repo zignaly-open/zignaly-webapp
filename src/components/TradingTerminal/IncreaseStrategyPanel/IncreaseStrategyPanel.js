@@ -163,12 +163,12 @@ const IncreaseStrategyPanel = (props) => {
                   className="outlineInput"
                   defaultValue={lastPrice}
                   disabled={isReadOnly}
+                  error={!!errors.price}
                   inputRef={register({
                     validate: (value) => parseFloat(value) > 0,
                   })}
                   name="price"
                   onChange={priceChange}
-                  error={!!errors.price}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -211,13 +211,13 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
+                  error={!!errors.positionSize}
                   inputRef={register({
                     validate: validatePositionSize,
                   })}
                   name="positionSize"
                   onChange={positionSizeChange}
                   placeholder={"0"}
-                  error={!!errors.positionSize}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -244,6 +244,7 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
+                  error={!!errors.positionSizePercentage}
                   inputRef={register({
                     required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                     validate: (value) =>
@@ -251,7 +252,6 @@ const IncreaseStrategyPanel = (props) => {
                       formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                   })}
                   name="positionSizePercentage"
-                  error={!!errors.positionSizePercentage}
                   placeholder={"0"}
                 />
                 <div className="currencyBox">%</div>
@@ -286,13 +286,13 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
+                  error={!!errors.units}
                   inputRef={register({
                     validate: validateUnits,
                   })}
                   name="units"
                   onChange={unitsChange}
                   placeholder={"0"}
-                  error={!!errors.units}
                 />
                 <div className="currencyBox">{symbolData.base}</div>
               </Box>

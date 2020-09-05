@@ -129,11 +129,11 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.stopPrice}
                 inputRef={register({
                   validate: (value) => parseFloat(value) > 0,
                 })}
                 name="stopPrice"
-                error={!!errors.stopPrice}
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
@@ -192,11 +192,11 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSize}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
                 })}
-                error={!!errors.positionSize}
                 name="positionSize"
                 onChange={positionSizeChange}
                 placeholder={"0"}
@@ -225,6 +225,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSizePercentage}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                   validate: (value) =>
@@ -233,7 +234,6 @@ const StrategyPanel = (props) => {
                 })}
                 name="positionSizePercentage"
                 placeholder={"0"}
-                error={!!errors.positionSizePercentage}
               />
               <div className="currencyBox">%</div>
             </Box>

@@ -28,8 +28,6 @@ import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
 const SidebarEditPanels = (props) => {
   const { positionEntity, currentSymbolData, isReadOnly } = props;
 
-  console.log(isReadOnly);
-
   return (
     <>
       <TakeProfitPanel

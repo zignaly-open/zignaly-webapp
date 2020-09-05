@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
-import { isValidIntOrFloat } from "../utils/validators";
 import { useIntl } from "react-intl";
 
 /**
@@ -30,7 +29,7 @@ import { useIntl } from "react-intl";
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
-  const { errors, clearErrors, getValues, setError, setValue, watch, trigger } = useFormContext();
+  const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = defaultLeverage || watch("leverage");
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
