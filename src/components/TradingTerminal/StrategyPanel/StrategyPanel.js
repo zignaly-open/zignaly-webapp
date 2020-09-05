@@ -58,7 +58,6 @@ const StrategyPanel = (props) => {
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-    validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -140,7 +139,10 @@ const StrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 defaultValue={lastPrice}
-                inputRef={register}
+                error={!!errors.price}
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
                 name="price"
                 onChange={priceChange}
               />
@@ -187,6 +189,7 @@ const StrategyPanel = (props) => {
                   required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
                 })}
+                error={!!errors.positionSize}
                 name="positionSize"
                 onChange={positionSizeChange}
                 placeholder={"0"}
@@ -217,11 +220,14 @@ const StrategyPanel = (props) => {
                 className="outlineInput"
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                  validate: validatePositionSizePercentage,
+                  validate: (value) =>
+                    !isNaN(value) ||
+                    formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"
                 onChange={positionSizePercentageChange}
                 placeholder={"0"}
+                error={!!errors.positionSizePercentage}
               />
               <div className="currencyBox">%</div>
             </Box>

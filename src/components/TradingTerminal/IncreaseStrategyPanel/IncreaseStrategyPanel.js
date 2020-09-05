@@ -210,7 +210,7 @@ const IncreaseStrategyPanel = (props) => {
                   className="outlineInput"
                   disabled={isReadOnly}
                   inputRef={register({
-                    required: formatMessage({ id: "terminal.positionsize.required" }),
+                    min: 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
                     validate: validatePositionSize,
                   })}
                   name="positionSize"
