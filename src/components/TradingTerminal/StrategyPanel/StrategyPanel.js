@@ -53,11 +53,11 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
-    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
+    validateUnits,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -127,7 +127,14 @@ const StrategyPanel = (props) => {
           <FormControl>
             <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+              <OutlinedInput
+                className="outlineInput"
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
+                name="stopPrice"
+                error={!!errors.stopPrice}
+              />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
@@ -250,7 +257,9 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: validateUnits,
+                })}
                 name="units"
                 onChange={unitsChange}
                 placeholder={"0"}

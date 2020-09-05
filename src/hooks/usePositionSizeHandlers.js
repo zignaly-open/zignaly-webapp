@@ -12,12 +12,10 @@ import { useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionSizeHandlersHook
  * @property {React.ChangeEventHandler} positionSizeChange
- * @property {React.ChangeEventHandler} positionSizePercentageChange
  * @property {React.ChangeEventHandler} priceChange
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
- * @property {Validate} validatePositionSizePercentage
  * @property {Validate} validatePrice
  * @property {Validate} validateUnits
  */
@@ -68,43 +66,27 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * Validate that units is within limits.
    *
    * @param {any} units Units value.
-   * @returns {boolean} Validation result.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   function validateUnits(units) {
     const value = parseFloat(units);
 
-    if (!isValidIntOrFloat(units)) {
-      setError("units", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.positionunits.limit.zero" }),
-      });
-      return false;
-    }
-
     if (limits.amount.min && value < limits.amount.min) {
-      setError("units", {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.positionunits.limit.min" },
-          { value: limits.amount.min },
-        ),
-      });
-      return false;
+      return formatMessage(
+        { id: "terminal.positionunits.limit.min" },
+        { value: limits.amount.min },
+      );
     }
 
     if (limits.amount.max && value > limits.amount.max) {
-      setError("units", {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.positionunits.limit.max" },
-          { value: limits.amount.max },
-        ),
-      });
-      return false;
+      return formatMessage(
+        { id: "terminal.positionunits.limit.max" },
+        { value: limits.amount.max },
+      );
     }
 
-    if (errors.units) {
-      clearErrors("units");
+    if (isNaN(units)) {
+      return formatMessage({ id: "terminal.positionsize.limit.zero" });
     }
 
     return true;
@@ -138,11 +120,13 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.realInvestment) * leverage;
     setValue("positionSize", positionSize);
-    trigger("positionSize");
-
-    const units = positionSize / currentPrice;
-    setValue("units", units.toFixed(8));
-    trigger("units");
+    trigger("positionSize").then((isValid) => {
+      if (isValid) {
+        const units = positionSize / currentPrice;
+        setValue("units", units.toFixed(8));
+        trigger("units");
+      }
+    });
   };
 
   const positionSizeChange = () => {

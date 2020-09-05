@@ -41,12 +41,11 @@ const IncreaseStrategyPanel = (props) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const {
     positionSizeChange,
-    positionSizePercentageChange,
+    validateUnits,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-    validatePositionSizePercentage,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { balance, loading } = useAvailableBalance();
   const { ownCopyTraderProviders, loading: loadingProviders } = useOwnCopyTraderProviders();
@@ -164,9 +163,12 @@ const IncreaseStrategyPanel = (props) => {
                   className="outlineInput"
                   defaultValue={lastPrice}
                   disabled={isReadOnly}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: (value) => parseFloat(value) > 0,
+                  })}
                   name="price"
                   onChange={priceChange}
+                  error={!!errors.price}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -210,12 +212,12 @@ const IncreaseStrategyPanel = (props) => {
                   className="outlineInput"
                   disabled={isReadOnly}
                   inputRef={register({
-                    min: 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
                     validate: validatePositionSize,
                   })}
                   name="positionSize"
                   onChange={positionSizeChange}
                   placeholder={"0"}
+                  error={!!errors.positionSize}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -244,10 +246,13 @@ const IncreaseStrategyPanel = (props) => {
                   disabled={isReadOnly}
                   inputRef={register({
                     required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                    validate: validatePositionSizePercentage,
+                    validate: (value) =>
+                      !isNaN(value) ||
+                      formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                   })}
                   name="positionSizePercentage"
                   onChange={positionSizePercentageChange}
+                  error={!!errors.positionSizePercentage}
                   placeholder={"0"}
                 />
                 <div className="currencyBox">%</div>
@@ -282,10 +287,13 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: validateUnits,
+                  })}
                   name="units"
                   onChange={unitsChange}
                   placeholder={"0"}
+                  error={!!errors.units}
                 />
                 <div className="currencyBox">{symbolData.base}</div>
               </Box>
