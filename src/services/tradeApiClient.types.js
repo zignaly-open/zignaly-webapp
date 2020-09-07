@@ -1188,7 +1188,7 @@ export function positionItemTransform(positionItem) {
  * @returns {Object<string, ReBuyTarget>} Typed rebuy target.
  */
 function positionRebuyTargetsTransforrm(rebuyTargets) {
-  return mapValues(rebuyTargets, (/** @type {any} */ rebuyTarget) => {
+  return mapValues(fixedTargets(rebuyTargets), (/** @type {any} */ rebuyTarget) => {
     return {
       targetId: parseInt(rebuyTarget.targetId) || 0,
       triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
@@ -1205,6 +1205,24 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
 }
 
 /**
+ * Fix targets to make sure no id is missing
+ * @template T
+ * @param {T} targets targets
+ * @returns {T} targets
+ */
+const fixedTargets = (targets) => {
+  /** @type {*} */
+  let newTargets = {};
+  let i = 1;
+  for (const target of Object.values(targets)) {
+    target.targetId = i;
+    newTargets[i] = target;
+    i++;
+  }
+  return newTargets;
+};
+
+/**
  * Transform position take profit targets to typed object.
  *
  * @param {*} profitTargets Trade API take profit targets response.
@@ -1212,7 +1230,7 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
  */
 function positionTakeProfitTargetsTransforrm(profitTargets) {
   // Ensure that targets is an indexed targets object.
-  return mapValues(profitTargets, (profitTarget) => {
+  return mapValues(fixedTargets(profitTargets), (profitTarget) => {
     return {
       amountPercentage: parseFloat(profitTarget.amountPercentage) || 0,
       priceTargetPercentage: parseFloat(profitTarget.priceTargetPercentage) || 0,
