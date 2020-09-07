@@ -53,7 +53,7 @@ const useAppUpdatesCheck = (enableInterval = true) => {
 
     // Redux persist takes few milliseconds since update is notified and
     // persisted to local storage so refresh need to wait a bit.
-    setInterval(() => {
+    setTimeout(() => {
       location.reload();
     }, 300);
   };

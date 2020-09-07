@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../../../store/actions/ui";
 import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
+import { FormattedMessage } from "react-intl";
 
 /**
  *
@@ -69,7 +70,7 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
     }
     if (action === "exit") {
       allSelectedSubPositions.forEach((item) => {
-        if (item.status === 1) {
+        if (item.status !== 1) {
           let payload = {
             token: storeSession.tradeApi.accessToken,
             positionId: item.positionId,
@@ -144,14 +145,14 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
         disabled={isDisabledCancel()}
         onClick={() => executeAction("abort")}
       >
-        Cancel Entries
+        <FormattedMessage id="copyt.management.cancel" />
       </CustomButton>
       <CustomButton
         className="textPurple"
         disabled={isDisabledExit()}
         onClick={() => executeAction("exit")}
       >
-        Exit Entries
+        <FormattedMessage id="copyt.management.exit" />
       </CustomButton>
     </Box>
   );
