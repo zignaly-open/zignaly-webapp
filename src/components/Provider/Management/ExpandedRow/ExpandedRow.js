@@ -41,7 +41,6 @@ const ExpandedRow = ({
   const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
-    console.log("mmm");
     if (values.length) {
       let positions = values[index].subPositions;
       let newList = [];
