@@ -15,7 +15,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import { formatPrice } from "../../../utils/formatters";
 import useValidation from "../../../hooks/useValidation";
 
@@ -166,6 +165,7 @@ const ReduceStrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={isReadOnly}
+                error={!!errors.reduceTargetPercentage}
                 inputRef={register({
                   validate: (value) =>
                     !isNaN(value) ||
@@ -173,7 +173,6 @@ const ReduceStrategyPanel = (props) => {
                 })}
                 name="reduceTargetPercentage"
                 onChange={reduceTargetPercentageChange}
-                error={!!errors.reduceTargetPercentage}
               />
               <div className="currencyBox">%</div>
             </Box>
@@ -201,6 +200,7 @@ const ReduceStrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={isReadOnly}
+                error={!!errors.reduceAvailablePercentage}
                 inputRef={register({
                   validate: {
                     percentage: (value) =>
@@ -209,7 +209,6 @@ const ReduceStrategyPanel = (props) => {
                 })}
                 name="reduceAvailablePercentage"
                 onChange={reduceAvailablePercentageChange}
-                error={!!errors.reduceAvailablePercentage}
               />
               <div className="currencyBox">%</div>
             </Box>

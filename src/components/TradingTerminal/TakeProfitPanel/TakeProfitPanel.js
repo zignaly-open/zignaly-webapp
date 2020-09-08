@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { inRange, lt, gt, isNumber, keys, range, size, sum, values } from "lodash";
+import { range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
@@ -8,7 +8,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -40,7 +39,7 @@ const TakeProfitPanel = (props) => {
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
-  const { lessThan, greaterThan, validPercentage } = useValidation();
+  const { greaterThan, validPercentage } = useValidation();
   const {
     validateTargetPriceLimits,
     validateCostLimits,
@@ -54,7 +53,6 @@ const TakeProfitPanel = (props) => {
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
-    getTargetPropertyRawValue,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -70,7 +68,6 @@ const TakeProfitPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
 
-  const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
@@ -213,7 +210,6 @@ const TakeProfitPanel = (props) => {
         const profitTarget = positionEntity.takeProfitTargets[index];
         const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
-        console.log(priceTargetPercentage, index);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
       });

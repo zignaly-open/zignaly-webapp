@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { lt, gt, isEqual, keys, size } from "lodash";
+import { isEqual, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
@@ -12,7 +12,6 @@ import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import { calculateDcaPrice } from "../../../utils/calculations";
 import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
 import usePositionEntry from "../../../hooks/usePositionEntry";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 
@@ -41,7 +40,7 @@ const DCAPanel = (props) => {
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
-  const { lessThan, greaterThan, positive } = useValidation();
+  const { lessThan } = useValidation();
 
   /**
    * @typedef {Object} PositionDcaIndexes
@@ -92,7 +91,6 @@ const DCAPanel = (props) => {
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
-    getTargetPropertyRawValue,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -218,6 +216,11 @@ const DCAPanel = (props) => {
     return true;
   };
 
+  /**
+   * Validate target percentage
+   * @param {string} targetPricePercentageRaw targetPricePercentage value
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
   const validateTargetDCALimit = (targetPricePercentageRaw) => {
     const price = getEntryPrice();
     const targetPricePercentage = parseFloat(targetPricePercentageRaw);
@@ -238,6 +241,11 @@ const DCAPanel = (props) => {
     trigger(rebuyPercentageProperty);
   };
 
+  /**
+   * Validate DCA price
+   * @param {string} targetId targetId
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
   const validatePrice = (targetId) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
@@ -359,6 +367,7 @@ const DCAPanel = (props) => {
               disabled={
                 fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
               }
+              error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
               inputRef={register({
                 validate: {
                   percentage: (value) =>
@@ -369,7 +378,6 @@ const DCAPanel = (props) => {
               })}
               name={composeTargetPropertyName("targetPricePercentage", targetId)}
               onChange={targetPricePercentageChange}
-              error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
             />
             <div className="currencyBox">%</div>
           </Box>
@@ -379,16 +387,16 @@ const DCAPanel = (props) => {
             <OutlinedInput
               className="outlineInput"
               disabled={fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]}
+              error={!!errors[composeTargetPropertyName("rebuyPercentage", targetId)]}
               inputRef={register({
                 validate: {
                   positive: (value) =>
                     value > 0 || formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
-                  limit: (value) => validateUnits(targetId),
+                  limit: () => validateUnits(targetId),
                 },
               })}
               name={composeTargetPropertyName("rebuyPercentage", targetId)}
               onChange={rebuyPercentageChange}
-              error={!!errors[composeTargetPropertyName("rebuyPercentage", targetId)]}
             />
             <div className="currencyBox">%</div>
           </Box>

@@ -4,7 +4,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import "./EntryExpirationPanel.scss";
 
 /**
@@ -14,7 +13,7 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, getValues, register } = useFormContext();
+  const { clearErrors, errors, register } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**

@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { isNumber, lt, gt } from "lodash";
+import { isNumber } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
-import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
@@ -40,8 +38,7 @@ const StopLossPanel = (props) => {
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
   const { clearErrors, errors, getValues, register, setValue, watch, trigger } = useFormContext();
-  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
-  const { lessThan, greaterThan, positive } = useValidation();
+  const { lessThan } = useValidation();
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
@@ -75,8 +72,6 @@ const StopLossPanel = (props) => {
   function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const valueType = entryType === "LONG" ? "lower" : "greater";
-    const compareFn = entryType === "LONG" ? gt : lt;
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
     return lessThan(
       stopLossPercentage,
