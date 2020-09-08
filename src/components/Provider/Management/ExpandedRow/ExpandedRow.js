@@ -41,6 +41,7 @@ const ExpandedRow = ({
   const storeSettings = useStoreSettingsSelector();
 
   const prepareList = () => {
+    console.log("mmm");
     if (values.length) {
       let positions = values[index].subPositions;
       let newList = [];
@@ -135,7 +136,7 @@ const ExpandedRow = ({
   };
 
   const showCheckAllButton = () => {
-    const subPositions = values[index].subPositions;
+    const subPositions = values[index] ? values[index].subPositions : [];
     const updatingPositions = subPositions.filter((item) => item.updating);
     if (subPositions.length === updatingPositions.length) {
       return false;
