@@ -135,7 +135,7 @@ const ExpandedRow = ({
   };
 
   const showCheckAllButton = () => {
-    const subPositions = values[index].subPositions;
+    const subPositions = values[index] ? values[index].subPositions : [];
     const updatingPositions = subPositions.filter((item) => item.updating);
     if (subPositions.length === updatingPositions.length) {
       return false;
