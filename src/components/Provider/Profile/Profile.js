@@ -12,6 +12,7 @@ import CloneDeleteButton from "../../../components/Provider/ProviderHeader/Provi
 import Modal from "../../../components/Modal";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import Options from "../../../components/Provider/Profile/Options";
+import PaymentResponse from "./PaymentResponse";
 
 /**
  * @typedef {Object} DefaultProps
@@ -33,16 +34,22 @@ const Profile = ({ provider }) => {
     if (typeof window !== "undefined") {
       let url = window.location.href;
       if (url.includes("error")) {
-        setPaymentStatus("error");
-        showPaymentModal(true);
-        // history.pushState({}, "error", url.split("#")[0]);
+        initStatus("error");
       }
       if (url.includes("success")) {
-        setPaymentStatus("success");
-        showPaymentModal(true);
-        // history.pushState({}, "success", url.split("#")[0]);
+        initStatus("success");
       }
     }
+  };
+
+  /**
+   *
+   * @param {String} status Status string
+   * @returns {Void} None.
+   */
+  const initStatus = (status) => {
+    setPaymentStatus(status);
+    showPaymentModal(true);
   };
 
   useEffect(checkPaymentStatus, []);
@@ -58,6 +65,14 @@ const Profile = ({ provider }) => {
       }
     });
     return available;
+  };
+
+  const handleClose = () => {
+    showPaymentModal(false);
+    if (typeof window !== "undefined") {
+      let url = window.location.href;
+      history.pushState({}, status, url.split("#")[0]);
+    }
   };
 
   return (
@@ -76,8 +91,8 @@ const Profile = ({ provider }) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Modal onClose={() => showPaymentModal(false)} size="small" state={paymentModal}>
-        <h1>Murad Malik</h1>
+      <Modal onClose={handleClose} size="small" state={paymentModal}>
+        <PaymentResponse status={paymentStatus} />
       </Modal>
       <Box className="leftColumn">
         <Box bgcolor="grid.content" className="aboutBox">

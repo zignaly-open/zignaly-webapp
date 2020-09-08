@@ -2,13 +2,10 @@ import React from "react";
 import "./PaymentResponse.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import PaymentForm from "../../../Forms/PaymentForm";
-import CustomButton from "../../../CustomButton";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
- * @property {Function} onClose
+ * @property {String} status
  */
 
 /**
@@ -17,39 +14,37 @@ import CustomButton from "../../../CustomButton";
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const PaymentResponse = ({ provider, onClose }) => {
-  const handleClick = () => {
-    onClose();
-  };
-
+const PaymentResponse = ({ status }) => {
   return (
     <Box
       alignItems="center"
-      className="disclaimer"
+      className="paymentResponse"
       display="flex"
       flexDirection="column"
-      justifyContent="space-between"
+      justifyContent="space-evenly"
     >
-      <Typography variant="h3">
-        <FormattedMessage id="srv.disclaimer.title" />
-      </Typography>
+      {status === "success" && (
+        <>
+          <Typography className="green" variant="h3">
+            <FormattedMessage id="srv.payment.success.title" />
+          </Typography>
 
-      <Typography variant="body1">
-        <FormattedMessage id="srv.disclaimer.text" />
-      </Typography>
+          <Typography variant="body1">
+            <FormattedMessage id="srv.payment.success.message" />
+          </Typography>
+        </>
+      )}
+      {status === "error" && (
+        <>
+          <Typography className="red" variant="h3">
+            <FormattedMessage id="srv.payment.error.title" />
+          </Typography>
 
-      <Box
-        alignItems="center"
-        className="actions"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-evenly"
-      >
-        <PaymentForm provider={provider} />
-        <CustomButton className="textButton" onClick={handleClick}>
-          <FormattedMessage id="action.cancel" />
-        </CustomButton>
-      </Box>
+          <Typography variant="body1">
+            <FormattedMessage id="srv.payment.error.message" />
+          </Typography>
+        </>
+      )}
     </Box>
   );
 };

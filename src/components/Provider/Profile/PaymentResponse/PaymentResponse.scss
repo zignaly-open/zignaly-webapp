@@ -1,5 +1,5 @@
-.disclaimer {
-  height: 300px;
+.paymentResponse {
+  height: 200px;
   padding: 40px 20px;
   width: 100%;
 
@@ -12,25 +12,11 @@
     margin: 0;
     text-align: center;
   }
-
-  .actions {
-    width: 100%;
-
-    .textButton {
-      min-width: 150px;
-    }
-  }
 }
 
 @include media("<=sm") {
-  .disclaimer {
+  .paymentResponse {
     padding: 30px 15px;
     width: 100%;
-
-    .actions {
-      .textButton {
-        min-width: fit-content;
-      }
-    }
   }
 }
