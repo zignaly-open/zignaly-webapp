@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ProvidersHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import { routesMapping } from "../../../utils/routesMapping";
@@ -18,7 +18,18 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersHeader = ({ path, rightComponent }) => {
+  const isCopyTrading = path.startsWith("/copyTraders");
   const sectionNavitation = routesMapping(path);
+  const [links, setLinks] = useState(sectionNavitation.links);
+
+  const initLinks = () => {
+    if (!isCopyTrading) {
+      let data = sectionNavitation.links.filter((item) => item.id !== "srv.analytics");
+      setLinks(data);
+    }
+  };
+
+  useEffect(initLinks, []);
 
   return (
     <Box className="providersHeader">
@@ -36,7 +47,7 @@ const ProvidersHeader = ({ path, rightComponent }) => {
           )}
         </h4>
       </Box>
-      <SubNavHeader links={sectionNavitation.links} rightComponent={rightComponent} />
+      <SubNavHeader links={links} rightComponent={rightComponent} />
     </Box>
   );
 };
