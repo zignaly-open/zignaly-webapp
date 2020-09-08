@@ -40,7 +40,7 @@ const Testimonial = (props) => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <span className="time"> {moment(data.date).fromNow()} </span>
+        <span className="time"> {moment(new Date(data.date)).fromNow()} </span>
         {data.facebook && <img alt="Zignaly" className="icon" src={FacebookIcon} />}
       </Box>
       <Box

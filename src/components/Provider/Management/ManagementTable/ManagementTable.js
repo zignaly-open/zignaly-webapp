@@ -70,7 +70,7 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
       positionId: positionId || "",
     });
 
-    if (action === "cancel") {
+    if (action === "abort") {
       setConfirmConfig({
         titleTranslationId: "confirm.positioncancel.title",
         messageTranslationId: "confirm.positioncancel.message",

@@ -633,13 +633,14 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
-    const { positionId, closed } = position;
+    const { positionId, closed, isCopyTrader } = position;
+    const isManualPosition = position.providerId === "1";
     const isProviderOwner =
-      position.providerId !== "1" && position.providerOwnerUserId === storeUserData.userId;
+      !isManualPosition && position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
-        {!closed && !isProviderOwner && (
+        {!closed && !isCopyTrader && !isProviderOwner && (
           <button
             data-action={"cancel"}
             data-position-id={positionId}
