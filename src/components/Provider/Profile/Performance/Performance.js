@@ -107,12 +107,14 @@ const PerformanceOverview = ({ provider }) => {
             </Box>
           </Box>
 
-          <Box className="chartBox">
-            <Typography variant="h4">
-              <FormattedMessage id="srv.performance12weeks" />
-            </Typography>
-            <PerformanceGraph provider={provider} />
-          </Box>
+          {provider.isCopyTrading && (
+            <Box className="chartBox">
+              <Typography variant="h4">
+                <FormattedMessage id="srv.performance12weeks" />
+              </Typography>
+              <PerformanceGraph provider={provider} />
+            </Box>
+          )}
         </>
       )}
     </Box>
