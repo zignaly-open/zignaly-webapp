@@ -47,16 +47,20 @@ const CopyTradersAnalytics = ({ provider }) => {
   };
 
   const getProviderPerformance = () => {
-    setPerformanceLoading(true);
-    tradeApi
-      .providerPerformanceGet(payload)
-      .then((response) => {
-        setPerformance(response);
-        setPerformanceLoading(false);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (provider.isCopyTrading) {
+      setPerformanceLoading(true);
+      tradeApi
+        .providerPerformanceGet(payload)
+        .then((response) => {
+          setPerformance(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setPerformanceLoading(false);
+        });
+    }
   };
 
   useEffect(getProviderPerformance, []);
@@ -71,6 +75,9 @@ const CopyTradersAnalytics = ({ provider }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setCopiersLoading(false);
       });
   };
 
@@ -98,22 +105,24 @@ const CopyTradersAnalytics = ({ provider }) => {
 
   return (
     <Box className="providerAnalytics">
-      <Box bgcolor="grid.content" className="tradingPerformanceBox">
-        <Typography className="boxTitle" variant="h3">
-          <FormattedMessage id="copyt.tradingperformance" />
-        </Typography>
+      {provider.isCopyTrading && (
+        <Box bgcolor="grid.content" className="tradingPerformanceBox">
+          <Typography className="boxTitle" variant="h3">
+            <FormattedMessage id="copyt.tradingperformance" />
+          </Typography>
 
-        <Box
-          alignItems="center"
-          className="graphBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
-          {performanceLoading && <CircularProgress color="primary" size={50} />}
-          {!performanceLoading && <TradingPerformance performance={performance} />}
+          <Box
+            alignItems="center"
+            className="graphBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            {performanceLoading && <CircularProgress color="primary" size={50} />}
+            {!performanceLoading && <TradingPerformance performance={performance} />}
+          </Box>
         </Box>
-      </Box>
+      )}
 
       <Box bgcolor="grid.content" className="copiersBox">
         <Box alignItems="center" className="titleBox" display="flex" flexDirection="row">
