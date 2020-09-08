@@ -17,6 +17,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { isValidIntOrFloat } from "../../../utils/validators";
 import { formatPrice } from "../../../utils/formatters";
+import useValidation from "../../../hooks/useValidation";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -53,6 +54,7 @@ const ReduceStrategyPanel = (props) => {
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
+  const { validPercentage } = useValidation();
 
   /**
    * Handle toggle switch action.
@@ -75,15 +77,6 @@ const ReduceStrategyPanel = (props) => {
     const draftPosition = getValues();
     const reduceTargetPercentage = parseFloat(draftPosition.reduceTargetPercentage);
 
-    if (!isValidIntOrFloat(reduceTargetPercentage)) {
-      setError("reduceTargetPercentage", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
-      });
-
-      return;
-    }
-
     const targetPrice = entryPrice + (reduceTargetPercentage / 100) * entryPrice;
     setReduceTargetPrice(formatPrice(targetPrice.toString()));
   };
@@ -94,22 +87,11 @@ const ReduceStrategyPanel = (props) => {
    * @returns {void}
    */
   const reduceAvailablePercentageChange = () => {
+    if (errors.reduceAvailablePercentage) return;
+
     const units = getEntrySize();
     const draftPosition = getValues();
     const reduceAvailablePercentage = parseFloat(draftPosition.reduceAvailablePercentage);
-
-    if (
-      !isValidIntOrFloat(reduceAvailablePercentage) ||
-      reduceAvailablePercentage <= 0 ||
-      reduceAvailablePercentage > 100
-    ) {
-      setError("reduceAvailablePercentage", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.reducestrategy.percentage.limit" }),
-      });
-
-      return;
-    }
 
     const targetUnits = (reduceAvailablePercentage / 100) * units;
     setReduceTargetUnits(targetUnits.toString());
@@ -193,9 +175,14 @@ const ReduceStrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={isReadOnly}
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    !isNaN(value) ||
+                    formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
+                })}
                 name="reduceTargetPercentage"
                 onChange={reduceTargetPercentageChange}
+                error={!!errors.reduceTargetPercentage}
               />
               <div className="currencyBox">%</div>
             </Box>
@@ -223,9 +210,15 @@ const ReduceStrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={isReadOnly}
-                inputRef={register}
+                inputRef={register({
+                  validate: {
+                    percentage: (value) =>
+                      validPercentage(value, "terminal.reducestrategy.percentage.limit"),
+                  },
+                })}
                 name="reduceAvailablePercentage"
                 onChange={reduceAvailablePercentageChange}
+                error={!!errors.reduceAvailablePercentage}
               />
               <div className="currencyBox">%</div>
             </Box>
