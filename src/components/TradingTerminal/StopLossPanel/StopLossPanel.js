@@ -10,6 +10,7 @@ import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
+import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
 
@@ -38,8 +39,18 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
-  const { clearErrors, errors, getValues, register, setError, setValue, watch } = useFormContext();
-  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
+  const {
+    clearErrors,
+    errors,
+    getValues,
+    register,
+    setError,
+    setValue,
+    watch,
+    trigger,
+  } = useFormContext();
+  const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
+  const { lessThan, greaterThan, positive } = useValidation();
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
@@ -76,25 +87,13 @@ const StopLossPanel = (props) => {
     const valueType = entryType === "LONG" ? "lower" : "greater";
     const compareFn = entryType === "LONG" ? gt : lt;
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
-
-    if (draftPosition.stopLossPercentage !== "-") {
-      if (
-        !isValidIntOrFloat(draftPosition.stopLossPercentage) ||
-        compareFn(stopLossPercentage, pricePercentChange)
-      ) {
-        setError("stopLossPercentage", {
-          type: "manual",
-          message: formatMessage(
-            { id: "terminal.stoploss.valid.percentage" },
-            { type: valueType, value: pricePercentChange },
-          ),
-        });
-
-        return false;
-      }
-    }
-
-    return true;
+    return lessThan(
+      stopLossPercentage,
+      pricePercentChange,
+      entryType,
+      "terminal.stoploss.valid.percentage",
+      { value: pricePercentChange },
+    );
   }
 
   /**
@@ -103,14 +102,12 @@ const StopLossPanel = (props) => {
    * @return {Void} None.
    */
   const stopLossPercentageChange = () => {
+    if (errors.stopLossPercentage) return;
+
     const draftPosition = getValues();
     const price = getEntryPrice();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const stopLossPrice = (price * (100 + stopLossPercentage)) / 100;
-
-    if (!validateStopLossPercentageLimits()) {
-      return;
-    }
 
     if (!isNaN(price) && price > 0) {
       setValue("stopLossPrice", formatPrice(stopLossPrice, "", ""));
@@ -118,17 +115,7 @@ const StopLossPanel = (props) => {
       setValue("stopLossPrice", "");
     }
 
-    if (!validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit")) {
-      return;
-    }
-
-    if (errors.stopLossPrice) {
-      clearErrors("stopLossPrice");
-    }
-
-    if (errors.stopLossPercentage) {
-      clearErrors("stopLossPercentage");
-    }
+    trigger("stopLossPrice");
   };
 
   /**
@@ -137,38 +124,21 @@ const StopLossPanel = (props) => {
    * @return {Void} None.
    */
   const stopLossPriceChange = () => {
+    if (errors.stopLossPrice) return;
+
     const draftPosition = getValues();
     const price = getEntryPrice();
     const stopLossPrice = parseFloat(draftPosition.stopLossPrice);
     const priceDiff = stopLossPrice - price;
 
-    if (!isValidIntOrFloat(draftPosition.stopLossPrice) || stopLossPrice < 0) {
-      setError("stopLossPrice", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.stoploss.limit.zero" }),
-      });
-      return;
-    }
-
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
       setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
-      if (validateStopLossPercentageLimits()) {
-        if (errors.stopLossPercentage) {
-          clearErrors("stopLossPercentage");
-        }
-      }
     } else {
       setValue("stopLossPercentage", "");
     }
 
-    if (!validateTargetPriceLimits(stopLossPrice, "stopLossPrice", "terminal.stoploss.limit")) {
-      return;
-    }
-
-    if (errors.stopLossPrice) {
-      clearErrors("stopLossPrice");
-    }
+    trigger("stopLossPercentage");
   };
 
   const chainedPriceUpdates = () => {
@@ -254,7 +224,9 @@ const StopLossPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={fieldsDisabled.stopLossPercentage}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: validateStopLossPercentageLimits,
+                  })}
                   name="stopLossPercentage"
                   onChange={stopLossPercentageChange}
                 />
@@ -264,7 +236,12 @@ const StopLossPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={fieldsDisabled.stopLossPrice}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: {
+                      positive: (value) =>
+                        value >= 0 || formatMessage({ id: "terminal.stoploss.limit.zero" }),
+                    },
+                  })}
                   name="stopLossPrice"
                   onChange={stopLossPriceChange}
                 />

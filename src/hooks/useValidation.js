@@ -22,14 +22,17 @@ const useValidation = () => {
    * @param {number} compare compared value
    * @param {string} side trade side
    * @param {string} errorId error translation id
+   * @param {*} [errorValues] error translation values
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   // eslint-disable-next-line max-params
-  const lessThan = (value, compare, side, errorId) => {
+  const lessThan = (value, compare, side, errorId, errorValues = {}) => {
     const sideErrorText = side.toUpperCase() === "LONG" ? "lower" : "greater";
     const compareFn = side.toUpperCase() === "LONG" ? lt : gt;
 
-    return compareFn(value, compare) || formatMessage({ id: `${errorId}.${sideErrorText}` });
+    return (
+      compareFn(value, compare) || formatMessage({ id: `${errorId}.${sideErrorText}` }, errorValues)
+    );
   };
 
   /**
@@ -38,14 +41,17 @@ const useValidation = () => {
    * @param {number} compare compared value
    * @param {string} side trade side
    * @param {string} errorId error translation id
+   * @param {*} [errorValues] error translation values
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   // eslint-disable-next-line max-params
-  const greaterThan = (value, compare, side, errorId) => {
+  const greaterThan = (value, compare, side, errorId, errorValues = {}) => {
     const sideErrorText = side.toUpperCase() === "LONG" ? "greater" : "lower";
     const compareFn = side.toUpperCase() === "LONG" ? gt : lt;
 
-    return compareFn(value, compare) || formatMessage({ id: `${errorId}.${sideErrorText}` });
+    return (
+      compareFn(value, compare) || formatMessage({ id: `${errorId}.${sideErrorText}` }, errorValues)
+    );
   };
 
   /**
