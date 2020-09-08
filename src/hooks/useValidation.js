@@ -5,6 +5,7 @@ import { useIntl } from "react-intl";
  * @typedef {Object} ValidationMethods
  * @property {function} lessThan
  * @property {function} greaterThan
+ * @property {function} validPercentage
  */
 
 /**
@@ -47,9 +48,20 @@ const useValidation = () => {
     return compareFn(value, compare) || formatMessage({ id: `${errorId}.${sideErrorText}` });
   };
 
+  /**
+   * Check if value is a valid percentage.
+   * @param {number} value value
+   * @param {string} errorId error translation id
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validPercentage = (value, errorId) => {
+    return (value > 0 && value <= 100) || formatMessage({ id: errorId });
+  };
+
   return {
     lessThan,
     greaterThan,
+    validPercentage,
   };
 };
 

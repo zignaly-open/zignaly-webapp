@@ -39,7 +39,7 @@ const TrailingStopPanel = (props) => {
   const { expanded, expandClass, setExpanded } = useExpandable(existsTrailingStop);
   const { clearErrors, errors, getValues, register, trigger, setValue, watch } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
-  const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
+  const trailingStopDistanceRaw = watch("trailingStopDistance");
   const trailingStopDistance = parseFloat(trailingStopDistanceRaw);
   const initTrailingStopPercentage = positionEntity
     ? positionEntity.trailingStopTriggerPercentage
@@ -47,7 +47,7 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentageRaw = watch("trailingStopPercentage", initTrailingStopPercentage);
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
-  const { lessThan, greaterThan } = useValidation();
+  const { lessThan, greaterThan, positive } = useValidation();
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   const isClosed = positionEntity ? positionEntity.closed : false;
@@ -77,6 +77,7 @@ const TrailingStopPanel = (props) => {
    * @return {Void} None.
    */
   const trailingStopPercentageChange = () => {
+    console.log("trailingStopPercentageChange");
     const price = getEntryPrice();
 
     if (price > 0) {
@@ -115,28 +116,31 @@ const TrailingStopPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
-    const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
-    const percentageSign = entryType === "SHORT" ? "-" : "";
-    const distanceSign = entryType === "SHORT" ? "" : "-";
+    simulateInputChangeEvent("trailingStopPercentage");
 
-    if (!trailingStopDistance) {
-      setValue("trailingStopDistance", distanceSign);
-    } else {
-      setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
-      simulateInputChangeEvent("trailingStopDistance");
-    }
+    // const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
+    // const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
+    // const percentageSign = entryType === "SHORT" ? "-" : "";
+    // const distanceSign = entryType === "SHORT" ? "" : "-";
 
-    if (!trailingStopPercentage) {
-      setValue("trailingStopPercentage", percentageSign);
-    } else {
-      setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
-      simulateInputChangeEvent("trailingStopPercentage");
-    }
+    // if (!trailingStopDistance) {
+    //   setValue("trailingStopDistance", distanceSign);
+    // } else {
+    //   setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
+    //   simulateInputChangeEvent("trailingStopDistance");
+    // }
 
-    if (!expanded) {
-      setValue("trailingStopPrice", "");
-    }
+    // if (!trailingStopPercentage) {
+    //   setValue("trailingStopPercentage", percentageSign);
+    // } else {
+    //   console.log("cchain");
+    //   setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
+    //   simulateInputChangeEvent("trailingStopPercentage");
+    // }
+
+    // if (!expanded) {
+    //   setValue("trailingStopPrice", "");
+    // }
   };
 
   useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
@@ -213,9 +217,12 @@ const TrailingStopPanel = (props) => {
                 className="outlineInput"
                 disabled={fieldsDisabled.trailingStopPrice}
                 inputRef={register({
-                  min: 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
-                  validate: (value) =>
-                    validateTargetPriceLimits2(value, "terminal.trailingstop.limit"),
+                  validate: {
+                    positive: (value) =>
+                      value >= 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
+                    limit: (value) =>
+                      validateTargetPriceLimits2(value, "terminal.trailingstop.limit"),
+                  },
                 })}
                 name="trailingStopPrice"
                 onChange={trailingStopPriceChange}
@@ -234,6 +241,7 @@ const TrailingStopPanel = (props) => {
                     lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
                 })}
                 name="trailingStopDistance"
+                defaultValue={initTrailingStopDistance}
               />
               <div className="currencyBox">%</div>
             </Box>

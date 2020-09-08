@@ -342,24 +342,24 @@ const DCAPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     initValuesFromPositionEntity();
-    if (expanded) {
-      cardinalityRange.forEach((targetId) => {
-        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-        const newValue = formatFloat2Dec(Math.abs(currentValue));
-        const sign = entryType === "LONG" ? "-" : "";
+    // if (expanded) {
+    //   cardinalityRange.forEach((targetId) => {
+    //     const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+    //     const newValue = formatFloat2Dec(Math.abs(currentValue));
+    //     const sign = entryType === "LONG" ? "-" : "";
 
-        if (isNaN(currentValue)) {
-          setTargetPropertyValue("targetPricePercentage", targetId, sign);
-        } else {
-          setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+    //     if (isNaN(currentValue)) {
+    //       setTargetPropertyValue("targetPricePercentage", targetId, sign);
+    //     } else {
+    //       setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
 
-          // Validate only when not yet executed.
-          if (!dcaExecutionIndex[targetId]) {
-            pricePercentageValidations(targetId);
-          }
-        }
-      });
-    }
+    //       // Validate only when not yet executed.
+    //       if (!dcaExecutionIndex[targetId]) {
+    //         pricePercentageValidations(targetId);
+    //       }
+    //     }
+    //   });
+    // }
   };
 
   useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);

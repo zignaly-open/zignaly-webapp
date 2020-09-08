@@ -49,6 +49,54 @@ const useSymbolLimitsValidate = (symbolData) => {
   };
 
   /**
+   * Validate that target units is within limits.
+   *
+   * @param {number} amount target units.
+   * @param {string} errorMessageGroup Error message translation group ID.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateTargetAmountLimits = (amount, errorMessageGroup) => {
+    // Skip validation when data not available.
+    if (!limits.amount) {
+      return true;
+    }
+
+    if (limits.amount.min && amount < limits.amount.min) {
+      return formatMessage({ id: errorMessageGroup + ".minunits" }, { value: limits.amount.min });
+    }
+
+    if (limits.amount.max && amount > limits.amount.max) {
+      return formatMessage({ id: errorMessageGroup + ".maxunits" }, { value: limits.amount.max });
+    }
+
+    return true;
+  };
+
+  /**
+   * Validate that target cost is within limits.
+   *
+   * @param {number} cost Cost amount.
+   * @param {string} errorMessageGroup Error message translation group ID.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateCostLimits2 = (cost, errorMessageGroup) => {
+    // Skip validation when data not available.
+    if (!limits.cost) {
+      return true;
+    }
+
+    if (limits.cost.min && cost < limits.cost.min) {
+      return formatMessage({ id: errorMessageGroup + ".mincost" }, { value: limits.cost.min });
+    }
+
+    if (limits.cost.max && cost > limits.cost.max) {
+      return formatMessage({ id: errorMessageGroup + ".maxcost" }, { value: limits.cost.max });
+    }
+
+    return true;
+  };
+
+  /**
    * Validate that target price is within limits.
    *
    * @param {number} targetPrice Rebuy target price.
@@ -167,6 +215,8 @@ const useSymbolLimitsValidate = (symbolData) => {
 
   return {
     validateCostLimits,
+    validateCostLimits2,
+    validateTargetAmountLimits,
     validateTargetPriceLimits,
     validateTargetPriceLimits2,
     validateUnitsLimits,
