@@ -14,26 +14,8 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, getValues, register, setError } = useFormContext();
+  const { clearErrors, errors, getValues, register } = useFormContext();
   const { formatMessage } = useIntl();
-
-  /**
-   * Validate that expiration time is greater than zero.
-   *
-   * @return {Void} None.
-   */
-  const expirationChange = () => {
-    const draftPosition = getValues();
-    const entryExpiration = parseFloat(draftPosition.entryExpiration);
-
-    clearErrors("entryExpiration");
-    if (!isValidIntOrFloat(draftPosition.entryExpiration) || entryExpiration <= 0) {
-      setError("entryExpiration", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.expiration.limit.zero" }),
-      });
-    }
-  };
 
   /**
    * Display property errors.
@@ -83,9 +65,11 @@ const EntryExpirationPanel = () => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    value > 0 || formatMessage({ id: "terminal.expiration.limit.zero" }),
+                })}
                 name="entryExpiration"
-                onChange={expirationChange}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.minutes" />

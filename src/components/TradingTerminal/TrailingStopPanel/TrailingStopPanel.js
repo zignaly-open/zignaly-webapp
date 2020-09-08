@@ -46,7 +46,7 @@ const TrailingStopPanel = (props) => {
     : 0;
   const trailingStopPercentageRaw = watch("trailingStopPercentage", initTrailingStopPercentage);
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
-  const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
+  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan, positive } = useValidation();
   const { getEntryPrice } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -221,7 +221,7 @@ const TrailingStopPanel = (props) => {
                     positive: (value) =>
                       value >= 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
                     limit: (value) =>
-                      validateTargetPriceLimits2(value, "terminal.trailingstop.limit"),
+                      validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
                   },
                 })}
                 name="trailingStopPrice"

@@ -14,26 +14,8 @@ import "./AutoclosePanel.scss";
  */
 const AutoclosePanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, getValues, register, setError } = useFormContext();
+  const { clearErrors, errors, getValues, register } = useFormContext();
   const { formatMessage } = useIntl();
-
-  /**
-   * Validate that autoclose time is greater than zero.
-   *
-   * @return {Void} None.
-   */
-  const autocloseChange = () => {
-    const draftPosition = getValues();
-    const autoclose = parseFloat(draftPosition.autoclose);
-
-    clearErrors("autoclose");
-    if (!isValidIntOrFloat(draftPosition.autoclose) || autoclose <= 0) {
-      setError("autoclose", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.autoclose.limit.zero" }),
-      });
-    }
-  };
 
   /**
    * Display property errors.
@@ -83,9 +65,11 @@ const AutoclosePanel = () => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    value > 0 || formatMessage({ id: "terminal.autoclose.limit.zero" }),
+                })}
                 name="autoclose"
-                onChange={autocloseChange}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.hours" />

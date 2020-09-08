@@ -42,8 +42,8 @@ const TakeProfitPanel = (props) => {
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
   const { lessThan, greaterThan, validPercentage } = useValidation();
   const {
-    validateTargetPriceLimits2,
-    validateCostLimits2,
+    validateTargetPriceLimits,
+    validateCostLimits,
     validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
@@ -339,8 +339,8 @@ const TakeProfitPanel = (props) => {
                         positive: (value) =>
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.price" }),
                         price: (value) =>
-                          validateTargetPriceLimits2(value, "terminal.takeprofit.limit"),
-                        cost: (value) => validateCostLimits2(value, "terminal.takeprofit.limit"),
+                          validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
+                        cost: (value) => validateCostLimits(value, "terminal.takeprofit.limit"),
                       },
                     })}
                     name={composeTargetPropertyName("targetPrice", targetId)}

@@ -100,8 +100,8 @@ const DCAPanel = (props) => {
   } = useTargetGroup("dca", positionTargetsCardinality);
 
   const {
-    validateTargetPriceLimits2,
-    validateCostLimits2,
+    validateTargetPriceLimits,
+    validateCostLimits,
     validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
@@ -222,7 +222,7 @@ const DCAPanel = (props) => {
     const price = getEntryPrice();
     const targetPricePercentage = parseFloat(targetPricePercentageRaw);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
-    return validateTargetPriceLimits2(targetPrice, "terminal.dca.limit");
+    return validateTargetPriceLimits(targetPrice, "terminal.dca.limit");
   };
 
   /**
@@ -243,7 +243,7 @@ const DCAPanel = (props) => {
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
     if (positionSize > 0) {
-      return validateCostLimits2(
+      return validateCostLimits(
         rebuyPositionSize,
         composeTargetPropertyName("rebuyPercentage", targetId),
         "terminal.dca.limit",

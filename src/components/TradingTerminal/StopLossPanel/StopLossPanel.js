@@ -40,7 +40,7 @@ const StopLossPanel = (props) => {
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
   const { clearErrors, errors, getValues, register, setValue, watch, trigger } = useFormContext();
-  const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
+  const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan, positive } = useValidation();
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
