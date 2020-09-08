@@ -40,16 +40,7 @@ const ReduceStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const {
-    control,
-    errors,
-    register,
-    watch,
-    getValues,
-    setError,
-    setValue,
-    reset,
-  } = useFormContext();
+  const { control, errors, register, watch, getValues, setValue, reset } = useFormContext();
   const { formatMessage } = useIntl();
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");

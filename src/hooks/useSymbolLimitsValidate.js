@@ -55,7 +55,7 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @param {string} errorMessageGroup Error message translation group ID.
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  const validateTargetAmountLimits = (amount, errorMessageGroup) => {
+  const validateUnitsLimits = (amount, errorMessageGroup) => {
     // Skip validation when data not available.
     if (!limits.amount) {
       return true;
@@ -175,51 +175,12 @@ const useSymbolLimitsValidate = (symbolData) => {
     return true;
   };
 
-  /**
-   * Validate that target units is within limits.
-   *
-   * @param {number} units Rebuy units.
-   * @param {string} propertyName Property name that validation error attachs to.
-   * @param {string} errorMessageGroup Error message translation group ID.
-   * @returns {boolean} true if validation pass, false otherwise.
-   */
-  const validateUnitsLimits = (units, propertyName, errorMessageGroup) => {
-    if (!limits.amount) {
-      return true;
-    }
-
-    if (limits.amount.min && units < limits.amount.min) {
-      setError(propertyName, {
-        type: "manual",
-        message: formatMessage(
-          { id: errorMessageGroup + ".minunits" },
-          { value: limits.amount.min },
-        ),
-      });
-      return false;
-    }
-
-    if (limits.amount.max && units > limits.amount.max) {
-      setError(propertyName, {
-        type: "manual",
-        message: formatMessage(
-          { id: errorMessageGroup + "maxunits" },
-          { value: limits.amount.max },
-        ),
-      });
-      return false;
-    }
-
-    return true;
-  };
-
   return {
     validateCostLimits,
     validateCostLimits2,
-    validateTargetAmountLimits,
+    validateUnitsLimits,
     validateTargetPriceLimits,
     validateTargetPriceLimits2,
-    validateUnitsLimits,
   };
 };
 

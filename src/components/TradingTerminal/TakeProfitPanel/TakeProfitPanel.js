@@ -44,19 +44,10 @@ const TakeProfitPanel = (props) => {
   const {
     validateTargetPriceLimits2,
     validateCostLimits2,
-    validateTargetAmountLimits,
+    validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
-  const {
-    clearErrors,
-    errors,
-    register,
-    setError,
-    setValue,
-    watch,
-    getValues,
-    trigger,
-  } = useFormContext();
+  const { clearErrors, errors, register, setValue, watch, getValues, trigger } = useFormContext();
   const defaultCardinality = 1;
   const {
     cardinality,
@@ -391,8 +382,7 @@ const TakeProfitPanel = (props) => {
                       validate: {
                         positive: (value) =>
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.units" }),
-                        limit: (value) =>
-                          validateTargetAmountLimits(value, "terminal.takeprofit.limit"),
+                        limit: (value) => validateUnitsLimits(value, "terminal.takeprofit.limit"),
                       },
                     })}
                     name={composeTargetPropertyName("exitUnits", targetId)}

@@ -39,16 +39,7 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
-  const {
-    clearErrors,
-    errors,
-    getValues,
-    register,
-    setError,
-    setValue,
-    watch,
-    trigger,
-  } = useFormContext();
+  const { clearErrors, errors, getValues, register, setValue, watch, trigger } = useFormContext();
   const { validateTargetPriceLimits2 } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan, positive } = useValidation();
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
