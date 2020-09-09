@@ -4,7 +4,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import "./AutoclosePanel.scss";
 
 /**
@@ -14,26 +13,8 @@ import "./AutoclosePanel.scss";
  */
 const AutoclosePanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, getValues, register, setError } = useFormContext();
+  const { clearErrors, errors, register } = useFormContext();
   const { formatMessage } = useIntl();
-
-  /**
-   * Validate that autoclose time is greater than zero.
-   *
-   * @return {Void} None.
-   */
-  const autocloseChange = () => {
-    const draftPosition = getValues();
-    const autoclose = parseFloat(draftPosition.autoclose);
-
-    clearErrors("autoclose");
-    if (!isValidIntOrFloat(draftPosition.autoclose) || autoclose <= 0) {
-      setError("autoclose", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.autoclose.limit.zero" }),
-      });
-    }
-  };
 
   /**
    * Display property errors.
@@ -83,9 +64,11 @@ const AutoclosePanel = () => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    value > 0 || formatMessage({ id: "terminal.autoclose.limit.zero" }),
+                })}
                 name="autoclose"
-                onChange={autocloseChange}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.hours" />

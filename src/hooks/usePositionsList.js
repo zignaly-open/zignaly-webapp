@@ -188,7 +188,7 @@ const usePositionsList = (
     // Skip request if required parameters is empty.
     if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerPayload.providerId)) {
       if (positionEntity) {
-        // On fist load rely on position entity passed by parent to avoid extra rquest.
+        // On first load rely on position entity passed by parent to avoid extra rquest.
         return new Promise((resolve) => {
           resolve([positionEntity]);
         });
