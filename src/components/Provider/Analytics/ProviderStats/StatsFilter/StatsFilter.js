@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./StatsFilter.scss";
-import { Box, Checkbox } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { Box } from "@material-ui/core";
+import useQuoteAssets from "../../../../../hooks/useQuoteAssets";
+import useExchangesOptions from "../../../../../hooks/useExchangesOptions";
+import CustomSelect from "../../../../CustomSelect";
+import { useIntl } from "react-intl";
 /**
  *
  * @typedef {import("../../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
@@ -17,51 +20,53 @@ import { FormattedMessage } from "react-intl";
 /**
  *
  * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX Component.
  */
-
 const StatsFilter = ({ list, onChange }) => {
-  const [checked, setChecked] = useState(false);
+  const [exchange, setExchange] = useState("ALL");
+  const [quote, setQuote] = useState("ALL");
+  const intl = useIntl();
+  const exchanges = useExchangesOptions(true);
+  const quoteAssets = useQuoteAssets();
+  const quotes = [
+    {
+      val: "ALL",
+      label: intl.formatMessage({ id: "fil.allcoins" }),
+    },
+  ].concat(
+    Object.keys(quoteAssets).map((label) => ({
+      val: label,
+      label,
+    })),
+  );
 
-  /**
-   * Filter change handler.
-   *
-   * @param {React.ChangeEvent} e Change event.
-   * @returns {Void} None.
-   */
-  const handleChange = (e) => {
-    /* @ts-ignore */
-    setChecked(e.target.checked);
-    /* @ts-ignore */
-    const data = filterData(e.target.checked);
-    onChange(data);
+  const filterData = () => {
+    let newList = [...list].filter(
+      (item) =>
+        (!quote || quote === "ALL" || item.quote === quote) &&
+        (!exchange || exchange === "ALL" || item.exchange.toLowerCase() === exchange.toLowerCase()),
+    );
+    onChange(newList);
   };
 
-  /**
-   * Filter Daily balance data
-   *
-   * @param {Boolean} value
-   * @returns {Array<ProfileProviderStatsSignalsObject>}
-   */
-
-  const filterData = (value) => {
-    if (!value) {
-      return list;
-    }
-
-    let newList = [...list].filter((item) => {
-      return parseFloat(item.balanceTotal) > 0;
-    });
-    return newList;
-  };
+  useEffect(filterData, [exchange, quote]);
 
   return (
-    <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
-      <Checkbox
-        checked={checked}
-        inputProps={{ "aria-label": "primary checkbox" }}
-        onChange={handleChange}
+    <Box alignItems="center" className="statsFilter" display="flex" flexDirection="row">
+      <CustomSelect
+        onChange={(/** @type {string} */ v) => setExchange(v)}
+        options={exchanges}
+        value={exchange}
       />
-      <FormattedMessage id="coins.filter.title" />
+      <CustomSelect
+        onChange={(/** @type {import("../../../../CustomSelect/CustomSelect").OptionType} */ v) =>
+          // @ts-ignore
+          setQuote(v.val)
+        }
+        options={quotes}
+        search={true}
+        value={quote}
+      />
     </Box>
   );
 };

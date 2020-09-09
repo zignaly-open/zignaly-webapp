@@ -267,7 +267,7 @@ const initialState = {
         "balanceTotalUSDT",
       ],
       profileProviderStats: [
-        "data",
+        "dateReadable",
         "pair",
         "exchange",
         "averageEntryPrice",

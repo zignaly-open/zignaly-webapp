@@ -139,7 +139,7 @@ const StatsTable = ({ title, persistKey, list }) => {
   };
 
   return (
-    <Box className="coinsTable" display="flex" flexDirection="column" width={1}>
+    <Box className="statsTable" display="flex" flexDirection="column" width={1}>
       <Table
         columns={columns}
         data={list}
