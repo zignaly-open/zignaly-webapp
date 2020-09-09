@@ -2,10 +2,10 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import CreatePost from "../CreatePost";
 
-const Wall = () => {
+const Wall = ({ providerId }) => {
   return (
     <Box className="wall">
-      <CreatePost />
+      <CreatePost providerId={providerId} />
     </Box>
   );
 };

@@ -1586,6 +1586,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Create post.
+   *
+   * @param {UserPayload} payload User update payload.
+   *
+   * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async createPost(payload) {
+    const endpointPath = "/fe/api.php?action=createPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

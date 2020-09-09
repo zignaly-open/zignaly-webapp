@@ -4,7 +4,7 @@ import Wall from "../../../components/Provider/News/Wall";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { useIntl } from "react-intl";
 
-const CopyTradersNews = () => {
+const CopyTradersNews = ({ providerId }) => {
   const intl = useIntl();
   const storeViews = useStoreViewsSelector();
 
@@ -17,7 +17,7 @@ const CopyTradersNews = () => {
           })}`}
         </title>
       </Helmet>
-      <Wall />
+      <Wall providerId={providerId} />
     </>
   );
 };
