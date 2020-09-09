@@ -126,7 +126,7 @@ const ExpandedRow = ({
    */
   const updating = (rowData) => {
     const obj = rowData.find((item) => item.id === "positionId");
-    const subPositions = values[index].subPositions;
+    const subPositions = values[index] ? values[index].subPositions : [];
     const position = subPositions.find((item) => item.positionId === obj.data.toString());
     if (position && position.updating) {
       return true;
