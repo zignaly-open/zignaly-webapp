@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import "./CoinsFilter.scss";
+import "./StatsFilter.scss";
 import { Box, Checkbox } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserExchangeAssetObject>} list
+ * @property {Array<ProfileProviderStatsSignalsObject>} list
  * @property {Function} onChange
  */
 
@@ -40,7 +40,7 @@ const StatsFilter = ({ list, onChange }) => {
    * Filter Daily balance data
    *
    * @param {Boolean} value
-   * @returns {Array<UserExchangeAssetObject>}
+   * @returns {Array<ProfileProviderStatsSignalsObject>}
    */
 
   const filterData = (value) => {

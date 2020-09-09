@@ -3786,6 +3786,7 @@ export function profileProviderStatsResponseTransform(response) {
  * @property {String} pair
  * @property {String} base
  * @property {String} quote
+ * @property {String} exchange
  * @property {String} averageEntryPrice
  * @property {String} i24HighPercentage
  * @property {String} i24LowPercentage
@@ -3855,6 +3856,7 @@ const createEmptyProfileProviderSignalsEntity = (item) => {
     pair: `${item.base}/${item.quote}`,
     base: item.base,
     quote: item.quote,
+    exchange: item.exchange,
     averageEntryPrice: item.averageEntryPrice,
     i24HighPercentage: item.i24h_higherPricePercentage,
     i24LowPercentage: item.i24h_lowerPricePercentage,

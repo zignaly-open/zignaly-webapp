@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./ProviderStats.scss";
-import { Box, CircularProgress } from "@material-ui/core";
-import CoinsTable from "./StatsTable";
-import useUserExchangeAssets from "../../../../hooks/useUserExchangeAssets";
-import CoinsFilter from "./StatsFilter";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { Box } from "@material-ui/core";
+import StatsFilter from "./StatsFilter";
+import StatsTable from "./StatsTable";
 
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
+ * @typedef {Object} DefaultProps
+ * @property {Array<ProfileProviderStatsSignalsObject>} data
  */
 
-const ProviderStats = () => {
+/**
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX Component.
+ */
+const ProviderStats = ({ data }) => {
   const [list, setList] = useState([]);
-  const storeSettings = useStoreSettingsSelector();
-  const { loading, data } = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
 
   const initData = () => {
     setList(data);
@@ -23,40 +26,25 @@ const ProviderStats = () => {
   useEffect(initData, [data]);
 
   /**
-   * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
+   * @param {Array<ProfileProviderStatsSignalsObject>} filtered Filtered equity data.
    * @returns {void}
    */
   const handleChange = (filtered) => {
     setList(filtered);
   };
 
-  const embedFilter = <CoinsFilter list={data} onChange={handleChange} />;
+  const embedFilter = <StatsFilter list={data} onChange={handleChange} />;
 
   return (
-    <>
-      {loading && (
-        <Box
-          alignItems="center"
-          className="loadingBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="center"
-        >
-          <CircularProgress color="primary" size={40} />
-        </Box>
-      )}
-      {!loading && (
-        <Box
-          alignItems="flex-start"
-          className="history"
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-        >
-          <CoinsTable list={list} persistKey="exchangeAssets" title={embedFilter} />
-        </Box>
-      )}
-    </>
+    <Box
+      alignItems="flex-start"
+      className="providerStats"
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
+    >
+      <StatsTable list={list} persistKey="profileProviderStats" title={embedFilter} />
+    </Box>
   );
 };
 

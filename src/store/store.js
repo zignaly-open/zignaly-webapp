@@ -29,7 +29,7 @@ const migrations = {
       },
     };
   },
-  10: (/** @type {PersistedState} */ state) => {
+  11: (/** @type {PersistedState} */ state) => {
     return {
       ...state,
       settings: {
@@ -43,7 +43,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 10,
+  version: 11,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };

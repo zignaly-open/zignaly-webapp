@@ -15,6 +15,7 @@ import {
   createEmptyProfileProviderStatsEntity,
 } from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
+import ProviderStats from "./ProviderStats";
 
 /**
  * @typedef {Object} DefaultProps
@@ -157,15 +158,18 @@ const CopyTradersAnalytics = ({ provider }) => {
 
       {!provider.isCopyTrading && (
         <Box bgcolor="grid.content" className="providerStatsBox">
-          <Box
-            alignItems="center"
-            className="graphBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-          >
-            {statsLoading && <CircularProgress color="primary" size={50} />}
-          </Box>
+          {statsLoading && (
+            <Box
+              alignItems="center"
+              className="graphBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <CircularProgress color="primary" size={50} />
+            </Box>
+          )}
+          {!statsLoading && <ProviderStats data={stats.signalsInfo} />}
         </Box>
       )}
 

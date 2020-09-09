@@ -1,8 +1,9 @@
 import React from "react";
-import "./CoinsTable.scss";
+import "./StatsTable.scss";
 import { Box } from "@material-ui/core";
-import { formatFloat } from "../../../../../utils/format";
+import { formatFloat, formatFloat2Dec } from "../../../../../utils/format";
 import Table from "../../../../Table";
+import ExchangeIcon from "../../../../ExchangeIcon";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -10,7 +11,7 @@ import Table from "../../../../Table";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("../../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
@@ -21,7 +22,7 @@ import Table from "../../../../Table";
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
- * @property {Array<UserExchangeAssetObject>} list
+ * @property {Array<ProfileProviderStatsSignalsObject>} list
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -32,46 +33,97 @@ const StatsTable = ({ title, persistKey, list }) => {
    */
   let columns = [
     {
-      name: "coin",
-      label: "col.coins.coin",
+      name: "dateReadable",
+      label: "col.stats.date",
     },
     {
-      name: "name",
-      label: "col.coins.name",
+      name: "pair",
+      label: "col.stats.pair",
     },
     {
-      name: "balanceTotal",
-      label: "col.coins.total",
+      name: "exchange",
+      label: "col.stats.exchange",
+      options: {
+        customBodyRender: (val) => {
+          return <ExchangeIcon exchange={val.toLowerCase()} size="medium" />;
+        },
+      },
+    },
+    {
+      name: "averageEntryPrice",
+      label: "col.stats.entryprice",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "balanceFree",
-      label: "col.coins.available",
+      name: "i24HighPercentage",
+      label: "col.stats.24H",
       options: {
-        customBodyRender: formatFloat,
+        customBodyRender: formatFloat2Dec,
       },
     },
     {
-      name: "balanceLocked",
-      label: "col.coins.locked",
+      name: "i24LowPercentage",
+      label: "col.stats.24L",
       options: {
-        customBodyRender: formatFloat,
+        customBodyRender: formatFloat2Dec,
       },
     },
     {
-      name: "balanceTotalBTC",
-      label: "col.coins.btcvalue",
+      name: "i3DHighPercentage",
+      label: "col.stats.3DH",
       options: {
-        customBodyRender: formatFloat,
+        customBodyRender: formatFloat2Dec,
       },
     },
     {
-      name: "balanceTotalUSDT",
-      label: "col.coins.usdtvalue",
+      name: "i3DLowPercentage",
+      label: "col.stats.3DL",
       options: {
-        customBodyRender: formatFloat,
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "iweekHighPercentage",
+      label: "col.stats.1WH",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "iweekLowPercentage",
+      label: "col.stats.1WL",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "imonthHighPercentage",
+      label: "col.stats.1MH",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "imonthLowPercentage",
+      label: "col.stats.1ML",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "i3MonthHighPercentage",
+      label: "col.stats.3MH",
+      options: {
+        customBodyRender: formatFloat2Dec,
+      },
+    },
+    {
+      name: "i3MonthLowPercentage",
+      label: "col.stats.3ML",
+      options: {
+        customBodyRender: formatFloat2Dec,
       },
     },
   ];
