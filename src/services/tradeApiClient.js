@@ -41,6 +41,7 @@ import {
   userAvailableBalanceResponseTransform,
   cloneProviderResponseTransform,
   profileStatsResponseTransform,
+  profileProviderStatsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -123,7 +124,9 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
  * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
+ * @typedef {import('./tradeApiClient.types').ProfileProviderStatsPayload} ProfileProviderStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
+ * @typedef {import('./tradeApiClient.types').ProfileProviderStatsObject} ProfileProviderStatsObject
  *
  */
 
@@ -1569,6 +1572,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return profileStatsResponseTransform(responseData);
+  }
+
+  /**
+   * Cancel exchange order.
+   *
+   * @param {ProfileProviderStatsPayload} payload Cancel exchange order payload.
+   *
+   * @returns {Promise<ProfileProviderStatsObject>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async profileProviderStatsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getProviderStats2";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return profileProviderStatsResponseTransform(responseData);
   }
 }
 

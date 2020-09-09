@@ -10,7 +10,10 @@ import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { createProviderCopiersEmptyEntity } from "../../../services/tradeApiClient.types";
+import {
+  createProviderCopiersEmptyEntity,
+  createEmptyProfileProviderStatsEntity,
+} from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
 
 /**
@@ -33,17 +36,26 @@ const CopyTradersAnalytics = ({ provider }) => {
     weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
   };
   const emptyFollowers = createProviderCopiersEmptyEntity();
+  const emptyStats = createEmptyProfileProviderStatsEntity();
   const [followers, setFollowers] = useState([emptyFollowers]);
   const [performance, setPerformance] = useState(emptyPerformance);
+  const [stats, setStats] = useState(emptyStats);
   const dispatch = useDispatch();
   const [copiersLoading, setCopiersLoading] = useState(false);
   const [performanceLoading, setPerformanceLoading] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(false);
   const [increase, setIncrease] = useState(0);
   const [increasePercentage, setIncreasePercentage] = useState(0);
 
   const payload = {
     token: storeSession.tradeApi.accessToken,
     providerId: provider.id,
+  };
+
+  const statsPayload = {
+    token: storeSession.tradeApi.accessToken,
+    providerId: provider.id,
+    ro: true,
   };
 
   const getProviderPerformance = () => {
@@ -64,6 +76,25 @@ const CopyTradersAnalytics = ({ provider }) => {
   };
 
   useEffect(getProviderPerformance, []);
+
+  const getProviderStats = () => {
+    if (!provider.isCopyTrading) {
+      setStatsLoading(true);
+      tradeApi
+        .profileProviderStatsGet(statsPayload)
+        .then((response) => {
+          setStats(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setStatsLoading(false);
+        });
+    }
+  };
+
+  useEffect(getProviderStats, []);
 
   const getProviderFollowers = () => {
     setCopiersLoading(true);
@@ -120,6 +151,20 @@ const CopyTradersAnalytics = ({ provider }) => {
           >
             {performanceLoading && <CircularProgress color="primary" size={50} />}
             {!performanceLoading && <TradingPerformance performance={performance} />}
+          </Box>
+        </Box>
+      )}
+
+      {!provider.isCopyTrading && (
+        <Box bgcolor="grid.content" className="providerStatsBox">
+          <Box
+            alignItems="center"
+            className="graphBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            {statsLoading && <CircularProgress color="primary" size={50} />}
           </Box>
         </Box>
       )}
