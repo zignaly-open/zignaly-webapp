@@ -36,7 +36,15 @@ import useValidation from "../../../hooks/useValidation";
  */
 const DCAPanel = (props) => {
   const { positionEntity, symbolData, isReadOnly = false } = props;
-  const { clearErrors, errors, register, setValue, watch, trigger } = useFormContext();
+  const {
+    clearErrors,
+    errors,
+    register,
+    setValue,
+    watch,
+    trigger,
+    formState: { dirtyFields },
+  } = useFormContext();
   const rebuyTargets = positionEntity ? positionEntity.reBuyTargets : {};
   const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
@@ -296,31 +304,42 @@ const DCAPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     initValuesFromPositionEntity();
-    // if (expanded) {
-    //   cardinalityRange.forEach((targetId) => {
-    //     const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-    //     const newValue = formatFloat2Dec(Math.abs(currentValue));
-    //     const sign = entryType === "LONG" ? "-" : "";
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+        const newValue = formatFloat2Dec(Math.abs(currentValue));
+        const sign = entryType === "LONG" ? "-" : "";
 
-    //     if (isNaN(currentValue)) {
-    //       setTargetPropertyValue("targetPricePercentage", targetId, sign);
-    //     } else {
-    //       setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+        if (isNaN(currentValue)) {
+          setTargetPropertyValue("targetPricePercentage", targetId, sign);
+        } else {
+          setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
 
-    //       // Validate only when not yet executed.
-    //       if (!dcaExecutionIndex[targetId]) {
-    //         pricePercentageValidations(targetId);
-    //       }
-    //     }
-    //   });
-    // }
+          const targetPercentageProperty = composeTargetPropertyName(
+            "targetPricePercentage",
+            targetId,
+          );
+
+          // Validate only when not yet executed.
+          if (!dcaExecutionIndex[targetId] && dirtyFields[targetPercentageProperty]) {
+            trigger(targetPercentageProperty);
+          }
+        }
+      });
+    }
   };
 
   useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    if (expanded && cardinality > 0 && !dcaExecutionIndex["1"]) {
-      const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", 1);
+    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", 1);
+
+    if (
+      expanded &&
+      cardinality > 0 &&
+      !dcaExecutionIndex["1"] &&
+      dirtyFields[rebuyPercentageProperty]
+    ) {
       trigger(rebuyPercentageProperty);
     }
   };

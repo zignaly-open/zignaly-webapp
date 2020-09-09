@@ -46,7 +46,16 @@ const TakeProfitPanel = (props) => {
     validateUnitsLimits,
   } = useSymbolLimitsValidate(symbolData);
 
-  const { clearErrors, errors, register, setValue, watch, getValues, trigger } = useFormContext();
+  const {
+    clearErrors,
+    errors,
+    register,
+    setValue,
+    watch,
+    getValues,
+    trigger,
+    formState: { dirtyFields },
+  } = useFormContext();
   const defaultCardinality = 1;
   const {
     cardinality,
@@ -164,12 +173,11 @@ const TakeProfitPanel = (props) => {
   /**
    * Calculate units based on units percentage change for a given target.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @param {string} targetId targetId
    * @return {Void} None.
    */
-  const exitUnitsPercentageChange = (event) => {
+  const exitUnitsPercentageChange = (targetId) => {
     const units = getEntrySize();
-    const targetId = getGroupTargetId(event);
     const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
     const exitUnitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
     const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
@@ -178,7 +186,10 @@ const TakeProfitPanel = (props) => {
 
     const targetUnits = units * (unitsPercentage / 100);
     setValue(unitsProperty, formatPrice(targetUnits, "", ""));
-    trigger(unitsProperty);
+    // Trigger validation unless change caused by initialization
+    if (dirtyFields[exitUnitsPercentageProperty]) {
+      trigger(unitsProperty);
+    }
   };
 
   /**
@@ -220,18 +231,18 @@ const TakeProfitPanel = (props) => {
     initValuesFromPositionEntity();
 
     cardinalityRange.forEach((targetId) => {
-      //   const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-      //   const newValue = formatFloat2Dec(Math.abs(currentValue));
-      //   const sign = entryType === "SHORT" ? "-" : "";
+      const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
+      const newValue = formatFloat2Dec(Math.abs(currentValue));
+      const sign = entryType === "SHORT" ? "-" : "";
 
-      //   if (isNaN(currentValue)) {
-      //     setTargetPropertyValue("targetPricePercentage", targetId, sign);
-      //   } else {
-      //     setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-      //   }
-
-      if (expanded) {
-        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+      if (isNaN(currentValue)) {
+        setTargetPropertyValue("targetPricePercentage", targetId, sign);
+      } else {
+        setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
+        if (expanded) {
+          // Trigger target price calculation
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        }
       }
     });
   };
@@ -239,11 +250,12 @@ const TakeProfitPanel = (props) => {
   useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, cardinality, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      if (expanded) {
-        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
-      }
-    });
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        // Trigger units amount calculation
+        exitUnitsPercentageChange(targetId);
+      });
+    }
   };
 
   useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
@@ -312,6 +324,7 @@ const TakeProfitPanel = (props) => {
                     disabled={
                       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
                     }
+                    error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
                     inputRef={register({
                       validate: (value) =>
                         greaterThan(
@@ -330,6 +343,7 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
+                    error={!!errors[composeTargetPropertyName("targetPrice", targetId)]}
                     inputRef={register({
                       validate: {
                         positive: (value) =>
@@ -358,6 +372,7 @@ const TakeProfitPanel = (props) => {
                     disabled={
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
                     }
+                    error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
                     inputRef={register({
                       validate: {
                         percentage: (value) =>
@@ -366,7 +381,7 @@ const TakeProfitPanel = (props) => {
                       },
                     })}
                     name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
-                    onChange={exitUnitsPercentageChange}
+                    onChange={() => exitUnitsPercentageChange(targetId)}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
@@ -374,6 +389,7 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                    error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
                     inputRef={register({
                       validate: {
                         positive: (value) =>

@@ -5,7 +5,6 @@ import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
-import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -37,9 +36,18 @@ const TrailingStopPanel = (props) => {
     ? Boolean(positionEntity.trailingStopPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsTrailingStop);
-  const { clearErrors, errors, getValues, register, trigger, setValue, watch } = useFormContext();
+  const {
+    clearErrors,
+    errors,
+    getValues,
+    register,
+    trigger,
+    setValue,
+    watch,
+    formState: { dirtyFields },
+  } = useFormContext();
   const initTrailingStopDistance = positionEntity ? positionEntity.trailingStopPercentage : 0;
-  const trailingStopDistanceRaw = watch("trailingStopDistance");
+  const trailingStopDistanceRaw = watch("trailingStopDistance", initTrailingStopDistance);
   const trailingStopDistance = parseFloat(trailingStopDistanceRaw);
   const initTrailingStopPercentage = positionEntity
     ? positionEntity.trailingStopTriggerPercentage
@@ -115,8 +123,6 @@ const TrailingStopPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    simulateInputChangeEvent("trailingStopPercentage");
-
     const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
     const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
     const percentageSign = entryType === "SHORT" ? "-" : "";
@@ -126,14 +132,16 @@ const TrailingStopPanel = (props) => {
       setValue("trailingStopDistance", distanceSign);
     } else {
       setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
-      simulateInputChangeEvent("trailingStopDistance");
+      if (dirtyFields.trailingStopDistance) {
+        trigger("trailingStopDistance");
+      }
     }
 
     if (!trailingStopPercentage) {
       setValue("trailingStopPercentage", percentageSign);
     } else {
       setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
-      simulateInputChangeEvent("trailingStopPercentage");
+      trailingStopPercentageChange();
     }
 
     if (!expanded) {
@@ -201,6 +209,7 @@ const TrailingStopPanel = (props) => {
                 className="outlineInput"
                 defaultValue={initTrailingStopPercentage}
                 disabled={fieldsDisabled.trailingStopPercentage}
+                error={!!errors.trailingStopPercentage}
                 inputRef={register({
                   validate: (value) =>
                     greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage"),
@@ -214,6 +223,7 @@ const TrailingStopPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 disabled={fieldsDisabled.trailingStopPrice}
+                error={!!errors.trailingStopPrice}
                 inputRef={register({
                   validate: {
                     positive: (value) =>
@@ -233,8 +243,8 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                defaultValue={initTrailingStopDistance}
                 disabled={fieldsDisabled.trailingStopDistance}
+                error={!!errors.trailingStopDistance}
                 inputRef={register({
                   validate: (value) =>
                     lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),

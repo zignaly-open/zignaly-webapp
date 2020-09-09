@@ -6,7 +6,6 @@ import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
-import { simulateInputChangeEvent } from "../../../utils/events";
 import useExpandable from "../../../hooks/useExpandable";
 import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -127,32 +126,32 @@ const StopLossPanel = (props) => {
     trigger("stopLossPercentage");
   };
 
-  const chainedPriceUpdates = () => {
+  const updateStopLoss = () => {
     const draftPosition = getValues();
     const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : null;
     const stopLossPercentage =
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
-    const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
     const sign = entryType === "SHORT" ? "" : "-";
 
     if (!stopLossPercentage) {
       setValue("stopLossPercentage", sign);
-    } else {
-      setValue("stopLossPercentage", `${sign}${newValue}`);
+    } else if (initialStopLossPercentage) {
       // When SL come from backend rely on the existing sign and value.
-      if (initialStopLossPercentage) {
-        setValue("stopLossPercentage", formatFloat2Dec(initialStopLossPercentage));
-      }
+      setValue("stopLossPercentage", formatFloat2Dec(initialStopLossPercentage));
+    } else {
+      const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
+      setValue("stopLossPercentage", `${sign}${newValue}`);
     }
 
     if (expanded) {
-      simulateInputChangeEvent("stopLossPercentage");
+      // Trigger stop price calculation
+      stopLossPercentageChange();
     } else {
       setValue("stopLossPrice", "");
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
+  useEffect(updateStopLoss, [expanded, positionEntity, entryType, strategyPrice]);
 
   /**
    * Display property errors.
