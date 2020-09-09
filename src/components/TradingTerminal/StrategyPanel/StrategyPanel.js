@@ -53,12 +53,11 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
-    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-    validatePositionSizePercentage,
+    validateUnits,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -128,7 +127,14 @@ const StrategyPanel = (props) => {
           <FormControl>
             <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+              <OutlinedInput
+                className="outlineInput"
+                error={!!errors.stopPrice}
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
+                name="stopPrice"
+              />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
@@ -140,7 +146,10 @@ const StrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 defaultValue={lastPrice}
-                inputRef={register}
+                error={!!errors.price}
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
                 name="price"
                 onChange={priceChange}
               />
@@ -183,6 +192,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSize}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
@@ -215,12 +225,14 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSizePercentage}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                  validate: validatePositionSizePercentage,
+                  validate: (value) =>
+                    !isNaN(value) ||
+                    formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"
-                onChange={positionSizePercentageChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">%</div>
@@ -244,7 +256,9 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: validateUnits,
+                })}
                 name="units"
                 onChange={unitsChange}
                 placeholder={"0"}
