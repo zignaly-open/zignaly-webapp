@@ -2,7 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import { cloneDeep, filter, isEmpty, isFunction, omitBy, partial, sortBy, uniqBy } from "lodash";
+import {
+  assign,
+  cloneDeep,
+  filter,
+  isEmpty,
+  isFunction,
+  omitBy,
+  partial,
+  sortBy,
+  uniqBy,
+} from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -17,6 +27,7 @@ import useFilters from "./useFilters";
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
  * @typedef {import("../store/initialState").Filters} Filters
+ * @typedef {Object<string, boolean>} UpdatingIndex
  */
 
 /**
@@ -76,6 +87,13 @@ const usePositionsList = (
     // Fix wrong value at first render
     noSsr: true,
   });
+
+  /**
+   * Track the position IDs that have performed an open position update action.
+   */
+  const [updatingIndex, setUpdatingIndex] = useState(
+    /** @type {UpdatingIndex} updatingIndex */ ({}),
+  );
 
   /**
    * @type {PositionsState}
@@ -170,7 +188,7 @@ const usePositionsList = (
     // Skip request if required parameters is empty.
     if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerPayload.providerId)) {
       if (positionEntity) {
-        // On fist load rely on position entity passed by parent to avoid extra rquest.
+        // On first load rely on position entity passed by parent to avoid extra rquest.
         return new Promise((resolve) => {
           resolve([positionEntity]);
         });
@@ -313,6 +331,10 @@ const usePositionsList = (
               newPositions[type] = (await fallbackLogPositionsAllStatuses()) || [];
             }
 
+            if (type === "open") {
+              newPositions[type] = mutateUpdatingPositions(newPositions[type]);
+            }
+
             setPositions(newPositions);
             if (isFunction(notifyPositionsUpdate)) {
               notifyPositionsUpdate(newPositions[type]);
@@ -374,6 +396,10 @@ const usePositionsList = (
         newPositions[type] = [data];
         setPositions(newPositions);
 
+        if (type === "open") {
+          newPositions[type] = mutateUpdatingPositions(newPositions[type]);
+        }
+
         if (isFunction(notifyPositionsUpdate)) {
           notifyPositionsUpdate(newPositions[type]);
         }
@@ -409,21 +435,38 @@ const usePositionsList = (
   useEffect(handlePositionTypeChange, [type]);
 
   /**
+   * Mutate those that started an update action as with updating flag.
+   *
+   * @param {UserPositionsCollection} currentPositionsCollection Current positions collection.
+   * @returns {UserPositionsCollection} Mutated updating flag positions collection.
+   */
+  const mutateUpdatingPositions = (currentPositionsCollection) => {
+    return currentPositionsCollection.map((position) => {
+      if (updatingIndex[position.positionId]) {
+        return { ...position, updating: true };
+      }
+
+      return position;
+    });
+  };
+
+  /**
    * Flag a given position as updating.
    *
    * @param {string} positionId Position ID to flag.
    * @returns {Void} None.
    */
   const flagPositionUpdating = (positionId) => {
+    // Add to updating index so this state persists even when backend have not
+    // started to process and avoid that duplicated actions are performed.
+    if (!updatingIndex[positionId]) {
+      const newUpdatingIndex = { [positionId]: true };
+      // Combine with others IDs that exists in current index state.
+      setUpdatingIndex(assign(updatingIndex, newUpdatingIndex));
+    }
+
     if (positions[type]) {
-      const newPositions = positions[type].map((position) => {
-        if (position.positionId === positionId) {
-          return { ...position, updating: true };
-        }
-
-        return position;
-      });
-
+      const newPositions = mutateUpdatingPositions(positions[type]);
       setPositions({ ...positions, [type]: newPositions });
     }
   };

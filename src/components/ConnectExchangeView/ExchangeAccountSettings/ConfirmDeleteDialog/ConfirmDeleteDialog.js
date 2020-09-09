@@ -14,8 +14,15 @@ import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { removeUserExchange } from "../../../../store/actions/user";
 import { CircularProgress, Box } from "@material-ui/core";
+import CustomButton from "../../../CustomButton";
 
 /**
+ * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ *
+ * @typedef {Object} UserProviderListOptions
+ * @property {Boolean} connectedOnly
+ * @property {Boolean} copyTradersOnly
+ *
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} onClose
  * @property {boolean} open
@@ -34,6 +41,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   } = useContext(ModalPathContext);
   const storeSession = useStoreSessionSelector();
   const [positions, setPositions] = useState(null);
+  const [loading, setLoading] = useState(false);
   const balance = useBalance(selectedAccount.internalId);
   const dispatch = useDispatch();
 
@@ -55,6 +63,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   useEffect(loadOpenPositions, []);
 
   const deleteExchange = () => {
+    setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalId: selectedAccount.internalId,
@@ -70,9 +79,13 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
           currentPath: previousPath,
         });
+        onClose();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -104,13 +117,14 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
         <Button autoFocus onClick={() => onClose()}>
           <FormattedMessage id="confirm.cancel" />
         </Button>
-        <Button
-          color="secondary"
+        <CustomButton
+          className="textPurple"
           disabled={Boolean(!balance || !positions || brokerAccountWithFunds || positions.length)}
+          loading={loading}
           onClick={deleteExchange}
         >
           <FormattedMessage id="confirm.delete" />
-        </Button>
+        </CustomButton>
       </DialogActions>
     </Dialog>
   );

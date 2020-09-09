@@ -417,7 +417,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
           </div>
         </Tooltip>
       )}
-      {(!isCopyTrading || isProviderOwner) && !updating && status === 1 && (
+      {(!isCopyTrading || isCopyTrader || isProviderOwner) && !updating && status === 1 && (
         <Tooltip
           arrow
           enterTouchDelay={50}
@@ -550,6 +550,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeRisk(position),
     composeRawValue(position.age),
     composeAllActionButtons(position, confirmActionHandler),
+    composeRawValue(position.positionId),
   ];
 }
 
@@ -589,6 +590,7 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
     ["col.risk", "risk"],
     ["col.age", "ageSeconds"],
     ["col.actions", "updating"],
+    ["col.positionId", "positionId"],
   ];
 
   return {

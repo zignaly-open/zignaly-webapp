@@ -40,7 +40,7 @@ const CustomButton = (props) => {
       type={type ? type : "button"}
       {...others}
     >
-      {loading ? <CircularProgress className="loader" thickness={5} /> : children}
+      {loading ? <CircularProgress className="loader" size={35} thickness={5} /> : children}
     </Button>
   );
 };

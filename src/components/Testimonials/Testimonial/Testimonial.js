@@ -4,6 +4,7 @@ import { Box } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import FacebookIcon from "../../../images/facebook-icon.svg";
 import moment from "moment";
+import { FormattedMessage } from "react-intl";
 
 /**
  *
@@ -39,7 +40,7 @@ const Testimonial = (props) => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        <span className="time"> {moment(data.date).fromNow()} </span>
+        <span className="time"> {moment(new Date(data.date)).fromNow()} </span>
         {data.facebook && <img alt="Zignaly" className="icon" src={FacebookIcon} />}
       </Box>
       <Box
@@ -50,7 +51,10 @@ const Testimonial = (props) => {
         justifyContent="start"
       >
         <span className="title"> {data.name} </span>
-        <p> {data.review} </p>
+        <p>
+          {" "}
+          <FormattedMessage id={data.review} />{" "}
+        </p>
       </Box>
       <Box className="reviewBox" display="flex" flexDirection="row" justifyContent="flex-end">
         <Rating classes={{ icon: "stars" }} readOnly value={5} />

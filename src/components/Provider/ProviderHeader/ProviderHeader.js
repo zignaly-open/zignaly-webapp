@@ -28,6 +28,12 @@ const ProviderHeader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeViews.provider.id, storeSettings.selectedExchange.internalId]);
 
+  const checkAccess = () => {
+    // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
+    window.scrollTo(0, 0);
+  };
+  useEffect(checkAccess, []);
+
   return (
     <Box
       className="providerHeader"
@@ -35,14 +41,8 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      {storeViews.provider.isCopyTrading ? (
-        <>
-          <TraderHeaderActions />
-          <TraderHeaderInfo />
-        </>
-      ) : (
-        <ProviderHeaderActions />
-      )}
+      <TraderHeaderActions />
+      <TraderHeaderInfo />
       <SubNavHeader links={links} />
     </Box>
   );

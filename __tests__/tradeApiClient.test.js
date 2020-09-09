@@ -119,7 +119,7 @@ describe("Consume tradeApiClient service", () => {
       true,
       "Second collection position item closed flag is not true.",
     );
-  }, 15000);
+  }, 20000);
 
   it("should get all the providers", async () => {
     const getProvidersPayload = {
@@ -268,7 +268,7 @@ describe("Consume tradeApiClient service", () => {
       marketData[0].precision.quote,
       "First market symbol precision quote is not an object.",
     );
-  });
+  }, 15000);
 
   it("should get user owned copy traders options list", async () => {
     const payload = {
@@ -411,6 +411,23 @@ describe("Consume tradeApiClient service", () => {
       10,
       "Take profit target price don't match the expected value.",
     );
+
+    const positionActionPayload = {
+      positionId: updatedPositionEntity.positionId,
+      token: accessToken,
+    };
+
+    // Position still entering, we can cancel.
+    if (updatedPositionEntity.status === 1) {
+      const cancelPosition = await client.positionCancel(positionActionPayload);
+      assert.isTrue(cancelPosition.updating, "Cancel position is not flagged as updating.");
+    }
+
+    // Position is filled, we can exit.
+    if (updatedPositionEntity.status === 9) {
+      const exitPosition = await client.positionExit(positionActionPayload);
+      assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
+    }
   }, 25000);
 
   it("should get position by ID", async () => {
@@ -464,7 +481,7 @@ describe("Consume tradeApiClient service", () => {
     const assets = await client.exchangeAssetsGet(payload);
     assert.isObject(assets, "response is not an object.");
     assert.isObject(assets.BTC, "response does not have the BTC asset.");
-  }, 10000);
+  }, 15000);
 
   it("should get deposit history for the exchange account", async () => {
     const payload = {

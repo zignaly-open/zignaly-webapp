@@ -35,6 +35,7 @@ const LoginForm = () => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+
   const hasMounted = useHasMounted();
   if (!hasMounted) {
     // Don't render form statically

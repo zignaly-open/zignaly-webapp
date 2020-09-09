@@ -4,6 +4,8 @@ import DCAPanel from "../DCAPanel/DCAPanel";
 import StopLossPanel from "../StopLossPanel/StopLossPanel";
 import TrailingStopPanel from "../TrailingStopPanel/TrailingStopPanel";
 import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPanel";
+import ReduceOrders from "../ReduceOrders/ReduceOrders";
+import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -14,6 +16,7 @@ import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPane
  * @typedef {Object} SidebarEditPanelsProps
  * @property {MarketSymbol} currentSymbolData
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {boolean} isReadOnly Flag to disable position update.
  */
 
 /**
@@ -23,15 +26,37 @@ import IncreaseStrategyPanel from "../IncreaseStrategyPanel/IncreaseStrategyPane
  * @returns {JSX.Element} Strategy form element.
  */
 const SidebarEditPanels = (props) => {
-  const { positionEntity, currentSymbolData } = props;
+  const { positionEntity, currentSymbolData, isReadOnly } = props;
 
   return (
     <>
-      <TakeProfitPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      <DCAPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      <StopLossPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      <TrailingStopPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
-      <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+      <TakeProfitPanel
+        isReadOnly={isReadOnly}
+        positionEntity={positionEntity}
+        symbolData={currentSymbolData}
+      />
+      <DCAPanel
+        isReadOnly={isReadOnly}
+        positionEntity={positionEntity}
+        symbolData={currentSymbolData}
+      />
+      <StopLossPanel
+        isReadOnly={isReadOnly}
+        positionEntity={positionEntity}
+        symbolData={currentSymbolData}
+      />
+      <TrailingStopPanel
+        isReadOnly={isReadOnly}
+        positionEntity={positionEntity}
+        symbolData={currentSymbolData}
+      />
+      {!isReadOnly && (
+        <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+      )}
+      <ReduceOrders isReadOnly={isReadOnly} positionEntity={positionEntity} />
+      {!isReadOnly && (
+        <ReduceStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+      )}
     </>
   );
 };

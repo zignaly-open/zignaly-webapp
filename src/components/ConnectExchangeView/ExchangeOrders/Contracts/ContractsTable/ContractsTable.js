@@ -11,6 +11,7 @@ import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelecto
 import ModalPathContext from "../../../ModalPathContext";
 import { showErrorAlert } from "../../../../../store/actions/ui";
 import { Delete } from "react-feather";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -167,13 +168,13 @@ const ContractsTable = ({ title, list, loadData }) => {
     },
     {
       name: "id",
-      label: "col.cancel",
+      label: "col.close",
       options: {
         customBodyRender: (val) => {
           return loading && position === val ? (
             <CircularProgress color="primary" size={24} />
           ) : (
-            <Tooltip placement="top" title="Cancel">
+            <Tooltip placement="top" title={<FormattedMessage id="col.close" />}>
               <Delete
                 className="cancelIcon red" // @ts-ignore
                 onClick={() => confirmCancel(val)}

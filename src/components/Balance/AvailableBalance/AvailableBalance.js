@@ -3,6 +3,8 @@ import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
+import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
@@ -16,6 +18,7 @@ import { formatFloat2Dec, formatFloat } from "../../../utils/format";
  */
 
 const AvailableBalance = ({ balance }) => {
+  const { selectedExchange } = useStoreSettingsSelector();
   const color = balance && balance.pnlBTC >= 0 ? "green" : "red";
 
   return (
@@ -46,11 +49,23 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.available" />
               </Typography>
               <Typography className="number3 smallText">
-                = USDT {formatFloat(balance.totalFreeUSDT)}
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalFreeUSDT)
+                )}
               </Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography className="number1">BTC {formatFloat(balance.totalFreeBTC)}</Typography>
+              <Typography className="number1">
+                BTC{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalFreeBTC)
+                )}
+              </Typography>
               {/* <Typography className="number1 pnlPercent">
                 {balance.totalFreeBTC && balance.totalBTC
                   ? formatFloat2Dec((balance.totalFreeBTC / balance.totalBTC) * 100)
@@ -144,10 +159,22 @@ const AvailableBalance = ({ balance }) => {
                 <FormattedMessage id="balance.total" />
               </Typography>
               <Typography className="smallText number3">
-                = USDT {formatFloat(balance.totalUSDT)}
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalUSDT)
+                )}
               </Typography>
             </Box>
-            <Typography className="number1">BTC {formatFloat(balance.totalBTC)}</Typography>
+            <Typography className="number1">
+              BTC{" "}
+              {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                <AllInclusiveIcon className="infinity" />
+              ) : (
+                formatFloat(balance.totalBTC)
+              )}
+            </Typography>
           </Box>
         </>
       )}

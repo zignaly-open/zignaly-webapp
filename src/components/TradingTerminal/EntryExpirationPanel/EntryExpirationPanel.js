@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import "./EntryExpirationPanel.scss";
 
 /**
@@ -13,27 +12,9 @@ import "./EntryExpirationPanel.scss";
  * @returns {JSX.Element} Take profit panel element.
  */
 const EntryExpirationPanel = () => {
-  const { expanded, expandClass, expandableControl } = useExpandable();
-  const { clearErrors, errors, getValues, register, setError } = useFormContext();
+  const { expanded, expandClass, setExpanded } = useExpandable();
+  const { clearErrors, errors, register } = useFormContext();
   const { formatMessage } = useIntl();
-
-  /**
-   * Validate that expiration time is greater than zero.
-   *
-   * @return {Void} None.
-   */
-  const expirationChange = () => {
-    const draftPosition = getValues();
-    const entryExpiration = parseFloat(draftPosition.entryExpiration);
-
-    clearErrors("entryExpiration");
-    if (!isValidIntOrFloat(draftPosition.entryExpiration) || entryExpiration <= 0) {
-      setError("entryExpiration", {
-        type: "manual",
-        message: formatMessage({ id: "terminal.expiration.limit.zero" }),
-      });
-    }
-  };
 
   /**
    * Display property errors.
@@ -60,7 +41,7 @@ const EntryExpirationPanel = () => {
   return (
     <Box className={`panel entryExpirationPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
-        {expandableControl}
+        <Switch checked={expanded} onChange={(e) => setExpanded(e.target.checked)} size="small" />
         <Box alignItems="center" className="title" display="flex" flexDirection="row">
           <Typography variant="h5">
             <FormattedMessage id="terminal.entryexpiration" />
@@ -83,9 +64,11 @@ const EntryExpirationPanel = () => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: (value) =>
+                    value > 0 || formatMessage({ id: "terminal.expiration.limit.zero" }),
+                })}
                 name="entryExpiration"
-                onChange={expirationChange}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.minutes" />

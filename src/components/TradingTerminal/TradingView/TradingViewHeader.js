@@ -149,6 +149,12 @@ const TradingViewHeader = (props) => {
             value={providerService.providerConsumedBalance || 0}
           />
           <input
+            name="providerConsumedBalancePercentage"
+            ref={register}
+            type="hidden"
+            value={providerService.providerConsumedBalancePercentage || 0}
+          />
+          <input
             name="providerName"
             ref={register}
             type="hidden"

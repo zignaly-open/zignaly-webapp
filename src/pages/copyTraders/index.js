@@ -10,11 +10,11 @@ import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider, unsetProvider } from "../../store/actions/views";
-import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
 import BrowsePage from "./browse";
+import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 
 /**
  *
@@ -53,7 +53,7 @@ const CopyTraders = (props) => {
       };
       dispatch(setProvider(payload));
     };
-    if (providerId && providerId.length === 24 && storeViews.provider.id !== providerId) {
+    if (providerId && providerId.length === 24) {
       loadProvider();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,34 +64,43 @@ const CopyTraders = (props) => {
     return <BrowsePage {...props} />;
   }
 
+  const allowAdminRoutes = storeViews.provider.isAdmin && !storeViews.provider.isClone;
+
   return (
     <ProviderLayout>
       <Router>
         <CopyTraderRoute
           component={Profile}
+          default
           path={withPrefix("/copyTraders/:providerId")}
           providerId={providerId}
         />
-        <CopyTraderRoute
-          component={Edit}
-          path={withPrefix("/copyTraders/:providerId/edit")}
-          providerId={providerId}
-        />
-        <CopyTraderRoute
-          component={Management}
-          path={withPrefix("/copyTraders/:providerId/management")}
-          providerId={providerId}
-        />
+        {allowAdminRoutes && (
+          <>
+            <CopyTraderRoute
+              component={Edit}
+              path={withPrefix("/copyTraders/:providerId/edit")}
+              providerId={providerId}
+            />
+            <CopyTraderRoute
+              component={Management}
+              path={withPrefix("/copyTraders/:providerId/management")}
+              providerId={providerId}
+            />
+          </>
+        )}
         <CopyTraderRoute
           component={Analytics}
           path={withPrefix("/copyTraders/:providerId/analytics")}
           providerId={providerId}
         />
-        <CopyTraderRoute
-          component={Users}
-          path={withPrefix("/copyTraders/:providerId/users")}
-          providerId={providerId}
-        />
+        {allowAdminRoutes && (
+          <CopyTraderRoute
+            component={Users}
+            path={withPrefix("/copyTraders/:providerId/users")}
+            providerId={providerId}
+          />
+        )}
         <CopyTraderRoute
           component={Positions}
           path={withPrefix("/copyTraders/:providerId/positions")}

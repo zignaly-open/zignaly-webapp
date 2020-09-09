@@ -155,7 +155,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
 
   return (
     <Box bgcolor="grid.content" className="settingsFormWrapper" flexWrap="wrap">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box className="formBox" display="flex" flexDirection="row">
           <Box
             alignItems="flex-start"

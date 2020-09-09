@@ -10,6 +10,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
 import { Link } from "gatsby";
 import { formatFloat } from "../../../../../utils/format";
 import { Delete } from "react-feather";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -117,13 +118,13 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
     },
     {
       name: "orderId",
-      label: "col.cancel",
+      label: "col.close",
       options: {
         customBodyRender: (val) => {
           return loading && order === val ? (
             <CircularProgress color="primary" size={24} />
           ) : (
-            <Tooltip placement="top" title="Cancel">
+            <Tooltip placement="top" title={<FormattedMessage id="col.close" />}>
               <Delete
                 className="cancelIcon red" // @ts-ignore
                 onClick={() => confirmCancel(val)}

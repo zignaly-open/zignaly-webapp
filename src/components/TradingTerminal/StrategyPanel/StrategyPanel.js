@@ -18,6 +18,7 @@ import Modal from "../../Modal";
 import { CircularProgress } from "@material-ui/core";
 import { LeverageForm } from "..";
 import { formatPrice } from "../../../utils/formatters";
+import { formatFloat2Dec } from "../../../utils/format";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
@@ -52,12 +53,11 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
-    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
-    validatePositionSizePercentage,
+    validateUnits,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -67,6 +67,7 @@ const StrategyPanel = (props) => {
   const providerService = watch("providerService");
   const providerAllocatedBalance = watch("providerPayableBalance");
   const providerConsumedBalance = watch("providerConsumedBalance");
+  const providerConsumedBalancePercentage = watch("providerConsumedBalancePercentage");
   const isCopyProvider = providerService && providerService !== "1";
 
   const entryStrategyOptions = [
@@ -126,7 +127,14 @@ const StrategyPanel = (props) => {
           <FormControl>
             <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+              <OutlinedInput
+                className="outlineInput"
+                error={!!errors.stopPrice}
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
+                name="stopPrice"
+              />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
           </FormControl>
@@ -138,7 +146,10 @@ const StrategyPanel = (props) => {
               <OutlinedInput
                 className="outlineInput"
                 defaultValue={lastPrice}
-                inputRef={register}
+                error={!!errors.price}
+                inputRef={register({
+                  validate: (value) => parseFloat(value) > 0,
+                })}
                 name="price"
                 onChange={priceChange}
               />
@@ -181,6 +192,7 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSize}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
@@ -213,18 +225,25 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
+                error={!!errors.positionSizePercentage}
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                  validate: validatePositionSizePercentage,
+                  validate: (value) =>
+                    !isNaN(value) ||
+                    formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"
-                onChange={positionSizePercentageChange}
                 placeholder={"0"}
               />
               <div className="currencyBox">%</div>
             </Box>
             <FormHelperText>
-              Current allocated: {providerAllocatedBalance}, Using: {providerConsumedBalance}
+              <FormattedMessage id="terminal.provider.allocated" />{" "}
+              <span>{formatPrice(providerAllocatedBalance)}, </span>
+              <FormattedMessage id="terminal.provider.consumed" />{" "}
+              <span>{formatPrice(providerConsumedBalance)}, </span>
+              <FormattedMessage id="terminal.provider.available" />{" "}
+              <span>{formatFloat2Dec(100 - providerConsumedBalancePercentage)}%</span>
             </FormHelperText>
             {errors.positionSizePercentage && (
               <span className="errorText">{errors.positionSizePercentage.message}</span>
@@ -237,7 +256,9 @@ const StrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                inputRef={register}
+                inputRef={register({
+                  validate: validateUnits,
+                })}
                 name="units"
                 onChange={unitsChange}
                 placeholder={"0"}
@@ -268,7 +289,13 @@ const StrategyPanel = (props) => {
               size="small"
               state={modalVisible}
             >
-              <LeverageForm leverage={parseInt(leverage)} max={125} min={1} setValue={setValue} />
+              <LeverageForm
+                leverage={parseInt(leverage)}
+                max={125}
+                min={1}
+                onClose={() => setModalVisible(false)}
+                setValue={setValue}
+              />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>

@@ -2,7 +2,7 @@ import React from "react";
 import "./LoginHeader.scss";
 import { Box } from "@material-ui/core";
 import Logo from "../../../images/logo/logoWhite.png";
-import LanguageSwitcher from "../../LanguageSwitcher";
+import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -28,7 +28,7 @@ const LoginHeader = ({ children }) => {
     >
       <Box className="headerImage" />
       <Box className="languageBox">
-        <LanguageSwitcher />
+        <LanguageSwitcherDropdown />
       </Box>
       <Box
         alignItems="start"

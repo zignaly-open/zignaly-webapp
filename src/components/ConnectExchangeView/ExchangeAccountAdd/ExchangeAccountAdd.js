@@ -27,11 +27,17 @@ import { getUserExchanges } from "../../../store/actions/user";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ demo }) => {
-  const { register, control, setValue, watch, setError } = useFormContext();
+  const { handleSubmit, register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const { setTitle, formRef, setTempMessage } = useContext(ModalPathContext);
+  const {
+    pathParams: { previousPath },
+    setPathParams,
+    setTitle,
+    formRef,
+    setTempMessage,
+  } = useContext(ModalPathContext);
 
   useEffect(() => {
     setTitle(<FormattedMessage id={demo ? "accounts.create.demo" : "accounts.create.exchange"} />);
@@ -124,7 +130,7 @@ const ExchangeAccountAdd = ({ demo }) => {
         ...(password && { password }),
       }),
       mainAccount: false,
-      isPaperTrading: demo,
+      isPaperTrading: demo ? (_testNet ? !_testNet : true) : false,
       testNet: _testNet,
     };
 
@@ -155,8 +161,28 @@ const ExchangeAccountAdd = ({ demo }) => {
       });
   };
 
+  /**
+   * Handle submit button click.
+   *
+   * @param {*} data Form data.
+   * @returns {Promise<void>} Form action async promise.
+   */
+  const onSubmit = async (data) => {
+    setPathParams((state) => ({ ...state, isLoading: true }));
+    const res = await submitForm(data);
+    let params = {
+      isLoading: false,
+      ...(res && {
+        currentPath: previousPath,
+        previousPath: null,
+      }),
+    };
+    setPathParams((state) => ({ ...state, ...params }));
+  };
+
   return (
-    <form className="exchangeAccountAdd" method="post">
+    // @ts-ignore
+    <form className="exchangeAccountAdd" method="post" onSubmit={handleSubmit(onSubmit)}>
       {!selectedExchange ? (
         <Box className="loadProgress" display="flex" flexDirection="row" justifyContent="center">
           <CircularProgress disableShrink />

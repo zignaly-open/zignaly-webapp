@@ -58,3 +58,11 @@
     }
   }
 }
+
+@include media(">lg") {
+  .traderHeaderActions {
+    .titleBox {
+      max-width: 100%;
+    }
+  }
+}

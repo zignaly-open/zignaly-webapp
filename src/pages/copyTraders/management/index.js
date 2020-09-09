@@ -103,7 +103,13 @@ const CopyTradersManagement = () => {
             <CircularProgress color="primary" size={40} />
           </Box>
         )}
-        {!positionsLoading && <ManagementTable allPositions={allPositions} list={tablePositions} />}
+        {!positionsLoading && (
+          <ManagementTable
+            allPositions={allPositions}
+            list={tablePositions}
+            setLoading={setPositionsLoading}
+          />
+        )}
       </Box>
     </Box>
   );

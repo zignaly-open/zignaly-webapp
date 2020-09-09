@@ -42,6 +42,12 @@ const useTimeFramesOptions = () => {
       }),
       val: "6months",
     },
+    {
+      label: intl.formatMessage({
+        id: "timeframe.total",
+      }),
+      val: "total",
+    },
   ];
 };
 
