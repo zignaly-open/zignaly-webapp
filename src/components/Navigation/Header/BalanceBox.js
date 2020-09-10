@@ -94,11 +94,17 @@ const BalanceBox = () => {
             <Typography className="title" variant="subtitle1">
               <FormattedMessage id="balance.profitlosses" />
             </Typography>
-            <Typography className={`${balance.pnlBTC > 0 ? "green" : "red"} number1`}>
+            <Typography
+              className={`${
+                balance.pnlBTC > 0 ? "green" : balance.pnlBTC < 0 ? "red" : ""
+              } number1`}
+            >
               BTC {formatFloat(balance.pnlBTC)}
             </Typography>
             <Typography
-              className={`${balance.pnlBTC > 0 ? "green" : "red"} number3`}
+              className={`${
+                balance.pnlBTC > 0 ? "green" : balance.pnlBTC < 0 ? "red" : ""
+              } number3`}
               variant="subtitle2"
             >
               USDT {formatFloat(balance.pnlUSDT)}
