@@ -17,7 +17,7 @@ const CopyTradersNews = ({ providerId }) => {
           })}`}
         </title>
       </Helmet>
-      <Wall providerId={providerId} />
+      <Wall provider={storeViews.provider} />
     </>
   );
 };
