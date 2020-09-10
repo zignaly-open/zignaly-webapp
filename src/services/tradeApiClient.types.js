@@ -70,9 +70,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
- * @property {number} quoteTarget
  * @property {number} amountPercentage
- * @property {number} value
  */
 
 /**
