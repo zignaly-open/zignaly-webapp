@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "gatsby";
 import { FormattedMessage } from "react-intl";
+import Captcha from "../../Captcha";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -40,6 +41,8 @@ const ResetPasswordForm = ({ token, setVerified }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
+  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
+  const recaptchaRef = useRef(null);
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
 
@@ -103,6 +106,7 @@ const ResetPasswordForm = ({ token, setVerified }) => {
       const payload = {
         token: token,
         password: data.password,
+        gRecaptchaResponse,
       };
       tradeApi
         .forgotPasswordStep3(payload)
@@ -206,6 +210,10 @@ const ResetPasswordForm = ({ token, setVerified }) => {
             />
           </FormControl>
           {passwordDoNotMatch && <span className="errorText">Passwords do not match</span>}
+        </Box>
+
+        <Box className="captchaBox">
+          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
         </Box>
 
         <Box className="inputBox">

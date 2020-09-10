@@ -815,14 +815,16 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ForgotPasswordStep1Payload
- * @property {string} email User's email.
+ * @property {String} email User's email.
  * @property {Boolean} array Default backend param equal to "true".
+ * @property {String} [gRecaptchaResponse] Google captcha response.
  */
 
 /**
  * @typedef {Object} ForgotPasswordStep3Payload
  * @property {string} token
  * @property {String} password
+ * @property {String} [gRecaptchaResponse] Google captcha response.
  */
 
 /**
