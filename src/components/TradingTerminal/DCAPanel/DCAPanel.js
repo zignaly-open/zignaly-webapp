@@ -98,7 +98,6 @@ const DCAPanel = (props) => {
     cardinality,
     cardinalityRange,
     composeTargetPropertyName,
-    getGroupTargetId,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -183,22 +182,6 @@ const DCAPanel = (props) => {
   };
 
   /**
-   * Calculate the target price.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
-   */
-  const targetPricePercentageChange = (event) => {
-    const targetId = getGroupTargetId(event);
-    const targetPercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    if (errors[targetPercentageProperty]) return;
-
-    // Only perform validation if no other active errors exists for this property.
-    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
-    trigger(rebuyPercentageProperty);
-  };
-
-  /**
    * Effects for when rebuy units change.
    *
    * This is not tied to any input due to the fact that this is derived from
@@ -214,11 +197,10 @@ const DCAPanel = (props) => {
     const price = getEntryPrice();
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
-    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
 
     const units = Math.abs(rebuyPositionSize / targetPrice);
     if (positionSize > 0) {
-      return validateUnitsLimits(units, rebuyPercentageProperty, "terminal.dca.limit");
+      return validateUnitsLimits(units, "terminal.dca.limit");
     }
 
     return true;
@@ -234,19 +216,6 @@ const DCAPanel = (props) => {
     const targetPricePercentage = parseFloat(targetPricePercentageRaw);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
     return validateTargetPriceLimits(targetPrice, "terminal.dca.limit");
-  };
-
-  /**
-   * Calculate the target position size.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @return {Void} None.
-   */
-  const rebuyPercentageChange = (event) => {
-    const targetId = getGroupTargetId(event);
-    const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", targetId);
-    if (errors[rebuyPercentageProperty]) return;
-    trigger(rebuyPercentageProperty);
   };
 
   /**
@@ -396,7 +365,6 @@ const DCAPanel = (props) => {
                 },
               })}
               name={composeTargetPropertyName("targetPricePercentage", targetId)}
-              onChange={targetPricePercentageChange}
             />
             <div className="currencyBox">%</div>
           </Box>
@@ -415,7 +383,6 @@ const DCAPanel = (props) => {
                 },
               })}
               name={composeTargetPropertyName("rebuyPercentage", targetId)}
-              onChange={rebuyPercentageChange}
             />
             <div className="currencyBox">%</div>
           </Box>

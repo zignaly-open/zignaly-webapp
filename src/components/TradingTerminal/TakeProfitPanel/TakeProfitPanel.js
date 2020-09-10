@@ -350,7 +350,6 @@ const TakeProfitPanel = (props) => {
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.price" }),
                         price: (value) =>
                           validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
-                        cost: (value) => validateCostLimits(value, "terminal.takeprofit.limit"),
                       },
                     })}
                     name={composeTargetPropertyName("targetPrice", targetId)}
@@ -395,6 +394,7 @@ const TakeProfitPanel = (props) => {
                         positive: (value) =>
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.units" }),
                         limit: (value) => validateUnitsLimits(value, "terminal.takeprofit.limit"),
+                        cost: (value) => validateCostLimits(value, "terminal.takeprofit.limit"),
                       },
                     })}
                     name={composeTargetPropertyName("exitUnits", targetId)}
