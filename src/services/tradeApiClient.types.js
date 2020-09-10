@@ -1308,6 +1308,7 @@ function createEmptyPositionEntity() {
     exchangeInternalName: "",
     exitPriceStyle: "",
     fees: 0,
+    fundingFees: 0,
     internalExchangeId: "",
     exchangeInternalId: "",
     invested: 0,
