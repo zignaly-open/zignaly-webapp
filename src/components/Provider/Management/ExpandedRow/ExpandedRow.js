@@ -42,7 +42,7 @@ const ExpandedRow = ({
 
   const prepareList = () => {
     if (values.length) {
-      let positions = values[index].subPositions;
+      let positions = values[index] ? values[index].subPositions : [];
       let newList = [];
       let transformed = composeManagementPositionsDataTable(positions, confirmAction);
       let { data, columns } = transformed;
@@ -64,12 +64,12 @@ const ExpandedRow = ({
     }
   };
 
-  useEffect(prepareList, []);
+  useEffect(prepareList, [values]);
 
   const checkIfAllChecked = () => {
     if (selectedRows.length) {
       let allSelected = true;
-      const subPositions = values[index].subPositions;
+      const subPositions = values[index] ? values[index].subPositions : [];
       subPositions.forEach((position) => {
         if (!selectedRows.includes(position.positionId)) {
           allSelected = false;
