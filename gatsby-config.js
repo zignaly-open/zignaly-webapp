@@ -60,7 +60,7 @@ module.exports = {
       options: {
         mergeSecurityHeaders: false,
         headers: {
-          "/*": ["X-Frame-Options: sameorigin"],
+          "/*": ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"],
         },
       },
     },
