@@ -209,17 +209,13 @@ const StrategyForm = (props) => {
 
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
-      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
-      const targetExitUnitsPercetage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
-      const targetExitUnits = draftPosition[`takeProfitExitUnits${targetId}`];
+      const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
 
       if (targetPricePercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
-          quoteTarget: parseFloat(targetPrice),
-          amountPercentage: parseFloat(targetExitUnitsPercetage),
-          value: parseFloat(targetExitUnits),
+          amountPercentage: parseFloat(targetExitUnitsPercentage),
         });
       }
     });

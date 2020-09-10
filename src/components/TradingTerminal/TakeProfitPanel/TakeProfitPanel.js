@@ -76,6 +76,8 @@ const TakeProfitPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
+  const providerService = watch("providerService");
+  const isCopyProvider = providerService && providerService !== "1";
 
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
@@ -397,26 +399,32 @@ const TakeProfitPanel = (props) => {
                   />
                   <div className="currencyBox">%</div>
                 </Box>
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
-                    error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
-                    inputRef={register({
-                      validate: {
-                        positive: (value) =>
-                          value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.units" }),
-                        limit: (value) => validateUnitsLimits(value, "terminal.takeprofit.limit"),
-                        cost: () => validateUnitCostLimits(targetId),
-                      },
-                    })}
-                    name={composeTargetPropertyName("exitUnits", targetId)}
-                    onChange={exitUnitsChange}
-                  />
-                  <div className="currencyBox">{symbolData.base}</div>
-                </Box>
+                {!isCopyProvider && (
+                  <>
+                    <Box alignItems="center" display="flex">
+                      <OutlinedInput
+                        className="outlineInput"
+                        disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                        error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
+                        inputRef={register({
+                          validate: {
+                            positive: (value) =>
+                              value >= 0 ||
+                              formatMessage({ id: "terminal.takeprofit.valid.units" }),
+                            limit: (value) =>
+                              validateUnitsLimits(value, "terminal.takeprofit.limit"),
+                            cost: () => validateUnitCostLimits(targetId),
+                          },
+                        })}
+                        name={composeTargetPropertyName("exitUnits", targetId)}
+                        onChange={exitUnitsChange}
+                      />
+                      <div className="currencyBox">{symbolData.base}</div>
+                    </Box>
+                  </>
+                )}
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
-                {displayTargetFieldErrors("exitUnits", targetId)}
+                {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
             </Box>
           ))}
