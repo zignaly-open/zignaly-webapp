@@ -424,6 +424,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose fee element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderFundingFee(dataIndex) {
+    const position = positions[dataIndex];
+    return <span>{formatPrice(position.fundingFees)}</span>;
+  }
+
+  /**
    * Compose profit percentage element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -975,6 +986,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.fees",
         propertyName: "fees",
         renderFunction: renderFee,
+      },
+      {
+        columnId: "col.fundingfees",
+        propertyName: "fees",
+        renderFunction: renderFundingFee,
       },
       {
         columnId: "col.netprofit.percentage",

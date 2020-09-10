@@ -381,6 +381,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
  * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees Exchange transaction fees.
+ * @property {number} fundingFees Exchange transaction funding fees.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
@@ -1117,6 +1118,7 @@ export function positionItemTransform(positionItem) {
     buyTTL: safeParseFloat(positionItem.buyTTL),
     closeDate: Number(positionItem.closeDate),
     fees: safeParseFloat(positionItem.fees),
+    fundingFees: safeParseFloat(positionItem.fundingFees),
     netProfit: safeParseFloat(positionItem.netProfit),
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
