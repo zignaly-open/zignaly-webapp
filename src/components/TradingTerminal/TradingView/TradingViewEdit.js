@@ -260,6 +260,7 @@ const TradingViewEdit = (props) => {
         "reBuyTargets",
         "positionSizeQuote",
         "reduceOrders",
+        "sellPrice",
       ];
       const propagateChange = !isEqual(
         pick(positionEntity, compareFields),

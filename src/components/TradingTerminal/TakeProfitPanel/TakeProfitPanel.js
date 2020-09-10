@@ -171,6 +171,19 @@ const TakeProfitPanel = (props) => {
   };
 
   /**
+   * Validate unit cost limits.
+   *
+   * @param {string} targetId targetId
+   * @returns {boolean|string} true if validation passed, error message otherwise.
+   */
+  const validateUnitCostLimits = (targetId) => {
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const cost = Math.abs(targetPrice * exitUnits);
+    return validateCostLimits(cost, "terminal.takeprofit.limit");
+  };
+
+  /**
    * Calculate units based on units percentage change for a given target.
    *
    * @param {string} targetId targetId
@@ -394,7 +407,7 @@ const TakeProfitPanel = (props) => {
                         positive: (value) =>
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.units" }),
                         limit: (value) => validateUnitsLimits(value, "terminal.takeprofit.limit"),
-                        cost: (value) => validateCostLimits(value, "terminal.takeprofit.limit"),
+                        cost: () => validateUnitCostLimits(targetId),
                       },
                     })}
                     name={composeTargetPropertyName("exitUnits", targetId)}
