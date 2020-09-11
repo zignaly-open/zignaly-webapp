@@ -167,7 +167,9 @@ const TakeProfitPanel = (props) => {
     const exitUnitsPercentages = getValues(exitUnitsPercentageFields);
     const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
     if (cumulativePercentage > 100) {
-      return formatMessage({ id: "terminal.takeprofit.limit.cumulative" });
+      return formatMessage({
+        id: "terminal.takeprofit.limit.cumulative",
+      });
     }
     return true;
   };
@@ -199,6 +201,7 @@ const TakeProfitPanel = (props) => {
 
     if (errors[exitUnitsPercentageProperty]) return;
 
+    console.log(units, unitsPercentage);
     const targetUnits = units * (unitsPercentage / 100);
     setValue(unitsProperty, formatPrice(targetUnits, "", ""));
     // Trigger validation unless change caused by initialization
@@ -231,20 +234,25 @@ const TakeProfitPanel = (props) => {
   };
 
   const initValuesFromPositionEntity = () => {
-    if (positionEntity) {
-      targetIndexes.forEach((index) => {
-        const profitTarget = positionEntity.takeProfitTargets[index];
-        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
-        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
-        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
-        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
-      });
-    }
+    targetIndexes.forEach((index) => {
+      // Initialization: populate with position targets values
+      const profitTarget = positionEntity.takeProfitTargets[index];
+      const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+      const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
+      setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+      setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
+    });
   };
 
   const chainedPriceUpdates = () => {
-    initValuesFromPositionEntity();
+    if (!expanded) return;
 
+    if (positionEntity) {
+      initValuesFromPositionEntity();
+    }
+
+    // Apply correct sign depending on entry type (Short/Long)
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
@@ -254,15 +262,13 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-        if (expanded) {
-          // Trigger target price calculation
-          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
-        }
+        // Trigger target price calculation
+        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
       }
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, isReadOnly, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -273,7 +279,8 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
+  const entrySize = getEntrySize();
+  useEffect(chainedUnitsUpdates, [expanded, strategyUnits, entrySize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
@@ -362,7 +369,10 @@ const TakeProfitPanel = (props) => {
                     inputRef={register({
                       validate: {
                         positive: (value) =>
-                          value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.price" }),
+                          value >= 0 ||
+                          formatMessage({
+                            id: "terminal.takeprofit.valid.price",
+                          }),
                         price: (value) =>
                           validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
                       },
@@ -387,13 +397,17 @@ const TakeProfitPanel = (props) => {
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
                     }
                     error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
-                    inputRef={register({
-                      validate: {
-                        percentage: (value) =>
-                          validPercentage(value, "terminal.takeprofit.valid.unitspercentage"),
-                        sum: validateCumulativePercentage,
-                      },
-                    })}
+                    inputRef={register(
+                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
+                        ? null
+                        : {
+                            validate: {
+                              percentage: (value) =>
+                                validPercentage(value, "terminal.takeprofit.valid.unitspercentage"),
+                              sum: validateCumulativePercentage,
+                            },
+                          },
+                    )}
                     name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
                     onChange={() => exitUnitsPercentageChange(targetId)}
                   />
@@ -410,7 +424,9 @@ const TakeProfitPanel = (props) => {
                           validate: {
                             positive: (value) =>
                               value >= 0 ||
-                              formatMessage({ id: "terminal.takeprofit.valid.units" }),
+                              formatMessage({
+                                id: "terminal.takeprofit.valid.units",
+                              }),
                             limit: (value) =>
                               validateUnitsLimits(value, "terminal.takeprofit.limit"),
                             cost: () => validateUnitCostLimits(targetId),
