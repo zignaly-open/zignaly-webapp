@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
@@ -128,7 +128,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     });
   };
 
-  const positionSizeChange = () => {
+  const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;
 
     const draftPosition = getValues();
@@ -142,7 +142,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  };
+  }, [errors, currentPrice, getValues, leverage, setValue, trigger]);
 
   const unitsChange = () => {
     const draftPosition = getValues();

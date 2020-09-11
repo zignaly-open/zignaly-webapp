@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -76,7 +76,7 @@ const ReduceStrategyPanel = (props) => {
    *
    * @returns {void}
    */
-  const reduceAvailablePercentageChange = () => {
+  const reduceAvailablePercentageChange = useCallback(() => {
     if (errors.reduceAvailablePercentage) return;
 
     const units = getEntrySize();
@@ -85,7 +85,7 @@ const ReduceStrategyPanel = (props) => {
 
     const targetUnits = (reduceAvailablePercentage / 100) * units;
     setReduceTargetUnits(targetUnits.toString());
-  };
+  }, [errors, getEntrySize, getValues]);
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");

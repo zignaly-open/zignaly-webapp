@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
@@ -86,7 +86,7 @@ const StopLossPanel = (props) => {
    *
    * @return {Void} None.
    */
-  const stopLossPercentageChange = () => {
+  const stopLossPercentageChange = useCallback(() => {
     if (errors.stopLossPercentage) return;
 
     const draftPosition = getValues();
@@ -101,14 +101,14 @@ const StopLossPanel = (props) => {
     }
 
     trigger("stopLossPrice");
-  };
+  }, [errors, getEntryPrice, getValues, setValue, trigger]);
 
   /**
    * Calculate percentage based on price when value is changed.
    *
    * @return {Void} None.
    */
-  const stopLossPriceChange = () => {
+  const stopLossPriceChange = useCallback(() => {
     if (errors.stopLossPrice) return;
 
     const draftPosition = getValues();
@@ -124,7 +124,7 @@ const StopLossPanel = (props) => {
     }
 
     trigger("stopLossPercentage");
-  };
+  }, [errors, getEntryPrice, getValues, setValue, trigger]);
 
   const updateStopLoss = () => {
     const draftPosition = getValues();
