@@ -8,19 +8,23 @@ import Post from "../Post";
 import "./Posts.scss";
 
 /**
+ * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
+ */
+
+/**
  * @typedef {Object} DefaultProps
  * @property {string} providerId
  */
 
 /**
- * Render a post.
+ * Render Posts list.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
 const Posts = ({ providerId }) => {
   const storeSession = useStoreSessionSelector();
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState(/** @type {Array<Post>} */ (null));
   const dispatch = useDispatch();
 
   const loadPosts = () => {
@@ -31,8 +35,8 @@ const Posts = ({ providerId }) => {
 
     tradeApi
       .getPosts(payload)
-      .then((posts) => {
-        setPosts(posts);
+      .then((_posts) => {
+        setPosts(_posts);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -43,7 +47,9 @@ const Posts = ({ providerId }) => {
   return (
     <Box className="posts" display="flex" justifyContent="center" flexDirection="column">
       {posts ? (
-        posts.sort((p1, p2)=>p1.).map((post) => <Post key={post.id} post={post} />)
+        posts
+          .sort((p1, p2) => p1.createdAt - p2.createdAt)
+          .map((post) => <Post key={post.id} post={post} />)
       ) : (
         <CircularProgress className="loader" />
       )}

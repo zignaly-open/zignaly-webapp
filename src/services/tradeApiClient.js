@@ -125,6 +125,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
  * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
+ * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
+ * @typedef {import('./tradeApiClient.types').Post} Post
  *
  */
 
@@ -1590,7 +1592,7 @@ class TradeApiClient {
   /**
    * Create post.
    *
-   * @param {UserPayload} payload User update payload.
+   * @param {CreatePostPayload} payload Create Post payload.
    *
    * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
    *
@@ -1605,9 +1607,9 @@ class TradeApiClient {
   /**
    * Get posts.
    *
-   * @param {UserPayload} payload User update payload.
+   * @param {GetPostsPayload} payload Get Posts payload.
    *
-   * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
+   * @returns {Promise<Array<Post>>} Returns promise that resolves posts list.
    *
    * @memberof TradeApiClient
    */

@@ -861,6 +861,35 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} GetPostsPayload
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {Object} CreatePostPayload
+ * @property {string} providerId
+ * @property {string} content
+ */
+
+/**
+ * @typedef {Object} PostAuthor
+ * @property {string} userName
+ * @property {string} imageUrl
+ */
+
+/**
+ * @typedef {Object} Post
+ * @property {string} id
+ * @property {PostAuthor} author
+ * @property {string} content
+ * @property {boolean} removed
+ * @property {number} createdAt
+ * @property {number} spams
+ * @property {number} likes
+ * @property {boolean} approved
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export
