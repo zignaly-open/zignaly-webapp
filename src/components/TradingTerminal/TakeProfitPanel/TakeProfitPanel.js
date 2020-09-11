@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
@@ -119,19 +119,30 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const targetPricePercentageChange = (event) => {
-    const price = getEntryPrice();
-    const targetId = getGroupTargetId(event);
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+  const targetPricePercentageChange = useCallback(
+    (event) => {
+      const price = getEntryPrice();
+      const targetId = getGroupTargetId(event);
+      const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+      const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+      const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
 
-    if (errors[pricePercentageProperty]) return;
+      if (errors[pricePercentageProperty]) return;
 
-    let targetPrice = price * ((targetPercentage + 100) / 100);
-    setValue(priceProperty, formatPrice(targetPrice, "", ""));
-    trigger(priceProperty);
-  };
+      let targetPrice = price * ((targetPercentage + 100) / 100);
+      setValue(priceProperty, formatPrice(targetPrice, "", ""));
+      trigger(priceProperty);
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntryPrice,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
+  );
 
   /**
    * Calculate percentage based on price change for a given target.
@@ -139,22 +150,32 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const targetPriceChange = (event) => {
-    const price = getEntryPrice();
-    const targetId = getGroupTargetId(event);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+  const targetPriceChange = useCallback(
+    (event) => {
+      const price = getEntryPrice();
+      const targetId = getGroupTargetId(event);
+      const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+      const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+      const priceProperty = composeTargetPropertyName("targetPrice", targetId);
 
-    if (errors[priceProperty]) return;
+      if (errors[priceProperty]) return;
 
-    const priceDiff = targetPrice - price;
-    const targetPercentage = (priceDiff / price) * 100;
-    setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
+      const priceDiff = targetPrice - price;
+      const targetPercentage = (priceDiff / price) * 100;
+      setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
 
-    trigger(pricePercentageProperty);
-  };
-
+      trigger(pricePercentageProperty);
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntryPrice,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
+  );
   /**
    * Validate cumulative targets percentage.
    *
@@ -193,22 +214,35 @@ const TakeProfitPanel = (props) => {
    * @param {string} targetId targetId
    * @return {Void} None.
    */
-  const exitUnitsPercentageChange = (targetId) => {
-    const units = getEntrySize();
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const exitUnitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
+  const exitUnitsPercentageChange = useCallback(
+    (targetId) => {
+      const units = getEntrySize();
+      const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+      const exitUnitsPercentageProperty = composeTargetPropertyName(
+        "exitUnitsPercentage",
+        targetId,
+      );
+      const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
-    if (errors[exitUnitsPercentageProperty]) return;
+      if (errors[exitUnitsPercentageProperty]) return;
 
-    console.log(units, unitsPercentage);
-    const targetUnits = units * (unitsPercentage / 100);
-    setValue(unitsProperty, formatPrice(targetUnits, "", ""));
-    // Trigger validation unless change caused by initialization
-    if (dirtyFields[exitUnitsPercentageProperty]) {
-      trigger(unitsProperty);
-    }
-  };
+      const targetUnits = units * (unitsPercentage / 100);
+      setValue(unitsProperty, formatPrice(targetUnits, "", ""));
+      // Trigger validation unless change caused by initialization
+      if (dirtyFields[exitUnitsPercentageProperty]) {
+        trigger(unitsProperty);
+      }
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      dirtyFields,
+      getEntrySize,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
+  );
 
   /**
    * Calculate units percentage based on units change for a given target.
@@ -216,41 +250,51 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const exitUnitsChange = (event) => {
-    const units = getEntrySize();
-    const targetId = getGroupTargetId(event);
-    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-    const exitUnitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    if (errors[exitUnitsProperty]) return;
+  const exitUnitsChange = useCallback(
+    (event) => {
+      const units = getEntrySize();
+      const targetId = getGroupTargetId(event);
+      const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
+      const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+      const exitUnitsProperty = composeTargetPropertyName("exitUnits", targetId);
+      if (errors[exitUnitsProperty]) return;
 
-    if (units > 0 && exitUnits > 0) {
-      const unitsDiff = units - exitUnits;
-      const unitsPercentage = (1 - unitsDiff / units) * 100;
-      setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
-    } else {
-      setValue(unitsPercentageProperty, "");
+      if (units > 0 && exitUnits > 0) {
+        const unitsDiff = units - exitUnits;
+        const unitsPercentage = (1 - unitsDiff / units) * 100;
+        setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
+      } else {
+        setValue(unitsPercentageProperty, "");
+      }
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntrySize,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+    ],
+  );
+
+  const initValuesFromPositionEntity = () => {
+    if (positionEntity) {
+      targetIndexes.forEach((index) => {
+        // Initialization: populate with position targets values
+        const profitTarget = positionEntity.takeProfitTargets[index];
+        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
+        setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
+      });
     }
   };
 
-  const initValuesFromPositionEntity = () => {
-    targetIndexes.forEach((index) => {
-      // Initialization: populate with position targets values
-      const profitTarget = positionEntity.takeProfitTargets[index];
-      const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
-      const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
-      setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
-      setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
-      simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
-    });
-  };
+  useEffect(initValuesFromPositionEntity, []);
 
   const chainedPriceUpdates = () => {
     if (!expanded) return;
-
-    if (positionEntity) {
-      initValuesFromPositionEntity();
-    }
 
     // Apply correct sign depending on entry type (Short/Long)
     cardinalityRange.forEach((targetId) => {
@@ -268,7 +312,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, isReadOnly, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -420,18 +464,22 @@ const TakeProfitPanel = (props) => {
                         className="outlineInput"
                         disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
                         error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
-                        inputRef={register({
-                          validate: {
-                            positive: (value) =>
-                              value >= 0 ||
-                              formatMessage({
-                                id: "terminal.takeprofit.valid.units",
-                              }),
-                            limit: (value) =>
-                              validateUnitsLimits(value, "terminal.takeprofit.limit"),
-                            cost: () => validateUnitCostLimits(targetId),
-                          },
-                        })}
+                        inputRef={register(
+                          fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]
+                            ? null
+                            : {
+                                validate: {
+                                  positive: (value) =>
+                                    value >= 0 ||
+                                    formatMessage({
+                                      id: "terminal.takeprofit.valid.units",
+                                    }),
+                                  limit: (value) =>
+                                    validateUnitsLimits(value, "terminal.takeprofit.limit"),
+                                  cost: () => validateUnitCostLimits(targetId),
+                                },
+                              },
+                        )}
                         name={composeTargetPropertyName("exitUnits", targetId)}
                         onChange={exitUnitsChange}
                       />
