@@ -130,7 +130,7 @@ const StrategyPanel = (props) => {
                 className="outlineInput"
                 error={!!errors.stopPrice}
                 inputRef={register({
-                  validate: (value) => parseFloat(value) > 0,
+                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                 })}
                 name="stopPrice"
               />
@@ -147,7 +147,7 @@ const StrategyPanel = (props) => {
                 defaultValue={lastPrice}
                 error={!!errors.price}
                 inputRef={register({
-                  validate: (value) => parseFloat(value) > 0,
+                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                 })}
                 name="price"
                 onChange={priceChange}
