@@ -97,7 +97,6 @@ const StrategyPanel = (props) => {
             name="entryStrategy"
           />
         </Box>
-        <input name="lastPrice" ref={register} type="hidden" />
       </Box>
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
         {selectedExchange.exchangeType === "futures" && (
@@ -229,7 +228,7 @@ const StrategyPanel = (props) => {
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                   validate: (value) =>
-                    !isNaN(value) ||
+                    (value > 0 && value <= 100) ||
                     formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"

@@ -70,9 +70,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
- * @property {number} quoteTarget
  * @property {number} amountPercentage
- * @property {number} value
  */
 
 /**
@@ -1254,9 +1252,13 @@ const fixedTargets = (targets) => {
   let newTargets = {};
   let i = 1;
   for (const target of Object.values(targets)) {
-    target.targetId = i;
-    newTargets[i] = target;
-    i++;
+    if (target.targetId < 1000) {
+      target.targetId = i;
+      newTargets[i] = target;
+      i++;
+    } else {
+      newTargets[target.targetId] = target;
+    }
   }
   return newTargets;
 };

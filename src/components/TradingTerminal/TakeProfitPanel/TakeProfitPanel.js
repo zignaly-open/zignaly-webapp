@@ -76,6 +76,8 @@ const TakeProfitPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
+  const providerService = watch("providerService");
+  const isCopyProvider = providerService && providerService !== "1";
 
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
@@ -168,6 +170,19 @@ const TakeProfitPanel = (props) => {
       return formatMessage({ id: "terminal.takeprofit.limit.cumulative" });
     }
     return true;
+  };
+
+  /**
+   * Validate unit cost limits.
+   *
+   * @param {string} targetId targetId
+   * @returns {boolean|string} true if validation passed, error message otherwise.
+   */
+  const validateUnitCostLimits = (targetId) => {
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const cost = Math.abs(targetPrice * exitUnits);
+    return validateCostLimits(cost, "terminal.takeprofit.limit");
   };
 
   /**
@@ -350,7 +365,6 @@ const TakeProfitPanel = (props) => {
                           value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.price" }),
                         price: (value) =>
                           validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
-                        cost: (value) => validateCostLimits(value, "terminal.takeprofit.limit"),
                       },
                     })}
                     name={composeTargetPropertyName("targetPrice", targetId)}
@@ -385,25 +399,32 @@ const TakeProfitPanel = (props) => {
                   />
                   <div className="currencyBox">%</div>
                 </Box>
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
-                    error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
-                    inputRef={register({
-                      validate: {
-                        positive: (value) =>
-                          value >= 0 || formatMessage({ id: "terminal.takeprofit.valid.units" }),
-                        limit: (value) => validateUnitsLimits(value, "terminal.takeprofit.limit"),
-                      },
-                    })}
-                    name={composeTargetPropertyName("exitUnits", targetId)}
-                    onChange={exitUnitsChange}
-                  />
-                  <div className="currencyBox">{symbolData.base}</div>
-                </Box>
+                {!isCopyProvider && (
+                  <>
+                    <Box alignItems="center" display="flex">
+                      <OutlinedInput
+                        className="outlineInput"
+                        disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                        error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
+                        inputRef={register({
+                          validate: {
+                            positive: (value) =>
+                              value >= 0 ||
+                              formatMessage({ id: "terminal.takeprofit.valid.units" }),
+                            limit: (value) =>
+                              validateUnitsLimits(value, "terminal.takeprofit.limit"),
+                            cost: () => validateUnitCostLimits(targetId),
+                          },
+                        })}
+                        name={composeTargetPropertyName("exitUnits", targetId)}
+                        onChange={exitUnitsChange}
+                      />
+                      <div className="currencyBox">{symbolData.base}</div>
+                    </Box>
+                  </>
+                )}
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
-                {displayTargetFieldErrors("exitUnits", targetId)}
+                {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
             </Box>
           ))}

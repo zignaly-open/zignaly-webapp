@@ -248,7 +248,7 @@ const IncreaseStrategyPanel = (props) => {
                   inputRef={register({
                     required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                     validate: (value) =>
-                      !isNaN(value) ||
+                      (value > 0 && value <= 100) ||
                       formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                   })}
                   name="positionSizePercentage"
