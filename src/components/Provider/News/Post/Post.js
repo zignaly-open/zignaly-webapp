@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Paper } from "@material-ui/core";
+import { Box, Paper, Typography } from "@material-ui/core";
 import Editor from "../../../Editor";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
@@ -30,16 +30,30 @@ const Post = ({ post }) => {
     <Box className="post">
       {/* <Editor content={post.content} /> */}
       <Paper className="postContent">
-        <Box className="postHeader">
+        <Box className="postHeader" display="flex" alignItems="center">
           <ProviderLogo
-            size="30px"
-            title=""
+            size="40px"
+            title={post.author.userName}
             url={post.author.imageUrl}
             defaultImage={ProfileIcon}
           />
-          <div className="name">{post.author.userName}</div>
+          {/* <div className="name">{post.author.userName}</div> */}
+          <Typography variant="h4" className="userName">
+            {post.author.userName}
+          </Typography>
         </Box>
-        <ReactMarkdown linkTarget="_blank" plugins={[breaks]} source={post.content} />
+        <ReactMarkdown
+          //   linkTarget="_blank"
+          plugins={[breaks]}
+          source={post.content}
+          renderers={{
+            link: (props) => (
+              <a href={props.href} target="_blank nofollow">
+                {props.children}
+              </a>
+            ),
+          }}
+        />
       </Paper>
     </Box>
   );

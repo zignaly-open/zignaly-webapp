@@ -48,7 +48,7 @@ const Posts = ({ providerId }) => {
     <Box className="posts" display="flex" justifyContent="center" flexDirection="column">
       {posts ? (
         posts
-          .sort((p1, p2) => p1.createdAt - p2.createdAt)
+          .sort((p1, p2) => p2.createdAt - p1.createdAt)
           .map((post) => <Post key={post.id} post={post} />)
       ) : (
         <CircularProgress className="loader" />

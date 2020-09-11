@@ -73,7 +73,7 @@ const CreatePost = ({ providerId }) => {
       <Typography variant="h3">
         <FormattedMessage id="wall.write" />
       </Typography>
-      <ProviderLogo size="30px" title="" url={storeUserData.imageUrl} defaultImage={ProfileIcon} />
+      {/* <ProviderLogo size="30px" title="" url={storeUserData.imageUrl} defaultImage={ProfileIcon} /> */}
       {/* <Typography variant="">{storeUserData.userName}</Typography> */}
 
       <Editor content={content} onChange={setContent} />
