@@ -1,7 +1,6 @@
 import React from "react";
 import "./connectedProviders.scss";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
@@ -26,4 +25,4 @@ const ConnectedProviders = () => {
   );
 };
 
-export default compose(withDashboardLayout)(ConnectedProviders);
+export default withDashboardLayout(ConnectedProviders);

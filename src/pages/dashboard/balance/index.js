@@ -1,7 +1,6 @@
 import React from "react";
 import "./balance.scss";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
@@ -54,4 +53,4 @@ const Balance = () => {
   );
 };
 
-export default compose(withDashboardLayout)(Balance);
+export default withDashboardLayout(Balance);

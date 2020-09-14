@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
@@ -50,4 +49,4 @@ const CopyTradersBrowse = (props) => {
   );
 };
 
-export default compose(withProvidersLayout)(CopyTradersBrowse);
+export default withProvidersLayout(CopyTradersBrowse);

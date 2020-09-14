@@ -94,6 +94,7 @@ const ProfileSettings = () => {
             inputRef={register({
               required: intl.formatMessage({ id: "form.error.username" }),
               minLength: 4,
+              maxLength: 15,
               pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
             })}
             name="userName"
