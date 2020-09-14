@@ -91,7 +91,9 @@ const DCAPanel = (props) => {
     dcaIncreaseIndexes,
   } = resolveDcaIndexes();
   const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
-  const positionTargetsCardinality = positionEntity ? Math.max(1, size(dcaRebuyIndexes)) : 1;
+  const positionTargetsCardinality = positionEntity
+    ? Math.max(dcaIncreaseIndexes.length ? 0 : 1, size(dcaRebuyIndexes))
+    : 1;
   const { expanded, expandClass, setExpanded } = useExpandable(size(dcaAllIndexes) > 0);
 
   const {
@@ -300,6 +302,12 @@ const DCAPanel = (props) => {
 
   useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
 
+  // Automatically expand/collpase panel depending on dca orders amount.
+  const autoExpandCollapse = () => {
+    setExpanded(Boolean(dcaAllIndexes.length));
+  };
+  useEffect(autoExpandCollapse, [dcaAllIndexes.length]);
+
   const chainedUnitsUpdates = () => {
     const rebuyPercentageProperty = composeTargetPropertyName("rebuyPercentage", 1);
 
@@ -356,14 +364,18 @@ const DCAPanel = (props) => {
                 fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
               }
               error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-              inputRef={register({
-                validate: {
-                  percentage: (value) =>
-                    lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
-                  limit: validateTargetDCALimit,
-                  cost: () => validatePrice(targetId),
-                },
-              })}
+              inputRef={register(
+                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                  ? null
+                  : {
+                      validate: {
+                        percentage: (value) =>
+                          lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
+                        limit: validateTargetDCALimit,
+                        cost: () => validatePrice(targetId),
+                      },
+                    },
+              )}
               name={composeTargetPropertyName("targetPricePercentage", targetId)}
             />
             <div className="currencyBox">%</div>
@@ -378,7 +390,10 @@ const DCAPanel = (props) => {
               inputRef={register({
                 validate: {
                   positive: (value) =>
-                    value > 0 || formatMessage({ id: "terminal.dca.valid.unitspercentage" }),
+                    value > 0 ||
+                    formatMessage({
+                      id: "terminal.dca.valid.unitspercentage",
+                    }),
                   limit: () => validateUnits(targetId),
                 },
               })}

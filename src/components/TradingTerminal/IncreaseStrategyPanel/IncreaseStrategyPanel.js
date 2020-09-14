@@ -165,7 +165,7 @@ const IncreaseStrategyPanel = (props) => {
                   disabled={isReadOnly}
                   error={!!errors.price}
                   inputRef={register({
-                    validate: (value) => parseFloat(value) > 0,
+                    validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                   })}
                   name="price"
                   onChange={priceChange}
