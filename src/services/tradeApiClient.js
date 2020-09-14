@@ -127,6 +127,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
  * @typedef {import('./tradeApiClient.types').Post} Post
+ * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
  *
  */
 
@@ -1594,7 +1595,7 @@ class TradeApiClient {
    *
    * @param {CreatePostPayload} payload Create Post payload.
    *
-   * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
+   * @returns {Promise<Post>} Returns promise that resolves created post.
    *
    * @memberof TradeApiClient
    */

@@ -1,11 +1,9 @@
 import React from "react";
 import { Box, Paper, Typography } from "@material-ui/core";
-import Editor from "../../../Editor";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import "./Post.scss";
-import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
 
 /**
@@ -24,28 +22,22 @@ import ProfileIcon from "../../../../images/header/profileIcon.svg";
  * @returns {JSX.Element} JSX
  */
 const Post = ({ post }) => {
-  const { provider } = useStoreViewsSelector();
-
   return (
     <Box className="post">
-      {/* <Editor content={post.content} /> */}
       <Paper className="postContent">
-        <Box className="postHeader" display="flex" alignItems="center">
+        <Box alignItems="center" className="postHeader" display="flex">
           <ProviderLogo
+            defaultImage={ProfileIcon}
             size="40px"
             title={post.author.userName}
             url={post.author.imageUrl}
-            defaultImage={ProfileIcon}
           />
-          {/* <div className="name">{post.author.userName}</div> */}
-          <Typography variant="h4" className="userName">
+          <Typography className="userName" variant="h4">
             {post.author.userName}
           </Typography>
         </Box>
         <ReactMarkdown
-          //   linkTarget="_blank"
           plugins={[breaks]}
-          source={post.content}
           renderers={{
             link: (props) => (
               <a href={props.href} target="_blank nofollow">
@@ -53,6 +45,7 @@ const Post = ({ post }) => {
               </a>
             ),
           }}
+          source={post.content}
         />
       </Paper>
     </Box>

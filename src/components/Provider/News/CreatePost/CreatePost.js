@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { ConfirmDialog } from "../../../Dialogs";
 import { navigate as navigateReach } from "@reach/router";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
-import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
-import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import "./CreatePost.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -14,7 +12,19 @@ import Editor from "../../../Editor";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 
-const CreatePost = ({ providerId }) => {
+/**
+ * @typedef {Object} DefaultProps
+ * @property {string} providerId
+ * @property {function} onCreated
+ */
+
+/**
+ * Render Create Post.
+ *
+ * @param {DefaultProps} props Component props.
+ * @returns {JSX.Element} JSX
+ */
+const CreatePost = ({ providerId, onCreated }) => {
   const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +47,8 @@ const CreatePost = ({ providerId }) => {
         .createPost(payload)
         .then(() => {
           dispatch(showSuccessAlert("", "wall.post.success"));
+          setContent("");
+          onCreated();
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -78,7 +90,7 @@ const CreatePost = ({ providerId }) => {
 
       <Editor content={content} onChange={setContent} />
 
-      <CustomButton className="submitButton" onClick={() => createPost()} loading={isLoading}>
+      <CustomButton className="submitButton" loading={isLoading} onClick={() => createPost()}>
         <FormattedMessage id="wall.post" />
       </CustomButton>
     </Paper>

@@ -107,10 +107,10 @@ const Header = () => {
         <Box className="linkBox">
           <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
             <ProviderLogo
+              defaultImage={ProfileIcon}
               size="32px"
               title=""
               url={storeUserData.imageUrl}
-              defaultImage={ProfileIcon}
             />
             <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
           </Box>

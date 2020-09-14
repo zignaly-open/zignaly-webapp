@@ -17,7 +17,7 @@ const SignalProviderNews = () => {
           })}`}
         </title>
       </Helmet>
-      <Wall />
+      <Wall provider={storeViews.provider} />
     </>
   );
 };

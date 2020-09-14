@@ -4,7 +4,7 @@ import Wall from "../../../components/Provider/News/Wall";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { useIntl } from "react-intl";
 
-const CopyTradersNews = ({ providerId }) => {
+const CopyTradersNews = () => {
   const intl = useIntl();
   const storeViews = useStoreViewsSelector();
 

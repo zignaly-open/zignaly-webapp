@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -39,22 +40,16 @@ const Markdown = (editor) => {
  * Default properties.
  *
  * @typedef {Object} DefaultProps
- * @property {Boolean} [loading] change button to loading state.
- * @property {String} [className] classname to apply styles.
- * @property {Object} children could be string or some node.
- * @property {MouseEventHandler} [onClick] handle onClick event.
- * @property {Boolean} [disabled] disable button and all events.
- * @property {ButtonHTMLAttributes["type"]} [type] type can be "submit" in terms of form.
- * @property {String} [target] open a link in a new tab.
- * @property {JSX.Element|string} [component] the component used for the root node.
+ * @property {string} content Editor content
+ * @property {function} onChange
  */
 
 /**
- * Default component's props.
+ * Render Editor.
  *
- * @param {DefaultProps & ButtonProps} props
+ * @param {DefaultProps} props Props
+ * @returns {JSX.Element} JSX
  */
-
 const Editor = ({ content, onChange }) => {
   const editorConfiguration = {
     plugins: [
@@ -110,52 +105,15 @@ const Editor = ({ content, onChange }) => {
     language: "en",
   };
 
-  //   const editorConfiguration0 = {
-  //     plugins: [Essentials, Bold, Italic, Paragraph],
-  //     toolbar: ["bold", "italic"],
-  //   };
-
-  //   const config = {
-  //     toolbar: [
-  //       "heading",
-  //       "|",
-  //       "bold",
-  //       "italic",
-  //       "link",
-  //       "bulletedList",
-  //       "numberedList",
-  //       "blockQuote",
-  //     ],
-  //     heading: {
-  //       options: [
-  //         { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
-  //         { model: "heading1", view: "h1", title: "Heading 1", class: "ck-heading_heading1" },
-  //         { model: "heading2", view: "h2", title: "Heading 2", class: "ck-heading_heading2" },
-  //       ],
-  //     },
-  //   };
   return (
     <div className="ckEditor">
       <CKEditor
-        editor={ClassicEditor}
-        // data="<p>Hello from CKEditor 5!</p>"
-        //   data="This is **bold**."
-        data={content}
         config={editorConfiguration}
-        onInit={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
-        }}
+        data={content}
+        editor={ClassicEditor}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log({ event, editor, data });
           onChange(data);
-        }}
-        onBlur={(event, editor) => {
-          console.log("Blur.", editor);
-        }}
-        onFocus={(event, editor) => {
-          console.log("Focus.", editor);
         }}
       />
     </div>

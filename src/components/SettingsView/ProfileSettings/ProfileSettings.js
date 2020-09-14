@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";
 import CustomButton from "../../CustomButton";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import UploadImage from "../../UploadImage";
 import { useDispatch } from "react-redux";
@@ -15,7 +15,7 @@ import ProfileIcon from "../../../images/header/profileIcon.svg";
 
 const ProfileSettings = () => {
   const storeUserData = useStoreUserData();
-  const { handleSubmit, register, reset, control, errors } = useForm();
+  const { handleSubmit, register, errors } = useForm();
   const storeSession = useStoreSessionSelector();
   const [updating, setUpdating] = useState(false);
   const [imageUrl, setImageUrl] = useState(storeUserData.imageUrl);
@@ -88,15 +88,15 @@ const ProfileSettings = () => {
             </Typography>
           </label>
           <OutlinedInput
-            error={!!errors.userName}
             className="customInput"
-            name="userName"
             defaultValue={storeUserData.userName || ""}
+            error={!!errors.userName}
             inputRef={register({
               required: intl.formatMessage({ id: "form.error.username" }),
               minLength: 4,
               pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
             })}
+            name="userName"
           />
           {errors.userName && (
             <span className="errorText">
@@ -109,9 +109,9 @@ const ProfileSettings = () => {
             <FormattedMessage id="profile.photo" />
           </label>
           <UploadImage
+            defaultImage={ProfileIcon}
             imageUrl={imageUrl || ""}
             onChange={(url) => setImageUrl(url)}
-            defaultImage={ProfileIcon}
           />
         </Box>
 

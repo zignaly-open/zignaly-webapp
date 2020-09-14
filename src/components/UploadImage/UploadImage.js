@@ -12,7 +12,7 @@ import { showErrorAlert } from "../../store/actions/ui";
  * @typedef {Object} UploadImagePropTypes
  * @property {string} imageUrl Current image.
  * @property {string} [defaultImage] Placeholder image.
- * @property {function} onChange Image change callback.
+ * @property {function(string): *} onChange Image change callback.
  */
 
 /**
@@ -75,7 +75,7 @@ const UploadImage = ({ imageUrl, onChange, defaultImage }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <ProviderLogo size="30px" title="Logo" url={imageUrl} defaultImage={defaultImage} />
+      <ProviderLogo defaultImage={defaultImage} size="30px" title="Logo" url={imageUrl} />
       <Box display="flex" flexDirection="row">
         <input accept="image/*" className="logo" id="logo" onChange={uploadLogo} type="file" />
         <label htmlFor="logo">
