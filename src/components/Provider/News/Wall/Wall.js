@@ -42,6 +42,7 @@ const Wall = ({ provider }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+        setPosts([]);
       });
   };
   useEffect(loadPosts, []);
