@@ -115,7 +115,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
-  const realInvestmentChange = () => {
+  const realInvestmentChange = useCallback(() => {
+    if (errors.realInvestment) return;
+
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.realInvestment) * leverage;
     setValue("positionSize", positionSize);
@@ -126,7 +128,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         trigger("units");
       }
     });
-  };
+  }, [errors, currentPrice]);
 
   const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;

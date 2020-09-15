@@ -184,7 +184,9 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
+                  })}
                   name="realInvestment"
                   onChange={realInvestmentChange}
                   placeholder={"0"}
