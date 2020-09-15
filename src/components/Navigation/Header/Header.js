@@ -18,6 +18,8 @@ import { toggleBalanceBox } from "../../../store/actions/settings";
 import "./Header.scss";
 import DownIconPurple from "../../../images/header/chevronDownPurple.svg";
 import DownIcon from "../../../images/header/chevron-down.svg";
+import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
+import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -28,6 +30,7 @@ const Header = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeUser = useStoreUserSelector();
   const [anchorEl, setAnchorEl] = useState(undefined);
+  const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
 
   const showHideBalance = () => {
@@ -103,7 +106,12 @@ const Header = () => {
           ))}
         <Box className="linkBox">
           <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <img alt="zignaly-user" className="icon" src={ProfileIcon} />
+            <ProviderLogo
+              defaultImage={ProfileIcon}
+              size="32px"
+              title=""
+              url={storeUserData.imageUrl}
+            />
             <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
           </Box>
           <Popper

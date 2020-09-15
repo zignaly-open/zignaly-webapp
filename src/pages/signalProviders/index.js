@@ -5,6 +5,7 @@ import Edit from "./edit";
 import Settings from "./settings";
 import Analytics from "./providerAnalytics";
 import Users from "./users";
+import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
@@ -101,6 +102,11 @@ const SignalProviders = (props) => {
             providerId={providerId}
           />
         )}
+        <SignalProviderRoute
+          component={News}
+          path={withPrefix("/signalProviders/:providerId/news")}
+          providerId={providerId}
+        />
       </Router>
     </ProviderLayout>
   );

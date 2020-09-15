@@ -124,6 +124,10 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
  * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
+ * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
+ * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
+ * @typedef {import('./tradeApiClient.types').Post} Post
+ * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
  *
  */
 
@@ -1569,6 +1573,51 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return profileStatsResponseTransform(responseData);
+  }
+
+  /**
+   * Update user.
+   *
+   * @param {UserPayload} payload User update payload.
+   *
+   * @returns {Promise<boolean>} Returns promise that resolves a boolean true.
+   *
+   * @memberof TradeApiClient
+   */
+  async updateUser(payload) {
+    const endpointPath = "/fe/api.php?action=updateUser";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Create post.
+   *
+   * @param {CreatePostPayload} payload Create Post payload.
+   *
+   * @returns {Promise<Post>} Returns promise that resolves created post.
+   *
+   * @memberof TradeApiClient
+   */
+  async createPost(payload) {
+    const endpointPath = "/fe/api.php?action=createPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Get posts.
+   *
+   * @param {GetPostsPayload} payload Get Posts payload.
+   *
+   * @returns {Promise<Array<Post>>} Returns promise that resolves posts list.
+   *
+   * @memberof TradeApiClient
+   */
+  async getPosts(payload) {
+    const endpointPath = "/fe/api.php?action=getPosts";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
   }
 }
 

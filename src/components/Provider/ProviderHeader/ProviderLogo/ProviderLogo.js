@@ -9,6 +9,7 @@ import "./ProviderLogo.scss";
  * @property {string} url logo url
  * @property {string} size logo size
  * @property {string} title logo title
+ * @property {string} [defaultImage] Placeholder image.
  */
 
 /**
@@ -17,7 +18,7 @@ import "./ProviderLogo.scss";
  * @param {ProviderLogoPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderLogo = ({ url, size, title }) => {
+const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon }) => {
   /**
    * Function to handle image url loading error.
    *
@@ -26,7 +27,7 @@ const ProviderLogo = ({ url, size, title }) => {
    */
   const onLogoError = (e) => {
     const targetElement = /** @type {HTMLInputElement} */ (e.target);
-    targetElement.src = LogoIcon;
+    targetElement.src = defaultImage;
   };
 
   // Handle no provider logo, returned as "images/providersLogo/default.png"
@@ -38,14 +39,14 @@ const ProviderLogo = ({ url, size, title }) => {
       offset={300}
       once
       placeholder={
-        <img className="providerLogo" height={size} src={LogoIcon} title={title} width={size} />
+        <img className="providerLogo" height={size} src={defaultImage} title={title} width={size} />
       }
     >
       <img
         className="providerLogo"
         height={size}
         onError={onLogoError}
-        src={url || LogoIcon}
+        src={url || defaultImage}
         title={title}
         width={size}
       />

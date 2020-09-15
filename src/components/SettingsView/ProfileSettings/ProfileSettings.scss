@@ -3,4 +3,10 @@
   .customInput {
     margin-top: 11px;
   }
+
+  .inputBox {
+    @include media(">sm") {
+      max-width: 250px;
+    }
+  }
 }

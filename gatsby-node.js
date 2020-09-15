@@ -4,6 +4,8 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
+const path = require("path");
+
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions;
 
@@ -39,33 +41,98 @@ exports.onCreatePage = ({ page, actions }) => {
 };
 
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-// Fix WebpackError: ReferenceError: window is not defined
-// https://www.gatsbyjs.org/docs/debugging-html-builds/
-exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+const { styles } = require("@ckeditor/ckeditor5-dev-utils");
+const cssRegex = /\.css$/;
+const cssModuleRegex = /\.module\.css$/;
+const svgCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/;
+
+exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
+  const config = getConfig();
+
+  /**
+   * Modify gatsby generated webpack config to support building ckEditor from source.
+   * https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/react.html#integrating-ckeditor-5-built-from-source
+   */
+
+  config.module.rules.forEach((rule) => {
+    if (rule.oneOf) {
+      rule.oneOf.forEach((subRule) => {
+        if ([String(cssRegex), String(cssModuleRegex)].includes(String(subRule.test))) {
+          if (!subRule.exclude) subRule.exclude = [];
+          subRule.exclude.push(/ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/);
+        }
+      });
+    } else if (String(rule.test).includes("svg")) {
+      if (!rule.exclude) rule.exclude = [];
+      rule.exclude.push(svgCKEditorRegex);
+    }
+  });
+
+  config.module.rules.push(
+    {
+      test: svgCKEditorRegex,
+      use: ["raw-loader"],
+    },
+    {
+      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+      use: [
+        {
+          loader: "style-loader",
+          options: {
+            injectType: "singletonStyleTag",
+            attributes: {
+              "data-cke": true,
+            },
+          },
+        },
+        {
+          loader: "postcss-loader",
+          options: styles.getPostCssConfig({
+            themeImporter: {
+              themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+            },
+            minify: true,
+          }),
+        },
+      ],
+    },
+  );
+
+  console.log(stage);
   if (stage === "build-html") {
-    actions.setWebpackConfig({
-      module: {
-        rules: [
-          {
-            test: /charting_library/,
-            use: loaders.null(),
-          },
-          {
-            test: /react-rte/,
-            use: loaders.null(),
-          },
-          {
-            test: /roundedBarCharts/,
-            use: loaders.null(),
-          },
-        ],
+    // Fix WebpackError: ReferenceError: window is not defined
+    // https://www.gatsbyjs.org/docs/debugging-html-builds/
+    config.module.rules.push(
+      {
+        test: /charting_library/,
+        use: loaders.null(),
       },
-    });
+      {
+        test: /react-rte/,
+        use: loaders.null(),
+      },
+      {
+        test: /roundedBarCharts/,
+        use: loaders.null(),
+      },
+      {
+        test: /canvas/,
+        use: loaders.null(),
+      },
+    );
   }
 
-  actions.setWebpackConfig({
-    plugins: [new CaseSensitivePathsPlugin()],
-  });
+  //   config.plugin("ignore", () => new webpack.IgnorePlugin(/^canvas$/));
+  config.plugins.push(new CaseSensitivePathsPlugin());
+  // eslint-disable-next-line no-console
+  console.log("Webpack build config updated");
+  //   console.log(JSON.stringify(config.module.rules, null, 2));
+  //   console.log(
+  //     config.module.rules.map((c) =>
+  //       c.oneOf ? c.oneOf.map((c2) => String(c2.test)) : String(c.test),
+  //     ),
+  //   );
+  actions.replaceWebpackConfig(config);
 };
 
 exports.onCreateBabelConfig = ({ actions }) => {

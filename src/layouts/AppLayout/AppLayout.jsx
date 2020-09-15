@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect } from "react";
-import { compose } from "recompose";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
@@ -73,4 +72,4 @@ const AppLayout = (props) => {
   );
 };
 
-export default compose(withPageContext)(AppLayout);
+export default withPageContext(AppLayout);

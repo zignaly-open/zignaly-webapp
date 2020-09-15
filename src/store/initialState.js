@@ -498,6 +498,8 @@ const initialState = {
       subscribe: false,
       token: "",
       userId: "",
+      userName: "",
+      imageUrl: "",
     },
   },
   ui: {
