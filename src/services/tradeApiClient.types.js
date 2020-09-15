@@ -1151,7 +1151,6 @@ export function positionItemTransform(positionItem) {
   });
 
   const risk = calculateRisk(positionEntity);
-  console.log(risk);
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     ageSeconds: openDateMoment.diff(nowDate),
