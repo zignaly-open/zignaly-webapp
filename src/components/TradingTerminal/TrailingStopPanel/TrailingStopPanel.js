@@ -149,7 +149,7 @@ const TrailingStopPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   /**
    * Display property errors.
@@ -227,7 +227,8 @@ const TrailingStopPanel = (props) => {
                 inputRef={register({
                   validate: {
                     positive: (value) =>
-                      value >= 0 || formatMessage({ id: "terminal.trailingstop.valid.price" }),
+                      (!isNaN(value) && parseFloat(value) >= 0) ||
+                      formatMessage({ id: "terminal.trailingstop.valid.price" }),
                     limit: (value) =>
                       validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
                   },

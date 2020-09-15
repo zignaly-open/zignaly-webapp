@@ -73,6 +73,12 @@
       }
     }
 
+    .languageBox {
+      left: auto;
+      right: 30px;
+      z-index: 101;
+    }
+
     .tagLineBox {
       box-sizing: border-box;
       height: 250px;

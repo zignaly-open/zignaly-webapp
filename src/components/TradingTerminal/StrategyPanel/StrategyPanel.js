@@ -23,6 +23,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
+import { simulateInputChangeEvent } from "../../../utils/events";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -82,6 +83,11 @@ const StrategyPanel = (props) => {
       val: "import",
     });
   }
+
+  const onLeverageClose = () => {
+    setModalVisible(false);
+    simulateInputChangeEvent("positionSize");
+  };
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -292,7 +298,7 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={125}
                 min={1}
-                onClose={() => setModalVisible(false)}
+                onClose={onLeverageClose}
                 setValue={setValue}
               />
             </Modal>

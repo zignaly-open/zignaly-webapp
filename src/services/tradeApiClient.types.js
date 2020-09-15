@@ -1079,11 +1079,10 @@ export function positionItemTransform(positionItem) {
    */
   const calculateRisk = (positionEntity) => {
     const buyPrice = positionEntity.buyPrice;
-    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
-
-    if (isNaN(risk)) {
+    if (!positionEntity.stopLossPrice || !buyPrice) {
       return -100;
     }
+    let risk = ((positionEntity.stopLossPrice - buyPrice) / buyPrice) * 100;
 
     // Invert on short position.
     if (positionEntity.side === "SHORT") {
