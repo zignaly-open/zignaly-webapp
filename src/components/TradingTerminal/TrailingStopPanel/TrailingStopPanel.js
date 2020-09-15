@@ -123,29 +123,36 @@ const TrailingStopPanel = (props) => {
   };
 
   const chainedPriceUpdates = () => {
-    const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
-    const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
-    const percentageSign = entryType === "SHORT" ? "-" : "";
-    const distanceSign = entryType === "SHORT" ? "" : "-";
+    if (expanded) {
+      const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
+      const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
+      const percentageSign = entryType === "SHORT" ? "-" : "";
+      const distanceSign = entryType === "SHORT" ? "" : "-";
 
-    if (!trailingStopDistance) {
-      setValue("trailingStopDistance", distanceSign);
-    } else {
-      setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
-      if (dirtyFields.trailingStopDistance) {
-        trigger("trailingStopDistance");
+      if (!trailingStopDistance) {
+        setValue("trailingStopDistance", distanceSign);
+      } else {
+        setValue("trailingStopDistance", `${distanceSign}${newDistance}`);
+        if (dirtyFields.trailingStopDistance) {
+          trigger("trailingStopDistance");
+        }
       }
-    }
 
-    if (!trailingStopPercentage) {
-      setValue("trailingStopPercentage", percentageSign);
+      if (!trailingStopPercentage) {
+        setValue("trailingStopPercentage", percentageSign);
+      } else {
+        setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
+        trailingStopPercentageChange();
+      }
     } else {
-      setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
-      trailingStopPercentageChange();
-    }
-
-    if (!expanded) {
       setValue("trailingStopPrice", "");
+      if (errors.trailingStopPercentage) {
+        clearErrors("trailingStopPercentage");
+      }
+
+      if (errors.trailingStopPrice) {
+        clearErrors("trailingStopPrice");
+      }
     }
   };
 
@@ -165,19 +172,20 @@ const TrailingStopPanel = (props) => {
     return null;
   };
 
-  const emptyFieldsWhenCollapsed = () => {
-    if (!expanded) {
-      if (errors.trailingStopPercentage) {
-        clearErrors("trailingStopPercentage");
-      }
+  //   const initTrailingStopLoss = () => {
+  //     if (expanded) {
+  //     } else {
+  //       setValue("trailingStopPrice", "");
+  //       if (errors.trailingStopPercentage) {
+  //         clearErrors("trailingStopPercentage");
+  //       }
 
-      if (errors.trailingStopPrice) {
-        clearErrors("trailingStopPrice");
-      }
-    }
-  };
-
-  useEffect(emptyFieldsWhenCollapsed, [expanded]);
+  //       if (errors.trailingStopPrice) {
+  //         clearErrors("trailingStopPrice");
+  //       }
+  //     }
+  //   };
+  //   useEffect(initTrailingStopLoss, [expanded]);
 
   return (
     <Box className={`panel trailingStopPanel ${expandClass}`}>

@@ -126,6 +126,25 @@ const StopLossPanel = (props) => {
     trigger("stopLossPercentage");
   }, [errors, getEntryPrice, getValues, setValue, trigger]);
 
+  const initStopLoss = () => {
+    if (expanded) {
+      if (positionEntity && positionEntity.stopLossPercentage) {
+        setValue("stopLossPercentage", formatFloat2Dec(positionEntity.stopLossPercentage));
+        stopLossPercentageChange();
+      }
+    } else {
+      setValue("stopLossPrice", "");
+      if (errors.stopLossPercentage) {
+        clearErrors("stopLossPercentage");
+      }
+
+      if (errors.stopLossPrice) {
+        clearErrors("stopLossPrice");
+      }
+    }
+  };
+  useEffect(initStopLoss, [expanded]);
+
   const updateStopLoss = () => {
     const draftPosition = getValues();
     const initialStopLossPercentage = positionEntity ? positionEntity.stopLossPercentage : null;
@@ -135,23 +154,15 @@ const StopLossPanel = (props) => {
 
     if (!stopLossPercentage) {
       setValue("stopLossPercentage", sign);
-    } else if (initialStopLossPercentage) {
-      // When SL come from backend rely on the existing sign and value.
-      setValue("stopLossPercentage", formatFloat2Dec(initialStopLossPercentage));
-    } else {
+    } else if (!initialStopLossPercentage || stopLossPercentage === initialStopLossPercentage) {
       const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
       setValue("stopLossPercentage", `${sign}${newValue}`);
-    }
-
-    if (expanded) {
       // Trigger stop price calculation
       stopLossPercentageChange();
-    } else {
-      setValue("stopLossPrice", "");
     }
   };
 
-  useEffect(updateStopLoss, [expanded, positionEntity, entryType, strategyPrice]);
+  useEffect(updateStopLoss, [entryType, strategyPrice]);
 
   /**
    * Display property errors.
@@ -166,20 +177,6 @@ const StopLossPanel = (props) => {
 
     return null;
   };
-
-  const emptyFieldsWhenCollapsed = () => {
-    if (!expanded) {
-      if (errors.stopLossPercentage) {
-        clearErrors("stopLossPercentage");
-      }
-
-      if (errors.stopLossPrice) {
-        clearErrors("stopLossPrice");
-      }
-    }
-  };
-
-  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>
