@@ -424,6 +424,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose fee element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderFundingFee(dataIndex) {
+    const position = positions[dataIndex];
+    return <span>{formatPrice(position.fundingFees)}</span>;
+  }
+
+  /**
    * Compose profit percentage element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -633,13 +644,14 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
-    const { positionId, closed } = position;
+    const { positionId, closed, isCopyTrader } = position;
+    const isManualPosition = position.providerId === "1";
     const isProviderOwner =
-      position.providerId !== "1" && position.providerOwnerUserId === storeUserData.userId;
+      !isManualPosition && position.providerOwnerUserId === storeUserData.userId;
 
     return (
       <div className="actions">
-        {!closed && !isProviderOwner && (
+        {!closed && !isCopyTrader && !isProviderOwner && (
           <button
             data-action={"cancel"}
             data-position-id={positionId}
@@ -974,6 +986,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.fees",
         propertyName: "fees",
         renderFunction: renderFee,
+      },
+      {
+        columnId: "col.fundingfees",
+        propertyName: "fees",
+        renderFunction: renderFundingFee,
       },
       {
         columnId: "col.netprofit.percentage",

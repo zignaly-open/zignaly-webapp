@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { inRange, lt, gt, isNumber, keys, range, size, sum, values } from "lodash";
+import React, { useEffect, useCallback } from "react";
+import { range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
@@ -8,11 +8,12 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-import { isValidIntOrFloat } from "../../../utils/validators";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
+import useValidation from "../../../hooks/useValidation";
 import "./TakeProfitPanel.scss";
+import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -38,15 +39,29 @@ const TakeProfitPanel = (props) => {
   const positionTargetsCardinality = positionEntity ? size(positionEntity.takeProfitTargets) : 0;
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
+  const { greaterThan, validPercentage } = useValidation();
+  const {
+    validateTargetPriceLimits,
+    validateCostLimits,
+    validateUnitsLimits,
+  } = useSymbolLimitsValidate(symbolData);
 
-  const { clearErrors, errors, register, setError, setValue, watch } = useFormContext();
+  const {
+    clearErrors,
+    errors,
+    register,
+    setValue,
+    watch,
+    getValues,
+    trigger,
+    formState: { dirtyFields },
+  } = useFormContext();
   const defaultCardinality = 1;
   const {
     cardinality,
     cardinalityRange,
     composeTargetPropertyName,
     getGroupTargetId,
-    getTargetPropertyRawValue,
     getTargetPropertyValue,
     handleTargetAdd,
     handleTargetRemove,
@@ -61,8 +76,9 @@ const TakeProfitPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
+  const providerService = watch("providerService");
+  const isCopyProvider = providerService && providerService !== "1";
 
-  const { limits } = symbolData;
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
@@ -98,100 +114,35 @@ const TakeProfitPanel = (props) => {
   const profitTargets = positionEntity ? positionEntity.takeProfitTargets : {};
 
   /**
-   * Validate result of changed target units event.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
-   * @returns {boolean} true if validation passed, false otherwise.
-   */
-  const validateExitUnits = (event) => {
-    const targetId = getGroupTargetId(event);
-    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-
-    clearErrors(unitsPercentageProperty);
-    if (exitUnits <= 0) {
-      setError(unitsPercentageProperty, {
-        type: "manual",
-        message: formatMessage({ id: "terminal.takeprofit.limit.zero" }),
-      });
-
-      return false;
-    }
-
-    if (!validateTargetExitUnitsLimits(targetId)) {
-      return false;
-    }
-
-    if (!validateCostLimits(targetId)) {
-      return false;
-    }
-
-    return true;
-  };
-
-  /**
-   * Validate target percentage limits.
-   *
-   * @param {string} targetId Take profit target ID.
-   * @returns {boolean} true if validation pass, false otherwise.
-   */
-  function validateTargetPercentageLimits(targetId) {
-    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const targetPercentageRaw = getTargetPropertyRawValue("targetPricePercentage", targetId);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    const valueType = entryType === "LONG" ? "greater" : "lower";
-    const compareFn = entryType === "LONG" ? lt : gt;
-
-    if (!isValidIntOrFloat(targetPercentageRaw) || compareFn(targetPercentage, 0)) {
-      setError(pricePercentageProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.valid.pricepercentage" },
-          { type: valueType },
-        ),
-      });
-
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
    * Calculate price based on percentage change for a given target.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const targetPricePercentageChange = (event) => {
-    const price = getEntryPrice();
-    const targetId = getGroupTargetId(event);
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    let targetPrice = price;
+  const targetPricePercentageChange = useCallback(
+    (event) => {
+      const price = getEntryPrice();
+      const targetId = getGroupTargetId(event);
+      const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+      const targetPercentage = getTargetPropertyValue("targetPricePercentage", targetId);
+      const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
 
-    if (!validateTargetPercentageLimits(targetId)) {
-      setValue(priceProperty, "");
-      return;
-    }
+      if (errors[pricePercentageProperty]) return;
 
-    if (targetPercentage !== 0) {
-      targetPrice = price * ((targetPercentage + 100) / 100);
-    }
-
-    if (isNumber(targetPercentage)) {
+      let targetPrice = price * ((targetPercentage + 100) / 100);
       setValue(priceProperty, formatPrice(targetPrice, "", ""));
-    } else {
-      setValue(priceProperty, "");
-    }
-
-    if (validateTargetPriceLimits(targetId)) {
-      clearErrors(priceProperty);
-    }
-
-    clearErrors(pricePercentageProperty);
-  };
+      trigger(priceProperty);
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntryPrice,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
+  );
 
   /**
    * Calculate percentage based on price change for a given target.
@@ -199,111 +150,99 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const targetPriceChange = (event) => {
-    const price = getEntryPrice();
-    const targetId = getGroupTargetId(event);
-    const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
-    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
-    const targetPriceRaw = getTargetPropertyRawValue("targetPrice", targetId);
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
+  const targetPriceChange = useCallback(
+    (event) => {
+      const price = getEntryPrice();
+      const targetId = getGroupTargetId(event);
+      const pricePercentageProperty = composeTargetPropertyName("targetPricePercentage", targetId);
+      const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+      const priceProperty = composeTargetPropertyName("targetPrice", targetId);
 
-    if (!isValidIntOrFloat(targetPriceRaw)) {
-      setError(priceProperty, {
-        type: "manual",
-        message: formatMessage({ id: "terminal.takeprofit.valid.price" }),
-      });
-      setValue(pricePercentageProperty, "");
-      return;
-    }
+      if (errors[priceProperty]) return;
 
-    if (!isNaN(targetPrice) && targetPrice !== 0) {
       const priceDiff = targetPrice - price;
       const targetPercentage = (priceDiff / price) * 100;
       setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
 
-      if (validateTargetPercentageLimits(targetId)) {
-        clearErrors(pricePercentageProperty);
-      }
-    } else {
-      setValue(pricePercentageProperty, "");
-    }
-
-    if (validateTargetPriceLimits(targetId)) {
-      clearErrors(priceProperty);
-    }
-  };
-
-  const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
-    composeTargetPropertyName("exitUnitsPercentage", targetId),
+      trigger(pricePercentageProperty);
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntryPrice,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
   );
-  const exitUnitsPercentages = watch(exitUnitsPercentageFields);
-
   /**
    * Validate cumulative targets percentage.
    *
-   * @returns {boolean} true if validation passed, false otherwise.
+   * @returns {boolean|string} true if validation passed, error message otherwise.
    */
   const validateCumulativePercentage = () => {
+    const exitUnitsPercentageFields = cardinalityRange.map((targetId) =>
+      composeTargetPropertyName("exitUnitsPercentage", targetId),
+    );
+    const exitUnitsPercentages = getValues(exitUnitsPercentageFields);
     const cumulativePercentage = sum(values(exitUnitsPercentages).map(Number));
-    const propertyNames = keys(exitUnitsPercentages);
     if (cumulativePercentage > 100) {
-      propertyNames.map((unitsPercentageProperty) => {
-        setError(unitsPercentageProperty, {
-          type: "manual",
-          message: formatMessage({ id: "terminal.takeprofit.limit.cumulative" }),
-        });
+      return formatMessage({
+        id: "terminal.takeprofit.limit.cumulative",
       });
-
-      return false;
     }
-
-    propertyNames.map((unitsPercentageProperty) => {
-      clearErrors(unitsPercentageProperty);
-    });
-
     return true;
+  };
+
+  /**
+   * Validate unit cost limits.
+   *
+   * @param {string} targetId targetId
+   * @returns {boolean|string} true if validation passed, error message otherwise.
+   */
+  const validateUnitCostLimits = (targetId) => {
+    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
+    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+    const cost = Math.abs(targetPrice * exitUnits);
+    return validateCostLimits(cost, "terminal.takeprofit.limit");
   };
 
   /**
    * Calculate units based on units percentage change for a given target.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
+   * @param {string} targetId targetId
    * @return {Void} None.
    */
-  const exitUnitsPercentageChange = (event) => {
-    const units = getEntrySize();
-    const targetId = getGroupTargetId(event);
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
-    const unitsPercentageRaw = getTargetPropertyRawValue("exitUnitsPercentage", targetId);
+  const exitUnitsPercentageChange = useCallback(
+    (targetId) => {
+      const units = getEntrySize();
+      const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
+      const exitUnitsPercentageProperty = composeTargetPropertyName(
+        "exitUnitsPercentage",
+        targetId,
+      );
+      const unitsPercentage = getTargetPropertyValue("exitUnitsPercentage", targetId);
 
-    if (!isValidIntOrFloat(unitsPercentageRaw) || !inRange(unitsPercentage, 0, 100.0001)) {
-      setError(composeTargetPropertyName("exitUnitsPercentage", targetId), {
-        type: "manual",
-        message: formatMessage({ id: "terminal.takeprofit.valid.unitspercentage" }),
-      });
+      if (errors[exitUnitsPercentageProperty]) return;
 
-      setValue(unitsProperty, "");
-      return;
-    }
-
-    if (unitsPercentage > 0) {
       const targetUnits = units * (unitsPercentage / 100);
       setValue(unitsProperty, formatPrice(targetUnits, "", ""));
-    } else {
-      setValue(unitsProperty, "");
-    }
-
-    if (!validateExitUnits(event)) {
-      return;
-    }
-
-    if (!validateCumulativePercentage()) {
-      return;
-    }
-
-    clearErrors(unitsProperty);
-  };
+      // Trigger validation unless change caused by initialization
+      if (dirtyFields[exitUnitsPercentageProperty]) {
+        trigger(unitsProperty);
+      }
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      dirtyFields,
+      getEntrySize,
+      getTargetPropertyValue,
+      setValue,
+      trigger,
+    ],
+  );
 
   /**
    * Calculate units percentage based on units change for a given target.
@@ -311,167 +250,53 @@ const TakeProfitPanel = (props) => {
    * @param {React.ChangeEvent<HTMLInputElement>} event Input change event.
    * @return {Void} None.
    */
-  const exitUnitsChange = (event) => {
-    const units = getEntrySize();
-    const targetId = getGroupTargetId(event);
-    const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
-    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-    const exitUnitsRaw = getTargetPropertyRawValue("exitUnits", targetId);
+  const exitUnitsChange = useCallback(
+    (event) => {
+      const units = getEntrySize();
+      const targetId = getGroupTargetId(event);
+      const unitsPercentageProperty = composeTargetPropertyName("exitUnitsPercentage", targetId);
+      const exitUnits = getTargetPropertyValue("exitUnits", targetId);
+      const exitUnitsProperty = composeTargetPropertyName("exitUnits", targetId);
+      if (errors[exitUnitsProperty]) return;
 
-    if (!isValidIntOrFloat(exitUnitsRaw) || exitUnits <= 0) {
-      setError(composeTargetPropertyName("exitUnits", targetId), {
-        type: "manual",
-        message: formatMessage({ id: "terminal.takeprofit.valid.units" }),
-      });
-
-      setValue(unitsPercentageProperty, "");
-      return;
-    }
-
-    if (units > 0 && exitUnits > 0) {
-      const unitsDiff = units - exitUnits;
-      const unitsPercentage = (1 - unitsDiff / units) * 100;
-      setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
-    } else {
-      setValue(unitsPercentageProperty, "");
-    }
-
-    validateExitUnits(event);
-  };
-
-  /**
-   * Validate that target price is within limits.
-   *
-   * @param {string} targetId Target index ID.
-   * @returns {boolean} true if validation passed, false otherwise.
-   */
-  const validateTargetPriceLimits = (targetId) => {
-    const priceProperty = composeTargetPropertyName("targetPrice", targetId);
-    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
-
-    if (limits.price && limits.price.min && targetPrice < limits.price.min) {
-      setError(priceProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.minprice" },
-          { value: limits.price.min },
-        ),
-      });
-
-      return false;
-    }
-
-    if (limits.price && limits.price.max && targetPrice > limits.price.max) {
-      setError(priceProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.maxprice" },
-          { value: limits.price.max },
-        ),
-      });
-
-      return false;
-    }
-
-    validateCostLimits(targetId);
-
-    return true;
-  };
-
-  /**
-   * Validate that cost is within limits.
-   *
-   * @param {string} targetId Target index ID.
-   * @returns {boolean} true if validation passed, false otherwise.
-   */
-  const validateCostLimits = (targetId) => {
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const targetPrice = getTargetPropertyValue("targetPrice", targetId);
-    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-    const cost = Math.abs(targetPrice * exitUnits);
-
-    if (limits.cost && limits.cost.min && cost > 0 && cost < limits.cost.min) {
-      setError(unitsProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.mincost" },
-          { value: limits.cost.min },
-        ),
-      });
-
-      return false;
-    }
-
-    if (limits.cost && limits.cost.max && cost > 0 && cost > limits.cost.max) {
-      setError(unitsProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.maxcost" },
-          { value: limits.cost.max },
-        ),
-      });
-
-      return false;
-    }
-
-    return true;
-  };
-
-  /**
-   * Validate that target units is within limits.
-   *
-   * @param {string} targetId Target index ID.
-   * @returns {boolean} true if validation passed, false otherwise.
-   */
-  const validateTargetExitUnitsLimits = (targetId) => {
-    const unitsProperty = composeTargetPropertyName("exitUnits", targetId);
-    const exitUnits = getTargetPropertyValue("exitUnits", targetId);
-
-    clearErrors(unitsProperty);
-    if (limits.amount && limits.amount.min && exitUnits < limits.amount.min) {
-      setError(unitsProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.minunits" },
-          { value: limits.amount.min },
-        ),
-      });
-
-      return false;
-    }
-
-    if (limits.amount && limits.amount.max && exitUnits > limits.amount.max) {
-      setError(unitsProperty, {
-        type: "manual",
-        message: formatMessage(
-          { id: "terminal.takeprofit.limit.maxunits" },
-          { value: limits.amount.max },
-        ),
-      });
-
-      return false;
-    }
-
-    return true;
-  };
+      if (units > 0 && exitUnits > 0) {
+        const unitsDiff = units - exitUnits;
+        const unitsPercentage = (1 - unitsDiff / units) * 100;
+        setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
+      } else {
+        setValue(unitsPercentageProperty, "");
+      }
+    },
+    [
+      errors,
+      composeTargetPropertyName,
+      getEntrySize,
+      getGroupTargetId,
+      getTargetPropertyValue,
+      setValue,
+    ],
+  );
 
   const initValuesFromPositionEntity = () => {
     if (positionEntity) {
       targetIndexes.forEach((index) => {
+        // Initialization: populate with position targets values
         const profitTarget = positionEntity.takeProfitTargets[index];
         const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
   };
 
+  useEffect(initValuesFromPositionEntity, []);
+
   const chainedPriceUpdates = () => {
-    initValuesFromPositionEntity();
-    setTimeout(() => {
-      initValuesFromPositionEntity();
-    }, 2000);
+    if (!expanded) return;
+
+    // Apply correct sign depending on entry type (Short/Long)
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
       const newValue = formatFloat2Dec(Math.abs(currentValue));
@@ -481,25 +306,25 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-      }
-
-      if (expanded) {
+        // Trigger target price calculation
         simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
       }
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, positionEntity, entryType, cardinality, strategyPrice]);
+  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
-    cardinalityRange.forEach((targetId) => {
-      if (expanded) {
-        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", targetId));
-      }
-    });
+    if (expanded) {
+      cardinalityRange.forEach((targetId) => {
+        // Trigger units amount calculation
+        exitUnitsPercentageChange(targetId);
+      });
+    }
   };
 
-  useEffect(chainedUnitsUpdates, [expanded, strategyUnits]);
+  const entrySize = getEntrySize();
+  useEffect(chainedUnitsUpdates, [expanded, strategyUnits, entrySize]);
 
   const emptyFieldsWhenCollapsed = () => {
     if (!expanded) {
@@ -565,7 +390,16 @@ const TakeProfitPanel = (props) => {
                     disabled={
                       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
                     }
-                    inputRef={register}
+                    error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
+                    inputRef={register({
+                      validate: (value) =>
+                        greaterThan(
+                          value,
+                          0,
+                          entryType,
+                          "terminal.takeprofit.valid.pricepercentage",
+                        ),
+                    })}
                     name={composeTargetPropertyName("targetPricePercentage", targetId)}
                     onChange={targetPricePercentageChange}
                   />
@@ -575,7 +409,18 @@ const TakeProfitPanel = (props) => {
                   <OutlinedInput
                     className="outlineInput"
                     disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
-                    inputRef={register}
+                    error={!!errors[composeTargetPropertyName("targetPrice", targetId)]}
+                    inputRef={register({
+                      validate: {
+                        positive: (value) =>
+                          value >= 0 ||
+                          formatMessage({
+                            id: "terminal.takeprofit.valid.price",
+                          }),
+                        price: (value) =>
+                          validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
+                      },
+                    })}
                     name={composeTargetPropertyName("targetPrice", targetId)}
                     onChange={targetPriceChange}
                   />
@@ -595,24 +440,55 @@ const TakeProfitPanel = (props) => {
                     disabled={
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
                     }
-                    inputRef={register}
+                    error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
+                    inputRef={register(
+                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
+                        ? null
+                        : {
+                            validate: {
+                              percentage: (value) =>
+                                validPercentage(value, "terminal.takeprofit.valid.unitspercentage"),
+                              sum: validateCumulativePercentage,
+                            },
+                          },
+                    )}
                     name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
-                    onChange={exitUnitsPercentageChange}
+                    onChange={() => exitUnitsPercentageChange(targetId)}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
-                    inputRef={register}
-                    name={composeTargetPropertyName("exitUnits", targetId)}
-                    onChange={exitUnitsChange}
-                  />
-                  <div className="currencyBox">{symbolData.base}</div>
-                </Box>
+                {!isCopyProvider && (
+                  <>
+                    <Box alignItems="center" display="flex">
+                      <OutlinedInput
+                        className="outlineInput"
+                        disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                        error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
+                        inputRef={register(
+                          fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]
+                            ? null
+                            : {
+                                validate: {
+                                  positive: (value) =>
+                                    value >= 0 ||
+                                    formatMessage({
+                                      id: "terminal.takeprofit.valid.units",
+                                    }),
+                                  limit: (value) =>
+                                    validateUnitsLimits(value, "terminal.takeprofit.limit"),
+                                  cost: () => validateUnitCostLimits(targetId),
+                                },
+                              },
+                        )}
+                        name={composeTargetPropertyName("exitUnits", targetId)}
+                        onChange={exitUnitsChange}
+                      />
+                      <div className="currencyBox">{symbolData.base}</div>
+                    </Box>
+                  </>
+                )}
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
-                {displayTargetFieldErrors("exitUnits", targetId)}
+                {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
             </Box>
           ))}

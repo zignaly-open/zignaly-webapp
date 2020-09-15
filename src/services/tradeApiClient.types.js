@@ -70,9 +70,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
- * @property {number} quoteTarget
  * @property {number} amountPercentage
- * @property {number} value
  */
 
 /**
@@ -381,6 +379,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
  * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees Exchange transaction fees.
+ * @property {number} fundingFees Exchange transaction funding fees.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
@@ -817,14 +816,16 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ForgotPasswordStep1Payload
- * @property {string} email User's email.
+ * @property {String} email User's email.
  * @property {Boolean} array Default backend param equal to "true".
+ * @property {String} [gRecaptchaResponse] Google captcha response.
  */
 
 /**
  * @typedef {Object} ForgotPasswordStep3Payload
  * @property {string} token
  * @property {String} password
+ * @property {String} [gRecaptchaResponse] Google captcha response.
  */
 
 /**
@@ -1117,6 +1118,7 @@ export function positionItemTransform(positionItem) {
     buyTTL: safeParseFloat(positionItem.buyTTL),
     closeDate: Number(positionItem.closeDate),
     fees: safeParseFloat(positionItem.fees),
+    fundingFees: safeParseFloat(positionItem.fundingFees),
     netProfit: safeParseFloat(positionItem.netProfit),
     netProfitPercentage: safeParseFloat(positionItem.netProfitPercentage),
     openDate: Number(positionItem.openDate),
@@ -1215,9 +1217,13 @@ const fixedTargets = (targets) => {
   let newTargets = {};
   let i = 1;
   for (const target of Object.values(targets)) {
-    target.targetId = i;
-    newTargets[i] = target;
-    i++;
+    if (target.targetId < 1000) {
+      target.targetId = i;
+      newTargets[i] = target;
+      i++;
+    } else {
+      newTargets[target.targetId] = target;
+    }
   }
   return newTargets;
 };
@@ -1306,6 +1312,7 @@ function createEmptyPositionEntity() {
     exchangeInternalName: "",
     exitPriceStyle: "",
     fees: 0,
+    fundingFees: 0,
     internalExchangeId: "",
     exchangeInternalId: "",
     invested: 0,
