@@ -30,7 +30,7 @@ import { useIntl } from "react-intl";
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits } = selectedSymbol;
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
-  const leverage = defaultLeverage || watch("leverage");
+  const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
@@ -140,11 +140,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("units", units.toFixed(8));
     trigger("units").then((isValid) => {
       if (isValid) {
-        const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
+        const realInvestment = parseFloat(draftPosition.positionSize) / draftPosition.leverage;
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, leverage, setValue, trigger]);
+  }, [errors, currentPrice, getValues, setValue, trigger]);
 
   const unitsChange = () => {
     const draftPosition = getValues();
