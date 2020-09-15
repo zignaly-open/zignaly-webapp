@@ -273,8 +273,11 @@ const DCAPanel = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (expanded) initValuesFromPositionEntity();
+  }, [expanded]);
+
   const chainedPriceUpdates = () => {
-    initValuesFromPositionEntity();
     if (expanded) {
       cardinalityRange.forEach((targetId) => {
         const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
