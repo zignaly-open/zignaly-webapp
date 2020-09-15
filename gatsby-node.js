@@ -116,7 +116,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
         use: loaders.null(),
       },
       {
-        include: path.resolve(__dirname, "node_modules/canvas"),
+        test: /canvas/,
         use: loaders.null(),
       },
     );
