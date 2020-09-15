@@ -75,6 +75,8 @@ const CreatePost = ({ providerId, onCreated }) => {
     navigateReach("#settings-profile");
   };
 
+  console.log("createpost");
+
   return (
     <Paper className="createPost">
       <ConfirmDialog
@@ -88,7 +90,7 @@ const CreatePost = ({ providerId, onCreated }) => {
       {/* <ProviderLogo size="30px" title="" url={storeUserData.imageUrl} defaultImage={ProfileIcon} /> */}
       {/* <Typography variant="">{storeUserData.userName}</Typography> */}
 
-      <Editor content={content} onChange={setContent} />
+      {/* <Editor content={content} onChange={setContent} /> */}
 
       <CustomButton className="submitButton" loading={isLoading} onClick={() => createPost()}>
         <FormattedMessage id="wall.post" />
