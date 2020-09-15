@@ -605,16 +605,16 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(response, "Response is not an array of user exchange assets entities.");
   }, 10000);
 
-  it("should get create a post.", async () => {
-    const payload = {
-      token: accessToken,
-      content: "aaa",
-      providerId: "5ee26419928896519668b62b",
-    };
+  //   it("should get create a post.", async () => {
+  //     const payload = {
+  //       token: accessToken,
+  //       content: "aaa",
+  //       providerId: "5ee26419928896519668b62b",
+  //     };
 
-    const response = await client.createPost(payload);
-    assert.isTrue(response, "Response is not true.");
-  }, 10000);
+  //     const response = await client.createPost(payload);
+  //     assert.isTrue(response, "Response is not true.");
+  //   }, 10000);
 
   it("should get posts list.", async () => {
     const payload = {
