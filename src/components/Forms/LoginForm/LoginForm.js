@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -14,6 +14,9 @@ import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { navigate } from "gatsby";
+import { verifySessionData } from "../../../utils/auth";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -35,6 +38,21 @@ const LoginForm = () => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const storeSession = useStoreSessionSelector();
+
+  useEffect(() => {
+    if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
+      // Navigate to return url or dashboard
+      const params = new URLSearchParams(
+        typeof window !== "undefined" ? window.location.search : "",
+      );
+      const path = params.get("ret") || "/dashboard";
+      const pathPrefix = process.env.GATSBY_BASE_PATH || "";
+      const pathWithoutPrefix = path.replace(pathPrefix, "");
+      navigate(pathWithoutPrefix);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeSession.sessionData]);
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {

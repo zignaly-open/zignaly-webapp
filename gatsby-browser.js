@@ -70,9 +70,10 @@ export const onInitialClientRender = () => {
 
   // Verify session when app loads.
   const sessionValid = verifySessionData(token, sessionData);
-  // Route page handles the correct redirection manually.
+  // Root page handles the correct redirection manually.
   if (path !== "/") {
-    if (!path.match(/404|login|signup|recover/g)) {
+    const isPrivateArea = !path.match(/login|signup|recover/g);
+    if (isPrivateArea) {
       // Redirect to login when navigating private pages with expired session.
       if (!sessionValid) {
         navigateLogin();
