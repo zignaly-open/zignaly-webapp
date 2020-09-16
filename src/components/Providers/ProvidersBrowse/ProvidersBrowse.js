@@ -79,9 +79,10 @@ const ProvidersBrowse = ({
           onClose={toggleSort}
           open={showSort}
           sort={sort}
+          isCopyTrading={copyTradersOnly}
         />
       )}
-      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={0} />
+      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={7} />
     </Box>
   );
 };

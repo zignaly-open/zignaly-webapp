@@ -104,12 +104,10 @@ const TraderCard = (props) => {
    * @returns {number} followers
    */
   const calculateNewFollowers = () => {
-    let followerDataOneWeekAgo = [...aggregateFollowers]
-      .reverse()
-      .find((followerData) => moment(followerData.totalFollowers).diff(new Date(), "d"));
-    if (!followerDataOneWeekAgo && aggregateFollowers.length) {
-      followerDataOneWeekAgo = aggregateFollowers[0];
-    }
+    // Find first date that is less than 7 days old
+    let followerDataOneWeekAgo = [...aggregateFollowers].find(
+      (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
+    );
     let newFollowers = 0;
     if (followerDataOneWeekAgo) {
       newFollowers = followers - followerDataOneWeekAgo.totalFollowers;
@@ -215,7 +213,7 @@ const TraderCard = (props) => {
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: isCopyTrading ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
-                id: "time." + timeFrame || 7 + "d",
+                id: "time." + (timeFrame || 7) + "d",
               })})`}</Typography>
             </div>
           </CustomToolip>

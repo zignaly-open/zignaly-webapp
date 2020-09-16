@@ -37,13 +37,18 @@ const migrations = {
       },
     };
   },
+  12: (/** @type {PersistedState} */ state) => {
+    // @ts-ignore
+    state.settings.sort.signalp = "";
+    return state;
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 11,
+  version: 12,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };
