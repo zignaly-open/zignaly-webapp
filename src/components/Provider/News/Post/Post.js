@@ -5,6 +5,7 @@ import breaks from "remark-breaks";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import "./Post.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
+import { formatDate, formatTime } from "../../../../utils/format";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -32,9 +33,10 @@ const Post = ({ post }) => {
             title={post.author.userName}
             url={post.author.imageUrl}
           />
-          <Typography className="userName" variant="h4">
-            {post.author.userName}
-          </Typography>
+          <Box className="metaBox">
+            <Typography className="username callout2">{post.author.userName}</Typography>
+            <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+          </Box>
         </Box>
         <ReactMarkdown
           plugins={[breaks]}

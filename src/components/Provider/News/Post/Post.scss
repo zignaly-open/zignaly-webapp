@@ -1,8 +1,20 @@
 .post {
   margin-bottom: 15px;
   width: 100%;
-}
 
-.postContent {
-  padding: 15px;
+  .metaBox {
+    padding-left: 8px;
+  }
+
+  .username {
+    font-size: 16px;
+  }
+
+  .date {
+    opacity: 0.7;
+  }
+
+  .postContent {
+    padding: 15px;
+  }
 }
