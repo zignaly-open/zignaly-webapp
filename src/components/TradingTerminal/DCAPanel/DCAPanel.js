@@ -351,7 +351,7 @@ const DCAPanel = (props) => {
     const index = parseInt(targetId);
     const showRemove =
       !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
-      index >= 1000;
+      targetId !== cardinalityRange[cardinalityRange.length - 1];
     return (
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
@@ -411,7 +411,7 @@ const DCAPanel = (props) => {
             <Button
               className="removeTarget"
               data-target-id={index}
-              onClick={handleDcaIncreaseRemove}
+              onClick={index >= 1000 ? handleDcaIncreaseRemove : handleTargetRemove}
             >
               <RemoveCircle />
               <FormattedMessage id="terminal.target.remove" />
@@ -457,6 +457,11 @@ const DCAPanel = (props) => {
               </Button>
             )}
           </Box>
+          {activeDcaIncreaseIndexes.length ? (
+            <Typography className="callout1 increaseDCATitle">
+              <FormattedMessage id="terminal.dca.increase" />
+            </Typography>
+          ) : null}
           {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
