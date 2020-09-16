@@ -29,18 +29,6 @@ import { ConfirmDialog } from "../../Dialogs";
  */
 
 /**
- * Format tooltip content.
- * @param {ChartTooltipItem} tooltipItem Tooltip object.
- * @returns {React.ReactNode} Tooltip content.
- */
-const tooltipFormat = (tooltipItem) => (
-  <div className="traderCardTooltip">
-    <div>{formatFloat2Dec(tooltipItem.yLabel) + "%"}</div>
-    <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("DD/MM/YYYY")}</div>
-  </div>
-);
-
-/**
  * @typedef {Object} TraderCardBodyPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {ProviderEntity} provider The provider to display.
@@ -68,7 +56,23 @@ const TraderCard = (props) => {
     quote,
     closedPositions,
     returns,
+    aggregateFollowers,
   } = provider;
+
+  /**
+   * Format tooltip content.
+   * @param {ChartTooltipItem} tooltipItem Tooltip object.
+   * @returns {React.ReactNode} Tooltip content.
+   */
+  const tooltipFormat = (tooltipItem) => (
+    <div className="traderCardTooltip">
+      <div>
+        {formatFloat2Dec(tooltipItem.yLabel)}{" "}
+        {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+      </div>
+      <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
+    </div>
+  );
 
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -81,12 +85,19 @@ const TraderCard = (props) => {
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-  dailyReturns.reduce((acc, item) => {
-    acc += item.returns;
-    chartData.values.push(acc);
-    chartData.labels.push(item.name);
-    return acc;
-  }, 0);
+  if (isCopyTrading) {
+    dailyReturns.reduce((acc, item) => {
+      acc += item.returns;
+      chartData.values.push(acc);
+      chartData.labels.push(item.name);
+      return acc;
+    }, 0);
+  } else {
+    aggregateFollowers.forEach((followerData) => {
+      chartData.values.push(followerData.totalFollowers);
+      chartData.labels.push(followerData.date);
+    });
+  }
 
   let colorClass = "green";
   /**

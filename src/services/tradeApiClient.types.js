@@ -542,6 +542,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderFollowers
+ * @property {string} date
+ * @property {number} followers New followers for this date
+ * @property {number} totalFollowers Total followers at this date
+ */
+
+/**
  * @typedef {Object} ProviderEntity
  * @property {string} id
  * @property {string} name
@@ -572,8 +579,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} floating
  * @property {number} openPositions
  * @property {number} closedPositions
+ * @property {number} totalSignals
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
+ * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  */
 
 /**
