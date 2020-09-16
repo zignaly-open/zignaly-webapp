@@ -129,7 +129,6 @@ const DCAPanel = (props) => {
     const targetElement = event.currentTarget;
     const targetId = targetElement.getAttribute("data-target-id");
     const newDcaIncreaseIndexes = activeDcaIncreaseIndexes.filter((value) => value !== targetId);
-    console.log(newDcaIncreaseIndexes, activeDcaIncreaseIndexes);
     setActiveDCAIncreaseIndexes(newDcaIncreaseIndexes);
   };
 
