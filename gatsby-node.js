@@ -112,6 +112,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
         test: /roundedBarCharts/,
         use: loaders.null(),
       },
+      {
+        test: /canvas/,
+        use: loaders.null(),
+      },
     );
   }
 
