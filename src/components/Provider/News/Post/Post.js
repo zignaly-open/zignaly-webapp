@@ -5,7 +5,7 @@ import breaks from "remark-breaks";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import "./Post.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
-import { formatDate, formatTime } from "../../../../utils/format";
+import { formatDate } from "../../../../utils/format";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
