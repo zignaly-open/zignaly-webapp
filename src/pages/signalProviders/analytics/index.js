@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersAnalyticsLayout from "../../../layouts/providersAnalyticsLayout/withProvidersAnalyticsLayout";
 import { Helmet } from "react-helmet";
@@ -31,4 +30,4 @@ const SignalProvidersAnalytics = () => {
   );
 };
 
-export default compose(withProvidersAnalyticsLayout)(SignalProvidersAnalytics);
+export default withProvidersAnalyticsLayout(SignalProvidersAnalytics);

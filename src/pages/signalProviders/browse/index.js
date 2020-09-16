@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout/withProvidersLayout";
 import { Helmet } from "react-helmet";
@@ -51,4 +50,4 @@ const SignalProvidersBrowse = (props) => {
   );
 };
 
-export default compose(withProvidersLayout)(SignalProvidersBrowse);
+export default withProvidersLayout(SignalProvidersBrowse);

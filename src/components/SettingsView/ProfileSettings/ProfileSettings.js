@@ -1,68 +1,131 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import React, { useState } from "react";
+import { Box, Typography, OutlinedInput } from "@material-ui/core";
+import { useIntl, FormattedMessage } from "react-intl";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";
+import CustomButton from "../../CustomButton";
+import { useForm } from "react-hook-form";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import UploadImage from "../../UploadImage";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import { getUserData } from "../../../store/actions/user";
+import tradeApi from "../../../services/tradeApiClient";
+import ProfileIcon from "../../../images/header/profileIcon.svg";
 
 const ProfileSettings = () => {
-  //   const dispatch = useDispatch();
   const storeUserData = useStoreUserData();
-  //   const { handleSubmit, register, reset, control, errors } = useForm();
-  //   const storeSession = useStoreSessionSelector();
+  const { handleSubmit, register, errors } = useForm();
+  const storeSession = useStoreSessionSelector();
+  const [updating, setUpdating] = useState(false);
+  const [imageUrl, setImageUrl] = useState(storeUserData.imageUrl);
+  const intl = useIntl();
+  const dispatch = useDispatch();
 
-  //   /**
-  //    * @typedef {Object} FormData
-  //    * @property {string} email
-  //    */
+  /**
+   * @typedef {Object} FormData
+   * @property {string} userName
+   */
 
-  //   /**
-  //    * Function to submit form.
-  //    *
-  //    * @param {FormData} data Form data.
-  //    * @returns {void}
-  //    */
-  //   const submitForm = (data) => {
-  //     const payload = {
-  //       token: storeSession.tradeApi.accessToken,
-  //     };
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {void}
+   */
+  const submitForm = (data) => {
+    const { userName } = data;
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      userName,
+      imageUrl,
+    };
 
-  //     setUpdating(true);
+    setUpdating(true);
 
-  //     tradeApi
-  //       .updateProfileNotifications(payload)
-  //       .then((data) => {
-  //         dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
-  //       })
-  //       .catch((e) => {
-  //         dispatch(showErrorAlert(e));
-  //       })
-  //       .finally(() => {
-  //         setUpdating(false);
-  //       });
-  //   };
+    tradeApi
+      .updateUser(payload)
+      .then(() => {
+        dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
+        dispatch(getUserData({ token: storeSession.tradeApi.accessToken }));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setUpdating(false);
+      });
+  };
 
   return (
-    // <form onSubmit={handleSubmit(submitForm)}></form>
-    <Box alignItems="flex-start" className="profileSettings" display="flex" flexDirection="column">
-      <label className="inputBox">
-        <Typography variant="body1">
-          <FormattedMessage id="profile.userid" />
-        </Typography>
-        <Typography className="userId" variant="body1">
-          {storeUserData.userId}
-        </Typography>
-      </label>
-      <label className="inputBox">
-        <Typography variant="body1">
-          <FormattedMessage id="profile.email" />
-        </Typography>
-        <Typography className="userId" variant="body1">
-          {storeUserData.email}
-        </Typography>
-        {/* <OutlinedInput className="customInput" disabled={true} value={storeUserData.email} /> */}
-      </label>
-    </Box>
-    // </form>
+    <form onSubmit={handleSubmit(submitForm)}>
+      <Box
+        alignItems="flex-start"
+        className="profileSettings"
+        display="flex"
+        flexDirection="column"
+      >
+        <label className="inputBox">
+          <Typography variant="body1">
+            <FormattedMessage id="profile.userid" />
+          </Typography>
+          <Typography className="userId" variant="body1">
+            {storeUserData.userId}
+          </Typography>
+        </label>
+        <label className="inputBox">
+          <Typography variant="body1">
+            <FormattedMessage id="profile.email" />
+          </Typography>
+          <Typography className="userId" variant="body1">
+            {storeUserData.email}
+          </Typography>
+        </label>
+        <Box className="inputBox" display="flex" flexDirection="column">
+          <label>
+            <Typography variant="body1">
+              <FormattedMessage id="profile.username" />
+            </Typography>
+          </label>
+          <OutlinedInput
+            className="customInput"
+            defaultValue={storeUserData.userName || ""}
+            error={!!errors.userName}
+            inputRef={register({
+              required: intl.formatMessage({ id: "form.error.username" }),
+              minLength: 4,
+              maxLength: 15,
+              pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
+            })}
+            name="userName"
+          />
+          {errors.userName && (
+            <span className="errorText">
+              <FormattedMessage id="profile.username.error" />
+            </span>
+          )}
+        </Box>
+        <Box className="inputBox" display="flex" flexDirection="column">
+          <label className="customLabel">
+            <FormattedMessage id="profile.photo" />
+          </label>
+          <UploadImage
+            defaultImage={ProfileIcon}
+            imageUrl={imageUrl || ""}
+            onChange={(url) => setImageUrl(url)}
+          />
+        </Box>
+
+        <CustomButton
+          className="bgPurple updateButton"
+          disabled={updating}
+          loading={updating}
+          type="submit"
+        >
+          <FormattedMessage id="action.update" />
+        </CustomButton>
+      </Box>
+    </form>
   );
 };
 

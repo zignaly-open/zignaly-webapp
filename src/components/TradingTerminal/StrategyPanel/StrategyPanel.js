@@ -23,6 +23,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
+import { simulateInputChangeEvent } from "../../../utils/events";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -83,6 +84,11 @@ const StrategyPanel = (props) => {
     });
   }
 
+  const onLeverageClose = () => {
+    setModalVisible(false);
+    simulateInputChangeEvent("positionSize");
+  };
+
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -97,7 +103,6 @@ const StrategyPanel = (props) => {
             name="entryStrategy"
           />
         </Box>
-        <input name="lastPrice" ref={register} type="hidden" />
       </Box>
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
         {selectedExchange.exchangeType === "futures" && (
@@ -131,7 +136,7 @@ const StrategyPanel = (props) => {
                 className="outlineInput"
                 error={!!errors.stopPrice}
                 inputRef={register({
-                  validate: (value) => parseFloat(value) > 0,
+                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                 })}
                 name="stopPrice"
               />
@@ -148,7 +153,7 @@ const StrategyPanel = (props) => {
                 defaultValue={lastPrice}
                 error={!!errors.price}
                 inputRef={register({
-                  validate: (value) => parseFloat(value) > 0,
+                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                 })}
                 name="price"
                 onChange={priceChange}
@@ -229,7 +234,7 @@ const StrategyPanel = (props) => {
                 inputRef={register({
                   required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                   validate: (value) =>
-                    !isNaN(value) ||
+                    (value > 0 && value <= 100) ||
                     formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                 })}
                 name="positionSizePercentage"
@@ -293,7 +298,7 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={125}
                 min={1}
-                onClose={() => setModalVisible(false)}
+                onClose={onLeverageClose}
                 setValue={setValue}
               />
             </Modal>

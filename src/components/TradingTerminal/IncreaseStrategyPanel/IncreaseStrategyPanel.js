@@ -165,7 +165,7 @@ const IncreaseStrategyPanel = (props) => {
                   disabled={isReadOnly}
                   error={!!errors.price}
                   inputRef={register({
-                    validate: (value) => parseFloat(value) > 0,
+                    validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                   })}
                   name="price"
                   onChange={priceChange}
@@ -184,7 +184,9 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   disabled={isReadOnly}
-                  inputRef={register}
+                  inputRef={register({
+                    validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
+                  })}
                   name="realInvestment"
                   onChange={realInvestmentChange}
                   placeholder={"0"}
@@ -248,7 +250,7 @@ const IncreaseStrategyPanel = (props) => {
                   inputRef={register({
                     required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                     validate: (value) =>
-                      !isNaN(value) ||
+                      (value > 0 && value <= 100) ||
                       formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                   })}
                   name="positionSizePercentage"

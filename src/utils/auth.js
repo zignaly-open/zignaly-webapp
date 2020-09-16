@@ -16,7 +16,7 @@ const isExpirationValid = (milliseconds) => {
  * @returns {boolean} Returns if the session is valid.
  */
 export const verifySessionData = (token, sessionData) => {
-  return (
-    token && sessionData && sessionData.validUntil && isExpirationValid(sessionData.validUntil)
+  return Boolean(
+    token && sessionData && sessionData.validUntil && isExpirationValid(sessionData.validUntil),
   );
 };

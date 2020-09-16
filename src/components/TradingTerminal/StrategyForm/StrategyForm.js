@@ -85,7 +85,7 @@ const StrategyForm = (props) => {
   const currentSymbolData = resolveCurrentSymbolData();
   const isPositionView = isObject(positionEntity);
 
-  const { errors, handleSubmit, setValue, reset, trigger, watch } = useFormContext();
+  const { errors, handleSubmit, setValue, reset, register, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
@@ -209,17 +209,13 @@ const StrategyForm = (props) => {
 
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
-      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
-      const targetExitUnitsPercetage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
-      const targetExitUnits = draftPosition[`takeProfitExitUnits${targetId}`];
+      const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
 
       if (targetPricePercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
-          quoteTarget: parseFloat(targetPrice),
-          amountPercentage: parseFloat(targetExitUnitsPercetage),
-          value: parseFloat(targetExitUnits),
+          amountPercentage: parseFloat(targetExitUnitsPercentage),
         });
       }
     });
@@ -558,6 +554,7 @@ const StrategyForm = (props) => {
   return (
     <Box bgcolor="grid.content" className="strategyForm" textAlign="center">
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
+        <input name="lastPrice" ref={register} type="hidden" />
         {isPositionView ? (
           <SidebarEditPanels
             currentSymbolData={currentSymbolData}
@@ -572,9 +569,6 @@ const StrategyForm = (props) => {
             className={"full submitButton"}
             disabled={!isEmpty(errors) || processing}
             loading={processing}
-            onClick={() => {
-              trigger();
-            }}
             type="submit"
           >
             {isPositionView ? (

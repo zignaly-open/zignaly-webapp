@@ -11,7 +11,8 @@ import { showErrorAlert } from "../../store/actions/ui";
 /**
  * @typedef {Object} UploadImagePropTypes
  * @property {string} imageUrl Current image.
- * @property {function} onChange Image change callback.
+ * @property {string} [defaultImage] Placeholder image.
+ * @property {function(string): *} onChange Image change callback.
  */
 
 /**
@@ -20,7 +21,7 @@ import { showErrorAlert } from "../../store/actions/ui";
  * @param {UploadImagePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const UploadImage = ({ imageUrl, onChange }) => {
+const UploadImage = ({ imageUrl, onChange, defaultImage }) => {
   const [modified, setModified] = useState(false);
   const [original] = useState(imageUrl);
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const UploadImage = ({ imageUrl, onChange }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <ProviderLogo size="30px" title="Logo" url={imageUrl} />
+      <ProviderLogo defaultImage={defaultImage} size="30px" title="Logo" url={imageUrl} />
       <Box display="flex" flexDirection="row">
         <input accept="image/*" className="logo" id="logo" onChange={uploadLogo} type="file" />
         <label htmlFor="logo">

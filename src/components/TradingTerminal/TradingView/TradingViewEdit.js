@@ -253,7 +253,15 @@ const TradingViewEdit = (props) => {
   const processPositionsUpdate = (positionsList) => {
     if (isArray(positionsList)) {
       const newPositionEntity = positionsList[0];
-      const compareFields = ["updating", "closed", "status", "reBuyTargets", "positionSizeQuote"];
+      const compareFields = [
+        "updating",
+        "closed",
+        "status",
+        "reBuyTargets",
+        "positionSizeQuote",
+        "reduceOrders",
+        // "sellPrice",
+      ];
       const propagateChange = !isEqual(
         pick(positionEntity, compareFields),
         pick(newPositionEntity, compareFields),

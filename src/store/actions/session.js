@@ -2,7 +2,6 @@ import { unsetUser, getUserExchanges, getUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
-import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
 
@@ -45,13 +44,6 @@ export const startTradeApiSession = (response) => {
       gtmEvent.push(assign(eventType, response));
     }
     dispatch(refreshSessionData(response.token));
-
-    // Navigate to return url or dashboard
-    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-    const path = params.get("ret") || "/dashboard";
-    const pathPrefix = process.env.GATSBY_BASE_PATH || "";
-    const pathWithoutPrefix = path.replace(pathPrefix, "");
-    navigate(pathWithoutPrefix);
   };
 };
 

@@ -46,7 +46,11 @@
     }
 
     .addTarget {
-      color: $purple;
+      color: var(--purple);
     }
+  }
+
+  .increaseDCATitle {
+    padding: 10px 0;
   }
 }

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { compose } from "recompose";
 import "./PrivateAreaLayout.scss";
 import { Box, Hidden } from "@material-ui/core";
 import Header from "../../components/Navigation/Header";
@@ -78,4 +77,4 @@ const PrivateAreaLayout = (props) => {
   );
 };
 
-export default compose(withPageContext)(PrivateAreaLayout);
+export default withPageContext(PrivateAreaLayout);

@@ -67,7 +67,7 @@ const ExchangeAccountList = ({ demo }) => {
         <Box className={`exchangeAccountContainer ${currentPath}`}>
           {exchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
-              <LazyLoad height={512} offset={200} overflow={true} scrollContainer=".modal">
+              <LazyLoad height={400} overflow={true} scrollContainer=".modal">
                 <ExchangeAccountTopBar account={account} />
                 <ExchangeAccountData account={account} />
               </LazyLoad>

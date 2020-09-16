@@ -161,11 +161,11 @@ export const formatDuration = (time) => {
  * Format unixtime date with given Moment format rule.
  *
  * @param {Number} date Unix time.
- * @param {String} format Moment format rule.
+ * @param {String} [format] Moment format rule.
  *
  * @returns {String} Formatted date.
  */
-export const formatDate = (date, format) => {
+export const formatDate = (date, format = "YYYY/MM/DD HH:mm") => {
   if (typeof date === "string") {
     date = parseFloat(date);
   }
