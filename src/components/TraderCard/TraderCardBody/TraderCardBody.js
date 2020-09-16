@@ -56,7 +56,7 @@ const TraderCard = (props) => {
     quote,
     closedPositions,
     returns,
-    aggregateFollowers,
+    aggregateFollowers = [],
   } = provider;
 
   /**
@@ -98,6 +98,25 @@ const TraderCard = (props) => {
       chartData.labels.push(followerData.date);
     });
   }
+
+  /**
+   * Calculate new followers for the past week
+   * @returns {number} followers
+   */
+  const calculateNewFollowers = () => {
+    let followerDataOneWeekAgo = [...aggregateFollowers]
+      .reverse()
+      .find((followerData) => moment(followerData.totalFollowers).diff(new Date(), "d"));
+    if (!followerDataOneWeekAgo && aggregateFollowers.length) {
+      followerDataOneWeekAgo = aggregateFollowers[0];
+    }
+    let newFollowers = 0;
+    if (followerDataOneWeekAgo) {
+      newFollowers = followers - followerDataOneWeekAgo.totalFollowers;
+    }
+
+    return newFollowers;
+  };
 
   let colorClass = "green";
   /**
@@ -191,12 +210,12 @@ const TraderCard = (props) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {formatFloat2Dec(returns)}%
+                {isCopyTrading ? <>{formatFloat2Dec(returns)}%</> : calculateNewFollowers()}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
-                id: "sort.return",
+                id: isCopyTrading ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
-                id: "time." + timeFrame + "d",
+                id: "time." + timeFrame || 7 + "d",
               })})`}</Typography>
             </div>
           </CustomToolip>
