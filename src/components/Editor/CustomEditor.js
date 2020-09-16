@@ -16,6 +16,7 @@ import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import Link from "@ckeditor/ckeditor5-link/src/link";
 import List from "@ckeditor/ckeditor5-list/src/list";
+import GFMDataProcessor from "@ckeditor/ckeditor5-markdown-gfm/src/gfmdataprocessor";
 import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
 import Mention from "@ckeditor/ckeditor5-mention/src/mention";
 import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
@@ -24,9 +25,10 @@ import Table from "@ckeditor/ckeditor5-table/src/table";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
 import "./Editor.scss";
-import loadable from "@loadable/component";
 
-const Markdown = loadable(() => import("./Markdown"));
+const Markdown = (editor) => {
+  editor.data.processor = new GFMDataProcessor(editor.editing.view.document);
+};
 
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler

@@ -4,8 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-const path = require("path");
-
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions;
 
@@ -98,7 +96,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     },
   );
 
-  console.log(stage);
   if (stage === "build-html") {
     // Fix WebpackError: ReferenceError: window is not defined
     // https://www.gatsbyjs.org/docs/debugging-html-builds/
@@ -122,7 +119,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     );
   }
 
-  //   config.plugin("ignore", () => new webpack.IgnorePlugin(/^canvas$/));
   config.plugins.push(new CaseSensitivePathsPlugin());
   // eslint-disable-next-line no-console
   console.log("Webpack build config updated");
