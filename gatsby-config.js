@@ -55,23 +55,15 @@ module.exports = {
       //     },
       //   },
     },
-    // {
-    //   resolve: "gatsby-plugin-netlify",
-    //   options: {
-    //     mergeSecurityHeaders: true,
-    //     headers: {
-    //       "/*": ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"],
-    //     },
-    //   },
-    // },
     {
-      resolve: "gatsby-plugin-zeit-now",
+      resolve: "gatsby-plugin-netlify",
       options: {
-        globalHeaders: {
-          "referrer-policy": "same-origin",
-          "x-frame-options": "sameorigin",
-        }
-      }
-    }
+        allPageHeaders: ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"],
+        mergeSecurityHeaders: true,
+        mergeLinkHeaders: true,
+        mergeCachingHeaders: true,
+        generateMatchPathRewrites: true,
+      },
+    },
   ],
 };
