@@ -575,12 +575,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
  * @property {number} followers
- * @property {number} newFollowers New followers in the past 7 days
+ * @property {number} [newFollowers] New followers in the past 7 days
  * @property {number} returns
  * @property {number} floating
  * @property {number} openPositions
  * @property {number} closedPositions
- * @property {number} totalSignals
+ * @property {number} [totalSignals] Total signals for signal providers
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
