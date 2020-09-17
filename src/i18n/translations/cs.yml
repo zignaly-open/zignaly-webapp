@@ -608,7 +608,7 @@ signalp.option.minimumsuccess.error: "CH-Minimum allowed success rate is 1."
 signalp.option.disclaimer.error: "CH-You need to accept the disclaimer from this provider."
 
 # CREATE PROVIDER ACCOUNT
-provider.createaccount: "CH-Create account"
+provider.createaccount: "CH-Create Service"
 provider.name: "CH-Name"
 copyt.become: "CH-Become a Copy Trader"
 copyt.create: "CH-Create a Copy Trading Account"

@@ -515,7 +515,7 @@ signalp.option.minimumsuccess.sub: "Tín hiệu có tỷ lệ thành công dư�
 signalp.option.DCA.error: "NẾU bạn chấp nhận tín hiệu DCA /Mua lại, giá trị này phải lớn hơn 1."
 signalp.option.minimumsuccess.error: "Tỷ lệ thành công tối thiểu được phép là 1."
 # CREATE PROVIDER ACCOUNT
-provider.createaccount: "Tạo tài khoản"
+provider.createaccount: "Create Service"
 provider.name: "Tên"
 copyt.become: "Trở thành Nhà giao dịch sao chép"
 copyt.create: "Tạo Một Tài Khoản Nhà Giao Dịch Sao Chép"

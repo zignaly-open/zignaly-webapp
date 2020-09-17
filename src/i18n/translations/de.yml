@@ -507,7 +507,7 @@ signalp.option.minimumsuccess.sub: "Signale mit einer Erfolgsrate unter diesem W
 signalp.option.DCA.error: "Wenn Sie ein DCA / ReBuys-Signal akzeptieren, muss dieser Wert größer als 1 sein."
 signalp.option.minimumsuccess.error: "Die minimal zulässige Erfolgsquote beträgt 1."
 # CREATE PROVIDER ACCOUNT
-provider.createaccount: "Konto erstellen"
+provider.createaccount: "Create Service"
 provider.name: "Name"
 copyt.become: "Werden Sie Copy Trader"
 copyt.create: "Einen Copy Trader Account erstellen"
