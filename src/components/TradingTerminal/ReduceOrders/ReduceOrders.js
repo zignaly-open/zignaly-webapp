@@ -127,6 +127,11 @@ const ReduceOrders = (props) => {
   };
   useEffect(autoExpandCollapse, [reduceOrders.length]);
 
+  useEffect(() => {
+    const val = Boolean(reduceOrders.find((o) => o.persistent || o.recurring));
+    setValue("reduceRecurringPersistent", val);
+  }, [positionEntity.reduceOrders]);
+
   /**
    * Render a reduce order
    * @param {ReduceOrder} order Reduce order
@@ -227,9 +232,9 @@ const ReduceOrders = (props) => {
                 className="customCheckbox"
                 control={
                   <Controller
+                    defaultValue={false}
                     control={control}
-                    defaultValue={true}
-                    name="removeReduceRecurringPersistent"
+                    name="reduceRecurringPersistent"
                     render={({ onChange, value }) => (
                       <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
                     )}
