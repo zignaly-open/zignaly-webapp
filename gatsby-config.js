@@ -58,7 +58,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-netlify",
       options: {
-        mergeSecurityHeaders: false,
+        mergeSecurityHeaders: true,
         headers: {
           "/*": ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"],
         },
