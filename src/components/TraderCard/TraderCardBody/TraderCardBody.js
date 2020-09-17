@@ -93,10 +93,17 @@ const TraderCard = (props) => {
       return acc;
     }, 0);
   } else {
-    aggregateFollowers.forEach((followerData) => {
-      chartData.values.push(followerData.totalFollowers);
-      chartData.labels.push(followerData.date);
-    });
+    let currentFollowers = followers;
+    // Find followers data for the past 7 days
+    for (let i = 0; i < 7; i++) {
+      const date = moment().subtract(i, "d").format("YYYY-MM-DD");
+      const followerData = aggregateFollowers.find((f) => f.date === date);
+      if (followerData) {
+        currentFollowers = followerData.totalFollowers;
+      }
+      chartData.values.unshift(currentFollowers);
+      chartData.labels.unshift(date);
+    }
   }
 
   /**

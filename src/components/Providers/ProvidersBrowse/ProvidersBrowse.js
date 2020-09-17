@@ -47,6 +47,8 @@ const ProvidersBrowse = ({
     filters,
     setFilters,
     modifiedFilters,
+    timeFrame,
+    setTimeFrame,
   } = useProvidersList(providersOptions);
   const intl = useIntl();
 
@@ -80,6 +82,22 @@ const ProvidersBrowse = ({
           open={showSort}
           sort={sort}
           isCopyTrading={copyTradersOnly}
+        />
+      )}
+      {copyTradersOnly && (
+        <TimeFrameSelectRow
+          isCopyTrading={copyTradersOnly}
+          onChange={setTimeFrame}
+          title={`${providers ? providers.length : 0} ${intl.formatMessage({
+            id: connectedOnly
+              ? copyTradersOnly
+                ? "dashboard.traders.copying"
+                : "dashboard.providers.following"
+              : copyTradersOnly
+              ? "copyt.traders"
+              : "menu.signalproviders",
+          })}`}
+          value={timeFrame}
         />
       )}
       <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={7} />

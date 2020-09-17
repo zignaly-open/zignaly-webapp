@@ -37,14 +37,14 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, isCopyTrad
           },
         ]
       : [
-          {
-            label: intl.formatMessage({ id: "sort.followers.desc" }),
-            val: "FOLLOWERS_DESC",
-          },
-          {
-            label: intl.formatMessage({ id: "sort.followers.asc" }),
-            val: "FOLLOWERS_ASC",
-          },
+          //   {
+          //     label: intl.formatMessage({ id: "sort.newfollowers.desc" }),
+          //     val: "NEW_FOLLOWERS_DESC",
+          //   },
+          //   {
+          //     label: intl.formatMessage({ id: "sort.newfollowers.asc" }),
+          //     val: "NEW_FOLLOWERS_ASC",
+          //   },
           {
             label: intl.formatMessage({ id: "sort.signals.desc" }),
             val: "SIGNALS_DESC",
@@ -61,6 +61,14 @@ const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, isCopyTrad
     {
       label: intl.formatMessage({ id: "sort.name.asc" }),
       val: "NAME_ASC",
+    },
+    {
+      label: intl.formatMessage({ id: "sort.followers.desc" }),
+      val: "FOLLOWERS_DESC",
+    },
+    {
+      label: intl.formatMessage({ id: "sort.followers.asc" }),
+      val: "FOLLOWERS_ASC",
     },
     {
       label: intl.formatMessage({ id: "sort.fee.desc" }),
