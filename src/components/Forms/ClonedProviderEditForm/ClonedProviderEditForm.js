@@ -27,7 +27,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { errors, handleSubmit, control } = useForm();
+  const { errors, handleSubmit, control } = useForm({mode: "all"});
   const dispatch = useDispatch();
 
   /**
