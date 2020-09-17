@@ -29,32 +29,37 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
 
   return (
     <CustomFilters onClear={onClear} title="">
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "fil.timeframe",
-        })}
-        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
-        options={timeFrames}
-        value={filters.timeFrame}
-      />
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "fil.quote",
-        })}
-        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v })}
-        options={quotes}
-        search={true}
-        value={filters.quote}
-      />
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "fil.providers",
-        })}
-        onChange={(/** @type {OptionType} */ v) => setFilters({ provider: v })}
-        options={providers}
-        search={true}
-        value={filters.provider}
-      />
+      {timeFrames.length && quotes.length && providers.length > 2 ?
+        <>
+        <CustomSelect
+            label={intl.formatMessage({
+              id: "fil.timeframe",
+            })}
+            onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
+            options={timeFrames}
+            value={filters.timeFrame}
+          />
+          <CustomSelect
+            label={intl.formatMessage({
+              id: "fil.quote",
+            })}
+            onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v })}
+            options={quotes}
+            search={true}
+            value={filters.quote}
+          />
+          <CustomSelect
+            label={intl.formatMessage({
+              id: "fil.providers",
+            })}
+            onChange={(/** @type {OptionType} */ v) => setFilters({ provider: v })}
+            options={providers}
+            search={true}
+            value={filters.provider}
+          />
+        </>
+        : null
+      }
     </CustomFilters>
   );
 };
