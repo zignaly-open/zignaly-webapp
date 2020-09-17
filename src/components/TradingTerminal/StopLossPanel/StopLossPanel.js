@@ -132,6 +132,7 @@ const StopLossPanel = (props) => {
         setValue("stopLossPercentage", formatFloat2Dec(positionEntity.stopLossPercentage));
         stopLossPercentageChange();
       }
+      updateStopLoss();
     } else {
       setValue("stopLossPrice", "");
       if (errors.stopLossPercentage) {

@@ -294,6 +294,7 @@ const TakeProfitPanel = (props) => {
   useEffect(() => {
     if (expanded) {
       initValuesFromPositionEntity();
+      chainedPriceUpdates();
     } else {
       cardinalityRange.forEach((targetId) => {
         clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
@@ -324,7 +325,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
