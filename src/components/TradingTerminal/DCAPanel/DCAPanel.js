@@ -213,7 +213,7 @@ const DCAPanel = (props) => {
    * @param {string} targetPricePercentageRaw targetPricePercentage value
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  const validateTargetDCALimit = (targetPricePercentageRaw) => {
+  const validateDCAPriceLimit = (targetPricePercentageRaw) => {
     const price = getEntryPrice();
     const targetPricePercentage = parseFloat(targetPricePercentageRaw);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
@@ -221,20 +221,16 @@ const DCAPanel = (props) => {
   };
 
   /**
-   * Validate DCA price
+   * Validate DCA Units Cost limits
    * @param {string} targetId targetId
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  const validatePrice = (targetId) => {
+  const validateUnitCostLimits = (targetId) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
     if (positionSize > 0) {
-      return validateCostLimits(
-        rebuyPositionSize,
-        composeTargetPropertyName("rebuyPercentage", targetId),
-        "terminal.dca.limit",
-      );
+      return validateCostLimits(rebuyPositionSize, "terminal.dca.limit");
     }
 
     return true;
@@ -275,7 +271,7 @@ const DCAPanel = (props) => {
 
   useEffect(() => {
     if (expanded) initValuesFromPositionEntity();
-  }, [expanded]);
+  }, [expanded, positionEntity.reBuyTargets]);
 
   const chainedPriceUpdates = () => {
     if (expanded) {
@@ -374,8 +370,7 @@ const DCAPanel = (props) => {
                       validate: {
                         percentage: (value) =>
                           lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
-                        limit: validateTargetDCALimit,
-                        cost: () => validatePrice(targetId),
+                        limit: validateDCAPriceLimit,
                       },
                     },
               )}
@@ -398,6 +393,7 @@ const DCAPanel = (props) => {
                       id: "terminal.dca.valid.unitspercentage",
                     }),
                   limit: () => validateUnits(targetId),
+                  cost: () => validateUnitCostLimits(targetId),
                 },
               })}
               name={composeTargetPropertyName("rebuyPercentage", targetId)}
