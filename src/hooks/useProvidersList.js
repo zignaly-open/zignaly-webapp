@@ -140,7 +140,7 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const filters = filtersData.filters;
 
-  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "FOLLOWERS_DESC";
+  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEW_FOLLOWERS_DESC";
 
   // Sort
   const initSort = () => {
@@ -195,6 +195,9 @@ const useProvidersList = (options) => {
           break;
         case "FOLLOWERS":
           res = a.followers - b.followers;
+          break;
+        case "NEWFOLLOWERS":
+          res = a.newFollowers - b.newFollowers;
           break;
         default:
           break;

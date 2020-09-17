@@ -57,6 +57,7 @@ const TraderCard = (props) => {
     closedPositions,
     returns,
     aggregateFollowers = [],
+    newFollowers,
   } = provider;
 
   /**
@@ -105,23 +106,6 @@ const TraderCard = (props) => {
       chartData.labels.unshift(date);
     }
   }
-
-  /**
-   * Calculate new followers for the past week
-   * @returns {number} followers
-   */
-  const calculateNewFollowers = () => {
-    // Find first date that is less than 7 days old
-    let followerDataOneWeekAgo = [...aggregateFollowers].find(
-      (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
-    );
-    let newFollowers = 0;
-    if (followerDataOneWeekAgo) {
-      newFollowers = followers - followerDataOneWeekAgo.totalFollowers;
-    }
-
-    return newFollowers;
-  };
 
   let colorClass = "green";
   /**
@@ -215,7 +199,7 @@ const TraderCard = (props) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {isCopyTrading ? <>{formatFloat2Dec(returns)}%</> : calculateNewFollowers()}
+                {isCopyTrading ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: isCopyTrading ? "sort.return" : "srv.newfollowers",

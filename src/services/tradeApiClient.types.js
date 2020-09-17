@@ -575,6 +575,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
  * @property {number} followers
+ * @property {number} newFollowers New followers in the past 7 days
  * @property {number} returns
  * @property {number} floating
  * @property {number} openPositions
@@ -962,6 +963,24 @@ export function providersResponseTransform(response) {
 }
 
 /**
+ * Calculate new followers for the past week
+ * @param {ProviderEntity} provider Provider entity.
+ * @returns {number} followers
+ */
+const calculateNewFollowers = (provider) => {
+  // Find first date that is less than 7 days old
+  let followerDataOneWeekAgo = provider.aggregateFollowers.find(
+    (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
+  );
+  let newFollowers = 0;
+  if (followerDataOneWeekAgo) {
+    newFollowers = provider.followers - followerDataOneWeekAgo.totalFollowers;
+  }
+
+  return newFollowers;
+};
+
+/**
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
@@ -984,6 +1003,10 @@ function providerItemTransform(providerItem) {
   transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
     (a, b) => a.name.getTime() - b.name.getTime(),
   );
+
+  if (!transformedResponse.isCopyTrading) {
+    transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
+  }
 
   return transformedResponse;
 }
