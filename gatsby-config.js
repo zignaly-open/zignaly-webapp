@@ -55,18 +55,5 @@ module.exports = {
       //     },
       //   },
     },
-    {
-      resolve: "gatsby-plugin-netlify",
-      options: {
-        headers: {
-          "/*": ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"]
-        },
-        allPageHeaders: ["X-Frame-Options: sameorigin", "Referrer-Policy: same-origin"],
-        mergeSecurityHeaders: true,
-        mergeLinkHeaders: true,
-        mergeCachingHeaders: true,
-        generateMatchPathRewrites: true,
-      },
-    },
   ],
 };
