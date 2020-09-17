@@ -270,7 +270,10 @@ const DCAPanel = (props) => {
   };
 
   useEffect(() => {
-    if (expanded) initValuesFromPositionEntity();
+    if (expanded) {
+      initValuesFromPositionEntity();
+      chainedPriceUpdates();
+    }
   }, [expanded, rebuyTargets]);
 
   const chainedPriceUpdates = () => {
@@ -299,7 +302,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, cardinality, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [cardinality, entryType, strategyPrice]);
 
   // Automatically expand/collpase panel depending on dca orders amount.
   const autoExpandCollapse = () => {
