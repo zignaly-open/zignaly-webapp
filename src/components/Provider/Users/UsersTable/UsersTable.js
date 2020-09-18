@@ -291,6 +291,10 @@ const UsersTable = ({
     showModifyModal(false);
   };
 
+  const customOptions = {
+    search: true,
+  };
+
   return (
     <Box className="usersTable" display="flex" flexDirection="column" width={1}>
       <ConfirmDialog
@@ -301,6 +305,7 @@ const UsersTable = ({
       <Table
         columns={columns}
         data={list}
+        options={customOptions}
         persistKey={persistKey}
         title={title}
         toggleFilters={toggleFilters}
