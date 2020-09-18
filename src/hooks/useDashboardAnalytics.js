@@ -97,6 +97,7 @@ const useDashboardAnalytics = () => {
       const provider = providerAssets.find((item) => item.id === filters.provider.val);
       if (provider && provider.quote) {
         setProviderQuotes([provider.quote]);
+        setFilters({quote: provider.quote});
       }
     }
   };
