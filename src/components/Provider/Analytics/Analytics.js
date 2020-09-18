@@ -10,8 +10,12 @@ import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { createProviderCopiersEmptyEntity } from "../../../services/tradeApiClient.types";
+import {
+  createProviderCopiersEmptyEntity,
+  createEmptyProfileProviderStatsEntity,
+} from "../../../services/tradeApiClient.types";
 import { formatFloat2Dec } from "../../../utils/format";
+import ProviderStats from "./ProviderStats";
 
 /**
  * @typedef {Object} DefaultProps
@@ -33,11 +37,14 @@ const CopyTradersAnalytics = ({ provider }) => {
     weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
   };
   const emptyFollowers = createProviderCopiersEmptyEntity();
+  const emptyStats = createEmptyProfileProviderStatsEntity();
   const [followers, setFollowers] = useState([emptyFollowers]);
   const [performance, setPerformance] = useState(emptyPerformance);
+  const [stats, setStats] = useState(emptyStats);
   const dispatch = useDispatch();
   const [copiersLoading, setCopiersLoading] = useState(false);
   const [performanceLoading, setPerformanceLoading] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(false);
   const [increase, setIncrease] = useState(0);
   const [increasePercentage, setIncreasePercentage] = useState(0);
 
@@ -46,20 +53,49 @@ const CopyTradersAnalytics = ({ provider }) => {
     providerId: provider.id,
   };
 
+  const statsPayload = {
+    token: storeSession.tradeApi.accessToken,
+    providerId: provider.id,
+    ro: true,
+  };
+
   const getProviderPerformance = () => {
-    setPerformanceLoading(true);
-    tradeApi
-      .providerPerformanceGet(payload)
-      .then((response) => {
-        setPerformance(response);
-        setPerformanceLoading(false);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (provider.isCopyTrading) {
+      setPerformanceLoading(true);
+      tradeApi
+        .providerPerformanceGet(payload)
+        .then((response) => {
+          setPerformance(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setPerformanceLoading(false);
+        });
+    }
   };
 
   useEffect(getProviderPerformance, []);
+
+  const getProviderStats = () => {
+    if (!provider.isCopyTrading) {
+      setStatsLoading(true);
+      tradeApi
+        .profileProviderStatsGet(statsPayload)
+        .then((response) => {
+          setStats(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setStatsLoading(false);
+        });
+    }
+  };
+
+  useEffect(getProviderStats, []);
 
   const getProviderFollowers = () => {
     setCopiersLoading(true);
@@ -71,6 +107,9 @@ const CopyTradersAnalytics = ({ provider }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setCopiersLoading(false);
       });
   };
 
@@ -98,22 +137,41 @@ const CopyTradersAnalytics = ({ provider }) => {
 
   return (
     <Box className="providerAnalytics">
-      <Box bgcolor="grid.content" className="tradingPerformanceBox">
-        <Typography className="boxTitle" variant="h3">
-          <FormattedMessage id="copyt.tradingperformance" />
-        </Typography>
+      {provider.isCopyTrading && (
+        <Box bgcolor="grid.content" className="tradingPerformanceBox">
+          <Typography className="boxTitle" variant="h3">
+            <FormattedMessage id="copyt.tradingperformance" />
+          </Typography>
 
-        <Box
-          alignItems="center"
-          className="graphBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
-          {performanceLoading && <CircularProgress color="primary" size={50} />}
-          {!performanceLoading && <TradingPerformance performance={performance} />}
+          <Box
+            alignItems="center"
+            className="graphBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            {performanceLoading && <CircularProgress color="primary" size={50} />}
+            {!performanceLoading && <TradingPerformance performance={performance} />}
+          </Box>
         </Box>
-      </Box>
+      )}
+
+      {!provider.isCopyTrading && (
+        <Box bgcolor="grid.content" className="providerStatsBox">
+          {statsLoading && (
+            <Box
+              alignItems="center"
+              className="graphBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <CircularProgress color="primary" size={50} />
+            </Box>
+          )}
+          {!statsLoading && <ProviderStats data={stats.signalsInfo} />}
+        </Box>
+      )}
 
       <Box bgcolor="grid.content" className="copiersBox">
         <Box alignItems="center" className="titleBox" display="flex" flexDirection="row">

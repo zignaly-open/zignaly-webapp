@@ -140,22 +140,25 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const filters = filtersData.filters;
 
+  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEW_FOLLOWERS_DESC";
+
   // Sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
       val = copyTradersOnly ? storeSettings.sort.copyt : storeSettings.sort.signalp;
     }
-    return val || "RETURNS_DESC";
+    return val || defaultSort;
   };
   const [sort, setSort] = useState(initSort);
 
   const clearSort = () => {
-    setSort("RETURNS_DESC");
+    setSort(defaultSort);
   };
 
   // TimeFrame
-  const initTimeFrame = storeSettings.timeFrame[page] || 90;
+  const defaultTimeFrame = copyTradersOnly ? 90 : 7;
+  const initTimeFrame = (copyTradersOnly && storeSettings.timeFrame[page]) || defaultTimeFrame;
   const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
   // Save timeFrame to store once changed
@@ -186,6 +189,15 @@ const useProvidersList = (options) => {
           break;
         case "FEE":
           res = a.price - b.price;
+          break;
+        case "SIGNALS":
+          res = a.totalSignals - b.totalSignals;
+          break;
+        case "FOLLOWERS":
+          res = a.followers - b.followers;
+          break;
+        case "NEWFOLLOWERS":
+          res = a.newFollowers - b.newFollowers;
           break;
         default:
           break;

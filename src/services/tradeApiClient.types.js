@@ -542,6 +542,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderFollowers
+ * @property {string} date
+ * @property {number} followers New followers for this date
+ * @property {number} totalFollowers Total followers at this date
+ */
+
+/**
  * @typedef {Object} ProviderEntity
  * @property {string} id
  * @property {string} name
@@ -568,12 +575,15 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Array<DailyReturn>} dailyReturns
  * @property {number} [risk]
  * @property {number} followers
+ * @property {number} [newFollowers] New followers in the past 7 days
  * @property {number} returns
  * @property {number} floating
  * @property {number} openPositions
  * @property {number} closedPositions
+ * @property {number} [totalSignals] Total signals for signal providers
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
+ * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  */
 
 /**
@@ -744,6 +754,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} timeFrameFormat
  * @property {String} token
  * @property {String} internalExchangeId
+ */
+
+/**
+ * @typedef {Object} ProfileProviderStatsPayload
+ * @property {String} providerId
+ * @property {Boolean} ro
+ * @property {String} token
  */
 
 /**
@@ -946,6 +963,24 @@ export function providersResponseTransform(response) {
 }
 
 /**
+ * Calculate new followers for the past week
+ * @param {ProviderEntity} provider Provider entity.
+ * @returns {number} followers
+ */
+const calculateNewFollowers = (provider) => {
+  // Find first date that is less than 7 days old
+  let followerDataOneWeekAgo = provider.aggregateFollowers.find(
+    (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
+  );
+  let newFollowers = 0;
+  if (followerDataOneWeekAgo) {
+    newFollowers = provider.followers - followerDataOneWeekAgo.totalFollowers;
+  }
+
+  return newFollowers;
+};
+
+/**
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
@@ -968,6 +1003,10 @@ function providerItemTransform(providerItem) {
   transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
     (a, b) => a.name.getTime() - b.name.getTime(),
   );
+
+  if (!transformedResponse.isCopyTrading) {
+    transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
+  }
 
   return transformedResponse;
 }
@@ -2360,7 +2399,7 @@ function createEmptyProviderGetEntity() {
     copyTradingQuote: "",
     description: "",
     disable: false,
-    exchangeInternalId: false,
+    exchangeInternalId: "",
     exchangeType: "",
     exchanges: [""],
     fee: "",
@@ -3790,5 +3829,121 @@ const createEmptyProfileStatsEntity = () => {
     returned: "",
     totalPositions: 1,
     totalWins: 0,
+  };
+};
+
+/**
+ * Transform profile profits stats response.
+ *
+ * @param {*} response Profile profits response.
+ * @returns {ProfileProviderStatsObject} Profile profits entity collection.
+ */
+export function profileProviderStatsResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object");
+  }
+
+  let transformedResponse = assign(createEmptyProfileProviderStatsEntity(), response);
+  transformedResponse.signalsInfo = transformedResponse.signalsInfo.map((item) => {
+    return createEmptyProfileProviderSignalsEntity(item);
+  });
+  return transformedResponse;
+}
+
+/**
+ * @typedef {Object} ProfileProviderStatsObject
+ * @property {ProviderEntity} providerInfo
+ * @property {Array<ProfileProviderStatsSignalsObject>} signalsInfo
+ */
+
+/**
+ * @typedef {Object} ProfileProviderStatsSignalsObject
+ * @property {String} date
+ * @property {String} dateReadable
+ * @property {String} pair
+ * @property {String} base
+ * @property {String} quote
+ * @property {String} exchange
+ * @property {String} averageEntryPrice
+ * @property {String} i24HighPercentage
+ * @property {String} i24LowPercentage
+ * @property {String} i3DHighPercentage
+ * @property {String} i3DLowPercentage
+ * @property {String} iweekHighPercentage
+ * @property {String} iweekLowPercentage
+ * @property {String} imonthHighPercentage
+ * @property {String} imonthLowPercentage
+ * @property {String} i3MonthHighPercentage
+ * @property {String} i3MonthLowPercentage
+ */
+
+/**
+ * Create an empty profile profits entity
+ *
+ * @returns {ProfileProviderStatsObject} Empty profile profits entity.
+ */
+export const createEmptyProfileProviderStatsEntity = () => {
+  return {
+    providerInfo: {
+      id: "",
+      name: "",
+      description: "",
+      shortDesc: "",
+      longDesc: "",
+      fee: false,
+      price: 0,
+      website: false,
+      exchanges: [],
+      key: false,
+      disable: true,
+      customerKey: false,
+      public: true,
+      logoUrl: "",
+      hasRecommendedSettings: false,
+      hasBeenUsed: false,
+      isClone: false,
+      isCopyTrading: false,
+      clonedFrom: false,
+      createdAt: 0,
+      isFromUser: false,
+      quote: "",
+      dailyReturns: [],
+      returns: 0,
+      risk: 0,
+      followers: 0,
+      floating: 0,
+      openPositions: 0,
+      closedPositions: 0,
+      exchangeType: "",
+      exchangeInternalId: "",
+    },
+    signalsInfo: [],
+  };
+};
+
+/**
+ * Create an empty profile profits entity
+ * @param {*} item response signals item.
+ * @returns {ProfileProviderStatsSignalsObject} Empty profile profits entity.
+ */
+const createEmptyProfileProviderSignalsEntity = (item) => {
+  return {
+    date: item.createdAt,
+    dateReadable: moment(Number(item.createdAt)).format("YYYY/MM/DD HH:mm"),
+    pair: `${item.base}/${item.quote}`,
+    base: item.base,
+    quote: item.quote,
+    exchange: item.exchange,
+    averageEntryPrice: item.averageEntryPrice,
+    i24HighPercentage: item.i24h_higherPricePercentage,
+    i24LowPercentage: item.i24h_lowerPricePercentage,
+    i3DHighPercentage: item.i3d_higherPricePercentage,
+    i3DLowPercentage: item.i3d_lowerPricePercentage,
+    iweekHighPercentage: item.i1w_higherPricePercentage,
+    iweekLowPercentage: item.i1w_lowerPricePercentage,
+    imonthHighPercentage: item.i1m_higherPricePercentage,
+    imonthLowPercentage: item.i1m_lowerPricePercentage,
+    i3MonthHighPercentage: item.i3m_higherPricePercentage,
+    i3MonthLowPercentage: item.i3m_lowerPricePercentage,
   };
 };

@@ -12,6 +12,7 @@ import CustomSelect from "../../CustomSelect";
  * @property {string} sort value Selected value.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {boolean} open Flag to indicates if the sort bar is open.
+ * @property {boolean} isCopyTrading
  */
 
 /**
@@ -20,43 +21,72 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, isCopyTrading }) => {
+  const intl = useIntl();
+
   const sorts = [
+    ...(isCopyTrading
+      ? [
+          {
+            label: intl.formatMessage({ id: "sort.returns.desc" }),
+            val: "RETURNS_DESC",
+          },
+          {
+            label: intl.formatMessage({ id: "sort.returns.asc" }),
+            val: "RETURNS_ASC",
+          },
+        ]
+      : [
+          {
+            label: intl.formatMessage({ id: "sort.signals.desc" }),
+            val: "SIGNALS_DESC",
+          },
+          {
+            label: intl.formatMessage({ id: "sort.signals.asc" }),
+            val: "SIGNALS_ASC",
+          },
+          {
+            label: intl.formatMessage({ id: "sort.newfollowers.desc" }),
+            val: "NEWFOLLOWERS_DESC",
+          },
+          {
+            label: intl.formatMessage({ id: "sort.newfollowers.asc" }),
+            val: "NEWFOLLOWERS_ASC",
+          },
+        ]),
     {
-      label: "Descending Results",
-      val: "RETURNS_DESC",
+      label: intl.formatMessage({ id: "sort.followers.desc" }),
+      val: "FOLLOWERS_DESC",
     },
     {
-      label: "Ascending Results",
-      val: "RETURNS_ASC",
+      label: intl.formatMessage({ id: "sort.followers.asc" }),
+      val: "FOLLOWERS_ASC",
     },
     {
-      label: "Descending Name",
+      label: intl.formatMessage({ id: "sort.name.desc" }),
       val: "NAME_DESC",
     },
     {
-      label: "Ascending Name",
+      label: intl.formatMessage({ id: "sort.name.asc" }),
       val: "NAME_ASC",
     },
     {
-      label: "Descending Subscription Fee",
+      label: intl.formatMessage({ id: "sort.fee.desc" }),
       val: "FEE_DESC",
     },
     {
-      label: "Ascending Subscription Fee",
+      label: intl.formatMessage({ id: "sort.fee.asc" }),
       val: "FEE_ASC",
     },
     {
-      label: "Descending Creation Date",
+      label: intl.formatMessage({ id: "sort.date.desc" }),
       val: "DATE_DESC",
     },
     {
-      label: "Ascending Creation Date",
+      label: intl.formatMessage({ id: "sort.date.asc" }),
       val: "DATE_ASC",
     },
   ];
-
-  const intl = useIntl();
 
   return (
     <Box className="providersSort">

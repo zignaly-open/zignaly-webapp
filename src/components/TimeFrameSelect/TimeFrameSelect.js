@@ -5,17 +5,6 @@ import CustomSelect from "../CustomSelect";
 import "./TimeFrameSelect.scss";
 
 /**
- * @typedef {import("../CustomSelect/CustomSelect").OptionType} OptionType
- * @type {Array<OptionType>}
- */
-const timeframes = [
-  { label: "Last 7 days", val: 7 },
-  { label: "Last month", val: 30 },
-  { label: "Last 90 days", val: 90 },
-  { label: "Last year", val: 365 },
-];
-
-/**
  * @typedef {Object} TimeFrameSelectPropTypes
  * @property {function} onChange Callback that delegate timeframe changes to caller.
  * @property {number} value Selected value.
@@ -30,6 +19,18 @@ const timeframes = [
 const TimeFrameSelect = (props) => {
   const { onChange, value } = props;
   const intl = useIntl();
+
+  /**
+   * @typedef {import("../CustomSelect/CustomSelect").OptionType} OptionType
+   * @type {Array<OptionType>}
+   */
+  const timeframes = [
+    { label: intl.formatMessage({ id: "timeframe.days.7" }), val: 7 },
+    { label: intl.formatMessage({ id: "timeframe.days.30" }), val: 30 },
+    { label: intl.formatMessage({ id: "timeframe.days.90" }), val: 90 },
+    { label: intl.formatMessage({ id: "timeframe.days.180" }), val: 180 },
+    { label: intl.formatMessage({ id: "timeframe.total" }), val: 3650 },
+  ];
 
   return (
     <Box className="selectTimeFrame">
