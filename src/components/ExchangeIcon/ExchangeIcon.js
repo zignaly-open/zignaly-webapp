@@ -36,7 +36,7 @@ const ExchangeIcon = (props) => {
       break;
   }
 
-  if (!exchange) return null;
+  if (!icon) return null;
   return (
     <img
       alt="zignaly"
