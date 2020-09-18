@@ -170,7 +170,7 @@ const MobileAppbar = () => {
       </Box>
       <Slide direction="up" in={menu}>
         <Box bgcolor="grid.content" className="userMenuDrawer">
-          <UserMenu />
+          <UserMenu onClose={() => showMenu(false)} />
         </Box>
       </Slide>
     </>
