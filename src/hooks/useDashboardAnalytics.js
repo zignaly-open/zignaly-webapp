@@ -97,7 +97,7 @@ const useDashboardAnalytics = () => {
       const provider = providerAssets.find((item) => item.id === filters.provider.val);
       if (provider && provider.quote) {
         setProviderQuotes([provider.quote]);
-        setFilters({quote: provider.quote});
+        setFilters({ quote: provider.quote });
       }
     }
   };
@@ -136,7 +136,9 @@ const useDashboardAnalytics = () => {
 
   // Load stats at init and on filters change
   useEffect(loadDashboardStats, [
-    filters.provider.val, filters.quote, filters.timeFrame,
+    filters.provider.val,
+    filters.quote,
+    filters.timeFrame,
     storeSettings.selectedExchange.internalId,
     storeSession.tradeApi.accessToken,
   ]);
