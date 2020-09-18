@@ -14,21 +14,28 @@ import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
 import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+// import Indent from "@ckeditor/ckeditor5-indent/src/indent";
 import Link from "@ckeditor/ckeditor5-link/src/link";
 import List from "@ckeditor/ckeditor5-list/src/list";
-import GFMDataProcessor from "@ckeditor/ckeditor5-markdown-gfm/src/gfmdataprocessor";
+// import GFMDataProcessor from "@ckeditor/ckeditor5-markdown-gfm/src/gfmdataprocessor";
 import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
 import Mention from "@ckeditor/ckeditor5-mention/src/mention";
 import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
-import SimpleUploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter";
 import Table from "@ckeditor/ckeditor5-table/src/table";
 import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
 import "./Editor.scss";
+import { CloudinaryUnsigned } from "puff-puff/CKEditor";
 
-const Markdown = (editor) => {
-  editor.data.processor = new GFMDataProcessor(editor.editing.view.document);
+const ImagePluginFactory = (editor) => {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return new CloudinaryUnsigned(loader, "zignaly", "nong0gls", [160, 500, 1000, 1052]);
+  };
 };
+
+// const Markdown = (editor) => {
+//     editor.data.processor = new GFMDataProcessor(editor.editing.view.document);
+// };
 
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
@@ -68,13 +75,14 @@ const Editor = ({ content, onChange }) => {
       Link,
       List,
       MediaEmbed,
-      Markdown,
+      //   Markdown,
       Mention,
       Paragraph,
-      SimpleUploadAdapter,
+      //   Indent,
       Table,
       TableToolbar,
       TextTransformation,
+      ImagePluginFactory,
     ],
     toolbar: {
       items: [
@@ -87,8 +95,8 @@ const Editor = ({ content, onChange }) => {
         "bulletedList",
         "numberedList",
         "|",
-        "imageUpload",
         "blockQuote",
+        "imageUpload",
         "insertTable",
         "mediaEmbed",
         "undo",
@@ -97,10 +105,20 @@ const Editor = ({ content, onChange }) => {
     },
     image: {
       toolbar: ["imageStyle:full", "imageStyle:side", "|", "imageTextAlternative"],
+      upload: {
+        panel: {
+          items: ["insertImageViaUrl"],
+        },
+        types: ["jpeg", "png", "gif", "bmp", "webp", "tiff", "svg"],
+      },
     },
-    table: {
-      contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
+    indentBlock: {
+      offset: 1,
+      unit: "em",
     },
+    // table: {
+    //   contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
+    // },
     // This value must be kept in sync with the language defined in webpack.config.js.
     language: "en",
   };

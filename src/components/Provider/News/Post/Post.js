@@ -6,6 +6,7 @@ import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import "./Post.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import { formatDate } from "../../../../utils/format";
+import DOMPurify from "dompurify";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -38,17 +39,8 @@ const Post = ({ post }) => {
             <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
           </Box>
         </Box>
-        <ReactMarkdown
-          plugins={[breaks]}
-          renderers={{
-            link: (props) => (
-              <a href={props.href} target="_blank nofollow">
-                {props.children}
-              </a>
-            ),
-          }}
-          source={post.content}
-        />
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+        {post.content}
       </Paper>
     </Box>
   );
