@@ -4,6 +4,7 @@ import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
+import ConditionalWrapper from "../../ConditionalWrapper";
 import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
@@ -189,13 +190,20 @@ const TraderCard = (props) => {
       />
       <div className="traderCardBody">
         <div className="returnsBox">
-          <CustomToolip
-            title={
-              <FormattedMessage
-                id="srv.closedpos.tooltip"
-                values={{ count: closedPositions, days: timeFrame }}
-              />
-            }
+          <ConditionalWrapper
+            condition={isCopyTrading}
+            wrapper={(_children) => (
+              <CustomToolip
+                title={
+                  <FormattedMessage
+                    id="srv.closedpos.tooltip"
+                    values={{ count: closedPositions, days: timeFrame }}
+                  />
+                }
+              >
+                {_children}
+              </CustomToolip>
+            )}
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
@@ -207,7 +215,7 @@ const TraderCard = (props) => {
                 id: "time." + (timeFrame || 7) + "d",
               })})`}</Typography>
             </div>
-          </CustomToolip>
+          </ConditionalWrapper>
 
           {isCopyTrading && (
             <CustomToolip
