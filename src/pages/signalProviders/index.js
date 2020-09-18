@@ -104,7 +104,7 @@ const SignalProviders = (props) => {
         )}
         <SignalProviderRoute
           component={News}
-          path={withPrefix("/signalProviders/:providerId/news")}
+          path={withPrefix("/signalProviders/:providerId/feed")}
           providerId={providerId}
         />
       </Router>
