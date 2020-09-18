@@ -16,21 +16,35 @@ import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
 
-const UserMenu = React.forwardRef(() => {
+/**
+ *
+ * @typedef {Object} DefaultProps
+ * @property {Function} onClose
+ */
+
+/**
+ *
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} JSX component.
+ */
+const UserMenu = ({ onClose }) => {
   const dispatch = useDispatch();
   const [languageSelector, showLanguageSelector] = useState(false);
 
   const logout = () => {
     dispatch(endTradeApiSession());
     navigate("/login");
+    onClose();
   };
 
   const showDiscord = () => {
     window.open(discordURL, "_blank");
+    onClose();
   };
 
   const showDocs = () => {
     window.open(docsURL, "_blank");
+    onClose();
   };
 
   return (
@@ -39,6 +53,7 @@ const UserMenu = React.forwardRef(() => {
         className="userMenuItem"
         onClick={() => {
           navigateReach("#exchangeAccounts");
+          onClose();
         }}
       >
         <img alt="zignaly" className="iconPurple" src={MyExchange} />
@@ -51,6 +66,7 @@ const UserMenu = React.forwardRef(() => {
         className="userMenuItem"
         onClick={() => {
           navigateReach("#settings");
+          onClose();
         }}
       >
         <img alt="zignaly" className="iconPurple" src={Settings} />
@@ -96,6 +112,6 @@ const UserMenu = React.forwardRef(() => {
       </MenuItem>
     </Box>
   );
-});
+};
 
 export default UserMenu;

@@ -128,7 +128,7 @@ const Header = () => {
                   className="menuWrapper"
                   onMouseLeave={() => setAnchorEl(undefined)}
                 >
-                  <UserMenu />
+                  <UserMenu onClose={() => setAnchorEl(undefined)} />
                 </Box>
               </Grow>
             )}
