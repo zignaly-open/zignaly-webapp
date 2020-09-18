@@ -44,6 +44,12 @@ const useDashboardAnalytics = () => {
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
 
+  const timeFrames = useDashboardAnalyticsTimeframeOptions();
+
+  const quoteAssets = useQuoteAssets();
+  const allQuotes = Object.keys(quoteAssets);
+  const [providerQuotes, setProviderQuotes] = useState([]);
+
   let providerAssets = useReadOnlyProviders();
   providerAssets = providerAssets.filter(
     (item) =>
@@ -63,12 +69,6 @@ const useDashboardAnalytics = () => {
     val: "all",
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
-
-  const timeFrames = useDashboardAnalyticsTimeframeOptions();
-
-  const quoteAssets = useQuoteAssets();
-  const allQuotes = Object.keys(quoteAssets);
-  const [providerQuotes, setProviderQuotes] = useState([]);
 
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
