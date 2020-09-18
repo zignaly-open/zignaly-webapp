@@ -10,9 +10,12 @@ import useBalance from "../../../../hooks/useBalance";
 import ModalPathContext from "../../ModalPathContext";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { removeUserExchange } from "../../../../store/actions/user";
+import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 
@@ -40,6 +43,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
     setPathParams,
   } = useContext(ModalPathContext);
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
+  const storeExchanegeConnections = useStoreUserExchangeConnections();
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
   const balance = useBalance(selectedAccount.internalId);
@@ -75,6 +80,13 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
       .exchangeDelete(payload)
       .then(() => {
         dispatch(removeUserExchange(selectedAccount.internalId));
+        if (storeSettings.selectedExchange.internalId === selectedAccount.internalId) {
+          // Current selected exchange has been deleted so reset to first one
+          const newSelectedExchange = storeExchanegeConnections.find(
+            (e) => e.internalId !== selectedAccount.internalId,
+          );
+          dispatch(setSelectedExchange(newSelectedExchange));
+        }
         setPathParams({
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
           currentPath: previousPath,
