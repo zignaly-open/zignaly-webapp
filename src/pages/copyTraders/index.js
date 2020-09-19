@@ -108,7 +108,7 @@ const CopyTraders = (props) => {
         />
         <CopyTraderRoute
           component={News}
-          path={withPrefix("/copyTraders/:providerId/news")}
+          path={withPrefix("/copyTraders/:providerId/feed")}
           providerId={providerId}
         />
       </Router>
