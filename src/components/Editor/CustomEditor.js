@@ -112,10 +112,13 @@ const Editor = ({ content, onChange }) => {
         types: ["jpeg", "png", "gif", "bmp", "webp", "tiff", "svg"],
       },
     },
-    indentBlock: {
-      offset: 1,
-      unit: "em",
-    },
+    // mediaEmbed: {
+    //   previewsInData: true,
+    // },
+    // indentBlock: {
+    //   offset: 1,
+    //   unit: "em",
+    // },
     // table: {
     //   contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
     // },
