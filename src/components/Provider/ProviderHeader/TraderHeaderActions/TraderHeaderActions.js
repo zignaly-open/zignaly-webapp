@@ -14,7 +14,7 @@ import FollowProviderButton from "../FollowProviderButton";
  *
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderHeaderActions = () => {
+const TraderHeaderActions = () => {
   const storeViews = useStoreViewsSelector();
 
   return (
@@ -58,4 +58,4 @@ const ProviderHeaderActions = () => {
   );
 };
 
-export default ProviderHeaderActions;
+export default TraderHeaderActions;

@@ -6,7 +6,6 @@ import { createProviderRoutes, createTraderRoutes } from "../../../utils/routesM
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
-import ProviderHeaderActions from "./ProviderHeaderActions";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
