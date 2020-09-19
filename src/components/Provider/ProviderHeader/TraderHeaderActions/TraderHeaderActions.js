@@ -1,7 +1,6 @@
 import React from "react";
 import "./TraderHeaderActions.scss";
 import { Box, Typography, Hidden } from "@material-ui/core";
-import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
@@ -10,13 +9,17 @@ import ProviderLogo from "../ProviderLogo";
 import FollowProviderButton from "../FollowProviderButton";
 
 /**
- * Provides the navigation bar for the dashboard.
+ * @typedef {Object} DefaultProps
+ * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ */
+
+/**
+ * Trader Header Actions compoennt for CT profile.
  *
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TraderHeaderActions = () => {
-  const storeViews = useStoreViewsSelector();
-
+const TraderHeaderActions = ({ provider }) => {
   return (
     <Box
       alignItems="center"
@@ -33,26 +36,18 @@ const TraderHeaderActions = () => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <ProviderLogo
-          size="40px"
-          title={storeViews.provider.name}
-          url={storeViews.provider.logoUrl}
-        />
-        <Typography variant="h1">{storeViews.provider.name}</Typography>
-        {storeViews.provider.isAdmin && storeViews.provider.isClone && (
-          <CloneEdit provider={storeViews.provider} />
-        )}
+        <ProviderLogo size="40px" title={provider.name} url={provider.logoUrl} />
+        <Typography variant="h1">{provider.name}</Typography>
+        {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>
-      {storeViews.provider.isCopyTrading ? (
-        <CopyTraderButton provider={storeViews.provider} />
+      {provider.isCopyTrading ? (
+        <CopyTraderButton provider={provider} />
       ) : (
-        <FollowProviderButton provider={storeViews.provider} />
+        <FollowProviderButton provider={provider} />
       )}
       <Hidden xsDown>
-        {storeViews.provider.internalPaymentInfo && <TrialPeriod provider={storeViews.provider} />}
-        {storeViews.provider.internalPaymentInfo && (
-          <PaymentButton provider={storeViews.provider} />
-        )}
+        {provider.internalPaymentInfo && <TrialPeriod provider={provider} />}
+        {provider.internalPaymentInfo && <PaymentButton provider={provider} />}
       </Hidden>
     </Box>
   );

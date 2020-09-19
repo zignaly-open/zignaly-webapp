@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./TraderHeaderInfo.scss";
 import { Box, Typography, Hidden } from "@material-ui/core";
-import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import EditIcon from "../../../../images/ct/edit.svg";
@@ -13,12 +12,17 @@ import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
 
 /**
- * Provides the navigation bar for the dashboard.
+ * @typedef {Object} DefaultProps
+ * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ */
+
+/**
+ * Trader Header Info compoennt for CT profile.
  *
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TraderHeaderInfo = () => {
-  const { provider } = useStoreViewsSelector();
+const TraderHeaderInfo = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
 
   const handleCopyModalClose = () => {
