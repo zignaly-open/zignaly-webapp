@@ -47,7 +47,7 @@ const TraderHeaderActions = ({ provider }) => {
       )}
       <Hidden xsDown>
         {provider.internalPaymentInfo && <TrialPeriod provider={provider} />}
-        {provider.internalPaymentInfo && <PaymentButton provider={provider} />}
+        {!provider.disable && provider.internalPaymentInfo && <PaymentButton provider={provider} />}
       </Hidden>
     </Box>
   );
