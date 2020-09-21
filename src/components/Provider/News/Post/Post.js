@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Paper, Typography } from "@material-ui/core";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
+import CustomButton from "../../../CustomButton";
 import "./Post.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import { formatDate } from "../../../../utils/format";
 import DOMPurify from "dompurify";
+import tradeApi from "../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 
 /**
  * Parse html to embed medias
@@ -55,23 +60,59 @@ const Post = ({ post }) => {
     ADD_ATTR: ["url"],
   });
   const content = embedMedias(originalContent);
+  const [isApproving, setApproving] = useState(false);
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
+
+  const approvePost = () => {
+    setApproving(true);
+
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      postId: post.id,
+    };
+
+    tradeApi
+      .approvePost(payload)
+      .then(() => {
+        dispatch(showSuccessAlert("", "wall.post.approved"));
+        post.approved = true;
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setApproving(false);
+      });
+  };
 
   return (
     <Box className="post">
       <Paper className="postContent">
-        <Box alignItems="center" className="postHeader" display="flex">
-          <ProviderLogo
-            defaultImage={ProfileIcon}
-            size="40px"
-            title={post.author.userName}
-            url={post.author.imageUrl}
-          />
-          <Box className="metaBox">
-            <Typography className="username callout2">{post.author.userName}</Typography>
-            <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+        {!post.approved && (
+          <Box width={1} className="adminActions">
+            <CustomButton className="bgPurple" onClick={approvePost} loading={isApproving}>
+              <Typography className="bold" variant="body1">
+                Approve
+              </Typography>
+            </CustomButton>
           </Box>
-        </Box>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+        )}
+        <div className={post.approved ? "" : "disabled"}>
+          <Box alignItems="center" className="postHeader" display="flex">
+            <ProviderLogo
+              defaultImage={ProfileIcon}
+              size="40px"
+              title={post.author.userName}
+              url={post.author.imageUrl}
+            />
+            <Box className="metaBox">
+              <Typography className="username callout2">{post.author.userName}</Typography>
+              <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+            </Box>
+          </Box>
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+        </div>
       </Paper>
     </Box>
   );
