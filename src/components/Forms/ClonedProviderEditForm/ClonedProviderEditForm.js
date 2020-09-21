@@ -27,7 +27,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const { errors, handleSubmit, control } = useForm({mode: "all"});
+  const { errors, handleSubmit, control } = useForm({ mode: "all" });
   const dispatch = useDispatch();
 
   /**
@@ -112,7 +112,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             control={control}
             defaultValue={provider.name}
             name="name"
-            rules={{ required: true, maxLength: 50, pattern: /^([a-zA-Z0-9 ()$_-]+)$/ }}
+            rules={{
+              required: true,
+              maxLength: 50,
+              minLength: 5,
+              pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
+            }}
           />
           {errors.name && (
             <span className="errorText">

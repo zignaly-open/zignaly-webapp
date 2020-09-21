@@ -1009,7 +1009,7 @@ profile.photo: "CH-Profile Picture"
 profile.username: "CH-Username"
 profile.username.error: "CH-Username must be between 5 and 16 characters. (Allowed: Numbers, Letters, $,-,_)"
 profile.userid: "CH-User ID"
-profile.error.name: "CH-Name is reuired of max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
+profile.error.name: "CH-Name is reuired of min 5 and max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
 
 # MONTHS
 m.jan: "CH-JAN"
