@@ -4,7 +4,7 @@ import useQuoteAssets from "./useQuoteAssets";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useReadOnlyProviders from "./useReadOnlyProviders";
+import useHasBeenUsedProviders from "./useHasBeenUsedProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
@@ -50,12 +50,7 @@ const useDashboardAnalytics = () => {
   const allQuotes = Object.keys(quoteAssets);
   const [providerQuotes, setProviderQuotes] = useState([]);
 
-  let providerAssets = useReadOnlyProviders();
-  providerAssets = providerAssets.filter(
-    (item) =>
-      item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
-  );
-
+  let providerAssets = useHasBeenUsedProviders();
   let providers = providerAssets.map((item) => ({
     val: item.id,
     label: item.name,

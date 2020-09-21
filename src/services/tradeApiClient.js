@@ -42,6 +42,7 @@ import {
   cloneProviderResponseTransform,
   profileStatsResponseTransform,
   profileProviderStatsResponseTransform,
+  hasBeenUsedProvidersResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -507,7 +508,7 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProviderList";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return providersResponseTransform(responseData);
+    return hasBeenUsedProvidersResponseTransform(responseData);
   }
 
   /**
