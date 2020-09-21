@@ -108,6 +108,7 @@ const TraderCard = (props) => {
     }
   }
 
+  const positive = (isCopyTrading ? returns : newFollowers) >= 0;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -119,7 +120,7 @@ const TraderCard = (props) => {
     gradientColor2: darkStyle ? "#181e26" : "#e5f8ed",
   };
 
-  if (returns < 0) {
+  if (!positive) {
     colorClass = "red";
     colorsOptions = {
       ...colorsOptions,
@@ -248,7 +249,7 @@ const TraderCard = (props) => {
           </div>
           <div
             className={`actionsWrapper ${
-              dailyReturns.length ? (returns >= 0 ? "positive" : "negative") : ""
+              !isCopyTrading || dailyReturns.length ? (positive ? "positive" : "negative") : ""
             }`}
           >
             <div className="followers">

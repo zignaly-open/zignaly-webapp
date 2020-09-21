@@ -140,7 +140,7 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const filters = filtersData.filters;
 
-  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEW_FOLLOWERS_DESC";
+  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEWFOLLOWERS_DESC";
 
   // Sort
   const initSort = () => {
