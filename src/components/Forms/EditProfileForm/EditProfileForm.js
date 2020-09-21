@@ -29,7 +29,6 @@ import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 import userOptions from "../../../utils/userOptions.json";
-import CustomTooltip from "../../CustomTooltip";
 import { Help } from "@material-ui/icons";
 
 /**
@@ -371,9 +370,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     label={
                       <div className="optionLabel">
                         <FormattedMessage id={o.label} />
-                        <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
+                        <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
                           <Help />
-                        </CustomTooltip>
+                        </Tooltip>
                       </div>
                     }
                     name={o.id}
