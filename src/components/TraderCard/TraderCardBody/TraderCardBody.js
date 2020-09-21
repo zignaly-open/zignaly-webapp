@@ -249,7 +249,7 @@ const TraderCard = (props) => {
           </div>
           <div
             className={`actionsWrapper ${
-              dailyReturns.length ? (positive ? "positive" : "negative") : ""
+              !isCopyTrading || dailyReturns.length ? (positive ? "positive" : "negative") : ""
             }`}
           >
             <div className="followers">
