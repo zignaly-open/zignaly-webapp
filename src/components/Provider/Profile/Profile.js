@@ -106,18 +106,20 @@ const Profile = ({ provider }) => {
         <Box bgcolor="grid.content" className="whoWeAreBox">
           <WhoWeAre provider={provider} />
         </Box>
-        <Box bgcolor="grid.content" className="performanceBox">
-          <Performance provider={provider} />
-        </Box>
-      </Box>
-      {!provider.isCopyTrading &&
-        !provider.disable &&
-        provider.exchangeInternalId === storeSettings.selectedExchange.internalId &&
-        checkAvailableOptions() && (
-          <Box bgcolor="grid.content" className="optionsBox">
-            <Options provider={provider} />
+        {provider.isCopyTrading && (
+          <Box bgcolor="grid.content" className="performanceBox">
+            <Performance provider={provider} />
           </Box>
         )}
+        {!provider.isCopyTrading &&
+          !provider.disable &&
+          provider.exchangeInternalId === storeSettings.selectedExchange.internalId &&
+          checkAvailableOptions() && (
+            <Box bgcolor="grid.content" className="optionsBox">
+              <Options provider={provider} />
+            </Box>
+          )}
+      </Box>
       {!provider.disable && !provider.isClone && provider.options.allowClones && (
         <Box className="cloneBox">
           <CloneProviderButton provider={provider} />

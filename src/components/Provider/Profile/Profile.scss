@@ -34,14 +34,12 @@
       min-height: 230px;
       width: 100%;
     }
-  }
 
-  .optionsBox {
-    box-shadow: 0 2px 8px 0 $boxShadowColor;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    min-height: 400px;
-    width: 100%;
+    .optionsBox {
+      box-shadow: 0 2px 8px 0 $boxShadowColor;
+      min-height: 400px;
+      width: 100%;
+    }
   }
 
   .cloneBox {
@@ -82,12 +80,11 @@
       .performanceBox {
         min-height: 50px;
       }
-    }
 
-    .optionsBox {
-      margin: 0 0 20px;
-      min-height: 50px;
-      width: 100%;
+      .optionsBox {
+        min-height: 50px;
+        width: 100%;
+      }
     }
 
     .cloneBox {
