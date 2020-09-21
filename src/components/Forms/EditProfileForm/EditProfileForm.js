@@ -364,7 +364,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 {userOptions.map((o) => (
                   <FormControlLabel
                     control={<Checkbox />}
-                    defaultChecked={false}
+                    // @ts-ignore
+                    defaultChecked={provider[o.id]}
                     inputRef={register}
                     key={o.id}
                     label={
