@@ -18,6 +18,7 @@ import CustomSelect from "../../../CustomSelect";
 import CustomTooltip from "../../../CustomTooltip";
 import "./ProviderUserOptions.scss";
 import { validateURL } from "../../../../utils/validators";
+import userOptions from "../../../../utils/userOptions.json";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -36,84 +37,6 @@ const checkedIcon = <CheckBox fontSize="small" />;
 const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
   const { control, register, errors, getValues } = useFormContext();
   const intl = useIntl();
-
-  const userOptions = [
-    {
-      id: "stopLossFromSignal",
-      label: "signalp.settings.stoploss",
-      tooltip: "signalp.useroption.stopLossFromSignal.help",
-    },
-    {
-      id: "takeProfitsFromSignal",
-      label: "signalp.settings.takeprofit",
-      tooltip: "signalp.useroption.takeProfitsFromSignal.help",
-    },
-    {
-      id: "acceptUpdateSignal",
-      label: "signalp.useroption.acceptUpdateSignal",
-      tooltip: "signalp.useroption.acceptUpdateSignal.help",
-    },
-    {
-      id: "enableSellSignals",
-      label: "signalp.useroption.enableSellSignals",
-      tooltip: "signalp.useroption.enableSellSignals.help",
-    },
-    {
-      id: "enablePanicSellSignals",
-      label: "signalp.useroption.enablePanicSellSignals",
-      tooltip: "signalp.useroption.enablePanicSellSignals.help",
-    },
-    {
-      id: "allowSendingBuyOrdersAsMarket",
-      label: "signalp.useroption.allowSendingBuyOrdersAsMarket",
-      tooltip: "signalp.useroption.allowSendingBuyOrdersAsMarket.help",
-    },
-    {
-      id: "reBuyFromProvider",
-      label: "signalp.useroption.reBuyFromProvider",
-      tooltip: "signalp.useroption.reBuyFromProvider.help",
-    },
-    {
-      id: "reUseSignalIdIfClosed",
-      label: "signalp.useroption.reUseSignalIdIfClosed",
-      tooltip: "signalp.useroption.reUseSignalIdIfClosed.help",
-    },
-    {
-      id: "limitPriceFromSignal",
-      label: "signalp.useroption.limitPriceFromSignal",
-      tooltip: "signalp.useroption.limitPriceFromSignal.help",
-    },
-    {
-      id: "terms",
-      label: "signalp.useroption.terms",
-      tooltip: "signalp.useroption.terms.help",
-    },
-    {
-      id: "riskFilter",
-      label: "signalp.useroption.riskFilter",
-      tooltip: "signalp.useroption.riskFilter.help",
-    },
-    {
-      id: "successRateFilter",
-      label: "signalp.useroption.successRateFilter",
-      tooltip: "signalp.useroption.successRateFilter.help",
-    },
-    {
-      id: "reBuysFromSignal",
-      label: "signalp.useroption.reBuysFromSignal",
-      tooltip: "signalp.useroption.reBuysFromSignal.help",
-    },
-    {
-      id: "useLeverageFromSignal",
-      label: "terminal.leverage",
-      tooltip: "signalp.useroption.useLeverageFromSignal.help",
-    },
-    {
-      id: "allowClones",
-      label: "signalp.useroption.allowClones",
-      tooltip: "signalp.useroption.allowClones.help",
-    },
-  ];
 
   /**
    * @param {string} ex exchange

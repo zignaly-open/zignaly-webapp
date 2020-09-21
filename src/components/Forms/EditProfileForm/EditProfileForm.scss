@@ -83,7 +83,8 @@
   .aboutBox,
   .whoWeAreBox,
   .strategyBox,
-  .profileBox {
+  .profileBox,
+  .optionsBox {
     padding: 20px;
     width: 100%;
   }
@@ -101,7 +102,7 @@
   }
 
   .strategyBox {
-    min-height: 400px;
+    min-height: 250px;
 
     .editor {
       min-height: inherit;
@@ -124,6 +125,21 @@
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+
+  .optionsBox {
+    .optionLabel {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+
+      svg {
+        color: $darkGrey;
+        height: 18px;
+        margin-left: 5px;
+        width: 18px;
       }
     }
   }
@@ -164,7 +180,8 @@
       .aboutBox,
       .whoWeAreBox,
       .strategyBox,
-      .profileBox {
+      .profileBox,
+      .optionsBox {
         padding: 20px 10px;
         width: 100%;
       }

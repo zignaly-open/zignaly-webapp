@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Switch, Tooltip } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  Switch,
+  Tooltip,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -20,6 +28,9 @@ import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
+import userOptions from "../../../utils/userOptions.json";
+import CustomTooltip from "../../CustomTooltip";
+import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -346,6 +357,30 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 value={strategy}
               />
             </Box>
+            {!provider.isCopyTrading && (
+              <Box className="optionsBox" display="flex" flexDirection="column">
+                <Typography variant="h3">
+                  <FormattedMessage id="signalp.useroption.title" />
+                </Typography>
+                {userOptions.map((o) => (
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    defaultChecked={false}
+                    inputRef={register}
+                    key={o.id}
+                    label={
+                      <div className="optionLabel">
+                        <FormattedMessage id={o.label} />
+                        <CustomTooltip title={<FormattedMessage id={o.tooltip} />}>
+                          <Help />
+                        </CustomTooltip>
+                      </div>
+                    }
+                    name={o.id}
+                  />
+                ))}
+              </Box>
+            )}
           </Box>
 
           <Box className="rightColumn">
