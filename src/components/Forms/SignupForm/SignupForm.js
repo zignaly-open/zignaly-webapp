@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
+import useRedirectUponSessionValid from "../../../hooks/useRedirectUponSessionValid";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,8 @@ const SignupForm = () => {
   const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
+  useRedirectUponSessionValid();
+
   if (!hasMounted) {
     // Don't render form statically
     return null;
@@ -90,10 +93,14 @@ const SignupForm = () => {
             variant="outlined"
           />
           {errors.firstName && errors.firstName.type === "required" && (
-            <span className="errorText">Name is required!</span>
+            <span className="errorText">
+              <FormattedMessage id="form.error.firstname" />
+            </span>
           )}
           {errors.firstName && errors.firstName.type === "minLength" && (
-            <span className="errorText">Name should be greater than 3 letters!</span>
+            <span className="errorText">
+              <FormattedMessage id="form.error.firstname.length" />
+            </span>
           )}
         </Box>
         <Box
@@ -119,10 +126,14 @@ const SignupForm = () => {
             variant="outlined"
           />
           {errors.email && errors.email.type === "required" && (
-            <span className="errorText">Email is required!</span>
+            <span className="errorText">
+              <FormattedMessage id="security.email.error.empty" />
+            </span>
           )}
           {errors.email && errors.email.type === "pattern" && (
-            <span className="errorText">Email should be valid!</span>
+            <span className="errorText">
+              <FormattedMessage id="security.email.error.invalid" />
+            </span>
           )}
         </Box>
 
@@ -144,28 +155,31 @@ const SignupForm = () => {
               flexWrap="wrap"
               justifyContent="start"
             >
-              <span className="text">
-                <FormattedMessage id="signup.agree" />
-              </span>
-              <a
-                className="link"
-                href="https://zignaly.com/legal/terms"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <FormattedMessage id="signup.terms" />
-              </a>
-              <span className="text">
-                <FormattedMessage id="signup.and" />
-              </span>
-              <a
-                className="link"
-                href="https://zignaly.com/legal/privacy"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <FormattedMessage id="signup.privacy" />
-              </a>
+              <FormattedMessage
+                id="signup.agreement"
+                values={{
+                  terms: (
+                    <a
+                      className="link"
+                      href="https://zignaly.com/legal/terms"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <FormattedMessage id="signup.terms" />
+                    </a>
+                  ),
+                  privacy: (
+                    <a
+                      className="link"
+                      href="https://zignaly.com/legal/privacy"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <FormattedMessage id="signup.privacy" />
+                    </a>
+                  ),
+                }}
+              />
             </Box>
           </Box>
         </Box>
