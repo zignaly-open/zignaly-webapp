@@ -14,6 +14,7 @@ import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
+import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -269,7 +270,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (expanded) {
       initValuesFromPositionEntity();
       chainedPriceUpdates();

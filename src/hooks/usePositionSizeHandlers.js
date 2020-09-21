@@ -128,7 +128,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         trigger("units");
       }
     });
-  }, [errors, currentPrice]);
+  }, [errors, currentPrice, leverage, getValues]);
 
   const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;
