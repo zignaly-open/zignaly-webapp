@@ -84,11 +84,6 @@ const StrategyPanel = (props) => {
     });
   }
 
-  const onLeverageClose = () => {
-    setModalVisible(false);
-    simulateInputChangeEvent("positionSize");
-  };
-
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -298,7 +293,9 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={125}
                 min={1}
-                onClose={onLeverageClose}
+                onClose={() => {
+                  setModalVisible(false);
+                }}
                 setValue={setValue}
               />
             </Modal>
