@@ -1012,6 +1012,35 @@ function providerItemTransform(providerItem) {
 }
 
 /**
+ * Transform providers response to typed object.
+ *
+ * @export
+ * @param {*} response Trade API signal providers list response.
+ * @returns {ProvidersCollection} Signal providers entities collection.
+ */
+export function hasBeenUsedProvidersResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of providers.");
+  }
+
+  return response.map((providerItem) => {
+    return hasBeenUsedProviderItemTransform(providerItem);
+  });
+}
+
+/**
+ * Transform API provider item to typed object.
+ *
+ * @param {Object.<string, any>} providerItem Trade API provider item.
+ * @returns {ProviderEntity} Provider entity.
+ */
+function hasBeenUsedProviderItemTransform(providerItem) {
+  const emptyProviderEntity = createEmptyProviderEntity();
+  // Override the empty entity with the values that came in from API.
+  return assign(emptyProviderEntity, providerItem);
+}
+
+/**
  * Create empty provider entity skeletion.
  *
  * @returns {ProviderEntity} Enpty provider entity.

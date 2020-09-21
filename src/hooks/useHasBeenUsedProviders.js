@@ -3,6 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -18,6 +19,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const storeSettings = useStoreSettingsSelector();
 
   const loadData = () => {
     if (shouldExecute) {
@@ -29,7 +31,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
       tradeApi
         .providersListGet(payload)
         .then((response) => {
-          setList(response);
+          filterProviders(response);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -37,7 +39,24 @@ const useReadOnlyProviders = (shouldExecute = true) => {
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, shouldExecute]);
+  /**
+   *
+   * @param {ProvidersCollection} response Providers Collection.
+   * @returns {Void} None.
+   */
+  const filterProviders = (response) => {
+    let providerAssets = response.filter(
+      (item) =>
+        item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
+    );
+    setList(providerAssets);
+  };
+
+  useEffect(loadData, [
+    storeSession.tradeApi.accessToken,
+    storeSettings.selectedExchange.internalId,
+    shouldExecute,
+  ]);
 
   return list;
 };
