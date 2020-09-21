@@ -169,11 +169,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     }
   };
 
-  const chainedPriceUpdates = () => {
+  // Trigger position size recalculation on leverage/entryType change
+  useEffect(() => {
     simulateInputChangeEvent("realInvestment");
-  };
-
-  useEffect(chainedPriceUpdates, [entryType, leverage]);
+  }, [entryType, leverage]);
 
   return {
     positionSizeChange,
