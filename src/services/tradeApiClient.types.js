@@ -3844,9 +3844,11 @@ export function profileProviderStatsResponseTransform(response) {
   }
 
   let transformedResponse = assign(createEmptyProfileProviderStatsEntity(), response);
-  transformedResponse.signalsInfo = transformedResponse.signalsInfo.map((item) => {
-    return createEmptyProfileProviderSignalsEntity(item);
-  });
+  transformedResponse.signalsInfo = transformedResponse.signalsInfo
+    ? transformedResponse.signalsInfo.map((item) => {
+        return createEmptyProfileProviderSignalsEntity(item);
+      })
+    : [];
   return transformedResponse;
 }
 
