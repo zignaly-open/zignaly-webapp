@@ -75,12 +75,17 @@
     }
   }
 
+  .leftColumn,
+  .rightColumn {
+    width: 50%;
+  }
+
   .aboutBox,
   .whoWeAreBox,
   .strategyBox,
   .profileBox {
     padding: 20px;
-    width: 50%;
+    width: 100%;
   }
 
   .aboutBox {
