@@ -26,12 +26,17 @@ const withPageContext = (Component) => {
    */
   const WrapperComponent = (props) => {
     const storeSettings = useStoreSettingsSelector();
+    // Merged english messages with selected by user locale messages
+    // In this case all english data would be overridden to user selected locale, but untranslated
+    // (missed in object keys) just stay in english
+    const mergedMessages = Object.assign(
+      {},
+      translations.en,
+      translations[storeSettings.languageCode],
+    );
 
     return (
-      <IntlProvider
-        locale={storeSettings.languageCode}
-        messages={translations[storeSettings.languageCode]}
-      >
+      <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
         <Component {...props} />
       </IntlProvider>
     );

@@ -291,7 +291,20 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  useEffect(initValuesFromPositionEntity, []);
+  useEffect(() => {
+    if (expanded) {
+      initValuesFromPositionEntity();
+      chainedPriceUpdates();
+    } else {
+      cardinalityRange.forEach((targetId) => {
+        clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
+        clearErrors(composeTargetPropertyName("exitUnits", targetId));
+        clearErrors(composeTargetPropertyName("targetPrice", targetId));
+        clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
+        setValue(composeTargetPropertyName("targetPrice", targetId), "");
+      });
+    }
+  }, [expanded]);
 
   const chainedPriceUpdates = () => {
     if (!expanded) return;
@@ -312,7 +325,7 @@ const TakeProfitPanel = (props) => {
     });
   };
 
-  useEffect(chainedPriceUpdates, [expanded, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -325,20 +338,6 @@ const TakeProfitPanel = (props) => {
 
   const entrySize = getEntrySize();
   useEffect(chainedUnitsUpdates, [expanded, strategyUnits, entrySize]);
-
-  const emptyFieldsWhenCollapsed = () => {
-    if (!expanded) {
-      cardinalityRange.forEach((targetId) => {
-        clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
-        clearErrors(composeTargetPropertyName("exitUnits", targetId));
-        clearErrors(composeTargetPropertyName("targetPrice", targetId));
-        clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
-        setValue(composeTargetPropertyName("targetPrice", targetId), "");
-      });
-    }
-  };
-
-  useEffect(emptyFieldsWhenCollapsed, [expanded]);
 
   /**
    * Compose dynamic target property errors.

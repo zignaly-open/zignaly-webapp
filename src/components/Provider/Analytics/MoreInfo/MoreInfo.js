@@ -53,19 +53,21 @@ const MoreInfo = ({ provider }) => {
           <Typography variant="h3">{provider.avgTradesPerWeek.toFixed(2)}</Typography>
         </Box>
 
-        <Box
-          alignItems="center"
-          className="dataBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
-          <img alt="zignaly" className="icon" src={TimeIcon} />
-          <Typography className="tagline" variant="h3">
-            <FormattedMessage id="srv.avgholdingtime" />
-          </Typography>
-          <Typography variant="h3">{formatDuration(provider.avgHoldingTime)}</Typography>
-        </Box>
+        {provider.isCopyTrading && (
+          <Box
+            alignItems="center"
+            className="dataBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <img alt="zignaly" className="icon" src={TimeIcon} />
+            <Typography className="tagline" variant="h3">
+              <FormattedMessage id="srv.avgholdingtime" />
+            </Typography>
+            <Typography variant="h3">{formatDuration(provider.avgHoldingTime)}</Typography>
+          </Box>
+        )}
 
         <Box
           alignItems="center"
@@ -86,21 +88,23 @@ const MoreInfo = ({ provider }) => {
           </Typography>
         </Box>
 
-        <Box
-          alignItems="center"
-          className="dataBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
-          <img alt="zignaly" className="icon" src={ProfitIcon} />
-          <Typography className="tagline" variant="h3">
-            <FormattedMessage id="srv.profitableweeks" />
-          </Typography>
-          <Typography variant="h3">
-            {provider.profitableWeeks ? `${provider.profitableWeeks.toFixed(2)}%` : `${0}%`}
-          </Typography>
-        </Box>
+        {provider.isCopyTrading && (
+          <Box
+            alignItems="center"
+            className="dataBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <img alt="zignaly" className="icon" src={ProfitIcon} />
+            <Typography className="tagline" variant="h3">
+              <FormattedMessage id="srv.profitableweeks" />
+            </Typography>
+            <Typography variant="h3">
+              {provider.profitableWeeks ? `${provider.profitableWeeks.toFixed(2)}%` : `${0}%`}
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Box>
   );

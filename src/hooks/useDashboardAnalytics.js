@@ -4,7 +4,7 @@ import useQuoteAssets from "./useQuoteAssets";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useReadOnlyProviders from "./useReadOnlyProviders";
+import useHasBeenUsedProviders from "./useHasBeenUsedProviders";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
@@ -44,12 +44,13 @@ const useDashboardAnalytics = () => {
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
 
-  let providerAssets = useReadOnlyProviders();
-  providerAssets = providerAssets.filter(
-    (item) =>
-      item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
-  );
+  const timeFrames = useDashboardAnalyticsTimeframeOptions();
 
+  const quoteAssets = useQuoteAssets();
+  const allQuotes = Object.keys(quoteAssets);
+  const [providerQuotes, setProviderQuotes] = useState([]);
+
+  let providerAssets = useHasBeenUsedProviders();
   let providers = providerAssets.map((item) => ({
     val: item.id,
     label: item.name,
@@ -64,12 +65,6 @@ const useDashboardAnalytics = () => {
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
 
-  const timeFrames = useDashboardAnalyticsTimeframeOptions();
-
-  const quoteAssets = useQuoteAssets();
-  const allQuotes = Object.keys(quoteAssets);
-  const [quotes, setQuotes] = useState([]);
-
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
   const defaultFilters = {
@@ -80,7 +75,7 @@ const useDashboardAnalytics = () => {
 
   const optionsFilters = {
     timeFrame: timeFrames,
-    quote: quotes,
+    quote: allQuotes,
     provider: providers,
   };
 
@@ -92,20 +87,17 @@ const useDashboardAnalytics = () => {
   // @ts-ignore
   const filters = res.filters;
 
-  const adjustQuotes = () => {
+  const adjustProviderQuotes = () => {
     if (filters.provider.val !== "1" && filters.provider.val !== "all") {
       const provider = providerAssets.find((item) => item.id === filters.provider.val);
       if (provider && provider.quote) {
-        setQuotes([provider.quote]);
-      } else {
-        setQuotes(allQuotes);
+        setProviderQuotes([provider.quote]);
+        setFilters({ quote: provider.quote });
       }
-    } else {
-      setQuotes(allQuotes);
     }
   };
 
-  useEffect(adjustQuotes, [filters.provider]);
+  useEffect(adjustProviderQuotes, [filters.provider]);
 
   const loadDashboardStats = () => {
     setLoading(true);
@@ -139,7 +131,9 @@ const useDashboardAnalytics = () => {
 
   // Load stats at init and on filters change
   useEffect(loadDashboardStats, [
-    filters,
+    filters.provider.val,
+    filters.quote,
+    filters.timeFrame,
     storeSettings.selectedExchange.internalId,
     storeSession.tradeApi.accessToken,
   ]);
@@ -147,7 +141,7 @@ const useDashboardAnalytics = () => {
   return {
     stats,
     timeFrames,
-    quotes,
+    quotes: providerQuotes.length ? providerQuotes : allQuotes,
     providers,
     clearFilters,
     loading,

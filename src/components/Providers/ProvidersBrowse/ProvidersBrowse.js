@@ -81,23 +81,26 @@ const ProvidersBrowse = ({
           onClose={toggleSort}
           open={showSort}
           sort={sort}
+          isCopyTrading={copyTradersOnly}
         />
       )}
-      <TimeFrameSelectRow
-        isCopyTrading={copyTradersOnly}
-        onChange={setTimeFrame}
-        title={`${providers ? providers.length : 0} ${intl.formatMessage({
-          id: connectedOnly
-            ? copyTradersOnly
-              ? "dashboard.traders.copying"
-              : "dashboard.providers.following"
-            : copyTradersOnly
-            ? "copyt.traders"
-            : "menu.signalproviders",
-        })}`}
-        value={timeFrame}
-      />
-      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
+      {copyTradersOnly && (
+        <TimeFrameSelectRow
+          isCopyTrading={copyTradersOnly}
+          onChange={setTimeFrame}
+          title={`${providers ? providers.length : 0} ${intl.formatMessage({
+            id: connectedOnly
+              ? copyTradersOnly
+                ? "dashboard.traders.copying"
+                : "dashboard.providers.following"
+              : copyTradersOnly
+              ? "copyt.traders"
+              : "menu.signalproviders",
+          })}`}
+          value={timeFrame}
+        />
+      )}
+      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={7} />
     </Box>
   );
 };

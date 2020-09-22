@@ -17,6 +17,18 @@
     }
   }
 
+  .providerStatsBox {
+    box-shadow: 0 2px 8px 0 $boxShadowColor;
+    margin-bottom: 30px;
+    min-height: 150px;
+    width: 100%;
+
+    .graphBox {
+      min-height: 400px;
+      width: 100%;
+    }
+  }
+
   .copiersBox {
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     margin-bottom: 30px;

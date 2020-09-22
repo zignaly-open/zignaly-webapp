@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { compose } from "recompose";
 import { useIntl } from "react-intl";
 import { Helmet } from "react-helmet";
 import "./analytics.scss";
@@ -31,4 +30,4 @@ const DashboardAnalytics = () => {
   );
 };
 
-export default compose(withDashboardLayout)(DashboardAnalytics);
+export default withDashboardLayout(DashboardAnalytics);

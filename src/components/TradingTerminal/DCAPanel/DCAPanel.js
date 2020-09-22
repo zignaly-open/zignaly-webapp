@@ -14,6 +14,7 @@ import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
+import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -213,7 +214,7 @@ const DCAPanel = (props) => {
    * @param {string} targetPricePercentageRaw targetPricePercentage value
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  const validateTargetDCALimit = (targetPricePercentageRaw) => {
+  const validateDCAPriceLimit = (targetPricePercentageRaw) => {
     const price = getEntryPrice();
     const targetPricePercentage = parseFloat(targetPricePercentageRaw);
     const targetPrice = calculateDcaPrice(price, targetPricePercentage);
@@ -221,20 +222,16 @@ const DCAPanel = (props) => {
   };
 
   /**
-   * Validate DCA price
+   * Validate DCA Units Cost limits
    * @param {string} targetId targetId
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  const validatePrice = (targetId) => {
+  const validateUnitCostLimits = (targetId) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
     if (positionSize > 0) {
-      return validateCostLimits(
-        rebuyPositionSize,
-        composeTargetPropertyName("rebuyPercentage", targetId),
-        "terminal.dca.limit",
-      );
+      return validateCostLimits(rebuyPositionSize, "terminal.dca.limit");
     }
 
     return true;
@@ -273,8 +270,14 @@ const DCAPanel = (props) => {
     }
   };
 
+  useDeepCompareEffect(() => {
+    if (expanded) {
+      initValuesFromPositionEntity();
+      chainedPriceUpdates();
+    }
+  }, [expanded, rebuyTargets]);
+
   const chainedPriceUpdates = () => {
-    initValuesFromPositionEntity();
     if (expanded) {
       cardinalityRange.forEach((targetId) => {
         const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
@@ -300,7 +303,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [expanded, cardinality, positionEntity, entryType, strategyPrice]);
+  useEffect(chainedPriceUpdates, [cardinality, entryType, strategyPrice]);
 
   // Automatically expand/collpase panel depending on dca orders amount.
   const autoExpandCollapse = () => {
@@ -348,7 +351,7 @@ const DCAPanel = (props) => {
     const index = parseInt(targetId);
     const showRemove =
       !fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] &&
-      index >= 1000;
+      targetId !== cardinalityRange[cardinalityRange.length - 1];
     return (
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
@@ -371,8 +374,7 @@ const DCAPanel = (props) => {
                       validate: {
                         percentage: (value) =>
                           lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
-                        limit: validateTargetDCALimit,
-                        cost: () => validatePrice(targetId),
+                        limit: validateDCAPriceLimit,
                       },
                     },
               )}
@@ -395,6 +397,7 @@ const DCAPanel = (props) => {
                       id: "terminal.dca.valid.unitspercentage",
                     }),
                   limit: () => validateUnits(targetId),
+                  cost: () => validateUnitCostLimits(targetId),
                 },
               })}
               name={composeTargetPropertyName("rebuyPercentage", targetId)}
@@ -408,7 +411,7 @@ const DCAPanel = (props) => {
             <Button
               className="removeTarget"
               data-target-id={index}
-              onClick={handleDcaIncreaseRemove}
+              onClick={index >= 1000 ? handleDcaIncreaseRemove : handleTargetRemove}
             >
               <RemoveCircle />
               <FormattedMessage id="terminal.target.remove" />
@@ -454,6 +457,11 @@ const DCAPanel = (props) => {
               </Button>
             )}
           </Box>
+          {activeDcaIncreaseIndexes.length ? (
+            <Typography className="callout1 increaseDCATitle">
+              <FormattedMessage id="terminal.dca.increase" />
+            </Typography>
+          ) : null}
           {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}

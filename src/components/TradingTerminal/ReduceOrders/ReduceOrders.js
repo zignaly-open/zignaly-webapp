@@ -227,9 +227,9 @@ const ReduceOrders = (props) => {
                 className="customCheckbox"
                 control={
                   <Controller
-                    control={control}
                     defaultValue={true}
-                    name="removeReduceRecurringPersistent"
+                    control={control}
+                    name="reduceRecurringPersistent"
                     render={({ onChange, value }) => (
                       <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
                     )}

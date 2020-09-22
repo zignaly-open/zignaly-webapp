@@ -6,7 +6,6 @@ import { createProviderRoutes, createTraderRoutes } from "../../../utils/routesM
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
-import ProviderHeaderActions from "./ProviderHeaderActions";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
@@ -15,18 +14,18 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const ProviderHeader = () => {
-  const storeViews = useStoreViewsSelector();
+  const { provider } = useStoreViewsSelector();
   const storeSettings = useStoreSettingsSelector();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    const data = storeViews.provider.isCopyTrading
-      ? createTraderRoutes(providerId, storeViews.provider)
-      : createProviderRoutes(providerId, storeViews.provider, storeSettings.selectedExchange);
+    const data = provider.isCopyTrading
+      ? createTraderRoutes(providerId, provider)
+      : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
     setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeViews.provider.id, storeSettings.selectedExchange.internalId]);
+  }, [provider.id, storeSettings.selectedExchange.internalId]);
 
   const checkAccess = () => {
     // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
@@ -41,8 +40,8 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      <TraderHeaderActions />
-      <TraderHeaderInfo />
+      <TraderHeaderActions provider={provider} />
+      <TraderHeaderInfo provider={provider} />
       <SubNavHeader links={links} />
     </Box>
   );

@@ -4,6 +4,7 @@ import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
+import ConditionalWrapper from "../../ConditionalWrapper";
 import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
@@ -27,18 +28,6 @@ import { ConfirmDialog } from "../../Dialogs";
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  */
-
-/**
- * Format tooltip content.
- * @param {ChartTooltipItem} tooltipItem Tooltip object.
- * @returns {React.ReactNode} Tooltip content.
- */
-const tooltipFormat = (tooltipItem) => (
-  <div className="traderCardTooltip">
-    <div>{formatFloat2Dec(tooltipItem.yLabel) + "%"}</div>
-    <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("DD/MM/YYYY")}</div>
-  </div>
-);
 
 /**
  * @typedef {Object} TraderCardBodyPropTypes
@@ -68,7 +57,24 @@ const TraderCard = (props) => {
     quote,
     closedPositions,
     returns,
+    aggregateFollowers = [],
+    newFollowers,
   } = provider;
+
+  /**
+   * Format tooltip content.
+   * @param {ChartTooltipItem} tooltipItem Tooltip object.
+   * @returns {React.ReactNode} Tooltip content.
+   */
+  const tooltipFormat = (tooltipItem) => (
+    <div className="traderCardTooltip">
+      <div>
+        {formatFloat2Dec(tooltipItem.yLabel)}{" "}
+        {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+      </div>
+      <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
+    </div>
+  );
 
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -81,13 +87,28 @@ const TraderCard = (props) => {
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-  dailyReturns.reduce((acc, item) => {
-    acc += item.returns;
-    chartData.values.push(acc);
-    chartData.labels.push(item.name);
-    return acc;
-  }, 0);
+  if (isCopyTrading) {
+    dailyReturns.reduce((acc, item) => {
+      acc += item.returns;
+      chartData.values.push(acc);
+      chartData.labels.push(item.name);
+      return acc;
+    }, 0);
+  } else {
+    let currentFollowers = followers;
+    // Find followers data for the past 7 days
+    for (let i = 0; i < 7; i++) {
+      const date = moment().subtract(i, "d").format("YYYY-MM-DD");
+      const followerData = aggregateFollowers.find((f) => f.date === date);
+      if (followerData) {
+        currentFollowers = followerData.totalFollowers;
+      }
+      chartData.values.unshift(currentFollowers);
+      chartData.labels.unshift(date);
+    }
+  }
 
+  const positive = (isCopyTrading ? returns : newFollowers) >= 0;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -99,7 +120,7 @@ const TraderCard = (props) => {
     gradientColor2: darkStyle ? "#181e26" : "#e5f8ed",
   };
 
-  if (returns < 0) {
+  if (!positive) {
     colorClass = "red";
     colorsOptions = {
       ...colorsOptions,
@@ -170,25 +191,32 @@ const TraderCard = (props) => {
       />
       <div className="traderCardBody">
         <div className="returnsBox">
-          <CustomToolip
-            title={
-              <FormattedMessage
-                id="srv.closedpos.tooltip"
-                values={{ count: closedPositions, days: timeFrame }}
-              />
-            }
+          <ConditionalWrapper
+            condition={isCopyTrading}
+            wrapper={(_children) => (
+              <CustomToolip
+                title={
+                  <FormattedMessage
+                    id="srv.closedpos.tooltip"
+                    values={{ count: closedPositions, days: timeFrame }}
+                  />
+                }
+              >
+                {_children}
+              </CustomToolip>
+            )}
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {formatFloat2Dec(returns)}%
+                {isCopyTrading ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
-                id: "sort.return",
+                id: isCopyTrading ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
-                id: "time." + timeFrame + "d",
+                id: "time." + (timeFrame || 7) + "d",
               })})`}</Typography>
             </div>
-          </CustomToolip>
+          </ConditionalWrapper>
 
           {isCopyTrading && (
             <CustomToolip
@@ -221,7 +249,7 @@ const TraderCard = (props) => {
           </div>
           <div
             className={`actionsWrapper ${
-              dailyReturns.length ? (returns >= 0 ? "positive" : "negative") : ""
+              !isCopyTrading || dailyReturns.length ? (positive ? "positive" : "negative") : ""
             }`}
           >
             <div className="followers">

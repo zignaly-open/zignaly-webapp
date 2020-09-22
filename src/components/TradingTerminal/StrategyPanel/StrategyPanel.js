@@ -292,7 +292,9 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={125}
                 min={1}
-                onClose={() => setModalVisible(false)}
+                onClose={() => {
+                  setModalVisible(false);
+                }}
                 setValue={setValue}
               />
             </Modal>

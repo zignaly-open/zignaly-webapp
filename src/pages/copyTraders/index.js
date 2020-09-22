@@ -6,6 +6,7 @@ import Management from "./management";
 import Analytics from "./providerAnalytics";
 import Users from "./users";
 import Positions from "./positions";
+import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider, unsetProvider } from "../../store/actions/views";
@@ -103,6 +104,11 @@ const CopyTraders = (props) => {
         <CopyTraderRoute
           component={Positions}
           path={withPrefix("/copyTraders/:providerId/positions")}
+          providerId={providerId}
+        />
+        <CopyTraderRoute
+          component={News}
+          path={withPrefix("/copyTraders/:providerId/feed")}
           providerId={providerId}
         />
       </Router>

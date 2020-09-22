@@ -14,6 +14,7 @@ import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
+import useRedirectUponSessionValid from "../../../hooks/useRedirectUponSessionValid";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -35,6 +36,7 @@ const LoginForm = () => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  useRedirectUponSessionValid();
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {

@@ -14,14 +14,16 @@
     .linkBox {
       margin: 0 12px;
 
-      .icon {
+      .providerLogo {
         font-size: 28px;
-        height: 32px;
-        widows: 32px;
       }
+    }
 
-      .iconOpen {
-        cursor: pointer;
+    .iconOpen {
+      cursor: pointer;
+
+      > div {
+        display: inline-block;
       }
     }
 
