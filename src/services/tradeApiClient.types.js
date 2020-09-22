@@ -891,6 +891,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} PostAuthor
+ * @property {string} userId
  * @property {string} userName
  * @property {string} imageUrl
  */
