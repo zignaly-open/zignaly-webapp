@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography } from "@material-ui/core";
+import { Box, Paper, Typography, MenuItem, Menu, IconButton } from "@material-ui/core";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import CustomButton from "../../../CustomButton";
 import "./Post.scss";
@@ -10,6 +10,11 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { FormattedMessage } from "react-intl";
+import { MoreHoriz } from "@material-ui/icons";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import Modal from "../../../Modal";
+import EditPost from "../EditPost";
 
 /**
  * Parse html to embed medias
@@ -61,8 +66,30 @@ const Post = ({ post }) => {
   });
   const content = embedMedias(originalContent);
   const [isApproving, setApproving] = useState(false);
+  const [editPostModal, setEditPostModal] = useState(false);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const userData = useStoreUserData();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  /**
+   * Handle action element click event.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @returns {Void} None.
+   */
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    handleMenuClose();
+    setEditPostModal(true);
+  };
 
   const approvePost = () => {
     setApproving(true);
@@ -88,6 +115,14 @@ const Post = ({ post }) => {
 
   return (
     <Box className="post">
+      <Modal
+        onClose={() => setEditPostModal(false)}
+        persist={false}
+        size="medium"
+        state={editPostModal}
+      >
+        <EditPost post={post} />
+      </Modal>
       <Paper className="postContent">
         {!post.approved && (
           <Box width={1} className="adminActions">
@@ -110,6 +145,30 @@ const Post = ({ post }) => {
               <Typography className="username callout2">{post.author.userName}</Typography>
               <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
             </Box>
+            {post.author.userId === userData.userId && (
+              <>
+                <IconButton
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleMenuOpen}
+                >
+                  <MoreHoriz />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  id="simple-menu"
+                  keepMounted
+                  onClose={handleMenuClose}
+                  open={Boolean(anchorEl)}
+                >
+                  {post.approved && post.author.userId === userData.userId && (
+                    <MenuItem onClick={handleEdit}>
+                      <FormattedMessage id="srv.edit" />
+                    </MenuItem>
+                  )}
+                </Menu>
+              </>
+            )}
           </Box>
           <div dangerouslySetInnerHTML={{ __html: content }} />
         </div>
