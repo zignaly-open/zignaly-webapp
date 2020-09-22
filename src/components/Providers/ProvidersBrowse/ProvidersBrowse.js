@@ -77,11 +77,11 @@ const ProvidersBrowse = ({
       {toggleSort && (
         <ProvidersSort
           clearFilters={clearSort}
+          isCopyTrading={copyTradersOnly}
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
           sort={sort}
-          isCopyTrading={copyTradersOnly}
         />
       )}
       {copyTradersOnly && (

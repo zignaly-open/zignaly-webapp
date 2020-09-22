@@ -124,26 +124,38 @@ const Post = ({ post }) => {
         <EditPost post={post} />
       </Modal>
       <Paper className="postContent">
-        {!post.approved && (
-          <Box width={1} className="adminActions">
-            <CustomButton className="bgPurple" onClick={approvePost} loading={isApproving}>
+        <Box className="adminActions" width={1}>
+          {!post.approved &&
+            (userData.isAdmin ? (
+              <CustomButton className="bgPurple" loading={isApproving} onClick={approvePost}>
+                <Typography className="bold" variant="body1">
+                  <FormattedMessage id="wall.approve" />
+                </Typography>
+              </CustomButton>
+            ) : (
               <Typography className="bold" variant="body1">
-                Approve
+                <FormattedMessage id="wall.approve.pending" />
               </Typography>
-            </CustomButton>
-          </Box>
-        )}
+            ))}
+        </Box>
         <div className={post.approved ? "" : "disabled"}>
-          <Box alignItems="center" className="postHeader" display="flex">
-            <ProviderLogo
-              defaultImage={ProfileIcon}
-              size="40px"
-              title={post.author.userName}
-              url={post.author.imageUrl}
-            />
-            <Box className="metaBox">
-              <Typography className="username callout2">{post.author.userName}</Typography>
-              <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+          <Box
+            alignItems="center"
+            className="postHeader"
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Box alignItems="center" display="flex">
+              <ProviderLogo
+                defaultImage={ProfileIcon}
+                size="40px"
+                title={post.author.userName}
+                url={post.author.imageUrl}
+              />
+              <Box className="metaBox">
+                <Typography className="username callout2">{post.author.userName}</Typography>
+                <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+              </Box>
             </Box>
             {post.author.userId === userData.userId && (
               <>
