@@ -1,4 +1,8 @@
 .wall {
   margin: 0 auto;
   max-width: 810px;
+
+  .customButton {
+    min-width: 185px;
+  }
 }
