@@ -20,10 +20,12 @@ import "./Posts.scss";
  */
 const Posts = ({ posts }) => {
   return (
-    <Box className="posts" display="flex" flexDirection="column" alignItems='center'>
+    <Box className="posts" display="flex" flexDirection="column" alignItems="center">
       {posts ? (
         posts
-          .sort((p1, p2) => p2.createdAt - p1.createdAt)
+          .sort((p1, p2) =>
+            p1.approved === p2.approved ? p2.createdAt - p1.createdAt : p1.approved ? 1 : -1,
+          )
           .map((post) => <Post key={post.id} post={post} />)
       ) : (
         <CircularProgress className="loader" />

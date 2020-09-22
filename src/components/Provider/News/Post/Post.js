@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography } from "@material-ui/core";
+import { Box, Paper, Typography, MenuItem, Menu, IconButton } from "@material-ui/core";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import CustomButton from "../../../CustomButton";
 import "./Post.scss";
@@ -10,6 +10,9 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { FormattedMessage } from "react-intl";
+import { MoreHoriz } from "@material-ui/icons";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 
 /**
  * Parse html to embed medias
@@ -63,6 +66,16 @@ const Post = ({ post }) => {
   const [isApproving, setApproving] = useState(false);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const userData = useStoreUserData();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const approvePost = () => {
     setApproving(true);
@@ -89,27 +102,62 @@ const Post = ({ post }) => {
   return (
     <Box className="post">
       <Paper className="postContent">
-        {!post.approved && (
-          <Box width={1} className="adminActions">
-            <CustomButton className="bgPurple" onClick={approvePost} loading={isApproving}>
+        <Box width={1} className="adminActions">
+          {!post.approved &&
+            (userData.isAdmin ? (
+              <CustomButton className="bgPurple" onClick={approvePost} loading={isApproving}>
+                <Typography className="bold" variant="body1">
+                  <FormattedMessage id="wall.approve" />
+                </Typography>
+              </CustomButton>
+            ) : (
               <Typography className="bold" variant="body1">
-                Approve
+                <FormattedMessage id="wall.approve.pending" />
               </Typography>
-            </CustomButton>
-          </Box>
-        )}
+            ))}
+        </Box>
         <div className={post.approved ? "" : "disabled"}>
-          <Box alignItems="center" className="postHeader" display="flex">
-            <ProviderLogo
-              defaultImage={ProfileIcon}
-              size="40px"
-              title={post.author.userName}
-              url={post.author.imageUrl}
-            />
-            <Box className="metaBox">
-              <Typography className="username callout2">{post.author.userName}</Typography>
-              <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+          <Box
+            className="postHeader"
+            display="flex"
+            justifyContent="space-between"
+            display="flex"
+            alignItems="center"
+          >
+            <Box display="flex" alignItems="center">
+              <ProviderLogo
+                defaultImage={ProfileIcon}
+                size="40px"
+                title={post.author.userName}
+                url={post.author.imageUrl}
+              />
+              <Box className="metaBox">
+                <Typography className="username callout2">{post.author.userName}</Typography>
+                <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+              </Box>
             </Box>
+            {post.author.userId === userData.userId && (
+              <>
+                <IconButton
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleMenuOpen}
+                >
+                  <MoreHoriz />
+                </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleMenuClose}>
+                    <FormattedMessage id="srv.edit" />
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
           <div dangerouslySetInnerHTML={{ __html: content }} />
         </div>
