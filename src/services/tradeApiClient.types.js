@@ -991,6 +991,7 @@ function providerItemTransform(providerItem) {
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
     floating: parseFloat(providerItem.floating) || 0,
+    aggregateFollowers: providerItem.aggregateFollowers ? providerItem.aggregateFollowers : [],
   });
 
   transformedResponse.dailyReturns.forEach((item) => {
