@@ -13,14 +13,20 @@ body {
   /* Hide scrollbar on Edge */
   -ms-overflow-style: none;
   /* Force thin scrollbar on Firefox */
-  scrollbar-width: thin;
+  scrollbar-width: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
 
 [data-os="win"] {
   /* Custom scrollbar for Windows (Chrome) */
   ::-webkit-scrollbar {
     height: 8px;
-    width: 8px;
+    width: 0px;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
