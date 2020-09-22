@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { Paper, Typography } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
-import { ConfirmDialog } from "../../../Dialogs";
-import { navigate as navigateReach } from "@reach/router";
-import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import "./EditPost.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -24,39 +21,33 @@ import { useDispatch } from "react-redux";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const EditPost = ({ post }) => {
-  const storeUserData = useStoreUserData();
+const EditPost = ({ post, onUpdated }) => {
   const storeSession = useStoreSessionSelector();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState(post.content);
   const dispatch = useDispatch();
 
   const editPost = () => {
-    if (!storeUserData.userName) {
-      setConfirmConfig((c) => ({ ...c, visible: true }));
-    } else {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId,
-        content,
-      };
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      postId: post.id,
+      content,
+    };
 
-      tradeApi
-        .createPost(payload)
-        .then(() => {
-          dispatch(showSuccessAlert("", "wall.post.success"));
-          setContent("");
-          onCreated();
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+    tradeApi
+      .editPost(payload)
+      .then((p) => {
+        dispatch(showSuccessAlert("", "wall.post.updated"));
+        onUpdated(p);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

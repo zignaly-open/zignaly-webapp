@@ -17,6 +17,10 @@ import Modal from "../../../Modal";
 import EditPost from "../EditPost";
 
 /**
+ * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
+ */
+
+/**
  * Parse html to embed medias
  * @param {string} html original html
  * @returns {string} new html
@@ -59,7 +63,8 @@ const embedMedias = (html) => {
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Post = ({ post }) => {
+const Post = ({ post: _post }) => {
+  const [post, setPost] = useState(_post);
   const originalContent = DOMPurify.sanitize(post.content, {
     ADD_TAGS: ["oembed"],
     ADD_ATTR: ["url"],
@@ -89,6 +94,16 @@ const Post = ({ post }) => {
   const handleEdit = () => {
     handleMenuClose();
     setEditPostModal(true);
+  };
+
+  /**
+   * Update Post callback
+   * @param {Post} newPost New post
+   * @returns {void}
+   */
+  const onUpdated = (newPost) => {
+    setEditPostModal(false);
+    setPost(newPost);
   };
 
   const approvePost = () => {
@@ -121,7 +136,7 @@ const Post = ({ post }) => {
         size="medium"
         state={editPostModal}
       >
-        <EditPost post={post} />
+        <EditPost post={post} onUpdated={onUpdated} />
       </Modal>
       <Paper className="postContent">
         <Box className="adminActions" width={1}>

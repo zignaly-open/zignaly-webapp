@@ -31,6 +31,11 @@
       max-width: 100%;
     }
 
+    th,
+    td {
+      border: 1px solid var(--border-color);
+    }
+
     .iframeContainer {
       height: 0;
       padding-bottom: 100%;
