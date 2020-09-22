@@ -61,7 +61,7 @@ const EditPost = ({ post, onUpdated }) => {
         className="submitButton"
         loading={isLoading}
         onClick={() => editPost()}
-        disabled={!content.length}
+        disabled={content.length < 10}
       >
         <FormattedMessage id="wall.update" />
       </CustomButton>
