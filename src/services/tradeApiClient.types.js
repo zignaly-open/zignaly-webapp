@@ -283,6 +283,22 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} dashlyHash
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} firstPositionOpenedAt
+ * @property {string} firstRealPositionClosedAt
+ * @property {string} firstRealPositionOpenedAt
+ * @property {boolean} hasActivated
+ * @property {string} hasActivatedAt
+ * @property {string} hasRegisteredAt
+ * @property {boolean} isSupport
+ * @property {string} lastPositionClosedAt
+ * @property {string} lastPositionOpenedAt
+ * @property {string} lastRealPositionClosedAt
+ * @property {string} lastRealPositionOpenedAt
+ * @property {number} positionBuysCount
+ * @property {number} positionSellsCount
+ * @property {number} realPositionBuysCount
+ * @property {number} realPositionSellsCount
+ * @property {string} role
  */
 
 /**
@@ -943,6 +959,22 @@ export function userEntityResponseTransform(response) {
     dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
     userName: response.userName,
     imageUrl: response.imageUrl,
+    firstPositionOpenedAt: response.firstPositionOpenedAt,
+    firstRealPositionClosedAt: response.firstRealPositionClosedAt,
+    firstRealPositionOpenedAt: response.firstRealPositionOpenedAt,
+    hasActivated: response.hasActivated,
+    hasActivatedAt: response.hasActivatedAt,
+    hasRegisteredAt: response.hasRegisteredAt,
+    isSupport: response.isSupport,
+    lastPositionClosedAt: response.lastPositionClosedAt,
+    lastPositionOpenedAt: response.lastPositionOpenedAt,
+    lastRealPositionClosedAt: response.lastRealPositionClosedAt,
+    lastRealPositionOpenedAt: response.lastRealPositionOpenedAt,
+    positionBuysCount: response.positionBuysCount,
+    positionSellsCount: response.positionSellsCount,
+    realPositionBuysCount: response.realPositionBuysCount,
+    realPositionSellsCount: response.realPositionSellsCount,
+    role: response.role,
   };
 }
 
