@@ -69,6 +69,12 @@ const Post = ({ post }) => {
   const userData = useStoreUserData();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  /**
+   * Handle action element click event.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @returns {Void} None.
+   */
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -102,10 +108,10 @@ const Post = ({ post }) => {
   return (
     <Box className="post">
       <Paper className="postContent">
-        <Box width={1} className="adminActions">
+        <Box className="adminActions" width={1}>
           {!post.approved &&
             (userData.isAdmin ? (
-              <CustomButton className="bgPurple" onClick={approvePost} loading={isApproving}>
+              <CustomButton className="bgPurple" loading={isApproving} onClick={approvePost}>
                 <Typography className="bold" variant="body1">
                   <FormattedMessage id="wall.approve" />
                 </Typography>
@@ -118,13 +124,12 @@ const Post = ({ post }) => {
         </Box>
         <div className={post.approved ? "" : "disabled"}>
           <Box
+            alignItems="center"
             className="postHeader"
             display="flex"
             justifyContent="space-between"
-            display="flex"
-            alignItems="center"
           >
-            <Box display="flex" alignItems="center">
+            <Box alignItems="center" display="flex">
               <ProviderLogo
                 defaultImage={ProfileIcon}
                 size="40px"
@@ -146,11 +151,11 @@ const Post = ({ post }) => {
                   <MoreHoriz />
                 </IconButton>
                 <Menu
-                  id="simple-menu"
                   anchorEl={anchorEl}
+                  id="simple-menu"
                   keepMounted
-                  open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
+                  open={Boolean(anchorEl)}
                 >
                   <MenuItem onClick={handleMenuClose}>
                     <FormattedMessage id="srv.edit" />

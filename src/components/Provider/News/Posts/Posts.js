@@ -20,7 +20,7 @@ import "./Posts.scss";
  */
 const Posts = ({ posts }) => {
   return (
-    <Box className="posts" display="flex" flexDirection="column" alignItems="center">
+    <Box alignItems="center" className="posts" display="flex" flexDirection="column">
       {posts ? (
         posts
           .sort((p1, p2) =>
