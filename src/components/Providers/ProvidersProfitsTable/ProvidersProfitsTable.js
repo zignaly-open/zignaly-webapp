@@ -83,6 +83,15 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
       name: "percentageProfit",
       label: "col.profit.percentage",
       options: {
+        // @ts-ignore
+        sortCompare: (order) => {
+          // @ts-ignore
+          return (obj1, obj2) => {
+            let val1 = obj1.data;
+            let val2 = obj2.data;
+            return (val1 - val2) * (order === "asc" ? 1 : -1);
+          };
+        },
         customBodyRender: (val) => (
           <span className={parseFloat(val) >= 0 ? "green" : "red"}>{formatFloat2Dec(val)}%</span>
         ),
