@@ -55,10 +55,14 @@ const EditPost = ({ post, onUpdated }) => {
       <Typography variant="h3">
         <FormattedMessage id="wall.edit" />
       </Typography>
-
       <Editor content={content} onChange={setContent} />
 
-      <CustomButton className="submitButton" loading={isLoading} onClick={() => editPost()}>
+      <CustomButton
+        className="submitButton"
+        loading={isLoading}
+        onClick={() => editPost()}
+        disabled={!content.length}
+      >
         <FormattedMessage id="wall.update" />
       </CustomButton>
     </Paper>

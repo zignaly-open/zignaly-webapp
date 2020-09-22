@@ -90,7 +90,12 @@ const CreatePost = ({ providerId, onCreated }) => {
 
       <Editor content={content} onChange={setContent} />
 
-      <CustomButton className="submitButton" loading={isLoading} onClick={() => createPost()}>
+      <CustomButton
+        className="submitButton"
+        loading={isLoading}
+        onClick={() => createPost()}
+        disabled={!content.length}
+      >
         <FormattedMessage id="wall.post" />
       </CustomButton>
     </Paper>
