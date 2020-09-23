@@ -20,6 +20,7 @@ import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
+import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -53,7 +54,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
 
-  const howToSendSignalsUrl = "https://docs.zignaly.com/signals/how-to";
   const listSwitch = watch("list", provider.list);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
@@ -498,7 +498,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             >
               <a
                 className="paymentDocsLink"
-                href="https://docs.zignaly.com/providers/how-to-create-a-public-provider#our-payment-system"
+                href={howToGetMerchantIDUrl}
                 rel="noopener noreferrer"
                 target="_blank"
               >
