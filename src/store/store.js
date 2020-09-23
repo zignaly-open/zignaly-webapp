@@ -12,16 +12,21 @@ import initialState from "./initialState";
  * @typedef {import("redux").Action} Action
  * @typedef {import("redux-thunk").ThunkAction<void, Function, unknown, Action>} AppThunk
  * @typedef {import("redux-persist").PersistedState} PersistedState
+ * @typedef {import("./initialState").DefaultState} DefaultState
+ */
+
+/**
+ * @typedef {PersistedState & DefaultState} PersistedDefaultState
  */
 
 const migrations = {
-  2: (/** @type {PersistedState} */ state) => {
+  2: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       ...cloneDeep(initialState),
     };
   },
-  11: (/** @type {PersistedState} */ state) => {
+  11: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       settings: {
@@ -29,10 +34,14 @@ const migrations = {
       },
     };
   },
-  12: (/** @type {PersistedState} */ state) => {
-    // @ts-ignore
-    state.settings.sort.signalp = "";
-    return state;
+  13: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        sort: { ...state.settings.sort, signalp: "" },
+      },
+    };
   },
   14: (/** @type {PersistedState} */ state) => {
     // @ts-ignore
