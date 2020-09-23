@@ -21,15 +21,7 @@ const migrations = {
       ...cloneDeep(initialState),
     };
   },
-  6: (/** @type {PersistedState} */ state) => {
-    return {
-      ...state,
-      settings: {
-        ...cloneDeep(initialState.settings),
-      },
-    };
-  },
-  11: (/** @type {PersistedState} */ state) => {
+  13: (/** @type {PersistedState} */ state) => {
     return {
       ...state,
       settings: {
