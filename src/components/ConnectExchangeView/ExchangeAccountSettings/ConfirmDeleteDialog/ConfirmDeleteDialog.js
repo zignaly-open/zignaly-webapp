@@ -14,7 +14,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { removeUserExchange } from "../../../../store/actions/user";
+import { getUserData, removeUserExchange } from "../../../../store/actions/user";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
@@ -97,6 +97,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           currentPath: previousPath,
         });
         onClose();
+        const authorizationPayload = { token: storeSession.tradeApi.accessToken };
+        dispatch(getUserData(authorizationPayload));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
