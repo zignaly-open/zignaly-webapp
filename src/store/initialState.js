@@ -516,6 +516,7 @@ const initialState = {
       userId: "",
       userName: "",
       imageUrl: "",
+      firstPositionClosedAt: "",
       firstPositionOpenedAt: "",
       firstRealPositionClosedAt: "",
       firstRealPositionOpenedAt: "",
