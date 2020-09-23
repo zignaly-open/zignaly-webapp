@@ -101,7 +101,7 @@ const ProfileSettings = () => {
           />
           {errors.userName && (
             <span className="errorText">
-              <FormattedMessage id="profile.username.error" />
+              <FormattedMessage id="form.error.username.format" />
             </span>
           )}
         </Box>

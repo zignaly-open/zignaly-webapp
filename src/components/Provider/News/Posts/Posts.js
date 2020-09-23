@@ -1,7 +1,9 @@
 import React from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import Post from "../Post";
 import "./Posts.scss";
+import Astronaut from "../../../Astronaut";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -22,15 +24,31 @@ const Posts = ({ posts }) => {
   return (
     <Box alignItems="center" className="posts" display="flex" flexDirection="column">
       {posts ? (
-        posts
-          .sort((p1, p2) =>
-            p1.approved === p2.approved ? p2.createdAt - p1.createdAt : p1.approved ? 1 : -1,
-          )
-          .map((post) => <Post key={post.id} post={post} />)
+        posts.length ? (
+          posts
+            .sort((p1, p2) =>
+              p1.approved === p2.approved ? p2.createdAt - p1.createdAt : p1.approved ? 1 : -1,
+            )
+            .map((post) => <Post key={post.id} post={post} />)
+        ) : (
+          <NoPosts />
+        )
       ) : (
         <CircularProgress className="loader" />
       )}
     </Box>
   );
 };
+
+const NoPosts = () => (
+  <Box className="noPosts" display="flex" alignItems="center" flexDirection="column">
+    <Astronaut />
+    <Typography variant="h1">
+      <FormattedMessage id="wall.nopost" />
+    </Typography>
+    <Typography className="desc" variant="body1">
+      <FormattedMessage id="wall.nopost.desc" />
+    </Typography>
+  </Box>
+);
 export default Posts;

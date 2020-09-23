@@ -1625,6 +1625,36 @@ class TradeApiClient {
   }
 
   /**
+   * Edit post.
+   *
+   * @param {{postId: string, content: string}} payload Edit Post payload.
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async editPost(payload) {
+    const endpointPath = "/fe/api.php?action=editPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Get post.
+   *
+   * @param {{postId: string}} payload Edit Post payload.
+   *
+   * @returns {Promise<Post>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getPost(payload) {
+    const endpointPath = "/fe/api.php?action=getPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
    * Get posts.
    *
    * @param {GetPostsPayload} payload Get Posts payload.
