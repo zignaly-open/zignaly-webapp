@@ -1,3 +1,11 @@
 .createPost {
   padding: 18px;
 }
+
+@include media("<=sm") {
+  .createPost {
+    .customButton {
+      width: 100%;
+    }
+  }
+}

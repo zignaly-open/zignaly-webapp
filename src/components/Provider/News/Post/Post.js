@@ -163,12 +163,12 @@ const Post = ({ post: _post }) => {
             <Box alignItems="center" display="flex">
               <ProviderLogo
                 defaultImage={ProfileIcon}
-                size="40px"
+                size="48px"
                 title={post.author.userName}
                 url={post.author.imageUrl}
               />
               <Box className="metaBox">
-                <Typography className="username callout2">{post.author.userName}</Typography>
+                <Typography className="username body1">{post.author.userName}</Typography>
                 <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
               </Box>
             </Box>
@@ -188,7 +188,7 @@ const Post = ({ post: _post }) => {
                   onClose={handleMenuClose}
                   open={Boolean(anchorEl)}
                 >
-                  {post.approved && post.author.userId === userData.userId && (
+                  {post.author.userId === userData.userId && (
                     <MenuItem onClick={handleEdit}>
                       <FormattedMessage id="srv.edit" />
                     </MenuItem>
@@ -197,10 +197,13 @@ const Post = ({ post: _post }) => {
               </>
             )}
           </Box>
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+          <Typography variant="body1">
+            <div dangerouslySetInnerHTML={{ __html: content }} />
+          </Typography>
         </div>
       </Paper>
     </Box>
   );
 };
+
 export default Post;
