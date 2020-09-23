@@ -10,9 +10,13 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 
 /**
+ * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
+ */
+
+/**
  * @typedef {Object} DefaultProps
- * @property {string} content
- * @property {function} onCreated
+ * @property {Post} post
+ * @property {function} onUpdated
  */
 
 /**

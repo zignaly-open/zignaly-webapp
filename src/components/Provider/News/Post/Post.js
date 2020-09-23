@@ -17,10 +17,6 @@ import Modal from "../../../Modal";
 import EditPost from "../EditPost";
 
 /**
- * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
- */
-
-/**
  * Parse html to embed medias
  * @param {string} html original html
  * @returns {string} new html
