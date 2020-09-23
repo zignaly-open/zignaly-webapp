@@ -37,14 +37,18 @@ export const getUserExchanges = (payload) => {
       const responseData = await tradeApi.userExchangesGet(payload);
 
       const state = getState();
+      // @ts-ignore
+      const storeSelectedExchange = state.settings.selectedExchange;
       /* @ts-ignore */
-      let exchangeInternalId = state.settings.selectedExchange.internalId;
-      let selected = responseData.find((item) => item.internalId === exchangeInternalId);
-      if (!selected) {
-        selected =
-          responseData.length > 0 ? responseData[0] : initialState.settings.selectedExchange;
+      let exchangeInternalId = "";
+      let selected = null;
+      if (storeSelectedExchange && storeSelectedExchange.internalId) {
+        exchangeInternalId = storeSelectedExchange.internalId;
+        selected = responseData.find((item) => item.internalId === exchangeInternalId);
       }
-
+      if (!selected) {
+        selected = responseData.length ? responseData[0] : initialState.settings.selectedExchange;
+      }
       dispatch(setSelectedExchange(selected));
       dispatch(setUserExchanges(responseData));
       if (responseData.length > 0) {

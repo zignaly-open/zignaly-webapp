@@ -18,6 +18,7 @@ import { removeUserExchange } from "../../../../store/actions/user";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
+import initialState from "../../../../store/initialState";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -85,7 +86,11 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           const newSelectedExchange = storeExchanegeConnections.find(
             (e) => e.internalId !== selectedAccount.internalId,
           );
-          dispatch(setSelectedExchange(newSelectedExchange));
+          dispatch(
+            setSelectedExchange(
+              newSelectedExchange ? newSelectedExchange : initialState.settings.selectedExchange,
+            ),
+          );
         }
         setPathParams({
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
