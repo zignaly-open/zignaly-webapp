@@ -140,7 +140,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("units", units.toFixed(8));
     trigger("units").then((isValid) => {
       if (isValid) {
-        const realInvestment = parseFloat(draftPosition.positionSize) / draftPosition.leverage;
+        const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
