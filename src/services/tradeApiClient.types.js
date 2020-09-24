@@ -238,9 +238,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} price
  * @property {String} trial
  * @property {String} ipnSecret
- * @property {String} [exchange]
- * @property {String} [exchangeType]
- * @property {String} [quote]
  * @property {String} about
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
