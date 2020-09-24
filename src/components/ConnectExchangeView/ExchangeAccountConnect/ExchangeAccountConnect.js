@@ -14,6 +14,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
+import { getUserData, getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -115,6 +116,11 @@ const ExchangeAccountConnect = () => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
+        const exchangePayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserExchanges(exchangePayload));
+        dispatch(getUserData(exchangePayload));
         resetToPath(previousPath);
       })
       .catch((e) => {

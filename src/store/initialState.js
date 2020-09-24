@@ -219,7 +219,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
-    balanceBox: false,
+    balanceBox: true,
     rowsPerPage: {},
     displayColumns: {
       signalpAnalytics: [
@@ -516,6 +516,23 @@ const initialState = {
       userId: "",
       userName: "",
       imageUrl: "",
+      firstPositionClosedAt: "",
+      firstPositionOpenedAt: "",
+      firstRealPositionClosedAt: "",
+      firstRealPositionOpenedAt: "",
+      hasActivated: false,
+      hasActivatedAt: "",
+      hasRegisteredAt: "",
+      isSupport: false,
+      lastPositionClosedAt: "",
+      lastPositionOpenedAt: "",
+      lastRealPositionClosedAt: "",
+      lastRealPositionOpenedAt: "",
+      positionBuysCount: 0,
+      positionSellsCount: 0,
+      realPositionBuysCount: 0,
+      realPositionSellsCount: 0,
+      role: "",
     },
   },
   ui: {

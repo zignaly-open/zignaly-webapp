@@ -7,7 +7,7 @@
   }
 }
 
-[data-theme="dark"] {
+:root[data-theme="dark"] {
   /* Helper variables to avoid duplication in the colors. */
   --ck-custom-background: hsl(270, 1%, 29%);
   --ck-custom-foreground: hsl(255, 3%, 18%);

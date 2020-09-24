@@ -115,11 +115,11 @@ const NotificationsSettings = () => {
                 label="notifications.positionupdate"
                 name="emailUpdatePosition"
               />
-              <NotificationCheckbox
+              {/* <NotificationCheckbox
                 control={control}
                 label="notifications.warnings"
                 name="emailSubscriptionWarning"
-              />
+              /> */}
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
             <Typography className="bold" variant="body1">
@@ -181,11 +181,11 @@ const NotificationsSettings = () => {
                 label="notifications.positionupdate"
                 name="telegramUpdatePosition"
               />
-              <NotificationCheckbox
+              {/* <NotificationCheckbox
                 control={control}
                 label="notifications.warnings"
                 name="telegramSubscriptionWarning"
-              />
+              /> */}
               {/* <NotificationCheckbox name="" label="notifications.demo" /> */}
             </FormGroup>
             <CustomButton

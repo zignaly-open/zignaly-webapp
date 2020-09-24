@@ -40,6 +40,10 @@
       }
     }
 
+    &:last-child {
+      margin: 0;
+    }
+
     &:hover {
       opacity: 1;
     }
