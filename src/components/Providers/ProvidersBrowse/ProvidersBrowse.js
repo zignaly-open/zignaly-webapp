@@ -100,7 +100,7 @@ const ProvidersBrowse = ({
           value={timeFrame}
         />
       )}
-      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={7} />
+      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
     </Box>
   );
 };
