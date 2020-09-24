@@ -144,7 +144,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, setValue, trigger]);
+  }, [errors, currentPrice, getValues, setValue, trigger, leverage]);
 
   const unitsChange = () => {
     const draftPosition = getValues();
