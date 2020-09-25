@@ -39,8 +39,10 @@ const ExchangeIcon = (props) => {
   if (!icon) return null;
   return (
     <img
-      alt="zignaly"
-      className={`exchangeIcon ${exchange} ${size ? size : ""} ${className ? className : ""}`}
+      alt={exchange}
+      className={`exchangeIcon ${exchange.toLowerCase()} ${size ? size : ""} ${
+        className ? className : ""
+      }`}
       onClick={onClick}
       src={icon}
       title={exchange}

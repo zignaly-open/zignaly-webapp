@@ -8,6 +8,7 @@ import {
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
   SHOW_CREATE_PROVIDER,
+  SHOW_CREATE_TRADER,
   SHOW_BALANCE_LOADER,
   SHOW_GLOBAL_MODAL,
 } from "../store/actions/ui";
@@ -37,6 +38,10 @@ const ui = (state = initialState.ui, action) => {
 
     case SHOW_CREATE_PROVIDER:
       newState.modal = { ...newState.modal, createProvider: action.payload };
+      break;
+
+    case SHOW_CREATE_TRADER:
+      newState.modal = { ...newState.modal, createTrader: action.payload };
       break;
 
     case SHOW_ERROR_ALERT:

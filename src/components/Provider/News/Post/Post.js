@@ -93,9 +93,11 @@ const Post = ({ post }) => {
 
     tradeApi
       .approvePost(payload)
-      .then(() => {
-        dispatch(showSuccessAlert("", "wall.post.approved"));
-        post.approved = true;
+      .then((result) => {
+        if (result) {
+          dispatch(showSuccessAlert("", "wall.post.approved"));
+          post.approved = true;
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

@@ -11,7 +11,8 @@ import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 import CustomButton from "../../components/CustomButton";
 import Modal from "../../components/Modal";
 import CreateProviderForm from "../../components/Forms/CreateProviderForm";
-import { showCreateProvider } from "../../store/actions/ui";
+import CreateTraderForm from "../../components/Forms/CreateTraderForm";
+import { showCreateProvider, showCreateTrader } from "../../store/actions/ui";
 import useStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
 import { useDispatch } from "react-redux";
 import "./ProvidersLayout.scss";
@@ -39,6 +40,7 @@ const withProvidersLayout = (Component) => {
   const WrapperComponent = (props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [showSort, setShowSort] = useState(false);
+    // const [createTrader, showCreateTrader] = useState(false);
     const [modifiedFiltersCount, setModifiedFiltersCount] = useState(0);
     const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
@@ -61,10 +63,20 @@ const withProvidersLayout = (Component) => {
         >
           <CreateProviderForm isCopyTrading={isCopyTrading} />
         </Modal>
+        <Modal
+          onClose={() => dispatch(showCreateTrader(false))}
+          persist={false}
+          size="fullscreen"
+          state={storeModal.createTrader}
+        >
+          <CreateTraderForm />
+        </Modal>
         <Hidden xsDown>
           <CustomButton
             className="textPurple borderPurple becomeProviderButton"
-            onClick={() => dispatch(showCreateProvider(true))}
+            onClick={() =>
+              dispatch(isCopyTrading ? showCreateTrader(true) : showCreateProvider(true))
+            }
           >
             <Typography variant="body1">
               <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />

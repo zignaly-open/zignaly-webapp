@@ -538,6 +538,7 @@ const initialState = {
     modal: {
       twoFA: false,
       createProvider: false,
+      createTrader: false,
       globalModal: false,
     },
     alerts: {
