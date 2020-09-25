@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import "./ExchangeAccountConnect.scss";
 import { useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -15,6 +14,7 @@ import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
+import { getUserData, getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -100,6 +100,11 @@ const ExchangeAccountConnect = () => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
+        const exchangePayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserExchanges(exchangePayload));
+        dispatch(getUserData(exchangePayload));
         resetToPath(previousPath);
       })
       .catch((e) => {

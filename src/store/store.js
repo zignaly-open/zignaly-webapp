@@ -12,16 +12,21 @@ import initialState from "./initialState";
  * @typedef {import("redux").Action} Action
  * @typedef {import("redux-thunk").ThunkAction<void, Function, unknown, Action>} AppThunk
  * @typedef {import("redux-persist").PersistedState} PersistedState
+ * @typedef {import("./initialState").DefaultState} DefaultState
+ */
+
+/**
+ * @typedef {PersistedState & DefaultState} PersistedDefaultState
  */
 
 const migrations = {
-  2: (/** @type {PersistedState} */ state) => {
+  2: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       ...cloneDeep(initialState),
     };
   },
-  6: (/** @type {PersistedState} */ state) => {
+  11: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       settings: {
@@ -29,17 +34,18 @@ const migrations = {
       },
     };
   },
-  11: (/** @type {PersistedState} */ state) => {
+  13: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       settings: {
-        ...cloneDeep(initialState.settings),
+        ...state.settings,
+        sort: { ...state.settings.sort, signalp: "" },
       },
     };
   },
-  12: (/** @type {PersistedState} */ state) => {
+  14: (/** @type {PersistedState} */ state) => {
     // @ts-ignore
-    state.settings.sort.signalp = "";
+    state.settings.balanceBox = true;
     return state;
   },
 };
@@ -48,7 +54,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 12,
+  version: 14,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };

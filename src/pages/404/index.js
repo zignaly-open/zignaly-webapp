@@ -5,10 +5,9 @@ import { Helmet } from "react-helmet";
 import { FormattedMessage } from "react-intl";
 import { Typography } from "@material-ui/core";
 import "./404.scss";
-import AstronautImage from "../../images/404/astronaut.svg";
-import PlanetImage from "../../images/404/planet.svg";
 import AnimalImage from "../../images/404/animal.svg";
 import CustomButton from "../../components/CustomButton";
+import Astronaut from "../../components/Astronaut";
 import { withPrefix } from "gatsby";
 
 const NotFound = () => {
@@ -29,10 +28,8 @@ const NotFound = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box className="astronaut">
-        <img className="planetImg" src={PlanetImage} />
-        <img src={AstronautImage} />
-      </Box>
+
+      <Astronaut />
       <Typography variant="h1">
         <FormattedMessage id="notfound.why" />
       </Typography>

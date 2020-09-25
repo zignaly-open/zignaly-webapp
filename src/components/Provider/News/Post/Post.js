@@ -13,6 +13,8 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import { MoreHoriz } from "@material-ui/icons";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import Modal from "../../../Modal";
+import EditPost from "../EditPost";
 
 /**
  * Parse html to embed medias
@@ -57,13 +59,15 @@ const embedMedias = (html) => {
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Post = ({ post }) => {
+const Post = ({ post: _post }) => {
+  const [post, setPost] = useState(_post);
   const originalContent = DOMPurify.sanitize(post.content, {
     ADD_TAGS: ["oembed"],
     ADD_ATTR: ["url"],
   });
   const content = embedMedias(originalContent);
   const [isApproving, setApproving] = useState(false);
+  const [editPostModal, setEditPostModal] = useState(false);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const userData = useStoreUserData();
@@ -81,6 +85,21 @@ const Post = ({ post }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    handleMenuClose();
+    setEditPostModal(true);
+  };
+
+  /**
+   * Update Post callback
+   * @param {Post} newPost New post
+   * @returns {void}
+   */
+  const onUpdated = (newPost) => {
+    setEditPostModal(false);
+    setPost(newPost);
   };
 
   const approvePost = () => {
@@ -109,6 +128,14 @@ const Post = ({ post }) => {
 
   return (
     <Box className="post">
+      <Modal
+        onClose={() => setEditPostModal(false)}
+        persist={false}
+        size="medium"
+        state={editPostModal}
+      >
+        <EditPost post={post} onUpdated={onUpdated} />
+      </Modal>
       <Paper className="postContent">
         <Box className="adminActions" width={1}>
           {!post.approved &&
@@ -134,12 +161,12 @@ const Post = ({ post }) => {
             <Box alignItems="center" display="flex">
               <ProviderLogo
                 defaultImage={ProfileIcon}
-                size="40px"
+                size="48px"
                 title={post.author.userName}
                 url={post.author.imageUrl}
               />
               <Box className="metaBox">
-                <Typography className="username callout2">{post.author.userName}</Typography>
+                <Typography className="username body1">{post.author.userName}</Typography>
                 <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
               </Box>
             </Box>
@@ -159,17 +186,22 @@ const Post = ({ post }) => {
                   onClose={handleMenuClose}
                   open={Boolean(anchorEl)}
                 >
-                  <MenuItem onClick={handleMenuClose}>
-                    <FormattedMessage id="srv.edit" />
-                  </MenuItem>
+                  {post.author.userId === userData.userId && (
+                    <MenuItem onClick={handleEdit}>
+                      <FormattedMessage id="srv.edit" />
+                    </MenuItem>
+                  )}
                 </Menu>
               </>
             )}
           </Box>
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+          <Typography variant="body1">
+            <div dangerouslySetInnerHTML={{ __html: content }} />
+          </Typography>
         </div>
       </Paper>
     </Box>
   );
 };
+
 export default Post;

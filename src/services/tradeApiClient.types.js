@@ -238,9 +238,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} price
  * @property {String} trial
  * @property {String} ipnSecret
- * @property {String} [exchange]
- * @property {String} [exchangeType]
- * @property {String} [quote]
  * @property {String} about
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
@@ -283,6 +280,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} dashlyHash
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} firstPositionClosedAt
  * @property {string} firstPositionOpenedAt
  * @property {string} firstRealPositionClosedAt
  * @property {string} firstRealPositionOpenedAt
@@ -959,6 +957,7 @@ export function userEntityResponseTransform(response) {
     dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
     userName: response.userName,
     imageUrl: response.imageUrl,
+    firstPositionClosedAt: response.firstPositionClosedAt,
     firstPositionOpenedAt: response.firstPositionOpenedAt,
     firstRealPositionClosedAt: response.firstRealPositionClosedAt,
     firstRealPositionOpenedAt: response.firstRealPositionOpenedAt,

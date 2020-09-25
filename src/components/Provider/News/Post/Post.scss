@@ -6,10 +6,6 @@
     padding-left: 8px;
   }
 
-  .username {
-    font-size: 16px;
-  }
-
   .date {
     opacity: 0.7;
   }
@@ -29,6 +25,11 @@
   .postContent {
     img {
       max-width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border-color);
     }
 
     .iframeContainer {
