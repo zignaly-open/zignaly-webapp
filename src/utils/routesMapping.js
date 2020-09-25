@@ -248,7 +248,7 @@ export const createProviderRoutes = (providerId, provider, selectedExchange) => 
       ],
     };
 
-    if (process.env.GATSBY_ENABLE_FEED.toLowerCase() === "true" && !provider.isClone) {
+    if (!provider.isClone) {
       data.links.push({
         id: "srv.newsfeed",
         to: `/signalProviders/${provider.id}/feed`,
