@@ -23,6 +23,7 @@ const MODEL_MONHTLY_FEE = 1;
 /**
  * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('../../../services/tradeApiClient.types').ProviderOptions} ProviderOptions
+ * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
  */
 
 /**
@@ -36,7 +37,7 @@ const CreateTraderForm = () => {
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
   );
-  const [exchangeName, setExchangeName] = useState("");
+  const [exchange, setExchange] = useState(/** @type {ExchangeListEntity} **/ (null));
   const [exchangeType, setExchangeType] = useState(null);
   const [step, setStep] = useState(1);
   const storeSession = useStoreSessionSelector();
@@ -55,21 +56,21 @@ const CreateTraderForm = () => {
     );
   }
 
-  let selectedExchange = exchanges
-    ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
-    : null;
+  //   let selectedExchange = exchanges
+  //     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
+  //     : null;
 
+  //   if (exchange && !exchanges.find((e) => e.name.toLowerCase() === exchange.name.toLowerCase())) {
+  //     setExchange(exchanges[0]);
+  //   }
   useEffect(() => {
     // Select first exchange on model change
-    if (!selectedExchange && exchanges) {
-      setExchangeName(exchanges[0].name);
+    if (exchanges && (!exchange || !exchanges.find((e) => e === exchange))) {
+      setExchange(exchanges[0]);
     }
-  }, [selectedExchange, exchanges]);
+  }, [exchanges]);
 
-  const quoteAssets = useQuoteAssets(
-    Boolean(selectedExchange),
-    selectedExchange ? selectedExchange.id : null,
-  );
+  const quoteAssets = useQuoteAssets(Boolean(exchange), exchange ? exchange.id : null);
   const quotes = Object.keys(quoteAssets);
 
   const { errors, handleSubmit, control, register, watch, setValue } = useForm();
@@ -129,7 +130,7 @@ const CreateTraderForm = () => {
       </Typography>
       <form method="post" onSubmit={handleSubmit(submitForm)}>
         <Box className="step1">
-          {exchanges ? (
+          {exchange ? (
             <>
               <Typography className="body1 bold" variant="h3">
                 <FormattedMessage id="copyt.model.choose" />
@@ -172,10 +173,10 @@ const CreateTraderForm = () => {
               </Typography>
               {exchanges.map((e) => (
                 <ExchangeIcon
-                  className={`iconButton ${exchangeName === e.name ? "selected" : ""}`}
+                  className={`iconButton ${exchange.name === e.name ? "selected" : ""}`}
                   exchange={e.name}
                   key={e.id}
-                  onClick={() => setExchangeName(e.name)}
+                  onClick={() => setExchange(exchanges.find((ex) => e === ex))}
                 />
               ))}
               {step === 1 && (
@@ -194,7 +195,7 @@ const CreateTraderForm = () => {
           {step >= 2 && (
             <>
               <ToggleButtonsExchangeType
-                exchange={selectedExchange}
+                exchange={exchange}
                 setExchangeType={setExchangeType}
                 exchangeType={exchangeType}
               />

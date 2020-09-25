@@ -1,7 +1,7 @@
 import React from "react";
 import "./ExchangeIcon.scss";
 import BinanceIcon from "../../images/exchanges/binance.svg";
-import ZignalyIcon from "../../images/exchanges/zignaly.png";
+import ZignalyIcon from "../../images/exchanges/zignaly.svg";
 import KucoinIcon from "../../images/exchanges/kucoin.svg";
 
 /**
