@@ -11,12 +11,17 @@
     border-radius: 50%;
     cursor: pointer;
     height: 62px;
-    margin: 21px 21px 21px 0;
+    margin: 21px 8px;
+    margin-left: 0;
     padding: 4px;
     width: 62px;
 
     &.selected {
       border-color: var(--purple);
+    }
+
+    &.exchangeIcon {
+      margin: 21px 21px 21px 0;
     }
   }
 
@@ -27,10 +32,18 @@
     width: 100%;
   }
 
+  .customInput {
+    max-width: 260px;
+  }
+
+  .customSelect {
+    align-items: start;
+  }
+
   .step1 {
     border-right: solid 1px var(--border-color);
-    flex: 1;
     padding-right: 12px;
+    width: 29%;
   }
 
   .exchangeChoose {
@@ -57,19 +70,27 @@
 
   .step2 {
     border-right: solid 1px var(--border-color);
-    flex: 2;
     padding: 0 42px;
+    width: 46%;
 
     .title {
       margin-bottom: 18px;
     }
 
-    .accountLabel {
-      margin-bottom: 11px;
+    label {
+      margin-bottom: 12px;
+
+      > p {
+        font-size: 16px;
+      }
     }
 
-    .controlWrapper {
+    .inputBox {
       margin-bottom: 32px;
+    }
+
+    .minAllocatedBalance {
+      max-width: 150px;
     }
 
     .summary {
@@ -96,8 +117,8 @@
   }
 
   .step3 {
-    flex: 1;
     padding-left: 42px;
+    width: 25%;
 
     .customButton {
       margin-top: 31px;
