@@ -132,12 +132,17 @@ const CreateTraderForm = () => {
 
               <Box display="flex">
                 {profitSharingEnabled && (
-                  <Box display="flex" flexDirection="row" alignItems="center">
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    className="model"
+                    onClick={() => setSelectedModel(MODEL_PROFIT_SHARING)}
+                  >
                     <img
                       className={`iconButton ${
                         selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
                       }`}
-                      onClick={() => setSelectedModel(MODEL_PROFIT_SHARING)}
                       src={MonthlyFee}
                       title={intl.formatMessage({ id: "copyt.profitsharing.service" })}
                     />
@@ -147,12 +152,17 @@ const CreateTraderForm = () => {
                   </Box>
                 )}
 
-                <Box display="flex" flexDirection="row" alignItems="center">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  className="model"
+                  onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
+                >
                   <img
                     className={`iconButton ${
                       selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
                     }`}
-                    onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
                     src={MonthlyFee}
                     title={intl.formatMessage({ id: "copyt.monthlyfee.service" })}
                   />
@@ -165,16 +175,18 @@ const CreateTraderForm = () => {
               <Typography className="body1 bold exchangeChoose" variant="h3">
                 <FormattedMessage id="accounts.exchange.choose" />
               </Typography>
-              {exchanges.map((e) => (
-                <ExchangeIcon
-                  className={`iconButton ${
-                    (exchange && exchange.name) === e.name ? "selected" : ""
-                  }`}
-                  exchange={e.name}
-                  key={e.id}
-                  onClick={() => setExchange(exchanges.find((ex) => e === ex))}
-                />
-              ))}
+              <Box display="flex" flexWrap="wrap">
+                {exchanges.map((e) => (
+                  <ExchangeIcon
+                    className={`iconButton ${
+                      (exchange && exchange.name) === e.name ? "selected" : ""
+                    }`}
+                    exchange={e.name}
+                    key={e.id}
+                    onClick={() => setExchange(exchanges.find((ex) => e === ex))}
+                  />
+                ))}
+              </Box>
               {step === 1 && (
                 <CustomButton className="bgPurple bold" onClick={() => setStep(2)}>
                   <FormattedMessage id="accounts.next" />
@@ -195,22 +207,6 @@ const CreateTraderForm = () => {
                 setExchangeType={setExchangeType}
                 exchangeType={exchangeType}
               />
-              <Box display="flex" flexDirection="column" className="inputBox">
-                <label htmlFor="name">
-                  <Typography className="accountLabel">
-                    <FormattedMessage id="copyt.servicename" />
-                  </Typography>
-                </label>
-                <OutlinedInput
-                  className="customInput"
-                  defaultValue=""
-                  id="name"
-                  inputRef={register()}
-                  name="name"
-                />
-                {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
-              </Box>
-
               <Box
                 alignItems="flex-start"
                 className="boxWrapper"
@@ -254,7 +250,7 @@ const CreateTraderForm = () => {
                   </label>
                   <OutlinedInput
                     className="customInput minAllocatedBalance"
-                    error={!!errors.minBalance}
+                    error={!!errors.minAllocatedBalance}
                     inputProps={{
                       min: 0,
                     }}
@@ -270,41 +266,19 @@ const CreateTraderForm = () => {
                   )}
                 </Box>
               </Box>
-              <Box
-                alignItems="flex-end"
-                className="actionStep2"
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                {step === 2 && (
-                  <Hidden xsDown>
-                    <CustomButton
-                      className="bgPurple bold"
-                      // disabled={!isValid}
-                      onClick={() => setStep(3)}
-                    >
-                      <FormattedMessage id="accounts.next" />
-                    </CustomButton>
-                  </Hidden>
-                )}
-              </Box>
-              {/* {tipsExpanded && (
-              <Typography className="tips">
-                <FormattedMessage id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`} />
-              </Typography>
-            )} */}
               {step === 2 && (
-                <Hidden smUp>
+                <>
+                  <Typography className="body1 tip">
+                    <FormattedMessage id="cannotmodify" />
+                  </Typography>
                   <CustomButton
                     className="bgPurple bold"
-                    //   disabled={!isValid}
-                    loading={loading}
-                    type="submit"
+                    // disabled={!isValid}
+                    onClick={() => setStep(3)}
                   >
                     <FormattedMessage id="accounts.next" />
                   </CustomButton>
-                </Hidden>
+                </>
               )}
             </>
           )}
@@ -313,23 +287,39 @@ const CreateTraderForm = () => {
           {step === 3 && (
             <>
               <Typography variant="h3">
-                <FormattedMessage id="accounts.connect.ready" />
+                <FormattedMessage id="laststep" />
               </Typography>
-              <Box
-                className="inputBox minBalanceBox"
-                display="flex"
-                flex={1}
-                flexDirection="column"
-                mr={1}
-              >
-                <label className="customLabel">
-                  <Typography className="callout2 selectLabel" noWrap>
-                    <FormattedMessage id="srv.edit.minbalance" />
-                  </Typography>
+              <Box display="flex" flexDirection="column" className="inputBox">
+                <label htmlFor="name" className="customLabel">
+                  <FormattedMessage id="copyt.servicename" />
                 </label>
                 <OutlinedInput
                   className="customInput"
-                  error={!!errors.minBalance}
+                  defaultValue=""
+                  id="name"
+                  inputRef={register({
+                    required: intl.formatMessage({ id: "form.error.name" }),
+                    minLength: {
+                      value: 5,
+                      message: intl.formatMessage({ id: "form.error.name.length" }),
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: intl.formatMessage({ id: "form.error.name.length" }),
+                    },
+                  })}
+                  error={!!errors.name}
+                  name="name"
+                />
+                {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
+              </Box>
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="copyt.profitsharing.percentage" />
+                </label>
+                <OutlinedInput
+                  className="customInput"
+                  error={!!errors.sharingPercentage}
                   inputProps={{
                     min: 0,
                   }}
@@ -337,15 +327,15 @@ const CreateTraderForm = () => {
                     required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
                     min: 0,
                   })}
-                  name="minAllocatedBalance"
+                  name="sharingPercentage"
                   type="number"
                 />
                 {errors.minAllocatedBalance && (
-                  <span className="errorText">{errors.minAllocatedBalance.message}</span>
+                  <span className="errorText">{errors.sharingPercentage.message}</span>
                 )}
               </Box>
               <CustomButton className="bgPurple bold" loading={loading} type="submit">
-                <FormattedMessage id="accounts.connect.button" />
+                <FormattedMessage id="provider.createaccount" />
               </CustomButton>
             </>
           )}
@@ -353,174 +343,6 @@ const CreateTraderForm = () => {
       </form>
     </Box>
   );
-
-  //   return (
-  //     <FormProvider {...methods}>
-  //       <form noValidate onSubmit={handleSubmit(submitForm)}>
-  //         <Box
-  //           alignItems="center"
-  //           className="createTraderForm"
-  //           display="flex"
-  //           flexDirection="column"
-  //           justifyContent="center"
-  //         >
-  //           {selectedExchange ? (
-  //             <Box className="formContent">
-  //               <>
-  //                 <Typography variant="h3">
-  //                   <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create`} />
-  //                 </Typography>
-  //                 <Typography className="desc" variant="body1">
-  //                   <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.create.desc`} />
-  //                 </Typography>
-  //                 <Box alignItems="flex-start" display="flex" flexDirection="column">
-  //                   <Box className="inputBox nameBox" display="flex" flexDirection="column" mr={1}>
-  //                     <label className="customLabel">
-  //                       <FormattedMessage id="provider.name" />
-  //                     </label>
-  //                     <OutlinedInput
-  //                       className="customInput"
-  //                       error={!!errors.name}
-  //                       fullWidth
-  //                       inputRef={register({
-  //                         required: intl.formatMessage({ id: "form.error.name" }),
-  //                         minLength: {
-  //                           value: 5,
-  //                           message: intl.formatMessage({ id: "form.error.name.length" }),
-  //                         },
-  //                         maxLength: {
-  //                           value: 50,
-  //                           message: intl.formatMessage({ id: "form.error.name.length" }),
-  //                         },
-  //                       })}
-  //                       name="name"
-  //                     />
-  //                     {errors.name && <span className="errorText">{errors.name.message}</span>}
-  //                   </Box>
-  //                   <Box
-  //                     alignItems="flex-start"
-  //                     className="boxWrapper"
-  //                     display="flex"
-  //                     flexDirection="row"
-  //                   >
-  //                     {isCopyTrading && (
-  //                       <Box className="inputBox typeBox" display="flex" flex={1} pr={1}>
-  //                         <Controller
-  //                           control={control}
-  //                           defaultValue={selectedExchange.name.toLowerCase()}
-  //                           name="exchange"
-  //                           render={({ onChange, value }) => (
-  //                             <CustomSelect
-  //                               label={intl.formatMessage({
-  //                                 id: "accounts.exchange",
-  //                               })}
-  //                               labelPlacement="top"
-  //                               onChange={(/** @type {string} **/ v) => {
-  //                                 setValue("exchangeType", typeOptions[0].val);
-  //                                 onChange(v);
-  //                               }}
-  //                               options={exchangeOptions}
-  //                               value={value}
-  //                             />
-  //                           )}
-  //                         />
-  //                       </Box>
-  //                     )}
-  //                     <Box className="inputBox typeBox" pl={isCopyTrading ? 1 : 0}>
-  //                       <Controller
-  //                         control={control}
-  //                         defaultValue={typeOptions[0].val}
-  //                         name="exchangeType"
-  //                         render={({ onChange, value }) => (
-  //                           <CustomSelect
-  //                             label={intl.formatMessage({
-  //                               id: "accounts.exchange.type",
-  //                             })}
-  //                             labelPlacement="top"
-  //                             onChange={onChange}
-  //                             options={typeOptions}
-  //                             value={value}
-  //                           />
-  //                         )}
-  //                       />
-  //                     </Box>
-  //                   </Box>
-  //                   {isCopyTrading ? (
-  //                     <Box
-  //                       alignItems="flex-start"
-  //                       className="boxWrapper"
-  //                       display="flex"
-  //                       flexDirection="row"
-  //                     >
-  //                       <Box
-  //                         className="inputBox minBalanceBox"
-  //                         display="flex"
-  //                         flex={1}
-  //                         flexDirection="column"
-  //                         mr={1}
-  //                       >
-  //                         <label className="customLabel">
-  //                           <Typography className="callout2 selectLabel" noWrap>
-  //                             <FormattedMessage id="srv.edit.minbalance" />
-  //                           </Typography>
-  //                         </label>
-  //                         <OutlinedInput
-  //                           className="customInput"
-  //                           error={!!errors.minBalance}
-  //                           inputProps={{
-  //                             min: 0,
-  //                           }}
-  //                           inputRef={register({
-  //                             required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
-  //                             min: 0,
-  //                           })}
-  //                           name="minAllocatedBalance"
-  //                           type="number"
-  //                         />
-  //                         {errors.minAllocatedBalance && (
-  //                           <span className="errorText">{errors.minAllocatedBalance.message}</span>
-  //                         )}
-  //                       </Box>
-  //                       <Box className="inputBox" display="flex" flex={1} ml={1}>
-  //                         <Controller
-  //                           control={control}
-  //                           defaultValue={"USDT"}
-  //                           name="quote"
-  //                           render={({ onChange, value }) => (
-  //                             <CustomSelect
-  //                               label={intl.formatMessage({
-  //                                 id: "fil.quote",
-  //                               })}
-  //                               labelPlacement="top"
-  //                               onChange={onChange}
-  //                               options={quotes}
-  //                               search={true}
-  //                               value={value}
-  //                             />
-  //                           )}
-  //                           rules={{
-  //                             required: intl.formatMessage({ id: "form.error.quote" }),
-  //                           }}
-  //                         />
-  //                         {errors.quote && <span className="errorText">{errors.quote.message}</span>}
-  //                       </Box>
-  //                     </Box>
-  //                   ) : (
-  //                     <ProviderUserOptions exchangeOptions={exchangeOptions} quotes={quotes} />
-  //                   )}
-  //                 </Box>
-  //                 <CustomButton className="bgPurple" loading={loading} type="submit">
-  //                   <FormattedMessage id="provider.createaccount" />
-  //                 </CustomButton>
-  //               </>
-  //             </Box>
-  //           ) : (
-  //             <CircularProgress className="loader" />
-  //           )}
-  //         </Box>
-  //       </form>
-  //     </FormProvider>
-  //   );
 };
 
 export default CreateTraderForm;

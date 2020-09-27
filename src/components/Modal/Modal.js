@@ -35,7 +35,7 @@ const GenericModal = (props) => {
       //   keepMounted={fullScreen}
     >
       {/* @ts-ignore */}
-      {!fullScreen && !persist && <CloseIcon className="closeIcon" onClick={onClose} />}
+      {!persist && <CloseIcon className="closeIcon" onClick={onClose} />}
       {children}
     </Dialog>
   );

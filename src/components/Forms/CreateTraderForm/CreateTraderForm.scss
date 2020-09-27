@@ -6,6 +6,10 @@
     opacity: 0.6;
   }
 
+  .model {
+    cursor: pointer;
+  }
+
   .iconButton {
     border: solid 2px transparent;
     border-radius: 50%;
@@ -59,19 +63,18 @@
     }
   }
 
-  .controlWrapper {
-    align-items: flex-start;
-    flex-direction: column;
+  .customLabel {
+    font-weight: 700;
   }
 
-  .accountLabel {
-    font-weight: 600;
+  .inputBox {
+    margin-bottom: 32px;
   }
 
   .step2 {
     border-right: solid 1px var(--border-color);
     padding: 0 42px;
-    width: 46%;
+    width: 44%;
 
     .title {
       margin-bottom: 18px;
@@ -85,25 +88,12 @@
       }
     }
 
-    .inputBox {
-      margin-bottom: 32px;
-    }
-
     .minAllocatedBalance {
       max-width: 150px;
     }
 
-    .summary {
-      cursor: pointer;
-
-      svg {
-        margin-left: 19px;
-      }
-    }
-
-    .tips {
-      margin-top: 24px;
-      white-space: pre-line;
+    .tip {
+      margin-bottom: 12px;
     }
   }
 
@@ -118,10 +108,10 @@
 
   .step3 {
     padding-left: 42px;
-    width: 25%;
+    width: 27%;
 
-    .customButton {
-      margin-top: 31px;
+    h3 {
+      margin-bottom: 18px;
     }
   }
 }
