@@ -273,7 +273,7 @@ const CreateTraderForm = () => {
               {step === 2 && (
                 <>
                   <Typography className="body1 tip">
-                    <FormattedMessage id="cannotmodify" />
+                    <FormattedMessage id="copyt.cannotmodify" />
                   </Typography>
                   <CustomButton
                     className="bgPurple bold"
@@ -293,7 +293,7 @@ const CreateTraderForm = () => {
           {step === 3 && (
             <>
               <Typography variant="h3">
-                <FormattedMessage id="laststep" />
+                <FormattedMessage id="copyt.laststep" />
               </Typography>
               <Box display="flex" flexDirection="column" className="inputBox">
                 <label htmlFor="name" className="customLabel">

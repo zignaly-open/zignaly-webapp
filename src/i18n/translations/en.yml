@@ -640,11 +640,11 @@ signalp.option.disclaimer.error: "You need to accept the disclaimer from this pr
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Name"
-cannotmodify: "Please, review this information, only the minimum allocated balance can be modified later."
-laststep: "Last step (modifiable later)"
 copyt.become: "Become a Copy Trader"
+copyt.cannotmodify: "Please, review this information, only the minimum allocated balance can be modified later."
 copyt.create: "Create a Copy Trading Service"
 copyt.create.desc: "Offer your services as an expert trader to be copied by our users"
+copyt.laststep: "Last step (modifiable later)"
 copyt.model.choose: "Choose Copy Trading Model"
 copyt.monthlyfee.service: "Monthly Fee Service"
 copyt.profitsharing.service: "Profit Sharing Service"
