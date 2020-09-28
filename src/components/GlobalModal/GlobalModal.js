@@ -36,7 +36,7 @@ const GlobalModal = (props) => {
   }, [isOpen]);
 
   return (
-    <Modal onClose={onClose} persist={false} size="fullscreen" state={isOpen}>
+    <Modal onClose={onClose} persist={false} size="fullscreen" state={isOpen} showCloseIcon={false}>
       {content({ onClose })}
     </Modal>
   );
