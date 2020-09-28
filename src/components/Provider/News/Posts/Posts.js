@@ -41,7 +41,7 @@ const Posts = ({ posts }) => {
 };
 
 const NoPosts = () => (
-  <Box className="noPosts" display="flex" alignItems="center" flexDirection="column">
+  <Box alignItems="center" className="noPosts" display="flex" flexDirection="column">
     <Astronaut />
     <Typography variant="h1">
       <FormattedMessage id="wall.nopost" />

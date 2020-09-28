@@ -121,7 +121,7 @@ const CreateTraderForm = () => {
         <FormattedMessage id="copyt.create.desc" />
       </Typography>
       <form method="post" onSubmit={handleSubmit(submitForm)}>
-        <Box className="step1" display="flex" flexDirection="column" alignItems="flex-start">
+        <Box alignItems="flex-start" className="step1" display="flex" flexDirection="column">
           {exchanges ? (
             <>
               <Typography className="body1 bold" variant="h3">
@@ -131,10 +131,10 @@ const CreateTraderForm = () => {
               <Box display="flex">
                 {profitSharingEnabled && (
                   <Box
-                    display="flex"
-                    flexDirection="row"
                     alignItems="center"
                     className="model"
+                    display="flex"
+                    flexDirection="row"
                     onClick={() => setSelectedModel(MODEL_PROFIT_SHARING)}
                   >
                     <img
@@ -151,10 +151,10 @@ const CreateTraderForm = () => {
                 )}
 
                 <Box
-                  display="flex"
-                  flexDirection="row"
                   alignItems="center"
                   className="model"
+                  display="flex"
+                  flexDirection="row"
                   onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
                 >
                   <img
@@ -194,10 +194,10 @@ const CreateTraderForm = () => {
           ) : (
             <Box
               alignItems="center"
+              className="loaderBox"
               display="flex"
               flexDirection="column"
               justifyContent="center"
-              className="loaderBox"
             >
               <CircularProgress color="primary" size={50} />
             </Box>
@@ -207,9 +207,9 @@ const CreateTraderForm = () => {
           {exchange && step >= 2 && (
             <>
               <ToggleButtonsExchangeType
+                exchangeType={exchangeType}
                 exchangeTypes={selectedModel !== MODEL_PROFIT_SHARING ? exchange.type : ["futures"]}
                 setExchangeType={setExchangeType}
-                exchangeType={exchangeType}
               />
               <Box
                 alignItems="flex-start"
@@ -295,13 +295,14 @@ const CreateTraderForm = () => {
               <Typography variant="h3">
                 <FormattedMessage id="copyt.laststep" />
               </Typography>
-              <Box display="flex" flexDirection="column" className="inputBox">
-                <label htmlFor="name" className="customLabel">
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel" htmlFor="name">
                   <FormattedMessage id="copyt.servicename" />
                 </label>
                 <OutlinedInput
                   className="customInput"
                   defaultValue=""
+                  error={!!errors.name}
                   id="name"
                   inputRef={register({
                     required: intl.formatMessage({ id: "form.error.name" }),
@@ -314,7 +315,6 @@ const CreateTraderForm = () => {
                       message: intl.formatMessage({ id: "form.error.name.length" }),
                     },
                   })}
-                  error={!!errors.name}
                   name="name"
                 />
                 {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
@@ -346,9 +346,9 @@ const CreateTraderForm = () => {
               )}
               <CustomButton
                 className="bgPurple bold"
+                disabled={!isValid}
                 loading={loading}
                 type="submit"
-                disabled={!isValid}
               >
                 <FormattedMessage id="provider.createaccount" />
               </CustomButton>

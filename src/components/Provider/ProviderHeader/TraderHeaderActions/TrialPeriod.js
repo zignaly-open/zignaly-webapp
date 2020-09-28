@@ -15,7 +15,6 @@ import moment from "moment";
  */
 const TrialPeriod = ({ provider }) => {
   const currentTime = new Date().getTime();
-  console.log(provider);
 
   const getTime = () => {
     return moment.duration(parseInt(provider.stripe.cancelDate) - currentTime).humanize();
