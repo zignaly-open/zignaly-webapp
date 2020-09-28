@@ -9,29 +9,27 @@ import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {ExchangeListEntity} exchange
+ * @property {Array<string>} exchangeTypes
+ * @property {string} exchangeType
+ * @property {function} setExchangeType
  */
 
 /**
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ToggleButtonsExchangeType = ({ exchange, exchangeType, setExchangeType }) => {
+const ToggleButtonsExchangeType = ({ exchangeTypes, exchangeType, setExchangeType }) => {
   // Account types options
-  const typeOptions =
-    exchange &&
-    exchange.type.map((t) => ({
-      val: t,
-      label: t.charAt(0).toUpperCase() + t.slice(1),
-    }));
+  const typeOptions = exchangeTypes.map((t) => ({
+    val: t,
+    label: t.charAt(0).toUpperCase() + t.slice(1),
+  }));
 
   useEffect(() => {
     // Set default exchange type on exchange change.
-    if (exchange) {
-      setExchangeType(typeOptions[0].val);
-    }
+    setExchangeType(typeOptions[0].val);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exchange]);
+  }, [exchangeTypes]);
 
   return (
     <>

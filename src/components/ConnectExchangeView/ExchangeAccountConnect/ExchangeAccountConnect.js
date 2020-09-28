@@ -168,7 +168,7 @@ const ExchangeAccountConnect = () => {
         {step >= 2 && selectedExchange && (
           <>
             <ToggleButtonsExchangeType
-              exchange={selectedExchange}
+              exchangeTypes={selectedExchange.type}
               setExchangeType={setExchangeType}
               exchangeType={exchangeType}
             />

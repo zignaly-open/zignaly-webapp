@@ -194,7 +194,13 @@ const CreateTraderForm = () => {
               )}
             </>
           ) : (
-            <Box alignItems="center" display="flex" flexDirection="column" justifyContent="center">
+            <Box
+              alignItems="center"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              className="loaderBox"
+            >
               <CircularProgress color="primary" size={50} />
             </Box>
           )}
@@ -203,7 +209,7 @@ const CreateTraderForm = () => {
           {exchange && step >= 2 && (
             <>
               <ToggleButtonsExchangeType
-                exchange={exchange}
+                exchangeTypes={selectedModel !== MODEL_PROFIT_SHARING ? exchange.type : ["futures"]}
                 setExchangeType={setExchangeType}
                 exchangeType={exchangeType}
               />
