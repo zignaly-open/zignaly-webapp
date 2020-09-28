@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./CreateTraderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress, Hidden } from "@material-ui/core";
+import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm, Controller, FormProvider } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
@@ -16,13 +16,11 @@ import MonthlyFee from "../../../images/ct/profit.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 
-const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
- * @typedef {import('../../../services/tradeApiClient.types').ProviderOptions} ProviderOptions
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
  */
 
@@ -72,22 +70,15 @@ const CreateTraderForm = () => {
     handleSubmit,
     control,
     register,
-    watch,
-    setValue,
     formState: { isValid },
   } = useForm({ mode: "onChange" });
 
   /**
-   * @typedef {ProviderOptions & Object} FormData
+   * @typedef {Object} FormData
+   * @property {string} quote
+   * @property {string} minAllocatedBalance
    * @property {string} name
-   * @property {string} [exchange]
-   * @property {string} [exchangeType]
-   * @property {string} [minAllocatedBalance]
-   * @property {string} [quote]
-   * @property {string} [disclaimer]
-   * @property {string} [exchangeType]
-   * @property {Array<string>} [quotes]
-   * @property {Array<string>} [exchanges]
+   * @property {string} [profitsShare]
    */
 
   /**
@@ -98,14 +89,13 @@ const CreateTraderForm = () => {
    */
   const submitForm = (data) => {
     setLoading(true);
+    const profitsSharing = selectedModel === MODEL_PROFIT_SHARING;
     const payload = {
       ...data,
-      ...(!isCopyTrading && {
-        projectId: "z01",
-        description: "",
-        providerId: CREATE_PROVIDER_ID,
-        version: 2,
-      }),
+      exchange: exchange.name,
+      exchangeType,
+      profitsSharing,
+      ...(profitsSharing && { profitsShare: parseFloat(data.profitsShare) }),
       token: storeSession.tradeApi.accessToken,
     };
 
@@ -338,6 +328,7 @@ const CreateTraderForm = () => {
                   error={!!errors.profitsShare}
                   inputProps={{
                     min: 0,
+                    step: 0.01,
                   }}
                   inputRef={register({
                     validate: (value) =>

@@ -146,6 +146,7 @@
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} twoFA
  * @property {Boolean} createProvider
+ * @property {Boolean} createTrader
  * @property {Boolean} globalModal
  */
 
