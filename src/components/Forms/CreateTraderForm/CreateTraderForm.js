@@ -67,7 +67,15 @@ const CreateTraderForm = () => {
   const quoteAssets = useQuoteAssets(Boolean(exchange), exchange ? exchange.id : null);
   const quotes = Object.keys(quoteAssets);
 
-  const { errors, handleSubmit, control, register, watch, setValue } = useForm();
+  const {
+    errors,
+    handleSubmit,
+    control,
+    register,
+    watch,
+    setValue,
+    formState: { isValid },
+  } = useForm({ mode: "onChange" });
 
   /**
    * @typedef {ProviderOptions & Object} FormData
@@ -279,8 +287,10 @@ const CreateTraderForm = () => {
                   </Typography>
                   <CustomButton
                     className="bgPurple bold"
-                    // disabled={!isValid}
-                    onClick={() => setStep(3)}
+                    disabled={!isValid}
+                    onClick={() => {
+                      setStep(3);
+                    }}
                   >
                     <FormattedMessage id="accounts.next" />
                   </CustomButton>
@@ -325,22 +335,28 @@ const CreateTraderForm = () => {
                 </label>
                 <OutlinedInput
                   className="customInput"
-                  error={!!errors.sharingPercentage}
+                  error={!!errors.profitsShare}
                   inputProps={{
                     min: 0,
                   }}
                   inputRef={register({
-                    required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
-                    min: 0,
+                    validate: (value) =>
+                      (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
+                      intl.formatMessage({ id: "form.error.profitsharing" }),
                   })}
-                  name="sharingPercentage"
+                  name="profitsShare"
                   type="number"
                 />
-                {errors.minAllocatedBalance && (
-                  <span className="errorText">{errors.sharingPercentage.message}</span>
+                {errors.profitsShare && (
+                  <span className="errorText">{errors.profitsShare.message}</span>
                 )}
               </Box>
-              <CustomButton className="bgPurple bold" loading={loading} type="submit">
+              <CustomButton
+                className="bgPurple bold"
+                loading={loading}
+                type="submit"
+                disabled={!isValid}
+              >
                 <FormattedMessage id="provider.createaccount" />
               </CustomButton>
             </>
