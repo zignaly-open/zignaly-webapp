@@ -134,7 +134,7 @@ const Post = ({ post: _post }) => {
         size="medium"
         state={editPostModal}
       >
-        <EditPost post={post} onUpdated={onUpdated} />
+        <EditPost onUpdated={onUpdated} post={post} />
       </Modal>
       <Paper className="postContent">
         <Box className="adminActions" width={1}>

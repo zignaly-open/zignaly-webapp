@@ -168,9 +168,9 @@ const ExchangeAccountConnect = () => {
         {step >= 2 && selectedExchange && (
           <>
             <ToggleButtonsExchangeType
+              exchangeType={exchangeType}
               exchangeTypes={selectedExchange.type}
               setExchangeType={setExchangeType}
-              exchangeType={exchangeType}
             />
             {/* <Typography variant="body1" className="bold title">
               <FormattedMessage id="accounts.exchange.api" />
