@@ -304,6 +304,7 @@ srv.settings.strategy: "Strategieoptionen"
 srv.text.days: "Tage"
 srv.text.expires: "Läuft ab in "
 srv.text.expired: "Abgelaufen"
+srv.text.active: "Active"
 srv.allocated: "Zugewiesen"
 # Hi Franki, the words between curly brakets, we should keep it as they are, because they are variables. Please take it into account. Thanks and regards
 srv.closedpos.tooltip: "Gibt von {count} geschlossenen Positionen während der letzten {Tage} Tage zurück"

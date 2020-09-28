@@ -15,6 +15,7 @@ import moment from "moment";
  */
 const TrialPeriod = ({ provider }) => {
   const currentTime = new Date().getTime();
+  console.log(provider);
 
   const getTime = () => {
     return moment.duration(parseInt(provider.stripe.cancelDate) - currentTime).humanize();
@@ -32,9 +33,15 @@ const TrialPeriod = ({ provider }) => {
           </Typography>
         ) : (
           <Typography className="trial red" variant="h4">
-            <b>
-              <FormattedMessage id="srv.text.expired" />
-            </b>
+            {provider.customerKey && provider.enableInProvider ? (
+              <b>
+                <FormattedMessage id="srv.text.active" />
+              </b>
+            ) : (
+              <b>
+                <FormattedMessage id="srv.text.expired" />
+              </b>
+            )}
           </Typography>
         )}
       </>
