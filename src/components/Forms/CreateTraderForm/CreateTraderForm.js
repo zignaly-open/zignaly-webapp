@@ -31,7 +31,7 @@ const MODEL_MONHTLY_FEE = 1;
  */
 const CreateTraderForm = () => {
   const [loading, setLoading] = useState(false);
-  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
+  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "trsue";
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
   );
@@ -319,29 +319,31 @@ const CreateTraderForm = () => {
                 />
                 {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="copyt.profitsharing.percentage" />
-                </label>
-                <OutlinedInput
-                  className="customInput"
-                  error={!!errors.profitsShare}
-                  inputProps={{
-                    min: 0,
-                    step: 0.01,
-                  }}
-                  inputRef={register({
-                    validate: (value) =>
-                      (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
-                      intl.formatMessage({ id: "form.error.profitsharing" }),
-                  })}
-                  name="profitsShare"
-                  type="number"
-                />
-                {errors.profitsShare && (
-                  <span className="errorText">{errors.profitsShare.message}</span>
-                )}
-              </Box>
+              {selectedModel === MODEL_PROFIT_SHARING && (
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="copyt.profitsharing.percentage" />
+                  </label>
+                  <OutlinedInput
+                    className="customInput"
+                    error={!!errors.profitsShare}
+                    inputProps={{
+                      min: 0,
+                      step: 0.01,
+                    }}
+                    inputRef={register({
+                      validate: (value) =>
+                        (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
+                        intl.formatMessage({ id: "form.error.profitsharing" }),
+                    })}
+                    name="profitsShare"
+                    type="number"
+                  />
+                  {errors.profitsShare && (
+                    <span className="errorText">{errors.profitsShare.message}</span>
+                  )}
+                </Box>
+              )}
               <CustomButton
                 className="bgPurple bold"
                 loading={loading}
