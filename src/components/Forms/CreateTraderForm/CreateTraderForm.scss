@@ -121,24 +121,24 @@
 }
 
 @include media("<=sm") {
-  .exchangeAccountConnect {
-    flex-direction: column;
-    padding-bottom: 72px;
-    padding-top: 18px;
+  .createTraderForm {
+    form {
+      flex-direction: column;
+      padding: 24px 10px 72px;
+    }
+
+    .boxWrapper {
+      flex-direction: column;
+    }
+
+    .customButton {
+      width: 100%;
+    }
 
     .step1 {
       border: 0;
       padding-right: 0;
-
-      .name {
-        margin-bottom: 20px;
-        width: 100%;
-      }
-
-      .accountLabel {
-        margin-bottom: 11px;
-        width: 100%;
-      }
+      width: 100%;
     }
 
     .step2 {
@@ -146,11 +146,6 @@
       margin-top: 14px;
       padding: 0;
       width: 100%;
-
-      .customButton {
-        margin-top: 18px;
-        width: 100%;
-      }
     }
 
     .actionStep2 {
@@ -160,6 +155,7 @@
 
     .step3 {
       padding: 0;
+      width: 100%;
     }
   }
 }
