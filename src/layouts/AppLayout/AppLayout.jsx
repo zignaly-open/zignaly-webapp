@@ -32,6 +32,7 @@ const AppLayout = (props) => {
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
   useScript(withPrefix("widgets/customerSupportWidget.js"));
+  useScript(withPrefix("widgets/zendeskCustomDataScript.js"));
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
