@@ -20,20 +20,6 @@ import initialState from "./initialState";
  */
 
 const migrations = {
-  2: (/** @type {PersistedDefaultState} */ state) => {
-    return {
-      ...state,
-      ...cloneDeep(initialState),
-    };
-  },
-  11: (/** @type {PersistedDefaultState} */ state) => {
-    return {
-      ...state,
-      settings: {
-        ...cloneDeep(initialState.settings),
-      },
-    };
-  },
   13: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
@@ -42,11 +28,6 @@ const migrations = {
         sort: { ...state.settings.sort, signalp: "" },
       },
     };
-  },
-  14: (/** @type {PersistedState} */ state) => {
-    // @ts-ignore
-    state.settings.balanceBox = true;
-    return state;
   },
 };
 
