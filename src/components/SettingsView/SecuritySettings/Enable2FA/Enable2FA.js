@@ -79,9 +79,9 @@ const Enable2FA = () => {
         dispatch(enable2FA(!twoFAEnabled));
         const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
         dispatch(showSuccessAlert("Success", intl.formatMessage({ id: msg })));
-        if (!twoFAEnabled) {
-          navigate("/login");
-        }
+        // if (!twoFAEnabled) {
+        //   navigate("/login");
+        // }
       })
       .catch((/** @type {*} **/ e) => {
         if (e.code === 37) {
