@@ -92,9 +92,9 @@ const CreatePost = ({ providerId, onCreated }) => {
 
       <CustomButton
         className="submitButton"
+        disabled={content.length < 10}
         loading={isLoading}
         onClick={() => createPost()}
-        disabled={content.length < 10}
       >
         <FormattedMessage id="wall.post" />
       </CustomButton>

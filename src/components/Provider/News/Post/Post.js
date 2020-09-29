@@ -117,9 +117,11 @@ const Post = ({ post: _post }) => {
 
     const method = approve ? tradeApi.approvePost(payload) : tradeApi.unapprovePost(payload);
     method
-      .then(() => {
-        dispatch(showSuccessAlert("", approve ? "wall.post.approved" : "wall.post.unapproved"));
-        post.unapproved = !approve;
+      .then((result) => {
+        if (result) {
+          dispatch(showSuccessAlert("", approve ? "wall.post.approved" : "wall.post.unapproved"));
+          post.unapproved = !approve;
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -137,7 +139,7 @@ const Post = ({ post: _post }) => {
         size="medium"
         state={editPostModal}
       >
-        <EditPost post={post} onUpdated={onUpdated} />
+        <EditPost onUpdated={onUpdated} post={post} />
       </Modal>
       <Paper className="postContent">
         <Box className="adminActions" width={1}>
