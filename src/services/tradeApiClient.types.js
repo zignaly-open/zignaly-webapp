@@ -919,7 +919,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} createdAt
  * @property {number} spams
  * @property {number} likes
- * @property {boolean} approved
+ * @property {boolean} unapproved Post has been unlisted by moderators
  */
 
 /**
