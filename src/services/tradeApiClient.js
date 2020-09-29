@@ -1683,6 +1683,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Unapprove post.
+   *
+   * @param {{postId: string}} payload Unapprove post payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async unapprovePost(payload) {
+    const endpointPath = "/fe/api.php?action=unapprovePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
