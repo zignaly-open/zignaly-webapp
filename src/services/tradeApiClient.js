@@ -132,6 +132,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
  * @typedef {import('./tradeApiClient.types').Post} Post
  * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
+ * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
  */
 
 /**
@@ -1695,6 +1696,21 @@ class TradeApiClient {
    */
   async unapprovePost(payload) {
     const endpointPath = "/fe/api.php?action=unapprovePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Add post/comment reply
+   *
+   * @param {AddReplyPayload} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async addReply(payload) {
+    const endpointPath = "/fe/api.php?action=addReply";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

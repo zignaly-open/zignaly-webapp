@@ -15,6 +15,9 @@ import { MoreHoriz } from "@material-ui/icons";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import EditPost from "../EditPost";
+import CreateReply from "../CreateReply";
+import Reply from "../Reply";
+import LazyLoad from "react-lazyload";
 
 /**
  * Parse html to embed medias
@@ -133,95 +136,101 @@ const Post = ({ post: _post }) => {
 
   return (
     <Box className="post">
-      <Modal
-        onClose={() => setEditPostModal(false)}
-        persist={false}
-        size="medium"
-        state={editPostModal}
-      >
-        <EditPost onUpdated={onUpdated} post={post} />
-      </Modal>
-      <Paper className="postContent">
-        <Box className="adminActions" width={1}>
-          {userData.isAdmin ? (
-            post.unapproved ? (
-              <CustomButton
-                className="textPurple"
-                loading={isApproving}
-                onClick={() => toggleApprove(true)}
-              >
-                <Typography className="bold" variant="body1">
-                  <FormattedMessage id="wall.approve" />
-                </Typography>
-              </CustomButton>
+      <LazyLoad>
+        <Modal
+          onClose={() => setEditPostModal(false)}
+          persist={false}
+          size="medium"
+          state={editPostModal}
+        >
+          <EditPost onUpdated={onUpdated} post={post} />
+        </Modal>
+        <Paper className="postContent">
+          <Box className="adminActions" width={1}>
+            {userData.isAdmin ? (
+              post.unapproved ? (
+                <CustomButton
+                  className="textPurple"
+                  loading={isApproving}
+                  onClick={() => toggleApprove(true)}
+                >
+                  <Typography className="bold" variant="body1">
+                    <FormattedMessage id="wall.approve" />
+                  </Typography>
+                </CustomButton>
+              ) : (
+                <CustomButton
+                  className="deleteButton"
+                  loading={isApproving}
+                  onClick={() => toggleApprove(false)}
+                >
+                  <Typography className="bold" variant="body1">
+                    <FormattedMessage id="wall.unapprove" />
+                  </Typography>
+                </CustomButton>
+              )
             ) : (
-              <CustomButton
-                className="deleteButton"
-                loading={isApproving}
-                onClick={() => toggleApprove(false)}
-              >
+              post.unapproved && (
                 <Typography className="bold" variant="body1">
-                  <FormattedMessage id="wall.unapprove" />
+                  <FormattedMessage id="wall.unapproved" />
                 </Typography>
-              </CustomButton>
-            )
-          ) : (
-            post.unapproved && (
-              <Typography className="bold" variant="body1">
-                <FormattedMessage id="wall.unapproved" />
-              </Typography>
-            )
-          )}
-        </Box>
-        <div className={post.unapproved ? "disabled" : ""}>
-          <Box
-            alignItems="center"
-            className="postHeader"
-            display="flex"
-            justifyContent="space-between"
-          >
-            <Box alignItems="center" display="flex">
-              <ProviderLogo
-                defaultImage={ProfileIcon}
-                size="48px"
-                title={post.author.userName}
-                url={post.author.imageUrl}
-              />
-              <Box className="metaBox">
-                <Typography className="username body1">{post.author.userName}</Typography>
-                <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
-              </Box>
-            </Box>
-            {post.author.userId === userData.userId && (
-              <>
-                <IconButton
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleMenuOpen}
-                >
-                  <MoreHoriz />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  id="simple-menu"
-                  keepMounted
-                  onClose={handleMenuClose}
-                  open={Boolean(anchorEl)}
-                >
-                  {post.author.userId === userData.userId && (
-                    <MenuItem onClick={handleEdit}>
-                      <FormattedMessage id="srv.edit" />
-                    </MenuItem>
-                  )}
-                </Menu>
-              </>
+              )
             )}
           </Box>
-          <Typography variant="body1">
-            <div dangerouslySetInnerHTML={{ __html: content }} />
-          </Typography>
-        </div>
-      </Paper>
+          <div className={post.unapproved ? "disabled" : ""}>
+            <Box
+              alignItems="center"
+              className="postHeader"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Box alignItems="center" display="flex">
+                <ProviderLogo
+                  defaultImage={ProfileIcon}
+                  size="48px"
+                  title={post.author.userName}
+                  url={post.author.imageUrl}
+                />
+                <Box className="metaBox">
+                  <Typography className="username body1">{post.author.userName}</Typography>
+                  <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
+                </Box>
+              </Box>
+              {post.author.userId === userData.userId && (
+                <>
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleMenuOpen}
+                  >
+                    <MoreHoriz />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="simple-menu"
+                    keepMounted
+                    onClose={handleMenuClose}
+                    open={Boolean(anchorEl)}
+                  >
+                    {post.author.userId === userData.userId && (
+                      <MenuItem onClick={handleEdit}>
+                        <FormattedMessage id="srv.edit" />
+                      </MenuItem>
+                    )}
+                  </Menu>
+                </>
+              )}
+            </Box>
+            <Typography variant="body1">
+              <div dangerouslySetInnerHTML={{ __html: content }} />
+            </Typography>
+          </div>
+        </Paper>
+        {post.replies.map((reply) => (
+          <Reply reply={reply} />
+        ))}
+        <CreateReply />
+      </LazyLoad>
     </Box>
   );
 };

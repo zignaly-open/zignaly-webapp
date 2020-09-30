@@ -920,6 +920,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} spams
  * @property {number} likes
  * @property {boolean} unapproved Post has been unlisted by moderators
+ * @property {Array<Post>} replies
+ */
+
+/**
+ * @typedef {Object} AddReplyPayload
+ * @property {string} postId
+ * @property {string} [replyId] If replying to a comment
+ * @property {string} content
  */
 
 /**
