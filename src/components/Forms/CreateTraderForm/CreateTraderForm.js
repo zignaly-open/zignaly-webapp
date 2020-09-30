@@ -31,7 +31,7 @@ const MODEL_MONHTLY_FEE = 1;
  */
 const CreateTraderForm = () => {
   const [loading, setLoading] = useState(false);
-  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "trsue";
+  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
   );
@@ -76,7 +76,7 @@ const CreateTraderForm = () => {
   /**
    * @typedef {Object} FormData
    * @property {string} quote
-   * @property {string} minAllocatedBalance
+   * @property {string} [minAllocatedBalance]
    * @property {string} name
    * @property {string} [profitsShare]
    */
@@ -234,46 +234,56 @@ const CreateTraderForm = () => {
                         value={value}
                       />
                     )}
-                    rules={{
-                      required: intl.formatMessage({ id: "form.error.quote" }),
-                    }}
+                    rules={
+                      {
+                        //   required: intl.formatMessage({ id: "form.error.quote" }),
+                      }
+                    }
                   />
                   {errors.quote && <span className="errorText">{errors.quote.message}</span>}
                 </Box>
-                <Box
-                  className="inputBox minBalanceBox"
-                  display="flex"
-                  flex={1}
-                  flexDirection="column"
-                  mr={1}
-                >
-                  <label className="customLabel">
-                    <Typography className="callout2 selectLabel" noWrap>
-                      <FormattedMessage id="srv.edit.minbalance" />
-                    </Typography>
-                  </label>
-                  <OutlinedInput
-                    className="customInput minAllocatedBalance"
-                    error={!!errors.minAllocatedBalance}
-                    inputProps={{
-                      min: 0,
-                    }}
-                    inputRef={register({
-                      required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
-                      min: 0,
-                    })}
-                    name="minAllocatedBalance"
-                    type="number"
-                  />
-                  {errors.minAllocatedBalance && (
-                    <span className="errorText">{errors.minAllocatedBalance.message}</span>
-                  )}
-                </Box>
+                {selectedModel === MODEL_MONHTLY_FEE && (
+                  <Box
+                    className="inputBox minBalanceBox"
+                    display="flex"
+                    flex={1}
+                    flexDirection="column"
+                    mr={1}
+                  >
+                    <label className="customLabel">
+                      <Typography className="callout2 selectLabel" noWrap>
+                        <FormattedMessage id="srv.edit.minbalance" />
+                      </Typography>
+                    </label>
+                    <OutlinedInput
+                      className="customInput minAllocatedBalance"
+                      error={!!errors.minAllocatedBalance}
+                      inputProps={{
+                        min: 0,
+                      }}
+                      inputRef={register({
+                        required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
+                        min: 0,
+                      })}
+                      name="minAllocatedBalance"
+                      type="number"
+                    />
+                    {errors.minAllocatedBalance && (
+                      <span className="errorText">{errors.minAllocatedBalance.message}</span>
+                    )}
+                  </Box>
+                )}
               </Box>
               {step === 2 && (
                 <>
                   <Typography className="body1 tip">
-                    <FormattedMessage id="copyt.cannotmodify" />
+                    <FormattedMessage
+                      id={
+                        selectedModel === MODEL_PROFIT_SHARING
+                          ? "copyt.cannotmodify"
+                          : "copyt.cannotmodify.minAllocatedBalance"
+                      }
+                    />
                   </Typography>
                   <CustomButton
                     className="bgPurple bold"
