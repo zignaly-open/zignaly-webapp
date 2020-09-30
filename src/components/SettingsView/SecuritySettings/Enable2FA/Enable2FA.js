@@ -10,7 +10,6 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import { enable2FA } from "../../../../store/actions/user";
-import { navigate } from "gatsby";
 
 /**
  * Provides a component to enable 2FA.
