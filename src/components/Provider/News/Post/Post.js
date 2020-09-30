@@ -226,9 +226,11 @@ const Post = ({ post: _post }) => {
             </Typography>
           </div>
           <div className="replyBox">
-            {post.replies.map((reply) => (
-              <Reply reply={reply} />
-            ))}
+            {post.replies
+              .sort((r1, r2) => r2.createdAt - r1.createdAt)
+              .map((reply) => (
+                <Reply reply={reply} key={reply.id} />
+              ))}
             <CreateReply postId={post.id} />
           </div>
         </Paper>
