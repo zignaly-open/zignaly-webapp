@@ -1,10 +1,12 @@
 import { createStore, applyMiddleware } from "redux";
+import { cloneDeep } from "lodash";
 import { persistStore, persistReducer, createMigrate } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers/rootReducer";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { composeWithDevTools } from "redux-devtools-extension";
+import initialState from "./initialState";
 
 /**
  * @typedef {import("redux").Action} Action
@@ -18,6 +20,20 @@ import { composeWithDevTools } from "redux-devtools-extension";
  */
 
 const migrations = {
+  2: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      ...cloneDeep(initialState),
+    };
+  },
+  11: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...cloneDeep(initialState.settings),
+      },
+    };
+  },
   13: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
