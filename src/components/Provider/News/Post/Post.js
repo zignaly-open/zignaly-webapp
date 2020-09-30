@@ -225,11 +225,13 @@ const Post = ({ post: _post }) => {
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Typography>
           </div>
+          <div className="replyBox">
+            {post.replies.map((reply) => (
+              <Reply reply={reply} />
+            ))}
+            <CreateReply postId={post.id} />
+          </div>
         </Paper>
-        {post.replies.map((reply) => (
-          <Reply reply={reply} />
-        ))}
-        <CreateReply />
       </LazyLoad>
     </Box>
   );

@@ -43,4 +43,13 @@
       position: relative;
     }
   }
+
+  .replyBox {
+    margin: 12px 24px;
+    width: 100%;
+
+    .providerLogo {
+      margin-right: 12px;
+    }
+  }
 }
