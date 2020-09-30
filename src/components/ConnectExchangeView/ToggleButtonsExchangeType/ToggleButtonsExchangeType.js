@@ -29,7 +29,7 @@ const ToggleButtonsExchangeType = ({ exchangeTypes, exchangeType, setExchangeTyp
     // Set default exchange type on exchange change.
     setExchangeType(typeOptions[0].val);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exchangeTypes]);
+  }, [exchangeTypes.length]);
 
   return (
     <>
@@ -41,7 +41,9 @@ const ToggleButtonsExchangeType = ({ exchangeTypes, exchangeType, setExchangeTyp
           <ToggleButtonGroup
             className="typeButtons"
             exclusive
-            onChange={(e, val) => setExchangeType(val)}
+            onChange={(e, val) => {
+              if (val) setExchangeType(val);
+            }}
             value={exchangeType}
           >
             {typeOptions.map((t) => (
