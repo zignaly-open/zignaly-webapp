@@ -76,6 +76,7 @@ const addLineBreaks = (string) =>
  * @typedef {Object} DefaultProps
  * @property {Post} reply
  * @property {string} postId
+ * @property {function} onReplyAdded
  */
 
 /**
@@ -84,7 +85,7 @@ const addLineBreaks = (string) =>
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const ReplyContainer = ({ postId, reply }) => {
+const ReplyContainer = ({ postId, reply, onReplyAdded }) => {
   const [addReply, showAddReply] = useState(false);
 
   return (
@@ -97,7 +98,7 @@ const ReplyContainer = ({ postId, reply }) => {
             <Reply reply={r} key={reply.id} />
           ))}
       </div>
-      {addReply && <CreateReply postId={postId} replyId={reply.id} />}
+      {addReply && <CreateReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
     </div>
   );
 };

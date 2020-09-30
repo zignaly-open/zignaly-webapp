@@ -1705,7 +1705,7 @@ class TradeApiClient {
    *
    * @param {AddReplyPayload} payload Payload
    *
-   * @returns {Promise<boolean>} Result
+   * @returns {Promise<Post>} Result
    *
    * @memberof TradeApiClient
    */

@@ -106,6 +106,26 @@ const Post = ({ post: _post }) => {
   };
 
   /**
+   * Reply added callback
+   * @param {Post} reply reply
+   * @param {string} [replyId] parent reply id
+   * @returns {void}
+   */
+  const onReplyAdded = (reply, replyId) => {
+    const newPost = { ...post };
+    if (replyId) {
+      // Add new nested reply
+      newPost.replies = newPost.replies.map((r) =>
+        r.id === replyId ? { ...r, replies: [...r.replies].concat(reply) } : r,
+      );
+    } else {
+      // Add new comment
+      newPost.replies = [...post.replies].concat(reply);
+    }
+    setPost(newPost);
+  };
+
+  /**
    * Toggle post approval
    * @param {boolean} approve Approve or not
    * @returns {void}
@@ -229,9 +249,9 @@ const Post = ({ post: _post }) => {
             {post.replies
               .sort((r1, r2) => r2.createdAt - r1.createdAt)
               .map((reply) => (
-                <Reply reply={reply} key={reply.id} postId={post.id} />
+                <Reply reply={reply} key={reply.id} postId={post.id} onReplyAdded={onReplyAdded} />
               ))}
-            <CreateReply postId={post.id} />
+            <CreateReply postId={post.id} onReplyAdded={onReplyAdded} />
           </div>
         </Paper>
       </LazyLoad>

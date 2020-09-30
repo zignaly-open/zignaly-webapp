@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
  * @typedef {Object} DefaultProps
  * @property {string} postId
  * @property {string} [replyId]
+ * @property {function} onReplyAdded
  */
 
 /**
@@ -26,7 +27,7 @@ import { useDispatch } from "react-redux";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const CreateReply = ({ postId, replyId }) => {
+const CreateReply = ({ postId, replyId, onReplyAdded }) => {
   const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const [reply, setReply] = useState("");
@@ -56,8 +57,9 @@ const CreateReply = ({ postId, replyId }) => {
 
     tradeApi
       .addReply(payload)
-      .then(() => {
+      .then((newReply) => {
         setReply("");
+        onReplyAdded(newReply, replyId);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
