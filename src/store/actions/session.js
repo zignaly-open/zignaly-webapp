@@ -94,12 +94,12 @@ export const registerUser = (payload, setLoading) => {
         name: responseData.firstName,
         email: responseData.email,
         params: {
-          user_id: responseData.userId,
-          exchange_connected: responseData.binanceConnected,
-          provider_enabled: responseData.providerEnable,
-          open_count: responseData.buysCount,
-          close_count: responseData.sellsCount,
-          has_activated: responseData.hasActivated,
+          userId: responseData.userId,
+          exchangeConnected: responseData.binanceConnected,
+          providerEnabled: responseData.providerEnable,
+          openCount: responseData.buysCount,
+          closeCount: responseData.sellsCount,
+          hasActivated: responseData.hasActivated,
         },
       });
       ls.newPageView();
