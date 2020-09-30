@@ -58,6 +58,7 @@ export const endTradeApiSession = () => {
         type: END_TRADE_API_SESSION,
       };
 
+      ls.invalidateSession();
       dispatch(action);
       dispatch(unsetUser());
       dispatch(unsetProvider());
@@ -92,7 +93,14 @@ export const registerUser = (payload, setLoading) => {
       ls.identify({
         name: responseData.firstName,
         email: responseData.email,
-        userId: responseData.userId,
+        params: {
+          user_id: responseData.userId,
+          exchange_connected: responseData.binanceConnected,
+          provider_enabled: responseData.providerEnable,
+          open_count: responseData.buysCount,
+          close_count: responseData.sellsCount,
+          has_activated: responseData.hasActivated,
+        },
       });
       ls.newPageView();
       dispatch(startTradeApiSession(responseData));
