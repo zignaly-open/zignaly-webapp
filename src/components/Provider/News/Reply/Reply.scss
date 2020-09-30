@@ -3,10 +3,23 @@
 
   .username {
     margin-left: -2px;
-    margin-right: 12px;
   }
 
   .replyHeader {
     margin-bottom: 4px;
+  }
+
+  .replyBox {
+    margin-left: 42px;
+  }
+
+  .sep {
+    font-size: 24px;
+    margin: 0 6px;
+  }
+
+  .action {
+    cursor: pointer;
+    opacity: 0.7;
   }
 }

@@ -225,11 +225,11 @@ const Post = ({ post: _post }) => {
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Typography>
           </div>
-          <div className="replyBox">
+          <div className="repliesBox">
             {post.replies
               .sort((r1, r2) => r2.createdAt - r1.createdAt)
               .map((reply) => (
-                <Reply reply={reply} key={reply.id} />
+                <Reply reply={reply} key={reply.id} postId={post.id} />
               ))}
             <CreateReply postId={post.id} />
           </div>
