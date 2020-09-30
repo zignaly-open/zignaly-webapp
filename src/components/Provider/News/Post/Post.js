@@ -221,7 +221,7 @@ const Post = ({ post: _post }) => {
                 </>
               )}
             </Box>
-            <Typography variant="body1">
+            <Typography variant="body1" component="div">
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Typography>
           </div>

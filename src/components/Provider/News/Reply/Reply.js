@@ -12,20 +12,18 @@ import CreateReply from "../CreateReply";
  */
 
 /**
- * @typedef {Object} DefaultProps
+ * @typedef {Object} ReplyProps
  * @property {Post} reply
- * @property {string} postId
+ * @property {function} [showAddReply]
  */
 
 /**
- * Render a post.
+ * Render a reply.
  *
- * @param {DefaultProps} props Component props.
+ * @param {ReplyProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Reply = ({ postId, reply }) => {
-  const [addReply, showAddReply] = useState(false);
-
+const Reply = ({ reply, showAddReply }) => {
   return (
     <Box className="reply">
       <Box className="replyHeader" display="flex" alignItems="center">
@@ -42,17 +40,20 @@ const Reply = ({ postId, reply }) => {
           <Typography className="action callout1">
             <FormattedMessage id="wall.like" />
           </Typography>
-          <span className="sep">·</span>
-          <Typography
-            className="action callout1"
-            onClick={() => {
-              showAddReply(true);
-            }}
-          >
-            <FormattedMessage id="wall.reply" />
-          </Typography>
+          {showAddReply && (
+            <>
+              <span className="sep">·</span>
+              <Typography
+                className="action callout1"
+                onClick={() => {
+                  showAddReply(true);
+                }}
+              >
+                <FormattedMessage id="wall.reply" />
+              </Typography>
+            </>
+          )}
         </Box>
-        {addReply && <CreateReply postId={postId} replyId={reply.id} />}
       </div>
     </Box>
   );
@@ -71,4 +72,34 @@ const addLineBreaks = (string) =>
     </React.Fragment>
   ));
 
-export default Reply;
+/**
+ * @typedef {Object} DefaultProps
+ * @property {Post} reply
+ * @property {string} postId
+ */
+
+/**
+ * Render a reply, nested replies and reply input.
+ *
+ * @param {DefaultProps} props Component props.
+ * @returns {JSX.Element} JSX
+ */
+const ReplyContainer = ({ postId, reply }) => {
+  const [addReply, showAddReply] = useState(false);
+
+  return (
+    <div className="replyContainer">
+      <Reply reply={reply} showAddReply={showAddReply} />
+      <div className="childReplies">
+        {reply.replies
+          .sort((r1, r2) => r2.createdAt - r1.createdAt)
+          .map((r) => (
+            <Reply reply={r} key={reply.id} />
+          ))}
+      </div>
+      {addReply && <CreateReply postId={postId} replyId={reply.id} />}
+    </div>
+  );
+};
+
+export default ReplyContainer;

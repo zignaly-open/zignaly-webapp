@@ -1,12 +1,8 @@
 .reply {
-  margin: 22px 0;
+  margin: 18px 0;
 
   .username {
     margin-left: -2px;
-  }
-
-  .replyHeader {
-    margin-bottom: 4px;
   }
 
   .replyBox {
@@ -21,5 +17,16 @@
   .action {
     cursor: pointer;
     opacity: 0.7;
+  }
+}
+
+.replyContainer {
+  .childReplies,
+  .createReply {
+    margin-left: 42px;
+  }
+
+  .createReply {
+    margin-bottom: 18px;
   }
 }
