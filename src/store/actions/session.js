@@ -57,7 +57,7 @@ export const endTradeApiSession = () => {
       const action = {
         type: END_TRADE_API_SESSION,
       };
-
+      ls.init("4c9e2f89.fe420345");
       ls.invalidateSession();
       dispatch(action);
       dispatch(unsetUser());
