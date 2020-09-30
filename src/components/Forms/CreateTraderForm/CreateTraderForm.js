@@ -31,7 +31,7 @@ const MODEL_MONHTLY_FEE = 1;
  */
 const CreateTraderForm = () => {
   const [loading, setLoading] = useState(false);
-  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "trsue";
+  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
   );
