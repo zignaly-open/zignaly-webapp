@@ -3420,7 +3420,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
- * @property {string} minAllocatedBalance
+ * @property {string} [minAllocatedBalance]
  * @property {string} quote
  * @property {boolean} [profitsSharing]
  * @property {number} [profitsShare]

@@ -27,6 +27,12 @@ const useExchangeList = (shouldExecute = true) => {
       tradeApi
         .exchangeListGet(payload)
         .then((data) => {
+          const zignalyIndex = data.findIndex((e) => e.name.toLowerCase() === "zignaly");
+          if (zignalyIndex) {
+            // Move zignaly to first place
+            const zignaly = data.splice(zignalyIndex, 1)[0];
+            data.unshift(zignaly);
+          }
           setExchanges(data);
         })
         .catch((e) => {
