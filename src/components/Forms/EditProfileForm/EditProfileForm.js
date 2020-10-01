@@ -489,130 +489,132 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               </Box>
             )}
 
-            <Box
-              className="paymentBox"
-              display="flex"
-              flexDirection="row"
-              flexWrap="wrap"
-              justifyContent="space-between"
-            >
-              <a
-                className="paymentDocsLink"
-                href={howToGetMerchantIDUrl}
-                rel="noopener noreferrer"
-                target="_blank"
+            {!provider.profitsSharing && (
+              <Box
+                className="paymentBox"
+                display="flex"
+                flexDirection="row"
+                flexWrap="wrap"
+                justifyContent="space-between"
               >
-                <FormattedMessage id="srv.payment.docs" />
-              </a>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.merchantid" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.merchantId ? "error" : "")
-                      }
-                      fullWidth
-                      variant="outlined"
-                    />
-                  }
-                  control={control}
-                  defaultValue={
-                    provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
-                  }
-                  name="merchantId"
-                  rules={{
-                    pattern: /^[0-9a-zA-Z]+$/,
-                    maxLength: 50,
-                  }}
-                />
-                {errors.merchantId && (
-                  <span className="errorText">
-                    Merchant ID is required and should only contains letetrs and numbers.
-                  </span>
-                )}
-              </Box>
+                <a
+                  className="paymentDocsLink"
+                  href={howToGetMerchantIDUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <FormattedMessage id="srv.payment.docs" />
+                </a>
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.merchantid" />
+                  </label>
+                  <Controller
+                    as={
+                      <TextField
+                        className={
+                          "customInput " +
+                          (storeSettings.darkStyle ? " dark " : " light ") +
+                          (errors.merchantId ? "error" : "")
+                        }
+                        fullWidth
+                        variant="outlined"
+                      />
+                    }
+                    control={control}
+                    defaultValue={
+                      provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
+                    }
+                    name="merchantId"
+                    rules={{
+                      pattern: /^[0-9a-zA-Z]+$/,
+                      maxLength: 50,
+                    }}
+                  />
+                  {errors.merchantId && (
+                    <span className="errorText">
+                      Merchant ID is required and should only contains letetrs and numbers.
+                    </span>
+                  )}
+                </Box>
 
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.price" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.price ? "error" : "")
-                      }
-                      fullWidth
-                      type="number"
-                      variant="outlined"
-                    />
-                  }
-                  control={control}
-                  defaultValue={
-                    provider.internalPaymentInfo ? provider.internalPaymentInfo.price : ""
-                  }
-                  name="price"
-                  rules={{ required: false }}
-                />
-                {errors.price && <span className="errorText">Price is required.</span>}
-              </Box>
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.price" />
+                  </label>
+                  <Controller
+                    as={
+                      <TextField
+                        className={
+                          "customInput " +
+                          (storeSettings.darkStyle ? " dark " : " light ") +
+                          (errors.price ? "error" : "")
+                        }
+                        fullWidth
+                        type="number"
+                        variant="outlined"
+                      />
+                    }
+                    control={control}
+                    defaultValue={
+                      provider.internalPaymentInfo ? provider.internalPaymentInfo.price : ""
+                    }
+                    name="price"
+                    rules={{ required: false }}
+                  />
+                  {errors.price && <span className="errorText">Price is required.</span>}
+                </Box>
 
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.ipn" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.ipnSecret ? "error" : "")
-                      }
-                      fullWidth
-                      variant="outlined"
-                    />
-                  }
-                  control={control}
-                  defaultValue={provider.internalPaymentInfo.merchantId ? "**********" : ""}
-                  name="ipnSecret"
-                  rules={{ maxLength: 50 }}
-                />
-                {errors.ipnSecret && <span className="errorText">IPN Secret is required.</span>}
-              </Box>
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.ipn" />
+                  </label>
+                  <Controller
+                    as={
+                      <TextField
+                        className={
+                          "customInput " +
+                          (storeSettings.darkStyle ? " dark " : " light ") +
+                          (errors.ipnSecret ? "error" : "")
+                        }
+                        fullWidth
+                        variant="outlined"
+                      />
+                    }
+                    control={control}
+                    defaultValue={provider.internalPaymentInfo.merchantId ? "**********" : ""}
+                    name="ipnSecret"
+                    rules={{ maxLength: 50 }}
+                  />
+                  {errors.ipnSecret && <span className="errorText">IPN Secret is required.</span>}
+                </Box>
 
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.trial" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.trial ? "error" : "")
-                      }
-                      fullWidth
-                      variant="outlined"
-                    />
-                  }
-                  control={control}
-                  defaultValue={
-                    provider.internalPaymentInfo ? provider.internalPaymentInfo.trial : 0
-                  }
-                  name="trial"
-                  rules={{ required: false }}
-                />
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.trial" />
+                  </label>
+                  <Controller
+                    as={
+                      <TextField
+                        className={
+                          "customInput " +
+                          (storeSettings.darkStyle ? " dark " : " light ") +
+                          (errors.trial ? "error" : "")
+                        }
+                        fullWidth
+                        variant="outlined"
+                      />
+                    }
+                    control={control}
+                    defaultValue={
+                      provider.internalPaymentInfo ? provider.internalPaymentInfo.trial : 0
+                    }
+                    name="trial"
+                    rules={{ required: false }}
+                  />
+                </Box>
               </Box>
-            </Box>
+            )}
 
             <Box
               alignItems="center"
