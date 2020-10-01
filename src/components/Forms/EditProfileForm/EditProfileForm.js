@@ -489,7 +489,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               </Box>
             )}
 
-            {!provider.profitsSharing && (
+            {!provider.profitSharing && (
               <Box
                 className="paymentBox"
                 display="flex"

@@ -2429,7 +2429,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} price
  * @property {Boolean} loading
  * @property {Array<String>} signalProviderQuotes
- * @property {Boolean} profitsSharing
+ * @property {Boolean} profitSharing
  */
 
 /**
@@ -2575,7 +2575,7 @@ function createEmptyProviderGetEntity() {
     price: 0,
     loading: false,
     signalProviderQuotes: [""],
-    profitsSharing: false,
+    profitSharing: false,
   };
 }
 
