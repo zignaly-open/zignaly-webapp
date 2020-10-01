@@ -271,27 +271,25 @@ const CreateTraderForm = () => {
                   </Box>
                 )}
               </Box>
+              <Typography className="body1 tip">
+                <FormattedMessage
+                  id={
+                    selectedModel === MODEL_PROFIT_SHARING
+                      ? "copyt.cannotmodify"
+                      : "copyt.cannotmodify.minAllocatedBalance"
+                  }
+                />
+              </Typography>
               {step === 2 && (
-                <>
-                  <Typography className="body1 tip">
-                    <FormattedMessage
-                      id={
-                        selectedModel === MODEL_PROFIT_SHARING
-                          ? "copyt.cannotmodify"
-                          : "copyt.cannotmodify.minAllocatedBalance"
-                      }
-                    />
-                  </Typography>
-                  <CustomButton
-                    className="bgPurple bold"
-                    disabled={!isValid}
-                    onClick={() => {
-                      setStep(3);
-                    }}
-                  >
-                    <FormattedMessage id="accounts.next" />
-                  </CustomButton>
-                </>
+                <CustomButton
+                  className="bgPurple bold"
+                  disabled={!isValid}
+                  onClick={() => {
+                    setStep(3);
+                  }}
+                >
+                  <FormattedMessage id="accounts.next" />
+                </CustomButton>
               )}
             </>
           )}
