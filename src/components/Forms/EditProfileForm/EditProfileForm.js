@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Switch, Tooltip } from "@material-ui/core";
+import { Box, TextField, Typography, Switch, Tooltip, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -491,28 +491,36 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               </Box>
             )}
 
-            {/* {provider.isCopyTrading && provider.profitSharing && (
+            {provider.isCopyTrading && provider.profitSharing && (
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
-                  <FormattedMessage id="srv.edit.minbalance" />
+                  <FormattedMessage id="copyt.profitsharing.percentage" />
                 </label>
-                <TextField
-                  className={
-                    "customInput " +
-                    (storeSettings.darkStyle ? " dark " : " light ") +
-                    (errors.profitShare ? "error" : "")
+                <Controller
+                  as={
+                    <TextField
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      }}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.profitShare ? "error" : "")
+                      }
+                      error={!!errors.profitShare}
+                      fullWidth
+                      variant="outlined"
+                    />
                   }
-                  error={!!errors.profitShare}
-                  fullWidth
-                  inputRef={register({ required: true })}
-                  name="minAllocatedBalance"
-                  onChange={handleMinAllocatedChange}
-                  type="text"
-                  value={provider.profitShare}
-                  variant="outlined"
+                  control={control}
+                  defaultValue={provider.profitShare}
+                  name="profitShare"
+                  rules={{
+                    required: true,
+                  }}
                 />
               </Box>
-            )} */}
+            )}
 
             {!provider.profitSharing && (
               <Box

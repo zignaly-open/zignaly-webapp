@@ -680,6 +680,7 @@ const initialState = {
       loading: false,
       signalProviderQuotes: [],
       profitSharing: false,
+      profitShare: 0,
     },
   },
 };
