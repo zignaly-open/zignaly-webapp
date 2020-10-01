@@ -679,6 +679,7 @@ const initialState = {
       price: 0,
       loading: false,
       signalProviderQuotes: [],
+      profitsSharing: false,
     },
   },
 };
