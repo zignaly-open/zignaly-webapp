@@ -125,7 +125,7 @@ const CreateTraderForm = () => {
                 <FormattedMessage id="copyt.model.choose" />
               </Typography>
 
-              <Box display="flex" className="models">
+              <Box className="models" display="flex">
                 {profitSharingEnabled && (
                   <Box
                     alignItems="center"
