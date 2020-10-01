@@ -115,6 +115,26 @@ const Post = ({ post: _post, onPostDeleted }) => {
   };
 
   /**
+   * Delete reply callback
+   * @param {string} replyId replyId
+   * @returns {void}
+   */
+  const onReplyDeleted = (replyId) => {
+    // Remove comment
+    let replies = post.replies.filter((r) => r.id !== replyId);
+    if (replies.length === post.replies.length) {
+      // Comment not deleted, look for the nested reply
+      for (const reply of replies) {
+        let subReplies = reply.replies.filter((r) => r.id !== replyId);
+
+        if (subReplies.length !== reply.replies.length) break;
+      }
+    }
+    const newPost = { ...post, replies };
+    setPost(newPost);
+  };
+
+  /**
    * Reply added callback
    * @param {Post} reply reply
    * @param {string} [replyId] parent reply id
@@ -178,9 +198,6 @@ const Post = ({ post: _post, onPostDeleted }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setApproving(false);
       });
   };
 
@@ -289,7 +306,13 @@ const Post = ({ post: _post, onPostDeleted }) => {
             {post.replies
               .sort((r1, r2) => r2.createdAt - r1.createdAt)
               .map((reply) => (
-                <Reply reply={reply} key={reply.id} postId={post.id} onReplyAdded={onReplyAdded} />
+                <Reply
+                  reply={reply}
+                  key={reply.id}
+                  postId={post.id}
+                  onReplyAdded={onReplyAdded}
+                  onReplyDeleted={onReplyDeleted}
+                />
               ))}
             <AddReply postId={post.id} onReplyAdded={onReplyAdded} />
           </div>

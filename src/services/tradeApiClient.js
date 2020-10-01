@@ -1720,12 +1720,27 @@ class TradeApiClient {
    *
    * @param {{postId: string}} payload Payload
    *
-   * @returns {Promise<Post>} Result
+   * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async deletePost(payload) {
     const endpointPath = "/fe/api.php?action=deletePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete Reply.
+   *
+   * @param {{postId: string, replyId: string}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteReply(payload) {
+    const endpointPath = "/fe/api.php?action=deleteReply";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

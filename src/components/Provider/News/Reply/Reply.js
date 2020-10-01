@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, MenuItem, Menu, IconButton } from "@material-ui/core";
 import "./Reply.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import { formatDate } from "../../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import AddReply from "../AddReply";
+import { MoreHoriz } from "@material-ui/icons";
+import { ConfirmDialog } from "../../../Dialogs";
+import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import tradeApi from "../../../../services/tradeApiClient";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { useDispatch } from "react-redux";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -14,7 +21,9 @@ import AddReply from "../AddReply";
 /**
  * @typedef {Object} ReplyProps
  * @property {Post} reply
+ * @property {string} postId
  * @property {function} [showAddReply]
+ * @property {function} onReplyDeleted
  */
 
 /**
@@ -23,9 +32,59 @@ import AddReply from "../AddReply";
  * @param {ReplyProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Reply = ({ reply, showAddReply }) => {
+const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const initConfirmConfig = {
+    titleTranslationId: "wall.delete.reply",
+    messageTranslationId: "wall.delete.reply.subtitle",
+    visible: false,
+  };
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const userData = useStoreUserData();
+  const storeSession = useStoreSessionSelector();
+  const isAuthor = reply.author.userId === userData.userId;
+  const dispatch = useDispatch();
+
+  /**
+   * Handle action element click event.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event Action element click.
+   * @returns {Void} None.
+   */
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const deleteReply = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      postId: postId,
+      replyId: reply.id,
+    };
+
+    tradeApi
+      .deleteReply(payload)
+      .then((result) => {
+        if (result) {
+          onReplyDeleted(reply.id);
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
   return (
     <Box className="reply">
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={deleteReply}
+        setConfirmConfig={setConfirmConfig}
+      />
       <Box className="replyHeader" display="flex" alignItems="center">
         <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={reply.author.imageUrl} />
         <Box className="replyMetaBox" display="flex" alignItems="center">
@@ -33,6 +92,29 @@ const Reply = ({ reply, showAddReply }) => {
           <span className="sep">·</span>
           <Typography className="date callout1">{formatDate(reply.createdAt)}</Typography>
         </Box>
+        <div className="replyMenu">
+          <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleMenuOpen}>
+            <MoreHoriz />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            id="simple-menu"
+            keepMounted
+            onClose={handleMenuClose}
+            open={Boolean(anchorEl)}
+          >
+            {isAuthor && (
+              <MenuItem onClick={() => {}}>
+                <FormattedMessage id="srv.edit" />
+              </MenuItem>
+            )}
+            {isAuthor && (
+              <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
+                <FormattedMessage id="srv.edit.delete" />
+              </MenuItem>
+            )}
+          </Menu>
+        </div>
       </Box>
       <div className="replyBox">
         {addLineBreaks(reply.content)}
@@ -77,6 +159,7 @@ const addLineBreaks = (string) =>
  * @property {Post} reply
  * @property {string} postId
  * @property {function} onReplyAdded
+ * @property {function} onReplyDeleted
  */
 
 /**
@@ -85,17 +168,22 @@ const addLineBreaks = (string) =>
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const ReplyContainer = ({ postId, reply, onReplyAdded }) => {
+const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
   const [addReply, showAddReply] = useState(false);
 
   return (
     <div className="replyContainer">
-      <Reply reply={reply} showAddReply={showAddReply} />
+      <Reply
+        reply={reply}
+        showAddReply={showAddReply}
+        onReplyDeleted={onReplyDeleted}
+        postId={postId}
+      />
       <div className="childReplies">
         {reply.replies
           .sort((r1, r2) => r2.createdAt - r1.createdAt)
           .map((r) => (
-            <Reply reply={r} key={reply.id} />
+            <Reply reply={r} key={reply.id} onReplyDeleted={onReplyDeleted} postId={postId} />
           ))}
       </div>
       {addReply && <AddReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
