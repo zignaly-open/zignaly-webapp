@@ -86,13 +86,13 @@ const CreateTraderForm = () => {
    */
   const submitForm = (data) => {
     setLoading(true);
-    const profitsSharing = selectedModel === MODEL_PROFIT_SHARING;
+    const profitSharing = selectedModel === MODEL_PROFIT_SHARING;
     const payload = {
       ...data,
       exchange: exchange.name,
       exchangeType,
-      profitsSharing,
-      ...(profitsSharing && { profitsShare: parseFloat(data.profitsShare) }),
+      profitSharing,
+      ...(profitSharing && { profitsShare: parseFloat(data.profitsShare) }),
       token: storeSession.tradeApi.accessToken,
     };
 
