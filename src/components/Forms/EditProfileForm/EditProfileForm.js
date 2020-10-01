@@ -323,6 +323,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               generateMarkdownPreview={(markdown) =>
                 Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
+              minEditorHeight={350}
               onChange={handleAboutChange}
               onTabChange={setAboutTab}
               // @ts-ignore
@@ -360,6 +361,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               generateMarkdownPreview={(markdown) =>
                 Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
               }
+              minEditorHeight={350}
               onChange={handleStrategyChange}
               onTabChange={setStrategyTab}
               // @ts-ignore
@@ -466,7 +468,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               )}
             </Box>
 
-            {provider.isCopyTrading && (
+            {provider.isCopyTrading && !provider.profitSharing && (
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.minbalance" />
@@ -488,6 +490,29 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 />
               </Box>
             )}
+
+            {/* {provider.isCopyTrading && provider.profitSharing && (
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.minbalance" />
+                </label>
+                <TextField
+                  className={
+                    "customInput " +
+                    (storeSettings.darkStyle ? " dark " : " light ") +
+                    (errors.profitShare ? "error" : "")
+                  }
+                  error={!!errors.profitShare}
+                  fullWidth
+                  inputRef={register({ required: true })}
+                  name="minAllocatedBalance"
+                  onChange={handleMinAllocatedChange}
+                  type="text"
+                  value={provider.profitShare}
+                  variant="outlined"
+                />
+              </Box>
+            )} */}
 
             {!provider.profitSharing && (
               <Box
