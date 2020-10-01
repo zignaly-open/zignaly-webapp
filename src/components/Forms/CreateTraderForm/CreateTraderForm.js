@@ -44,13 +44,10 @@ const CreateTraderForm = () => {
   let exchanges = useExchangeList();
 
   if (exchanges) {
-    // Filter exchanges depending on selected model
+    // Only show zignaly exchange for profit sharing
     exchanges = exchanges.filter(
       (e) =>
-        e.enabled &&
-        (selectedModel === MODEL_PROFIT_SHARING
-          ? e.name.toLowerCase() === "zignaly"
-          : e.name.toLowerCase() !== "zignaly"),
+        e.enabled && (selectedModel !== MODEL_PROFIT_SHARING || e.name.toLowerCase() === "zignaly"),
     );
   }
 
@@ -128,7 +125,7 @@ const CreateTraderForm = () => {
                 <FormattedMessage id="copyt.model.choose" />
               </Typography>
 
-              <Box display="flex">
+              <Box display="flex" className="models">
                 {profitSharingEnabled && (
                   <Box
                     alignItems="center"
