@@ -1714,6 +1714,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Delete Post.
+   *
+   * @param {{postId: string}} payload Payload
+   *
+   * @returns {Promise<Post>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deletePost(payload) {
+    const endpointPath = "/fe/api.php?action=deletePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

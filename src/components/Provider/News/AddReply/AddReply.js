@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, OutlinedInput } from "@material-ui/core";
-import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
+import ProviderLogo from "../../ProviderHeader/ProviderLogo";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
-import "./CreateReply.scss";
+import "./AddReply.scss";
 import { useIntl } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -22,12 +22,12 @@ import { useDispatch } from "react-redux";
  */
 
 /**
- * Render a component to create reply.
+ * Render a component to add reply.
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const CreateReply = ({ postId, replyId, onReplyAdded }) => {
+const AddReply = ({ postId, replyId, onReplyAdded }) => {
   const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const [reply, setReply] = useState("");
@@ -70,7 +70,7 @@ const CreateReply = ({ postId, replyId, onReplyAdded }) => {
   };
 
   return (
-    <Box className="createReply" display="flex" alignItems="center">
+    <Box className="addReply" display="flex" alignItems="center">
       <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={storeUserData.imageUrl} />
       <OutlinedInput
         fullWidth={true}
@@ -84,4 +84,4 @@ const CreateReply = ({ postId, replyId, onReplyAdded }) => {
     </Box>
   );
 };
-export default CreateReply;
+export default AddReply;

@@ -5,7 +5,7 @@ import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import { formatDate } from "../../../../utils/format";
 import { FormattedMessage } from "react-intl";
-import CreateReply from "../CreateReply";
+import AddReply from "../AddReply";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -98,7 +98,7 @@ const ReplyContainer = ({ postId, reply, onReplyAdded }) => {
             <Reply reply={r} key={reply.id} />
           ))}
       </div>
-      {addReply && <CreateReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
+      {addReply && <AddReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
     </div>
   );
 };

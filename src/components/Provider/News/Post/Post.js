@@ -15,9 +15,10 @@ import { MoreHoriz } from "@material-ui/icons";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import EditPost from "../EditPost";
-import CreateReply from "../CreateReply";
+import AddReply from "../AddReply";
 import Reply from "../Reply";
 import LazyLoad from "react-lazyload";
+import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * Parse html to embed medias
@@ -54,6 +55,7 @@ const embedMedias = (html) => {
 /**
  * @typedef {Object} DefaultProps
  * @property {Post} post
+ * @property {function} onPostDeleted
  */
 
 /**
@@ -62,7 +64,7 @@ const embedMedias = (html) => {
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Post = ({ post: _post }) => {
+const Post = ({ post: _post, onPostDeleted }) => {
   const [post, setPost] = useState(_post);
   const originalContent = DOMPurify.sanitize(post.content, {
     ADD_TAGS: ["oembed"],
@@ -75,6 +77,13 @@ const Post = ({ post: _post }) => {
   const dispatch = useDispatch();
   const userData = useStoreUserData();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const initConfirmConfig = {
+    titleTranslationId: "wall.delete.post",
+    messageTranslationId: "wall.delete.post.subtitle",
+    visible: false,
+  };
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const isAuthor = post.author.userId === userData.userId;
 
   /**
    * Handle action element click event.
@@ -154,6 +163,27 @@ const Post = ({ post: _post }) => {
       });
   };
 
+  const deletePost = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      postId: post.id,
+    };
+
+    tradeApi
+      .deletePost(payload)
+      .then((result) => {
+        if (result) {
+          onPostDeleted(post.id);
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setApproving(false);
+      });
+  };
+
   return (
     <Box className="post">
       <LazyLoad>
@@ -165,6 +195,11 @@ const Post = ({ post: _post }) => {
         >
           <EditPost onUpdated={onUpdated} post={post} />
         </Modal>
+        <ConfirmDialog
+          confirmConfig={confirmConfig}
+          executeActionCallback={deletePost}
+          setConfirmConfig={setConfirmConfig}
+        />
         <Paper className="postContent">
           <Box className="adminActions" width={1}>
             {userData.isAdmin ? (
@@ -232,9 +267,14 @@ const Post = ({ post: _post }) => {
                     onClose={handleMenuClose}
                     open={Boolean(anchorEl)}
                   >
-                    {post.author.userId === userData.userId && (
+                    {isAuthor && (
                       <MenuItem onClick={handleEdit}>
                         <FormattedMessage id="srv.edit" />
+                      </MenuItem>
+                    )}
+                    {isAuthor && (
+                      <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
+                        <FormattedMessage id="srv.edit.delete" />
                       </MenuItem>
                     )}
                   </Menu>
@@ -251,7 +291,7 @@ const Post = ({ post: _post }) => {
               .map((reply) => (
                 <Reply reply={reply} key={reply.id} postId={post.id} onReplyAdded={onReplyAdded} />
               ))}
-            <CreateReply postId={post.id} onReplyAdded={onReplyAdded} />
+            <AddReply postId={post.id} onReplyAdded={onReplyAdded} />
           </div>
         </Paper>
       </LazyLoad>
