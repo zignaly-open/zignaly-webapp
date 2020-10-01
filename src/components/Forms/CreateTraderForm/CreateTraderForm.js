@@ -12,7 +12,8 @@ import CustomSelect from "../../CustomSelect";
 import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
-import MonthlyFee from "../../../images/ct/profit.svg";
+import MonthlyPayment from "../../../images/ct/monthlyPayment.svg";
+import ProfitSharing from "../../../images/ct/profitSharing.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 
@@ -134,13 +135,19 @@ const CreateTraderForm = () => {
                     flexDirection="row"
                     onClick={() => setSelectedModel(MODEL_PROFIT_SHARING)}
                   >
-                    <img
+                    <Box
+                      alignItems="center"
                       className={`iconButton ${
                         selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
                       }`}
-                      src={MonthlyFee}
-                      title={intl.formatMessage({ id: "copyt.profitsharing.service" })}
-                    />
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      <img
+                        src={ProfitSharing}
+                        title={intl.formatMessage({ id: "copyt.profitsharing.service" })}
+                      />
+                    </Box>
                     <Typography className="callout2">
                       <FormattedMessage id="copyt.profitsharing.service" />
                     </Typography>
@@ -154,13 +161,19 @@ const CreateTraderForm = () => {
                   flexDirection="row"
                   onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
                 >
-                  <img
+                  <Box
+                    alignItems="center"
                     className={`iconButton ${
                       selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
                     }`}
-                    src={MonthlyFee}
-                    title={intl.formatMessage({ id: "copyt.monthlyfee.service" })}
-                  />
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    <img
+                      src={MonthlyPayment}
+                      title={intl.formatMessage({ id: "copyt.monthlyfee.service" })}
+                    />
+                  </Box>
                   <Typography className="callout2">
                     <FormattedMessage id="copyt.monthlyfee.service" />
                   </Typography>
