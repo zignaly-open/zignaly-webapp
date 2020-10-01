@@ -44,13 +44,10 @@ const CreateTraderForm = () => {
   let exchanges = useExchangeList();
 
   if (exchanges) {
-    // Filter exchanges depending on selected model
+    // Only show zignaly exchange for profit sharing
     exchanges = exchanges.filter(
       (e) =>
-        e.enabled &&
-        (selectedModel === MODEL_PROFIT_SHARING
-          ? e.name.toLowerCase() === "zignaly"
-          : e.name.toLowerCase() !== "zignaly"),
+        e.enabled && (selectedModel !== MODEL_PROFIT_SHARING || e.name.toLowerCase() === "zignaly"),
     );
   }
 
@@ -128,7 +125,7 @@ const CreateTraderForm = () => {
                 <FormattedMessage id="copyt.model.choose" />
               </Typography>
 
-              <Box display="flex">
+              <Box className="models" display="flex">
                 {profitSharingEnabled && (
                   <Box
                     alignItems="center"
@@ -274,27 +271,25 @@ const CreateTraderForm = () => {
                   </Box>
                 )}
               </Box>
+              <Typography className="body1 tip">
+                <FormattedMessage
+                  id={
+                    selectedModel === MODEL_PROFIT_SHARING
+                      ? "copyt.cannotmodify"
+                      : "copyt.cannotmodify.minAllocatedBalance"
+                  }
+                />
+              </Typography>
               {step === 2 && (
-                <>
-                  <Typography className="body1 tip">
-                    <FormattedMessage
-                      id={
-                        selectedModel === MODEL_PROFIT_SHARING
-                          ? "copyt.cannotmodify"
-                          : "copyt.cannotmodify.minAllocatedBalance"
-                      }
-                    />
-                  </Typography>
-                  <CustomButton
-                    className="bgPurple bold"
-                    disabled={!isValid}
-                    onClick={() => {
-                      setStep(3);
-                    }}
-                  >
-                    <FormattedMessage id="accounts.next" />
-                  </CustomButton>
-                </>
+                <CustomButton
+                  className="bgPurple bold"
+                  disabled={!isValid}
+                  onClick={() => {
+                    setStep(3);
+                  }}
+                >
+                  <FormattedMessage id="accounts.next" />
+                </CustomButton>
               )}
             </>
           )}
