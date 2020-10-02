@@ -120,7 +120,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     const statusCode = position.status;
     const statusTranslationId = `status.${statusCode}`;
-    const statusLink = `https://docs.zignaly.com/configuration/positions-statuses#${statusCode}`;
+    const statusLink = `https://help.zignaly.com/hc/en-us/articles/360015780840#status-${statusCode}`;
 
     return (
       <Box alignItems="center" display="flex">
