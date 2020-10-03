@@ -89,8 +89,9 @@ const Post = ({ post: _post, onPostDeleted }) => {
   let sortedReplies = post.replies.sort((r1, r2) => r1.createdAt - r2.createdAt);
   if (!showAllComments) {
     // Display only 2 comments initially
-    sortedReplies = sortedReplies.slice(0, 2);
+    sortedReplies = sortedReplies.slice(sortedReplies.length - 2, sortedReplies.length);
   }
+  console.log(sortedReplies);
 
   /**
    * Handle action element click event.

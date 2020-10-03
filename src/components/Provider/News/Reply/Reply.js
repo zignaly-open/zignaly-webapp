@@ -120,14 +120,14 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       <div className="replyBox">
         {addLineBreaks(reply.content)}
         <Box display="flex" className="replyActions" alignItems="center">
-          <Typography className="action callout1">
+          <Typography className="action callout2">
             <FormattedMessage id="wall.like" />
           </Typography>
           {showAddReply && (
             <>
               <span className="sep">·</span>
               <Typography
-                className="action callout1"
+                className="action callout2"
                 onClick={() => {
                   showAddReply(true);
                 }}
@@ -192,7 +192,7 @@ const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
         ) : (
           <div className="childReplies">
             {sortedReplies.map((r) => (
-              <Reply reply={r} key={reply.id} onReplyDeleted={onReplyDeleted} postId={postId} />
+              <Reply reply={r} key={r.id} onReplyDeleted={onReplyDeleted} postId={postId} />
             ))}
           </div>
         )}
