@@ -183,11 +183,16 @@ const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
 
   let sortedReplies = reply.replies.sort((r1, r2) => r1.createdAt - r2.createdAt);
 
+  const handleShowAddReply = () => {
+    setShowAllReplies(true);
+    showAddReply(true);
+  };
+
   return (
     <div className="replyContainer">
       <Reply
         reply={reply}
-        showAddReply={showAddReply}
+        showAddReply={handleShowAddReply}
         onReplyDeleted={onReplyDeleted}
         postId={postId}
       />

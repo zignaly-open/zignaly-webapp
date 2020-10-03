@@ -312,7 +312,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
           <div className="repliesBox">
             {!showAllComments && post.replies.length > 2 && (
               <Typography
-                className="showAllComments body2"
+                className="showAllComments callout2"
                 onClick={() => setShowAllComments(true)}
               >
                 <FormattedMessage
