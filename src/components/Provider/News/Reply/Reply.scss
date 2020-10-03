@@ -30,6 +30,13 @@
   .replyMenu {
     padding-left: 5px;
   }
+
+  .following {
+    img {
+      border: solid 2px var(--purple);
+      border-radius: 50%;
+    }
+  }
 }
 
 .replyContainer {

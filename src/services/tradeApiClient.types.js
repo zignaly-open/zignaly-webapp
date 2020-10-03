@@ -574,7 +574,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
- * @property {boolean} disable
+ * @property {boolean} disable False if user is copying
  * @property {boolean} customerKey
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
@@ -908,6 +908,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} userId
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} isFollowing Flag indicating if author is following provider
  */
 
 /**

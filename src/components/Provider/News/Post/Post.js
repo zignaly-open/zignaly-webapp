@@ -91,7 +91,6 @@ const Post = ({ post: _post, onPostDeleted }) => {
     // Display only 2 comments initially
     sortedReplies = sortedReplies.slice(sortedReplies.length - 2, sortedReplies.length);
   }
-  console.log(sortedReplies);
 
   /**
    * Handle action element click event.

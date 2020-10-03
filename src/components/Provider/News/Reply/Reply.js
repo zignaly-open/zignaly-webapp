@@ -87,7 +87,15 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <Box className="replyHeader" display="flex" alignItems="center">
-        <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={reply.author.imageUrl} />
+        <div className={reply.author.isFollowing ? "following" : ""}>
+          <ProviderLogo
+            defaultImage={ProfileIcon}
+            size="32px"
+            title=""
+            url={reply.author.imageUrl}
+          />
+        </div>
+
         <Box className="replyMetaBox" display="flex" alignItems="center">
           <Typography className="username body1">{reply.author.userName}</Typography>
           <span className="sep">·</span>
