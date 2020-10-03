@@ -42,7 +42,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
   const userData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
-  const isAuthor = reply.author.userId === userData.userId;
+  const canEdit = reply.author.userId === userData.userId || userData.isAdmin;
   const dispatch = useDispatch();
 
   /**
@@ -103,12 +103,12 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
             onClose={handleMenuClose}
             open={Boolean(anchorEl)}
           >
-            {isAuthor && (
+            {canEdit && (
               <MenuItem onClick={() => {}}>
                 <FormattedMessage id="srv.edit" />
               </MenuItem>
             )}
-            {isAuthor && (
+            {canEdit && (
               <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
                 <FormattedMessage id="srv.edit.delete" />
               </MenuItem>
