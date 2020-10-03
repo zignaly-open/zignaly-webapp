@@ -1,5 +1,5 @@
 .reply {
-  margin: 18px 0;
+  margin-top: 18px;
 
   .username {
     margin-left: -2px;
@@ -11,11 +11,12 @@
 
   .sep {
     font-size: 24px;
+    line-height: 0;
     margin: 0 6px;
   }
 
   .replyActions {
-    height: 34px;
+    margin-top: 14px;
   }
 
   .action {
@@ -29,12 +30,24 @@
 }
 
 .replyContainer {
-  .childReplies,
-  .addReply {
+  margin: -10px 0 18px;
+
+  .subRepliesContainer {
     margin-left: 42px;
   }
 
   .addReply {
-    margin-bottom: 18px;
+    margin: 18px 0;
+  }
+
+  .showAllReplies {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    margin-top: 16px;
+
+    svg {
+      margin-right: 3px;
+    }
   }
 }

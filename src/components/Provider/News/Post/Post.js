@@ -83,7 +83,14 @@ const Post = ({ post: _post, onPostDeleted }) => {
     visible: false,
   };
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-  const isAuthor = post.author.userId === userData.userId;
+  const [showAllComments, setShowAllComments] = useState(false);
+  const canEdit = post.author.userId === userData.userId || userData.isAdmin;
+
+  let sortedReplies = post.replies.sort((r1, r2) => r1.createdAt - r2.createdAt);
+  if (!showAllComments) {
+    // Display only 2 comments initially
+    sortedReplies = sortedReplies.slice(0, 2);
+  }
 
   /**
    * Handle action element click event.
@@ -268,7 +275,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
                   <Typography className="date callout1">{formatDate(post.createdAt)}</Typography>
                 </Box>
               </Box>
-              {post.author.userId === userData.userId && (
+              {canEdit && (
                 <>
                   <IconButton
                     aria-controls="simple-menu"
@@ -284,12 +291,12 @@ const Post = ({ post: _post, onPostDeleted }) => {
                     onClose={handleMenuClose}
                     open={Boolean(anchorEl)}
                   >
-                    {isAuthor && (
+                    {canEdit && (
                       <MenuItem onClick={handleEdit}>
                         <FormattedMessage id="srv.edit" />
                       </MenuItem>
                     )}
-                    {isAuthor && (
+                    {canEdit && (
                       <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
                         <FormattedMessage id="srv.edit.delete" />
                       </MenuItem>
@@ -303,17 +310,27 @@ const Post = ({ post: _post, onPostDeleted }) => {
             </Typography>
           </div>
           <div className="repliesBox">
-            {post.replies
-              .sort((r1, r2) => r2.createdAt - r1.createdAt)
-              .map((reply) => (
-                <Reply
-                  reply={reply}
-                  key={reply.id}
-                  postId={post.id}
-                  onReplyAdded={onReplyAdded}
-                  onReplyDeleted={onReplyDeleted}
+            {!showAllComments && post.replies.length > 2 && (
+              <Typography
+                className="showAllComments body2"
+                onClick={() => setShowAllComments(true)}
+              >
+                <FormattedMessage
+                  id="wall.replies.more"
+                  values={{ number: post.replies.length - 2 }}
                 />
-              ))}
+              </Typography>
+            )}
+
+            {sortedReplies.map((reply) => (
+              <Reply
+                reply={reply}
+                key={reply.id}
+                postId={post.id}
+                onReplyAdded={onReplyAdded}
+                onReplyDeleted={onReplyDeleted}
+              />
+            ))}
             <AddReply postId={post.id} onReplyAdded={onReplyAdded} />
           </div>
         </Paper>

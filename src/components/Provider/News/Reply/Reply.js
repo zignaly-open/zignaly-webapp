@@ -13,6 +13,7 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
+import { CornerDownRight } from "react-feather";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').Post} Post
@@ -170,6 +171,9 @@ const addLineBreaks = (string) =>
  */
 const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
   const [addReply, showAddReply] = useState(false);
+  const [showAllReplies, setShowAllReplies] = useState(false);
+
+  let sortedReplies = reply.replies.sort((r1, r2) => r1.createdAt - r2.createdAt);
 
   return (
     <div className="replyContainer">
@@ -179,14 +183,21 @@ const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
         onReplyDeleted={onReplyDeleted}
         postId={postId}
       />
-      <div className="childReplies">
-        {reply.replies
-          .sort((r1, r2) => r2.createdAt - r1.createdAt)
-          .map((r) => (
-            <Reply reply={r} key={reply.id} onReplyDeleted={onReplyDeleted} postId={postId} />
-          ))}
+      <div className="subRepliesContainer">
+        {!showAllReplies && reply.replies.length > 0 ? (
+          <Typography className="showAllReplies callout2" onClick={() => setShowAllReplies(true)}>
+            <CornerDownRight />
+            <FormattedMessage id="wall.replies.count" values={{ number: reply.replies.length }} />
+          </Typography>
+        ) : (
+          <div className="childReplies">
+            {sortedReplies.map((r) => (
+              <Reply reply={r} key={reply.id} onReplyDeleted={onReplyDeleted} postId={postId} />
+            ))}
+          </div>
+        )}
+        {addReply && <AddReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
       </div>
-      {addReply && <AddReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
     </div>
   );
 };
