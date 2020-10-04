@@ -120,7 +120,7 @@ const Post = ({ post: _post }) => {
       .then((result) => {
         if (result) {
           dispatch(showSuccessAlert("", approve ? "wall.post.approved" : "wall.post.unapproved"));
-          post.unapproved = !approve;
+          setPost({ ...post, unapproved: !approve });
         }
       })
       .catch((e) => {
