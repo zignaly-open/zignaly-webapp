@@ -304,6 +304,30 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     return false;
   };
 
+  const GetListedTooltip = () => {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Typography variant="h5">
+          <FormattedMessage id="srv.edit.list.tooltip" />
+        </Typography>
+        <ul>
+          <li>
+            <FormattedMessage id="srv.edit.list.1.tooltip" />
+          </li>
+          <li>
+            <FormattedMessage id="srv.edit.list.2.tooltip" />
+          </li>
+          <li>
+            <FormattedMessage id="srv.edit.list.3.tooltip" />
+          </li>
+          <li>
+            <FormattedMessage id="srv.edit.list.4.tooltip" />
+          </li>
+        </ul>
+      </Box>
+    );
+  };
+
   return (
     <Box bgcolor="grid.content" className="formWrapper">
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
@@ -655,14 +679,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             >
               <label className="customLabel">
                 <FormattedMessage id="srv.edit.list" />
-                <Tooltip
-                  placement="top"
-                  title={
-                    <Typography variant="h5">
-                      <FormattedMessage id="srv.edit.list.tooltip" />
-                    </Typography>
-                  }
-                >
+                <Tooltip placement="top" title={<GetListedTooltip />}>
                   <HelpIcon className="icon" />
                 </Tooltip>
               </label>

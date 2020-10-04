@@ -430,7 +430,11 @@ srv.edit.quotes: "Quotes"
 srv.edit.public: "Công khai"
 srv.edit.public.tooltip: "Nếu bạn chọn tùy chọn này, những ai có url bạn cung cấp sẽ có thể kết nối với dịch vụ của bạn."
 srv.edit.list: "Được liệt kê trên thị trường"
-srv.edit.list.tooltip: "Kiểm tra tùy chọn này, khi nó sẵn sàng thì dịch vụ của bạn có thể được liệt kê trên thị trường. Để được liệt kê, xin vui lòng liên hệ với bộ phận hỗ trợ."
+srv.edit.list.tooltip: "Please fulfill all these requirements and then contact our support in order to get listed in the marketplace!"
+srv.edit.list.1.tooltip: Have a logo and description.
+srv.edit.list.2.tooltip: Add a way to contact you.
+srv.edit.list.3.tooltip: Connect with a real account.
+srv.edit.list.4.tooltip: 2 weeks of results.
 srv.edit.upload: "Tải lên"
 srv.edit.delete: "Xóa"
 srv.edit.countries: "Chọn quốc gia"
