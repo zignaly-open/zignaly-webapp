@@ -43,11 +43,6 @@ const migrations = {
       },
     };
   },
-  14: (/** @type {PersistedState} */ state) => {
-    // @ts-ignore
-    state.settings.balanceBox = true;
-    return state;
-  },
 };
 
 const persistConfig = {

@@ -1,23 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import "./signup.scss";
 import Testimonials from "../../components/Testimonials";
 import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
-import { useDispatch } from "react-redux";
-import { endTradeApiSession } from "../../store/actions/session";
 import LoginHeader from "../../components/Login/LoginHeader";
 import SignupForm from "../../components/Forms/SignupForm";
+import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
 
 const SignupPage = () => {
-  const dispatch = useDispatch();
   const intl = useIntl();
-
-  const dispatchLogout = () => {
-    dispatch(endTradeApiSession());
-  };
-  useEffect(dispatchLogout, []);
+  useRedirectUponSessionValid();
 
   return (
     <>

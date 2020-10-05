@@ -26,9 +26,7 @@ const Posts = ({ posts }) => {
       {posts ? (
         posts.length ? (
           posts
-            .sort((p1, p2) =>
-              p1.approved === p2.approved ? p2.createdAt - p1.createdAt : p1.approved ? 1 : -1,
-            )
+            .sort((p1, p2) => p2.createdAt - p1.createdAt)
             .map((post) => <Post key={post.id} post={post} />)
         ) : (
           <NoPosts />
@@ -41,7 +39,7 @@ const Posts = ({ posts }) => {
 };
 
 const NoPosts = () => (
-  <Box className="noPosts" display="flex" alignItems="center" flexDirection="column">
+  <Box alignItems="center" className="noPosts" display="flex" flexDirection="column">
     <Astronaut />
     <Typography variant="h1">
       <FormattedMessage id="wall.nopost" />

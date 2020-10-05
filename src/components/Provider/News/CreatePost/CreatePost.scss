@@ -1,5 +1,9 @@
 .createPost {
   padding: 18px;
+
+  .customButton {
+    min-width: 185px;
+  }
 }
 
 @include media("<=sm") {

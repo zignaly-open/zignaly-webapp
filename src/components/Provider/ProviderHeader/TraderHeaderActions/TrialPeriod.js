@@ -30,6 +30,12 @@ const TrialPeriod = ({ provider }) => {
               {getTime()}
             </b>
           </Typography>
+        ) : provider.customerKey && provider.enableInProvider ? (
+          <Typography className="trial green" variant="h4">
+            <b>
+              <FormattedMessage id="srv.text.active" />
+            </b>
+          </Typography>
         ) : (
           <Typography className="trial red" variant="h4">
             <b>

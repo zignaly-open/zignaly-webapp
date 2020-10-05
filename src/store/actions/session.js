@@ -4,6 +4,7 @@ import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
+import ls from "@livesession/sdk";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -56,7 +57,8 @@ export const endTradeApiSession = () => {
       const action = {
         type: END_TRADE_API_SESSION,
       };
-
+      ls.init("4c9e2f89.fe420345");
+      ls.invalidateSession();
       dispatch(action);
       dispatch(unsetUser());
       dispatch(unsetProvider());
@@ -87,6 +89,20 @@ export const registerUser = (payload, setLoading) => {
       if (gtmEvent) {
         gtmEvent.push(assign(eventType, responseData));
       }
+      ls.init("4c9e2f89.fe420345");
+      ls.identify({
+        name: responseData.firstName,
+        email: responseData.email,
+        params: {
+          userId: responseData.userId,
+          exchangeConnected: responseData.binanceConnected,
+          providerEnabled: responseData.providerEnable,
+          openCount: responseData.buysCount,
+          closeCount: responseData.sellsCount,
+          hasActivated: responseData.hasActivated,
+        },
+      });
+      ls.newPageView();
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {

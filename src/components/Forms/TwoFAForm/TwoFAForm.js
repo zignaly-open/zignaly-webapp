@@ -46,8 +46,6 @@ const TwoFAForm = ({ onSuccess, data }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
         setLoading(false);
       });
   };

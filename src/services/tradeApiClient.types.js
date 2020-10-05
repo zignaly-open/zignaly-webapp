@@ -919,7 +919,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} createdAt
  * @property {number} spams
  * @property {number} likes
- * @property {boolean} approved
+ * @property {boolean} unapproved Post has been unlisted by moderators
  */
 
 /**
@@ -3412,8 +3412,10 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
- * @property {string} minAllocatedBalance
+ * @property {string} [minAllocatedBalance]
  * @property {string} quote
+ * @property {boolean} [profitSharing]
+ * @property {number} [profitsShare]
  */
 
 /**

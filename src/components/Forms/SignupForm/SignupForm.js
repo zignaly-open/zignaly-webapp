@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
-import useRedirectUponSessionValid from "../../../hooks/useRedirectUponSessionValid";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +20,6 @@ const SignupForm = () => {
   const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
-  useRedirectUponSessionValid();
 
   if (!hasMounted) {
     // Don't render form statically

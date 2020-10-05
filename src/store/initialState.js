@@ -146,6 +146,7 @@
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} twoFA
  * @property {Boolean} createProvider
+ * @property {Boolean} createTrader
  * @property {Boolean} globalModal
  */
 
@@ -539,6 +540,7 @@ const initialState = {
     modal: {
       twoFA: false,
       createProvider: false,
+      createTrader: false,
       globalModal: false,
     },
     alerts: {

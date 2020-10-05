@@ -102,7 +102,12 @@ const Post = ({ post: _post }) => {
     setPost(newPost);
   };
 
-  const approvePost = () => {
+  /**
+   * Toggle post approval
+   * @param {boolean} approve Approve or not
+   * @returns {void}
+   */
+  const toggleApprove = (approve) => {
     setApproving(true);
 
     const payload = {
@@ -110,11 +115,13 @@ const Post = ({ post: _post }) => {
       postId: post.id,
     };
 
-    tradeApi
-      .approvePost(payload)
-      .then(() => {
-        dispatch(showSuccessAlert("", "wall.post.approved"));
-        post.approved = true;
+    const method = approve ? tradeApi.approvePost(payload) : tradeApi.unapprovePost(payload);
+    method
+      .then((result) => {
+        if (result) {
+          dispatch(showSuccessAlert("", approve ? "wall.post.approved" : "wall.post.unapproved"));
+          post.unapproved = !approve;
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -132,24 +139,41 @@ const Post = ({ post: _post }) => {
         size="medium"
         state={editPostModal}
       >
-        <EditPost post={post} onUpdated={onUpdated} />
+        <EditPost onUpdated={onUpdated} post={post} />
       </Modal>
       <Paper className="postContent">
         <Box className="adminActions" width={1}>
-          {!post.approved &&
-            (userData.isAdmin ? (
-              <CustomButton className="bgPurple" loading={isApproving} onClick={approvePost}>
+          {userData.isAdmin ? (
+            post.unapproved ? (
+              <CustomButton
+                className="textPurple"
+                loading={isApproving}
+                onClick={() => toggleApprove(true)}
+              >
                 <Typography className="bold" variant="body1">
                   <FormattedMessage id="wall.approve" />
                 </Typography>
               </CustomButton>
             ) : (
+              <CustomButton
+                className="deleteButton"
+                loading={isApproving}
+                onClick={() => toggleApprove(false)}
+              >
+                <Typography className="bold" variant="body1">
+                  <FormattedMessage id="wall.unapprove" />
+                </Typography>
+              </CustomButton>
+            )
+          ) : (
+            post.unapproved && (
               <Typography className="bold" variant="body1">
-                <FormattedMessage id="wall.approve.pending" />
+                <FormattedMessage id="wall.unapproved" />
               </Typography>
-            ))}
+            )
+          )}
         </Box>
-        <div className={post.approved ? "" : "disabled"}>
+        <div className={post.unapproved ? "disabled" : ""}>
           <Box
             alignItems="center"
             className="postHeader"
