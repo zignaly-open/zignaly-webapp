@@ -12,6 +12,7 @@ import { FormattedMessage } from "react-intl";
 /**
  * @typedef {Object} DefaultProps
  * @property {Array<Post>} posts
+ * @property {function} onPostDeleted
  */
 
 /**
@@ -20,14 +21,14 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const Posts = ({ posts }) => {
+const Posts = ({ posts, onPostDeleted }) => {
   return (
     <Box alignItems="center" className="posts" display="flex" flexDirection="column">
       {posts ? (
         posts.length ? (
           posts
             .sort((p1, p2) => p2.createdAt - p1.createdAt)
-            .map((post) => <Post key={post.id} post={post} />)
+            .map((post) => <Post key={post.id} onPostDeleted={onPostDeleted} post={post} />)
         ) : (
           <NoPosts />
         )
