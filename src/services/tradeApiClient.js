@@ -1733,7 +1733,7 @@ class TradeApiClient {
   /**
    * Delete Reply.
    *
-   * @param {{postId: string, replyId: string}} payload Payload
+   * @param {{postId: string, replyId: string, nested: boolean}} payload Payload
    *
    * @returns {Promise<boolean>} Result
    *

@@ -118,7 +118,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
    */
   const onUpdated = (newPost) => {
     setEditPostModal(false);
-    setPost(newPost);
+    setPost({ ...newPost, replies: post.replies });
   };
 
   /**
@@ -134,7 +134,10 @@ const Post = ({ post: _post, onPostDeleted }) => {
       for (const reply of replies) {
         let subReplies = reply.replies.filter((r) => r.id !== replyId);
 
-        if (subReplies.length !== reply.replies.length) break;
+        if (subReplies.length !== reply.replies.length) {
+          reply.replies = subReplies;
+          break;
+        }
       }
     }
     const newPost = { ...post, replies };

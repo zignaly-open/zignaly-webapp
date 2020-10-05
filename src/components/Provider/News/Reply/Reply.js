@@ -45,6 +45,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   const storeSession = useStoreSessionSelector();
   const canEdit = reply.author.userId === userData.userId || userData.isAdmin;
   const dispatch = useDispatch();
+  const isNested = !showAddReply;
 
   /**
    * Handle action element click event.
@@ -65,6 +66,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       token: storeSession.tradeApi.accessToken,
       postId: postId,
       replyId: reply.id,
+      nested: isNested,
     };
 
     tradeApi
