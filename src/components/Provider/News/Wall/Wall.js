@@ -47,10 +47,20 @@ const Wall = ({ provider }) => {
   };
   useEffect(loadPosts, []);
 
+  /**
+   * Post deleted callback
+   * @param {string} postId postId
+   * @returns {void}
+   */
+  const onPostDeleted = (postId) => {
+    const newPosts = posts.filter((p) => p.id !== postId);
+    setPosts(newPosts);
+  };
+
   return (
     <Box className="wall">
       {provider.isAdmin && <CreatePost onCreated={loadPosts} providerId={provider.id} />}
-      <Posts posts={posts} />
+      <Posts onPostDeleted={onPostDeleted} posts={posts} />
     </Box>
   );
 };

@@ -132,6 +132,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
  * @typedef {import('./tradeApiClient.types').Post} Post
  * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
+ * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
  */
 
 /**
@@ -1695,6 +1696,51 @@ class TradeApiClient {
    */
   async unapprovePost(payload) {
     const endpointPath = "/fe/api.php?action=unapprovePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Add post/comment reply
+   *
+   * @param {AddReplyPayload} payload Payload
+   *
+   * @returns {Promise<Post>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async addReply(payload) {
+    const endpointPath = "/fe/api.php?action=addReply";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete Post.
+   *
+   * @param {{postId: string}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deletePost(payload) {
+    const endpointPath = "/fe/api.php?action=deletePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete Reply.
+   *
+   * @param {{postId: string, replyId: string, nested: boolean}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteReply(payload) {
+    const endpointPath = "/fe/api.php?action=deleteReply";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
