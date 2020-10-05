@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography } from "@material-ui/core";
+import { Box, TextField, Typography, CircularProgress } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -13,7 +13,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
-// import useAvailableBalance from "../../../hooks/useAvailableBalance";
+import useAvailableBalance from "../../../hooks/useAvailableBalance";
 
 /**
  * @typedef {Object} DefaultProps
@@ -38,7 +38,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
-  // const { balance, loading } = useAvailableBalance();
+  const { balance, loading } = useAvailableBalance();
 
   /**
    *
@@ -74,7 +74,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (validateExchange()) {
+    if (validateExchange() && validateBalance(data.allocatedBalance)) {
       const added = parseFloat(data.allocatedBalance);
       const needed =
         typeof provider.minAllocatedBalance === "string"
@@ -123,6 +123,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
   };
 
   const validateExchange = () => {
+    if (!provider.profitSharing) {
+      return true;
+    }
     if (storeUserExchangeConnections.length > 0) {
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
@@ -152,27 +155,27 @@ const CopyTraderForm = ({ provider, onClose }) => {
     return true;
   };
 
-  // /**
-  //  *
-  //  * @param {String} allocatedBalance balance inout from user.
-  //  * @returns {Boolean} whether the input value is valid or not.
-  //  */
-  // const validateBalance = (allocatedBalance) => {
-  //   // Skip balance validation on paper trading exchange.
-  //   const added = parseFloat(allocatedBalance);
-  //   if (storeSettings.selectedExchange.paperTrading) {
-  //     return true;
-  //   }
-  //   let neededQuote = provider.copyTradingQuote;
-  //   /* @ts-ignore */
-  //   let userBalance = balance[neededQuote] || 0;
-  //   if (userBalance && userBalance > added) {
-  //     return true;
-  //   }
-  //   let msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
-  //   setAlert(msg);
-  //   return false;
-  // };
+  /**
+   *
+   * @param {String} allocatedBalance balance inout from user.
+   * @returns {Boolean} whether the input value is valid or not.
+   */
+  const validateBalance = (allocatedBalance) => {
+    // Skip balance validation on paper trading exchange.
+    const added = parseFloat(allocatedBalance);
+    if (storeSettings.selectedExchange.paperTrading) {
+      return true;
+    }
+    let neededQuote = provider.copyTradingQuote;
+    /* @ts-ignore */
+    let userBalance = balance[neededQuote] || 0;
+    if (userBalance && userBalance > added) {
+      return true;
+    }
+    let msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
+    setAlert(msg);
+    return false;
+  };
 
   /**
    * @returns {String} Exchange name to display in the error.
@@ -208,92 +211,27 @@ const CopyTraderForm = ({ provider, onClose }) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {/* {loading && <CircularProgress color="primary" size={40} />} */}
-        {/* {!loading && ( */}
-        <>
-          {Boolean(alert) && (
-            <Alert className="alert" severity="error">
-              {alert}
-            </Alert>
-          )}
-          <Typography variant="h3">
-            <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
-          </Typography>
-          <Typography variant="body1">
-            <FormattedMessage id="trader.everymove" />
-          </Typography>
-          <Box
-            alignItems="center"
-            className="fieldBox"
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-          >
+        {loading && <CircularProgress color="primary" size={40} />}
+        {!loading && (
+          <>
+            {Boolean(alert) && (
+              <Alert className="alert" severity="error">
+                {alert}
+              </Alert>
+            )}
+            <Typography variant="h3">
+              <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+            </Typography>
+            <Typography variant="body1">
+              <FormattedMessage id="trader.everymove" />
+            </Typography>
             <Box
-              alignItems="start"
-              className="inputBox"
+              alignItems="center"
+              className="fieldBox"
               display="flex"
-              flexDirection="column"
-              justifyContent="start"
+              flexDirection="row"
+              justifyContent="center"
             >
-              <label className="customLabel">
-                <FormattedMessage id="trader.choose" />{" "}
-              </label>
-              <TextField
-                className="customInput"
-                error={!!errors.allocatedBalance}
-                fullWidth
-                inputRef={register({
-                  required: true,
-                })}
-                name="allocatedBalance"
-                onChange={handleAllocatedChange}
-                value={allocated}
-                variant="outlined"
-              />
-              {!provider.profitSharing && (
-                <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-                  <FormattedMessage
-                    id="trader.amount.error"
-                    values={{
-                      quote: provider.copyTradingQuote,
-                      amount: provider.minAllocatedBalance,
-                    }}
-                  />
-                </span>
-              )}
-            </Box>
-          </Box>
-
-          {provider.profitSharing && (
-            <>
-              <Typography variant="h4">
-                <FormattedMessage id="trader.locked" />
-              </Typography>
-
-              <Typography variant="h4">
-                <FormattedMessage id="trader.moreinfo" />
-              </Typography>
-
-              <label className="customLabel">
-                <FormattedMessage id="trader.profitaction" />
-              </label>
-
-              <Box className="labeledInputsBox">
-                <span
-                  className={profitSharingMode === "reinvest" ? "checked" : ""}
-                  onClick={() => handleShareingModeChange("reinvest")}
-                >
-                  <FormattedMessage id="trader.reinvest" />
-                </span>
-                <span
-                  className={profitSharingMode === "withdraw" ? "checked" : ""}
-                  onClick={() => handleShareingModeChange("withdraw")}
-                >
-                  <FormattedMessage id="trader.withdraw" />
-                </span>
-              </Box>
-
               <Box
                 alignItems="start"
                 className="inputBox"
@@ -301,36 +239,101 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 flexDirection="column"
                 justifyContent="start"
               >
+                <label className="customLabel">
+                  <FormattedMessage id="trader.choose" />{" "}
+                </label>
                 <TextField
-                  className="customTextarea"
-                  defaultValue=""
-                  error={!!errors.acknowledgeLockedBalance}
+                  className="customInput"
+                  error={!!errors.allocatedBalance}
                   fullWidth
                   inputRef={register({
                     required: true,
                   })}
-                  multiline
-                  name="acknowledgeLockedBalance"
-                  placeholder={intl.formatMessage({ id: "trader.ack" })}
-                  rows={3}
+                  name="allocatedBalance"
+                  onChange={handleAllocatedChange}
+                  value={allocated}
                   variant="outlined"
                 />
+                {!provider.profitSharing && (
+                  <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+                    <FormattedMessage
+                      id="trader.amount.error"
+                      values={{
+                        quote: provider.copyTradingQuote,
+                        amount: provider.minAllocatedBalance,
+                      }}
+                    />
+                  </span>
+                )}
               </Box>
-            </>
-          )}
+            </Box>
 
-          <Box className="inputBox">
-            <CustomButton
-              className="full submitButton"
-              loading={actionLoading}
-              onClick={handleSubmitClick}
-              type="submit"
-            >
-              <FormattedMessage id="trader.start" />
-            </CustomButton>
-          </Box>
-        </>
-        {/* )} */}
+            {provider.profitSharing && (
+              <>
+                <Typography variant="h4">
+                  <FormattedMessage id="trader.locked" />
+                </Typography>
+
+                <Typography variant="h4">
+                  <FormattedMessage id="trader.moreinfo" />
+                </Typography>
+
+                <label className="customLabel">
+                  <FormattedMessage id="trader.profitaction" />
+                </label>
+
+                <Box className="labeledInputsBox">
+                  <span
+                    className={profitSharingMode === "reinvest" ? "checked" : ""}
+                    onClick={() => handleShareingModeChange("reinvest")}
+                  >
+                    <FormattedMessage id="trader.reinvest" />
+                  </span>
+                  <span
+                    className={profitSharingMode === "withdraw" ? "checked" : ""}
+                    onClick={() => handleShareingModeChange("withdraw")}
+                  >
+                    <FormattedMessage id="trader.withdraw" />
+                  </span>
+                </Box>
+
+                <Box
+                  alignItems="start"
+                  className="inputBox"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="start"
+                >
+                  <TextField
+                    className="customTextarea"
+                    defaultValue=""
+                    error={!!errors.acknowledgeLockedBalance}
+                    fullWidth
+                    inputRef={register({
+                      required: true,
+                    })}
+                    multiline
+                    name="acknowledgeLockedBalance"
+                    placeholder={intl.formatMessage({ id: "trader.ack" })}
+                    rows={3}
+                    variant="outlined"
+                  />
+                </Box>
+              </>
+            )}
+
+            <Box className="inputBox">
+              <CustomButton
+                className="full submitButton"
+                loading={actionLoading}
+                onClick={handleSubmitClick}
+                type="submit"
+              >
+                <FormattedMessage id="trader.start" />
+              </CustomButton>
+            </Box>
+          </>
+        )}
       </Box>
     </form>
   );
