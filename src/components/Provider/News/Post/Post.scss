@@ -24,9 +24,7 @@
 
   .postContent {
     padding: 15px;
-  }
 
-  .postContent {
     img {
       max-width: 100%;
     }
@@ -41,6 +39,19 @@
       padding-bottom: 100%;
       padding-bottom: 56.2493%;
       position: relative;
+    }
+  }
+
+  .repliesBox {
+    padding: 14px 16px;
+    width: 100%;
+
+    .showAllComments {
+      cursor: pointer;
+    }
+
+    .providerLogo {
+      margin-right: 12px;
     }
   }
 }
