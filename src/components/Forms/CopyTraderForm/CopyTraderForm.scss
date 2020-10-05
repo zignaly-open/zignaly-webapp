@@ -11,16 +11,16 @@
   h3 {
     font-weight: 500;
     margin-bottom: 20px;
+    max-width: 80%;
     text-align: center;
     text-transform: initial;
-    max-width: 80%;
   }
 
   h4 {
     margin-bottom: 20px;
+    max-width: 80%;
     text-align: center;
     text-transform: initial;
-    max-width: 80%;
   }
 
   p {
@@ -61,18 +61,18 @@
   }
 
   .labeledInputsBox {
-    width: 80%;
     margin-bottom: 30px;
+    width: 80%;
 
     span {
-      display: inline-block;
-      box-sizing: border-box;
-      width: 50%;
       border: 2px solid $purple;
-      text-align: center;
-      padding: 10px;
+      box-sizing: border-box;
       cursor: pointer;
+      display: inline-block;
       font-weight: 600;
+      padding: 10px;
+      text-align: center;
+      width: 50%;
 
       &.checked {
         background: $purple;

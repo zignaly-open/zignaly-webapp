@@ -2461,7 +2461,12 @@ export function providerGetResponseTransform(response) {
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  let transformed = assign(emptyProviderEntity, response);
+  let transformed = assign(emptyProviderEntity, response, {
+    minAllocatedBalance:
+      response.minAllocatedBalance && response.minAllocatedBalance !== "false"
+        ? response.minAllocatedBalance
+        : 0,
+  });
   transformed.options.allowClones = checkClones();
   return transformed;
 }

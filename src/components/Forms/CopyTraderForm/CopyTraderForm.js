@@ -89,6 +89,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
+          ...(provider.profitSharing && {
+            profitSharingMode: profitSharingMode,
+          }),
         };
         tradeApi
           .traderConnect(payload)
