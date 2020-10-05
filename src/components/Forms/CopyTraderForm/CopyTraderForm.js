@@ -33,6 +33,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeSettings = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
   const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
+  const [profitSharingMode, setProfitSharingMode] = useState("reinvest");
   const [alert, setAlert] = useState(undefined);
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
@@ -50,6 +51,15 @@ const CopyTraderForm = ({ provider, onClose }) => {
       data = data.replace(",", ".");
       setAllocated(data);
     }
+  };
+
+  /**
+   *
+   * @param {String} val Change event.
+   * @returns {Void} None.
+   */
+  const handleShareingModeChange = (val) => {
+    setProfitSharingMode(val);
   };
 
   /**
@@ -193,7 +203,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         className="copyTraderForm"
         display="flex"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="flex-start"
       >
         {/* {loading && <CircularProgress color="primary" size={40} />} */}
         {/* {!loading && ( */}
@@ -238,17 +248,73 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 value={allocated}
                 variant="outlined"
               />
-              <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-                <FormattedMessage
-                  id="trader.amount.error"
-                  values={{
-                    quote: provider.copyTradingQuote,
-                    amount: provider.minAllocatedBalance,
-                  }}
-                />
-              </span>
+              {!provider.profitSharing && (
+                <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+                  <FormattedMessage
+                    id="trader.amount.error"
+                    values={{
+                      quote: provider.copyTradingQuote,
+                      amount: provider.minAllocatedBalance,
+                    }}
+                  />
+                </span>
+              )}
             </Box>
           </Box>
+
+          {provider.profitSharing && (
+            <>
+              <Typography variant="h4">
+                <FormattedMessage id="trader.locked" />
+              </Typography>
+
+              <Typography variant="h4">
+                <FormattedMessage id="trader.moreinfo" />
+              </Typography>
+
+              <label className="customLabel">
+                <FormattedMessage id="trader.profitaction" />
+              </label>
+
+              <Box className="labeledInputsBox">
+                <span
+                  className={profitSharingMode === "reinvest" ? "checked" : ""}
+                  onClick={() => handleShareingModeChange("reinvest")}
+                >
+                  <FormattedMessage id="trader.reinvest" />
+                </span>
+                <span
+                  className={profitSharingMode === "withdraw" ? "checked" : ""}
+                  onClick={() => handleShareingModeChange("withdraw")}
+                >
+                  <FormattedMessage id="trader.withdraw" />
+                </span>
+              </Box>
+
+              <Box
+                alignItems="start"
+                className="inputBox"
+                display="flex"
+                flexDirection="column"
+                justifyContent="start"
+              >
+                <TextField
+                  className="customTextarea"
+                  defaultValue=""
+                  error={!!errors.acknowledgeLockedBalance}
+                  fullWidth
+                  inputRef={register({
+                    required: true,
+                  })}
+                  multiline
+                  name="acknowledgeLockedBalance"
+                  placeholder={intl.formatMessage({ id: "trader.ack" })}
+                  rows={3}
+                  variant="outlined"
+                />
+              </Box>
+            </>
+          )}
 
           <Box className="inputBox">
             <CustomButton

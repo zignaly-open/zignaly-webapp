@@ -31,7 +31,7 @@ const CopyTraderButton = ({ provider }) => {
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
-  const [copyModal, showCopyModal] = useState(false);
+  const [copyModal, showCopyModal] = useState(true);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
 
