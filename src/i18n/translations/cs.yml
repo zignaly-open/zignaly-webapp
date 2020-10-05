@@ -441,6 +441,7 @@ copyt.subtitle: "CH-Copy experienced traders who trade with the currencies you o
 copyt.allocated: "CH-allocated of copytrader’s balance"
 copyt.copiers: "CH-Copiers"
 srv.followers: "CH-Followers"
+copyt.successfee: "CH-Success Fee"
 srv.newfollowers: "CH-New Followers"
 copyt.copierslast7: "CH-Copiers last 7 days"
 copyt.copythistrader: "CH-Copy this Trader"

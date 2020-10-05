@@ -347,6 +347,7 @@ copyt.subtitle: "Sao chép các nhà giao dịch có kinh nghiệm với các lo
 copyt.allocated: "phân bổ số dư của nhà giao dịch"
 copyt.copiers: "Người sao chép"
 copyt.copierslast7: "Người sao chép 7 ngày qua"
+copyt.successfee: "Success Fee"
 copyt.copythistrader: "Sao chép Nhà giao dịch này"
 copyt.followingfrom: "Theo dõi từ Tài khoản"
 copyt.stopcopyingtrader: "Dừng sao chép nhà giao dịch này"
