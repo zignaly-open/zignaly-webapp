@@ -11,7 +11,7 @@ import { ConfirmDialog } from "../../../Dialogs";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
-import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { CornerDownRight } from "react-feather";
 
@@ -88,7 +88,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
         executeActionCallback={deleteReply}
         setConfirmConfig={setConfirmConfig}
       />
-      <Box className="replyHeader" display="flex" alignItems="center">
+      <Box alignItems="center" className="replyHeader" display="flex">
         <div className={reply.author.isFollowing ? "following" : ""}>
           <ProviderLogo
             defaultImage={ProfileIcon}
@@ -98,7 +98,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
           />
         </div>
 
-        <Box className="replyMetaBox" display="flex" alignItems="center">
+        <Box alignItems="center" className="replyMetaBox" display="flex">
           <Typography className="username body1">{reply.author.userName}</Typography>
           <span className="sep">·</span>
           <Typography className="date callout1">{formatDate(reply.createdAt)}</Typography>
@@ -129,7 +129,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       </Box>
       <div className="replyBox">
         {addLineBreaks(reply.content)}
-        <Box display="flex" className="replyActions" alignItems="center">
+        <Box alignItems="center" className="replyActions" display="flex">
           <Typography className="action callout2">
             <FormattedMessage id="wall.like" />
           </Typography>
@@ -193,10 +193,10 @@ const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
   return (
     <div className="replyContainer">
       <Reply
-        reply={reply}
-        showAddReply={handleShowAddReply}
         onReplyDeleted={onReplyDeleted}
         postId={postId}
+        reply={reply}
+        showAddReply={handleShowAddReply}
       />
       <div className="subRepliesContainer">
         {!showAllReplies && reply.replies.length > 0 ? (
@@ -207,11 +207,11 @@ const ReplyContainer = ({ postId, reply, onReplyAdded, onReplyDeleted }) => {
         ) : (
           <div className="childReplies">
             {sortedReplies.map((r) => (
-              <Reply reply={r} key={r.id} onReplyDeleted={onReplyDeleted} postId={postId} />
+              <Reply key={r.id} onReplyDeleted={onReplyDeleted} postId={postId} reply={r} />
             ))}
           </div>
         )}
-        {addReply && <AddReply postId={postId} replyId={reply.id} onReplyAdded={onReplyAdded} />}
+        {addReply && <AddReply onReplyAdded={onReplyAdded} postId={postId} replyId={reply.id} />}
       </div>
     </div>
   );

@@ -308,7 +308,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
                 </>
               )}
             </Box>
-            <Typography variant="body1" component="div">
+            <Typography component="div" variant="body1">
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Typography>
           </div>
@@ -327,14 +327,14 @@ const Post = ({ post: _post, onPostDeleted }) => {
 
             {sortedReplies.map((reply) => (
               <Reply
-                reply={reply}
                 key={reply.id}
-                postId={post.id}
                 onReplyAdded={onReplyAdded}
                 onReplyDeleted={onReplyDeleted}
+                postId={post.id}
+                reply={reply}
               />
             ))}
-            <AddReply postId={post.id} onReplyAdded={onReplyAdded} />
+            <AddReply onReplyAdded={onReplyAdded} postId={post.id} />
           </div>
         </Paper>
       </LazyLoad>

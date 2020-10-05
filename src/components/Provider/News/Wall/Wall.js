@@ -60,7 +60,7 @@ const Wall = ({ provider }) => {
   return (
     <Box className="wall">
       {provider.isAdmin && <CreatePost onCreated={loadPosts} providerId={provider.id} />}
-      <Posts posts={posts} onPostDeleted={onPostDeleted} />
+      <Posts onPostDeleted={onPostDeleted} posts={posts} />
     </Box>
   );
 };

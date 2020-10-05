@@ -28,7 +28,7 @@ const Posts = ({ posts, onPostDeleted }) => {
         posts.length ? (
           posts
             .sort((p1, p2) => p2.createdAt - p1.createdAt)
-            .map((post) => <Post key={post.id} post={post} onPostDeleted={onPostDeleted} />)
+            .map((post) => <Post key={post.id} onPostDeleted={onPostDeleted} post={post} />)
         ) : (
           <NoPosts />
         )

@@ -7,7 +7,7 @@ import "./AddReply.scss";
 import { useIntl } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 
 /**
@@ -70,16 +70,16 @@ const AddReply = ({ postId, replyId, onReplyAdded }) => {
   };
 
   return (
-    <Box className="addReply" display="flex" alignItems="center">
+    <Box alignItems="center" className="addReply" display="flex">
       <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={storeUserData.imageUrl} />
       <OutlinedInput
-        fullWidth={true}
-        placeholder={intl.formatMessage({ id: "wall.write.comment" })}
-        onKeyDown={keyPress}
-        onChange={(e) => setReply(e.target.value)}
-        value={reply}
         disabled={loading}
+        fullWidth={true}
         multiline={true}
+        onChange={(e) => setReply(e.target.value)}
+        onKeyDown={keyPress}
+        placeholder={intl.formatMessage({ id: "wall.write.comment" })}
+        value={reply}
       />
     </Box>
   );
