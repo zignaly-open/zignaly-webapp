@@ -1,7 +1,7 @@
 .copyTraderForm {
   min-height: 300px;
-  padding: 40px;
   overflow-y: scroll;
+  padding: 40px;
 
   .alert {
     margin-bottom: 20px;
@@ -82,6 +82,7 @@
 
   .customTextarea {
     margin-bottom: 30px;
+
     > div {
       padding: 10px;
     }
