@@ -8,17 +8,15 @@ import { showErrorAlert } from "../store/actions/ui";
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
- * @typedef {Object} DefaultProps
- * @property {String} internalExchangeId
  */
 
 /**
  * Hook to generate the profit sharing services list fetching and filtering.
  *
- * @param {DefaultProps} props Default props.
+ * @param {String} internalExchangeId Internal ID of exchange.
  * @returns {ProvidersCollection} Profits Sharing Services List
  */
-const useProfitSharingServices = ({ internalExchangeId }) => {
+const useProfitSharingServices = (internalExchangeId) => {
   const [providers, setProviders] = useState([]);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();

@@ -4001,6 +4001,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       closedPositions: 0,
       exchangeType: "",
       exchangeInternalId: "",
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
     signalsInfo: [],
   };
