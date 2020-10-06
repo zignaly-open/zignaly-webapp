@@ -82,7 +82,7 @@ const TraderHeaderInfo = ({ provider }) => {
           <span>
             <FormattedMessage id="copyt.successfee" />
           </span>
-          <b>{`${provider.profitShare}%`}</b>
+          <b>{`${provider.profitsShare}%`}</b>
         </Typography>
       ) : (
         <Typography className="price" variant="h4">

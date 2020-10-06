@@ -33,7 +33,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeSettings = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
   const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
-  const [profitsMode, setProfitsMode] = useState(provider.profitsMode);
+  const [profitsMode, setProfitsMode] = useState(
+    provider.profitsMode ? provider.profitsMode : "reinvest",
+  );
   const [alert, setAlert] = useState(undefined);
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
@@ -90,7 +92,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           providerId: provider.id,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
           ...(provider.profitSharing && {
-            profitMode: profitsMode,
+            profitsMode: profitsMode,
           }),
         };
         tradeApi
