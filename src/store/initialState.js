@@ -681,6 +681,7 @@ const initialState = {
       signalProviderQuotes: [],
       profitSharing: false,
       profitShare: 0,
+      profitsMode: "",
     },
   },
 };

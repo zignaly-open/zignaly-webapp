@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {Object} HookData
@@ -19,6 +21,7 @@ const useAvailableBalance = () => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
 
   const loadData = () => {
     // Skip balance fetch for paper trading exchanges.
@@ -34,7 +37,9 @@ const useAvailableBalance = () => {
         .then((data) => {
           setBalance(data);
         })
-        .catch(() => {})
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
         .finally(() => {
           setLoading(false);
         });

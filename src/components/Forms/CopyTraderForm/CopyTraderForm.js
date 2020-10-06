@@ -33,7 +33,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const storeSettings = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
   const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
-  const [profitSharingMode, setProfitSharingMode] = useState("reinvest");
+  const [profitsMode, setProfitsMode] = useState(provider.profitsMode);
   const [alert, setAlert] = useState(undefined);
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {Void} None.
    */
   const handleShareingModeChange = (val) => {
-    setProfitSharingMode(val);
+    setProfitsMode(val);
   };
 
   /**
@@ -90,7 +90,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           providerId: provider.id,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
           ...(provider.profitSharing && {
-            profitSharingMode: profitSharingMode,
+            profitMode: profitsMode,
           }),
         };
         tradeApi
@@ -123,9 +123,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
   };
 
   const validateExchange = () => {
-    if (!provider.profitSharing) {
-      return true;
-    }
     if (storeUserExchangeConnections.length > 0) {
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
@@ -161,6 +158,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {Boolean} whether the input value is valid or not.
    */
   const validateBalance = (allocatedBalance) => {
+    if (!provider.profitSharing) {
+      return true;
+    }
     // Skip balance validation on paper trading exchange.
     const added = parseFloat(allocatedBalance);
     if (storeSettings.selectedExchange.paperTrading) {
@@ -284,13 +284,13 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
                 <Box className="labeledInputsBox">
                   <span
-                    className={profitSharingMode === "reinvest" ? "checked" : ""}
+                    className={profitsMode === "reinvest" ? "checked" : ""}
                     onClick={() => handleShareingModeChange("reinvest")}
                   >
                     <FormattedMessage id="trader.reinvest" />
                   </span>
                   <span
-                    className={profitSharingMode === "withdraw" ? "checked" : ""}
+                    className={profitsMode === "withdraw" ? "checked" : ""}
                     onClick={() => handleShareingModeChange("withdraw")}
                   >
                     <FormattedMessage id="trader.withdraw" />
