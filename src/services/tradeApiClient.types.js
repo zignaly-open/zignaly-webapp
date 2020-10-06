@@ -1050,6 +1050,11 @@ function providerItemTransform(providerItem) {
   );
 
   if (!transformedResponse.isCopyTrading) {
+    // Updating followers count because it's out of date for clones
+    transformedResponse.followers = transformedResponse.aggregateFollowers.length
+      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
+          .totalFollowers
+      : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
 
@@ -2445,7 +2450,8 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} loading
  * @property {Array<String>} signalProviderQuotes
  * @property {Boolean} profitSharing
- * @property {Number} profitShare
+ * @property {Number} profitsShare
+ * @property {String} profitsMode
  */
 
 /**
@@ -2467,7 +2473,12 @@ export function providerGetResponseTransform(response) {
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  let transformed = assign(emptyProviderEntity, response);
+  let transformed = assign(emptyProviderEntity, response, {
+    minAllocatedBalance:
+      response.minAllocatedBalance && response.minAllocatedBalance !== "false"
+        ? response.minAllocatedBalance
+        : 0,
+  });
   transformed.options.allowClones = checkClones();
   return transformed;
 }
@@ -2592,7 +2603,8 @@ function createEmptyProviderGetEntity() {
     loading: false,
     signalProviderQuotes: [""],
     profitSharing: false,
-    profitShare: 0,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 

@@ -537,7 +537,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     />
                   }
                   control={control}
-                  defaultValue={provider.profitShare}
+                  defaultValue={provider.profitsShare}
                   name="profitShare"
                   rules={{
                     required: true,
