@@ -2439,7 +2439,8 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} loading
  * @property {Array<String>} signalProviderQuotes
  * @property {Boolean} profitSharing
- * @property {Number} profitShare
+ * @property {Number} profitsShare
+ * @property {String} profitsMode
  */
 
 /**
@@ -2461,7 +2462,12 @@ export function providerGetResponseTransform(response) {
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  let transformed = assign(emptyProviderEntity, response);
+  let transformed = assign(emptyProviderEntity, response, {
+    minAllocatedBalance:
+      response.minAllocatedBalance && response.minAllocatedBalance !== "false"
+        ? response.minAllocatedBalance
+        : 0,
+  });
   transformed.options.allowClones = checkClones();
   return transformed;
 }
@@ -2586,7 +2592,8 @@ function createEmptyProviderGetEntity() {
     loading: false,
     signalProviderQuotes: [""],
     profitSharing: false,
-    profitShare: 0,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 

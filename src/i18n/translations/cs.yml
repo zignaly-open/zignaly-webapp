@@ -431,6 +431,12 @@ trader.howmuch: "CH-How much {quote} do you want to allocate to this trader?"
 trader.choose: "CH-Choose allocated amount"
 trader.everymove: "CH-Copy every move proportionally with the following amount."
 trader.amount.error: "CH-Minimum allocated amount {quote} {amount}"
+trader.locked: "CH-Attention! This amount will be locked and used exclusively for copy-trading."
+trader.moreinfo: "CH-More information about locked balance"
+trader.profitaction: "CH-Choose what you want to do with profits."
+trader.reinvest: "CH-REINVEST"
+trader.withdraw: "CH-WITHDRAW"
+trader.ack: "CH-Acknowledge about locked balance."
 
 graph.others: "CH-Others"
 
