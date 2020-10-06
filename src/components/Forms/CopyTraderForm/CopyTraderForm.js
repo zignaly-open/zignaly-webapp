@@ -126,6 +126,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
   const validateExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
+      if (storeSettings.selectedExchange.paperTrading) {
+        let msg = intl.formatMessage({ id: "copyt.copy.error4" });
+        setAlert(msg);
+        return false;
+      }
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
           provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase()) &&
