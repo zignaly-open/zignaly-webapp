@@ -597,6 +597,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} [totalSignals] Total signals for signal providers
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
+ * @property {boolean} profitSharing Connected exchange account id
+ * @property {number} profitsShare Connected exchange account id
+ * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  */
 
@@ -1125,6 +1128,9 @@ function createEmptyProviderEntity() {
     closedPositions: 0,
     exchangeType: "",
     exchangeInternalId: "",
+    profitSharing: false,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 
@@ -4007,6 +4013,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       closedPositions: 0,
       exchangeType: "",
       exchangeInternalId: "",
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
     signalsInfo: [],
   };
