@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography, CircularProgress, InputAdornment } from "@material-ui/core";
+import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
