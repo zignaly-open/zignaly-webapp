@@ -359,6 +359,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 generateMarkdownPreview={(markdown) =>
                   Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
+                minEditorHeight={400}
                 onChange={handleAboutChange}
                 onTabChange={setAboutTab}
                 // @ts-ignore
@@ -374,6 +375,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 generateMarkdownPreview={(markdown) =>
                   Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
+                minEditorHeight={400}
                 onChange={handleStrategyChange}
                 onTabChange={setStrategyTab}
                 // @ts-ignore
