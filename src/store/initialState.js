@@ -146,6 +146,7 @@
  * @typedef {Object} DefaultUIModalObject
  * @property {Boolean} twoFA
  * @property {Boolean} createProvider
+ * @property {Boolean} createTrader
  * @property {Boolean} globalModal
  */
 
@@ -219,7 +220,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
-    balanceBox: false,
+    balanceBox: true,
     rowsPerPage: {},
     displayColumns: {
       signalpAnalytics: [
@@ -516,12 +517,30 @@ const initialState = {
       userId: "",
       userName: "",
       imageUrl: "",
+      firstPositionClosedAt: "",
+      firstPositionOpenedAt: "",
+      firstRealPositionClosedAt: "",
+      firstRealPositionOpenedAt: "",
+      hasActivated: false,
+      hasActivatedAt: "",
+      hasRegisteredAt: "",
+      isSupport: false,
+      lastPositionClosedAt: "",
+      lastPositionOpenedAt: "",
+      lastRealPositionClosedAt: "",
+      lastRealPositionOpenedAt: "",
+      positionBuysCount: 0,
+      positionSellsCount: 0,
+      realPositionBuysCount: 0,
+      realPositionSellsCount: 0,
+      role: "",
     },
   },
   ui: {
     modal: {
       twoFA: false,
       createProvider: false,
+      createTrader: false,
       globalModal: false,
     },
     alerts: {
@@ -660,6 +679,9 @@ const initialState = {
       price: 0,
       loading: false,
       signalProviderQuotes: [],
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
   },
 };

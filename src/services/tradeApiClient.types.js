@@ -238,9 +238,6 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} price
  * @property {String} trial
  * @property {String} ipnSecret
- * @property {String} [exchange]
- * @property {String} [exchangeType]
- * @property {String} [quote]
  * @property {String} about
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
@@ -283,6 +280,23 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} dashlyHash
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} firstPositionClosedAt
+ * @property {string} firstPositionOpenedAt
+ * @property {string} firstRealPositionClosedAt
+ * @property {string} firstRealPositionOpenedAt
+ * @property {boolean} hasActivated
+ * @property {string} hasActivatedAt
+ * @property {string} hasRegisteredAt
+ * @property {boolean} isSupport
+ * @property {string} lastPositionClosedAt
+ * @property {string} lastPositionOpenedAt
+ * @property {string} lastRealPositionClosedAt
+ * @property {string} lastRealPositionOpenedAt
+ * @property {number} positionBuysCount
+ * @property {number} positionSellsCount
+ * @property {number} realPositionBuysCount
+ * @property {number} realPositionSellsCount
+ * @property {string} role
  */
 
 /**
@@ -560,7 +574,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
- * @property {boolean} disable
+ * @property {boolean} disable False if user is copying
  * @property {boolean} customerKey
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
@@ -583,6 +597,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} [totalSignals] Total signals for signal providers
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
+ * @property {boolean} profitSharing Connected exchange account id
+ * @property {number} profitsShare Connected exchange account id
+ * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  */
 
@@ -891,8 +908,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} PostAuthor
+ * @property {string} userId
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} isFollowing Flag indicating if author is following provider
  */
 
 /**
@@ -904,7 +923,15 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} createdAt
  * @property {number} spams
  * @property {number} likes
- * @property {boolean} approved
+ * @property {boolean} unapproved Post has been unlisted by moderators
+ * @property {Array<Post>} replies
+ */
+
+/**
+ * @typedef {Object} AddReplyPayload
+ * @property {string} postId
+ * @property {string} [replyId] If replying to a comment
+ * @property {string} content
  */
 
 /**
@@ -942,6 +969,23 @@ export function userEntityResponseTransform(response) {
     dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
     userName: response.userName,
     imageUrl: response.imageUrl,
+    firstPositionClosedAt: response.firstPositionClosedAt,
+    firstPositionOpenedAt: response.firstPositionOpenedAt,
+    firstRealPositionClosedAt: response.firstRealPositionClosedAt,
+    firstRealPositionOpenedAt: response.firstRealPositionOpenedAt,
+    hasActivated: response.hasActivated,
+    hasActivatedAt: response.hasActivatedAt,
+    hasRegisteredAt: response.hasRegisteredAt,
+    isSupport: response.isSupport,
+    lastPositionClosedAt: response.lastPositionClosedAt,
+    lastPositionOpenedAt: response.lastPositionOpenedAt,
+    lastRealPositionClosedAt: response.lastRealPositionClosedAt,
+    lastRealPositionOpenedAt: response.lastRealPositionOpenedAt,
+    positionBuysCount: response.positionBuysCount,
+    positionSellsCount: response.positionSellsCount,
+    realPositionBuysCount: response.realPositionBuysCount,
+    realPositionSellsCount: response.realPositionSellsCount,
+    role: response.role,
   };
 }
 
@@ -991,6 +1035,7 @@ function providerItemTransform(providerItem) {
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
     floating: parseFloat(providerItem.floating) || 0,
+    aggregateFollowers: providerItem.aggregateFollowers ? providerItem.aggregateFollowers : [],
   });
 
   transformedResponse.dailyReturns.forEach((item) => {
@@ -1005,6 +1050,11 @@ function providerItemTransform(providerItem) {
   );
 
   if (!transformedResponse.isCopyTrading) {
+    // Updating followers count because it's out of date for clones
+    transformedResponse.followers = transformedResponse.aggregateFollowers.length
+      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
+          .totalFollowers
+      : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
 
@@ -1078,6 +1128,9 @@ function createEmptyProviderEntity() {
     closedPositions: 0,
     exchangeType: "",
     exchangeInternalId: "",
+    profitSharing: false,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 
@@ -2396,6 +2449,9 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} price
  * @property {Boolean} loading
  * @property {Array<String>} signalProviderQuotes
+ * @property {Boolean} profitSharing
+ * @property {Number} profitsShare
+ * @property {String} profitsMode
  */
 
 /**
@@ -2417,7 +2473,12 @@ export function providerGetResponseTransform(response) {
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  let transformed = assign(emptyProviderEntity, response);
+  let transformed = assign(emptyProviderEntity, response, {
+    minAllocatedBalance:
+      response.minAllocatedBalance && response.minAllocatedBalance !== "false"
+        ? response.minAllocatedBalance
+        : 0,
+  });
   transformed.options.allowClones = checkClones();
   return transformed;
 }
@@ -2541,6 +2602,9 @@ function createEmptyProviderGetEntity() {
     price: 0,
     loading: false,
     signalProviderQuotes: [""],
+    profitSharing: false,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 
@@ -3379,8 +3443,10 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} name
  * @property {string} exchange
  * @property {string} exchangeType
- * @property {string} minAllocatedBalance
+ * @property {string} [minAllocatedBalance]
  * @property {string} quote
+ * @property {boolean} [profitSharing]
+ * @property {number} [profitsShare]
  */
 
 /**
@@ -3947,6 +4013,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       closedPositions: 0,
       exchangeType: "",
       exchangeInternalId: "",
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
     signalsInfo: [],
   };

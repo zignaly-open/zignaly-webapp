@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import "./ExchangeAccountConnect.scss";
 import { useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -14,6 +13,8 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
+import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
+import { getUserData, getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -62,22 +63,6 @@ const ExchangeAccountConnect = () => {
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
     : null;
 
-  // Account types options
-  const typeOptions =
-    selectedExchange &&
-    selectedExchange.type.map((t) => ({
-      val: t,
-      label: t.charAt(0).toUpperCase() + t.slice(1),
-    }));
-
-  useEffect(() => {
-    // Set default exchange type on exchange change.
-    if (selectedExchange) {
-      setExchangeType(typeOptions[0].val);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedExchange]);
-
   /**
    * @typedef {Object} FormData
    * @property {String} internalName
@@ -115,6 +100,11 @@ const ExchangeAccountConnect = () => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
+        const exchangePayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserExchanges(exchangePayload));
+        dispatch(getUserData(exchangePayload));
         resetToPath(previousPath);
       })
       .catch((e) => {
@@ -177,25 +167,11 @@ const ExchangeAccountConnect = () => {
       <Box className="step2">
         {step >= 2 && selectedExchange && (
           <>
-            {typeOptions.length && (
-              <>
-                <Typography className="bold title">
-                  <FormattedMessage id="accounts.exchange.type" />
-                </Typography>
-                <ToggleButtonGroup
-                  className="typeButtons"
-                  exclusive
-                  onChange={(e, val) => setExchangeType(val)}
-                  value={exchangeType}
-                >
-                  {typeOptions.map((t) => (
-                    <ToggleButton key={t.val} value={t.val}>
-                      {t.label}
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </>
-            )}
+            <ToggleButtonsExchangeType
+              exchangeType={exchangeType}
+              exchangeTypes={selectedExchange.type}
+              setExchangeType={setExchangeType}
+            />
             {/* <Typography variant="body1" className="bold title">
               <FormattedMessage id="accounts.exchange.api" />
             </Typography> */}
@@ -211,7 +187,6 @@ const ExchangeAccountConnect = () => {
                 type="password"
               />
             ))}
-
             <Box
               alignItems="flex-end"
               className="actionStep2"

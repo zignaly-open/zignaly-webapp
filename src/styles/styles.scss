@@ -13,14 +13,20 @@ body {
   /* Hide scrollbar on Edge */
   -ms-overflow-style: none;
   /* Force thin scrollbar on Firefox */
-  scrollbar-width: thin;
+  scrollbar-width: 0;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 0;
 }
 
 [data-os="win"] {
   /* Custom scrollbar for Windows (Chrome) */
   ::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
+    background: transparent;
+    height: 0;
+    width: 0;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -290,6 +296,22 @@ table {
   --purple: #{$purpleLight};
   --border-color: #{$lightBlackBorder};
   --background-color: #{$lighterBlack};
+
+  /* CKEditor */
+  /* Helper variables to avoid duplication in the colors. */
+  --ck-custom-background: hsl(270, 1%, 29%);
+  --ck-custom-foreground: hsl(255, 3%, 18%);
+  --ck-custom-border: hsl(300, 1%, 22%);
+  --ck-custom-white: hsl(0, 0%, 100%);
+
+  /* Overrides generic colors. */
+
+  --ck-color-base-foreground: var(--ck-custom-background);
+  --ck-color-base-background: var(--ck-custom-background);
+  --ck-color-focus-border: hsl(208, 90%, 62%);
+  --ck-color-text: hsl(0, 0%, 98%);
+  --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
+  --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
 
   &[data-os="win"] {
     ::-webkit-scrollbar-thumb {

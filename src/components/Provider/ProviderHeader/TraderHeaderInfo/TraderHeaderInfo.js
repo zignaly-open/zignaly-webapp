@@ -77,14 +77,28 @@ const TraderHeaderInfo = ({ provider }) => {
         <b>{provider.followers} </b>
       </Typography>
 
-      <Typography className="price" variant="h4">
-        <span>
-          <FormattedMessage id="srv.edit.price" />
-        </span>
-        <b>{`$${provider.price}/Month`}</b>
-      </Typography>
-      <Hidden smUp>{provider.internalPaymentInfo && <TrialPeriod provider={provider} />}</Hidden>
-      {provider.isCopyTrading && (
+      {provider.profitSharing ? (
+        <Typography className="price" variant="h4">
+          <span>
+            <FormattedMessage id="copyt.successfee" />
+          </span>
+          <b>{`${provider.profitsShare}%`}</b>
+        </Typography>
+      ) : (
+        <Typography className="price" variant="h4">
+          <span>
+            <FormattedMessage id="srv.edit.price" />
+          </span>
+          <b>{`$${provider.price}/Month`}</b>
+        </Typography>
+      )}
+      <Hidden smUp>
+        {provider.profitSharing && provider.internalPaymentInfo && (
+          <TrialPeriod provider={provider} />
+        )}
+      </Hidden>
+
+      {provider.isCopyTrading && !provider.profitSharing && (
         <Typography className="allocated" variant="h4">
           {!provider.disable ? (
             <>
@@ -113,7 +127,24 @@ const TraderHeaderInfo = ({ provider }) => {
           )}
         </Typography>
       )}
-      <Hidden smUp>{provider.internalPaymentInfo && <PaymentButton provider={provider} />}</Hidden>
+      <Typography className="traderType" variant="h4">
+        <span>
+          <FormattedMessage id="accounts.exchange.type" />
+        </span>
+        <b>
+          {provider.profitSharing ? (
+            <FormattedMessage id="copyt.profitsharing" />
+          ) : (
+            <FormattedMessage id="copyt.copytrading" />
+          )}
+        </b>
+      </Typography>
+
+      <Hidden smUp>
+        {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
+          <PaymentButton provider={provider} />
+        )}
+      </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
       </Modal>

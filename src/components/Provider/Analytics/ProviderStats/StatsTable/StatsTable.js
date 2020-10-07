@@ -1,7 +1,7 @@
 import React from "react";
 import "./StatsTable.scss";
 import { Box } from "@material-ui/core";
-import { formatFloat, formatFloat2Dec } from "../../../../../utils/format";
+import { formatFloat2Dec } from "../../../../../utils/format";
 import Table from "../../../../Table";
 import ExchangeIcon from "../../../../ExchangeIcon";
 
@@ -50,80 +50,93 @@ const StatsTable = ({ title, persistKey, list }) => {
       },
     },
     {
-      name: "averageEntryPrice",
-      label: "col.stats.entryprice",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
       name: "i24HighPercentage",
       label: "col.stats.24H",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "i24LowPercentage",
       label: "col.stats.24L",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "i3DHighPercentage",
       label: "col.stats.3DH",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "i3DLowPercentage",
       label: "col.stats.3DL",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "iweekHighPercentage",
       label: "col.stats.1WH",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "iweekLowPercentage",
       label: "col.stats.1WL",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "imonthHighPercentage",
       label: "col.stats.1MH",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "imonthLowPercentage",
       label: "col.stats.1ML",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "i3MonthHighPercentage",
       label: "col.stats.3MH",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
     {
       name: "i3MonthLowPercentage",
       label: "col.stats.3ML",
       options: {
-        customBodyRender: formatFloat2Dec,
+        customBodyRender: (val) => {
+          return `${formatFloat2Dec(val)}%`;
+        },
       },
     },
   ];

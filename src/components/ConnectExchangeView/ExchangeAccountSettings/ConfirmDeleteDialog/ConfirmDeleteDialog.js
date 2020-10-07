@@ -14,10 +14,12 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { removeUserExchange } from "../../../../store/actions/user";
+import { getUserData, removeUserExchange } from "../../../../store/actions/user";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
+import initialState from "../../../../store/initialState";
+import useProfitSharingServices from "../../../../hooks/useProfitSharingServices";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -48,6 +50,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
   const balance = useBalance(selectedAccount.internalId);
+  const profitSharingServices = useProfitSharingServices(selectedAccount.internalId);
   const dispatch = useDispatch();
 
   const loadOpenPositions = () => {
@@ -85,13 +88,19 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           const newSelectedExchange = storeExchanegeConnections.find(
             (e) => e.internalId !== selectedAccount.internalId,
           );
-          dispatch(setSelectedExchange(newSelectedExchange));
+          dispatch(
+            setSelectedExchange(
+              newSelectedExchange ? newSelectedExchange : initialState.settings.selectedExchange,
+            ),
+          );
         }
         setPathParams({
           tempMessage: <FormattedMessage id={"accounts.deleted"} />,
           currentPath: previousPath,
         });
         onClose();
+        const authorizationPayload = { token: storeSession.tradeApi.accessToken };
+        dispatch(getUserData(authorizationPayload));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -119,6 +128,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               <FormattedMessage id="confirm.deleteexchange.balance" />
             ) : positions.length ? (
               <FormattedMessage id="confirm.deleteexchange.openpos" />
+            ) : profitSharingServices.length ? (
+              <FormattedMessage id="confirm.deleteexchange.profit" />
             ) : (
               <FormattedMessage id="confirm.deleteexchange.message" />
             )}
@@ -131,7 +142,13 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
         </Button>
         <CustomButton
           className="textPurple"
-          disabled={Boolean(!balance || !positions || brokerAccountWithFunds || positions.length)}
+          disabled={Boolean(
+            !balance ||
+              !positions ||
+              brokerAccountWithFunds ||
+              positions.length ||
+              profitSharingServices.length,
+          )}
           loading={loading}
           onClick={deleteExchange}
         >

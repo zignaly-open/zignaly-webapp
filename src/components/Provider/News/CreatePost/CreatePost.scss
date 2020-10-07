@@ -1,5 +1,15 @@
 .createPost {
-  //   margin: 0 auto;
   padding: 18px;
-  //   width: 860px;
+
+  .customButton {
+    min-width: 185px;
+  }
+}
+
+@include media("<=sm") {
+  .createPost {
+    .customButton {
+      width: 100%;
+    }
+  }
 }

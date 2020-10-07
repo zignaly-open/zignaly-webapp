@@ -176,12 +176,10 @@ export const createTraderRoutes = (providerId, provider) => {
       ],
     };
 
-    if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
-      data.links.push({
-        id: "srv.newsfeed",
-        to: `/copyTraders/${provider.id}/feed`,
-      });
-    }
+    data.links.push({
+      id: "srv.newsfeed",
+      to: `/copyTraders/${provider.id}/feed`,
+    });
 
     if (provider.isAdmin) {
       if (!provider.isClone) {
@@ -248,7 +246,7 @@ export const createProviderRoutes = (providerId, provider, selectedExchange) => 
       ],
     };
 
-    if (process.env.GATSBY_ENABLE_FEED.toLowerCase() === "true" && !provider.isClone) {
+    if (!provider.isClone) {
       data.links.push({
         id: "srv.newsfeed",
         to: `/signalProviders/${provider.id}/feed`,

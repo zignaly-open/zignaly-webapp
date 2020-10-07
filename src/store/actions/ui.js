@@ -7,6 +7,7 @@ export const SHOW_SUCCESS_ALERT = "SHOW_SUCCESS_ALERT";
 export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
 export const ASK_2FA = "ASK_2FA";
 export const SHOW_CREATE_PROVIDER = "SHOW_CREATE_PROVIDER";
+export const SHOW_CREATE_TRADER = "SHOW_CREATE_TRADER";
 export const SHOW_BALANCE_LOADER = "SHOW_BALANCE_LOADER_ACTION";
 export const SHOW_GLOBAL_MODAL = "SHOW_GLOBAL_MODAL";
 
@@ -62,7 +63,7 @@ const prepareErrorMessage = (error) => {
     }
     return "error.noidea";
   }
-  return error;
+  return "error.noidea";
 };
 
 /**
@@ -122,6 +123,17 @@ export const ask2FA = (payload) => {
 export const showCreateProvider = (payload) => {
   return {
     type: SHOW_CREATE_PROVIDER,
+    payload,
+  };
+};
+
+/**
+ * @param {boolean} payload Flag to indicate if we should open create trader modal.
+ * @returns {AnyAction} return action object.
+ */
+export const showCreateTrader = (payload) => {
+  return {
+    type: SHOW_CREATE_TRADER,
     payload,
   };
 };

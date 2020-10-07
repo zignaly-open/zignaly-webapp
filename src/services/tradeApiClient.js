@@ -132,6 +132,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
  * @typedef {import('./tradeApiClient.types').Post} Post
  * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
+ * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
  */
 
 /**
@@ -1625,6 +1626,36 @@ class TradeApiClient {
   }
 
   /**
+   * Edit post.
+   *
+   * @param {{postId: string, content: string}} payload Edit Post payload.
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async editPost(payload) {
+    const endpointPath = "/fe/api.php?action=editPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Get post.
+   *
+   * @param {{postId: string}} payload Edit Post payload.
+   *
+   * @returns {Promise<Post>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getPost(payload) {
+    const endpointPath = "/fe/api.php?action=getPost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
    * Get posts.
    *
    * @param {GetPostsPayload} payload Get Posts payload.
@@ -1635,6 +1666,81 @@ class TradeApiClient {
    */
   async getPosts(payload) {
     const endpointPath = "/fe/api.php?action=getPosts";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Approve post.
+   *
+   * @param {{postId: string}} payload Approve post payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async approvePost(payload) {
+    const endpointPath = "/fe/api.php?action=approvePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Unapprove post.
+   *
+   * @param {{postId: string}} payload Unapprove post payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async unapprovePost(payload) {
+    const endpointPath = "/fe/api.php?action=unapprovePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Add post/comment reply
+   *
+   * @param {AddReplyPayload} payload Payload
+   *
+   * @returns {Promise<Post>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async addReply(payload) {
+    const endpointPath = "/fe/api.php?action=addReply";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete Post.
+   *
+   * @param {{postId: string}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deletePost(payload) {
+    const endpointPath = "/fe/api.php?action=deletePost";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Delete Reply.
+   *
+   * @param {{postId: string, replyId: string, nested: boolean}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteReply(payload) {
+    const endpointPath = "/fe/api.php?action=deleteReply";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

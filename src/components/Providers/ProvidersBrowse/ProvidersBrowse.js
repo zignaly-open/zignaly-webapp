@@ -77,11 +77,11 @@ const ProvidersBrowse = ({
       {toggleSort && (
         <ProvidersSort
           clearFilters={clearSort}
+          isCopyTrading={copyTradersOnly}
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
           sort={sort}
-          isCopyTrading={copyTradersOnly}
         />
       )}
       {copyTradersOnly && (
@@ -100,7 +100,7 @@ const ProvidersBrowse = ({
           value={timeFrame}
         />
       )}
-      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={7} />
+      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
     </Box>
   );
 };
