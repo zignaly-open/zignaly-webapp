@@ -145,7 +145,7 @@ const ExchangeAccountAdd = ({ demo }) => {
         };
         dispatch(getUserExchanges(exchangePayload));
         dispatch(getUserData(exchangePayload));
-        dashlyExchangeConnected();
+        dashlyExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
       })
