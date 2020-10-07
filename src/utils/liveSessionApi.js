@@ -1,6 +1,6 @@
 import ls from "@livesession/sdk";
 
-export const liveSessionTrackID = "4c9e2f89.fe420345";
+const liveSessionTrackID = "4c9e2f89.fe420345";
 
 /**
  *

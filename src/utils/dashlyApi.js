@@ -29,12 +29,19 @@ const dashlyApi = () => {
 
 export default dashlyApi;
 
-export const dashlyExchangeConnection = () => {
+/**
+ *
+ * @param {string} exchangeType Exchange type either demo or real
+ * @returns {void} None.
+ */
+export const dashlyExchangeConnected = (exchangeType) => {
   const { dashly } = dashlyApi();
 
   if (dashly) {
     // @ts-ignore
-    dashly.track("Exchange Connected");
+    dashly.track("Exchange Connected", {
+      exchangeType: exchangeType,
+    });
   }
 };
 
