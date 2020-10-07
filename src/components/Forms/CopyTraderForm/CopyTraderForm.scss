@@ -23,7 +23,7 @@
     text-transform: initial;
   }
 
-  p {
+  .para {
     margin-bottom: 20px;
     text-align: center;
     width: 80%;
@@ -76,6 +76,7 @@
 
       &.checked {
         background: $purple;
+        color: $white;
       }
     }
   }
