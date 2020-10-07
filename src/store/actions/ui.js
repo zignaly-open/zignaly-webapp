@@ -63,7 +63,7 @@ const prepareErrorMessage = (error) => {
     }
     return "error.noidea";
   }
-  return error;
+  return "error.noidea";
 };
 
 /**
