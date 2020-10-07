@@ -97,7 +97,8 @@ const TraderHeaderInfo = ({ provider }) => {
           <TrialPeriod provider={provider} />
         )}
       </Hidden>
-      {provider.isCopyTrading && (
+
+      {provider.isCopyTrading && !provider.profitSharing && (
         <Typography className="allocated" variant="h4">
           {!provider.disable ? (
             <>
@@ -126,6 +127,16 @@ const TraderHeaderInfo = ({ provider }) => {
           )}
         </Typography>
       )}
+      <Typography className="traderType" variant="h4">
+        <b>
+          {provider.profitSharing ? (
+            <FormattedMessage id="copyt.profitsharing" />
+          ) : (
+            <FormattedMessage id="copyt.copytrading" />
+          )}
+        </b>
+      </Typography>
+
       <Hidden smUp>
         {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
           <PaymentButton provider={provider} />
