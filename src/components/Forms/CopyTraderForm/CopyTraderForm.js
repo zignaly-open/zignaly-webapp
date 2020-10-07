@@ -41,7 +41,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { balance, loading } = useAvailableBalance();
+  const { balance } = useAvailableBalance();
 
   /**
    *
@@ -220,136 +220,131 @@ const CopyTraderForm = ({ provider, onClose }) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {loading && <CircularProgress color="primary" size={40} />}
-        {!loading && (
-          <>
-            {Boolean(alert) && (
-              <Alert className="alert" severity="error">
-                {alert}
-              </Alert>
-            )}
-            <Typography variant="h3">
-              <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
-            </Typography>
-            <Typography className="para" variant="body1">
-              <FormattedMessage id="trader.everymove" />
-            </Typography>
-            <Box
-              alignItems="center"
-              className="fieldBox"
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <Box
-                alignItems="start"
-                className="inputBox"
-                display="flex"
-                flexDirection="column"
-                justifyContent="start"
-              >
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
-                    ),
+        {Boolean(alert) && (
+          <Alert className="alert" severity="error">
+            {alert}
+          </Alert>
+        )}
+        <Typography variant="h3">
+          <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+        </Typography>
+        <Typography className="para" variant="body1">
+          <FormattedMessage id="trader.everymove" />
+        </Typography>
+        <Box
+          alignItems="center"
+          className="fieldBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <Box
+            alignItems="start"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <TextField
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
+                ),
+              }}
+              className="customInput"
+              error={!!errors.allocatedBalance}
+              fullWidth
+              inputRef={register({
+                required: true,
+              })}
+              name="allocatedBalance"
+              onChange={handleAllocatedChange}
+              placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
+              value={allocated}
+              variant="outlined"
+            />
+            {!provider.profitSharing && (
+              <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+                <FormattedMessage
+                  id="trader.amount.error"
+                  values={{
+                    quote: provider.copyTradingQuote,
+                    amount: provider.minAllocatedBalance,
                   }}
-                  className="customInput"
-                  error={!!errors.allocatedBalance}
-                  fullWidth
-                  inputRef={register({
-                    required: true,
-                  })}
-                  name="allocatedBalance"
-                  onChange={handleAllocatedChange}
-                  placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
-                  value={allocated}
-                  variant="outlined"
                 />
-                {!provider.profitSharing && (
-                  <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
-                    <FormattedMessage
-                      id="trader.amount.error"
-                      values={{
-                        quote: provider.copyTradingQuote,
-                        amount: provider.minAllocatedBalance,
-                      }}
-                    />
-                  </span>
-                )}
-              </Box>
+              </span>
+            )}
+          </Box>
+        </Box>
+
+        {provider.profitSharing && (
+          <>
+            <Typography variant="h4">
+              <FormattedMessage id="trader.locked" />
+            </Typography>
+
+            <Typography variant="h4">
+              <FormattedMessage id="trader.moreinfo" />
+            </Typography>
+
+            <label className="customLabel">
+              <FormattedMessage id="trader.profitaction" />
+            </label>
+
+            <Box className="labeledInputsBox">
+              <span
+                className={profitsMode === "reinvest" ? "checked" : ""}
+                onClick={() => handleShareingModeChange("reinvest")}
+              >
+                <FormattedMessage id="trader.reinvest" />
+              </span>
+              <span
+                className={profitsMode === "withdraw" ? "checked" : ""}
+                onClick={() => handleShareingModeChange("withdraw")}
+              >
+                <FormattedMessage id="trader.withdraw" />
+              </span>
             </Box>
 
-            {provider.profitSharing && (
-              <>
-                <Typography variant="h4">
-                  <FormattedMessage id="trader.locked" />
-                </Typography>
+            <label className="customLabel">
+              <FormattedMessage id="trader.copy.confirm" />
+            </label>
 
-                <Typography variant="h4">
-                  <FormattedMessage id="trader.moreinfo" />
-                </Typography>
-
-                <label className="customLabel">
-                  <FormattedMessage id="trader.profitaction" />
-                </label>
-
-                <Box className="labeledInputsBox">
-                  <span
-                    className={profitsMode === "reinvest" ? "checked" : ""}
-                    onClick={() => handleShareingModeChange("reinvest")}
-                  >
-                    <FormattedMessage id="trader.reinvest" />
-                  </span>
-                  <span
-                    className={profitsMode === "withdraw" ? "checked" : ""}
-                    onClick={() => handleShareingModeChange("withdraw")}
-                  >
-                    <FormattedMessage id="trader.withdraw" />
-                  </span>
-                </Box>
-
-                <label className="customLabel">
-                  <FormattedMessage id="trader.copy.confirm" />
-                </label>
-
-                <Box
-                  alignItems="start"
-                  className="inputBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="start"
-                >
-                  <TextField
-                    className="customTextarea"
-                    defaultValue=""
-                    error={!!errors.acknowledgeLockedBalance}
-                    fullWidth
-                    inputRef={register({
-                      required: true,
-                    })}
-                    multiline
-                    name="acknowledgeLockedBalance"
-                    placeholder={intl.formatMessage({ id: "trader.ack" })}
-                    rows={3}
-                    variant="outlined"
-                  />
-                </Box>
-              </>
-            )}
-
-            <Box className="inputBox">
-              <CustomButton
-                className="full submitButton"
-                loading={actionLoading}
-                onClick={handleSubmitClick}
-                type="submit"
-              >
-                <FormattedMessage id="trader.start" />
-              </CustomButton>
+            <Box
+              alignItems="start"
+              className="inputBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+            >
+              <TextField
+                className="customTextarea"
+                defaultValue=""
+                error={!!errors.acknowledgeLockedBalance}
+                fullWidth
+                inputRef={register({
+                  required: true,
+                })}
+                multiline
+                name="acknowledgeLockedBalance"
+                placeholder={intl.formatMessage({ id: "trader.ack" })}
+                rows={3}
+                variant="outlined"
+              />
             </Box>
           </>
         )}
+
+        <Box className="inputBox">
+          <CustomButton
+            className="full submitButton"
+            loading={actionLoading}
+            onClick={handleSubmitClick}
+            type="submit"
+          >
+            <FormattedMessage id="trader.start" />
+          </CustomButton>
+        </Box>
       </Box>
     </form>
   );
