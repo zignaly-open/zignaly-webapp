@@ -23,7 +23,7 @@
     text-transform: initial;
   }
 
-  .p {
+  .para {
     margin-bottom: 20px;
     text-align: center;
     width: 80%;
@@ -67,13 +67,13 @@
     span {
       border: 2px solid $purple;
       box-sizing: border-box;
+      color: $purple;
       cursor: pointer;
       display: inline-block;
       font-weight: 600;
       padding: 10px;
       text-align: center;
       width: 50%;
-      color: $purple;
 
       &.checked {
         background: $purple;

@@ -231,7 +231,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <Typography variant="h3">
               <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
             </Typography>
-            <Typography className="p" variant="body1">
+            <Typography className="para" variant="body1">
               <FormattedMessage id="trader.everymove" />
             </Typography>
             <Box
