@@ -23,7 +23,7 @@
     text-transform: initial;
   }
 
-  p {
+  .p {
     margin-bottom: 20px;
     text-align: center;
     width: 80%;
@@ -73,9 +73,11 @@
       padding: 10px;
       text-align: center;
       width: 50%;
+      color: $purple;
 
       &.checked {
         background: $purple;
+        color: $white;
       }
     }
   }

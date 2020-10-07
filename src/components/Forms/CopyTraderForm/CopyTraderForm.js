@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography, CircularProgress } from "@material-ui/core";
+import { Box, TextField, Typography, CircularProgress, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -231,7 +231,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <Typography variant="h3">
               <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
             </Typography>
-            <Typography variant="body1">
+            <Typography className="p" variant="body1">
               <FormattedMessage id="trader.everymove" />
             </Typography>
             <Box
@@ -248,10 +248,12 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 flexDirection="column"
                 justifyContent="start"
               >
-                <label className="customLabel">
-                  <FormattedMessage id="trader.choose" />{" "}
-                </label>
                 <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
+                    ),
+                  }}
                   className="customInput"
                   error={!!errors.allocatedBalance}
                   fullWidth
@@ -260,6 +262,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                   })}
                   name="allocatedBalance"
                   onChange={handleAllocatedChange}
+                  placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
                   value={allocated}
                   variant="outlined"
                 />
@@ -305,6 +308,10 @@ const CopyTraderForm = ({ provider, onClose }) => {
                     <FormattedMessage id="trader.withdraw" />
                   </span>
                 </Box>
+
+                <label className="customLabel">
+                  <FormattedMessage id="trader.copy.confirm" />
+                </label>
 
                 <Box
                   alignItems="start"
