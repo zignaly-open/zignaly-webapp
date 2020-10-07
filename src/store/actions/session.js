@@ -6,6 +6,7 @@ import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
 import { dashlyLogin, dashlyRegister } from "../../utils/dashlyApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
+import { userPilotLogin } from "../../utils/userPilotApi";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -92,6 +93,7 @@ export const registerUser = (payload, setLoading) => {
       }
       startLiveSession(responseData);
       dashlyRegister(responseData);
+      userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
       setLoading(false);
     } catch (e) {

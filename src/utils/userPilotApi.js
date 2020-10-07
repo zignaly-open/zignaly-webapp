@@ -4,7 +4,6 @@ const appToken = "55mi72q1";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserEntity} UserEntity
- * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -25,13 +24,13 @@ export const userPilotLogin = (userData) => {
 };
 
 /**
- * @param {ExchangeConnectionEntity} exchange Added Exchange.
+ * @param {string} exchangeType Added Exchange.
  * @returns {void} None.
  */
-export const userPilotExchangeConnected = (exchange) => {
+export const userPilotExchangeConnected = (exchangeType) => {
   Userpilot.initialize(appToken);
   Userpilot.track("Exchange Connected", {
-    exchangeType: exchange.paperTrading ? "demo" : "real",
+    exchangeType: exchangeType,
   });
 };
 

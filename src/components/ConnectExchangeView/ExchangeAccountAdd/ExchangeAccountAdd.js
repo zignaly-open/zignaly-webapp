@@ -13,6 +13,7 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
 import { showErrorAlert } from "../../../store/actions/ui";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
 import { dashlyExchangeConnected } from "../../../utils/dashlyApi";
+import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -145,6 +146,7 @@ const ExchangeAccountAdd = ({ demo }) => {
         dispatch(getUserExchanges(exchangePayload));
         dispatch(getUserData(exchangePayload));
         dashlyExchangeConnected();
+        userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
       })
       .catch((e) => {
