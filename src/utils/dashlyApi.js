@@ -29,6 +29,15 @@ const dashlyApi = () => {
 
 export default dashlyApi;
 
+export const dashlyExchangeConnection = () => {
+  const { dashly } = dashlyApi();
+
+  if (dashly) {
+    // @ts-ignore
+    dashly.track("Exchange Connected");
+  }
+};
+
 /**
  * @param {UserEntity} userData User Entity.
  * @returns {void} None.
