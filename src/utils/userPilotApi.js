@@ -15,11 +15,11 @@ export const userPilotLogin = (userData) => {
   Userpilot.identify(userData.userId, {
     name: userData.firstName,
     email: userData.email,
-    created_at: userData.createdAt,
-    exchange_connected: userData.binanceConnected,
-    provider_enabled: userData.providerEnable,
-    buys_count: userData.buysCount,
-    sells_count: userData.sellsCount,
+    createdAt: userData.createdAt,
+    exchangeConnected: userData.binanceConnected,
+    providerEnabled: userData.providerEnable,
+    buysCount: userData.buysCount,
+    sellsCount: userData.sellsCount,
   });
 };
 
