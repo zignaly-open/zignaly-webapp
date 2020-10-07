@@ -128,6 +128,9 @@ const TraderHeaderInfo = ({ provider }) => {
         </Typography>
       )}
       <Typography className="traderType" variant="h4">
+        <span>
+          <FormattedMessage id="accounts.exchange.type" />
+        </span>
         <b>
           {provider.profitSharing ? (
             <FormattedMessage id="copyt.profitsharing" />
