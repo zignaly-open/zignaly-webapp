@@ -27,7 +27,7 @@ const ConnectedProvidersSummary = ({ providers }) => {
             <FormattedMessage id="accounts.copying" />
           </Typography>
 
-          <Link to="dashboard/connectedTraders">
+          <Link to="/dashboard/connectedTraders">
             <Typography className="textPurple" variant="subtitle1">
               <FormattedMessage id="accounts.connected" />
             </Typography>
