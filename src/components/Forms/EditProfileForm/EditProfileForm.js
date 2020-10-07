@@ -529,16 +529,16 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                       className={
                         "customInput " +
                         (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.profitShare ? "error" : "")
+                        (errors.profitsShare ? "error" : "")
                       }
-                      error={!!errors.profitShare}
+                      error={!!errors.profitsShare}
                       fullWidth
                       variant="outlined"
                     />
                   }
                   control={control}
                   defaultValue={provider.profitsShare}
-                  name="profitShare"
+                  name="profitsShare"
                   rules={{
                     required: true,
                   }}
