@@ -29,7 +29,7 @@ const dashlyApi = () => {
 
 export default dashlyApi;
 
-export const dashlyExchangeConnection = () => {
+export const dashlyExchangeConnected = () => {
   const { dashly } = dashlyApi();
 
   if (dashly) {
