@@ -6,7 +6,6 @@ import {
   Typography,
   Switch,
   Tooltip,
-  FormControlLabel,
   Checkbox,
   InputAdornment,
 } from "@material-ui/core";
