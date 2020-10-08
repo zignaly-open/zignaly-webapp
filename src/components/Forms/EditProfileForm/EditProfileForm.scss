@@ -122,16 +122,14 @@
   }
 
   .optionsBox {
-    .optionLabel {
-      align-items: center;
-      display: flex;
-      flex-direction: row;
+    .customLabel {
+      margin-left: 10px;
+    }
 
-      svg {
-        height: 16px;
-        margin-left: 5px;
-        width: 16px;
-      }
+    .helpIcon {
+      height: 16px;
+      margin-left: 5px;
+      width: 16px;
     }
   }
 

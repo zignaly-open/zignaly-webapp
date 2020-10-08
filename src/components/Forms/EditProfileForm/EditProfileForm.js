@@ -34,6 +34,7 @@ import { Help } from "@material-ui/icons";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider
@@ -123,6 +124,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
+        options: preparePayloadOptions(data),
         logoUrl,
       };
       tradeApi
@@ -169,6 +171,22 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       list.push(obj);
     }
     return list;
+  };
+
+  /**
+   *
+   * @param {*} data Submitted object.
+   * @returns {DefaultProviderOptions} Provider options.
+   */
+  const preparePayloadOptions = (data) => {
+    let options = provider.options;
+
+    userOptions.forEach((item) => {
+      // @ts-ignore
+      options[item.id] = data[item.id];
+      delete data[item.id];
+    });
+    return options;
   };
 
   /**
@@ -389,22 +407,35 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   <FormattedMessage id="signalp.useroption.title" />
                 </Typography>
                 {userOptions.map((o) => (
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    // @ts-ignore
-                    defaultChecked={provider[o.id]}
-                    inputRef={register}
+                  <Box
+                    alignItems="center"
+                    className="inputBox"
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-start"
                     key={o.id}
-                    label={
-                      <div className="optionLabel">
-                        <FormattedMessage id={o.label} />
-                        <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
-                          <Help />
-                        </Tooltip>
-                      </div>
-                    }
-                    name={o.id}
-                  />
+                    width="100%"
+                  >
+                    <Controller
+                      control={control}
+                      // @ts-ignore
+                      defaultValue={provider.options[o.id]}
+                      name={o.id}
+                      render={({ onChange, onBlur, value }) => (
+                        <Checkbox
+                          checked={value}
+                          onBlur={onBlur}
+                          onChange={(e) => onChange(e.target.checked)}
+                        />
+                      )}
+                    />
+                    <label className="customLabel">
+                      <FormattedMessage id={o.label} />
+                      <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
+                        <Help className="helpIcon" />
+                      </Tooltip>
+                    </label>
+                  </Box>
                 ))}
               </Box>
             )}
