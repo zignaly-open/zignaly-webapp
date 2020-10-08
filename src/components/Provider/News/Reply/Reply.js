@@ -114,11 +114,11 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
             onClose={handleMenuClose}
             open={Boolean(anchorEl)}
           >
-            {canEdit && (
+            {/* {canEdit && (
               <MenuItem onClick={() => {}}>
                 <FormattedMessage id="srv.edit" />
               </MenuItem>
-            )}
+            )} */}
             {canEdit && (
               <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
                 <FormattedMessage id="srv.edit.delete" />
@@ -130,12 +130,12 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       <div className="replyBox">
         {addLineBreaks(reply.content)}
         <Box alignItems="center" className="replyActions" display="flex">
-          <Typography className="action callout2">
+          {/* <Typography className="action callout2">
             <FormattedMessage id="wall.like" />
-          </Typography>
+          </Typography> */}
           {showAddReply && (
             <>
-              <span className="sep">·</span>
+              {/* <span className="sep">·</span> */}
               <Typography
                 className="action callout2"
                 onClick={() => {
