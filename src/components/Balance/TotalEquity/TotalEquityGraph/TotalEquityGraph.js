@@ -60,7 +60,6 @@ const TotalEquityGraph = ({ list, modal }) => {
    */
 
   const tooltipFormat = (tooltipItem) => {
-    // console.log(list[list.length - tooltipItem.index]);
     return (
       <Box className="equityTooltip">
         <Box>
