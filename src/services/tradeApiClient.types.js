@@ -242,6 +242,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
  * @property {Array<DefaultProviderTeamObject>} team
+ * @property {DefaultProviderOptions} [options]
  */
 
 /**

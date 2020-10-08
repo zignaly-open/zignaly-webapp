@@ -75,12 +75,18 @@
     }
   }
 
+  .leftColumn,
+  .rightColumn {
+    width: 50%;
+  }
+
   .aboutBox,
   .whoWeAreBox,
   .strategyBox,
-  .profileBox {
+  .profileBox,
+  .optionsBox {
     padding: 20px;
-    width: 50%;
+    width: 100%;
   }
 
   .aboutBox {
@@ -92,7 +98,7 @@
   }
 
   .strategyBox {
-    min-height: 400px;
+    min-height: 250px;
   }
 
   .profileBox {
@@ -112,6 +118,18 @@
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+
+  .optionsBox {
+    .customLabel {
+      margin-left: 10px;
+    }
+
+    .helpIcon {
+      height: 16px;
+      margin-left: 5px;
+      width: 16px;
     }
   }
 
@@ -151,7 +169,8 @@
       .aboutBox,
       .whoWeAreBox,
       .strategyBox,
-      .profileBox {
+      .profileBox,
+      .optionsBox {
         padding: 20px 10px;
         width: 100%;
       }
