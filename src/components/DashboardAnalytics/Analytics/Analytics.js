@@ -3,6 +3,7 @@ import Filters from "../Filters";
 import { Box } from "@material-ui/core";
 import useDashboardAnalytics from "../../../hooks/useDashboardAnalytics";
 import AnalyticsChart from "../AnalyticsChart";
+import ProfitSharingAnalytics from "../ProfitSharingAnalytics";
 
 /**
  * Dashboard analytics component.
@@ -31,13 +32,14 @@ const Analytics = () => {
         setFilters={setFilters}
         timeFrames={timeFrames}
       />
-      <AnalyticsChart
+      {/* <AnalyticsChart
         loading={loading}
         provider={filters.provider}
         quote={filters.quote}
         stats={stats}
         timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
-      />
+      /> */}
+      <ProfitSharingAnalytics providerId="5ec8fbc8da8e9655d2272a44" />
     </Box>
   );
 };
