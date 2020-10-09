@@ -8,11 +8,12 @@ import { Box, CircularProgress, Typography } from "@material-ui/core";
 import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
-import { formatFloat2Dec, formatFloat } from "../../../utils/format";
+import { formatFloat, FormatedDateTime } from "../../../utils/format";
 import TotalEquityGraph from "../../Balance/TotalEquity/TotalEquityGraph";
 import TitleBar from "../../Balance/TotalEquity//TitleBar";
 import EquityFilter from "../../Balance/TotalEquity//EquityFilter";
 import EquityGraphLabels from "../../Balance/TotalEquity//GraphLabels";
+import ProfitSharingTable from "./ProfitSharingTable";
 
 /**
  * @typedef {import("../../../store/initialState").DashboardAnalyticsFilters} DashboardAnalyticsFilters
@@ -62,7 +63,6 @@ const ProfitSharingAnalytics = ({ providerId }) => {
     },
   ];
   const [balances, setBalances] = useState(balancesTest);
-
   const dispatch = useDispatch();
 
   const getProviderPerformance = () => {
@@ -157,6 +157,7 @@ const ProfitSharingAnalytics = ({ providerId }) => {
           <EquityGraphLabels list={balances} />
         </Box>
       </Box>
+      <ProfitSharingTable />
     </Box>
   );
 };

@@ -441,6 +441,7 @@ trader.ack: "Acknowledge about locked balance."
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
 
 profitsharing.currentAllocated: "Current Allocated Balance"
+profitsharing.accounting: "Accounting"
 profitsharing.initAllocated: "Initial Allocated Balance"
 profitsharing.retain: "Retain"
 profitsharing.watermark: "Watermark"
