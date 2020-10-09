@@ -40,7 +40,7 @@ import {
   exchangeContractsResponseTransform,
   userAvailableBalanceResponseTransform,
   cloneProviderResponseTransform,
-  profileStatsResponseTransform,
+  profitStatsResponseTransform,
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
 } from "./tradeApiClient.types";
@@ -124,9 +124,9 @@ import {
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
- * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
+ * @typedef {import('./tradeApiClient.types').ProfitStatsPayload} ProfitStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileProviderStatsPayload} ProfileProviderStatsPayload
- * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
+ * @typedef {import('./tradeApiClient.types').ProfitStatsObject} ProfitStatsObject
  * @typedef {import('./tradeApiClient.types').ProfileProviderStatsObject} ProfileProviderStatsObject
  * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
@@ -1566,17 +1566,17 @@ class TradeApiClient {
   /**
    * Cancel exchange order.
    *
-   * @param {ProfileStatsPayload} payload Cancel exchange order payload.
+   * @param {ProfitStatsPayload} payload Cancel exchange order payload.
    *
-   * @returns {Promise<Array<ProfileStatsObject>>} Returns promise that resolves a boolean true.
+   * @returns {Promise<Array<ProfitStatsObject>>} Returns promise that resolves a boolean true.
    *
    * @memberof TradeApiClient
    */
-  async profileStatsGet(payload) {
+  async profitStatsGet(payload) {
     const endpointPath = "/fe/api.php?action=getProfitStatsNew";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return profileStatsResponseTransform(responseData);
+    return profitStatsResponseTransform(responseData);
   }
 
   /**

@@ -762,7 +762,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} ProfileStatsPayload
+ * @typedef {Object} ProfitStatsPayload
  * @property {Boolean} includeOpenPositions
  * @property {String} providerId
  * @property {String} quote
@@ -3869,7 +3869,7 @@ export const createEmptyExchangeContractsEntity = () => {
 };
 
 /**
- * @typedef {Object} ProfileStatsObject
+ * @typedef {Object} ProfitStatsObject
  * @property {String} date
  * @property {String} invested
  * @property {Number} profit
@@ -3884,15 +3884,15 @@ export const createEmptyExchangeContractsEntity = () => {
  * Transform profile profits stats response.
  *
  * @param {*} response Profile profits response.
- * @returns {Array<ProfileStatsObject>} Profile profits entity collection.
+ * @returns {Array<ProfitStatsObject>} Profile profits entity collection.
  */
-export function profileStatsResponseTransform(response) {
+export function profitStatsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of objects");
   }
 
   return response.map((item) => {
-    return profileStatsItemTransform(item);
+    return profitStatsItemTransform(item);
   });
 }
 
@@ -3900,10 +3900,10 @@ export function profileStatsResponseTransform(response) {
  * Transform profile profits stats response item.
  *
  * @param {*} item Profile profits response entity.
- * @returns {ProfileStatsObject} Profile profits entity.
+ * @returns {ProfitStatsObject} Profile profits entity.
  */
-function profileStatsItemTransform(item) {
-  return assign(createEmptyProfileStatsEntity(), item, {
+function profitStatsItemTransform(item) {
+  return assign(createEmptyProfitStatsEntity(), item, {
     profit: formatFloat(item.profit),
     profitFromInvestmentPercentage: formatFloat2Dec(item.profitFromInvestmentPercentage),
   });
@@ -3912,9 +3912,9 @@ function profileStatsItemTransform(item) {
 /**
  * Create an empty profile profits entity
  *
- * @returns {ProfileStatsObject} Empty profile profits entity.
+ * @returns {ProfitStatsObject} Empty profile profits entity.
  */
-const createEmptyProfileStatsEntity = () => {
+const createEmptyProfitStatsEntity = () => {
   return {
     date: "",
     invested: "",

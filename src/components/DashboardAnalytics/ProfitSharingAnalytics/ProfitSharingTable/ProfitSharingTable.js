@@ -49,7 +49,7 @@ const ProfitSharingTable = () => {
   ];
 
   return (
-    <div>
+    <div className="profitSharingTable">
       <Table
         columns={columns}
         data={data}

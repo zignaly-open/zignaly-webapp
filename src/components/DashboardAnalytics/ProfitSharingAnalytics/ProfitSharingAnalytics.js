@@ -9,11 +9,9 @@ import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
 import { formatFloat, FormatedDateTime } from "../../../utils/format";
-import TotalEquityGraph from "../../Balance/TotalEquity/TotalEquityGraph";
-import TitleBar from "../../Balance/TotalEquity//TitleBar";
-import EquityFilter from "../../Balance/TotalEquity//EquityFilter";
-import EquityGraphLabels from "../../Balance/TotalEquity//GraphLabels";
 import ProfitSharingTable from "./ProfitSharingTable";
+import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
+import "./ProfitSharingAnalytics.scss";
 
 /**
  * @typedef {import("../../../store/initialState").DashboardAnalyticsFilters} DashboardAnalyticsFilters
@@ -45,24 +43,7 @@ const ProfitSharingAnalytics = ({ providerId }) => {
     totalLockedBTC: 0,
     totalLockedUSDT: 0,
   };
-  const balancesTest = [
-    {
-      totalUSDT: 100,
-      totalBTC: 0.01,
-      date: "2020-10-08",
-    },
-    {
-      totalUSDT: 60,
-      totalBTC: 0.006,
-      date: "2020-10-07",
-    },
-    {
-      totalUSDT: 50,
-      totalBTC: 0.005,
-      date: "2020-10-06",
-    },
-  ];
-  const [balances, setBalances] = useState(balancesTest);
+
   const dispatch = useDispatch();
 
   const getProviderPerformance = () => {
@@ -88,7 +69,7 @@ const ProfitSharingAnalytics = ({ providerId }) => {
   useEffect(getProviderPerformance, []);
 
   return (
-    <Box>
+    <Box className="profitSharingAnalytics">
       {performanceLoading ? (
         <CircularProgress color="primary" size={50} />
       ) : (
@@ -134,30 +115,11 @@ const ProfitSharingAnalytics = ({ providerId }) => {
           </>
         )}
       </TotalEquityBar>
-      <Box
-        alignItems="flex-start"
-        className="totalEquity"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Box
-          alignItems="flex-start"
-          className="equityHeader"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          width="100%"
-        >
-          <TitleBar balance={balance} />
-          <EquityFilter list={balances} onChange={(b) => setBalances(b)} />
-        </Box>
-        <Box width={1}>
-          <TotalEquityGraph list={balances} modal={false} />
-          <EquityGraphLabels list={balances} />
-        </Box>
+
+      <Box display="flex" width={1}>
+        <ProfitSharingEquityChart />
+        <ProfitSharingTable />
       </Box>
-      <ProfitSharingTable />
     </Box>
   );
 };
