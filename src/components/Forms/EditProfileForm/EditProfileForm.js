@@ -376,7 +376,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 generateMarkdownPreview={(markdown) =>
                   Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
-                minEditorHeight={400}
                 onChange={handleAboutChange}
                 onTabChange={setAboutTab}
                 // @ts-ignore
@@ -392,7 +391,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 generateMarkdownPreview={(markdown) =>
                   Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
-                minEditorHeight={400}
                 onChange={handleStrategyChange}
                 onTabChange={setStrategyTab}
                 // @ts-ignore
@@ -496,9 +494,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 <Controller
                   as={
                     <TextField
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                      }}
                       className={
                         "customInput " +
                         (storeSettings.darkStyle ? " dark " : " light ") +
@@ -795,7 +790,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-            <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
+            {!provider.profitSharing && (
+              <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
+            )}
 
             <CustomButton
               className={"full submitButton"}
