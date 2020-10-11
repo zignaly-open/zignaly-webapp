@@ -233,21 +233,21 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     );
   }
 
-  /**
-   * Compose position size for a given position.
-   *
-   * @param {number} dataIndex Data entity index.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function renderPositionSize(dataIndex) {
-    const position = positions[dataIndex];
-    return (
-      <>
-        <span className="symbol">{position.quote}</span>{" "}
-        {formatPrice(parseFloat(position.positionSize))}
-      </>
-    );
-  }
+  // /**
+  //  * Compose position size for a given position.
+  //  *
+  //  * @param {number} dataIndex Data entity index.
+  //  * @returns {JSX.Element} Composed JSX element.
+  //  */
+  // function renderPositionSize(dataIndex) {
+  //   const position = positions[dataIndex];
+  //   return (
+  //     <>
+  //       <span className="symbol">{position.quote}</span>{" "}
+  //       {formatPrice(parseFloat(position.positionSize))}
+  //     </>
+  //   );
+  // }
 
   /**
    * Compose real investment for a given position.
@@ -338,16 +338,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     return <>{formatNumber(position.returnFromAllocated, 2)} %</>;
   }
 
-  /**
-   * Compose returns from investment element for a given position.
-   *
-   * @param {number} dataIndex Data entity index.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function renderReturnsFromInvestment(dataIndex) {
-    const position = positions[dataIndex];
-    return <>{formatNumber(position.returnFromInvestment, 2)} %</>;
-  }
+  // /**
+  //  * Compose returns from investment element for a given position.
+  //  *
+  //  * @param {number} dataIndex Data entity index.
+  //  * @returns {JSX.Element} Composed JSX element.
+  //  */
+  // function renderReturnsFromInvestment(dataIndex) {
+  //   const position = positions[dataIndex];
+  //   return <>{formatNumber(position.returnFromInvestment, 2)} %</>;
+  // }
 
   /**
    * Compose profit amount element for a given position.
@@ -482,29 +482,29 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     );
   }
 
-  /**
-   * Compose profit amount element for a given position.
-   *
-   * @param {number} dataIndex Data entity index.
-   * @returns {JSX.Element} Composed JSX element.
-   */
-  function renderUnrealizedNetProfit(dataIndex) {
-    const position = positions[dataIndex];
-    return (
-      <>
-        {position.status === 1 ? (
-          <span>Still entering...</span>
-        ) : (
-          <>
-            <span className="symbol">{position.quote}</span>
-            <span className={position.unrealizedProfitStyle}>
-              {formatPrice(position.unrealizedProfitLosses)}
-            </span>
-          </>
-        )}
-      </>
-    );
-  }
+  // /**
+  //  * Compose profit amount element for a given position.
+  //  *
+  //  * @param {number} dataIndex Data entity index.
+  //  * @returns {JSX.Element} Composed JSX element.
+  //  */
+  // function renderUnrealizedNetProfit(dataIndex) {
+  //   const position = positions[dataIndex];
+  //   return (
+  //     <>
+  //       {position.status === 1 ? (
+  //         <span>Still entering...</span>
+  //       ) : (
+  //         <>
+  //           <span className="symbol">{position.quote}</span>
+  //           <span className={position.unrealizedProfitStyle}>
+  //             {formatPrice(position.unrealizedProfitLosses)}
+  //           </span>
+  //         </>
+  //       )}
+  //     </>
+  //   );
+  // }
 
   /**
    * Compose profit amount element for a given position.
