@@ -335,7 +335,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderReturnsFromAllocated(dataIndex) {
     const position = positions[dataIndex];
-    return <>{formatNumber(position.returnFromAllocated, 2)} %</>;
+    return <span className={position.returnFromAllocated > 0 ? "green" : position.returnFromAllocated < 0 ? "red" : ""}>{formatNumber(position.returnFromAllocated, 2)} %</span>;
   }
 
   // /**
@@ -1316,8 +1316,13 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: null,
       },
       {
-        columnId: "col.exchange",
-        propertyName: "exchange",
+        columnId: "col.leverage",
+        propertyName: "leverage",
+        renderFunction: renderLeverage,
+      },
+      {
+        columnId: "col.side",
+        propertyName: "side",
         renderFunction: null,
       },
       {
@@ -1349,11 +1354,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
         renderFunction: renderOpenDate,
-      },
-      {
-        columnId: "col.status",
-        propertyName: "status",
-        renderFunction: renderStatusMessage,
       },
       {
         columnId: "col.pair",
@@ -1389,11 +1389,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.dca",
         propertyName: "reBuyTargetsCountPending",
         renderFunction: renderRebuyTargets,
-      },
-      {
-        columnId: "col.risk",
-        propertyName: "risk",
-        renderFunction: renderRisk,
       },
       {
         columnId: "col.actions",
