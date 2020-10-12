@@ -14,7 +14,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConnectExchange from "../../../Modal/ConnectExchange";
-import { ConfirmDialog } from "../../../Dialogs";
+import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 
 /**
  * @typedef {Object} DefaultProps
@@ -33,27 +33,16 @@ const CopyTraderButton = ({ provider }) => {
   const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
+  const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const [stopCopyLoader, setStopCopyLoader] = useState(false);
 
-  /**
-   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
-   * @type {ConfirmDialogConfig} initConfirmConfig
-   */
-  const initConfirmConfig = {
-    titleTranslationId: "",
-    messageTranslationId: "",
-    visible: false,
-  };
-
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-
-  const confirmAction = () => {
-    setConfirmConfig({
-      titleTranslationId: "confirm.copyt.unfollow.title",
-      messageTranslationId: "confirm.copyt.unfollow.message",
-      visible: true,
-    });
-  };
+  // const confirmAction = () => {
+  //   setConfirmConfig({
+  //     titleTranslationId: "confirm.copyt.unfollow.title",
+  //     messageTranslationId: "confirm.copyt.unfollow.message",
+  //     visible: true,
+  //   });
+  // };
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -96,6 +85,10 @@ const CopyTraderButton = ({ provider }) => {
     showConnectModal(false);
   };
 
+  const handleStopCopyingModalClose = () => {
+    showStopCopyingModal(false);
+  };
+
   const followingFrom = exchangeConnections.find(
     (e) => e.internalId === provider.exchangeInternalId,
   );
@@ -108,18 +101,13 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={stopCopying}
-        setConfirmConfig={setConfirmConfig}
-      />
       {provider.disable ? (
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
       ) : !followingFrom ||
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-        <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={confirmAction}>
+        <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={() => showStopCopyingModal(true)}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       ) : (
@@ -140,6 +128,9 @@ const CopyTraderButton = ({ provider }) => {
           </Tooltip>
         </Box>
       )}
+      <Modal onClose={handleStopCopyingModalClose} persist={false} size="small" state={stopCopyingModal}>
+        <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
+      </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
       </Modal>
