@@ -397,6 +397,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees Exchange transaction fees.
  * @property {number} fundingFees Exchange transaction funding fees.
+ * @property {boolean} profitSharing Flag to indicate if it is a profit sharing service position.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
@@ -1293,6 +1294,7 @@ export function positionItemTransform(positionItem) {
     profitPercentage:
       safeParseFloat(positionItem.profitPercentage) ||
       safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
+    profitSharing: positionItem.profitSharing,
     leverage: safeParseFloat(positionItem.leverage),
     unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
     unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
@@ -1479,6 +1481,7 @@ function createEmptyPositionEntity() {
     investedQuote: "",
     isCopyTrader: false,
     isCopyTrading: false,
+    profitSharing: false,
     leverage: 0,
     logoUrl: "",
     netProfit: 0,

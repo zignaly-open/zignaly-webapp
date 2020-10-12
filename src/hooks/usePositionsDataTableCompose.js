@@ -212,7 +212,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        {position.leverage}
+        {formatNumber(position.leverage, 0)}
         <span className="symbol">X</span>
       </>
     );
@@ -660,6 +660,9 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
+    if(position.profitSharing){
+      return null;
+    }
     return composeAllActionButtons(position, confirmActionHandler);
   }
 
