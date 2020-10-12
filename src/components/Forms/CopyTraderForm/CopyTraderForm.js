@@ -280,11 +280,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         {provider.profitSharing && (
           <>
             <Typography variant="h4">
-              <FormattedMessage id="trader.locked" />
-            </Typography>
-
-            <Typography variant="h4">
-              <FormattedMessage id="trader.moreinfo" />
+              <FormattedMessage id="trader.locked" /> <FormattedMessage id="trader.moreinfo" />
             </Typography>
 
             <label className="customLabel">
@@ -327,8 +323,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 })}
                 multiline
                 name="acknowledgeLockedBalance"
-                placeholder={intl.formatMessage({ id: "trader.ack" })}
-                rows={3}
+                rows={2}
                 variant="outlined"
               />
             </Box>
