@@ -660,7 +660,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
-    if(position.profitSharing){
+    if (position.profitSharing) {
       return null;
     }
     return composeAllActionButtons(position, confirmActionHandler);
