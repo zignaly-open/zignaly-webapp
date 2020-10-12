@@ -107,7 +107,11 @@ const CopyTraderButton = ({ provider }) => {
         </CustomButton>
       ) : !followingFrom ||
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-        <CustomButton className="loadMoreButton" loading={stopCopyLoader} onClick={() => showStopCopyingModal(true)}>
+        <CustomButton
+          className="loadMoreButton"
+          loading={stopCopyLoader}
+          onClick={() => showStopCopyingModal(true)}
+        >
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       ) : (
@@ -128,7 +132,12 @@ const CopyTraderButton = ({ provider }) => {
           </Tooltip>
         </Box>
       )}
-      <Modal onClose={handleStopCopyingModalClose} persist={false} size="small" state={stopCopyingModal}>
+      <Modal
+        onClose={handleStopCopyingModalClose}
+        persist={false}
+        size="small"
+        state={stopCopyingModal}
+      >
         <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
