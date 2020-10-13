@@ -66,14 +66,6 @@ const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
       {provider.profitSharing && (
         <Box className="labeledInputsBox" display="flex" flexDirection="column">
           <Box display="flex" flexDirection="row" justifyContent="space-between">
-            <span className="info">
-              <FormattedMessage id="trader.softdisconnect.tooltip" />
-            </span>
-            <span className="info">
-              <FormattedMessage id="trader.harddisconnect.tooltip" />
-            </span>
-          </Box>
-          <Box display="flex" flexDirection="row" justifyContent="space-between">
             <span
               className={"button " + (disconnectMode === 1 ? "checked" : "")}
               onClick={() => handleShareingModeChange(1)}
@@ -87,6 +79,16 @@ const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
               <FormattedMessage id="trader.harddisconnect" />
             </span>
           </Box>
+          {disconnectMode === 1 && (
+            <span className="info">
+              <FormattedMessage id="trader.softdisconnect.tooltip" />
+            </span>
+          )}
+          {disconnectMode === 2 && (
+            <span className="info">
+              <FormattedMessage id="trader.harddisconnect.tooltip" />
+            </span>
+          )}
         </Box>
       )}
 
