@@ -1045,6 +1045,7 @@ form.error.password.invalid: "Thông tin sai"
 form.error.passphrase: "Nhập cụm mật khẩu"
 form.error.telegram: "Vui lòng nhập mã telegram của bạn"
 form.error.value: "Nhập một giá trị"
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 # GENERAL
 general.yes: "Yes"
 general.no: "No"

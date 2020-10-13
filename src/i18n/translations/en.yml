@@ -1315,7 +1315,7 @@ action.forgot: "Forgot Password"
 
 # FORM
 form.button.save: "Save"
-form.error.allocatedBalance.min: "Please enter an amount above the minimum allocated amount."
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 form.error.firstname: "Name is required"
 form.error.firstname.length: "Name should be greater than 3 letters"
 form.error.exchanges: "Select at least one exchange"
