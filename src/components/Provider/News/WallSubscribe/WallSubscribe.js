@@ -60,7 +60,7 @@ const WallSubscribe = ({ subscribed, providerId }) => {
         />
       }
     >
-      <Box display="flex" alignItems="center" className="wallSubscribe" onClick={subscribe}>
+      <Box alignItems="center" className="wallSubscribe" display="flex" onClick={subscribe}>
         {isSubscribed ? <NotificationsActive /> : <NotificationsNone />}
         <Typography>
           <FormattedMessage id="settings.notifications" />
