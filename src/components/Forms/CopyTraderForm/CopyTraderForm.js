@@ -175,13 +175,13 @@ const CopyTraderForm = ({ provider, onClose }) => {
       }
       setAlert(msg);
       return false;
-    } else if (!provider.disable) {
-      if (userBalance >= added - alreadyAllocated) {
-        return true;
-      }
-      setAlert(msg);
-      return false;
     }
+
+    if (userBalance >= added - alreadyAllocated) {
+      return true;
+    }
+    setAlert(msg);
+    return false;
   };
 
   /**
@@ -227,12 +227,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
         return true;
       }
       return validateNeeded();
-    } else if (!provider.disable) {
-      if (provider.profitSharing) {
-        return validateAlreadyAllocated();
-      }
-      return validateNeeded();
     }
+    if (provider.profitSharing) {
+      return validateAlreadyAllocated();
+    }
+    return validateNeeded();
   };
 
   /**
