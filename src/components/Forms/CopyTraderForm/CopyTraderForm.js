@@ -167,7 +167,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {Boolean} whether the input value is valid or not.
    */
   const validateBalance = (allocatedBalance) => {
-    return true;
     if (!provider.profitSharing) {
       return true;
     }
