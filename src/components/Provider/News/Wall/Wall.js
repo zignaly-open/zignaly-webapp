@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import CreatePost from "../CreatePost";
 import Posts from "../Posts";
+import WallSubscribe from "../WallSubscribe";
 import "./Wall.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -59,7 +60,8 @@ const Wall = ({ provider }) => {
 
   return (
     <Box className="wall">
-      {provider.isAdmin && <CreatePost onCreated={loadPosts} providerId={provider.id} />}
+      {/* {provider.isAdmin && <CreatePost onCreated={loadPosts} providerId={provider.id} />} */}
+      <WallSubscribe subscribed={provider.notificationsPosts} providerId={provider.id} />
       <Posts onPostDeleted={onPostDeleted} posts={posts} />
     </Box>
   );

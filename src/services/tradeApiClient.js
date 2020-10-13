@@ -1744,6 +1744,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Subscribe to provider's posts notifications.
+   *
+   * @param {{providerId: string, subscribed: boolean}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async updatePostsNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=updatePostsNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
