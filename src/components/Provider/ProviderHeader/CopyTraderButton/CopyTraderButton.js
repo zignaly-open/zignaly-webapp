@@ -138,7 +138,11 @@ const CopyTraderButton = ({ provider }) => {
         size="small"
         state={stopCopyingModal}
       >
-        <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
+        <StopCopyingTraderForm
+          onClose={handleStopCopyingModalClose}
+          onSuccess={stopCopying}
+          provider={provider}
+        />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />

@@ -437,6 +437,10 @@ trader.moreinfo: "CH-Be aware that at the moment that you connect to this servic
 trader.profitaction: "CH-Choose what you want to do with profits."
 trader.reinvest: "CH-REINVEST"
 trader.withdraw: "CH-WITHDRAW"
+trader.softdisconnect: "Ch-Soft Disconnect"
+trader.softdisconnect.tooltip: "Ch-You will be connected to the profit sharing service but you will not participate in new positions. Once the last position where your are currently participating would be closed by the provider, you will be disconnected from the service and your allocated amount unlock it into your account."
+trader.harddisconnect: "Ch-Hard Disconnect"
+trader.harddisconnect.tooltip: "CH-At this moment you will exit from all the positions, not matter the market situation. We will calculate your profit and losses and recalculate your allocated amount. Then it will be unlocked in your account."
 trader.ack: "CH-Acknowledge about locked balance."
 trader.copy.confirm: "CH-Please, to confirm, you need to write 'Locked'"
 

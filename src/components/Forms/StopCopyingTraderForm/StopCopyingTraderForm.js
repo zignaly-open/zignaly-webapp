@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import "./StopCopyingTraderForm.scss";
-import { Box, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
+import { Help } from "@material-ui/icons";
 
 /**
+ * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
  * @property {Function} onSuccess
+ * @property {DefaultProviderGetObject} provider
  */
 
 /**
@@ -16,7 +18,7 @@ import CustomButton from "../../CustomButton";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const StopCopyingTraderForm = ({ onClose, onSuccess }) => {
+const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
   const [disconnectMode, setDisconnectMode] = useState(1);
 
   /**
@@ -34,6 +36,7 @@ const StopCopyingTraderForm = ({ onClose, onSuccess }) => {
 
   const handleSuccess = () => {
     onSuccess();
+    onClose();
   };
 
   return (
@@ -52,27 +55,41 @@ const StopCopyingTraderForm = ({ onClose, onSuccess }) => {
         <FormattedMessage id="confirm.copyt.unfollow.message" />
       </Typography>
 
-      <Box className="labeledInputsBox">
-        <span
-          className={disconnectMode === 1 ? "checked" : ""}
-          onClick={() => handleShareingModeChange(1)}
-        >
-          <FormattedMessage id="trader.reinvest" />
-        </span>
-        {/* <span
-          className={disconnectMode === 2 ? "checked" : ""}
-          onClick={() => handleShareingModeChange(2)}
-        >
-          <FormattedMessage id="trader.withdraw" />
-        </span> */}
-      </Box>
+      {provider.profitSharing && (
+        <Box className="labeledInputsBox">
+          <span
+            className={disconnectMode === 1 ? "checked" : ""}
+            onClick={() => handleShareingModeChange(1)}
+          >
+            <FormattedMessage id="trader.softdisconnect" />
+            <Tooltip
+              placement="top"
+              title={<FormattedMessage id="trader.softdisconnect.tooltip" />}
+            >
+              <Help className="helpIcon" />
+            </Tooltip>
+          </span>
+          <span
+            className={disconnectMode === 2 ? "checked" : ""}
+            onClick={() => handleShareingModeChange(2)}
+          >
+            <FormattedMessage id="trader.harddisconnect" />
+            <Tooltip
+              placement="top"
+              title={<FormattedMessage id="trader.harddisconnect.tooltip" />}
+            >
+              <Help className="helpIcon" />
+            </Tooltip>
+          </span>
+        </Box>
+      )}
 
       <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
         <CustomButton className="textDefault" onClick={handleClose}>
           <FormattedMessage id="confirm.cancel" />
         </CustomButton>
 
-        <CustomButton className="textDefault" onClick={handleClose}>
+        <CustomButton className="textDefault" onClick={handleSuccess}>
           <FormattedMessage id="confirm.accept" />
         </CustomButton>
       </Box>
