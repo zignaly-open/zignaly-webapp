@@ -18,7 +18,7 @@ import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
  * @returns {JSX.Element} Component JSX.
  */
 
-const AvailableBalance = ({ balance, selectedExchange }) => {
+const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
   const color = balance && balance.pnlBTC >= 0 ? "green" : "red";
 
   return (
@@ -182,4 +182,4 @@ const AvailableBalance = ({ balance, selectedExchange }) => {
   );
 };
 
-export default AvailableBalance;
+export default FuturesAvailableBalance;

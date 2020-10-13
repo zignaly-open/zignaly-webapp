@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useMediaQuery, Box, Typography, CircularProgress } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
-import AvailableBalance from "../../../Balance/AvailableBalance";
+import { SpotAvailableBalance, FuturesAvailableBalance } from "../../../Balance/AvailableBalance";
 import ConnectedProvidersSummary from "../../../Providers/ConnectedProvidersSummary";
 import "./ExchangeAccountData.scss";
 import useEquity from "../../../../hooks/useEquity";
@@ -87,7 +87,11 @@ const ExchangeAccountData = ({ account }) => {
         )}
       </Box>
       <Box className="balanceBox">
-        <AvailableBalance balance={balance} selectedExchange={account} />
+        {account.exchangeType === "futures" ? (
+          <FuturesAvailableBalance balance={balance} selectedExchange={account} />
+        ) : (
+          <SpotAvailableBalance balance={balance} selectedExchange={account} />
+        )}
       </Box>
     </Box>
   );

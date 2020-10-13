@@ -5,7 +5,10 @@ import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
-import AvailableBalance from "../../../components/Balance/AvailableBalance";
+import {
+  SpotAvailableBalance,
+  FuturesAvailableBalance,
+} from "../../../components/Balance/AvailableBalance";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -43,7 +46,11 @@ const Balance = () => {
           <CryptoComposition dailyBalance={dailyBalance} />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance balance={balance} selectedExchange={selectedExchange} />
+          {selectedExchange.exchangeType === "futures" ? (
+            <FuturesAvailableBalance balance={balance} selectedExchange={selectedExchange} />
+          ) : (
+            <SpotAvailableBalance balance={balance} selectedExchange={selectedExchange} />
+          )}
         </Box>
         <Box className="historyBox">
           <BalanceTabs dailyBalance={dailyBalance} />
