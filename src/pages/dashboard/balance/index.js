@@ -14,8 +14,8 @@ import BalanceTabs from "../../../components/Balance/BalanceTabs";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
-  const storeSettings = useStoreSettingsSelector();
-  const balance = useBalance(storeSettings.selectedExchange.internalId);
+  const { selectedExchange } = useStoreSettingsSelector();
+  const balance = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 
   return (
@@ -43,7 +43,7 @@ const Balance = () => {
           <CryptoComposition dailyBalance={dailyBalance} />
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance balance={balance} />
+          <AvailableBalance balance={balance} selectedExchange={selectedExchange} />
         </Box>
         <Box className="historyBox">
           <BalanceTabs dailyBalance={dailyBalance} />

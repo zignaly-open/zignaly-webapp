@@ -36,6 +36,7 @@ testimonials.loadmore: "Load More"
 # BALANCE
 balance.available: "Available"
 balance.invested: "Invested"
+balance.margin: "Margin Balance"
 balance.profit: "Unrealized Profit"
 balance.total: "Total Equity"
 balance.profitlosses: "UP/L #"

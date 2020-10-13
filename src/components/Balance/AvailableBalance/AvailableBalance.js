@@ -4,12 +4,13 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {UserBalanceEntity} balance
+ * @property {ExchangeConnectionEntity} selectedExchange
  */
 
 /**
@@ -17,8 +18,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @returns {JSX.Element} Component JSX.
  */
 
-const AvailableBalance = ({ balance }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+const AvailableBalance = ({ balance, selectedExchange }) => {
   const color = balance && balance.pnlBTC >= 0 ? "green" : "red";
 
   return (

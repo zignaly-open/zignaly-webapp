@@ -87,7 +87,7 @@ const ExchangeAccountData = ({ account }) => {
         )}
       </Box>
       <Box className="balanceBox">
-        <AvailableBalance balance={balance} />
+        <AvailableBalance balance={balance} selectedExchange={account} />
       </Box>
     </Box>
   );

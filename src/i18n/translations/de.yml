@@ -35,6 +35,7 @@ testimonials.loadmore: "Load More"
 # BALANCE
 balance.available: "Verfügbar"
 balance.invested: "Investiert"
+balance.margin: "Margin Balance"
 balance.profit: "Profitieren"
 balance.total: "Gesamtkapital"
 balance.profitlosses: "P / L #"

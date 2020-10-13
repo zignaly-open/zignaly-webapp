@@ -70,19 +70,37 @@ const BalanceBox = () => {
             </Typography>
           </Box>
 
-          <Box
-            alignItems="flex-start"
-            className="balanceBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Typography className="title" variant="subtitle1">
-              <FormattedMessage id="balance.invested" />
-            </Typography>
-            <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
-            <Typography className="number3">USDT {formatFloat(balance.totalLockedUSDT)}</Typography>
-          </Box>
+          {selectedExchange.exchangeType === "futures" ? (
+            <Box
+              alignItems="flex-start"
+              className="balanceBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <Typography className="title" variant="subtitle1">
+                <FormattedMessage id="balance.margin" />
+              </Typography>
+              <Typography className="number1">BTC {formatFloat(0)}</Typography>
+              <Typography className="number3">USDT {formatFloat(0)}</Typography>
+            </Box>
+          ) : (
+            <Box
+              alignItems="flex-start"
+              className="balanceBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <Typography className="title" variant="subtitle1">
+                <FormattedMessage id="balance.invested" />
+              </Typography>
+              <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
+              <Typography className="number3">
+                USDT {formatFloat(balance.totalLockedUSDT)}
+              </Typography>
+            </Box>
+          )}
 
           <Box
             alignItems="flex-start"
