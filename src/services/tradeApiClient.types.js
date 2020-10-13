@@ -2480,7 +2480,7 @@ export function providerGetResponseTransform(response) {
   let transformed = assign(emptyProviderEntity, response, {
     minAllocatedBalance:
       response.minAllocatedBalance && response.minAllocatedBalance !== "false"
-        ? response.minAllocatedBalance
+        ? parseFloat(response.minAllocatedBalance)
         : 0,
   });
   transformed.options.allowClones = checkClones();
