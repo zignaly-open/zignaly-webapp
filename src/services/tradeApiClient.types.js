@@ -2374,7 +2374,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
  * @property {String} description
- * @property {Boolean} disable
+ * @property {Boolean} disable True when not provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
@@ -2453,6 +2453,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} profitSharing
  * @property {Number} profitsShare
  * @property {String} profitsMode
+ * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  */
 
 /**

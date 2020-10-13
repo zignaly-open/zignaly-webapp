@@ -824,7 +824,7 @@ class TradeApiClient {
    *
    * @param {DisableProviderPayload} payload Stop following provider payload.
 
-   * @returns {Promise<Array<*>>} Promise that resolves into array of provider entities.
+   * @returns {Promise<boolean>} Promise that resolves into success status.
    *
    * @memberof TradeApiClient
    */
