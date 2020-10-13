@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./StopCopyingTraderForm.scss";
-import { Box, Tooltip, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
-import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
