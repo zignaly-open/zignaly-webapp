@@ -1307,7 +1307,7 @@ action.forgot: "CH-Forgot Password"
 
 # FORM
 form.button.save: "CH-Save"
-form.error.allocatedBalance.min: "CH-Please enter an amount above the minimum allocated amount."
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 form.error.firstname: "CH-Name is required"
 form.error.firstname.length: "CH-Name should be greater than 3 letters"
 form.error.exchanges: "CH-Select at least one exchange"

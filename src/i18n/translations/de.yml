@@ -1244,7 +1244,7 @@ accounts.exchangedisconnected: "Exchange getrennt"
 error.apilatency: "Wir haben eine zeitliche Verschlechterung der Reaktionszeit unserer Dienste festgestellt."
 # FORM
 form.button.save: "sparen"
-form.error.allocatedBalance.min: "Bitte geben Sie einen Betrag ein, der über dem Mindestbetrag liegt."
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 form.error.exchanges: "Wählen Sie mindestens eine Exchange aus"
 form.error.url: "Der URL ist nicht korrekt"
 copyt.follow.alert.title: "Erfolgt"
