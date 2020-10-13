@@ -47,49 +47,56 @@ const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
       flexDirection="column"
       justifyContent="center"
     >
-      <Typography variant="h3">
-        <FormattedMessage id="confirm.copyt.unfollow.title" />
-      </Typography>
+      {provider.profitSharing && (
+        <Typography variant="h3">
+          <FormattedMessage id="confirm.copyt.unfollow.title2" />
+        </Typography>
+      )}
+      {!provider.profitSharing && (
+        <>
+          <Typography variant="h3">
+            <FormattedMessage id="confirm.copyt.unfollow.title" />
+          </Typography>
 
-      <Typography variant="body1">
-        <FormattedMessage id="confirm.copyt.unfollow.message" />
-      </Typography>
+          <Typography variant="body1">
+            <FormattedMessage id="confirm.copyt.unfollow.message" />
+          </Typography>
+        </>
+      )}
 
       {provider.profitSharing && (
-        <Box className="labeledInputsBox">
-          <span
-            className={disconnectMode === 1 ? "checked" : ""}
-            onClick={() => handleShareingModeChange(1)}
-          >
-            <FormattedMessage id="trader.softdisconnect" />
-            <Tooltip
-              placement="top"
-              title={<FormattedMessage id="trader.softdisconnect.tooltip" />}
+        <Box className="labeledInputsBox" display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="row" justifyContent="space-between">
+            <span className="info">
+              <FormattedMessage id="trader.softdisconnect.tooltip" />
+            </span>
+            <span className="info">
+              <FormattedMessage id="trader.harddisconnect.tooltip" />
+            </span>
+          </Box>
+          <Box display="flex" flexDirection="row" justifyContent="space-between">
+            <span
+              className={"button " + (disconnectMode === 1 ? "checked" : "")}
+              onClick={() => handleShareingModeChange(1)}
             >
-              <Help className="helpIcon" />
-            </Tooltip>
-          </span>
-          <span
-            className={disconnectMode === 2 ? "checked" : ""}
-            onClick={() => handleShareingModeChange(2)}
-          >
-            <FormattedMessage id="trader.harddisconnect" />
-            <Tooltip
-              placement="top"
-              title={<FormattedMessage id="trader.harddisconnect.tooltip" />}
+              <FormattedMessage id="trader.softdisconnect" />
+            </span>
+            <span
+              className={"button " + (disconnectMode === 2 ? "checked" : "")}
+              onClick={() => handleShareingModeChange(2)}
             >
-              <Help className="helpIcon" />
-            </Tooltip>
-          </span>
+              <FormattedMessage id="trader.harddisconnect" />
+            </span>
+          </Box>
         </Box>
       )}
 
       <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-        <CustomButton className="textDefault" onClick={handleClose}>
+        <CustomButton className="textPurple" onClick={handleClose}>
           <FormattedMessage id="confirm.cancel" />
         </CustomButton>
 
-        <CustomButton className="textDefault" onClick={handleSuccess}>
+        <CustomButton className="textPurple" onClick={handleSuccess}>
           <FormattedMessage id="confirm.accept" />
         </CustomButton>
       </Box>

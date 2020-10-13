@@ -1078,6 +1078,7 @@ confirm.positionabort.message: "Bạn có chắc muốn hủy điểm vào lện
 confirm.positionabort.title: "Hủy nhập vị thế"
 confirm.ordercancel.title: "Hủy lệnh chờ"
 confirm.ordercancel.message: "Hủy lệnh này sẽ xóa lệnh trên sàn giao dịch, nếu lệnh được mở bởi zignaly,. Vui lòng xác nhận là bạn muốn hủy lệnh #{order}"
+confirm.copyt.unfollow.title2: "CH-Disconnect from profit sharing service"
 col.entryprice: "GIÁ NHẬP"
 col.exitprice: "Giá thoát"
 col.availablePercentage: "Phần trăm khả dụng"

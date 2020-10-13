@@ -2,17 +2,15 @@
   padding: 20px;
 
   h3 {
-    margin-bottom: 40px;
+    font-size: 19px;
+    margin-bottom: 20px;
   }
 
   .labeledInputsBox {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 30px 0;
+    margin: 20px 0;
     width: 100%;
 
-    span {
+    .button {
       align-items: center;
       border: 2px solid $purple;
       box-sizing: border-box;
@@ -23,22 +21,22 @@
       justify-content: center;
       padding: 10px;
       text-align: center;
-      width: 50%;
+      width: calc(50% - 10px);
 
       &.checked {
         background: $purple;
         color: $white;
       }
+    }
 
-      .helpIcon {
-        height: 16px;
-        margin-left: 5px;
-        width: 16px;
-      }
+    .info {
+      padding: 10px;
+      width: 50%;
     }
   }
 
   .formAction {
+    margin-top: 20px;
     width: 100%;
   }
 }
