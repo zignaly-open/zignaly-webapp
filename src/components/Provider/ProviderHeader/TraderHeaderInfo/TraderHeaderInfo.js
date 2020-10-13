@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./TraderHeaderInfo.scss";
-import { Box, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden, Tooltip } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import EditIcon from "../../../../images/ct/edit.svg";
@@ -77,13 +77,40 @@ const TraderHeaderInfo = ({ provider }) => {
         <b>{provider.followers} </b>
       </Typography>
 
-      <Typography className="price" variant="h4">
-        <span>
-          <FormattedMessage id="srv.edit.price" />
-        </span>
-        <b>{`$${provider.price}/Month`}</b>
-      </Typography>
-      <Hidden smUp>{provider.internalPaymentInfo && <TrialPeriod provider={provider} />}</Hidden>
+      {provider.profitSharing ? (
+        <Tooltip
+          placement="top"
+          title={
+            <FormattedMessage
+              id="copyt.successfee.tootltip"
+              values={{
+                providerShare: provider.profitsShare,
+                userShare: 100 - provider.profitsShare,
+              }}
+            />
+          }
+        >
+          <Typography className="price" variant="h4">
+            <span>
+              <FormattedMessage id="copyt.successfee" />
+            </span>
+            <b>{`${provider.profitsShare}%`}</b>
+          </Typography>
+        </Tooltip>
+      ) : (
+        <Typography className="price" variant="h4">
+          <span>
+            <FormattedMessage id="srv.edit.price" />
+          </span>
+          <b>{`$${provider.price}/Month`}</b>
+        </Typography>
+      )}
+      <Hidden smUp>
+        {provider.profitSharing && provider.internalPaymentInfo && (
+          <TrialPeriod provider={provider} />
+        )}
+      </Hidden>
+
       {provider.isCopyTrading && (
         <Typography className="allocated" variant="h4">
           {!provider.disable ? (
@@ -95,13 +122,15 @@ const TraderHeaderInfo = ({ provider }) => {
               </b>
             </>
           ) : (
-            <>
-              <FormattedMessage id="srv.minimum" />
-              <b>
-                {formatFloat(provider.minAllocatedBalance)}{" "}
-                {provider.copyTradingQuote ? provider.copyTradingQuote.toUpperCase() : ""}
-              </b>
-            </>
+            !provider.profitSharing && (
+              <>
+                <FormattedMessage id="srv.minimum" />
+                <b>
+                  {formatFloat(provider.minAllocatedBalance)}{" "}
+                  {provider.copyTradingQuote ? provider.copyTradingQuote.toUpperCase() : ""}
+                </b>
+              </>
+            )
           )}
           {provider.exchangeInternalId && !provider.disable && (
             <img
@@ -113,7 +142,24 @@ const TraderHeaderInfo = ({ provider }) => {
           )}
         </Typography>
       )}
-      <Hidden smUp>{provider.internalPaymentInfo && <PaymentButton provider={provider} />}</Hidden>
+      <Typography className="traderType" variant="h4">
+        <span>
+          <FormattedMessage id="accounts.exchange.type" />
+        </span>
+        <b>
+          {provider.profitSharing ? (
+            <FormattedMessage id="copyt.profitsharing" />
+          ) : (
+            <FormattedMessage id="copyt.copytrading" />
+          )}
+        </b>
+      </Typography>
+
+      <Hidden smUp>
+        {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
+          <PaymentButton provider={provider} />
+        )}
+      </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
       </Modal>

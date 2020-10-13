@@ -46,8 +46,12 @@ const TraderHeaderActions = ({ provider }) => {
         <FollowProviderButton provider={provider} />
       )}
       <Hidden xsDown>
-        {provider.internalPaymentInfo && <TrialPeriod provider={provider} />}
-        {!provider.disable && provider.internalPaymentInfo && <PaymentButton provider={provider} />}
+        {!provider.profitSharing && provider.internalPaymentInfo && (
+          <TrialPeriod provider={provider} />
+        )}
+        {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
+          <PaymentButton provider={provider} />
+        )}
       </Hidden>
     </Box>
   );

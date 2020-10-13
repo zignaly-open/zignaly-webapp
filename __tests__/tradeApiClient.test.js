@@ -78,7 +78,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 15000);
+  }, 25000);
 
   it("should get user closed positions", async () => {
     const payload = {
@@ -93,7 +93,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 15000);
+  }, 25000);
 
   it("should get user log positions", async () => {
     const payload = {
@@ -119,7 +119,7 @@ describe("Consume tradeApiClient service", () => {
       true,
       "Second collection position item closed flag is not true.",
     );
-  }, 20000);
+  }, 25000);
 
   it("should get all the providers", async () => {
     const getProvidersPayload = {
@@ -133,7 +133,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(providersCollection, "Providers collection is not an array.");
     assert.isObject(providersCollection[0], "First collection provider element is not an object.");
     assert.isString(providersCollection[0].id, "First collection provider ID is not a string.");
-  }, 10000);
+  }, 25000);
 
   it("should get user exchange connections", async () => {
     const getExchangeConnectionPayload = {
@@ -142,7 +142,7 @@ describe("Consume tradeApiClient service", () => {
 
     const exchangeConnections = await client.userExchangesGet(getExchangeConnectionPayload);
     assert.isArray(exchangeConnections, "Exchange connection is not an array.");
-  }, 5000);
+  }, 25000);
 
   it("should get user balance", async () => {
     const getBalancePayload = {
@@ -179,7 +179,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(providersStats, "Provider stats is not an array.");
     assert.isObject(providersStats[0], "First stats is not an object.");
     assert.isString(providersStats[0].providerId, "First provider ID is not a string.");
-  }, 20000);
+  }, 25000);
 
   it("should get quote assets", async () => {
     const payload = {
@@ -191,7 +191,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(quoteAssets, "Quote assets is not an object.");
     assert.isObject(quoteAssets.BTC, "BTC quote is not an object.");
     assert.isString(quoteAssets.BTC.quote, "BTC quote is not a string.");
-  });
+  }, 25000);
 
   it("should get server time", async () => {
     const payload = {
@@ -203,7 +203,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isNumber(serverTime.serverTime, "Server time 'serverTime' is not a number.");
     assert.isAtLeast(serverTime.serverTime, 100000, "Time seems to be invalid.");
     assert.isNumber(serverTime.dbTime, "Server time 'dbTime' is not a number.");
-  });
+  }, 25000);
 
   it("should get coinray token", async () => {
     const payload = {
@@ -214,7 +214,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(coinRayToken, "Coinray token is not an object.");
     assert.isString(coinRayToken.jwt, "Coinray token 'jwt' is not a string.");
     assert.isAtLeast(coinRayToken.jwt.length, 200, "Token seems to be invalid.");
-  });
+  }, 25000);
 
   it("should get bases assets", async () => {
     const payload = {
@@ -226,7 +226,7 @@ describe("Consume tradeApiClient service", () => {
     const basesAssets = await client.baseAssetsGet(payload);
     assert.isObject(basesAssets, "Base assets is not an object.");
     assert.isObject(basesAssets.BTC, "BTC quote is not an object.");
-  }, 15000);
+  }, 25000);
 
   it("should get exchange connection market data", async () => {
     const payload = {
@@ -268,7 +268,7 @@ describe("Consume tradeApiClient service", () => {
       marketData[0].precision.quote,
       "First market symbol precision quote is not an object.",
     );
-  }, 15000);
+  }, 25000);
 
   it("should get user owned copy traders options list", async () => {
     const payload = {
@@ -295,7 +295,7 @@ describe("Consume tradeApiClient service", () => {
 
       assert.isNumber(copyTraderOption.providerPayableBalance, "Payable balance is not a number.");
     });
-  }, 10000);
+  }, 25000);
 
   it("should get details of provider", async () => {
     const payload = {
@@ -307,7 +307,7 @@ describe("Consume tradeApiClient service", () => {
     const provider = await client.providerGet(payload);
     assert.isObject(provider, "response is not an object.");
     assert.isString(provider.id, "response does not have the provider id.");
-  }, 10000);
+  }, 25000);
 
   it("should get list of all exchanges support by zignaly", async () => {
     const payload = {
@@ -316,7 +316,7 @@ describe("Consume tradeApiClient service", () => {
 
     const exchangeList = await client.exchangeListGet(payload);
     assert.isArray(exchangeList, "Exchange list is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should create and update manual market order position", async () => {
     const payload = {
@@ -439,7 +439,7 @@ describe("Consume tradeApiClient service", () => {
 
     const positionEntity = await client.positionGet(payload);
     positionEntityStructureAssertions(positionEntity);
-  });
+  }, 25000);
 
   it("should get trading performance data for a provider", async () => {
     const payload = {
@@ -450,7 +450,7 @@ describe("Consume tradeApiClient service", () => {
     const provider = await client.providerPerformanceGet(payload);
     assert.isObject(provider, "response is not an object.");
     assert.isArray(provider.weeklyStats, "response does not have the weekly performance data.");
-  }, 10000);
+  }, 25000);
 
   it("should get user profile data", async () => {
     const payload = {
@@ -460,7 +460,7 @@ describe("Consume tradeApiClient service", () => {
     const userData = await client.userDataGet(payload);
     assert.isObject(userData, "response is not an object.");
     assert.isString(userData.userId, "response is missing user ID.");
-  }, 10000);
+  }, 25000);
 
   it("should get copy trading points data for a provider", async () => {
     const payload = {
@@ -470,7 +470,7 @@ describe("Consume tradeApiClient service", () => {
 
     const dataPoints = await client.providerCopyTradingDataPointsGet(payload);
     assert.isObject(dataPoints, "response is not an object.");
-  }, 10000);
+  }, 25000);
 
   it("should get assets for the exchange account", async () => {
     const payload = {
@@ -481,7 +481,7 @@ describe("Consume tradeApiClient service", () => {
     const assets = await client.exchangeAssetsGet(payload);
     assert.isObject(assets, "response is not an object.");
     assert.isObject(assets.BTC, "response does not have the BTC asset.");
-  }, 15000);
+  }, 25000);
 
   it("should get deposit history for the exchange account", async () => {
     const payload = {
@@ -491,7 +491,7 @@ describe("Consume tradeApiClient service", () => {
 
     const assets = await client.exchangeLastDepositsGet(payload);
     assert.isArray(assets, "response is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should get withdraw history for the exchange account", async () => {
     const payload = {
@@ -501,7 +501,7 @@ describe("Consume tradeApiClient service", () => {
 
     const assets = await client.exchangeLastWithdrawalsGet(payload);
     assert.isArray(assets, "response is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should get deposit address for asset", async () => {
     const payload = {
@@ -515,7 +515,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(addressResponse, "response is not an object.");
     assert.equal(addressResponse.currency, "BTC");
     assert.isString(addressResponse.address, "Address is not a string");
-  }, 10000);
+  }, 25000);
 
   it("should get 2FA code", async () => {
     const payload = {
@@ -525,7 +525,7 @@ describe("Consume tradeApiClient service", () => {
     const response = await client.enable2FA1Step(payload);
     assert.isArray(response, "Response is not an array.");
     assert.isString(response[0], "Code is not a string.");
-  }, 15000);
+  }, 25000);
 
   it("should get user notifications settings", async () => {
     const payload = {
@@ -534,7 +534,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.getProfileNotifications(payload);
     assert.isObject(response, "Response is not an array.");
-  }, 10000);
+  }, 25000);
 
   it("should get user's exchange orders for an exchange.", async () => {
     const payload = {
@@ -553,7 +553,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.sessionDataGet(payload);
     assert.isObject(response, "Response is not an object.");
-  }, 10000);
+  }, 25000);
 
   it("should get user's available balance for an exchange", async () => {
     const payload = {
@@ -563,7 +563,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.userAvailableBalanceGet(payload);
     assert.isObject(response, "Response is not an object.");
-  }, 10000);
+  }, 25000);
 
   it("should get management positions for provider.", async () => {
     const payload = {
@@ -573,7 +573,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.providerManagementPositions(payload);
     assert.isArray(response, "Response is not an array of objects with positions and subpositions");
-  }, 10000);
+  }, 25000);
 
   it("should get provider's followers list.", async () => {
     const payload = {
@@ -583,7 +583,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.providerFollowersListGet(payload);
     assert.isArray(response, "Response is not an array of follower entities.");
-  }, 10000);
+  }, 25000);
 
   it("should get provider's copiers list.", async () => {
     const payload = {
@@ -593,7 +593,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.providerCopiersGet(payload);
     assert.isArray(response, "Response is not an array of copiers entities.");
-  }, 10000);
+  }, 25000);
 
   it("should get user's exchange assets.", async () => {
     const payload = {
@@ -603,7 +603,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.userExchangeAssetsGet(payload);
     assert.isArray(response, "Response is not an array of user exchange assets entities.");
-  }, 10000);
+  }, 25000);
 
   //   it("should get create a post.", async () => {
   //     const payload = {
@@ -624,5 +624,5 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.getPosts(payload);
     assert.isArray(response, "Response is not an array of posts.");
-  }, 10000);
+  }, 25000);
 });

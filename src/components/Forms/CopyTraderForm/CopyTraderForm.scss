@@ -1,5 +1,6 @@
 .copyTraderForm {
   min-height: 300px;
+  overflow-y: scroll;
   padding: 40px;
 
   .alert {
@@ -8,22 +9,28 @@
   }
 
   h3 {
-    font-size: 21px;
     font-weight: 500;
     margin-bottom: 20px;
+    max-width: 80%;
     text-align: center;
     text-transform: initial;
-    width: 80%;
   }
 
-  p {
+  h4 {
+    margin-bottom: 20px;
+    max-width: 80%;
+    text-align: center;
+    text-transform: initial;
+  }
+
+  .para {
     margin-bottom: 20px;
     text-align: center;
     width: 80%;
   }
 
   .fieldBox {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     width: 100%;
   }
 
@@ -50,6 +57,35 @@
       &.errorText {
         font-size: 14px;
       }
+    }
+  }
+
+  .labeledInputsBox {
+    margin-bottom: 30px;
+    width: 80%;
+
+    span {
+      border: 2px solid $purple;
+      box-sizing: border-box;
+      cursor: pointer;
+      display: inline-block;
+      font-weight: 700;
+      padding: 10px;
+      text-align: center;
+      width: 50%;
+
+      &.checked {
+        background: $purple;
+        color: $white;
+      }
+    }
+  }
+
+  .customTextarea {
+    margin-bottom: 30px;
+
+    > div {
+      padding: 10px;
     }
   }
 }

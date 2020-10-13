@@ -679,6 +679,9 @@ const initialState = {
       price: 0,
       loading: false,
       signalProviderQuotes: [],
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
   },
 };

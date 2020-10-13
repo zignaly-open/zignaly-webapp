@@ -179,7 +179,7 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
     let indexes = [];
     // @ts-ignore
     allRowsExpanded.forEach((item) => {
-      indexes.push(item.index);
+      indexes.push(item.dataIndex);
     });
     setExpanded(indexes);
   };

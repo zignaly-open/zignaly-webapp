@@ -93,7 +93,11 @@ const useDashboardAnalytics = () => {
       if (provider && provider.quote) {
         setProviderQuotes([provider.quote]);
         setFilters({ quote: provider.quote });
+      } else {
+        setProviderQuotes(allQuotes);
       }
+    } else {
+      setProviderQuotes(allQuotes);
     }
   };
 

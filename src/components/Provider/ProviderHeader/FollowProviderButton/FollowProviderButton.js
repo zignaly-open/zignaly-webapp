@@ -11,6 +11,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { userPilotProviderEnabled } from "../../../../utils/userPilotApi";
 
 /**
  * @typedef {Object} DefaultProps
@@ -71,6 +72,7 @@ const FollowProviderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(payload2));
+        userPilotProviderEnabled();
         dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         setLoader(false);
       }

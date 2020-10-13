@@ -242,6 +242,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
  * @property {Array<DefaultProviderTeamObject>} team
+ * @property {DefaultProviderOptions} [options]
  */
 
 /**
@@ -396,6 +397,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees Exchange transaction fees.
  * @property {number} fundingFees Exchange transaction funding fees.
+ * @property {boolean} profitSharing Flag to indicate if it is a profit sharing service position.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
@@ -574,7 +576,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {boolean} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
- * @property {boolean} disable
+ * @property {boolean} disable False if user is copying
  * @property {boolean} customerKey
  * @property {boolean} public
  * @property {boolean} hasRecommendedSettings
@@ -597,6 +599,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} [totalSignals] Total signals for signal providers
  * @property {string} exchangeType
  * @property {string} exchangeInternalId Connected exchange account id
+ * @property {boolean} profitSharing Connected exchange account id
+ * @property {number} profitsShare Connected exchange account id
+ * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  */
 
@@ -908,6 +913,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} userId
  * @property {string} userName
  * @property {string} imageUrl
+ * @property {string} isFollowing Flag indicating if author is following provider
  */
 
 /**
@@ -920,6 +926,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} spams
  * @property {number} likes
  * @property {boolean} unapproved Post has been unlisted by moderators
+ * @property {Array<Post>} replies
+ */
+
+/**
+ * @typedef {Object} AddReplyPayload
+ * @property {string} postId
+ * @property {string} [replyId] If replying to a comment
+ * @property {string} content
  */
 
 /**
@@ -1038,6 +1052,11 @@ function providerItemTransform(providerItem) {
   );
 
   if (!transformedResponse.isCopyTrading) {
+    // Updating followers count because it's out of date for clones
+    transformedResponse.followers = transformedResponse.aggregateFollowers.length
+      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
+          .totalFollowers
+      : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
 
@@ -1111,6 +1130,9 @@ function createEmptyProviderEntity() {
     closedPositions: 0,
     exchangeType: "",
     exchangeInternalId: "",
+    profitSharing: false,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 
@@ -1272,6 +1294,7 @@ export function positionItemTransform(positionItem) {
     profitPercentage:
       safeParseFloat(positionItem.profitPercentage) ||
       safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
+    profitSharing: positionItem.profitSharing,
     leverage: safeParseFloat(positionItem.leverage),
     unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
     unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
@@ -1280,7 +1303,7 @@ export function positionItemTransform(positionItem) {
       : false,
     remainAmount: safeParseFloat(positionItem.remainAmount),
     sellPrice: safeParseFloat(positionItem.sellPrice),
-    side: positionItem.side.toUpperCase(),
+    side: positionItem.side ? positionItem.side.toUpperCase() : "",
     stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
     signalId: positionItem.signalId ? positionItem.signalId : "",
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
@@ -1458,6 +1481,7 @@ function createEmptyPositionEntity() {
     investedQuote: "",
     isCopyTrader: false,
     isCopyTrading: false,
+    profitSharing: false,
     leverage: 0,
     logoUrl: "",
     netProfit: 0,
@@ -2429,6 +2453,9 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} price
  * @property {Boolean} loading
  * @property {Array<String>} signalProviderQuotes
+ * @property {Boolean} profitSharing
+ * @property {Number} profitsShare
+ * @property {String} profitsMode
  */
 
 /**
@@ -2450,7 +2477,12 @@ export function providerGetResponseTransform(response) {
   }
 
   let emptyProviderEntity = createEmptyProviderGetEntity();
-  let transformed = assign(emptyProviderEntity, response);
+  let transformed = assign(emptyProviderEntity, response, {
+    minAllocatedBalance:
+      response.minAllocatedBalance && response.minAllocatedBalance !== "false"
+        ? response.minAllocatedBalance
+        : 0,
+  });
   transformed.options.allowClones = checkClones();
   return transformed;
 }
@@ -2574,6 +2606,9 @@ function createEmptyProviderGetEntity() {
     price: 0,
     loading: false,
     signalProviderQuotes: [""],
+    profitSharing: false,
+    profitsShare: 0,
+    profitsMode: "",
   };
 }
 
@@ -3982,6 +4017,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       closedPositions: 0,
       exchangeType: "",
       exchangeInternalId: "",
+      profitSharing: false,
+      profitsShare: 0,
+      profitsMode: "",
     },
     signalsInfo: [],
   };
