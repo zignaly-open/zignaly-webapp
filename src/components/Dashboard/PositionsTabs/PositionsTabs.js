@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@material-ui/core";
 import TabsMenu from "../../TabsMenu";
-import { PositionsTabContent } from "./";
 import "./PositionsTabs.scss";
 import { navigate as navigateReach } from "@reach/router";
 import { useIntl } from "react-intl";
 import PositionsConext from "../PositionsContext";
+import PositionsTable from "../PositionsTable";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -139,7 +139,9 @@ const PositionsTabs = ({ isProfile }) => {
       >
         <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
       </Box>
-      <PositionsTabContent isProfile={isProfile} type={selectedType} />
+      <Box className="tabPanel">
+        <PositionsTable isProfile={isProfile} type={selectedType} />
+      </Box>
     </Box>
   );
 };

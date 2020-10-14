@@ -11,6 +11,7 @@ import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
+import PositionsContext from "../../components/Dashboard/PositionsContext";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps

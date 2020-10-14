@@ -10,7 +10,7 @@ import usePositionsContext from "../../../hooks/usePositionsContext";
 
 const Positions = () => {
   const intl = useIntl();
-  const data = usePositionsContext();
+  const context = usePositionsContext();
 
   return (
     <>
@@ -24,7 +24,7 @@ const Positions = () => {
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">
-        <PositionsContext.Provider value={data}>
+        <PositionsContext.Provider value={context}>
           <PositionsTabs />
         </PositionsContext.Provider>
       </Box>

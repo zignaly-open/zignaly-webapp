@@ -10,7 +10,7 @@ import PositionsContext from "../../../components/Dashboard/PositionsContext";
 const CopyTradersPositions = () => {
   const intl = useIntl();
   const storeViews = useStoreViewsSelector();
-  const data = usePositionsContext();
+  const context = usePositionsContext();
 
   return (
     <>
@@ -22,7 +22,7 @@ const CopyTradersPositions = () => {
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">
-        <PositionsContext.Provider value={data}>
+        <PositionsContext.Provider value={context}>
           <PositionsTabs isProfile={true} />
         </PositionsContext.Provider>
       </Box>

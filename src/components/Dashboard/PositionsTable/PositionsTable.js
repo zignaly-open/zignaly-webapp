@@ -216,13 +216,13 @@ const PositionsTable = (props) => {
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
-      setCloseCount(dataTable.data.length);
+      setCloseCount(positionsAll.length);
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
-      setLogCount(dataTable.data.length);
+      setLogCount(positionsAll.length);
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      setOpenCount(dataTable.data.length);
+      setOpenCount(positionsAll.length);
       // if (excludeCancelAction()) {
       //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       // }
@@ -232,10 +232,10 @@ const PositionsTable = (props) => {
       if (excludeCancelAction()) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
-      setOpenCount(dataTable.data.length);
+      setOpenCount(positionsAll.length);
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
-      setCloseCount(dataTable.data.length);
+      setCloseCount(positionsAll.length);
     } else {
       throw new Error(formatMessage({ id: "dashboard.positions.type.invalid" }));
     }
