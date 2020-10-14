@@ -6,6 +6,21 @@
     font-weight: 700;
     margin-bottom: 30px;
   }
+
+  .profitBox,
+  .winBox {
+    min-width: 250px;
+
+    .title {
+      border-bottom: 1px dotted grey;
+      opacity: 0.65;
+      text-transform: capitalize;
+    }
+  }
+
+  .winBox {
+    margin-top: 20px;
+  }
 }
 
 .loadingBox {

@@ -48,6 +48,14 @@ balance.profit.tooltip: "From all Open Positions, Current Profit and Loss"
 balance.total: "Total Equity"
 balance.profitlosses: "UP/L #"
 
+profitlossanalysis.totalprofit: "Total profit"
+profitlossanalysis.totalloss: "Total loss"
+profitlossanalysis.netprofitloss: "Net Profit/Loss"
+profitlossanalysis.windays: "Winning Days"
+profitlossanalysis.lossdays: "Losing Days"
+profitlossanalysis.evendays: "Breakeven Days"
+profitlossanalysis.winrate: "Win Rate"
+
 # EXCHANGES
 exchange.binance: "binance"
 exchange.kucoin: "kuCoin"

@@ -2,6 +2,7 @@ import React from "react";
 import "./ProfitLossAnalysis.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import { formatFloat } from "../../../utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -29,7 +30,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
       )}
       {!dailyBalance.loading && (
         <Box
-          alignItems="flex-start"
+          alignItems="center"
           className="profitLossAnalysis"
           display="flex"
           flexDirection="column"
@@ -38,6 +39,103 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
           <Typography className="boxTitle" variant="h3">
             <FormattedMessage id="dashboard.balance.profitloss" />
           </Typography>
+
+          <Box className="profitBox" display="flex" flexDirection="column">
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.totalprofit" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.totalloss" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.netprofitloss" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+          </Box>
+
+          <Box className="winBox" display="flex" flexDirection="column">
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.windays" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.lossdays" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.evendays" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+            <Box
+              className="dataBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <span className="title">
+                <FormattedMessage id="profitlossanalysis.winrate" />
+              </span>
+              <span className="value">
+                {formatFloat(0)} {"USDT"}
+              </span>
+            </Box>
+          </Box>
         </Box>
       )}
     </>
