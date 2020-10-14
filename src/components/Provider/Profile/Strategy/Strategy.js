@@ -58,7 +58,7 @@ const Strategy = ({ provider }) => {
         )}
       </Box>
       {show && (
-        <Box className="strategyBody">
+        <Box className="strategyBody markdownContent">
           <ReactMarkdown linkTarget="_blank" plugins={[breaks]} source={provider.strategy} />
         </Box>
       )}

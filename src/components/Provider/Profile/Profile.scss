@@ -1,6 +1,21 @@
 .profile {
   width: 100%;
 
+  .markdownContent {
+    margin-top: 20px;
+    overflow: hidden;
+    width: 100%;
+
+    p {
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  }
+
   .leftColumn {
     margin-right: 20px;
     width: calc(46% - 20px);
