@@ -47,12 +47,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.totalprofit" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
             <Box
               className="dataBox"
@@ -60,12 +60,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.totalloss" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
             <Box
               className="dataBox"
@@ -73,12 +73,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.netprofitloss" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
           </Box>
 
@@ -89,12 +89,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.windays" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
             <Box
               className="dataBox"
@@ -102,12 +102,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.lossdays" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
             <Box
               className="dataBox"
@@ -115,12 +115,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.evendays" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
             <Box
               className="dataBox"
@@ -128,12 +128,12 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <span className="title">
+              <Typography className="title" variant="body1">
                 <FormattedMessage id="profitlossanalysis.winrate" />
-              </span>
-              <span className="value">
+              </Typography>
+              <Typography className="value" variant="body1">
                 {formatFloat(0)} {"USDT"}
-              </span>
+              </Typography>
             </Box>
           </Box>
         </Box>

@@ -9,10 +9,13 @@
 
   .profitBox,
   .winBox {
-    min-width: 250px;
+    min-width: 320px;
+
+    .dataBox {
+      margin-bottom: 5px;
+    }
 
     .title {
-      border-bottom: 1px dotted grey;
       opacity: 0.65;
       text-transform: capitalize;
     }
@@ -36,6 +39,22 @@
 
     h3 {
       margin-bottom: 30px;
+    }
+
+    .profitBox,
+    .winBox {
+      min-width: 100%;
+
+      .title {
+        border-bottom: 1px dotted grey;
+        font-size: 14px;
+        opacity: 0.65;
+        text-transform: capitalize;
+      }
+
+      .value {
+        font-size: 14px;
+      }
     }
   }
 }
