@@ -2,7 +2,7 @@ import React from "react";
 import "./AvailableBalance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { formatFloat2Dec, formatFloat } from "../../../utils/format";
+import { formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 
 /**
