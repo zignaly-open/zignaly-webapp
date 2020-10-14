@@ -59,3 +59,13 @@
     }
   }
 }
+
+@include media(">sm", "<=lg") {
+  .availableBalance {
+    .dataBox {
+      h4 {
+        font-size: 12px;
+      }
+    }
+  }
+}

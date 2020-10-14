@@ -4,6 +4,7 @@ import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
+import { formatNumber } from "../../../utils/formatters";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
@@ -50,7 +51,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                   <FormattedMessage id="balance.wallet" />
                 </Typography>
               </Tooltip>
-              <Typography className="number3 smallText">= USDT {formatFloat(0)}</Typography>
+              <Typography className="number3 smallText">= USDT {formatNumber(0, 2)}</Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
               <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
@@ -84,13 +85,11 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               </Tooltip>
 
               <Typography className={`smallText number3 ${color}`}>
-                = USDT {formatFloat(balance.pnlUSDT)}
+                = USDT {formatNumber(0, 2)}
               </Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography className={`number1 ${color}`}>
-                BTC {formatFloat(balance.pnlBTC)}
-              </Typography>
+              <Typography className={`number1 ${color}`}>BTC {formatFloat(0)}</Typography>
               <Typography className={`number1 pnlPercent ${color}`}>0%</Typography>
             </Box>
           </Box>
@@ -115,9 +114,9 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 </Typography>
               </Tooltip>
 
-              <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
+              <Typography className="smallText number3">= USDT {formatNumber(0, 2)}</Typography>
             </Box>
-            <Typography className="number1">BTC{formatFloat(0)}</Typography>
+            <Typography className="number1">BTC {formatFloat(0)}</Typography>
           </Box>
           <span className="operator">&mdash;</span>
           <Box
@@ -140,9 +139,9 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 </Typography>
               </Tooltip>
 
-              <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
+              <Typography className="smallText number3">= USDT {formatNumber(0, 2)}</Typography>
             </Box>
-            <Typography className="number1">BTC{formatFloat(0)}</Typography>
+            <Typography className="number1">BTC {formatFloat(0)}</Typography>
           </Box>
           <span className="operator">=</span>
           <Box
@@ -170,7 +169,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatFloat(0)
+                  formatNumber(0, 2)
                 )}
               </Typography>
             </Box>

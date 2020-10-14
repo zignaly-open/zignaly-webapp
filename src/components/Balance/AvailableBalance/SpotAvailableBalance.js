@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
+import { formatNumber } from "../../../utils/formatters";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
@@ -53,7 +54,7 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatFloat(balance.totalFreeUSDT)
+                  formatNumber(balance.totalFreeUSDT, 2)
                 )}
               </Typography>
             </Box>
@@ -93,7 +94,7 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
                 <FormattedMessage id="balance.invested" />
               </Typography>
               <Typography className="number3 smallText">
-                = USDT {formatFloat(balance.totalLockedUSDT)}
+                = USDT {formatNumber(balance.totalLockedUSDT, 2)}
               </Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
@@ -125,7 +126,7 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
                 <FormattedMessage id="balance.profit" />
               </Typography>
               <Typography className={`smallText number3 ${color}`}>
-                = USDT {formatFloat(balance.pnlUSDT)}
+                = USDT {formatNumber(balance.pnlUSDT, 2)}
               </Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
@@ -163,7 +164,7 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatFloat(balance.totalUSDT)
+                  formatNumber(balance.totalUSDT, 2)
                 )}
               </Typography>
             </Box>
