@@ -5,9 +5,13 @@ import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import { PositionsTabs } from "../../../components/Dashboard/PositionsTabs";
 import { useIntl } from "react-intl";
+import PositionsContext from "../../../components/Dashboard/PositionsContext";
+import usePositionsContext from "../../../hooks/usePositionsContext";
 
 const Positions = () => {
   const intl = useIntl();
+  const data = usePositionsContext();
+
   return (
     <>
       <Helmet>
@@ -20,7 +24,9 @@ const Positions = () => {
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">
-        <PositionsTabs />
+        <PositionsContext.Provider value={data}>
+          <PositionsTabs />
+        </PositionsContext.Provider>
       </Box>
     </>
   );

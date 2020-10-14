@@ -4,10 +4,13 @@ import { Helmet } from "react-helmet";
 import { PositionsTabs } from "../../../components/Dashboard/PositionsTabs";
 import { useIntl } from "react-intl";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
+import usePositionsContext from "../../../hooks/usePositionsContext";
+import PositionsContext from "../../../components/Dashboard/PositionsContext";
 
 const CopyTradersPositions = () => {
   const intl = useIntl();
   const storeViews = useStoreViewsSelector();
+  const data = usePositionsContext();
 
   return (
     <>
@@ -19,7 +22,9 @@ const CopyTradersPositions = () => {
         </title>
       </Helmet>
       <Box className="positionsPage" display="flex" flexDirection="row" justifyContent="center">
-        <PositionsTabs isProfile={true} />
+        <PositionsContext.Provider value={data}>
+          <PositionsTabs isProfile={true} />
+        </PositionsContext.Provider>
       </Box>
     </>
   );
