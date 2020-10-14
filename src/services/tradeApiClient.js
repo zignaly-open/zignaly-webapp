@@ -824,7 +824,7 @@ class TradeApiClient {
    *
    * @param {DisableProviderPayload} payload Stop following provider payload.
 
-   * @returns {Promise<Array<*>>} Promise that resolves into array of provider entities.
+   * @returns {Promise<boolean>} Promise that resolves into success status.
    *
    * @memberof TradeApiClient
    */
@@ -1741,6 +1741,21 @@ class TradeApiClient {
    */
   async deleteReply(payload) {
     const endpointPath = "/fe/api.php?action=deleteReply";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Subscribe to provider's posts notifications.
+   *
+   * @param {{providerId: string, subscribed: boolean}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async updatePostsNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=updatePostsNotifications";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

@@ -242,6 +242,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} strategy
  * @property {Array<DefaultProviderSocialObject>} social
  * @property {Array<DefaultProviderTeamObject>} team
+ * @property {DefaultProviderOptions} [options]
  */
 
 /**
@@ -396,6 +397,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} closeDate Close date represented in unix time epoch seconds.
  * @property {number} fees Exchange transaction fees.
  * @property {number} fundingFees Exchange transaction funding fees.
+ * @property {boolean} profitSharing Flag to indicate if it is a profit sharing service position.
  * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
  * @property {number} netProfit Net profit amount.
  * @property {number} netProfitPercentage Net percentage profit.
@@ -1292,6 +1294,7 @@ export function positionItemTransform(positionItem) {
     profitPercentage:
       safeParseFloat(positionItem.profitPercentage) ||
       safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
+    profitSharing: positionItem.profitSharing,
     leverage: safeParseFloat(positionItem.leverage),
     unrealizedProfitLosses: safeParseFloat(positionItem.unrealizedProfitLosses),
     unrealizedProfitLossesPercentage: safeParseFloat(positionItem.unrealizedProfitLossesPercentage),
@@ -1300,7 +1303,7 @@ export function positionItemTransform(positionItem) {
       : false,
     remainAmount: safeParseFloat(positionItem.remainAmount),
     sellPrice: safeParseFloat(positionItem.sellPrice),
-    side: positionItem.side.toUpperCase(),
+    side: positionItem.side ? positionItem.side.toUpperCase() : "",
     stopLossPrice: safeParseFloat(positionItem.stopLossPrice),
     signalId: positionItem.signalId ? positionItem.signalId : "",
     takeProfitTargets: isObject(positionItem.takeProfitTargets)
@@ -1478,6 +1481,7 @@ function createEmptyPositionEntity() {
     investedQuote: "",
     isCopyTrader: false,
     isCopyTrading: false,
+    profitSharing: false,
     leverage: 0,
     logoUrl: "",
     netProfit: 0,
@@ -2373,7 +2377,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
  * @property {String} description
- * @property {Boolean} disable
+ * @property {Boolean} disable True when not provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
@@ -2452,6 +2456,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} profitSharing
  * @property {Number} profitsShare
  * @property {String} profitsMode
+ * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  */
 
 /**
@@ -2476,7 +2481,7 @@ export function providerGetResponseTransform(response) {
   let transformed = assign(emptyProviderEntity, response, {
     minAllocatedBalance:
       response.minAllocatedBalance && response.minAllocatedBalance !== "false"
-        ? response.minAllocatedBalance
+        ? parseFloat(response.minAllocatedBalance)
         : 0,
   });
   transformed.options.allowClones = checkClones();

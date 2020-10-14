@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Switch, Tooltip, InputAdornment } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  Switch,
+  Tooltip,
+  Checkbox,
+  InputAdornment,
+} from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -20,9 +28,12 @@ import UploadImage from "../../UploadImage";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
+import userOptions from "../../../utils/userOptions.json";
+import { Help } from "@material-ui/icons";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider
@@ -112,6 +123,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
+        options: preparePayloadOptions(data),
         logoUrl,
       };
       tradeApi
@@ -158,6 +170,22 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       list.push(obj);
     }
     return list;
+  };
+
+  /**
+   *
+   * @param {*} data Submitted object.
+   * @returns {DefaultProviderOptions} Provider options.
+   */
+  const preparePayloadOptions = (data) => {
+    let options = provider.options;
+
+    userOptions.forEach((item) => {
+      // @ts-ignore
+      options[item.id] = data[item.id];
+      delete data[item.id];
+    });
+    return options;
   };
 
   /**
@@ -339,197 +367,137 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           flexWrap="wrap"
           justifyContent="flex-start"
         >
-          <Box bgcolor="grid.content" className="aboutBox">
-            <Typography variant="h3">
-              <FormattedMessage id="srv.about" />
-            </Typography>
-            <ReactMde
-              generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
-              }
-              minEditorHeight={350}
-              onChange={handleAboutChange}
-              onTabChange={setAboutTab}
-              // @ts-ignore
-              selectedTab={aboutTab}
-              value={about}
-            />
-          </Box>
-
-          <Box
-            className="whoWeAreBox"
-            display="flex"
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="space-between"
-          >
-            <Typography variant="h3">
-              <FormattedMessage id="srv.who" />
-            </Typography>
-            <CountrySelect defaultValue={provider.team} onChange={handleCountryChange} />
-            <Typography variant="h3">
-              <FormattedMessage id="srv.social" />
-            </Typography>
-            <SocialSelect
-              defaultValue={provider.social}
-              onChange={handleSocialLinkChange}
-              onError={handleSocialError}
-            />
-          </Box>
-
-          <Box bgcolor="grid.content" className="strategyBox">
-            <Typography variant="h3">
-              <FormattedMessage id="srv.strategy" />
-            </Typography>
-            <ReactMde
-              generateMarkdownPreview={(markdown) =>
-                Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
-              }
-              minEditorHeight={350}
-              onChange={handleStrategyChange}
-              onTabChange={setStrategyTab}
-              // @ts-ignore
-              selectedTab={strategyTab}
-              value={strategy}
-            />
-          </Box>
-
-          <Box
-            bgcolor="grid.content"
-            className="profileBox"
-            display="flex"
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="space-between"
-          >
-            <Box
-              alignItems="flex-start"
-              className="signalBox"
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-start"
-            >
-              <Typography variant="h6">
-                <FormattedMessage id="srv.signalurl" />
-                <span className="signalUrl">{signalUrl}</span>
+          <Box className="leftColumn">
+            <Box bgcolor="grid.content" className="aboutBox">
+              <Typography variant="h3">
+                <FormattedMessage id="srv.about" />
               </Typography>
-              <a
-                className="howToUrl"
-                href={howToSendSignalsUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                How to send signals?
-              </a>
-            </Box>
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className={"customLabel"}>
-                <FormattedMessage id="srv.edit.title" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.name ? "error" : "")
-                    }
-                    fullWidth
-                    variant="outlined"
-                  />
+              <ReactMde
+                generateMarkdownPreview={(markdown) =>
+                  Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
-                control={control}
-                defaultValue={provider.name}
-                name="name"
-                rules={{
-                  required: true,
-                  maxLength: 50,
-                  minLength: 5,
-                  pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
-                }}
+                onChange={handleAboutChange}
+                onTabChange={setAboutTab}
+                // @ts-ignore
+                selectedTab={aboutTab}
+                value={about}
               />
-              {errors.name && (
-                <span className="errorText">
-                  <FormattedMessage id="profile.error.name" />
-                </span>
-              )}
             </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.logo" />
-              </label>
-              <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
-            </Box>
-
-            <Box className="inputBox" display="flex" flexDirection="column">
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.website" />
-              </label>
-              <Controller
-                as={
-                  <TextField
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.website ? "error" : "")
-                    }
-                    error={!!errors.website}
-                    fullWidth
-                    variant="outlined"
-                  />
+            <Box bgcolor="grid.content" className="strategyBox">
+              <Typography variant="h3">
+                <FormattedMessage id="srv.strategy" />
+              </Typography>
+              <ReactMde
+                generateMarkdownPreview={(markdown) =>
+                  Promise.resolve(<ReactMarkdown plugins={[breaks]} source={markdown} />)
                 }
-                control={control}
-                defaultValue={provider.website ? provider.website : ""}
-                name="website"
-                rules={{
-                  required: false,
-                  pattern: /^(ftp|http|https):\/\/[^ "]+$/,
-                }}
+                onChange={handleStrategyChange}
+                onTabChange={setStrategyTab}
+                // @ts-ignore
+                selectedTab={strategyTab}
+                value={strategy}
               />
-              {errors.website && (
-                <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
-              )}
             </Box>
-
-            {provider.isCopyTrading && !provider.profitSharing && (
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.minbalance" />
-                </label>
-                <TextField
-                  className={
-                    "customInput " +
-                    (storeSettings.darkStyle ? " dark " : " light ") +
-                    (errors.minAllocatedBalance ? "error" : "")
-                  }
-                  error={!!errors.minAllocatedBalance}
-                  fullWidth
-                  inputRef={register({ required: true })}
-                  name="minAllocatedBalance"
-                  onChange={handleMinAllocatedChange}
-                  type="text"
-                  value={minAllocatedBalance}
-                  variant="outlined"
-                />
+            {!provider.isCopyTrading && (
+              <Box className="optionsBox" display="flex" flexDirection="column">
+                <Typography variant="h3">
+                  <FormattedMessage id="signalp.useroption.title" />
+                </Typography>
+                {userOptions.map((o) => (
+                  <Box
+                    alignItems="center"
+                    className="inputBox"
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-start"
+                    key={o.id}
+                    width="100%"
+                  >
+                    <Controller
+                      control={control}
+                      // @ts-ignore
+                      defaultValue={provider.options[o.id]}
+                      name={o.id}
+                      render={({ onChange, onBlur, value }) => (
+                        <Checkbox
+                          checked={value}
+                          onBlur={onBlur}
+                          onChange={(e) => onChange(e.target.checked)}
+                        />
+                      )}
+                    />
+                    <label className="customLabel">
+                      <FormattedMessage id={o.label} />
+                      <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
+                        <Help className="helpIcon" />
+                      </Tooltip>
+                    </label>
+                  </Box>
+                ))}
               </Box>
             )}
+          </Box>
 
-            {provider.isCopyTrading && provider.profitSharing && (
+          <Box className="rightColumn">
+            <Box
+              className="whoWeAreBox"
+              display="flex"
+              flexDirection="row"
+              flexWrap="wrap"
+              justifyContent="space-between"
+            >
+              <Typography variant="h3">
+                <FormattedMessage id="srv.who" />
+              </Typography>
+              <CountrySelect defaultValue={provider.team} onChange={handleCountryChange} />
+              <Typography variant="h3">
+                <FormattedMessage id="srv.social" />
+              </Typography>
+              <SocialSelect
+                defaultValue={provider.social}
+                onChange={handleSocialLinkChange}
+                onError={handleSocialError}
+              />
+            </Box>
+            <Box
+              bgcolor="grid.content"
+              className="profileBox"
+              display="flex"
+              flexDirection="row"
+              flexWrap="wrap"
+              justifyContent="space-between"
+            >
+              <Box
+                alignItems="flex-start"
+                className="signalBox"
+                display="flex"
+                flexDirection="column"
+                justifyContent="flex-start"
+              >
+                <Typography variant="h6">
+                  <FormattedMessage id="srv.signalurl" />
+                  <span className="signalUrl">{signalUrl}</span>
+                </Typography>
+                <a
+                  className="howToUrl"
+                  href={howToSendSignalsUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  How to send signals?
+                </a>
+              </Box>
               <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="copyt.profitsharing.percentage" />
+                <label className={"customLabel"}>
+                  <FormattedMessage id="srv.edit.title" />
                 </label>
                 <Controller
                   as={
                     <TextField
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                      }}
                       className={
                         "customInput " +
                         (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.profitsShare ? "error" : "")
+                        (errors.name ? "error" : "")
                       }
                       error={!!errors.profitsShare}
                       fullWidth
@@ -537,205 +505,294 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     />
                   }
                   control={control}
-                  defaultValue={provider.profitsShare}
-                  name="profitsShare"
+                  defaultValue={provider.name}
+                  name="name"
                   rules={{
                     required: true,
+                    maxLength: 50,
+                    pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
                   }}
                 />
+                {errors.name && (
+                  <span className="errorText">
+                    Name is reuired of max 50 characters. (Allowed characters, Numbers, Letters,
+                    $,-,_)
+                  </span>
+                )}
               </Box>
-            )}
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.logo" />
+                </label>
+                <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
+              </Box>
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.website" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.website ? "error" : "")
+                      }
+                      error={!!errors.website}
+                      fullWidth
+                      variant="outlined"
+                    />
+                  }
+                  control={control}
+                  defaultValue={provider.website ? provider.website : ""}
+                  name="website"
+                  rules={{
+                    required: false,
+                    pattern: /^(ftp|http|https):\/\/[^ "]+$/,
+                  }}
+                />
+                {errors.website && (
+                  <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
+                )}
+              </Box>
+              {provider.isCopyTrading && !provider.profitSharing && (
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.minbalance" />
+                  </label>
+                  <TextField
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.minAllocatedBalance ? "error" : "")
+                    }
+                    error={!!errors.minAllocatedBalance}
+                    fullWidth
+                    inputRef={register({ required: true })}
+                    name="minAllocatedBalance"
+                    onChange={handleMinAllocatedChange}
+                    type="text"
+                    value={minAllocatedBalance}
+                    variant="outlined"
+                  />
+                </Box>
+              )}
+              {provider.isCopyTrading && provider.profitSharing && (
+                <Box className="inputBox" display="flex" flexDirection="column">
+                  <label className="customLabel">
+                    <FormattedMessage id="copyt.profitsharing.percentage" />
+                  </label>
+                  <TextField
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                    }}
+                    className={
+                      "customInput " +
+                      (storeSettings.darkStyle ? " dark " : " light ") +
+                      (errors.profitsShare ? "error" : "")
+                    }
+                    defaultValue={provider.profitsShare}
+                    error={!!errors.profitsShare}
+                    fullWidth
+                    inputRef={register({ required: true })}
+                    name="profitsShare"
+                    type="text"
+                    variant="outlined"
+                  />
+                </Box>
+              )}
+              {!provider.profitSharing && (
+                <Box
+                  className="paymentBox"
+                  display="flex"
+                  flexDirection="row"
+                  flexWrap="wrap"
+                  justifyContent="space-between"
+                >
+                  <a
+                    className="paymentDocsLink"
+                    href={howToGetMerchantIDUrl}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <FormattedMessage id="srv.payment.docs" />
+                  </a>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.merchantid" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.merchantId ? "error" : "")
+                          }
+                          fullWidth
+                          variant="outlined"
+                        />
+                      }
+                      control={control}
+                      defaultValue={
+                        provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
+                      }
+                      name="merchantId"
+                      rules={{
+                        pattern: /^[0-9a-zA-Z]+$/,
+                        maxLength: 50,
+                      }}
+                    />
+                    {errors.merchantId && (
+                      <span className="errorText">
+                        Merchant ID is required and should only contains letetrs and numbers.
+                      </span>
+                    )}
+                  </Box>
 
-            {!provider.profitSharing && (
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.price" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.price ? "error" : "")
+                          }
+                          fullWidth
+                          type="number"
+                          variant="outlined"
+                        />
+                      }
+                      control={control}
+                      defaultValue={
+                        provider.internalPaymentInfo ? provider.internalPaymentInfo.price : ""
+                      }
+                      name="price"
+                      rules={{ required: false }}
+                    />
+                    {errors.price && <span className="errorText">Price is required.</span>}
+                  </Box>
+
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.ipn" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.ipnSecret ? "error" : "")
+                          }
+                          fullWidth
+                          variant="outlined"
+                        />
+                      }
+                      control={control}
+                      defaultValue={provider.internalPaymentInfo.merchantId ? "**********" : ""}
+                      name="ipnSecret"
+                      rules={{ maxLength: 50 }}
+                    />
+                    {errors.ipnSecret && <span className="errorText">IPN Secret is required.</span>}
+                  </Box>
+
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.trial" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.trial ? "error" : "")
+                          }
+                          fullWidth
+                          variant="outlined"
+                        />
+                      }
+                      control={control}
+                      defaultValue={
+                        provider.internalPaymentInfo ? provider.internalPaymentInfo.trial : 0
+                      }
+                      name="trial"
+                      rules={{ required: false }}
+                    />
+                  </Box>
+                </Box>
+              )}
+
               <Box
-                className="paymentBox"
+                alignItems="center"
+                className="inputBox switches"
                 display="flex"
                 flexDirection="row"
-                flexWrap="wrap"
                 justifyContent="space-between"
+                width="100%"
               >
-                <a
-                  className="paymentDocsLink"
-                  href={howToGetMerchantIDUrl}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <FormattedMessage id="srv.payment.docs" />
-                </a>
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.merchantid" />
-                  </label>
-                  <Controller
-                    as={
-                      <TextField
-                        className={
-                          "customInput " +
-                          (storeSettings.darkStyle ? " dark " : " light ") +
-                          (errors.merchantId ? "error" : "")
-                        }
-                        fullWidth
-                        variant="outlined"
-                      />
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.public" />
+                  <Tooltip
+                    placement="top"
+                    title={
+                      <Typography variant="h5">
+                        <FormattedMessage id="srv.edit.public.tooltip" />
+                      </Typography>
                     }
-                    control={control}
-                    defaultValue={
-                      provider.internalPaymentInfo ? provider.internalPaymentInfo.merchantId : ""
-                    }
-                    name="merchantId"
-                    rules={{
-                      pattern: /^[0-9a-zA-Z]+$/,
-                      maxLength: 50,
-                    }}
-                  />
-                  {errors.merchantId && (
-                    <span className="errorText">
-                      Merchant ID is required and should only contains letetrs and numbers.
-                    </span>
+                  >
+                    <HelpIcon className="icon" />
+                  </Tooltip>
+                </label>
+                <Controller
+                  control={control}
+                  defaultValue={provider.public}
+                  name="public"
+                  render={({ onChange, value }) => (
+                    <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
                   )}
-                </Box>
-
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.price" />
-                  </label>
-                  <Controller
-                    as={
-                      <TextField
-                        className={
-                          "customInput " +
-                          (storeSettings.darkStyle ? " dark " : " light ") +
-                          (errors.price ? "error" : "")
-                        }
-                        fullWidth
-                        type="number"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue={
-                      provider.internalPaymentInfo ? provider.internalPaymentInfo.price : ""
-                    }
-                    name="price"
-                    rules={{ required: false }}
-                  />
-                  {errors.price && <span className="errorText">Price is required.</span>}
-                </Box>
-
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.ipn" />
-                  </label>
-                  <Controller
-                    as={
-                      <TextField
-                        className={
-                          "customInput " +
-                          (storeSettings.darkStyle ? " dark " : " light ") +
-                          (errors.ipnSecret ? "error" : "")
-                        }
-                        fullWidth
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue={provider.internalPaymentInfo.merchantId ? "**********" : ""}
-                    name="ipnSecret"
-                    rules={{ maxLength: 50 }}
-                  />
-                  {errors.ipnSecret && <span className="errorText">IPN Secret is required.</span>}
-                </Box>
-
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.trial" />
-                  </label>
-                  <Controller
-                    as={
-                      <TextField
-                        className={
-                          "customInput " +
-                          (storeSettings.darkStyle ? " dark " : " light ") +
-                          (errors.trial ? "error" : "")
-                        }
-                        fullWidth
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue={
-                      provider.internalPaymentInfo ? provider.internalPaymentInfo.trial : 0
-                    }
-                    name="trial"
-                    rules={{ required: false }}
-                  />
-                </Box>
+                />
               </Box>
-            )}
-
-            <Box
-              alignItems="center"
-              className="inputBox switches"
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              width="100%"
-            >
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.public" />
-                <Tooltip
-                  placement="top"
-                  title={
-                    <Typography variant="h5">
-                      <FormattedMessage id="srv.edit.public.tooltip" />
-                    </Typography>
-                  }
-                >
-                  <HelpIcon className="icon" />
-                </Tooltip>
-              </label>
-              <Controller
-                control={control}
-                defaultValue={provider.public}
-                name="public"
-                render={({ onChange, value }) => (
-                  <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
-                )}
-              />
-            </Box>
-
-            <Box
-              alignItems="center"
-              className="inputBox switches"
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              width="100%"
-            >
-              <label className="customLabel">
-                <FormattedMessage id="srv.edit.list" />
-                <Tooltip placement="top" title={<GetListedTooltip />}>
-                  <HelpIcon className="icon" />
-                </Tooltip>
-              </label>
-              <Controller
-                control={control}
-                defaultValue={provider.list}
-                name="list"
-                render={({ onChange, onBlur, value }) => (
-                  <Switch
-                    checked={value}
-                    disabled={disableList()}
-                    onBlur={onBlur}
-                    onChange={(e) => onChange(e.target.checked)}
-                  />
-                )}
-              />
+              <Box
+                alignItems="center"
+                className="inputBox switches"
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                width="100%"
+              >
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.list" />
+                  <Tooltip placement="top" title={<GetListedTooltip />}>
+                    <HelpIcon className="icon" />
+                  </Tooltip>
+                </label>
+                <Controller
+                  control={control}
+                  defaultValue={provider.list}
+                  name="list"
+                  render={({ onChange, onBlur, value }) => (
+                    <Switch
+                      checked={value}
+                      disabled={disableList()}
+                      onBlur={onBlur}
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
+                />
+              </Box>
             </Box>
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-            <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
+            {!provider.profitSharing && (
+              <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
+            )}
 
             <CustomButton
               className={"full submitButton"}

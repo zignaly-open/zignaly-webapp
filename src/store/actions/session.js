@@ -47,6 +47,7 @@ export const startTradeApiSession = (response) => {
       gtmEvent.push(assign(eventType, response));
     }
     dashlyLogin(response);
+    userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
 };

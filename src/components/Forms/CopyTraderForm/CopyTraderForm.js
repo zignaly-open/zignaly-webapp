@@ -77,58 +77,50 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (validateExchange() && validateBalance(data.allocatedBalance)) {
-      const added = parseFloat(data.allocatedBalance);
-      const needed =
-        typeof provider.minAllocatedBalance === "string"
-          ? parseFloat(provider.minAllocatedBalance)
-          : provider.minAllocatedBalance;
-      if (added >= needed) {
-        setActionLoading(true);
-        const payload = {
-          allocatedBalance: data.allocatedBalance,
-          balanceFilter: true,
-          connected: provider.connected ? provider.connected : false,
-          token: storeSession.tradeApi.accessToken,
-          providerId: provider.id,
-          exchangeInternalId: storeSettings.selectedExchange.internalId,
-          ...(provider.profitSharing && {
-            profitsMode: profitsMode,
-          }),
-        };
-        tradeApi
-          .traderConnect(payload)
-          .then((response) => {
-            if (response) {
-              const payload2 = {
-                token: storeSession.tradeApi.accessToken,
-                providerId: provider.id,
-                version: 2,
-              };
-              dispatch(setProvider(payload2));
-              userPilotProviderEnabled();
-              dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
-              onClose();
-            }
-          })
-          .catch((e) => {
-            dispatch(showErrorAlert(e));
-          })
-          .finally(() => {
-            setActionLoading(false);
-          });
-      } else {
-        setError("allocatedBalance", {
-          type: "manual",
-          message: intl.formatMessage({ id: "form.error.allocatedBalance.min" }),
+    if (
+      validateExchange() &&
+      validateAllocated(data.allocatedBalance) &&
+      validateBalance(data.allocatedBalance)
+    ) {
+      setActionLoading(true);
+      const payload = {
+        allocatedBalance: data.allocatedBalance,
+        balanceFilter: true,
+        connected: provider.connected ? provider.connected : false,
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        exchangeInternalId: storeSettings.selectedExchange.internalId,
+        ...(provider.profitSharing && {
+          profitsMode: profitsMode,
+        }),
+      };
+      tradeApi
+        .traderConnect(payload)
+        .then((response) => {
+          if (response) {
+            const payload2 = {
+              token: storeSession.tradeApi.accessToken,
+              providerId: provider.id,
+              version: 2,
+            };
+            dispatch(setProvider(payload2));
+            userPilotProviderEnabled();
+            dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
+            onClose();
+          }
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setActionLoading(false);
         });
-      }
     }
   };
 
   const validateExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
-      if (storeSettings.selectedExchange.paperTrading) {
+      if (provider.profitSharing && storeSettings.selectedExchange.paperTrading) {
         let msg = intl.formatMessage({ id: "copyt.copy.error4" });
         setAlert(msg);
         return false;
@@ -170,20 +162,76 @@ const CopyTraderForm = ({ provider, onClose }) => {
     if (!provider.profitSharing) {
       return true;
     }
-    // Skip balance validation on paper trading exchange.
+
     const added = parseFloat(allocatedBalance);
-    if (storeSettings.selectedExchange.paperTrading) {
+    const alreadyAllocated = provider.allocatedBalance;
+    const neededQuote = provider.copyTradingQuote;
+    const userBalance = balance[neededQuote] || 0;
+    const msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
+
+    if (provider.disable) {
+      if (userBalance >= added) {
+        return true;
+      }
+      setAlert(msg);
+      return false;
+    }
+
+    if (userBalance >= added - alreadyAllocated) {
       return true;
     }
-    let neededQuote = provider.copyTradingQuote;
-    /* @ts-ignore */
-    let userBalance = balance[neededQuote] || 0;
-    if (userBalance && userBalance > added) {
-      return true;
-    }
-    let msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
     setAlert(msg);
     return false;
+  };
+
+  /**
+   *
+   * @param {String} allocatedBalance balance inout from user.
+   * @returns {Boolean} whether the input value is valid or not.
+   */
+  const validateAllocated = (allocatedBalance) => {
+    const added = parseFloat(allocatedBalance);
+    const needed = provider.minAllocatedBalance;
+    const alreadyAllocated = provider.allocatedBalance;
+
+    const validateNeeded = () => {
+      if (added >= needed) {
+        return true;
+      }
+      setError("allocatedBalance", {
+        type: "manual",
+        message: intl.formatMessage(
+          { id: "trader.amount.error" },
+          {
+            quote: provider.copyTradingQuote,
+            amount: provider.minAllocatedBalance,
+          },
+        ),
+      });
+      return false;
+    };
+
+    const validateAlreadyAllocated = () => {
+      if (added >= alreadyAllocated && added >= needed) {
+        return true;
+      }
+      setError("allocatedBalance", {
+        type: "manual",
+        message: intl.formatMessage({ id: "form.error.allocatedBalance.reduce" }),
+      });
+      return false;
+    };
+
+    if (provider.disable) {
+      if (provider.profitSharing) {
+        return true;
+      }
+      return validateNeeded();
+    }
+    if (provider.profitSharing) {
+      return validateAlreadyAllocated();
+    }
+    return validateNeeded();
   };
 
   /**
@@ -263,8 +311,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
               value={allocated}
               variant="outlined"
             />
-            {!provider.profitSharing && (
-              <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+            {errors.allocatedBalance && (
+              <span className={"text errorText"}>{errors.allocatedBalance.message}</span>
+            )}
+            {!provider.profitSharing && !errors.allocatedBalance && (
+              <span className={"text"}>
                 <FormattedMessage
                   id="trader.amount.error"
                   values={{
@@ -280,11 +331,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
         {provider.profitSharing && (
           <>
             <Typography variant="h4">
-              <FormattedMessage id="trader.locked" />
-            </Typography>
-
-            <Typography variant="h4">
-              <FormattedMessage id="trader.moreinfo" />
+              <FormattedMessage id="trader.locked" /> <FormattedMessage id="trader.moreinfo" />
             </Typography>
 
             <label className="customLabel">
@@ -327,8 +374,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 })}
                 multiline
                 name="acknowledgeLockedBalance"
-                placeholder={intl.formatMessage({ id: "trader.ack" })}
-                rows={3}
+                rows={2}
                 variant="outlined"
               />
             </Box>
