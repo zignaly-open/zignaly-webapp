@@ -142,18 +142,21 @@ const TraderHeaderInfo = ({ provider }) => {
           )}
         </Typography>
       )}
-      <Typography className="traderType" variant="h4">
-        <span>
-          <FormattedMessage id="accounts.exchange.type" />
-        </span>
-        <b>
-          {provider.profitSharing ? (
-            <FormattedMessage id="copyt.profitsharing" />
-          ) : (
-            <FormattedMessage id="copyt.copytrading" />
-          )}
-        </b>
-      </Typography>
+
+      {provider.isCopyTrading && (
+        <Typography className="traderType" variant="h4">
+          <span>
+            <FormattedMessage id="accounts.exchange.type" />
+          </span>
+          <b>
+            {provider.profitSharing ? (
+              <FormattedMessage id="copyt.profitsharing" />
+            ) : (
+              <FormattedMessage id="copyt.copytrading" />
+            )}
+          </b>
+        </Typography>
+      )}
 
       <Hidden smUp>
         {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (

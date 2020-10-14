@@ -682,6 +682,7 @@ const initialState = {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
+      notificationsPosts: false,
     },
   },
 };
