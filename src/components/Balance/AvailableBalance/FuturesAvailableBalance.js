@@ -1,6 +1,6 @@
 import React from "react";
 import "./AvailableBalance.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
@@ -31,7 +31,6 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
     >
       {balance && (
         <>
-          <span className="operator">+</span>
           <Box
             alignItems="flex-start"
             className="dataBox"
@@ -46,9 +45,11 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               justifyContent="space-between"
               mb={1}
             >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.wallet" />
-              </Typography>
+              <Tooltip placement="top" title={<FormattedMessage id="balance.wallet.tooltip" />}>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.wallet" />
+                </Typography>
+              </Tooltip>
               <Typography className="number3 smallText">= USDT {formatFloat(0)}</Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
@@ -76,9 +77,12 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               justifyContent="space-between"
               mb={1}
             >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.profit" />
-              </Typography>
+              <Tooltip placement="top" title={<FormattedMessage id="balance.profit.tooltip" />}>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.profit" />
+                </Typography>
+              </Tooltip>
+
               <Typography className={`smallText number3 ${color}`}>
                 = USDT {formatFloat(balance.pnlUSDT)}
               </Typography>
@@ -105,9 +109,12 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               justifyContent="space-between"
               mb={1}
             >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.margin" />
-              </Typography>
+              <Tooltip placement="top" title={<FormattedMessage id="balance.margin.tooltip" />}>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.margin" />
+                </Typography>
+              </Tooltip>
+
               <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
             </Box>
             <Typography className="number1">BTC{formatFloat(0)}</Typography>
@@ -127,9 +134,12 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               justifyContent="space-between"
               mb={1}
             >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.current" />
-              </Typography>
+              <Tooltip placement="top" title={<FormattedMessage id="balance.current.tooltip" />}>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.current" />
+                </Typography>
+              </Tooltip>
+
               <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
             </Box>
             <Typography className="number1">BTC{formatFloat(0)}</Typography>
@@ -149,9 +159,12 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               justifyContent="space-between"
               mb={1}
             >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.available" />
-              </Typography>
+              <Tooltip placement="top" title={<FormattedMessage id="balance.available.tooltip" />}>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.available" />
+                </Typography>
+              </Tooltip>
+
               <Typography className="number3 smallText">
                 = USDT{" "}
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (

@@ -14,6 +14,7 @@ import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useIntl } from "react-intl";
 import BalanceTabs from "../../../components/Balance/BalanceTabs";
+import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
@@ -43,7 +44,11 @@ const Balance = () => {
           <TotalEquity dailyBalance={dailyBalance} modal={false} />
         </Box>
         <Box className="cryptoBox">
-          <CryptoComposition dailyBalance={dailyBalance} />
+          {selectedExchange.exchangeType === "futures" ? (
+            <ProfitLossAnalysis dailyBalance={dailyBalance} />
+          ) : (
+            <CryptoComposition dailyBalance={dailyBalance} />
+          )}
         </Box>
         <Box className="balanceBox">
           {selectedExchange.exchangeType === "futures" ? (
