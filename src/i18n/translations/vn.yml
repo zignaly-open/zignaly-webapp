@@ -34,6 +34,8 @@ testimonials.title: "Testimonials"
 testimonials.loadmore: "Load More"
 # BALANCE
 balance.available: "Khả dụng"
+balance.wallet: "Wallet Balance"
+balance.current: "Current Margin"
 balance.invested: "Đã Đầu Tư"
 balance.margin: "Margin Balance"
 balance.profit: "Lợi Nhuận Chưa Thực Hiện"

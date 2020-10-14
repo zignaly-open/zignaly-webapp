@@ -35,6 +35,8 @@ testimonials.loadmore: "Load More"
 
 # BALANCE
 balance.available: "Available"
+balance.wallet: "Wallet Balance"
+balance.current: "Current Margin"
 balance.invested: "Invested"
 balance.margin: "Margin Balance"
 balance.profit: "Unrealized Profit"

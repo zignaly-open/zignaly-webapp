@@ -34,6 +34,8 @@ testimonials.title: "Testimonials"
 testimonials.loadmore: "Load More"
 # BALANCE
 balance.available: "Verfügbar"
+balance.wallet: "Wallet Balance"
+balance.current: "Current Margin"
 balance.invested: "Investiert"
 balance.margin: "Margin Balance"
 balance.profit: "Profitieren"

@@ -31,49 +31,6 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
     >
       {balance && (
         <>
-          <Box
-            alignItems="flex-start"
-            className="dataBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="flex-start"
-          >
-            <Box
-              alignItems="center"
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              mb={1}
-            >
-              <Typography variant="h4">
-                <FormattedMessage id="balance.available" />
-              </Typography>
-              <Typography className="number3 smallText">
-                = USDT{" "}
-                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                  <AllInclusiveIcon className="infinity" />
-                ) : (
-                  formatFloat(balance.totalFreeUSDT)
-                )}
-              </Typography>
-            </Box>
-            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-              <Typography className="number1">
-                BTC{" "}
-                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                  <AllInclusiveIcon className="infinity" />
-                ) : (
-                  formatFloat(balance.totalFreeBTC)
-                )}
-              </Typography>
-              {/* <Typography className="number1 pnlPercent">
-                {balance.totalFreeBTC && balance.totalBTC
-                  ? formatFloat2Dec((balance.totalFreeBTC / balance.totalBTC) * 100)
-                  : 0}
-                %
-              </Typography> */}
-            </Box>
-          </Box>
           <span className="operator">+</span>
           <Box
             alignItems="flex-start"
@@ -90,11 +47,9 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               mb={1}
             >
               <Typography variant="h4">
-                <FormattedMessage id="balance.invested" />
+                <FormattedMessage id="balance.wallet" />
               </Typography>
-              <Typography className="number3 smallText">
-                = USDT {formatFloat(balance.totalLockedUSDT)}
-              </Typography>
+              <Typography className="number3 smallText">= USDT {formatFloat(0)}</Typography>
             </Box>
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
               <Typography className="number1">BTC {formatFloat(balance.totalLockedBTC)}</Typography>
@@ -132,12 +87,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               <Typography className={`number1 ${color}`}>
                 BTC {formatFloat(balance.pnlBTC)}
               </Typography>
-              <Typography className={`number1 pnlPercent ${color}`}>
-                {balance.pnlBTC && balance.totalLockedBTC
-                  ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
-                  : 0}
-                %
-              </Typography>
+              <Typography className={`number1 pnlPercent ${color}`}>0%</Typography>
             </Box>
           </Box>
           <span className="operator">=</span>
@@ -156,25 +106,77 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
               mb={1}
             >
               <Typography variant="h4">
-                <FormattedMessage id="balance.total" />
+                <FormattedMessage id="balance.margin" />
               </Typography>
-              <Typography className="smallText number3">
+              <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
+            </Box>
+            <Typography className="number1">BTC{formatFloat(0)}</Typography>
+          </Box>
+          <span className="operator">&mdash;</span>
+          <Box
+            alignItems="flex-start"
+            className="dataBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+          >
+            <Box
+              alignItems="center"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              mb={1}
+            >
+              <Typography variant="h4">
+                <FormattedMessage id="balance.current" />
+              </Typography>
+              <Typography className="smallText number3">= USDT{formatFloat(0)}</Typography>
+            </Box>
+            <Typography className="number1">BTC{formatFloat(0)}</Typography>
+          </Box>
+          <span className="operator">=</span>
+          <Box
+            alignItems="flex-start"
+            className="dataBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+          >
+            <Box
+              alignItems="center"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              mb={1}
+            >
+              <Typography variant="h4">
+                <FormattedMessage id="balance.available" />
+              </Typography>
+              <Typography className="number3 smallText">
                 = USDT{" "}
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatFloat(balance.totalUSDT)
+                  formatFloat(0)
                 )}
               </Typography>
             </Box>
-            <Typography className="number1">
-              BTC{" "}
-              {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                <AllInclusiveIcon className="infinity" />
-              ) : (
-                formatFloat(balance.totalBTC)
-              )}
-            </Typography>
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
+              <Typography className="number1">
+                BTC{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(0)
+                )}
+              </Typography>
+              {/* <Typography className="number1 pnlPercent">
+                {balance.totalFreeBTC && balance.totalBTC
+                  ? formatFloat2Dec((balance.totalFreeBTC / balance.totalBTC) * 100)
+                  : 0}
+                %
+              </Typography> */}
+            </Box>
           </Box>
         </>
       )}
