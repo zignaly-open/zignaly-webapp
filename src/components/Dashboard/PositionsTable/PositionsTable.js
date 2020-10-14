@@ -199,6 +199,17 @@ const PositionsTable = (props) => {
   } = usePositionDataTableCompose(positionsFiltered, confirmAction);
 
   /**
+   *
+   * @param {UserPositionsCollection} allPositions positions collection.
+   * @returns {Number} count of positions in last 24 hour.
+   */
+  const filterPastDayPositions = (allPositions) => {
+    const last24HoursTime = new Date().getTime() - 86400000;
+    const filtered = allPositions.filter((item) => item.closeDate >= last24HoursTime);
+    return filtered.length;
+  };
+
+  /**
    * Compose MUI data table for positions collection of selected type.
    *
    * @returns {DataTableContent} Data table content.
@@ -216,7 +227,7 @@ const PositionsTable = (props) => {
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
-      setCloseCount(positionsAll.length);
+      setCloseCount(filterPastDayPositions(positionsAll));
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
       setLogCount(positionsAll.length);

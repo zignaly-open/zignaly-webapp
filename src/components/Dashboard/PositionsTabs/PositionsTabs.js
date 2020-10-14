@@ -113,7 +113,7 @@ const PositionsTabs = ({ isProfile }) => {
     {
       display: true,
       label: `${intl.formatMessage({ id: "dashboard.positions.closed" })} ${
-        tabValue === 1 ? `(${closeCount})` : ""
+        tabValue === 1 ? `(${closeCount}/24h)` : ""
       }`,
     },
     {
