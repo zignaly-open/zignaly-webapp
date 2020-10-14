@@ -116,7 +116,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
   const validateExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
-      if (storeSettings.selectedExchange.paperTrading) {
+      if (provider.profitSharing && storeSettings.selectedExchange.paperTrading) {
         let msg = intl.formatMessage({ id: "copyt.copy.error4" });
         setAlert(msg);
         return false;
