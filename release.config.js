@@ -30,14 +30,10 @@ module.exports = {
       },
     ],
     [
-      "semantic-release-jira-releases",
+      "semantic-release-slack-bot",
       {
-        projectId: "ZIG",
-        releaseNameTemplate: "webapp-${version}",
-        jiraHost: "zignaly.atlassian.net",
-        ticketPrefixes: ["ZIG"],
-        released: true,
-        setReleaseDate: true,
+        notifyOnSuccess: true,
+        notifyOnFail: true,
       },
     ],
   ],
