@@ -122,33 +122,35 @@ const ProfitSharingAnalytics = ({ provider }) => {
                   //   info={<div>= USDT {formatFloat(balance.totalFreeUSDT)}</div>}
                   value={
                     <>
-                      {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
+                      {balanceHistory.quote} {formatFloat(balanceHistory.initBalance)}
                     </>
                   }
                 />
-                {/* <span className="operator">+</span> */}
+                <span className="operator">|</span>
                 <EquityPart
                   name="profitsharing.currentAllocated"
                   //   info={<>= USDT {formatFloat(10.1)}</>}
                   value={
                     <>
+                      {/* <Typography className={`number1`}> */}
                       {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
-                    </>
-                  }
-                />
-                {/* <span className="operator">+</span> */}
-                <EquityPart
-                  name="profitsharing.retain"
-                  value={
-                    <>
-                      <Typography className={`number1 ${color}`}>
-                        {balanceHistory.quote} {formatFloat(0.004)}
-                      </Typography>
+                      {/* </Typography> */}
                       {/* <Typography className={`number1 pnlPercent ${color}`}>10%</Typography> */}
                     </>
                   }
                 />
-                {/* <span className="operator">=</span> */}
+                <span className="operator">|</span>
+                <EquityPart
+                  name="profitsharing.retain"
+                  value={
+                    <>
+                      <Typography className="number1">
+                        {balanceHistory.quote} {formatFloat(0.004)}
+                      </Typography>
+                    </>
+                  }
+                />
+                <span className="operator">|</span>
                 <EquityPart
                   name="profitsharing.watermark"
                   //   info={
