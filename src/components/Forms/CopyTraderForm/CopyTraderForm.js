@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import {
-  Box,
-  TextField,
-  Typography,
-  InputAdornment,
-  OutlinedInput,
-  FormControl,
-} from "@material-ui/core";
+import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -45,7 +38,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
     provider.profitsMode ? provider.profitsMode : "reinvest",
   );
   const [alert, setAlert] = useState(undefined);
-  const { errors, handleSubmit, register, setError, control } = useForm();
+  const { errors, handleSubmit, setError, control } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
   const { balance } = useAvailableBalance();
@@ -84,7 +77,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    console.log(data);
     if (
       validateExchange() &&
       validateAllocated(data.allocatedBalance) &&
@@ -267,6 +259,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
     handleSubmit(onSubmit);
   };
 
+  console.log(errors);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -278,9 +272,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
       >
         {Boolean(alert) && (
           <Alert className="alert" severity="error">
-            <Typography className="para" variant="body1">
-              {alert}
-            </Typography>
+            <Typography variant="body1">{alert}</Typography>
           </Alert>
         )}
         <Typography variant="h3">
@@ -306,7 +298,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <Controller
               control={control}
               name="allocatedBalance"
-              render={() => (
+              render={(props) => (
                 <TextField
                   InputProps={{
                     endAdornment: (
@@ -321,6 +313,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                     if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
                       data = data.replace(",", ".");
                       setAllocated(data);
+                      props.onChange(data);
                     }
                   }}
                   placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
@@ -328,13 +321,13 @@ const CopyTraderForm = ({ provider, onClose }) => {
                   variant="outlined"
                 />
               )}
-              rules={{ required: "Please enter some amount!" }}
+              rules={{ required: "Please enter a valid Amount!" }}
             />
             {provider.profitSharing && errors.allocatedBalance && (
               <span className={"text errorText"}>{errors.allocatedBalance.message}</span>
             )}
             {!provider.profitSharing && (
-              <span className={"text" + (errors.allocatedBalance ? "errorText" : "")}>
+              <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
                 <FormattedMessage
                   id="trader.amount.error"
                   values={{
@@ -372,7 +365,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
               </span>
             </Box>
 
-            <label className="customLabel">
+            <label
+              className={"customLabel " + (errors.acknowledgeLockedBalance ? "errorText" : "")}
+            >
               <FormattedMessage id="trader.copy.confirm" />
             </label>
 
@@ -387,13 +382,17 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 control={control}
                 defaultValue=""
                 name="acknowledgeLockedBalance"
-                render={() => (
+                render={(props) => (
                   <TextField
                     className="customTextarea"
                     error={!!errors.acknowledgeLockedBalance}
                     fullWidth
                     multiline
                     name="acknowledgeLockedBalance"
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      props.onChange(value);
+                    }}
                     rows={2}
                     variant="outlined"
                   />

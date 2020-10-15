@@ -3,6 +3,15 @@
   overflow-y: scroll;
   padding: 40px;
 
+  .alert {
+    padding: 0;
+    margin-bottom: 10px;
+
+    div {
+      padding: 0;
+    }
+  }
+
   h3 {
     font-weight: 500;
     margin-bottom: 20px;
