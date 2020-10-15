@@ -29,23 +29,5 @@ module.exports = {
         publishCmd: "mv release.tar.gz zignaly-webapp2-${nextRelease.version}.tar.gz",
       },
     ],
-    [
-      "semantic-release-jira-releases",
-      {
-        projectId: "ZIG",
-        releaseNameTemplate: "webapp-${version}",
-        jiraHost: "zignaly.atlassian.net",
-        ticketPrefixes: ["ZIG"],
-        released: true,
-        setReleaseDate: true,
-      },
-    ],
-    [
-      "semantic-release-slack-bot",
-      {
-        notifyOnSuccess: true,
-        notifyOnFail: true,
-      },
-    ],
   ],
 };
