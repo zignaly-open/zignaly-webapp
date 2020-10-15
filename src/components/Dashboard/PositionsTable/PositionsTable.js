@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { isEmpty } from "lodash";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,7 @@ import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTabl
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
 import { useIntl } from "react-intl";
+import PositionsContext from "../PositionsContext";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -41,6 +42,7 @@ import { useIntl } from "react-intl";
  */
 const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
+  const { setOpenCount, setCloseCount, setLogCount } = useContext(PositionsContext);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const userData = useStoreUserData();
@@ -197,6 +199,17 @@ const PositionsTable = (props) => {
   } = usePositionDataTableCompose(positionsFiltered, confirmAction);
 
   /**
+   *
+   * @param {UserPositionsCollection} allPositions positions collection.
+   * @returns {Number} count of positions in last 24 hour.
+   */
+  const pastDayPositionsCount = (allPositions) => {
+    const last24HoursTime = new Date().getTime() - 60 * 60 * 24 * 1000;
+    const filtered = allPositions.filter((item) => item.closeDate >= last24HoursTime);
+    return filtered.length;
+  };
+
+  /**
    * Compose MUI data table for positions collection of selected type.
    *
    * @returns {DataTableContent} Data table content.
@@ -214,10 +227,13 @@ const PositionsTable = (props) => {
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
+      setCloseCount(pastDayPositionsCount(positionsAll));
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
+      setLogCount(positionsAll.length);
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
+      setOpenCount(positionsAll.length);
       // if (excludeCancelAction()) {
       //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       // }
@@ -227,8 +243,10 @@ const PositionsTable = (props) => {
       if (excludeCancelAction()) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
+      setOpenCount(positionsAll.length);
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
+      setCloseCount(positionsAll.length);
     } else {
       throw new Error(formatMessage({ id: "dashboard.positions.type.invalid" }));
     }
