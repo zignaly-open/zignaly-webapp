@@ -210,6 +210,31 @@ const PositionsTable = (props) => {
   };
 
   /**
+   *
+   * @param {string} countType Which type of count to configure
+   * @param {number} count Count value.
+   * @returns {void} None.
+   */
+  const configureCounts = (countType, count) => {
+    if (setOpenCount && setCloseCount && setLogCount) {
+      switch (countType) {
+        case "open":
+          setOpenCount(count);
+          break;
+        case "close":
+          setOpenCount(count);
+          break;
+        case "log":
+          setOpenCount(count);
+          break;
+        default:
+          setOpenCount(count);
+          break;
+      }
+    }
+  };
+
+  /**
    * Compose MUI data table for positions collection of selected type.
    *
    * @returns {DataTableContent} Data table content.
@@ -227,13 +252,13 @@ const PositionsTable = (props) => {
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
-      setCloseCount(pastDayPositionsCount(positionsAll));
+      configureCounts("close", pastDayPositionsCount(positionsAll));
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
-      setLogCount(positionsAll.length);
+      configureCounts("log", positionsAll.length);
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      setOpenCount(positionsAll.length);
+      configureCounts("open", positionsAll.length);
       // if (excludeCancelAction()) {
       //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       // }
@@ -243,10 +268,10 @@ const PositionsTable = (props) => {
       if (excludeCancelAction()) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
-      setOpenCount(positionsAll.length);
+      configureCounts("open", positionsAll.length);
     } else if (type === "profileClosed") {
       dataTable = composeClosedPositionsForProvider(positionsAll);
-      setCloseCount(positionsAll.length);
+      configureCounts("close", pastDayPositionsCount(positionsAll));
     } else {
       throw new Error(formatMessage({ id: "dashboard.positions.type.invalid" }));
     }
