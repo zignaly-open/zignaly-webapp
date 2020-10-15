@@ -46,8 +46,7 @@ const Analytics = () => {
           timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
         />
       ) : (
-        // <ProfitSharingAnalytics providerId={selectedProvider.id} />
-        <ProfitSharingAnalytics providerId="5f87273d3661db421e77fe73" />
+        <ProfitSharingAnalytics provider={selectedProvider} />
       )}
     </Box>
   );

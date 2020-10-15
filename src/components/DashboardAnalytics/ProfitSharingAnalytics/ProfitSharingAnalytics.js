@@ -16,11 +16,12 @@ import "./ProfitSharingAnalytics.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  */
 
 /**
  * @typedef {Object} DefaultProps
- * @property {string} providerId
+ * @property {ProviderEntity} provider
  */
 
 /**
@@ -29,7 +30,7 @@ import "./ProfitSharingAnalytics.scss";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const ProfitSharingAnalytics = ({ providerId }) => {
+const ProfitSharingAnalytics = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const [performance, setPerformance] = useState(null);
   const [performanceLoading, setPerformanceLoading] = useState(false);
@@ -55,7 +56,7 @@ const ProfitSharingAnalytics = ({ providerId }) => {
   const getProviderPerformance = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      providerId,
+      providerId: provider.id,
     };
     setPerformanceLoading(true);
 
@@ -76,7 +77,8 @@ const ProfitSharingAnalytics = ({ providerId }) => {
   const getProfitSharingBalanceHistory = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      providerId,
+      //   providerId: provider.id,
+      providerId: "5f87273d3661db421e77fe73",
       exchangeInternalId: storeSettings.selectedExchange.internalId,
     };
     setBalanceHistoryLoading(true);
@@ -109,41 +111,55 @@ const ProfitSharingAnalytics = ({ providerId }) => {
         performance && <TradingPerformance performance={performance} />
       )}
       <TotalEquityBar>
-        {balance && (
+        {balanceHistory && (
           <>
             <EquityPart
               name="profitsharing.initAllocated"
               //   info={<div>= USDT {formatFloat(balance.totalFreeUSDT)}</div>}
-              value={<>BTC {formatFloat(0.001)}</>}
+              value={
+                <>
+                  {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
+                </>
+              }
             />
-            <span className="operator">+</span>
+            {/* <span className="operator">+</span> */}
             <EquityPart
               name="profitsharing.currentAllocated"
               //   info={<>= USDT {formatFloat(10.1)}</>}
-              value={<>BTC {formatFloat(0.0012)}</>}
+              value={
+                <>
+                  {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
+                </>
+              }
             />
-            <span className="operator">+</span>
+            {/* <span className="operator">+</span> */}
             <EquityPart
               name="profitsharing.retain"
               value={
                 <>
-                  <Typography className={`number1 ${color}`}>BTC {formatFloat(0.004)}</Typography>
-                  <Typography className={`number1 pnlPercent ${color}`}>10%</Typography>
+                  <Typography className={`number1 ${color}`}>
+                    {balanceHistory.quote} {formatFloat(0.004)}
+                  </Typography>
+                  {/* <Typography className={`number1 pnlPercent ${color}`}>10%</Typography> */}
                 </>
               }
             />
-            <span className="operator">=</span>
+            {/* <span className="operator">=</span> */}
             <EquityPart
               name="profitsharing.watermark"
-              info={
+              //   info={
+              //     <>
+              //       <Typography variant="h4">
+              //         <FormattedMessage id="balance.total" />
+              //       </Typography>
+              //       <Typography className="smallText number3">= USDT {formatFloat(10)}</Typography>
+              //     </>
+              //   }
+              value={
                 <>
-                  <Typography variant="h4">
-                    <FormattedMessage id="balance.total" />
-                  </Typography>
-                  <Typography className="smallText number3">= USDT {formatFloat(10)}</Typography>
+                  {balanceHistory.quote} {formatFloat(balanceHistory.watermark)}
                 </>
               }
-              value={<>BTC {formatFloat(0.0001)}</>}
             />
           </>
         )}
