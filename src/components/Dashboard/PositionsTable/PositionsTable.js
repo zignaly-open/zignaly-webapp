@@ -203,8 +203,8 @@ const PositionsTable = (props) => {
    * @param {UserPositionsCollection} allPositions positions collection.
    * @returns {Number} count of positions in last 24 hour.
    */
-  const filterPastDayPositions = (allPositions) => {
-    const last24HoursTime = new Date().getTime() - 86400000;
+  const pastDayPositionsCount = (allPositions) => {
+    const last24HoursTime = new Date().getTime() - 60 * 60 * 24 * 1000;
     const filtered = allPositions.filter((item) => item.closeDate >= last24HoursTime);
     return filtered.length;
   };
@@ -227,7 +227,7 @@ const PositionsTable = (props) => {
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
-      setCloseCount(filterPastDayPositions(positionsAll));
+      setCloseCount(pastDayPositionsCount(positionsAll));
     } else if (type === "log") {
       dataTable = composeLogPositionsDataTable();
       setLogCount(positionsAll.length);
