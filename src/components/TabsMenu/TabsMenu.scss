@@ -1,22 +1,23 @@
 .tabsMenu {
   border-bottom: 1px solid var(--border-color);
   min-height: 70px;
-  padding: 0 10px;
+  padding: 0 20px;
   width: 100%;
 
   .container {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    width: fit-content;
+    width: 100%;
   }
 
   button {
     font-size: 16px;
     font-weight: 600;
-    max-width: 130px;
+    margin-right: 10px;
+    max-width: 200px;
     min-height: 70px;
-    min-width: 100px;
+    min-width: 50px;
     opacity: 0.6;
     padding: 0;
     text-transform: capitalize;
@@ -43,17 +44,19 @@
 @include media("<=sm") {
   .tabsMenu {
     min-height: 70px;
+    padding: 0 10px;
 
     .container {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      width: fit-content;
+      width: 100%;
 
       button {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 700;
-        max-width: 100px;
+        margin-right: 10px;
+        max-width: 150px;
         min-height: 70px;
         padding: 0;
         text-transform: capitalize;
