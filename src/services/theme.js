@@ -312,10 +312,10 @@ const theme = (darkStyle) => {
             borderColor: darkStyle ? colors.lighterBlackBorder : "rgba(0, 0, 0, 0.3)",
           },
           // Override border for inputs inside a modal with dark theme
-          "[data-theme='dark'] .modal &:not($focused):not(:hover):not(.Mui-error) $notchedOutline": {
+          "[data-theme='dark'] .modal &:not($focused):not(.Mui-error):not(:hover) $notchedOutline": {
             borderColor: "rgba(255, 255, 255, 0.23)",
           },
-          "[data-theme='dark'] .modal &:not($focused):hover:not(.Mui-error) $notchedOutline": {
+          "[data-theme='dark'] .modal &:not($focused):not(.Mui-error):hover $notchedOutline": {
             borderColor: "rgba(255, 255, 255, 0.4)",
           },
         },
