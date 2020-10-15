@@ -535,12 +535,14 @@ signalp.option.minimumsuccess.error: "Tỷ lệ thành công tối thiểu đư�
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Tên"
-copyt.become: "Trở thành Nhà giao dịch sao chép"
+copyt.become: "CH-Offer Your Copy Trading Service"
+copyt.become.mobile: "CH-Offer Service"
 copyt.create: "Tạo Một Tài Khoản Nhà Giao Dịch Sao Chép"
 copyt.create.desc: "Người dùng của chúng tôi sẽ sao chép giao dịch của bạn"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
 signalp.create: "Tạo Tài Khoản Nhà Cung Cấp Tín Hiệu"
-signalp.become: "Trở thành nhà cung cấp tín hiệu"
+signalp.become: "CH-Offer Your Signal Provider Service"
+signalp.become.mobile: "CH-Offer Service"
 # TRADING TERMINAL
 terminal.autoclose.limit.zero: "Số giờ tự động đóng phải lớn hơn 0."
 terminal.available: "Khả dụng"
