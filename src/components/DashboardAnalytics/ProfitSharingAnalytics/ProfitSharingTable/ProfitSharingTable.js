@@ -3,7 +3,24 @@ import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
 import { formatFloat, FormatedDateTime } from "../../../../utils/format";
 
-const ProfitSharingTable = () => {
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
+ * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
+ * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
+ */
+
+/**
+ * @typedef {Object} DefaultProps
+ * @property {Array<ProfitSharingBalanceEntry>} data
+ */
+
+/**
+ * Render profit sharing balance history table.
+ *
+ * @param {DefaultProps} props Component props.
+ * @returns {JSX.Element} JSX
+ */
+const ProfitSharingTable = ({ data }) => {
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -30,23 +47,10 @@ const ProfitSharingTable = () => {
    */
   const options = {
     sortOrder: {
-      date: "timestamp",
+      name: "date",
       direction: "desc",
     },
   };
-
-  const data = [
-    {
-      date: "2020-10-07",
-      type: "init",
-      amount: "100",
-    },
-    {
-      date: "2020-10-08",
-      type: "withdraw",
-      amount: "100",
-    },
-  ];
 
   return (
     <div className="profitSharingTable">

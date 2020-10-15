@@ -2,14 +2,20 @@
   .totalEquityBar {
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     margin: 30px 0 42px;
+    width: 100%;
   }
 
   .totalEquity {
     width: 60%;
   }
 
-  .profitSharingTable {
+  .tableBox {
     padding-left: 24px;
     width: 40%;
+  }
+
+  .profitSharingTable {
+    height: 100%;
+    width: 100%;
   }
 }

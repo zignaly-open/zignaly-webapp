@@ -133,6 +133,8 @@ import {
  * @typedef {import('./tradeApiClient.types').Post} Post
  * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
  * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
+ * @typedef {import('./tradeApiClient.types').GetProfitSharingBalanceHistoryPayload} GetProfitSharingBalanceHistoryPayload
+ * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  */
 
 /**
@@ -1756,6 +1758,21 @@ class TradeApiClient {
    */
   async updatePostsNotifications(payload) {
     const endpointPath = "/fe/api.php?action=updatePostsNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Get Profit Sharing balance history for a connected provider
+   *
+   * @param {GetProfitSharingBalanceHistoryPayload} payload Payload
+   *
+   * @returns {Promise<ProfitSharingBalanceHistory>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getProfitSharingBalanceHistory(payload) {
+    const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

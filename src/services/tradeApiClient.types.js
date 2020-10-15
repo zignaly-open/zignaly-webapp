@@ -937,6 +937,27 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} GetProfitSharingBalanceHistoryPayload
+ * @property {string} exchangeInternalId
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {Object} ProfitSharingBalanceEntry
+ * @property {string} id
+ * @property {string} date
+ * @property {string} amount
+ * @property {string} type
+ */
+
+/**
+ * @typedef {Object} ProfitSharingBalanceHistory
+ * @property {Array<ProfitSharingBalanceEntry>} entries
+ * @property {number} watermark
+ * @property {number} currentBalance
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export

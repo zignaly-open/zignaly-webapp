@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
@@ -14,7 +15,7 @@ import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
 
 /**
- * @typedef {import("../../../store/initialState").DashboardAnalyticsFilters} DashboardAnalyticsFilters
+ * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  */
 
 /**
@@ -32,6 +33,11 @@ const ProfitSharingAnalytics = ({ providerId }) => {
   const storeSession = useStoreSessionSelector();
   const [performance, setPerformance] = useState(null);
   const [performanceLoading, setPerformanceLoading] = useState(false);
+  const [balanceHistory, setBalanceHistory] = useState(
+    /** @type {ProfitSharingBalanceHistory} */ (null),
+  );
+  const [balanceHistoryLoading, setBalanceHistoryLoading] = useState(false);
+  const storeSettings = useStoreSettingsSelector();
   const color = "green";
   const balance = {
     totalUSDT: 100,
@@ -65,11 +71,38 @@ const ProfitSharingAnalytics = ({ providerId }) => {
         setPerformanceLoading(false);
       });
   };
-
   useEffect(getProviderPerformance, []);
 
+  const getProfitSharingBalanceHistory = () => {
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId,
+      exchangeInternalId: storeSettings.selectedExchange.internalId,
+    };
+    setBalanceHistoryLoading(true);
+
+    tradeApi
+      .getProfitSharingBalanceHistory(payload)
+      .then((response) => {
+        setBalanceHistory(response);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setBalanceHistoryLoading(false);
+      });
+  };
+  useEffect(getProfitSharingBalanceHistory, []);
+
   return (
-    <Box className="profitSharingAnalytics">
+    <Box
+      className="profitSharingAnalytics"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+    >
       {performanceLoading ? (
         <CircularProgress color="primary" size={50} />
       ) : (
@@ -118,7 +151,13 @@ const ProfitSharingAnalytics = ({ providerId }) => {
 
       <Box display="flex" width={1}>
         <ProfitSharingEquityChart />
-        <ProfitSharingTable />
+        <Box display="flex" justifyContent="center" alignItems="center" className="tableBox">
+          {balanceHistoryLoading ? (
+            <CircularProgress color="primary" size={50} />
+          ) : (
+            balanceHistory && <ProfitSharingTable data={balanceHistory.entries} />
+          )}
+        </Box>
       </Box>
     </Box>
   );

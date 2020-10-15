@@ -24,7 +24,8 @@ const Analytics = () => {
   } = useDashboardAnalytics();
 
   const selectedProvider = providers.find((p) => p.id === filters.provider.val);
-  const profitSharing = selectedProvider && selectedProvider.profitSharing;
+  //   const profitSharing = selectedProvider && selectedProvider.profitSharing;
+  const profitSharing = true;
 
   return (
     <Box>
@@ -45,7 +46,8 @@ const Analytics = () => {
           timeFrame={timeFrames.find((t) => t.val === filters.timeFrame).label}
         />
       ) : (
-        <ProfitSharingAnalytics providerId={selectedProvider.id} />
+        // <ProfitSharingAnalytics providerId={selectedProvider.id} />
+        <ProfitSharingAnalytics providerId="5f87273d3661db421e77fe73" />
       )}
     </Box>
   );
