@@ -43,16 +43,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
   const [balanceHistoryLoading, setBalanceHistoryLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const color = "green";
-  const balance = {
-    totalUSDT: 100,
-    totalBTC: 0.01,
-    pnlBTC: 0,
-    pnlUSDT: 0,
-    totalFreeBTC: 0,
-    totalFreeUSDT: 0,
-    totalLockedBTC: 0,
-    totalLockedUSDT: 0,
-  };
 
   const dispatch = useDispatch();
 
@@ -112,71 +102,82 @@ const ProfitSharingAnalytics = ({ provider }) => {
       ) : (
         performance && <TradingPerformance performance={performance} />
       )}
-      <TotalEquityBar>
-        {balanceHistory && (
-          <>
-            <EquityPart
-              name="profitsharing.initAllocated"
-              //   info={<div>= USDT {formatFloat(balance.totalFreeUSDT)}</div>}
-              value={
-                <>
-                  {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
-                </>
-              }
-            />
-            {/* <span className="operator">+</span> */}
-            <EquityPart
-              name="profitsharing.currentAllocated"
-              //   info={<>= USDT {formatFloat(10.1)}</>}
-              value={
-                <>
-                  {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
-                </>
-              }
-            />
-            {/* <span className="operator">+</span> */}
-            <EquityPart
-              name="profitsharing.retain"
-              value={
-                <>
-                  <Typography className={`number1 ${color}`}>
-                    {balanceHistory.quote} {formatFloat(0.004)}
-                  </Typography>
-                  {/* <Typography className={`number1 pnlPercent ${color}`}>10%</Typography> */}
-                </>
-              }
-            />
-            {/* <span className="operator">=</span> */}
-            <EquityPart
-              name="profitsharing.watermark"
-              //   info={
-              //     <>
-              //       <Typography variant="h4">
-              //         <FormattedMessage id="balance.total" />
-              //       </Typography>
-              //       <Typography className="smallText number3">= USDT {formatFloat(10)}</Typography>
-              //     </>
-              //   }
-              value={
-                <>
-                  {balanceHistory.quote} {formatFloat(balanceHistory.watermark)}
-                </>
-              }
-            />
-          </>
-        )}
-      </TotalEquityBar>
-
-      <Box display="flex" width={1}>
-        <ProfitSharingEquityChart />
-        <Box display="flex" justifyContent="center" alignItems="center" className="tableBox">
-          {balanceHistoryLoading ? (
-            <CircularProgress color="primary" size={50} />
-          ) : (
-            balanceHistory && <ProfitSharingTable data={balanceHistory.entries} />
-          )}
+      {balanceHistoryLoading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt="50px"
+        >
+          <CircularProgress color="primary" size={50} />
         </Box>
-      </Box>
+      ) : (
+        balanceHistory && (
+          <>
+            <TotalEquityBar>
+              <>
+                <EquityPart
+                  name="profitsharing.initAllocated"
+                  //   info={<div>= USDT {formatFloat(balance.totalFreeUSDT)}</div>}
+                  value={
+                    <>
+                      {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
+                    </>
+                  }
+                />
+                {/* <span className="operator">+</span> */}
+                <EquityPart
+                  name="profitsharing.currentAllocated"
+                  //   info={<>= USDT {formatFloat(10.1)}</>}
+                  value={
+                    <>
+                      {balanceHistory.quote} {formatFloat(balanceHistory.currentBalance)}
+                    </>
+                  }
+                />
+                {/* <span className="operator">+</span> */}
+                <EquityPart
+                  name="profitsharing.retain"
+                  value={
+                    <>
+                      <Typography className={`number1 ${color}`}>
+                        {balanceHistory.quote} {formatFloat(0.004)}
+                      </Typography>
+                      {/* <Typography className={`number1 pnlPercent ${color}`}>10%</Typography> */}
+                    </>
+                  }
+                />
+                {/* <span className="operator">=</span> */}
+                <EquityPart
+                  name="profitsharing.watermark"
+                  //   info={
+                  //     <>
+                  //       <Typography variant="h4">
+                  //         <FormattedMessage id="balance.total" />
+                  //       </Typography>
+                  //       <Typography className="smallText number3">= USDT {formatFloat(10)}</Typography>
+                  //     </>
+                  //   }
+                  value={
+                    <>
+                      {balanceHistory.quote} {formatFloat(balanceHistory.watermark)}
+                    </>
+                  }
+                />
+              </>
+            </TotalEquityBar>
+
+            <Box display="flex" width={1}>
+              <ProfitSharingEquityChart
+                currentBalance={balanceHistory.currentBalance}
+                data={balanceHistory.entries}
+              />
+              <ProfitSharingTable data={balanceHistory.entries} />
+            </Box>
+          </>
+        )
+      )}
     </Box>
   );
 };

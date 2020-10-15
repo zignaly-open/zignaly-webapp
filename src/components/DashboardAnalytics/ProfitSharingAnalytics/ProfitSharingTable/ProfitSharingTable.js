@@ -2,6 +2,7 @@ import React from "react";
 import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
 import { formatFloat, FormatedDateTime } from "../../../../utils/format";
+import { capitalize } from "lodash";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -27,7 +28,10 @@ const ProfitSharingTable = ({ data }) => {
   let columns = [
     {
       name: "type",
-      label: "col.type",
+      label: "col.orders.type",
+      options: {
+        customBodyRender: capitalize,
+      },
     },
     {
       name: "amount",
