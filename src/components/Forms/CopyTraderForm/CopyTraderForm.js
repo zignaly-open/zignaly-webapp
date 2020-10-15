@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  InputAdornment,
+  OutlinedInput,
+  FormControl,
+} from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
@@ -38,23 +45,23 @@ const CopyTraderForm = ({ provider, onClose }) => {
     provider.profitsMode ? provider.profitsMode : "reinvest",
   );
   const [alert, setAlert] = useState(undefined);
-  const { errors, handleSubmit, register, setError } = useForm();
+  const { errors, handleSubmit, register, setError, control } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
   const { balance } = useAvailableBalance();
 
-  /**
-   *
-   * @param {React.ChangeEvent<*>} e Change event.
-   * @returns {Void} None.
-   */
-  const handleAllocatedChange = (e) => {
-    let data = e.target.value;
-    if (data.match(/^[0-9]\d*(?:[.,]\d{0,8})?$/) || data === "") {
-      data = data.replace(",", ".");
-      setAllocated(data);
-    }
-  };
+  // /**
+  //  *
+  //  * @param {React.ChangeEvent<*>} e Change event.
+  //  * @returns {Void} None.
+  //  */
+  // const handleAllocatedChange = (e) => {
+  //   let data = e.target.value;
+  //   if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
+  //     data = data.replace(",", ".");
+  //     setAllocated(data);
+  //   }
+  // };
 
   /**
    *
@@ -77,6 +84,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
+    console.log(data);
     if (
       validateExchange() &&
       validateAllocated(data.allocatedBalance) &&
@@ -270,7 +278,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
       >
         {Boolean(alert) && (
           <Alert className="alert" severity="error">
-            {alert}
+            <Typography className="para" variant="body1">
+              {alert}
+            </Typography>
           </Alert>
         )}
         <Typography variant="h3">
@@ -293,29 +303,38 @@ const CopyTraderForm = ({ provider, onClose }) => {
             flexDirection="column"
             justifyContent="start"
           >
-            <TextField
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
-                ),
-              }}
-              className="customInput"
-              error={!!errors.allocatedBalance}
-              fullWidth
-              inputRef={register({
-                required: true,
-              })}
+            <Controller
+              control={control}
               name="allocatedBalance"
-              onChange={handleAllocatedChange}
-              placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
-              value={allocated}
-              variant="outlined"
+              render={() => (
+                <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
+                    ),
+                  }}
+                  className="customInput"
+                  error={!!errors.allocatedBalance}
+                  fullWidth
+                  onChange={(e) => {
+                    let data = e.target.value;
+                    if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
+                      data = data.replace(",", ".");
+                      setAllocated(data);
+                    }
+                  }}
+                  placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
+                  value={allocated}
+                  variant="outlined"
+                />
+              )}
+              rules={{ required: "Please enter some amount!" }}
             />
-            {errors.allocatedBalance && (
+            {provider.profitSharing && errors.allocatedBalance && (
               <span className={"text errorText"}>{errors.allocatedBalance.message}</span>
             )}
-            {!provider.profitSharing && !errors.allocatedBalance && (
-              <span className={"text"}>
+            {!provider.profitSharing && (
+              <span className={"text" + (errors.allocatedBalance ? "errorText" : "")}>
                 <FormattedMessage
                   id="trader.amount.error"
                   values={{
@@ -364,18 +383,22 @@ const CopyTraderForm = ({ provider, onClose }) => {
               flexDirection="column"
               justifyContent="start"
             >
-              <TextField
-                className="customTextarea"
+              <Controller
+                control={control}
                 defaultValue=""
-                error={!!errors.acknowledgeLockedBalance}
-                fullWidth
-                inputRef={register({
-                  required: true,
-                })}
-                multiline
                 name="acknowledgeLockedBalance"
-                rows={2}
-                variant="outlined"
+                render={() => (
+                  <TextField
+                    className="customTextarea"
+                    error={!!errors.acknowledgeLockedBalance}
+                    fullWidth
+                    multiline
+                    name="acknowledgeLockedBalance"
+                    rows={2}
+                    variant="outlined"
+                  />
+                )}
+                rules={{ required: true }}
               />
             </Box>
           </>
