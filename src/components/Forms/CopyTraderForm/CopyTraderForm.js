@@ -259,8 +259,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
     handleSubmit(onSubmit);
   };
 
-  console.log(errors);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
