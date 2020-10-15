@@ -528,7 +528,7 @@ copyt.become.mobile: "CH-Offer Service"
 copyt.create: "Einen Copy Trader Account erstellen"
 copyt.create.desc: "Bieten Sie Ihre Dienste als erfahrener Trader an, um von unseren Benutzern kopiert zu werden"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
-signalp.create: "Erstellen Sie ein Signal Provider Konto"
+signalp.create: "Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
 # TRADING TERMINAL

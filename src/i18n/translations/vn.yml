@@ -540,7 +540,7 @@ copyt.become.mobile: "CH-Offer Service"
 copyt.create: "Tạo Một Tài Khoản Nhà Giao Dịch Sao Chép"
 copyt.create.desc: "Người dùng của chúng tôi sẽ sao chép giao dịch của bạn"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
-signalp.create: "Tạo Tài Khoản Nhà Cung Cấp Tín Hiệu"
+signalp.create: "Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
 # TRADING TERMINAL
