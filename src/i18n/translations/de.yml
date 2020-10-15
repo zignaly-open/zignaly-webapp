@@ -523,12 +523,14 @@ signalp.option.minimumsuccess.error: "Die minimal zulässige Erfolgsquote beträ
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Name"
-copyt.become: "Werden Sie Copy Trader"
+copyt.become: "CH-Offer Your Copy Trading Service"
+copyt.become.mobile: "CH-Offer Service"
 copyt.create: "Einen Copy Trader Account erstellen"
 copyt.create.desc: "Bieten Sie Ihre Dienste als erfahrener Trader an, um von unseren Benutzern kopiert zu werden"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
-signalp.create: "Erstellen Sie ein Signal Provider Konto"
-signalp.become: "Werden Sie Signal Provider"
+signalp.create: "Create a Signal Provider Service"
+signalp.become: "CH-Offer Your Signal Provider Service"
+signalp.become.mobile: "CH-Offer Service"
 # TRADING TERMINAL
 terminal.autoclose.limit.zero: "Autoclose in Stunden muss größer als 0 sein."
 terminal.available: "Verfügbar"
