@@ -31,6 +31,9 @@ import "./ProfitSharingAnalytics.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingAnalytics = ({ provider }) => {
+  provider = {
+    id: "5f88702f2db6ce48270111c3",
+  };
   const storeSession = useStoreSessionSelector();
   const [performance, setPerformance] = useState(null);
   const [performanceLoading, setPerformanceLoading] = useState(false);
@@ -77,8 +80,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
   const getProfitSharingBalanceHistory = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      //   providerId: provider.id,
-      providerId: "5f87273d3661db421e77fe73",
+      providerId: provider.id,
       exchangeInternalId: storeSettings.selectedExchange.internalId,
     };
     setBalanceHistoryLoading(true);

@@ -953,9 +953,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} ProfitSharingBalanceHistory
  * @property {Array<ProfitSharingBalanceEntry>} entries
- * @property {number} watermark
+ * @property {number} watermark Hide-water mark
  * @property {number} currentBalance
  * @property {number} initBalance
+ * @property {number} retain
  * @property {string} quote
  */
 
