@@ -27,9 +27,13 @@ import "./ProfitSharingEquityChart.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingEquityChart = ({ currentBalance, data }) => {
-  const dailyBalance = generateDailyData(data, (date, amount) => ({
+  const dataWithDates = data.map((d) => ({
+    ...d,
+    date: new Date(d.date),
+  }));
+  const dailyBalance = generateDailyData(dataWithDates, (date, amount) => ({
     date: formatDate(date, "YYYY/MM/DD"),
-    amount,
+    totalUSDT: amount,
   }));
 
   const [tableData, setTableData] = useState(dailyBalance);
