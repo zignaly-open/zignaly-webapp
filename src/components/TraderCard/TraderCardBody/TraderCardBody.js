@@ -99,7 +99,10 @@ const TraderCard = (props) => {
       chartData.values.push(amount);
       chartData.labels.push(date);
     };
-    const dailyData = dailyReturns.map((r) => ({ date: new Date(r.name), amount: r.returns }));
+    const dailyData = dailyReturns.map((r) => ({
+      date: new Date(r.name),
+      amount: r.returns,
+    }));
     generateDailyData(dailyData, addValue);
   } else {
     let currentFollowers = followers;

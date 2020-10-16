@@ -1,19 +1,28 @@
 import moment from "moment";
+/**
+ * @typedef {Object} DailyData
+ * @property {Date} date Date
+ * @property {number} amount Amount
+ */
 
 /**
+ * Function to generate a new array that contains daily amount data.
  *
- * @param {Array<*>} dailyData
- * @param {function} addValue
- * @returns {Array<*>}
+ * @param {Array<DailyData>} dailyData Array of daily amount data.
+ * @param {function} addValue Callback to format the new aggregated value
+ * @returns {Array<*>} Result
  */
 export const generateDailyData = (dailyData, addValue) => {
+  /**
+   * @type {Array<*>}
+   */
   let res = [];
 
   /**
    * Fill missing days with passed amount value
-   * @param {number} daysCount
-   * @param {Date} afterDate
-   * @param {numer} amount
+   * @param {number} daysCount Number of days to generate
+   * @param {Date} afterDate Date after which to start generating
+   * @param {number} amount Amount value for each day
    * @returns {void}
    */
   const generateMissingDays = (daysCount, afterDate, amount) => {
@@ -23,7 +32,7 @@ export const generateDailyData = (dailyData, addValue) => {
     }
   };
 
-  dailyData.reduce((/** @type {{date: Date, amount: number}} */ aggregatedData, currentData) => {
+  const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
     const currentDate = currentData.date;
     let amount = currentData.amount;
 
@@ -43,9 +52,17 @@ export const generateDailyData = (dailyData, addValue) => {
     // Return last aggregated data
     return {
       date: currentDate,
-      amount: amount,
+      amount,
     };
   }, null);
+
+  if (lastAggregatedData) {
+    // Adding missing days until today
+    const daysDiff = moment().diff(moment(lastAggregatedData.date), "days");
+    if (daysDiff > 1) {
+      generateMissingDays(daysDiff - 1, lastAggregatedData.date, lastAggregatedData.amount);
+    }
+  }
 
   return res;
 };
