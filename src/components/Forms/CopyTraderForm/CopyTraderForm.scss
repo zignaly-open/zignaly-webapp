@@ -1,23 +1,28 @@
 .copyTraderForm {
   min-height: 300px;
   overflow-y: scroll;
-  padding: 40px;
+  padding: 0 40px 30px 40px;
 
   .alert {
-    margin-bottom: 10px;
-    padding: 0;
+    margin-bottom: 20px;
+    margin-top: 10px;
 
     div {
       padding: 0;
     }
   }
 
-  h3 {
+  .formTitle {
     font-weight: 500;
     margin-bottom: 20px;
+    margin-top: 20px;
     max-width: 80%;
     text-align: center;
     text-transform: initial;
+
+    &.noMargin {
+      margin-top: 0px;
+    }
   }
 
   h4 {
@@ -97,7 +102,7 @@
 
 @include media("<=sm") {
   .copyTraderForm {
-    padding: 40px 15px;
+    padding: 20px 15px 30px 15px;
 
     h3 {
       width: 100%;

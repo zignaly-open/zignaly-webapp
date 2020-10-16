@@ -265,7 +265,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <Typography variant="body1">{alert}</Typography>
           </Alert>
         )}
-        <Typography variant="h3">
+        <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
           <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
         </Typography>
         <Typography className="para" variant="body1">
