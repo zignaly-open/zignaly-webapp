@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getDisplayName } from "../../utils";
-import { Box, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden, useMediaQuery } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
@@ -16,6 +16,8 @@ import { showCreateProvider, showCreateTrader } from "../../store/actions/ui";
 import useStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
 import { useDispatch } from "react-redux";
 import "./ProvidersLayout.scss";
+import { useTheme } from "@material-ui/core/styles";
+import ServiceIcon from "../../images/offerServiceIcon.svg";
 
 /**
  * HOC wrap component with copy traders layout.
@@ -44,6 +46,8 @@ const withProvidersLayout = (Component) => {
     const [modifiedFiltersCount, setModifiedFiltersCount] = useState(0);
     const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const dispatch = useDispatch();
     const toggleFilters = () => {
       setShowFilters(!showFilters);
@@ -51,6 +55,13 @@ const withProvidersLayout = (Component) => {
 
     const toggleSort = () => {
       setShowSort(!showSort);
+    };
+
+    const createButtonText = () => {
+      if (isMobile) {
+        return `${isCopyTrading ? "copyt" : "signalp"}.become.mobile`;
+      }
+      return `${isCopyTrading ? "copyt" : "signalp"}.become`;
     };
 
     const filters = (
@@ -79,8 +90,9 @@ const withProvidersLayout = (Component) => {
             }
           >
             <Typography variant="body1">
-              <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+              <FormattedMessage id={createButtonText()} />
             </Typography>
+            <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
           </CustomButton>
         </Hidden>
         <Box

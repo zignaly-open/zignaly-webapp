@@ -4,8 +4,12 @@
   padding: 40px;
 
   .alert {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 0;
+
+    div {
+      padding: 0;
+    }
   }
 
   h3 {
