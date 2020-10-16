@@ -204,7 +204,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
     };
 
     const validateAlreadyAllocated = () => {
-      if (added >= alreadyAllocated && added >= needed) {
+      if (added >= alreadyAllocated) {
         return true;
       }
       setError("allocatedBalance", {
