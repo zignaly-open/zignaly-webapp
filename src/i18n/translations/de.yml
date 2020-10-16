@@ -338,7 +338,7 @@ trader.moreinfo: "Be aware that at the moment that you connect to this service t
 trader.profitaction: "Choose what you want to do with profits."
 trader.reinvest: "REINVEST"
 trader.withdraw: "WITHDRAW"
-trader.ack: "Acknowledge about locked balance."
+trader.ack.placeholder: "Locked"
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
 graph.others: "Andere"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
