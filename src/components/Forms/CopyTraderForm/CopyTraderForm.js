@@ -43,19 +43,6 @@ const CopyTraderForm = ({ provider, onClose }) => {
   const intl = useIntl();
   const { balance } = useAvailableBalance();
 
-  // /**
-  //  *
-  //  * @param {React.ChangeEvent<*>} e Change event.
-  //  * @returns {Void} None.
-  //  */
-  // const handleAllocatedChange = (e) => {
-  //   let data = e.target.value;
-  //   if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
-  //     data = data.replace(",", ".");
-  //     setAllocated(data);
-  //   }
-  // };
-
   /**
    *
    * @param {String} val Change event.
@@ -69,6 +56,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    *
    * @typedef {Object} SubmitObject
    * @property {String} allocatedBalance
+   * @property {String} locked
    */
 
   /**
@@ -77,44 +65,48 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (
-      validateExchange() &&
-      validateAllocated(data.allocatedBalance) &&
-      validateBalance(data.allocatedBalance)
-    ) {
-      setActionLoading(true);
-      const payload = {
-        allocatedBalance: data.allocatedBalance,
-        balanceFilter: true,
-        connected: provider.connected ? provider.connected : false,
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-        exchangeInternalId: storeSettings.selectedExchange.internalId,
-        ...(provider.profitSharing && {
-          profitsMode: profitsMode,
-        }),
-      };
-      tradeApi
-        .traderConnect(payload)
-        .then((response) => {
-          if (response) {
-            const payload2 = {
-              token: storeSession.tradeApi.accessToken,
-              providerId: provider.id,
-              version: 2,
-            };
-            dispatch(setProvider(payload2));
-            userPilotProviderEnabled();
-            dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
-            onClose();
-          }
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setActionLoading(false);
-        });
+    if (data.locked.toLowerCase() === "locked") {
+      if (
+        validateExchange() &&
+        validateAllocated(data.allocatedBalance) &&
+        validateBalance(data.allocatedBalance)
+      ) {
+        setActionLoading(true);
+        const payload = {
+          allocatedBalance: data.allocatedBalance,
+          balanceFilter: true,
+          connected: provider.connected ? provider.connected : false,
+          token: storeSession.tradeApi.accessToken,
+          providerId: provider.id,
+          exchangeInternalId: storeSettings.selectedExchange.internalId,
+          ...(provider.profitSharing && {
+            profitsMode: profitsMode,
+          }),
+        };
+        tradeApi
+          .traderConnect(payload)
+          .then((response) => {
+            if (response) {
+              const payload2 = {
+                token: storeSession.tradeApi.accessToken,
+                providerId: provider.id,
+                version: 2,
+              };
+              dispatch(setProvider(payload2));
+              userPilotProviderEnabled();
+              dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
+              onClose();
+            }
+          })
+          .catch((e) => {
+            dispatch(showErrorAlert(e));
+          })
+          .finally(() => {
+            setActionLoading(false);
+          });
+      }
+    } else {
+      setError("locked", { type: "patter", message: "" });
     }
   };
 
@@ -273,7 +265,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
             <Typography variant="body1">{alert}</Typography>
           </Alert>
         )}
-        <Typography variant="h3">
+        <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
           <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
         </Typography>
         <Typography className="para" variant="body1">
@@ -363,9 +355,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               </span>
             </Box>
 
-            <label
-              className={"customLabel " + (errors.acknowledgeLockedBalance ? "errorText" : "")}
-            >
+            <label className={"customLabel " + (errors.locked ? "errorText" : "")}>
               <FormattedMessage id="trader.copy.confirm" />
             </label>
 
@@ -379,18 +369,18 @@ const CopyTraderForm = ({ provider, onClose }) => {
               <Controller
                 control={control}
                 defaultValue=""
-                name="acknowledgeLockedBalance"
+                name="locked"
                 render={(props) => (
                   <TextField
                     className="customTextarea"
-                    error={!!errors.acknowledgeLockedBalance}
+                    error={!!errors.locked}
                     fullWidth
                     multiline
-                    name="acknowledgeLockedBalance"
                     onChange={(e) => {
                       let value = e.target.value;
                       props.onChange(value);
                     }}
+                    placeholder={intl.formatMessage({ id: "trader.ack.placeholder" })}
                     rows={2}
                     variant="outlined"
                   />
