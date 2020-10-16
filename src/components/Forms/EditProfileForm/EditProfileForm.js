@@ -400,6 +400,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             </Box>
             {!provider.isCopyTrading && (
               <Box className="optionsBox" display="flex" flexDirection="column">
+                <Typography variant="h3">
+                  <FormattedMessage id="signalp.useroption.title" />
+                </Typography>
                 {userOptions.map((o) => (
                   <Box
                     alignItems="center"

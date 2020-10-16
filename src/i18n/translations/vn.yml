@@ -350,6 +350,7 @@ trader.ack.placeholder: "Locked"
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
 graph.others: "Khác"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
+signalp.useroption.title: "User Available Options in Profile Tab"
 copyt.title: "COPY-TRADERS"
 copyt.subtitle: "Sao chép các nhà giao dịch có kinh nghiệm với các loại tiền tệ mà bạn sở hữu."
 copyt.allocated: "phân bổ số dư của nhà giao dịch"
