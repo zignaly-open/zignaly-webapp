@@ -14,3 +14,19 @@
     width: 40%;
   }
 }
+
+@include media("<=sm") {
+  .profitSharingAnalytics {
+    .chartTableBox {
+      flex-direction: column;
+
+      > div {
+        width: 100%;
+      }
+    }
+
+    .profitSharingTable {
+      padding: 20px 0;
+    }
+  }
+}
