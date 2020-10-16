@@ -440,6 +440,12 @@ trader.withdraw: "WITHDRAW"
 trader.ack.placeholder: "Locked"
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
 
+profitsharing.currentAllocated: "Current Allocated"
+profitsharing.accounting: "Accounting"
+profitsharing.initAllocated: "Initial Allocated"
+profitsharing.retain: "Retain"
+profitsharing.watermark: "Watermark"
+
 graph.others: "Others"
 
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS

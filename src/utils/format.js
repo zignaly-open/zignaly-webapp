@@ -160,7 +160,7 @@ export const formatDuration = (time) => {
 /**
  * Format unixtime date with given Moment format rule.
  *
- * @param {Number} date Unix time.
+ * @param {Number|Date} date Unix time.
  * @param {String} [format] Moment format rule.
  *
  * @returns {String} Formatted date.

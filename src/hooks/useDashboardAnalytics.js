@@ -14,17 +14,19 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
- * @typedef {import("../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
+ * @typedef {import("../services/tradeApiClient.types").ProfitStatsObject} ProfitStatsObject
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("../store/initialState").Filters} Filters
+ * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  */
 
 /**
  * @typedef {Object} ProviderStatsData
- * @property {Array<ProfileStatsObject>} stats
+ * @property {Array<ProfitStatsObject>} stats
  * @property {Array<OptionType>} timeFrames
  * @property {Array<string>} quotes
- * @property {Array<OptionType>} providers
+ * @property {Array<OptionType>} providersOptions
+ * @property {ProvidersCollection} providers
  * @property {function} clearFilters
  * @property {function} setFilters
  * @property {Boolean} loading
@@ -50,17 +52,17 @@ const useDashboardAnalytics = () => {
   const allQuotes = Object.keys(quoteAssets);
   const [providerQuotes, setProviderQuotes] = useState([]);
 
-  let providerAssets = useHasBeenUsedProviders();
-  let providers = providerAssets.map((item) => ({
+  let providers = useHasBeenUsedProviders();
+  let providersOptions = providers.map((item) => ({
     val: item.id,
     label: item.name,
   }));
 
-  providers.unshift({
+  providersOptions.unshift({
     val: "1",
     label: intl.formatMessage({ id: "fil.manual" }),
   });
-  providers.unshift({
+  providersOptions.unshift({
     val: "all",
     label: intl.formatMessage({ id: "fil.providers.all" }),
   });
@@ -70,13 +72,13 @@ const useDashboardAnalytics = () => {
   const defaultFilters = {
     timeFrame: "7",
     quote: "USDT",
-    provider: providers[0],
+    provider: providersOptions[0],
   };
 
   const optionsFilters = {
     timeFrame: timeFrames,
     quote: allQuotes,
-    provider: providers,
+    provider: providersOptions,
   };
 
   const res = useFilters(defaultFilters, storeFilters, optionsFilters, page);
@@ -89,7 +91,7 @@ const useDashboardAnalytics = () => {
 
   const adjustProviderQuotes = () => {
     if (filters.provider.val !== "1" && filters.provider.val !== "all") {
-      const provider = providerAssets.find((item) => item.id === filters.provider.val);
+      const provider = providers.find((item) => item.id === filters.provider.val);
       if (provider && provider.quote) {
         setProviderQuotes([provider.quote]);
         setFilters({ quote: provider.quote });
@@ -121,7 +123,7 @@ const useDashboardAnalytics = () => {
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
     tradeApi
-      .profileStatsGet(payload)
+      .profitStatsGet(payload)
       .then((responseData) => {
         setStats(responseData);
       })
@@ -146,6 +148,7 @@ const useDashboardAnalytics = () => {
     stats,
     timeFrames,
     quotes: providerQuotes.length ? providerQuotes : allQuotes,
+    providersOptions,
     providers,
     clearFilters,
     loading,
