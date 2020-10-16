@@ -42,7 +42,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
   );
   const [balanceHistoryLoading, setBalanceHistoryLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
-  const color = "green";
 
   const dispatch = useDispatch();
 
@@ -119,7 +118,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
               <>
                 <EquityPart
                   name="profitsharing.initAllocated"
-                  //   info={<div>= USDT {formatFloat(balance.totalFreeUSDT)}</div>}
                   value={
                     <>
                       {balanceHistory.quote} {formatFloat(balanceHistory.initBalance)}
@@ -153,14 +151,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
                 <span className="operator">|</span>
                 <EquityPart
                   name="profitsharing.watermark"
-                  //   info={
-                  //     <>
-                  //       <Typography variant="h4">
-                  //         <FormattedMessage id="balance.total" />
-                  //       </Typography>
-                  //       <Typography className="smallText number3">= USDT {formatFloat(10)}</Typography>
-                  //     </>
-                  //   }
                   value={
                     <>
                       {balanceHistory.quote} {formatFloat(balanceHistory.watermark)}

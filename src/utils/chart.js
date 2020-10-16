@@ -9,7 +9,7 @@ import moment from "moment";
  * Function to generate a new array that contains daily amount data.
  *
  * @param {Array<DailyData>} dailyData Array of daily amount data.
- * @param {function} addValue Callback to format the new aggregated value
+ * @param {function(Date, number): *} addValue Callback to format the new aggregated value
  * @returns {Array<*>} Result
  */
 export const generateDailyData = (dailyData, addValue) => {
@@ -28,7 +28,7 @@ export const generateDailyData = (dailyData, addValue) => {
   const generateMissingDays = (daysCount, afterDate, amount) => {
     for (let i = 0; i < daysCount; i++) {
       const date = moment(afterDate).add(i + 1, "d");
-      res.push(addValue(date, amount));
+      res.push(addValue(date.toDate(), amount));
     }
   };
 
