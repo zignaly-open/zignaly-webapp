@@ -6,7 +6,6 @@ import EquityGraphLabels from "../../../Balance/TotalEquity//GraphLabels";
 import { formatFloat, formatDate } from "../../../../utils/format";
 import { generateDailyData } from "../../../../utils/chart";
 import { FormattedMessage } from "react-intl";
-import moment from "moment";
 import "./ProfitSharingEquityChart.scss";
 
 /**
@@ -60,9 +59,12 @@ const ProfitSharingEquityChart = ({ currentBalance, data }) => {
           </Typography>
           <Typography className="number2">USDT {formatFloat(currentBalance)}</Typography>
         </div>
-        <EquityFilter list={tableData} onChange={(d) => setTableData(d)} />
+        <EquityFilter
+          list={tableData}
+          onChange={(/** @type {typeof tableData} */ d) => setTableData(d)}
+        />
       </Box>
-      <Box width={1} className="chartBox">
+      <Box className="chartBox" width={1}>
         <TotalEquityGraph list={tableData} modal={false} />
         <EquityGraphLabels list={tableData} />
       </Box>

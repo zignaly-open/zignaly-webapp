@@ -4,12 +4,11 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { FormattedMessage } from "react-intl";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
-import { formatFloat, FormatedDateTime } from "../../../utils/format";
+import { formatFloat } from "../../../utils/format";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
@@ -31,9 +30,6 @@ import "./ProfitSharingAnalytics.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingAnalytics = ({ provider }) => {
-  provider = {
-    id: "5f88702f2db6ce48270111c3",
-  };
   const storeSession = useStoreSessionSelector();
   const [performance, setPerformance] = useState(null);
   const [performanceLoading, setPerformanceLoading] = useState(false);
@@ -90,11 +86,11 @@ const ProfitSharingAnalytics = ({ provider }) => {
 
   return (
     <Box
+      alignItems="center"
       className="profitSharingAnalytics"
       display="flex"
-      justifyContent="center"
-      alignItems="center"
       flexDirection="column"
+      justifyContent="center"
     >
       {performanceLoading ? (
         <CircularProgress color="primary" size={50} />
@@ -103,10 +99,10 @@ const ProfitSharingAnalytics = ({ provider }) => {
       )}
       {balanceHistoryLoading ? (
         <Box
-          display="flex"
-          justifyContent="center"
           alignItems="center"
+          display="flex"
           flexDirection="column"
+          justifyContent="center"
           mt="50px"
         >
           <CircularProgress color="primary" size={50} />
@@ -160,7 +156,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
               </>
             </TotalEquityBar>
 
-            <Box display="flex" width={1} className="chartTableBox">
+            <Box className="chartTableBox" display="flex" width={1}>
               <ProfitSharingEquityChart
                 currentBalance={balanceHistory.currentBalance}
                 data={balanceHistory.entries}

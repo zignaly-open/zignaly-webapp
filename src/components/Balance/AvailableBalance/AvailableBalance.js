@@ -29,7 +29,6 @@ const AvailableBalance = ({ balance }) => {
         {balance && (
           <>
             <EquityPart
-              name="balance.available"
               info={
                 <div>
                   = USDT{" "}
@@ -40,6 +39,7 @@ const AvailableBalance = ({ balance }) => {
                   )}
                 </div>
               }
+              name="balance.available"
               value={
                 <>
                   BTC{" "}
@@ -53,8 +53,8 @@ const AvailableBalance = ({ balance }) => {
             />
             <span className="operator">+</span>
             <EquityPart
-              name="balance.invested"
               info={<>= USDT {formatFloat(balance.totalLockedUSDT)}</>}
+              name="balance.invested"
               value={
                 <>
                   BTC {formatFloat(balance.totalLockedBTC)}
@@ -69,8 +69,8 @@ const AvailableBalance = ({ balance }) => {
             />
             <span className="operator">+</span>
             <EquityPart
-              name="balance.profit"
               info={<>= USDT {formatFloat(balance.pnlUSDT)}</>}
+              name="balance.profit"
               value={
                 <>
                   <Typography className={`number1 ${color}`}>
@@ -87,7 +87,6 @@ const AvailableBalance = ({ balance }) => {
             />
             <span className="operator">=</span>
             <EquityPart
-              name="balance.available"
               info={
                 <>
                   <Typography variant="h4">
@@ -103,6 +102,7 @@ const AvailableBalance = ({ balance }) => {
                   </Typography>
                 </>
               }
+              name="balance.available"
               value={
                 <>
                   BTC{" "}

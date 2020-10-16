@@ -1,7 +1,7 @@
 import React from "react";
 import Table from "../../../Table";
 import { FormattedMessage } from "react-intl";
-import { formatFloat, FormatedDateTime } from "../../../../utils/format";
+import { FormatedDateTime } from "../../../../utils/format";
 import { capitalize } from "lodash";
 
 /**
