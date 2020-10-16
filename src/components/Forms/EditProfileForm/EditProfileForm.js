@@ -406,7 +406,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 {userOptions.map((o) => (
                   <Box
                     alignItems="center"
-                    className="inputBox"
+                    className="optionsFieldbox"
                     display="flex"
                     flexDirection="row"
                     justifyContent="flex-start"
@@ -421,6 +421,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                       render={({ onChange, onBlur, value }) => (
                         <Checkbox
                           checked={value}
+                          className="checkbox"
                           onBlur={onBlur}
                           onChange={(e) => onChange(e.target.checked)}
                         />
