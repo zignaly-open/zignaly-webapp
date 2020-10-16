@@ -4,12 +4,15 @@ import TotalEquityGraph from "../../../Balance/TotalEquity/TotalEquityGraph";
 import TitleBar from "../../../Balance/TotalEquity//TitleBar";
 import EquityFilter from "../../../Balance/TotalEquity//EquityFilter";
 import EquityGraphLabels from "../../../Balance/TotalEquity//GraphLabels";
-import { formatFloat } from "../../../../utils/format";
+import { formatFloat, formatDate } from "../../../../utils/format";
+import { generateDays } from "../../../../utils/chart";
 import { FormattedMessage } from "react-intl";
+import moment from "moment";
 import "./ProfitSharingEquityChart.scss";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
+ * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
  */
 
 /**
@@ -25,19 +28,50 @@ import "./ProfitSharingEquityChart.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingEquityChart = ({ currentBalance, data }) => {
-  const tableDataAll = [];
+  /** @type {Array<UserEquityEntity>} */
+  const dailyBalance = [];
+
+  generateDays();
   data
     .sort((a, b) => a.date - b.date)
-    .reduce((totalBalance, entry) => {
-      const newTotalBalance = parseFloat(totalBalance) + parseFloat(entry.amount);
-      tableDataAll.push({
-        date: entry.date,
-        totalUSDT: newTotalBalance,
+    .reduce((/** @type {{date: string, amount: number}} */ lastData, entry) => {
+      const entryDate = formatDate(entry.date, "YYYY/MM/DD");
+      let totalUSDT;
+
+      if (lastData) {
+        console.log(lastData, entry);
+        if (lastData.date === entryDate) {
+          console.log("1");
+          // Still same date, updating daily amount total
+          totalUSDT = lastData.amount + entry.amount;
+        } else {
+          console.log("2");
+
+          const nextDate = moment(lastData.date).add("1d").format("YYYY/MM/DD");
+          if (nextDate !== entryDate) {
+            // Day with no data so keeping the same amount as previous one
+            totalUSDT = lastData.amount;
+          } else {
+          }
+        }
+      } else {
+        // Init first day with entry amount
+        totalUSDT = entry.amount;
+      }
+
+      // Update daily balance
+      dailyBalance.push({
+        date: entryDate,
+        totalUSDT,
       });
-      return newTotalBalance;
-    }, 0);
-  const [tableData, setTableData] = useState(tableDataAll);
-  console.log(tableDataAll);
+
+      // Return last aggregated data
+      return {
+        date: entryDate,
+        amount: totalUSDT,
+      };
+    }, null);
+  const [tableData, setTableData] = useState(dailyBalance);
 
   return (
     <Box
