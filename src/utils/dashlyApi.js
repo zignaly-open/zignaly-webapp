@@ -22,7 +22,9 @@ const dashlyApi = () => {
   if (typeof window !== "undefined" && window.dashly) {
     // @ts-ignore
     dashly = window.dashly;
+    dashly.connect("2894-173f0edb1738610ede1cd7296e4");
   }
+  console.log(dashly);
 
   return { dashly: dashly };
 };
