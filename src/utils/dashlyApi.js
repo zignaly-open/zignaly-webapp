@@ -24,8 +24,6 @@ const dashlyApi = () => {
     dashly = window.dashly;
     dashly.connect("2894-173f0edb1738610ede1cd7296e4");
   }
-  // @ts-ignore
-  console.log(dashly);
 
   return { dashly: dashly };
 };
