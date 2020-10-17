@@ -12,10 +12,17 @@ window.zESettings = {
   },
 };
 
-var script = document.createElement("script");
+let script = document.createElement("script");
 script.type = "text/javascript";
 script.src = "https://static.zdassets.com/ekr/snippet.js?key=374628c3-7648-4afb-96c4-c13bc6408a8f";
 script.id = "ze-snippet";
 script.async = true;
 script.defer = true;
 document.getElementsByTagName("head")[0].appendChild(script);
+
+let script2 = document.createElement("script");
+script2.type = "text/javascript";
+script2.src = "https://cdn.dashly.app/api.min.js";
+script2.id = "dashly";
+script2.async = true;
+document.getElementsByTagName("head")[0].appendChild(script2);
