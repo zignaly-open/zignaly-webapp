@@ -18,6 +18,6 @@
     "pretty": true,
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "types/global.d.ts", "public/widgets/dashly.js"],
+  "include": ["./src/**/*", "types/global.d.ts", "static/widgets/dashly.js"],
   "typeRoots": ["./src/types", "./node_modules/@types"]
 }
