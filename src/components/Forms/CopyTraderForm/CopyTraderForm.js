@@ -65,7 +65,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (data.locked.toLowerCase() === "locked") {
+    if (!data.locked || data.locked.toLowerCase() === "locked") {
       if (
         validateExchange() &&
         validateAllocated(data.allocatedBalance) &&
