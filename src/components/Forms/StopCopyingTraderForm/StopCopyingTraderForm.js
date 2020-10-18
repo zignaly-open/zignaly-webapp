@@ -3,12 +3,17 @@ import "./StopCopyingTraderForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
+import tradeApi from "../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { setProvider } from "../../../store/actions/views";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
+import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
- * @property {Function} onSuccess
  * @property {DefaultProviderGetObject} provider
  */
 
@@ -17,24 +22,74 @@ import CustomButton from "../../CustomButton";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
-  const [disconnectMode, setDisconnectMode] = useState(1);
+const StopCopyingTraderForm = ({ onClose, provider }) => {
+  const storeSession = useStoreSessionSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
+  const [disconnectType, setDisconnectType] = useState("soft");
+  const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
+
+  const stopCopying = () => {
+    setLoader(true);
+    const getProviderPayload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      version: 2,
+    };
+
+    if (!provider.profitSharing) {
+      const disablePayload = {
+        disable: true,
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        type: "connected",
+      };
+      tradeApi
+        .providerDisable(disablePayload)
+        .then(() => {
+          dispatch(setProvider(getProviderPayload));
+          dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoader(false);
+          handleClose();
+        });
+    } else {
+      const disconnectPayload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        internalExchnageId: selectedExchange.internalId,
+        disconnectType,
+      };
+      tradeApi
+        .providerDisable(disconnectPayload)
+        .then(() => {
+          dispatch(setProvider(getProviderPayload));
+          dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoader(false);
+          handleClose();
+        });
+    }
+  };
 
   /**
    *
-   * @param {number} val Change event.
+   * @param {string} val Change event.
    * @returns {Void} None.
    */
   const handleShareingModeChange = (val) => {
-    setDisconnectMode(val);
+    setDisconnectType(val);
   };
 
   const handleClose = () => {
-    onClose();
-  };
-
-  const handleSuccess = () => {
-    onSuccess();
     onClose();
   };
 
@@ -67,24 +122,24 @@ const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
         <Box className="labeledInputsBox" display="flex" flexDirection="column">
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <span
-              className={"button " + (disconnectMode === 1 ? "checked" : "")}
+              className={"button " + (disconnectType === "soft" ? "checked" : "")}
               onClick={() => handleShareingModeChange(1)}
             >
               <FormattedMessage id="trader.softdisconnect" />
             </span>
             <span
-              className={"button " + (disconnectMode === 2 ? "checked" : "")}
+              className={"button " + (disconnectType === "hard" ? "checked" : "")}
               onClick={() => handleShareingModeChange(2)}
             >
               <FormattedMessage id="trader.harddisconnect" />
             </span>
           </Box>
-          {disconnectMode === 1 && (
+          {disconnectType === "soft" && (
             <span className="info">
               <FormattedMessage id="trader.softdisconnect.tooltip" />
             </span>
           )}
-          {disconnectMode === 2 && (
+          {disconnectType === "hard" && (
             <span className="info">
               <FormattedMessage id="trader.harddisconnect.tooltip" />
             </span>
@@ -97,7 +152,7 @@ const StopCopyingTraderForm = ({ onClose, onSuccess, provider }) => {
           <FormattedMessage id="confirm.cancel" />
         </CustomButton>
 
-        <CustomButton className="textPurple" onClick={handleSuccess}>
+        <CustomButton className="textPurple" loading={loader} onClick={stopCopying}>
           <FormattedMessage id="confirm.accept" />
         </CustomButton>
       </Box>

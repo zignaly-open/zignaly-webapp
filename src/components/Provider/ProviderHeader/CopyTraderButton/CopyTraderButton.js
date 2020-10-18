@@ -5,14 +5,9 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
-import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import { useDispatch } from "react-redux";
-import { setProvider } from "../../../../store/actions/views";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
-import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 
@@ -27,53 +22,17 @@ import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
-  const dispatch = useDispatch();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
-  const [stopCopyLoader, setStopCopyLoader] = useState(false);
-
-  // const confirmAction = () => {
-  //   setConfirmConfig({
-  //     titleTranslationId: "confirm.copyt.unfollow.title",
-  //     messageTranslationId: "confirm.copyt.unfollow.message",
-  //     visible: true,
-  //   });
-  // };
 
   const startCopying = () => {
     if (exchangeConnections.length) {
       showCopyModal(true);
     } else {
       showConnectModal(true);
-    }
-  };
-
-  const stopCopying = async () => {
-    try {
-      setStopCopyLoader(true);
-      const payload = {
-        disable: true,
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-        type: "connected",
-      };
-      const response = await tradeApi.providerDisable(payload);
-      if (response) {
-        const payload2 = {
-          token: storeSession.tradeApi.accessToken,
-          providerId: provider.id,
-          version: 2,
-        };
-        dispatch(setProvider(payload2));
-        dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
-        setStopCopyLoader(false);
-      }
-    } catch (e) {
-      dispatch(showErrorAlert(e));
     }
   };
 
@@ -107,11 +66,7 @@ const CopyTraderButton = ({ provider }) => {
         </CustomButton>
       ) : !followingFrom ||
         provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
-        <CustomButton
-          className="loadMoreButton"
-          loading={stopCopyLoader}
-          onClick={() => showStopCopyingModal(true)}
-        >
+        <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
       ) : (
@@ -138,11 +93,7 @@ const CopyTraderButton = ({ provider }) => {
         size="small"
         state={stopCopyingModal}
       >
-        <StopCopyingTraderForm
-          onClose={handleStopCopyingModalClose}
-          onSuccess={stopCopying}
-          provider={provider}
-        />
+        <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
