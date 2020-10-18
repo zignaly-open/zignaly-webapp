@@ -1207,6 +1207,7 @@ alert.management.exitall.body: "Your request to exit these positions has been su
 signalp.disclaimer: "Haftungsausschluss URL"
 signalp.general: "Allgemeines"
 signalp.useroption.title: "User Available Options in Profile Tab"
+signalp.useroption.subtitle: "Check options to make them visible in Profile tab"
 signalp.useroption.disclaimer: "Disclaimer"
 signalp.useroption.disclaimer.help: "Ask user to accept the Disclimer."
 signalp.useroption.stopLossFromSignal.help: "Ermöglichen Sie dem Benutzer, den Stop-Loss der Signale zu akzeptieren oder nicht."

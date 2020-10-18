@@ -403,6 +403,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 <Typography variant="h3">
                   <FormattedMessage id="signalp.useroption.title" />
                 </Typography>
+                <Typography className="optionsSubtitle" variant="body1">
+                  <FormattedMessage id="signalp.useroption.subtitle" />
+                </Typography>
                 {userOptions.map((o) => (
                   <Box
                     alignItems="center"
