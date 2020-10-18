@@ -80,15 +80,6 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
     }
   };
 
-  /**
-   *
-   * @param {string} val Change event.
-   * @returns {Void} None.
-   */
-  const handleShareingModeChange = (val) => {
-    setDisconnectType(val);
-  };
-
   const handleClose = () => {
     onClose();
   };
@@ -123,16 +114,16 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <span
               className={"button " + (disconnectType === "soft" ? "checked" : "")}
-              onClick={() => handleShareingModeChange(1)}
+              onClick={() => setDisconnectType("soft")}
             >
               <FormattedMessage id="trader.softdisconnect" />
             </span>
-            <span
+            {/* <span
               className={"button " + (disconnectType === "hard" ? "checked" : "")}
-              onClick={() => handleShareingModeChange(2)}
+              onClick={() => setDisconnectType("hard")}
             >
               <FormattedMessage id="trader.harddisconnect" />
-            </span>
+            </span> */}
           </Box>
           {disconnectType === "soft" && (
             <span className="info">
