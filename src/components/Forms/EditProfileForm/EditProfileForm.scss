@@ -122,7 +122,12 @@
   }
 
   .optionsBox {
+    .checkbox {
+      padding: 5px;
+    }
+
     .customLabel {
+      margin-bottom: 0;
       margin-left: 10px;
     }
 

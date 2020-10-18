@@ -40,7 +40,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   };
 
   /**
-   *
+   * Filter providers that have been used for the selected exchange.
    * @param {ProvidersCollection} response Providers Collection.
    * @returns {Void} None.
    */

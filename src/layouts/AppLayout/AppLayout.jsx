@@ -31,8 +31,7 @@ const AppLayout = (props) => {
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
-  useScript(withPrefix("widgets/customerSupportWidget.js"));
-  useScript(withPrefix("widgets/dashly.js"));
+  useScript(withPrefix("widgets/externalWidgets.js"));
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");

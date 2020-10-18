@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@material-ui/core";
 import TabsMenu from "../../TabsMenu";
-import { PositionsTabContent } from "./";
 import "./PositionsTabs.scss";
 import { navigate as navigateReach } from "@reach/router";
-import { FormattedMessage } from "react-intl";
+import { useIntl } from "react-intl";
+import PositionsConext from "../PositionsContext";
+import PositionsTable from "../PositionsTable";
 
 /**
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
@@ -19,21 +20,8 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} JSX component.
  */
 const PositionsTabs = ({ isProfile }) => {
-  const tabsList = [
-    {
-      display: true,
-      label: <FormattedMessage id="dashboard.positions.open" />,
-    },
-    {
-      display: true,
-      label: <FormattedMessage id="dashboard.positions.closed" />,
-    },
-    {
-      display: !isProfile,
-      label: <FormattedMessage id="dashboard.positions.log" />,
-    },
-  ];
-
+  const intl = useIntl();
+  const { openCount, closeCount, logCount } = useContext(PositionsConext);
   /**
    * Map tab index to positions collection type.
    *
@@ -89,10 +77,11 @@ const PositionsTabs = ({ isProfile }) => {
   /**
    * Map tab index to positions collection type.
    *
+   * @param {number} value Active tab.
    * @returns {PositionsCollectionType} Collection type.
    */
-  const mapProfileIndexToCollectionType = () => {
-    switch (tabValue) {
+  const mapProfileIndexToCollectionType = (value) => {
+    switch (value) {
       case 1:
         return "profileClosed";
 
@@ -114,8 +103,29 @@ const PositionsTabs = ({ isProfile }) => {
     navigateReach(`#${newTabKey}`);
   };
 
+  const tabsList = [
+    {
+      display: true,
+      label: `${intl.formatMessage({ id: "dashboard.positions.open" })} ${
+        tabValue === 0 ? `(${openCount})` : ""
+      }`,
+    },
+    {
+      display: true,
+      label: `${intl.formatMessage({ id: "dashboard.positions.closed" })} ${
+        tabValue === 1 ? `(${closeCount}/24h)` : ""
+      }`,
+    },
+    {
+      display: !isProfile,
+      label: `${intl.formatMessage({ id: "dashboard.positions.log" })} ${
+        tabValue === 2 ? `(${logCount})` : ""
+      }`,
+    },
+  ];
+
   const selectedType = isProfile
-    ? mapProfileIndexToCollectionType()
+    ? mapProfileIndexToCollectionType(tabValue)
     : mapIndexToCollectionType(tabValue);
 
   return (
@@ -129,7 +139,9 @@ const PositionsTabs = ({ isProfile }) => {
       >
         <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
       </Box>
-      <PositionsTabContent isProfile={isProfile} type={selectedType} />
+      <Box className="tabPanel">
+        <PositionsTable isProfile={isProfile} type={selectedType} />
+      </Box>
     </Box>
   );
 };
