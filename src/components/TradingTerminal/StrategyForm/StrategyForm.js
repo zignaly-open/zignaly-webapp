@@ -353,6 +353,7 @@ const StrategyForm = (props) => {
     const isIncreaseUpdate = draftPosition.positionSize || draftPosition.positionSizePercentage;
     const positionStrategy = isIncreaseUpdate ? composePositionStrategy(draftPosition) : {};
 
+    console.log(draftPosition);
     return assign(
       {
         token: storeSession.tradeApi.accessToken,
@@ -360,7 +361,8 @@ const StrategyForm = (props) => {
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
         buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
-        takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
+        takeProfitTargets:
+          !draftPosition.reduceTargetPercentage && composePositionTakeProfitTargets(draftPosition),
         reBuyTargets: composePositionDcaTargets(draftPosition),
         trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
         trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
@@ -368,8 +370,8 @@ const StrategyForm = (props) => {
         providerName: "Manual Trading",
         internalExchangeId: positionEntity.internalExchangeId,
         positionId: positionEntity.positionId,
-        reduceTargetPercentage: draftPosition.reduceTargetPercentage,
-        reduceAvailablePercentage: draftPosition.reduceAvailablePercentage,
+        reduceTargetPercentage: parseFloat(draftPosition.reduceTargetPercentage),
+        reduceAvailablePercentage: parseFloat(draftPosition.reduceAvailablePercentage),
         reduceOrderType: draftPosition.reduceOrderType,
         reduceRecurring: draftPosition.reduceRecurring,
         reducePersistent: draftPosition.reducePersistent,

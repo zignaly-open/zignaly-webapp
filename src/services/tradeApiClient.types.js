@@ -2401,7 +2401,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
  * @property {String} description
- * @property {Boolean} disable True when not provider is not connected.
+ * @property {Boolean} disable True when provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
