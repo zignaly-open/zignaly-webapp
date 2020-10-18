@@ -353,7 +353,6 @@ const StrategyForm = (props) => {
     const isIncreaseUpdate = draftPosition.positionSize || draftPosition.positionSizePercentage;
     const positionStrategy = isIncreaseUpdate ? composePositionStrategy(draftPosition) : {};
 
-    console.log(draftPosition);
     return assign(
       {
         token: storeSession.tradeApi.accessToken,
