@@ -21,8 +21,8 @@ import ProviderStats from "./ProviderStats";
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
+
 /**
- * About us compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.

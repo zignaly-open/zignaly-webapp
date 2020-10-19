@@ -35,6 +35,7 @@ const Analytics = () => {
         quotes={quotes}
         setFilters={setFilters}
         timeFrames={timeFrames}
+        profitSharing={profitSharing}
       />
       {!profitSharing ? (
         <AnalyticsChart
