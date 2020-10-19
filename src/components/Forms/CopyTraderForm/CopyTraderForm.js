@@ -161,20 +161,24 @@ const CopyTraderForm = ({ provider, onClose }) => {
     const alreadyAllocated = provider.allocatedBalance;
     const neededQuote = provider.copyTradingQuote;
     const userBalance = balance[neededQuote] || 0;
-    const msg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
+    const noBalanceMsg = intl.formatMessage({ id: "copyt.copy.error3" }, { quote: neededQuote });
+    const noBalanceToIncreaseMsg = intl.formatMessage(
+      { id: "copyt.copy.error5" },
+      { quote: neededQuote },
+    );
 
     if (provider.disable) {
       if (userBalance >= added) {
         return true;
       }
-      setAlert(msg);
+      setAlert(noBalanceMsg);
       return false;
     }
 
     if (userBalance >= added - alreadyAllocated) {
       return true;
     }
-    setAlert(msg);
+    setAlert(noBalanceToIncreaseMsg);
     return false;
   };
 
