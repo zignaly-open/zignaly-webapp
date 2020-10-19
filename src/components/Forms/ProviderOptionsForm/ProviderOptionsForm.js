@@ -41,7 +41,7 @@ const ProviderOptionsForm = ({ provider }) => {
 
   useEffect(() => {
     // Check parent checkbox when at least one child checked
-    setValue("takeProfitsFromSignal", takeProfitFirst || takeProfitAll || takeProfitLast);
+    setValue("takeProfitsFromSignal", Boolean(takeProfitFirst || takeProfitAll || takeProfitLast));
   }, [takeProfitFirst, takeProfitLast, takeProfitAll]);
 
   useEffect(() => {
