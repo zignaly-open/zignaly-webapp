@@ -48,12 +48,10 @@ const IncreaseStrategyPanel = (props) => {
     validatePositionSize,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { balance, loading } = useAvailableBalance();
-  const { ownCopyTraderProviders, loading: loadingProviders } = useOwnCopyTraderProviders();
+  const { loading: loadingProviders } = useOwnCopyTraderProviders();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
-  const providerService = ownCopyTraderProviders.find(
-    (provider) => provider.providerId === positionEntity.providerId,
-  );
+  const providerService = watch("providerService");
   const isCopyProvider = providerService && providerService !== "1";
 
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
