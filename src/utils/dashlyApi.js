@@ -48,85 +48,48 @@ export const dashlyExchangeConnected = (exchangeType) => {
 
 /**
  * @param {UserEntity} userData User Entity.
+ * @param {'login'|'signup'} type Type of event to trigger .
  * @returns {void} None.
  */
-export const dashlyLogin = (userData) => {
+export const dashlyTrigger = (userData, type) => {
   const { dashly } = dashlyApi();
+  const eventToTrigger = type === "login" ? "$authorized" : "$registered";
 
   if (dashly) {
     // @ts-ignore
-    dashly.auth(userData.userId, userData.dashlyHash);
+    dashly.auth(`"${userData.userId}"`, `"${userData.dashlyHash}"`);
 
     // @ts-ignore
-    dashly.track("$authorized", {
-      $email: userData.email,
-      $name: userData.firstName,
-      subscribed: userData.subscribe,
-      created: userData.createdAt,
+    dashly.track(eventToTrigger, {
+      $email: `"${userData.email}"`,
+      $name: `"${userData.firstName}"`,
+      subscribed: `"${userData.subscribe}"`,
+      created: `"${userData.createdAt}"`,
     });
 
     // @ts-ignore
     dashly.onReady(() => {
       // @ts-ignore
       dashly.identify([
-        { op: "update_or_create", key: "$email", value: userData.email },
-        { op: "update_or_create", key: "$name", value: userData.firstName },
+        { op: "update_or_create", key: "$email", value: `"${userData.email}"` },
+        { op: "update_or_create", key: "$name", value: `"${userData.firstName}"` },
       ]);
 
       // @ts-ignore
       dashly.identify([
-        { op: "update_or_create", key: "ref", value: userData.ref },
-        { op: "update_or_create", key: "subscribed", value: userData.subscribe },
-        { op: "update_or_create", key: "created", value: userData.createdAt },
-        { op: "update_or_create", key: "2fa", value: userData.twoFAEnable },
-        { op: "update_or_create", key: "providers_enabled", value: userData.providerEnable },
-        { op: "update_or_create", key: "exchange_connected", value: userData.binanceConnected },
-        { op: "update_or_create", key: "buys_count", value: userData.buysCount },
-        { op: "update_or_create", key: "sells_count", value: userData.sellsCount },
-        { op: "update_or_create", key: "status", value: userData.status },
-      ]);
-    });
-  }
-};
-
-/**
- * @param {UserEntity} userData User Entity.
- * @returns {void} None.
- */
-export const dashlyRegister = (userData) => {
-  const { dashly } = dashlyApi();
-
-  if (dashly) {
-    // @ts-ignore
-    dashly.auth(userData.userId, userData.dashlyHash);
-
-    // @ts-ignore
-    dashly.track("$registered", {
-      $email: userData.email,
-      $name: userData.firstName,
-      subscribed: userData.subscribe,
-      created: userData.createdAt,
-    });
-
-    // @ts-ignore
-    dashly.onReady(() => {
-      // @ts-ignore
-      dashly.identify([
-        { op: "update_or_create", key: "$email", value: userData.email },
-        { op: "update_or_create", key: "$name", value: userData.firstName },
-      ]);
-
-      // @ts-ignore
-      dashly.identify([
-        { op: "update_or_create", key: "ref", value: userData.ref },
-        { op: "update_or_create", key: "subscribed", value: userData.subscribe },
-        { op: "update_or_create", key: "created", value: userData.createdAt },
-        { op: "update_or_create", key: "2fa", value: userData.twoFAEnable },
-        { op: "update_or_create", key: "providers_enabled", value: userData.providerEnable },
-        { op: "update_or_create", key: "exchange_connected", value: userData.binanceConnected },
-        { op: "update_or_create", key: "buys_count", value: userData.buysCount },
-        { op: "update_or_create", key: "sells_count", value: userData.sellsCount },
-        { op: "update_or_create", key: "status", value: userData.status },
+        { op: "update_or_create", key: "ref", value: `"${userData.ref}"` },
+        { op: "update_or_create", key: "subscribed", value: `"${userData.subscribe}"` },
+        { op: "update_or_create", key: "created", value: `"${userData.createdAt}"` },
+        { op: "update_or_create", key: "2fa", value: `"${userData.twoFAEnable}"` },
+        { op: "update_or_create", key: "providers_enabled", value: `"${userData.providerEnable}"` },
+        {
+          op: "update_or_create",
+          key: "exchange_connected",
+          value: `"${userData.binanceConnected}"`,
+        },
+        { op: "update_or_create", key: "buys_count", value: `"${userData.buysCount}"` },
+        { op: "update_or_create", key: "sells_count", value: `"${userData.sellsCount}"` },
+        { op: "update_or_create", key: "status", value: `"${userData.status}"` },
       ]);
     });
   }
