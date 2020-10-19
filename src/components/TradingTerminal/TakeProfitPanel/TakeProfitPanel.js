@@ -339,6 +339,12 @@ const TakeProfitPanel = (props) => {
   const entrySize = getEntrySize();
   useEffect(chainedUnitsUpdates, [expanded, strategyUnits, entrySize]);
 
+  // Automatically expand/collpase panel depending on position current tps amount.
+  const autoExpandCollapse = () => {
+    setExpanded(Boolean(positionTargetsCardinality));
+  };
+  useEffect(autoExpandCollapse, [positionTargetsCardinality]);
+
   /**
    * Compose dynamic target property errors.
    *
