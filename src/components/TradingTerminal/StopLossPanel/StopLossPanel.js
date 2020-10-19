@@ -153,13 +153,13 @@ const StopLossPanel = (props) => {
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (!stopLossPercentage) {
+    if (isNaN(stopLossPercentage)) {
       setValue("stopLossPercentage", sign);
-    } else if (!initialStopLossPercentage || stopLossPercentage === initialStopLossPercentage) {
-      const newValue = formatFloat2Dec(Math.abs(stopLossPercentage));
-      setValue("stopLossPercentage", `${sign}${newValue}`);
-      // Trigger stop price calculation
-      stopLossPercentageChange();
+    } else {
+      // When SL come from backend rely on the existing sign and value.
+      // Otherwise use the custom SL value and apply the sign corresponding to entry type.
+      const newValue = formatFloat2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
+      setValue("stopLossPercentage", formatFloat2Dec(newValue));
     }
   };
 
