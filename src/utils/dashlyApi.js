@@ -46,6 +46,15 @@ export const dashlyExchangeConnected = (exchangeType) => {
   }
 };
 
+export const dashlyProviderEnabled = () => {
+  const { dashly } = dashlyApi();
+
+  if (dashly) {
+    // @ts-ignore
+    dashly.track("Provider Enabled", {});
+  }
+};
+
 /**
  * Trigger login/signup events for dashly.
  *
