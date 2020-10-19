@@ -316,10 +316,10 @@ const CopyTraderForm = ({ provider, onClose }) => {
               rules={{ required: "Please enter a valid Amount!" }}
             />
             {provider.profitSharing && errors.allocatedBalance && (
-              <span className={"text errorText"}>{errors.allocatedBalance.message}</span>
+              <span className={"text red"}>{errors.allocatedBalance.message}</span>
             )}
             {!provider.profitSharing && (
-              <span className={"text " + (errors.allocatedBalance ? "errorText" : "")}>
+              <span className={"text " + (errors.allocatedBalance ? "red" : "")}>
                 <FormattedMessage
                   id="trader.amount.error"
                   values={{
@@ -357,7 +357,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               </span>
             </Box>
 
-            <label className={"customLabel " + (errors.locked ? "errorText" : "")}>
+            <label className={"customLabel " + (errors.locked ? "red" : "")}>
               <FormattedMessage id="trader.copy.confirm" />
             </label>
 
