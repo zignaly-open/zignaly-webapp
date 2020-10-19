@@ -131,6 +131,9 @@
     }
 
     .customLabel {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
       margin-bottom: 0;
       margin-left: 10px;
     }
