@@ -47,7 +47,6 @@ const SignalProviders = (props) => {
   useEffect(() => {
     const loadProvider = async () => {
       dispatch(unsetProvider());
-      dispatch(showProviderProfileLoader(true));
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,
