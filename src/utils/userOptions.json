@@ -1,12 +1,12 @@
 [
   {
     "id": "stopLossFromSignal",
-    "label": "signalp.settings.stoploss",
+    "label": "signalp.option.stoploss",
     "tooltip": "signalp.useroption.stopLossFromSignal.help"
   },
   {
     "id": "acceptUpdateSignal",
-    "label": "signalp.useroption.acceptUpdateSignal",
+    "label": "signalp.option.updates",
     "tooltip": "signalp.useroption.acceptUpdateSignal.help"
   },
   {
@@ -16,62 +16,62 @@
   },
   {
     "id": "enableSellSignals",
-    "label": "signalp.useroption.enableSellSignals",
+    "label": "signalp.option.exit",
     "tooltip": "signalp.useroption.enableSellSignals.help"
   },
   {
     "id": "useLeverageFromSignal",
-    "label": "terminal.leverage",
+    "label": "signalp.option.leverage",
     "tooltip": "signalp.useroption.useLeverageFromSignal.help"
   },
   {
     "id": "enablePanicSellSignals",
-    "label": "signalp.useroption.enablePanicSellSignals",
+    "label": "signalp.option.panicexit",
     "tooltip": "signalp.useroption.enablePanicSellSignals.help"
   },
   {
     "id": "allowSendingBuyOrdersAsMarket",
-    "label": "signalp.useroption.allowSendingBuyOrdersAsMarket",
+    "label": "signalp.option.buymarketorder",
     "tooltip": "signalp.useroption.allowSendingBuyOrdersAsMarket.help"
   },
   {
     "id": "reUseSignalIdIfClosed",
-    "label": "signalp.useroption.reUseSignalIdIfClosed",
+    "label": "signalp.option.reusingsignalID",
     "tooltip": "signalp.useroption.reUseSignalIdIfClosed.help"
   },
   {
     "id": "limitPriceFromSignal",
-    "label": "signalp.useroption.limitPriceFromSignal",
+    "label": "signalp.option.limitprice",
     "tooltip": "signalp.useroption.limitPriceFromSignal.help"
   },
   {
     "id": "reBuysFromSignal",
-    "label": "signalp.useroption.reBuysFromSignal",
+    "label": "signalp.option.entryDCA",
     "tooltip": "signalp.useroption.reBuysFromSignal.help"
   },
   {
     "id": "takeProfitsFromSignal",
-    "label": "signalp.settings.takeprofit",
+    "label": "signalp.option.takeprofit",
     "tooltip": "signalp.useroption.takeProfitsFromSignal.help"
   },
   {
     "id": "reBuyFromProvider",
-    "label": "signalp.useroption.reBuyFromProvider",
+    "label": "signalp.option.DCA",
     "tooltip": "signalp.useroption.reBuyFromProvider.help"
   },
   {
     "id": "terms",
-    "label": "signalp.useroption.terms",
+    "label": "signalp.option.checkterms",
     "tooltip": "signalp.useroption.terms.help"
   },
   {
     "id": "riskFilter",
-    "label": "signalp.useroption.riskFilter",
+    "label": "signalp.option.filterrisk",
     "tooltip": "signalp.useroption.riskFilter.help"
   },
   {
     "id": "successRateFilter",
-    "label": "signalp.useroption.successRateFilter",
+    "label": "signalp.option.minimumsuccess",
     "tooltip": "signalp.useroption.successRateFilter.help"
   },
   {
