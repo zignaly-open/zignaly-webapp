@@ -25,7 +25,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 const StopCopyingTraderForm = ({ onClose, provider }) => {
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
-  const [disconnectType, setDisconnectType] = useState("soft");
+  const [disconnectionType, setDisconnectType] = useState("soft");
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
 
@@ -61,11 +61,11 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
       const disconnectPayload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
-        internalExchnageId: selectedExchange.internalId,
-        disconnectType,
+        internalExchangeId: selectedExchange.internalId,
+        disconnectionType: disconnectionType,
       };
       tradeApi
-        .providerDisable(disconnectPayload)
+        .providerDisconnect(disconnectPayload)
         .then(() => {
           dispatch(setProvider(getProviderPayload));
           dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
@@ -113,7 +113,7 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
         <Box className="labeledInputsBox" display="flex" flexDirection="column">
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <span
-              className={"button " + (disconnectType === "soft" ? "checked" : "")}
+              className={"button " + (disconnectionType === "soft" ? "checked" : "")}
               onClick={() => setDisconnectType("soft")}
             >
               <FormattedMessage id="trader.softdisconnect" />
@@ -125,12 +125,12 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
               <FormattedMessage id="trader.harddisconnect" />
             </span> */}
           </Box>
-          {disconnectType === "soft" && (
+          {disconnectionType === "soft" && (
             <span className="info">
               <FormattedMessage id="trader.softdisconnect.tooltip" />
             </span>
           )}
-          {disconnectType === "hard" && (
+          {disconnectionType === "hard" && (
             <span className="info">
               <FormattedMessage id="trader.harddisconnect.tooltip" />
             </span>
