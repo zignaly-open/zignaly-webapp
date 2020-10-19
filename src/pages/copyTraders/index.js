@@ -43,23 +43,19 @@ const CopyTraders = (props) => {
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
 
-  const loadProvider = async () => {
-    dispatch(unsetProvider());
-    dispatch(showProviderProfileLoader(true));
-    const payload = {
-      token: tradeApi.accessToken,
-      providerId: providerId,
-      version: 2,
-    };
-    dispatch(setProvider(payload));
+  const loadProvider = () => {
+    if (providerId && providerId.length === 24) {
+      dispatch(unsetProvider());
+      const payload = {
+        token: tradeApi.accessToken,
+        providerId: providerId,
+        version: 2,
+      };
+      dispatch(setProvider(payload));
+    }
   };
 
-  useEffect(() => {
-    if (providerId && providerId.length === 24) {
-      loadProvider();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [providerId]);
+  useEffect(loadProvider, [providerId]);
 
   if (!providerId) {
     // Render Browse page

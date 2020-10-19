@@ -126,19 +126,25 @@
   }
 
   .optionsBox {
+    .optionsFieldbox {
+      margin-bottom: 10px;
+    }
+
     .checkbox {
-      padding: 5px;
+      padding: 0;
     }
 
     .customLabel {
       align-items: center;
       display: flex;
+      font-size: 14px;
       flex-direction: row;
       margin-bottom: 0;
       margin-left: 10px;
     }
 
     .helpIcon {
+      display: inline;
       height: 16px;
       margin-left: 5px;
       width: 16px;
