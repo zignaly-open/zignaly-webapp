@@ -35,7 +35,7 @@ const TopBalance = () => {
       )}
       {!storeBalanceLoader && (
         <Box
-          alignItems="center"
+          alignItems="flex-start"
           className="balanceContainer"
           display="flex"
           flexDirection="row"
