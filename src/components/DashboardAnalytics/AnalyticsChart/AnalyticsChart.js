@@ -7,14 +7,14 @@ import "./AnalyticsChart.scss";
 import { formatFloat } from "../../../utils/format";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ProfileStatsObject} ProfileStatsObject
+ * @typedef {import("../../../services/tradeApiClient.types").ProfitStatsObject} ProfitStatsObject
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  */
 
 /**
  * @typedef {Object} DefaultProps
- * @property {Array<ProfileStatsObject>} stats Table stats data.
+ * @property {Array<ProfitStatsObject>} stats Table stats data.
  * @property {string} quote Selected quote (base currency).
  * @property {string} timeFrame Selected time frame.
  * @property {OptionType} provider Selected provider.
@@ -42,8 +42,8 @@ const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
     unit = quote;
   }
 
-  const values = [...stats].map((s) => s[key]);
-  const labels = [...stats].map((s) => s.date);
+  const values = stats.map((s) => s[key]);
+  const labels = stats.map((s) => s.date);
   const options = {};
 
   /**

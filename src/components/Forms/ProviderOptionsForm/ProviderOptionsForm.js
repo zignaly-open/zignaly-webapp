@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProviderOptionsForm.scss";
 import { Box, Checkbox, TextField, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -24,7 +24,7 @@ import { FormattedMessage } from "react-intl";
 
 const ProviderOptionsForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
-  const { watch, handleSubmit, control, errors } = useForm();
+  const { watch, handleSubmit, control, errors, setValue } = useForm();
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
@@ -33,7 +33,28 @@ const ProviderOptionsForm = ({ provider }) => {
   const DCA = watch("reBuyFromProvider", provider.reBuyFromProvider);
   const terms = watch("terms", !!provider.terms);
   const riskFilter = watch("riskFilter", provider.riskFilter);
+  const takeProfitsFromSignal = watch("takeProfitsFromSignal");
+  const takeProfitFirst = watch("takeProfitFirst");
+  const takeProfitLast = watch("takeProfitLast");
+  const takeProfitAll = watch("takeProfitAll");
   const successRateFilter = watch("successRateFilter", provider.successRateFilter);
+
+  useEffect(() => {
+    // Check parent checkbox when at least one child checked
+    setValue("takeProfitsFromSignal", Boolean(takeProfitFirst || takeProfitAll || takeProfitLast));
+  }, [takeProfitFirst, takeProfitLast, takeProfitAll]);
+
+  useEffect(() => {
+    if (!takeProfitsFromSignal) {
+      // Uncheck all children when parent unchecked
+      setValue("takeProfitFirst", false);
+      setValue("takeProfitLast", false);
+      setValue("takeProfitAll", false);
+    } else if (!takeProfitFirst && !takeProfitAll && !takeProfitLast) {
+      // Check first child when parent checked and all children unchecked
+      setValue("takeProfitFirst", true);
+    }
+  }, [takeProfitsFromSignal]);
 
   /**
    *

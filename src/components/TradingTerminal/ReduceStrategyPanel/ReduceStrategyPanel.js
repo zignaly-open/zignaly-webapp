@@ -17,6 +17,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { formatPrice } from "../../../utils/formatters";
 import useValidation from "../../../hooks/useValidation";
+import { Alert } from "@material-ui/lab";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -148,6 +149,9 @@ const ReduceStrategyPanel = (props) => {
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
+          <Alert className="tpsWarning" severity="warning">
+            <FormattedMessage id="terminal.reducestrategy.tpwarning" />
+          </Alert>
           <HelperLabel descriptionId="terminal.reducestrategy.help" labelId="terminal.entrytype" />
           <Controller
             as={<CustomSelect label="" onChange={() => {}} options={orderTypeOptions} />}

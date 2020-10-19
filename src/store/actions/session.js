@@ -4,7 +4,7 @@ import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
-import { dashlyLogin, dashlyRegister } from "../../utils/dashlyApi";
+import { dashlyTrigger } from "../../utils/dashlyApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 import { userPilotLogin } from "../../utils/userPilotApi";
 
@@ -46,7 +46,7 @@ export const startTradeApiSession = (response) => {
     if (gtmEvent) {
       gtmEvent.push(assign(eventType, response));
     }
-    dashlyLogin(response);
+    dashlyTrigger(response, "login");
     userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
@@ -93,7 +93,7 @@ export const registerUser = (payload, setLoading) => {
         gtmEvent.push(assign(eventType, responseData));
       }
       startLiveSession(responseData);
-      dashlyRegister(responseData);
+      dashlyTrigger(responseData, "signup");
       userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
       setLoading(false);

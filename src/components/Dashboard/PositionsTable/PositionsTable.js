@@ -222,10 +222,10 @@ const PositionsTable = (props) => {
           setOpenCount(count);
           break;
         case "close":
-          setOpenCount(count);
+          setCloseCount(count);
           break;
         case "log":
-          setOpenCount(count);
+          setLogCount(count);
           break;
         default:
           setOpenCount(count);

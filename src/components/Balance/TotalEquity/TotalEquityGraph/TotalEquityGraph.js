@@ -60,17 +60,18 @@ const TotalEquityGraph = ({ list, modal }) => {
    */
 
   const tooltipFormat = (tooltipItem) => {
-    // console.log(list[list.length - tooltipItem.index]);
     return (
       <Box className="equityTooltip">
         <Box>
           <span className="label"> Date:</span>
           <span>{list[tooltipItem.index] ? list[tooltipItem.index].date : "0"}</span>
         </Box>
-        <Box>
-          <span className="label">BTC:</span>
-          <span>{formatFloat(list[tooltipItem.index].totalBTC)}</span>
-        </Box>
+        {list[tooltipItem.index].totalBTC && (
+          <Box>
+            <span className="label">BTC:</span>
+            <span>{formatFloat(list[tooltipItem.index].totalBTC)}</span>
+          </Box>
+        )}
         <Box>
           <span className="label">USDT:</span>
           <span>{formatFloat(list[tooltipItem.index].totalUSDT)}</span>

@@ -96,13 +96,13 @@ const Table = ({
       // Display columns picked by the user
       display:
         (c.options && c.options.display) ||
-        ((c.options && c.options.viewColumns === false) ||
-        (persistKey &&
-          storeSettings.displayColumns[persistKey] &&
+        (c.options && c.options.viewColumns === false) ||
+        !persistKey ||
+        (storeSettings.displayColumns[persistKey] &&
           (storeSettings.displayColumns[persistKey].includes(c.name) ||
             storeSettings.displayColumns[persistKey].includes(c.label)))
           ? "true"
-          : "false"),
+          : "false",
     },
   }));
 
