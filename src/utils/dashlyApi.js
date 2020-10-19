@@ -17,7 +17,6 @@
 const dashlyApi = () => {
   let dashly = null;
 
-  // Check that GTM is loaded and available for usage.
   // @ts-ignore
   if (typeof window !== "undefined" && window.dashly) {
     // @ts-ignore
@@ -31,6 +30,7 @@ const dashlyApi = () => {
 export default dashlyApi;
 
 /**
+ * Triger exchange connected event for dashly.
  *
  * @param {string} exchangeType Exchange type either demo or real
  * @returns {void} None.
@@ -47,6 +47,8 @@ export const dashlyExchangeConnected = (exchangeType) => {
 };
 
 /**
+ * Trigger login/signup events for dashly.
+ *
  * @param {UserEntity} userData User Entity.
  * @param {'login'|'signup'} type Type of event to trigger .
  * @returns {void} None.
