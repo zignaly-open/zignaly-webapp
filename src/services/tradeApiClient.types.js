@@ -1719,7 +1719,7 @@ export function userBalanceResponseTransform(response) {
   return assign(createEmptyUserBalanceEntity(), response);
 }
 
-function createEmptyUserBalanceEntity() {
+export function createEmptyUserBalanceEntity() {
   return {
     pnlBTC: 0,
     pnlUSDT: 0,
