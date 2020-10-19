@@ -18,26 +18,29 @@ import { FormattedMessage } from "react-intl";
 const EquityPart = ({ name, info, value }) => {
   return (
     <Box
-      alignItems="flex-start"
+      alignItems="center"
       className="dataBox"
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
+      flex={1}
     >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        mb={1}
-      >
-        <Typography variant="h4">
-          <FormattedMessage id={name} />
-        </Typography>
-        {info && <Typography className="number3 smallText">{info}</Typography>}
-      </Box>
-      <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-        <Typography className="number1">{value}</Typography>
+      <Box>
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          mb={1}
+        >
+          <Typography variant="h4">
+            <FormattedMessage id={name} />
+          </Typography>
+          {info && <Typography className="number3 smallText">{info}</Typography>}
+        </Box>
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
+          <Typography className="number1">{value}</Typography>
+        </Box>
       </Box>
     </Box>
   );
