@@ -31,53 +31,65 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
 
   const stopCopying = () => {
     setLoader(true);
+
+    if (!provider.profitSharing) {
+      disable();
+    } else {
+      disconnect();
+    }
+  };
+
+  const refreshProvider = () => {
     const getProviderPayload = {
       token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       version: 2,
     };
+    dispatch(setProvider(getProviderPayload));
+  };
 
-    if (!provider.profitSharing) {
-      const disablePayload = {
-        disable: true,
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-        type: "connected",
-      };
-      tradeApi
-        .providerDisable(disablePayload)
-        .then(() => {
-          dispatch(setProvider(getProviderPayload));
-          dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoader(false);
-          handleClose();
-        });
-    } else {
-      const disconnectPayload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-        internalExchangeId: selectedExchange.internalId,
-        disconnectionType: disconnectionType,
-      };
-      tradeApi
-        .providerDisconnect(disconnectPayload)
-        .then(() => {
-          dispatch(setProvider(getProviderPayload));
-          dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoader(false);
-          handleClose();
-        });
-    }
+  const disable = () => {
+    const disablePayload = {
+      disable: true,
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      type: "connected",
+    };
+    tradeApi
+      .providerDisable(disablePayload)
+      .then(() => {
+        refreshProvider();
+        dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoader(false);
+        handleClose();
+      });
+  };
+
+  const disconnect = () => {
+    const disconnectPayload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      internalExchangeId: selectedExchange.internalId,
+      disconnectionType: disconnectionType,
+    };
+    tradeApi
+      .providerDisconnect(disconnectPayload)
+      .then(() => {
+        refreshProvider();
+        dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoader(false);
+        handleClose();
+      });
   };
 
   const handleClose = () => {
