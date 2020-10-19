@@ -15,6 +15,7 @@ import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSele
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
+import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
 
 /**
  * @typedef {Object} DefaultProps
@@ -93,6 +94,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
                 version: 2,
               };
               dispatch(setProvider(payload2));
+              dashlyProviderEnabled();
               userPilotProviderEnabled();
               dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
               onClose();
