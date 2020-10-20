@@ -3,6 +3,7 @@ import "./ExchangeIcon.scss";
 import BinanceIcon from "../../images/exchanges/binance.svg";
 import ZignalyIcon from "../../images/exchanges/zignaly.svg";
 import KucoinIcon from "../../images/exchanges/kucoin.svg";
+import BitmexIcon from "../../images/exchanges/bitmex.svg";
 
 /**
  * @typedef {Object} ExchangeIconPropTypes
@@ -25,6 +26,9 @@ const ExchangeIcon = (props) => {
   switch (exchange.toLowerCase()) {
     case "binance":
       icon = BinanceIcon;
+      break;
+    case "bitmex":
+      icon = BitmexIcon;
       break;
     case "zignaly":
       icon = ZignalyIcon;
