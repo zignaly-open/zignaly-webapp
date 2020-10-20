@@ -137,14 +137,16 @@ const ExchangeAccountConnect = () => {
         <Typography className="body1 bold" variant="h3">
           <FormattedMessage id="accounts.exchange.choose" />
         </Typography>
-        {exchanges.map((e) => (
-          <ExchangeIcon
-            className={exchangeName === e.name ? "selected" : ""}
-            exchange={e.name}
-            key={e.id}
-            onClick={() => setExchangeName(e.name)}
-          />
-        ))}
+        <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
+          {exchanges.map((e) => (
+            <ExchangeIcon
+              className={exchangeName === e.name ? "selected" : ""}
+              exchange={e.name}
+              key={e.id}
+              onClick={() => setExchangeName(e.name)}
+            />
+          ))}
+        </Box>
         <div className="name">
           <CustomInput
             inputRef={register({
