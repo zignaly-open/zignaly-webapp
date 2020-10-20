@@ -26,96 +26,94 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
   return (
     <div className="availableBalance">
       <TotalEquityBar>
-        {balance && (
-          <>
-            <EquityPart
-              info={
-                <div>
-                  = USDT{" "}
-                  {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                    <AllInclusiveIcon className="infinity" />
-                  ) : (
-                    formatFloat(balance.totalFreeUSDT)
-                  )}
-                </div>
-              }
-              name="balance.available"
-              value={
-                <>
-                  BTC{" "}
-                  {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                    <AllInclusiveIcon className="infinity" />
-                  ) : (
-                    formatFloat(balance.totalFreeBTC)
-                  )}
-                </>
-              }
-            />
-            <span className="operator">+</span>
-            <EquityPart
-              info={<>= USDT {formatFloat(balance.totalLockedUSDT)}</>}
-              name="balance.invested"
-              value={
-                <>
-                  BTC {formatFloat(balance.totalLockedBTC)}
-                  {/* <Typography className="number1 pnlPercent">
+        <>
+          <EquityPart
+            info={
+              <div>
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalFreeUSDT)
+                )}
+              </div>
+            }
+            name="balance.available"
+            value={
+              <>
+                BTC{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalFreeBTC)
+                )}
+              </>
+            }
+          />
+          <span className="operator">+</span>
+          <EquityPart
+            info={<>= USDT {formatFloat(balance.totalLockedUSDT)}</>}
+            name="balance.invested"
+            value={
+              <>
+                BTC {formatFloat(balance.totalLockedBTC)}
+                {/* <Typography className="number1 pnlPercent">
                 {balance.totalLockedBTC && balance.totalBTC
                     ? formatFloat2Dec((balance.totalLockedBTC / balance.totalBTC) * 100)
                   : 0}
                 %
             </Typography> */}
-                </>
-              }
-            />
-            <span className="operator">+</span>
-            <EquityPart
-              info={<>= USDT {formatFloat(balance.pnlUSDT)}</>}
-              name="balance.profit"
-              value={
-                <>
-                  <Typography className={`number1 ${color}`}>
-                    BTC {formatFloat(balance.pnlBTC)}
-                  </Typography>
-                  <Typography className={`number1 pnlPercent ${color}`}>
-                    {balance.pnlBTC && balance.totalLockedBTC
-                      ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
-                      : 0}
-                    %
-                  </Typography>
-                </>
-              }
-            />
-            <span className="operator">=</span>
-            <EquityPart
-              info={
-                <>
-                  <Typography variant="h4">
-                    <FormattedMessage id="balance.total" />
-                  </Typography>
-                  <Typography className="smallText number3">
-                    = USDT{" "}
-                    {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                      <AllInclusiveIcon className="infinity" />
-                    ) : (
-                      formatFloat(balance.totalUSDT)
-                    )}
-                  </Typography>
-                </>
-              }
-              name="balance.available"
-              value={
-                <>
-                  BTC{" "}
+              </>
+            }
+          />
+          <span className="operator">+</span>
+          <EquityPart
+            info={<>= USDT {formatFloat(balance.pnlUSDT)}</>}
+            name="balance.profit"
+            value={
+              <>
+                <Typography className={`number1 ${color}`}>
+                  BTC {formatFloat(balance.pnlBTC)}
+                </Typography>
+                <Typography className={`number1 pnlPercent ${color}`}>
+                  {balance.pnlBTC && balance.totalLockedBTC
+                    ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
+                    : 0}
+                  %
+                </Typography>
+              </>
+            }
+          />
+          <span className="operator">=</span>
+          <EquityPart
+            info={
+              <>
+                <Typography variant="h4">
+                  <FormattedMessage id="balance.total" />
+                </Typography>
+                <Typography className="smallText number3">
+                  = USDT{" "}
                   {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                     <AllInclusiveIcon className="infinity" />
                   ) : (
-                    formatFloat(balance.totalBTC)
+                    formatFloat(balance.totalUSDT)
                   )}
-                </>
-              }
-            />
-          </>
-        )}
+                </Typography>
+              </>
+            }
+            name="balance.available"
+            value={
+              <>
+                BTC{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalBTC)
+                )}
+              </>
+            }
+          />
+        </>
       </TotalEquityBar>
     </div>
   );
