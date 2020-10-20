@@ -101,6 +101,47 @@ export const dashlyTrigger = (userData, type) => {
         { op: "update_or_create", key: "buys_count", value: `"${userData.buysCount}"` },
         { op: "update_or_create", key: "sells_count", value: `"${userData.sellsCount}"` },
         { op: "update_or_create", key: "status", value: `"${userData.status}"` },
+
+        {
+          op: "update_or_create",
+          key: "firstPositionOpenedAt",
+          value: `"${userData.firstPositionOpenedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "firstPositionClosedAt",
+          value: `"${userData.firstPositionClosedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "lastPositionOpenedAt",
+          value: `"${userData.lastPositionOpenedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "lastPositionClosedAt",
+          value: `"${userData.lastPositionClosedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "firstRealPositionOpenedAt",
+          value: `"${userData.firstRealPositionOpenedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "firstRealPositionClosedAt",
+          value: `"${userData.firstRealPositionClosedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "lastRealPositionOpenedAt",
+          value: `"${userData.lastRealPositionOpenedAt}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "lastRealPositionClosedAt",
+          value: `"${userData.lastRealPositionClosedAt}"`,
+        },
       ]);
     });
   }
