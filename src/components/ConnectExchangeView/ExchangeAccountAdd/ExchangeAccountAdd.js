@@ -29,7 +29,7 @@ import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ demo }) => {
-  const { handleSubmit, register, control, setValue, watch, setError } = useFormContext();
+  const { handleSubmit, register, control, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
