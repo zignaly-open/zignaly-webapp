@@ -95,8 +95,13 @@ export const dashlyTrigger = (userData, type) => {
         { op: "update_or_create", key: "providers_enabled", value: `"${userData.providerEnable}"` },
         {
           op: "update_or_create",
-          key: "exchange_connected",
-          value: `"${userData.binanceConnected}"`,
+          key: "demoExchangeConnected",
+          value: `"${userData.demoExchangeConnected}"`,
+        },
+        {
+          op: "update_or_create",
+          key: "realExchangeConnected",
+          value: `"${userData.realExchangeConnected}"`,
         },
         { op: "update_or_create", key: "buys_count", value: `"${userData.buysCount}"` },
         { op: "update_or_create", key: "sells_count", value: `"${userData.sellsCount}"` },
