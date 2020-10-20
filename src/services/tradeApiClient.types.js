@@ -306,6 +306,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} realPositionBuysCount
  * @property {number} realPositionSellsCount
  * @property {string} role
+ * @property {boolean} realExchangeConnected
+ * @property {boolean} demoExchangeConnected
  */
 
 /**
@@ -1020,6 +1022,8 @@ export function userEntityResponseTransform(response) {
     realPositionBuysCount: response.realPositionBuysCount,
     realPositionSellsCount: response.realPositionSellsCount,
     role: response.role,
+    realExchangeConnected: response.realExchangeConnected,
+    demoExchangeConnected: response.demoExchangeConnected,
   };
 }
 

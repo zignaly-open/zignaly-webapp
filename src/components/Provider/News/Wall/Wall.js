@@ -60,7 +60,7 @@ const Wall = ({ provider }) => {
 
   return (
     <Box className="wall">
-      {(provider.notificationsPosts || !provider.disable) && (
+      {(provider.notificationsPosts || (!provider.isAdmin && !provider.disable)) && (
         <WallSubscribe providerId={provider.id} subscribed={provider.notificationsPosts} />
       )}
       {provider.isAdmin && <CreatePost onCreated={loadPosts} providerId={provider.id} />}

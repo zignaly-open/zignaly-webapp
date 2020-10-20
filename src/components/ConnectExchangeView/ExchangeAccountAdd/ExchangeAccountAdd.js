@@ -55,7 +55,9 @@ const ExchangeAccountAdd = ({ demo }) => {
   const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
-    demo && exchangeType === "futures" && exchangeName.toLowerCase() === "binance";
+    demo &&
+    exchangeType === "futures" &&
+    ["binance", "bitmex"].includes(exchangeName.toLowerCase());
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
@@ -84,6 +86,13 @@ const ExchangeAccountAdd = ({ demo }) => {
       val: t,
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
+
+  useEffect(() => {
+    if (typeOptions) {
+      setValue("exchangeType", typeOptions[0].val);
+      setValue("testNet", false);
+    }
+  }, [exchangeName]);
 
   // Expose submitForm handler to ref so it can be triggered from the parent.
   useImperativeHandle(
@@ -205,8 +214,6 @@ const ExchangeAccountAdd = ({ demo }) => {
                     id: "accounts.exchange",
                   })}
                   onChange={(/** @type {string} **/ v) => {
-                    setValue("exchangeType", typeOptions[0].val);
-                    setValue("testNet", false);
                     onChange(v);
                   }}
                   options={exchangesOptions}
@@ -216,23 +223,21 @@ const ExchangeAccountAdd = ({ demo }) => {
               rules={{ required: true }}
             />
           )}
-          {typeOptions.length > 1 && (
-            <Controller
-              control={control}
-              defaultValue={typeOptions[0].val}
-              name="exchangeType"
-              render={({ onChange, value }) => (
-                <CustomSelect
-                  label={intl.formatMessage({
-                    id: "accounts.exchange.type",
-                  })}
-                  onChange={onChange}
-                  options={typeOptions}
-                  value={value}
-                />
-              )}
-            />
-          )}
+          <Controller
+            control={control}
+            defaultValue={typeOptions[0].val}
+            name="exchangeType"
+            render={({ onChange, value }) => (
+              <CustomSelect
+                label={intl.formatMessage({
+                  id: "accounts.exchange.type",
+                })}
+                onChange={onChange}
+                options={typeOptions}
+                value={value}
+              />
+            )}
+          />
           {showTestnet && (
             <CustomSwitch
               defaultValue={false}

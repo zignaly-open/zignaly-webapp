@@ -11,6 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import LazyLoad from "react-lazyload";
+import useExchangeList from "../../../hooks/useExchangeList";
 
 /**
  * @typedef {Object} DefaultProps
@@ -30,6 +31,7 @@ const ExchangeAccountList = ({ demo }) => {
   } = useContext(ModalPathContext);
 
   const storeUser = useStoreUserSelector();
+  const allExchanges = useExchangeList();
   const exchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
@@ -52,6 +54,21 @@ const ExchangeAccountList = ({ demo }) => {
    */
   const handleTabChange = (id) => {
     resetToPath(id);
+  };
+
+  const getExchangeNames = () => {
+    let names = "";
+    if (allExchanges) {
+      const list = allExchanges.filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly");
+      list.forEach((item, index) => {
+        names += `${item.name}`;
+        if (index !== list.length - 1) {
+          names += " or ";
+        }
+      });
+      return names;
+    }
+    return names;
   };
 
   return (
@@ -94,7 +111,8 @@ const ExchangeAccountList = ({ demo }) => {
                   <FormattedMessage id="accounts.connect.existing" />
                 </CustomButton>
                 <Box className="exchangeSubtitle">
-                  <FormattedMessage id="accounts.exchanges" />
+                  {/* <FormattedMessage id="accounts.exchanges" /> */}
+                  {getExchangeNames()}
                 </Box>
               </Box>
             </Box>

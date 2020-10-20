@@ -534,6 +534,8 @@ const initialState = {
       realPositionBuysCount: 0,
       realPositionSellsCount: 0,
       role: "",
+      realExchangeConnected: false,
+      demoExchangeConnected: false,
     },
   },
   ui: {
