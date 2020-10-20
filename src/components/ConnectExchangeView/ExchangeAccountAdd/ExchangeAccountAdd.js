@@ -29,7 +29,7 @@ import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountAdd = ({ demo }) => {
-  const { handleSubmit, register, control, watch, setError } = useFormContext();
+  const { handleSubmit, register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -57,7 +57,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   const showTestnet =
     demo &&
     exchangeType === "futures" &&
-    (exchangeName.toLowerCase() === "binance" || exchangeName.toLowerCase() === "bitmex");
+    ["binance", "bitmex"].includes(exchangeName.toLowerCase());
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
@@ -86,6 +86,13 @@ const ExchangeAccountAdd = ({ demo }) => {
       val: t,
       label: t.charAt(0).toUpperCase() + t.slice(1),
     }));
+
+  useEffect(() => {
+    if (typeOptions) {
+      setValue("exchangeType", typeOptions[0].val);
+      setValue("testNet", false);
+    }
+  }, [exchangeName]);
 
   // Expose submitForm handler to ref so it can be triggered from the parent.
   useImperativeHandle(
