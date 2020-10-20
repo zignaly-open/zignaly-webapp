@@ -57,9 +57,9 @@ const ExchangeAccountList = ({ demo }) => {
   };
 
   const getExchangeNames = () => {
+    let names = "";
     if (allExchanges) {
       const list = allExchanges.filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly");
-      let names = "";
       list.forEach((item, index) => {
         names += `${item.name}`;
         if (index !== list.length - 1) {
@@ -68,6 +68,7 @@ const ExchangeAccountList = ({ demo }) => {
       });
       return names;
     }
+    return names;
   };
 
   return (
