@@ -4,8 +4,6 @@
  * @property {GlobalDashly} dashly Dashly API push function.
  */
 
-import user from "../reducers/user";
-
 /**
  * @typedef {Object} GlobalDashly
  * @prop {Function} connect Connect to dashly remote API.
