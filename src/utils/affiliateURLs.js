@@ -13,3 +13,6 @@ export const howToSendSignalsUrl =
   "https://help.zignaly.com/hc/en-us/categories/360002703720-Sending-Signals";
 export const howToGetMerchantIDUrl =
   "https://help.zignaly.com/hc/en-us/articles/360015904740-Implement-a-payment-system";
+export const bitmexAPIKeysUrl = "https://www.bitmex.com/app/apiKeys";
+export const binanceUrl = "https://accounts.binance.com/";
+export const kucoinUrl = "https://www.kucoin.com/";

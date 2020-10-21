@@ -1249,8 +1249,30 @@ terminal.price.help: "Der Grenzpreis für die Order."
 terminal.realinvest.help: "Die zu investierende Base-Currency (einschließlich Hebel)."
 terminal.stopprice.help: "Der Stop-Loss-Preis der Limit Order."
 terminal.units.help: "Die Quote-Currency Einheiten entsprechen der Positionsgröße."
-accounts.exchange.api.tip.binance: "- Öffnen Sie binance.com in einer neuen Reiterkarte\n - Melden Sie sich bei Binance an\n - Bewegen Sie den Mauszeiger über das Profil und klicken Sie auf \"API-Verwaltung\".\n - Geben Sie dem API-Schlüssel oben auf dem Bildschirm eine Bezeichnung\n - Klicken Sie auf Erstellen\n - Befolgen Sie die Anweisungen zur Authentifizierung\n - Wenn Sie fertig sind, kopieren Sie die API-Schlüssel der neu erstellten API zurück in die entsprechenden Eingabefelder oben\n - Erledigt"
-accounts.exchange.api.tip.kucoin: "- Öffnen Sie kucoin.com in einer neuen Registerkarte\n - Melde dich in deinem Konto an\n - Klicken Sie im Dropdown-Menü auf „API-Verwaltung“.\n - Aktivieren Sie die beiden Sicherheitsschutzmethoden\n - Klicken Sie auf API erstellen> Benennen Sie Ihren Schlüssel> Geben Sie die Passphrase ein (Dies ist ein Kennwort für den API-Schlüssel. Beachten Sie dies, da Sie Zignaly ohne diesen keine API hinzufügen können.)\n - Klicken Sie auf Erstellen\n - Wenn Sie fertig sind, kopieren Sie die API-Schlüssel der neu erstellten API zurück in die entsprechenden Eingabefelder oben\n - Erledigt"
+accounts.exchange.api.tip.binance: "- Open {url}\n
+  - Log in to Binance\n
+  - Hover over profile and click “API Management”\n
+  - Give the API key a label at the top of the screen\n
+  - Click create\n
+  - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
+  - Log in to your account\n
+  - In the dropdown menu, click “API Management“\n
+  - Enable the two security protection methods\n
+  - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order\n
+  - Click create API key\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
 accounts.exchange.positionsettings.title: "Einstellungen für Signalproviderpositionen"
 accounts.exchangeconnected: "Exchange verbunden"
 accounts.exchangedisconnected: "Exchange getrennt"
