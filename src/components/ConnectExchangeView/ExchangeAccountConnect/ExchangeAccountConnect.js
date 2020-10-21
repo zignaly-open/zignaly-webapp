@@ -138,7 +138,7 @@ const ExchangeAccountConnect = () => {
    * @param {string} name Name of selected exchange.
    * @returns {JSX.Element} Url of the selected exchange.
    */
-  const getExchangeUrl = (name) => {
+  const exchangeUrl = (name) => {
     switch (name) {
       case "binance":
         return (
@@ -267,7 +267,7 @@ const ExchangeAccountConnect = () => {
               <Typography className="tips">
                 <FormattedMessage
                   id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`}
-                  values={{ url: getExchangeUrl(exchangeName.toLowerCase()) }}
+                  values={{ url: exchangeUrl(exchangeName.toLowerCase()) }}
                 />
               </Typography>
             )}
