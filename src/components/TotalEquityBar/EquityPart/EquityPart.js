@@ -23,7 +23,6 @@ const EquityPart = ({ name, info, value }) => {
       display="flex"
       flexDirection="column"
       justifyContent="flex-start"
-      flex={1}
     >
       <Box>
         <Box
