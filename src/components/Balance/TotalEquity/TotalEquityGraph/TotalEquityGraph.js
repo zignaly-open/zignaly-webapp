@@ -9,6 +9,7 @@ import { formatFloat } from "../../../../utils/format";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -16,6 +17,7 @@ import { formatFloat } from "../../../../utils/format";
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
  * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
+ * @property {ExchangeConnectionEntity} selectedExchange Flag to indicate if chart is displayed inside a modal.
  */
 
 /**
@@ -23,7 +25,7 @@ import { formatFloat } from "../../../../utils/format";
  * @param {DefaultProps} props Default props.
  */
 
-const TotalEquityGraph = ({ list, modal }) => {
+const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
   const { darkStyle } = useStoreSettingsSelector();
 
   /**
@@ -40,8 +42,9 @@ const TotalEquityGraph = ({ list, modal }) => {
   };
 
   const prepareChartData = () => {
+    const key = selectedExchange.exchangeType === "futures" ? "totalUSDT" : "totalUSDT";
     [...list].forEach((item) => {
-      chartData.values.push(item.totalUSDT);
+      chartData.values.push(item[key]);
       chartData.labels.push("");
     });
   };
