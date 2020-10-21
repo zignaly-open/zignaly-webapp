@@ -105,7 +105,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 </Typography>
               </>
             }
-            name="balance.available"
+            name="balance.total"
             value={
               <>
                 BTC{" "}

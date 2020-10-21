@@ -1,7 +1,6 @@
 import React from "react";
 import "./AvailableBalance.scss";
 import { Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 import EquityPart from "../../TotalEquityBar/EquityPart";
@@ -88,20 +87,15 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
           <EquityPart
             info={
               <>
-                <Typography variant="h4">
-                  <FormattedMessage id="balance.total" />
-                </Typography>
-                <Typography className="smallText number3">
-                  = USDT{" "}
-                  {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                    <AllInclusiveIcon className="infinity" />
-                  ) : (
-                    formatFloat(balance.totalUSDT)
-                  )}
-                </Typography>
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalUSDT)
+                )}
               </>
             }
-            name="balance.available"
+            name="balance.total"
             value={
               <>
                 BTC{" "}
