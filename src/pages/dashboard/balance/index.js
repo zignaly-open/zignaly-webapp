@@ -58,7 +58,7 @@ const Balance = () => {
           )}
         </Box>
         <Box className="historyBox">
-          <BalanceTabs dailyBalance={dailyBalance} />
+          <BalanceTabs dailyBalance={dailyBalance} selectedExchange={selectedExchange} />
         </Box>
       </Box>
     </>

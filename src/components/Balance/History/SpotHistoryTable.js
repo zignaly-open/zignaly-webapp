@@ -1,19 +1,16 @@
 import React from "react";
-import "./FuturesHistoryTable.scss";
 import { Box } from "@material-ui/core";
-import { formatFloat } from "../../../../utils/format";
-import Table from "../../../Table";
-import { formatNumber } from "../../../../utils/formatters";
+import { formatFloat } from "../../../utils/format";
+import Table from "../../Table";
+import { formatNumber } from "../../../utils/formatters";
 
 /**
- * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
  */
 
 /**
@@ -21,14 +18,14 @@ import { formatNumber } from "../../../../utils/formatters";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'ctAnalytics'|'spAnalytics'|'dailyBalance'} persistKey Key to save display columns settings.
+ * @property {'spotDailyBalance'} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
+const HistoryTable = ({ title, persistKey, list, quotes }) => {
   let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   /**
@@ -169,7 +166,7 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   dynamicColumns();
 
   return (
-    <Box className="futuresHistoryTable" display="flex" flexDirection="column" width={1}>
+    <Box className="historyTable" display="flex" flexDirection="column" width={1}>
       <Table
         columns={columns}
         data={data}
@@ -181,4 +178,4 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   );
 };
 
-export default FuturesHistoryTable;
+export default HistoryTable;

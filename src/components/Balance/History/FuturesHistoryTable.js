@@ -1,19 +1,16 @@
 import React from "react";
-import "./HistoryTable.scss";
 import { Box } from "@material-ui/core";
-import { formatFloat } from "../../../../utils/format";
-import Table from "../../../Table";
-import { formatNumber } from "../../../../utils/formatters";
+import { formatFloat } from "../../../utils/format";
+import Table from "../../Table";
+// import { formatNumber } from "../../../utils/formatters";
 
 /**
- * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
  */
 
 /**
@@ -21,22 +18,23 @@ import { formatNumber } from "../../../../utils/formatters";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'ctAnalytics'|'spAnalytics'|'dailyBalance'} persistKey Key to save display columns settings.
+ * @property {'futuresDailyBalance'} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const HistoryTable = ({ title, persistKey, list, quotes }) => {
+const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   let data = [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  /**
-   * Format Yes/No value.
-   * @param {Number} val Val.
-   * @returns {React.ReactNode} Formatted node.
-   */
-  const renderPercentage = (val) => <span>{formatNumber(val, 2)}%</span>;
+  // /**
+  //  * Format Yes/No value.
+  //  * @param {Number} val Val.
+  //  * @returns {React.ReactNode} Formatted node.
+  //  */
+  // const renderPercentage = (val) => <span>{formatNumber(val, 2)}%</span>;
+
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
@@ -51,72 +49,28 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
     },
     {
       name: "totalUSDT",
-      label: "col.totalUSDT",
+      label: "col.dailyprofitloss",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalBTC",
-      label: "col.totalBTC",
+      name: "totalUSDT",
+      label: "col.cumprofitloss",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalFreeUSDT",
-      label: "col.totalUSDTfree",
+      name: "totalUSDT",
+      label: "col.nettransfer",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalFreeBTC",
-      label: "col.totalBTCfree",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "totalLockedUSDT",
-      label: "col.totalUSDTalloc",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "totalLockedBTC",
-      label: "col.totalBTCalloc",
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "availablePercentage",
-      label: "col.availablePercentage",
-      options: {
-        customBodyRender: renderPercentage,
-      },
-    },
-    {
-      name: "investedPercentage",
-      label: "col.investedPercentage",
-      options: {
-        customBodyRender: renderPercentage,
-      },
-    },
-    {
-      name: "freeBNB",
-      /* @ts-ignore */
-      label: { id: "col.freequote", quote: "BNB" },
-      options: {
-        customBodyRender: formatFloat,
-      },
-    },
-    {
-      name: "freeETH",
-      /* @ts-ignore */
-      label: { id: "col.freequote", quote: "ETH" },
+      name: "totalUSDT",
+      label: "col.walletbalance",
       options: {
         customBodyRender: formatFloat,
       },
@@ -169,7 +123,7 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
   dynamicColumns();
 
   return (
-    <Box className="historyTable" display="flex" flexDirection="column" width={1}>
+    <Box className="futuresHistoryTable" display="flex" flexDirection="column" width={1}>
       <Table
         columns={columns}
         data={data}
@@ -181,4 +135,4 @@ const HistoryTable = ({ title, persistKey, list, quotes }) => {
   );
 };
 
-export default HistoryTable;
+export default FuturesHistoryTable;

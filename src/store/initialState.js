@@ -245,7 +245,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
-      dailyBalance: [
+      spotDailyBalance: [
         "date",
         "totalUSDT",
         "totalFreeUSDT",
@@ -257,6 +257,14 @@ const initialState = {
         "freeBNB",
         "col.availablePercentage",
         "col.investedPercentage",
+      ],
+      futuresDailyBalance: [
+        "date",
+        "col.dailyprofitloss",
+        "col.cumprofitloss",
+        "col.nettransfer",
+        "col.walletbalance",
+        "freeETH",
       ],
       exchangeAssets: [
         "coin",
