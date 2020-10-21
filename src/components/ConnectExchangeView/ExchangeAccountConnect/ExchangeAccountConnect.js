@@ -139,37 +139,26 @@ const ExchangeAccountConnect = () => {
    * @returns {JSX.Element} Url of the selected exchange.
    */
   const exchangeUrl = (name) => {
+    let url = "";
     switch (name) {
       case "binance":
-        return (
-          <a className="exchangeLink" href={binanceUrl} rel="noopener noreferrer" target="_blank">
-            {binanceUrl}
-          </a>
-        );
+        url = binanceUrl;
+        break;
       case "kucoin":
-        return (
-          <a className="exchangeLink" href={kucoinUrl} rel="noopener noreferrer" target="_blank">
-            {kucoinUrl}
-          </a>
-        );
+        url = kucoinUrl;
+        break;
       case "bitmex":
-        return (
-          <a
-            className="exchangeLink"
-            href={bitmexAPIKeysUrl}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {bitmexAPIKeysUrl}
-          </a>
-        );
+        url = bitmexAPIKeysUrl;
+        break;
       default:
-        return (
-          <a className="exchangeLink" href={binanceUrl} rel="noopener noreferrer" target="_blank">
-            {binanceUrl}
-          </a>
-        );
+        url = binanceUrl;
+        break;
     }
+    return (
+      <a className="exchangeLink" href={url} rel="noopener noreferrer" target="_blank">
+        {url}
+      </a>
+    );
   };
 
   return (
