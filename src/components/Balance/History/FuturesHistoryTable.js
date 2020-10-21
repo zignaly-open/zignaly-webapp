@@ -85,6 +85,7 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   };
 
   const dynamicColumns = () => {
+    console.log(quotes);
     for (let a = 0; a < quotes.length; a++) {
       let obj = {
         name: "",
@@ -121,6 +122,8 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   };
 
   dynamicColumns();
+
+  console.log(columns);
 
   return (
     <Box className="futuresHistoryTable" display="flex" flexDirection="column" width={1}>
