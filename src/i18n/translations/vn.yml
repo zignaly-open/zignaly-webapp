@@ -702,7 +702,7 @@ accounts.exchange.api.tip.kucoin: "- Open {url}\n
 accounts.exchange.api.tip.bitmex: "- Open {url}\n
   - Log in to Bitmex\n
   - Give the API key a name\n
-  - Set the key permissions as “Order"\n
+  - Set the key permissions as “Order“\n
   - Click create API key\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
