@@ -71,7 +71,7 @@ const History = ({ dailyBalance, selectedExchange }) => {
           ) : (
             <SpotHistoryTable
               list={list}
-              persistKey="spotDailyBalance"
+              persistKey="dailyBalance"
               quotes={dailyBalance.quotes}
               title={embedFilter}
             />

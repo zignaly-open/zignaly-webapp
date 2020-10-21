@@ -18,7 +18,7 @@ import { formatNumber } from "../../../utils/formatters";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'spotDailyBalance'} persistKey Key to save display columns settings.
+ * @property {'dailyBalance'} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
  *

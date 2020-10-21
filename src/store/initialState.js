@@ -245,7 +245,7 @@ const initialState = {
         "sumSoldByStopLoss",
         "sumSoldByTakeProfit",
       ],
-      spotDailyBalance: [
+      dailyBalance: [
         "date",
         "totalUSDT",
         "totalFreeUSDT",

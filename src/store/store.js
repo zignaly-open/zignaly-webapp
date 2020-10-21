@@ -50,7 +50,6 @@ const migrations = {
         ...state.settings,
         displayColumns: {
           ...state.settings.displayColumns,
-          spotDailyBalance: [...initialState.settings.displayColumns.spotDailyBalance],
           futuresDailyBalance: [...initialState.settings.displayColumns.futuresDailyBalance],
         },
       },
