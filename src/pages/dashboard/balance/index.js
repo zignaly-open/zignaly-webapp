@@ -5,17 +5,21 @@ import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
 import CryptoComposition from "../../../components/Balance/CryptoComposition";
-import AvailableBalance from "../../../components/Balance/AvailableBalance";
+import {
+  SpotAvailableBalance,
+  FuturesAvailableBalance,
+} from "../../../components/Balance/AvailableBalance";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useIntl } from "react-intl";
 import BalanceTabs from "../../../components/Balance/BalanceTabs";
+import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
-  const storeSettings = useStoreSettingsSelector();
-  const balance = useBalance(storeSettings.selectedExchange.internalId);
+  const { selectedExchange } = useStoreSettingsSelector();
+  const balance = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 
   return (
@@ -37,16 +41,28 @@ const Balance = () => {
         justifyContent="center"
       >
         <Box className="equityBox">
-          <TotalEquity dailyBalance={dailyBalance} modal={false} />
+          <TotalEquity
+            dailyBalance={dailyBalance}
+            modal={false}
+            selectedExchange={selectedExchange}
+          />
         </Box>
         <Box className="cryptoBox">
-          <CryptoComposition dailyBalance={dailyBalance} />
+          {selectedExchange.exchangeType === "futures" ? (
+            <ProfitLossAnalysis dailyBalance={dailyBalance} />
+          ) : (
+            <CryptoComposition dailyBalance={dailyBalance} />
+          )}
         </Box>
         <Box className="balanceBox">
-          <AvailableBalance balance={balance} />
+          {selectedExchange.exchangeType === "futures" ? (
+            <FuturesAvailableBalance balance={balance} selectedExchange={selectedExchange} />
+          ) : (
+            <SpotAvailableBalance balance={balance} selectedExchange={selectedExchange} />
+          )}
         </Box>
         <Box className="historyBox">
-          <BalanceTabs dailyBalance={dailyBalance} />
+          <BalanceTabs dailyBalance={dailyBalance} selectedExchange={selectedExchange} />
         </Box>
       </Box>
     </>

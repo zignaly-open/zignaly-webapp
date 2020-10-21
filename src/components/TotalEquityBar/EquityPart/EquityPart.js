@@ -36,10 +36,10 @@ const EquityPart = ({ name, info, value }) => {
           <Typography variant="h4">
             <FormattedMessage id={name} />
           </Typography>
-          {info && <Typography className="number3 smallText">{info}</Typography>}
+          {info && <span className="number3 smallText">{info}</span>}
         </Box>
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
-          <Typography className="number1">{value}</Typography>
+          <span className="number1">{value}</span>
         </Box>
       </Box>
     </Box>

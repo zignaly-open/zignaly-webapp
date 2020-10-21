@@ -258,6 +258,14 @@ const initialState = {
         "col.availablePercentage",
         "col.investedPercentage",
       ],
+      futuresDailyBalance: [
+        "date",
+        "col.dailyprofitloss",
+        "col.cumprofitloss",
+        "col.nettransfer",
+        "col.walletbalance",
+        "freeETH",
+      ],
       exchangeAssets: [
         "coin",
         "name",
@@ -534,6 +542,8 @@ const initialState = {
       realPositionBuysCount: 0,
       realPositionSellsCount: 0,
       role: "",
+      realExchangeConnected: false,
+      demoExchangeConnected: false,
     },
   },
   ui: {

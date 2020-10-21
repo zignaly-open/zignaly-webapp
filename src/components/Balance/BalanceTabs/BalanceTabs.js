@@ -9,16 +9,17 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
- * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {ExchangeConnectionEntity} selectedExchange Daily balance.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const BalanceTabs = ({ dailyBalance }) => {
+const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
   const [tabValue, setTabValue] = useState(0);
   const storeSettings = useStoreSettingsSelector();
 
@@ -66,7 +67,7 @@ const BalanceTabs = ({ dailyBalance }) => {
         <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
         {tabValue === 0 && (
           <Box className="tabPanel">
-            <History dailyBalance={dailyBalance} />
+            <History dailyBalance={dailyBalance} selectedExchange={selectedExchange} />
           </Box>
         )}
         {tabValue === 1 && (

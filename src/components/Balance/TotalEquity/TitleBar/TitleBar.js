@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import { formatFloat } from "../../../../utils/format";
 
 /**
- *
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} BalanceObject
  * @property {Number} totalBTC
  * @property {Number} totalUSDT
@@ -14,13 +14,14 @@ import { formatFloat } from "../../../../utils/format";
 /**
  * @typedef {Object} DefaultProps
  * @property {BalanceObject} balance Balance
+ * @property {ExchangeConnectionEntity} selectedExchange Selected Exchange.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TitleBar = ({ balance }) => {
+const TitleBar = ({ balance, selectedExchange }) => {
   return (
     <Box
       alignItems="center"
@@ -36,7 +37,11 @@ const TitleBar = ({ balance }) => {
         justifyContent="flex-start"
       >
         <Typography className="boxTitle" variant="h3">
-          <FormattedMessage id="dashboard.balance" />
+          {selectedExchange.exchangeType === "futures" ? (
+            <FormattedMessage id="balance.wallet" />
+          ) : (
+            <FormattedMessage id="dashboard.balance" />
+          )}
         </Typography>
         <Box
           alignItems="center"

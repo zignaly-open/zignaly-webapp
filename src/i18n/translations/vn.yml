@@ -33,11 +33,27 @@ recover.error: "Liên kết đã hết hạn! Xin vui lòng bắt đầu lại t
 testimonials.title: "Testimonials"
 testimonials.loadmore: "Load More"
 # BALANCE
-balance.available: "Khả dụng"
-balance.invested: "Đã Đầu Tư"
-balance.profit: "Lợi Nhuận Chưa Thực Hiện"
-balance.total: "Tổng vốn sở hữu"
-balance.profitlosses: "UP / L #"
+balance.available: "Available"
+balance.available.tooltip: "Margin Balance - Current Margin"
+balance.invested: "Invested"
+balance.margin: "Margin Balance"
+balance.margin.tooltip: "Wallet Balance - Unrealized PNL"
+balance.wallet: "Wallet Balance"
+balance.wallet.tooltip: "Deposits - Withdraws + Realized Profit and Losses - Fees"
+balance.current: "Current Margin"
+balance.current.tooltip: "In BINANCE its Initial Margin and in BITMEX its Positions + Orders Margins"
+balance.profit: "Unrealized Profit"
+balance.profit.tooltip: "From all Open Positions, Current Profit and Loss"
+balance.total: "Total Equity"
+balance.profitlosses: "UP/L #"
+
+profitlossanalysis.totalprofit: "Total profit"
+profitlossanalysis.totalloss: "Total loss"
+profitlossanalysis.netprofitloss: "Net Profit/Loss"
+profitlossanalysis.windays: "Winning Days"
+profitlossanalysis.lossdays: "Losing Days"
+profitlossanalysis.evendays: "Breakeven Days"
+profitlossanalysis.winrate: "Win Rate"
 # EXCHANGES
 exchange.binance: "Binance"
 exchange.kucoin: "kuCoin"
@@ -65,6 +81,7 @@ dashboard.browsetraders: "Duyệt nhà giao dịch để sao chép"
 dashboard.balance.totalequity: "Tổng vốn sở hữu"
 dashboard.balance.show: "Hiển thị"
 dashboard.balance.cryptocompo: "Phân bổ Crypto"
+dashboard.balance.profitloss: "Profit Loss Analysis"
 # DASHBOARD SECTION
 dashboard.balance.available: "Khả dụng"
 dashboard.balance.invested: "Đã Đầu Tư"
@@ -228,6 +245,10 @@ col.totalBTCfree: "TỔNG BTC CHƯA DÙNG"
 col.totalUSDT: "TỔNG USDT"
 col.totalUSDTalloc: "TỔNG USDT ĐÃ DÙNG"
 col.totalUSDTfree: "TỔNG USDT CHƯA DÙNG"
+col.dailyprofitloss: "Daily Profit and Loss"
+col.cumprofitloss: "Cummulative Profit and Loss"
+col.nettransfer: "Net Transfer"
+col.walletbalance: "Wallet Balance"
 col.totalsignals: "TỔNG TÍN HIỆU"
 col.tp: "TP"
 col.tsl: "TSL"
@@ -684,6 +705,30 @@ accounts.deposit.history: "Lịch Sử Gửi Tiền"
 accounts.deposit.make: "{depositLink} vào tài khoản này để bắt đầu giao dịch."
 accounts.done: "Xong"
 accounts.exchange: "Sàn Giao Dịch"
+accounts.exchange.api.tip.binance: "- Open {url}\n
+  - Log in to Binance\n
+  - Hover over profile and click “API Management”\n
+  - Give the API key a label at the top of the screen\n
+  - Click create\n
+  - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
+  - Log in to your account\n
+  - In the dropdown menu, click “API Management“\n
+  - Enable the two security protection methods\n
+  - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order\n
+  - Click create API key\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
 accounts.exchange.name: "Tên tài khoản"
 accounts.exchange.type: "Loại"
 accounts.exchange.key: "API Key"
@@ -1122,6 +1167,7 @@ col.stats.3MH: "3 MONTHS HIGH"
 col.stats.3ML: "3 MONTHS LOW"
 fil.allexchangeTypes: "Tất cả Các loại"
 copyt.copy.error3: "Bạn không có đủ {quote} để bắt đầu copy nhà giao dịch này"
+copyt.copy.error5: "You do not have enough {quote} to increase your allocated balance."
 srv.deleteclone: "Xóa nhà giao dịch này"
 srv.deletetrader: "Delete This Trader"
 srv.deleteprovider: "Delete This Provider"

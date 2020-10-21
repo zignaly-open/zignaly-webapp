@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./History.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import HistoryTable from "./HistoryTable";
+import SpotHistoryTable from "./SpotHistoryTable";
 import EquityFilter from "../TotalEquity/EquityFilter";
+import FuturesHistoryTable from "./FuturesHistoryTable";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
- * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {ExchangeConnectionEntity} selectedExchange Selected Exchange.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const History = ({ dailyBalance }) => {
+const History = ({ dailyBalance, selectedExchange }) => {
   const [list, setList] = useState(dailyBalance.balances);
 
   const initData = () => {
@@ -59,12 +61,21 @@ const History = ({ dailyBalance }) => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <HistoryTable
-            list={list}
-            persistKey="dailyBalance"
-            quotes={dailyBalance.quotes}
-            title={embedFilter}
-          />
+          {selectedExchange.exchangeType === "futures" ? (
+            <FuturesHistoryTable
+              list={list}
+              persistKey="futuresDailyBalance"
+              quotes={dailyBalance.quotes}
+              title={embedFilter}
+            />
+          ) : (
+            <SpotHistoryTable
+              list={list}
+              persistKey="dailyBalance"
+              quotes={dailyBalance.quotes}
+              title={embedFilter}
+            />
+          )}
         </Box>
       )}
     </>

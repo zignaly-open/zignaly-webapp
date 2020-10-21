@@ -10,17 +10,41 @@
     padding-right: 12px;
   }
 
-  .exchangeIcon {
-    border: solid 2px transparent;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 62px;
-    margin: 28px 56px 33px 0;
-    padding: 4px;
-    width: 62px;
+  .exchangeLink {
+    color: $blue;
+    text-decoration: none;
+    width: fit-content;
 
-    &.selected {
-      border-color: var(--purple);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .exchangeIconBox {
+    margin: 20px 0;
+
+    .exchangeIcon {
+      border: solid 2px transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 60px;
+      margin-right: 20px;
+      padding: 4px;
+      width: 60px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.bitmex {
+        height: 48px;
+        margin-right: 20px;
+        width: 48px;
+      }
+
+      &.selected {
+        border-color: var(--purple);
+      }
     }
   }
 

@@ -43,13 +43,25 @@ const migrations = {
       },
     };
   },
+  15: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        displayColumns: {
+          ...state.settings.displayColumns,
+          futuresDailyBalance: [...initialState.settings.displayColumns.futuresDailyBalance],
+        },
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 14,
+  version: 15,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };

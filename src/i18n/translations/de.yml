@@ -33,11 +33,27 @@ recover.error: "Link abgelaufen! Bitte starten Sie den Vorgang erneut von der An
 testimonials.title: "Testimonials"
 testimonials.loadmore: "Load More"
 # BALANCE
-balance.available: "Verfügbar"
-balance.invested: "Investiert"
-balance.profit: "Profitieren"
-balance.total: "Gesamtkapital"
-balance.profitlosses: "P / L #"
+balance.available: "Available"
+balance.available.tooltip: "Margin Balance - Current Margin"
+balance.invested: "Invested"
+balance.margin: "Margin Balance"
+balance.margin.tooltip: "Wallet Balance - Unrealized PNL"
+balance.wallet: "Wallet Balance"
+balance.wallet.tooltip: "Deposits - Withdraws + Realized Profit and Losses - Fees"
+balance.current: "Current Margin"
+balance.current.tooltip: "In BINANCE its Initial Margin and in BITMEX its Positions + Orders Margins"
+balance.profit: "Unrealized Profit"
+balance.profit.tooltip: "From all Open Positions, Current Profit and Loss"
+balance.total: "Total Equity"
+balance.profitlosses: "UP/L #"
+
+profitlossanalysis.totalprofit: "Total profit"
+profitlossanalysis.totalloss: "Total loss"
+profitlossanalysis.netprofitloss: "Net Profit/Loss"
+profitlossanalysis.windays: "Winning Days"
+profitlossanalysis.lossdays: "Losing Days"
+profitlossanalysis.evendays: "Breakeven Days"
+profitlossanalysis.winrate: "Win Rate"
 # EXCHANGES
 exchange.binance: "binance"
 exchange.kucoin: "kuCoin"
@@ -64,6 +80,7 @@ dashboard.browsetraders: "Copy Trader auflisten"
 dashboard.balance.totalequity: "Gesamtkapital"
 dashboard.balance.show: "Zeigen"
 dashboard.balance.cryptocompo: "Krypto-Zusammensetzung"
+dashboard.balance.profitloss: "Profit Loss Analysis"
 # DASHBOARD SECTION
 dashboard.balance.available: "Verfügbar"
 dashboard.balance.invested: "Investiert"
@@ -220,6 +237,10 @@ col.totalBTCfree: "GESAMT BTC KOSTENLOS"
 col.totalUSDT: "GESAMT USDT"
 col.totalUSDTalloc: "GESAMT USDT GESPERRT"
 col.totalUSDTfree: "GESAMT USDT KOSTENLOS"
+col.dailyprofitloss: "Daily Profit and Loss"
+col.cumprofitloss: "Cummulative Profit and Loss"
+col.nettransfer: "Net Transfer"
+col.walletbalance: "Wallet Balance"
 col.totalsignals: "GESAMTSIGNALE"
 col.tp: "TP"
 col.tsl: "TSL"
@@ -1104,6 +1125,7 @@ col.stats.3MH: "3 MONTHS HIGH"
 col.stats.3ML: "3 MONTHS LOW"
 fil.allexchangeTypes: "Alle Arten"
 copyt.copy.error3: "Sie haben nicht genug {quote} um den Trader zu kopieren"
+copyt.copy.error5: "You do not have enough {quote} to increase your allocated balance."
 srv.deletetrader: "Löschen Sie diesen Trader"
 srv.deleteprovider: "Löschen Sie diesen Provider"
 srv.deleteprovider.alert.title: "Klon gelöscht!"
@@ -1248,8 +1270,30 @@ terminal.price.help: "Der Grenzpreis für die Order."
 terminal.realinvest.help: "Die zu investierende Base-Currency (einschließlich Hebel)."
 terminal.stopprice.help: "Der Stop-Loss-Preis der Limit Order."
 terminal.units.help: "Die Quote-Currency Einheiten entsprechen der Positionsgröße."
-accounts.exchange.api.tip.binance: "- Öffnen Sie binance.com in einer neuen Reiterkarte\n - Melden Sie sich bei Binance an\n - Bewegen Sie den Mauszeiger über das Profil und klicken Sie auf \"API-Verwaltung\".\n - Geben Sie dem API-Schlüssel oben auf dem Bildschirm eine Bezeichnung\n - Klicken Sie auf Erstellen\n - Befolgen Sie die Anweisungen zur Authentifizierung\n - Wenn Sie fertig sind, kopieren Sie die API-Schlüssel der neu erstellten API zurück in die entsprechenden Eingabefelder oben\n - Erledigt"
-accounts.exchange.api.tip.kucoin: "- Öffnen Sie kucoin.com in einer neuen Registerkarte\n - Melde dich in deinem Konto an\n - Klicken Sie im Dropdown-Menü auf „API-Verwaltung“.\n - Aktivieren Sie die beiden Sicherheitsschutzmethoden\n - Klicken Sie auf API erstellen> Benennen Sie Ihren Schlüssel> Geben Sie die Passphrase ein (Dies ist ein Kennwort für den API-Schlüssel. Beachten Sie dies, da Sie Zignaly ohne diesen keine API hinzufügen können.)\n - Klicken Sie auf Erstellen\n - Wenn Sie fertig sind, kopieren Sie die API-Schlüssel der neu erstellten API zurück in die entsprechenden Eingabefelder oben\n - Erledigt"
+accounts.exchange.api.tip.binance: "- Open {url}\n
+  - Log in to Binance\n
+  - Hover over profile and click “API Management”\n
+  - Give the API key a label at the top of the screen\n
+  - Click create\n
+  - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
+  - Log in to your account\n
+  - In the dropdown menu, click “API Management“\n
+  - Enable the two security protection methods\n
+  - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order\n
+  - Click create API key\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
 accounts.exchange.positionsettings.title: "Einstellungen für Signalproviderpositionen"
 accounts.exchangeconnected: "Exchange verbunden"
 accounts.exchangedisconnected: "Exchange getrennt"

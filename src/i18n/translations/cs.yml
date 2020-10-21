@@ -35,10 +35,26 @@ testimonials.loadmore: "CH-Load More"
 
 # BALANCE
 balance.available: "CH-Available"
+balance.available.tooltip: "CH-Margin Balance - Current Margin"
 balance.invested: "CH-Invested"
+balance.margin: "CH-Margin Balance"
+balance.margin.tooltip: "CH-Wallet Balance - Unrealized PNL"
+balance.wallet: "CH-Wallet Balance"
+balance.wallet.tooltip: "CH-Deposits - Withdraws + Realized Profit and Losses - Fees"
+balance.current: "CH-Current Margin"
+balance.current.tooltip: "CH-In BINANCE its Initial Margin and in BITMEX its Positions + Orders Margins"
 balance.profit: "CH-Unrealized Profit"
+balance.profit.tooltip: "CH-From all Open Positions, Current Profit and Loss"
 balance.total: "CH-Total Equity"
 balance.profitlosses: "CH-UP/L #"
+
+profitlossanalysis.totalprofit: "CH-Total profit"
+profitlossanalysis.totalloss: "CH-Total loss"
+profitlossanalysis.netprofitloss: "CH-Net Profit/Loss"
+profitlossanalysis.windays: "CH-Winning Days"
+profitlossanalysis.lossdays: "CH-Losing Days"
+profitlossanalysis.evendays: "CH-Breakeven Days"
+profitlossanalysis.winrate: "CH-Win Rate"
 
 # EXCHANGES
 exchange.binance: "CH-binance"
@@ -49,6 +65,7 @@ exchange.zignaly: "CH-zignaly"
 dashboard.balance.available: "CH-Available"
 dashboard.balance.coins: "CH-Coins"
 dashboard.balance.cryptocompo: "CH-Crypto Composition"
+dashboard.balance.profitloss: "CH-Profit Loss Analysis"
 dashboard.balance.historical: "CH-Historical"
 dashboard.balance.invested: "CH-Invested"
 dashboard.balance.profit: "CH-Profit"
@@ -257,6 +274,10 @@ col.totalBTCfree: "CH-TOTAL BTC FREE"
 col.totalUSDT: "CH-TOTAL USDT"
 col.totalUSDTalloc: "CH-TOTAL USDT LOCKED"
 col.totalUSDTfree: "CH-TOTAL USDT FREE"
+col.dailyprofitloss: "CH-Daily Profit and Loss"
+col.cumprofitloss: "Ch-Cummulative Profit and Loss"
+col.nettransfer: "Ch-Net Transfer"
+col.walletbalance: "Ch-Wallet Balance"
 col.totalsignals: "CH-TOTAL SIGNALS"
 col.tp: "CH-TP"
 col.tsl: "CH-TSL"
@@ -491,6 +512,7 @@ copyt.copy.error1: "CH-Your current account, {selected}, is a {exchange} account
 copyt.copy.error2: "CH-You need to add an exchange in order to copy this trader."
 copyt.copy.error3: "CH-You do not have enough {quote} to start copying this trader."
 copyt.copy.error4: "CH-You cannot connect to Profit Sharing service using a Demo account."
+copyt.copy.error5: "CH-You do not have enough {quote} to increase your allocated balance."
 
 srv.followprovider: "CH-Follow this provider"
 srv.stopfollowing: "CH-Stop Following"
@@ -907,7 +929,7 @@ accounts.done: "CH-Done"
 accounts.exchange: "CH-Exchange"
 accounts.exchange.api: "CH-Get 2 API Keys from Exchange"
 accounts.exchange.api.tip: "CH-Where to find these keys?"
-accounts.exchange.api.tip.binance: "- Open binance.com on a new tab\n
+accounts.exchange.api.tip.binance: "- Open {url}\n
   - Log in to Binance\n
   - Hover over profile and click “API Management”\n
   - Give the API key a label at the top of the screen\n
@@ -915,11 +937,19 @@ accounts.exchange.api.tip.binance: "- Open binance.com on a new tab\n
   - Follow authentication instructions\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
-accounts.exchange.api.tip.kucoin: "- Open kucoin.com on a new tab\n
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
   - Log in to your account\n
   - In the dropdown menu, click “API Management“\n
   - Enable the two security protection methods\n
   - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order\n
+  - Click create API key\n
   - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"

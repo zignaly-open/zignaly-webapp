@@ -160,6 +160,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
               <ProfitSharingEquityChart
                 currentBalance={balanceHistory.currentBalance}
                 data={balanceHistory.entries}
+                selectedExchange={storeSettings.selectedExchange}
               />
               <ProfitSharingTable data={balanceHistory.entries} />
             </Box>

@@ -11,12 +11,14 @@ import "./ProfitSharingEquityChart.scss";
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
  * @typedef {Object} DefaultProps
  * @property {number} currentBalance
  * @property {Array<ProfitSharingBalanceEntry>} data
+ * @property {ExchangeConnectionEntity} selectedExchange
  */
 
 /**
@@ -25,7 +27,7 @@ import "./ProfitSharingEquityChart.scss";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const ProfitSharingEquityChart = ({ currentBalance, data }) => {
+const ProfitSharingEquityChart = ({ currentBalance, data, selectedExchange }) => {
   const dataWithDates = data.map((d) => ({
     ...d,
     date: new Date(d.date),
@@ -65,7 +67,7 @@ const ProfitSharingEquityChart = ({ currentBalance, data }) => {
         />
       </Box>
       <Box className="chartBox" width={1}>
-        <TotalEquityGraph list={tableData} modal={false} />
+        <TotalEquityGraph list={tableData} modal={false} selectedExchange={selectedExchange} />
         <EquityGraphLabels list={tableData} />
       </Box>
     </Box>
