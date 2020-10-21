@@ -15,6 +15,7 @@ import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
+import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl } from "../../../utils/affiliateURLs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -131,6 +132,46 @@ const ExchangeAccountConnect = () => {
     );
   }
 
+  /**
+   * Function to return the url for selected exchange.
+   *
+   * @param {string} name Name of selected exchange.
+   * @returns {JSX.Element} Url of the selected exchange.
+   */
+  const getExchangeUrl = (name) => {
+    switch (name) {
+      case "binance":
+        return (
+          <a className="exchangeLink" href={binanceUrl} rel="noopener noreferrer" target="_blank">
+            {binanceUrl}
+          </a>
+        );
+      case "kucoin":
+        return (
+          <a className="exchangeLink" href={kucoinUrl} rel="noopener noreferrer" target="_blank">
+            {kucoinUrl}
+          </a>
+        );
+      case "bitmex":
+        return (
+          <a
+            className="exchangeLink"
+            href={bitmexAPIKeysUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {bitmexAPIKeysUrl}
+          </a>
+        );
+      default:
+        return (
+          <a className="exchangeLink" href={binanceUrl} rel="noopener noreferrer" target="_blank">
+            {binanceUrl}
+          </a>
+        );
+    }
+  };
+
   return (
     <form className="exchangeAccountConnect" method="post" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
@@ -224,7 +265,10 @@ const ExchangeAccountConnect = () => {
             </Box>
             {tipsExpanded && (
               <Typography className="tips">
-                <FormattedMessage id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`} />
+                <FormattedMessage
+                  id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`}
+                  values={{ url: getExchangeUrl(exchangeName.toLowerCase()) }}
+                />
               </Typography>
             )}
             {step === 2 && (
