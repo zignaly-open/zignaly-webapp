@@ -17,7 +17,7 @@ import { formatFloat } from "../../../../utils/format";
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
  * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
- * @property {ExchangeConnectionEntity} selectedExchange Flag to indicate if chart is displayed inside a modal.
+ * @property {ExchangeConnectionEntity} selectedExchange Selected Exchange.
  */
 
 /**
