@@ -4,6 +4,8 @@
  * @property {GlobalDashly} dashly Dashly API push function.
  */
 
+import user from "../reducers/user";
+
 /**
  * @typedef {Object} GlobalDashly
  * @prop {Function} connect Connect to dashly remote API.
@@ -72,80 +74,80 @@ export const dashlyTrigger = (userData, type) => {
   const eventToTrigger = type === "login" ? "$authorized" : "$registered";
 
   if (dashly) {
-    dashly.auth(`"${userData.userId}"`, `"${userData.dashlyHash}"`);
+    dashly.auth(userData.userId || "", userData.dashlyHash || "");
 
     dashly.track(eventToTrigger, {
-      $email: `"${userData.email}"`,
-      $name: `"${userData.firstName}"`,
-      subscribed: `"${userData.subscribe}"`,
-      created: `"${userData.createdAt}"`,
+      $email: userData.email || "",
+      $name: userData.firstName || "",
+      subscribed: userData.subscribe,
+      created: userData.createdAt || 0,
     });
 
     dashly.onReady(() => {
       dashly.identify([
-        { op: "update_or_create", key: "$email", value: `"${userData.email}"` },
-        { op: "update_or_create", key: "$name", value: `"${userData.firstName}"` },
+        { op: "update_or_create", key: "$email", value: userData.email || "" },
+        { op: "update_or_create", key: "$name", value: userData.firstName || "" },
       ]);
 
       dashly.identify([
-        { op: "update_or_create", key: "ref", value: `"${userData.ref}"` },
-        { op: "update_or_create", key: "subscribed", value: `"${userData.subscribe}"` },
-        { op: "update_or_create", key: "created", value: `"${userData.createdAt}"` },
-        { op: "update_or_create", key: "2fa", value: `"${userData.twoFAEnable}"` },
-        { op: "update_or_create", key: "providers_enabled", value: `"${userData.providerEnable}"` },
+        { op: "update_or_create", key: "ref", value: userData.ref || "" },
+        { op: "update_or_create", key: "subscribed", value: userData.subscribe },
+        { op: "update_or_create", key: "created", value: userData.createdAt || "" },
+        { op: "update_or_create", key: "2fa", value: userData.twoFAEnable },
+        { op: "update_or_create", key: "providers_enabled", value: userData.providerEnable },
         {
           op: "update_or_create",
           key: "demoExchangeConnected",
-          value: `"${userData.demoExchangeConnected}"`,
+          value: userData.demoExchangeConnected,
         },
         {
           op: "update_or_create",
           key: "realExchangeConnected",
-          value: `"${userData.realExchangeConnected}"`,
+          value: userData.realExchangeConnected,
         },
-        { op: "update_or_create", key: "buys_count", value: `"${userData.buysCount}"` },
-        { op: "update_or_create", key: "sells_count", value: `"${userData.sellsCount}"` },
-        { op: "update_or_create", key: "status", value: `"${userData.status}"` },
+        { op: "update_or_create", key: "buys_count", value: userData.buysCount || 0 },
+        { op: "update_or_create", key: "sells_count", value: userData.sellsCount || 0 },
+        { op: "update_or_create", key: "status", value: userData.status || 0 },
 
         {
           op: "update_or_create",
           key: "firstPositionOpenedAt",
-          value: `"${userData.firstPositionOpenedAt}"`,
+          value: userData.firstPositionOpenedAt || "",
         },
         {
           op: "update_or_create",
           key: "firstPositionClosedAt",
-          value: `"${userData.firstPositionClosedAt}"`,
+          value: userData.firstPositionClosedAt || "",
         },
         {
           op: "update_or_create",
           key: "lastPositionOpenedAt",
-          value: `"${userData.lastPositionOpenedAt}"`,
+          value: userData.lastPositionOpenedAt || "",
         },
         {
           op: "update_or_create",
           key: "lastPositionClosedAt",
-          value: `"${userData.lastPositionClosedAt}"`,
+          value: userData.lastPositionClosedAt || "",
         },
         {
           op: "update_or_create",
           key: "firstRealPositionOpenedAt",
-          value: `"${userData.firstRealPositionOpenedAt}"`,
+          value: userData.firstRealPositionOpenedAt || "",
         },
         {
           op: "update_or_create",
           key: "firstRealPositionClosedAt",
-          value: `"${userData.firstRealPositionClosedAt}"`,
+          value: userData.firstRealPositionClosedAt || "",
         },
         {
           op: "update_or_create",
           key: "lastRealPositionOpenedAt",
-          value: `"${userData.lastRealPositionOpenedAt}"`,
+          value: userData.lastRealPositionOpenedAt || "",
         },
         {
           op: "update_or_create",
           key: "lastRealPositionClosedAt",
-          value: `"${userData.lastRealPositionClosedAt}"`,
+          value: userData.lastRealPositionClosedAt || "",
         },
       ]);
     });
