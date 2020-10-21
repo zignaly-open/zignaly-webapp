@@ -15,6 +15,7 @@ import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
+import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl } from "../../../utils/affiliateURLs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -131,6 +132,35 @@ const ExchangeAccountConnect = () => {
     );
   }
 
+  /**
+   * Function to return the url for selected exchange.
+   *
+   * @param {string} name Name of selected exchange.
+   * @returns {JSX.Element} Url of the selected exchange.
+   */
+  const exchangeUrl = (name) => {
+    let url = "";
+    switch (name) {
+      case "binance":
+        url = binanceUrl;
+        break;
+      case "kucoin":
+        url = kucoinUrl;
+        break;
+      case "bitmex":
+        url = bitmexAPIKeysUrl;
+        break;
+      default:
+        url = binanceUrl;
+        break;
+    }
+    return (
+      <a className="exchangeLink" href={url} rel="noopener noreferrer" target="_blank">
+        {url}
+      </a>
+    );
+  };
+
   return (
     <form className="exchangeAccountConnect" method="post" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
@@ -224,7 +254,10 @@ const ExchangeAccountConnect = () => {
             </Box>
             {tipsExpanded && (
               <Typography className="tips">
-                <FormattedMessage id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`} />
+                <FormattedMessage
+                  id={`accounts.exchange.api.tip.${exchangeName.toLowerCase()}`}
+                  values={{ url: exchangeUrl(exchangeName.toLowerCase()) }}
+                />
               </Typography>
             )}
             {step === 2 && (
