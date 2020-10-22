@@ -10,6 +10,11 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
+import tradeApi from "../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { setProvider } from "../../../../store/actions/views";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,15 +28,25 @@ import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
  */
 const CopyTraderButton = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
+  const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const followingFrom = exchangeConnections.find(
     (e) => e.internalId === provider.exchangeInternalId,
   );
+  let disconnectedExchange = provider.exchangeInternalIds.find(
+    (item) => item.internalId === selectedExchange.internalId,
+  );
+  const disconnecting =
+    disconnectedExchange && disconnectedExchange.disconnecting
+      ? disconnectedExchange.disconnecting
+      : false;
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -53,6 +68,32 @@ const CopyTraderButton = ({ provider }) => {
     showStopCopyingModal(false);
   };
 
+  const cancelDisconnect = () => {
+    showCancelDisconnectLoader(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      internalExchangeId: selectedExchange.internalId,
+    };
+    tradeApi
+      .providerCancelDisconnect(payload)
+      .then(() => {
+        const providerPayload = {
+          token: storeSession.tradeApi.accessToken,
+          providerId: provider.id,
+          version: 2,
+        };
+        dispatch(setProvider(providerPayload));
+        dispatch(showSuccessAlert("", "Your disconnection has been cancelled!"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        showCancelDisconnectLoader(false);
+      });
+  };
+
   return (
     <Box
       alignItems="center"
@@ -61,15 +102,17 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {disabled ? (
+      {disabled && !disconnecting && (
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
-      ) : !followingFrom || sameSelectedExchange ? (
+      )}
+      {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
         <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
-      ) : (
+      )}
+      {!disabled && !disconnecting && !sameSelectedExchange && (
         <Box
           alignItems="center"
           className="actionHelpBox"
@@ -86,6 +129,15 @@ const CopyTraderButton = ({ provider }) => {
             </Box>
           </Tooltip>
         </Box>
+      )}
+      {!disabled && disconnecting && (
+        <CustomButton
+          className="loadMoreButton"
+          loading={cancelDisconnectLoader}
+          onClick={cancelDisconnect}
+        >
+          <FormattedMessage id="copyt.canceldisconnecting" />
+        </CustomButton>
       )}
       <Modal
         onClose={handleStopCopyingModalClose}
