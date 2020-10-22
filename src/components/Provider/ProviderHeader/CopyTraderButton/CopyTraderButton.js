@@ -10,6 +10,12 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
+import tradeApi from "../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { useDispatch } from "react-redux";
+import { setProvider } from "../../../../store/actions/views";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * @typedef {Object} DefaultProps
@@ -22,11 +28,46 @@ import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
+  const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
+  const disabled = provider.disable;
+  const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
+  const followingFrom = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
+  let disconnectedExchange = provider.exchangeInternalIds.find(
+    (item) => item.internalId === selectedExchange.internalId,
+  );
+  const disconnecting =
+    disconnectedExchange && disconnectedExchange.disconnecting
+      ? disconnectedExchange.disconnecting
+      : false;
+
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  const confirmCancel = () => {
+    setConfirmConfig({
+      titleTranslationId: "copyt.canceldisconnect.title",
+      messageTranslationId: "copyt.canceldisconnect.body",
+      visible: true,
+    });
+  };
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -48,9 +89,33 @@ const CopyTraderButton = ({ provider }) => {
     showStopCopyingModal(false);
   };
 
-  const followingFrom = exchangeConnections.find(
-    (e) => e.internalId === provider.exchangeInternalId,
-  );
+  const cancelDisconnect = () => {
+    showCancelDisconnectLoader(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+      internalExchangeId: selectedExchange.internalId,
+    };
+    tradeApi
+      .providerCancelDisconnect(payload)
+      .then(() => {
+        const providerPayload = {
+          token: storeSession.tradeApi.accessToken,
+          providerId: provider.id,
+          version: 2,
+        };
+        dispatch(setProvider(providerPayload));
+        dispatch(
+          showSuccessAlert("srv.canceldisconnect.alert.title", "srv.canceldisconnect.alert.body"),
+        );
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        showCancelDisconnectLoader(false);
+      });
+  };
 
   return (
     <Box
@@ -60,16 +125,22 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {provider.disable ? (
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={cancelDisconnect}
+        setConfirmConfig={setConfirmConfig}
+      />
+      {disabled && !disconnecting && (
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
-      ) : !followingFrom ||
-        provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
+      )}
+      {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
         <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
-      ) : (
+      )}
+      {!disabled && !disconnecting && !sameSelectedExchange && (
         <Box
           alignItems="center"
           className="actionHelpBox"
@@ -86,6 +157,15 @@ const CopyTraderButton = ({ provider }) => {
             </Box>
           </Tooltip>
         </Box>
+      )}
+      {!disabled && disconnecting && (
+        <CustomButton
+          className="loadMoreButton"
+          loading={cancelDisconnectLoader}
+          onClick={confirmCancel}
+        >
+          <FormattedMessage id="copyt.canceldisconnecting" />
+        </CustomButton>
       )}
       <Modal
         onClose={handleStopCopyingModalClose}
