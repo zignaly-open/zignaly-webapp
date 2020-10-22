@@ -24,7 +24,6 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
-        version: 2,
         ...(exchangeInternalId && { exchangeInternalId }),
       };
 
