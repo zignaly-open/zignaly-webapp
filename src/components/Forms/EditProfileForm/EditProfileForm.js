@@ -14,7 +14,6 @@ import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
-import HelpIcon from "@material-ui/icons/Help";
 import SocialSelect from "./SocialSelect";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
@@ -29,7 +28,6 @@ import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 import userOptions from "../../../utils/userOptions.json";
-import { Help } from "@material-ui/icons";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 
 /**
@@ -403,10 +401,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 <Typography variant="h3">
                   <FormattedMessage id="signalp.useroption.title" />
                 </Typography>
+                <Typography className="optionsSubtitle" variant="body1">
+                  <FormattedMessage id="signalp.useroption.subtitle" />
+                </Typography>
                 {userOptions.map((o) => (
                   <Box
                     alignItems="center"
-                    className="inputBox"
+                    className="optionsFieldbox"
                     display="flex"
                     flexDirection="row"
                     justifyContent="flex-start"
@@ -421,17 +422,17 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                       render={({ onChange, onBlur, value }) => (
                         <Checkbox
                           checked={value}
+                          className="checkbox"
                           onBlur={onBlur}
                           onChange={(e) => onChange(e.target.checked)}
                         />
                       )}
                     />
-                    <label className="customLabel">
-                      <FormattedMessage id={o.label} />
-                      <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
-                        <Help className="helpIcon" />
-                      </Tooltip>
-                    </label>
+                    <Tooltip placement="top" title={<FormattedMessage id={o.tooltip} />}>
+                      <label className="customLabel">
+                        <FormattedMessage id={o.label} />
+                      </label>
+                    </Tooltip>
                   </Box>
                 ))}
               </Box>
@@ -736,19 +737,19 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 justifyContent="space-between"
                 width="100%"
               >
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.public" />
-                  <Tooltip
-                    placement="top"
-                    title={
-                      <Typography variant="h5">
-                        <FormattedMessage id="srv.edit.public.tooltip" />
-                      </Typography>
-                    }
-                  >
-                    <HelpIcon className="icon" />
-                  </Tooltip>
-                </label>
+                <Tooltip
+                  placement="top"
+                  title={
+                    <Typography variant="h5">
+                      <FormattedMessage id="srv.edit.public.tooltip" />
+                    </Typography>
+                  }
+                >
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.public" />
+                  </label>
+                </Tooltip>
+
                 <Controller
                   control={control}
                   defaultValue={provider.public}
@@ -766,12 +767,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 justifyContent="space-between"
                 width="100%"
               >
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.list" />
-                  <Tooltip placement="top" title={<GetListedTooltip />}>
-                    <HelpIcon className="icon" />
-                  </Tooltip>
-                </label>
+                <Tooltip placement="top" title={<GetListedTooltip />}>
+                  <label className="customLabel">
+                    <FormattedMessage id="srv.edit.list" />
+                  </label>
+                </Tooltip>
+
                 <Controller
                   control={control}
                   defaultValue={provider.list}

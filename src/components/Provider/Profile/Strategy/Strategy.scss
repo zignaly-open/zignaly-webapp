@@ -2,17 +2,6 @@
   min-height: inherit;
   padding: 30px 20px;
   width: 100%;
-
-  .strategyBody {
-    margin-top: 20px;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  p {
-    width: 100%;
-    word-wrap: break-word;
-  }
 }
 
 @include media("<=sm") {

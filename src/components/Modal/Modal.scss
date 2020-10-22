@@ -40,6 +40,15 @@
 
 @include media("<=sm") {
   .modal {
+    .closeIcon {
+      cursor: pointer;
+      height: 20px;
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      width: 20px;
+    }
+
     &.fullscreen {
       height: 100%;
       margin: 0;

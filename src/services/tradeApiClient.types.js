@@ -219,6 +219,14 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} DisconnectProviderPayload
+ * @property {string} token User's session token
+ * @property {string} providerId Provider Id
+ * @property {String} disconnectionType Disconnection type.
+ * @property {String} internalExchangeId Internal Id of connected exchange.
+ */
+
+/**
  * @typedef {Object} DeleteProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -298,6 +306,8 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {number} realPositionBuysCount
  * @property {number} realPositionSellsCount
  * @property {string} role
+ * @property {boolean} realExchangeConnected
+ * @property {boolean} demoExchangeConnected
  */
 
 /**
@@ -764,7 +774,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
- * @typedef {Object} ProfileStatsPayload
+ * @typedef {Object} ProfitStatsPayload
  * @property {Boolean} includeOpenPositions
  * @property {String} providerId
  * @property {String} quote
@@ -937,6 +947,30 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} GetProfitSharingBalanceHistoryPayload
+ * @property {string} exchangeInternalId
+ * @property {string} providerId
+ */
+
+/**
+ * @typedef {Object} ProfitSharingBalanceEntry
+ * @property {string} id
+ * @property {number} date Timestamp
+ * @property {number} amount
+ * @property {string} type
+ */
+
+/**
+ * @typedef {Object} ProfitSharingBalanceHistory
+ * @property {Array<ProfitSharingBalanceEntry>} entries
+ * @property {number} watermark Hide-water mark
+ * @property {number} currentBalance
+ * @property {number} initBalance
+ * @property {number} retain
+ * @property {string} quote
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export
@@ -988,6 +1022,8 @@ export function userEntityResponseTransform(response) {
     realPositionBuysCount: response.realPositionBuysCount,
     realPositionSellsCount: response.realPositionSellsCount,
     role: response.role,
+    realExchangeConnected: response.realExchangeConnected,
+    demoExchangeConnected: response.demoExchangeConnected,
   };
 }
 
@@ -2377,7 +2413,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
  * @property {String} description
- * @property {Boolean} disable
+ * @property {Boolean} disable True when provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
@@ -2456,6 +2492,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} profitSharing
  * @property {Number} profitsShare
  * @property {String} profitsMode
+ * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  */
 
 /**
@@ -2480,7 +2517,7 @@ export function providerGetResponseTransform(response) {
   let transformed = assign(emptyProviderEntity, response, {
     minAllocatedBalance:
       response.minAllocatedBalance && response.minAllocatedBalance !== "false"
-        ? response.minAllocatedBalance
+        ? parseFloat(response.minAllocatedBalance)
         : 0,
   });
   transformed.options.allowClones = checkClones();
@@ -3873,7 +3910,7 @@ export const createEmptyExchangeContractsEntity = () => {
 };
 
 /**
- * @typedef {Object} ProfileStatsObject
+ * @typedef {Object} ProfitStatsObject
  * @property {String} date
  * @property {String} invested
  * @property {Number} profit
@@ -3888,15 +3925,15 @@ export const createEmptyExchangeContractsEntity = () => {
  * Transform profile profits stats response.
  *
  * @param {*} response Profile profits response.
- * @returns {Array<ProfileStatsObject>} Profile profits entity collection.
+ * @returns {Array<ProfitStatsObject>} Profile profits entity collection.
  */
-export function profileStatsResponseTransform(response) {
+export function profitStatsResponseTransform(response) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of objects");
   }
 
   return response.map((item) => {
-    return profileStatsItemTransform(item);
+    return profitStatsItemTransform(item);
   });
 }
 
@@ -3904,10 +3941,10 @@ export function profileStatsResponseTransform(response) {
  * Transform profile profits stats response item.
  *
  * @param {*} item Profile profits response entity.
- * @returns {ProfileStatsObject} Profile profits entity.
+ * @returns {ProfitStatsObject} Profile profits entity.
  */
-function profileStatsItemTransform(item) {
-  return assign(createEmptyProfileStatsEntity(), item, {
+function profitStatsItemTransform(item) {
+  return assign(createEmptyProfitStatsEntity(), item, {
     profit: formatFloat(item.profit),
     profitFromInvestmentPercentage: formatFloat2Dec(item.profitFromInvestmentPercentage),
   });
@@ -3916,9 +3953,9 @@ function profileStatsItemTransform(item) {
 /**
  * Create an empty profile profits entity
  *
- * @returns {ProfileStatsObject} Empty profile profits entity.
+ * @returns {ProfitStatsObject} Empty profile profits entity.
  */
-const createEmptyProfileStatsEntity = () => {
+const createEmptyProfitStatsEntity = () => {
   return {
     date: "",
     invested: "",

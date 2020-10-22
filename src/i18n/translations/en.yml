@@ -107,6 +107,7 @@ confirm.ordercancel.message: "Canceling this order will remove it from the excha
 confirm.srv.unfollow.title: "Stop Following Provider"
 confirm.srv.unfollow.message: "Your positions will remain under provider management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
 confirm.copyt.unfollow.title: "Stop Copying Trader"
+confirm.copyt.unfollow.title2: "Disconnect from profit sharing service"
 confirm.copyt.unfollow.message: "Your positions will remain under trader management but you can always cancel them anytime you want directly from the exchange. Do you confirm?"
 confirm.appupdate.title: "Application Update"
 confirm.appupdate.message: "A new Zignaly webapp update was released, we need to refresh the page to take advantage of the latest improvements."
@@ -437,8 +438,19 @@ trader.moreinfo: "Be aware that at the moment that you connect to this service t
 trader.profitaction: "Choose what you want to do with profits."
 trader.reinvest: "REINVEST"
 trader.withdraw: "WITHDRAW"
+trader.softdisconnect: "Progressive Disconnection"
+trader.softdisconnect.tooltip: "You will be connected to the profit sharing service but you will not participate in new positions. Once the last position where your are currently participating would be closed by the provider, you will be disconnected from the service and your allocated amount unlock it into your account."
+trader.harddisconnect: "Immediate Disconnection"
+trader.harddisconnect.tooltip: "At this moment you will exit from all the positions, not matter the market situation. We will calculate your profit and losses and recalculate your allocated amount. Then it will be unlocked in your account."
 trader.ack: "Acknowledge about locked balance."
+trader.ack.placeholder: "Locked"
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
+
+profitsharing.currentAllocated: "Current Allocated"
+profitsharing.accounting: "Accounting"
+profitsharing.initAllocated: "Initial Allocated"
+profitsharing.retain: "Retain"
+profitsharing.watermark: "Watermark"
 
 graph.others: "Others"
 
@@ -450,7 +462,7 @@ copyt.allocated: "allocated of copytrader’s balance"
 copyt.copiers: "Copiers"
 srv.followers: "Followers"
 copyt.successfee: "Success Fee"
-copyt.successfee.tootltip: "The subscription fee is paid from profits. So from the profits of each position closed, {userShare}% will be for you and the {providerShare}% for the provider"
+copyt.successfee.tootltip: "The success fee is paid from profits. So from the profits of each position closed, {userShare}% will be for you and the remaining {providerShare}% for the service and platform."
 copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 srv.newfollowers: "New Followers"
@@ -479,6 +491,7 @@ copyt.copy.error1: "Your current account, {selected}, is a {exchange} account an
 copyt.copy.error2: "You need to add an exchange in order to copy this trader."
 copyt.copy.error3: "You do not have enough {quote} to start copying this trader."
 copyt.copy.error4: "You cannot connect to Profit Sharing service using a Demo account."
+copyt.copy.error5: "You do not have enough {quote} to increase your allocated balance."
 
 srv.followprovider: "Follow this provider"
 srv.stopfollowing: "Stop Following"
@@ -582,6 +595,7 @@ signalp.settings.pricedeviation.entry: "Entry Price Deviation"
 signalp.settings.pricedeviation.exit: "Exit Price Deviation"
 signalp.settings.entryexpiration: "Entry Order Expiration"
 signalp.settings.timeautoclose: "Time Based Autoclose"
+signalp.settings.apikey: "API Key"
 signalp.settings.stoploss: "Stop Loss"
 signalp.settings.trailingstop: "Trailing Stop"
 signalp.settings.takeprofit: "Take Profit"
@@ -658,7 +672,8 @@ signalp.option.disclaimer.error: "You need to accept the disclaimer from this pr
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Name"
-copyt.become: "Become a Copy Trader"
+copyt.become: "Offer Your Copy Trading Service"
+copyt.become.mobile: "Offer Service"
 copyt.cannotmodify: "Please, review this information, it cannot be modified later."
 copyt.cannotmodify.minAllocatedBalance: "Please, review this information, only the minimum allocated balance can be modified later."
 copyt.create: "Create a Copy Trading Service"
@@ -670,11 +685,15 @@ copyt.profitsharing.service: "Profit Sharing"
 copyt.profitsharing.percentage: "Profit Sharing Percentage"
 copyt.servicename: "Service Name"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
-signalp.create: "Create a Signal Provider"
-signalp.become: "Become a Signal Provider"
+signalp.create: "Create a Signal Provider Service"
+signalp.become: "Offer Your Signal Provider Service"
+signalp.become.mobile: "Offer Service"
 signalp.disclaimer: "Disclaimer URL"
 signalp.general: "General"
-signalp.useroption.title: "User Available Options"
+signalp.useroption.title: "User Available Options in Profile Tab"
+signalp.useroption.subtitle: "Check options to make them visible in Profile tab"
+signalp.useroption.disclaimer: "Disclaimer"
+signalp.useroption.disclaimer.help: "Ask user to accept the Disclimer."
 signalp.useroption.stopLossFromSignal.help: "Allow the user to accept or not stop loss value from the signals."
 signalp.useroption.acceptUpdateSignal: "Update Signals"
 signalp.useroption.acceptUpdateSignal.help: "Allow the user to accept or not updates from the signals."
@@ -783,6 +802,7 @@ terminal.reducestrategy.recurring.help: "If checked, each time a new DCA is fill
 terminal.reducestrategy.persistent: "Persistent"
 terminal.reducestrategy.persistentrecurring: "Persistent/Recurring"
 terminal.reducestrategy.persistent.help: "If checked, it won't close the position if there are pending DCAs."
+terminal.reducestrategy.tpwarning: "This will replace your Take Profit Targets."
 terminal.status.done: "Done"
 terminal.status.failed: "Failed"
 terminal.status.pending: "Pending"
@@ -794,7 +814,7 @@ terminal.stoploss.limit.minprice: "Stop loss price cannot be lower than {value}"
 terminal.stoploss.limit.zero: "Stop loss price must be a number greater than 0."
 terminal.stoploss.valid.percentage.greater: "Stop loss percentage must be a number greater than {value} to avoid exceeding current price."
 terminal.stoploss.valid.percentage.lower: "Stop loss percentage must be a number lower than {value} to avoid exceeding current price."
-terminal.stoploss: "Stop-Loss"
+terminal.stoploss: "Stop-Loss Market"
 terminal.stopprice: "Stop Price"
 terminal.stopprice.help: "The stop loss price of the limit order."
 terminal.strategy.import: "Import from Exchange"
@@ -816,7 +836,7 @@ terminal.takeprofit.valid.pricepercentage.greater: "Profit target price percenta
 terminal.takeprofit.valid.pricepercentage.lower: "Profit target price percentage must be a number lower than 0."
 terminal.takeprofit.valid.units: "Profit units must be a number greater than 0."
 terminal.takeprofit.valid.unitspercentage: "Profit units percentage must be a number between 0 - 100."
-terminal.takeprofit: "Take Profit"
+terminal.takeprofit: "Take Profit Limit"
 terminal.target.add: "Add target"
 terminal.target.remove: "Remove target"
 terminal.target.split: "Split target"
@@ -888,20 +908,26 @@ accounts.done: "Done"
 accounts.exchange: "Exchange"
 accounts.exchange.api: "Get 2 API Keys from Exchange"
 accounts.exchange.api.tip: "Where to find these keys?"
-accounts.exchange.api.tip.binance: "- Open binance.com on a new tab\n
-  - Log in to Binance\n
+accounts.exchange.api.tip.binance: "- Open {url}\n
+  - Log in to your account\n
   - Hover over profile and click “API Management”\n
   - Give the API key a label at the top of the screen\n
   - Click create\n
   - Follow authentication instructions\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
-accounts.exchange.api.tip.kucoin: "- Open kucoin.com on a new tab\n
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
   - Log in to your account\n
   - In the dropdown menu, click “API Management“\n
   - Enable the two security protection methods\n
   - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
-  - Click create\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order“\n
+  - Click create API key\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.choose: "Choose Exchange"
@@ -1311,7 +1337,7 @@ action.forgot: "Forgot Password"
 
 # FORM
 form.button.save: "Save"
-form.error.allocatedBalance.min: "Please enter an amount above the minimum allocated amount."
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 form.error.firstname: "Name is required"
 form.error.firstname.length: "Name should be greater than 3 letters"
 form.error.exchanges: "Select at least one exchange"
@@ -1388,6 +1414,8 @@ wall.post.updated: "Post successfully updated."
 wall.replies.count: "{number} replies"
 wall.replies.more: "View {number} more comments"
 wall.reply: "Reply"
+wall.notifications: "Receive notifications for new posts."
+wall.notifications.enabled: "You are receiving notifications for new posts."
 wall.unapprove: "Unapprove"
 wall.unapproved: "This post has been unapproved by moderators"
 wall.update: "Update Post"

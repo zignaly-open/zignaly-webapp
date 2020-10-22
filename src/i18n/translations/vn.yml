@@ -346,17 +346,24 @@ trader.moreinfo: "Be aware that at the moment that you connect to this service t
 trader.profitaction: "Choose what you want to do with profits."
 trader.reinvest: "REINVEST"
 trader.withdraw: "WITHDRAW"
+trader.softdisconnect: "Progressive Disconnection"
+trader.softdisconnect.tooltip: "You will be connected to the profit sharing service but you will not participate in new positions. Once the last position where your are currently participating would be closed by the provider, you will be disconnected from the service and your allocated amount unlock it into your account."
+trader.harddisconnect: "Immediate Disconnection"
+trader.harddisconnect.tooltip: "At this moment you will exit from all the positions, not matter the market situation. We will calculate your profit and losses and recalculate your allocated amount. Then it will be unlocked in your account."
 trader.ack: "Acknowledge about locked balance."
+trader.ack.placeholder: "Locked"
 trader.copy.confirm: "Please, to confirm, you need to write 'Locked'"
 graph.others: "Khác"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
+signalp.useroption.title: "User Available Options in Profile Tab"
+signalp.useroption.subtitle: "Check options to make them visible in Profile tab"
 copyt.title: "COPY-TRADERS"
 copyt.subtitle: "Sao chép các nhà giao dịch có kinh nghiệm với các loại tiền tệ mà bạn sở hữu."
 copyt.allocated: "phân bổ số dư của nhà giao dịch"
 copyt.copiers: "Người sao chép"
 copyt.copierslast7: "Người sao chép 7 ngày qua"
 copyt.successfee: "Success Fee"
-copyt.successfee.tootltip: "The subscription fee is paid from profits. So from the profits of each position closed, {userShare}% will be for you and the {providerShare}% for the provider"
+copyt.successfee.tootltip: "The success fee is paid from profits. So from the profits of each position closed, {userShare}% will be for you and the remaining {providerShare}% for the service and platform."
 copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 copyt.copythistrader: "Sao chép Nhà giao dịch này"
@@ -470,6 +477,7 @@ signalp.settings.pricedeviation.entry: "Độ lệch giá nhập"
 signalp.settings.pricedeviation.exit: "Độ lệch giá thoát"
 signalp.settings.entryexpiration: "Hạn chờ nhập"
 signalp.settings.timeautoclose: "Thời gian tự động đóng"
+signalp.settings.apikey: "API Key"
 signalp.settings.stoploss: "Dừng lỗ"
 signalp.settings.trailingstop: "Trailing Stop"
 signalp.settings.takeprofit: "Chốt lời"
@@ -535,12 +543,14 @@ signalp.option.minimumsuccess.error: "Tỷ lệ thành công tối thiểu đư�
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Tên"
-copyt.become: "Trở thành Nhà giao dịch sao chép"
+copyt.become: "CH-Offer Your Copy Trading Service"
+copyt.become.mobile: "CH-Offer Service"
 copyt.create: "Tạo Một Tài Khoản Nhà Giao Dịch Sao Chép"
 copyt.create.desc: "Người dùng của chúng tôi sẽ sao chép giao dịch của bạn"
 signalp.create.desc: "Offer your signals as an expert trader to be followed by our users"
-signalp.create: "Tạo Tài Khoản Nhà Cung Cấp Tín Hiệu"
-signalp.become: "Trở thành nhà cung cấp tín hiệu"
+signalp.create: "Create a Signal Provider Service"
+signalp.become: "CH-Offer Your Signal Provider Service"
+signalp.become.mobile: "CH-Offer Service"
 # TRADING TERMINAL
 terminal.autoclose.limit.zero: "Số giờ tự động đóng phải lớn hơn 0."
 terminal.available: "Khả dụng"
@@ -594,7 +604,7 @@ terminal.status: "Trạng thái"
 terminal.stoploss.help: "Nếu giá hiện tại bằng hoặc nhỏ hơn giá trị này, một lệnh thoát với giá thị trường sẽ được gửi lên sàn giao dịch."
 terminal.stoploss.limit.zero: "Giá dừng lỗ phải là một số lớn hơn 0."
 terminal.stoploss.valid.percentage: "Tỷ lệ % dừng lỗ phải là một số {type} hơn {value} để tránh vượt quá giá hiện tại"
-terminal.stoploss: "Dừng lỗ"
+terminal.stoploss: "Stop-Loss Market"
 terminal.stopprice: "Giá dừng"
 terminal.strategy.import: "Nhập từ sàn giao dịch"
 terminal.strategy.limit: "Lệnh Limit"
@@ -614,7 +624,7 @@ terminal.takeprofit.valid.price: "Giá mục tiêu chốt lời phải là một
 terminal.takeprofit.valid.pricepercentage: "Phần trăm giá mục tiêu chốt lời phải là một số {type} hơn 0."
 terminal.takeprofit.valid.units: "Số lượng chốt lời phải là một số lớn hơn 0."
 terminal.takeprofit.valid.unitspercentage: "Phần trăm số lượng chốt lời phải là một số trong khoảng từ 0 - 100."
-terminal.takeprofit: "Chốt lời"
+terminal.takeprofit: "Take Profit Limit"
 terminal.target.add: "Thêm mục tiêu"
 terminal.target.remove: "Xóa mục tiêu"
 terminal.target.split: "Chia mục tiêu"
@@ -674,6 +684,28 @@ accounts.deposit.history: "Lịch Sử Gửi Tiền"
 accounts.deposit.make: "{depositLink} vào tài khoản này để bắt đầu giao dịch."
 accounts.done: "Xong"
 accounts.exchange: "Sàn Giao Dịch"
+accounts.exchange.api.tip.binance: "- Open {url}\n
+  - Log in to your account\n
+  - Hover over profile and click “API Management”\n
+  - Give the API key a label at the top of the screen\n
+  - Click create\n
+  - Follow authentication instructions\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.kucoin: "- Open {url}\n
+  - Log in to your account\n
+  - In the dropdown menu, click “API Management“\n
+  - Enable the two security protection methods\n
+  - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
+accounts.exchange.api.tip.bitmex: "- Open {url}\n
+  - Log in to Bitmex\n
+  - Give the API key a name\n
+  - Set the key permissions as “Order“\n
+  - Click create API key\n
+  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - Done"
 accounts.exchange.name: "Tên tài khoản"
 accounts.exchange.type: "Loại"
 accounts.exchange.key: "API Key"
@@ -1041,6 +1073,7 @@ form.error.password.invalid: "Thông tin sai"
 form.error.passphrase: "Nhập cụm mật khẩu"
 form.error.telegram: "Vui lòng nhập mã telegram của bạn"
 form.error.value: "Nhập một giá trị"
+form.error.allocatedBalance.reduce: "It is not possible to reduce your allocated balance. In order to do that, you need to disconnect from the service and connect again."
 # GENERAL
 general.yes: "Yes"
 general.no: "No"
@@ -1073,6 +1106,7 @@ confirm.positionabort.message: "Bạn có chắc muốn hủy điểm vào lện
 confirm.positionabort.title: "Hủy nhập vị thế"
 confirm.ordercancel.title: "Hủy lệnh chờ"
 confirm.ordercancel.message: "Hủy lệnh này sẽ xóa lệnh trên sàn giao dịch, nếu lệnh được mở bởi zignaly,. Vui lòng xác nhận là bạn muốn hủy lệnh #{order}"
+confirm.copyt.unfollow.title2: "CH-Disconnect from profit sharing service"
 col.entryprice: "GIÁ NHẬP"
 col.exitprice: "Giá thoát"
 col.availablePercentage: "Phần trăm khả dụng"
@@ -1110,6 +1144,7 @@ col.stats.3MH: "3 MONTHS HIGH"
 col.stats.3ML: "3 MONTHS LOW"
 fil.allexchangeTypes: "Tất cả Các loại"
 copyt.copy.error3: "Bạn không có đủ {quote} để bắt đầu copy nhà giao dịch này"
+copyt.copy.error5: "You do not have enough {quote} to increase your allocated balance."
 srv.deleteclone: "Xóa nhà giao dịch này"
 srv.deletetrader: "Delete This Trader"
 srv.deleteprovider: "Delete This Provider"

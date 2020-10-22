@@ -40,7 +40,7 @@ import {
   exchangeContractsResponseTransform,
   userAvailableBalanceResponseTransform,
   cloneProviderResponseTransform,
-  profileStatsResponseTransform,
+  profitStatsResponseTransform,
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
 } from "./tradeApiClient.types";
@@ -66,6 +66,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectTraderPayload} ConnectTraderPayload
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
+ * @typedef {import('./tradeApiClient.types').DisconnectProviderPayload} DisconnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DeleteProviderPayload} DeleteProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
@@ -124,15 +125,17 @@ import {
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
- * @typedef {import('./tradeApiClient.types').ProfileStatsPayload} ProfileStatsPayload
+ * @typedef {import('./tradeApiClient.types').ProfitStatsPayload} ProfitStatsPayload
  * @typedef {import('./tradeApiClient.types').ProfileProviderStatsPayload} ProfileProviderStatsPayload
- * @typedef {import('./tradeApiClient.types').ProfileStatsObject} ProfileStatsObject
+ * @typedef {import('./tradeApiClient.types').ProfitStatsObject} ProfitStatsObject
  * @typedef {import('./tradeApiClient.types').ProfileProviderStatsObject} ProfileProviderStatsObject
  * @typedef {import('./tradeApiClient.types').UserPayload} UserPayload
  * @typedef {import('./tradeApiClient.types').GetPostsPayload} GetPostsPayload
  * @typedef {import('./tradeApiClient.types').Post} Post
  * @typedef {import('./tradeApiClient.types').CreatePostPayload} CreatePostPayload
  * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
+ * @typedef {import('./tradeApiClient.types').GetProfitSharingBalanceHistoryPayload} GetProfitSharingBalanceHistoryPayload
+ * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  */
 
 /**
@@ -824,13 +827,29 @@ class TradeApiClient {
    *
    * @param {DisableProviderPayload} payload Stop following provider payload.
 
-   * @returns {Promise<Array<*>>} Promise that resolves into array of provider entities.
+   * @returns {Promise<boolean>} Promise that resolves into success status.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerDisable(payload) {
+    const endpointPath = "/fe/api.php?action=toggleProvider";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Stop following a provider or copytrader.
+   *
+   * @param {DisconnectProviderPayload} payload Stop following provider payload.
+
+   * @returns {Promise<boolean>} Promise that resolves into success status.
    *
    * @memberof TradeApiClient
    */
 
-  async providerDisable(payload) {
-    const endpointPath = "/fe/api.php?action=toggleProvider";
+  async providerDisconnect(payload) {
+    const endpointPath = "/fe/api.php?action=disconnectProfitSharingService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
@@ -845,7 +864,6 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-
   async providerDelete(payload) {
     const endpointPath = "/fe/api.php?action=deleteProvider";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -862,7 +880,6 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-
   async exchangeListGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeList";
     const responseData = await this.doRequest(endpointPath, payload);
@@ -1566,17 +1583,17 @@ class TradeApiClient {
   /**
    * Cancel exchange order.
    *
-   * @param {ProfileStatsPayload} payload Cancel exchange order payload.
+   * @param {ProfitStatsPayload} payload Cancel exchange order payload.
    *
-   * @returns {Promise<Array<ProfileStatsObject>>} Returns promise that resolves a boolean true.
+   * @returns {Promise<Array<ProfitStatsObject>>} Returns promise that resolves a boolean true.
    *
    * @memberof TradeApiClient
    */
-  async profileStatsGet(payload) {
+  async profitStatsGet(payload) {
     const endpointPath = "/fe/api.php?action=getProfitStatsNew";
     const responseData = await this.doRequest(endpointPath, payload);
 
-    return profileStatsResponseTransform(responseData);
+    return profitStatsResponseTransform(responseData);
   }
 
   /**
@@ -1741,6 +1758,36 @@ class TradeApiClient {
    */
   async deleteReply(payload) {
     const endpointPath = "/fe/api.php?action=deleteReply";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Subscribe to provider's posts notifications.
+   *
+   * @param {{providerId: string, subscribed: boolean}} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async updatePostsNotifications(payload) {
+    const endpointPath = "/fe/api.php?action=updatePostsNotifications";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Get Profit Sharing balance history for a connected provider
+   *
+   * @param {GetProfitSharingBalanceHistoryPayload} payload Payload
+   *
+   * @returns {Promise<ProfitSharingBalanceHistory>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getProfitSharingBalanceHistory(payload) {
+    const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

@@ -534,6 +534,8 @@ const initialState = {
       realPositionBuysCount: 0,
       realPositionSellsCount: 0,
       role: "",
+      realExchangeConnected: false,
+      demoExchangeConnected: false,
     },
   },
   ui: {
@@ -682,6 +684,7 @@ const initialState = {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
+      notificationsPosts: false,
     },
   },
 };

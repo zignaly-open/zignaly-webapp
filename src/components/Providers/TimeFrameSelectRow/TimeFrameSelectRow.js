@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden, useMediaQuery } from "@material-ui/core";
 import TimeFrameSelect from "../../TimeFrameSelect";
 import "./TimeFrameSelectRow.scss";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { showCreateProvider, showCreateTrader } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
+import { useTheme } from "@material-ui/core/styles";
+import ServiceIcon from "../../../images/offerServiceIcon.svg";
 
 /**
  * @typedef {Object} TimeFrameSelectRowPropTypes
@@ -23,6 +25,16 @@ import { useDispatch } from "react-redux";
  */
 const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const createButtonText = () => {
+    if (isMobile) {
+      return `${isCopyTrading ? "copyt" : "signalp"}.become.mobile`;
+    }
+    return `${isCopyTrading ? "copyt" : "signalp"}.become`;
+  };
+
   return (
     <Box
       className="timeFrameSelectRow"
@@ -49,20 +61,23 @@ const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
             }
           >
             <Typography variant="body1">
-              <FormattedMessage id={`${isCopyTrading ? "copyt" : "signalp"}.become`} />
+              <FormattedMessage id={createButtonText()} />
             </Typography>
+            <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
           </CustomButton>
         </Hidden>
       </Box>
-      <Box
-        alignItems="center"
-        className="timeFrameSelectBox"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-end"
-      >
-        <TimeFrameSelect onChange={onChange} value={value} />
-      </Box>
+      {isCopyTrading && (
+        <Box
+          alignItems="center"
+          className="timeFrameSelectBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-end"
+        >
+          <TimeFrameSelect onChange={onChange} value={value} />
+        </Box>
+      )}
     </Box>
   );
 };

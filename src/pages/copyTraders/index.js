@@ -9,7 +9,7 @@ import Positions from "./positions";
 import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider, unsetProvider } from "../../store/actions/views";
+import { setProvider, unsetProvider, showProviderProfileLoader } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -43,22 +43,19 @@ const CopyTraders = (props) => {
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
 
-  const loadProvider = async () => {
-    dispatch(unsetProvider());
-    const payload = {
-      token: tradeApi.accessToken,
-      providerId: providerId,
-      version: 2,
-    };
-    dispatch(setProvider(payload));
+  const loadProvider = () => {
+    if (providerId && providerId.length === 24) {
+      dispatch(unsetProvider());
+      const payload = {
+        token: tradeApi.accessToken,
+        providerId: providerId,
+        version: 2,
+      };
+      dispatch(setProvider(payload));
+    }
   };
 
-  useEffect(() => {
-    if (providerId && providerId.length === 24) {
-      loadProvider();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [providerId]);
+  useEffect(loadProvider, [providerId]);
 
   if (!providerId) {
     // Render Browse page

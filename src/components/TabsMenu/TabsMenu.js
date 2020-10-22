@@ -6,7 +6,7 @@ import { Tab, Tabs } from "@material-ui/core";
  *
  * @typedef {Object} DefaultTabsObject
  * @property {Boolean} display
- * @property {JSX.Element} label
+ * @property {JSX.Element|String} label
  */
 
 /**
