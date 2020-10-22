@@ -693,6 +693,7 @@ const initialState = {
       profitsShare: 0,
       profitsMode: "",
       notificationsPosts: false,
+      exchangeInternalIds: [],
     },
   },
 };

@@ -227,6 +227,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelDisconnectProviderPayload
+ * @property {string} token User's session token
+ * @property {string} providerId Provider Id
+ * @property {String} internalExchangeId Internal Id of connected exchange.
+ */
+
+/**
  * @typedef {Object} DeleteProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -2420,6 +2427,17 @@ function createConnectedProviderUserInfoEntity(response) {
  */
 
 /**
+ *
+ * @typedef {Object} DefaultProviderExchangeIDsObject
+ * @property {Boolean} disconnecting
+ * @property {String} disconnectionType
+ * @property {String} internalId
+ * @property {String} profitsMode
+ * @property {Number} profitsShare
+ * @property {Number} retain
+ */
+
+/**
  * Default Single Provider object from 'getProvider' endpoint.
  *
  * @typedef {Object} DefaultProviderGetObject
@@ -2506,6 +2524,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} profitsShare
  * @property {String} profitsMode
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
 
 /**
@@ -2659,6 +2678,7 @@ function createEmptyProviderGetEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    exchangeInternalIds: [{}],
   };
 }
 

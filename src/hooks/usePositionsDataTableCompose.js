@@ -335,7 +335,15 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderReturnsFromAllocated(dataIndex) {
     const position = positions[dataIndex];
-    return <span className={position.returnFromAllocated > 0 ? "green" : position.returnFromAllocated < 0 ? "red" : ""}>{formatNumber(position.returnFromAllocated, 2)} %</span>;
+    return (
+      <span
+        className={
+          position.returnFromAllocated > 0 ? "green" : position.returnFromAllocated < 0 ? "red" : ""
+        }
+      >
+        {formatNumber(position.returnFromAllocated, 2)} %
+      </span>
+    );
   }
 
   // /**
@@ -1314,6 +1322,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: renderCloseDate,
       },
       {
+        columnId: "col.positionid",
+        propertyName: "positionId",
+        renderFunction: null,
+      },
+      {
+        columnId: "col.signalid",
+        propertyName: "signalId",
+        renderFunction: null,
+      },
+      {
         columnId: "col.pair",
         propertyName: "pair",
         renderFunction: null,
@@ -1357,6 +1375,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
         renderFunction: renderOpenDate,
+      },
+      {
+        columnId: "col.positionid",
+        propertyName: "positionId",
+        renderFunction: null,
+      },
+      {
+        columnId: "col.signalid",
+        propertyName: "signalId",
+        renderFunction: null,
       },
       {
         columnId: "col.pair",
