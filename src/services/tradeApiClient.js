@@ -840,9 +840,9 @@ class TradeApiClient {
   }
 
   /**
-   * Stop following a provider or copytrader.
+   * Stop following a profit sharing service.
    *
-   * @param {DisconnectProviderPayload} payload Stop following provider payload.
+   * @param {DisconnectProviderPayload} payload Disconenct profit sharing trader payload.
 
    * @returns {Promise<boolean>} Promise that resolves into success status.
    *
@@ -857,9 +857,9 @@ class TradeApiClient {
   }
 
   /**
-   * Stop following a provider or copytrader.
+   * Cancel disconnection for a profit sharing service.
    *
-   * @param {CancelDisconnectProviderPayload} payload Stop following provider payload.
+   * @param {CancelDisconnectProviderPayload} payload Cancel disconnect provider payload.
 
    * @returns {Promise<boolean>} Promise that resolves into success status.
    *
