@@ -23,27 +23,35 @@
   .exchangeIconBox {
     margin: 20px 0;
 
-    .exchangeIcon {
+    .iconBox {
+      align-items: center;
       border: solid 2px transparent;
       border-radius: 50%;
-      cursor: pointer;
-      height: 60px;
+      display: flex;
+      flex-direction: row;
+      height: 72px;
+      justify-content: center;
       margin-right: 20px;
       padding: 4px;
-      width: 60px;
+      width: 72px;
 
       &:last-child {
         margin-right: 0;
       }
 
-      &.bitmex {
-        height: 48px;
-        margin-right: 20px;
-        width: 48px;
-      }
-
       &.selected {
         border-color: var(--purple);
+      }
+    }
+
+    .exchangeIcon {
+      cursor: pointer;
+      height: 60px;
+      width: 60px;
+
+      &.bitmex {
+        height: 60px;
+        width: 60px;
       }
     }
   }

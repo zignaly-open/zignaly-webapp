@@ -169,12 +169,9 @@ const ExchangeAccountConnect = () => {
         </Typography>
         <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
           {exchanges.map((e) => (
-            <ExchangeIcon
-              className={exchangeName === e.name ? "selected" : ""}
-              exchange={e.name}
-              key={e.id}
-              onClick={() => setExchangeName(e.name)}
-            />
+            <Box className={`iconBox ${exchangeName === e.name ? "selected" : ""}`} key={e.id}>
+              <ExchangeIcon exchange={e.name} onClick={() => setExchangeName(e.name)} />
+            </Box>
           ))}
         </Box>
         <div className="name">
