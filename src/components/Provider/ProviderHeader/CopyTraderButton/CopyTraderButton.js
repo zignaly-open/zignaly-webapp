@@ -15,6 +15,7 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
+import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * @typedef {Object} DefaultProps
@@ -47,6 +48,26 @@ const CopyTraderButton = ({ provider }) => {
     disconnectedExchange && disconnectedExchange.disconnecting
       ? disconnectedExchange.disconnecting
       : false;
+
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  const confirmCancel = () => {
+    setConfirmConfig({
+      titleTranslationId: "copyt.canceldisconnect.title",
+      messageTranslationId: "copyt.canceldisconnect.body",
+      visible: true,
+    });
+  };
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -104,6 +125,11 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={cancelDisconnect}
+        setConfirmConfig={setConfirmConfig}
+      />
       {disabled && !disconnecting && (
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
@@ -136,7 +162,7 @@ const CopyTraderButton = ({ provider }) => {
         <CustomButton
           className="loadMoreButton"
           loading={cancelDisconnectLoader}
-          onClick={cancelDisconnect}
+          onClick={confirmCancel}
         >
           <FormattedMessage id="copyt.canceldisconnecting" />
         </CustomButton>
