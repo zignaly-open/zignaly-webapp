@@ -84,7 +84,9 @@ const CopyTraderButton = ({ provider }) => {
           version: 2,
         };
         dispatch(setProvider(providerPayload));
-        dispatch(showSuccessAlert("", "Your disconnection has been cancelled!"));
+        dispatch(
+          showSuccessAlert("srv.canceldisconnect.alert.title", "srv.canceldisconnect.alert.body"),
+        );
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
