@@ -67,6 +67,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').DisconnectProviderPayload} DisconnectProviderPayload
+ * @typedef {import('./tradeApiClient.types').CancelDisconnectProviderPayload} CancelDisconnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DeleteProviderPayload} DeleteProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
@@ -850,6 +851,23 @@ class TradeApiClient {
 
   async providerDisconnect(payload) {
     const endpointPath = "/fe/api.php?action=disconnectProfitSharingService";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Stop following a provider or copytrader.
+   *
+   * @param {CancelDisconnectProviderPayload} payload Stop following provider payload.
+
+   * @returns {Promise<boolean>} Promise that resolves into success status.
+   *
+   * @memberof TradeApiClient
+   */
+
+  async providerCancelDisconnect(payload) {
+    const endpointPath = "/fe/api.php?action=cancelDisconnecting";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

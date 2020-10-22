@@ -227,6 +227,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelDisconnectProviderPayload
+ * @property {string} token User's session token
+ * @property {string} providerId Provider Id
+ * @property {String} internalExchangeId Internal Id of connected exchange.
+ */
+
+/**
  * @typedef {Object} DeleteProviderPayload
  * @property {string} token
  * @property {string} providerId

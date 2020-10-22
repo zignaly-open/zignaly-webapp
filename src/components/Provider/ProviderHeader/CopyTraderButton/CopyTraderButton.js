@@ -22,11 +22,16 @@ import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
+  const disabled = provider.disable;
+  const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
+  const followingFrom = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -48,10 +53,6 @@ const CopyTraderButton = ({ provider }) => {
     showStopCopyingModal(false);
   };
 
-  const followingFrom = exchangeConnections.find(
-    (e) => e.internalId === provider.exchangeInternalId,
-  );
-
   return (
     <Box
       alignItems="center"
@@ -60,12 +61,11 @@ const CopyTraderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      {provider.disable ? (
+      {disabled ? (
         <CustomButton className="submitButton" onClick={startCopying}>
           <FormattedMessage id="copyt.copythistrader" />
         </CustomButton>
-      ) : !followingFrom ||
-        provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
+      ) : !followingFrom || sameSelectedExchange ? (
         <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
           <FormattedMessage id="copyt.stopcopyingtrader" />
         </CustomButton>
