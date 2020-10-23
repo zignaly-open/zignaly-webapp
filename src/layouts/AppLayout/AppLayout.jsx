@@ -59,6 +59,15 @@ const AppLayout = (props) => {
     }
   }, [hash]);
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    if (userpilot) {
+      userpilot.reload();
+    }
+  }, [location.pathname]);
+
+>>>>>>> Stashed changes
   return (
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
