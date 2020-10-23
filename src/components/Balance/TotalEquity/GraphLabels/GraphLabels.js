@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./GraphLabels.scss";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import moment from "moment";
 
 /**
  *
@@ -33,21 +34,17 @@ const EquityGraphLabels = ({ list }) => {
   ];
 
   useEffect(() => {
-    const prepareLabels = () => {
-      /**
-       * @type {Array<String>} data
-       */
-      let data = [];
-      [...list].forEach((item) => {
-        let date = new Date(item.date);
-        if (!data.includes(monthNames[date.getMonth()])) {
-          data.push(monthNames[date.getMonth()]);
-        }
-      });
-      setLabels(data);
-    };
-
-    prepareLabels();
+    /**
+     * @type {Array<String>} data
+     */
+    let data = [];
+    list.forEach((item) => {
+      let date = moment(item.date);
+      if (!data.includes(monthNames[date.month()])) {
+        data.push(monthNames[date.month()]);
+      }
+    });
+    setLabels(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
 

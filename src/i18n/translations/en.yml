@@ -475,6 +475,7 @@ profitsharing.watermark: "Watermark"
 profitsharing.types.all: "All"
 profitsharing.types.deposit: "Deposit"
 profitsharing.types.pnl: "PnL"
+profitsharing.types.successFee: "Success Fee"
 profitsharing.types.withdraw: "Withdraw"
 
 graph.others: "Others"

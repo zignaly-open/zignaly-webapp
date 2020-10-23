@@ -43,7 +43,7 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
 
   const prepareChartData = () => {
     const key = selectedExchange.exchangeType === "futures" ? "totalUSDT" : "totalUSDT";
-    [...list].forEach((item) => {
+    list.forEach((item) => {
       chartData.values.push(item[key]);
       chartData.labels.push("");
     });
