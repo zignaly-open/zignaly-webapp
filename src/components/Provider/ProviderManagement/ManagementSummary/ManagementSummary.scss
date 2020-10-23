@@ -2,11 +2,6 @@
   width: 100%;
 }
 
-.loadingBox {
-  min-height: 150px;
-  width: 100%;
-}
-
 @include media("<=sm") {
   .managementSummary {
     flex-wrap: wrap;

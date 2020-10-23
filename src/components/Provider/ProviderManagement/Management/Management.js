@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
+import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import "./Management.scss";
-import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert } from "../../../store/actions/ui";
-import useInterval from "../../../hooks/useInterval";
+import tradeApi from "../../../../services/tradeApiClient";
+import { showErrorAlert } from "../../../../store/actions/ui";
+import useInterval from "../../../../hooks/useInterval";
 import { Box, CircularProgress } from "@material-ui/core";
 import ManagementTable from "./ManagementTable";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
- * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Balance
  */

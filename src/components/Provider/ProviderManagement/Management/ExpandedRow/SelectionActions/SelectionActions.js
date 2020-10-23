@@ -1,17 +1,17 @@
 import React from "react";
 import "./SelectionActions.scss";
 import { Box } from "@material-ui/core";
-import CustomButton from "../../../../CustomButton";
+import CustomButton from "../../../../../CustomButton";
 import { useDispatch } from "react-redux";
-import { showSuccessAlert, showErrorAlert } from "../../../../../store/actions/ui";
-import tradeApi from "../../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
+import { showSuccessAlert, showErrorAlert } from "../../../../../../store/actions/ui";
+import tradeApi from "../../../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../../../hooks/useStoreSessionSelector";
 import { FormattedMessage } from "react-intl";
 
 /**
  *
- * @typedef {import('../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
- * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import('../../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import("../../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {Object} DefaultProps
  * @property {Array<ManagementPositionsEntity>} values
  * @property {Array<String>} selectedRows
