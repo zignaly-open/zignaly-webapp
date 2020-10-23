@@ -1,7 +1,6 @@
 import React from "react";
 import "./AvailableBalance.scss";
 import { Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -89,9 +88,6 @@ const AvailableBalance = ({ balance }) => {
             <EquityPart
               info={
                 <>
-                  <Typography variant="h4">
-                    <FormattedMessage id="balance.total" />
-                  </Typography>
                   <Typography className="smallText number3">
                     = USDT{" "}
                     {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
@@ -102,7 +98,7 @@ const AvailableBalance = ({ balance }) => {
                   </Typography>
                 </>
               }
-              name="balance.available"
+              name="balance.total"
               value={
                 <>
                   BTC{" "}
