@@ -63,12 +63,12 @@ const ManagementTabs = ({ provider }) => {
         )}
         {tabValue === 1 && (
           <Box className="tabPanel">
-            <Contracts provider={provider} />
+            <Orders provider={provider} />
           </Box>
         )}
         {tabValue === 2 && (
           <Box className="tabPanel">
-            <Orders provider={provider} />
+            <Contracts provider={provider} />
           </Box>
         )}
       </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./Orders.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
@@ -30,9 +30,10 @@ const Orders = ({ provider }) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedExchange.internalId,
+      providerId: provider.id,
     };
     tradeApi
-      .openOrdersGet(payload)
+      .providerOrdersGet(payload)
       .then((response) => {
         setList(response);
       })

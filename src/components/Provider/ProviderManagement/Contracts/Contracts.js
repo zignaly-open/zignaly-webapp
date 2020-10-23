@@ -30,9 +30,10 @@ const Contracts = ({ provider }) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedExchange.internalId,
+      providerId: provider.id,
     };
     tradeApi
-      .exchangeContractsGet(payload)
+      .providerContractsGet(payload)
       .then((response) => {
         setList(response);
       })
