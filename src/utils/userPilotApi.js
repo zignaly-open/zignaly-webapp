@@ -12,6 +12,7 @@
  * @prop {Function} track
  * @prop {Function} trigger
  * @prop {Function} reset
+ * @prop {Function} reload
  */
 
 /**
