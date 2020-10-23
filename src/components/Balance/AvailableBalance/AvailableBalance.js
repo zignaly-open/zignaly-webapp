@@ -89,9 +89,6 @@ const AvailableBalance = ({ balance }) => {
             <EquityPart
               info={
                 <>
-                  <Typography variant="h4">
-                    <FormattedMessage id="balance.total" />
-                  </Typography>
                   <Typography className="smallText number3">
                     = USDT{" "}
                     {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
@@ -102,7 +99,7 @@ const AvailableBalance = ({ balance }) => {
                   </Typography>
                 </>
               }
-              name="balance.available"
+              name="balance.total"
               value={
                 <>
                   BTC{" "}
