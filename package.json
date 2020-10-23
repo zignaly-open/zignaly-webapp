@@ -84,8 +84,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "remark-breaks": "^2.0.0",
-    "userpilot": "^1.1.7"
+    "remark-breaks": "^2.0.0"
   },
   "resolutions": {
     "moment": "2.24.0"
