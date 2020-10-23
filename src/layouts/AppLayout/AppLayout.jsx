@@ -52,6 +52,7 @@ const AppLayout = (props) => {
 
   const hash = typeof window !== "undefined" ? window.location.hash : "";
   const location = typeof window !== "undefined" ? window.location : null;
+  const pathname = location ? location.pathname : "";
   useEffect(() => {
     // Internal tracking for hash navigation
     if (hash && location) {
@@ -65,7 +66,7 @@ const AppLayout = (props) => {
     if (userpilot) {
       userpilot.reload();
     }
-  }, [location.pathname]);
+  }, [pathname]);
 
   return (
     <StylesProvider injectFirst>
