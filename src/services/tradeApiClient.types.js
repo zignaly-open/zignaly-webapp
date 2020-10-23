@@ -905,8 +905,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuotesAssetsGetPayload
  * @property {boolean} ro
- * @property {string} [exchangeInternalId] internal ID of exchange.
- * @property {number} version Endpoint version number.
+ * @property {string} [exchangeInternalId]
  */
 
 /**
