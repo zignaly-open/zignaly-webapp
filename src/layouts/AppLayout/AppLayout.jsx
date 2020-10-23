@@ -51,9 +51,10 @@ const AppLayout = (props) => {
   }, []);
 
   const hash = typeof window !== "undefined" ? window.location.hash : "";
+  const location = typeof window !== "undefined" ? window.location : null;
+  const pathname = location ? location.pathname : "";
   useEffect(() => {
     // Internal tracking for hash navigation
-    const location = typeof window !== "undefined" ? window.location : null;
     if (hash && location) {
       triggerTz(location, ref.current);
       // Save prev location
@@ -65,7 +66,7 @@ const AppLayout = (props) => {
     if (userpilot) {
       userpilot.reload();
     }
-  }, [location]);
+  }, [pathname]);
 
   return (
     <StylesProvider injectFirst>
