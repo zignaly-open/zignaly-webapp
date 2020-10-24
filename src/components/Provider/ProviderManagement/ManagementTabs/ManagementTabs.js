@@ -26,11 +26,11 @@ const ManagementTabs = ({ provider }) => {
       label: <FormattedMessage id="management.positions" />,
     },
     {
-      display: true,
+      display: provider.profitSharing,
       label: <FormattedMessage id="management.orders" />,
     },
     {
-      display: true,
+      display: provider.profitSharing,
       label: <FormattedMessage id="management.contracts" />,
     },
   ];
