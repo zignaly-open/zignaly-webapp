@@ -10,6 +10,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
 import { usePositionDataTableCompose } from "../../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 import SelectionActions from "../ExpandedRow/SelectionActions";
+import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -34,6 +35,7 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
  */
 const ManagementTable = ({ list, allPositions, setLoading }) => {
   const storeSession = useStoreSessionSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
@@ -130,7 +132,10 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
     }
   };
 
-  const { composeManagementPositionsDataTable } = usePositionDataTableCompose(list, confirmAction);
+  const {
+    composeManagementPositionsDataTable,
+    excludeDataTableColumn,
+  } = usePositionDataTableCompose(list, confirmAction);
 
   /**
    * Compose MUI data table for positions collection of selected type.
@@ -139,7 +144,14 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
+    const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
+    const isDemo = selectedExchange.paperTrading;
+
     dataTable = composeManagementPositionsDataTable();
+    if (isDemo || !isFutures) {
+      dataTable = excludeDataTableColumn(dataTable, "col.price.market");
+      dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+    }
     return dataTable;
   };
 

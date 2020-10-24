@@ -44,7 +44,7 @@ const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const { setOpenCount, setCloseCount, setLogCount } = useContext(PositionsContext);
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
   const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;
@@ -241,14 +241,9 @@ const PositionsTable = (props) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
-
-    const excludeCancelAction = () => {
-      const isFutures =
-        storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures";
-      const isZignaly = storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly";
-
-      return isZignaly && isFutures;
-    };
+    const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
+    const isZignaly = selectedExchange.exchangeName.toLowerCase() === "zignaly";
+    const isDemo = selectedExchange.paperTrading;
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
@@ -258,14 +253,15 @@ const PositionsTable = (props) => {
       configureCounts("log", positionsAll.length);
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
+      if (isDemo || !isFutures) {
+        dataTable = excludeDataTableColumn(dataTable, "col.price.market");
+        dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+      }
       configureCounts("open", positionsAll.length);
-      // if (excludeCancelAction()) {
-      //   dataTable = excludeDataTableColumn(dataTable, "col.cancel");
-      // }
     } else if (type === "profileOpen") {
       dataTable = composeOpenPositionsForProvider(positionsAll, confirmAction);
       dataTable = excludeDataTableColumn(dataTable, "col.actions");
-      if (excludeCancelAction()) {
+      if (isZignaly && isFutures) {
         dataTable = excludeDataTableColumn(dataTable, "col.cancel");
       }
       configureCounts("open", positionsAll.length);
