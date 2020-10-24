@@ -1725,15 +1725,15 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
  * @property {Number} totalAvailableBTC
- * @property {Number} totalAvailableUSD
+ * @property {Number} totalAvailableUSDT
  * @property {Number} totalCurrentMarginBTC
- * @property {Number} totalCurrentMarginUSD
+ * @property {Number} totalCurrentMarginUSDT
  * @property {Number} totalMarginBTC
- * @property {Number} totalMarginUSD
+ * @property {Number} totalMarginUSDT
  * @property {Number} totalUnrealizedProfitBTC
- * @property {Number} totalUnrealizedProfitUSD
+ * @property {Number} totalUnrealizedProfitUSDT
  * @property {Number} totalWalletBTC
- * @property {Number} totalWalletUSD
+ * @property {Number} totalWalletUSDT
  */
 
 /**
@@ -1761,15 +1761,15 @@ export function createEmptyUserBalanceEntity() {
     totalLockedUSDT: 0,
     totalUSDT: 0,
     totalAvailableBTC: 0,
-    totalAvailableUSD: 0,
+    totalAvailableUSDT: 0,
     totalCurrentMarginBTC: 0,
-    totalCurrentMarginUSD: 0,
+    totalCurrentMarginUSDT: 0,
     totalMarginBTC: 0,
-    totalMarginUSD: 0,
+    totalMarginUSDT: 0,
     totalUnrealizedProfitBTC: 0,
-    totalUnrealizedProfitUSD: 0,
+    totalUnrealizedProfitUSDT: 0,
     totalWalletBTC: 0,
-    totalWalletUSD: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -1857,6 +1857,14 @@ export function createEmptyUserBalanceEntity() {
  * @property {Number} totalUSDT
  * @property {Number} availablePercentage
  * @property {Number} investedPercentage
+ * @property {Number} netTransferBTC
+ * @property {Number} netTransferUSDT
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} sumPnlBTC
+ * @property {Number} sumPnlUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  *
  */
 
@@ -2008,6 +2016,14 @@ function createUserEquityEntity() {
     totalUSDT: 0,
     availablePercentage: 0,
     investedPercentage: 0,
+    netTransferBTC: 0,
+    netTransferUSDT: 0,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    sumPnlBTC: 0,
+    sumPnlUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 

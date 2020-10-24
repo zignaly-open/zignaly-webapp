@@ -260,11 +260,10 @@ const initialState = {
       ],
       futuresDailyBalance: [
         "date",
-        "col.dailyprofitloss",
-        "col.cumprofitloss",
-        "col.nettransfer",
-        "col.walletbalance",
-        "freeETH",
+        "col.dailyprofitlossUSDT",
+        "col.cumprofitlossUSDT",
+        "col.nettransferUSDT",
+        "col.walletbalanceUSDT",
       ],
       exchangeAssets: [
         "coin",

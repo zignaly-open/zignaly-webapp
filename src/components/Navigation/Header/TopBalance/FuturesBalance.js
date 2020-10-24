@@ -26,7 +26,7 @@ const FuturesBalance = ({ balance, selectedExchange }) => {
       <BalaneBox
         name={<FormattedMessage id="balance.wallet" />}
         value1={<> BTC {formatFloat(balance.totalWalletBTC)}</>}
-        value2={<>USDT {formatFloat(balance.totalWalletUSD)}</>}
+        value2={<>USDT {formatFloat(balance.totalWalletUSDT)}</>}
       />
 
       <BalaneBox
@@ -47,15 +47,15 @@ const FuturesBalance = ({ balance, selectedExchange }) => {
         value2={
           <Typography
             className={`${
-              balance.totalUnrealizedProfitUSD > 0
+              balance.totalUnrealizedProfitUSDT > 0
                 ? "green"
-                : balance.totalUnrealizedProfitUSD < 0
+                : balance.totalUnrealizedProfitUSDT < 0
                 ? "red"
                 : ""
             } number3`}
             variant="subtitle2"
           >
-            USDT {formatFloat(balance.totalUnrealizedProfitUSD)}
+            USDT {formatFloat(balance.totalUnrealizedProfitUSDT)}
           </Typography>
         }
       />
@@ -63,7 +63,7 @@ const FuturesBalance = ({ balance, selectedExchange }) => {
       <BalaneBox
         name={<FormattedMessage id="balance.margin" />}
         value1={<> BTC {formatFloat(balance.totalMarginBTC)}</>}
-        value2={<>USDT {formatFloat(balance.totalMarginUSD)}</>}
+        value2={<>USDT {formatFloat(balance.totalMarginUSDT)}</>}
       />
 
       <BalanceBox
@@ -84,7 +84,7 @@ const FuturesBalance = ({ balance, selectedExchange }) => {
             {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
               <AllInclusiveIcon className="infinity" />
             ) : (
-              formatFloat(balance.totalAvailableUSD)
+              formatFloat(balance.totalAvailableUSDT)
             )}
           </>
         }

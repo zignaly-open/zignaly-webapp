@@ -34,7 +34,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatNumber(balance.totalWalletUSD, 2)
+                  formatNumber(balance.totalWalletUSDT, 2)
                 )}
               </div>
             }
@@ -52,7 +52,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
           />
           <span className="operator">+</span>
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalUnrealizedProfitUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalUnrealizedProfitUSDT, 2)}</>}
             name="balance.profit"
             value={
               <>
@@ -71,7 +71,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
           <span className="operator">=</span>
 
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalMarginUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalMarginUSDT, 2)}</>}
             name="balance.margin"
             value={
               <Typography className={`number1 ${color}`}>
@@ -82,11 +82,11 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
 
           <span className="operator">+</span>
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalCurrentMarginUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalCurrentMarginUSDT, 2)}</>}
             name="balance.current"
             value={
               <Typography className={`number1 ${color}`}>
-                BTC {formatFloat(balance.totalCurrentMarginUSD)}
+                BTC {formatFloat(balance.totalCurrentMarginUSDT)}
               </Typography>
             }
           />
@@ -100,7 +100,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                   {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                     <AllInclusiveIcon className="infinity" />
                   ) : (
-                    formatNumber(balance.totalAvailableUSD, 2)
+                    formatNumber(balance.totalAvailableUSDT, 2)
                   )}
                 </Typography>
               </>
