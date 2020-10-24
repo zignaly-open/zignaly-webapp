@@ -18,7 +18,7 @@ import moment from "moment";
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
- * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import("../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
 
@@ -74,7 +74,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
       };
     });
 
-    /** @type {Array<ProfitSharingBalanceEntry>} */
+    /** @type {Array<DefaultProviderPerformanceWeeklyStats>} */
     let weekStats = [];
     /** @type {Array<ProfitSharingBalanceEntry>} */
     let accountingStats = [];

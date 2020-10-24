@@ -6,6 +6,12 @@ import moment from "moment";
  */
 
 /**
+ * @typedef {Object} WeeklyData
+ * @property {Date} day Day
+ * @property {number} return Return
+ */
+
+/**
  * Function to generate a new array that contains daily amount data.
  *
  * @param {Array<DailyData>} dailyData Array of daily amount data.
@@ -105,7 +111,7 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
 /**
  * Function to generate a new array that contains daily amount data.
  *
- * @param {Array<DailyData>} dailyData Array of daily amount data.
+ * @param {Array<WeeklyData>} dailyData Array of daily amount data.
  * @param {function(Date, number): *} addValue Callback to format the new aggregated value
  * @returns {Array<*>} Result
  */
@@ -145,16 +151,10 @@ export const generateWeeklyData = (dailyData, addValue) => {
       generateMissingDays(quarterStart, daysDiff, 0);
     }
   }
-  let totalLosses = 0;
-  let lastWeekBalance = 0;
+
   const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
     let amount = currentData.return;
     let dayDate = currentData.day;
-
-    // let weekFull = currentData.week;
-    // const weekFullSplit = weekFull.split("-");
-    // const week = parseInt(weekFullSplit[0]);
-    // const year = parseInt(weekFullSplit[1]);
 
     if (aggregatedData) {
       amount += aggregatedData.return;

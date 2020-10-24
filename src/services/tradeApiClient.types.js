@@ -2402,7 +2402,7 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
- * @typedef {Object} DefaultProviderPermormanceWeeklyStats
+ * @typedef {Object} DefaultProviderPerformanceWeeklyStats
  * @property {String} week
  * @property {Number} return
  * @property {String} day
@@ -2413,7 +2413,7 @@ function createConnectedProviderUserInfoEntity(response) {
  *
  * @typedef {Object} DefaultProviderPermormanceObject
  * @property {Number} closePositions
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
@@ -3015,7 +3015,7 @@ export function exchangeDepositAddressResponseTransform({ currency, address, tag
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  */
 
 /**

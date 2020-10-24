@@ -5,14 +5,14 @@ import moment from "moment";
 
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
  *
  * @typedef {Object} DefaultQuarter
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} total
  * @property {Number} id
  * @property {String} label
