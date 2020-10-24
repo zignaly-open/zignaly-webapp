@@ -38,7 +38,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
-  const tablePersistsKey = "ordersTable";
+  const tablePersistsKey = "providerOrders";
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("");

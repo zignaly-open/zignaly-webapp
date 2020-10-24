@@ -36,7 +36,7 @@ import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelec
  * @returns {JSX.Element} Component JSX.
  */
 const ContractsTable = ({ title, list, loadData }) => {
-  const tablePersistsKey = "contractsTable";
+  const tablePersistsKey = "providerContracts";
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
