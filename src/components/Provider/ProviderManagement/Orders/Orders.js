@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import OrdersTable from "./OrdersTable";
+import OrdersTable from "../../../ConnectExchangeView/ExchangeOrders/Orders/OrdersTable";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**
