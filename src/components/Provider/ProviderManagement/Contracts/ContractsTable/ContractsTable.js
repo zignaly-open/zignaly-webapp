@@ -11,6 +11,7 @@ import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelecto
 import { showErrorAlert } from "../../../../../store/actions/ui";
 import { Delete } from "react-feather";
 import { FormattedMessage } from "react-intl";
+import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../../../store/initialState").DefaultState} DefaultStateType
@@ -36,6 +37,7 @@ import { FormattedMessage } from "react-intl";
  */
 const ContractsTable = ({ title, list, loadData }) => {
   const tablePersistsKey = "contractsTable";
+  const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState("");
@@ -78,6 +80,7 @@ const ContractsTable = ({ title, list, loadData }) => {
       token: storeSession.tradeApi.accessToken,
       symbol: contract.symbol,
       amount: contract.amount.toString(),
+      exchangeInternalId: selectedExchange.internalId,
     };
 
     tradeApi
