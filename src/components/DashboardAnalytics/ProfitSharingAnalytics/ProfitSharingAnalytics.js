@@ -13,7 +13,7 @@ import { generateDailyData } from "../../../utils/chart";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
-import moment from "moment";
+import dayjs from "dayjs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
@@ -66,14 +66,10 @@ const ProfitSharingAnalytics = ({ provider }) => {
    */
   const parseEntries = (entries) => {
     // Prepare balance daily stats
-    const balanceStats = generateDailyData(entries, true, (date, amount, watermark, profits) => {
-      const momentDate = moment(date);
-      return {
-        day: momentDate.format("YYYY/MM/DD"),
-        totalUSDT: amount,
-      };
-    });
-
+    const balanceStats = generateDailyData(entries, (date, amount) => ({
+      day: dayjs(date).format("YYYY/MM/DD"),
+      totalUSDT: amount,
+    }));
     /** @type {Array<DefaultProviderPerformanceWeeklyStats>} */
     let weekStats = [];
     /** @type {Array<ProfitSharingBalanceEntry>} */
@@ -81,31 +77,33 @@ const ProfitSharingAnalytics = ({ provider }) => {
 
     // Prepare weekly profit stats and accounting stats
     entries.forEach((entry) => {
-      const dayDate = entry.date.startOf("d");
+      const dayDate = dayjs(entry.date).startOf("d");
       if (entry.type === "pnl") {
+        // Calculate total PnL by week for weekly profit stats
         const week = dayDate.week();
         const statsPnLWeek = weekStats.length && weekStats[weekStats.length - 1];
-        if (statsPnLWeek && statsPnLWeek.day.isSame(dayDate, "w")) {
+        if (statsPnLWeek && dayjs(statsPnLWeek.day).isSame(dayDate, "w")) {
           statsPnLWeek.return += entry.amount;
         } else {
           weekStats.push({
             week: `${dayDate.year()}-${week}`,
             return: 0,
-            day: dayDate,
+            day: dayDate.format(),
             positions: 1,
           });
         }
       }
 
       const existingStats = accountingStats.find(
-        (s) => s.date.isSame(entry.date) && s.type === entry.type,
+        (s) => dayjs(s.date).isSame(entry.date, "d") && s.type === entry.type,
       );
 
+      // Prepare accounting data, grouped by day and type
       if (existingStats) {
-        accountingStats.amount += entry.amount;
+        existingStats.amount += entry.amount;
       } else {
         accountingStats.push({
-          date: dayDate,
+          date: dayDate.toDate(),
           amount: entry.amount,
           type: entry.type,
         });
@@ -115,6 +113,10 @@ const ProfitSharingAnalytics = ({ provider }) => {
     setStats({
       performance: {
         weeklyStats: weekStats,
+        closePositions: 0,
+        openPositions: 0,
+        totalBalance: 0,
+        totalTradingVolume: 0,
       },
       accounting: accountingStats,
       balance: balanceStats,
@@ -132,8 +134,8 @@ const ProfitSharingAnalytics = ({ provider }) => {
     tradeApi
       .getProfitSharingBalanceHistory(payload)
       .then((response) => {
-        setBalanceHistory(response);
         parseEntries(response.entries);
+        setBalanceHistory(response);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

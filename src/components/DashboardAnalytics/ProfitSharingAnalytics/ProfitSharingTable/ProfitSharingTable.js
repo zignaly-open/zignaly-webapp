@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../Table";
 import { FormattedMessage, useIntl } from "react-intl";
-import { FormatedDateTime } from "../../../../utils/format";
+import { formatDate } from "../../../../utils/format";
 import { formatPrice } from "../../../../utils/formatters";
 import "./ProfitSharingTable.scss";
 import AccountFilter from "../AccountingFilter";
@@ -68,7 +68,7 @@ const ProfitSharingTable = ({ data }) => {
       name: "date",
       label: "col.date",
       options: {
-        customBodyRender: FormatedDateTime,
+        customBodyRender: (date) => formatDate(date, "YYYY/MM/DD"),
       },
     },
     {

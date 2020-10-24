@@ -1,4 +1,7 @@
-import moment from "moment";
+import dayjs from "dayjs";
+import quarterOfYear from "dayjs/plugin/quarterOfYear";
+dayjs.extend(quarterOfYear);
+
 /**
  * @typedef {Object} DailyData
  * @property {Date} date Date
@@ -7,7 +10,7 @@ import moment from "moment";
 
 /**
  * @typedef {Object} WeeklyData
- * @property {Date} day Day
+ * @property {Date|string} day Day
  * @property {number} return Return
  */
 
@@ -18,7 +21,7 @@ import moment from "moment";
  * @param {function(Date, number): *} addValue Callback to format the new aggregated value
  * @returns {Array<*>} Result
  */
-export const generateDailyData = (dailyData, withWaterfall, addValue) => {
+export const generateDailyData = (dailyData, addValue) => {
   /**
    * @type {Array<*>}
    */
@@ -31,19 +34,19 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
    * @param {number} amount Amount value for each day
    * @returns {void}
    */
-  const generateMissingDays = (daysCount, afterDate, amount, waterfall) => {
+  const generateMissingDays = (daysCount, afterDate, amount) => {
     for (let i = 0; i < daysCount; i++) {
-      const date = moment(afterDate).add(i + 1, "d");
-      res.push(addValue(date.toDate(), amount, waterfall));
+      const date = dayjs(afterDate).add(i + 1, "d");
+      res.push(addValue(date.toDate(), amount));
     }
   };
 
   let totalLosses = 0;
-  let lastWeekBalance = 0;
+  //   let lastWeekBalance = 0;
   const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
     let amount = currentData.amount;
-    let balance;
-    let profits = 0;
+    // let balance;
+    // let profits = 0;
     // if (currentData.type === "pnl") {
     //   if (amount < 0) {
     //     totalLosses += Math.abs(currentData.amount);
@@ -51,21 +54,15 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
     //   profits = currentData.amount;
     // }
     let dayDate = currentData.date;
-    let sameDay = false;
 
     if (aggregatedData) {
       amount += aggregatedData.amount;
-      const currentDate = moment(currentData.date);
-      const lastDate = moment(aggregatedData.date);
-      const daysDiff = currentDate.startOf("d").diff(lastDate.startOf("d"), "days");
+      const currentDate = dayjs(currentData.date).startOf("d");
+      const lastDate = dayjs(aggregatedData.date).startOf("d");
+      const daysDiff = currentDate.diff(lastDate, "d");
       if (daysDiff > 1) {
         // Adding missing days
-        generateMissingDays(
-          daysDiff - 1,
-          aggregatedData.date,
-          aggregatedData.amount,
-          aggregatedData.watermark,
-        );
+        generateMissingDays(daysDiff - 1, aggregatedData.date, aggregatedData.amount);
       } else if (daysDiff === 0) {
         // Still same day as previous one
         // Sum daily profits
@@ -79,29 +76,21 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
     // const profitPercentage = (lastWeekBalance * profits) / 100;
 
     // Add calculated daily amount
-    res.push(addValue(dayDate, amount, watermark));
+    res.push(addValue(dayDate, amount));
 
     // Return last aggregated data
     return {
       date: dayDate,
       amount,
       watermark,
-      //   profits,
     };
   }, null);
 
   if (lastAggregatedData) {
     // Adding missing days until today
-    const daysDiff = moment()
-      .startOf("d")
-      .diff(moment(lastAggregatedData.date).startOf("d"), "days");
+    const daysDiff = dayjs().startOf("d").diff(dayjs(lastAggregatedData.date).startOf("d"), "d");
     if (daysDiff > 1) {
-      generateMissingDays(
-        daysDiff - 1,
-        lastAggregatedData.date,
-        lastAggregatedData.amount,
-        lastAggregatedData.waterfall,
-      );
+      generateMissingDays(daysDiff - 1, lastAggregatedData.date, lastAggregatedData.amount);
     }
   }
 
@@ -123,32 +112,32 @@ export const generateWeeklyData = (dailyData, addValue) => {
 
   /**
    * Fill missing days with passed amount value
-   * @param {Date} afterDate Date after which to start generating
+   * @param {string|Date} startDate Date after which to start generating
    * @param {number} daysCount Number of days to generate
    * @param {number} amount Amount value for each day
    * @returns {void}
    */
   const generateMissingDays = (startDate, daysCount, amount) => {
-    let date = moment(startDate);
+    let date = dayjs(startDate);
     for (let i = 0; i < daysCount; i++) {
       res.push(addValue(date.toDate(), amount));
-      date.add(1, "w");
+      date = date.add(1, "w");
     }
   };
 
   if (dailyData.length) {
-    // Adding missing days from start date
-    const firstDate = moment(dailyData[0].date);
-    const quarterStart = firstDate.clone().startOf("quarter");
+    // Adding missing days until start date
+    const firstDate = dayjs(dailyData[0].day);
+    const quarterStart = firstDate.startOf("quarter");
     // First week day of the first week of the quarter
     if (quarterStart.day() > 0) {
       quarterStart.add(1, "w").startOf("w");
     }
-    const firstWeekDate = firstDate.clone().startOf("week");
+    const firstWeekDate = firstDate.startOf("week");
     const daysDiff = firstWeekDate.diff(quarterStart, "w");
     if (daysDiff > 0) {
       // Adding missing days
-      generateMissingDays(quarterStart, daysDiff, 0);
+      generateMissingDays(quarterStart.toDate(), daysDiff, 0);
     }
   }
 
@@ -158,15 +147,15 @@ export const generateWeeklyData = (dailyData, addValue) => {
 
     if (aggregatedData) {
       amount += aggregatedData.return;
-      const currentDate = moment(currentData.day).startOf("d");
-      const lastDate = moment(aggregatedData.day);
-      const daysDiff = currentDate.startOf("d").diff(lastDate.startOf("d"), "week");
+      const currentDate = dayjs(currentData.day).startOf("d");
+      const lastDate = dayjs(aggregatedData.day).startOf("d");
+      const daysDiff = currentDate.diff(lastDate, "week");
       if (daysDiff > 1) {
         // Adding missing days
         generateMissingDays(
-          moment(aggregatedData.day).add(1, "w"),
+          dayjs(aggregatedData.day).add(1, "w").toDate(),
           daysDiff,
-          aggregatedData.amount,
+          aggregatedData.return,
         );
       }
     }
@@ -178,20 +167,19 @@ export const generateWeeklyData = (dailyData, addValue) => {
 
     // Return last aggregated data
     return {
-      date: dayDate,
-      amount,
-      //   profits,
+      day: dayDate,
+      return: amount,
     };
   }, null);
 
   if (lastAggregatedData) {
     // Adding missing days until today
-    const daysDiff = moment()
+    const daysDiff = dayjs()
       .endOf("quarter")
       .startOf("d")
-      .diff(moment(lastAggregatedData.date).startOf("d"), "week");
+      .diff(dayjs(lastAggregatedData.day).startOf("d"), "week");
     if (daysDiff > 1) {
-      generateMissingDays(moment(lastAggregatedData.date).add(1, "w"), daysDiff, 0);
+      generateMissingDays(dayjs(lastAggregatedData.day).add(1, "w").toDate(), daysDiff, 0);
     }
   }
 

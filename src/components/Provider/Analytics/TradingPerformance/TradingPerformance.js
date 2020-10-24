@@ -4,7 +4,9 @@ import { Box } from "@material-ui/core";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
 import { generateWeeklyData } from "../../../../utils/chart";
-import moment, { weekdays } from "moment";
+import dayjs from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+dayjs.extend(weekOfYear);
 
 /**
  *
@@ -54,11 +56,11 @@ const TradingPerformance = ({ performance }) => {
     // }));
     generateWeeklyData(performance.weeklyStats, (date, amount) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
-      const dateMoment = moment(date);
-      const currentQuarterId = dateMoment.quarter();
+      const weekDate = dayjs(date);
+      const currentQuarterId = dayjs(date).quarter();
       const weekStats = {
-        day: dateMoment.format(),
-        week: dateMoment.week().toString(),
+        day: weekDate.format(),
+        week: weekDate.week().toString(),
         return: amount,
         positions: 1, // todo if needed
       };
@@ -70,7 +72,7 @@ const TradingPerformance = ({ performance }) => {
           weeklyStats: [weekStats],
           total: 0,
           id: currentQuarterId,
-          label: `'${dateMoment.year().toString().slice(2)} Q${currentQuarterId}`,
+          label: `'${weekDate.year().toString().slice(2)} Q${currentQuarterId}`,
         });
       }
     });

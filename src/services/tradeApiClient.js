@@ -1790,7 +1790,7 @@ class TradeApiClient {
   async getProfitSharingBalanceHistory(payload) {
     const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
-    return profitSharingBalanceHistoryResponseTransform(responseData);
+    return responseData;
   }
 }
 

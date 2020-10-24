@@ -954,8 +954,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ProfitSharingBalanceEntry
- * @property {string} id
- * @property {number} date Timestamp
+ * @property {Date} date
  * @property {number} amount
  * @property {string} type
  */
