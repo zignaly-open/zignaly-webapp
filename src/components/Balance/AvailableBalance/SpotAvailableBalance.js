@@ -88,9 +88,6 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
           <EquityPart
             info={
               <>
-                <Typography variant="h4">
-                  <FormattedMessage id="balance.total" />
-                </Typography>
                 <Typography className="smallText number3">
                   = USDT{" "}
                   {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
@@ -101,7 +98,7 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
                 </Typography>
               </>
             }
-            name="balance.available"
+            name="balance.total"
             value={
               <>
                 BTC{" "}
