@@ -43,6 +43,7 @@ import {
   profitStatsResponseTransform,
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
+  profitSharingBalanceHistoryResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -1789,7 +1790,7 @@ class TradeApiClient {
   async getProfitSharingBalanceHistory(payload) {
     const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return profitSharingBalanceHistoryResponseTransform(responseData);
   }
 }
 

@@ -2403,7 +2403,7 @@ function createConnectedProviderUserInfoEntity(response) {
 /**
  *
  * @typedef {Object} DefaultProviderPermormanceWeeklyStats
- * @property {Number} week
+ * @property {String} week
  * @property {Number} return
  * @property {String} day
  * @property {Number} positions
@@ -4101,3 +4101,17 @@ const createEmptyProfileProviderSignalsEntity = (item) => {
     i3MonthLowPercentage: item.i3m_lowerPricePercentage,
   };
 };
+
+/**
+ * Transform profits sharing balance history response.
+ *
+ * @param {*} response Profits sharing balance history response.
+ * @returns {ProfitSharingBalanceHistory} Profits sharing balance history entity.
+ */
+export function profitSharingBalanceHistoryResponseTransform(response) {
+  return {
+    ...response,
+    // @ts-ignore
+    entries: response.entries.map((e) => ({ ...e, date: moment.unix(e.date / 1000) })),
+  };
+}

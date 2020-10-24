@@ -3,10 +3,13 @@ import "./TradingPerformance.scss";
 import { Box } from "@material-ui/core";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
+import { generateWeeklyData } from "../../../../utils/chart";
+import moment from "moment";
 
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
@@ -31,25 +34,26 @@ const TradingPerformance = ({ performance }) => {
     label: "",
   });
 
-  const prepareData = () => {
+  const prepareData0 = () => {
     let weeklyStats = performance.weeklyStats;
     if (weeklyStats) {
       weeklyStats = prepareYear(weeklyStats);
       let listing = [];
       let week = 0;
-      for (let a = 0; a < 4; a++) {
+      for (let i = 0; i < 4; i++) {
         /**
          * @type {*}
          */
-        let quarter = { weeklyStats: [], total: 0, id: 0, label: "", quarterNumber: a + 1 };
+        let quarter = { weeklyStats: [], total: 0, id: 0, label: "", quarterNumber: i + 1 };
         let total = 0;
-        for (let b = 0; b < 13; b++) {
-          let stats = weeklyStats[week];
+        for (let j = 0; j < 13; j++) {
+          let stats = weeklyStats.find();
           if (stats.week === week + 1 && new Date(stats.day).getFullYear() === 2020) {
             quarter.weeklyStats.push(weeklyStats[week]);
             total += weeklyStats[week].return;
             quarter.total = total;
           } else {
+            // no weekly stats for this quarter
             quarter.weeklyStats.push({ week: week, return: 0, day: "", positions: 0 });
           }
           week++;
@@ -77,17 +81,51 @@ const TradingPerformance = ({ performance }) => {
    * @returns {Array<*>} Weekly data for 52 weeks.
    */
   const prepareYear = (data) => {
-    data = [...data].sort((a, b) => a.week - b.week);
+    console.log(data);
+    data = data.sort((a, b) => a.week - b.week);
     let newData = [];
-    for (let a = 1; a <= 52; a++) {
-      let item = [...data].find((i) => i.week === a);
+    for (let i = 1; i <= 52; i++) {
+      let item = data.find((i) => i.week === i);
       if (item) {
         newData.push(item);
       } else {
-        newData.push({ week: a, return: 0, day: "", positions: 0 });
+        // Empty week
+        newData.push({ week: i, return: 0, day: "", positions: 0 });
       }
     }
+    console.log(newData);
     return newData;
+  };
+
+  /**
+   * Update the weekly stats to fill missing weeks and group them by quarters
+   * @returns {void}
+   */
+  const prepareData = () => {
+    const quarters = [];
+    generateWeeklyData(performance.weeklyStats, (date, amount) => {
+      const lastQuarter = quarters && quarters[quarters.length - 1];
+      const dateMoment = moment(date);
+      const currentQuarterId = dateMoment.quarter();
+      const weekStats = {
+        day: dateMoment.format(), // start of week date
+        return: amount, // total PnL
+        positions: 1,
+      };
+      if (lastQuarter && lastQuarter.id === currentQuarterId) {
+        lastQuarter.weeklyStats.push(weekStats);
+        lastQuarter.total += weekStats.return;
+      } else {
+        quarters.push({
+          weeklyStats: [weekStats],
+          total: 0,
+          id: currentQuarterId,
+          label: `'${dateMoment.year().toString().slice(2)} Q${currentQuarterId}`,
+        });
+      }
+    });
+    setList(quarters);
+    setSelectedQuarter(quarters[0]);
   };
 
   useEffect(prepareData, [performance]);

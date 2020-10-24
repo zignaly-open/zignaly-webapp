@@ -26,7 +26,6 @@ import AccountFilter from "../AccountingFilter";
 const ProfitSharingTable = ({ data }) => {
   const [filteredData, setData] = useState(data);
   const intl = useIntl();
-  console.log(filteredData);
 
   const types = [
     {

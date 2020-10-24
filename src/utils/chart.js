@@ -38,12 +38,12 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
     let amount = currentData.amount;
     let balance;
     let profits = 0;
-    if (currentData.type === "pnl") {
-      if (amount < 0) {
-        totalLosses += Math.abs(currentData.amount);
-      }
-      profits = currentData.amount;
-    }
+    // if (currentData.type === "pnl") {
+    //   if (amount < 0) {
+    //     totalLosses += Math.abs(currentData.amount);
+    //   }
+    //   profits = currentData.amount;
+    // }
     let dayDate = currentData.date;
     let sameDay = false;
 
@@ -62,8 +62,6 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
         );
       } else if (daysDiff === 0) {
         // Still same day as previous one
-        dayDate = lastDate;
-        sameDay = true;
         // Sum daily profits
         // profits = aggregatedData.profits + profits;
       }
@@ -75,9 +73,7 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
     // const profitPercentage = (lastWeekBalance * profits) / 100;
 
     // Add calculated daily amount
-    if (!sameDay) {
-      res.push(addValue(dayDate, amount, watermark));
-    }
+    res.push(addValue(dayDate, amount, watermark));
 
     // Return last aggregated data
     return {
@@ -90,7 +86,9 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
 
   if (lastAggregatedData) {
     // Adding missing days until today
-    const daysDiff = moment().startOf().diff(moment(lastAggregatedData.date).startOf(), "days");
+    const daysDiff = moment()
+      .startOf("d")
+      .diff(moment(lastAggregatedData.date).startOf("d"), "days");
     if (daysDiff > 1) {
       generateMissingDays(
         daysDiff - 1,
@@ -98,6 +96,97 @@ export const generateDailyData = (dailyData, withWaterfall, addValue) => {
         lastAggregatedData.amount,
         lastAggregatedData.waterfall,
       );
+    }
+  }
+
+  return res;
+};
+
+/**
+ * Function to generate a new array that contains daily amount data.
+ *
+ * @param {Array<DailyData>} dailyData Array of daily amount data.
+ * @param {function(Date, number): *} addValue Callback to format the new aggregated value
+ * @returns {Array<*>} Result
+ */
+export const generateWeeklyData = (dailyData, addValue) => {
+  /**
+   * @type {Array<*>}
+   */
+  let res = [];
+
+  /**
+   * Fill missing days with passed amount value
+   * @param {Date} afterDate Date after which to start generating
+   * @param {number} daysCount Number of days to generate
+   * @param {number} amount Amount value for each day
+   * @returns {void}
+   */
+  const generateMissingDays = (startDate, daysCount, amount) => {
+    let date = moment(startDate);
+    for (let i = 0; i < daysCount; i++) {
+      res.push(addValue(date.toDate(), amount));
+      date.add(1, "w");
+    }
+  };
+
+  if (dailyData.length) {
+    // Adding missing days from start date
+    const quarterStart = moment(dailyData[0].date).startOf("quarter");
+    const firstWeekDate = moment(dailyData[0].date).startOf("week");
+    const daysDiff = quarterStart.diff(firstWeekDate, "w");
+    if (daysDiff < 0) {
+      // Adding missing days
+      generateMissingDays(quarterStart, Math.abs(daysDiff), 0);
+    }
+  }
+  let totalLosses = 0;
+  let lastWeekBalance = 0;
+  const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
+    let amount = currentData.return;
+    let dayDate = currentData.day;
+
+    // let weekFull = currentData.week;
+    // const weekFullSplit = weekFull.split("-");
+    // const week = parseInt(weekFullSplit[0]);
+    // const year = parseInt(weekFullSplit[1]);
+
+    if (aggregatedData) {
+      amount += aggregatedData.return;
+      const currentDate = moment(currentData.day).startOf("d");
+      const lastDate = moment(aggregatedData.day);
+      const daysDiff = currentDate.startOf("d").diff(lastDate.startOf("d"), "week");
+      if (daysDiff > 1) {
+        // Adding missing days
+        generateMissingDays(
+          moment(aggregatedData.day).add(1, "w"),
+          daysDiff - 1,
+          aggregatedData.amount,
+        );
+      }
+    }
+    // const watermark = amount + totalLosses;
+    // const profitPercentage = (lastWeekBalance * profits) / 100;
+
+    // Add calculated daily amount
+    res.push(addValue(dayDate, amount));
+
+    // Return last aggregated data
+    return {
+      date: dayDate,
+      amount,
+      //   profits,
+    };
+  }, null);
+
+  if (lastAggregatedData) {
+    // Adding missing days until today
+    const daysDiff = moment()
+      .endOf("quarter")
+      .startOf("d")
+      .diff(moment(lastAggregatedData.date).startOf("d"), "week");
+    if (daysDiff > 1) {
+      generateMissingDays(moment(lastAggregatedData.date).add(1, "w"), daysDiff - 1, 0);
     }
   }
 

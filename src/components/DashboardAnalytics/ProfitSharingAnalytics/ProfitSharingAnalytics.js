@@ -19,6 +19,8 @@ import moment from "moment";
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
+
  */
 
 /**
@@ -48,15 +50,15 @@ const ProfitSharingAnalytics = ({ provider }) => {
   let weeklyStats = null;
   const dailyStats = [];
 
+  /**
+   *
+   * @param {Array<ProfitSharingBalanceEntry>} entries
+   */
   const parseEntries = (entries) => {
-    const dataWithDates = entries.map((d) => ({
-      ...d,
-      date: new Date(d.date),
-    }));
-    return generateDailyData(dataWithDates, true, (date, amount, watermark, profits) => {
+    const _profitStats = generateDailyData(entries, true, (date, amount, watermark, profits) => {
       const momentDate = moment(date);
       return {
-        id: `${momentDate.year()}-${momentDate.week()}`, // group by week
+        // week: `${momentDate.year()}-${momentDate.week()}`, // group by week
         day: momentDate.format("YYYY/MM/DD"),
         totalUSDT: amount,
         // watermark,
@@ -64,6 +66,37 @@ const ProfitSharingAnalytics = ({ provider }) => {
         //   returns:
       };
     });
+    setProfitStats(_profitStats);
+
+    /** @type {Array<DefaultProviderPermormanceWeeklyStats>} */
+    let statsAccounting = [];
+    let lastEntry = null;
+
+    let _statsPnL = [];
+    entries.forEach((entry) => {
+      const dayDate = entry.date.startOf("d");
+      if (entry.type === "pnl") {
+        const week = dayDate.week();
+        const statsPnLWeek = _statsPnL.length && _statsPnL[_statsPnL.length - 1];
+        if (statsPnLWeek && statsPnLWeek.day.isSame(dayDate, "w")) {
+          statsPnLWeek.return += entry.amount;
+        } else {
+          _statsPnL.push({
+            week: `${dayDate.year()}-${week}`,
+            return: 0,
+            day: dayDate,
+            positions: 1,
+          });
+        }
+      }
+      //   if (lastEntry && moment(lastEntry.date).isSame(dayDate, "d")) {
+      //   }
+    });
+    // setProfitStats(entries);
+    const performance = {
+      weeklyStats: _statsPnL,
+    };
+    setPerformance(performance);
   };
 
   const getProviderPerformance = () => {
@@ -98,9 +131,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
     tradeApi
       .getProfitSharingBalanceHistory(payload)
       .then((response) => {
-        const entries = parseEntries(response.entries);
-        console.log(entries);
-        setProfitStats(entries);
+        parseEntries(response.entries);
         setBalanceHistory(response);
         // calculateProviderPerformance(response);
       })

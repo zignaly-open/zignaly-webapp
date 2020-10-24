@@ -41,7 +41,7 @@ const WeeklyData = ({ list, selected, onChange }) => {
    * @returns {void} None.
    */
   const handleChange = (id) => {
-    let found = [...list].find((item) => item.id === id);
+    let found = list.find((item) => item.id === id);
     if (found) {
       onChange(found);
     }
