@@ -38,15 +38,15 @@ const CopyTraderButton = ({ provider }) => {
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
-  const followingFrom = exchangeConnections.find(
-    (e) => e.internalId === provider.exchangeInternalId,
-  );
-  let disconnectedExchange = provider.exchangeInternalIds.find(
-    (item) => item.internalId === selectedExchange.internalId,
-  );
+  const followingFrom =
+    exchangeConnections &&
+    exchangeConnections.find((e) => e.internalId === provider.exchangeInternalId);
+  const disconnectedExchangeData = provider.exchangeInternalIds
+    ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
+    : undefined;
   const disconnecting =
-    disconnectedExchange && disconnectedExchange.disconnecting
-      ? disconnectedExchange.disconnecting
+    disconnectedExchangeData && disconnectedExchangeData.disconnecting
+      ? disconnectedExchangeData.disconnecting
       : false;
 
   /**
@@ -151,9 +151,12 @@ const CopyTraderButton = ({ provider }) => {
           <Typography variant="h4">
             <FormattedMessage id="copyt.followingfrom" />
           </Typography>
-          <Tooltip placement="top" title={followingFrom.internalName}>
+          <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
             <Box>
-              <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
+              <ExchangeIcon
+                exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                size="mediumLarge"
+              />
             </Box>
           </Tooltip>
         </Box>

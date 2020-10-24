@@ -311,6 +311,38 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose exit price element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderMarkPrice(dataIndex) {
+    const position = positions[dataIndex];
+    return (
+      <>
+        <span className="symbol">{position.quote}</span>
+        <span className={position.markPriceStyle}>{formatPrice(position.markPrice)}</span>
+      </>
+    );
+  }
+
+  /**
+   * Compose exit price element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderLiquidPrice(dataIndex) {
+    const position = positions[dataIndex];
+    return (
+      <>
+        <span className="symbol">{position.quote}</span>
+        <span>{formatPrice(position.liquidationPrice)}</span>
+      </>
+    );
+  }
+
+  /**
    * Compose price difference element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -809,6 +841,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: renderExitPrice,
       },
       {
+        columnId: "col.price.market",
+        propertyName: "markPrice",
+        renderFunction: renderMarkPrice,
+      },
+      {
+        columnId: "col.price.liquid",
+        propertyName: "liquidationPrice",
+        renderFunction: renderLiquidPrice,
+      },
+      {
         columnId: "col.plnumber",
         propertyName: "profit",
         renderFunction: renderProfit,
@@ -1230,6 +1272,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.price.current",
         propertyName: "sellPrice",
         renderFunction: renderExitPrice,
+      },
+      {
+        columnId: "col.price.market",
+        propertyName: "markPrice",
+        renderFunction: renderMarkPrice,
+      },
+      {
+        columnId: "col.price.liquid",
+        propertyName: "liquidationPrice",
+        renderFunction: renderLiquidPrice,
       },
       {
         columnId: "col.plnumber",

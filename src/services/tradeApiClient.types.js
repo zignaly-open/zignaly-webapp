@@ -349,6 +349,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderContractsPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} providerId ID of provider.
+ */
+
+/**
  * @typedef {Object} CancelOrderPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
@@ -482,6 +489,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {Number} currentAllocatedBalance Allocated copy trading balance when the trade was open.
  * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
+ * @property {Number} liquidationPrice
+ * @property {Number} markPrice
+ * @property {string} markPriceStyle
  */
 
 /**
@@ -1354,6 +1364,8 @@ export function positionItemTransform(positionItem) {
       : false,
     positionSizePercentage: safeParseFloat(positionItem.positionSizePercentage),
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
+    liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
+    markPrice: safeParseFloat(positionItem.markPrice),
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1363,6 +1375,11 @@ export function positionItemTransform(positionItem) {
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    markPriceStyle: getPriceColorType(
+      positionEntity.markPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
@@ -1591,6 +1608,9 @@ function createEmptyPositionEntity() {
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
     reduceOrders: [],
+    liquidationPrice: 0,
+    markPrice: 0,
+    markPriceStyle: "",
   };
 }
 

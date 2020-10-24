@@ -1,18 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import "./Contracts.scss";
+import React, { useState, useEffect } from "react";
+import "./Orders.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import ModalPathContext from "../../ModalPathContext";
-import ContractsTable from "./ContractsTable";
+import OrdersTable from "../../../ConnectExchangeView/ExchangeOrders/Orders/OrdersTable";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
-const Contracts = () => {
-  const {
-    pathParams: { selectedAccount },
-  } = useContext(ModalPathContext);
+/**
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {Object} DefaultProps
+ * @property {DefaultProviderGetObject} provider Balance
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const Orders = ({ provider }) => {
   const [loading, setLoading] = useState(false);
+  const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -21,10 +29,11 @@ const Contracts = () => {
     setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: selectedAccount.internalId,
+      exchangeInternalId: selectedExchange.internalId,
+      providerId: provider.id,
     };
     tradeApi
-      .exchangeContractsGet(payload)
+      .providerOrdersGet(payload)
       .then((response) => {
         setList(response);
       })
@@ -59,10 +68,10 @@ const Contracts = () => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <ContractsTable
+          <OrdersTable
             list={list}
             loadData={loadData}
-            selectedAccount={selectedAccount}
+            selectedAccount={selectedExchange}
             title=""
           />
         </Box>
@@ -71,4 +80,4 @@ const Contracts = () => {
   );
 };
 
-export default Contracts;
+export default Orders;
