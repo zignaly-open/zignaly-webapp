@@ -29,14 +29,14 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
         <>
           <EquityPart
             info={
-              <div>
+              <Typography className="smallText number3">
                 = USDT{" "}
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
                   formatNumber(balance.totalWalletUSDT, 2)
                 )}
-              </div>
+              </Typography>
             }
             name="balance.wallet"
             value={
