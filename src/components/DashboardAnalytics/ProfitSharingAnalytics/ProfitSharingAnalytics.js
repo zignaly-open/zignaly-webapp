@@ -20,6 +20,7 @@ import moment from "moment";
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
  * @typedef {import("../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
 
  */
 
@@ -36,52 +37,58 @@ import moment from "moment";
  */
 const ProfitSharingAnalytics = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
-  const [performance, setPerformance] = useState(null);
-  const [performanceLoading, setPerformanceLoading] = useState(false);
   const [balanceHistory, setBalanceHistory] = useState(
     /** @type {ProfitSharingBalanceHistory} */ (null),
   );
-  const [profitStats, setProfitStats] = useState(/** @type {Array<*>} */ (null));
   const [balanceHistoryLoading, setBalanceHistoryLoading] = useState(false);
+
+  /**
+   * @typedef {Object} Stats
+   * @property {Array<ProfitSharingBalanceEntry>} accounting
+   * @property {Array<ProfitSharingBalanceEntry>} balance
+   * @property {ProviderPerformanceEntity} performance
+   */
+  const [stats, setStats] = useState(
+    /** @type {Stats} */ ({
+      accounting: [],
+      balance: [],
+      performance: null,
+    }),
+  );
   const storeSettings = useStoreSettingsSelector();
 
   const dispatch = useDispatch();
 
-  let weeklyStats = null;
-  const dailyStats = [];
-
   /**
-   *
-   * @param {Array<ProfitSharingBalanceEntry>} entries
+   * Parse balance entries to prepare stats
+   * @param {Array<ProfitSharingBalanceEntry>} entries Balance entries
+   * @returns {void}
    */
   const parseEntries = (entries) => {
-    const _profitStats = generateDailyData(entries, true, (date, amount, watermark, profits) => {
+    // Prepare balance daily stats
+    const balanceStats = generateDailyData(entries, true, (date, amount, watermark, profits) => {
       const momentDate = moment(date);
       return {
-        // week: `${momentDate.year()}-${momentDate.week()}`, // group by week
         day: momentDate.format("YYYY/MM/DD"),
         totalUSDT: amount,
-        // watermark,
-        // profits,
-        //   returns:
       };
     });
-    setProfitStats(_profitStats);
 
-    /** @type {Array<DefaultProviderPermormanceWeeklyStats>} */
-    let statsAccounting = [];
-    let lastEntry = null;
+    /** @type {Array<ProfitSharingBalanceEntry>} */
+    let weekStats = [];
+    /** @type {Array<ProfitSharingBalanceEntry>} */
+    let accountingStats = [];
 
-    let _statsPnL = [];
+    // Prepare weekly profit stats and accounting stats
     entries.forEach((entry) => {
       const dayDate = entry.date.startOf("d");
       if (entry.type === "pnl") {
         const week = dayDate.week();
-        const statsPnLWeek = _statsPnL.length && _statsPnL[_statsPnL.length - 1];
+        const statsPnLWeek = weekStats.length && weekStats[weekStats.length - 1];
         if (statsPnLWeek && statsPnLWeek.day.isSame(dayDate, "w")) {
           statsPnLWeek.return += entry.amount;
         } else {
-          _statsPnL.push({
+          weekStats.push({
             week: `${dayDate.year()}-${week}`,
             return: 0,
             day: dayDate,
@@ -89,36 +96,30 @@ const ProfitSharingAnalytics = ({ provider }) => {
           });
         }
       }
-      //   if (lastEntry && moment(lastEntry.date).isSame(dayDate, "d")) {
-      //   }
+
+      const existingStats = accountingStats.find(
+        (s) => s.date.isSame(entry.date) && s.type === entry.type,
+      );
+
+      if (existingStats) {
+        accountingStats.amount += entry.amount;
+      } else {
+        accountingStats.push({
+          date: dayDate,
+          amount: entry.amount,
+          type: entry.type,
+        });
+      }
     });
-    // setProfitStats(entries);
-    const performance = {
-      weeklyStats: _statsPnL,
-    };
-    setPerformance(performance);
-  };
 
-  const getProviderPerformance = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: provider.id,
-    };
-    setPerformanceLoading(true);
-
-    tradeApi
-      .providerPerformanceGet(payload)
-      .then((response) => {
-        setPerformance(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setPerformanceLoading(false);
-      });
+    setStats({
+      performance: {
+        weeklyStats: weekStats,
+      },
+      accounting: accountingStats,
+      balance: balanceStats,
+    });
   };
-  //   useEffect(getProviderPerformance, []);
 
   const getProfitSharingBalanceHistory = () => {
     const payload = {
@@ -131,9 +132,8 @@ const ProfitSharingAnalytics = ({ provider }) => {
     tradeApi
       .getProfitSharingBalanceHistory(payload)
       .then((response) => {
-        parseEntries(response.entries);
         setBalanceHistory(response);
-        // calculateProviderPerformance(response);
+        parseEntries(response.entries);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -144,56 +144,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
   };
   useEffect(getProfitSharingBalanceHistory, []);
 
-  /**
-   *
-   * @param {ProfitSharingBalanceHistory} response Balance History
-   * @returns {void}
-   */
-  const calculateProviderPerformance = (response) => {
-    //---
-
-    /** @type {Array<DefaultProviderPermormanceWeeklyStats>} */
-    const weeklyStats = [];
-    /** @type {DefaultProviderPermormanceWeeklyStats} */
-    let weekData = null;
-    let currentAllocated = 0;
-    let losses = 0;
-
-    response.entries.forEach((entry) => {
-      const date = moment(entry.date);
-      const week = date.week();
-      if (weekData && weekData.week !== week) {
-        weekData = { week, positions: 1, day: date, return: 0 };
-        weeklyStats.push(weekData);
-      }
-
-      currentAllocated += entry.amount;
-
-      switch (entry.type) {
-        case "deposit":
-          currentAllocated = entry.amount;
-          break;
-        case "pnl":
-          if (entry.amount < 0) {
-            losses -= entry.amount;
-          }
-          break;
-        default:
-          break;
-      }
-      watermark = currentAllocated + losses;
-
-      //   weeklyStats.push({
-      //     week,
-      //     return,
-      //   });
-
-      //   return {
-      //     currentAllocated,
-      //   };
-    });
-  };
-
   return (
     <Box
       alignItems="center"
@@ -202,11 +152,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
       flexDirection="column"
       justifyContent="center"
     >
-      {performanceLoading ? (
-        <CircularProgress color="primary" size={50} />
-      ) : (
-        performance && <TradingPerformance performance={performance} />
-      )}
       {balanceHistoryLoading ? (
         <Box
           alignItems="center"
@@ -220,6 +165,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
       ) : (
         balanceHistory && (
           <>
+            <TradingPerformance performance={stats.performance} />
             <TotalEquityBar>
               <>
                 <EquityPart
@@ -267,16 +213,12 @@ const ProfitSharingAnalytics = ({ provider }) => {
             </TotalEquityBar>
 
             <Box className="chartTableBox" display="flex" width={1}>
-              {profitStats && (
-                <>
-                  <ProfitSharingEquityChart
-                    currentBalance={balanceHistory.currentBalance}
-                    data={profitStats}
-                    selectedExchange={storeSettings.selectedExchange}
-                  />
-                  <ProfitSharingTable data={profitStats} />
-                </>
-              )}
+              <ProfitSharingEquityChart
+                currentBalance={balanceHistory.currentBalance}
+                data={stats.balance}
+                selectedExchange={storeSettings.selectedExchange}
+              />
+              <ProfitSharingTable data={stats.accounting} />
             </Box>
           </>
         )
