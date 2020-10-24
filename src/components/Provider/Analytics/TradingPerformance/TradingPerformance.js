@@ -19,6 +19,7 @@ dayjs.extend(weekOfYear);
 /**
  * @typedef {Object} DefaultProps
  * @property {ProviderPerformanceEntity} performance
+ * @property {string} [unit]
  */
 
 /**
@@ -27,7 +28,7 @@ dayjs.extend(weekOfYear);
  * @returns {JSX.Element} JSX component.
  */
 
-const TradingPerformance = ({ performance }) => {
+const TradingPerformance = ({ performance, unit = "%" }) => {
   const [quarters, setQuarters] = useState(/** @type {Array<DefaultQuarter>} */ ([]));
 
   const [selectedQuater, setSelectedQuarter] = useState(
@@ -94,8 +95,8 @@ const TradingPerformance = ({ performance }) => {
 
   return (
     <Box className="tradingPerformance">
-      <TradingPerformanceGraph quarter={selectedQuater} />
-      <WeeklyData list={quarters} onChange={handleChange} selected={selectedQuater} />
+      <TradingPerformanceGraph quarter={selectedQuater} unit={unit} />
+      <WeeklyData list={quarters} onChange={handleChange} selected={selectedQuater} unit={unit} />
     </Box>
   );
 };

@@ -167,7 +167,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
       ) : (
         balanceHistory && (
           <>
-            <TradingPerformance performance={stats.performance} />
+            <TradingPerformance performance={stats.performance} unit=" USDT" />
             <TotalEquityBar>
               <>
                 <EquityPart
