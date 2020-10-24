@@ -9,7 +9,7 @@ import { FormattedMessage } from "react-intl";
 import "./ProfitSharingEquityChart.scss";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
+ * @typedef {import("../../../Balance/TotalEquity/TotalEquityGraph/TotalEquityGraph").EquityChartData} EquityChartData
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
@@ -17,7 +17,7 @@ import "./ProfitSharingEquityChart.scss";
 /**
  * @typedef {Object} DefaultProps
  * @property {number} currentBalance
- * @property {Array<ProfitSharingBalanceEntry>} data
+ * @property {Array<EquityChartData>} data
  * @property {ExchangeConnectionEntity} selectedExchange
  */
 
@@ -28,18 +28,6 @@ import "./ProfitSharingEquityChart.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingEquityChart = ({ currentBalance, data, selectedExchange }) => {
-  //   const dataWithDates = data.map((d) => ({
-  //     ...d,
-  //     date: new Date(d.date),
-  //   }));
-  //   const dailyBalance = generateDailyData(dataWithDates, true, (date, amount, watermark) => ({
-  //     date: formatDate(date, "YYYY/MM/DD"),
-  //     totalUSDT: amount,
-  //     watermark,
-  //   }));
-
-  //   console.log(dailyBalance);
-
   const [tableData, setTableData] = useState(data);
 
   return (

@@ -45,7 +45,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
   /**
    * @typedef {Object} Stats
    * @property {Array<ProfitSharingBalanceEntry>} accounting
-   * @property {Array<ProfitSharingBalanceEntry>} balance
+   * @property {Array<BalanceChartData>} balance
    * @property {ProviderPerformanceEntity} performance
    */
   const [stats, setStats] = useState(
@@ -67,7 +67,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
   const parseEntries = (entries) => {
     // Prepare balance daily stats
     const balanceStats = generateDailyData(entries, (date, amount) => ({
-      day: dayjs(date).format("YYYY/MM/DD"),
+      date: dayjs(date).format("YYYY/MM/DD"),
       totalUSDT: amount,
     }));
     /** @type {Array<DefaultProviderPerformanceWeeklyStats>} */
