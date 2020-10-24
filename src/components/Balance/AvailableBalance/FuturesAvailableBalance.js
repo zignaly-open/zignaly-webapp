@@ -60,8 +60,10 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                   BTC {formatFloat(balance.totalUnrealizedProfitBTC)}
                 </Typography>
                 <Typography className={`number1 pnlPercent ${color}`}>
-                  {balance.pnlBTC && balance.totalLockedBTC
-                    ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
+                  {balance.totalUnrealizedProfitBTC && balance.totalWalletBTC
+                    ? formatFloat2Dec(
+                        (balance.totalUnrealizedProfitBTC * 100) / balance.totalWalletBTC,
+                      )
                     : 0}
                   %
                 </Typography>
@@ -74,7 +76,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
             info={<>= USDT {formatNumber(balance.totalMarginUSDT, 2)}</>}
             name="balance.margin"
             value={
-              <Typography className={`number1 ${color}`}>
+              <Typography className={"number1"}>
                 BTC {formatFloat(balance.totalMarginBTC)}
               </Typography>
             }
@@ -85,7 +87,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
             info={<>= USDT {formatNumber(balance.totalCurrentMarginUSDT, 2)}</>}
             name="balance.current"
             value={
-              <Typography className={`number1 ${color}`}>
+              <Typography className={"number1"}>
                 BTC {formatFloat(balance.totalCurrentMarginUSDT)}
               </Typography>
             }
