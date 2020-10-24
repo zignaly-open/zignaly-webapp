@@ -831,7 +831,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.price.liquid",
-        propertyName: "liquodationPrice",
+        propertyName: "liquidationPrice",
         renderFunction: null,
       },
       {
@@ -1264,7 +1264,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.price.liquid",
-        propertyName: "liquodationPrice",
+        propertyName: "liquidationPrice",
         renderFunction: null,
       },
       {
