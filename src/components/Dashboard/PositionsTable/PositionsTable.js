@@ -244,6 +244,7 @@ const PositionsTable = (props) => {
     const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
     const isZignaly = selectedExchange.exchangeName.toLowerCase() === "zignaly";
     const isDemo = selectedExchange.paperTrading;
+    const isTestnet = selectedExchange.isTestnet;
 
     if (type === "closed") {
       dataTable = composeClosePositionsDataTable();
@@ -253,7 +254,7 @@ const PositionsTable = (props) => {
       configureCounts("log", positionsAll.length);
     } else if (type === "open") {
       dataTable = composeOpenPositionsDataTable();
-      if (isDemo || !isFutures) {
+      if (isDemo || isTestnet || !isFutures) {
         dataTable = excludeDataTableColumn(dataTable, "col.price.market");
         dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
       }
