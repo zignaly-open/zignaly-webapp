@@ -42,7 +42,7 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
   };
 
   const prepareChartData = () => {
-    const key = selectedExchange.exchangeType === "futures" ? "totalUSDT" : "totalUSDT";
+    const key = selectedExchange.exchangeType === "futures" ? "totalUSDT" : "totalWalletUSDT";
     [...list].forEach((item) => {
       chartData.values.push(item[key]);
       chartData.labels.push("");
@@ -63,6 +63,29 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
    */
 
   const tooltipFormat = (tooltipItem) => {
+    if (selectedExchange.exchangeType.toLowerCase() === "futures") {
+      return (
+        <Box className="equityTooltip">
+          <Box>
+            <span className="label"> Date:</span>
+            <span>{list[tooltipItem.index] ? list[tooltipItem.index].date : "0"}</span>
+          </Box>
+          {list[tooltipItem.index].totalWalletBTC && (
+            <Box>
+              <span className="label">BTC:</span>
+              <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
+            </Box>
+          )}
+          {list[tooltipItem.index].totalWalletUSDT && (
+            <Box>
+              <span className="label">USDT:</span>
+              <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
+            </Box>
+          )}
+        </Box>
+      );
+    }
+
     return (
       <Box className="equityTooltip">
         <Box>
