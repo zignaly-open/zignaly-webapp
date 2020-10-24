@@ -1898,7 +1898,7 @@ export function userEquityResponseTransform(response) {
  * @returns {UserEquityEntity} Exchange connection entity.
  */
 function userEquityItemTransform(userEquityItem) {
-  const emptyEquityEntity = createUserEquityEntity();
+  const emptyEquityEntity = createEmptyUserEquityEntity();
 
   function prepareAvailablePercentage() {
     if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
@@ -1941,7 +1941,7 @@ function createUserEquityResponseEntity(response) {
  *
  * @returns {UserEquityEntity} User balance entity.
  */
-function createUserEquityEntity() {
+export function createEmptyUserEquityEntity() {
   return {
     BKRWpercentage: 0,
     BNBpercentage: 0,

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ProfitLossAnalysis.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { formatFloat } from "../../../utils/format";
+import { createEmptyUserEquityEntity } from "../../../services/tradeApiClient.types";
+import { formatNumber } from "../../../utils/formatters";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -15,6 +16,41 @@ import { formatFloat } from "../../../utils/format";
  * @returns {JSX.Element} Component JSX.
  */
 const ProfitLossAnalysis = ({ dailyBalance }) => {
+  const inittialValues = {
+    totalProfit: 0,
+    totalLoss: 0,
+    netProfitLoss: 0,
+    winDays: 0,
+    lossDays: 0,
+    evenDays: 0,
+    winRate: 0,
+  };
+
+  const [profitLossData, setProfitLossData] = useState(inittialValues);
+
+  const prepareData = () => {
+    let data = { ...inittialValues };
+    const currentEquity = dailyBalance.balances.length
+      ? dailyBalance.balances[dailyBalance.balances.length - 1]
+      : createEmptyUserEquityEntity();
+    [...dailyBalance.balances].forEach((item) => {
+      if (item.pnlUSDT > 0) {
+        data.totalProfit += item.pnlUSDT;
+        data.winDays += 1;
+      } else if (item.pnlUSDT < 0) {
+        data.totalLoss += item.pnlUSDT;
+        data.lossDays += 1;
+      } else if (item.pnlUSDT === 0) {
+        data.evenDays += 1;
+      }
+    });
+    data.winRate = (data.winDays / dailyBalance.balances.length) * 100;
+    data.netProfitLoss = currentEquity.sumPnlUSDT;
+    setProfitLossData(data);
+  };
+
+  useEffect(prepareData, [dailyBalance.balances]);
+
   return (
     <>
       {dailyBalance.loading && (
@@ -51,7 +87,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.totalprofit" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {formatNumber(profitLossData.totalProfit, 2)} {"USDT"}
               </Typography>
             </Box>
             <Box
@@ -64,7 +100,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.totalloss" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {formatNumber(profitLossData.totalLoss, 2)} {"USDT"}
               </Typography>
             </Box>
             <Box
@@ -77,7 +113,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.netprofitloss" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {formatNumber(profitLossData.netProfitLoss, 2)} {"USDT"}
               </Typography>
             </Box>
           </Box>
@@ -93,7 +129,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.windays" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {profitLossData.winDays}
               </Typography>
             </Box>
             <Box
@@ -106,7 +142,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.lossdays" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {profitLossData.lossDays}
               </Typography>
             </Box>
             <Box
@@ -119,7 +155,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.evendays" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {profitLossData.evenDays}
               </Typography>
             </Box>
             <Box
@@ -132,7 +168,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
                 <FormattedMessage id="profitlossanalysis.winrate" />
               </Typography>
               <Typography className="value" variant="body1">
-                {formatFloat(0)} {"USDT"}
+                {formatNumber(profitLossData.winRate, 2)} {"%"}
               </Typography>
             </Box>
           </Box>
