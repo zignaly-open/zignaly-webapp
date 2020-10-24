@@ -124,7 +124,7 @@ const TradingPerformance = ({ performance }) => {
         });
       }
     });
-    setList(quarters);
+    setList(quarters.reverse());
     setSelectedQuarter(quarters[0]);
   };
 

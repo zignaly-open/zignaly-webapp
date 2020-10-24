@@ -132,12 +132,17 @@ export const generateWeeklyData = (dailyData, addValue) => {
 
   if (dailyData.length) {
     // Adding missing days from start date
-    const quarterStart = moment(dailyData[0].date).startOf("quarter");
-    const firstWeekDate = moment(dailyData[0].date).startOf("week");
-    const daysDiff = quarterStart.diff(firstWeekDate, "w");
-    if (daysDiff < 0) {
+    const firstDate = moment(dailyData[0].date);
+    const quarterStart = firstDate.clone().startOf("quarter");
+    // First week day of the first week of the quarter
+    if (quarterStart.day() > 0) {
+      quarterStart.add(1, "w").startOf("w");
+    }
+    const firstWeekDate = firstDate.clone().startOf("week");
+    const daysDiff = firstWeekDate.diff(quarterStart, "w");
+    if (daysDiff > 0) {
       // Adding missing days
-      generateMissingDays(quarterStart, Math.abs(daysDiff), 0);
+      generateMissingDays(quarterStart, daysDiff, 0);
     }
   }
   let totalLosses = 0;
@@ -160,7 +165,7 @@ export const generateWeeklyData = (dailyData, addValue) => {
         // Adding missing days
         generateMissingDays(
           moment(aggregatedData.day).add(1, "w"),
-          daysDiff - 1,
+          daysDiff,
           aggregatedData.amount,
         );
       }
@@ -186,45 +191,9 @@ export const generateWeeklyData = (dailyData, addValue) => {
       .startOf("d")
       .diff(moment(lastAggregatedData.date).startOf("d"), "week");
     if (daysDiff > 1) {
-      generateMissingDays(moment(lastAggregatedData.date).add(1, "w"), daysDiff - 1, 0);
+      generateMissingDays(moment(lastAggregatedData.date).add(1, "w"), daysDiff, 0);
     }
   }
 
   return res;
 };
-
-/**
- * Function to generate a new array that contains daily amount data.
- *
- * @param {Array<DailyData>} dailyData Array of daily amount data.
- * @param {function(Date, number): *} addValue Callback to format the new aggregated value
- * @returns {Array<*>} Result
- */
-// export const generateWeeklyData = (dailyData, withWaterfall, addValue) => {
-//   /**
-//    * @type {Array<*>}
-//    */
-//   let res = [];
-
-//   const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
-//     const currentDate = currentData.date;
-//       let amount = currentData.amount;
-//       let watermark = amount-
-
-//     if (aggregatedData) {
-//       amount += aggregatedData.amount;
-//     }
-
-//     // Add calculated daily amount
-//     res.push(addValue(currentDate, amount));
-
-//     // Return last aggregated data
-//     return {
-//       date: currentDate,
-//       amount,
-//       waterfall,
-//     };
-//   }, null);
-
-//   return res;
-// };

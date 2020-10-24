@@ -35,7 +35,7 @@ import moment from "moment";
 
 const WeeklyData = ({ list, selected, onChange }) => {
   /**
-   * Funciton to select a quarter.
+   * Function to select a quarter.
    *
    * @param {Number} id id of the quarter on which user clicks.
    * @returns {void} None.
