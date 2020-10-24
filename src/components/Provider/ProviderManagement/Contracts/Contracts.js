@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import ContractsTable from "./ContractsTable";
+import ContractsTable from "../../../ConnectExchangeView/ExchangeOrders/Contracts/ContractsTable";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**
@@ -68,7 +68,12 @@ const Contracts = ({ provider }) => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <ContractsTable list={list} loadData={loadData} title="" />
+          <ContractsTable
+            list={list}
+            loadData={loadData}
+            selectedAccount={selectedExchange}
+            title=""
+          />
         </Box>
       )}
     </>
