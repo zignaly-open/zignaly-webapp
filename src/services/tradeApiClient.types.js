@@ -349,6 +349,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderContractsPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} providerId ID of provider.
+ */
+
+/**
  * @typedef {Object} CancelOrderPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.

@@ -1,0 +1,30 @@
+.managementTabs {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  width: 100%;
+
+  .tabsBox {
+    border-bottom: solid 1px var(--border-color);
+
+    .tabPanel {
+      padding: 0;
+      width: 100%;
+    }
+
+    .tabsMenu {
+      button {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+@include media("<=sm") {
+  .managementTabs {
+    .tabsBox {
+      .tabPanel {
+        min-height: 350px;
+      }
+    }
+  }
+}
