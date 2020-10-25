@@ -21,7 +21,7 @@ import dayjs from "dayjs";
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import("../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
-
+ * @typedef {import("../../Balance/TotalEquity/TotalEquityGraph/TotalEquityGraph").EquityChartData} EquityChartData
  */
 
 /**
@@ -45,7 +45,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
   /**
    * @typedef {Object} Stats
    * @property {Array<ProfitSharingBalanceEntry>} accounting
-   * @property {Array<BalanceChartData>} balance
+   * @property {Array<EquityChartData>} balance
    * @property {ProviderPerformanceEntity} performance
    */
   const [stats, setStats] = useState(
@@ -56,7 +56,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
     }),
   );
   const storeSettings = useStoreSettingsSelector();
-
   const dispatch = useDispatch();
 
   /**

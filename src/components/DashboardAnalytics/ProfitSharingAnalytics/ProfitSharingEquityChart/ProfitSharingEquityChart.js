@@ -36,7 +36,7 @@ const ProfitSharingEquityChart = ({ currentBalance, data, selectedExchange }) =>
       className="profitSharingEquityChart"
       display="flex"
       flexDirection="column"
-      justifyContent="space-between"
+      justifyContent="flex-start"
     >
       <Box
         alignItems="flex-start"
