@@ -54,6 +54,12 @@
     .dataBox {
       align-items: center;
       width: 100%;
+
+      > div {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
     }
 
     .operator {

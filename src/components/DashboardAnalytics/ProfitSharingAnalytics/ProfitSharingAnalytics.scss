@@ -29,8 +29,12 @@
       padding: 20px 0;
     }
 
+    .totalEquityBar {
+      box-shadow: none;
+    }
+
     .operator {
-      display: none;
+      visibility: hidden;
     }
   }
 }
