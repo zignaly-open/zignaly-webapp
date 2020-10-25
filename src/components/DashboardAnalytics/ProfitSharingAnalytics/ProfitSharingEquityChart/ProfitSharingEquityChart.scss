@@ -4,10 +4,13 @@
   }
 
   .chartBox {
-    margin-top: 24px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 8px 0 20px;
   }
 
   .gradientChart {
-    height: 242px;
+    height: 100%;
   }
 }

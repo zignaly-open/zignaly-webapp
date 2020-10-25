@@ -13,6 +13,13 @@
     padding-left: 24px;
     width: 40%;
   }
+
+  .chartBox {
+    // display: flex;
+    // flex: 1;
+    // flex-direction: column;
+    // position: relative;
+  }
 }
 
 @include media("<=sm") {
