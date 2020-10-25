@@ -227,6 +227,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelDisconnectProviderPayload
+ * @property {string} token User's session token
+ * @property {string} providerId Provider Id
+ * @property {String} internalExchangeId Internal Id of connected exchange.
+ */
+
+/**
  * @typedef {Object} DeleteProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -339,6 +346,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
+ */
+
+/**
+ * @typedef {Object} ProviderContractsPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} providerId ID of provider.
  */
 
 /**
@@ -475,6 +489,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {Number} currentAllocatedBalance Allocated copy trading balance when the trade was open.
  * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
+ * @property {Number} liquidationPrice
+ * @property {Number} markPrice
+ * @property {string} markPriceStyle
  */
 
 /**
@@ -1346,6 +1363,8 @@ export function positionItemTransform(positionItem) {
       : false,
     positionSizePercentage: safeParseFloat(positionItem.positionSizePercentage),
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
+    liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
+    markPrice: safeParseFloat(positionItem.markPrice),
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1355,6 +1374,11 @@ export function positionItemTransform(positionItem) {
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    markPriceStyle: getPriceColorType(
+      positionEntity.markPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
@@ -1583,6 +1607,9 @@ function createEmptyPositionEntity() {
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
     reduceOrders: [],
+    liquidationPrice: 0,
+    markPrice: 0,
+    markPriceStyle: "",
   };
 }
 
@@ -1697,15 +1724,15 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
  * @property {Number} totalAvailableBTC
- * @property {Number} totalAvailableUSD
+ * @property {Number} totalAvailableUSDT
  * @property {Number} totalCurrentMarginBTC
- * @property {Number} totalCurrentMarginUSD
+ * @property {Number} totalCurrentMarginUSDT
  * @property {Number} totalMarginBTC
- * @property {Number} totalMarginUSD
+ * @property {Number} totalMarginUSDT
  * @property {Number} totalUnrealizedProfitBTC
- * @property {Number} totalUnrealizedProfitUSD
+ * @property {Number} totalUnrealizedProfitUSDT
  * @property {Number} totalWalletBTC
- * @property {Number} totalWalletUSD
+ * @property {Number} totalWalletUSDT
  */
 
 /**
@@ -1733,15 +1760,15 @@ export function createEmptyUserBalanceEntity() {
     totalLockedUSDT: 0,
     totalUSDT: 0,
     totalAvailableBTC: 0,
-    totalAvailableUSD: 0,
+    totalAvailableUSDT: 0,
     totalCurrentMarginBTC: 0,
-    totalCurrentMarginUSD: 0,
+    totalCurrentMarginUSDT: 0,
     totalMarginBTC: 0,
-    totalMarginUSD: 0,
+    totalMarginUSDT: 0,
     totalUnrealizedProfitBTC: 0,
-    totalUnrealizedProfitUSD: 0,
+    totalUnrealizedProfitUSDT: 0,
     totalWalletBTC: 0,
-    totalWalletUSD: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -1829,6 +1856,14 @@ export function createEmptyUserBalanceEntity() {
  * @property {Number} totalUSDT
  * @property {Number} availablePercentage
  * @property {Number} investedPercentage
+ * @property {Number} netTransferBTC
+ * @property {Number} netTransferUSDT
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} sumPnlBTC
+ * @property {Number} sumPnlUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  *
  */
 
@@ -1862,7 +1897,7 @@ export function userEquityResponseTransform(response) {
  * @returns {UserEquityEntity} Exchange connection entity.
  */
 function userEquityItemTransform(userEquityItem) {
-  const emptyEquityEntity = createUserEquityEntity();
+  const emptyEquityEntity = createEmptyUserEquityEntity();
 
   function prepareAvailablePercentage() {
     if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
@@ -1905,7 +1940,7 @@ function createUserEquityResponseEntity(response) {
  *
  * @returns {UserEquityEntity} User balance entity.
  */
-function createUserEquityEntity() {
+export function createEmptyUserEquityEntity() {
   return {
     BKRWpercentage: 0,
     BNBpercentage: 0,
@@ -1980,6 +2015,14 @@ function createUserEquityEntity() {
     totalUSDT: 0,
     availablePercentage: 0,
     investedPercentage: 0,
+    netTransferBTC: 0,
+    netTransferUSDT: 0,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    sumPnlBTC: 0,
+    sumPnlUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -2419,6 +2462,17 @@ function createConnectedProviderUserInfoEntity(response) {
  */
 
 /**
+ *
+ * @typedef {Object} DefaultProviderExchangeIDsObject
+ * @property {Boolean} disconnecting
+ * @property {String} disconnectionType
+ * @property {String} internalId
+ * @property {String} profitsMode
+ * @property {Number} profitsShare
+ * @property {Number} retain
+ */
+
+/**
  * Default Single Provider object from 'getProvider' endpoint.
  *
  * @typedef {Object} DefaultProviderGetObject
@@ -2505,6 +2559,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} profitsShare
  * @property {String} profitsMode
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
 
 /**
@@ -2658,6 +2713,7 @@ function createEmptyProviderGetEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    exchangeInternalIds: [{}],
   };
 }
 

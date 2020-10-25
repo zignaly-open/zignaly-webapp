@@ -211,6 +211,8 @@ col.positions.stillopened: "CH-POSITIONS STILL OPENED"
 col.positions.total: "CH-TOTAL POSITIONS"
 col.positions.won: "CH-POSITIONS WON"
 col.price.current: "CH-CURRENT PRICE"
+col.price.market: "CH-MARKET PRICE"
+col.price.liquid: "CH-LIQUIDATION PRICE"
 col.price.entry: "CH-AVERAGE ENTRY PRICE"
 col.price.exit: "CH-AVERAGE EXIT PRICE"
 col.price.higher.1month: "CH-HIGHER PRICE IN 1m"
@@ -274,10 +276,14 @@ col.totalBTCfree: "CH-TOTAL BTC FREE"
 col.totalUSDT: "CH-TOTAL USDT"
 col.totalUSDTalloc: "CH-TOTAL USDT LOCKED"
 col.totalUSDTfree: "CH-TOTAL USDT FREE"
-col.dailyprofitloss: "CH-Daily Profit and Loss"
-col.cumprofitloss: "Ch-Cummulative Profit and Loss"
-col.nettransfer: "Ch-Net Transfer"
-col.walletbalance: "Ch-Wallet Balance"
+col.dailyprofitlossUSDT: "CH-Daily Profit and Loss USDT"
+col.cumprofitlossUSDT: "Ch-Cummulative Profit and Loss USDT"
+col.nettransferUSDT: "Ch-Net Transfer USDT"
+col.walletbalanceUSDT: "Ch-Wallet Balance USDT"
+col.dailyprofitlossBTC: "CH-Daily Profit and Loss BTC"
+col.cumprofitlossBTC: "Ch-Cummulative Profit and Loss BTC"
+col.nettransferBTC: "Ch-Net Transfer BTC"
+col.walletbalanceBTC: "Ch-Wallet Balance BTC"
 col.totalsignals: "CH-TOTAL SIGNALS"
 col.tp: "CH-TP"
 col.tsl: "CH-TSL"
@@ -314,6 +320,8 @@ contract.cancel.title: "CH-Cancel Contract"
 contract.cancel.subtitle: "CH-Are you sure you want to cancel this contract?"
 users.enable.title: "CH-Enable Subscription"
 users.enable.subtitle: "CH-Are you sure you want to enable this users subscription?"
+copyt.canceldisconnect.title: "CH-Cancel Disconnection"
+copyt.canceldisconnect.body: "CH-Are you sure you want cancel your disconnection and resume copying this service?"
 users.modify.day: "CH-day"
 users.modify.days: "CH-days"
 col.coins.coin: "CH-COIN"
@@ -491,6 +499,7 @@ copyt.copierslast7: "CH-Copiers last 7 days"
 copyt.copythistrader: "CH-Copy this Trader"
 copyt.followingfrom: "CH-Following from Account"
 copyt.stopcopyingtrader: "CH-Stop Copying Trader"
+copyt.canceldisconnecting: "CH-Cancel Disconnection"
 copyt.peoplecopying: "CH-People copying this trader"
 copyt.performance: "CH-Copy Traders’ Performance"
 copyt.traders: "CH-Traders"
@@ -930,7 +939,7 @@ accounts.exchange: "CH-Exchange"
 accounts.exchange.api: "CH-Get 2 API Keys from Exchange"
 accounts.exchange.api.tip: "CH-Where to find these keys?"
 accounts.exchange.api.tip.binance: "- Open {url}\n
-  - Log in to Binance\n
+  - Log in to your account\n
   - Hover over profile and click “API Management”\n
   - Give the API key a label at the top of the screen\n
   - Click create\n
@@ -942,15 +951,13 @@ accounts.exchange.api.tip.kucoin: "- Open {url}\n
   - In the dropdown menu, click “API Management“\n
   - Enable the two security protection methods\n
   - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
-  - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.api.tip.bitmex: "- Open {url}\n
   - Log in to Bitmex\n
   - Give the API key a name\n
-  - Set the key permissions as “Order\n
+  - Set the key permissions as “Order“ \n
   - Click create API key\n
-  - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.choose: "CH-Choose Exchange"
@@ -975,6 +982,9 @@ accounts.orders: "CH-Orders"
 accounts.contracts: "CH-Contracts"
 accounts.exchangeconnected: "CH-Exchange Connected"
 accounts.exchangedisconnected: "CH-Exchange Disconnected"
+management.positions: "Ch-Positions"
+management.orders: "Ch-Orders"
+management.contracts: "CH-Contracts"
 
 accounts.options.blacklist: "CH-Global Blacklist"
 accounts.options.blacklist.help: "CH-It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
@@ -1416,6 +1426,8 @@ srv.follow.alert.body: "CH-You are now Following this Provider!"
 srv.follow.anotheraccount: "CH-You are following this provider from another account ({account})"
 srv.unfollow.alert.title: "CH-Success"
 srv.unfollow.alert.body: "CH-You are not Following this Provider anymore!"
+srv.canceldisconnect.alert.title: "CH-Success"
+srv.canceldisconnect.alert.body: "CH-Your disconnection has been cancelled!"
 
 # WALL
 wall.approve: "CH-Approve"

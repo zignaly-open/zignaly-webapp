@@ -1,6 +1,7 @@
 import React from "react";
 import Doughnut from "../../../Graphs/Doughnut";
 import { useIntl } from "react-intl";
+import { createEmptyUserEquityEntity } from "../../../../services/tradeApiClient.types";
 
 /**
  *
@@ -66,7 +67,7 @@ const CompositionGraph = ({ list, quotes, vertical }) => {
     /**
      * @type {*}
      */
-    let equity = list.length ? list[list.length - 1] : {};
+    let equity = list.length ? list[list.length - 1] : createEmptyUserEquityEntity();
     if (equity) {
       for (let i = 0; i < quotes.length; i++) {
         let property = quotes[i] + "percentage";

@@ -184,6 +184,8 @@ col.positions.stillopened: "VỊ THẾ ĐANG MỞ"
 col.positions.total: "TỔNG CÁC VỊ THẾ"
 col.positions.won: "VỊ THẾ THẮNG"
 col.price.current: "GIÁ HIỆN TẠI"
+col.price.market: "MARKET PRICE"
+col.price.liquid: "LIQUIDATION PRICE"
 col.price.entry: "GIÁ NHẬP"
 col.price.exit: "GIÁ THOÁT"
 col.price.higher.1month: "GIÁ CAO TRONG 1m"
@@ -245,10 +247,14 @@ col.totalBTCfree: "TỔNG BTC CHƯA DÙNG"
 col.totalUSDT: "TỔNG USDT"
 col.totalUSDTalloc: "TỔNG USDT ĐÃ DÙNG"
 col.totalUSDTfree: "TỔNG USDT CHƯA DÙNG"
-col.dailyprofitloss: "Daily Profit and Loss"
-col.cumprofitloss: "Cummulative Profit and Loss"
-col.nettransfer: "Net Transfer"
-col.walletbalance: "Wallet Balance"
+col.dailyprofitlossUSDT: "Daily Profit and Loss USDT"
+col.cumprofitlossUSDT: "Cummulative Profit and Loss USDT"
+col.nettransferUSDT: "Net Transfer USDT"
+col.walletbalanceUSDT: "Wallet Balance USDT"
+col.dailyprofitlossBTC: "Daily Profit and Loss BTC"
+col.cumprofitlossBTC: "Cummulative Profit and Loss BTC"
+col.nettransferBTC: "Net Transfer BTC"
+col.walletbalanceBTC: "Wallet Balance BTC"
 col.totalsignals: "TỔNG TÍN HIỆU"
 col.tp: "TP"
 col.tsl: "TSL"
@@ -390,6 +396,7 @@ copyt.copytrading: "Copy Trading"
 copyt.copythistrader: "Sao chép Nhà giao dịch này"
 copyt.followingfrom: "Theo dõi từ Tài khoản"
 copyt.stopcopyingtrader: "Dừng sao chép nhà giao dịch này"
+copyt.canceldisconnecting: "Cancel Disconnection"
 copyt.peoplecopying: "Người đang sao chép nhà giao dịch này"
 copyt.performance: "Hiệu suất của nhà giao dịch sao chép"
 copyt.traders: "Nhà giao dịch"
@@ -528,6 +535,10 @@ alert.profileedit.body: "Thông tin hồ sơ của bạn đã được cập nh�
 alert.forgotpassword.step1.title: "Yêu cầu xử lý"
 alert.forgotpassword.step1.body: "Một email hướng dẫn đã được gửi đến email mà bạn cung cấp"
 alert.forgotpassword.step3.body: "Mật khẩu của bạn đã được thiết lập lại. Bây giờ bạn có thể đăng nhập bằng mật khẩu mới!"
+srv.canceldisconnect.alert.title: "Success"
+srv.canceldisconnect.alert.body: "Your disconnection has been cancelled!"
+copyt.canceldisconnect.title: "Cancel Disconnection"
+copyt.canceldisconnect.body: "Are you sure you want cancel your disconnection and resume copying this service?"
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "API-Key của bạn từ nhà cung cấp"
 signalp.option.stoploss: "Chấp nhận giá trị dừng lỗ từ tín hiệu?"
@@ -706,7 +717,7 @@ accounts.deposit.make: "{depositLink} vào tài khoản này để bắt đầu 
 accounts.done: "Xong"
 accounts.exchange: "Sàn Giao Dịch"
 accounts.exchange.api.tip.binance: "- Open {url}\n
-  - Log in to Binance\n
+  - Log in to your account\n
   - Hover over profile and click “API Management”\n
   - Give the API key a label at the top of the screen\n
   - Click create\n
@@ -718,15 +729,13 @@ accounts.exchange.api.tip.kucoin: "- Open {url}\n
   - In the dropdown menu, click “API Management“\n
   - Enable the two security protection methods\n
   - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
-  - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.api.tip.bitmex: "- Open {url}\n
   - Log in to Bitmex\n
   - Give the API key a name\n
-  - Set the key permissions as “Order\n
+  - Set the key permissions as “Order“\n
   - Click create API key\n
-  - Click create\n
   - When done, copy the API keys of the newly created API back into the corresping input fields above\n
   - Done"
 accounts.exchange.name: "Tên tài khoản"
@@ -1226,6 +1235,9 @@ faq.question2: "Làm thế nào để rút số dư của mình?"
 faq.question3: "Nhà cung cấp tín hiệu là ai?"
 faq.question4: "Nhà giao dịch sao chép là ai?"
 faq.documentation: "Truy cập tài liệu trợ giúp của chúng tôi"
+management.positions: "Positions"
+management.orders: "Orders"
+management.contracts: "Contracts"
 
 testimonial.review.nelson: "Just wanted to say thank you for putting together a really great platform that is not only easy to use but gives us traders the option of choosing  through some really great signal providers while being customizable as well."
 testimonial.review.krzysztof: "I have used several crypto bots and I need to say that the difference against other platforms I've encountered, it's their level of support, responsiveness and customer service, which is very critical for a trader. keep up the great job!"

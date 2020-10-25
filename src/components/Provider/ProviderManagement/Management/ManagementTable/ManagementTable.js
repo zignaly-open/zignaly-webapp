@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import Table from "../../../Table";
-import { ConfirmDialog } from "../../../Dialogs";
-import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import Table from "../../../../Table";
+import { ConfirmDialog } from "../../../../Dialogs";
+import tradeApi from "../../../../../services/tradeApiClient";
+import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import ExpandedRow from "../ExpandedRow";
-import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
-import { usePositionDataTableCompose } from "../../../../hooks/usePositionsDataTableCompose";
+import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/ui";
+import { usePositionDataTableCompose } from "../../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 import SelectionActions from "../ExpandedRow/SelectionActions";
+import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
- * @typedef {import("../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
+ * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
@@ -34,13 +35,14 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
  */
 const ManagementTable = ({ list, allPositions, setLoading }) => {
   const storeSession = useStoreSessionSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
 
   /**
-   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @typedef {import("../../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
    * @type {ConfirmDialogConfig} initConfirmConfig
    */
   const initConfirmConfig = {
@@ -130,7 +132,10 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
     }
   };
 
-  const { composeManagementPositionsDataTable } = usePositionDataTableCompose(list, confirmAction);
+  const {
+    composeManagementPositionsDataTable,
+    excludeDataTableColumn,
+  } = usePositionDataTableCompose(list, confirmAction);
 
   /**
    * Compose MUI data table for positions collection of selected type.
@@ -139,7 +144,14 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
+    const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
+    const isDemo = selectedExchange.paperTrading;
+
     dataTable = composeManagementPositionsDataTable();
+    if (isDemo || !isFutures) {
+      dataTable = excludeDataTableColumn(dataTable, "col.price.market");
+      dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+    }
     return dataTable;
   };
 

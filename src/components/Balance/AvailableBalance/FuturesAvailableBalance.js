@@ -29,14 +29,14 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
         <>
           <EquityPart
             info={
-              <div>
+              <Typography className="smallText number3">
                 = USDT{" "}
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatNumber(balance.totalWalletUSD, 2)
+                  formatNumber(balance.totalWalletUSDT, 2)
                 )}
-              </div>
+              </Typography>
             }
             name="balance.wallet"
             value={
@@ -52,7 +52,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
           />
           <span className="operator">+</span>
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalUnrealizedProfitUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalUnrealizedProfitUSDT, 2)}</>}
             name="balance.profit"
             value={
               <>
@@ -60,8 +60,10 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                   BTC {formatFloat(balance.totalUnrealizedProfitBTC)}
                 </Typography>
                 <Typography className={`number1 pnlPercent ${color}`}>
-                  {balance.pnlBTC && balance.totalLockedBTC
-                    ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
+                  {balance.totalUnrealizedProfitBTC && balance.totalWalletBTC
+                    ? formatFloat2Dec(
+                        (balance.totalUnrealizedProfitBTC * 100) / balance.totalWalletBTC,
+                      )
                     : 0}
                   %
                 </Typography>
@@ -71,10 +73,10 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
           <span className="operator">=</span>
 
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalMarginUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalMarginUSDT, 2)}</>}
             name="balance.margin"
             value={
-              <Typography className={`number1 ${color}`}>
+              <Typography className={"number1"}>
                 BTC {formatFloat(balance.totalMarginBTC)}
               </Typography>
             }
@@ -82,11 +84,11 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
 
           <span className="operator">+</span>
           <EquityPart
-            info={<>= USDT {formatNumber(balance.totalCurrentMarginUSD, 2)}</>}
+            info={<>= USDT {formatNumber(balance.totalCurrentMarginUSDT, 2)}</>}
             name="balance.current"
             value={
-              <Typography className={`number1 ${color}`}>
-                BTC {formatFloat(balance.totalCurrentMarginUSD)}
+              <Typography className={"number1"}>
+                BTC {formatFloat(balance.totalCurrentMarginUSDT)}
               </Typography>
             }
           />
@@ -100,7 +102,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                   {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                     <AllInclusiveIcon className="infinity" />
                   ) : (
-                    formatNumber(balance.totalAvailableUSD, 2)
+                    formatNumber(balance.totalAvailableUSDT, 2)
                   )}
                 </Typography>
               </>

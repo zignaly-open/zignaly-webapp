@@ -11,6 +11,7 @@ import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
+import userPilotApi from "../../utils/userPilotApi";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -32,6 +33,7 @@ const AppLayout = (props) => {
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
   useScript(withPrefix("widgets/externalWidgets.js"));
+  const { userpilot } = userPilotApi();
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
@@ -49,15 +51,22 @@ const AppLayout = (props) => {
   }, []);
 
   const hash = typeof window !== "undefined" ? window.location.hash : "";
+  const location = typeof window !== "undefined" ? window.location : null;
+  const pathname = location ? location.pathname : "";
   useEffect(() => {
     // Internal tracking for hash navigation
-    const location = typeof window !== "undefined" ? window.location : null;
     if (hash && location) {
       triggerTz(location, ref.current);
       // Save prev location
       ref.current = location;
     }
   }, [hash]);
+
+  useEffect(() => {
+    if (userpilot) {
+      userpilot.reload();
+    }
+  }, [pathname]);
 
   return (
     <StylesProvider injectFirst>

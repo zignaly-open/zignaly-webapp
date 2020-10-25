@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./ExpandedRow.scss";
 import { TableRow, TableCell, Checkbox, CircularProgress } from "@material-ui/core";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
-import { composeManagementPositionsDataTable } from "../../../../utils/composePositionsDataTable";
+import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
+import { composeManagementPositionsDataTable } from "../../../../../utils/composePositionsDataTable";
 
 /**
  *
- * @typedef {import('../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import('../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {Object} TransformedObject
  * @property {String} id
  * @property {String|Number|JSX.Element} data

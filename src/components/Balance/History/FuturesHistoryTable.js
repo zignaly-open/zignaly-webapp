@@ -48,29 +48,57 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
       },
     },
     {
-      name: "totalUSDT",
-      label: "col.dailyprofitloss",
+      name: "pnlUSDT",
+      label: "col.dailyprofitlossUSDT",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalUSDT",
-      label: "col.cumprofitloss",
+      name: "pnlBTC",
+      label: "col.dailyprofitlossBTC",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalUSDT",
-      label: "col.nettransfer",
+      name: "sumPnlUSDT",
+      label: "col.cumprofitlossUSDT",
       options: {
         customBodyRender: formatFloat,
       },
     },
     {
-      name: "totalUSDT",
-      label: "col.walletbalance",
+      name: "sumPnlBTC",
+      label: "col.cumprofitlossBTC",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "netTransferUSDT",
+      label: "col.nettransferUSDT",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "netTransferBTC",
+      label: "col.nettransferBTC",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "totalWalletUSDT",
+      label: "col.walletbalanceUSDT",
+      options: {
+        customBodyRender: formatFloat,
+      },
+    },
+    {
+      name: "totalWalletBTC",
+      label: "col.walletbalanceBTC",
       options: {
         customBodyRender: formatFloat,
       },
