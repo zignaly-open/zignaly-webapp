@@ -9,7 +9,7 @@ import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
 import { formatFloat, formatDate } from "../../../utils/format";
-import { generateDailyStats } from "../../../utils/chart";
+import { generateDailyStats } from "../../../utils/stats";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";

@@ -14,29 +14,29 @@ dayjs.extend(quarterOfYear);
 
 /**
  * @typedef {Object} WeeklyData
- * @property {Date|string} day Day
+ * @property {Date} day Day
  * @property {number} return Return
  */
 
 /**
  * Make the missing stats generator function.
- * @param {Array<*>} res Stats array
- * @param {function(Date, number): *} addValue Callback to format the new aggregated value
+ * @param {Array<*>} stats Stats array
+ * @param {function(Date, number): *} formatStats Callback to format the new aggregated value
  * @param {OpUnitType} unit Unit
  * @returns {function} Missing stats generator function
  */
-const generateMissingStats = (res, addValue, unit) => {
+const generateMissingStats = (stats, formatStats, unit) => {
   /**
-   * Fill missing stats with passed amount value
+   * Fill missing stats for each unit of time, from startDate to count
    * @param {string|Date} startDate Date after which to start generating
-   * @param {number} daysCount Number of days to generate
-   * @param {number} amount Amount value for each day
+   * @param {number} count Number of days to generate
+   * @param {number} amount Amount value for each unit of time
    * @returns {void}
    */
-  const fn = (startDate, daysCount, amount) => {
+  const fn = (startDate, count, amount) => {
     let date = dayjs(startDate);
-    for (let i = 0; i < daysCount; i++) {
-      res.push(addValue(date.toDate(), amount));
+    for (let i = 0; i < count; i++) {
+      stats.push(formatStats(date.toDate(), amount));
       date = date.add(1, unit);
     }
   };
@@ -47,16 +47,15 @@ const generateMissingStats = (res, addValue, unit) => {
  * Function to generate a new array that contains daily amount data.
  *
  * @param {Array<DailyData>} dailyData Array of daily amount data.
- * @param {function(Date, number): *} parseValue Callback to format the new aggregated value
+ * @param {function(Date, number): *} formatStats Callback to format the new aggregated value
  * @returns {Array<*>} Result
  */
-export const generateDailyStats = (dailyData, parseValue) => {
+export const generateDailyStats = (dailyData, formatStats) => {
   /**
    * @type {Array<*>}
    */
-  let res = [];
-
-  const generateMissingDays = generateMissingStats(res, parseValue, "d");
+  let stats = [];
+  const generateMissingDays = generateMissingStats(stats, formatStats, "d");
 
   let totalLosses = 0;
   //   let lastWeekBalance = 0;
@@ -95,12 +94,12 @@ export const generateDailyStats = (dailyData, parseValue) => {
     // const profitPercentage = (lastWeekBalance * profits) / 100;
 
     // Add calculated daily amount
-    const newValue = parseValue(currentDate.toDate(), amount);
+    const newValue = formatStats(currentDate.toDate(), amount);
     if (!sameDay) {
-      res.push(newValue);
+      stats.push(newValue);
     } else {
       // Update stats data
-      res[res.length - 1] = newValue;
+      stats[stats.length - 1] = newValue;
     }
 
     // Return last aggregated data
@@ -120,7 +119,7 @@ export const generateDailyStats = (dailyData, parseValue) => {
     }
   }
 
-  return res;
+  return stats;
 };
 
 /**
@@ -134,9 +133,8 @@ export const generateWeeklyStats = (dailyData, addValue) => {
   /**
    * @type {Array<*>}
    */
-  let res = [];
-
-  const generateMissingWeeks = generateMissingStats(res, addValue, "w");
+  let stats = [];
+  const generateMissingWeeks = generateMissingStats(stats, addValue, "w");
 
   if (dailyData.length) {
     // Adding missing weeks until start date
@@ -160,7 +158,7 @@ export const generateWeeklyStats = (dailyData, addValue) => {
 
     if (aggregatedData) {
       amount += aggregatedData.return;
-      const lastDate = aggregatedData.day.startOf("d");
+      const lastDate = dayjs(aggregatedData.day).startOf("d");
       const daysDiff = currentDate.diff(lastDate, "week");
       if (daysDiff > 1) {
         // Adding missing weeks
@@ -175,7 +173,7 @@ export const generateWeeklyStats = (dailyData, addValue) => {
     // const profitPercentage = (lastWeekBalance * profits) / 100;
 
     // Add calculated weekly amount
-    res.push(addValue(currentDate.toDate(), amount));
+    stats.push(addValue(currentDate.toDate(), amount));
 
     // Return last aggregated data
     return {
@@ -195,5 +193,5 @@ export const generateWeeklyStats = (dailyData, addValue) => {
     }
   }
 
-  return res;
+  return stats;
 };

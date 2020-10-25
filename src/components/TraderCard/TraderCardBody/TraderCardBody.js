@@ -9,7 +9,7 @@ import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { formatFloat2Dec } from "../../../utils/format";
-import { generateDailyStats } from "../../../utils/chart";
+import { generateDailyStats } from "../../../utils/stats";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

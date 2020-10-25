@@ -3,7 +3,7 @@ import "./TradingPerformance.scss";
 import { Box } from "@material-ui/core";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
-import { generateWeeklyStats } from "../../../../utils/chart";
+import { generateWeeklyStats } from "../../../../utils/stats";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
