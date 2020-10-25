@@ -3,8 +3,7 @@ import { Box, Typography } from "@material-ui/core";
 import TotalEquityGraph from "../../../Balance/TotalEquity/TotalEquityGraph";
 import EquityFilter from "../../../Balance/TotalEquity//EquityFilter";
 import EquityGraphLabels from "../../../Balance/TotalEquity//GraphLabels";
-import { formatFloat, formatDate } from "../../../../utils/format";
-import { generateDailyStats } from "../../../../utils/stats";
+import { formatFloat } from "../../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import "./ProfitSharingEquityChart.scss";
 

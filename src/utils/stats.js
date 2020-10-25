@@ -44,10 +44,10 @@ const generateMissingStats = (stats, formatStats, unit) => {
 };
 
 /**
- * Function to generate a new array that contains daily amount data.
+ * Function to generate a new array that contains daily stats data.
  *
- * @param {Array<DailyData>} dailyData Array of daily amount data.
- * @param {function(Date, number): *} formatStats Callback to format the new aggregated value
+ * @param {Array<DailyData>} dailyData Array of daily stats data.
+ * @param {function(Date, number): *} formatStats Callback to format the new aggregated stats
  * @returns {Array<*>} Result
  */
 export const generateDailyStats = (dailyData, formatStats) => {
@@ -123,22 +123,32 @@ export const generateDailyStats = (dailyData, formatStats) => {
 };
 
 /**
- * Function to generate a new array that contains daily amount data.
+ * @typedef {Object} Options
+ * @property {boolean} accumulateAmount The total stats amount value will by summed up for each entry
+ */
+const defaultOptions = {
+  accumulateAmount: true,
+};
+
+/**
+ * Function to generate a new array that contains weekly stats data.
  *
- * @param {Array<WeeklyData>} dailyData Array of daily amount data.
- * @param {function(Date, number): *} addValue Callback to format the new aggregated value
+ * @param {Array<WeeklyData>} weeklyData Array of weekly stats data.
+ * @param {Options} opts Options
+ * @param {function(Date, number): *} formatStats Callback to format the new aggregated stats
  * @returns {Array<*>} Result
  */
-export const generateWeeklyStats = (dailyData, addValue) => {
+export const generateWeeklyStats = (weeklyData, opts, formatStats) => {
+  const options = { ...defaultOptions, ...opts };
   /**
    * @type {Array<*>}
    */
   let stats = [];
-  const generateMissingWeeks = generateMissingStats(stats, addValue, "w");
+  const generateMissingWeeks = generateMissingStats(stats, formatStats, "w");
 
-  if (dailyData.length) {
+  if (weeklyData.length) {
     // Adding missing weeks until start date
-    const firstDate = dayjs(dailyData[0].day);
+    const firstDate = dayjs(weeklyData[0].day);
     const quarterStart = firstDate.startOf("quarter");
     // First week day of the first week of the quarter
     if (quarterStart.day() > 0) {
@@ -152,20 +162,22 @@ export const generateWeeklyStats = (dailyData, addValue) => {
     }
   }
 
-  const lastAggregatedData = dailyData.reduce((aggregatedData, currentData) => {
+  const lastAggregatedData = weeklyData.reduce((aggregatedData, currentData) => {
     let amount = currentData.return;
     const currentDate = dayjs(currentData.day).startOf("d");
 
     if (aggregatedData) {
-      amount += aggregatedData.return;
+      if (options.accumulateAmount) {
+        amount += aggregatedData.return;
+      }
       const lastDate = dayjs(aggregatedData.day).startOf("d");
-      const daysDiff = currentDate.diff(lastDate, "week");
-      if (daysDiff > 1) {
+      const weeksDiff = currentDate.diff(lastDate, "week");
+      if (weeksDiff > 1) {
         // Adding missing weeks
         generateMissingWeeks(
           dayjs(aggregatedData.day).add(1, "w").toDate(),
-          daysDiff,
-          aggregatedData.return,
+          weeksDiff - 1,
+          options.accumulateAmount ? aggregatedData.return : 0,
         );
       }
     }
@@ -173,7 +185,7 @@ export const generateWeeklyStats = (dailyData, addValue) => {
     // const profitPercentage = (lastWeekBalance * profits) / 100;
 
     // Add calculated weekly amount
-    stats.push(addValue(currentDate.toDate(), amount));
+    stats.push(formatStats(currentDate.toDate(), amount));
 
     // Return last aggregated data
     return {

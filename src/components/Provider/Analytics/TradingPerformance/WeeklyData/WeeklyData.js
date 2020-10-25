@@ -66,7 +66,7 @@ const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
         <Typography className="quaterLabel" variant="h3" />
         {selected.weeklyStats.map((item, index) => (
           <Typography key={index} variant="h5">
-            {item.day ? moment(new Date(item.day)).format("DD MMM") : "--"}
+            {item.return ? moment(new Date(item.day)).format("DD MMM") : "--"}
           </Typography>
         ))}
         <Typography className="total" variant="h5">

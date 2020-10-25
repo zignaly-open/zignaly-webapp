@@ -8,7 +8,7 @@ import { Box, CircularProgress, Typography } from "@material-ui/core";
 import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
-import { formatFloat, formatDate } from "../../../utils/format";
+import { formatFloat } from "../../../utils/format";
 import { generateDailyStats } from "../../../utils/stats";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";

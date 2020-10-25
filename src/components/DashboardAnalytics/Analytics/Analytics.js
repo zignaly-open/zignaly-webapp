@@ -31,11 +31,11 @@ const Analytics = () => {
       <Filters
         filters={filters}
         onClear={clearFilters}
+        profitSharing={profitSharing}
         providers={providersOptions}
         quotes={quotes}
         setFilters={setFilters}
         timeFrames={timeFrames}
-        profitSharing={profitSharing}
       />
       {!profitSharing ? (
         <AnalyticsChart

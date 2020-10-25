@@ -31,7 +31,7 @@ dayjs.extend(weekOfYear);
 const TradingPerformance = ({ performance, unit = "%" }) => {
   const [quarters, setQuarters] = useState(/** @type {Array<DefaultQuarter>} */ ([]));
 
-  const [selectedQuater, setSelectedQuarter] = useState(
+  const [selectedQuarter, setSelectedQuarter] = useState(
     /** @type {DefaultQuarter} */
     {
       weeklyStats: [],
@@ -46,16 +46,22 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
    * @returns {void}
    */
   const prepareData = () => {
+    if (!performance.weeklyStats.length) return;
     /** @type {Array<DefaultQuarter>} */
     const _quarters = [];
 
     // keep?
-    // const weeklyData = performance.weeklyStats.map((s) => ({
-    //   ...s,
-    //   date: s.day,
-    //   amount: s.return,
-    // }));
-    generateWeeklyStats(performance.weeklyStats, (date, amount) => {
+    const weeklyStats = performance.weeklyStats
+      .map((s) => ({
+        ...s,
+        day: dayjs(s.day).toDate(),
+        return: s.return,
+      }))
+      .sort((a, b) => a.day.getTime() - b.day.getTime());
+    const options = {
+      accumulateAmount: false,
+    };
+    generateWeeklyStats(weeklyStats, options, (date, amount) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
       const weekDate = dayjs(date);
       const currentQuarterId = dayjs(date).quarter();
@@ -63,15 +69,17 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
         day: weekDate.format(),
         week: weekDate.week().toString(),
         return: amount,
-        positions: 1, // todo if needed
+        positions: 0, // todo if needed
       };
       if (lastQuarter && lastQuarter.id === currentQuarterId) {
+        // Add weekly stats to current quarter
         lastQuarter.weeklyStats.push(weekStats);
         lastQuarter.total += weekStats.return;
       } else {
+        // Init new quarter
         _quarters.push({
           weeklyStats: [weekStats],
-          total: 0,
+          total: amount,
           id: currentQuarterId,
           label: `'${weekDate.year().toString().slice(2)} Q${currentQuarterId}`,
         });
@@ -80,7 +88,6 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     setQuarters(_quarters.reverse());
     setSelectedQuarter(_quarters[0]);
   };
-
   useEffect(prepareData, [performance]);
 
   /**
@@ -95,8 +102,8 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
 
   return (
     <Box className="tradingPerformance">
-      <TradingPerformanceGraph quarter={selectedQuater} unit={unit} />
-      <WeeklyData list={quarters} onChange={handleChange} selected={selectedQuater} unit={unit} />
+      <TradingPerformanceGraph quarter={selectedQuarter} unit={unit} />
+      <WeeklyData list={quarters} onChange={handleChange} selected={selectedQuarter} unit={unit} />
     </Box>
   );
 };
