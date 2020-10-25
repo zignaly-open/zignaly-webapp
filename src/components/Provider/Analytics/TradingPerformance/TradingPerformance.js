@@ -47,21 +47,18 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
    */
   const prepareData = () => {
     if (!performance.weeklyStats.length) return;
+
     /** @type {Array<DefaultQuarter>} */
     const _quarters = [];
 
-    // keep?
     const weeklyStats = performance.weeklyStats
       .map((s) => ({
         ...s,
         day: dayjs(s.day).toDate(),
-        return: s.return,
       }))
       .sort((a, b) => a.day.getTime() - b.day.getTime());
-    const options = {
-      accumulateAmount: false,
-    };
-    generateWeeklyStats(weeklyStats, options, (date, amount) => {
+
+    generateWeeklyStats(weeklyStats, (date, amount) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
       const weekDate = dayjs(date);
       const currentQuarterId = dayjs(date).quarter();

@@ -123,23 +123,14 @@ export const generateDailyStats = (dailyData, formatStats) => {
 };
 
 /**
- * @typedef {Object} Options
- * @property {boolean} accumulateAmount The total stats amount value will by summed up for each entry
- */
-const defaultOptions = {
-  accumulateAmount: true,
-};
-
-/**
  * Function to generate a new array that contains weekly stats data.
+ * (Currently only used for the trader performance stats)
  *
  * @param {Array<WeeklyData>} weeklyData Array of weekly stats data.
- * @param {Options} opts Options
- * @param {function(Date, number): *} formatStats Callback to format the new aggregated stats
+ * @param {function(Date, number): *} formatStats Callback to format the stats data
  * @returns {Array<*>} Result
  */
-export const generateWeeklyStats = (weeklyData, opts, formatStats) => {
-  const options = { ...defaultOptions, ...opts };
+export const generateWeeklyStats = (weeklyData, formatStats) => {
   /**
    * @type {Array<*>}
    */
@@ -167,18 +158,11 @@ export const generateWeeklyStats = (weeklyData, opts, formatStats) => {
     const currentDate = dayjs(currentData.day).startOf("d");
 
     if (aggregatedData) {
-      if (options.accumulateAmount) {
-        amount += aggregatedData.return;
-      }
       const lastDate = dayjs(aggregatedData.day).startOf("d");
       const weeksDiff = currentDate.diff(lastDate, "week");
       if (weeksDiff > 1) {
         // Adding missing weeks
-        generateMissingWeeks(
-          dayjs(aggregatedData.day).add(1, "w").toDate(),
-          weeksDiff - 1,
-          options.accumulateAmount ? aggregatedData.return : 0,
-        );
+        generateMissingWeeks(dayjs(aggregatedData.day).add(1, "w").toDate(), weeksDiff - 1, 0);
       }
     }
     // const watermark = amount + totalLosses;
