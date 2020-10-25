@@ -9,7 +9,7 @@ import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
 import { formatFloat, formatDate } from "../../../utils/format";
-import { generateDailyData } from "../../../utils/chart";
+import { generateDailyStats } from "../../../utils/chart";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
@@ -65,10 +65,13 @@ const ProfitSharingAnalytics = ({ provider }) => {
    */
   const parseEntries = (entries) => {
     // Prepare balance daily stats
-    const balanceStats = generateDailyData(entries, (date, amount) => ({
-      date: dayjs(date).format("YYYY/MM/DD"),
-      totalUSDT: amount,
-    }));
+    const balanceStats = generateDailyStats(entries, (date, amount) => {
+      return {
+        date: dayjs(date).format("YYYY/MM/DD"),
+        totalUSDT: amount,
+      };
+    });
+
     /** @type {Array<DefaultProviderPerformanceWeeklyStats>} */
     let weekStats = [];
     /** @type {Array<ProfitSharingBalanceEntry>} */

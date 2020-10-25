@@ -9,7 +9,7 @@ import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { formatFloat2Dec } from "../../../utils/format";
-import { generateDailyData } from "../../../utils/chart";
+import { generateDailyStats } from "../../../utils/chart";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -103,7 +103,7 @@ const TraderCard = (props) => {
       date: new Date(r.name),
       amount: r.returns,
     }));
-    generateDailyData(dailyData, addValue);
+    generateDailyStats(dailyData, addValue);
   } else {
     let currentFollowers = followers;
     // Find followers data for the past 7 days

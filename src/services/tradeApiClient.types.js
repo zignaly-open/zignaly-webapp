@@ -1,4 +1,5 @@
 import moment from "moment";
+import dayjs from "dayjs";
 import { assign, isArray, isObject, mapValues, isString } from "lodash";
 import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
@@ -4167,6 +4168,6 @@ export function profitSharingBalanceHistoryResponseTransform(response) {
   return {
     ...response,
     // @ts-ignore
-    entries: response.entries.map((e) => ({ ...e, date: moment.unix(e.date / 1000) })),
+    entries: response.entries.map((e) => ({ ...e, date: dayjs.unix(e.date / 1000).toDate() })),
   };
 }

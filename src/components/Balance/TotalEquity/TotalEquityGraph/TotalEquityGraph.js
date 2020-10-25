@@ -14,8 +14,9 @@ import { formatFloat } from "../../../../utils/format";
  * @typedef {Object} EquityChartData
  * @property {string} date
  * @property {number} [totalUSDT]
- * @property {number} [totalWalletUSDT]
  * @property {number} [totalBTC]
+ * @property {number} [totalWalletUSDT]
+ * @property {number} [totalWalletBTC]
  */
 
 /**
@@ -82,10 +83,10 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
               <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
             </Box>
           )}
-          {list[tooltipItem.index].totalWalletUSDT && (
+          {list[tooltipItem.index].totalUSDT && (
             <Box>
               <span className="label">USDT:</span>
-              <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
+              <span>{formatFloat(list[tooltipItem.index].totalUSDT)}</span>
             </Box>
           )}
         </Box>

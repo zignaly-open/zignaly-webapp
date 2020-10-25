@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./GraphLabels.scss";
 import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import moment from "moment";
+import dayjs from "dayjs";
 
 /**
  *
@@ -39,7 +39,7 @@ const EquityGraphLabels = ({ list }) => {
      */
     let data = [];
     list.forEach((item) => {
-      let date = moment(item.date);
+      let date = dayjs(item.date);
       if (!data.includes(monthNames[date.month()])) {
         data.push(monthNames[date.month()]);
       }

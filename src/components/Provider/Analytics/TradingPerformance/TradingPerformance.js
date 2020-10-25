@@ -3,7 +3,7 @@ import "./TradingPerformance.scss";
 import { Box } from "@material-ui/core";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
-import { generateWeeklyData } from "../../../../utils/chart";
+import { generateWeeklyStats } from "../../../../utils/chart";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
@@ -55,7 +55,7 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     //   date: s.day,
     //   amount: s.return,
     // }));
-    generateWeeklyData(performance.weeklyStats, (date, amount) => {
+    generateWeeklyStats(performance.weeklyStats, (date, amount) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
       const weekDate = dayjs(date);
       const currentQuarterId = dayjs(date).quarter();
