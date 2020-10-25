@@ -13,7 +13,8 @@ import { formatFloat } from "../../../../utils/format";
 /**
  * @typedef {Object} EquityChartData
  * @property {string} date
- * @property {number} totalUSDT
+ * @property {number} [totalUSDT]
+ * @property {number} [totalWalletUSDT]
  * @property {number} [totalBTC]
  */
 
