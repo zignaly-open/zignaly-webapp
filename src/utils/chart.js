@@ -23,7 +23,7 @@ dayjs.extend(quarterOfYear);
  * @param {Array<*>} res Stats array
  * @param {function(Date, number): *} addValue Callback to format the new aggregated value
  * @param {OpUnitType} unit Unit
- * @returns {void}
+ * @returns {function} Missing stats generator function
  */
 const generateMissingStats = (res, addValue, unit) => {
   /**
@@ -33,13 +33,14 @@ const generateMissingStats = (res, addValue, unit) => {
    * @param {number} amount Amount value for each day
    * @returns {void}
    */
-  return (startDate, daysCount, amount) => {
+  const fn = (startDate, daysCount, amount) => {
     let date = dayjs(startDate);
     for (let i = 0; i < daysCount; i++) {
       res.push(addValue(date.toDate(), amount));
       date = date.add(1, unit);
     }
   };
+  return fn;
 };
 
 /**
@@ -98,6 +99,7 @@ export const generateDailyStats = (dailyData, parseValue) => {
     if (!sameDay) {
       res.push(newValue);
     } else {
+      // Update stats data
       res[res.length - 1] = newValue;
     }
 
