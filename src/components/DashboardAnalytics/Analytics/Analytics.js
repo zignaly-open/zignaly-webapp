@@ -25,7 +25,6 @@ const Analytics = () => {
 
   const selectedProvider = providers.find((p) => p.id === filters.provider.val);
   const profitSharing = selectedProvider && selectedProvider.profitSharing;
-  console.log(selectedProvider, profitSharing, filters.provider.val, providers);
 
   return (
     <Box>
