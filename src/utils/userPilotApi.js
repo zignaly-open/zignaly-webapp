@@ -47,11 +47,11 @@ export const userPilotLogin = (userData) => {
   userpilot.identify(userData.userId, {
     name: userData.firstName,
     email: userData.email,
-    createdAt: userData.createdAt,
-    exchangeConnected: userData.binanceConnected,
-    providerEnabled: userData.providerEnable,
-    buysCount: userData.buysCount,
-    sellsCount: userData.sellsCount,
+    created_at: userData.createdAt,
+    exchange_connected: userData.binanceConnected,
+    provider_enabled: userData.providerEnable,
+    buys_count: userData.buysCount,
+    sells_count: userData.sellsCount,
   });
 };
 
@@ -63,7 +63,7 @@ export const userPilotExchangeConnected = (exchangeType) => {
   const { userpilot } = userPilotApi();
 
   userpilot.track("Exchange Connected", {
-    exchangeType: exchangeType,
+    exchange_type: exchangeType,
   });
 };
 
