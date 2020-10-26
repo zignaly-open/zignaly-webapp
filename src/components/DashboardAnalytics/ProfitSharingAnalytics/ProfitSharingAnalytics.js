@@ -142,7 +142,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
+      exchangeInternalId: provider.exchangeInternalId,
     };
     setBalanceHistoryLoading(true);
 
@@ -159,7 +159,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
         setBalanceHistoryLoading(false);
       });
   };
-  useEffect(getProfitSharingBalanceHistory, []);
+  useEffect(getProfitSharingBalanceHistory, [provider]);
 
   return (
     <Box
