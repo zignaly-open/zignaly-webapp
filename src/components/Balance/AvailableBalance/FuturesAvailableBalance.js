@@ -59,14 +59,14 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 <Typography className={`number1 ${color}`}>
                   BTC {formatFloat(balance.totalUnrealizedProfitBTC)}
                 </Typography>
-                <Typography className={`number1 pnlPercent ${color}`}>
+                {/* <Typography className={`number1 pnlPercent ${color}`}>
                   {balance.totalUnrealizedProfitBTC && balance.totalWalletBTC
                     ? formatFloat2Dec(
                         (balance.totalUnrealizedProfitBTC * 100) / balance.totalWalletBTC,
                       )
                     : 0}
                   %
-                </Typography>
+                </Typography> */}
               </>
             }
           />
