@@ -1,7 +1,7 @@
 import React from "react";
 import "./AvailableBalance.scss";
 import { Typography } from "@material-ui/core";
-import { formatFloat2Dec, formatFloat } from "../../../utils/format";
+import { formatFloat } from "../../../utils/format";
 import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
 import EquityPart from "../../TotalEquityBar/EquityPart";
 import TotalEquityBar from "../../TotalEquityBar";
