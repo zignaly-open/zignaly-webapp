@@ -95,7 +95,7 @@ const Table = ({
       ...c.options,
       // Display columns picked by the user
       display:
-        c.options.display !== "excluded"
+        c.options && c.options.display !== "excluded"
           ? (c.options && c.options.display) ||
             (c.options && c.options.viewColumns === false) ||
             !persistKey ||
