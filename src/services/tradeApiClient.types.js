@@ -361,6 +361,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
  * @property {String} symbol symbol.
+ * @property {String} providerId symbol.
  */
 
 /**
@@ -369,6 +370,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} amount amount.
  * @property {String} symbol symbol.
+ * @property {String} providerId symbol.
  */
 
 /**
