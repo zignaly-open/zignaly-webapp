@@ -38,7 +38,6 @@ const IncreaseStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
-  const { selectedExchange } = useStoreSettingsSelector();
   const {
     positionSizeChange,
     validateUnits,
