@@ -3823,6 +3823,7 @@ export function sessionDataResponseTransform(response) {
 
 /**
  * @typedef {Object} ExchangeOpenOrdersObject
+ * @property {String} id
  * @property {String} orderId
  * @property {String} positionId
  * @property {String} symbol
@@ -3861,6 +3862,7 @@ export function exchangeOpenOrdersResponseTransform(response) {
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
   const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
+    id: Math.random().toString(),
     datetimeReadable: time.format("YYYY/MM/DD HH:mm"),
   });
   return orderEntity;
@@ -3873,6 +3875,7 @@ function exchangeOrdersItemTransform(order) {
  */
 const createEmptyExchangeOpenOrdersEntity = () => {
   return {
+    id: "",
     orderId: "",
     positionId: "",
     symbol: "",

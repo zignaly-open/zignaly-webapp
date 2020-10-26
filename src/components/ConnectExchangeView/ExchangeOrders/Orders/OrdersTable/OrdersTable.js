@@ -79,70 +79,47 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
     {
       name: "orderId",
       label: "col.orders.orderid",
-      options: {
-        display: true,
-      },
     },
     {
       name: "positionId",
       label: "col.positionid",
       options: {
         customBodyRender: composePositionLinkButton,
-        display: true,
       },
     },
     {
       name: "symbol",
       label: "col.orders.symbol",
-      options: {
-        display: true,
-      },
     },
     {
       name: "amount",
       label: "col.amount",
       options: {
         customBodyRender: formatFloat,
-        display: true,
       },
     },
     {
       name: "status",
       label: "col.orders.status",
-      options: {
-        display: true,
-      },
     },
     {
       name: "price",
       label: "col.orders.price",
-      options: {
-        display: true,
-      },
     },
     {
       name: "side",
       label: "col.side",
-      options: {
-        display: true,
-      },
     },
     {
       name: "type",
       label: "col.orders.type",
-      options: {
-        display: true,
-      },
     },
     {
       name: "datetimeReadable",
       label: "col.orders.datetime",
-      options: {
-        display: true,
-      },
     },
     {
-      name: "orderId",
+      name: "id",
       label: "col.close",
       options: {
         customBodyRender: (val) => {
@@ -169,13 +146,14 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
    */
   const confirmCancel = (id) => {
     setOrder(id);
+    const data = list.find((item) => item.id === id);
 
     setConfirmConfig({
       titleTranslationId: "confirm.ordercancel.title",
       messageTranslationId: "confirm.ordercancel.message",
       visible: true,
       values: {
-        order: <b>{id}</b>,
+        order: <b>{data ? data.orderId : "Null"}</b>,
       },
     });
   };
@@ -187,7 +165,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
    */
   const executeAction = () => {
     setLoading(true);
-    const found = list.find((item) => item.orderId === order);
+    const found = list.find((item) => item.id === order);
     const payload = {
       orderId: found.orderId,
       token: storeSession.tradeApi.accessToken,

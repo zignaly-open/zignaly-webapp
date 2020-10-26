@@ -95,9 +95,13 @@ const Table = ({
       ...c.options,
       // Display columns picked by the user
       display:
-        c.options &&
-        c.options.display &&
-        c.options.display !== "excluded" &&
+        (c.options
+          ? "display" in c.options
+            ? c.options.display !== "excluded"
+              ? c.options.display
+              : false
+            : true
+          : true) &&
         ((c.options && c.options.viewColumns === false) ||
           !persistKey ||
           (storeSettings.displayColumns[persistKey] &&
