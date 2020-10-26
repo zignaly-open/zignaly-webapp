@@ -52,7 +52,6 @@ const IncreaseStrategyPanel = (props) => {
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const providerService = watch("providerService");
-  const isCopyProvider = providerService && providerService !== "1";
 
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
@@ -176,7 +175,7 @@ const IncreaseStrategyPanel = (props) => {
           ) : (
             <input defaultValue={lastPrice} name="price" ref={register} type="hidden" />
           )}
-          {selectedExchange.exchangeType === "futures" && !isCopyProvider && (
+          {positionEntity.exchangeType === "futures" && !positionEntity.isCopyTrader && (
             <FormControl>
               <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
               <Box alignItems="center" display="flex">
