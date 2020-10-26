@@ -3,7 +3,7 @@ import "./TradingPerformance.scss";
 import { Box } from "@material-ui/core";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
-import { generateWeeklyStats } from "../../../../utils/stats";
+import { generateStats } from "../../../../utils/stats";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
@@ -13,6 +13,7 @@ dayjs.extend(weekOfYear);
  * @typedef {import("../../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import("./WeeklyData/WeeklyData").DefaultQuarter} DefaultQuarter
+ * @typedef {import("../../../../utils/stats").StatsOptions} StatsOptions
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
@@ -58,15 +59,28 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
       }))
       .sort((a, b) => a.day.getTime() - b.day.getTime());
 
-    generateWeeklyStats(weeklyStats, (date, amount) => {
+    // Start at the first week day of the quarter's first week.
+    let quarterStart = dayjs(weeklyStats[0].day).startOf("quarter");
+    if (quarterStart.day() > 0) {
+      quarterStart = quarterStart.add(1, "w").startOf("w");
+    }
+
+    /** @type {StatsOptions} */
+    const options = {
+      unit: "w",
+      startDate: quarterStart,
+      endDate: dayjs().endOf("quarter").startOf("d"),
+      dateKey: "day",
+    };
+    generateStats(weeklyStats, options, (weekDate, data) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
-      const weekDate = dayjs(date);
-      const currentQuarterId = dayjs(date).quarter();
+      const currentQuarterId = weekDate.quarter();
+      const returns = data ? data.return : 0;
       const weekStats = {
         day: weekDate.format(),
         week: weekDate.week().toString(),
-        return: amount,
-        positions: 0, // todo if needed
+        return: returns,
+        positions: data ? data.positions : 0,
       };
       if (lastQuarter && lastQuarter.id === currentQuarterId) {
         // Add weekly stats to current quarter
@@ -76,13 +90,12 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
         // Init new quarter
         _quarters.push({
           weeklyStats: [weekStats],
-          total: amount,
+          total: returns,
           id: currentQuarterId,
           label: `'${weekDate.year().toString().slice(2)} Q${currentQuarterId}`,
         });
       }
     });
-    // generateStats();
     setQuarters(_quarters.reverse());
     setSelectedQuarter(_quarters[0]);
   };

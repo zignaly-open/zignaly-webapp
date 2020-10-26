@@ -9,7 +9,7 @@ import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomToolip from "../../CustomTooltip";
 import { formatFloat2Dec } from "../../../utils/format";
-import { generateDailyStats } from "../../../utils/stats";
+import { generateStats } from "../../../utils/stats";
 import moment from "moment";
 import LazyLoad from "react-lazyload";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -89,21 +89,14 @@ const TraderCard = (props) => {
    */
   let chartData = { values: [], labels: [] };
   if (isCopyTrading) {
-    /**
-     * Callback to add a daily amount
-     * @param {Date} date Date
-     * @param {number} amount Amount
-     * @returns {void}
-     */
-    const addValue = (date, amount) => {
-      chartData.values.push(amount);
-      chartData.labels.push(date);
-    };
-    const dailyData = dailyReturns.map((r) => ({
-      date: new Date(r.name),
-      amount: r.returns,
-    }));
-    generateDailyStats(dailyData, addValue);
+    generateStats(dailyReturns, { dateKey: "name" }, (date, data) => {
+      const lastReturns = chartData.values.length
+        ? chartData.values[chartData.values.length - 1]
+        : 0;
+
+      chartData.values.push(lastReturns + (data ? data.returns : 0));
+      chartData.labels.push(date.toDate());
+    });
   } else {
     let currentFollowers = followers;
     // Find followers data for the past 7 days
