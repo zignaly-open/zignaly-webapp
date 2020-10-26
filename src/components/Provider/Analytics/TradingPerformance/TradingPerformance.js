@@ -52,15 +52,8 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     /** @type {Array<DefaultQuarter>} */
     const _quarters = [];
 
-    const weeklyStats = performance.weeklyStats
-      .map((s) => ({
-        ...s,
-        day: dayjs(s.day).toDate(),
-      }))
-      .sort((a, b) => a.day.getTime() - b.day.getTime());
-
     // Start at the first week day of the quarter's first week.
-    let quarterStart = dayjs(weeklyStats[0].day).startOf("quarter");
+    let quarterStart = dayjs(performance.weeklyStats[0].day).startOf("quarter");
     if (quarterStart.day() > 0) {
       quarterStart = quarterStart.add(1, "w").startOf("w");
     }
@@ -72,7 +65,7 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
       endDate: dayjs().endOf("quarter").startOf("d"),
       dateKey: "day",
     };
-    generateStats(weeklyStats, options, (weekDate, data) => {
+    generateStats(performance.weeklyStats, options, (weekDate, data) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
       const currentQuarterId = weekDate.quarter();
       const returns = data ? data.return : 0;

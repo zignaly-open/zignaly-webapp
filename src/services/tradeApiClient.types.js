@@ -3088,7 +3088,16 @@ export function providerPerformanceResponseTransform(response) {
   }
 
   let emptyProviderEntity = createProviderPerformanceEmptyEntity();
-  return { ...emptyProviderEntity, ...response };
+  return {
+    ...emptyProviderEntity,
+    ...response,
+    weeklyStats: response.weeklyStats
+      .map((/** @type {*} */ s) => ({
+        ...s,
+        day: dayjs(s.day).toDate(),
+      }))
+      .sort((/** @type {*} */ a, /** @type {*} */ b) => a.day.getTime() - b.day.getTime()),
+  };
 }
 
 export function createProviderPerformanceEmptyEntity() {
