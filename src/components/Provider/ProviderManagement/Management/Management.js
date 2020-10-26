@@ -81,6 +81,7 @@ const Management = ({ provider }) => {
         <ManagementTable
           allPositions={allPositions}
           list={tablePositions}
+          provider={provider}
           setLoading={setPositionsLoading}
         />
       )}
