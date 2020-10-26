@@ -43,16 +43,16 @@ const migrations = {
       },
     };
   },
-  17: (/** @type {PersistedDefaultState} */ state) => {
+  18: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       settings: {
         ...state.settings,
         displayColumns: {
           ...state.settings.displayColumns,
-          futuresDailyBalance: [...initialState.settings.displayColumns.futuresDailyBalance],
-          providerContracts: [...initialState.settings.displayColumns.providerContracts],
-          providerOrders: [...initialState.settings.displayColumns.providerOrders],
+          futuresDailyBalance: initialState.settings.displayColumns.futuresDailyBalance,
+          providerContracts: initialState.settings.displayColumns.providerContracts,
+          providerOrders: initialState.settings.displayColumns.providerOrders,
         },
       },
     };
@@ -63,7 +63,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 17,
+  version: 18,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui"],
 };

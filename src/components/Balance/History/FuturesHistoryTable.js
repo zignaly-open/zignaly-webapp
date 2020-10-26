@@ -113,7 +113,7 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
   };
 
   const dynamicColumns = () => {
-    for (let a = 0; a < quotes.length; a++) {
+    for (let i = 0; i < quotes.length; i++) {
       let obj = {
         name: "",
         label: { id: "", quote: "" },
@@ -130,7 +130,7 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
         columns.push(obj);
       }
     }
-    for (let a = 0; a < quotes.length; a++) {
+    for (let i = 0; i < quotes.length; i++) {
       let obj = {
         name: "",
         label: { id: "", quote: "" },
