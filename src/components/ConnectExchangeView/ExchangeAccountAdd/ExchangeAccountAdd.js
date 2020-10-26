@@ -153,7 +153,6 @@ const ExchangeAccountAdd = ({ demo }) => {
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(getUserExchanges(exchangePayload));
-        dispatch(getUserData(exchangePayload));
         dashlyExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
