@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ProviderOptionsForm.scss";
 import { Box, Checkbox, TextField, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
