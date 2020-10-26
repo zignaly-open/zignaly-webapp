@@ -80,6 +80,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
         balanceStats.push({
           date: date.format("YYYY/MM/DD"),
           totalUSDT: lastAmount + amount,
+          totalWalletUSDT: lastAmount + amount,
         });
       }
     });

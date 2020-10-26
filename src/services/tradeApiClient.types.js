@@ -4169,7 +4169,6 @@ const createEmptyProfileProviderSignalsEntity = (item) => {
 export function profitSharingBalanceHistoryResponseTransform(response) {
   return {
     ...response,
-    // @ts-ignore
-    entries: response.entries.map((e) => ({ ...e, date: dayjs.unix(e.date / 1000).toDate() })),
+    entries: response.entries.map((/** @type {*} */ e) => ({ ...e, date: dayjs(e.date).toDate() })),
   };
 }
