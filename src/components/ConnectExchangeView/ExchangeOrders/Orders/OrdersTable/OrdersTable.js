@@ -31,6 +31,7 @@ import { FormattedMessage } from "react-intl";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
+ * @property {string} persistKey Table title.
  * @property {Array<ExchangeOpenOrdersObject>} list
  * @property {ExchangeConnectionEntity} selectedAccount
  * @property {DefaultProviderGetObject} [provider]
@@ -39,8 +40,7 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const OrdersTable = ({ title, list, selectedAccount, loadData, provider }) => {
-  const tablePersistsKey = "ordersTable";
+const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persistKey }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("");
@@ -205,7 +205,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider }) => {
           columns={columns}
           data={list}
           options={options}
-          persistKey={tablePersistsKey}
+          persistKey={persistKey}
           title={title}
         />
       </Box>
