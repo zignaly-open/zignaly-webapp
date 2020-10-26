@@ -82,6 +82,7 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
         });
       }
     });
+    // generateStats();
     setQuarters(_quarters.reverse());
     setSelectedQuarter(_quarters[0]);
   };

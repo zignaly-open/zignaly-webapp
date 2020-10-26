@@ -191,3 +191,65 @@ export const generateWeeklyStats = (weeklyData, formatStats) => {
 
   return stats;
 };
+
+/**
+ * @typedef {Object} Options
+ * @property {OpUnitType} [unit]
+ * @property {string} [dateKey]
+ * @property {string|Date} [startDate]
+ * @property {string|Date} [endDate]
+ */
+
+/** @type {Options} */
+const defaultOptions = {
+  unit: "d",
+  startDate: null,
+  endDate: null,
+  dateKey: "date",
+};
+
+//   const firstDate = dayjs(weeklyData[0].day);
+//   const quarterStart = firstDate.startOf("quarter");
+//   // First week day of the first week of the quarter
+//   if (quarterStart.day() > 0) {
+//     quarterStart.add(1, "w").startOf("w");
+//   }
+//   const firstWeekDate = firstDate.startOf("week");
+
+// const endDate = dayjs().endOf("quarter").startOf("d");
+
+/**
+ * Generate stats
+ *
+ * @template T
+ * @param {Array<T>} data Array of weekly stats data.
+ * @param {Options} options Options
+ * @param {function(dayjs.Dayjs, T): *} formatStats Callback to format the stats data
+ * @returns {void}
+ */
+export const generateStats = (data, options, formatStats) => {
+  if (!data.length) return;
+  const opts = { ...defaultOptions, ...options };
+
+  // Start at passed startDate or first date
+  let startDate = opts.startDate ? dayjs(opts.startDate) : dayjs(data[0][opts.dateKey]);
+  startDate = startDate.startOf("d");
+
+  // End at passed date or today
+  let endDate = opts.endDate ? dayjs(opts.endDate) : dayjs();
+  endDate = endDate.startOf("d");
+
+  const diff = endDate.diff(startDate, opts.unit);
+  let currentDate = startDate;
+
+  const test = (d) => dayjs(d[opts.dateKey]).isSame(currentDate, opts.unit);
+  for (let i = 0; i <= diff; i++) {
+    const matchingData = data.filter(test);
+    if (!matchingData.length) {
+      formatStats(currentDate, null);
+    } else {
+      matchingData.forEach((d) => formatStats(currentDate, d));
+    }
+    currentDate = currentDate.add(1, opts.unit);
+  }
+};

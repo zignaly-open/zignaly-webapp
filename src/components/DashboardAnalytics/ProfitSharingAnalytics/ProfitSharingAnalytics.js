@@ -9,7 +9,7 @@ import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";
 import { formatFloat } from "../../../utils/format";
-import { generateDailyStats } from "../../../utils/stats";
+import { generateDailyStats, generateStats } from "../../../utils/stats";
 import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
@@ -65,12 +65,35 @@ const ProfitSharingAnalytics = ({ provider }) => {
    */
   const parseEntries = (entries) => {
     // Prepare balance daily stats
-    const balanceStats = generateDailyStats(entries, (date, amount) => {
+    console.time("1");
+    const balanceStats0 = generateDailyStats(entries, (date, amount) => {
       return {
         date: dayjs(date).format("YYYY/MM/DD"),
         totalUSDT: amount,
       };
     });
+    console.timeEnd("1");
+
+    /** @type {Array<EquityChartData>} */
+    const balanceStats = [];
+    console.time("2");
+    generateStats(entries, {}, (date, data) => {
+      const lastData = balanceStats.length ? balanceStats[balanceStats.length - 1] : null;
+      const amount = data ? data.amount : 0;
+
+      if (lastData && date.isSame(lastData.date, "d")) {
+        // Multiple data for same day, update last stats
+        balanceStats[balanceStats.length - 1].totalUSDT += amount;
+      } else {
+        const lastAmount = lastData ? lastData.totalUSDT : 0;
+        // Add new daily stats
+        balanceStats.push({
+          date: date.format("YYYY/MM/DD"),
+          totalUSDT: lastAmount + amount,
+        });
+      }
+    });
+    console.timeEnd("2");
 
     /** @type {Array<DefaultProviderPerformanceWeeklyStats>} */
     let weekStats = [];
