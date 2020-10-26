@@ -79,44 +79,67 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
     {
       name: "orderId",
       label: "col.orders.orderid",
+      options: {
+        display: true,
+      },
     },
     {
       name: "positionId",
       label: "col.positionid",
       options: {
         customBodyRender: composePositionLinkButton,
+        display: true,
       },
     },
     {
       name: "symbol",
       label: "col.orders.symbol",
+      options: {
+        display: true,
+      },
     },
     {
       name: "amount",
       label: "col.amount",
       options: {
         customBodyRender: formatFloat,
+        display: true,
       },
     },
     {
       name: "status",
       label: "col.orders.status",
+      options: {
+        display: true,
+      },
     },
     {
       name: "price",
       label: "col.orders.price",
+      options: {
+        display: true,
+      },
     },
     {
       name: "side",
       label: "col.side",
+      options: {
+        display: true,
+      },
     },
     {
       name: "type",
       label: "col.orders.type",
+      options: {
+        display: true,
+      },
     },
     {
       name: "datetimeReadable",
       label: "col.orders.datetime",
+      options: {
+        display: true,
+      },
     },
     {
       name: "orderId",
@@ -188,7 +211,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
    */
   const options = {
     sortOrder: {
-      name: "col.orders.datetime",
+      name: "datetimeReadable",
       direction: "desc",
     },
   };

@@ -121,39 +121,52 @@ const ContractsTable = ({ title, list, loadData, selectedAccount, provider, pers
       label: "col.positionid",
       options: {
         customBodyRender: composePositionLinkButton,
+        display: true,
       },
     },
     {
       name: "symbol",
       label: "col.orders.symbol",
+      options: {
+        display: true,
+      },
     },
     {
       name: "amount",
       label: "col.amount",
       options: {
         customBodyRender: formatFloat,
+        display: true,
       },
     },
     {
       name: "leverage",
       label: "col.leverage",
+      options: {
+        display: true,
+      },
     },
     {
       name: "liquidationprice",
       label: "col.contracts.liquidationprice",
       options: {
         customBodyRender: formatFloat,
+        display: true,
       },
     },
     {
       name: "side",
       label: "col.side",
+      options: {
+        display: true,
+      },
     },
     {
       name: "entryprice",
       label: "col.entryprice",
       options: {
         customBodyRender: formatFloat,
+        display: true,
       },
     },
     {
@@ -161,11 +174,15 @@ const ContractsTable = ({ title, list, loadData, selectedAccount, provider, pers
       label: "col.contracts.markprice",
       options: {
         customBodyRender: formatFloat,
+        display: true,
       },
     },
     {
       name: "margin",
       label: "col.contracts.margin",
+      options: {
+        display: true,
+      },
     },
     {
       name: "id",
