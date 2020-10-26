@@ -11,6 +11,7 @@ import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { useTheme } from "@material-ui/core/styles";
+import ProfitLossAnalysis from "../../../Balance/ProfitLossAnalysis";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -80,7 +81,11 @@ const ExchangeAccountData = ({ account }) => {
                   )}
                 </Box>
                 <Box className="cryptoBox">
-                  <CryptoComposition dailyBalance={dailyBalance} vertical={!isMobile} />
+                  {account.exchangeType === "futures" ? (
+                    <ProfitLossAnalysis dailyBalance={dailyBalance} />
+                  ) : (
+                    <CryptoComposition dailyBalance={dailyBalance} vertical={!isMobile} />
+                  )}
                 </Box>
               </>
             )}
