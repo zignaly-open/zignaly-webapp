@@ -19,6 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
@@ -32,11 +33,12 @@ import { FormattedMessage } from "react-intl";
  * @property {Array<ExchangeContractsObject>} list
  * @property {Function} loadData
  * @property {ExchangeConnectionEntity} selectedAccount
+ * @property {DefaultProviderGetObject} [provider]
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ContractsTable = ({ title, list, loadData, selectedAccount }) => {
+const ContractsTable = ({ title, list, loadData, selectedAccount, provider }) => {
   const tablePersistsKey = "contractsTable";
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
@@ -81,6 +83,7 @@ const ContractsTable = ({ title, list, loadData, selectedAccount }) => {
       exchangeInternalId: selectedAccount.internalId,
       symbol: contract.symbol,
       amount: contract.amount.toString(),
+      ...(provider && { providerId: provider.id }),
     };
 
     tradeApi

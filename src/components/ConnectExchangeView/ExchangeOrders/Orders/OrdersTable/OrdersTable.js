@@ -19,6 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -32,12 +33,13 @@ import { FormattedMessage } from "react-intl";
  * @property {string | React.ReactNode} title Table title.
  * @property {Array<ExchangeOpenOrdersObject>} list
  * @property {ExchangeConnectionEntity} selectedAccount
+ * @property {DefaultProviderGetObject} [provider]
  * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
+const OrdersTable = ({ title, list, selectedAccount, loadData, provider }) => {
   const tablePersistsKey = "ordersTable";
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
@@ -163,13 +165,15 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
   const executeAction = () => {
     setLoading(true);
     const found = list.find((item) => item.orderId === order);
+    const payload = {
+      orderId: found.orderId,
+      token: storeSession.tradeApi.accessToken,
+      symbol: found.symbol,
+      exchangeInternalId: selectedAccount.internalId,
+      ...(provider && { providerId: provider.id }),
+    };
     tradeApi
-      .cancelExchangeOrder({
-        orderId: found.orderId,
-        token: storeSession.tradeApi.accessToken,
-        symbol: found.symbol,
-        exchangeInternalId: selectedAccount.internalId,
-      })
+      .cancelExchangeOrder(payload)
       .then(() => {
         dispatch(showSuccessAlert("orders.alert.title", "orders.alert.body"));
         loadData();
