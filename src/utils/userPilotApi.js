@@ -65,7 +65,9 @@ export const userPilotExchangeConnected = (exchangeType) => {
   const { userpilot } = userPilotApi();
 
   userpilot.track("Exchange Connected", {
+    /* eslint-disable */
     exchange_type: exchangeType,
+    /* eslint-enable */
   });
 };
 
