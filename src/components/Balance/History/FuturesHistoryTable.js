@@ -121,11 +121,10 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
           customBodyRender: formatFloat,
         },
       };
-      if (quotes[a] !== "ETH" && quotes[a] !== "BNB") {
-        obj.name = "free" + quotes[a];
+      if (quotes[i] !== "ETH" && quotes[i] !== "BNB") {
+        obj.name = "free" + quotes[i];
         obj.label.id = "col.freequote";
-        /* @ts-ignore */
-        obj.label.quote = quotes[a];
+        obj.label.quote = quotes[i];
         /* @ts-ignore */
         columns.push(obj);
       }
@@ -139,10 +138,9 @@ const FuturesHistoryTable = ({ title, persistKey, list, quotes }) => {
         },
       };
 
-      obj.name = "locked" + quotes[a];
+      obj.name = "locked" + quotes[i];
       obj.label.id = "col.lockedquote";
-      /* @ts-ignore */
-      obj.label.quote = quotes[a];
+      obj.label.quote = quotes[i];
       /* @ts-ignore */
       columns.push(obj);
     }
