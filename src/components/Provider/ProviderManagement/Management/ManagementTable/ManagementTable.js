@@ -10,7 +10,6 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
 import { usePositionDataTableCompose } from "../../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 import SelectionActions from "../ExpandedRow/SelectionActions";
-import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -37,7 +36,6 @@ import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelec
  */
 const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
