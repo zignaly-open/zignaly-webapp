@@ -77,7 +77,8 @@ const TakeProfitPanel = (props) => {
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
   const providerService = watch("providerService");
-  const isCopyProvider = providerService && providerService !== "1";
+  const isCopyProvider =
+    (providerService && providerService !== "1") || (positionEntity && positionEntity.isCopyTrader);
 
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
