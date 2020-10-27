@@ -21,7 +21,7 @@ import { formatNumber } from "../../../utils/formatters";
  */
 
 const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
-  const color = balance && balance.pnlBTC >= 0 ? "green" : "red";
+  const color = balance && balance.totalUnrealizedProfitBTC >= 0 ? "green" : "red";
 
   return (
     <div className="availableBalance">

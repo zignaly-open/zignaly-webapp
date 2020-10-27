@@ -9,6 +9,8 @@ import { formatFloat } from "../../../../utils/format";
  * @typedef {Object} BalanceObject
  * @property {Number} totalBTC
  * @property {Number} totalUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  */
 
 /**
@@ -50,9 +52,21 @@ const TitleBar = ({ balance, selectedExchange }) => {
           justifyContent="space-between"
           mt={1}
         >
-          <Typography className="number2">BTC {formatFloat(balance.totalBTC)}</Typography>
+          <Typography className="number2">
+            BTC{" "}
+            {formatFloat(
+              selectedExchange.exchangeType === "futures"
+                ? balance.totalWalletBTC
+                : balance.totalBTC,
+            )}
+          </Typography>
           <Typography className="smallText number3">
-            = USDT {formatFloat(balance.totalUSDT)}
+            = USDT{" "}
+            {formatFloat(
+              selectedExchange.exchangeType === "futures"
+                ? balance.totalWalletUSDT
+                : balance.totalUSDT,
+            )}
           </Typography>
         </Box>
       </Box>

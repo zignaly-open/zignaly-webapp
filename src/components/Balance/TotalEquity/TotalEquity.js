@@ -22,15 +22,18 @@ import { isObject } from "lodash";
  */
 const TotalEquity = ({ dailyBalance, modal, selectedExchange }) => {
   const [list, setList] = useState(dailyBalance.balances);
-  const [balance, setBalance] = useState({ totalBTC: 0, totalUSDT: 0 });
+  const initData = { totalBTC: 0, totalUSDT: 0, totalWalletBTC: 0, totalWalletUSDT: 0 };
+  const [balance, setBalance] = useState(initData);
 
   const filterBalance = () => {
     let obj = { ...balance };
     let data = dailyBalance.balances.length
       ? dailyBalance.balances[dailyBalance.balances.length - 1]
-      : { totalBTC: 0, totalUSDT: 0 };
+      : initData;
     obj.totalBTC = isObject(data) ? data.totalBTC : 0;
     obj.totalUSDT = isObject(data) ? data.totalUSDT : 0;
+    obj.totalWalletBTC = isObject(data) ? data.totalWalletBTC : 0;
+    obj.totalWalletUSDT = isObject(data) ? data.totalWalletUSDT : 0;
     setBalance(obj);
   };
 
