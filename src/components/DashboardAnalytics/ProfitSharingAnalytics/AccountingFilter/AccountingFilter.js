@@ -40,10 +40,9 @@ const AccountingFilter = ({ data, onChange, types }) => {
   /**
    * Filter accounting data
    *
-   * @param {string} value
-   * @returns {Array<ProfitSharingBalanceEntry>}
+   * @param {string} value Original data
+   * @returns {Array<ProfitSharingBalanceEntry>} Filtered data
    */
-
   const filterData = (value) => {
     if (value === "all") {
       return data;
