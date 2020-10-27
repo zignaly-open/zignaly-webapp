@@ -8,7 +8,7 @@ import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
 import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
-import BalanceBox from "./BalanceBox";
+import BalanceBox from "./TopBalance";
 import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";

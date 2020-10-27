@@ -6,7 +6,7 @@ import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";
 import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import MobileExchangeList from "./MobileExchangeList";
-import BalanceBox from "../Header/BalanceBox";
+import BalanceBox from "../Header/TopBalance";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

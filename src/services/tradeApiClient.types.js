@@ -1726,6 +1726,16 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
+ * @property {Number} totalAvailableBTC
+ * @property {Number} totalAvailableUSDT
+ * @property {Number} totalCurrentMarginBTC
+ * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalMarginBTC
+ * @property {Number} totalMarginUSDT
+ * @property {Number} totalUnrealizedProfitBTC
+ * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  */
 
 /**
@@ -1739,26 +1749,29 @@ export function userBalanceResponseTransform(response) {
     throw new Error("Response must be an object with different propteries.");
   }
 
-  let transformedResponse = createUserBalanceEntity(response);
-  return transformedResponse;
+  return assign(createEmptyUserBalanceEntity(), response);
 }
 
-/**
- * Create user balance entity.
- *
- * @param {*} response Trade API user balance raw raw response.
- * @returns {UserBalanceEntity} User balance entity.
- */
-function createUserBalanceEntity(response) {
+export function createEmptyUserBalanceEntity() {
   return {
-    pnlBTC: response.pnlBTC,
-    pnlUSDT: response.pnlUSDT,
-    totalBTC: response.totalBTC,
-    totalFreeBTC: response.totalFreeBTC,
-    totalFreeUSDT: response.totalFreeUSDT,
-    totalLockedBTC: response.totalLockedBTC,
-    totalLockedUSDT: response.totalLockedUSDT,
-    totalUSDT: response.totalUSDT,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    totalBTC: 0,
+    totalFreeBTC: 0,
+    totalFreeUSDT: 0,
+    totalLockedBTC: 0,
+    totalLockedUSDT: 0,
+    totalUSDT: 0,
+    totalAvailableBTC: 0,
+    totalAvailableUSDT: 0,
+    totalCurrentMarginBTC: 0,
+    totalCurrentMarginUSDT: 0,
+    totalMarginBTC: 0,
+    totalMarginUSDT: 0,
+    totalUnrealizedProfitBTC: 0,
+    totalUnrealizedProfitUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -1846,6 +1859,14 @@ function createUserBalanceEntity(response) {
  * @property {Number} totalUSDT
  * @property {Number} availablePercentage
  * @property {Number} investedPercentage
+ * @property {Number} netTransferBTC
+ * @property {Number} netTransferUSDT
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} sumPnlBTC
+ * @property {Number} sumPnlUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  *
  */
 
@@ -1879,7 +1900,7 @@ export function userEquityResponseTransform(response) {
  * @returns {UserEquityEntity} Exchange connection entity.
  */
 function userEquityItemTransform(userEquityItem) {
-  const emptyEquityEntity = createUserEquityEntity();
+  const emptyEquityEntity = createEmptyUserEquityEntity();
 
   function prepareAvailablePercentage() {
     if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
@@ -1922,7 +1943,7 @@ function createUserEquityResponseEntity(response) {
  *
  * @returns {UserEquityEntity} User balance entity.
  */
-function createUserEquityEntity() {
+export function createEmptyUserEquityEntity() {
   return {
     BKRWpercentage: 0,
     BNBpercentage: 0,
@@ -1997,6 +2018,14 @@ function createUserEquityEntity() {
     totalUSDT: 0,
     availablePercentage: 0,
     investedPercentage: 0,
+    netTransferBTC: 0,
+    netTransferUSDT: 0,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    sumPnlBTC: 0,
+    sumPnlUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 

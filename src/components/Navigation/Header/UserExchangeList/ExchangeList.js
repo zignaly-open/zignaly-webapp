@@ -67,12 +67,12 @@ const ExchangeList = (props) => {
             <ExchangeIcon exchange={item.name.toLowerCase()} size="small" />
             <span className="name"> {item.internalName} </span>
             {item.paperTrading && (
-              <span className="name">
+              <span className="tag">
                 (<FormattedMessage id="menu.demo" />)
               </span>
             )}
             {item.isTestnet && (
-              <span className="name">
+              <span className="tag">
                 (<FormattedMessage id="menu.testnet" />)
               </span>
             )}

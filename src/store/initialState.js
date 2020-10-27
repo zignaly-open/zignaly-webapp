@@ -258,6 +258,13 @@ const initialState = {
         "col.availablePercentage",
         "col.investedPercentage",
       ],
+      futuresDailyBalance: [
+        "date",
+        "col.dailyprofitlossUSDT",
+        "col.cumprofitlossUSDT",
+        "col.nettransferUSDT",
+        "col.walletbalanceUSDT",
+      ],
       exchangeAssets: [
         "coin",
         "name",

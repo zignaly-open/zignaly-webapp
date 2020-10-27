@@ -1,19 +1,16 @@
 import React from "react";
-import "./HistoryTable.scss";
 import { Box } from "@material-ui/core";
-import { formatFloat } from "../../../../utils/format";
-import Table from "../../../Table";
-import { formatNumber } from "../../../../utils/formatters";
+import { formatFloat } from "../../../utils/format";
+import Table from "../../Table";
+import { formatNumber } from "../../../utils/formatters";
 
 /**
- * @typedef {import("../../../../store/initialState").DefaultState} DefaultStateType
- * @typedef {import("../../../../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
+ * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("../../../../store/initialState").UserEquityEntity} UserEquityEntity
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("../../../store/initialState").UserEquityEntity} UserEquityEntity
  */
 
 /**
@@ -21,7 +18,7 @@ import { formatNumber } from "../../../../utils/formatters";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
- * @property {'ctAnalytics'|'spAnalytics'|'dailyBalance'} persistKey Key to save display columns settings.
+ * @property {'dailyBalance'} persistKey Key to save display columns settings.
  * @property {Array<UserEquityEntity>} list
  * @property {Array<String>} quotes
  *

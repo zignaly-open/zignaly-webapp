@@ -9,6 +9,7 @@ import { formatFloat } from "../../../../utils/format";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -16,6 +17,7 @@ import { formatFloat } from "../../../../utils/format";
  * @typedef {Object} DefaultProps
  * @property {Array<UserEquityEntity>} list
  * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
+ * @property {ExchangeConnectionEntity} selectedExchange Selected Exchange.
  */
 
 /**
@@ -23,7 +25,7 @@ import { formatFloat } from "../../../../utils/format";
  * @param {DefaultProps} props Default props.
  */
 
-const TotalEquityGraph = ({ list, modal }) => {
+const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
   const { darkStyle } = useStoreSettingsSelector();
 
   /**
@@ -40,8 +42,9 @@ const TotalEquityGraph = ({ list, modal }) => {
   };
 
   const prepareChartData = () => {
-    [...list].forEach((item) => {
-      chartData.values.push(item.totalUSDT);
+    const key = selectedExchange.exchangeType === "futures" ? "totalWalletUSDT" : "totalUSDT";
+    list.forEach((item) => {
+      chartData.values.push(item[key]);
       chartData.labels.push("");
     });
   };
@@ -60,6 +63,29 @@ const TotalEquityGraph = ({ list, modal }) => {
    */
 
   const tooltipFormat = (tooltipItem) => {
+    if (selectedExchange.exchangeType.toLowerCase() === "futures") {
+      return (
+        <Box className="equityTooltip">
+          <Box>
+            <span className="label"> Date:</span>
+            <span>{list[tooltipItem.index] ? list[tooltipItem.index].date : "0"}</span>
+          </Box>
+          {list[tooltipItem.index].totalWalletBTC && (
+            <Box>
+              <span className="label">BTC:</span>
+              <span>{formatFloat(list[tooltipItem.index].totalWalletBTC)}</span>
+            </Box>
+          )}
+          {list[tooltipItem.index].totalWalletUSDT && (
+            <Box>
+              <span className="label">USDT:</span>
+              <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
+            </Box>
+          )}
+        </Box>
+      );
+    }
+
     return (
       <Box className="equityTooltip">
         <Box>
