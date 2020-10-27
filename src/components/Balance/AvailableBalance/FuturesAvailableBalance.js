@@ -82,7 +82,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
             }
           />
 
-          <span className="operator">+</span>
+          <span className="operator">&mdash;</span>
           <EquityPart
             info={<>= USDT {formatNumber(balance.totalCurrentMarginUSDT, 2)}</>}
             name="balance.current"
@@ -105,7 +105,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 )}
               </>
             }
-            name="balance.total"
+            name="balance.available"
             value={
               <>
                 BTC{" "}
