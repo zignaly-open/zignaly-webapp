@@ -89,7 +89,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
     },
     {
       name: "symbol",
-      label: "col.orders.symbol",
+      label: "col.pair",
     },
     {
       name: "amount",
