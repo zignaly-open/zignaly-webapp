@@ -6,7 +6,8 @@ import { formatFloat } from "../../../../utils/format";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {Object} BalanceObject
+ * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {UserEquityEntity} BalanceObject
  * @property {Number} totalBTC
  * @property {Number} totalUSDT
  * @property {Number} totalWalletBTC

@@ -5,7 +5,6 @@ import "./BalanceTabs.scss";
 import History from "../History";
 import Coins from "../Coins";
 import { FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -21,7 +20,6 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  */
 const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
   const [tabValue, setTabValue] = useState(0);
-  const storeSettings = useStoreSettingsSelector();
 
   /**
    * Event handler to change tab value.
@@ -36,8 +34,8 @@ const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
 
   const checkCoinsDisplay = () => {
     if (
-      storeSettings.selectedExchange.exchangeName &&
-      storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly"
+      selectedExchange.exchangeName &&
+      selectedExchange.exchangeName.toLowerCase() === "zignaly"
     ) {
       return true;
     }
