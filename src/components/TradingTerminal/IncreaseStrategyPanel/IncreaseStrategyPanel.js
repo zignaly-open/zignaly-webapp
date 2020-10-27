@@ -3,7 +3,6 @@ import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
