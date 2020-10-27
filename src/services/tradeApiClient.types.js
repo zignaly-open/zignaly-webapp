@@ -1,4 +1,5 @@
 import moment from "moment";
+import dayjs from "dayjs";
 import { assign, isArray, isObject, mapValues, isString } from "lodash";
 import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
@@ -973,8 +974,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ProfitSharingBalanceEntry
- * @property {string} id
- * @property {number} date Timestamp
+ * @property {Date} date
  * @property {number} amount
  * @property {string} type
  */
@@ -2447,8 +2447,8 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
- * @typedef {Object} DefaultProviderPermormanceWeeklyStats
- * @property {Number} week
+ * @typedef {Object} DefaultProviderPerformanceWeeklyStats
+ * @property {String} week
  * @property {Number} return
  * @property {String} day
  * @property {Number} positions
@@ -2458,7 +2458,7 @@ function createConnectedProviderUserInfoEntity(response) {
  *
  * @typedef {Object} DefaultProviderPermormanceObject
  * @property {Number} closePositions
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
@@ -3073,7 +3073,7 @@ export function exchangeDepositAddressResponseTransform({ currency, address, tag
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  */
 
 /**
@@ -3088,7 +3088,16 @@ export function providerPerformanceResponseTransform(response) {
   }
 
   let emptyProviderEntity = createProviderPerformanceEmptyEntity();
-  return { ...emptyProviderEntity, ...response };
+  return {
+    ...emptyProviderEntity,
+    ...response,
+    weeklyStats: response.weeklyStats
+      .map((/** @type {*} */ s) => ({
+        ...s,
+        day: dayjs(s.day).toDate(),
+      }))
+      .sort((/** @type {*} */ a, /** @type {*} */ b) => a.day.getTime() - b.day.getTime()),
+  };
 }
 
 export function createProviderPerformanceEmptyEntity() {
@@ -4162,3 +4171,16 @@ const createEmptyProfileProviderSignalsEntity = (item) => {
     i3MonthLowPercentage: item.i3m_lowerPricePercentage,
   };
 };
+
+/**
+ * Transform profits sharing balance history response.
+ *
+ * @param {*} response Profits sharing balance history response.
+ * @returns {ProfitSharingBalanceHistory} Profits sharing balance history entity.
+ */
+export function profitSharingBalanceHistoryResponseTransform(response) {
+  return {
+    ...response,
+    entries: response.entries.map((/** @type {*} */ e) => ({ ...e, date: dayjs(e.date).toDate() })),
+  };
+}

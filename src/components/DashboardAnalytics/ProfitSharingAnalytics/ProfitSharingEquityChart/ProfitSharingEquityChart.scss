@@ -4,6 +4,22 @@
   }
 
   .chartBox {
-    margin-top: 24px;
+    display: flex;
+    // flex: 1;
+    flex-direction: column;
+    height: 370px;
+    margin: 8px 0 20px;
+  }
+
+  .gradientChart {
+    height: 100%;
+  }
+}
+
+@include media("<=sm") {
+  .profitSharingEquityChart {
+    .chartBox {
+      height: auto;
+    }
   }
 }

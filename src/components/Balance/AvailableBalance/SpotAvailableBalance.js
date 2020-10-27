@@ -87,14 +87,12 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
           <EquityPart
             info={
               <>
-                <Typography className="smallText number3">
-                  = USDT{" "}
-                  {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                    <AllInclusiveIcon className="infinity" />
-                  ) : (
-                    formatFloat(balance.totalUSDT)
-                  )}
-                </Typography>
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatFloat(balance.totalUSDT)
+                )}
               </>
             }
             name="balance.total"

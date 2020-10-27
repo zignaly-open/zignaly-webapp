@@ -3,13 +3,12 @@ import { Box, Typography } from "@material-ui/core";
 import TotalEquityGraph from "../../../Balance/TotalEquity/TotalEquityGraph";
 import EquityFilter from "../../../Balance/TotalEquity//EquityFilter";
 import EquityGraphLabels from "../../../Balance/TotalEquity//GraphLabels";
-import { formatFloat, formatDate } from "../../../../utils/format";
-import { generateDailyData } from "../../../../utils/chart";
+import { formatFloat } from "../../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import "./ProfitSharingEquityChart.scss";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
+ * @typedef {import("../../../Balance/TotalEquity/TotalEquityGraph/TotalEquityGraph").EquityChartData} EquityChartData
  * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
@@ -17,7 +16,7 @@ import "./ProfitSharingEquityChart.scss";
 /**
  * @typedef {Object} DefaultProps
  * @property {number} currentBalance
- * @property {Array<ProfitSharingBalanceEntry>} data
+ * @property {Array<EquityChartData>} data
  * @property {ExchangeConnectionEntity} selectedExchange
  */
 
@@ -28,16 +27,7 @@ import "./ProfitSharingEquityChart.scss";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingEquityChart = ({ currentBalance, data, selectedExchange }) => {
-  const dataWithDates = data.map((d) => ({
-    ...d,
-    date: new Date(d.date),
-  }));
-  const dailyBalance = generateDailyData(dataWithDates, (date, amount) => ({
-    date: formatDate(date, "YYYY/MM/DD"),
-    totalUSDT: amount,
-  }));
-
-  const [tableData, setTableData] = useState(dailyBalance);
+  const [tableData, setTableData] = useState(data);
 
   return (
     <Box
@@ -45,7 +35,7 @@ const ProfitSharingEquityChart = ({ currentBalance, data, selectedExchange }) =>
       className="profitSharingEquityChart"
       display="flex"
       flexDirection="column"
-      justifyContent="space-between"
+      justifyContent="flex-start"
     >
       <Box
         alignItems="flex-start"

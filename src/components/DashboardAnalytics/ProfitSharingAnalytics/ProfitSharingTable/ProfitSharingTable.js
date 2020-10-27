@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "../../../Table";
-import { FormattedMessage } from "react-intl";
-import { FormatedDateTime } from "../../../../utils/format";
-import { capitalize } from "lodash";
+import { FormattedMessage, useIntl } from "react-intl";
+import { formatDate } from "../../../../utils/format";
+import { formatPrice } from "../../../../utils/formatters";
+import "./ProfitSharingTable.scss";
+import AccountFilter from "../AccountingFilter";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -22,26 +24,68 @@ import { capitalize } from "lodash";
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingTable = ({ data }) => {
+  const [filteredData, setData] = useState(data);
+  const intl = useIntl();
+
+  const types = [
+    {
+      label: intl.formatMessage({
+        id: "profitsharing.types.withdraw",
+      }),
+      val: "withdraw",
+    },
+    {
+      label: intl.formatMessage({
+        id: "profitsharing.types.deposit",
+      }),
+      val: "deposit",
+    },
+    {
+      label: intl.formatMessage({
+        id: "profitsharing.types.pnl",
+      }),
+      val: "pnl",
+    },
+    {
+      label: intl.formatMessage({
+        id: "profitsharing.types.successFee",
+      }),
+      val: "successFee",
+    },
+    {
+      label: intl.formatMessage({
+        id: "profitsharing.types.all",
+      }),
+      val: "all",
+    },
+  ];
+
   /**
    * @type {Array<MUIDataTableColumn>} Table columns
    */
   let columns = [
     {
+      name: "date",
+      label: "col.date",
+      options: {
+        customBodyRender: (date) => formatDate(date, "YYYY/MM/DD"),
+      },
+    },
+    {
       name: "type",
       label: "col.orders.type",
       options: {
-        customBodyRender: capitalize,
+        customBodyRender: (type) => {
+          const typeOption = types.find((t) => t.val === type);
+          return typeOption ? typeOption.label : type;
+        },
       },
     },
     {
       name: "amount",
       label: "col.amount",
-    },
-    {
-      name: "date",
-      label: "col.date",
       options: {
-        customBodyRender: FormatedDateTime,
+        customBodyRender: (amount) => formatPrice(amount),
       },
     },
   ];
@@ -58,9 +102,10 @@ const ProfitSharingTable = ({ data }) => {
 
   return (
     <div className="profitSharingTable">
+      <AccountFilter data={data} onChange={(d) => setData(d)} types={types} />
       <Table
         columns={columns}
-        data={data}
+        data={filteredData}
         options={options}
         // persistKey={persistKey}
         title={<FormattedMessage id="profitsharing.accounting" />}

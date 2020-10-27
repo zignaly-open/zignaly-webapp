@@ -7,15 +7,22 @@ import { colors } from "../../../../services/theme";
 import { formatFloat } from "../../../../utils/format";
 
 /**
- *
- * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
+
+/**
+ * @typedef {Object} EquityChartData
+ * @property {string} date
+ * @property {number} [totalUSDT]
+ * @property {number} [totalBTC]
+ * @property {number} [totalWalletUSDT]
+ * @property {number} [totalWalletBTC]
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserEquityEntity>} list
+ * @property {Array<EquityChartData>} list
  * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
  * @property {ExchangeConnectionEntity} selectedExchange Selected Exchange.
  */

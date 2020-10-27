@@ -65,7 +65,7 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
   version: 18,
   migrate: createMigrate(migrations, { debug: false }),
-  blacklist: ["ui"],
+  blacklist: ["ui", "views"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

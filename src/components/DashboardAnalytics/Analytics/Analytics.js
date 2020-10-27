@@ -31,6 +31,7 @@ const Analytics = () => {
       <Filters
         filters={filters}
         onClear={clearFilters}
+        profitSharing={profitSharing}
         providers={providersOptions}
         quotes={quotes}
         setFilters={setFilters}

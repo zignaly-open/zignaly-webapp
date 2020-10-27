@@ -21,8 +21,8 @@ import ProviderStats from "./ProviderStats";
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
+
 /**
- * About us compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
@@ -34,7 +34,7 @@ const CopyTradersAnalytics = ({ provider }) => {
     openPositions: 0,
     totalBalance: 0,
     totalTradingVolume: 0,
-    weeklyStats: [{ week: 0, return: 0, day: "", positions: 0 }],
+    weeklyStats: [{ week: "", return: 0, day: "", positions: 0 }],
   };
   const emptyFollowers = createProviderCopiersEmptyEntity();
   const emptyStats = createEmptyProfileProviderStatsEntity();
@@ -119,12 +119,12 @@ const CopyTradersAnalytics = ({ provider }) => {
     if (followers.length > 0) {
       let total = 0;
       let targetDate = new Date().setDate(new Date().getDate() - 7);
-      let list = [...followers].sort((a, b) => a.totalFollowers - b.totalFollowers);
+      let list = followers.sort((a, b) => a.totalFollowers - b.totalFollowers);
       let latest = list[list.length - 1];
-      for (let a = 0; a < list.length; a++) {
-        let itemTime = new Date(list[a].date).getTime();
+      for (let i = 0; i < list.length; i++) {
+        let itemTime = new Date(list[i].date).getTime();
         if (itemTime >= targetDate) {
-          total += list[a].followers;
+          total += list[i].followers;
         }
       }
       setIncrease(total);
@@ -150,8 +150,11 @@ const CopyTradersAnalytics = ({ provider }) => {
             flexDirection="column"
             justifyContent="center"
           >
-            {performanceLoading && <CircularProgress color="primary" size={50} />}
-            {!performanceLoading && <TradingPerformance performance={performance} />}
+            {performanceLoading ? (
+              <CircularProgress color="primary" size={50} />
+            ) : (
+              <TradingPerformance performance={performance} />
+            )}
           </Box>
         </Box>
       )}

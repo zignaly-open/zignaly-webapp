@@ -29,14 +29,14 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
         <>
           <EquityPart
             info={
-              <Typography className="smallText number3">
+              <>
                 = USDT{" "}
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
                   formatNumber(balance.totalWalletUSDT, 2)
                 )}
-              </Typography>
+              </>
             }
             name="balance.wallet"
             value={
@@ -97,17 +97,15 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
           <EquityPart
             info={
               <>
-                <Typography className="smallText number3">
-                  = USDT{" "}
-                  {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
-                    <AllInclusiveIcon className="infinity" />
-                  ) : (
-                    formatNumber(balance.totalAvailableUSDT, 2)
-                  )}
-                </Typography>
+                = USDT{" "}
+                {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
+                  <AllInclusiveIcon className="infinity" />
+                ) : (
+                  formatNumber(balance.totalAvailableUSDT, 2)
+                )}
               </>
             }
-            name="balance.available"
+            name="balance.total"
             value={
               <>
                 BTC{" "}

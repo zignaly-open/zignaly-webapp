@@ -6,14 +6,14 @@ import { useTheme } from "@material-ui/core/styles";
 
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
  *
  * @typedef {Object} DefaultQuarter
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} total
  * @property {Number} id
  */
@@ -22,6 +22,7 @@ import { useTheme } from "@material-ui/core/styles";
  *
  * @typedef {Object} DefaultProps
  * @property {DefaultQuarter} quarter
+ * @property {string} [unit]
  */
 
 /**
@@ -30,7 +31,7 @@ import { useTheme } from "@material-ui/core/styles";
  * @param {DefaultProps} props Default props.
  * @return {JSX.Element} JSX component.
  */
-const PerformanceGraph = ({ quarter }) => {
+const PerformanceGraph = ({ quarter, unit = "%" }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const values = quarter.weeklyStats.map((item) => item.return);
@@ -62,11 +63,11 @@ const PerformanceGraph = ({ quarter }) => {
   };
 
   /**
-   * @param {ChartTooltipItem} tooltipItems Tooltip itwm.
+   * @param {ChartTooltipItem} tooltipItems Tooltip item.
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}%`;
+    `${tooltipItems[isMobile ? "xLabel" : "yLabel"]}${unit}`;
 
   return (
     <Box className="tradingPerformanceGraph">

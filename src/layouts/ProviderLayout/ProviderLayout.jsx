@@ -26,7 +26,7 @@ const ProviderLayout = ({ children }) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      {storeViews.provider.loading && (
+      {storeViews.provider.loading || !storeViews.provider.id ? (
         <Box
           alignItems="center"
           className="loadingBox"
@@ -36,8 +36,7 @@ const ProviderLayout = ({ children }) => {
         >
           <CircularProgress color="primary" size={50} />
         </Box>
-      )}
-      {!storeViews.provider.loading && (
+      ) : (
         <>
           <ProviderHeader />
           <Box className="pageContent">{children}</Box>

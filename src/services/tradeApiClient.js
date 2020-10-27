@@ -43,6 +43,7 @@ import {
   profitStatsResponseTransform,
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
+  profitSharingBalanceHistoryResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -841,9 +842,9 @@ class TradeApiClient {
   }
 
   /**
-   * Stop following a profit sharing service.
+   * Stop following a provider or copytrader.
    *
-   * @param {DisconnectProviderPayload} payload Disconenct profit sharing trader payload.
+   * @param {DisconnectProviderPayload} payload Stop following provider payload.
 
    * @returns {Promise<boolean>} Promise that resolves into success status.
    *
@@ -1840,7 +1841,7 @@ class TradeApiClient {
   async getProfitSharingBalanceHistory(payload) {
     const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return profitSharingBalanceHistoryResponseTransform(responseData);
   }
 }
 
