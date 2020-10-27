@@ -268,12 +268,16 @@ const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
           options={options}
           persistKey={tablePersistsKey}
           title={
-            <SelectionActions
-              selectedRows={selectedRows}
-              setLoading={setLoading}
-              setSelectedRows={setSelectedRows}
-              values={allPositions}
-            />
+            !provider.profitSharing ? (
+              <SelectionActions
+                selectedRows={selectedRows}
+                setLoading={setLoading}
+                setSelectedRows={setSelectedRows}
+                values={allPositions}
+              />
+            ) : (
+              ""
+            )
           }
         />
       </Box>
