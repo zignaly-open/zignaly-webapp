@@ -10,13 +10,13 @@ import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/u
 import { usePositionDataTableCompose } from "../../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 import SelectionActions from "../ExpandedRow/SelectionActions";
-import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
 
@@ -25,6 +25,7 @@ import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelec
  * @property {Array<PositionEntity>} list
  * @property {Array<ManagementPositionsEntity>} allPositions
  * @property {React.SetStateAction<*>} setLoading
+ * @property {DefaultProviderGetObject} provider
  */
 
 /**
@@ -33,9 +34,8 @@ import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelec
  * @param {PositionsTableProps} props Component properties.
  * @returns {JSX.Element} Positions table element.
  */
-const ManagementTable = ({ list, allPositions, setLoading }) => {
+const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
@@ -144,13 +144,12 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
    */
   const composeDataTableForPositionsType = () => {
     let dataTable;
-    const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
-    const isDemo = selectedExchange.paperTrading;
 
     dataTable = composeManagementPositionsDataTable();
-    if (isDemo || !isFutures) {
-      dataTable = excludeDataTableColumn(dataTable, "col.price.market");
-      dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+    if (provider.profitSharing) {
+      dataTable = excludeDataTableColumn(dataTable, "col.provider.subpositions");
+      dataTable = excludeDataTableColumn(dataTable, "col.provider.totalpositions");
+      dataTable = excludeDataTableColumn(dataTable, "col.provider.soldpositions");
     }
     return dataTable;
   };
@@ -244,7 +243,7 @@ const ManagementTable = ({ list, allPositions, setLoading }) => {
    * @type {MUIDataTableOptions}
    */
   const options = {
-    expandableRows: true,
+    expandableRows: !provider.profitSharing,
     renderExpandableRow: renderRow,
     rowsExpanded: expanded,
     onRowExpansionChange: handleRowExpansionChange,

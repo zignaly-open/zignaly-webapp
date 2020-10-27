@@ -30,6 +30,7 @@ import { FormattedMessage } from "react-intl";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
+ * @property {string} persistKey Table title.
  * @property {Array<ExchangeContractsObject>} list
  * @property {Function} loadData
  * @property {ExchangeConnectionEntity} selectedAccount
@@ -38,8 +39,7 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ContractsTable = ({ title, list, loadData, selectedAccount, provider }) => {
-  const tablePersistsKey = "contractsTable";
+const ContractsTable = ({ title, list, loadData, selectedAccount, provider, persistKey }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState("");
@@ -195,7 +195,7 @@ const ContractsTable = ({ title, list, loadData, selectedAccount, provider }) =>
           executeActionCallback={cancelContract}
           setConfirmConfig={setConfirmConfig}
         />
-        <Table columns={columns} data={list} persistKey={tablePersistsKey} title={title} />
+        <Table columns={columns} data={list} persistKey={persistKey} title={title} />
       </Box>
     </>
   );

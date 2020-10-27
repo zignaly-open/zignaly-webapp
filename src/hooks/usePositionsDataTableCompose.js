@@ -1274,16 +1274,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         renderFunction: renderExitPrice,
       },
       {
-        columnId: "col.price.market",
-        propertyName: "markPrice",
-        renderFunction: renderMarkPrice,
-      },
-      {
-        columnId: "col.price.liquid",
-        propertyName: "liquidationPrice",
-        renderFunction: renderLiquidPrice,
-      },
-      {
         columnId: "col.plnumber",
         propertyName: "profit",
         renderFunction: renderProfit,

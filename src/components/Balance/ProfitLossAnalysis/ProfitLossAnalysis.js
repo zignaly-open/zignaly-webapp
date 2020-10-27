@@ -33,7 +33,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
     const currentEquity = dailyBalance.balances.length
       ? dailyBalance.balances[dailyBalance.balances.length - 1]
       : createEmptyUserEquityEntity();
-    [...dailyBalance.balances].forEach((item) => {
+    dailyBalance.balances.forEach((item) => {
       if (item.pnlUSDT > 0) {
         data.totalProfit += item.pnlUSDT;
         data.winDays += 1;

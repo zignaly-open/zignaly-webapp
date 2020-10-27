@@ -80,7 +80,7 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
           {list[tooltipItem.index].totalWalletBTC && (
             <Box>
               <span className="label">BTC:</span>
-              <span>{formatFloat(list[tooltipItem.index].totalWalletUSDT)}</span>
+              <span>{formatFloat(list[tooltipItem.index].totalWalletBTC)}</span>
             </Box>
           )}
           {list[tooltipItem.index].totalUSDT && (
