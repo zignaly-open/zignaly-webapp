@@ -62,6 +62,7 @@ const Contracts = () => {
           <ContractsTable
             list={list}
             loadData={loadData}
+            persistKey="contractsTable"
             selectedAccount={selectedAccount}
             title=""
           />
