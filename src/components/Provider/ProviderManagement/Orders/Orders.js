@@ -71,6 +71,7 @@ const Orders = ({ provider }) => {
           <OrdersTable
             list={list}
             loadData={loadData}
+            persistKey="providerOrders"
             selectedAccount={selectedExchange}
             title=""
           />

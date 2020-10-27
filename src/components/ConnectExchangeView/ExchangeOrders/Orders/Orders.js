@@ -59,7 +59,13 @@ const Orders = () => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <OrdersTable list={list} loadData={loadData} selectedAccount={selectedAccount} title="" />
+          <OrdersTable
+            list={list}
+            loadData={loadData}
+            persistKey="ordersTable"
+            selectedAccount={selectedAccount}
+            title=""
+          />
         </Box>
       )}
     </>
