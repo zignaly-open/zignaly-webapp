@@ -61,7 +61,12 @@ const TitleBar = ({ balance, selectedExchange }) => {
             )}
           </Typography>
           <Typography className="smallText number3">
-            = USDT {formatFloat(balance.totalUSDT)}
+            = USDT{" "}
+            {formatFloat(
+              selectedExchange.exchangeType === "futures"
+                ? balance.totalWalletUSDT
+                : balance.totalUSDT,
+            )}
           </Typography>
         </Box>
       </Box>
