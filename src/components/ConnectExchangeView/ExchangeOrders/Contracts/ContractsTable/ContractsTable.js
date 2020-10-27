@@ -125,7 +125,7 @@ const ContractsTable = ({ title, list, loadData, selectedAccount, provider, pers
     },
     {
       name: "symbol",
-      label: "col.orders.symbol",
+      label: "col.pair",
     },
     {
       name: "amount",
