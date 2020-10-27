@@ -6,6 +6,7 @@ import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
 import EquityGraphLabels from "./GraphLabels";
 import { isObject } from "lodash";
+import { createEmptyUserEquityEntity } from "../../../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -22,19 +23,13 @@ import { isObject } from "lodash";
  */
 const TotalEquity = ({ dailyBalance, modal, selectedExchange }) => {
   const [list, setList] = useState(dailyBalance.balances);
-  const initData = { totalBTC: 0, totalUSDT: 0, totalWalletBTC: 0, totalWalletUSDT: 0 };
-  const [balance, setBalance] = useState(initData);
+  const [balance, setBalance] = useState(createEmptyUserEquityEntity());
 
   const filterBalance = () => {
-    let obj = { ...balance };
     let data = dailyBalance.balances.length
       ? dailyBalance.balances[dailyBalance.balances.length - 1]
-      : initData;
-    obj.totalBTC = isObject(data) ? data.totalBTC : 0;
-    obj.totalUSDT = isObject(data) ? data.totalUSDT : 0;
-    obj.totalWalletBTC = isObject(data) ? data.totalWalletBTC : 0;
-    obj.totalWalletUSDT = isObject(data) ? data.totalWalletUSDT : 0;
-    setBalance(obj);
+      : createEmptyUserEquityEntity();
+    setBalance(isObject(data) ? data : createEmptyUserEquityEntity());
   };
 
   useEffect(() => {
