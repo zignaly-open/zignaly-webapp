@@ -1,6 +1,6 @@
 import React from "react";
 import "./ManagementSummaryCard.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import PeopleIcon from "@material-ui/icons/People";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
@@ -15,6 +15,8 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
  * @property {String} [percentage] icon.
  * @property {String|Number} foot icon.
  * @property {String|Number} value
+ * @property {String|JSX.Element} [tooltip]
+ * @property {String} [valueColor]
  *
  */
 
@@ -22,7 +24,16 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) => {
+const ManagementSummaryCard = ({
+  icon,
+  title,
+  quote,
+  percentage,
+  foot,
+  value,
+  tooltip,
+  valueColor,
+}) => {
   return (
     <Box
       alignItems="center"
@@ -44,9 +55,17 @@ const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) 
         {icon === "balance" && <AccountBalanceWalletIcon className="icon" />}
         {icon === "profit" && <MonetizationOnIcon className="icon" />}
         {icon === "float" && <LocalMallIcon className="icon" />}
-        <Typography className="headTitle" variant="caption">
-          {title}
-        </Typography>
+        {tooltip ? (
+          <Tooltip placement="top" title={tooltip}>
+            <Typography className="headTitle" variant="caption">
+              {title}
+            </Typography>
+          </Tooltip>
+        ) : (
+          <Typography className="headTitle" variant="caption">
+            {title}
+          </Typography>
+        )}
         {percentage && <Typography variant="h4">{percentage}</Typography>}
       </Box>
       <Box
@@ -56,18 +75,22 @@ const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) 
         flexDirection="row"
         justifyContent="center"
       >
-        <Typography variant="h1">{value}</Typography>
+        <Typography className={valueColor ? valueColor : ""} variant="h1">
+          {value}
+        </Typography>
         {quote && <Typography variant="caption">{quote}</Typography>}
       </Box>
-      <Box
-        alignItems="center"
-        className="foot"
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-      >
-        <Typography variant="caption">{foot}</Typography>
-      </Box>
+      {foot && (
+        <Box
+          alignItems="center"
+          className="foot"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <Typography variant="caption">{foot}</Typography>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -55,6 +55,9 @@ const CopyTraderSummary = ({ summary }) => {
         quote={summary.quote}
         title={<FormattedMessage id="copyt.management.totalprofit" />}
         value={formatFloat2Dec(summary.totalProfit)}
+        valueColor={
+          summary.totalProfitUSDT > 0 ? "green" : summary.totalProfitUSDT < 0 ? "red" : ""
+        }
       />
 
       <ManagementSummaryCard

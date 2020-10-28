@@ -30,14 +30,16 @@ const ProfitSharingSummary = ({ summary }) => {
         }`}
         icon="followers"
         title={<FormattedMessage id="copyt.management.totalfollowers" />}
+        tooltip={intl.formatMessage({ id: "copyt.management.totalfollowers.tooltip" })}
         value={summary.totalFollowers}
       />
 
       <ManagementSummaryCard
         foot={`USDT: ${formatFloat2Dec(summary.totalAllocatedUSDTFromFollowers)}`}
-        icon="balance"
+        icon="allocated"
         quote={summary.quote}
         title={<FormattedMessage id="copyt.management.wallet" />}
+        tooltip={intl.formatMessage({ id: "copyt.management.wallet.tooltip" })}
         value={formatFloat2Dec(summary.totalAllocatedFromFollowers)}
       />
 
@@ -46,6 +48,7 @@ const ProfitSharingSummary = ({ summary }) => {
         icon="profit"
         title={<FormattedMessage id="copyt.management.profit" />}
         value={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
+        valueColor="green"
       />
 
       <ManagementSummaryCard
@@ -54,15 +57,17 @@ const ProfitSharingSummary = ({ summary }) => {
         percentage={`${formatFloat2Dec(summary.totalProfitPercentage)}%`}
         quote={summary.quote}
         title={<FormattedMessage id="copyt.management.margin" />}
+        tooltip={intl.formatMessage({ id: "copyt.management.margin.tooltip" })}
         value={formatFloat2Dec(summary.totalProfit)}
       />
 
       <ManagementSummaryCard
         foot={`USDT ${formatFloat2Dec(summary.floatUSDT)}`}
-        icon="allocated"
+        icon="balance"
         percentage={`${formatFloat2Dec(summary.floatPercentage)}%`}
         quote={summary.quote}
         title={<FormattedMessage id="copyt.management.available" />}
+        tooltip={intl.formatMessage({ id: "copyt.management.available.tooltip" })}
         value={formatFloat2Dec(summary.float)}
       />
     </Box>
