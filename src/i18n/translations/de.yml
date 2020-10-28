@@ -1238,6 +1238,7 @@ copyt.deletedisabled.tooltip.point.3: "Es sollten keine offenen Positionen vorha
 srv.deletedisabled.tooltip.point.1: "Der Dienst sollte nicht öffentlich und nicht gelistet sein."
 srv.deletedisabled.tooltip.point.2: "Der Eigentümer des Dienstes sollte vom Dienst getrennt werden."
 srv.filters.userowned: "Benutzer im Besitz"
+srv.filters.profitsharing: "Profit Sharing"
 alert.payment.title: "Zahlung abgeschlossen"
 alert.payment.body: "Ihre Zahlungsanforderung ist abgeschlossen!"
 alert.management.cancelall.title: "Cancelled Successfully!"
