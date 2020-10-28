@@ -9,10 +9,10 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateProvider } from "../../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
 import ProviderUserOptions from "./ProviderUserOptions";
+import useBaseExchangeQuotes from "../../../hooks/useBaseExchangeQuotes";
 
 const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
 
@@ -70,10 +70,10 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     });
   }
 
-  const quoteAssets = useQuoteAssets(
-    !isCopyTrading || Boolean(selectedExchange),
-    isCopyTrading && selectedExchange ? selectedExchange.id : "",
-  );
+  const quoteAssets = useBaseExchangeQuotes({
+    exchangeId: selectedExchange ? selectedExchange.id : "",
+    exchangeType: selectedExchange ? selectedExchange.type[0] : "",
+  });
   const quotes = Object.keys(quoteAssets);
 
   /**

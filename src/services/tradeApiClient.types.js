@@ -918,7 +918,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuotesAssetsGetPayload
  * @property {boolean} ro
- * @property {string} [exchangeInternalId]
+ * @property {string} token
+ * @property {string} [exchangeInternalId] Exchange Internal ID
+ * @property {number} version version of endpoint
+ * @property {string} [exchangeId] Exchange ID
+ * @property {string} [exchangeType] Exchange type
  */
 
 /**

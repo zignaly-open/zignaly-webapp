@@ -6,29 +6,30 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+ * @typedef {Object} ExchangeData
+ * @property {string} exchangeId
+ * @property {string} exchangeType
  */
 
 /**
  * Provides quotes assets.
+ * @param {ExchangeData} exchangeData Exchange internal id.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
- * @param {string} [exchangeInternalId] Exchange internal id.
- * @param {string} [exchangeId] Exchange internal id.
- * @param {string} [exchangeType] Exchange internal id.
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useQuoteAssets = (shouldExecute = true, exchangeInternalId, exchangeId, exchangeType) => {
+const useBaseExchangeQuotes = (exchangeData, shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const loadData = () => {
-    if (shouldExecute) {
+    if (shouldExecute && exchangeData.exchangeId && exchangeData.exchangeType) {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
         version: 2,
-        ...(exchangeInternalId && { exchangeInternalId }),
-        ...(exchangeId && exchangeType && { exchangeId, exchangeType }),
+        exchangeId: exchangeData.exchangeId,
+        exchangeType: exchangeData.exchangeType,
       };
 
       tradeApi
@@ -42,9 +43,14 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId, exchangeId, ex
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
+  useEffect(loadData, [
+    storeSession.tradeApi.accessToken,
+    exchangeData.exchangeId,
+    exchangeData.exchangeType,
+    shouldExecute,
+  ]);
 
   return quotes;
 };
 
-export default useQuoteAssets;
+export default useBaseExchangeQuotes;
