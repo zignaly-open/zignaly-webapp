@@ -739,6 +739,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
  * @property {string} providerId
+ * @property {string} exchangeInternalId
  */
 
 /**

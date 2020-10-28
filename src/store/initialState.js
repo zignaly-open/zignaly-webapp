@@ -74,6 +74,7 @@
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} fromUser
+ * @property {boolean} profitSharing
  */
 
 /**
@@ -491,7 +492,7 @@ const initialState = {
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
-      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "", profitSharing: false },
       signalp: { fromUser: "" },
       copytAnalytics: { quote: "", base: "", timeFrame: "" },
       signalpAnalytics: { quote: "", base: "", timeFrame: "" },
