@@ -1,7 +1,6 @@
 import React from "react";
 import "./ManagementSummaryCard.scss";
 import { Box, Typography } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
 import PeopleIcon from "@material-ui/icons/People";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
@@ -67,11 +66,6 @@ const ManagementSummaryCard = ({ icon, title, quote, percentage, foot, value }) 
         flexDirection="row"
         justifyContent="center"
       >
-        {icon === "followers" && (
-          <Typography variant="caption">
-            <FormattedMessage id="copyt.management.trialing" />
-          </Typography>
-        )}
         <Typography variant="caption">{foot}</Typography>
       </Box>
     </Box>
