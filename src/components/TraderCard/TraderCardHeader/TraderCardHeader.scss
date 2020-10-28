@@ -94,9 +94,17 @@
     .traderCardHeaderTitleBox {
       margin-left: 15px;
 
-      //   .nameWrapper {
-      //     height: 40px;
-      //   }
+      .nameBox {
+        .price {
+          font-size: 10px;
+        }
+      }
+
+      .tradesInfoBox {
+        .tradeType {
+          font-size: 13px;
+        }
+      }
     }
   }
 }
