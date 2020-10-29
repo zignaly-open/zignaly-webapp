@@ -77,7 +77,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
           <>
             {previousPath && (
               <CustomButton
-                className="textPurple borderPurple"
+                className="textPurple borderPurple back"
                 onClick={() => resetToPath(previousPath)}
                 startIcon={<img className="icon iconPurple" src={LeftIcon} />}
               >
@@ -85,22 +85,26 @@ const ConnectExchangeViewHead = ({ onClose }) => {
               </CustomButton>
             )}
             {!previousPath ? (
-              <CustomButton className="submitButton" onClick={() => onClose()}>
+              <CustomButton className="submitButton done" onClick={() => onClose()}>
                 <FormattedMessage id="accounts.done" />
               </CustomButton>
             ) : (
               formRef.current && (
-                <CustomButton className="submitButton" loading={isLoading} onClick={handleClick}>
+                <CustomButton
+                  className="submitButton save"
+                  loading={isLoading}
+                  onClick={handleClick}
+                >
                   <FormattedMessage id="form.button.save" />
                 </CustomButton>
               )
             )}
-            <Typography className="tempMessage" variant="body1">
-              {tempMessage}
-            </Typography>
             {storeUser.exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
+            <Typography className="tempMessage" variant="body1">
+              {tempMessage}
+            </Typography>
           </>
         }
         titleBar={
