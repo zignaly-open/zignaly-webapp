@@ -3,7 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
-import { creatProviderDataPointsEntity } from "../services/tradeApiClient.types";
+import { creatProviderBalanceEntity } from "../services/tradeApiClient.types";
 import useInterval from "./useInterval";
 
 /**
@@ -20,7 +20,7 @@ import useInterval from "./useInterval";
  * @returns {HookData} Balance.
  */
 const usePSManagementSymmary = (providerId) => {
-  const emptyObject = creatProviderDataPointsEntity(null);
+  const emptyObject = creatProviderBalanceEntity(null);
   const [summary, setSummary] = useState(emptyObject);
   const [loading, setLoading] = useState(true);
 
@@ -34,7 +34,7 @@ const usePSManagementSymmary = (providerId) => {
         providerId: providerId,
       };
       tradeApi
-        .providerCopyTradingDataPointsGet(payload)
+        .providerBalanceGet(payload)
         .then((response) => {
           setSummary(response);
         })

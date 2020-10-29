@@ -3496,6 +3496,66 @@ export function creatProviderDataPointsEntity(response) {
 
 /**
  *
+ * @typedef {Object} ProviderBalanceEntity
+ * @property {Number} float
+ * @property {Number} floatPercentage
+ * @property {Number} floatUSDT
+ * @property {Number} followersTrialing
+ * @property {Number} freeBalance
+ * @property {Number} freeBalancePercentage
+ * @property {Number} freeBalanceUSDT
+ * @property {String} quote
+ * @property {Number} totalAllocated
+ * @property {Number} totalAllocatedFromFollowers
+ * @property {Number} totalAllocatedUSDT
+ * @property {Number} totalAllocatedUSDTFromFollowers
+ * @property {Number} totalFollowers
+ * @property {Number} totalProfit
+ * @property {Number} totalProfitPercentage
+ * @property {Number} totalProfitUSDT
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderBalanceEntity} Provider Data points entity.
+ */
+export function providerBalanceResponseTransform(response) {
+  return creatProviderBalanceEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderBalanceEntity} Provider data points entity.
+ */
+export function creatProviderBalanceEntity(response) {
+  return {
+    float: response ? formatValue(response.float) : 0,
+    floatPercentage: response ? formatValue(response.floatPercentage) : 0,
+    floatUSDT: response ? formatValue(response.floatUSDT) : 0,
+    followersTrialing: response ? formatValue(response.followersTrialing) : 0,
+    freeBalance: response ? formatValue(response.freeBalance) : 0,
+    freeBalancePercentage: response ? formatValue(response.freeBalancePercentage) : 0,
+    freeBalanceUSDT: response ? formatValue(response.freeBalanceUSDT) : 0,
+    quote: response ? response.quote : "",
+    totalAllocated: response ? formatValue(response.totalAllocated) : 0,
+    totalAllocatedFromFollowers: response ? formatValue(response.totalAllocatedFromFollowers) : 0,
+    totalAllocatedUSDT: response ? formatValue(response.totalAllocatedUSDT) : 0,
+    totalAllocatedUSDTFromFollowers: response
+      ? formatValue(response.totalAllocatedUSDTFromFollowers)
+      : 0,
+    totalFollowers: response ? formatValue(response.totalFollowers) : 0,
+    totalProfit: response ? formatValue(response.totalProfit) : 0,
+    totalProfitPercentage: response ? formatValue(response.totalProfitPercentage) : 0,
+    totalProfitUSDT: response ? formatValue(response.totalProfitUSDT) : 0,
+  };
+}
+
+/**
+ *
  * @typedef {Object} ManagementPositionsEntity
  * @property {PositionEntity} position
  * @property {Array<PositionEntity>} subPositions

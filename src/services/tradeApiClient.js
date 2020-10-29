@@ -44,6 +44,7 @@ import {
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
   profitSharingBalanceHistoryResponseTransform,
+  providerBalanceResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -1151,6 +1152,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return providerDataPointsResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider's profit/management stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Provider's stats payload.
+
+   * @returns {Promise<ProviderDataPointsEntity>} Returns promise that resolves provider data points entry.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerBalanceGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBalanceForService";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return providerBalanceResponseTransform(responseData);
   }
 
   /**
