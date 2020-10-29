@@ -45,6 +45,7 @@ import {
   hasBeenUsedProvidersResponseTransform,
   profitSharingBalanceHistoryResponseTransform,
   providerBalanceResponseTransform,
+  providerFollowersCountResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -115,6 +116,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
  * @typedef {import('./tradeApiClient.types').ProviderBalanceEntity} ProviderBalanceEntity
+ * @typedef {import('./tradeApiClient.types').ProviderFollowersCountEntity} ProviderFollowersCountEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
  * @typedef {import('./tradeApiClient.types').CancelContractPayload} CancelContractPayload
@@ -1169,6 +1171,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return providerBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider's profit/management stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Provider's stats payload.
+
+   * @returns {Promise<ProviderFollowersCountEntity>} Returns promise that resolves provider data points entry.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerFollowersCountGet(payload) {
+    const endpointPath = "/fe/api.php?action=getFollowersForProvider";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return providerFollowersCountResponseTransform(responseData);
   }
 
   /**

@@ -13,7 +13,7 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
  * @property {JSX.Element} title icon.
  * @property {String} [quote] icon.
  * @property {String} [percentage] icon.
- * @property {String|Number} foot icon.
+ * @property {String|Number} [foot] icon.
  * @property {String|Number} value
  * @property {String|JSX.Element} [tooltip]
  * @property {String} [valueColor]

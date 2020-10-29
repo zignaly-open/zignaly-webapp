@@ -3540,6 +3540,34 @@ export function creatProviderBalanceEntity(response) {
 
 /**
  *
+ * @typedef {Object} ProviderFollowersCountEntity
+ * @property {Number} followers
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderFollowersCountEntity} Provider Data points entity.
+ */
+export function providerFollowersCountResponseTransform(response) {
+  return creatProviderFollowersCountEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderFollowersCountEntity} Provider data points entity.
+ */
+export function creatProviderFollowersCountEntity(response) {
+  return {
+    followers: response ? formatValue(response.followers) : 0,
+  };
+}
+
+/**
+ *
  * @typedef {Object} ManagementPositionsEntity
  * @property {PositionEntity} position
  * @property {Array<PositionEntity>} subPositions

@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 import { formatFloat, formatFloat2Dec } from "../../../../utils/format";
 import usePSManagementSymmary from "../../../../hooks/usePSManagementSymmary";
+import useProviderFollowersCount from "../../../../hooks/useProviderFollowersCount";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -17,6 +18,7 @@ import usePSManagementSymmary from "../../../../hooks/usePSManagementSymmary";
  */
 const ProfitSharingSummary = ({ provider }) => {
   const { summaryLoading, summary } = usePSManagementSymmary(provider.id);
+  const { counts } = useProviderFollowersCount(provider.id);
   const intl = useIntl();
   return (
     <>
@@ -40,11 +42,11 @@ const ProfitSharingSummary = ({ provider }) => {
           justifyContent="space-evenly"
         >
           <ManagementSummaryCard
-            foot={`${intl.formatMessage({ id: "copyt.management.trialing" })}: ${0}`}
+            foot={`${intl.formatMessage({ id: "menu.demo" })}: ${0}`}
             icon="followers"
             title={<FormattedMessage id="copyt.management.totalfollowers" />}
             tooltip={intl.formatMessage({ id: "copyt.management.totalfollowers.tooltip" })}
-            value={0}
+            value={counts.followers}
           />
 
           <ManagementSummaryCard
