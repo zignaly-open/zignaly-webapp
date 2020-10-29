@@ -30,7 +30,10 @@ const StatsFilter = ({ list, onChange }) => {
   const intl = useIntl();
   const exchanges = useExchangesOptions(true);
   const selectedBase =
-    baseExchanges && baseExchanges.find((item) => item.name.toLowerCase() === "binance");
+    baseExchanges &&
+    baseExchanges.find(
+      (item) => item.name.toLowerCase() === (exchange === "ALL" ? "binance" : exchange),
+    );
   const quoteAssets = useBaseExchangeQuotes({
     exchangeId: selectedBase && selectedBase.id ? selectedBase.id : "",
     exchangeType: selectedBase && selectedBase.type ? selectedBase.type[0] : "",
