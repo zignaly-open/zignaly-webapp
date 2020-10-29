@@ -29,6 +29,8 @@ const TraderCardHeader = (props) => {
     isCopyTrading,
     id,
     exchangeType,
+    profitSharing,
+    profitsShare,
   } = props.provider;
 
   const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
@@ -42,21 +44,30 @@ const TraderCardHeader = (props) => {
             <Typography variant="h4">{name}</Typography>
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
-          <div className="commissionBox">
-            <Typography variant="h4">
-              {price ? (
-                <span>
-                  {price}
-                  <FormattedMessage id="srv.pricemonth" />
-                </span>
-              ) : (
-                <FormattedMessage id="col.free" />
-              )}
-            </Typography>
-            <Typography className="price" variant="subtitle1">
-              <FormattedMessage id="srv.edit.price" />
-            </Typography>
-          </div>
+          {profitSharing ? (
+            <div className="commissionBox">
+              <Typography variant="h4">{`${profitsShare}%`}</Typography>
+              <Typography className="price" variant="subtitle1">
+                <FormattedMessage id="copyt.successfee" />
+              </Typography>
+            </div>
+          ) : (
+            <div className="commissionBox">
+              <Typography variant="h4">
+                {price ? (
+                  <span>
+                    {price}
+                    <FormattedMessage id="srv.pricemonth" />
+                  </span>
+                ) : (
+                  <FormattedMessage id="col.free" />
+                )}
+              </Typography>
+              <Typography className="price" variant="subtitle1">
+                <FormattedMessage id="srv.edit.price" />
+              </Typography>
+            </div>
+          )}
         </div>
         {/* <Box
           className="nameBox"

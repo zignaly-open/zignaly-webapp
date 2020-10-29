@@ -28,6 +28,7 @@ const defaultExchangeSymbol = {
   KuCoin: "BTC/USDT",
   Binance: "BTC/USDT",
   Zignaly: "BTC/USDT",
+  BitMEX: "XBT/USD",
   fallback: "BTC/USDT",
 };
 
@@ -201,7 +202,10 @@ const TradingView = () => {
     setSelectedSymbol(selectedOption);
     // setTerminalPair(selectedOption);
     const symbolSuffix =
-      storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
+      storeSettings.selectedExchange.exchangeType === "futures"
+        ? "PERP"
+        : "";
     const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 

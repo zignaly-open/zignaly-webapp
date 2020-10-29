@@ -739,6 +739,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
  * @property {string} providerId
+ * @property {string} exchangeInternalId
  */
 
 /**
@@ -2212,8 +2213,12 @@ export function coinRayTokenResponseTransform(response) {
  * @property {string} quoteId Same as quote.
  * @property {PricePrecision} precision Symbol required price precision details.
  * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
- * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
  * @property {string} coinrayBase Base currency ID adapted to CoinRay.
+ * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
+ * @property {number} multiplier For bitmex
+ * @property {number} maxLeverage Max leverage for symbol (futures)
+ * @property {string} tradeViewSymbol TradingView symbol
+ * @property {string} zignalyId Symbol used internally
  */
 
 /**
@@ -2265,6 +2270,10 @@ export function createMarketSymbolEmptyValueObject() {
     },
     coinrayQuote: "",
     coinrayBase: "",
+    multiplier: 0,
+    maxLeverage: 0,
+    tradeViewSymbol: "",
+    zignalyId: "",
   };
 }
 
