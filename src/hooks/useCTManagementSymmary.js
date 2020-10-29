@@ -19,7 +19,7 @@ import useInterval from "./useInterval";
  * @param {string} providerId ID of the exchange.
  * @returns {HookData} Balance.
  */
-const useManagementSymmary = (providerId) => {
+const useCTManagementSymmary = (providerId) => {
   const emptyObject = creatProviderDataPointsEntity(null);
   const [summary, setSummary] = useState(emptyObject);
   const [loading, setLoading] = useState(true);
@@ -55,4 +55,4 @@ const useManagementSymmary = (providerId) => {
   };
 };
 
-export default useManagementSymmary;
+export default useCTManagementSymmary;
