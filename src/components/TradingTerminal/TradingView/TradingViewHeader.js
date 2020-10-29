@@ -31,7 +31,7 @@ const TradingViewHeader = (props) => {
   const { control, register, watch } = useFormContext();
   // @ts-ignore
   const symbolsOptionsAll = symbolsList.map((symbolItem) => {
-    return symbolItem.symbol;
+    return symbolItem.tradeViewSymbol;
   });
   const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
   const { formatMessage } = useIntl();

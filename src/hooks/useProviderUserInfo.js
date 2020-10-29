@@ -3,6 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import('../services/tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
@@ -15,6 +16,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * @returns {{providerUserInfo: ConnectedProviderUserInfo, profitPerc: number}} Provider user info.
  */
 const useProviderUserInfo = (providerId) => {
+  const { selectedExchange } = useStoreSettingsSelector();
   /**
    * @type {ConnectedProviderUserInfo}
    */
@@ -33,6 +35,7 @@ const useProviderUserInfo = (providerId) => {
       token: storeSession.tradeApi.accessToken,
       ro: true,
       providerId,
+      exchangeInternalId: selectedExchange.internalId,
     };
 
     tradeApi
