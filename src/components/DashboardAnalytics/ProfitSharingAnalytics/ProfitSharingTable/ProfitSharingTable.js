@@ -4,7 +4,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { formatDate } from "../../../../utils/format";
 import { formatPrice } from "../../../../utils/formatters";
 import "./ProfitSharingTable.scss";
-import AccountFilter from "../AccountingFilter";
+import AccountingFilter from "../AccountingFilter";
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -102,13 +103,17 @@ const ProfitSharingTable = ({ data }) => {
 
   return (
     <div className="profitSharingTable">
-      <AccountFilter data={data} onChange={(d) => setData(d)} types={types} />
       <Table
         columns={columns}
         data={filteredData}
         options={options}
         // persistKey={persistKey}
-        title={<FormattedMessage id="profitsharing.accounting" />}
+        title={
+          <Box display="flex" alignItems="center">
+            <FormattedMessage id="profitsharing.accounting" />
+            <AccountingFilter data={data} onChange={(d) => setData(d)} types={types} />
+          </Box>
+        }
       />
     </div>
   );

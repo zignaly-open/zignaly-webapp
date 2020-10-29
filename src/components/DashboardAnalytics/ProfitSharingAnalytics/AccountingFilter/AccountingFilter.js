@@ -53,13 +53,8 @@ const AccountingFilter = ({ data, onChange, types }) => {
   };
 
   return (
-    <Box alignItems="center" className="accountFilter" display="flex" flexDirection="row">
-      <CustomSelect
-        label={intl.formatMessage({ id: "dashboard.balance.show" })}
-        onChange={handleChange}
-        options={types}
-        value={selected}
-      />
+    <Box alignItems="center" className="accountingFilter" display="flex" flexDirection="row">
+      <CustomSelect label="" onChange={handleChange} options={types} value={selected} />
     </Box>
   );
 };
