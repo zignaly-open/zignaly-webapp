@@ -2,7 +2,7 @@ import React from "react";
 import { Box, CircularProgress } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
-import { formatFloat2Dec } from "../../../../utils/format";
+import { formatFloat, formatFloat2Dec } from "../../../../utils/format";
 import usePSManagementSymmary from "../../../../hooks/usePSManagementSymmary";
 
 /**
@@ -40,50 +40,54 @@ const ProfitSharingSummary = ({ provider }) => {
           justifyContent="space-evenly"
         >
           <ManagementSummaryCard
-            foot={`${intl.formatMessage({ id: "copyt.management.trialing" })}: ${
-              summary.followersTrialing
-            }`}
+            foot={`${intl.formatMessage({ id: "copyt.management.trialing" })}: ${0}`}
             icon="followers"
             title={<FormattedMessage id="copyt.management.totalfollowers" />}
             tooltip={intl.formatMessage({ id: "copyt.management.totalfollowers.tooltip" })}
-            value={summary.totalFollowers}
+            value={0}
           />
 
           <ManagementSummaryCard
-            foot={`USDT: ${formatFloat2Dec(summary.totalAllocatedUSDTFromFollowers)}`}
+            foot={`BTC: ${formatFloat(summary.totalWalletBTC)}`}
             icon="allocated"
-            quote={summary.quote}
+            quote="USDT"
             title={<FormattedMessage id="copyt.management.wallet" />}
             tooltip={intl.formatMessage({ id: "copyt.management.wallet.tooltip" })}
-            value={formatFloat2Dec(summary.totalAllocatedFromFollowers)}
+            value={formatFloat2Dec(summary.totalWalletUSDT)}
           />
 
           <ManagementSummaryCard
-            foot={`USDT ${formatFloat2Dec(summary.freeBalanceUSDT)}`}
+            foot={`BTC ${formatFloat(summary.totalUnrealizedProfitBTC)}`}
             icon="profit"
+            quote="USDT"
             title={<FormattedMessage id="copyt.management.profit" />}
-            value={`${formatFloat2Dec(summary.freeBalancePercentage)}%`}
-            valueColor="green"
+            value={`${formatFloat2Dec(summary.totalUnrealizedProfitUSDT)}`}
+            valueColor={
+              summary.totalUnrealizedProfitBTC > 0
+                ? "green"
+                : summary.totalUnrealizedProfitBTC < 0
+                ? "red"
+                : ""
+            }
           />
 
           <ManagementSummaryCard
-            foot={`USDT ${formatFloat2Dec(summary.totalProfitUSDT)}`}
+            foot={`BTC ${formatFloat(summary.totalMarginBTC)}`}
             icon="balance"
-            percentage={`${formatFloat2Dec(summary.totalProfitPercentage)}%`}
-            quote={summary.quote}
+            quote="USDT"
             title={<FormattedMessage id="copyt.management.margin" />}
             tooltip={intl.formatMessage({ id: "copyt.management.margin.tooltip" })}
-            value={formatFloat2Dec(summary.totalProfit)}
+            value={formatFloat2Dec(summary.totalMarginUSDT)}
           />
 
           <ManagementSummaryCard
-            foot={`USDT ${formatFloat2Dec(summary.floatUSDT)}`}
+            foot={`BTC ${formatFloat(summary.totalMarginBTC - summary.totalCurrentMarginBTC)}`}
             icon="balance"
-            percentage={`${formatFloat2Dec(summary.floatPercentage)}%`}
-            quote={summary.quote}
+            percentage={`${formatFloat2Dec(summary.abstractPercentage)}%`}
+            quote="USDT"
             title={<FormattedMessage id="copyt.management.available" />}
             tooltip={intl.formatMessage({ id: "copyt.management.available.tooltip" })}
-            value={formatFloat2Dec(summary.float)}
+            value={formatFloat2Dec(summary.totalMarginUSDT - summary.totalCurrentMarginUSDT)}
           />
         </Box>
       )}
