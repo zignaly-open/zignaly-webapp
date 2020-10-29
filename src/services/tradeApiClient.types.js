@@ -2308,16 +2308,17 @@ function exchangeMarketDataItemTransform(symbolsDataItem) {
  * @returns {QuoteAssetsDict} Quote assets.
  */
 export function quotesResponseTransform(response) {
-  if (!isArray(response)) {
-    throw new Error("Response must be an array of strings quotes.");
+  if (!isObject(response)) {
+    throw new Error("Response must be object of key value pairs.");
   }
+
   /** @type {QuoteAssetsDict} */
   let transformed = {};
   let obj = {
     quote: "",
     minNotional: 0,
   };
-  response.forEach((item) => {
+  Object.values(response).forEach((item) => {
     obj.quote = item;
     obj.minNotional = 0;
     transformed[item] = obj;
