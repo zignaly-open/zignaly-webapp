@@ -109,7 +109,7 @@ const ProfitSharingTable = ({ data }) => {
         options={options}
         // persistKey={persistKey}
         title={
-          <Box display="flex" alignItems="center">
+          <Box alignItems="center" display="flex">
             <FormattedMessage id="profitsharing.accounting" />
             <AccountingFilter data={data} onChange={(d) => setData(d)} types={types} />
           </Box>

@@ -117,8 +117,8 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
     <GenericChart
       chartData={chartData}
       colorsOptions={colorsOptions}
-      tooltipFormat={tooltipFormat}
       options={{ beginAtZero: true }}
+      tooltipFormat={tooltipFormat}
     />
   );
 };

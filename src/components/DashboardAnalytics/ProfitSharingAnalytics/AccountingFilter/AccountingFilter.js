@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../../CustomSelect";
-import { useIntl } from "react-intl";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -23,7 +22,6 @@ import { useIntl } from "react-intl";
 
 const AccountingFilter = ({ data, onChange, types }) => {
   const [selected, setSelected] = useState("all");
-  const intl = useIntl();
 
   /**
    * Select change handler.
