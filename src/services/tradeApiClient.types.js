@@ -722,7 +722,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuoteAsset
  * @property {string} quote
- * @property {string} minNotional
+ * @property {number} minNotional
  */
 
 /**
@@ -2308,20 +2308,21 @@ function exchangeMarketDataItemTransform(symbolsDataItem) {
  * @returns {QuoteAssetsDict} Quote assets.
  */
 export function quotesResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object with different properties.");
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of strings quotes.");
   }
-
-  return Object.entries(response).reduce(
-    (res, [key, val]) => ({
-      ...res,
-      [key]: {
-        quote: val.quote,
-        minNotional: val.minNotional,
-      },
-    }),
-    {},
-  );
+  /** @type {QuoteAssetsDict} */
+  let transformed = {};
+  let obj = {
+    quote: "",
+    minNotional: 0,
+  };
+  response.forEach((item) => {
+    obj.quote = item;
+    obj.minNotional = 0;
+    transformed[item] = obj;
+  });
+  return transformed;
 }
 
 /**
