@@ -1,7 +1,10 @@
 import React from "react";
 import "./management.scss";
 import { Box } from "@material-ui/core";
-import ManagementSummary from "../../../components/Provider/ProviderManagement/ManagementSummary";
+import {
+  CopyTraderSummary,
+  ProfitSharingSummary,
+} from "../../../components/Provider/ProviderManagement/ManagementSummary";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
@@ -21,7 +24,11 @@ const CopyTradersManagement = () => {
         </title>
       </Helmet>
       <Box className="summaryBox">
-        <ManagementSummary provider={provider} />
+        {provider.profitSharing ? (
+          <ProfitSharingSummary provider={provider} />
+        ) : (
+          <CopyTraderSummary provider={provider} />
+        )}
       </Box>
 
       <Box className="tableBoxBox">

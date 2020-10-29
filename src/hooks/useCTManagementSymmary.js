@@ -3,7 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
-import { creatEmptyProviderDataPointsEntity } from "../services/tradeApiClient.types";
+import { creatProviderDataPointsEntity } from "../services/tradeApiClient.types";
 import useInterval from "./useInterval";
 
 /**
@@ -14,13 +14,13 @@ import useInterval from "./useInterval";
  */
 
 /**
- * Provides balance summary for exchange.
+ * Provides balance summary CT service.
  *
- * @param {string} providerId ID of the exchange.
+ * @param {string} providerId ID of the provider.
  * @returns {HookData} Balance.
  */
-const useManagementSymmary = (providerId) => {
-  const emptyObject = creatEmptyProviderDataPointsEntity();
+const useCTManagementSymmary = (providerId) => {
+  const emptyObject = creatProviderDataPointsEntity(null);
   const [summary, setSummary] = useState(emptyObject);
   const [loading, setLoading] = useState(true);
 
@@ -55,4 +55,4 @@ const useManagementSymmary = (providerId) => {
   };
 };
 
-export default useManagementSymmary;
+export default useCTManagementSymmary;
