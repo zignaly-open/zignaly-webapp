@@ -129,6 +129,7 @@ const useProvidersList = (options) => {
         exchangeType: "ALL",
       }),
       fromUser: "ALL",
+      profitSharing: false,
     }),
   };
 
@@ -239,7 +240,8 @@ const useProvidersList = (options) => {
         (!filters.exchangeType ||
           filters.exchangeType === "ALL" ||
           p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser) &&
+        (!filters.profitSharing || p.profitSharing),
     );
     sortProviders(matches);
   };
