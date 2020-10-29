@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./StatsFilter.scss";
 import { Box } from "@material-ui/core";
-import useQuoteAssets from "../../../../../hooks/useQuoteAssets";
 import useExchangesOptions from "../../../../../hooks/useExchangesOptions";
 import CustomSelect from "../../../../CustomSelect";
 import { useIntl } from "react-intl";
+import useBaseExchangeQuotes from "../../../../../hooks/useBaseExchangeQuotes";
+import useExchangeList from "../../../../../hooks/useExchangeList";
 /**
  *
  * @typedef {import("../../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
@@ -23,11 +24,17 @@ import { useIntl } from "react-intl";
  * @returns {JSX.Element} JSX Component.
  */
 const StatsFilter = ({ list, onChange }) => {
+  const baseExchanges = useExchangeList();
   const [exchange, setExchange] = useState("ALL");
   const [quote, setQuote] = useState("ALL");
   const intl = useIntl();
   const exchanges = useExchangesOptions(true);
-  const quoteAssets = useQuoteAssets();
+  const selectedBase =
+    baseExchanges && baseExchanges.find((item) => item.name.toLowerCase() === "binance");
+  const quoteAssets = useBaseExchangeQuotes({
+    exchangeId: selectedBase && selectedBase.id ? selectedBase.id : "",
+    exchangeType: selectedBase && selectedBase.type ? selectedBase.type[0] : "",
+  });
   const quotes = [
     {
       val: "ALL",
