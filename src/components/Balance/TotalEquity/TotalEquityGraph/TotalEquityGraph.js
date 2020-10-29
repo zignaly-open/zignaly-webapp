@@ -118,6 +118,7 @@ const TotalEquityGraph = ({ list, modal, selectedExchange }) => {
       chartData={chartData}
       colorsOptions={colorsOptions}
       tooltipFormat={tooltipFormat}
+      options={{ beginAtZero: true }}
     />
   );
 };
