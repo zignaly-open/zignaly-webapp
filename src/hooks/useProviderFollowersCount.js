@@ -13,10 +13,10 @@ import { creatProviderFollowersCountEntity } from "../services/tradeApiClient.ty
  */
 
 /**
- * Provides balance summary for exchange.
+ * Provides followers counts for a provider.
  *
  * @param {string} providerId ID of the provider.
- * @returns {HookData} Balance.
+ * @returns {HookData} .
  */
 const useProviderFollowersCount = (providerId) => {
   const emptyObject = creatProviderFollowersCountEntity(null);

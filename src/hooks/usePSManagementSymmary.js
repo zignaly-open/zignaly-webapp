@@ -14,7 +14,7 @@ import useInterval from "./useInterval";
  */
 
 /**
- * Provides balance summary for exchange.
+ * Provides balance summary for PS service.
  *
  * @param {string} providerId ID of the provider.
  * @returns {HookData} Balance.
