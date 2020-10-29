@@ -114,6 +114,7 @@ import {
  * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
+ * @typedef {import('./tradeApiClient.types').ProviderBalanceEntity} ProviderBalanceEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
  * @typedef {import('./tradeApiClient.types').CancelContractPayload} CancelContractPayload
@@ -1159,7 +1160,7 @@ class TradeApiClient {
    *
    * @param {GetProviderFollowersPayload} payload Provider's stats payload.
 
-   * @returns {Promise<ProviderDataPointsEntity>} Returns promise that resolves provider data points entry.
+   * @returns {Promise<ProviderBalanceEntity>} Returns promise that resolves provider data points entry.
    *
    * @memberof TradeApiClient
    */
