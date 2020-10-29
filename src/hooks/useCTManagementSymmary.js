@@ -16,7 +16,7 @@ import useInterval from "./useInterval";
 /**
  * Provides balance summary for exchange.
  *
- * @param {string} providerId ID of the exchange.
+ * @param {string} providerId ID of the provider.
  * @returns {HookData} Balance.
  */
 const useCTManagementSymmary = (providerId) => {

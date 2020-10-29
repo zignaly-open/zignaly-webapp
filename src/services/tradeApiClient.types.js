@@ -3497,22 +3497,15 @@ export function creatProviderDataPointsEntity(response) {
 /**
  *
  * @typedef {Object} ProviderBalanceEntity
- * @property {Number} float
- * @property {Number} floatPercentage
- * @property {Number} floatUSDT
- * @property {Number} followersTrialing
- * @property {Number} freeBalance
- * @property {Number} freeBalancePercentage
- * @property {Number} freeBalanceUSDT
- * @property {String} quote
- * @property {Number} totalAllocated
- * @property {Number} totalAllocatedFromFollowers
- * @property {Number} totalAllocatedUSDT
- * @property {Number} totalAllocatedUSDTFromFollowers
- * @property {Number} totalFollowers
- * @property {Number} totalProfit
- * @property {Number} totalProfitPercentage
- * @property {Number} totalProfitUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
+ * @property {Number} totalCurrentMarginBTC
+ * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalUnrealizedProfitBTC
+ * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalMarginBTC
+ * @property {Number} totalMarginUSDT
+ * @property {Number} abstractPercentage
  */
 
 /**
@@ -3533,24 +3526,15 @@ export function providerBalanceResponseTransform(response) {
  */
 export function creatProviderBalanceEntity(response) {
   return {
-    float: response ? formatValue(response.float) : 0,
-    floatPercentage: response ? formatValue(response.floatPercentage) : 0,
-    floatUSDT: response ? formatValue(response.floatUSDT) : 0,
-    followersTrialing: response ? formatValue(response.followersTrialing) : 0,
-    freeBalance: response ? formatValue(response.freeBalance) : 0,
-    freeBalancePercentage: response ? formatValue(response.freeBalancePercentage) : 0,
-    freeBalanceUSDT: response ? formatValue(response.freeBalanceUSDT) : 0,
-    quote: response ? response.quote : "",
-    totalAllocated: response ? formatValue(response.totalAllocated) : 0,
-    totalAllocatedFromFollowers: response ? formatValue(response.totalAllocatedFromFollowers) : 0,
-    totalAllocatedUSDT: response ? formatValue(response.totalAllocatedUSDT) : 0,
-    totalAllocatedUSDTFromFollowers: response
-      ? formatValue(response.totalAllocatedUSDTFromFollowers)
-      : 0,
-    totalFollowers: response ? formatValue(response.totalFollowers) : 0,
-    totalProfit: response ? formatValue(response.totalProfit) : 0,
-    totalProfitPercentage: response ? formatValue(response.totalProfitPercentage) : 0,
-    totalProfitUSDT: response ? formatValue(response.totalProfitUSDT) : 0,
+    totalWalletBTC: response ? formatValue(response.totalWalletBTC) : 0,
+    totalWalletUSDT: response ? formatValue(response.totalWalletUSDT) : 0,
+    totalCurrentMarginBTC: response ? formatValue(response.totalCurrentMarginBTC) : 0,
+    totalCurrentMarginUSDT: response ? formatValue(response.totalCurrentMarginUSDT) : 0,
+    totalUnrealizedProfitBTC: response ? formatValue(response.totalUnrealizedProfitBTC) : 0,
+    totalUnrealizedProfitUSDT: response ? formatValue(response.totalUnrealizedProfitUSDT) : 0,
+    totalMarginBTC: response ? formatValue(response.totalMarginBTC) : 0,
+    totalMarginUSDT: response ? response.totalMarginUSDT : 0,
+    abstractPercentage: response ? formatValue(response.abstractPercentage) : 0,
   };
 }
 

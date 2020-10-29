@@ -7,16 +7,16 @@ import { creatProviderBalanceEntity } from "../services/tradeApiClient.types";
 import useInterval from "./useInterval";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").ProviderDataPointsEntity} ProviderDataPointsEntity
+ * @typedef {import("../services/tradeApiClient.types").ProviderBalanceEntity} ProviderBalanceEntity
  * @typedef {Object} HookData
- * @property {ProviderDataPointsEntity} summary
+ * @property {ProviderBalanceEntity} summary
  * @property {Boolean} summaryLoading
  */
 
 /**
  * Provides balance summary for exchange.
  *
- * @param {string} providerId ID of the exchange.
+ * @param {string} providerId ID of the provider.
  * @returns {HookData} Balance.
  */
 const usePSManagementSymmary = (providerId) => {
