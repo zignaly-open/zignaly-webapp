@@ -104,7 +104,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
         } else {
           weekStats.push({
             week: `${dayDate.year()}-${week}`,
-            return: 0,
+            return: entry.amount,
             day: dayDate.format(),
             positions: 1,
           });
