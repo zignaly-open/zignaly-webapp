@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../../CustomSelect";
-import { useIntl } from "react-intl";
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -23,7 +22,6 @@ import { useIntl } from "react-intl";
 
 const AccountingFilter = ({ data, onChange, types }) => {
   const [selected, setSelected] = useState("all");
-  const intl = useIntl();
 
   /**
    * Select change handler.
@@ -53,13 +51,8 @@ const AccountingFilter = ({ data, onChange, types }) => {
   };
 
   return (
-    <Box alignItems="center" className="accountFilter" display="flex" flexDirection="row">
-      <CustomSelect
-        label={intl.formatMessage({ id: "dashboard.balance.show" })}
-        onChange={handleChange}
-        options={types}
-        value={selected}
-      />
+    <Box alignItems="center" className="accountingFilter" display="flex" flexDirection="row">
+      <CustomSelect label="" onChange={handleChange} options={types} value={selected} />
     </Box>
   );
 };
