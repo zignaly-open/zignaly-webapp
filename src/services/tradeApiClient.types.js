@@ -2215,6 +2215,7 @@ export function coinRayTokenResponseTransform(response) {
  * @property {number} maxLeverage Max leverage for symbol (futures)
  * @property {string} tradeViewSymbol TradingView symbol
  * @property {string} zignalyId Symbol used internally
+ * @property {string} short Short name
  */
 
 /**

@@ -83,6 +83,7 @@ const StrategyPanel = (props) => {
     });
   }
 
+  console.log(symbolData);
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">

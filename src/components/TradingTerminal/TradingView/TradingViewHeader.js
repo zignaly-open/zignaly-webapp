@@ -29,9 +29,8 @@ import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 const TradingViewHeader = (props) => {
   const { symbolsList, handleSymbolChange, selectedSymbol } = props;
   const { control, register, watch } = useFormContext();
-  // @ts-ignore
   const symbolsOptionsAll = symbolsList.map((symbolItem) => {
-    return symbolItem.tradeViewSymbol;
+    return symbolItem.short;
   });
   const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
   const { formatMessage } = useIntl();
@@ -84,7 +83,12 @@ const TradingViewHeader = (props) => {
 
   // Filter signal provider symbols options when is selected.
   const symbolsOptions = symbolsOptionsAll.filter((symbol) => {
-    if (providerId && providerId !== "1" && providerService) {
+    if (
+      providerService &&
+      providerId &&
+      providerId !== "1" &&
+      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex"
+    ) {
       const { providerQuote } = providerService;
       if (isBoolean(providerQuote)) {
         return providerQuote === true;

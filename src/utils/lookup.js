@@ -10,5 +10,5 @@
  * @returns {boolean} TRUE when ID matches, FALSE otherwise.
  */
 export function matchCurrentSymbol(item, findSymbol) {
-  return item.symbol.replace("/", "") === findSymbol.replace("/", "");
+  return item.tradeViewSymbol.replace("/", "") === findSymbol.replace("/", "");
 }
