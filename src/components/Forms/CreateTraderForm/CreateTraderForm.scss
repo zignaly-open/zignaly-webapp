@@ -33,15 +33,47 @@
       border-color: var(--purple);
     }
 
-    &.exchangeIcon {
-      margin: 21px 21px 21px 0;
-    }
-
     img {
       height: 100%;
       margin-top: -2px;
       padding: 2px;
       width: 100%;
+    }
+  }
+
+  .exchangeIconBox {
+    margin: 20px 0;
+
+    .iconBox {
+      align-items: center;
+      border: solid 2px transparent;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: row;
+      height: 65px;
+      justify-content: center;
+      margin-right: 20px;
+      padding: 4px;
+      width: 65px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.selected {
+        border-color: var(--purple);
+      }
+    }
+
+    .exchangeIcon {
+      cursor: pointer;
+      height: 55px;
+      width: 55px;
+
+      &.bitmex {
+        height: 55px;
+        width: 55px;
+      }
     }
   }
 

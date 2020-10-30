@@ -183,16 +183,19 @@ const CreateTraderForm = () => {
               <Typography className="body1 bold exchangeChoose" variant="h3">
                 <FormattedMessage id="accounts.exchange.choose" />
               </Typography>
-              <Box display="flex" flexWrap="wrap">
+              <Box className="exchangeIconBox" display="flex" flexWrap="wrap">
                 {exchanges.map((e) => (
-                  <ExchangeIcon
-                    className={`iconButton ${
+                  <Box
+                    className={`iconBox ${
                       (exchange && exchange.name) === e.name ? "selected" : ""
                     }`}
-                    exchange={e.name}
                     key={e.id}
-                    onClick={() => setExchange(exchanges.find((ex) => e === ex))}
-                  />
+                  >
+                    <ExchangeIcon
+                      exchange={e.name}
+                      onClick={() => setExchange(exchanges.find((ex) => e === ex))}
+                    />
+                  </Box>
                 ))}
               </Box>
               {step === 1 && (
