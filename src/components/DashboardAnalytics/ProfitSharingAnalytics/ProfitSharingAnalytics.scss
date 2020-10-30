@@ -3,6 +3,10 @@
     box-shadow: 0 2px 8px 0 $boxShadowColor;
     margin: 30px 0 42px;
     width: 100%;
+
+    .dataBox {
+      align-items: center;
+    }
   }
 
   .profitSharingEquityChart {

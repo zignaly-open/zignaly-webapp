@@ -60,9 +60,12 @@ const Table = ({
   const countRows = size(data);
   const theme = useTheme();
 
-  const [responsive, setResponsive] = useState(
-    storeSettings.responsiveTables[persistKey] !== false,
-  );
+  const defaultReponsive =
+    storeSettings.responsiveTables[persistKey] === undefined
+      ? // by default responsive if more than 3 columns
+        columns.length > 4
+      : storeSettings.responsiveTables[persistKey];
+  const [responsive, setResponsive] = useState(defaultReponsive);
 
   /**
    * Function to create column labels.
@@ -78,8 +81,6 @@ const Table = ({
       if (typeof label === "object") {
         return intl.formatMessage({ id: label.id }, { quote: label.quote });
       }
-    } else {
-      return "";
     }
     return "";
   };
