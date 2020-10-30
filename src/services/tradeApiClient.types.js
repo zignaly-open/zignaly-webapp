@@ -1,6 +1,6 @@
 import moment from "moment";
 import dayjs from "dayjs";
-import { assign, isArray, isObject, mapValues, isString } from "lodash";
+import { assign, isArray, isObject, mapValues, isString, toNumber } from "lodash";
 import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
@@ -3428,23 +3428,38 @@ export function creatEmptySettingsEntity() {
 /**
  *
  * @typedef {Object} ProviderDataPointsEntity
- * @property {String} float
- * @property {String} floatPercentage
- * @property {String} floatUSDT
+ * @property {Number} float
+ * @property {Number} floatPercentage
+ * @property {Number} floatUSDT
  * @property {Number} followersTrialing
- * @property {String} freeBalance
- * @property {String} freeBalancePercentage
- * @property {String} freeBalanceUSDT
+ * @property {Number} freeBalance
+ * @property {Number} freeBalancePercentage
+ * @property {Number} freeBalanceUSDT
  * @property {String} quote
- * @property {String} totalAllocated
- * @property {String} totalAllocatedFromFollowers
- * @property {String} totalAllocatedUSDT
- * @property {String} totalAllocatedUSDTFromFollowers
+ * @property {Number} totalAllocated
+ * @property {Number} totalAllocatedFromFollowers
+ * @property {Number} totalAllocatedUSDT
+ * @property {Number} totalAllocatedUSDTFromFollowers
  * @property {Number} totalFollowers
- * @property {String} totalProfit
- * @property {String} totalProfitPercentage
- * @property {String} totalProfitUSDT
+ * @property {Number} totalProfit
+ * @property {Number} totalProfitPercentage
+ * @property {Number} totalProfitUSDT
  */
+
+/**
+ * Format number for display.
+ *
+ * @param {number} value Number to format.
+ *
+ * @returns {number} Formatter number for display.
+ */
+export const formatValue = (value) => {
+  if (!value || isNaN(value)) {
+    return 0;
+  }
+
+  return toNumber(value);
+};
 
 /**
  * Transform Provider data points get response.
@@ -3453,32 +3468,107 @@ export function creatEmptySettingsEntity() {
  * @returns {ProviderDataPointsEntity} Provider Data points entity.
  */
 export function providerDataPointsResponseTransform(response) {
-  return assign(creatEmptyProviderDataPointsEntity(), response);
+  return creatProviderDataPointsEntity(response);
 }
 
 /**
  * Create provider data points entity.
+ * @param {*} response .
  *
  * @returns {ProviderDataPointsEntity} Provider data points entity.
  */
-export function creatEmptyProviderDataPointsEntity() {
+export function creatProviderDataPointsEntity(response) {
   return {
-    float: "",
-    floatPercentage: "",
-    floatUSDT: "",
-    followersTrialing: 0,
-    freeBalance: "",
-    freeBalancePercentage: "",
-    freeBalanceUSDT: "",
-    quote: "",
-    totalAllocated: "",
-    totalAllocatedFromFollowers: "",
-    totalAllocatedUSDT: "",
-    totalAllocatedUSDTFromFollowers: "",
-    totalFollowers: 0,
-    totalProfit: "",
-    totalProfitPercentage: "",
-    totalProfitUSDT: "",
+    float: response ? formatValue(response.float) : 0,
+    floatPercentage: response ? formatValue(response.floatPercentage) : 0,
+    floatUSDT: response ? formatValue(response.floatUSDT) : 0,
+    followersTrialing: response ? formatValue(response.followersTrialing) : 0,
+    freeBalance: response ? formatValue(response.freeBalance) : 0,
+    freeBalancePercentage: response ? formatValue(response.freeBalancePercentage) : 0,
+    freeBalanceUSDT: response ? formatValue(response.freeBalanceUSDT) : 0,
+    quote: response ? response.quote : "",
+    totalAllocated: response ? formatValue(response.totalAllocated) : 0,
+    totalAllocatedFromFollowers: response ? formatValue(response.totalAllocatedFromFollowers) : 0,
+    totalAllocatedUSDT: response ? formatValue(response.totalAllocatedUSDT) : 0,
+    totalAllocatedUSDTFromFollowers: response
+      ? formatValue(response.totalAllocatedUSDTFromFollowers)
+      : 0,
+    totalFollowers: response ? formatValue(response.totalFollowers) : 0,
+    totalProfit: response ? formatValue(response.totalProfit) : 0,
+    totalProfitPercentage: response ? formatValue(response.totalProfitPercentage) : 0,
+    totalProfitUSDT: response ? formatValue(response.totalProfitUSDT) : 0,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderBalanceEntity
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
+ * @property {Number} totalCurrentMarginBTC
+ * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalUnrealizedProfitBTC
+ * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalMarginBTC
+ * @property {Number} totalMarginUSDT
+ * @property {Number} abstractPercentage
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderBalanceEntity} Provider Data points entity.
+ */
+export function providerBalanceResponseTransform(response) {
+  return creatProviderBalanceEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderBalanceEntity} Provider data points entity.
+ */
+export function creatProviderBalanceEntity(response) {
+  return {
+    totalWalletBTC: response ? formatValue(response.totalWalletBTC) : 0,
+    totalWalletUSDT: response ? formatValue(response.totalWalletUSDT) : 0,
+    totalCurrentMarginBTC: response ? formatValue(response.totalCurrentMarginBTC) : 0,
+    totalCurrentMarginUSDT: response ? formatValue(response.totalCurrentMarginUSDT) : 0,
+    totalUnrealizedProfitBTC: response ? formatValue(response.totalUnrealizedProfitBTC) : 0,
+    totalUnrealizedProfitUSDT: response ? formatValue(response.totalUnrealizedProfitUSDT) : 0,
+    totalMarginBTC: response ? formatValue(response.totalMarginBTC) : 0,
+    totalMarginUSDT: response ? response.totalMarginUSDT : 0,
+    abstractPercentage: response ? formatValue(response.abstractPercentage) : 0,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderFollowersCountEntity
+ * @property {Number} followers
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderFollowersCountEntity} Provider Data points entity.
+ */
+export function providerFollowersCountResponseTransform(response) {
+  return creatProviderFollowersCountEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderFollowersCountEntity} Provider data points entity.
+ */
+export function creatProviderFollowersCountEntity(response) {
+  return {
+    followers: response ? formatValue(response.followers) : 0,
   };
 }
 

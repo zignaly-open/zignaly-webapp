@@ -19,7 +19,7 @@ const TotalEquityBar = ({ children }) => {
       className="totalEquityBar"
       display="flex"
       flexDirection="row"
-      justifyContent="space-between"
+      justifyContent="space-around"
     >
       {children}
     </Box>

@@ -15,7 +15,13 @@ import "./GlobalModalHead.scss";
 const GlobalModalHead = ({ actionBar, titleBar }) => {
   return (
     <Box className="globalModalHead">
-      <Box alignItems="center" className="actionBar" display="flex" flexDirection="row">
+      <Box
+        alignItems="center"
+        className="actionBar"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
         {actionBar}
       </Box>
       <Box className="titleBar">{titleBar}</Box>
