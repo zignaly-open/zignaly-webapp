@@ -12,7 +12,7 @@ import CustomSelect from "../../CustomSelect";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
 import ProviderUserOptions from "./ProviderUserOptions";
-import useBaseExchangeQuotes from "../../../hooks/useBaseExchangeQuotes";
+import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 
 const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
 
@@ -70,7 +70,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     });
   }
 
-  const quoteAssets = useBaseExchangeQuotes({
+  const quoteAssets = useExchangeQuotes({
     exchangeId: selectedExchange ? selectedExchange.id : "",
     exchangeType: selectedExchange ? selectedExchange.type[0] : "",
   });

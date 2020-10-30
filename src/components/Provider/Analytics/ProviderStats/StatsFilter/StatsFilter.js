@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import useExchangesOptions from "../../../../../hooks/useExchangesOptions";
 import CustomSelect from "../../../../CustomSelect";
 import { useIntl } from "react-intl";
-import useBaseExchangeQuotes from "../../../../../hooks/useBaseExchangeQuotes";
+import useExchangeQuotes from "../../../../../hooks/useExchangeQuotes";
 import useExchangeList from "../../../../../hooks/useExchangeList";
 /**
  *
@@ -29,14 +29,15 @@ const StatsFilter = ({ list, onChange }) => {
   const [quote, setQuote] = useState("ALL");
   const intl = useIntl();
   const exchanges = useExchangesOptions(true);
-  const selectedBase =
+  const selectedBaseExchange =
     baseExchanges &&
     baseExchanges.find(
       (item) => item.name.toLowerCase() === (exchange === "ALL" ? "binance" : exchange),
     );
-  const quoteAssets = useBaseExchangeQuotes({
-    exchangeId: selectedBase && selectedBase.id ? selectedBase.id : "",
-    exchangeType: selectedBase && selectedBase.type ? selectedBase.type[0] : "",
+  const quoteAssets = useExchangeQuotes({
+    exchangeId: selectedBaseExchange && selectedBaseExchange.id ? selectedBaseExchange.id : "",
+    exchangeType:
+      selectedBaseExchange && selectedBaseExchange.type ? selectedBaseExchange.type[0] : "",
   });
   const quotes = [
     {

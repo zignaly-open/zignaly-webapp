@@ -17,7 +17,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useBaseExchangeQuotes = (exchangeData, shouldExecute = true) => {
+const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
@@ -53,4 +53,4 @@ const useBaseExchangeQuotes = (exchangeData, shouldExecute = true) => {
   return quotes;
 };
 
-export default useBaseExchangeQuotes;
+export default useExchangeQuotes;

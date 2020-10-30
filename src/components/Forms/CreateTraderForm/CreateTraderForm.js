@@ -15,7 +15,7 @@ import MonthlyPayment from "../../../images/ct/monthlyPayment.svg";
 import ProfitSharing from "../../../images/ct/profitSharing.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
-import useBaseExchangeQuotes from "../../../hooks/useBaseExchangeQuotes";
+import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -60,7 +60,7 @@ const CreateTraderForm = () => {
     }
   }, [exchanges]);
 
-  const quoteAssets = useBaseExchangeQuotes({
+  const quoteAssets = useExchangeQuotes({
     exchangeId: exchange ? exchange.id : "",
     exchangeType: exchange ? exchange.type[0] : "",
   });
