@@ -32,14 +32,13 @@ import "./StrategyForm.scss";
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  */
 
 /**
  * @typedef {Object} StrategyFormProps
- * @property {MarketSymbolsCollection} symbolsData
  * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {MarketSymbol} selectedSymbol

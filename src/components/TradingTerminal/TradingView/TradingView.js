@@ -94,7 +94,6 @@ const TradingView = () => {
   const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
   const symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
-  console.log(symbolData, symbols, selectedSymbol);
   const [selectedExchangeId, setSelectedExchangeId] = useState(
     storeSettings.selectedExchange.internalId,
   );

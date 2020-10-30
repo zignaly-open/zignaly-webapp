@@ -151,7 +151,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const units = parseFloat(draftPosition.units);
     if (isNaN(units)) return;
 
-    const positionSize = units * currentPrice * selectedSymbol.multiplier;
+    let positionSize = units * currentPrice * selectedSymbol.multiplier;
+    if (selectedSymbol.inverse) {
+      positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+    }
+
     setValue("positionSize", positionSize.toFixed(8));
     trigger("positionSize").then((isValid) => {
       if (isValid) {

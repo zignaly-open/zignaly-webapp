@@ -2211,11 +2211,13 @@ export function coinRayTokenResponseTransform(response) {
  * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
  * @property {string} coinrayBase Base currency ID adapted to CoinRay.
  * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
- * @property {number} multiplier For bitmex
- * @property {number} maxLeverage Max leverage for symbol (futures)
- * @property {string} tradeViewSymbol TradingView symbol
- * @property {string} zignalyId Symbol used internally
- * @property {string} short Short name
+ * @property {number} multiplier Multiplier to calculate bitmex contract values/PnL.
+ * @property {number} maxLeverage Max leverage (futures).
+ * @property {string} tradeViewSymbol TradingView symbol.
+ * @property {string} zignalyId Symbol used internally.
+ * @property {string} short Short symbol name displayed in Zignaly.
+ * @property {boolean} inverse Inverse contract type (bitmex)
+ * @property {boolean} quanto Quanto contract type (bitmex)
  */
 
 /**
