@@ -27,6 +27,7 @@ import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiC
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -49,7 +50,8 @@ const TradingViewEdit = (props) => {
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
-  const [marketData, setMarketData] = useState(null);
+  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ null);
+  const [maxLeverage, setMaxLeverage] = useState(0);
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
@@ -153,6 +155,32 @@ const TradingViewEdit = (props) => {
     }, 100);
   };
   useEffect(loadDependencies, []);
+
+  /**
+   *
+   * @param {MarketSymbolsCollection} list Market Symbol collection.
+   * @param {String} symbol Market symbol.
+   *
+   * @returns {Number} max leverage for the symbol.
+   */
+  const getLeverageForSymbol = (list, symbol) => {
+    if (list && symbol) {
+      const found = list.find(
+        (item) => item.tradeViewSymbol === selectedSymbol.split("/").join(""),
+      );
+      if (found) {
+        return found.maxLeverage;
+      }
+      return 125;
+    }
+    return 125;
+  };
+
+  const initLeverage = () => {
+    setMaxLeverage(getLeverageForSymbol(marketData, selectedSymbol));
+  };
+
+  useEffect(initLeverage, [marketData]);
 
   /**
    * Callback that to be notified when position updates are performed.
@@ -309,6 +337,7 @@ const TradingViewEdit = (props) => {
               <input name="updatedAt" ref={methods.register} type="hidden" />
               <StrategyForm
                 lastPrice={lastPrice}
+                maxLeverage={maxLeverage}
                 notifyPositionUpdate={notifyPositionUpdate}
                 positionEntity={positionEntity}
                 selectedSymbol={selectedSymbol}

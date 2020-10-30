@@ -49,7 +49,7 @@ const TradingView = () => {
   } = useTradingTerminal();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ []);
+  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ null);
   const [maxLeverage, setMaxLeverage] = useState(0);
   const dispatch = useDispatch();
 
