@@ -14,7 +14,7 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 
 /**
  * @typedef {Object} SidebarCreatePanelsProps
- * @property {MarketSymbol} currentSymbolData
+ * @property {MarketSymbol} selectedSymbol
  */
 
 /**
@@ -24,15 +24,15 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
  * @returns {JSX.Element} Strategy form element.
  */
 const SidebarCreatePanels = (props) => {
-  const { currentSymbolData } = props;
+  const { selectedSymbol } = props;
 
   return (
     <>
-      <StrategyPanel symbolData={currentSymbolData} />
-      <TakeProfitPanel symbolData={currentSymbolData} />
-      <DCAPanel symbolData={currentSymbolData} />
-      <StopLossPanel symbolData={currentSymbolData} />
-      <TrailingStopPanel symbolData={currentSymbolData} />
+      <StrategyPanel symbolData={selectedSymbol} />
+      <TakeProfitPanel symbolData={selectedSymbol} />
+      <DCAPanel symbolData={selectedSymbol} />
+      <StopLossPanel symbolData={selectedSymbol} />
+      <TrailingStopPanel symbolData={selectedSymbol} />
       <EntryExpirationPanel />
       <AutoclosePanel />
     </>
