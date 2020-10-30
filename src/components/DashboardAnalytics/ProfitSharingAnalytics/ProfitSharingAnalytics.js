@@ -95,7 +95,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
     // Prepare weekly profit stats and accounting stats
     entries.forEach((entry) => {
       const dayDate = dayjs(entry.date).startOf("d");
-      console.log(entry.type);
       if (["pnl", "successFee"].includes(entry.type)) {
         // Calculate total PnL by week for weekly profit stats
         const week = dayDate.week();
