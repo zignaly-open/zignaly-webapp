@@ -21,7 +21,7 @@ const useExchangesOptions = (allOption) => {
     : [];
 
   exchanges = exchanges.concat(
-    ["Binance", "Zignaly", "KuCoin"].map((label) => ({
+    ["Binance", "Zignaly", "BitMEX", "KuCoin"].map((label) => ({
       val: label.toLowerCase(),
       label,
     })),
