@@ -1,10 +1,10 @@
 import React from "react";
 import "./ManagementSummary.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
-import { formatFloat2Dec } from "../../../../utils/format";
+import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
-import useManagementSymmary from "../../../../hooks/useManagementSymmary";
+import { formatFloat2Dec } from "../../../../utils/format";
+import useCTManagementSymmary from "../../../../hooks/useCTManagementSymmary";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -16,9 +16,9 @@ import useManagementSymmary from "../../../../hooks/useManagementSymmary";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementSummary = ({ provider }) => {
-  const { summaryLoading, summary } = useManagementSymmary(provider.id);
-
+const CopyTraderSummary = ({ provider }) => {
+  const { summaryLoading, summary } = useCTManagementSymmary(provider.id);
+  const intl = useIntl();
   return (
     <>
       {summaryLoading && (
@@ -41,7 +41,9 @@ const ManagementSummary = ({ provider }) => {
           justifyContent="space-evenly"
         >
           <ManagementSummaryCard
-            foot={summary.followersTrialing}
+            foot={`${intl.formatMessage({ id: "copyt.management.trialing" })}: ${
+              summary.followersTrialing
+            }`}
             icon="followers"
             title={<FormattedMessage id="copyt.management.totalfollowers" />}
             value={summary.totalFollowers}
@@ -69,6 +71,9 @@ const ManagementSummary = ({ provider }) => {
             quote={summary.quote}
             title={<FormattedMessage id="copyt.management.totalprofit" />}
             value={formatFloat2Dec(summary.totalProfit)}
+            valueColor={
+              summary.totalProfitUSDT > 0 ? "green" : summary.totalProfitUSDT < 0 ? "red" : ""
+            }
           />
 
           <ManagementSummaryCard
@@ -85,4 +90,4 @@ const ManagementSummary = ({ provider }) => {
   );
 };
 
-export default ManagementSummary;
+export default CopyTraderSummary;
