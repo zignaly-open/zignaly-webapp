@@ -4,7 +4,23 @@
 
   @include media("<=sm") {
     .actionBar {
+      flex-wrap: wrap;
+
       .submitButton {
+        &.back {
+          width: calc(50% - 10px);
+        }
+
+        &.done {
+          width: calc(100% - 245px);
+        }
+
+        &.save {
+          width: calc(50% - 10px);
+        }
+      }
+
+      .tempMessage {
         width: 100%;
       }
     }
@@ -47,6 +63,16 @@
 
 @include media("<=sm") {
   .connectExchangeViewHead {
+    .actionBar {
+      .customButton {
+        margin-right: 15px;
+
+        + * {
+          margin-left: 0;
+        }
+      }
+    }
+
     .titleBar {
       padding: 24px 10px 0;
 
