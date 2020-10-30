@@ -35,10 +35,16 @@ const MemoizedLine = React.memo(
 );
 
 /**
+ * @typedef {Object} ChartOptions
+ * @property {boolean} beginAtZero Start y axis at 0
+ */
+
+/**
  * @typedef {Object} LineChartPropTypes
  * @property {ChartColorOptions} colorsOptions Chart colors.
  * @property {ChartData} chartData Chart dataset.
  * @property {function} tooltipFormat Function to format data based on selected value.
+ * @property {ChartOptions} [options] Options
  */
 
 /**
@@ -48,7 +54,15 @@ const MemoizedLine = React.memo(
  * @returns {JSX.Element} Component JSX.
  */
 const LineChart = (props) => {
-  const { chartData, colorsOptions, tooltipFormat } = props;
+  const defaultOptions = {
+    beginAtZero: false,
+  };
+  const {
+    chartData,
+    colorsOptions,
+    tooltipFormat,
+    options: customOptions = defaultOptions,
+  } = props;
   const { chartRef, pointHoverRef, tooltipData, showTooltip } = useChartTooltip(tooltipFormat);
   const showTooltipCallback = useCallback(showTooltip, [chartData]);
 
@@ -122,6 +136,7 @@ const LineChart = (props) => {
           stacked: false,
           ticks: {
             display: false,
+            beginAtZero: customOptions.beginAtZero,
           },
           gridLines: {
             display: false,

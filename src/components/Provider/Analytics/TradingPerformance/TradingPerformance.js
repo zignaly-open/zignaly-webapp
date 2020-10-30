@@ -14,7 +14,6 @@ dayjs.extend(weekOfYear);
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import("./WeeklyData/WeeklyData").DefaultQuarter} DefaultQuarter
  * @typedef {import("../../../../utils/stats").StatsOptions} StatsOptions
- * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
