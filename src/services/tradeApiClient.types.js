@@ -2267,7 +2267,7 @@ export function createMarketSymbolEmptyValueObject() {
     coinrayQuote: "",
     coinrayBase: "",
     multiplier: 0,
-    maxLeverage: 0,
+    maxLeverage: 125,
     tradeViewSymbol: "",
     zignalyId: "",
   };

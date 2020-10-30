@@ -15,6 +15,7 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
 /**
  * @typedef {Object} SidebarCreatePanelsProps
  * @property {MarketSymbol} currentSymbolData
+ * @property {Number} maxLeverage
  */
 
 /**
@@ -24,11 +25,11 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
  * @returns {JSX.Element} Strategy form element.
  */
 const SidebarCreatePanels = (props) => {
-  const { currentSymbolData } = props;
+  const { currentSymbolData, maxLeverage } = props;
 
   return (
     <>
-      <StrategyPanel symbolData={currentSymbolData} />
+      <StrategyPanel maxLeverage={maxLeverage} symbolData={currentSymbolData} />
       <TakeProfitPanel symbolData={currentSymbolData} />
       <DCAPanel symbolData={currentSymbolData} />
       <StopLossPanel symbolData={currentSymbolData} />

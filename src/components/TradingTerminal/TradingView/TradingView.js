@@ -19,6 +19,7 @@ import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -48,7 +49,8 @@ const TradingView = () => {
   } = useTradingTerminal();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [marketData, setMarketData] = useState(null);
+  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ []);
+  const [maxLeverage, setMaxLeverage] = useState(0);
   const dispatch = useDispatch();
 
   const getMarketData = async () => {
@@ -134,6 +136,32 @@ const TradingView = () => {
 
   useEffect(loadDependencies, [storeSettings.selectedExchange.internalId]);
 
+  /**
+   *
+   * @param {MarketSymbolsCollection} list Market Symbol collection.
+   * @param {String} symbol Market symbol.
+   *
+   * @returns {Number} max leverage for the symbol.
+   */
+  const getLeverageForSymbol = (list, symbol) => {
+    if (list && symbol) {
+      const found = list.find(
+        (item) => item.tradeViewSymbol === selectedSymbol.split("/").join(""),
+      );
+      if (found) {
+        return found.maxLeverage;
+      }
+      return 125;
+    }
+    return 125;
+  };
+
+  const initLeverage = () => {
+    setMaxLeverage(getLeverageForSymbol(marketData, selectedSymbol));
+  };
+
+  useEffect(initLeverage, [marketData]);
+
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
     if (!libraryReady || tradingViewWidget) {
@@ -200,6 +228,7 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
+    setMaxLeverage(getLeverageForSymbol(marketData, selectedOption));
     // setTerminalPair(selectedOption);
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
@@ -263,6 +292,7 @@ const TradingView = () => {
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}
+                maxLeverage={maxLeverage}
                 selectedSymbol={selectedSymbol}
                 symbolsData={marketData}
                 tradingViewWidget={tradingViewWidget}
