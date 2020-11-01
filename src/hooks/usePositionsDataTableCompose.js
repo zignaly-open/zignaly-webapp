@@ -700,7 +700,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
-    if (position.profitSharing) {
+    if (position.profitSharing && !position.isCopyTrader) {
       return null;
     }
     return composeAllActionButtons(position, confirmActionHandler);
