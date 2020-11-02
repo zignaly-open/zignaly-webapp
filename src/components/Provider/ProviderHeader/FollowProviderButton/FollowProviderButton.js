@@ -52,6 +52,7 @@ const FollowProviderButton = ({ provider }) => {
       }
     } catch (e) {
       dispatch(showErrorAlert(e));
+      setLoader(false);
     }
   };
 
@@ -78,6 +79,7 @@ const FollowProviderButton = ({ provider }) => {
       }
     } catch (e) {
       dispatch(showErrorAlert(e));
+      setLoader(false);
     }
   };
 

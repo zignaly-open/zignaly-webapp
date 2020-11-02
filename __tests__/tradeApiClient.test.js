@@ -185,12 +185,12 @@ describe("Consume tradeApiClient service", () => {
     const payload = {
       token: accessToken,
       ro: true,
+      version: 2,
+      exchangeInternalId: "Zignaly1586867845_5e95ae85e21ea",
     };
 
     const quoteAssets = await client.quotesAssetsGet(payload);
     assert.isObject(quoteAssets, "Quote assets is not an object.");
-    assert.isObject(quoteAssets.BTC, "BTC quote is not an object.");
-    assert.isString(quoteAssets.BTC.quote, "BTC quote is not a string.");
   }, 25000);
 
   it("should get server time", async () => {
