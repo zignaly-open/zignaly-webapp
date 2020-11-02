@@ -19,7 +19,7 @@ import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
- * @typedef {import('../../../services/tradeApiClient.types').MarketSymbolsCollection MarketSymbolsCollection}
+ * @typedef {import('../../../services/tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -199,7 +199,6 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
-    // setTerminalPair(selectedOption);
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
       storeSettings.selectedExchange.exchangeType === "futures"

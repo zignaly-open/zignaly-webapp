@@ -25,6 +25,7 @@ import AutoclosePanel from "../AutoclosePanel/AutoclosePanel";
  */
 const SidebarCreatePanels = (props) => {
   const { selectedSymbol } = props;
+  console.log(selectedSymbol);
 
   return (
     <>
