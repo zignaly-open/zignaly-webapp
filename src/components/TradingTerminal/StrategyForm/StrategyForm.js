@@ -8,11 +8,7 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  mapEntryTypeToEnum,
-  mapSideToEnum,
-  createMarketSymbolEmptyValueObject,
-} from "../../../services/tradeApiClient.types";
+import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -22,7 +18,6 @@ import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
-import { matchCurrentSymbol } from "../../../utils/lookup";
 import "./StrategyForm.scss";
 
 /**
@@ -536,9 +531,9 @@ const StrategyForm = (props) => {
         <input name="lastPrice" ref={register} type="hidden" />
         {isPositionView ? (
           <SidebarEditPanels
-            selectedSymbol={selectedSymbol}
             isReadOnly={isReadOnly}
             positionEntity={positionEntity}
+            selectedSymbol={selectedSymbol}
           />
         ) : (
           <SidebarCreatePanels selectedSymbol={selectedSymbol} />
