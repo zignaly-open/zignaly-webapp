@@ -10,11 +10,11 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * Provides quotes assets.
+ * @param {string} exchangeInternalId Exchange internal id.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
- * @param {string} [exchangeInternalId] Exchange internal id.
  * @returns {QuoteAssetsDict} Quote Assets.
  */
-const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
+const useSelectedExchangeQuotes = (exchangeInternalId, shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
   const storeSession = useStoreSessionSelector();
@@ -24,6 +24,7 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
+        version: 2,
         ...(exchangeInternalId && { exchangeInternalId }),
       };
 
@@ -43,4 +44,4 @@ const useQuoteAssets = (shouldExecute = true, exchangeInternalId) => {
   return quotes;
 };
 
-export default useQuoteAssets;
+export default useSelectedExchangeQuotes;

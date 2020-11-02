@@ -3,7 +3,7 @@ import tradeApi from "../services/tradeApiClient";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
-import useQuoteAssets from "./useQuoteAssets";
+import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useBaseAssets from "./useBaseAssets";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
@@ -55,7 +55,7 @@ const useProvidersAnalytics = (type) => {
   };
 
   // quotes
-  const quoteAssets = useQuoteAssets();
+  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const quotes = Object.keys(quoteAssets);
 
   const timeFrames = useTimeFramesOptions();
