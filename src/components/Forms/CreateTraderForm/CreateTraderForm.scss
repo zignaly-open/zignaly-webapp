@@ -20,48 +20,30 @@
   }
 
   .iconButton {
+    align-items: center;
     border: solid 2px transparent;
     border-radius: 50%;
-    cursor: pointer;
-    height: 62px;
-    margin: 21px 8px;
-    margin-left: 0;
+    display: flex;
+    flex-direction: row;
+    height: 65px;
+    justify-content: center;
+    margin-right: 20px;
     padding: 4px;
-    width: 62px;
+    width: 65px;
+
+    &:last-child {
+      margin-right: 0;
+    }
 
     &.selected {
       border-color: var(--purple);
     }
 
-    img {
-      height: 100%;
-      margin-top: -2px;
-      padding: 2px;
-      width: 100%;
-    }
-  }
-
-  .exchangeIconBox {
-    margin: 20px 0;
-
-    .iconBox {
-      align-items: center;
-      border: solid 2px transparent;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: row;
-      height: 65px;
-      justify-content: center;
-      margin-right: 20px;
-      padding: 4px;
-      width: 65px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &.selected {
-        border-color: var(--purple);
+    &.fee {
+      img {
+        height: 100%;
+        padding: 4px;
+        width: 100%;
       }
     }
 
@@ -70,6 +52,10 @@
       height: 55px;
       width: 55px;
     }
+  }
+
+  .exchangeIconBox {
+    margin: 20px 0;
   }
 
   form {

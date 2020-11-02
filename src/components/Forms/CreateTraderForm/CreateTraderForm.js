@@ -137,7 +137,7 @@ const CreateTraderForm = () => {
                   >
                     <Box
                       alignItems="center"
-                      className={`iconButton ${
+                      className={`iconButton fee ${
                         selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
                       }`}
                       display="flex"
@@ -163,7 +163,7 @@ const CreateTraderForm = () => {
                 >
                   <Box
                     alignItems="center"
-                    className={`iconButton ${
+                    className={`iconButton fee ${
                       selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
                     }`}
                     display="flex"
@@ -186,7 +186,7 @@ const CreateTraderForm = () => {
               <Box className="exchangeIconBox" display="flex" flexWrap="wrap">
                 {exchanges.map((e) => (
                   <Box
-                    className={`iconBox ${
+                    className={`iconButton ${
                       (exchange && exchange.name) === e.name ? "selected" : ""
                     }`}
                     key={e.id}
