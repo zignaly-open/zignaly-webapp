@@ -2274,6 +2274,10 @@ export function createMarketSymbolEmptyValueObject() {
     maxLeverage: 0,
     tradeViewSymbol: "",
     zignalyId: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
+    contractType: "",
   };
 }
 
