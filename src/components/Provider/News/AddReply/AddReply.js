@@ -9,6 +9,8 @@ import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
+import { navigate as navigateReach } from "@reach/router";
+import { ConfirmDialog } from "../../../Dialogs";
 
 /**
  * @typedef {import('react').MouseEvent} MouseEvent
@@ -42,35 +44,60 @@ const AddReply = ({ postId, replyId, onReplyAdded }) => {
    */
   const keyPress = (e) => {
     if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
       sendReply();
     }
   };
 
   const sendReply = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      postId,
-      ...(replyId ? { replyId } : {}),
-      content: reply,
-    };
-    setLoading(true);
+    if (!storeUserData.userName) {
+      setConfirmConfig((c) => ({ ...c, visible: true }));
+    } else {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        postId,
+        ...(replyId ? { replyId } : {}),
+        content: reply,
+      };
+      setLoading(true);
 
-    tradeApi
-      .addReply(payload)
-      .then((newReply) => {
-        setReply("");
-        onReplyAdded(newReply, replyId);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      tradeApi
+        .addReply(payload)
+        .then((newReply) => {
+          setReply("");
+          onReplyAdded(newReply, replyId);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
+
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig}
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "wall.completeprofile.title",
+    messageTranslationId: "wall.completeprofile.desc",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const navigateProfileSettings = () => {
+    navigateReach("#settings-profile");
   };
 
   return (
     <Box alignItems="center" className="addReply" display="flex">
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={navigateProfileSettings}
+        setConfirmConfig={setConfirmConfig}
+      />
       <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={storeUserData.imageUrl} />
       <OutlinedInput
         disabled={loading}
