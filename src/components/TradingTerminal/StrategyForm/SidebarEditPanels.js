@@ -14,7 +14,7 @@ import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
 
 /**
  * @typedef {Object} SidebarEditPanelsProps
- * @property {MarketSymbol} currentSymbolData
+ * @property {MarketSymbol} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} isReadOnly Flag to disable position update.
  */
@@ -26,36 +26,36 @@ import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
  * @returns {JSX.Element} Strategy form element.
  */
 const SidebarEditPanels = (props) => {
-  const { positionEntity, currentSymbolData, isReadOnly } = props;
+  const { positionEntity, selectedSymbol, isReadOnly } = props;
 
   return (
     <>
       <TakeProfitPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
-        symbolData={currentSymbolData}
+        symbolData={selectedSymbol}
       />
       <DCAPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
-        symbolData={currentSymbolData}
+        symbolData={selectedSymbol}
       />
       <StopLossPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
-        symbolData={currentSymbolData}
+        symbolData={selectedSymbol}
       />
       <TrailingStopPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
-        symbolData={currentSymbolData}
+        symbolData={selectedSymbol}
       />
       {!isReadOnly && (
-        <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        <IncreaseStrategyPanel positionEntity={positionEntity} symbolData={selectedSymbol} />
       )}
       <ReduceOrders isReadOnly={isReadOnly} positionEntity={positionEntity} />
       {!isReadOnly && (
-        <ReduceStrategyPanel positionEntity={positionEntity} symbolData={currentSymbolData} />
+        <ReduceStrategyPanel positionEntity={positionEntity} symbolData={selectedSymbol} />
       )}
     </>
   );

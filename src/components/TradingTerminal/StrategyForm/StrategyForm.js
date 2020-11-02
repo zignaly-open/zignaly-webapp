@@ -8,11 +8,7 @@ import { useDispatch } from "react-redux";
 import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  mapEntryTypeToEnum,
-  mapSideToEnum,
-  createMarketSymbolEmptyValueObject,
-} from "../../../services/tradeApiClient.types";
+import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -22,7 +18,6 @@ import { minToSeconds, hourToSeconds } from "../../../utils/timeConvert";
 import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
-import { matchCurrentSymbol } from "../../../utils/lookup";
 import "./StrategyForm.scss";
 
 /**
@@ -32,17 +27,16 @@ import "./StrategyForm.scss";
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  */
 
 /**
  * @typedef {Object} StrategyFormProps
- * @property {MarketSymbolsCollection} symbolsData
  * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
- * @property {string} selectedSymbol
+ * @property {MarketSymbol} selectedSymbol
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
  */
@@ -60,29 +54,8 @@ const StrategyForm = (props) => {
     selectedSymbol,
     tradingViewWidget,
     positionEntity = null,
-    symbolsData = [],
   } = props;
 
-  const resolveCurrentSymbolData = () => {
-    const symbolDataMatch = symbolsData.find((item) => matchCurrentSymbol(item, selectedSymbol));
-
-    if (positionEntity && isEmpty(symbolDataMatch)) {
-      const symbolData = assign(createMarketSymbolEmptyValueObject(), {
-        id: positionEntity.symbol,
-        base: positionEntity.base,
-        baseId: positionEntity.base,
-        quote: positionEntity.quote,
-        quoteId: positionEntity.quote,
-        limits: {},
-      });
-
-      return symbolData;
-    }
-
-    return symbolDataMatch || createMarketSymbolEmptyValueObject();
-  };
-
-  const currentSymbolData = resolveCurrentSymbolData();
   const isPositionView = isObject(positionEntity);
 
   const { errors, handleSubmit, setValue, reset, register, watch } = useFormContext();
@@ -282,7 +255,7 @@ const StrategyForm = (props) => {
       buyType: mapEntryTypeToEnum(draftPosition.entryStrategy),
       type: mapEntryTypeToEnum(draftPosition.entryStrategy),
       positionSize,
-      positionSizeQuote: currentSymbolData.quote,
+      positionSizeQuote: selectedSymbol.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || lastPrice,
     };
@@ -305,7 +278,7 @@ const StrategyForm = (props) => {
    * @returns {any} Create position payload.
    */
   const composePositionPayload = (draftPosition) => {
-    const { quote, base } = currentSymbolData;
+    const { quote, base } = selectedSymbol;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
     const buyTTL = parseFloat(draftPosition.entryExpiration);
     const sellTTL = parseFloat(draftPosition.autoclose);
@@ -349,7 +322,7 @@ const StrategyForm = (props) => {
    * @returns {UpdatePositionPayload} Update position payload.
    */
   const composeUpdatePositionPayload = (draftPosition) => {
-    const { quote } = currentSymbolData;
+    const { quote } = selectedSymbol;
     const isIncreaseUpdate = draftPosition.positionSize || draftPosition.positionSizePercentage;
     const positionStrategy = isIncreaseUpdate ? composePositionStrategy(draftPosition) : {};
 
@@ -558,12 +531,12 @@ const StrategyForm = (props) => {
         <input name="lastPrice" ref={register} type="hidden" />
         {isPositionView ? (
           <SidebarEditPanels
-            currentSymbolData={currentSymbolData}
             isReadOnly={isReadOnly}
             positionEntity={positionEntity}
+            selectedSymbol={selectedSymbol}
           />
         ) : (
-          <SidebarCreatePanels currentSymbolData={currentSymbolData} />
+          <SidebarCreatePanels selectedSymbol={selectedSymbol} />
         )}
         {!isReadOnly && (
           <CustomButton

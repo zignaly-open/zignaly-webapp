@@ -2211,14 +2211,18 @@ export function coinRayTokenResponseTransform(response) {
  * @property {string} quote Quote currency, i.e. USDT.
  * @property {string} baseId Same as base.
  * @property {string} quoteId Same as quote.
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
  * @property {PricePrecision} precision Symbol required price precision details.
  * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
  * @property {string} coinrayBase Base currency ID adapted to CoinRay.
  * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
- * @property {number} multiplier For bitmex
- * @property {number} maxLeverage Max leverage for symbol (futures)
- * @property {string} tradeViewSymbol TradingView symbol
- * @property {string} zignalyId Symbol used internally
+ * @property {number} multiplier Multiplier to calculate bitmex contract values/PnL.
+ * @property {number} maxLeverage Max leverage (futures).
+ * @property {string} tradeViewSymbol TradingView symbol.
+ * @property {string} zignalyId Symbol used internally.
+ * @property {string} short Short symbol name displayed in Zignaly.
+ * @property {string} contractType Bitmex contract type (inverse, quanto, linear)
  */
 
 /**
@@ -2274,6 +2278,10 @@ export function createMarketSymbolEmptyValueObject() {
     maxLeverage: 125,
     tradeViewSymbol: "",
     zignalyId: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
+    contractType: "",
   };
 }
 

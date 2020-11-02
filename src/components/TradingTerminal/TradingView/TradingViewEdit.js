@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isArray, isEqual, pick } from "lodash";
+import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
@@ -19,15 +19,18 @@ import {
 } from "../../../hooks/useStoreUserSelector";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
-import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiClient.types";
+import {
+  createExchangeConnectionEmptyEntity,
+  createMarketSymbolEmptyValueObject,
+} from "../../../services/tradeApiClient.types";
 
 /**
  * @typedef {any} TVWidget
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
- * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -50,8 +53,19 @@ const TradingViewEdit = (props) => {
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
-  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ null);
-  const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [selectedSymbol, setSelectedSymbol] = useState(null);
+  const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
+  let symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
+  if (positionEntity && !symbolData) {
+    symbolData = assign(createMarketSymbolEmptyValueObject(), {
+      id: positionEntity.symbol,
+      base: positionEntity.base,
+      baseId: positionEntity.base,
+      quote: positionEntity.quote,
+      quoteId: positionEntity.quote,
+      limits: {},
+    });
+  }
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -86,13 +100,11 @@ const TradingViewEdit = (props) => {
     };
 
     // When position is closed avoid get market data and rely on position symbol data.
-    if (positionData.closed) {
-      setMarketData([]);
-    } else {
+    if (!positionData.closed) {
       tradeApi
         .exchangeConnectionMarketDataGet(marketDataPayload)
         .then((data) => {
-          setMarketData(data);
+          setSymbols(data);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -165,7 +177,7 @@ const TradingViewEdit = (props) => {
     methods.setValue("updatedAt", new Date());
   };
 
-  const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !marketData;
+  const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
 
   /**
    * Resolve exchange name from selected exchange.
@@ -199,7 +211,13 @@ const TradingViewEdit = (props) => {
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
-    const symbolSuffix = exchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+    if (!selectedSymbol) return;
+
+    const symbolSuffix =
+      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
+      storeSettings.selectedExchange.exchangeType === "futures"
+        ? "PERP"
+        : "";
     const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
@@ -312,8 +330,7 @@ const TradingViewEdit = (props) => {
                 lastPrice={lastPrice}
                 notifyPositionUpdate={notifyPositionUpdate}
                 positionEntity={positionEntity}
-                selectedSymbol={selectedSymbol}
-                symbolsData={marketData}
+                selectedSymbol={symbolData}
                 tradingViewWidget={tradingViewWidget}
               />
             </>
