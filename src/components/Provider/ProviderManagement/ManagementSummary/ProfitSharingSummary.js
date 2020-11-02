@@ -83,13 +83,12 @@ const ProfitSharingSummary = ({ provider }) => {
           />
 
           <ManagementSummaryCard
-            foot={`BTC ${formatFloat(summary.totalMarginBTC - summary.totalCurrentMarginBTC)}`}
+            foot={`USDT ${formatFloat(summary.totalMarginUSDT - summary.totalCurrentMarginUSDT)}`}
             icon="balance"
-            percentage={`${formatFloat2Dec(summary.abstractPercentage)}%`}
-            quote="USDT"
+            quote="%"
             title={<FormattedMessage id="copyt.management.available" />}
             tooltip={intl.formatMessage({ id: "copyt.management.available.tooltip" })}
-            value={formatFloat2Dec(summary.totalMarginUSDT - summary.totalCurrentMarginUSDT)}
+            value={formatFloat2Dec(summary.abstractPercentage)}
           />
         </Box>
       )}
