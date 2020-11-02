@@ -12,6 +12,8 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { userPilotProviderEnabled } from "../../../../utils/userPilotApi";
+import Modal from "../../../Modal";
+import ConnectExchange from "../../../Modal/ConnectExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -27,11 +29,16 @@ const FollowProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
+  const [connectModal, showConnectModal] = useState(false);
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
 
-  const followProvider = async () => {
-    try {
+  const handleConnectModalClose = () => {
+    showConnectModal(false);
+  };
+
+  const followProvider = () => {
+    if (exchangeConnections.length) {
       setLoader(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -39,25 +46,30 @@ const FollowProviderButton = ({ provider }) => {
         connected: false,
         exchangeInternalId: storeSettings.selectedExchange.internalId,
       };
-      const response = await tradeApi.providerConnect(payload);
-      if (response) {
-        const payload2 = {
-          token: storeSession.tradeApi.accessToken,
-          providerId: provider.id,
-          version: 2,
-        };
-        dispatch(setProvider(payload2));
-        dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
-        setLoader(false);
-      }
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-      setLoader(false);
+      tradeApi
+        .providerConnect(payload)
+        .then(() => {
+          const payload2 = {
+            token: storeSession.tradeApi.accessToken,
+            providerId: provider.id,
+            version: 2,
+          };
+          dispatch(setProvider(payload2));
+          dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoader(false);
+        });
+    } else {
+      showConnectModal(true);
     }
   };
 
   const stopFollowing = async () => {
-    try {
+    if (exchangeConnections.length) {
       setLoader(true);
       const payload = {
         disable: true,
@@ -65,21 +77,26 @@ const FollowProviderButton = ({ provider }) => {
         providerId: provider.id,
         type: "connected",
       };
-      const response = await tradeApi.providerDisable(payload);
-      if (response) {
-        const payload2 = {
-          token: storeSession.tradeApi.accessToken,
-          providerId: provider.id,
-          version: 2,
-        };
-        dispatch(setProvider(payload2));
-        userPilotProviderEnabled();
-        dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
-        setLoader(false);
-      }
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-      setLoader(false);
+      tradeApi
+        .providerDisable(payload)
+        .then(() => {
+          const payload2 = {
+            token: storeSession.tradeApi.accessToken,
+            providerId: provider.id,
+            version: 2,
+          };
+          dispatch(setProvider(payload2));
+          userPilotProviderEnabled();
+          dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoader(false);
+        });
+    } else {
+      showConnectModal(true);
     }
   };
 
@@ -95,6 +112,9 @@ const FollowProviderButton = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
+      <Modal onClose={handleConnectModalClose} size="small" state={connectModal}>
+        <ConnectExchange onClose={handleConnectModalClose} />
+      </Modal>
       {provider.disable ? (
         <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
           <FormattedMessage id="srv.followprovider" />
