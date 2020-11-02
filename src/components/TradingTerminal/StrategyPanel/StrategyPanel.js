@@ -32,7 +32,6 @@ import "./StrategyPanel.scss";
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {Number} maxLeverage
  */
 
 /**
@@ -42,7 +41,7 @@ import "./StrategyPanel.scss";
  * @returns {JSX.Element} Strategy panel element.
  */
 const StrategyPanel = (props) => {
-  const { symbolData, maxLeverage } = props;
+  const { symbolData } = props;
   const { control, errors, register, setValue, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
@@ -291,7 +290,7 @@ const StrategyPanel = (props) => {
             >
               <LeverageForm
                 leverage={parseInt(leverage)}
-                max={maxLeverage}
+                max={symbolData.maxLeverage}
                 min={1}
                 onClose={() => {
                   setModalVisible(false);

@@ -43,7 +43,6 @@ import "./StrategyForm.scss";
  * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {string} selectedSymbol
- * @property {number} maxLeverage Maximum leverage for a symbol.
  * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
  */
@@ -62,7 +61,6 @@ const StrategyForm = (props) => {
     tradingViewWidget,
     positionEntity = null,
     symbolsData = [],
-    maxLeverage,
   } = props;
 
   const resolveCurrentSymbolData = () => {
@@ -565,7 +563,7 @@ const StrategyForm = (props) => {
             positionEntity={positionEntity}
           />
         ) : (
-          <SidebarCreatePanels currentSymbolData={currentSymbolData} maxLeverage={maxLeverage} />
+          <SidebarCreatePanels currentSymbolData={currentSymbolData} />
         )}
         {!isReadOnly && (
           <CustomButton
