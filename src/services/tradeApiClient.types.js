@@ -2207,6 +2207,8 @@ export function coinRayTokenResponseTransform(response) {
  * @property {string} quote Quote currency, i.e. USDT.
  * @property {string} baseId Same as base.
  * @property {string} quoteId Same as quote.
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
  * @property {PricePrecision} precision Symbol required price precision details.
  * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
  * @property {string} coinrayBase Base currency ID adapted to CoinRay.
@@ -2216,8 +2218,7 @@ export function coinRayTokenResponseTransform(response) {
  * @property {string} tradeViewSymbol TradingView symbol.
  * @property {string} zignalyId Symbol used internally.
  * @property {string} short Short symbol name displayed in Zignaly.
- * @property {boolean} inverse Inverse contract type (bitmex)
- * @property {boolean} quanto Quanto contract type (bitmex)
+ * @property {string} contractType Bitmex contract type (inverse, quanto, linear)
  */
 
 /**
