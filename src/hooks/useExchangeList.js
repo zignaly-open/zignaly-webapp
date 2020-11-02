@@ -14,7 +14,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * @returns {Array<ExchangeListEntity>} Exchange list.
  */
 const useExchangeList = (shouldExecute = true) => {
-  const [exchanges, setExchanges] = useState(null);
+  const [exchanges, setExchanges] = useState([]);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
 

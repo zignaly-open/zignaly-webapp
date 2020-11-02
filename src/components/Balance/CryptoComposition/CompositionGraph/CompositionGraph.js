@@ -78,7 +78,7 @@ const CompositionGraph = ({ list, quotes, vertical }) => {
           labels.push(quotes[i]);
         }
       }
-      if (equity.otherPercentage > 0) {
+      if (equity.otherPercentage) {
         values.push(equity.otherPercentage);
 
         labels.push(

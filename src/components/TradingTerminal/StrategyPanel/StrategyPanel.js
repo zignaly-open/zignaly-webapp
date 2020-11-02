@@ -290,7 +290,7 @@ const StrategyPanel = (props) => {
             >
               <LeverageForm
                 leverage={parseInt(leverage)}
-                max={125}
+                max={symbolData.maxLeverage}
                 min={1}
                 onClose={() => {
                   setModalVisible(false);

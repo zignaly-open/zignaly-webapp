@@ -1,4 +1,5 @@
 import { useIntl } from "react-intl";
+import useExchangeList from "./useExchangeList";
 
 /**
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
@@ -11,6 +12,7 @@ import { useIntl } from "react-intl";
  */
 const useExchangesOptions = (allOption) => {
   const intl = useIntl();
+  const data = useExchangeList();
   let exchanges = allOption
     ? [
         {
@@ -21,10 +23,14 @@ const useExchangesOptions = (allOption) => {
     : [];
 
   exchanges = exchanges.concat(
-    ["Binance", "Zignaly", "BitMEX", "KuCoin"].map((label) => ({
-      val: label.toLowerCase(),
-      label,
-    })),
+    data &&
+      data.map(
+        (item) =>
+          item.enabled && {
+            val: item.name.toLowerCase(),
+            label: item.name,
+          },
+      ),
   );
 
   return exchanges;

@@ -19,6 +19,7 @@ import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -48,7 +49,7 @@ const TradingView = () => {
   } = useTradingTerminal();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [marketData, setMarketData] = useState(null);
+  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ null);
   const dispatch = useDispatch();
 
   const getMarketData = async () => {
@@ -199,7 +200,6 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(selectedOption);
     // setTerminalPair(selectedOption);
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&

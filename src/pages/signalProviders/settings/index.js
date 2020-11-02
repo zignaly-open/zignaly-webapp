@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
+import useSelectedExchangeQuotes from "../../../hooks/useSelectedExchangeQuotes";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView";
@@ -23,7 +23,7 @@ const SignalProvidersSettings = () => {
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
   const [settingsView, setSettingsView] = useState(false);
-  const quotes = useQuoteAssets();
+  const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const intl = useIntl();
 
   const loadSettings = () => {

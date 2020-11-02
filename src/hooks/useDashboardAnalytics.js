@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useQuoteAssets from "./useQuoteAssets";
+import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -48,7 +48,7 @@ const useDashboardAnalytics = () => {
 
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
 
-  const quoteAssets = useQuoteAssets();
+  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const allQuotes = Object.keys(quoteAssets);
   const [providerQuotes, setProviderQuotes] = useState([]);
 
