@@ -700,12 +700,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderAllActionButtons(dataIndex) {
     const position = positions[dataIndex];
-    const { providerOwnerUserId, profitSharing } = position;
-    const currentUserId = storeUserData.userId;
-    const isProviderOwner = providerOwnerUserId === currentUserId;
+    const { isCopyTrader, profitSharing } = position;
 
     if (profitSharing) {
-      if (isProviderOwner) {
+      if (isCopyTrader) {
         return composeAllActionButtons(position, confirmActionHandler);
       }
       return null;
