@@ -27,6 +27,7 @@ import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiC
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -49,7 +50,7 @@ const TradingViewEdit = (props) => {
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
-  const [marketData, setMarketData] = useState(null);
+  const [marketData, setMarketData] = useState(/** @type {MarketSymbolsCollection} */ null);
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();

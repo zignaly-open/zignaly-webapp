@@ -128,7 +128,7 @@ const LeverageForm = (props) => {
         step={1}
         value={val}
       />
-      {val >= 25 && (
+      {max > 25 && val >= 25 && (
         <span className="errorText">
           <FormattedMessage id="terminal.leverage.alert" />
         </span>
