@@ -1348,6 +1348,7 @@ error.94: "You need to disconnect your profit-sharing services before removing t
 error.95: "It was not possible to allocated the balance."
 error.96: "You are not allowed to perform this action."
 error.97: "Position reduced to zero."
+error.99: "Username not set."
 error.1003: "Buy Not Place Because TTL"
 error.1005: "Current Price Below Min Price"
 error.1012: "No Minimal Amount"
