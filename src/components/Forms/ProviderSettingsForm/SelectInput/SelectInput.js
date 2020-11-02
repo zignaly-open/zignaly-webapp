@@ -26,7 +26,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  */
 const SelectInput = ({ value1, value2, formMethods, label, name1, name2, tooltip }) => {
   const storeSettings = useStoreSettingsSelector();
-  const [val1, setVal1] = useState(value1.toString().replace(",", "."));
+  const [val1, setVal1] = useState(value1 ? value1.toString().replace(",", ".") : "");
   const { control, register } = formMethods;
 
   /**

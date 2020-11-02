@@ -14,7 +14,7 @@
 
     .actionBar {
       .textPurple {
-        min-width: 100%;
+        width: calc(50% - 20px);
       }
     }
   }

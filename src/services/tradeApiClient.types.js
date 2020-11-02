@@ -722,7 +722,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuoteAsset
  * @property {string} quote
- * @property {string} minNotional
+ * @property {number} minNotional
  */
 
 /**
@@ -919,7 +919,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuotesAssetsGetPayload
  * @property {boolean} ro
- * @property {string} [exchangeInternalId]
+ * @property {string} token
+ * @property {string} [exchangeInternalId] Exchange Internal ID
+ * @property {number} version version of endpoint
+ * @property {string} [exchangeId] Exchange ID
+ * @property {string} [exchangeType] Exchange type
  */
 
 /**
@@ -2271,7 +2275,7 @@ export function createMarketSymbolEmptyValueObject() {
     coinrayQuote: "",
     coinrayBase: "",
     multiplier: 0,
-    maxLeverage: 0,
+    maxLeverage: 125,
     tradeViewSymbol: "",
     zignalyId: "",
     unitsInvestment: "",
@@ -2313,19 +2317,21 @@ function exchangeMarketDataItemTransform(symbolsDataItem) {
  */
 export function quotesResponseTransform(response) {
   if (!isObject(response)) {
-    throw new Error("Response must be an object with different properties.");
+    throw new Error("Response must be object of key value pairs.");
   }
 
-  return Object.entries(response).reduce(
-    (res, [key, val]) => ({
-      ...res,
-      [key]: {
-        quote: val.quote,
-        minNotional: val.minNotional,
-      },
-    }),
-    {},
-  );
+  /** @type {QuoteAssetsDict} */
+  let transformed = {};
+  let obj = {
+    quote: "",
+    minNotional: 0,
+  };
+  Object.values(response).forEach((item) => {
+    obj.quote = item;
+    obj.minNotional = 0;
+    transformed[item] = obj;
+  });
+  return transformed;
 }
 
 /**
