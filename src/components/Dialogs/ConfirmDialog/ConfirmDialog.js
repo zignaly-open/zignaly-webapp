@@ -39,7 +39,6 @@ const ConfirmDialog = (props) => {
   } = props;
 
   const handleClose = () => {
-    console.log("oa");
     setConfirmConfig({
       ...confirmConfig,
       visible: false,
@@ -47,14 +46,11 @@ const ConfirmDialog = (props) => {
   };
 
   const triggerCancelCallback = () => {
-    console.log("triggerCancelCallback");
     handleClose();
     executeCancelCallback();
   };
 
   const triggerActionCallback = () => {
-    console.log("triggerActionCallback");
-
     handleClose();
     executeActionCallback();
   };
