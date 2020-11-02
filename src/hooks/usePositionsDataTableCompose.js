@@ -721,10 +721,31 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderCancelActionButton(dataIndex) {
     const position = positions[dataIndex];
-    const { positionId, closed, isCopyTrader } = position;
+    const { positionId, closed, isCopyTrader, profitSharing } = position;
     const isManualPosition = position.providerId === "1";
     const isProviderOwner =
       !isManualPosition && position.providerOwnerUserId === storeUserData.userId;
+
+    if (profitSharing) {
+      if (isCopyTrader || isProviderOwner) {
+        return (
+          <div className="actions">
+            {!closed && (
+              <button
+                data-action={"cancel"}
+                data-position-id={positionId}
+                onClick={confirmActionHandler}
+                title="cancel"
+                type="button"
+              >
+                <XCircle color={colors.purpleLight} />
+              </button>
+            )}
+          </div>
+        );
+      }
+      return null;
+    }
 
     return (
       <div className="actions">
