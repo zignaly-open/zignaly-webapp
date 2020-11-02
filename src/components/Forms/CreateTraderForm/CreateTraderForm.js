@@ -140,7 +140,7 @@ const CreateTraderForm = () => {
                   >
                     <Box
                       alignItems="center"
-                      className={`iconButton ${
+                      className={`iconButton fee ${
                         selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
                       }`}
                       display="flex"
@@ -166,7 +166,7 @@ const CreateTraderForm = () => {
                 >
                   <Box
                     alignItems="center"
-                    className={`iconButton ${
+                    className={`iconButton fee ${
                       selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
                     }`}
                     display="flex"
@@ -186,16 +186,19 @@ const CreateTraderForm = () => {
               <Typography className="body1 bold exchangeChoose" variant="h3">
                 <FormattedMessage id="accounts.exchange.choose" />
               </Typography>
-              <Box display="flex" flexWrap="wrap">
+              <Box className="exchangeIconBox" display="flex" flexWrap="wrap">
                 {exchanges.map((e) => (
-                  <ExchangeIcon
+                  <Box
                     className={`iconButton ${
                       (exchange && exchange.name) === e.name ? "selected" : ""
                     }`}
-                    exchange={e.name}
                     key={e.id}
-                    onClick={() => setExchange(exchanges.find((ex) => e === ex))}
-                  />
+                  >
+                    <ExchangeIcon
+                      exchange={e.name}
+                      onClick={() => setExchange(exchanges.find((ex) => e === ex))}
+                    />
+                  </Box>
                 ))}
               </Box>
               {step === 1 && (
