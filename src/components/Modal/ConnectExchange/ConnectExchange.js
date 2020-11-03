@@ -4,6 +4,8 @@ import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import "./ConnectExchange.scss";
 import { navigate as navigateReach } from "@reach/router";
+import useExchangeList from "../../../hooks/useExchangeList";
+import { getExchangeNamesCombined } from "../../../utils/helpers";
 
 /**
  * @typedef {Object} ConnectExchangePropTypes
@@ -17,6 +19,7 @@ import { navigate as navigateReach } from "@reach/router";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchange = ({ onClose }) => {
+  const allExchanges = useExchangeList();
   const navigate = () => {
     if (onClose) onClose();
     navigateReach("#exchangeAccounts");
@@ -28,7 +31,10 @@ const ConnectExchange = ({ onClose }) => {
         <FormattedMessage id="accounts.connect" />
       </Typography>
       <Typography variant="body1">
-        <FormattedMessage id="accounts.connect.first" />
+        <FormattedMessage
+          id="accounts.connect.first"
+          values={{ exchanges: getExchangeNamesCombined(allExchanges, "or") }}
+        />
       </Typography>
       <Box className="real" display="flex" flexDirection="column">
         <Typography variant="h4">

@@ -44,6 +44,15 @@ const CreateTraderForm = () => {
   const intl = useIntl();
   let exchanges = useExchangeList();
 
+  const {
+    errors,
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    formState: { isValid },
+  } = useForm({ mode: "onChange" });
+
   if (exchanges) {
     // Only show zignaly exchange for profit sharing
     exchanges = exchanges.filter(
@@ -64,15 +73,14 @@ const CreateTraderForm = () => {
     exchangeId: exchange ? exchange.id : "",
     exchangeType: exchange ? exchange.type[0] : "",
   });
-  const quotes = Object.keys(quoteAssets);
+  const quotes =
+    exchange && exchange.name.toLowerCase() === "bitmex" ? ["BTC"] : Object.keys(quoteAssets);
 
-  const {
-    errors,
-    handleSubmit,
-    control,
-    register,
-    formState: { isValid },
-  } = useForm({ mode: "onChange" });
+  useEffect(() => {
+    if (quotes) {
+      setValue("quote", quotes[0]);
+    }
+  }, [quotes.length]);
 
   /**
    * @typedef {Object} FormData
@@ -236,7 +244,7 @@ const CreateTraderForm = () => {
                 <Box className="inputBox" mr={2}>
                   <Controller
                     control={control}
-                    defaultValue={"USDT"}
+                    defaultValue={quotes[0]}
                     name="quote"
                     render={({ onChange, value }) => (
                       <CustomSelect
