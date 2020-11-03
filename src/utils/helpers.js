@@ -20,7 +20,6 @@ export const getExchangeNamesCombined = (allExchanges, seperator) => {
         names += ` ${seperator} `;
       }
     });
-    return names;
   }
   return names;
 };
