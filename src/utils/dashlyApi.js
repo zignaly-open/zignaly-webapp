@@ -25,7 +25,7 @@ const dashlyApi = () => {
   let dashly = null;
 
   // @ts-ignore
-  if (typeof window !== "undefined" && window.dashly) {
+  if (typeof window !== "undefined" && window.dashly && process.env.NODE_ENV === "production") {
     // @ts-ignore
     dashly = window.dashly;
     dashly.connect("2894-173f0edb1738610ede1cd7296e4");
