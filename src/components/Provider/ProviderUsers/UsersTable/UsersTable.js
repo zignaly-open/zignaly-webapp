@@ -223,7 +223,7 @@ const UsersTable = ({
    * @param {Array<MUIDataTableColumn>} columnList Table columns list.
    * @param {string} columnId ID of the column to remove.
    *
-   * @returns {Array<MUIDataTableColumn>} Table columns list without removed column.
+   * @returns {Void} .
    */
   function excludeDataTableColumn(columnList, columnId) {
     const columnIndex = findIndex(columnList, {
@@ -236,16 +236,12 @@ const UsersTable = ({
         viewColumns: false,
         display: "excluded",
       };
-
-      return columns;
     }
-
-    return columns;
   }
 
   if (provider.profitSharing) {
     excludedColumns.forEach((item) => {
-      columns = excludeDataTableColumn(columns, item);
+      excludeDataTableColumn(columns, item);
     });
   }
 
