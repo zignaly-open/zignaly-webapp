@@ -35,7 +35,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
-  const providerService = watch("providerService");
   const providerAllocatedBalance = watch("providerPayableBalance");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
   const { formatMessage } = useIntl();
