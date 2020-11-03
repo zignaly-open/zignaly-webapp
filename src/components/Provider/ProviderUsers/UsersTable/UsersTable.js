@@ -220,12 +220,11 @@ const UsersTable = ({
   /**
    * Exclude data table column display.
    *
-   * @param {Array<MUIDataTableColumn>} columnList Data table structure.
+   * @param {Array<MUIDataTableColumn>} columnList Table columns list.
    * @param {string} columnId ID of the column to remove.
    *
-   * @returns {Array<MUIDataTableColumn>} Data table without removed column.
+   * @returns {Array<MUIDataTableColumn>} Table columns list without removed column.
    */
-
   function excludeDataTableColumn(columnList, columnId) {
     const columnIndex = findIndex(columnList, {
       label: columnId,
