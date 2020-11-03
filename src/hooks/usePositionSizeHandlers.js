@@ -11,6 +11,7 @@ import { useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionSizeHandlersHook
  * @property {React.ChangeEventHandler} positionSizeChange
+ * @property {React.ChangeEventHandler} positionSizePercentageChange
  * @property {React.ChangeEventHandler} priceChange
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
@@ -34,6 +35,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
+  const providerAllocatedBalance = watch("providerPayableBalance");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
   const { formatMessage } = useIntl();
 
@@ -148,6 +150,16 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     });
   }, [errors, currentPrice, getValues, setValue, trigger, leverage]);
 
+  const positionSizePercentageChange = useCallback(() => {
+    if (errors.positionSizePercentage) return;
+
+    const draftPosition = getValues();
+    const positionSizePercentage = parseFloat(draftPosition.positionSizePercentage);
+
+    const positionSize = positionSizePercentage * providerAllocatedBalance;
+    setValue("positionSizeAllocated", positionSize.toFixed(8));
+  }, [errors, getValues, setValue, providerAllocatedBalance]);
+
   const unitsChange = () => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units);
@@ -182,6 +194,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
   return {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,
