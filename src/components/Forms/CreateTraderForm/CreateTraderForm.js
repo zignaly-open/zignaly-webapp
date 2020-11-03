@@ -64,7 +64,8 @@ const CreateTraderForm = () => {
     exchangeId: exchange ? exchange.id : "",
     exchangeType: exchange ? exchange.type[0] : "",
   });
-  const quotes = Object.keys(quoteAssets);
+  const quotes =
+    exchange && exchange.name.toLowerCase() === "bitmex" ? ["BTC"] : Object.keys(quoteAssets);
 
   const {
     errors,
@@ -236,7 +237,7 @@ const CreateTraderForm = () => {
                 <Box className="inputBox" mr={2}>
                   <Controller
                     control={control}
-                    defaultValue={"USDT"}
+                    defaultValue={quotes[0]}
                     name="quote"
                     render={({ onChange, value }) => (
                       <CustomSelect
