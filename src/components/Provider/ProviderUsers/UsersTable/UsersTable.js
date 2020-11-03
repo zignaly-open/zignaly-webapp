@@ -15,11 +15,14 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { findIndex } from "lodash";
 
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersEntity} ProviderFollowersEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../hooks/usePositionsDataTableCompose").DataTableDataColumns} DataTableDataColumns
  */
 
 /**
@@ -27,6 +30,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
+ * @property {DefaultProviderGetObject} provider Provider entity.
  * @property {string} persistKey Key to save display columns settings.
  * @property {Array<ProviderFollowersEntity>} list
  * @property {Function} loadData
@@ -38,6 +42,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
  */
 const UsersTable = ({
   title,
+  provider,
   persistKey,
   list,
   loadData,
@@ -64,6 +69,14 @@ const UsersTable = ({
   const [actionType, setActionType] = useState("cancel");
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
   const dispatch = useDispatch();
+  const excludedColumns = [
+    "col.users.suspended",
+    "col.users.code",
+    "col.users.lasttransaction",
+    "col.users.canceldate",
+    "col.users.modify",
+    "col.users.cancel",
+  ];
 
   const toggleFilters = () => {
     setFiltersVisibility(!filtersVisibility);
@@ -203,6 +216,39 @@ const UsersTable = ({
       },
     },
   ];
+
+  /**
+   * Exclude data table column display.
+   *
+   * @param {Array<MUIDataTableColumn>} columnList Data table structure.
+   * @param {string} columnId ID of the column to remove.
+   *
+   * @returns {Array<MUIDataTableColumn>} Data table without removed column.
+   */
+
+  function excludeDataTableColumn(columnList, columnId) {
+    const columnIndex = findIndex(columnList, {
+      label: columnId,
+    });
+
+    // Remove column when exists.
+    if (columnIndex > -1) {
+      columns[columnIndex].options = {
+        viewColumns: false,
+        display: "excluded",
+      };
+
+      return columns;
+    }
+
+    return columns;
+  }
+
+  if (provider.profitSharing) {
+    excludedColumns.forEach((item) => {
+      columns = excludeDataTableColumn(columns, item);
+    });
+  }
 
   /**
    * Function to check if user is suspended.

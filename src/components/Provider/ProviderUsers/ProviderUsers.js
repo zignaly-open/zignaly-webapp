@@ -1,12 +1,12 @@
 import React from "react";
 import { CircularProgress } from "@material-ui/core";
-import UsersTable from "../UsersTable";
-import useProviderUsers from "../../../../hooks/useProviderUsers";
-import UserFilters from "../UserFilters";
+import UsersTable from "./UsersTable";
+import useProviderUsers from "../../../hooks/useProviderUsers";
+import UserFilters from "./UserFilters";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
  * About us compoennt for CT profile.
@@ -51,6 +51,7 @@ const ProviderUsers = ({ provider }) => {
           list={list}
           loadData={loadFollowersList}
           persistKey="copytProfileUsers"
+          provider={provider}
           setFiltersVisibility={setFiltersVisibility}
           title={embedFilters()}
         />
