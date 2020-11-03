@@ -99,12 +99,19 @@ const ConnectExchangeViewHead = ({ onClose }) => {
                 </CustomButton>
               )
             )}
+            {!isMobile && tempMessage && (
+              <Typography className="tempMessage" variant="body1">
+                {tempMessage}
+              </Typography>
+            )}
             {storeUser.exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
-            <Typography className="tempMessage" variant="body1">
-              {tempMessage}
-            </Typography>
+            {isMobile && tempMessage && (
+              <Typography className="tempMessage" variant="body1">
+                {tempMessage}
+              </Typography>
+            )}
           </>
         }
         titleBar={

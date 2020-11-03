@@ -20,7 +20,7 @@ const GlobalModalHead = ({ actionBar, titleBar }) => {
         className="actionBar"
         display="flex"
         flexDirection="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
       >
         {actionBar}
       </Box>
