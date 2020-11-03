@@ -1,13 +1,11 @@
 import React from "react";
 import "./DashboardLayout.scss";
 import { getDisplayName } from "../../utils";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
-import { FormattedMessage } from "react-intl";
-import ExchangeIcon from "../../components/ExchangeIcon";
 import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
-import { navigate as navigateReach } from "@reach/router";
+import NoExchanges from "../../components/Dashboard/NoExchanges";
 
 /**
  * HOC wrap component with dashboard layout.
@@ -31,10 +29,6 @@ const withDashboardLayout = (Component) => {
    */
   const WrapperComponent = (props) => {
     const user = useStoreUserSelector();
-
-    const handleClickEvent = () => {
-      navigateReach("#exchangeAccounts");
-    };
 
     return (
       <Box
@@ -65,37 +59,7 @@ const withDashboardLayout = (Component) => {
             </Box>
           </>
         ) : (
-          <Box
-            className="noExchangeBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="flex-start"
-          >
-            <Typography variant="h1">
-              <FormattedMessage id="dashboard" />
-            </Typography>
-            <span className="title">
-              <FormattedMessage id="dashboard.connectexchange.preText" />
-              <b onClick={handleClickEvent}>
-                <FormattedMessage id="dashboard.connectexchange.bold.title" />
-              </b>
-              <FormattedMessage id="dashboard.connectexchange.postText" />
-            </span>
-            <span className="subtitle">
-              <FormattedMessage id="dashboard.connectexchange.subtitle" />
-              <span>
-                <FormattedMessage id="exchange.binance" />
-              </span>
-              or
-              <span>
-                <FormattedMessage id="exchange.kucoin" />
-              </span>
-            </span>
-            <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <ExchangeIcon exchange="binance" size="xlarge" />
-              <ExchangeIcon exchange="kucoin" size="xlarge" />
-            </Box>
-          </Box>
+          <NoExchanges />
         )}
       </Box>
     );

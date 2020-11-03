@@ -5,13 +5,17 @@ import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
 import { Typography } from "@material-ui/core";
 import ModalPathContext from "../../ModalPathContext";
+import useExchangeList from "../../../../hooks/useExchangeList";
+import { getExchangeNamesCombined } from "../../../../utils/helpers";
 
 /**
  * Displays buttons to connect or create real exchange account.
  * @returns {JSX.Element} Component JSX.
  */
 const NoRealAccount = () => {
+  const allExchanges = useExchangeList();
   const { navigateToPath } = useContext(ModalPathContext);
+
   return (
     <Box className="noRealAccount">
       <Box alignItems="center" display="flex" flexDirection="column">
@@ -19,7 +23,10 @@ const NoRealAccount = () => {
           <FormattedMessage id="accounts.connect" />
         </Typography>
         <Typography className="body1 connectDesc" variant="h4">
-          <FormattedMessage id="accounts.connect.first" />
+          <FormattedMessage
+            id="accounts.connect.first"
+            values={{ exchanges: getExchangeNamesCombined(allExchanges, "or") }}
+          />
         </Typography>
       </Box>
       <Box
@@ -52,9 +59,7 @@ const NoRealAccount = () => {
           >
             <FormattedMessage id="accounts.connect.existing" />
           </CustomButton>
-          <Box className="exchangeSubtitle">
-            <FormattedMessage id="accounts.exchanges" />
-          </Box>
+          <Box className="exchangeSubtitle">{getExchangeNamesCombined(allExchanges, "or")}</Box>
         </Box>
         <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">

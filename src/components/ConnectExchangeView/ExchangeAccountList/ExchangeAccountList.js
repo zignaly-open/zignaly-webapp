@@ -12,6 +12,7 @@ import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import LazyLoad from "react-lazyload";
 import useExchangeList from "../../../hooks/useExchangeList";
+import { getExchangeNamesCombined } from "../../../utils/helpers";
 
 /**
  * @typedef {Object} DefaultProps
@@ -56,21 +57,6 @@ const ExchangeAccountList = ({ demo }) => {
     resetToPath(id);
   };
 
-  const getExchangeNames = () => {
-    let names = "";
-    if (allExchanges) {
-      const list = allExchanges.filter((e) => e.enabled && e.name.toLowerCase() !== "zignaly");
-      list.forEach((item, index) => {
-        names += `${item.name}`;
-        if (index !== list.length - 1) {
-          names += " or ";
-        }
-      });
-      return names;
-    }
-    return names;
-  };
-
   return (
     <Box className="exchangeAccountList">
       <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
@@ -112,7 +98,7 @@ const ExchangeAccountList = ({ demo }) => {
                 </CustomButton>
                 <Box className="exchangeSubtitle">
                   {/* <FormattedMessage id="accounts.exchanges" /> */}
-                  {getExchangeNames()}
+                  {getExchangeNamesCombined(allExchanges, "or")}
                 </Box>
               </Box>
             </Box>
