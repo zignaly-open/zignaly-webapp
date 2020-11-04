@@ -1,0 +1,246 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="traderCard"
+      >
+        <div
+          class="traderCardHeader"
+        >
+          <div
+            class="lazyload-wrapper"
+          >
+            <img
+              class="providerLogo"
+              height="40px"
+              src="test-file-stub"
+              title="Darkcryptolord"
+              width="40px"
+            />
+          </div>
+          <div
+            class="traderCardHeaderTitleBox"
+          >
+            <div
+              class="nameBox"
+            >
+              <a
+                class="name"
+                href="/copyTraders/5edf6165fc869626686e8657"
+              >
+                <h4
+                  class="MuiTypography-root MuiTypography-h4"
+                >
+                  Darkcryptolord
+                </h4>
+              </a>
+              <div
+                class="commissionBox"
+              >
+                <h4
+                  class="MuiTypography-root MuiTypography-h4"
+                >
+                  <span>
+                    50
+                    $/mo
+                  </span>
+                </h4>
+                <h6
+                  class="MuiTypography-root price MuiTypography-subtitle1"
+                >
+                  Price
+                </h6>
+              </div>
+            </div>
+            <div
+              class="tradesInfoBox"
+            >
+              <span
+                class="MuiTypography-root tradeType MuiTypography-caption"
+              >
+                Trades 
+                <b>
+                  BTC
+                </b>
+                 in 
+                <b>
+                  spot
+                </b>
+                 on
+              </span>
+              <img
+                alt="binance"
+                class="exchangeIcon binance xsmall "
+                src="test-file-stub"
+                title="binance"
+              />
+              <img
+                alt="zignaly"
+                class="exchangeIcon zignaly xsmall "
+                src="test-file-stub"
+                title="zignaly"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="lazyload-wrapper"
+        >
+          <div
+            class="lazyload-placeholder"
+            style="height: 310px;"
+          />
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="traderCard"
+    >
+      <div
+        class="traderCardHeader"
+      >
+        <div
+          class="lazyload-wrapper"
+        >
+          <img
+            class="providerLogo"
+            height="40px"
+            src="test-file-stub"
+            title="Darkcryptolord"
+            width="40px"
+          />
+        </div>
+        <div
+          class="traderCardHeaderTitleBox"
+        >
+          <div
+            class="nameBox"
+          >
+            <a
+              class="name"
+              href="/copyTraders/5edf6165fc869626686e8657"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4"
+              >
+                Darkcryptolord
+              </h4>
+            </a>
+            <div
+              class="commissionBox"
+            >
+              <h4
+                class="MuiTypography-root MuiTypography-h4"
+              >
+                <span>
+                  50
+                  $/mo
+                </span>
+              </h4>
+              <h6
+                class="MuiTypography-root price MuiTypography-subtitle1"
+              >
+                Price
+              </h6>
+            </div>
+          </div>
+          <div
+            class="tradesInfoBox"
+          >
+            <span
+              class="MuiTypography-root tradeType MuiTypography-caption"
+            >
+              Trades 
+              <b>
+                BTC
+              </b>
+               in 
+              <b>
+                spot
+              </b>
+               on
+            </span>
+            <img
+              alt="binance"
+              class="exchangeIcon binance xsmall "
+              src="test-file-stub"
+              title="binance"
+            />
+            <img
+              alt="zignaly"
+              class="exchangeIcon zignaly xsmall "
+              src="test-file-stub"
+              title="zignaly"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="lazyload-wrapper"
+      >
+        <div
+          class="lazyload-placeholder"
+          style="height: 310px;"
+        />
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

@@ -6,6 +6,7 @@ require("dotenv").config({
 module.exports = {
   transform: {
     "^.+\\.jsx?$": "<rootDir>/jest-preprocess.js",
+    ".*\\.(yml)$": "yaml-jest",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.([tj]sx?)$",
   moduleNameMapper: {
@@ -20,4 +21,10 @@ module.exports = {
     __PATH_PREFIX__: "",
   },
   setupFiles: ["<rootDir>/loadershim.js", "<rootDir>/jest.setup.js"],
+  moduleDirectories: [
+    "node_modules",
+    // add the directory with the test-utils.js file, for example:
+    "__tests__/utils/", // a utility folder
+    __dirname, // the root directory
+  ],
 };
