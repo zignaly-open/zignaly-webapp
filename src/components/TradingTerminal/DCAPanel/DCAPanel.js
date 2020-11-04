@@ -389,17 +389,21 @@ const DCAPanel = (props) => {
               className="outlineInput"
               disabled={fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]}
               error={!!errors[composeTargetPropertyName("rebuyPercentage", targetId)]}
-              inputRef={register({
-                validate: {
-                  positive: (value) =>
-                    value > 0 ||
-                    formatMessage({
-                      id: "terminal.dca.valid.unitspercentage",
-                    }),
-                  limit: () => validateUnits(targetId),
-                  cost: () => validateUnitCostLimits(targetId),
-                },
-              })}
+              inputRef={register(
+                fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
+                  ? null
+                  : {
+                      validate: {
+                        positive: (value) =>
+                          value > 0 ||
+                          formatMessage({
+                            id: "terminal.dca.valid.unitspercentage",
+                          }),
+                        limit: () => validateUnits(targetId),
+                        cost: () => validateUnitCostLimits(targetId),
+                      },
+                    },
+              )}
               name={composeTargetPropertyName("rebuyPercentage", targetId)}
             />
             <div className="currencyBox">%</div>

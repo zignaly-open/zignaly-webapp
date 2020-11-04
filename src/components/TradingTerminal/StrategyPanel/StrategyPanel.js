@@ -58,6 +58,7 @@ const StrategyPanel = (props) => {
     unitsChange,
     validatePositionSize,
     validateUnits,
+    positionSizePercentageChange,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -65,7 +66,6 @@ const StrategyPanel = (props) => {
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
-  const providerAllocatedBalance = watch("providerPayableBalance");
   const providerConsumedBalance = watch("providerConsumedBalance");
   const providerConsumedBalancePercentage = watch("providerConsumedBalancePercentage");
   const isCopyProvider = providerService && providerService !== "1";
@@ -170,7 +170,7 @@ const StrategyPanel = (props) => {
                 onChange={realInvestmentChange}
                 placeholder={"0"}
               />
-              <div className="currencyBox">{symbolData.quote}</div>
+              <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
             <FormHelperText>
               <FormattedMessage id="terminal.available" />{" "}
@@ -200,7 +200,7 @@ const StrategyPanel = (props) => {
                 onChange={positionSizeChange}
                 placeholder={"0"}
               />
-              <div className="currencyBox">{symbolData.quote}</div>
+              <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
             <FormHelperText>
               <FormattedMessage id="terminal.available" />{" "}
@@ -221,24 +221,35 @@ const StrategyPanel = (props) => {
               descriptionId="terminal.position.sizepercentage.help"
               labelId="terminal.position.sizepercentage"
             />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                error={!!errors.positionSizePercentage}
-                inputRef={register({
-                  required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                  validate: (value) =>
-                    (value > 0 && value <= 100) ||
-                    formatMessage({ id: "terminal.positionsize.valid.percentage" }),
-                })}
-                name="positionSizePercentage"
-                placeholder={"0"}
-              />
-              <div className="currencyBox">%</div>
+            <Box className="positionSizePercentage" display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row">
+                <OutlinedInput
+                  className="outlineInput"
+                  error={!!errors.positionSizePercentage}
+                  inputRef={register({
+                    required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
+                    validate: (value) =>
+                      (value > 0 && value <= 100) ||
+                      formatMessage({ id: "terminal.positionsize.valid.percentage" }),
+                  })}
+                  name="positionSizePercentage"
+                  onChange={positionSizePercentageChange}
+                  placeholder={"0"}
+                />
+                <div className="currencyBox">%</div>
+              </Box>
+              <Box display="flex" flexDirection="row">
+                <OutlinedInput
+                  className="outlineInput"
+                  inputRef={register}
+                  name="positionSizeAllocated"
+                  placeholder={"0"}
+                  readOnly={true}
+                />
+                <div className="currencyBox">{symbolData.unitsInvestment}</div>
+              </Box>
             </Box>
             <FormHelperText>
-              <FormattedMessage id="terminal.provider.allocated" />{" "}
-              <span>{formatPrice(providerAllocatedBalance)}, </span>
               <FormattedMessage id="terminal.provider.consumed" />{" "}
               <span>{formatPrice(providerConsumedBalance)}, </span>
               <FormattedMessage id="terminal.provider.available" />{" "}
@@ -262,7 +273,7 @@ const StrategyPanel = (props) => {
                 onChange={unitsChange}
                 placeholder={"0"}
               />
-              <div className="currencyBox">{symbolData.base}</div>
+              <div className="currencyBox">{symbolData.unitsAmount}</div>
             </Box>
             <FormHelperText>
               <FormattedMessage id="terminal.available" />{" "}
@@ -290,7 +301,7 @@ const StrategyPanel = (props) => {
             >
               <LeverageForm
                 leverage={parseInt(leverage)}
-                max={125}
+                max={symbolData.maxLeverage}
                 min={1}
                 onClose={() => {
                   setModalVisible(false);

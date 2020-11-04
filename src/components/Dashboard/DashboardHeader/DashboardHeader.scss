@@ -17,7 +17,7 @@
       margin: 8px 0 0 16px;
       text-transform: capitalize;
 
-      span {
+      .tag {
         margin-left: 5px;
       }
 
@@ -41,5 +41,13 @@
 @include media("<=sm") {
   .dashboardHeader {
     overflow: scroll;
+
+    .titleBox {
+      flex-wrap: wrap;
+
+      .exchangeTitle {
+        margin: 8px 0 0;
+      }
+    }
   }
 }

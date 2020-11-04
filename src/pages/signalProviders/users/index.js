@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
-import ProviderUsers from "../../../components/Provider/Users/ProviderUsers";
+import ProviderUsers from "../../../components/Provider/ProviderUsers";
 
 const SignalProvidersUsers = () => {
   const storeViews = useStoreViewsSelector();

@@ -18,6 +18,7 @@ import { Typography } from "@material-ui/core";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Box, CircularProgress } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
+import { getUserExchanges } from "../../../store/actions/user";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -126,6 +127,7 @@ const ExchangeAccountSettings = () => {
     return tradeApi
       .exchangeUpdate(payload)
       .then(() => {
+        dispatch(getUserExchanges({ token: storeSession.tradeApi.accessToken }));
         setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
         return true;
       })

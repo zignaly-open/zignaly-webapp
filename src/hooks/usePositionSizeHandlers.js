@@ -11,6 +11,7 @@ import { useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionSizeHandlersHook
  * @property {React.ChangeEventHandler} positionSizeChange
+ * @property {React.ChangeEventHandler} positionSizePercentageChange
  * @property {React.ChangeEventHandler} priceChange
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
@@ -28,12 +29,13 @@ import { useIntl } from "react-intl";
  * @returns {PositionSizeHandlersHook} Position handlers hook object.
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
-  const { limits } = selectedSymbol;
+  const { limits, contractType } = selectedSymbol;
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
   const lastPrice = watch("lastPrice");
   const strategyPrice = watch("price");
+  const providerAllocatedBalance = watch("providerPayableBalance");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
   const { formatMessage } = useIntl();
 
@@ -45,13 +47,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    */
   function validatePositionSize(positionSize) {
     const value = parseFloat(positionSize);
+    const limitsCost = contractType === "inverse" ? limits.amount : limits.cost;
 
-    if (limits.cost.min && value < limits.cost.min) {
-      return formatMessage({ id: "terminal.positionsize.limit.min" }, { value: limits.cost.min });
+    if (limitsCost.min && value < limitsCost.min) {
+      return formatMessage({ id: "terminal.positionsize.limit.min" }, { value: limitsCost.min });
     }
 
-    if (limits.cost.max && value > limits.cost.max) {
-      return formatMessage({ id: "terminal.positionsize.limit.max" }, { value: limits.cost.max });
+    if (limitsCost.max && value > limitsCost.max) {
+      return formatMessage({ id: "terminal.positionsize.limit.max" }, { value: limitsCost.max });
     }
 
     if (!(value > 0)) {
@@ -69,15 +72,16 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    */
   function validateUnits(units) {
     const value = parseFloat(units);
+    const limitsAmount = contractType === "inverse" ? limits.cost : limits.amount;
 
-    if (limits.amount.min && value < limits.amount.min) {
+    if (limitsAmount.min && value < limitsAmount.min) {
       return formatMessage(
         { id: "terminal.positionunits.limit.min" },
         { value: limits.amount.min },
       );
     }
 
-    if (limits.amount.max && value > limits.amount.max) {
+    if (limitsAmount.max && value > limitsAmount.max) {
       return formatMessage(
         { id: "terminal.positionunits.limit.max" },
         { value: limits.amount.max },
@@ -146,12 +150,26 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     });
   }, [errors, currentPrice, getValues, setValue, trigger, leverage]);
 
+  const positionSizePercentageChange = useCallback(() => {
+    if (errors.positionSizePercentage) return;
+
+    const draftPosition = getValues();
+    const positionSizePercentage = parseFloat(draftPosition.positionSizePercentage);
+
+    const positionSize = positionSizePercentage * providerAllocatedBalance;
+    setValue("positionSizeAllocated", positionSize.toFixed(8));
+  }, [errors, getValues, setValue, providerAllocatedBalance]);
+
   const unitsChange = () => {
     const draftPosition = getValues();
     const units = parseFloat(draftPosition.units);
     if (isNaN(units)) return;
 
-    const positionSize = units * currentPrice;
+    let positionSize = units * currentPrice * selectedSymbol.multiplier;
+    if (selectedSymbol.contractType === "inverse") {
+      positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+    }
+
     setValue("positionSize", positionSize.toFixed(8));
     trigger("positionSize").then((isValid) => {
       if (isValid) {
@@ -176,6 +194,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
   return {
     positionSizeChange,
+    positionSizePercentageChange,
     priceChange,
     realInvestmentChange,
     unitsChange,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import useQuoteAssets from "./useQuoteAssets";
+import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
@@ -88,7 +88,7 @@ const useProvidersList = (options) => {
   const storeFilters = storeSettings.filters[page] || {};
 
   // Get quotes list unless connected providers only which don't need filters
-  const quoteAssets = useQuoteAssets(!connectedOnly);
+  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const quotes = [
     {
       val: "ALL",
@@ -129,6 +129,7 @@ const useProvidersList = (options) => {
         exchangeType: "ALL",
       }),
       fromUser: "ALL",
+      profitSharing: false,
     }),
   };
 
@@ -239,7 +240,8 @@ const useProvidersList = (options) => {
         (!filters.exchangeType ||
           filters.exchangeType === "ALL" ||
           p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser) &&
+        (!filters.profitSharing || p.profitSharing),
     );
     sortProviders(matches);
   };

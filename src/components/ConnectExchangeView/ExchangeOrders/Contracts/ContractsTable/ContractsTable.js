@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./ContractsTable.scss";
 import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../../Table";
@@ -8,7 +8,6 @@ import { ConfirmDialog } from "../../../../Dialogs";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
-import ModalPathContext from "../../../ModalPathContext";
 import { showErrorAlert } from "../../../../../store/actions/ui";
 import { Delete } from "react-feather";
 import { FormattedMessage } from "react-intl";
@@ -19,6 +18,8 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
@@ -29,17 +30,16 @@ import { FormattedMessage } from "react-intl";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
+ * @property {string} persistKey Table title.
  * @property {Array<ExchangeContractsObject>} list
  * @property {Function} loadData
+ * @property {ExchangeConnectionEntity} selectedAccount
+ * @property {DefaultProviderGetObject} [provider]
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ContractsTable = ({ title, list, loadData }) => {
-  const tablePersistsKey = "contractsTable";
-  const {
-    pathParams: { selectedAccount },
-  } = useContext(ModalPathContext);
+const ContractsTable = ({ title, list, loadData, selectedAccount, provider, persistKey }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState("");
@@ -83,6 +83,7 @@ const ContractsTable = ({ title, list, loadData }) => {
       exchangeInternalId: selectedAccount.internalId,
       symbol: contract.symbol,
       amount: contract.amount.toString(),
+      ...(provider && { providerId: provider.id }),
     };
 
     tradeApi
@@ -124,7 +125,7 @@ const ContractsTable = ({ title, list, loadData }) => {
     },
     {
       name: "symbol",
-      label: "col.orders.symbol",
+      label: "col.pair",
     },
     {
       name: "amount",
@@ -194,7 +195,7 @@ const ContractsTable = ({ title, list, loadData }) => {
           executeActionCallback={cancelContract}
           setConfirmConfig={setConfirmConfig}
         />
-        <Table columns={columns} data={list} persistKey={tablePersistsKey} title={title} />
+        <Table columns={columns} data={list} persistKey={persistKey} title={title} />
       </Box>
     </>
   );

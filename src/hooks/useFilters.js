@@ -41,7 +41,7 @@ const useFilters = (
   // eslint-disable-next-line max-params
 ) => {
   /**
-   * Initial filters values using the saved values or falling back to default
+   * Initial filters values using the saved values or falling back to default if not in options values
    * @returns {Filter} filters
    */
   const initialValues = () => {
@@ -54,9 +54,11 @@ const useFilters = (
       if (storeValues && storeValues[key]) {
         // Check that saved value is of correct type
         const typeCorrect = typeof storeValues[key] === typeof defaultValues[key];
+        // Check if available options are loaded
+        const optionsReady = Boolean(optionsFilters[key] && optionsFilters[key].length);
         // Check that saved value exists in options
         const valueCorrect =
-          !optionsFilters[key] ||
+          !optionsReady ||
           optionsFilters[key].find((o) => extractVal(o) === extractVal(storeValues[key]));
         if (typeCorrect && valueCorrect) {
           values[key] = storeValues[key];

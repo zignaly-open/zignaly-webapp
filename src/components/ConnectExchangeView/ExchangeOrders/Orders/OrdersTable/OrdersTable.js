@@ -19,6 +19,7 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -30,15 +31,16 @@ import { FormattedMessage } from "react-intl";
  *
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
+ * @property {string} persistKey Table title.
  * @property {Array<ExchangeOpenOrdersObject>} list
  * @property {ExchangeConnectionEntity} selectedAccount
+ * @property {DefaultProviderGetObject} [provider]
  * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
-  const tablePersistsKey = "ordersTable";
+const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persistKey }) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("");
@@ -87,7 +89,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
     },
     {
       name: "symbol",
-      label: "col.orders.symbol",
+      label: "col.pair",
     },
     {
       name: "amount",
@@ -117,7 +119,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
       label: "col.orders.datetime",
     },
     {
-      name: "orderId",
+      name: "id",
       label: "col.close",
       options: {
         customBodyRender: (val) => {
@@ -144,13 +146,14 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
    */
   const confirmCancel = (id) => {
     setOrder(id);
+    const data = list.find((item) => item.id === id);
 
     setConfirmConfig({
       titleTranslationId: "confirm.ordercancel.title",
       messageTranslationId: "confirm.ordercancel.message",
       visible: true,
       values: {
-        order: <b>{id}</b>,
+        order: <b>{data ? data.orderId : "Null"}</b>,
       },
     });
   };
@@ -162,14 +165,16 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
    */
   const executeAction = () => {
     setLoading(true);
-    const found = list.find((item) => item.orderId === order);
+    const found = list.find((item) => item.id === order);
+    const payload = {
+      orderId: found.orderId,
+      token: storeSession.tradeApi.accessToken,
+      symbol: found.symbol,
+      exchangeInternalId: selectedAccount.internalId,
+      ...(provider && { providerId: provider.id }),
+    };
     tradeApi
-      .cancelExchangeOrder({
-        orderId: found.orderId,
-        token: storeSession.tradeApi.accessToken,
-        symbol: found.symbol,
-        exchangeInternalId: selectedAccount.internalId,
-      })
+      .cancelExchangeOrder(payload)
       .then(() => {
         dispatch(showSuccessAlert("orders.alert.title", "orders.alert.body"));
         loadData();
@@ -184,7 +189,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
    */
   const options = {
     sortOrder: {
-      name: "col.orders.datetime",
+      name: "datetimeReadable",
       direction: "desc",
     },
   };
@@ -201,7 +206,7 @@ const OrdersTable = ({ title, list, selectedAccount, loadData }) => {
           columns={columns}
           data={list}
           options={options}
-          persistKey={tablePersistsKey}
+          persistKey={persistKey}
           title={title}
         />
       </Box>

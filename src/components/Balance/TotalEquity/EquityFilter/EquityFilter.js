@@ -5,13 +5,13 @@ import CustomSelect from "../../../CustomSelect";
 import { useIntl } from "react-intl";
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").UserEquityEntity} UserEquityEntity
+ * @typedef {import("../TotalEquityGraph/TotalEquityGraph").EquityChartData} EquityChartData
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserEquityEntity>} list
+ * @property {Array<EquityChartData>} list
  * @property {Function} onChange
  */
 
@@ -51,17 +51,16 @@ const EquityFilter = (props) => {
   /**
    * Filter Daily balance data
    *
-   * @param {Number} value
-   * @returns {Array<UserEquityEntity>}
+   * @param {Number} value Filter value.
+   * @returns {Array<EquityChartData>} Filtered data.
    */
-
   const filterData = (value) => {
     if (value === 0) {
       return list;
     }
     let date = new Date();
     date.setDate(date.getDate() - value);
-    let newList = [...list].filter((item) => {
+    let newList = list.filter((item) => {
       return new Date(item.date).getTime() > new Date(date).getTime();
     });
     return newList;

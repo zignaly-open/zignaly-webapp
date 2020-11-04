@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
+import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
@@ -13,7 +14,7 @@ import tradeApi from "../services/tradeApiClient";
  * @returns {UserBalanceEntity} Balance.
  */
 const useBalance = (internalId) => {
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
 
   const storeSession = useStoreSessionSelector();
 

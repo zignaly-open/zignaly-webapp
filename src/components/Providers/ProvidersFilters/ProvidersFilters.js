@@ -96,6 +96,24 @@ const ProvidersFilters = ({
           <FormattedMessage id="srv.filters.userowned" />
         </span>
       </Box>
+      {copyTradersOnly && (
+        <Box
+          alignItems="center"
+          className="checkboxFilter"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+        >
+          <Checkbox
+            // @ts-ignore
+            checked={filters.profitSharing}
+            onChange={(e) => setFilters({ profitSharing: e.target.checked })}
+          />
+          <span>
+            <FormattedMessage id="srv.filters.profitsharing" />
+          </span>
+        </Box>
+      )}
     </CustomFilters>
   );
 };

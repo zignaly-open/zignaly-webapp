@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useMediaQuery, Box, Typography, CircularProgress } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
-import AvailableBalance from "../../../Balance/AvailableBalance";
+import { SpotAvailableBalance, FuturesAvailableBalance } from "../../../Balance/AvailableBalance";
 import ConnectedProvidersSummary from "../../../Providers/ConnectedProvidersSummary";
 import "./ExchangeAccountData.scss";
 import useEquity from "../../../../hooks/useEquity";
@@ -11,6 +11,7 @@ import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { useTheme } from "@material-ui/core/styles";
+import ProfitLossAnalysis from "../../../Balance/ProfitLossAnalysis";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -72,11 +73,19 @@ const ExchangeAccountData = ({ account }) => {
                       </Typography>
                     </Box>
                   ) : (
-                    <TotalEquity balance={balance} dailyBalance={dailyBalance} modal={true} />
+                    <TotalEquity
+                      dailyBalance={dailyBalance}
+                      modal={true}
+                      selectedExchange={account}
+                    />
                   )}
                 </Box>
                 <Box className="cryptoBox">
-                  <CryptoComposition dailyBalance={dailyBalance} vertical={!isMobile} />
+                  {account.exchangeType === "futures" ? (
+                    <ProfitLossAnalysis dailyBalance={dailyBalance} />
+                  ) : (
+                    <CryptoComposition dailyBalance={dailyBalance} vertical={!isMobile} />
+                  )}
                 </Box>
               </>
             )}
@@ -87,7 +96,11 @@ const ExchangeAccountData = ({ account }) => {
         )}
       </Box>
       <Box className="balanceBox">
-        <AvailableBalance balance={balance} />
+        {account.exchangeType === "futures" ? (
+          <FuturesAvailableBalance balance={balance} selectedExchange={account} />
+        ) : (
+          <SpotAvailableBalance balance={balance} selectedExchange={account} />
+        )}
       </Box>
     </Box>
   );

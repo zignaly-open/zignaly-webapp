@@ -5,22 +5,21 @@ import "./BalanceTabs.scss";
 import History from "../History";
 import Coins from "../Coins";
 import { FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
- * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
+ * @property {ExchangeConnectionEntity} selectedExchange Daily balance.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const BalanceTabs = ({ dailyBalance }) => {
+const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
   const [tabValue, setTabValue] = useState(0);
-  const storeSettings = useStoreSettingsSelector();
 
   /**
    * Event handler to change tab value.
@@ -35,8 +34,8 @@ const BalanceTabs = ({ dailyBalance }) => {
 
   const checkCoinsDisplay = () => {
     if (
-      storeSettings.selectedExchange.exchangeName &&
-      storeSettings.selectedExchange.exchangeName.toLowerCase() === "zignaly"
+      selectedExchange.exchangeName &&
+      selectedExchange.exchangeName.toLowerCase() === "zignaly"
     ) {
       return true;
     }
@@ -66,7 +65,7 @@ const BalanceTabs = ({ dailyBalance }) => {
         <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
         {tabValue === 0 && (
           <Box className="tabPanel">
-            <History dailyBalance={dailyBalance} />
+            <History dailyBalance={dailyBalance} selectedExchange={selectedExchange} />
           </Box>
         )}
         {tabValue === 1 && (

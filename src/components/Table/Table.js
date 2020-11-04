@@ -60,9 +60,12 @@ const Table = ({
   const countRows = size(data);
   const theme = useTheme();
 
-  const [responsive, setResponsive] = useState(
-    storeSettings.responsiveTables[persistKey] !== false,
-  );
+  const defaultReponsive =
+    storeSettings.responsiveTables[persistKey] === undefined
+      ? // by default responsive if more than 3 columns
+        columns.length > 4
+      : storeSettings.responsiveTables[persistKey];
+  const [responsive, setResponsive] = useState(defaultReponsive);
 
   /**
    * Function to create column labels.
@@ -78,8 +81,6 @@ const Table = ({
       if (typeof label === "object") {
         return intl.formatMessage({ id: label.id }, { quote: label.quote });
       }
-    } else {
-      return "";
     }
     return "";
   };
@@ -95,12 +96,18 @@ const Table = ({
       ...c.options,
       // Display columns picked by the user
       display:
-        (c.options && c.options.display) ||
-        (c.options && c.options.viewColumns === false) ||
-        !persistKey ||
-        (storeSettings.displayColumns[persistKey] &&
-          (storeSettings.displayColumns[persistKey].includes(c.name) ||
-            storeSettings.displayColumns[persistKey].includes(c.label)))
+        (c.options
+          ? "display" in c.options
+            ? c.options.display !== "excluded"
+              ? c.options.display
+              : false
+            : true
+          : true) &&
+        ((c.options && c.options.viewColumns === false) ||
+          !persistKey ||
+          (storeSettings.displayColumns[persistKey] &&
+            (storeSettings.displayColumns[persistKey].includes(c.name) ||
+              storeSettings.displayColumns[persistKey].includes(c.label))))
           ? "true"
           : "false",
     },

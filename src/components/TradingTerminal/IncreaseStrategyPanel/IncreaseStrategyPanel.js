@@ -3,7 +3,6 @@ import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
@@ -38,7 +37,6 @@ const IncreaseStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
-  const { selectedExchange } = useStoreSettingsSelector();
   const {
     positionSizeChange,
     validateUnits,
@@ -52,7 +50,6 @@ const IncreaseStrategyPanel = (props) => {
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const providerService = watch("providerService");
-  const isCopyProvider = providerService && providerService !== "1";
 
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
@@ -176,7 +173,7 @@ const IncreaseStrategyPanel = (props) => {
           ) : (
             <input defaultValue={lastPrice} name="price" ref={register} type="hidden" />
           )}
-          {selectedExchange.exchangeType === "futures" && !isCopyProvider && (
+          {positionEntity.exchangeType === "futures" && !positionEntity.isCopyTrader && (
             <FormControl>
               <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
               <Box alignItems="center" display="flex">

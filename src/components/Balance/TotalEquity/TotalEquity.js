@@ -6,13 +6,14 @@ import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";
 import EquityGraphLabels from "./GraphLabels";
 import { isObject } from "lodash";
+import { createEmptyUserEquityEntity } from "../../../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
- * @typedef {import("../../../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
- * @property {UserBalanceEntity} [balance]
+ * @property {ExchangeConnectionEntity} [selectedExchange]
  * @property {boolean} modal Flag to indicate if chart is displayed inside a modal.
  */
 
@@ -20,18 +21,15 @@ import { isObject } from "lodash";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const TotalEquity = ({ dailyBalance, modal }) => {
+const TotalEquity = ({ dailyBalance, modal, selectedExchange }) => {
   const [list, setList] = useState(dailyBalance.balances);
-  const [balance, setBalance] = useState({ totalBTC: 0, totalUSDT: 0 });
+  const [balance, setBalance] = useState(createEmptyUserEquityEntity());
 
   const filterBalance = () => {
-    let obj = { ...balance };
     let data = dailyBalance.balances.length
       ? dailyBalance.balances[dailyBalance.balances.length - 1]
-      : { totalBTC: 0, totalUSDT: 0 };
-    obj.totalBTC = isObject(data) ? data.totalBTC : 0;
-    obj.totalUSDT = isObject(data) ? data.totalUSDT : 0;
-    setBalance(obj);
+      : createEmptyUserEquityEntity();
+    setBalance(isObject(data) ? data : createEmptyUserEquityEntity());
   };
 
   useEffect(() => {
@@ -79,11 +77,11 @@ const TotalEquity = ({ dailyBalance, modal }) => {
             justifyContent="space-between"
             width="100%"
           >
-            <TitleBar balance={balance} />
+            <TitleBar balance={balance} selectedExchange={selectedExchange} />
             {!modal && <EquityFilter list={dailyBalance.balances} onChange={handleChange} />}
           </Box>
           <Box width={1}>
-            <TotalEquityGraph list={list} modal={modal} />
+            <TotalEquityGraph list={list} modal={modal} selectedExchange={selectedExchange} />
             <EquityGraphLabels list={list} />
           </Box>
           {modal && (

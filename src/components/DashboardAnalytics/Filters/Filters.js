@@ -16,6 +16,7 @@ import { useIntl } from "react-intl";
  * @property {Array<OptionType>} providers Providers options.
  * @property {function} setFilters Callback that delegate filters update to caller.
  * @property {DashboardAnalyticsFilters} filters Current filters.
+ * @property {boolean} profitSharing Flag to indicate if showing filters for profitSharing
  */
 
 /**
@@ -24,28 +25,19 @@ import { useIntl } from "react-intl";
  * @param {AnayticsFiltersPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }) => {
+const Filters = ({
+  onClear,
+  quotes,
+  timeFrames,
+  providers,
+  setFilters,
+  filters,
+  profitSharing,
+}) => {
   const intl = useIntl();
 
   return (
     <CustomFilters onClear={onClear} title="">
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "fil.timeframe",
-        })}
-        onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
-        options={timeFrames}
-        value={filters.timeFrame}
-      />
-      <CustomSelect
-        label={intl.formatMessage({
-          id: "fil.quote",
-        })}
-        onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v })}
-        options={quotes}
-        search={true}
-        value={filters.quote}
-      />
       <CustomSelect
         label={intl.formatMessage({
           id: "fil.providers",
@@ -55,6 +47,27 @@ const Filters = ({ onClear, quotes, timeFrames, providers, setFilters, filters }
         search={true}
         value={filters.provider}
       />
+      {!profitSharing && (
+        <CustomSelect
+          label={intl.formatMessage({
+            id: "fil.quote",
+          })}
+          onChange={(/** @type {OptionType} */ v) => setFilters({ quote: v })}
+          options={quotes}
+          search={true}
+          value={filters.quote}
+        />
+      )}
+      {!profitSharing && (
+        <CustomSelect
+          label={intl.formatMessage({
+            id: "fil.timeframe",
+          })}
+          onChange={(/** @type {string} */ v) => setFilters({ timeFrame: v })}
+          options={timeFrames}
+          value={filters.timeFrame}
+        />
+      )}
     </CustomFilters>
   );
 };

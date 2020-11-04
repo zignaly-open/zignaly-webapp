@@ -43,11 +43,15 @@ import {
   profitStatsResponseTransform,
   profileProviderStatsResponseTransform,
   hasBeenUsedProvidersResponseTransform,
+  profitSharingBalanceHistoryResponseTransform,
+  providerBalanceResponseTransform,
+  providerFollowersCountResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
+ * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
@@ -67,6 +71,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ConnectProviderPayload} ConnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DisableProviderPayload} DisableProviderPayload
  * @typedef {import('./tradeApiClient.types').DisconnectProviderPayload} DisconnectProviderPayload
+ * @typedef {import('./tradeApiClient.types').CancelDisconnectProviderPayload} CancelDisconnectProviderPayload
  * @typedef {import('./tradeApiClient.types').DeleteProviderPayload} DeleteProviderPayload
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
@@ -110,6 +115,8 @@ import {
  * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
+ * @typedef {import('./tradeApiClient.types').ProviderBalanceEntity} ProviderBalanceEntity
+ * @typedef {import('./tradeApiClient.types').ProviderFollowersCountEntity} ProviderFollowersCountEntity
  * @typedef {import('./tradeApiClient.types').ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import('./tradeApiClient.types').CancelOrderPayload} CancelOrderPayload
  * @typedef {import('./tradeApiClient.types').CancelContractPayload} CancelContractPayload
@@ -856,6 +863,23 @@ class TradeApiClient {
   }
 
   /**
+   * Cancel disconnection for a profit sharing service.
+   *
+   * @param {CancelDisconnectProviderPayload} payload Cancel disconnect provider payload.
+
+   * @returns {Promise<boolean>} Promise that resolves into success status.
+   *
+   * @memberof TradeApiClient
+   */
+
+  async providerCancelDisconnect(payload) {
+    const endpointPath = "/fe/api.php?action=cancelDisconnecting";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
    * Delete a cloned provider or copy trader.
    *
    * @param {DeleteProviderPayload} payload Delete provider payload.
@@ -1131,6 +1155,38 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return providerDataPointsResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider's profit/management stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Provider's stats payload.
+
+   * @returns {Promise<ProviderBalanceEntity>} Returns promise that resolves provider data points entry.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerBalanceGet(payload) {
+    const endpointPath = "/fe/api.php?action=getBalanceForService";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return providerBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider's profit/management stats.
+   *
+   * @param {GetProviderFollowersPayload} payload Provider's stats payload.
+
+   * @returns {Promise<ProviderFollowersCountEntity>} Returns promise that resolves provider data points entry.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerFollowersCountGet(payload) {
+    const endpointPath = "/fe/api.php?action=getFollowersForProvider";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return providerFollowersCountResponseTransform(responseData);
   }
 
   /**
@@ -1533,6 +1589,22 @@ class TradeApiClient {
   }
 
   /**
+   * Function to get exchange open orders.
+   *
+   * @param {ProviderContractsPayload} payload exchange orders payload.
+   *
+   * @returns {Promise<Array<ExchangeOpenOrdersObject>>} Returns promise that resolved exchange order object.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerOrdersGet(payload) {
+    const endpointPath = "/fe/api.php?action=getOpenOrdersForService";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeOpenOrdersResponseTransform(responseData);
+  }
+
+  /**
    * Function to get exchange contracts.
    *
    * @param {UserEquityPayload} payload exchange contracts payload.
@@ -1543,6 +1615,22 @@ class TradeApiClient {
    */
   async exchangeContractsGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeContracts";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeContractsResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get exchange contracts.
+   *
+   * @param {ProviderContractsPayload} payload exchange contracts payload.
+   *
+   * @returns {Promise<Array<ExchangeContractsObject>>} Returns promise that.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerContractsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getContractsForService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeContractsResponseTransform(responseData);
@@ -1789,7 +1877,7 @@ class TradeApiClient {
   async getProfitSharingBalanceHistory(payload) {
     const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return profitSharingBalanceHistoryResponseTransform(responseData);
   }
 }
 

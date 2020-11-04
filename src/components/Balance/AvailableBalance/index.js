@@ -1,1 +1,4 @@
-export { default } from "./AvailableBalance";
+import SpotAvailableBalance from "./SpotAvailableBalance";
+import FuturesAvailableBalance from "./FuturesAvailableBalance";
+
+export { SpotAvailableBalance, FuturesAvailableBalance };

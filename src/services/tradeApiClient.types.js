@@ -1,5 +1,6 @@
 import moment from "moment";
-import { assign, isArray, isObject, mapValues, isString } from "lodash";
+import dayjs from "dayjs";
+import { assign, isArray, isObject, mapValues, isString, toNumber } from "lodash";
 import { toCamelCaseKeys, formatFloat, formatFloat2Dec } from "../utils/format";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 
@@ -227,6 +228,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} CancelDisconnectProviderPayload
+ * @property {string} token User's session token
+ * @property {string} providerId Provider Id
+ * @property {String} internalExchangeId Internal Id of connected exchange.
+ */
+
+/**
  * @typedef {Object} DeleteProviderPayload
  * @property {string} token
  * @property {string} providerId
@@ -342,11 +350,19 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderContractsPayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {String} providerId ID of provider.
+ */
+
+/**
  * @typedef {Object} CancelOrderPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
  * @property {String} symbol symbol.
+ * @property {String} providerId symbol.
  */
 
 /**
@@ -355,6 +371,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} amount amount.
  * @property {String} symbol symbol.
+ * @property {String} providerId symbol.
  */
 
 /**
@@ -475,6 +492,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
  * @property {Number} currentAllocatedBalance Allocated copy trading balance when the trade was open.
  * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
+ * @property {Number} liquidationPrice
+ * @property {Number} markPrice
+ * @property {string} markPriceStyle
  */
 
 /**
@@ -702,7 +722,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuoteAsset
  * @property {string} quote
- * @property {string} minNotional
+ * @property {number} minNotional
  */
 
 /**
@@ -719,6 +739,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
  * @property {string} providerId
+ * @property {string} exchangeInternalId
  */
 
 /**
@@ -898,7 +919,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} QuotesAssetsGetPayload
  * @property {boolean} ro
- * @property {string} [exchangeInternalId]
+ * @property {string} token
+ * @property {string} [exchangeInternalId] Exchange Internal ID
+ * @property {number} version version of endpoint
+ * @property {string} [exchangeId] Exchange ID
+ * @property {string} [exchangeType] Exchange type
  */
 
 /**
@@ -954,8 +979,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
  * @typedef {Object} ProfitSharingBalanceEntry
- * @property {string} id
- * @property {number} date Timestamp
+ * @property {Date} date
  * @property {number} amount
  * @property {string} type
  */
@@ -1347,6 +1371,8 @@ export function positionItemTransform(positionItem) {
       : false,
     positionSizePercentage: safeParseFloat(positionItem.positionSizePercentage),
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
+    liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
+    markPrice: safeParseFloat(positionItem.markPrice),
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1356,6 +1382,11 @@ export function positionItemTransform(positionItem) {
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
+      positionEntity.buyPrice,
+      positionEntity.side,
+    ),
+    markPriceStyle: getPriceColorType(
+      positionEntity.markPrice,
       positionEntity.buyPrice,
       positionEntity.side,
     ),
@@ -1584,6 +1615,9 @@ function createEmptyPositionEntity() {
     positionSizePercentage: 0,
     currentAllocatedBalance: 0,
     reduceOrders: [],
+    liquidationPrice: 0,
+    markPrice: 0,
+    markPriceStyle: "",
   };
 }
 
@@ -1697,6 +1731,16 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
  * @property {Number} totalUSDT
+ * @property {Number} totalAvailableBTC
+ * @property {Number} totalAvailableUSDT
+ * @property {Number} totalCurrentMarginBTC
+ * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalMarginBTC
+ * @property {Number} totalMarginUSDT
+ * @property {Number} totalUnrealizedProfitBTC
+ * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  */
 
 /**
@@ -1710,26 +1754,29 @@ export function userBalanceResponseTransform(response) {
     throw new Error("Response must be an object with different propteries.");
   }
 
-  let transformedResponse = createUserBalanceEntity(response);
-  return transformedResponse;
+  return assign(createEmptyUserBalanceEntity(), response);
 }
 
-/**
- * Create user balance entity.
- *
- * @param {*} response Trade API user balance raw raw response.
- * @returns {UserBalanceEntity} User balance entity.
- */
-function createUserBalanceEntity(response) {
+export function createEmptyUserBalanceEntity() {
   return {
-    pnlBTC: response.pnlBTC,
-    pnlUSDT: response.pnlUSDT,
-    totalBTC: response.totalBTC,
-    totalFreeBTC: response.totalFreeBTC,
-    totalFreeUSDT: response.totalFreeUSDT,
-    totalLockedBTC: response.totalLockedBTC,
-    totalLockedUSDT: response.totalLockedUSDT,
-    totalUSDT: response.totalUSDT,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    totalBTC: 0,
+    totalFreeBTC: 0,
+    totalFreeUSDT: 0,
+    totalLockedBTC: 0,
+    totalLockedUSDT: 0,
+    totalUSDT: 0,
+    totalAvailableBTC: 0,
+    totalAvailableUSDT: 0,
+    totalCurrentMarginBTC: 0,
+    totalCurrentMarginUSDT: 0,
+    totalMarginBTC: 0,
+    totalMarginUSDT: 0,
+    totalUnrealizedProfitBTC: 0,
+    totalUnrealizedProfitUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -1817,6 +1864,14 @@ function createUserBalanceEntity(response) {
  * @property {Number} totalUSDT
  * @property {Number} availablePercentage
  * @property {Number} investedPercentage
+ * @property {Number} netTransferBTC
+ * @property {Number} netTransferUSDT
+ * @property {Number} pnlBTC
+ * @property {Number} pnlUSDT
+ * @property {Number} sumPnlBTC
+ * @property {Number} sumPnlUSDT
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
  *
  */
 
@@ -1850,7 +1905,7 @@ export function userEquityResponseTransform(response) {
  * @returns {UserEquityEntity} Exchange connection entity.
  */
 function userEquityItemTransform(userEquityItem) {
-  const emptyEquityEntity = createUserEquityEntity();
+  const emptyEquityEntity = createEmptyUserEquityEntity();
 
   function prepareAvailablePercentage() {
     if (userEquityItem.totalFreeUSDT && userEquityItem.totalUSDT) {
@@ -1893,7 +1948,7 @@ function createUserEquityResponseEntity(response) {
  *
  * @returns {UserEquityEntity} User balance entity.
  */
-function createUserEquityEntity() {
+export function createEmptyUserEquityEntity() {
   return {
     BKRWpercentage: 0,
     BNBpercentage: 0,
@@ -1968,6 +2023,14 @@ function createUserEquityEntity() {
     totalUSDT: 0,
     availablePercentage: 0,
     investedPercentage: 0,
+    netTransferBTC: 0,
+    netTransferUSDT: 0,
+    pnlBTC: 0,
+    pnlUSDT: 0,
+    sumPnlBTC: 0,
+    sumPnlUSDT: 0,
+    totalWalletBTC: 0,
+    totalWalletUSDT: 0,
   };
 }
 
@@ -2148,10 +2211,18 @@ export function coinRayTokenResponseTransform(response) {
  * @property {string} quote Quote currency, i.e. USDT.
  * @property {string} baseId Same as base.
  * @property {string} quoteId Same as quote.
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
  * @property {PricePrecision} precision Symbol required price precision details.
  * @property {SymbolLimits} limits Symbol cost, price and amount min/max limits.
- * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
  * @property {string} coinrayBase Base currency ID adapted to CoinRay.
+ * @property {string} coinrayQuote Quote currency ID adapted to CoinRay.
+ * @property {number} multiplier Multiplier to calculate bitmex contract values/PnL.
+ * @property {number} maxLeverage Max leverage (futures).
+ * @property {string} tradeViewSymbol TradingView symbol.
+ * @property {string} zignalyId Symbol used internally.
+ * @property {string} short Short symbol name displayed in Zignaly.
+ * @property {string} contractType Bitmex contract type (inverse, quanto, linear)
  */
 
 /**
@@ -2203,6 +2274,14 @@ export function createMarketSymbolEmptyValueObject() {
     },
     coinrayQuote: "",
     coinrayBase: "",
+    multiplier: 0,
+    maxLeverage: 125,
+    tradeViewSymbol: "",
+    zignalyId: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
+    contractType: "",
   };
 }
 
@@ -2238,19 +2317,21 @@ function exchangeMarketDataItemTransform(symbolsDataItem) {
  */
 export function quotesResponseTransform(response) {
   if (!isObject(response)) {
-    throw new Error("Response must be an object with different properties.");
+    throw new Error("Response must be object of key value pairs.");
   }
 
-  return Object.entries(response).reduce(
-    (res, [key, val]) => ({
-      ...res,
-      [key]: {
-        quote: val.quote,
-        minNotional: val.minNotional,
-      },
-    }),
-    {},
-  );
+  /** @type {QuoteAssetsDict} */
+  let transformed = {};
+  let obj = {
+    quote: "",
+    minNotional: 0,
+  };
+  Object.values(response).forEach((item) => {
+    obj.quote = item;
+    obj.minNotional = 0;
+    transformed[item] = obj;
+  });
+  return transformed;
 }
 
 /**
@@ -2389,8 +2470,8 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
- * @typedef {Object} DefaultProviderPermormanceWeeklyStats
- * @property {Number} week
+ * @typedef {Object} DefaultProviderPerformanceWeeklyStats
+ * @property {String} week
  * @property {Number} return
  * @property {String} day
  * @property {Number} positions
@@ -2400,10 +2481,21 @@ function createConnectedProviderUserInfoEntity(response) {
  *
  * @typedef {Object} DefaultProviderPermormanceObject
  * @property {Number} closePositions
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
+ */
+
+/**
+ *
+ * @typedef {Object} DefaultProviderExchangeIDsObject
+ * @property {Boolean} disconnecting
+ * @property {String} disconnectionType
+ * @property {String} internalId
+ * @property {String} profitsMode
+ * @property {Number} profitsShare
+ * @property {Number} retain
  */
 
 /**
@@ -2493,6 +2585,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} profitsShare
  * @property {String} profitsMode
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
 
 /**
@@ -2646,6 +2739,7 @@ function createEmptyProviderGetEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    exchangeInternalIds: [{}],
   };
 }
 
@@ -3002,7 +3096,7 @@ export function exchangeDepositAddressResponseTransform({ currency, address, tag
  * @property {Number} openPositions
  * @property {Number} totalBalance
  * @property {Number} totalTradingVolume
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  */
 
 /**
@@ -3017,7 +3111,16 @@ export function providerPerformanceResponseTransform(response) {
   }
 
   let emptyProviderEntity = createProviderPerformanceEmptyEntity();
-  return { ...emptyProviderEntity, ...response };
+  return {
+    ...emptyProviderEntity,
+    ...response,
+    weeklyStats: response.weeklyStats
+      .map((/** @type {*} */ s) => ({
+        ...s,
+        day: dayjs(s.day).toDate(),
+      }))
+      .sort((/** @type {*} */ a, /** @type {*} */ b) => a.day.getTime() - b.day.getTime()),
+  };
 }
 
 export function createProviderPerformanceEmptyEntity() {
@@ -3333,23 +3436,38 @@ export function creatEmptySettingsEntity() {
 /**
  *
  * @typedef {Object} ProviderDataPointsEntity
- * @property {String} float
- * @property {String} floatPercentage
- * @property {String} floatUSDT
+ * @property {Number} float
+ * @property {Number} floatPercentage
+ * @property {Number} floatUSDT
  * @property {Number} followersTrialing
- * @property {String} freeBalance
- * @property {String} freeBalancePercentage
- * @property {String} freeBalanceUSDT
+ * @property {Number} freeBalance
+ * @property {Number} freeBalancePercentage
+ * @property {Number} freeBalanceUSDT
  * @property {String} quote
- * @property {String} totalAllocated
- * @property {String} totalAllocatedFromFollowers
- * @property {String} totalAllocatedUSDT
- * @property {String} totalAllocatedUSDTFromFollowers
+ * @property {Number} totalAllocated
+ * @property {Number} totalAllocatedFromFollowers
+ * @property {Number} totalAllocatedUSDT
+ * @property {Number} totalAllocatedUSDTFromFollowers
  * @property {Number} totalFollowers
- * @property {String} totalProfit
- * @property {String} totalProfitPercentage
- * @property {String} totalProfitUSDT
+ * @property {Number} totalProfit
+ * @property {Number} totalProfitPercentage
+ * @property {Number} totalProfitUSDT
  */
+
+/**
+ * Format number for display.
+ *
+ * @param {number} value Number to format.
+ *
+ * @returns {number} Formatter number for display.
+ */
+export const formatValue = (value) => {
+  if (!value || isNaN(value)) {
+    return 0;
+  }
+
+  return toNumber(value);
+};
 
 /**
  * Transform Provider data points get response.
@@ -3358,32 +3476,107 @@ export function creatEmptySettingsEntity() {
  * @returns {ProviderDataPointsEntity} Provider Data points entity.
  */
 export function providerDataPointsResponseTransform(response) {
-  return assign(creatEmptyProviderDataPointsEntity(), response);
+  return creatProviderDataPointsEntity(response);
 }
 
 /**
  * Create provider data points entity.
+ * @param {*} response .
  *
  * @returns {ProviderDataPointsEntity} Provider data points entity.
  */
-export function creatEmptyProviderDataPointsEntity() {
+export function creatProviderDataPointsEntity(response) {
   return {
-    float: "",
-    floatPercentage: "",
-    floatUSDT: "",
-    followersTrialing: 0,
-    freeBalance: "",
-    freeBalancePercentage: "",
-    freeBalanceUSDT: "",
-    quote: "",
-    totalAllocated: "",
-    totalAllocatedFromFollowers: "",
-    totalAllocatedUSDT: "",
-    totalAllocatedUSDTFromFollowers: "",
-    totalFollowers: 0,
-    totalProfit: "",
-    totalProfitPercentage: "",
-    totalProfitUSDT: "",
+    float: response ? formatValue(response.float) : 0,
+    floatPercentage: response ? formatValue(response.floatPercentage) : 0,
+    floatUSDT: response ? formatValue(response.floatUSDT) : 0,
+    followersTrialing: response ? formatValue(response.followersTrialing) : 0,
+    freeBalance: response ? formatValue(response.freeBalance) : 0,
+    freeBalancePercentage: response ? formatValue(response.freeBalancePercentage) : 0,
+    freeBalanceUSDT: response ? formatValue(response.freeBalanceUSDT) : 0,
+    quote: response ? response.quote : "",
+    totalAllocated: response ? formatValue(response.totalAllocated) : 0,
+    totalAllocatedFromFollowers: response ? formatValue(response.totalAllocatedFromFollowers) : 0,
+    totalAllocatedUSDT: response ? formatValue(response.totalAllocatedUSDT) : 0,
+    totalAllocatedUSDTFromFollowers: response
+      ? formatValue(response.totalAllocatedUSDTFromFollowers)
+      : 0,
+    totalFollowers: response ? formatValue(response.totalFollowers) : 0,
+    totalProfit: response ? formatValue(response.totalProfit) : 0,
+    totalProfitPercentage: response ? formatValue(response.totalProfitPercentage) : 0,
+    totalProfitUSDT: response ? formatValue(response.totalProfitUSDT) : 0,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderBalanceEntity
+ * @property {Number} totalWalletBTC
+ * @property {Number} totalWalletUSDT
+ * @property {Number} totalCurrentMarginBTC
+ * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalUnrealizedProfitBTC
+ * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalMarginBTC
+ * @property {Number} totalMarginUSDT
+ * @property {Number} abstractPercentage
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderBalanceEntity} Provider Data points entity.
+ */
+export function providerBalanceResponseTransform(response) {
+  return creatProviderBalanceEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderBalanceEntity} Provider data points entity.
+ */
+export function creatProviderBalanceEntity(response) {
+  return {
+    totalWalletBTC: response ? formatValue(response.totalWalletBTC) : 0,
+    totalWalletUSDT: response ? formatValue(response.totalWalletUSDT) : 0,
+    totalCurrentMarginBTC: response ? formatValue(response.totalCurrentMarginBTC) : 0,
+    totalCurrentMarginUSDT: response ? formatValue(response.totalCurrentMarginUSDT) : 0,
+    totalUnrealizedProfitBTC: response ? formatValue(response.totalUnrealizedProfitBTC) : 0,
+    totalUnrealizedProfitUSDT: response ? formatValue(response.totalUnrealizedProfitUSDT) : 0,
+    totalMarginBTC: response ? formatValue(response.totalMarginBTC) : 0,
+    totalMarginUSDT: response ? response.totalMarginUSDT : 0,
+    abstractPercentage: response ? formatValue(response.abstractPercentage) : 0,
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ProviderFollowersCountEntity
+ * @property {Number} followers
+ */
+
+/**
+ * Transform Provider data points get response.
+ *
+ * @param {*} response .
+ * @returns {ProviderFollowersCountEntity} Provider Data points entity.
+ */
+export function providerFollowersCountResponseTransform(response) {
+  return creatProviderFollowersCountEntity(response);
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {ProviderFollowersCountEntity} Provider data points entity.
+ */
+export function creatProviderFollowersCountEntity(response) {
+  return {
+    followers: response ? formatValue(response.followers) : 0,
   };
 }
 
@@ -3781,6 +3974,7 @@ export function sessionDataResponseTransform(response) {
 
 /**
  * @typedef {Object} ExchangeOpenOrdersObject
+ * @property {String} id
  * @property {String} orderId
  * @property {String} positionId
  * @property {String} symbol
@@ -3819,6 +4013,7 @@ export function exchangeOpenOrdersResponseTransform(response) {
 function exchangeOrdersItemTransform(order) {
   const time = moment(Number(order.timestamp));
   const orderEntity = assign(createEmptyExchangeOpenOrdersEntity(), order, {
+    id: Math.random().toString(),
     datetimeReadable: time.format("YYYY/MM/DD HH:mm"),
   });
   return orderEntity;
@@ -3831,6 +4026,7 @@ function exchangeOrdersItemTransform(order) {
  */
 const createEmptyExchangeOpenOrdersEntity = () => {
   return {
+    id: "",
     orderId: "",
     positionId: "",
     symbol: "",
@@ -4088,3 +4284,19 @@ const createEmptyProfileProviderSignalsEntity = (item) => {
     i3MonthLowPercentage: item.i3m_lowerPricePercentage,
   };
 };
+
+/**
+ * Transform profits sharing balance history response.
+ *
+ * @param {*} response Profits sharing balance history response.
+ * @returns {ProfitSharingBalanceHistory} Profits sharing balance history entity.
+ */
+export function profitSharingBalanceHistoryResponseTransform(response) {
+  return {
+    ...response,
+    entries: response.entries.map((/** @type {*} */ e) => ({
+      ...e,
+      date: dayjs(Number(e.date)).toDate(),
+    })),
+  };
+}

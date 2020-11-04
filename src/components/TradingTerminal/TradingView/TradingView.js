@@ -19,6 +19,7 @@ import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
+ * @typedef {import('../../../services/tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  */
 
 /**
@@ -28,6 +29,7 @@ const defaultExchangeSymbol = {
   KuCoin: "BTC/USDT",
   Binance: "BTC/USDT",
   Zignaly: "BTC/USDT",
+  BitMEX: "XBT/USD",
   fallback: "BTC/USDT",
 };
 
@@ -47,7 +49,7 @@ const TradingView = () => {
   } = useTradingTerminal();
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
-  const [marketData, setMarketData] = useState(null);
+  const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
   const dispatch = useDispatch();
 
   const getMarketData = async () => {
@@ -58,7 +60,7 @@ const TradingView = () => {
 
     try {
       const data = await tradeApi.exchangeConnectionMarketDataGet(marketDataPayload);
-      setMarketData(data);
+      setSymbols(data);
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -91,20 +93,24 @@ const TradingView = () => {
   const exchangeName = resolveExchangeName();
   const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
+  let symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
+  console.log("symbolData", symbols, symbolData, selectedSymbol);
+
+  if (!symbolData && symbols) {
+    symbolData = symbols[0];
+  }
+
   const [selectedExchangeId, setSelectedExchangeId] = useState(
     storeSettings.selectedExchange.internalId,
   );
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
-  const isLoading = tradingViewWidget === null || marketData === null;
+  const isLoading = tradingViewWidget === null || symbols === null;
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
     if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
-      const newExchangeName =
-        storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
-      const newDefaultSymbol =
-        defaultExchangeSymbol[newExchangeName] || defaultExchangeSymbol.fallback;
       if (tradingViewWidget) {
+        const newDefaultSymbol = resolveDefaultSymbol();
         tradingViewWidget.remove();
         setTradingViewWidget(null);
         setLastPrice(null);
@@ -119,7 +125,7 @@ const TradingView = () => {
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const loadDependencies = () => {
-    setMarketData(null);
+    setSymbols(null);
     getMarketData();
 
     const checkExist = setInterval(() => {
@@ -199,9 +205,11 @@ const TradingView = () => {
    */
   const handleSymbolChange = (selectedOption) => {
     setSelectedSymbol(selectedOption);
-    // setTerminalPair(selectedOption);
     const symbolSuffix =
-      storeSettings.selectedExchange.exchangeType.toLocaleLowerCase() === "futures" ? "PERP" : "";
+      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
+      storeSettings.selectedExchange.exchangeType === "futures"
+        ? "PERP"
+        : "";
     const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
@@ -235,7 +243,7 @@ const TradingView = () => {
             <TradingViewHeader
               handleSymbolChange={handleSymbolChange}
               selectedSymbol={selectedSymbol}
-              symbolsList={marketData}
+              symbolsList={symbols}
             />
           )}
           <Box
@@ -259,8 +267,7 @@ const TradingView = () => {
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}
-                selectedSymbol={selectedSymbol}
-                symbolsData={marketData}
+                selectedSymbol={symbolData}
                 tradingViewWidget={tradingViewWidget}
               />
             )}

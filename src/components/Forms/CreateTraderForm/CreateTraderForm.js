@@ -9,13 +9,13 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateTrader } from "../../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
-import useQuoteAssets from "../../../hooks/useQuoteAssets";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
 import MonthlyPayment from "../../../images/ct/monthlyPayment.svg";
 import ProfitSharing from "../../../images/ct/profitSharing.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
+import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -44,6 +44,15 @@ const CreateTraderForm = () => {
   const intl = useIntl();
   let exchanges = useExchangeList();
 
+  const {
+    errors,
+    handleSubmit,
+    control,
+    register,
+    setValue,
+    formState: { isValid },
+  } = useForm({ mode: "onChange" });
+
   if (exchanges) {
     // Only show zignaly exchange for profit sharing
     exchanges = exchanges.filter(
@@ -60,16 +69,18 @@ const CreateTraderForm = () => {
     }
   }, [exchanges]);
 
-  const quoteAssets = useQuoteAssets(Boolean(exchange), exchange ? exchange.id : null);
-  const quotes = Object.keys(quoteAssets);
+  const quoteAssets = useExchangeQuotes({
+    exchangeId: exchange ? exchange.id : "",
+    exchangeType: exchange ? exchange.type[0] : "",
+  });
+  const quotes =
+    exchange && exchange.name.toLowerCase() === "bitmex" ? ["BTC"] : Object.keys(quoteAssets);
 
-  const {
-    errors,
-    handleSubmit,
-    control,
-    register,
-    formState: { isValid },
-  } = useForm({ mode: "onChange" });
+  useEffect(() => {
+    if (quotes) {
+      setValue("quote", quotes[0]);
+    }
+  }, [quotes.length]);
 
   /**
    * @typedef {Object} FormData
@@ -137,7 +148,7 @@ const CreateTraderForm = () => {
                   >
                     <Box
                       alignItems="center"
-                      className={`iconButton ${
+                      className={`iconButton fee ${
                         selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
                       }`}
                       display="flex"
@@ -163,7 +174,7 @@ const CreateTraderForm = () => {
                 >
                   <Box
                     alignItems="center"
-                    className={`iconButton ${
+                    className={`iconButton fee ${
                       selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
                     }`}
                     display="flex"
@@ -183,16 +194,19 @@ const CreateTraderForm = () => {
               <Typography className="body1 bold exchangeChoose" variant="h3">
                 <FormattedMessage id="accounts.exchange.choose" />
               </Typography>
-              <Box display="flex" flexWrap="wrap">
+              <Box className="exchangeIconBox" display="flex" flexWrap="wrap">
                 {exchanges.map((e) => (
-                  <ExchangeIcon
+                  <Box
                     className={`iconButton ${
                       (exchange && exchange.name) === e.name ? "selected" : ""
                     }`}
-                    exchange={e.name}
                     key={e.id}
-                    onClick={() => setExchange(exchanges.find((ex) => e === ex))}
-                  />
+                  >
+                    <ExchangeIcon
+                      exchange={e.name}
+                      onClick={() => setExchange(exchanges.find((ex) => e === ex))}
+                    />
+                  </Box>
                 ))}
               </Box>
               {step === 1 && (
@@ -230,7 +244,7 @@ const CreateTraderForm = () => {
                 <Box className="inputBox" mr={2}>
                   <Controller
                     control={control}
-                    defaultValue={"USDT"}
+                    defaultValue={quotes[0]}
                     name="quote"
                     render={({ onChange, value }) => (
                       <CustomSelect

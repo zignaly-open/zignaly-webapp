@@ -26,6 +26,9 @@
   }
 
   .dataBox {
+    margin: 0 14px;
+    white-space: nowrap;
+
     .smallText {
       margin-left: 12px;
     }
@@ -51,9 +54,18 @@
     .dataBox {
       align-items: center;
       width: 100%;
+
+      > div {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
     }
 
     .operator {
+      display: flex;
+      flex: 1;
+      justify-content: center;
       text-align: center;
       width: 100%;
     }

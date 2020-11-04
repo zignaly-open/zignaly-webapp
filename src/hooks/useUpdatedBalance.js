@@ -6,6 +6,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showBalanceLoader } from "../store/actions/ui";
 import useStoreUIBalanceLoader from "./useStoreUIBalanceLoader";
+import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
@@ -17,16 +18,7 @@ import useStoreUIBalanceLoader from "./useStoreUIBalanceLoader";
  * @returns {UserBalanceEntity} Balance.
  */
 const useUpdatedBalance = () => {
-  const [balance, setBalance] = useState({
-    pnlBTC: 0,
-    pnlUSDT: 0,
-    totalBTC: 0,
-    totalFreeBTC: 0,
-    totalFreeUSDT: 0,
-    totalLockedBTC: 0,
-    totalLockedUSDT: 0,
-    totalUSDT: 0,
-  });
+  const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
 
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();

@@ -48,12 +48,12 @@ const DashboardHeader = ({ path }) => {
         <span className="exchangeTitle">
           <span className="name"> {storeSettings.selectedExchange.internalName} </span>
           {storeSettings.selectedExchange.paperTrading && (
-            <span className="name">
+            <span className="tag">
               (<FormattedMessage id="menu.demo" />){" "}
             </span>
           )}
           {storeSettings.selectedExchange.isTestnet && (
-            <span className="name">
+            <span className="tag">
               (<FormattedMessage id="menu.testnet" />){" "}
             </span>
           )}

@@ -5,14 +5,14 @@ import moment from "moment";
 
 /**
  *
- * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPermormanceWeeklyStats} DefaultProviderPermormanceWeeklyStats
+ * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
  */
 
 /**
  *
  * @typedef {Object} DefaultQuarter
- * @property {Array<DefaultProviderPermormanceWeeklyStats>} weeklyStats
+ * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} total
  * @property {Number} id
  * @property {String} label
@@ -24,6 +24,7 @@ import moment from "moment";
  * @property {Array<DefaultQuarter>} list
  * @property {DefaultQuarter} selected
  * @property {Function} onChange
+ * @property {string} [unit]
  */
 
 /**
@@ -33,15 +34,15 @@ import moment from "moment";
  * @return {JSX.Element} JSX component.
  */
 
-const WeeklyData = ({ list, selected, onChange }) => {
+const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
   /**
-   * Funciton to select a quarter.
+   * Function to select a quarter.
    *
    * @param {Number} id id of the quarter on which user clicks.
    * @returns {void} None.
    */
   const handleChange = (id) => {
-    let found = [...list].find((item) => item.id === id);
+    let found = list.find((item) => item.id === id);
     if (found) {
       onChange(found);
     }
@@ -65,7 +66,7 @@ const WeeklyData = ({ list, selected, onChange }) => {
         <Typography className="quaterLabel" variant="h3" />
         {selected.weeklyStats.map((item, index) => (
           <Typography key={index} variant="h5">
-            {item.day ? moment(new Date(item.day)).format("DD MMM") : "--"}
+            {item.return ? moment(new Date(item.day)).format("DD MMM") : "--"}
           </Typography>
         ))}
         <Typography className="total" variant="h5">
@@ -89,11 +90,11 @@ const WeeklyData = ({ list, selected, onChange }) => {
             </Typography>
             {item.weeklyStats.map((item2, index2) => (
               <Typography className={item2.return >= 0 ? "green" : "red"} key={index2} variant="h5">
-                {item2.return ? `${item2.return.toFixed(2)}%` : "--"}
+                {item2.return ? `${item2.return.toFixed(2)}${unit}` : "--"}
               </Typography>
             ))}
             <Typography className={"total " + (item.total >= 0 ? "green" : "red")} variant="h5">
-              {item.total ? `${item.total.toFixed(2)}%` : "--"}
+              {item.total ? `${item.total.toFixed(2)}${unit}` : "--"}
             </Typography>
           </Box>
         ))}

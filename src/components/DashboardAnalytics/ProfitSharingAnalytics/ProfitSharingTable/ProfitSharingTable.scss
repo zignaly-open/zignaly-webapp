@@ -1,0 +1,18 @@
+.profitSharingTable {
+  .accountingFilter {
+    margin-left: 50px;
+  }
+
+  [role="toolbar"] {
+    padding: 0 0 0 12px;
+  }
+}
+
+@include media("<=sm") {
+  .profitSharingTable {
+    .accountingFilter {
+      margin-left: auto;
+      margin-right: 12px;
+    }
+  }
+}

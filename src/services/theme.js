@@ -189,6 +189,7 @@ const theme = (darkStyle) => {
       type: darkStyle ? "dark" : "light",
     },
     typography: {
+      fontFamily: "PlexSans, Roboto, Helvetica, Arial, sans-serif",
       h1: {
         // this is for page title eg "Dashboard" (Large Title)
         fontSize: "33px",
