@@ -94,7 +94,6 @@ const TradingView = () => {
   const defaultSymbol = resolveDefaultSymbol();
   const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
   let symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
-  console.log("symbolData", symbols, symbolData, selectedSymbol);
 
   if (!symbolData && symbols) {
     symbolData = symbols[0];
