@@ -6,7 +6,6 @@ require("dotenv").config({
 module.exports = {
   transform: {
     "^.+\\.jsx?$": "<rootDir>/jest-preprocess.js",
-    ".*\\.(yml)$": "yaml-jest",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.([tj]sx?)$",
   moduleNameMapper: {

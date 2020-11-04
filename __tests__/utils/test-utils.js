@@ -3,7 +3,6 @@ import { render as rtlRender } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { store } from "../../src/store/store";
-import translations from "../../src/i18n/translations";
 
 /**
  * Wrap ui with react-intl and react-redux providers
@@ -19,9 +18,7 @@ function render(ui, { locale = "en", ...renderOptions } = {}) {
    */
   function Wrapper({ children }) {
     return (
-      // react-intl with english translations.
-      // It's possible to drop the translations and display the ids only, by using onError={myCustomErrorFunction}
-      <IntlProvider locale={locale} messages={translations.en}>
+      <IntlProvider locale={locale} onError={() => {}}>
         <Provider store={store}>{children}</Provider>
       </IntlProvider>
     );

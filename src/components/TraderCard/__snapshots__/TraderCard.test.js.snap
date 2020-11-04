@@ -46,13 +46,13 @@ Object {
                 >
                   <span>
                     50
-                    $/mo
+                    srv.pricemonth
                   </span>
                 </h4>
                 <h6
                   class="MuiTypography-root price MuiTypography-subtitle1"
                 >
-                  Price
+                  srv.edit.price
                 </h6>
               </div>
             </div>
@@ -62,15 +62,7 @@ Object {
               <span
                 class="MuiTypography-root tradeType MuiTypography-caption"
               >
-                Trades 
-                <b>
-                  BTC
-                </b>
-                 in 
-                <b>
-                  spot
-                </b>
-                 on
+                srv.trades
               </span>
               <img
                 alt="binance"
@@ -140,13 +132,13 @@ Object {
               >
                 <span>
                   50
-                  $/mo
+                  srv.pricemonth
                 </span>
               </h4>
               <h6
                 class="MuiTypography-root price MuiTypography-subtitle1"
               >
-                Price
+                srv.edit.price
               </h6>
             </div>
           </div>
@@ -156,15 +148,7 @@ Object {
             <span
               class="MuiTypography-root tradeType MuiTypography-caption"
             >
-              Trades 
-              <b>
-                BTC
-              </b>
-               in 
-              <b>
-                spot
-              </b>
-               on
+              srv.trades
             </span>
             <img
               alt="binance"
