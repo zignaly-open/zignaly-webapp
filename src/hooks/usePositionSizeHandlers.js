@@ -156,7 +156,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSizePercentage = parseFloat(draftPosition.positionSizePercentage);
 
-    const positionSize = positionSizePercentage * providerAllocatedBalance;
+    const positionSize = (positionSizePercentage * providerAllocatedBalance) / 100;
     setValue("positionSizeAllocated", positionSize.toFixed(8));
   }, [errors, getValues, setValue, providerAllocatedBalance]);
 
