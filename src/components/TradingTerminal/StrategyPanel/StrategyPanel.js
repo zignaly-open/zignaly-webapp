@@ -241,7 +241,7 @@ const StrategyPanel = (props) => {
               <Box display="flex" flexDirection="row">
                 <OutlinedInput
                   className="outlineInput"
-                  inputRef={register({})}
+                  inputRef={register}
                   name="positionSizeAllocated"
                   placeholder={"0"}
                   readOnly={true}
