@@ -24,7 +24,7 @@ module.exports = {
   moduleDirectories: [
     "node_modules",
     // add the directory with the test-utils.js file, for example:
-    "__tests__/utils/", // a utility folder
+    "../__tests__/utils", // a utility folder
     __dirname, // the root directory
   ],
 };
