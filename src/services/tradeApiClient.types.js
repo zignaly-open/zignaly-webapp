@@ -2951,6 +2951,11 @@ export function providerFollowersListResponseTransform(response) {
  * @property {Boolean} realExchangeConnected
  * @property {Boolean} suspended
  * @property {String} lastTransactionId
+ * @property {Number} originalAllocated
+ * @property {String} profitsMode
+ * @property {Number} profitsShare
+ * @property {Number} retain
+ * @property {String} unit
  */
 
 /**
@@ -2966,6 +2971,9 @@ function providerFollowersListItemTransform(providerFollowersListItem) {
   return transformedResponse;
 }
 
+/**
+ * @returns {ProviderFollowersEntity} Provider follower entity.
+ */
 function createProviderFollowersListEmptyEntity() {
   return {
     active: false,
@@ -2973,13 +2981,18 @@ function createProviderFollowersListEmptyEntity() {
     cancelDate: "-",
     code: "-",
     connected: false,
-    email: "0",
+    email: "",
     lastTransactionId: "-",
     name: "",
     profitsFromClosedBalance: "",
     realExchangeConnected: false,
     suspended: false,
     userId: "",
+    originalAllocated: 0,
+    profitsMode: "",
+    profitsShare: 0,
+    retain: 0,
+    unit: "",
   };
 }
 
