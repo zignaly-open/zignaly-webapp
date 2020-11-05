@@ -1,10 +1,7 @@
-import client from "../src/services/tradeApiClient";
+import client from "../services/tradeApiClient";
 // import faker from "faker";
 import { assert } from "chai";
-import {
-  POSITION_SIDE_LONG,
-  POSITION_ENTRY_TYPE_LIMIT,
-} from "../src/services/tradeApiClient.types";
+import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "../services/tradeApiClient.types";
 import { positionEntityStructureAssertions } from "./utils/positionAssertions";
 
 describe("Consume tradeApiClient service", () => {

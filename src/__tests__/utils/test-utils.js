@@ -2,7 +2,7 @@ import React from "react";
 import { render as rtlRender } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
-import { store } from "../../src/store/store";
+import { store } from "../../store/store";
 
 /**
  * Wrap ui with react-intl and react-redux providers

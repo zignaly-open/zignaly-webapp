@@ -22,8 +22,8 @@ module.exports = {
   setupFiles: ["<rootDir>/loadershim.js", "<rootDir>/jest.setup.js"],
   moduleDirectories: [
     "node_modules",
-    // add the directory with the test-utils.js file, for example:
-    "../__tests__/utils", // a utility folder
     __dirname, // the root directory
+    "src",
+    "__tests__/utils",
   ],
 };

@@ -126,6 +126,7 @@
     "identity-obj-proxy": "^3.0.0",
     "include-media": "^1.4.9",
     "jest": "^26.6.3",
+    "miragejs": "^0.1.41",
     "prettier": "^2.1.1",
     "semantic-release": "^17.2.1",
     "semantic-release-jira-releases": "^0.7.2",

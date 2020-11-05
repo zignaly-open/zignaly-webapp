@@ -1,0 +1,412 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="MuiBox-root MuiBox-root-1 providersLayout"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-2 providersHeader"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-3 titleBox"
+          >
+            <h1
+              class="MuiTypography-root MuiTypography-h1"
+            >
+              menu.copytraders
+            </h1>
+            <h4
+              class="subHeader"
+            >
+              copyt.subtitle
+              
+            </h4>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-4 subNavHeader"
+          >
+            <a
+              href="/copyTraders"
+            >
+              srv.browse
+            </a>
+            <a
+              href="/copyTraders/analytics"
+            >
+              srv.analytics
+            </a>
+            <div
+              class="MuiBox-root MuiBox-root-5 settings"
+            >
+              <img
+                class="icon iconPurple"
+                src="test-file-stub"
+                title="Filter"
+              />
+              <img
+                class="icon iconPurple"
+                src="test-file-stub"
+                title="Sort"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root MuiBox-root-6 pageContent"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-7 ctBrowsePage"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-8 providersBrowse"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-9 providersSort"
+              />
+              <div
+                class="MuiBox-root MuiBox-root-10 timeFrameSelectRow"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-11 providersCountBox"
+                >
+                  <h3
+                    class="MuiTypography-root providersCount MuiTypography-h3"
+                  >
+                    0 copyt.traders
+                  </h3>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-12 timeFrameSelectBox"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-13 selectTimeFrame"
+                  >
+                    <div
+                      class="MuiBox-root MuiBox-root-14 customSelect"
+                    >
+                      <label>
+                        <p
+                          class="MuiTypography-root callout2 selectLabel MuiTypography-body1"
+                        >
+                          timeframe.returns
+                        </p>
+                      </label>
+                      <div
+                        class="MuiFormControl-root callout customSelectControl"
+                      >
+                        <div
+                          class="MuiInputBase-root MuiOutlinedInput-root select MuiInputBase-formControl"
+                        >
+                          <div
+                            aria-haspopup="listbox"
+                            class="MuiSelect-root callout1 MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+                            role="button"
+                            tabindex="0"
+                          >
+                            timeframe.days.90
+                          </div>
+                          <input
+                            aria-hidden="true"
+                            class="MuiSelect-nativeInput"
+                            tabindex="-1"
+                            value="90"
+                          />
+                          <svg
+                            aria-hidden="true"
+                            class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                            focusable="false"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M7 10l5 5 5-5z"
+                            />
+                          </svg>
+                          <fieldset
+                            aria-hidden="true"
+                            class="PrivateNotchedOutline-root-15 MuiOutlinedInput-notchedOutline"
+                            style="padding-left: 8px;"
+                          >
+                            <legend
+                              class="PrivateNotchedOutline-legend-16"
+                              style="width: 0.01px;"
+                            >
+                              <span>
+                                ​
+                              </span>
+                            </legend>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-19 providersList"
+              >
+                <div
+                  class="MuiCircularProgress-root loader MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                  role="progressbar"
+                  style="width: 40px; height: 40px;"
+                >
+                  <svg
+                    class="MuiCircularProgress-svg"
+                    viewBox="22 22 44 44"
+                  >
+                    <circle
+                      class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                      cx="44"
+                      cy="44"
+                      fill="none"
+                      r="20.2"
+                      stroke-width="3.6"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root MuiBox-root-20 faq"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-21"
+          />
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="MuiBox-root MuiBox-root-1 providersLayout"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-2 providersHeader"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-3 titleBox"
+        >
+          <h1
+            class="MuiTypography-root MuiTypography-h1"
+          >
+            menu.copytraders
+          </h1>
+          <h4
+            class="subHeader"
+          >
+            copyt.subtitle
+            
+          </h4>
+        </div>
+        <div
+          class="MuiBox-root MuiBox-root-4 subNavHeader"
+        >
+          <a
+            href="/copyTraders"
+          >
+            srv.browse
+          </a>
+          <a
+            href="/copyTraders/analytics"
+          >
+            srv.analytics
+          </a>
+          <div
+            class="MuiBox-root MuiBox-root-5 settings"
+          >
+            <img
+              class="icon iconPurple"
+              src="test-file-stub"
+              title="Filter"
+            />
+            <img
+              class="icon iconPurple"
+              src="test-file-stub"
+              title="Sort"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-6 pageContent"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-7 ctBrowsePage"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-8 providersBrowse"
+          >
+            <div
+              class="MuiBox-root MuiBox-root-9 providersSort"
+            />
+            <div
+              class="MuiBox-root MuiBox-root-10 timeFrameSelectRow"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-11 providersCountBox"
+              >
+                <h3
+                  class="MuiTypography-root providersCount MuiTypography-h3"
+                >
+                  0 copyt.traders
+                </h3>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-12 timeFrameSelectBox"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-13 selectTimeFrame"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-14 customSelect"
+                  >
+                    <label>
+                      <p
+                        class="MuiTypography-root callout2 selectLabel MuiTypography-body1"
+                      >
+                        timeframe.returns
+                      </p>
+                    </label>
+                    <div
+                      class="MuiFormControl-root callout customSelectControl"
+                    >
+                      <div
+                        class="MuiInputBase-root MuiOutlinedInput-root select MuiInputBase-formControl"
+                      >
+                        <div
+                          aria-haspopup="listbox"
+                          class="MuiSelect-root callout1 MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+                          role="button"
+                          tabindex="0"
+                        >
+                          timeframe.days.90
+                        </div>
+                        <input
+                          aria-hidden="true"
+                          class="MuiSelect-nativeInput"
+                          tabindex="-1"
+                          value="90"
+                        />
+                        <svg
+                          aria-hidden="true"
+                          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                          focusable="false"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M7 10l5 5 5-5z"
+                          />
+                        </svg>
+                        <fieldset
+                          aria-hidden="true"
+                          class="PrivateNotchedOutline-root-15 MuiOutlinedInput-notchedOutline"
+                          style="padding-left: 8px;"
+                        >
+                          <legend
+                            class="PrivateNotchedOutline-legend-16"
+                            style="width: 0.01px;"
+                          >
+                            <span>
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-19 providersList"
+            >
+              <div
+                class="MuiCircularProgress-root loader MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                role="progressbar"
+                style="width: 40px; height: 40px;"
+              >
+                <svg
+                  class="MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.2"
+                    stroke-width="3.6"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-20 faq"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-21"
+        />
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
