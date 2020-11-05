@@ -1373,6 +1373,7 @@ export function positionItemTransform(positionItem) {
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
     liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
     markPrice: safeParseFloat(positionItem.markPrice),
+    takeProfitTargetsCountSuccess: safeParseFloat(positionItem.takeProfitTargetsCountSuccess),
   });
 
   const risk = calculateRisk(positionEntity);
