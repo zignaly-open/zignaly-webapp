@@ -278,15 +278,14 @@ const StrategyForm = (props) => {
    * @returns {any} Create position payload.
    */
   const composePositionPayload = (draftPosition) => {
-    const { quote, base } = selectedSymbol;
     const exchangeName = selectedExchange.exchangeName || selectedExchange.name || "";
     const buyTTL = parseFloat(draftPosition.entryExpiration);
     const sellTTL = parseFloat(draftPosition.autoclose);
 
     return {
       token: storeSession.tradeApi.accessToken,
-      pair: `${base}  ${quote}`,
-      positionSizeQuote: quote,
+      pair: selectedSymbol.zignalyId,
+      positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
       buyTTL: minToSeconds(buyTTL) || false,
