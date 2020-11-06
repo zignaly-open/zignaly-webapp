@@ -139,6 +139,7 @@ const TradingView = () => {
 
   const loadDependencies = () => {
     setSymbols(null);
+    setSelectedSymbol(null);
     getMarketData();
 
     const checkExist = setInterval(() => {
