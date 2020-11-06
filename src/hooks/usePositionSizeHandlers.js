@@ -156,7 +156,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSizePercentage = parseFloat(draftPosition.positionSizePercentage);
 
-    const positionSize = positionSizePercentage * providerAllocatedBalance;
+    const positionSize = (positionSizePercentage * providerAllocatedBalance) / 100;
     setValue("positionSizeAllocated", positionSize.toFixed(8));
   }, [errors, getValues, setValue, providerAllocatedBalance]);
 
@@ -165,9 +165,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const units = parseFloat(draftPosition.units);
     if (isNaN(units)) return;
 
-    let positionSize = units * currentPrice * selectedSymbol.multiplier;
+    let positionSize = units * currentPrice;
     if (selectedSymbol.contractType === "inverse") {
       positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+    } else if (
+      selectedSymbol.contractType === "quanto" ||
+      selectedSymbol.contractType === "linear"
+    ) {
+      positionSize *= selectedSymbol.multiplier;
     }
 
     setValue("positionSize", positionSize.toFixed(8));

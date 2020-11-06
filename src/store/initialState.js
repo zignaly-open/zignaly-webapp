@@ -306,6 +306,10 @@ const initialState = {
         "cancelDate",
         "code",
         "realExchangeConnected",
+        "profitsMode",
+        "originalAllocated",
+        "profitsShare",
+        "retain",
       ],
       openPositions: [
         "openDateReadable",

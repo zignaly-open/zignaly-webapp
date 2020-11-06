@@ -457,7 +457,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getClosedPositions";
+    const endpointPath = "/fe/api.php?action=getSoldPositions";
     const responseData = await this.doRequest(
       endpointPath,
       {

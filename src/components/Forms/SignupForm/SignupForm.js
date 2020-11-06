@@ -141,7 +141,7 @@ const SignupForm = () => {
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <Checkbox
               className="checkboxInput"
-              // error={errors.terms ? "true" : "false"}
+              defaultChecked={true}
               inputRef={register({ required: true })}
               name="terms"
               onChange={() => clearErrors("terms")}

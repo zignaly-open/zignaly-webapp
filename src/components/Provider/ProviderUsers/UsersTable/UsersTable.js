@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
 import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
-import { formatDate } from "../../../../utils/format";
+import { formatDate, formatFloat, formatFloat2Dec } from "../../../../utils/format";
 import { ConfirmDialog } from "../../../Dialogs";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -218,6 +218,57 @@ const UsersTable = ({
   ];
 
   /**
+   * @type {Array<MUIDataTableColumn>} Table columns
+   */
+  const profitSharingExtraColumns = [
+    {
+      name: "profitsMode",
+      label: "col.users.profitsmode",
+      options: {
+        display: "true",
+        viewColumns: true,
+      },
+    },
+    {
+      name: "originalAllocated",
+      label: "col.users.originallyallocated",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRenderLite: (dataIndex) => {
+          return (
+            <span>{`${list[dataIndex].unit} ${formatFloat(
+              list[dataIndex].originalAllocated,
+            )}`}</span>
+          );
+        },
+      },
+    },
+    {
+      name: "profitsShare",
+      label: "col.users.profitshare",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRender: (val) => {
+          return <span>{`${formatFloat2Dec(val)}%`}</span>;
+        },
+      },
+    },
+    {
+      name: "retain",
+      label: "col.users.retain",
+      options: {
+        display: "true",
+        viewColumns: true,
+        customBodyRenderLite: (dataIndex) => {
+          return <span>{formatFloat2Dec(list[dataIndex].retain)}</span>;
+        },
+      },
+    },
+  ];
+
+  /**
    * Exclude data table column display.
    *
    * @param {Array<MUIDataTableColumn>} columnList Table columns list.
@@ -243,6 +294,8 @@ const UsersTable = ({
     excludedColumns.forEach((item) => {
       excludeDataTableColumn(columns, item);
     });
+
+    columns = columns.concat(profitSharingExtraColumns);
   }
 
   /**

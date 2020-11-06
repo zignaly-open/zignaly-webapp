@@ -19,6 +19,7 @@ import "./TradingView.scss";
 
 /**
  * @typedef {any} TVWidget
+ * @typedef {import('../../../services/tradeApiClient.types').MarketSymbol} MarketSymbol
  * @typedef {import('../../../services/tradeApiClient.types').MarketSymbolsCollection} MarketSymbolsCollection
  */
 
@@ -75,46 +76,58 @@ const TradingView = () => {
     return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
   };
 
+  const exchangeName = resolveExchangeName();
+
+  /**
+   * Get symbol data
+   * @param {string} symbol Symbol
+   * @returns {MarketSymbol} Symbol data
+   */
+  const resolveSymbolData = (symbol) =>
+    symbol && symbols ? symbols.find((d) => d.short === symbol) : null;
+
   /**
    * Resolve last selected or default symbol for selected exchange.
    *
    * In case of not default symbol for the exchange resolves BTCUSDT.
    *
-   * @returns {string} Symbol ID.
+   * @returns {MarketSymbol} Symbol ID.
    */
-  const resolveDefaultSymbol = () => {
-    return (
-      storeSettings.tradingTerminal.pair[storeSettings.selectedExchange.exchangeId] ||
-      defaultExchangeSymbol[exchangeName] ||
-      defaultExchangeSymbol.fallback
-    );
+  const defaultSelectedSymbol = () => {
+    const symbolOptions = [
+      storeSettings.tradingTerminal.pair[storeSettings.selectedExchange.exchangeId],
+      defaultExchangeSymbol[exchangeName],
+      defaultExchangeSymbol.fallback,
+    ];
+    for (const s of symbolOptions) {
+      if (s) {
+        const symbolData = resolveSymbolData(s);
+        if (symbolData) {
+          return symbolData;
+        }
+      }
+    }
+    return null;
   };
-
-  const exchangeName = resolveExchangeName();
-  const defaultSymbol = resolveDefaultSymbol();
-  const [selectedSymbol, setSelectedSymbol] = useState(defaultSymbol);
-  let symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
-  console.log("symbolData", symbols, symbolData, selectedSymbol);
-
-  if (!symbolData && symbols) {
-    symbolData = symbols[0];
-  }
+  const [selectedSymbol, setSelectedSymbol] = useState(null);
+  useEffect(() => {
+    setSelectedSymbol(defaultSelectedSymbol());
+  }, [symbols]);
 
   const [selectedExchangeId, setSelectedExchangeId] = useState(
     storeSettings.selectedExchange.internalId,
   );
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
-  const isLoading = tradingViewWidget === null || symbols === null;
+  const isLoading = tradingViewWidget === null || selectedSymbol === null;
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
     if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
       if (tradingViewWidget) {
-        const newDefaultSymbol = resolveDefaultSymbol();
         tradingViewWidget.remove();
         setTradingViewWidget(null);
         setLastPrice(null);
-        setSelectedSymbol(newDefaultSymbol);
+        setSelectedSymbol(defaultSelectedSymbol());
         bootstrapWidget();
       }
 
@@ -126,6 +139,7 @@ const TradingView = () => {
 
   const loadDependencies = () => {
     setSymbols(null);
+    setSelectedSymbol(null);
     getMarketData();
 
     const checkExist = setInterval(() => {
@@ -141,13 +155,13 @@ const TradingView = () => {
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    if (!libraryReady || tradingViewWidget) {
+    if (!libraryReady || tradingViewWidget || !selectedSymbol) {
       return () => {};
     }
 
     const widgetOptions = createWidgetOptions(
       exchangeName,
-      selectedSymbol,
+      selectedSymbol.short,
       storeSettings.darkStyle,
     );
 
@@ -158,7 +172,7 @@ const TradingView = () => {
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, tradingViewWidget]);
+  useEffect(bootstrapWidget, [libraryReady, tradingViewWidget, selectedSymbol]);
 
   const changeTheme = () => {
     const reloadWidget = () => {
@@ -183,8 +197,13 @@ const TradingView = () => {
   // Force initial price notification.
   const initDataFeedSymbol = () => {
     const checkExist = setInterval(() => {
-      if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
-        handleSymbolChange(defaultSymbol);
+      if (
+        tradingViewWidget &&
+        tradingViewWidget.iframe &&
+        tradingViewWidget.iframe.contentWindow &&
+        selectedSymbol
+      ) {
+        handleSymbolChange(selectedSymbol.short);
         clearInterval(checkExist);
       }
     }, 100);
@@ -204,7 +223,7 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(selectedOption);
+    setSelectedSymbol(resolveSymbolData(selectedOption));
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
       storeSettings.selectedExchange.exchangeType === "futures"
@@ -242,7 +261,7 @@ const TradingView = () => {
           {!isLoading && (
             <TradingViewHeader
               handleSymbolChange={handleSymbolChange}
-              selectedSymbol={selectedSymbol}
+              selectedSymbol={selectedSymbol.short}
               symbolsList={symbols}
             />
           )}
@@ -267,7 +286,7 @@ const TradingView = () => {
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}
-                selectedSymbol={symbolData}
+                selectedSymbol={selectedSymbol}
                 tradingViewWidget={tradingViewWidget}
               />
             )}
