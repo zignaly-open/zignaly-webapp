@@ -32,7 +32,6 @@ const CountrySelect = ({ onChange, defaultValue }) => {
         defaultValue[a].id = Math.random();
         defaultValue[a].delete = true;
       }
-      defaultValue[defaultValue.length - 1].delete = false;
       setValues(defaultValue);
     }
   };
