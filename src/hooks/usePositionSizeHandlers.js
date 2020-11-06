@@ -165,9 +165,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const units = parseFloat(draftPosition.units);
     if (isNaN(units)) return;
 
-    let positionSize = units * currentPrice * selectedSymbol.multiplier;
+    let positionSize = units * currentPrice;
     if (selectedSymbol.contractType === "inverse") {
       positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+    } else if (
+      selectedSymbol.contractType === "quanto" ||
+      selectedSymbol.contractType === "linear"
+    ) {
+      positionSize *= selectedSymbol.multiplier;
     }
 
     setValue("positionSize", positionSize.toFixed(8));
