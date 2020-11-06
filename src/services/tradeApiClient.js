@@ -364,6 +364,7 @@ class TradeApiClient {
     try {
       const startTime = Date.now();
       const response = await fetch(requestUrl, options);
+      console.log(requestUrl);
       const elapsedTime = Date.now() - startTime;
       this.setRequestAverageLatency(cacheId, elapsedTime);
 
@@ -696,7 +697,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProvider";
+    // const endpointPath = "/fe/api.php?action=getProvider";
+    const endpointPath = "/test";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerGetResponseTransform(responseData);

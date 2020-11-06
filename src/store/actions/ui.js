@@ -36,6 +36,7 @@ export const showLoader = (flag) => {
  * @returns {AnyAction} Action object.
  */
 export const showErrorAlert = (error) => {
+  console.error(error);
   return {
     type: SHOW_ERROR_ALERT,
     payload: {

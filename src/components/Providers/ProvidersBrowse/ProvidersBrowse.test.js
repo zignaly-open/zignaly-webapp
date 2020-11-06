@@ -1,9 +1,9 @@
 import React from "react";
 import ProvidersBrowse from "./ProvidersBrowse";
 import CopyTradersBrowse from "pages/copyTraders/browse/index.js";
-import { render, screen } from "test-utils";
+import { render, screen, waitForElement, waitFor } from "test-utils";
 import { makeServer } from "utils/server";
-import providers from "../../../data/providers";
+import providers from "__tests__/fixtures/providers";
 import { providersResponseTransform } from "services/tradeApiClient.types";
 
 // it("renders correctly", () => {
@@ -31,7 +31,8 @@ afterEach(() => {
   server.shutdown();
 });
 
-it.only("renders correctly", () => {
+it("renders correctly", async () => {
   const tree = render(<CopyTradersBrowse path="/copyTraders" />);
+  await waitFor(() => screen.findByText("srv.openpos"));
   expect(tree).toMatchSnapshot();
 });

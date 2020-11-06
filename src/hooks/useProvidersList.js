@@ -270,6 +270,7 @@ const useProvidersList = (options) => {
     tradeApi
       .providersGet(payload)
       .then((responseData) => {
+        console.log(responseData);
         const uniqueProviders = uniqBy(responseData, "id");
         setProviders((s) => ({
           ...s,
