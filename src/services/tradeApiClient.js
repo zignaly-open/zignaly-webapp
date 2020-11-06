@@ -1,4 +1,4 @@
-import fetch from "cross-fetch";
+// import fetch from "cross-fetch";
 import cache from "memory-cache";
 import { createHash } from "crypto";
 import { navigateLogin } from "./navigation";
@@ -364,7 +364,6 @@ class TradeApiClient {
     try {
       const startTime = Date.now();
       const response = await fetch(requestUrl, options);
-      console.log(requestUrl);
       const elapsedTime = Date.now() - startTime;
       this.setRequestAverageLatency(cacheId, elapsedTime);
 

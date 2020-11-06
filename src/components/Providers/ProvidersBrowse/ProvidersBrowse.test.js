@@ -33,6 +33,9 @@ afterEach(() => {
 
 it("renders correctly", async () => {
   const tree = render(<CopyTradersBrowse path="/copyTraders" />);
-  await waitFor(() => screen.findByText("srv.openpos"));
+  //   const openpos = await screen.findByText("srv.opesnpos");
+  // expect(openpos).toBeDefined();
+  expect(await screen.findByText("srv.opesnpos")).toBeInTheDocument();
+
   expect(tree).toMatchSnapshot();
-});
+}, 500000);
