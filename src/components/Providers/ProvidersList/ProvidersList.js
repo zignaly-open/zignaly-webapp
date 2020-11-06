@@ -19,6 +19,7 @@ import "./ProvidersList.scss";
  */
 const ProvidersList = (props) => {
   const { providers, showSummary, timeFrame } = props;
+  console.log(providers);
   return (
     <Box
       className="providersList"

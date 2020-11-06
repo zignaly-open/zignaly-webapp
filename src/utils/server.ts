@@ -32,30 +32,16 @@ export function makeServer({ environment = "test" } = {}) {
     //   }),
     // },
 
-    seeds(server) {
+    seeds() {
       server.loadFixtures();
-      server.create("user", { name: "Bob" });
-      server.create("user", { name: "Alice" });
+      //   server.create("user", { name: "Bob" });
+      //   server.create("user", { name: "Alice" });
       //   server.createList("provider", 5);
     },
 
     routes() {
-      // this.urlPrefix = "http://api.zignaly.lndo.site/fe";
-      this.urlPrefix = "http://api.zignaly.lndo.site";
+      this.urlPrefix = process.env.GATSBY_TRADEAPI_URL;
       this.namespace = "/fe";
-
-      //   this.post("/api.php?action=getProviderList2", (schema) => {
-      //     console.log("omg");
-      //     return schema.providers.all();
-      //   });
-
-      //   this.post("/api.php?action=getQuoteAssets", (schema) => {
-      //     return ["USDT", "BTC", "USD", "BNB"];
-      //   });
-
-      //   this.post("/api.php?action=getExchangeList", (schema) => {
-      //     return schema.exchanges.all();
-      //   });
 
       this.post("/api.php", (schema, request) => {
         let response = {};
@@ -64,10 +50,10 @@ export function makeServer({ environment = "test" } = {}) {
             response = ["USDT", "BTC", "USD", "BNB"];
             break;
           case "getProviderList2":
-            response = schema.providers.all();
+            response = schema.db.providers;
             break;
           case "getExchangeList":
-            response = schema.exchanges.all();
+            response = schema.db.exchanges;
             break;
           default:
             break;
@@ -75,13 +61,6 @@ export function makeServer({ environment = "test" } = {}) {
         // Return response and force status 200
         return new Response(200, {}, response);
       });
-
-      //   this.post("/test", (schema) => {
-      //     console.log("TESTTT");
-
-      //     return schema.exchanges.all();
-      //   });
-      //   this.get("/movies");
     },
   });
 

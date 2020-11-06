@@ -1,9 +1,10 @@
 import React from "react";
 import CopyTradersBrowse from "pages/copyTraders/browse/index.js";
-import { render, screen } from "test-utils";
+import { render, screen, waitForElementToBeRemoved } from "test-utils";
 import { makeServer } from "utils/server";
+import type { Server } from "miragejs/server";
 
-let server;
+let server: Server;
 
 beforeEach(() => {
   server = makeServer();
@@ -16,6 +17,8 @@ afterEach(() => {
 it("renders copy traders correctly", async () => {
   const tree = render(<CopyTradersBrowse path="/copyTraders" />);
 
-  await screen.findAllByText("srv.trades");
+  //   await screen.findAllByText("srv.trades");
+  await waitForElementToBeRemoved(() => screen.getByRole("progressbar"));
+
   expect(tree).toMatchSnapshot();
 });
