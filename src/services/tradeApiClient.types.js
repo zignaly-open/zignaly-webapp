@@ -1724,8 +1724,8 @@ export function createExchangeConnectionEmptyEntity() {
 
 /**
  * @typedef {Object} UserBalanceEntity
- * @property {Number} pnlBTC
- * @property {Number} pnlUSDT
+ * @property {Number} totalPnlUSDT
+ * @property {Number} totalPnlBTC
  * @property {Number} totalBTC
  * @property {Number} totalFreeBTC
  * @property {Number} totalFreeUSDT
@@ -1760,8 +1760,8 @@ export function userBalanceResponseTransform(response) {
 
 export function createEmptyUserBalanceEntity() {
   return {
-    pnlBTC: 0,
-    pnlUSDT: 0,
+    totalPnlBTC: 0,
+    totalPnlUSDT: 0,
     totalBTC: 0,
     totalFreeBTC: 0,
     totalFreeUSDT: 0,
