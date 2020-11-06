@@ -149,12 +149,18 @@ const SocialSelect = ({ onChange, defaultValue, onError }) => {
               <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
             )}
           </Box>
-          {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
-          {obj.delete && (
-            <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
-          )}
+          <Box className="iconBox">
+            {obj.delete && (
+              <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
+            )}
+          </Box>
         </Box>
       ))}
+      <Box className="addActionBox" display="flex" flexDirection="row" justifyContent="flex-end">
+        <Box className="iconBox">
+          <AddCircleOutlineIcon className="icon add" onClick={addField} />
+        </Box>
+      </Box>
     </Box>
   );
 };

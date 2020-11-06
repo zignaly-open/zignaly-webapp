@@ -146,12 +146,18 @@ const CountrySelect = ({ onChange, defaultValue }) => {
             value={obj.name}
             variant="outlined"
           />
-          {!obj.delete && <AddCircleOutlineIcon className="icon add" onClick={addField} />}
-          {obj.delete && (
-            <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
-          )}
+          <Box className="iconBox">
+            {obj.delete && (
+              <HighlightOffIcon className="icon delete" onClick={() => removeField(obj.id)} />
+            )}
+          </Box>
         </Box>
       ))}
+      <Box className="addActionBox" display="flex" flexDirection="row" justifyContent="flex-end">
+        <Box className="iconBox">
+          <AddCircleOutlineIcon className="icon add" onClick={addField} />
+        </Box>
+      </Box>
     </Box>
   );
 };
