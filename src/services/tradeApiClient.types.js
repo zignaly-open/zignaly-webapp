@@ -1755,7 +1755,12 @@ export function userBalanceResponseTransform(response) {
     throw new Error("Response must be an object with different propteries.");
   }
 
-  return assign(createEmptyUserBalanceEntity(), response);
+  return assign(createEmptyUserBalanceEntity(), response, {
+    // @ts-ignore
+    totalUSDT: response["1USDT"] || response.totalUSDT || 0,
+    // @ts-ignore
+    totalBTC: response["1BTC"] || response.totalBTC || 0,
+  });
 }
 
 export function createEmptyUserBalanceEntity() {
