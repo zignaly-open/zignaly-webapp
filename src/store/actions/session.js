@@ -113,6 +113,8 @@ export const registerUser = (payload, setLoading) => {
 export const loadAppUserData = (token) => {
   return async (dispatch) => {
     if (token) {
+      console.log("2");
+
       const authorizationPayload = {
         token,
       };

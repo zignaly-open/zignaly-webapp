@@ -30,6 +30,7 @@ const settings = (state = initialState.session, action) => {
 
   switch (action.type) {
     case START_TRADE_API_SESSION:
+      console.log(action);
       newState.tradeApi = { accessToken: action.payload.token };
       break;
     case END_TRADE_API_SESSION:

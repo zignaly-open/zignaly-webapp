@@ -696,8 +696,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerGet(payload) {
-    // const endpointPath = "/fe/api.php?action=getProvider";
-    const endpointPath = "/test";
+    const endpointPath = "/fe/api.php?action=getProvider";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return providerGetResponseTransform(responseData);
