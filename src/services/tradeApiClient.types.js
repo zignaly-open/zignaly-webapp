@@ -495,6 +495,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} liquidationPrice
  * @property {Number} markPrice
  * @property {string} markPriceStyle
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
+ * @property {string} short Short symbol name displayed in Zignaly.
  */
 
 /**
@@ -603,7 +606,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} longDesc
  * @property {string|boolean} fee
  * @property {number} price
- * @property {boolean} website
+ * @property {boolean|string} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
  * @property {boolean} disable False if user is copying
@@ -1619,6 +1622,9 @@ function createEmptyPositionEntity() {
     liquidationPrice: 0,
     markPrice: 0,
     markPriceStyle: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
   };
 }
 

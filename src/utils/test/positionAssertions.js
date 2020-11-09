@@ -1,7 +1,7 @@
 import { assert } from "chai";
 
 /**
- * @typedef {import("../../src/services/tradeApiClient.types").PositionEntity} PositionEntity
+ * @typedef {import("../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**

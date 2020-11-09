@@ -9,6 +9,7 @@ import { navigateLogin } from "./src/services/navigation";
 import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
+import "whatwg-fetch";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
