@@ -154,6 +154,7 @@ const TraderHeaderInfo = ({ provider }) => {
             ) : (
               <FormattedMessage id="copyt.copytrading" />
             )}
+            {provider.profitSharing && ` / ${provider.profitsMode}`}
           </b>
         </Typography>
       )}
