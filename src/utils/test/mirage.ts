@@ -1,9 +1,9 @@
 import { createServer, Model, Factory, RestSerializer, Response } from "miragejs";
-import providers from "../__tests__/fixtures/providers";
-import exchanges from "../__tests__/fixtures/exchanges";
-import userExchanges from "../__tests__/fixtures/userExchanges";
-import userData from "../__tests__/fixtures/userData";
-import pairs from "../__tests__/fixtures/pairs";
+import providers from "./fixtures/providers";
+import exchanges from "./fixtures/exchanges";
+import userExchanges from "./fixtures/userExchanges";
+import userData from "./fixtures/userData";
+import pairs from "./fixtures/pairs";
 
 let ApplicationSerializer = RestSerializer.extend({
   root: false,

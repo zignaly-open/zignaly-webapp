@@ -1,40 +1,40 @@
 {
-    "compilerOptions": {
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "esnext",
-        "allowJs": true,
-        "checkJs": true,
-        "alwaysStrict": true,
-        "strictNullChecks": false,
-        "declaration": false,
-        "emitDeclarationOnly": false,
-        "outDir": "types",
-        "jsx": "react",
-        "lib": [
-            "dom",
-            "esnext"
-        ],
-        "removeComments": false,
-        "pretty": true,
-        "resolveJsonModule": true,
-        "baseUrl": "src",
-        "paths": {
-            "test-utils": [
-                "__tests__/utils/test-utils"
-            ]
-        },
-        "moduleResolution": "node",
-    },
-    "include": [
-        "./src/**/*",
-        "types/global.d.ts",
-        "static/widgets/dashly.js"
+  "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "esnext",
+    "allowJs": true,
+    "checkJs": true,
+    "alwaysStrict": true,
+    "strictNullChecks": false,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "outDir": "types",
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "esnext"
     ],
-    "typeRoots": [
-        "./src/types",
-        "./node_modules/@types"
-    ]
+    "removeComments": false,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "test-utils": [
+        "utils/test/test-utils"
+      ]
+    },
+    "moduleResolution": "node",
+  },
+  "include": [
+    "./src/**/*",
+    "types/global.d.ts",
+    "static/widgets/dashly.js"
+  ],
+  "typeRoots": [
+    "./src/types",
+    "./node_modules/@types"
+  ]
 }

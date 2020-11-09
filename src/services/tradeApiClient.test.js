@@ -1,8 +1,8 @@
-import client from "../services/tradeApiClient";
+import client from "./tradeApiClient";
 // import faker from "faker";
 import { assert } from "chai";
-import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "../services/tradeApiClient.types";
-import { positionEntityStructureAssertions } from "./utils/positionAssertions";
+import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "./tradeApiClient.types";
+import { positionEntityStructureAssertions } from "../utils/test/positionAssertions";
 
 describe("Consume tradeApiClient service", () => {
   // Shared user and access token across scenarios.

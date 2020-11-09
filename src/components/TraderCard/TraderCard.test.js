@@ -1,7 +1,7 @@
 import React from "react";
 import TraderCard from "./TraderCard";
-import { render } from "__tests__/utils/test-utils";
-import providers from "__tests__/fixtures/providers";
+import { render } from "test-utils";
+import providers from "utils/test/fixtures/providers";
 import { providersResponseTransform } from "services/tradeApiClient.types";
 
 it("renders correctly", () => {

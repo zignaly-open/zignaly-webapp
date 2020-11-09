@@ -24,6 +24,6 @@ module.exports = {
     "node_modules",
     __dirname, // the root directory
     "src",
-    "__tests__/utils",
+    "src/utils/test",
   ],
 };
