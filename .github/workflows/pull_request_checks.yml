@@ -24,6 +24,4 @@ jobs:
           GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
           GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
-        run: |
-          STAGE=test jest -- "tradeApiClient"
-          jest --testPathIgnorePatterns "tradeApiClient"
+        run: npm test
