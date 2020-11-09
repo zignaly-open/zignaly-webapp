@@ -12,15 +12,16 @@ import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
 
 /**
+ * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {DefaultProviderGetObject} provider
  */
 
 /**
  * Trader Header Info compoennt for CT profile.
  *
  * @param {DefaultProps} props Default props.
- * @returns {JSX.Element} Component JSX.
+ * @returns {JSX.Element} JSX Element JSX.
  */
 const TraderHeaderInfo = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
