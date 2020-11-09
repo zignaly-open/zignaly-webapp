@@ -155,10 +155,20 @@ const UsersTable = ({
     {
       name: "allocatedBalance",
       label: "col.users.allocatedbalance",
+      options: {
+        customBodyRender: (val) => {
+          return <span>{formatFloat(val)}</span>;
+        },
+      },
     },
     {
       name: "profitsFromClosedBalance",
       label: "col.users.profits",
+      options: {
+        customBodyRender: (val) => {
+          return <span>{formatFloat(val)}</span>;
+        },
+      },
     },
     {
       name: "code",
