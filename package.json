@@ -177,8 +177,9 @@
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
-    "test": "STAGE=test jest -- \"tradeApiClient\"; jest --testPathIgnorePatterns \"tradeApiClient\" --coverage",
-    "test:coverage": "STAGE=test jest -- \"tradeApiClient\"; jest --testPathIgnorePatterns \"tradeApiClient\" --coverage",
+    "test": "STAGE=test jest -- tradeApiClient; npm run test:ui",
+    "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
+    "test:coverage": "npm run test:ui -- --coverage",
     "semantic-release": "semantic-release"
   }
 }
