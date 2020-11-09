@@ -1,0 +1,1338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders trading terminal correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="MuiBox-root MuiBox-root-1 tradingTerminal"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-5 controlsBar"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-6 symbolsSelector"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              terminal.browsecoins
+            </p>
+            <div
+              class="MuiBox-root MuiBox-root-7 customSelect"
+            >
+              
+              <div
+                class="MuiFormControl-root callout customSelectControl"
+              >
+                <div
+                  aria-expanded="false"
+                  class="MuiAutocomplete-root searchRoot MuiAutocomplete-hasPopupIcon"
+                  role="combobox"
+                >
+                  <div
+                    class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+                  >
+                    <div
+                      class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot searchInputRoot callout1 MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        aria-invalid="false"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input searchInput MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                        id="mui-61935"
+                        spellcheck="false"
+                        type="text"
+                        value="BTC/USDT"
+                      />
+                      <div
+                        class="MuiAutocomplete-endAdornment"
+                      >
+                        <button
+                          aria-label="Open"
+                          class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                          tabindex="-1"
+                          title="Open"
+                          type="button"
+                        >
+                          <span
+                            class="MuiIconButton-label"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="MuiSvgIcon-root"
+                              focusable="false"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                d="M7 10l5 5 5-5z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            class="MuiTouchRipple-root"
+                          />
+                        </button>
+                      </div>
+                      <fieldset
+                        aria-hidden="true"
+                        class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                        style="padding-left: 8px;"
+                      >
+                        <legend
+                          class="PrivateNotchedOutline-legend-9"
+                          style="width: 0.01px;"
+                        >
+                          <span>
+                            ​
+                          </span>
+                        </legend>
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root MuiBox-root-2 tradingViewContainer"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-4 tradingViewChart"
+            id="trading_view_chart"
+          />
+          <div
+            class="MuiBox-root MuiBox-root-12 strategyForm"
+          >
+            <form
+              method="post"
+            >
+              <input
+                name="lastPrice"
+                type="hidden"
+                value="15377.20"
+              />
+              <div
+                class="MuiBox-root MuiBox-root-13 panel strategyPanel expanded"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-14 panelHeader"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-15 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.strategy
+                    </h5>
+                    <div
+                      class="MuiBox-root MuiBox-root-16 customSelect"
+                    >
+                      
+                      <div
+                        class="MuiFormControl-root callout customSelectControl"
+                      >
+                        <div
+                          class="MuiInputBase-root MuiOutlinedInput-root select MuiInputBase-formControl"
+                        >
+                          <div
+                            aria-haspopup="listbox"
+                            class="MuiSelect-root callout1 MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+                            role="button"
+                            tabindex="0"
+                          >
+                            terminal.strategy.limit
+                          </div>
+                          <input
+                            aria-hidden="true"
+                            class="MuiSelect-nativeInput"
+                            tabindex="-1"
+                            value="limit"
+                          />
+                          <svg
+                            aria-hidden="true"
+                            class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                            focusable="false"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M7 10l5 5 5-5z"
+                            />
+                          </svg>
+                          <fieldset
+                            aria-hidden="true"
+                            class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                            style="padding-left: 8px;"
+                          >
+                            <legend
+                              class="PrivateNotchedOutline-legend-9"
+                              style="width: 0.01px;"
+                            >
+                              <span>
+                                ​
+                              </span>
+                            </legend>
+                          </fieldset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-17 panelContent"
+                >
+                  <div
+                    class="MuiFormControl-root"
+                  >
+                    <div
+                      class="MuiBox-root MuiBox-root-18 help"
+                    >
+                      <p
+                        class="MuiFormHelperText-root"
+                        title="terminal.price.help"
+                      >
+                        terminal.price
+                      </p>
+                    </div>
+                    <div
+                      class="MuiBox-root MuiBox-root-19"
+                    >
+                      <div
+                        class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                      >
+                        <input
+                          aria-invalid="false"
+                          class="MuiInputBase-input MuiOutlinedInput-input"
+                          name="price"
+                          type="text"
+                          value=""
+                        />
+                        <fieldset
+                          aria-hidden="true"
+                          class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                          style="padding-left: 8px;"
+                        >
+                          <legend
+                            class="PrivateNotchedOutline-legend-9"
+                            style="width: 0.01px;"
+                          >
+                            <span>
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                      <div
+                        class="currencyBox"
+                      >
+                        USDT
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiFormControl-root"
+                  >
+                    <div
+                      class="MuiBox-root MuiBox-root-20 help"
+                    >
+                      <p
+                        class="MuiFormHelperText-root"
+                        title="terminal.position.size.help"
+                      >
+                        terminal.position.size
+                      </p>
+                    </div>
+                    <div
+                      class="MuiBox-root MuiBox-root-21"
+                    >
+                      <div
+                        class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                      >
+                        <input
+                          aria-invalid="false"
+                          class="MuiInputBase-input MuiOutlinedInput-input"
+                          name="positionSize"
+                          placeholder="0"
+                          type="text"
+                          value=""
+                        />
+                        <fieldset
+                          aria-hidden="true"
+                          class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                          style="padding-left: 8px;"
+                        >
+                          <legend
+                            class="PrivateNotchedOutline-legend-9"
+                            style="width: 0.01px;"
+                          >
+                            <span>
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                      <div
+                        class="currencyBox"
+                      >
+                        USDT
+                      </div>
+                    </div>
+                    <p
+                      class="MuiFormHelperText-root"
+                    >
+                      terminal.available
+                       
+                      <span
+                        class="balance"
+                      >
+                        0.00000000
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="MuiFormControl-root"
+                  >
+                    <div
+                      class="MuiBox-root MuiBox-root-22 help"
+                    >
+                      <p
+                        class="MuiFormHelperText-root"
+                        title="terminal.units.help"
+                      >
+                        terminal.units
+                      </p>
+                    </div>
+                    <div
+                      class="MuiBox-root MuiBox-root-23"
+                    >
+                      <div
+                        class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                      >
+                        <input
+                          aria-invalid="false"
+                          class="MuiInputBase-input MuiOutlinedInput-input"
+                          name="units"
+                          placeholder="0"
+                          type="text"
+                          value=""
+                        />
+                        <fieldset
+                          aria-hidden="true"
+                          class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                          style="padding-left: 8px;"
+                        >
+                          <legend
+                            class="PrivateNotchedOutline-legend-9"
+                            style="width: 0.01px;"
+                          >
+                            <span>
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                      <div
+                        class="currencyBox"
+                      >
+                        BTC
+                      </div>
+                    </div>
+                    <p
+                      class="MuiFormHelperText-root"
+                    >
+                      terminal.available
+                       
+                      <span
+                        class="balance"
+                      >
+                        0.00000000
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-24 panel takeProfitPanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-25 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-30 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.takeprofit
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-31 panel dcaPanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-32 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-33 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.dca
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-34 panel stopLossPanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-35 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-36 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.stoploss
+                    </h5>
+                    <input
+                      name="unrealizedProfitLossesPercentage"
+                      type="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-37 panel trailingStopPanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-38 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-39 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.trailingstop
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-40 panel entryExpirationPanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-41 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-42 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.entryexpiration
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-43 panel autoclosePanel collapsed"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-44 panelHeader"
+                >
+                  <span
+                    class="MuiSwitch-root MuiSwitch-sizeSmall"
+                  >
+                    <span
+                      aria-disabled="false"
+                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                    >
+                      <span
+                        class="MuiIconButton-label"
+                      >
+                        <input
+                          class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                          type="checkbox"
+                          value=""
+                        />
+                        <span
+                          class="MuiSwitch-thumb"
+                        />
+                      </span>
+                      <span
+                        class="MuiTouchRipple-root"
+                      />
+                    </span>
+                    <span
+                      class="MuiSwitch-track"
+                    />
+                  </span>
+                  <div
+                    class="MuiBox-root MuiBox-root-45 title"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5"
+                    >
+                      terminal.timeautoclose
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text customButton full submitButton"
+                tabindex="0"
+                type="submit"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  terminal.open
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="MuiBox-root MuiBox-root-1 tradingTerminal"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-5 controlsBar"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-6 symbolsSelector"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1"
+          >
+            terminal.browsecoins
+          </p>
+          <div
+            class="MuiBox-root MuiBox-root-7 customSelect"
+          >
+            
+            <div
+              class="MuiFormControl-root callout customSelectControl"
+            >
+              <div
+                aria-expanded="false"
+                class="MuiAutocomplete-root searchRoot MuiAutocomplete-hasPopupIcon"
+                role="combobox"
+              >
+                <div
+                  class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+                >
+                  <div
+                    class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot searchInputRoot callout1 MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      aria-invalid="false"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input searchInput MuiAutocomplete-inputFocused MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                      id="mui-61935"
+                      spellcheck="false"
+                      type="text"
+                      value="BTC/USDT"
+                    />
+                    <div
+                      class="MuiAutocomplete-endAdornment"
+                    >
+                      <button
+                        aria-label="Open"
+                        class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                        tabindex="-1"
+                        title="Open"
+                        type="button"
+                      >
+                        <span
+                          class="MuiIconButton-label"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="MuiSvgIcon-root"
+                            focusable="false"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M7 10l5 5 5-5z"
+                            />
+                          </svg>
+                        </span>
+                        <span
+                          class="MuiTouchRipple-root"
+                        />
+                      </button>
+                    </div>
+                    <fieldset
+                      aria-hidden="true"
+                      class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                      style="padding-left: 8px;"
+                    >
+                      <legend
+                        class="PrivateNotchedOutline-legend-9"
+                        style="width: 0.01px;"
+                      >
+                        <span>
+                          ​
+                        </span>
+                      </legend>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-2 tradingViewContainer"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-4 tradingViewChart"
+          id="trading_view_chart"
+        />
+        <div
+          class="MuiBox-root MuiBox-root-12 strategyForm"
+        >
+          <form
+            method="post"
+          >
+            <input
+              name="lastPrice"
+              type="hidden"
+              value="15377.20"
+            />
+            <div
+              class="MuiBox-root MuiBox-root-13 panel strategyPanel expanded"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-14 panelHeader"
+              >
+                <div
+                  class="MuiBox-root MuiBox-root-15 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.strategy
+                  </h5>
+                  <div
+                    class="MuiBox-root MuiBox-root-16 customSelect"
+                  >
+                    
+                    <div
+                      class="MuiFormControl-root callout customSelectControl"
+                    >
+                      <div
+                        class="MuiInputBase-root MuiOutlinedInput-root select MuiInputBase-formControl"
+                      >
+                        <div
+                          aria-haspopup="listbox"
+                          class="MuiSelect-root callout1 MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+                          role="button"
+                          tabindex="0"
+                        >
+                          terminal.strategy.limit
+                        </div>
+                        <input
+                          aria-hidden="true"
+                          class="MuiSelect-nativeInput"
+                          tabindex="-1"
+                          value="limit"
+                        />
+                        <svg
+                          aria-hidden="true"
+                          class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                          focusable="false"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M7 10l5 5 5-5z"
+                          />
+                        </svg>
+                        <fieldset
+                          aria-hidden="true"
+                          class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                          style="padding-left: 8px;"
+                        >
+                          <legend
+                            class="PrivateNotchedOutline-legend-9"
+                            style="width: 0.01px;"
+                          >
+                            <span>
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root MuiBox-root-17 panelContent"
+              >
+                <div
+                  class="MuiFormControl-root"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-18 help"
+                  >
+                    <p
+                      class="MuiFormHelperText-root"
+                      title="terminal.price.help"
+                    >
+                      terminal.price
+                    </p>
+                  </div>
+                  <div
+                    class="MuiBox-root MuiBox-root-19"
+                  >
+                    <div
+                      class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                    >
+                      <input
+                        aria-invalid="false"
+                        class="MuiInputBase-input MuiOutlinedInput-input"
+                        name="price"
+                        type="text"
+                        value=""
+                      />
+                      <fieldset
+                        aria-hidden="true"
+                        class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                        style="padding-left: 8px;"
+                      >
+                        <legend
+                          class="PrivateNotchedOutline-legend-9"
+                          style="width: 0.01px;"
+                        >
+                          <span>
+                            ​
+                          </span>
+                        </legend>
+                      </fieldset>
+                    </div>
+                    <div
+                      class="currencyBox"
+                    >
+                      USDT
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="MuiFormControl-root"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-20 help"
+                  >
+                    <p
+                      class="MuiFormHelperText-root"
+                      title="terminal.position.size.help"
+                    >
+                      terminal.position.size
+                    </p>
+                  </div>
+                  <div
+                    class="MuiBox-root MuiBox-root-21"
+                  >
+                    <div
+                      class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                    >
+                      <input
+                        aria-invalid="false"
+                        class="MuiInputBase-input MuiOutlinedInput-input"
+                        name="positionSize"
+                        placeholder="0"
+                        type="text"
+                        value=""
+                      />
+                      <fieldset
+                        aria-hidden="true"
+                        class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                        style="padding-left: 8px;"
+                      >
+                        <legend
+                          class="PrivateNotchedOutline-legend-9"
+                          style="width: 0.01px;"
+                        >
+                          <span>
+                            ​
+                          </span>
+                        </legend>
+                      </fieldset>
+                    </div>
+                    <div
+                      class="currencyBox"
+                    >
+                      USDT
+                    </div>
+                  </div>
+                  <p
+                    class="MuiFormHelperText-root"
+                  >
+                    terminal.available
+                     
+                    <span
+                      class="balance"
+                    >
+                      0.00000000
+                    </span>
+                  </p>
+                </div>
+                <div
+                  class="MuiFormControl-root"
+                >
+                  <div
+                    class="MuiBox-root MuiBox-root-22 help"
+                  >
+                    <p
+                      class="MuiFormHelperText-root"
+                      title="terminal.units.help"
+                    >
+                      terminal.units
+                    </p>
+                  </div>
+                  <div
+                    class="MuiBox-root MuiBox-root-23"
+                  >
+                    <div
+                      class="MuiInputBase-root MuiOutlinedInput-root outlineInput MuiInputBase-formControl"
+                    >
+                      <input
+                        aria-invalid="false"
+                        class="MuiInputBase-input MuiOutlinedInput-input"
+                        name="units"
+                        placeholder="0"
+                        type="text"
+                        value=""
+                      />
+                      <fieldset
+                        aria-hidden="true"
+                        class="PrivateNotchedOutline-root-8 MuiOutlinedInput-notchedOutline"
+                        style="padding-left: 8px;"
+                      >
+                        <legend
+                          class="PrivateNotchedOutline-legend-9"
+                          style="width: 0.01px;"
+                        >
+                          <span>
+                            ​
+                          </span>
+                        </legend>
+                      </fieldset>
+                    </div>
+                    <div
+                      class="currencyBox"
+                    >
+                      BTC
+                    </div>
+                  </div>
+                  <p
+                    class="MuiFormHelperText-root"
+                  >
+                    terminal.available
+                     
+                    <span
+                      class="balance"
+                    >
+                      0.00000000
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-24 panel takeProfitPanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-25 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-30 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.takeprofit
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-31 panel dcaPanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-32 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-33 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.dca
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-34 panel stopLossPanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-35 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-36 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.stoploss
+                  </h5>
+                  <input
+                    name="unrealizedProfitLossesPercentage"
+                    type="hidden"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-37 panel trailingStopPanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-38 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-39 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.trailingstop
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-40 panel entryExpirationPanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-41 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-42 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.entryexpiration
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiBox-root MuiBox-root-43 panel autoclosePanel collapsed"
+            >
+              <div
+                class="MuiBox-root MuiBox-root-44 panelHeader"
+              >
+                <span
+                  class="MuiSwitch-root MuiSwitch-sizeSmall"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-29 MuiSwitch-input"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="MuiSwitch-thumb"
+                      />
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiSwitch-track"
+                  />
+                </span>
+                <div
+                  class="MuiBox-root MuiBox-root-45 title"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5"
+                  >
+                    terminal.timeautoclose
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text customButton full submitButton"
+              tabindex="0"
+              type="submit"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                terminal.open
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

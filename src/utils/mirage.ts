@@ -3,6 +3,7 @@ import providers from "../__tests__/fixtures/providers";
 import exchanges from "../__tests__/fixtures/exchanges";
 import userExchanges from "../__tests__/fixtures/userExchanges";
 import userData from "../__tests__/fixtures/userData";
+import pairs from "../__tests__/fixtures/pairs";
 
 let ApplicationSerializer = RestSerializer.extend({
   root: false,
@@ -23,6 +24,7 @@ export function makeServer({ environment = "test" } = {}) {
       provider: Model,
       userExchange: Model,
       userData: Model,
+      pair: Model,
     },
 
     fixtures: {
@@ -30,6 +32,7 @@ export function makeServer({ environment = "test" } = {}) {
       exchanges,
       userExchanges,
       userData,
+      pairs,
     },
 
     // factories: {
@@ -67,6 +70,8 @@ export function makeServer({ environment = "test" } = {}) {
           case "getUserData":
             response = schema.db.userData;
             break;
+          case "getPairsNew":
+            response = schema.db.pairs;
           default:
             break;
         }
