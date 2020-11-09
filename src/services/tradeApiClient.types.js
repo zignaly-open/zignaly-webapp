@@ -1622,6 +1622,9 @@ function createEmptyPositionEntity() {
     liquidationPrice: 0,
     markPrice: 0,
     markPriceStyle: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
   };
 }
 
