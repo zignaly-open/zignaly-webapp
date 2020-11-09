@@ -1751,15 +1751,17 @@ export function createExchangeConnectionEmptyEntity() {
  * @returns {UserBalanceEntity} User balance entity.
  */
 export function userBalanceResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object with different propteries.");
-  }
-
   return assign(createEmptyUserBalanceEntity(), response, {
-    // @ts-ignore
     totalUSDT: response["1USDT"] || response.totalUSDT || 0,
-    // @ts-ignore
     totalBTC: response["1BTC"] || response.totalBTC || 0,
+    totalAvailableBTC:
+      response.totalMarginBTC && response.totalCurrentMarginBTC
+        ? response.totalMarginBTC - response.totalCurrentMarginBTC
+        : 0,
+    totalAvailableUSDT:
+      response.totalMarginUSDT && response.totalCurrentMarginUSDT
+        ? response.totalMarginUSDT - response.totalCurrentMarginUSDT
+        : 0,
   });
 }
 
