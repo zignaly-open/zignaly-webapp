@@ -101,7 +101,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatNumber(balance.totalMarginUSDT - balance.totalCurrentMarginUSDT, 2)
+                  formatNumber(balance.totalAvailableUSDT, 2)
                 )}
               </>
             }
@@ -112,7 +112,7 @@ const FuturesAvailableBalance = ({ balance, selectedExchange }) => {
                 {selectedExchange.paperTrading && !selectedExchange.isTestnet ? (
                   <AllInclusiveIcon className="infinity" />
                 ) : (
-                  formatFloat(balance.totalMarginBTC - balance.totalCurrentMarginBTC)
+                  formatFloat(balance.totalAvailableBTC)
                 )}
               </>
             }

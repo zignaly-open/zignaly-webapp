@@ -1724,8 +1724,8 @@ export function createExchangeConnectionEmptyEntity() {
 
 /**
  * @typedef {Object} UserBalanceEntity
- * @property {Number} pnlBTC
- * @property {Number} pnlUSDT
+ * @property {Number} totalPnlUSDT
+ * @property {Number} totalPnlBTC
  * @property {Number} totalBTC
  * @property {Number} totalFreeBTC
  * @property {Number} totalFreeUSDT
@@ -1751,17 +1751,24 @@ export function createExchangeConnectionEmptyEntity() {
  * @returns {UserBalanceEntity} User balance entity.
  */
 export function userBalanceResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object with different propteries.");
-  }
-
-  return assign(createEmptyUserBalanceEntity(), response);
+  return assign(createEmptyUserBalanceEntity(), response, {
+    totalUSDT: response["1USDT"] || response.totalUSDT || 0,
+    totalBTC: response["1BTC"] || response.totalBTC || 0,
+    totalAvailableBTC:
+      response.totalMarginBTC && response.totalCurrentMarginBTC
+        ? response.totalMarginBTC - response.totalCurrentMarginBTC
+        : 0,
+    totalAvailableUSDT:
+      response.totalMarginUSDT && response.totalCurrentMarginUSDT
+        ? response.totalMarginUSDT - response.totalCurrentMarginUSDT
+        : 0,
+  });
 }
 
 export function createEmptyUserBalanceEntity() {
   return {
-    pnlBTC: 0,
-    pnlUSDT: 0,
+    totalPnlBTC: 0,
+    totalPnlUSDT: 0,
     totalBTC: 0,
     totalFreeBTC: 0,
     totalFreeUSDT: 0,
