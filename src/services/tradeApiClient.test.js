@@ -79,7 +79,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 25000);
+  }, 60000);
 
   it("should get user closed positions", async () => {
     const payload = {
@@ -94,7 +94,7 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
     positionEntityStructureAssertions(positionsCollection[1]);
-  }, 25000);
+  }, 60000);
 
   it("should get user log positions", async () => {
     const payload = {
@@ -120,7 +120,7 @@ describe("Consume tradeApiClient service", () => {
       true,
       "Second collection position item closed flag is not true.",
     );
-  }, 25000);
+  }, 60000);
 
   it("should get all the providers", async () => {
     /**
@@ -579,7 +579,7 @@ describe("Consume tradeApiClient service", () => {
 
     const response = await client.providerManagementPositions(payload);
     assert.isArray(response, "Response is not an array of objects with positions and subpositions");
-  }, 25000);
+  }, 60000);
 
   it("should get provider's followers list.", async () => {
     const payload = {
