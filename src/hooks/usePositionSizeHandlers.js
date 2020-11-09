@@ -75,17 +75,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const limitsAmount = contractType === "inverse" ? limits.cost : limits.amount;
 
     if (limitsAmount.min && value < limitsAmount.min) {
-      return formatMessage(
-        { id: "terminal.positionunits.limit.min" },
-        { value: limits.amount.min },
-      );
+      return formatMessage({ id: "terminal.positionunits.limit.min" }, { value: limitsAmount.min });
     }
 
     if (limitsAmount.max && value > limitsAmount.max) {
-      return formatMessage(
-        { id: "terminal.positionunits.limit.max" },
-        { value: limits.amount.max },
-      );
+      return formatMessage({ id: "terminal.positionunits.limit.max" }, { value: limitsAmount.max });
     }
 
     if (isNaN(units)) {
@@ -119,6 +113,19 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
+  /**
+   * @param {number} positionSize positionSize
+   * @param {number} price price
+   * @param {number} multiplier multiplier
+   * @returns {number} units
+   */
+  const calculateUnits = (positionSize, price, multiplier = 1) => {
+    if (contractType === "inverse") {
+      return (price * positionSize) / multiplier;
+    }
+    return positionSize / (price * multiplier);
+  };
+
   const realInvestmentChange = useCallback(() => {
     if (errors.realInvestment) return;
 
@@ -127,7 +134,8 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("positionSize", positionSize);
     trigger("positionSize").then((isValid) => {
       if (isValid) {
-        const units = positionSize / currentPrice;
+        const units = calculateUnits(positionSize, currentPrice);
+
         setValue("units", units.toFixed(8));
         trigger("units");
       }
@@ -140,7 +148,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
 
-    const units = positionSize / currentPrice;
+    const units = calculateUnits(positionSize, currentPrice, selectedSymbol.multiplier);
     setValue("units", units.toFixed(8));
     trigger("units").then((isValid) => {
       if (isValid) {
