@@ -5,7 +5,7 @@ require("dotenv").config({
 
 module.exports = {
   transform: {
-    "^.+\\.jsx?$": "<rootDir>/jest-preprocess.js",
+    "^.+\\.(js|jsx|ts|tsx)?$": "<rootDir>/jest-preprocess.js",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.([tj]sx?)$",
   moduleNameMapper: {
@@ -14,10 +14,16 @@ module.exports = {
       "<rootDir>/__mocks__/file-mock.js",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  testPathIgnorePatterns: ["node_modules", ".cache"],
+  testPathIgnorePatterns: ["node_modules", ".cache", "types"],
   transformIgnorePatterns: ["node_modules/(?!(gatsby)/)"],
   globals: {
     __PATH_PREFIX__: "",
   },
-  setupFiles: ["<rootDir>/loadershim.js", "<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/loadershim.js", "<rootDir>/jest.setup.js"],
+  moduleDirectories: [
+    "node_modules",
+    __dirname, // the root directory
+    "src",
+    "src/utils/test",
+  ],
 };
