@@ -3,19 +3,19 @@ import { render as rtlRender } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-// import thunk from "redux-thunk";
+import thunk from "redux-thunk";
 import initialState from "store/initialState";
 import rootReducer from "reducers/rootReducer";
 import userExchanges from "__tests__/fixtures/userExchanges";
 import userData from "__tests__/fixtures/userData";
 
 /**
- * Wrap ui with react-intl and react-redux providers
+ * Render ui with logged in user store
  * @param {React.ReactElement} ui Element to render
  * @param {*} Options Render params
  * @returns {React.ReactNode} New element
  */
-export function renderLoggedIn(ui, { state: customState = {} } = {}) {
+export const renderLoggedIn = (ui, { state: customState = {} } = {}) => {
   const s = {
     session: {
       tradeApi: {
@@ -35,7 +35,7 @@ export function renderLoggedIn(ui, { state: customState = {} } = {}) {
   const state = { ...customState, ...s };
 
   return render(ui, { state });
-}
+};
 
 /**
  * Wrap ui with react-intl and react-redux providers
@@ -43,7 +43,7 @@ export function renderLoggedIn(ui, { state: customState = {} } = {}) {
  * @param {*} Options Render params
  * @returns {React.ReactNode} New element
  */
-function render(ui, { locale = "en", state: customState = {}, ...renderOptions } = {}) {
+export const render = (ui, { locale = "en", state: customState = {}, ...renderOptions } = {}) => {
   const state = { ...initialState, ...customState };
   const store = createStore(rootReducer, state, applyMiddleware(thunk));
 
@@ -60,30 +60,27 @@ function render(ui, { locale = "en", state: customState = {}, ...renderOptions }
     );
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
-}
-
-const thunk = ({ dispatch, getState }) => (next) => (action) => {
-  if (typeof action === "function") {
-    return action(dispatch, getState);
-  }
-
-  return next(action);
 };
 
-const create = () => {
-  const store = {
-    getState: jest.fn(() => ({})),
-    dispatch: jest.fn(),
-  };
-  const next = jest.fn();
+// const thunk = ({ dispatch, getState }) => (next) => (action) => {
+//   if (typeof action === "function") {
+//     return action(dispatch, getState);
+//   }
 
-  const invoke = (action) => thunk(store)(next)(action);
+//   return next(action);
+// };
 
-  return { store, next, invoke };
-};
+// const create = () => {
+//   const store = {
+//     getState: jest.fn(() => ({})),
+//     dispatch: jest.fn(),
+//   };
+//   const next = jest.fn();
+
+//   const invoke = (action) => thunk(store)(next)(action);
+
+//   return { store, next, invoke };
+// };
 
 // re-export everything
 export * from "@testing-library/react";
-
-// override render method
-export { render, create };

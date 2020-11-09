@@ -6,7 +6,7 @@ import { positionEntityStructureAssertions } from "./utils/positionAssertions";
 
 describe("Consume tradeApiClient service", () => {
   // Shared user and access token across scenarios.
-  let accessToken = null;
+  let accessToken = "";
 
   // Shared user session for test scenarios that require access token.
   beforeAll(async () => {

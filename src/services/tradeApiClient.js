@@ -1,4 +1,4 @@
-// import fetch from "cross-fetch";
+import "whatwg-fetch";
 import cache from "memory-cache";
 import { createHash } from "crypto";
 import { navigateLogin } from "./navigation";
