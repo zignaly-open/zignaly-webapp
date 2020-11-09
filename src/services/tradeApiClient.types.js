@@ -606,7 +606,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} longDesc
  * @property {string|boolean} fee
  * @property {number} price
- * @property {boolean} website
+ * @property {boolean|string} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
  * @property {boolean} disable False if user is copying

@@ -154,8 +154,8 @@ const TradingView = () => {
   useEffect(loadDependencies, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
-    // Skip if TV widget already exists or TV library is not ready.
-    if (!libraryReady || tradingViewWidget || !selectedSymbol) {
+    // Skip if TV widget already exists or TV library/symbol not ready.
+    if (tradingViewWidget || !libraryReady || !selectedSymbol) {
       return () => {};
     }
 
