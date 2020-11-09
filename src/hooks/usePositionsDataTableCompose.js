@@ -185,7 +185,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        <span className="symbol">{position.base}</span>
+        <span className="symbol">{position.unitsAmount}</span>
         {formatPrice(position.amount)}
       </>
     );
@@ -228,7 +228,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        <span className="symbol">{position.quote}</span> {formatPrice(position.positionSizeQuote)}
+        <span className="symbol">{position.unitsInvestment}</span>{" "}
+        {formatPrice(position.positionSizeQuote)}
       </>
     );
   }
@@ -259,7 +260,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        <span className="symbol">{position.quote}</span> {formatPrice(position.realInvestment)}
+        <span className="symbol">{position.unitsInvestment}</span>{" "}
+        {formatPrice(position.realInvestment)}
       </>
     );
   }
@@ -403,7 +405,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
           <span>Still entering...</span>
         ) : (
           <>
-            <span className="symbol">{position.quote}</span>
+            <span className="symbol">{position.unitsInvestment}</span>
             <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
           </>
         )}
@@ -436,7 +438,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        <span className="symbol">{position.quote}</span>
+        <span className="symbol">{position.unitsInvestment}</span>
         <span className={position.netProfitStyle}>{formatPrice(position.netProfit)}</span>
       </>
     );
@@ -454,7 +456,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       <>
         {position.currentAllocatedBalance && (
           <>
-            <span className="symbol">{position.quote}</span>{" "}
+            <span className="symbol">{position.unitsInvestment}</span>{" "}
             {formatPrice(position.currentAllocatedBalance)}
           </>
         )}
@@ -536,7 +538,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   //         <span>Still entering...</span>
   //       ) : (
   //         <>
-  //           <span className="symbol">{position.quote}</span>
+  //           <span className="symbol">{position.unitsInvestment}</span>
   //           <span className={position.unrealizedProfitStyle}>
   //             {formatPrice(position.unrealizedProfitLosses)}
   //           </span>
@@ -560,7 +562,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
           <span>Still entering...</span>
         ) : (
           <>
-            <span className="symbol">{position.quote}</span>
+            <span className="symbol">{position.unitsInvestment}</span>
             <span className={position.unrealizedProfitStyle}>
               {formatPrice(position.unrealizedProfitLossesPercentage)} %
             </span>
@@ -580,7 +582,9 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
     const position = positions[dataIndex];
     return (
       <>
-        {!isNaN(position.stopLossPrice) && <span className="symbol">{position.quote}</span>}
+        {!isNaN(position.stopLossPrice) && (
+          <span className="symbol">{position.unitsInvestment}</span>
+        )}
         <span className={position.stopLossStyle}>{formatPrice(position.stopLossPrice)}</span>
       </>
     );
@@ -614,7 +618,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
 
     return (
       <>
-        <span className="symbol">{position.base}</span> {formatPrice(price)}
+        <span className="symbol">{position.unitsAmount}</span> {formatPrice(price)}
       </>
     );
   }
@@ -855,7 +859,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
@@ -1012,7 +1016,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
@@ -1162,7 +1166,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
@@ -1283,7 +1287,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
@@ -1403,7 +1407,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
@@ -1458,7 +1462,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "pair",
+        propertyName: "short",
         renderFunction: null,
       },
       {
