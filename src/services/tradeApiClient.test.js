@@ -4,6 +4,10 @@ import { assert } from "chai";
 import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "./tradeApiClient.types";
 import { positionEntityStructureAssertions } from "../utils/test/positionAssertions";
 
+/**
+ * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
+ */
+
 describe("Consume tradeApiClient service", () => {
   // Shared user and access token across scenarios.
   let accessToken = "";
@@ -119,12 +123,16 @@ describe("Consume tradeApiClient service", () => {
   }, 25000);
 
   it("should get all the providers", async () => {
+    /**
+     * @type {ProvidersPayload}
+     */
     const getProvidersPayload = {
       token: accessToken,
       type: "all",
       ro: true,
       copyTradersOnly: true,
       timeFrame: 90,
+      internalExchangeId: "Binance1578301457_5e12f811deda4",
     };
     const providersCollection = await client.providersGet(getProvidersPayload);
     assert.isArray(providersCollection, "Providers collection is not an array.");
@@ -170,6 +178,7 @@ describe("Consume tradeApiClient service", () => {
       base: "all",
       timeFrame: "2months",
       DCAFilter: "withoutDCA",
+      isCopyTrading: true,
     };
 
     const providersStats = await client.providersStatsGet(payload);
@@ -386,25 +395,25 @@ describe("Consume tradeApiClient service", () => {
     });
 
     assert.equal(
-      updatedPositionEntity.reBuyTargets["1"].triggerPercentage,
+      updatedPositionEntity.reBuyTargets[1].triggerPercentage,
       5,
       "DCA target percentage don't match the expected value.",
     );
 
     assert.equal(
-      updatedPositionEntity.reBuyTargets["1"].quantity,
+      updatedPositionEntity.reBuyTargets[1].quantity,
       50,
       "DCA target amount amount don't match the expected value.",
     );
 
     assert.equal(
-      updatedPositionEntity.takeProfitTargets["1"].amountPercentage,
+      updatedPositionEntity.takeProfitTargets[1].amountPercentage,
       100,
       "Take profit target percentage don't match the expected value.",
     );
 
     assert.isAtLeast(
-      updatedPositionEntity.takeProfitTargets["1"].priceTargetPercentage,
+      updatedPositionEntity.takeProfitTargets[1].priceTargetPercentage,
       10,
       "Take profit target price don't match the expected value.",
     );
