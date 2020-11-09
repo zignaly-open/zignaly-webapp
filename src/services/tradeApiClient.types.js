@@ -495,6 +495,9 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} liquidationPrice
  * @property {Number} markPrice
  * @property {string} markPriceStyle
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
+ * @property {string} short Short symbol name displayed in Zignaly.
  */
 
 /**

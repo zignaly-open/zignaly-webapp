@@ -107,7 +107,7 @@ function composeTrailingStopIcon(position) {
 function composeAmount(position) {
   return (
     <>
-      <span className="symbol">{position.base}</span>
+      <span className="symbol">{position.unitsAmount}</span>
       {formatPrice(position.amount)}
     </>
   );
@@ -137,7 +137,8 @@ function composeLeverage(position) {
 function composeQuoteSize(position) {
   return (
     <>
-      <span className="symbol">{position.quote}</span> {formatPrice(position.positionSizeQuote)}
+      <span className="symbol">{position.unitsInvestment}</span>{" "}
+      {formatPrice(position.positionSizeQuote)}
     </>
   );
 }
@@ -184,7 +185,7 @@ function composeProfit(position) {
         <span>Still entering...</span>
       ) : (
         <>
-          <span className="symbol">{position.quote}</span>
+          <span className="symbol">{position.unitsInvestment}</span>
           <span className={position.profitStyle}>{formatPrice(position.profit)}</span>
         </>
       )}
@@ -533,7 +534,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
     composeStatusMessage(position.status),
     composeRawValue(position.signalId),
     composeRawValue(position.userId),
-    composeRawValue(position.pair),
+    composeRawValue(position.short),
     composeEntryPrice(position),
     composeLeverage(position),
     composeExitPrice(position),
