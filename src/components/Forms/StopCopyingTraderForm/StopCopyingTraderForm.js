@@ -44,7 +44,7 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
       token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       version: 2,
-      exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+      exchangeInternalId: selectedExchange.internalId,
     };
     dispatch(setProvider(getProviderPayload));
   };

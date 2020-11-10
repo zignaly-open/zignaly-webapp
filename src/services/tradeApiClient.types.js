@@ -155,7 +155,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} token user's access token
  * @property {string} providerId Provider ID
  * @property {Number} version api endpoint version number.
- * @property {String|Boolean} exchangeInternalId internal Id of selected exchange.
+ * @property {String} exchangeInternalId internal Id of selected exchange.
  */
 
 /**

@@ -51,7 +51,7 @@ const SignalProviders = (props) => {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,
         version: 2,
-        exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+        exchangeInternalId: selectedExchange.internalId,
       };
       dispatch(setProvider(payload));
     };

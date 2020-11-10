@@ -52,7 +52,7 @@ const CopyTraders = (props) => {
         token: tradeApi.accessToken,
         providerId: providerId,
         version: 2,
-        exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+        exchangeInternalId: selectedExchange.internalId,
       };
       dispatch(setProvider(payload));
     }

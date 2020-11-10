@@ -53,7 +53,7 @@ const FollowProviderButton = ({ provider }) => {
             token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
             version: 2,
-            exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+            exchangeInternalId: selectedExchange,
           };
           dispatch(setProvider(payload2));
           dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
@@ -85,7 +85,7 @@ const FollowProviderButton = ({ provider }) => {
             token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
             version: 2,
-            exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+            exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(setProvider(payload2));
           userPilotProviderEnabled();
