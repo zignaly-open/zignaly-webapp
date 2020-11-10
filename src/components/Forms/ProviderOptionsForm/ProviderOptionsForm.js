@@ -110,7 +110,9 @@ const ProviderOptionsForm = ({ provider }) => {
                 token: storeSession.tradeApi.accessToken,
                 providerId: provider.id,
                 version: 2,
+                exchangeInternalId: storeSettings.selectedExchange.internalId,
               };
+
               dispatch(setProvider(payload2));
             }
           })
