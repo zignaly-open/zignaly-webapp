@@ -32,7 +32,7 @@ import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
 const CopyTraderForm = ({ provider, onClose }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
   const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
   const [profitsMode, setProfitsMode] = useState(
@@ -79,26 +79,25 @@ const CopyTraderForm = ({ provider, onClose }) => {
           connected: provider.connected ? provider.connected : false,
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
-          exchangeInternalId: storeSettings.selectedExchange.internalId,
+          exchangeInternalId: selectedExchange.internalId,
           ...(provider.profitSharing && {
             profitsMode: profitsMode,
           }),
         };
         tradeApi
           .traderConnect(payload)
-          .then((response) => {
-            if (response) {
-              const payload2 = {
-                token: storeSession.tradeApi.accessToken,
-                providerId: provider.id,
-                version: 2,
-              };
-              dispatch(setProvider(payload2));
-              dashlyProviderEnabled();
-              userPilotProviderEnabled();
-              dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
-              onClose();
-            }
+          .then(() => {
+            const payload2 = {
+              token: storeSession.tradeApi.accessToken,
+              providerId: provider.id,
+              version: 2,
+              exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
+            };
+            dispatch(setProvider(payload2));
+            dashlyProviderEnabled();
+            userPilotProviderEnabled();
+            dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
+            onClose();
           })
           .catch((e) => {
             dispatch(showErrorAlert(e));
@@ -114,16 +113,15 @@ const CopyTraderForm = ({ provider, onClose }) => {
 
   const validateExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
-      if (provider.profitSharing && storeSettings.selectedExchange.paperTrading) {
+      if (provider.profitSharing && selectedExchange.paperTrading) {
         let msg = intl.formatMessage({ id: "copyt.copy.error4" });
         setAlert(msg);
         return false;
       }
       if (provider.exchanges.length && provider.exchanges[0] !== "") {
         if (
-          provider.exchanges.includes(storeSettings.selectedExchange.name.toLowerCase()) &&
-          provider.exchangeType.toLowerCase() ===
-            storeSettings.selectedExchange.exchangeType.toLowerCase()
+          provider.exchanges.includes(selectedExchange.name.toLowerCase()) &&
+          provider.exchangeType.toLowerCase() === selectedExchange.exchangeType.toLowerCase()
         ) {
           return true;
         }
@@ -131,8 +129,8 @@ const CopyTraderForm = ({ provider, onClose }) => {
         let msg = intl.formatMessage(
           { id: "copyt.copy.error1" },
           {
-            selected: `${storeSettings.selectedExchange.internalName.toUpperCase()}`,
-            exchange: `${storeSettings.selectedExchange.name.toUpperCase()} ${storeSettings.selectedExchange.exchangeType.toUpperCase()}`,
+            selected: `${selectedExchange.internalName.toUpperCase()}`,
+            exchange: `${selectedExchange.name.toUpperCase()} ${selectedExchange.exchangeType.toUpperCase()}`,
             required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
           },
         );

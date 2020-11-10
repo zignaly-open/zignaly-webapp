@@ -27,7 +27,7 @@ import ConnectExchange from "../../../Modal/ConnectExchange";
  */
 const FollowProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [connectModal, showConnectModal] = useState(false);
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const FollowProviderButton = ({ provider }) => {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
         connected: false,
-        exchangeInternalId: storeSettings.selectedExchange.internalId,
+        exchangeInternalId: selectedExchange.internalId,
       };
       tradeApi
         .providerConnect(payload)
@@ -53,6 +53,7 @@ const FollowProviderButton = ({ provider }) => {
             token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
             version: 2,
+            exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
           };
           dispatch(setProvider(payload2));
           dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
@@ -84,6 +85,7 @@ const FollowProviderButton = ({ provider }) => {
             token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
             version: 2,
+            exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
           };
           dispatch(setProvider(payload2));
           userPilotProviderEnabled();
@@ -119,8 +121,7 @@ const FollowProviderButton = ({ provider }) => {
         <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
           <FormattedMessage id="srv.followprovider" />
         </CustomButton>
-      ) : !followingFrom ||
-        provider.exchangeInternalId === storeSettings.selectedExchange.internalId ? (
+      ) : !followingFrom || provider.exchangeInternalId === selectedExchange.internalId ? (
         <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
           <FormattedMessage id="srv.stopfollowing" />
         </CustomButton>

@@ -8,6 +8,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { setProvider } from "../../../../store/actions/views";
 import { useDispatch } from "react-redux";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -22,6 +23,7 @@ import { useDispatch } from "react-redux";
  * @returns {JSX.Element} JSX
  */
 const WallSubscribe = ({ subscribed, providerId }) => {
+  const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const [isSubscribed, setSubscribed] = useState(subscribed);
   const dispatch = useDispatch();
@@ -42,6 +44,7 @@ const WallSubscribe = ({ subscribed, providerId }) => {
             token: storeSession.tradeApi.accessToken,
             providerId,
             version: 2,
+            exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
           };
           dispatch(setProvider(payload2));
         }

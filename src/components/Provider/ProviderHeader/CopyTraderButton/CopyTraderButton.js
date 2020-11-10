@@ -103,6 +103,7 @@ const CopyTraderButton = ({ provider }) => {
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
           version: 2,
+          exchangeInternalId: selectedExchange.internalId ? selectedExchange.internalId : false,
         };
         dispatch(setProvider(providerPayload));
         dispatch(
