@@ -31,21 +31,30 @@
         border-color: $lightGrey;
       }
     }
+  }
 
-    .icon {
-      color: $lightGrey;
-      cursor: pointer;
-      height: 24px;
-      width: 24px;
+  .iconBox {
+    height: 24px;
+    width: 24px;
+  }
 
-      &.add {
-        color: $green;
-      }
+  .icon {
+    color: $lightGrey;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
 
-      &.delete {
-        color: $red2;
-      }
+    &.add {
+      color: $green;
     }
+
+    &.delete {
+      color: $red2;
+    }
+  }
+
+  .addActionBox {
+    width: 100%;
   }
 }
 
@@ -62,6 +71,7 @@
     width: 100%;
 
     .fieldBox {
+      align-items: flex-start;
       flex-wrap: wrap;
       margin-bottom: 15px;
       position: relative;
