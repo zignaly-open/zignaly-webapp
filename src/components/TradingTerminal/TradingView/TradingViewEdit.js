@@ -218,14 +218,14 @@ const TradingViewEdit = (props) => {
         tradingViewWidget &&
         tradingViewWidget.iframe &&
         tradingViewWidget.iframe.contentWindow &&
-        selectedSymbol
+        symbolData
       ) {
         const symbolSuffix =
           storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
           storeSettings.selectedExchange.exchangeType === "futures"
             ? "PERP"
             : "";
-        const symbolCode = selectedSymbol.tradeViewSymbol + symbolSuffix;
+        const symbolCode = symbolData.tradeViewSymbol + symbolSuffix;
         const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
         tradingViewWidget.iframe.contentWindow.postMessage(
