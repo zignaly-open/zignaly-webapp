@@ -225,13 +225,14 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    setSelectedSymbol(resolveSymbolData(selectedOption));
+    const newSymbol = resolveSymbolData(selectedOption);
+    setSelectedSymbol(newSymbol);
     const symbolSuffix =
       storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
       storeSettings.selectedExchange.exchangeType === "futures"
         ? "PERP"
         : "";
-    const symbolCode = selectedSymbol.tradeViewSymbol + symbolSuffix;
+    const symbolCode = newSymbol.tradeViewSymbol + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
