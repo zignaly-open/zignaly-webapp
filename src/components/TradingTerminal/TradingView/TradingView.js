@@ -27,10 +27,10 @@ import "./TradingView.scss";
  * @type {Object<string, string>}
  */
 const defaultExchangeSymbol = {
-  KuCoin: "BTC/USDT",
-  Binance: "BTC/USDT",
-  Zignaly: "BTC/USDT",
-  BitMEX: "XBT/USD",
+  kucoin: "BTC/USDT",
+  binance: "BTC/USDT",
+  zignaly: "BTC/USDT",
+  bitmex: "XBTUSD",
   fallback: "BTC/USDT",
 };
 
@@ -96,7 +96,7 @@ const TradingView = () => {
   const defaultSelectedSymbol = () => {
     const symbolOptions = [
       storeSettings.tradingTerminal.pair[storeSettings.selectedExchange.exchangeId],
-      defaultExchangeSymbol[exchangeName],
+      defaultExchangeSymbol[exchangeName.toLowerCase()],
       defaultExchangeSymbol.fallback,
     ];
     for (const s of symbolOptions) {
@@ -109,9 +109,11 @@ const TradingView = () => {
     }
     return null;
   };
-  const [selectedSymbol, setSelectedSymbol] = useState(null);
+  const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
   useEffect(() => {
-    setSelectedSymbol(defaultSelectedSymbol());
+    if (symbols) {
+      setSelectedSymbol(defaultSelectedSymbol());
+    }
   }, [symbols]);
 
   const [selectedExchangeId, setSelectedExchangeId] = useState(
@@ -229,7 +231,7 @@ const TradingView = () => {
       storeSettings.selectedExchange.exchangeType === "futures"
         ? "PERP"
         : "";
-    const symbolCode = selectedOption.replace("/", "") + symbolSuffix;
+    const symbolCode = selectedSymbol.tradeViewSymbol + symbolSuffix;
     const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {

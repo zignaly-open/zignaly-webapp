@@ -211,18 +211,20 @@ const TradingViewEdit = (props) => {
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
-    if (!selectedSymbol) return;
-
-    const symbolSuffix =
-      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-      storeSettings.selectedExchange.exchangeType === "futures"
-        ? "PERP"
-        : "";
-    const symbolCode = selectedSymbol.replace("/", "") + symbolSuffix;
-    const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
-
     const checkExist = setInterval(() => {
-      if (tradingViewWidget && tradingViewWidget.iframe && tradingViewWidget.iframe.contentWindow) {
+      if (
+        tradingViewWidget &&
+        tradingViewWidget.iframe &&
+        tradingViewWidget.iframe.contentWindow &&
+        selectedSymbol
+      ) {
+        const symbolSuffix =
+          storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
+          storeSettings.selectedExchange.exchangeType === "futures"
+            ? "PERP"
+            : "";
+        const symbolCode = selectedSymbol.tradeViewSymbol + symbolSuffix;
+        const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
         tradingViewWidget.iframe.contentWindow.postMessage(
           { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
           "*",
