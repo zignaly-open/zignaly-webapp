@@ -63,6 +63,8 @@ const TradingViewEdit = (props) => {
       baseId: positionEntity.base,
       quote: positionEntity.quote,
       quoteId: positionEntity.quote,
+      short: positionEntity.short,
+      tradeViewSymbol: positionEntity.tradeViewSymbol,
       limits: {},
     });
   }
@@ -225,6 +227,7 @@ const TradingViewEdit = (props) => {
             : "";
         const symbolCode = selectedSymbol.tradeViewSymbol + symbolSuffix;
         const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
+
         tradingViewWidget.iframe.contentWindow.postMessage(
           { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
           "*",
