@@ -1626,6 +1626,7 @@ function createEmptyPositionEntity() {
     unitsInvestment: "",
     unitsAmount: "",
     short: "",
+    tradeViewSymbol: "",
   };
 }
 
